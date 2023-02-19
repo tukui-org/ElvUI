@@ -2,32 +2,18 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
-L["Reset all frames to their original positions."] = true
-L["You cannot copy settings from the same unit."] = true
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = true
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "如果你不想讓某一個光環或是光環條顯示出來, 只需按住 Shift 的同時滑鼠右鍵點擊圖示就可以讓其消失."
 L["Reposition Window"] = true
 L["Quest Log"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["Torghast Choice Toggle"] = true
-L["Max Level"] = true
 L["Location"] = true
-L["Movers"] = true
-L["Export Now"] = true
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
-L["Import Now"] = true
-L["General"] = true
 L["Minimap Cluster"] = true
 L["Time Alert Frame"] = true
-L["Install"] = true
-L["Run the installation process."] = true
-L["Reset the size and position of this frame."] = true
-L["Unlock various elements of the UI to be repositioned."] = true
-L["Must be in group with the player if he isn't on the same server as you."] = true
-L["Toggle Tutorials"] = true
 L["Spell Haste"] = true
-L["Toggle Anchors"] = true
-L["On screen positions for different elements."] = true
-L["Reset Anchors"] = true
+L["Player Aura Bars"] = true
+L["Target Aura Bars"] = true
+L["Pet Aura Bars"] = true
+L["Focus Aura Bars"] = true
 
 L["Loadouts"] = "配置"
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = "|cffFFFFFFControl + 左鍵:|r 切換配置"

@@ -2,32 +2,14 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
-L["Reset all frames to their original positions."] = "вернуть все фреймы на изначальные позиции" --This probably should be in config
-L["You cannot copy settings from the same unit."] = "Вы не можете копировать настройки из того же юнита" --This probably should be in config
-L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Если у Вас есть иконка или полоса аур, которую Вы не хотите отображать, просто shift+ПКМ на ней для занесения в черный список (она пропадет)." --currently in config but used in install so should be here
---L["Reposition Window"] = true --Actually in config
+
+L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Если у Вас есть иконка или полоса аур, которую Вы не хотите отображать, просто shift+ПКМ на ней для занесения в черный список (она пропадет)."
 L["Quest Log"] = "Список заданий"
---L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true --Actually in config
 L["Torghast Choice Toggle"] = "Торгаст: панель выбора"
---L["Max Level"] = true --Dupe
 L["Location"] = "Локация"
---L["Movers"] = true --Actually in config
--- L["Export Now"] = true --Actually in config
---L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true --Actually in config
--- L["Import Now"] = true --Actually in config
--- L["General"] = true --Actually in config
 L["Minimap Cluster"] = "Кластер миникарты"
 L["Time Alert Frame"] = "Напоминание о времени"
-L["Install"] = "Установка" --This probably should be in config
-L["Run the installation process."] = "Запустить процесс установки" --This probably should be in config
-L["Reset the size and position of this frame."] = "Сбросить размер и позицию этого окна" --This probably should be in config
--- L["Unlock various elements of the UI to be repositioned."] = true --Actually in config
-L["Must be in group with the player if he isn't on the same server as you."] = "Если игрок не на том же сервере, то он должен быть с вами в одной группе" --didn't find any calls for D:Distribute, but feels like this line will appear noly after config is opened and used to profile share => probably belongs to config locales
--- L["Toggle Tutorials"] = true --Actually in config
 L["Spell Haste"] = "Скорость заклинаний"
--- L["Toggle Anchors"] = true --Actually in config
--- L["On screen positions for different elements."] = true --Actually in config
-L["Reset Anchors"] = "Сбросить фиксаторы" --In line with other locales like "Toggle anchors" should probably be a config locale
 
 --Found these lines not localized in movers
 L["Player Aura Bars"] = "Полосы аур игрока"

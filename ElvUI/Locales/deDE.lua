@@ -2,32 +2,20 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
-L["Reset all frames to their original positions."] = "Setze alle Fenster auf ihre ursprüngliche Position zurück."
-L["You cannot copy settings from the same unit."] = "Du kannst keine Einstellungen vom selben Gerät kopieren."
+
+
 L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Wenn Du ein Symbol oder eine Auraleiste hast, die Du nicht anzeigen möchtest, halte einfach die Umschalttaste gedrückt und klicke mit der rechten Maustaste auf das Symbol, damit es verschwindet."
-L["Reposition Window"] = "Fenster neu positionieren"
+-- L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."] = "Wenn du ein Symbol oder eine Auraleiste nicht angezeigt haben möchtest, halte einfach Shift und rechtsklick auf das Symbol um zu verstecken." --Old from config
 L["Quest Log"] = "Questlog"
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du wirst die Einstellungen für |cffD3CF00\"%s\"|r von deinem aktuellen |cff4beb2c\"%s\"|r-Profil in das |cff4beb2c\"%s\"|r-Profil kopieren. Bist du sicher?"
 L["Torghast Choice Toggle"] = "Torghast Auswahlschalter"
-L["Max Level"] = true
 L["Location"] = "Standort"
-L["Movers"] = true
-L["Export Now"] = "Jetzt Exportieren"
-L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Du wirst die Einstellungen für |cffD3CF00\"%s\"|r aus dem |cff4beb2c\"%s\"|r-Profil in dein aktuelles |cff4beb2c\"%s\"|r-Profil kopieren. Bist du sicher?"
-L["Import Now"] = "Jetzt Importieren"
-L["General"] = "Allgemein"
 L["Minimap Cluster"] = "Minikarte Gruppe"
 L["Time Alert Frame"] = "Zeitalarm Fenster"
-L["Install"] = "Installieren"
-L["Run the installation process."] = "Führe den Installationsvorgang aus."
-L["Reset the size and position of this frame."] = "Größe und Position dieses Fensters zurücksetzen."
-L["Unlock various elements of the UI to be repositioned."] = "Schalte verschiedene Elemente der Benutzeroberfläche frei, die neu positioniert werden sollen."
-L["Must be in group with the player if he isn't on the same server as you."] = "Muss mit dem Spieler in der Gruppe sein, wenn er nicht auf demselben Server wie du ist."
-L["Toggle Tutorials"] = "Tutorials umschalten"
 L["Spell Haste"] = "Zaubertempo"
-L["Toggle Anchors"] = "Anker umschalten"
-L["On screen positions for different elements."] = "Bildschirmpositionen für verschiedene Elemente."
-L["Reset Anchors"] = "Anker zurücksetzen"
+L["Player Aura Bars"] = true
+L["Target Aura Bars"] = true
+L["Pet Aura Bars"] = true
+L["Focus Aura Bars"] = true
 
 L["Loadouts"] = "Auslastungen"
 L["|cffFFFFFFControl + Left Click:|r Change Loadout"] = "|cffFFFFFFStrg + Linksklick:|r Auslastung ändern"
