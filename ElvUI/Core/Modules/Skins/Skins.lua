@@ -1896,8 +1896,10 @@ function S:Initialize()
 		end
 	end
 
-	S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
-	S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
+	if E.Retail then
+		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
+		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
+	end
 end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load
