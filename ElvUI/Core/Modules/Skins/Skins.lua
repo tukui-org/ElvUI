@@ -1855,14 +1855,10 @@ function S:CallLoadedAddon(addonName, object)
 	S.addonsToLoad[addonName] = nil
 end
 
-function S:UPDATE_ALL_UI_WIDGETS()
+function S:UpdateAllWidgets()
 	for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
 		S:SkinWidgetContainer(widget)
 	end
-end
-
-function S:PLAYER_ENTERING_WORLD()
-	S:UPDATE_ALL_UI_WIDGETS()
 end
 
 function S:Initialize()
@@ -1900,8 +1896,8 @@ function S:Initialize()
 		end
 	end
 
-	S:RegisterEvent('PLAYER_ENTERING_WORLD')
-	S:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
+	S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
+	S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load
