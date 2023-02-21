@@ -1065,6 +1065,16 @@ Colors.healthGroup.args.health = ACH:Color(L["Health"], nil, 22)
 Colors.healthGroup.args.disconnected = ACH:Color(L["Disconnected"], nil, 23)
 Colors.healthGroup.args.health_backdrop_dead = ACH:Color(L["Custom Dead Backdrop"], L["Use this backdrop color for units that are dead or ghosts."], 24, nil, 250)
 
+Colors.healthGroup.args.healthBreak = ACH:Group(L["Health Breakpoint"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.healthBreak[info[#info]], P.unitframe.colors.healthBreak[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors.healthBreak[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.healthBreak[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors.healthBreak[info[#info]] = value end UF:Update_AllFrames() end)
+Colors.healthGroup.args.healthBreak.inline = true
+Colors.healthGroup.args.healthBreak.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
+Colors.healthGroup.args.healthBreak.args.high = ACH:Range(L["High"], nil, 2, { min = 0.5, max = 1, step = 0.01, isPercent = true })
+Colors.healthGroup.args.healthBreak.args.low = ACH:Range(L["Low"], nil, 3, { min = 0, max = 0.5, step = 0.01, isPercent = true })
+Colors.healthGroup.args.healthBreak.args.onlyLow = ACH:Toggle(L["Only Low"], nil, 4)
+Colors.healthGroup.args.healthBreak.args.good = ACH:Color(L["Good"], nil, 5)
+Colors.healthGroup.args.healthBreak.args.neutral = ACH:Color(L["Neutral"], nil, 6)
+Colors.healthGroup.args.healthBreak.args.bad = ACH:Color(L["Bad"], nil, 7)
+
 Colors.powerGroup = ACH:Group(L["Power"], nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)
 Colors.powerGroup.args.transparentPower = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 1)
 Colors.powerGroup.args.invertPower = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.colors.transparentPower end)
