@@ -635,6 +635,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
 		[196342]	= List(), -- Zanzil's Embrace
+		[374037]	= List(), -- Overwhelming Rage
 	},
 }
 
