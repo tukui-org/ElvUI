@@ -217,21 +217,22 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 
 	local isTapped = UnitIsTapDenied(unit)
 	local isDeadOrGhost = UnitIsDeadOrGhost(unit)
+	local healthBreak = not isTapped and colors.healthBreak
 
 	if not b then r, g, b = colors.health.r, colors.health.g, colors.health.b end
 	local newr, newg, newb -- fallback for bg if custom settings arent used
 	if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 		newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
-	elseif colors.healthBreak.enabled and not isTapped then
-		local breakPoint = self.cur/self.max
-		local onlyLow, color = colors.healthBreak.onlyLow
+	elseif healthBreak and healthBreak.enabled then
+		local breakPoint = self.max > 0 and (self.cur / self.max) or 1
+		local onlyLow, color = healthBreak.onlyLow
 
-		if breakPoint <= colors.healthBreak.low then
-			color = colors.healthBreak.bad
-		elseif breakPoint >= colors.healthBreak.high and breakPoint ~= 1 and not onlyLow then
-			color = colors.healthBreak.good
-		elseif breakPoint >= colors.healthBreak.low and breakPoint < colors.healthBreak.high and not onlyLow then
+		if breakPoint <= healthBreak.low then
+			color = healthBreak.bad
+		elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
+			color = healthBreak.good
+		elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
 			color = colors.healthBreak.neutral
 		end
 
