@@ -541,11 +541,21 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.power = ACH:Toggle(L["Power"], nil, 9, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
 	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 10, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 11, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.spacer = ACH:Spacer(12, 'full')
-	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 13, { min = 0, max = 3, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.smooth = ACH:Range(L["Smooth"], nil, 14, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.minAlpha = ACH:Range(L["Min Alpha"], nil, 15, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.maxAlpha = ACH:Range(L["Max Alpha"], nil, 16, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.spacer = ACH:Spacer(13, 'full')
+	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 14, { min = 0, max = 3, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
+	config.args.smooth = ACH:Range(L["Smooth"], nil, 15, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.minAlpha = ACH:Range(L["Min Alpha"], nil, 16, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.maxAlpha = ACH:Range(L["Max Alpha"], nil, 17, { min = 0, max = 1, step = .01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+
+	config.args.instanceDifficulties = ACH:Group(L["Instance Difficulties"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.instanceDifficulties.inline = true
+	config.args.instanceDifficulties.args.dungeonNormal = ACH:Toggle(L["Dungeon (normal)"], nil, 1, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.dungeonHeroic = ACH:Toggle(L["Dungeon (heroic)"], nil, 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.dungeonMythic = ACH:Toggle(L["Dungeon (mythic)"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.dungeonMythicKeystone = ACH:Toggle(L["Mythic Keystone"], nil, 4, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.raidNormal = ACH:Toggle(L["Raid (normal)"], nil, 5, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.raidHeroic = ACH:Toggle(L["Raid (heroic)"], nil, 6, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.raidMythic = ACH:Toggle(L["Raid (mythic)"], nil, 7, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
 
 	return config
 end

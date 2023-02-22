@@ -54,7 +54,7 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
-local function Update(self, _, unit)
+local function Update(self, event, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
@@ -80,6 +80,13 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
+	-- instance difficulty fader
+	-- TODO: only do this on appropriate event?
+	local instanceDifficulty
+	if element.InstanceDifficulties then
+		instanceDifficulty = select(3, GetInstanceInfo())
+	end
+
 	if
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
@@ -89,7 +96,8 @@ local function Update(self, _, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI(unit)) or
-		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
+		(element.Hover and GetMouseFocus() == (self.__faderobject or self)) or
+		(element.InstanceDifficulties and element.InstanceDifficulties[instanceDifficulty])
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
@@ -250,6 +258,15 @@ local options = {
 			end
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
+	},
+	InstanceDifficulties = {
+		enable = function(self)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', Update, true)
+			self:RegisterEvent('ZONE_CHANGED', Update, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', Update, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', Update, true)
+		end,
+		events = {'PLAYER_DIFFICULTY_CHANGED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}
 	},
 	MinAlpha = {
 		countIgnored = true,
