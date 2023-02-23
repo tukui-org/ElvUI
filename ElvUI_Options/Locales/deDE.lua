@@ -858,6 +858,7 @@ L["Ignore mouse events."] = "Ignoriere Maus Events."
 L["Ignored Items and Search Syntax (Global)"] = "Ignorierte Gegenstände oder Suchoperatoren (Global)"
 L["Ignored Items and Search Syntax (Profile)"] = "Ignorierte Gegenstände oder Suchoperatoren (Profil)"
 L["Import Now"] = "Jetzt importieren"
+L["Import Profile"] = true
 L["Import"] = true
 L["Importing"] = "Importiere"
 L["In Combat Label"] = true

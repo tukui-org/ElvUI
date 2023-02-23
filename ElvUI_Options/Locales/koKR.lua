@@ -859,6 +859,7 @@ L["Ignored Items and Search Syntax (Global)"] = "제외된 아이템 또는 검�
 L["Ignored Items and Search Syntax (Profile)"] = "제외된 아이템 또는 검색구문 (프로필)"
 L["Import Now"] = "지금 가져오기"
 L["Import"] = true
+L["Import Profile"] = true
 L["Importing"] = "가져올 것"
 L["In Combat Label"] = true
 L["In Combat"] = true

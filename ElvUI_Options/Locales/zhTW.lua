@@ -859,6 +859,7 @@ L["Ignored Items and Search Syntax (Global)"] = "忽略的物品與搜尋語法 
 L["Ignored Items and Search Syntax (Profile)"] = "忽略的物品與搜尋語法 (個人)"
 L["Import Now"] = "現在導入"
 L["Import"] = true
+L["Import Profile"] = true
 L["Importing"] = "正在導入"
 L["In Combat Label"] = true
 L["In Combat"] = "在戰鬥中"
