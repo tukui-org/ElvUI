@@ -738,7 +738,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[397904] = List(), -- Setting Sun Kick
 		[397911] = List(), -- Touch of Ruin
 		[395859] = List(), -- Haunting Scream
-		[374037] = List(), -- Overwhelming Rage
 		[396093] = List(), -- Savage Leap
 		[106823] = List(), -- Serpent Strike
 		[396152] = List(), -- Feeling of Inferiority
