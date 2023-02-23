@@ -9,7 +9,6 @@ local wipe, next, pairs, ipairs = wipe, next, pairs, ipairs
 local format, strmatch, strsplit = format, strmatch, strsplit
 local tinsert, tonumber, gsub, ceil = tinsert, tonumber, gsub, ceil
 
-local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 local CopyTable = CopyTable
 
@@ -63,7 +62,7 @@ local CUSTOMTEXT_CONFIGS, filters = {}, {}
 local carryFilterFrom, carryFilterTo
 
 local classTable = {}
-for i = 1, GetNumClasses() do
+for i = 1, _G.MAX_CLASSES do
 	local classDisplayName, classTag = GetClassInfo(i)
 	if classTag then
 		classTable[classTag] = classDisplayName

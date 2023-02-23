@@ -334,7 +334,7 @@ StyleFilters.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutr
 
 StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 12, nil, nil, nil, DisabledFilter)
 
-for index = 1, 13 do
+for index = 1, _G.MAX_CLASSES do
 	local className, classTag, classID = GetClassInfo(index)
 	if classTag then
 		local coloredName = E:ClassColor(classTag)
