@@ -334,14 +334,14 @@ StyleFilters.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutr
 
 StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 12, nil, nil, nil, DisabledFilter)
 
-for index = 1, 12 do
+for index = 1, _G.MAX_CLASSES do
 	local className, classTag, classID = GetClassInfo(index)
 	if classTag then
 		local coloredName = E:ClassColor(classTag)
 		coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
 		StyleFilters.triggers.args.class.args[classTag] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortedClasses, classTag), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger then triggers.class[classTag] = {} end if value then triggers.class[classTag].enabled = value else triggers.class[classTag] = nil end NP:ConfigureAll() end)
 
-		local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 12, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
+		local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
 		group.inline = true
 
 		for k = 1, GetNumSpecializationsForClassID(classID) do

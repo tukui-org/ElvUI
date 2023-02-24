@@ -136,6 +136,7 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
+	local closeButton = frame.CloseButton or name and _G[name..'CloseButton']
 
 	frame:StripTextures()
 
@@ -147,8 +148,8 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 		S:HandleInsetFrame(insetFrame)
 	end
 
-	if frame.CloseButton then
-		S:HandleCloseButton(frame.CloseButton)
+	if closeButton then
+		S:HandleCloseButton(closeButton)
 	end
 
 	if setBackdrop then

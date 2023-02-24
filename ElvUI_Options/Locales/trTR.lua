@@ -859,6 +859,7 @@ L["Ignored Items and Search Syntax (Global)"] = "Yok Sayilan Ogeler ve Arama Soz
 L["Ignored Items and Search Syntax (Profile)"] = "Yok Sayilan Ogeler ve Arama Sozdizimi (Profil)"
 L["Import Now"] = "simdi Ice Aktar"
 L["Import"] = true
+L["Import Profile"] = true
 L["Importing"] = "Ice Aktariyor"
 L["In Combat Label"] = true
 L["In Combat"] = "Catismada"

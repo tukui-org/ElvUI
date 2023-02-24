@@ -859,6 +859,7 @@ L["Ignored Items and Search Syntax (Global)"] = true
 L["Ignored Items and Search Syntax (Profile)"] = true
 L["Import Now"] = true
 L["Import"] = true
+L["Import Profile"] = true
 L["Importing"] = true
 L["In Combat Label"] = true
 L["In Combat"] = true

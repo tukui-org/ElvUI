@@ -726,10 +726,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 end
 
 function AB:UpdateMasque(bar, masqueGroup)
-	(bar and bar.MasqueGroup or masqueGroup):ReSkin()
+	local masque = (bar and bar.MasqueGroup) or masqueGroup
+	masque:ReSkin()
 
-	if bar and bar.buttons then
-		for _, btn in next, bar.buttons do -- masque retrims them all so we have to too
+	if bar and bar.buttons then -- masque retrims them all so we have to too
+		for _, btn in next, bar.buttons do
 			AB:TrimIcon(btn, true)
 		end
 	end

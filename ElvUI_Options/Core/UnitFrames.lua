@@ -9,7 +9,6 @@ local wipe, next, pairs, ipairs = wipe, next, pairs, ipairs
 local format, strmatch, strsplit = format, strmatch, strsplit
 local tinsert, tonumber, gsub, ceil = tinsert, tonumber, gsub, ceil
 
-local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 local CopyTable = CopyTable
 
@@ -63,7 +62,7 @@ local CUSTOMTEXT_CONFIGS, filters = {}, {}
 local carryFilterFrom, carryFilterTo
 
 local classTable = {}
-for i = 1, GetNumClasses() do
+for i = 1, _G.MAX_CLASSES do
 	local classDisplayName, classTag = GetClassInfo(i)
 	if classTag then
 		classTable[classTag] = classDisplayName
@@ -1512,7 +1511,7 @@ Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings fr
 Party.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party')
 
 for i = 1, 3 do
-	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L[format('Raid %s', i)], E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s - %s', raid, name) or raid end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
+	GroupUnits['raid'..i] = ACH:Group(function() local raid, name = L["Raid"].." "..i, E.db.unitframe.units['raid'..i].customName return name and name ~= '' and format('%s - %s', raid, name) or raid end, nil, nil, nil, function(info) return E.db.unitframe.units['raid'..i][info[#info]] end, function(info, value) E.db.unitframe.units['raid'..i][info[#info]] = value UF:CreateAndUpdateHeaderGroup('raid'..i) end)
 	GroupUnits['raid'..i].args = GetUnitSettings('raid'..i, UF.CreateAndUpdateHeaderGroup)
 	local Raid = GroupUnits['raid'..i].args
 
