@@ -60,7 +60,7 @@ local PI = E:GetModule('PluginInstaller')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs, unpack, type = pairs, unpack, type
 local tinsert, tremove, format = tinsert, tremove, format
 
 local PlaySound = PlaySound
