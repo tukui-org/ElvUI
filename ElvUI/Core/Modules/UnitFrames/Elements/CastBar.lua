@@ -232,7 +232,7 @@ function UF:Configure_Castbar(frame)
 		UF:Update_FontString(castbar.Time)
 	end
 
-	local textColor = db.textColor
+	local textColor = E:UpdateClassColor(db.textColor)
 	castbar.Text:SetTextColor(textColor.r, textColor.g, textColor.b)
 	castbar.Time:SetTextColor(textColor.r, textColor.g, textColor.b)
 
@@ -445,11 +445,11 @@ function UF:SetCastTicks(frame, numTicks)
 		if not tick then
 			tick = frame:CreateTexture(nil, 'OVERLAY')
 			tick:SetTexture(E.media.blankTex)
-			tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 			tick:Width(frame.tickWidth)
 			ticks[i] = tick
 		end
 
+		tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 		tick:ClearAllPoints()
 		tick:Point('RIGHT', frame, 'LEFT', offset * i, 0)
 		tick:Height(frame.tickHeight)

@@ -21,8 +21,12 @@ local meleeCrit, rangedCrit, ratingIndex = 0, 0
 local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(ratingIndex), GetCombatRatingBonus(ratingIndex)))
+
+	if not E.Classic then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(ratingIndex), GetCombatRatingBonus(ratingIndex)))
+	end
+
 	DT.tooltip:Show()
 end
 

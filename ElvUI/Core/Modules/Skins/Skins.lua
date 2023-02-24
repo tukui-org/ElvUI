@@ -136,6 +136,7 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
+	local closeButton = frame.CloseButton or name and _G[name..'CloseButton']
 
 	frame:StripTextures()
 
@@ -147,8 +148,8 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 		S:HandleInsetFrame(insetFrame)
 	end
 
-	if frame.CloseButton then
-		S:HandleCloseButton(frame.CloseButton)
+	if closeButton then
+		S:HandleCloseButton(closeButton)
 	end
 
 	if setBackdrop then
@@ -1784,11 +1785,11 @@ function S:SkinWidgetContainer(widget)
 end
 
 function S:ADDON_LOADED(_, addonName)
-	if not self.allowBypass[addonName] and not E.initialized then
+	if not S.allowBypass[addonName] and not E.initialized then
 		return
 	end
 
-	local object = self.addonsToLoad[addonName]
+	local object = S.addonsToLoad[addonName]
 	if object then
 		S:CallLoadedAddon(addonName, object)
 	end
@@ -1820,23 +1821,23 @@ end
 
 function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 	if bypass then
-		self.allowBypass[addonName] = true
+		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
 		xpcall(func, errorhandler)
-		self.addonsToLoad[addonName] = nil
+		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
-			tinsert(self.nonAddonsToLoad, position, func)
+			tinsert(S.nonAddonsToLoad, position, func)
 		else
-			tinsert(self.nonAddonsToLoad, func)
+			tinsert(S.nonAddonsToLoad, func)
 		end
 	else
-		local addon = self.addonsToLoad[addonName]
+		local addon = S.addonsToLoad[addonName]
 		if not addon then
-			self.addonsToLoad[addonName] = {}
-			addon = self.addonsToLoad[addonName]
+			S.addonsToLoad[addonName] = {}
+			addon = S.addonsToLoad[addonName]
 		end
 
 		if position then
@@ -1852,19 +1853,25 @@ function S:CallLoadedAddon(addonName, object)
 		xpcall(func, errorhandler)
 	end
 
-	self.addonsToLoad[addonName] = nil
+	S.addonsToLoad[addonName] = nil
+end
+
+function S:UpdateAllWidgets()
+	for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
+		S:SkinWidgetContainer(widget)
+	end
 end
 
 function S:Initialize()
-	self.Initialized = true
-	self.db = E.private.skins
+	S.Initialized = true
+	S.db = E.private.skins
 
-	for index, func in next, self.nonAddonsToLoad do
+	for index, func in next, S.nonAddonsToLoad do
 		xpcall(func, errorhandler)
-		self.nonAddonsToLoad[index] = nil
+		S.nonAddonsToLoad[index] = nil
 	end
 
-	for addonName, object in pairs(self.addonsToLoad) do
+	for addonName, object in pairs(S.addonsToLoad) do
 		local isLoaded, isFinished = IsAddOnLoaded(addonName)
 		if isLoaded and isFinished then
 			S:CallLoadedAddon(addonName, object)
@@ -1891,14 +1898,8 @@ function S:Initialize()
 	end
 
 	if E.Retail then
-		local frame = CreateFrame('Frame')
-		frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-		frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
-		frame:SetScript('OnEvent', function()
-			for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
-				S:SkinWidgetContainer(widget)
-			end
-		end)
+		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
+		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end
 end
 

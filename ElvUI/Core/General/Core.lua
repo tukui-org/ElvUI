@@ -6,7 +6,7 @@ local LCS = E.Libs.LCS
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
-local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
+local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
@@ -864,7 +864,7 @@ do	--Split string by multi-character delimiter (the strsplit / string.split func
 
 		-- find each instance of a string followed by the delimiter
 		while true do
-			local pos = find(str, delim, start, true) -- plain find
+			local pos = strfind(str, delim, start, true) -- plain find
 			if not pos then break end
 
 			tinsert(splitTable, sub(str, start, pos - 1))
@@ -894,10 +894,12 @@ do
 
 	local SendRecieveGroupSize = 0
 	local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
-	local function SendRecieve(_, event, prefix, message, _, sender)
+	local function SendRecieve(_, event, prefix, message, _, senderOne, senderTwo)
 		if event == 'CHAT_MSG_ADDON' then
-			if sender == PLAYER_NAME then return end
-			if prefix == 'ELVUI_VERSIONCHK' then
+			local sender = strfind(senderOne, '-') and senderOne or senderTwo
+			if sender == PLAYER_NAME then
+				return
+			elseif prefix == 'ELVUI_VERSIONCHK' then
 				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
 
 				E.UserList[E:StripMyRealm(sender)] = msg
@@ -1384,7 +1386,7 @@ function E:DBConvertDF()
 	local currency = E.global.datatexts.customCurrencies
 	if currency then
 		for id, data in next, E.global.datatexts.customCurrencies do
-			local info = { name = data.NAME, showMax = data.SHOW_MAX, currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP, nameStyle = data.DISPLAY_STYLE and (find(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or find(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil }
+			local info = { name = data.NAME, showMax = data.SHOW_MAX, currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP, nameStyle = data.DISPLAY_STYLE and (strfind(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or strfind(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil }
 			if next(info) then
 				E.global.datatexts.customCurrencies[id] = info
 			end

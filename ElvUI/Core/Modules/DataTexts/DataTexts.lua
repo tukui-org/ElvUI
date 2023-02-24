@@ -172,7 +172,10 @@ function DT:ReleasePanel(givenName)
 		DT.PanelPool.Free[givenName] = panel
 		DT.PanelPool.InUse[givenName] = nil
 		DT.RegisteredPanels[givenName] = nil
-		E.db.movers[panel.moverName] = nil
+
+		if E.db.movers then
+			E.db.movers[panel.moverName] = nil
+		end
 	end
 end
 
@@ -255,6 +258,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 
 		panel.text:SetText(str)
+		panel.icon:SetShown(icon)
 		panel.icon:SetTexture(icon)
 		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
 	end

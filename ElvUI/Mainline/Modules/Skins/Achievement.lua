@@ -25,8 +25,7 @@ end
 local function StyleSearchButton(button)
 	if not button then return end
 
-	button:StripTextures()
-	button:CreateBackdrop('Transparent')
+	S:HandleFrame(button, true)
 	local icon = button.icon or button.Icon
 	if icon then
 		S:HandleIcon(icon)
@@ -70,11 +69,8 @@ local function HideBackdrop(frame)
 end
 
 local function SkinStatusBar(bar)
-	bar:StripTextures()
-	bar:SetStatusBarTexture(E.media.normTex)
+	S:HandleStatusBar(bar)
 	bar:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
-	bar:CreateBackdrop()
-	E:RegisterStatusBar(bar)
 
 	local StatusBarName = bar:GetName()
 
@@ -91,13 +87,11 @@ end
 local function HandleSummaryBar(frame)
 	frame:StripTextures()
 	local bar = frame.StatusBar
-	bar:StripTextures()
-	bar:SetStatusBarTexture(E.media.normTex)
+	S:HandleStatusBar(bar)
 	bar:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
 	bar.Title:SetTextColor(1, 1, 1)
 	bar.Title:Point('LEFT', bar, 'LEFT', 6, 0)
 	bar.Text:Point('RIGHT', bar, 'RIGHT', -5, 0)
-	bar:CreateBackdrop('Transparent')
 end
 
 local function HandleCompareCategory(button)
@@ -117,10 +111,7 @@ function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	local AchievementFrame = _G.AchievementFrame
-	AchievementFrame:StripTextures()
-	AchievementFrame:SetTemplate('Transparent')
-
-	S:HandleCloseButton(_G.AchievementFrameCloseButton)
+	S:HandleFrame(AchievementFrame)
 
 	AchievementFrame.Header:StripTextures()
 	AchievementFrame.Header.Title:Hide()
@@ -138,26 +129,20 @@ function S:Blizzard_AchievementUI()
 	-- Bottom Tabs
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
-		if tab then
-			S:HandleTab(tab)
-		end
+		S:HandleTab(tab)
+		tab:ClearAllPoints()
 	end
 
 	-- Reposition Tabs
-	_G.AchievementFrameTab1:ClearAllPoints()
-	_G.AchievementFrameTab2:ClearAllPoints()
-	_G.AchievementFrameTab3:ClearAllPoints()
 	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -3, 0)
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
 	local PreviewContainer = AchievementFrame.SearchPreviewContainer
 	local ShowAllSearchResults = PreviewContainer.ShowAllSearchResults
-	PreviewContainer:StripTextures()
+	S:HandleFrame(PreviewContainer, true, nil, -3, 3)
 	PreviewContainer:ClearAllPoints()
 	PreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 7, -2)
-	PreviewContainer:CreateBackdrop('Transparent')
-	PreviewContainer.backdrop:Point('TOPLEFT', -3, 3)
 	PreviewContainer.backdrop:Point('BOTTOMRIGHT', ShowAllSearchResults, 3, -3)
 
 	for i = 1, 5 do
@@ -167,11 +152,7 @@ function S:Blizzard_AchievementUI()
 
 	local Result = AchievementFrame.SearchResults
 	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
-	Result:StripTextures()
-	Result:CreateBackdrop('Transparent')
-	Result.backdrop:Point('TOPLEFT', -10, 0)
-	Result.backdrop:Point('BOTTOMRIGHT')
-	S:HandleCloseButton(Result.CloseButton)
+	S:HandleFrame(Result, true, nil, -10)
 	S:HandleTrimScrollBar(Result.ScrollBar)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
@@ -247,11 +228,8 @@ function S:Blizzard_AchievementUI()
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				local button = child.Button
 				if button and not button.IsSkinned then
-					button:StripTextures()
+					S:HandleFrame(button, true, nil, 0, -1)
 					button.Background:Hide()
-					button:CreateBackdrop('Transparent')
-					button.backdrop:Point('TOPLEFT', 0, -1)
-					button.backdrop:Point('BOTTOMRIGHT')
 					SetupButtonHighlight(button, button.backdrop)
 
 					button.IsSkinned = true
@@ -265,10 +243,7 @@ function S:Blizzard_AchievementUI()
 		hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.IsSkinned then
-					child:StripTextures()
-					child:CreateBackdrop('Transparent')
-					child.backdrop:Point('TOPLEFT', 2, -E.mult)
-					child.backdrop:Point('BOTTOMRIGHT', 4, E.mult)
+					S:HandleFrame(child, true, nil, 2, -E.mult, 4, E.mult)
 					SetupButtonHighlight(child, child.backdrop)
 
 					child.IsSkinned = true
@@ -296,10 +271,7 @@ function S:Blizzard_AchievementUI()
 		hooksecurefunc(Comparison.StatContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
 				if not child.isSkinned then
-					child:StripTextures()
-					child:CreateBackdrop('Transparent')
-					child.backdrop:Point('TOPLEFT', 2, -E.mult)
-					child.backdrop:Point('BOTTOMRIGHT', 6, E.mult)
+					S:HandleFrame(child, true, nil, 2, -E.mult, 6, E.mult)
 
 					child.isSkinned = true
 				end
@@ -311,10 +283,8 @@ function S:Blizzard_AchievementUI()
 		local name = 'AchievementFrameSummaryCategoriesCategory'..i
 
 		local bu = _G[name]
-		bu:StripTextures()
-		bu:SetStatusBarTexture(E.media.normTex)
+		S:HandleStatusBar(bu)
 		bu:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
-		bu:CreateBackdrop('Transparent')
 
 		bu.Label:SetTextColor(1, 1, 1)
 		bu.Label:Point('LEFT', bu, 'LEFT', 6, 0)
