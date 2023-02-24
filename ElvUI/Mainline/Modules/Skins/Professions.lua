@@ -288,6 +288,15 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
 
 	local OrderView = Orders.OrderView
+
+	local DeclineOrderDialog = OrderView.DeclineOrderDialog
+	DeclineOrderDialog:StripTextures()
+	DeclineOrderDialog:CreateBackdrop('Transparent')
+	DeclineOrderDialog.NoteEditBox:StripTextures()
+	S:HandleEditBox(DeclineOrderDialog.NoteEditBox.ScrollingEditBox)
+	S:HandleButton(DeclineOrderDialog.ConfirmButton)
+	S:HandleButton(DeclineOrderDialog.CancelButton)
+
 	local OrderRankBar = OrderView.RankBar
 	OrderRankBar.Border:Hide()
 	OrderRankBar.Background:Hide()
