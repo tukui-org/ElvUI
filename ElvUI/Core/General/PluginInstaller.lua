@@ -60,7 +60,7 @@ local PI = E:GetModule('PluginInstaller')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs, unpack, type = pairs, unpack, type
 local tinsert, tremove, format = tinsert, tremove, format
 
 local PlaySound = PlaySound
@@ -141,7 +141,14 @@ function PI:SetPage(PageNum, PrevPage)
 				color = f.StepTitlesColor or titleColor
 			end
 
-			line.text:SetText(f.StepTitles[i])
+			local StepTitleText
+			if type(f.StepTitles[i]) == 'function' then
+				StepTitleText = f.StepTitles[i]()
+			else
+				StepTitleText = f.StepTitles[i]
+			end
+
+			line.text:SetText(StepTitleText)
 			line.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end

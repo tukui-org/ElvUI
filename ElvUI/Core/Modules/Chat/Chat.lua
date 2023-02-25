@@ -326,15 +326,15 @@ do --this can save some main file locals
 		z['Kalline-Myzrael']		= itsSimpy -- Shaman
 		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
 		-- Luckyone
-		z['Luckyone-Gehennas']		= ElvRed -- [Horde] Hunter
-		z['Luckygrip-Gehennas']		= ElvRed -- [Horde] DK
-		z['Luckyone-Everlook']		= ElvRed -- [Alliance] Druid
-		z['Luckypriest-Everlook']	= ElvRed -- [Alliance] Priest
-		z['Luckyrogue-Everlook']	= ElvRed -- [Alliance] Rogue
-		z['Luckyhunter-Everlook']	= ElvRed -- [Alliance] Hunter
-		z['Luckydk-Everlook']		= ElvRed -- [Alliance] DK
-		z['Luckykek-Everlook']		= ElvRed -- [Alliance] Shaman
-		z['Luckyone-Giantstalker']	= ElvRed -- [Alliance] Paladin
+		z['Luckyone-Gehennas']		= ElvGreen -- [Horde] Hunter
+		z['Luckygrip-Gehennas']		= ElvGreen -- [Horde] DK
+		z['Luckyone-Everlook']		= ElvGreen -- [Alliance] Druid
+		z['Luckypriest-Everlook']	= ElvGreen -- [Alliance] Priest
+		z['Luckyrogue-Everlook']	= ElvGreen -- [Alliance] Rogue
+		z['Luckyhunter-Everlook']	= ElvGreen -- [Alliance] Hunter
+		z['Luckydk-Everlook']		= ElvGreen -- [Alliance] DK
+		z['Luckykek-Everlook']		= ElvGreen -- [Alliance] Shaman
+		z['Luckyone-Giantstalker']	= ElvGreen -- [Alliance] Paladin
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -367,20 +367,20 @@ do --this can save some main file locals
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
 		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvRed -- [Horde] Druid
-		z['Luckypriest-LaughingSkull']	= ElvRed -- [Horde] Priest
-		z['Luckymonkas-LaughingSkull']	= ElvRed -- [Horde] Monk
-		z['Luckyhunter-LaughingSkull']	= ElvRed -- [Horde] Hunter
-		z['Luckydh-LaughingSkull']		= ElvRed -- [Horde] DH
-		z['Luckymage-LaughingSkull']	= ElvRed -- [Horde] Mage
-		z['Luckypala-LaughingSkull']	= ElvRed -- [Horde] Paladin
-		z['Luckyrogue-LaughingSkull']	= ElvRed -- [Horde] Rogue
-		z['Luckywl-LaughingSkull']		= ElvRed -- [Horde] Warlock
-		z['Luckydk-LaughingSkull']		= ElvRed -- [Horde] DK
-		z['Luckyevoker-LaughingSkull']	= ElvRed -- [Horde] Evoker
-		z['Notlucky-LaughingSkull']		= ElvRed -- [Horde] Warrior
-		z['Unluckyone-LaughingSkull']	= ElvRed -- [Horde] Shaman
-		z['Luckydruid-LaughingSkull']	= ElvRed -- [Alliance] Druid
+		z['Luckyone-LaughingSkull']		= ElvGreen -- [Horde] Druid
+		z['Luckypriest-LaughingSkull']	= ElvGreen -- [Horde] Priest
+		z['Luckymonkas-LaughingSkull']	= ElvGreen -- [Horde] Monk
+		z['Luckyhunter-LaughingSkull']	= ElvGreen -- [Horde] Hunter
+		z['Luckydh-LaughingSkull']		= ElvGreen -- [Horde] DH
+		z['Luckymage-LaughingSkull']	= ElvGreen -- [Horde] Mage
+		z['Luckypala-LaughingSkull']	= ElvGreen -- [Horde] Paladin
+		z['Luckyrogue-LaughingSkull']	= ElvGreen -- [Horde] Rogue
+		z['Luckywl-LaughingSkull']		= ElvGreen -- [Horde] Warlock
+		z['Luckydk-LaughingSkull']		= ElvGreen -- [Horde] DK
+		z['Luckyevoker-LaughingSkull']	= ElvGreen -- [Horde] Evoker
+		z['Notlucky-LaughingSkull']		= ElvGreen -- [Horde] Warrior
+		z['Unluckyone-LaughingSkull']	= ElvGreen -- [Horde] Shaman
+		z['Luckydruid-LaughingSkull']	= ElvGreen -- [Alliance] Druid
 		-- Repooc
 		z['Sifpooc-Stormrage']			= itsPooc	-- DH
 		z['Fragmented-Stormrage']		= itsPooc	-- Warlock
@@ -2112,7 +2112,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			local isCommunityType = chatType == 'COMMUNITIES_CHANNEL'
-			local playerName, lineID, bnetIDAccount = arg2, arg11, arg13
+			local playerName, lineID, bnetIDAccount = (nameWithRealm ~= arg2 and nameWithRealm) or arg2, arg11, arg13
 			if isCommunityType then
 				local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0
 				local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine()
@@ -2126,15 +2126,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				else
 					playerLink = playerLinkDisplayText
 				end
+			elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
+				playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
 			else
-				if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
-					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
-				elseif ((chatType == 'GUILD' or chatType == 'TEXT_EMOTE') or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
-					playerName = nameWithRealm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
-				else
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
-				end
+				playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 			end
 
 			local message = arg1

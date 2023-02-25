@@ -103,20 +103,22 @@ function TT:IsModKeyDown(db)
 	return k == 'SHOW' or ((k == 'SHIFT' and IsShiftKeyDown()) or (k == 'CTRL' and IsControlKeyDown()) or (k == 'ALT' and IsAltKeyDown()))
 end
 
+function TT:SetCompareItems(tt, value)
+	if E.Retail and tt == GameTooltip then
+		tt.supportsItemComparison = value
+	end
+end
+
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
-	elseif InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
+	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
+		TT:SetCompareItems(tt, false)
 		tt:Hide()
 		return
-	elseif not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
-		local owner = tt:GetOwner()
-		local ownerName = owner and owner.GetName and owner:GetName()
-		if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) then
-			tt:Hide()
-			return
-		end
 	end
+
+	TT:SetCompareItems(tt, true)
 
 	local statusBar = tt.StatusBar
 	if statusBar then
@@ -871,6 +873,7 @@ end
 function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
+		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
 	end
@@ -882,6 +885,7 @@ function TT:SetCurrencyToken(tt, index)
 	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
 	if not id then return end
 
+	tt:AddLine(' ')
 	tt:AddLine(format(IDLine, _G.ID, id))
 	tt:Show()
 end
@@ -889,6 +893,7 @@ end
 function TT:SetCurrencyTokenByID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
+		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
 	end

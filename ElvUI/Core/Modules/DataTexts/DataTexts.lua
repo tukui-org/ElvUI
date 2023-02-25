@@ -6,6 +6,7 @@ local LSM = E.Libs.LSM
 -- GLOBALS: ElvDB
 
 local _G = _G
+local min, max = min, max
 local next, format, type, pcall, unpack = next, format, type, pcall, unpack
 local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, sort, gsub
 local tostring, strfind, strsplit = tostring, strfind, strsplit
@@ -171,7 +172,10 @@ function DT:ReleasePanel(givenName)
 		DT.PanelPool.Free[givenName] = panel
 		DT.PanelPool.InUse[givenName] = nil
 		DT.RegisteredPanels[givenName] = nil
-		E.db.movers[panel.moverName] = nil
+
+		if E.db.movers then
+			E.db.movers[panel.moverName] = nil
+		end
 	end
 end
 
@@ -254,6 +258,7 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 
 		panel.text:SetText(str)
+		panel.icon:SetShown(icon)
 		panel.icon:SetTexture(icon)
 		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
 	end
@@ -363,6 +368,7 @@ do
 		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
 
 		-- enable / battleground - enable / profile dt
+		if not DT.db.panels[name] then DT.db.panels[name] = {} end
 		local panelDB = E:CopyTable(DT.db.panels[name], defaults, true)
 
 		-- global frame settings and to keep profile tidy
@@ -500,6 +506,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	local width, height, vertical, numPoints = DT:GetTextAttributes(panel, db)
+	local iconSize = min(max(height - 2, fontSize), fontSize)
 
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
@@ -510,13 +517,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt:RegisterForClicks('AnyUp')
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
-			text:SetPoint('CENTER')
+			text:SetAllPoints()
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
 
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
+			icon:Hide()
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
-			icon:Size(height - 2)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
 			dt.icon = icon
@@ -570,6 +577,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
 
+		dt.icon:Size(iconSize)
 		dt.icon:SetTexture(E.ClearTexture)
 
 		if dt.objectEvent and dt.objectEventFunc then
@@ -584,6 +592,19 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		local data = DT.RegisteredDataTexts[ (battlePanel and DT.db.battlePanel or DT.db.panels)[panelName][i] ]
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
+
+		if dt.icon:IsShown() then
+			dt.text:ClearAllPoints()
+
+			if db.textJustify == 'LEFT' then
+				dt.text:Point('LEFT', dt, 'LEFT', iconSize + 4, 0)
+				dt.text:Point('RIGHT')
+			else
+				dt.text:Point(db.textJustify or 'CENTER')
+			end
+		else
+			dt.text:SetAllPoints()
+		end
 	end
 end
 
@@ -791,7 +812,7 @@ function DT:CurrencyListInfo(index)
 	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 
 	if E.Wrath then
-		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.extraCurrencyType, info.iconFileID, info.itemID = GetCurrencyListInfo(index)
+		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
 	end
 
 	return info
