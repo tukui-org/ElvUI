@@ -724,11 +724,11 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			local count = GetItemCount(link)
 			local total = GetItemCount(link, true)
 			if TT.db.itemCount == 'BAGS_ONLY' then
-				bagCount = format(IDLine, L["Count"], count)
+				bagCount = format(IDLine, L["Counts"], count)
 			elseif TT.db.itemCount == 'BANK_ONLY' then
 				bankCount = format(IDLine, L["Bank"], total - count)
 			elseif TT.db.itemCount == 'BOTH' then
-				bagCount = format(IDLine, L["Count"], count)
+				bagCount = format(IDLine, L["Counts"], count)
 				bankCount = format(IDLine, L["Bank"], total - count)
 			end
 		end
