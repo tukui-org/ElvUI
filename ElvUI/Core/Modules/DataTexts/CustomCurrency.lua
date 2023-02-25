@@ -49,7 +49,10 @@ local function RegisterDT(currencyID, name, update)
 	local data = DT:RegisterDatatext(currencyID, _G.CURRENCY, currencyEvents, OnEvent, nil, nil, OnEnter, nil, name)
 	data.isCurrency = true
 
-	if update then DT:UpdateQuickDT() end
+	if update then
+		DT:UpdateQuickDT()
+	end
+
 	return data
 end
 
