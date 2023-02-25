@@ -59,8 +59,7 @@ local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityC
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
-local C_SocialGetLastItem = C_Social.GetLastItem
-local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
+
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 
@@ -77,8 +76,10 @@ local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetCha
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
+local C_Texture_GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
 
 local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
+local TitleIconVersion_Small = E.Retail and Enum.TitleIconVersion.Small
 local CHATCHANNELRULESET_MENTOR = E.Retail and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = E.Retail and Enum.PlayerMentorshipStatus.Newcomer
 local NPEV2_CHAT_USER_TAG_GUIDE = E.Retail and gsub(NPEV2_CHAT_USER_TAG_GUIDE, '(|A.-|a).+', '%1') -- we only want the icon
@@ -1791,6 +1792,19 @@ function CH:FCFManager_GetChatTarget(chatGroup, playerTarget, channelTarget)
 	return chatTarget
 end
 
+-- Clone from ChatFrame.XML
+local function FlashTabIfNotShown(frame, info, type, chatGroup, chatTarget)
+	if (not frame:IsShown() ) then
+		if ((frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab)) then
+			if (not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER") then	--BN_WHISPER FIXME
+				if (not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget)) then
+					_G.FCF_StartAlertFlash(frame)
+				end
+			end
+		end
+	end
+end
+
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
@@ -1928,13 +1942,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or chatType == 'BN_WHISPER_PLAYER_OFFLINE') then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif chatType == 'LOOT' then
-			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
-			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
-				local itemID, creationContext = GetItemInfoFromHyperlink(arg1)
-				if itemID and C_SocialGetLastItem() == itemID then
-					arg1 = arg1 .. ' ' .. _G.Social_GetShareItemLink(creationContext, true)
-				end
-			end
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,7) == 'COMBAT_' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1944,24 +1951,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,11) == 'ACHIEVEMENT' then
 			-- Append [Share] hyperlink
-			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
-				local achieveID = GetAchievementInfoFromHyperlink(arg1)
-				if achieveID then
-					arg1 = arg1 .. ' ' .. _G.Social_GetShareAchievementLink(achieveID, true)
-				end
-			end
 			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,18) == 'GUILD_ACHIEVEMENT' then
 			local message = format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName)))
-			if C_SocialIsSocialEnabled() then
-				local achieveID = GetAchievementInfoFromHyperlink(arg1)
-				if achieveID then
-					local isGuildAchievement = select(12, GetAchievementInfo(achieveID))
-					if isGuildAchievement then
-						message = message .. ' ' .. _G.Social_GetShareAchievementLink(achieveID, true)
-					end
-				end
-			end
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif chatType == 'IGNORED' then
 			frame:AddMessage(format(_G.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -2041,11 +2033,17 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
 
 				if clientProgram and clientProgram ~= '' then
-					local name = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
-					local characterNameText = GetClientTexture(clientProgram, 14)..name
-					local linkDisplayText = format('[%s] (%s)', arg2, characterNameText)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-					message = format(globalstring, playerLink)
+					C_Texture_GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
+						if success then
+							local characterName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
+							local linkDisplayText = ("[%s] (%s)"):format(arg2, characterName)
+							local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(type), 0)
+							local message = format(globalstring, playerLink)
+							self:AddMessage(message, info.r, info.g, info.b, info.id)
+							_G.FlashTabIfNotShown(self, info, type, chatGroup, chatTarget)
+						end
+					end);
+					return;
 				else
 					local linkDisplayText = format('[%s]', arg2)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
@@ -2237,15 +2235,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if CH.db.flashClientIcon then FlashClientIcon() end
 		end
 
-		if notChatHistory and not frame:IsShown() then
-			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
-				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER' then
-					if not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
-						_G.FCF_StartAlertFlash(frame)
-					end
-				end
-			end
-		end
+		FlashTabIfNotShown(self, info, type, chatGroup, chatTarget)
 
 		return true
 	end
