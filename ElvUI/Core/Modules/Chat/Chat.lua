@@ -2235,7 +2235,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if CH.db.flashClientIcon then FlashClientIcon() end
 		end
 
-		FlashTabIfNotShown(self, info, type, chatGroup, chatTarget)
+		FlashTabIfNotShown(frame, info, type, chatGroup, chatTarget)
 
 		return true
 	end
