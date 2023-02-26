@@ -421,18 +421,18 @@ function S:BlizzardQuestFrames()
 		if questLogTitle.isHeader then
 			questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
 			questLogTitle.SetNormalTexture = E.noop
-			
+
 			questLogTitle:SetHighlightTexture(E.ClearTexture)
 			questLogTitle.SetHighlightTexture = E.noop
-			
+
 			local normalTex = questLogTitle:GetNormalTexture()
 			normalTex:Size(16)
 			normalTex:Point('LEFT', 5, 0)
-			
+
 			questLogTitle:Width(300)
-			
+
 			_G['QuestLogTitle'..questLogIndex..'Highlight']:SetAlpha(0)
-			
+
 			S:HandleCollapseTexture(questLogTitle)
 		end
 		questLogIndex = questLogIndex + 1
