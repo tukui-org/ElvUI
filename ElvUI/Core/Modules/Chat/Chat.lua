@@ -18,8 +18,6 @@ local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
 local CreateFrame = CreateFrame
 local FlashClientIcon = FlashClientIcon
-local GetAchievementInfo = GetAchievementInfo
-local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
@@ -28,7 +26,6 @@ local GetCursorPosition = GetCursorPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
-local GetItemInfoFromHyperlink = GetItemInfoFromHyperlink
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
@@ -75,7 +72,6 @@ local C_ChatInfo_GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChan
 local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
-local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 local C_Texture_GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
 
 local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
@@ -1792,15 +1788,12 @@ function CH:FCFManager_GetChatTarget(chatGroup, playerTarget, channelTarget)
 	return chatTarget
 end
 
--- Clone from ChatFrame.XML
-local function FlashTabIfNotShown(frame, info, type, chatGroup, chatTarget)
-	if (not frame:IsShown() ) then
-		if ((frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab)) then
-			if (not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or type == "WHISPER" or type == "BN_WHISPER") then	--BN_WHISPER FIXME
-				if (not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget)) then
-					_G.FCF_StartAlertFlash(frame)
-				end
-			end
+-- Clone from ChatFrame.xml modified by Simpy
+local function FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
+	if not frame:IsShown() and ((frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab)) then
+		if (not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER')	--BN_WHISPER FIXME
+		and not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
+			_G.FCF_StartAlertFlash(frame)
 		end
 	end
 end
@@ -1858,9 +1851,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
 
-		if type == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
+		if chatType == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
 			local leader = UnitIsGroupLeader(arg2)
-			infoType, type = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
+			infoType, chatType = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
 			info = _G.ChatTypeInfo[infoType]
 		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
@@ -2035,15 +2028,18 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if clientProgram and clientProgram ~= '' then
 					C_Texture_GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
 						if success then
-							local characterName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
-							local linkDisplayText = ("[%s] (%s)"):format(arg2, characterName)
-							local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(type), 0)
-							local message = format(globalstring, playerLink)
-							self:AddMessage(message, info.r, info.g, info.b, info.id)
-							_G.FlashTabIfNotShown(self, info, type, chatGroup, chatTarget)
+							local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
+							local linkDisplayText = format('[%s] (%s)', arg2, charName)
+							local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+							frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
+
+							if notChatHistory then
+								FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
+							end
 						end
-					end);
-					return;
+					end)
+
+					return
 				else
 					local linkDisplayText = format('[%s]', arg2)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
@@ -2054,6 +2050,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				message = format(globalstring, playerLink)
 			end
+
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
 			if arg1 ~= '' then
@@ -2235,7 +2232,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if CH.db.flashClientIcon then FlashClientIcon() end
 		end
 
-		FlashTabIfNotShown(frame, info, type, chatGroup, chatTarget)
+		if notChatHistory then
+			FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
+		end
 
 		return true
 	end
