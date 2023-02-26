@@ -435,6 +435,7 @@ function S:BlizzardQuestFrames()
 
 			S:HandleCollapseTexture(questLogTitle)
 		end
+
 		questLogIndex = questLogIndex + 1
 		questLogTitle = _G['QuestLogTitle'..questLogIndex]
 	end
