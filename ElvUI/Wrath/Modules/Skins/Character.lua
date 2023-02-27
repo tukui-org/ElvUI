@@ -167,8 +167,6 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
-	S:HandleCloseButton(_G.CharacterFrameCloseButton)
-
 	S:HandleDropDownBox(_G.PlayerStatFrameRightDropDown, 145)
 	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropDown, 147)
 	S:HandleDropDownBox(_G.PlayerTitleDropDown, 200)
