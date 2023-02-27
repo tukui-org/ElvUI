@@ -187,6 +187,9 @@ function S:FriendsFrame()
 	BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
+
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture(nil)
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetTemplate('Transparent')
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)
 

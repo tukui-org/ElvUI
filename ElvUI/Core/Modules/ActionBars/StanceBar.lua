@@ -20,6 +20,7 @@ local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Stance Bar')
 local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
+bar.MasqueGroup = MasqueGroup
 bar.buttons = {}
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
@@ -173,11 +174,7 @@ function AB:PositionAndSizeBarShapeShift()
 	RegisterStateDriver(bar, 'visibility', (not db.enabled or GetNumShapeshiftForms() == 0) and 'hide' or visibility)
 
 	if useMasque then
-		MasqueGroup:ReSkin()
-
-		for _, btn in ipairs(bar.buttons) do
-			AB:TrimIcon(btn, true)
-		end
+		AB:UpdateMasque(bar)
 	end
 end
 
@@ -197,6 +194,7 @@ function AB:AdjustMaxStanceButtons(event)
 		if not bar.buttons[i] then
 			bar.buttons[i] = CreateFrame('CheckButton', format(bar:GetName()..'Button%d', i), bar, 'StanceButtonTemplate')
 			bar.buttons[i]:SetID(i)
+			bar.buttons[i].parentName = 'ElvUI_StanceBar'
 
 			AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
 			AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')

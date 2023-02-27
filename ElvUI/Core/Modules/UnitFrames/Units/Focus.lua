@@ -4,7 +4,6 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tinsert = tinsert
--- GLOBALS: ElvUF_Target
 
 function UF:Construct_FocusFrame(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')

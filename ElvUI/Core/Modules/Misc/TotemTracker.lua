@@ -31,18 +31,13 @@ function T:UpdateButton(button, totem)
 	end
 end
 
-function T:HideTotem()
-	T:UpdateButton(T.bar[priority[self.layoutIndex]], self)
-end
-
 function T:Update()
 	if E.Retail then
-		for totem in next, _G.TotemFrame.totemPool.activeObjects do
+		for _, totem in _G.TotemFrame.totemPool:EnumerateInactive() do
 			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
-
-			if totem:GetScript('OnHide') ~= T.HideTotem then
-				totem:SetScript('OnHide', T.HideTotem)
-			end
+		end
+		for totem in _G.TotemFrame.totemPool:EnumerateActive() do
+			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
 		end
 	else
 		for i = 1, MAX_TOTEMS do
@@ -137,6 +132,12 @@ function T:Initialize()
 
 	T:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
 	T:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
+
+	if E.Retail then
+		T:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'Update')
+	else
+		T:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'Update')
+	end
 
 	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,totems')
 end

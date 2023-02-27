@@ -1844,9 +1844,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
 
-		if type == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
+		if chatType == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
 			local leader = UnitIsGroupLeader(arg2)
-			infoType, type = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
+			infoType, chatType = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
 			info = _G.ChatTypeInfo[infoType]
 		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
@@ -2112,7 +2112,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			local isCommunityType = chatType == 'COMMUNITIES_CHANNEL'
-			local playerName, lineID, bnetIDAccount = arg2, arg11, arg13
+			local playerName, lineID, bnetIDAccount = (nameWithRealm ~= arg2 and nameWithRealm) or arg2, arg11, arg13
 			if isCommunityType then
 				local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0
 				local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine()
@@ -2126,15 +2126,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				else
 					playerLink = playerLinkDisplayText
 				end
+			elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
+				playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
 			else
-				if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
-					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
-				elseif ((chatType == 'GUILD' or chatType == 'TEXT_EMOTE') or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
-					playerName = nameWithRealm
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
-				else
-					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
-				end
+				playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 			end
 
 			local message = arg1

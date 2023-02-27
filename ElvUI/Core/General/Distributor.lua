@@ -5,7 +5,7 @@ local LibDeflate = E.Libs.Deflate
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
-local len, format, split, strmatch = strlen, format, strsplit, strmatch
+local len, format, split, strmatch, strfind = strlen, format, strsplit, strmatch, strfind
 
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -188,17 +188,16 @@ function D:Distribute(target, otherServer, isGlobal)
 	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
 
-function D:CHAT_MSG_ADDON(_, prefix, message, _, sender)
+function D:CHAT_MSG_ADDON(_, prefix, message, _, senderOne, senderTwo)
+	local sender = strfind(senderOne, '-') and senderOne or senderTwo
 	if prefix ~= TRANSFER_PREFIX or not Downloads[sender] then return end
-	local cur = len(message)
-	local max = Downloads[sender].length
-	Downloads[sender].current = Downloads[sender].current + cur
 
-	if Downloads[sender].current > max then
-		Downloads[sender].current = max
-	end
+	local cur, max = len(message), Downloads[sender].length
+	local current = Downloads[sender].current + cur
+	if current > max then current = max end
+	Downloads[sender].current = current
 
-	D.statusBar:SetValue(Downloads[sender].current)
+	D.statusBar:SetValue(current)
 end
 
 function D:OnCommReceived(prefix, msg, dist, sender)

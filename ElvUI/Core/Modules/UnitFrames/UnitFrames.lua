@@ -430,7 +430,7 @@ function UF:UpdateColors()
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
-	for i=1, 6 do
+	for i = 1, 6 do
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
@@ -451,7 +451,7 @@ function UF:UpdateColors()
 	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
 	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
 
-	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0,	1, 1, 0} end
+	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
 	-- end
 
 	ElvUF.colors.reaction[1] = ElvUF.colors.reaction.bad
@@ -1250,6 +1250,7 @@ do
 	local MAX_BOSS_FRAMES = 8
 
 	local disabledPlates = {}
+	local handledUnits = {}
 	local lockedFrames = {}
 
 	-- lock Boss, Party, and Arena
@@ -1295,7 +1296,9 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if E.private.unitframe.enable then
+		if E.private.unitframe.enable and not handledUnits[unit] then
+			handledUnits[unit] = true
+
 			local disable = E.private.unitframe.disabledBlizzardFrames
 			if unit == 'player' then
 				if disable.player then
