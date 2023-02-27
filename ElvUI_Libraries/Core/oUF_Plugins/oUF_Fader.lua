@@ -54,7 +54,16 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
-local function Update(self, event, unit)
+local function updateCachedInstanceDifficulty(element)
+	local instanceDifficulty
+	if element.InstanceDifficulties then
+		instanceDifficulty = select(3, GetInstanceInfo())
+	end
+
+	element.cachedShowInstanceDifficulty = (element.InstanceDifficulties and element.InstanceDifficulties[instanceDifficulty]) or false
+end
+
+local function Update(self, _, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
@@ -80,11 +89,8 @@ local function Update(self, event, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	-- instance difficulty fader
-	-- TODO: only do this on appropriate event?
-	local instanceDifficulty
-	if element.InstanceDifficulties then
-		instanceDifficulty = select(3, GetInstanceInfo())
+	if element.cachedShowInstanceDifficulty == nil then
+		updateCachedInstanceDifficulty(element)
 	end
 
 	if
@@ -97,7 +103,7 @@ local function Update(self, event, unit)
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI(unit)) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self)) or
-		(element.InstanceDifficulties and element.InstanceDifficulties[instanceDifficulty])
+		(element.InstanceDifficulties and element.cachedShowInstanceDifficulty)
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
@@ -130,6 +136,12 @@ local function onRangeUpdate(frame, elapsed)
 
 		frame.timer = 0
 	end
+end
+
+local function onInstanceDifficultyUpdate(self, ...)
+	local element = self.Fader
+	updateCachedInstanceDifficulty(element)
+	element:ForceUpdate()
 end
 
 local function HoverScript(self)
@@ -260,11 +272,12 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	InstanceDifficulties = {
+		countIgnored = true,
 		enable = function(self)
-			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', Update, true)
-			self:RegisterEvent('ZONE_CHANGED', Update, true)
-			self:RegisterEvent('ZONE_CHANGED_INDOORS', Update, true)
-			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', Update, true)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficultyUpdate, true)
+			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficultyUpdate, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficultyUpdate, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficultyUpdate, true)
 		end,
 		events = {'PLAYER_DIFFICULTY_CHANGED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}
 	},
@@ -325,11 +338,6 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
-			if type(state) == 'table' then
-				state.__faderelement = element
-				element.__owner.__faderobject = state
-			end
-
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end
