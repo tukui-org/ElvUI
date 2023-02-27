@@ -4,6 +4,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tinsert = tinsert
+
 -- GLOBALS: ElvUF_Pet
 
 function UF:Construct_PetTargetFrame(frame)

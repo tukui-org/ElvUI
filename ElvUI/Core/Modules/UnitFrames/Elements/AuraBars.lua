@@ -7,7 +7,9 @@ local wipe = wipe
 local ipairs = ipairs
 local unpack = unpack
 local strfind = strfind
+
 local CreateFrame = CreateFrame
+local GetSpellInfo = GetSpellInfo
 
 function UF:Construct_AuraBars(bar)
 	bar:CreateBackdrop(nil, nil, nil, nil, true)

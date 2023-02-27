@@ -8,7 +8,6 @@ local tinsert = tinsert
 
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
--- GLOBALS: ElvUF_Target
 
 function UF:Construct_PlayerFrame(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
