@@ -680,7 +680,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(data)
-	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
+	if self:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = self:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
@@ -692,50 +692,44 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	local itemID, bagCount, bankCount
 	local modKey = TT:IsModKeyDown()
 
-	if self.GetItem then -- Some tooltips don't have this func. Example - compare tooltip
-		local name, link = self:GetItem()
+	-- after change this, self refers to GameTooltip/ShoppingTooltip1/ShoppingTooltip2, so use TooltipUtil.GetDisplayedItem(self)
+	local name, link = TooltipUtil.GetDisplayedItem(self)    -- self:GetItem()   https://github.com/Gethe/wow-ui-source/tree/live/Interface/FrameXML/GameTooltip.lua#L986
 
-		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
-			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
-			if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
-		end
+	if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
+		if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
+	end
 
-		if not link then return end
+	if not link then return end
 
-		if TT.db.itemQuality then
-			local _, _, quality = GetItemInfo(link)
-			if quality and quality > 1 then
-				local r, g, b = GetItemQualityColor(quality)
-				if self.NineSlice then
-					self.NineSlice:SetBorderColor(r, g, b)
-				else
-					self:SetBackdropBorderColor(r, g, b)
-				end
-
-				self.qualityChanged = true
+	if TT.db.itemQuality then
+		local _, _, quality = GetItemInfo(link)
+		if quality and quality > 1 then
+			local r, g, b = GetItemQualityColor(quality)
+			if self.NineSlice then
+				self.NineSlice:SetBorderColor(r, g, b)
+			else
+				self:SetBackdropBorderColor(r, g, b)
 			end
-		end
 
-		if modKey then
-			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, (data and data.id) or strmatch(link, ':(%w+)'))
+			self.qualityChanged = true
 		end
+	end
 
-		if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
-			local count = GetItemCount(link)
-			local total = GetItemCount(link, true)
-			if TT.db.itemCount == 'BAGS_ONLY' then
-				bagCount = format(IDLine, L["Count"], count)
-			elseif TT.db.itemCount == 'BANK_ONLY' then
-				bankCount = format(IDLine, L["Bank"], total - count)
-			elseif TT.db.itemCount == 'BOTH' then
-				bagCount = format(IDLine, L["Count"], count)
-				bankCount = format(IDLine, L["Bank"], total - count)
-			end
-		end
-	elseif modKey then
-		local id = data and data.id
-		if id then
-			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, id)
+	if modKey then
+		itemID = format('|cFFCA3C3C%s|r %s', _G.ID, (data and data.id) or strmatch(link, ':(%w+)'))
+	end
+
+	if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
+		local count = GetItemCount(link)
+		local total = GetItemCount(link, true)
+		if TT.db.itemCount == 'BAGS_ONLY' then
+			bagCount = format(IDLine, L["Count"], count)
+		elseif TT.db.itemCount == 'BANK_ONLY' then
+			bankCount = format(IDLine, L["Bank"], total - count)
+		elseif TT.db.itemCount == 'BOTH' then
+			bagCount = format(IDLine, L["Count"], count)
+			bankCount = format(IDLine, L["Bank"], total - count)
 		end
 	end
 
