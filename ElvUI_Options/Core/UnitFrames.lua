@@ -537,7 +537,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 		CreateCustomTextGroup(groupName, textName)
 		updateFunc(UF, groupName, numUnits)
 
-		E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'unitframe', individual[groupName] and 'individualUnits' or 'groupUnits', groupName, 'customText', textName)
+		E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'unitframe', individual[groupName] and 'individualUnits' or 'groupUnits', groupName, 'customTexts', textName)
 	end
 
 	return config
