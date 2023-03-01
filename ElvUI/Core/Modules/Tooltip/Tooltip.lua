@@ -75,6 +75,7 @@ local UnitHealthMax = UnitHealthMax
 
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
+local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -680,7 +681,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(data)
-	if (self ~= GameTooltip and self ~= ShoppingTooltip1 and self ~= ShoppingTooltip2) or self:IsForbidden() or not TT.db.visibility then return end
+	if (self ~= GameTooltip and self ~= _G.ShoppingTooltip1 and self ~= _G.ShoppingTooltip2) or self:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = self:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
@@ -692,15 +693,9 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	local itemID, bagCount, bankCount
 	local modKey = TT:IsModKeyDown()
 
-	if (not E.Retail and self.GetItem) or E.Retail then
-		local name, link
-		if E.Retail then
-			-- after changed, self refers to GameTooltip/ShoppingTooltip1/ShoppingTooltip2, so use TooltipUtil.GetDisplayedItem(self) for retail
-			-- https://github.com/Gethe/wow-ui-source/tree/live/Interface/FrameXML/GameTooltip.lua#L986
-			name, link = TooltipUtil.GetDisplayedItem(self)
-		else
-			name, link = self:GetItem()
-		end
+	local GetItem = GetDisplayedItem and self.GetItem
+	if GetItem then
+		local name, link = GetItem(self)
 
 		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
 			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
