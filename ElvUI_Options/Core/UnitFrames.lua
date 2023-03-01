@@ -469,7 +469,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	end
 
 	local config = ACH:Group(objectName, nil, nil, nil, function(info) return E.db.unitframe.units[unit].customTexts[objectName][info[#info]] end, function(info, value) E.db.unitframe.units[unit].customTexts[objectName][info[#info]] = value UpdateCustomTextGroup(unit) end)
-	config.args.delete = ACH:Execute(L["Delete"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customText.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
+	config.args.delete = ACH:Execute(L["Delete"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2)
 	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 3)
 	config.args.size = ACH:Range(L["Font Size"], nil, 4, C.Values.FontSize)
