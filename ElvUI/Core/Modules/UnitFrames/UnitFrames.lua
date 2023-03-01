@@ -430,7 +430,7 @@ function UF:UpdateColors()
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
-	for i=1, 6 do
+	for i = 1, 6 do
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
@@ -451,7 +451,7 @@ function UF:UpdateColors()
 	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
 	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
 
-	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0,	1, 1, 0} end
+	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
 	-- end
 
 	ElvUF.colors.reaction[1] = ElvUF.colors.reaction.bad

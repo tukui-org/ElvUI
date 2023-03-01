@@ -18,9 +18,9 @@ local data = { killingBlows = 0, honorableKills = 0, healingDone = 0, deaths = 0
 
 local function GetBattleStats(name)
 	if name == 'PvP: Kills' then
-		return _G.KILLS, data.killingBlows
+		return _G.KILLING_BLOWS, data.killingBlows
 	elseif name == 'PvP: Honorable Kills' then
-		return _G.KILLING_BLOWS, data.honorableKills
+		return _G.HONORABLE_KILLS, data.honorableKills
 	elseif name == 'PvP: Heals' then
 		return (E.Retail and _G.SHOW_COMBAT_HEALING) or _G.HEALS, data.healingDone
 	elseif name == 'PvP: Deaths' then

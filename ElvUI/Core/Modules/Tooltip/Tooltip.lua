@@ -262,7 +262,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
-			if localizedFaction and englishRace == 'Pandaren' then race = localizedFaction..' '..race end
+			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr') then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
 			if level < realLevel then

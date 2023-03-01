@@ -7,9 +7,9 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
+
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
--- GLOBALS: ElvUF_Player
 
 local AltManaTypes = { Rage = 1 }
 local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower' }
