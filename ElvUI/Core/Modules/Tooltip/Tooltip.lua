@@ -693,7 +693,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	local itemID, bagCount, bankCount
 	local modKey = TT:IsModKeyDown()
 
-	local GetItem = GetDisplayedItem and self.GetItem
+	local GetItem = GetDisplayedItem or self.GetItem
 	if GetItem then
 		local name, link = GetItem(self)
 
