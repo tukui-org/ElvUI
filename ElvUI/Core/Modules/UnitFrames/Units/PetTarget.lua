@@ -4,7 +4,6 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tinsert = tinsert
--- GLOBALS: ElvUF_Pet
 
 function UF:Construct_PetTargetFrame(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -25,7 +24,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
+	frame:Point('BOTTOM', UF.pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pettarget,generalGroup')
 
 	frame.unitframeType = 'pettarget'

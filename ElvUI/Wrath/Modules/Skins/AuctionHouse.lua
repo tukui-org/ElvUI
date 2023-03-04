@@ -136,8 +136,6 @@ function S:Blizzard_AuctionUI()
 
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
-	S:HandleCloseButton(_G.AuctionFrameCloseButton, AuctionFrame.backdrop)
-
 	_G.AuctionFrameMoneyFrame:Point('BOTTOMRIGHT', AuctionFrame, 'BOTTOMLEFT', 181, 11)
 
 	-- Browse Frame

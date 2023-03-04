@@ -178,7 +178,7 @@ function UF:ShowChildUnits(header, ...)
 		length = _G.MAX_PARTY_MEMBERS
 	end
 
-	for i=1, length do
+	for i = 1, length do
 		local frame = select(i, ...)
 		frame:SetID(i)
 		self:ForceShow(frame)
@@ -189,7 +189,7 @@ function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
 	UF.isForcedHidePlayer = nil
 
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local frame = select(i, ...)
 		self:UnforceShow(frame)
 	end
@@ -238,7 +238,7 @@ function UF:HeaderConfig(header, configMode)
 		end
 	end
 
-	for i=1, #header.groups do
+	for i = 1, #header.groups do
 		local group = header.groups[i]
 
 		if group:IsShown() then
@@ -282,7 +282,7 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for i=1, 8 do
+	for i = 1, 8 do
 		if i < 6 then
 			local arena = self['arena'..i]
 			if arena and arena.isForced then

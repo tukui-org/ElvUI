@@ -167,14 +167,6 @@ function S:ContainerFrame()
 		E:RegisterCooldown(cooldown, 'bags')
 	end
 
-	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate()
-	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
-
-	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate()
-	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
-
 	S:HandleButton(_G.BankFramePurchaseButton)
 
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
