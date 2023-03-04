@@ -126,8 +126,6 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_PVPText(frame)
 	UF:Configure_PartyIndicator(frame)
 	UF:Configure_ResurrectionIcon(frame)
-
-	frame:DisableElement('Castbar')
 	UF:Configure_AuraWatch(frame)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
