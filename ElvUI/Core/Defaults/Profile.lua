@@ -1761,6 +1761,7 @@ P.unitframe = {
 				width = 10,
 			},
 			aurabar = CopyTable(UF_AuraBars),
+			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			customTexts = {},
