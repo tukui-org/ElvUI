@@ -43,10 +43,10 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
 	frame.PvPIndicator = UF:Construct_PvPIcon(frame)
+	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
-	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 
 	if not E.Retail and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
@@ -112,7 +112,6 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Threat(frame)
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-	UF:Configure_AuraWatch(frame)
 	UF:Configure_RestingIndicator(frame)
 	UF:Configure_RaidRoleIcons(frame)
 	UF:Configure_AuraHighlight(frame)
@@ -129,6 +128,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_ResurrectionIcon(frame)
 
 	frame:DisableElement('Castbar')
+	UF:Configure_AuraWatch(frame)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 

@@ -1795,6 +1795,7 @@ P.unitframe = {
 			disableFocusGlow = true,
 			CombatIcon = CopyTable(UF_CombatIcon),
 			aurabar = CopyTable(UF_AuraBars),
+			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			customTexts = {},
