@@ -8,7 +8,7 @@
 	<Script file='Battlegrounds.lua'/>
 	<Script file='CombatTime.lua'/>
 	<Script file='CombatIndicator.lua'/>
-	<Script file='ConfigElvUI.lua'/>
+	<Script file='ElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
 	<Script file='Crit.lua'/>
 	<Script file='CustomCurrency.lua'/>

@@ -115,7 +115,6 @@ L["DPS"] = true
 L["Durability Frame"] = "Dayaniklilik Cercevesi"
 L["Earned:"] = "Kazanilan:"
 L["Elite"] = true
-L["ElvUI Config"] = "ElvUI Yapilandirmasi"
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable it in the profiles tab."] = "ElvUI, aninda mevcut spesifikasyonunuza gore farkli profiller yuklemenize izin veren ikili bir ozellik ozelligine sahiptir. Bunu profiller sekmesinde etkinlestirebilirsiniz."
 L["ElvUI Installation"] = "ElvUI Kurulumu"
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI bes veya daha fazla revizyon guncel degil. En yeni surumu www.tukui.org adresinden indirebilirsiniz. Premium uyelik alin ve ElvUI'nin Tukui istemcisi ile otomatik olarak guncellenmesini saglayin!"
