@@ -1394,15 +1394,14 @@ do
 	function ElvUF:DisableNamePlate(frame)
 		if E.private.nameplates.enable then
 			local plate = frame and frame.UnitFrame
-			if not plate then return end
-			if(plate:IsForbidden()) then return end
+			if not plate or plate:IsForbidden() then return end
 
-			if(not plate.isHooked) then
+			if(not disabledPlates[plate]) then
+				disabledPlates[plate] = true
+
+				HandleFrame(plate, true)
 				hooksecurefunc(plate, 'Show', plate.Hide)
-				plate.isHooked = true
 			end
-
-			HandleFrame(plate, true)
 		end
 	end
 end
