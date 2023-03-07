@@ -210,6 +210,8 @@ do
 		'ElvUI_VisualAuraTimers',
 		'ElvUI_SecondsToBuff',
 		'ElvUI_BuffHighlight',
+		'ElvUI_ToxiUI',
+		'WunderUI',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
