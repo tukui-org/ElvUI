@@ -130,15 +130,17 @@ function oUF:DisableBlizzard(unit)
 				handleFrame('ArenaEnemyPrepFrame' .. i)
 			end
 		end
-	elseif(unit:match('nameplate%d+$')) then
-		local frame = C_NamePlate.GetNamePlateForUnit(unit)
-		if(frame and frame.UnitFrame) then
-			if(not frame.UnitFrame.isHooked) then
-				frame.UnitFrame:HookScript('OnShow', insecureOnShow)
-				frame.UnitFrame.isHooked = true
-			end
-
-			handleFrame(frame.UnitFrame, true)
-		end
 	end
+end
+
+function oUF:DisableNamePlate(frame)
+	if(not(frame or frame.UnitFrame)) then return end
+	if(frame.UnitFrame:IsForbidden()) then return end
+
+	if(not frame.UnitFrame.isHooked) then
+		frame.UnitFrame:HookScript('OnShow', insecureOnShow)
+		frame.UnitFrame.isHooked = true
+	end
+
+	handleFrame(frame.UnitFrame, true)
 end
