@@ -799,7 +799,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	-- driver to create, update, and remove Blizz nameplates.
 	-- Disable only not forbidden nameplates.
 	hooksecurefunc(_G.NamePlateDriverFrame, 'AcquireUnitFrame', function(...)
-		self:DisableNamePlate(...)
+		oUF:DisableNamePlate(...)
 	end)
 
 	local eventHandler = CreateFrame('Frame', 'oUF_NamePlateDriver')
