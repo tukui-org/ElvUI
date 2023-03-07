@@ -1389,17 +1389,20 @@ do
 				end
 			end
 		end
+	end
 
-		if E.private.nameplates.enable and strmatch(unit, 'nameplate%d+$') then
-			local frame = C_NamePlate_GetNamePlateForUnit(unit)
+	function ElvUF:DisableNamePlate(frame)
+		if E.private.nameplates.enable then
 			local plate = frame and frame.UnitFrame
-			if plate and not disabledPlates[plate] then
-				disabledPlates[plate] = true
+			if not plate then return end
+			if(plate:IsForbidden()) then return end
 
-				HandleFrame(plate, true)
-
+			if(not plate.isHooked) then
 				hooksecurefunc(plate, 'Show', plate.Hide)
+				plate.isHooked = true
 			end
+
+			HandleFrame(plate, true)
 		end
 	end
 end
