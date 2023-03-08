@@ -204,7 +204,7 @@ local function OnAttributeChanged(self, attr)
 		UF:ShowChildUnits(self, self:GetChildren())
 	elseif tankAssist then -- for showing target frames
 		if attr == 'startingindex' then
-			self.waitForTarget = true
+			self.waitForTarget = db.targetsGroup.enable or nil
 		elseif self.waitForTarget and attr == 'statehidden' then
 			UF:ShowChildUnits(self, self:GetChildren())
 			self.waitForTarget = nil
