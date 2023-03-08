@@ -134,7 +134,7 @@ function oUF:DisableBlizzard(unit)
 end
 
 function oUF:DisableNamePlate()
-	if(not(self or self.UnitFrame)) then return end
+	if(not(self and self.UnitFrame)) then return end
 	if(self.UnitFrame:IsForbidden()) then return end
 
 	if(not self.UnitFrame.isHooked) then
