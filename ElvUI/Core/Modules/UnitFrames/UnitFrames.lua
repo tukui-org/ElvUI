@@ -1444,9 +1444,9 @@ function UF:ToggleForceShowFrame(unit)
 	end
 end
 
-function UF:ToggleForceShowGroupFrames(unit, numGroup)
+function UF:ToggleForceShowGroupFrames(group, numGroup)
 	for i = 1, numGroup do
-		UF:ToggleForceShowFrame(unit..i)
+		UF:ToggleForceShowFrame(group..i)
 	end
 end
 
