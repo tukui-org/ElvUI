@@ -1433,14 +1433,20 @@ function UF:ResetUnitSettings(unit)
 	UF:Update_AllFrames()
 end
 
-function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
+function UF:ToggleForceShowFrame(unit)
+	local frame = UF[unit]
+	if not frame then return end
+
+	if not frame.isForced then
+		UF:ForceShow(frame)
+	else
+		UF:UnforceShow(frame)
+	end
+end
+
+function UF:ToggleForceShowGroupFrames(unit, numGroup)
 	for i = 1, numGroup do
-		local frame = UF[unitGroup..i]
-		if frame and not frame.isForced then
-			UF:ForceShow(frame)
-		elseif frame then
-			UF:UnforceShow(frame)
-		end
+		UF:ToggleForceShowFrame(unit..i)
 	end
 end
 
