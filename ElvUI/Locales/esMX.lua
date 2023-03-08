@@ -114,7 +114,6 @@ L["DPS"] = "DPS"
 L["Durability Frame"] = true
 L["Earned:"] = "Ganada:"
 L["Elite"] = "Élite"
-L["ElvUI Config"] = true
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable it in the profiles tab."] = "ElvUI tiene una función de doble especificación que te permite cargar diferentes perfiles basados en tu especificación actual sobre la marcha. Puedes activarlo en la pestaña de perfiles."
 L["ElvUI Installation"] = "Instalación de ElvUI"
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = "ElvUI está cinco o mas revisiones desactualizado. Puedes descargar la versión más nueva de www.tukui.org. ¡Obtén la suscripción premium y ElvUI se actualizará automáticamente con el cliente Tukui!"

@@ -43,6 +43,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
 	frame.PvPIndicator = UF:Construct_PvPIcon(frame)
+	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
@@ -125,8 +126,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_PVPText(frame)
 	UF:Configure_PartyIndicator(frame)
 	UF:Configure_ResurrectionIcon(frame)
-
-	frame:DisableElement('Castbar')
+	UF:Configure_AuraWatch(frame)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 

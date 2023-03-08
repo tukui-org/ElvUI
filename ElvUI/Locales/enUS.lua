@@ -115,7 +115,6 @@ L["DPS"] = true
 L["Durability Frame"] = true
 L["Earned:"] = true
 L["Elite"] = true
-L["ElvUI Config"] = true
 L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable it in the profiles tab."] = true
 L["ElvUI Installation"] = true
 L["ElvUI is five or more revisions out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"] = true
