@@ -395,7 +395,7 @@ Filters.mainOptions.args.auraIndicator.args.positionGroup.args.point = ACH:Selec
 Filters.mainOptions.args.auraIndicator.args.positionGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.positionGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -75, max = 75, step = 1 })
 
-Filters.mainOptions.args.auraIndicator.args.countGroup = ACH:Group(L["Count"], nil, 20)
+Filters.mainOptions.args.auraIndicator.args.countGroup = ACH:Group(L["Count Text"], nil, 20)
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })

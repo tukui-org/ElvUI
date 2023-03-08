@@ -391,7 +391,6 @@ L["Copy settings from another unit."] = "다른 부분에서 설정을 복사하
 L["Copy settings from"] = "설정 복사해서 가져오기"
 L["Core |cff1784d1ElvUI|r options."] = "핵심 |cff1784d1ElvUI|r 옵션."
 L["Cosmetic"] = "추가기능 설정"
-L["Count"] = "중첩"
 L["Count Text"] = "카운트 문자"
 L["Covenant Preview"] = "퀘스트 미리보기"
 L["Covenant Renown"] = "성약의 단 영예"
