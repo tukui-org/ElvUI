@@ -557,7 +557,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 10, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 11, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
 
-	config.args.instanceDifficulties = ACH:Group(L["Instance Difficulties"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.instanceDifficulties = ACH:Group(L["Instance Difficulties"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, groupName ~= "player")
 	config.args.instanceDifficulties.inline = true
 	config.args.instanceDifficulties.args.dungeonNormal = ACH:Toggle(L["Dungeon (normal)"], nil, 1, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
 	config.args.instanceDifficulties.args.dungeonHeroic = ACH:Toggle(L["Dungeon (heroic)"], nil, 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)

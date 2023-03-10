@@ -55,11 +55,7 @@ local function ToggleAlpha(self, element, endAlpha)
 end
 
 local function updateCachedInstanceDifficulty(element)
-	local instanceDifficulty
-	if element.InstanceDifficulties then
-		instanceDifficulty = select(3, GetInstanceInfo())
-	end
-
+	local instanceDifficulty = select(3, GetInstanceInfo())
 	element.cachedShowInstanceDifficulty = (element.InstanceDifficulties and element.InstanceDifficulties[instanceDifficulty]) or false
 end
 
@@ -89,7 +85,12 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	if element.cachedShowInstanceDifficulty == nil then
+	-- Instance difficulties
+	if not element.InstanceDifficulties then
+		-- Clear cache if the option is not enabled
+		element.cachedShowInstanceDifficulty = nil
+	elseif element.cachedShowInstanceDifficulty == nil then
+		-- Update if option is enabled and we haven't checked yet
 		updateCachedInstanceDifficulty(element)
 	end
 
@@ -138,7 +139,7 @@ local function onRangeUpdate(frame, elapsed)
 	end
 end
 
-local function onInstanceDifficultyUpdate(self, ...)
+local function onInstanceDifficultyUpdate(self)
 	local element = self.Fader
 	updateCachedInstanceDifficulty(element)
 	element:ForceUpdate()
@@ -272,7 +273,6 @@ local options = {
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	InstanceDifficulties = {
-		countIgnored = true,
 		enable = function(self)
 			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficultyUpdate, true)
 			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficultyUpdate, true)
