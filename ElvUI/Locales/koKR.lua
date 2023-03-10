@@ -87,7 +87,6 @@ L["Confused.. Try Again!"] = "작업에 혼선이 있었습니다. 다시 시도
 L["Continue"] = "계속"
 L["Coords"] = "좌표"
 L["copperabbrev"] = [[|TInterface\MoneyFrame\UI-MoneyIcons:0:0:1:0:64:16:33:48:1:16|t]]
-L["Counts"] = "가방속"
 L["Current Difficulties:"] = "현재 난이도:"
 L["Current Level:"] = "현재 레벨"
 L["CVars Set"] = "CVars 설정"
