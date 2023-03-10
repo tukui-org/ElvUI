@@ -28,7 +28,6 @@ local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
 local UnitGUID = UnitGUID
 
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
@@ -1389,17 +1388,19 @@ do
 				end
 			end
 		end
+	end
 
-		if E.private.nameplates.enable and strmatch(unit, 'nameplate%d+$') then
-			local frame = C_NamePlate_GetNamePlateForUnit(unit)
-			local plate = frame and frame.UnitFrame
-			if plate and not disabledPlates[plate] then
-				disabledPlates[plate] = true
+	function ElvUF:DisableNamePlate()
+		if not E.private.nameplates.enable then return end
 
-				HandleFrame(plate, true)
+		local plate = self and self.UnitFrame
+		if not plate or plate:IsForbidden() then return end
 
-				hooksecurefunc(plate, 'Show', plate.Hide)
-			end
+		if not disabledPlates[plate] then
+			disabledPlates[plate] = true
+
+			HandleFrame(plate, true)
+			hooksecurefunc(plate, 'Show', plate.Hide)
 		end
 	end
 end
@@ -1432,14 +1433,20 @@ function UF:ResetUnitSettings(unit)
 	UF:Update_AllFrames()
 end
 
-function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
+function UF:ToggleForceShowFrame(unit)
+	local frame = UF[unit]
+	if not frame then return end
+
+	if not frame.isForced then
+		UF:ForceShow(frame)
+	else
+		UF:UnforceShow(frame)
+	end
+end
+
+function UF:ToggleForceShowGroupFrames(group, numGroup)
 	for i = 1, numGroup do
-		local frame = UF[unitGroup..i]
-		if frame and not frame.isForced then
-			UF:ForceShow(frame)
-		elseif frame then
-			UF:UnforceShow(frame)
-		end
+		UF:ToggleForceShowFrame(group..i)
 	end
 end
 

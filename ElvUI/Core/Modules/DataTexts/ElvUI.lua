@@ -53,4 +53,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', hex, '%s|r')
 end
 
-DT:RegisterDatatext('ElvUI', nil, nil, OnEvent, nil, OnClick, OnEnter, nil, L["ElvUI Config"], nil, ApplySettings)
+DT:RegisterDatatext('ElvUI', nil, nil, OnEvent, nil, OnClick, OnEnter, nil, configText, nil, ApplySettings)

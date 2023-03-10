@@ -20,8 +20,8 @@ local SharedOptions = {
 	showDuration = ACH:Toggle(L["Duration Enable"], nil, 11),
 
 	statusBar = ACH:Group(L["Statusbar"], nil, -3),
-	timeGroup = ACH:Group(L["Time"], nil, -2),
-	countGroup = ACH:Group(L["Count"], nil, -1),
+	timeGroup = ACH:Group(L["Time Text"], nil, -2),
+	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
 
 SharedOptions.timeGroup.inline = true

@@ -75,6 +75,7 @@ local UnitHealthMax = UnitHealthMax
 
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
+local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -680,7 +681,7 @@ function TT:EmbeddedItemTooltip_QuestReward(tt)
 end
 
 function TT:GameTooltip_OnTooltipSetItem(data)
-	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
+	if (self ~= GameTooltip and self ~= _G.ShoppingTooltip1 and self ~= _G.ShoppingTooltip2) or self:IsForbidden() or not TT.db.visibility then return end
 
 	local owner = self:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
@@ -692,8 +693,9 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	local itemID, bagCount, bankCount
 	local modKey = TT:IsModKeyDown()
 
-	if self.GetItem then -- Some tooltips don't have this func. Example - compare tooltip
-		local name, link = self:GetItem()
+	local GetItem = GetDisplayedItem or self.GetItem
+	if GetItem then
+		local name, link = GetItem(self)
 
 		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
 			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
@@ -724,11 +726,11 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			local count = GetItemCount(link)
 			local total = GetItemCount(link, true)
 			if TT.db.itemCount == 'BAGS_ONLY' then
-				bagCount = format(IDLine, L["Count"], count)
+				bagCount = format(IDLine, L["Bags"], count)
 			elseif TT.db.itemCount == 'BANK_ONLY' then
 				bankCount = format(IDLine, L["Bank"], total - count)
 			elseif TT.db.itemCount == 'BOTH' then
-				bagCount = format(IDLine, L["Count"], count)
+				bagCount = format(IDLine, L["Bags"], count)
 				bankCount = format(IDLine, L["Bank"], total - count)
 			end
 		end

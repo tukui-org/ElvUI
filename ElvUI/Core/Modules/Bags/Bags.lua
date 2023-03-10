@@ -1182,52 +1182,31 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-do
-	local delayed = CreateFrame('Frame')
-	delayed:Hide()
-	delayed:SetScript('OnUpdate', function(_, elapsed)
-		if delayed.elapsed and delayed.elapsed > 0.02 then
-			for _, bagFrame in next, B.BagFrames do
-				if next(bagFrame.DelayedContainers) then
-					B:UpdateDelayedContainer(bagFrame)
-				end
-			end
-
-			delayed:Hide()
-			delayed.elapsed = 0
-		else
-			delayed.elapsed = (delayed.elapsed or 0) + elapsed
+function B:UpdateDelayedContainer(frame)
+	for bagID, container in next, frame.DelayedContainers do
+		if bagID ~= BACKPACK_CONTAINER then
+			B:SetBagAssignments(container)
 		end
-	end)
 
-	B.DelayedNoEvent = delayed
-
-	function B:UpdateDelayedContainer(frame)
-		for bagID, container in next, frame.DelayedContainers do
-			if bagID ~= BACKPACK_CONTAINER then
-				B:SetBagAssignments(container)
-			end
-
-			local bag = frame.Bags[bagID]
-			if bag and bag.needsUpdate then
-				B:UpdateBagSlots(frame, bagID)
-				bag.needsUpdate = nil
-			end
-
-			frame.DelayedContainers[bagID] = nil
+		local bag = frame.Bags[bagID]
+		if bag and bag.needsUpdate then
+			B:UpdateBagSlots(frame, bagID)
+			bag.needsUpdate = nil
 		end
+
+		frame.DelayedContainers[bagID] = nil
 	end
+end
 
-	function B:DelayedContainer(bagFrame, event, bagID)
-		local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
-		if container then
-			bagFrame.DelayedContainers[bagID] = container
+function B:DelayedContainer(bagFrame, event, bagID)
+	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
+	if container then
+		bagFrame.DelayedContainers[bagID] = container
 
-			if event == 'BAG_CLOSED' then -- let it call layout
-				bagFrame.totalSlots = 0
-			else
-				bagFrame.Bags[bagID].needsUpdate = true
-			end
+		if event == 'BAG_CLOSED' then -- let it call layout
+			bagFrame.totalSlots = 0
+		else
+			bagFrame.Bags[bagID].needsUpdate = true
 		end
 	end
 end
@@ -1264,12 +1243,6 @@ function B:OnEvent(event, ...)
 		if not self.isBank or self:IsShown() then
 			local bagID = ...
 			B:DelayedContainer(self, event, bagID)
-
-			-- BAG_UPDATE_DELAYED doesn't fire on all bags on Wrath or Retail 10.0.5 (it does for bag 0)?
-			if not E.Classic and bagID ~= 0 then
-				B.DelayedNoEvent:Show()
-				B.DelayedNoEvent.elapsed = 0
-			end
 		end
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		B:UpdateDelayedContainer(self)
