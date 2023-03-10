@@ -64,8 +64,6 @@ function S:MailFrame()
 	_G.SendMailScrollFrame:StripTextures(true)
 	_G.SendMailScrollFrame:SetTemplate()
 
-	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
-
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
 	S:HandleEditBox(_G.SendMailMoneyGold)
@@ -110,8 +108,6 @@ function S:MailFrame()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
 	_G.OpenMailScrollFrame:SetTemplate()
-
-	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
 	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
 	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)

@@ -359,11 +359,6 @@ end
 function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
-	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestRewardScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestDetailScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestGreetingScrollFrameScrollBar)
-
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
 	QuestInfoSkillPointFrame:StripTextures()
 	QuestInfoSkillPointFrame:StyleButton()
@@ -486,7 +481,6 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
@@ -495,7 +489,6 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameShareButton)
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
 	QuestLogPopupDetailFrame:SetTemplate('Transparent')
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()

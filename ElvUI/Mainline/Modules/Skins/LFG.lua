@@ -401,11 +401,12 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
-	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
 
-	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
+	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
 
+	-- TODO Season 2
+	--[[
 	_G.LFRBrowseFrame:HookScript('OnShow', function()
 		if not _G.LFRBrowseFrameListScrollFrameScrollBar.skinned then
 			S:HandleScrollBar(_G.LFRBrowseFrameListScrollFrameScrollBar)
@@ -471,6 +472,7 @@ function S:LookingForGroupFrames()
 			scrollBar.skinned = true
 		end
 	end)
+	]]
 
 	--[[
 		LFGInvitePopup_Update('Elvz', true, true, true)
@@ -486,8 +488,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	_G.LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
-	S:HandleScrollBar(_G.LFDQueueFrameRandomScrollFrameScrollBar)
 
 	--LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
