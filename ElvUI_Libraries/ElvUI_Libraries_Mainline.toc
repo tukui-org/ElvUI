@@ -2,7 +2,7 @@
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
 ## Version: 1.00
-## Interface: 100005
+## Interface: 100100
 ## X-oUF: ElvUF
 
 Mainline\Libs.xml
