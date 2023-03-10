@@ -111,7 +111,7 @@ function S:MailFrame()
 	_G.OpenMailScrollFrame:StripTextures(true)
 	_G.OpenMailScrollFrame:SetTemplate()
 
-	-- S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
 
 	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
 	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
