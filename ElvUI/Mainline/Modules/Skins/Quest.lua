@@ -360,12 +360,10 @@ function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
 	-- TODO Season 2
-	--[[
-	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestRewardScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestDetailScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestGreetingScrollFrameScrollBar)
-	]]
+	S:HandleTrimScrollBar(_G.QuestProgressScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestRewardScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestDetailScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestGreetingScrollFrame.ScrollBar)
 
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
 	QuestInfoSkillPointFrame:StripTextures()
