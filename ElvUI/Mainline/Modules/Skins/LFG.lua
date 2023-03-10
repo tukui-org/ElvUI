@@ -401,78 +401,10 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
+	-- _G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures() TODO Season 2
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	-- TODO Season 2
-	--[[
-	_G.LFRBrowseFrame:HookScript('OnShow', function()
-		if not _G.LFRBrowseFrameListScrollFrameScrollBar.skinned then
-			S:HandleScrollBar(_G.LFRBrowseFrameListScrollFrameScrollBar)
-			_G.LFRBrowseFrameListScrollFrameScrollBar.skinned = true
-		end
-	end)
-
-	_G.LFRBrowseFrameRoleInset:DisableDrawLayer('BORDER')
-	_G.RaidBrowserFrameBg:Hide()
-
-	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
-	_G.LFRBrowseFrameColumnHeader2:Width(38)
-
-	_G.RaidBrowserFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
-	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
-	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
-	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
-
-	local RoleButtons2 = {
-		_G.LFRQueueFrameRoleButtonHealer,
-		_G.LFRQueueFrameRoleButtonDPS,
-		_G.LFRQueueFrameRoleButtonTank,
-	}
-
-	_G.RaidBrowserFrame:HookScript('OnShow', function()
-		local scrollBar = _G.LFRQueueFrameSpecificListScrollFrameScrollBar
-		if not scrollBar.skinned then
-			S:HandleScrollBar(scrollBar)
-			_G.LFRBrowseFrame:StripTextures()
-
-			for _, roleButton in pairs(RoleButtons2) do
-				roleButton:SetNormalTexture(E.ClearTexture)
-				S:HandleCheckBox(roleButton.checkButton, nil, true)
-				roleButton:GetChildren():SetFrameLevel(roleButton:GetChildren():GetFrameLevel() + 1)
-			end
-
-			for i=1, 2 do
-				local tab = _G['LFRParentFrameSideTab'..i]
-				tab:DisableDrawLayer('BACKGROUND')
-
-				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
-				tab:GetNormalTexture():SetInside()
-
-				tab.pushed = true
-				tab:SetTemplate()
-				tab:StyleButton(true)
-
-				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', ClearSetTexture)
-				hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', ClearSetTexture)
-			end
-
-			for i=1, 7 do
-				local tab = _G['LFRBrowseFrameColumnHeader'..i]
-				tab:DisableDrawLayer('BACKGROUND')
-			end
-
-			S:HandleDropDownBox(_G.LFRBrowseFrameRaidDropDown)
-			S:HandleButton(_G.LFRBrowseFrameRefreshButton)
-			S:HandleButton(_G.LFRBrowseFrameInviteButton)
-			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
-
-			scrollBar.skinned = true
-		end
-	end)
-	]]
 
 	--[[
 		LFGInvitePopup_Update('Elvz', true, true, true)
@@ -488,8 +420,10 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
+	-- _G.LFDQueueFrameRandomScrollFrameScrollBar:StripTextures() TODO Season 2
+	-- S:HandleScrollBar(_G.LFDQueueFrameRandomScrollFrameScrollBar) TODO Season 2
 
-	--LFGListFrame
+	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)

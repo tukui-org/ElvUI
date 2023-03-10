@@ -42,6 +42,7 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 
+	-- S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar) TODO Season 2
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 

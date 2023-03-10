@@ -64,6 +64,8 @@ function S:MailFrame()
 	_G.SendMailScrollFrame:StripTextures(true)
 	_G.SendMailScrollFrame:SetTemplate()
 
+	-- S:HandleScrollBar(_G.SendMailScrollFrameScrollBar) TODO Season 2
+
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
 	S:HandleEditBox(_G.SendMailMoneyGold)
@@ -108,6 +110,8 @@ function S:MailFrame()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
 	_G.OpenMailScrollFrame:SetTemplate()
+
+	-- S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar) TODO Season 2
 
 	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
 	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)

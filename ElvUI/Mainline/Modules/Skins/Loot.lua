@@ -74,6 +74,7 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
 	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
 	_G.LootHistoryFrameScrollFrame:StripTextures()
+	-- S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar) TODO Season 2
 
 	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
