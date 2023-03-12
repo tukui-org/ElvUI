@@ -15,7 +15,7 @@ local CR_EXPERTISE_TOOLTIP = CR_EXPERTISE_TOOLTIP
 local STAT_EXPERTISE = STAT_EXPERTISE
 local CR_EXPERTISE = CR_EXPERTISE
 
-local displayString, expertisePercentDisplay = '', ''
+local displayString, expertisePercentDisplay, ttStr = '', '', ''
 local expertisePercent, offhandExpertisePercent = 0, 0
 local expertiseRating, expertiseBonusRating = 0, 0
 local expertise, offhandExpertise = 0, 0
@@ -27,8 +27,10 @@ local function OnEvent(self)
 
 	if IsDualWielding() then
 		expertisePercentDisplay = format('%.2f%% / %.2f%%', expertisePercent, offhandExpertisePercent)
+		ttStr = '%s / %s'
 	else
 		expertisePercentDisplay = format('%.2f%%', expertisePercent)
+		ttStr = '%s'
 	end
 
 	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
@@ -37,7 +39,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddDoubleLine(STAT_EXPERTISE, format(displayString..expertisePercentDisplay, expertise, offhandExpertise), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(STAT_EXPERTISE, format(ttStr, expertise, offhandExpertise), 1, 1, 1)
 	DT.tooltip:AddLine(format(CR_EXPERTISE_TOOLTIP, expertisePercentDisplay, expertiseRating, expertiseBonusRating))
 
 	DT.tooltip:Show()
