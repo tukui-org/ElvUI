@@ -401,7 +401,6 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
-	-- _G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures() TODO Season 2
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
@@ -420,8 +419,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	-- _G.LFDQueueFrameRandomScrollFrameScrollBar:StripTextures() TODO Season 2
-	-- S:HandleScrollBar(_G.LFDQueueFrameRandomScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar, true)
 
 	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame

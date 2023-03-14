@@ -64,7 +64,7 @@ function S:MailFrame()
 	_G.SendMailScrollFrame:StripTextures(true)
 	_G.SendMailScrollFrame:SetTemplate()
 
-	-- S:HandleScrollBar(_G.SendMailScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.SendMailScrollFrame.ScrollBar, true)
 
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)

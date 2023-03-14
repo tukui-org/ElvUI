@@ -197,7 +197,7 @@ function S:Blizzard_Communities()
 
 	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate('Transparent')
-	-- S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(CommunitiesFrame.Chat.ScrollBar, true)
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
@@ -244,7 +244,7 @@ function S:Blizzard_Communities()
 			if frame.GuildCards then HandleGuildCards(frame.GuildCards) end
 			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
 			if frame.CommunityCards then
-				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
+				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar, true)
 				hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 			if frame.PendingCommunityCards then
