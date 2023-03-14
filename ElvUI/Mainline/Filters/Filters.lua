@@ -683,66 +683,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
-	-- Dragonflight Season 1
-		[396369] = List(), -- Mark of Lightning
-		[396364] = List(), -- Mark of Wind
 	----------------------------------------------------------
-	---------------- Dragonflight (Season 1) -----------------
+	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
-	-- Court of Stars
-		[207278] = List(), -- Arcane Lockdown
-		[209516] = List(), -- Mana Fang
-		[209512] = List(), -- Disrupting Energy
-		[211473] = List(), -- Shadow Slash
-		[207979] = List(), -- Shockwave
-		[207980] = List(), -- Disintegration Beam 1
-		[207981] = List(), -- Disintegration Beam 2
-		[211464] = List(), -- Fel Detonation
-		[208165] = List(), -- Withering Soul
-		[209413] = List(), -- Suppress
-		[209027] = List(), -- Quelling Strike
-	-- Halls of Valor
-		[197964] = List(), -- Runic Brand Orange
-		[197965] = List(), -- Runic Brand Yellow
-		[197963] = List(), -- Runic Brand Purple
-		[197967] = List(), -- Runic Brand Green
-		[197966] = List(), -- Runic Brand Blue
-		[193783] = List(), -- Aegis of Aggramar Up
-		[196838] = List(), -- Scent of Blood
-		[199674] = List(), -- Wicked Dagger
-		[193260] = List(), -- Static Field
-		[193743] = List(), -- Aegis of Aggramar Wielder
-		[199652] = List(), -- Sever
-		[198944] = List(), -- Breach Armor
-		[215430] = List(), -- Thunderstrike 1
-		[215429] = List(), -- Thunderstrike 2
-		[203963] = List(), -- Eye of the Storm
-		[196497] = List(), -- Ravenous Leap
-		[193660] = List(), -- Felblaze Rush
-	-- Shadowmoon Burial Grounds
-		[156776] = List(), -- Rending Voidlash
-		[153692] = List(), -- Necrotic Pitch
-		[153524] = List(), -- Plague Spit
-		[154469] = List(), -- Ritual of Bones
-		[162652] = List(), -- Lunar Purity
-		[164907] = List(), -- Void Cleave
-		[152979] = List(), -- Soul Shred
-		[158061] = List(), -- Blessed Waters of Purity
-		[154442] = List(), -- Malevolence
-		[153501] = List(), -- Void Blast
-	-- Temple of the Jade Serpent
-		[396150] = List(), -- Feeling of Superiority
-		[397878] = List(), -- Tainted Ripple
-		[106113] = List(), -- Touch of Nothingness
-		[397914] = List(), -- Defiling Mist
-		[397904] = List(), -- Setting Sun Kick
-		[397911] = List(), -- Touch of Ruin
-		[395859] = List(), -- Haunting Scream
-		[396093] = List(), -- Savage Leap
-		[106823] = List(), -- Serpent Strike
-		[396152] = List(), -- Feeling of Inferiority
-		[110125] = List(), -- Shattered Resolve
-		[397797] = List(), -- Corrupted Vortex
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
 		[392406] = List(), -- Thunderclap
 		[372820] = List(), -- Scorched Earth
@@ -825,10 +772,22 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
-	-- Brackenhide Hollow
-	-- Halls of Infusion
-	-- Neltharus
-	-- Uldaman: Legacy of Tyr
+	-- Freehold
+	-- Neltharion's Lair
+	-- Underrot
+	-- Vortex Pinnacle
+	---------------------------------------------------------
+	------------ Aberrus, the Shadowed Crucible -------------
+	---------------------------------------------------------
+	-- Kazzara
+	-- Molgoth
+	-- Experimentation of Dracthyr
+	-- Zaqali Invasion
+	-- Rashok
+	-- Zskarn
+	-- Magmorax
+	-- Echo of Neltharion
+	-- Scalecommander Sarkareth
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
@@ -895,50 +854,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
 	----------------------------------------------------------
-	---------------- Dragonflight (Season 1) -----------------
+	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
-	-- Court of Stars
-		[209033] = List(), -- Fortification
-		[209741] = List(), -- Slicing Maelstrom 1
-		[209676] = List(), -- Slicing Maelstrom 2
-		[225101] = List(), -- Power Charge
-		[212784] = List(), -- Eye Storm
-		[225100] = List(), -- Charging Station
-		[207850] = List(), -- Bond of Strength
-		[209719] = List(), -- Bond of Cruelty
-		[209722] = List(), -- Bond of Flame
-		[209713] = List(), -- Bond of Cunning
-		[207906] = List(), -- Burning Intensity
-		[211477] = List(), -- Ferocity
-		[211401] = List(), -- Drifting Embers
-		[207815] = List(), -- Flask of the Solemn Night
-	-- Halls of Valor
-		[207707] = List(), -- Stealth 1
-		[196567] = List(), -- Stealth 2
-		[202494] = List(), -- Ragnarok 1
-		[193826] = List(), -- Ragnarok 2
-		[199248] = List(), -- Leap of Safety
-		[200901] = List(), -- Eye of the Storm
-		[190225] = List(), -- Enrage
-		[198745] = List(), -- Protective Light
-		[192158] = List(), -- Sanctify 1
-		[192307] = List(), -- Sanctify 2
-	-- Shadowmoon Burial Grounds
-		[162696] = List(), -- Deathspike
-		[165578] = List(), -- Corpse Breath
-		[153804] = List(), -- Inhale
-		[153094] = List(), -- Whispers of the Dark Star
-		[153153] = List(), -- Dark Communion
-		[164974] = List(), -- Dark Eclipse
-		[153067] = List(), -- Void Devastation
-	-- Temple of the Jade Serpent
-		[113315] = List(), -- Intensity
-		[117570] = List(), -- Gathering Doubt
-		[114805] = List(), -- Aerialist's Kick
-		[117665] = List(), -- Bounds of Reality
-		[113379] = List(), -- Dissipation
-		[106797] = List(), -- Jade Essence
-		[113309] = List(), -- Ultimate Power
+	-- Brackenhide Hollow
+	-- Halls of Infusion
+	-- Neltharus
+	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
 		[372743] = List(), -- Ice Shield
 		[392569] = List(), -- Molten Blood
@@ -995,10 +916,22 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
-	-- Brackenhide Hollow
-	-- Halls of Infusion
-	-- Neltharus
-	-- Uldaman: Legacy of Tyr
+	-- Freehold
+	-- Neltharion's Lair
+	-- Underrot
+	-- Vortex Pinnacle
+	---------------------------------------------------------
+	------------ Aberrus, the Shadowed Crucible -------------
+	---------------------------------------------------------
+	-- Kazzara
+	-- Molgoth
+	-- Experimentation of Dracthyr
+	-- Zaqali Invasion
+	-- Rashok
+	-- Zskarn
+	-- Magmorax
+	-- Echo of Neltharion
+	-- Scalecommander Sarkareth
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
