@@ -773,8 +773,29 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
+		[258323] = List(), -- Infected Wound
+		[257775] = List(), -- Plague Step
+		[257908] = List(), -- Oiled Blade
+		[257436] = List(), -- Poisoning Strike
+		[274389] = List(), -- Rat Traps
+		[274555] = List(), -- Scabrous Bites
+		[258875] = List(), -- Blackout Barrel
+		[256363] = List(), -- Ripper Punch
 	-- Neltharion's Lair
 	-- Underrot
+		[265468] = List(), -- Withering Curse
+		[278961] = List(), -- Decaying Mind
+		[259714] = List(), -- Decaying Spores
+		[272180] = List(), -- Death Bolt
+		[272609] = List(), -- Maddening Gaze
+		[269301] = List(), -- Putrid Blood
+		[265533] = List(), -- Blood Maw
+		[265019] = List(), -- Savage Cleave
+		[265377] = List(), -- Hooked Snare
+		[265625] = List(), -- Dark Omen
+		[260685] = List(), -- Taint of G'huun
+		[266107] = List(), -- Thirst for Blood
+		[260455] = List(), -- Serrated Fangs
 	-- Vortex Pinnacle
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
