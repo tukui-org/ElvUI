@@ -554,7 +554,7 @@ function S:CharacterFrame()
 	_G.TokenFrameMoneyFrame:Kill()
 
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
-		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+		if not child:GetName() then
 			child:Hide()
 			break
 		end
