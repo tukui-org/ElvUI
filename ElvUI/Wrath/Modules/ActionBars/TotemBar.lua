@@ -148,7 +148,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	end
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	frame.buttons[1]:SetBackdropBorderColor(color.r, color.g, color.b)
 	closeButton:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	frame:ClearAllPoints()
