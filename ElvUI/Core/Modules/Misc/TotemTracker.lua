@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local T = E:GetModule('TotemTracker')
 
 local _G = _G
-local next = next
+local ipairs = ipairs
 local unpack = unpack
 
 local CreateFrame = CreateFrame
@@ -33,8 +33,10 @@ end
 
 function T:Update()
 	if E.Retail then
-		for i in ipairs(T.bar) do
-			T.bar[i]:Hide()
+		for _, button in ipairs(T.bar) do
+			if button:IsShown() then
+				button:SetShown(false)
+			end
 		end
 		for totem in _G.TotemFrame.totemPool:EnumerateActive() do
 			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
