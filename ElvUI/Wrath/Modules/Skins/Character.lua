@@ -553,8 +553,9 @@ function S:CharacterFrame()
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
 
+	-- try to find the close button
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
-		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+		if child.Hide and child:IsShown() and not child:GetName() then
 			child:Hide()
 			break
 		end
