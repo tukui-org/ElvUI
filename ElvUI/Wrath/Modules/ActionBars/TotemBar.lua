@@ -109,10 +109,11 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local numButtons = 0
 	local totalHeight = 0
+	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
-			AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
+			AB:SkinMultiCastButton(button, nil, useMasque)
 
 			-- these only need mouseover script, dont need the bind key script
 			AB:HookScript(button, 'OnEnter', 'TotemBar_OnEnter')
@@ -122,7 +123,10 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 		if button:IsShown() then
 			numButtons = numButtons + 1
 
-			button:SetBackdropBorderColor(color.r, color.g, color.b)
+			if not useMasque then
+				button:SetBackdropBorderColor(color.r, color.g, color.b)
+			end
+
 			button:Size(AB.db.totemBar.flyoutSize)
 			button:ClearAllPoints()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -144,7 +148,6 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	end
 
 	local closeButton = _G.MultiCastFlyoutFrameCloseButton
-	frame.buttons[1]:SetBackdropBorderColor(color.r, color.g, color.b)
 	closeButton:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	frame:ClearAllPoints()

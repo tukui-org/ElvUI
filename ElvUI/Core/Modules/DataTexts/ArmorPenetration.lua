@@ -34,7 +34,7 @@ local function OnEnter()
 end
 
 local function ApplySettings(_, hex)
-	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
+	displayString = strjoin('', '%s: ', hex, '%s|r')
 end
 
 DT:RegisterDatatext('Armor Penetration', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, nil, nil, ApplySettings)
