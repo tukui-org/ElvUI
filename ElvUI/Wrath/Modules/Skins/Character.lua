@@ -193,6 +193,9 @@ function S:CharacterFrame()
 
 	_G.PaperDollFrame:StripTextures()
 
+	_G.CharacterFrameCloseButton:SetNormalTexture(E.Media.Textures.Close)
+	_G.CharacterFrameCloseButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
+
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
