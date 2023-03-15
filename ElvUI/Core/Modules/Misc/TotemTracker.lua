@@ -33,8 +33,8 @@ end
 
 function T:Update()
 	if E.Retail then
-		for _, totem in _G.TotemFrame.totemPool:EnumerateInactive() do
-			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
+		for i in ipairs(T.bar) do
+			T.bar[i]:Hide()
 		end
 		for totem in _G.TotemFrame.totemPool:EnumerateActive() do
 			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
