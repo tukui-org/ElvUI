@@ -185,8 +185,10 @@ function S:Blizzard_Professions()
 
 	if E.private.skins.parchmentRemoverEnable then
 		SchematicForm.Background:SetAlpha(0)
+		SchematicForm.MinimalBackground:SetAlpha(0)
 	else
 		SchematicForm.Background:SetAlpha(.25)
+		SchematicForm.MinimalBackground:SetAlpha(.25)
 	end
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
