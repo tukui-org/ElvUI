@@ -142,6 +142,8 @@ function S:Blizzard_Professions()
 	GuildFrame.Container:StripTextures()
 	GuildFrame.Container:CreateBackdrop('Transparent')
 
+	S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
+
 	for _, tab in next, { ProfessionsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
 	end
