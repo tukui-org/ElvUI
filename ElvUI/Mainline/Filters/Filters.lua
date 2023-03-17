@@ -806,6 +806,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[402253] = List(), -- Ray of Anguish
 		[406525] = List(), -- Dread Rift
 	-- Molgoth
+		[405084] = List(), -- Lingering Umbra
+		[405645] = List(), -- Engulfing Heat
+		[405642] = List(), -- Blistering Twilight
+		[402617] = List(), -- Blazing Heat
+		[401809] = List(), -- Corrupting Shadow
+		[405394] = List(), -- Shadowflame
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
 	-- Rashok
@@ -959,6 +965,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[407069] = List(), -- Rays of Anguish
 		[402219] = List(), -- Rays of Anguish
 	-- Molgoth
+		[406730] = List(), -- Crucible Instability
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
 	-- Rashok
