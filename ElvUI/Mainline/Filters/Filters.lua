@@ -801,6 +801,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
 	-- Kazzara
+		[406530] = List(), -- Riftburn
+		[402420] = List(), -- Molten Scar
+		[402253] = List(), -- Ray of Anguish
+		[406525] = List(), -- Dread Rift
 	-- Molgoth
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
@@ -945,6 +949,15 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
 	-- Kazzara
+		[406516] = List(), -- Dread Rifts
+		[407199] = List(), -- Dread Rifts
+		[407200] = List(), -- Dread Rifts
+		[407198] = List(), -- Dread Rifts
+		[408367] = List(), -- Infernal Heart
+		[408372] = List(), -- Infernal Heart
+		[408373] = List(), -- Infernal Heart
+		[407069] = List(), -- Rays of Anguish
+		[402219] = List(), -- Rays of Anguish
 	-- Molgoth
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
