@@ -63,12 +63,8 @@ end
 
 local function Update(self, _, unit)
 	local element = self.Fader
-
-	-- check Instance Difficulties
-	if not element.Instanced then -- Clear cache if the option is not enabled
-		element.cachedInstanceDifficulty = nil
-	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
-		updateCachedInstanceDifficulty(element)
+	if element and not element.Instanced then
+		element.cachedInstanceDifficulty = nil -- Clear cache if the option is not enabled
 	end
 
 	if self.isForced or (not element or not element.count or element.count <= 0) then
@@ -78,6 +74,11 @@ local function Update(self, _, unit)
 
 	if not unit then
 		unit = self.unit
+	end
+
+	-- Update if Instance Difficulty is enabled and we haven't checked yet
+	if element.Instanced and not element.cachedInstanceDifficulty then
+		updateCachedInstanceDifficulty(element)
 	end
 
 	-- range fader
