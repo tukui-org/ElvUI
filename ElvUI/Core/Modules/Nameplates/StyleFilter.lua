@@ -634,7 +634,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 		c.HealthTexture = true
 
-		frame.Health:SetStatusBarTexture(tx)
+		frame.Health.barTexture:SetTexture(tx)
 
 		if HealthFlash then
 			frame.HealthFlashTexture:SetTexture(tx)
@@ -707,7 +707,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
-		frame.Health:SetStatusBarTexture(tx)
+		frame.Health.barTexture:SetTexture(tx)
 	end
 end
 
