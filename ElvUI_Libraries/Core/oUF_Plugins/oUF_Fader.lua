@@ -86,7 +86,7 @@ local function Update(self, _, unit)
 	-- check Instance Difficulties
 	if not element.Instanced then -- Clear cache if the option is not enabled
 		element.cachedInstanceDifficulty = nil
-	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
+	elseif element.Instanced and not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
 		updateCachedInstanceDifficulty(element)
 	end
 
