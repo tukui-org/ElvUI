@@ -58,7 +58,7 @@ end
 
 local function updateCachedInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
-	element.cachedShowInstanceDifficulty = element.InstanceDifficulties and element.InstanceDifficulties[difficultyID] or nil
+	element.cachedInstanceDifficulty = element.Instanced and element.Instanced[difficultyID] or nil
 end
 
 local function Update(self, _, unit)
@@ -84,9 +84,9 @@ local function Update(self, _, unit)
 	end
 
 	-- check Instance Difficulties
-	if not element.InstanceDifficulties then -- Clear cache if the option is not enabled
-		element.cachedShowInstanceDifficulty = nil
-	elseif not element.cachedShowInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
+	if not element.Instanced then -- Clear cache if the option is not enabled
+		element.cachedInstanceDifficulty = nil
+	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
 		updateCachedInstanceDifficulty(element)
 	end
 
@@ -96,7 +96,7 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	if	(element.InstanceDifficulties and element.cachedShowInstanceDifficulty) or
+	if	(element.Instanced and element.cachedInstanceDifficulty) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
@@ -266,7 +266,7 @@ local options = {
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
-	InstanceDifficulties = {
+	Instanced = {
 		enable = function(self)
 			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
 			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
