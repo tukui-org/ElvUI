@@ -58,7 +58,7 @@ end
 
 local function updateCachedInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
-	element.cachedShowInstanceDifficulty = element.InstanceDifficulties[difficultyID] or nil
+	element.cachedShowInstanceDifficulty = element.InstanceDifficulties and element.InstanceDifficulties[difficultyID] or nil
 end
 
 local function Update(self, _, unit)
