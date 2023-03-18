@@ -1,6 +1,23 @@
 -- Turkish localization file for trTR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = true
+L["Maximum number of updates for tags per second."] = true
 L["%s and then %s"] = "%s ve ardından %s"
 L["24-Hour Time"] = "24 Saatlik Zaman"
 L["2D"] = true

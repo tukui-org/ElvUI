@@ -67,6 +67,7 @@ P.general = {
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
+	tagUpdateRate = 0.25,
 	decimalLength = 1,
 	altPowerBar = {
 		enable = true,

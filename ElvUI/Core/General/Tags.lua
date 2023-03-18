@@ -115,6 +115,10 @@ function E:CallTag(tag, ...)
 	end
 end
 
+function E:TagUpdateRate(second)
+	Tags:SetEventUpdateTimer(second)
+end
+
 --Expose local functions for plugins onto this table
 E.TagFunctions = {}
 

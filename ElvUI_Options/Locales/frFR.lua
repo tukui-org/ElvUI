@@ -1,6 +1,23 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = true
+L["Maximum number of updates for tags per second."] = true
 L["%s and then %s"] = "%s et alors %s"
 L["24-Hour Time"] = "Mode 24 Heures"
 L["2D"] = "2D"

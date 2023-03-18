@@ -1,6 +1,23 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = true
+L["Maximum number of updates for tags per second."] = true
 L["%s and then %s"] = "%s y entonces %s"
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
@@ -1715,7 +1732,6 @@ L["Top Left"] = "Top Izquierda"
 L["Top Panel"] = true
 L["Top Right"] = "Top Derecho"
 L["Top to Bottom"] = "De Arriba hacia Abajo"
-L["Top"] = true
 L["Torghast Level Picker"] = true
 L["TOTEM_AIR"] = "Tótem de Aire"
 L["TOTEM_EARTH"] = "Tótem de Tierra"

@@ -1,6 +1,23 @@
 -- Italian localization file for itIT.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'itIT')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = true
+L["Maximum number of updates for tags per second."] = true
 L["%s and then %s"] = true
 L["24-Hour Time"] = true
 L["2D"] = true
@@ -215,7 +232,6 @@ L["Bottom Left"] = true
 L["Bottom Panel"] = true
 L["Bottom Right"] = true
 L["Bottom to Top"] = true
-L["Bottom"] = true
 L["BUFFOPTIONS_LABEL"] = "Buff E Debuff"
 L["Buffs on Debuffs"] = true
 L["Button Flash"] = true
@@ -968,7 +984,6 @@ L["Left Panel Width"] = true
 L["Left Position"] = true
 L["Left Shift"] = true
 L["Left to Right"] = true
-L["Left"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = true
 L["LFG Queue"] = true
@@ -1396,7 +1411,6 @@ L["Right Panel Width"] = true
 L["Right Position"] = true
 L["Right Shift"] = true
 L["Right to Left"] = true
-L["Right"] = true
 L["Role Icon"] = true
 L["Role Order"] = true
 L["ROLE"] = "Role"
@@ -1715,7 +1729,6 @@ L["Top Left"] = true
 L["Top Panel"] = true
 L["Top Right"] = true
 L["Top to Bottom"] = true
-L["Top"] = true
 L["Torghast Level Picker"] = true
 L["TOTEM_AIR"] = "Totem dell'Aria"
 L["TOTEM_EARTH"] = "Totem della Terra"
