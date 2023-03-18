@@ -67,6 +67,8 @@ function S:SettingsPanel()
 	SettingsPanel.CategoryList:CreateBackdrop('Transparent')
 	SettingsPanel.CategoryList.backdrop:SetInside()
 
+	S:HandleTrimScrollBar(SettingsPanel.CategoryList.ScrollBar, true)
+
 	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
