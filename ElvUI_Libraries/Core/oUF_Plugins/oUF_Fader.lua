@@ -72,13 +72,14 @@ local function Update(self, _, unit)
 		return
 	end
 
-	if not unit then
-		unit = self.unit
-	end
-
 	-- Update if Instance Difficulty is enabled and we haven't checked yet
 	if element.Instanced and not element.cachedInstanceDifficulty then
 		updateCachedInstanceDifficulty(element)
+	end
+
+	-- try to get the unit from the parent
+	if not unit then
+		unit = self.unit
 	end
 
 	-- range fader
