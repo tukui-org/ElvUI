@@ -146,6 +146,9 @@ function S:Blizzard_Professions()
 		S:HandleTab(tab)
 	end
 
+	ProfessionsFrame.TabSystem:ClearAllPoints()
+	ProfessionsFrame.TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
+
 	for _, name in pairs({'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot', 'FishingGear0Slot', 'FishingGear1Slot'}) do
 		local button = CraftingPage[name]
 		if button then
