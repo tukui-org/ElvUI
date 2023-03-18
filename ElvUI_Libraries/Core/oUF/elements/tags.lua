@@ -574,10 +574,6 @@ elseif oUF.isWrath then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 end
 
-for tag, events in pairs(tagEvents) do -- ElvUI: UNIT_HEALTH is bugged on TBC, use same method to convert as E.AddTag
-	tagEvents[tag] = (oUF.isRetail and gsub(events, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(events, 'UNIT_HEALTH([^%s_]?)', 'UNIT_HEALTH_FREQUENT%1')
-end
-
 local stringsToUpdate = {}
 local eventFontStrings = {}
 local eventFrame = CreateFrame('Frame')
