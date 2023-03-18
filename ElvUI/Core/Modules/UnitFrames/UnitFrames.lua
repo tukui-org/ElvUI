@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local type, unpack, assert, tostring = type, unpack, assert, tostring
+local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
@@ -522,53 +522,58 @@ function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
 
-function UF:Configure_Fader(frame)
-	local db = frame.db and frame.db.enable and frame.db.fader
-	if db and db.enable then
-		if not frame:IsElementEnabled('Fader') then
-			frame:EnableElement('Fader')
+do
+	local instanceDifficultly = {}
+	local function addInstanceDifficultly(...)
+		for i = 1, select('#', ...) do
+			local val = select(i, ...)
+			instanceDifficultly[val] = true
 		end
+	end
 
-		local fader = frame.Fader
-		fader:SetOption('Hover', db.hover)
-		fader:SetOption('Combat', db.combat)
-		fader:SetOption('PlayerTarget', db.playertarget)
-		fader:SetOption('Focus', db.focus)
-		fader:SetOption('Health', db.health)
-		fader:SetOption('Power', db.power)
-		fader:SetOption('Vehicle', db.vehicle)
-		fader:SetOption('Casting', db.casting)
-		fader:SetOption('MinAlpha', db.minAlpha)
-		fader:SetOption('MaxAlpha', db.maxAlpha)
+	function UF:Configure_Fader(frame)
+		local db = frame.db and frame.db.enable and frame.db.fader
+		if db and db.enable then
+			if not frame:IsElementEnabled('Fader') then
+				frame:EnableElement('Fader')
+			end
 
-		if frame ~= _G.ElvUF_Player then
-			fader:SetOption('Range', db.range)
-			fader:SetOption('UnitTarget', db.unittarget)
+			local fader = frame.Fader
+			fader:SetOption('Hover', db.hover)
+			fader:SetOption('Combat', db.combat)
+			fader:SetOption('PlayerTarget', db.playertarget)
+			fader:SetOption('Focus', db.focus)
+			fader:SetOption('Health', db.health)
+			fader:SetOption('Power', db.power)
+			fader:SetOption('Vehicle', db.vehicle)
+			fader:SetOption('Casting', db.casting)
+			fader:SetOption('MinAlpha', db.minAlpha)
+			fader:SetOption('MaxAlpha', db.maxAlpha)
+
+			if frame ~= _G.ElvUF_Player then
+				fader:SetOption('Range', db.range)
+				fader:SetOption('UnitTarget', db.unittarget)
+			end
+
+			fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
+			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
+
+			wipe(instanceDifficultly)
+			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1) end
+			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2) end
+			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23) end
+			if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficultly(8) end
+			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14) end
+			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15) end
+			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
+			fader:SetOption('InstanceDifficulties', next(instanceDifficultly) and true or nil)
+
+			fader:ClearTimers()
+			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
+		elseif frame:IsElementEnabled('Fader') then
+			frame:DisableElement('Fader')
+			E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 		end
-
-		fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
-		fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
-
-		local instanceDifficulties = {}
-		local addInstanceDifficulties = function(...)
-			for i = 1, select("#", ...) do instanceDifficulties[select(i, ...)] = true end
-		end
-
-		if db.instanceDifficulties.dungeonNormal then addInstanceDifficulties(1) end
-		if db.instanceDifficulties.dungeonHeroic then addInstanceDifficulties(2) end
-		if db.instanceDifficulties.dungeonMythic then addInstanceDifficulties(23) end
-		if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficulties(8, 192) end
-		if db.instanceDifficulties.raidNormal then addInstanceDifficulties(3, 4, 14, 175, 176) end
-		if db.instanceDifficulties.raidHeroic then addInstanceDifficulties(5, 6, 15, 193, 194) end
-		if db.instanceDifficulties.raidMythic then addInstanceDifficulties(16) end
-
-		fader:SetOption("InstanceDifficulties", (next(instanceDifficulties) ~= nil and instanceDifficulties) or nil)
-
-		fader:ClearTimers()
-		fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
-	elseif frame:IsElementEnabled('Fader') then
-		frame:DisableElement('Fader')
-		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 	end
 end
 

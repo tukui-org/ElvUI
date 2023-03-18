@@ -9,8 +9,10 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 local _G = _G
 local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
+
 local CreateFrame = CreateFrame
 local GetMouseFocus = GetMouseFocus
+local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
@@ -55,8 +57,8 @@ local function ToggleAlpha(self, element, endAlpha)
 end
 
 local function updateCachedInstanceDifficulty(element)
-	local instanceDifficulty = select(3, GetInstanceInfo())
-	element.cachedShowInstanceDifficulty = (element.InstanceDifficulties and element.InstanceDifficulties[instanceDifficulty]) or false
+	local _, _, difficultyID = GetInstanceInfo()
+	element.cachedShowInstanceDifficulty = element.InstanceDifficulties[difficultyID] or nil
 end
 
 local function Update(self, _, unit)
@@ -73,10 +75,19 @@ local function Update(self, _, unit)
 		if element.UpdateRange then
 			element.UpdateRange(self, unit)
 		end
+
 		if element.RangeAlpha then
 			ToggleAlpha(self, element, element.RangeAlpha)
 		end
+
 		return
+	end
+
+	-- check Instance Difficulties
+	if not element.InstanceDifficulties then -- Clear cache if the option is not enabled
+		element.cachedShowInstanceDifficulty = nil
+	elseif not element.cachedShowInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
+		updateCachedInstanceDifficulty(element)
 	end
 
 	-- normal fader
@@ -85,16 +96,7 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	-- Instance difficulties
-	if not element.InstanceDifficulties then
-		-- Clear cache if the option is not enabled
-		element.cachedShowInstanceDifficulty = nil
-	elseif element.cachedShowInstanceDifficulty == nil then
-		-- Update if option is enabled and we haven't checked yet
-		updateCachedInstanceDifficulty(element)
-	end
-
-	if
+	if	(element.InstanceDifficulties and element.cachedShowInstanceDifficulty) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
@@ -103,21 +105,18 @@ local function Update(self, _, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI(unit)) or
-		(element.Hover and GetMouseFocus() == (self.__faderobject or self)) or
-		(element.InstanceDifficulties and element.cachedShowInstanceDifficulty)
+		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
-	else
-		if element.Delay then
-			if element.DelayAlpha then
-				ToggleAlpha(self, element, element.DelayAlpha)
-			end
-
-			element:ClearTimers()
-			element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
-		else
-			ToggleAlpha(self, element, element.MinAlpha)
+	elseif element.Delay then
+		if element.DelayAlpha then
+			ToggleAlpha(self, element, element.DelayAlpha)
 		end
+
+		element:ClearTimers()
+		element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
+	else
+		ToggleAlpha(self, element, element.MinAlpha)
 	end
 end
 
@@ -139,7 +138,7 @@ local function onRangeUpdate(frame, elapsed)
 	end
 end
 
-local function onInstanceDifficultyUpdate(self)
+local function onInstanceDifficulty(self)
 	local element = self.Fader
 	updateCachedInstanceDifficulty(element)
 	element:ForceUpdate()
@@ -269,12 +268,12 @@ local options = {
 	},
 	InstanceDifficulties = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficultyUpdate, true)
-			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficultyUpdate, true)
-			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficultyUpdate, true)
-			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficultyUpdate, true)
+			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficulty, true)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty, true)
 		end,
-		events = {'PLAYER_DIFFICULTY_CHANGED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}
+		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
 	},
 	MinAlpha = {
 		countIgnored = true,
@@ -333,6 +332,11 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
+			if type(state) == 'table' then
+				state.__faderelement = element
+				element.__owner.__faderobject = state
+			end
+
 			if options[option].enable then
 				options[option].enable(element.__owner, state)
 			end
