@@ -549,6 +549,21 @@ function UF:Configure_Fader(frame)
 		fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
 		fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
 
+		local instanceDifficulties = {}
+		local addInstanceDifficulties = function(...)
+			for i = 1, select("#", ...) do instanceDifficulties[select(i, ...)] = true end
+		end
+
+		if db.instanceDifficulties.dungeonNormal then addInstanceDifficulties(1) end
+		if db.instanceDifficulties.dungeonHeroic then addInstanceDifficulties(2) end
+		if db.instanceDifficulties.dungeonMythic then addInstanceDifficulties(23) end
+		if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficulties(8, 192) end
+		if db.instanceDifficulties.raidNormal then addInstanceDifficulties(3, 4, 14, 175, 176) end
+		if db.instanceDifficulties.raidHeroic then addInstanceDifficulties(5, 6, 15, 193, 194) end
+		if db.instanceDifficulties.raidMythic then addInstanceDifficulties(16) end
+
+		fader:SetOption("InstanceDifficulties", (next(instanceDifficulties) ~= nil and instanceDifficulties) or nil)
+
 		fader:ClearTimers()
 		fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
 	elseif frame:IsElementEnabled('Fader') then

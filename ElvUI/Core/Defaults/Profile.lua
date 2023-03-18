@@ -1366,6 +1366,16 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+
+	instanceDifficulties = {
+		dungeonNormal = false,
+		dungeonHeroic = false,
+		dungeonMythic = false,
+		dungeonMythicKeystone = false,
+		raidNormal = false,
+		raidHeroic = false,
+		raidMythic = false,
+	},
 }
 
 local UF_Name = {
@@ -2064,6 +2074,13 @@ P.unitframe.units.player.fader.playertarget = true
 P.unitframe.units.player.fader.power = true
 P.unitframe.units.player.fader.range = nil
 P.unitframe.units.player.fader.vehicle = true
+P.unitframe.units.player.fader.instanceDifficulties.dungeonNormal = false
+P.unitframe.units.player.fader.instanceDifficulties.dungeonHeroic = false
+P.unitframe.units.player.fader.instanceDifficulties.dungeonMythic = false
+P.unitframe.units.player.fader.instanceDifficulties.dungeonMythicKeystone = false
+P.unitframe.units.player.fader.instanceDifficulties.raidNormal = false
+P.unitframe.units.player.fader.instanceDifficulties.raidHeroic = false
+P.unitframe.units.player.fader.instanceDifficulties.raidMythic = false
 P.unitframe.units.player.healPrediction.enable = true
 P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent:shortvalue]'
