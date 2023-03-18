@@ -17,7 +17,7 @@ L["RIGHT"] = true
 L["TOP"] = true
 
 L["Tag Update Rate"] = true
-L["Maximum number of updates for tags per second."] = true
+L["Maximum tick rate allowed for tag updates per second."] = true
 L["%s and then %s"] = "%s ve ardından %s"
 L["24-Hour Time"] = "24 Saatlik Zaman"
 L["2D"] = true

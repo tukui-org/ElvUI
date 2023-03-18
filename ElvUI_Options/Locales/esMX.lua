@@ -17,7 +17,7 @@ L["RIGHT"] = true
 L["TOP"] = true
 
 L["Tag Update Rate"] = "Tasa de actualización de Tags."
-L["Maximum number of updates for tags per second."] = "Número máximo de actualizaciones de Tags por segundo."
+L["Maximum tick rate allowed for tag updates per second."] = "Tasa máxima de tick permitida para actualizaciones de Tags por segundo."
 L["%s and then %s"] = "%s y entonces %s"
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
