@@ -63,12 +63,22 @@ end
 
 local function Update(self, _, unit)
 	local element = self.Fader
+
+	-- check Instance Difficulties
+	if not element.Instanced then -- Clear cache if the option is not enabled
+		element.cachedInstanceDifficulty = nil
+	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
+		updateCachedInstanceDifficulty(element)
+	end
+
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
 		return
 	end
 
-	unit = unit or self.unit
+	if not unit then
+		unit = self.unit
+	end
 
 	-- range fader
 	if element.Range then
@@ -81,13 +91,6 @@ local function Update(self, _, unit)
 		end
 
 		return
-	end
-
-	-- check Instance Difficulties
-	if not element.Instanced then -- Clear cache if the option is not enabled
-		element.cachedInstanceDifficulty = nil
-	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
-		updateCachedInstanceDifficulty(element)
 	end
 
 	-- normal fader
@@ -332,7 +335,7 @@ local function SetOption(element, opt, state)
 		element[opt] = state
 
 		if state then
-			if type(state) == 'table' then
+			if type(state) == 'table' and opt ~= 'Instanced' then
 				state.__faderelement = element
 				element.__owner.__faderobject = state
 			end
