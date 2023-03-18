@@ -9,8 +9,10 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 local _G = _G
 local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
+
 local CreateFrame = CreateFrame
 local GetMouseFocus = GetMouseFocus
+local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
@@ -54,6 +56,11 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
+local function updateCachedInstanceDifficulty(element)
+	local _, _, difficultyID = GetInstanceInfo()
+	element.cachedInstanceDifficulty = element.Instanced and element.Instanced[difficultyID] or nil
+end
+
 local function Update(self, _, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
@@ -68,10 +75,19 @@ local function Update(self, _, unit)
 		if element.UpdateRange then
 			element.UpdateRange(self, unit)
 		end
+
 		if element.RangeAlpha then
 			ToggleAlpha(self, element, element.RangeAlpha)
 		end
+
 		return
+	end
+
+	-- check Instance Difficulties
+	if not element.Instanced then -- Clear cache if the option is not enabled
+		element.cachedInstanceDifficulty = nil
+	elseif not element.cachedInstanceDifficulty then -- Update if option is enabled and we haven't checked yet
+		updateCachedInstanceDifficulty(element)
 	end
 
 	-- normal fader
@@ -80,7 +96,7 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	if
+	if	(element.Instanced and element.cachedInstanceDifficulty) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
@@ -92,17 +108,15 @@ local function Update(self, _, unit)
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
-	else
-		if element.Delay then
-			if element.DelayAlpha then
-				ToggleAlpha(self, element, element.DelayAlpha)
-			end
-
-			element:ClearTimers()
-			element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
-		else
-			ToggleAlpha(self, element, element.MinAlpha)
+	elseif element.Delay then
+		if element.DelayAlpha then
+			ToggleAlpha(self, element, element.DelayAlpha)
 		end
+
+		element:ClearTimers()
+		element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
+	else
+		ToggleAlpha(self, element, element.MinAlpha)
 	end
 end
 
@@ -122,6 +136,12 @@ local function onRangeUpdate(frame, elapsed)
 
 		frame.timer = 0
 	end
+end
+
+local function onInstanceDifficulty(self)
+	local element = self.Fader
+	updateCachedInstanceDifficulty(element)
+	element:ForceUpdate()
 end
 
 local function HoverScript(self)
@@ -245,6 +265,15 @@ local options = {
 			end
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
+	},
+	Instanced = {
+		enable = function(self)
+			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficulty, true)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty, true)
+		end,
+		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
 	},
 	MinAlpha = {
 		countIgnored = true,

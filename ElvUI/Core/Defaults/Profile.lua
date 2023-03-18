@@ -1366,6 +1366,15 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+	instanceDifficulties = {
+		dungeonNormal = false,
+		dungeonHeroic = false,
+		dungeonMythic = false,
+		dungeonMythicKeystone = false,
+		raidNormal = false,
+		raidHeroic = false,
+		raidMythic = false,
+	}
 }
 
 local UF_Name = {
