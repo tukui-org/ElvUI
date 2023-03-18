@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
+local wipe, type, select, unpack, assert, tostring = wipe, type, select, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
