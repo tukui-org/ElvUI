@@ -56,25 +56,21 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
-local function updateCachedInstanceDifficulty(element)
+local function updateInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
-	element.cachedInstanceDifficulty = element.Instanced and element.Instanced[difficultyID] or nil
+	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
 end
 
 local function Update(self, _, unit)
 	local element = self.Fader
-	if element and not element.Instanced then
-		element.cachedInstanceDifficulty = nil -- Clear cache if the option is not enabled
-	end
-
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
 		return
 	end
 
-	-- Update if Instance Difficulty is enabled and we haven't checked yet
-	if element.Instanced and not element.cachedInstanceDifficulty then
-		updateCachedInstanceDifficulty(element)
+	-- Instance Difficulty is enabled and we haven't checked yet
+	if element.InstanceDifficulty and not element.InstancedCached then
+		updateInstanceDifficulty(element)
 	end
 
 	-- try to get the unit from the parent
@@ -101,7 +97,7 @@ local function Update(self, _, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	if	(element.Instanced and element.cachedInstanceDifficulty) or
+	if	(element.InstanceDifficulty and element.InstancedCached) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
@@ -145,7 +141,7 @@ end
 
 local function onInstanceDifficulty(self)
 	local element = self.Fader
-	updateCachedInstanceDifficulty(element)
+	updateInstanceDifficulty(element)
 	element:ForceUpdate()
 end
 
@@ -271,7 +267,7 @@ local options = {
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
-	Instanced = {
+	InstanceDifficulty = {
 		enable = function(self)
 			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
 			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
@@ -333,11 +329,15 @@ local function SetOption(element, opt, state)
 	local option = ((opt == 'UnitTarget' or opt == 'PlayerTarget') and 'Target') or opt
 	local oldState = element[opt]
 
+	if opt == 'InstanceDifficulty' then
+		element.InstancedCached = nil -- clear the cached value
+	end
+
 	if option and options[option] and (oldState ~= state) then
 		element[opt] = state
 
 		if state then
-			if type(state) == 'table' and opt ~= 'Instanced' then
+			if type(state) == 'table' and opt ~= 'InstanceDifficulty' then
 				state.__faderelement = element
 				element.__owner.__faderobject = state
 			end

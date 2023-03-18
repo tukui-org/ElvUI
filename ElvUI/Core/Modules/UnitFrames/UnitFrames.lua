@@ -566,7 +566,7 @@ do
 			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14) end
 			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15) end
 			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
-			fader:SetOption('Instanced', next(instanceDifficultly) and instanceDifficultly or nil)
+			fader:SetOption('InstanceDifficulty', next(instanceDifficultly) and instanceDifficultly or nil)
 
 			fader:ClearTimers()
 			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
