@@ -687,6 +687,38 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Brackenhide Hollow
+		[385361] = List(), -- Rotting Sickness
+		[378020] = List(), -- Gash Frenzy
+		[385356] = List(), -- Ensnaring Trap
+		[373917] = List(), -- Decaystrike 1
+		[377864] = List(), -- Infectious Spit
+		[376933] = List(), -- Grasping Vines
+		[384425] = List(), -- Smell Like Meat
+		[373912] = List(), -- Decaystrike 2
+		[373896] = List(), -- Withering Rot
+		[377844] = List(), -- Bladestorm 1
+		[378229] = List(), -- Marked for Butchery
+		[381835] = List(), -- Bladestorm 2
+		[376149] = List(), -- Choking Rotcloud
+		[384725] = List(), -- Feeding Frenzy
+		[385303] = List(), -- Teeth Trap
+		[368299] = List(), -- Toxic Trap
+		[384970] = List(), -- Scented Meat 1
+		[384974] = List(), -- Scented Meat 2
+		[368091] = List(), -- Infected Bite
+		[385185] = List(), -- Disoriented
+		[387210] = List(), -- Decaying Strength
+		[382808] = List(), -- Withering Contagion 1
+		[383087] = List(), -- Withering Contagion 2
+		[382723] = List(), -- Crushing Smash
+		[382787] = List(), -- Decay Claws
+		[385058] = List(), -- Withering Poison
+		[383399] = List(), -- Rotting Surge
+		[367484] = List(), -- Vicious Clawmangle
+		[367521] = List(), -- Bone Bolt
+		[368081] = List(), -- Withering
+		[374245] = List(), -- Rotting Creek
+		[367481] = List(), -- Bloody Bite
 	-- Halls of Infusion
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
@@ -898,6 +930,27 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Brackenhide Hollow
+		[384764] = List(), -- Feeding Frenzy
+		[376933] = List(), -- Grasping Vines
+		[374186] = List(), -- Decaying Strength
+		[390968] = List(), -- Starving Frenzy
+		[378029] = List(), -- Gash Frenzy
+		[388046] = List(), -- Violent Whirlwind
+		[377965] = List(), -- Bloodfrenzy
+		[389788] = List(), -- Prey on the Weak
+		[387890] = List(), -- Huntleader's Tactics 1
+		[387889] = List(), -- Huntleader's Tactics 2
+		[382444] = List(), -- Rotchant
+		[376231] = List(), -- Decay Spray
+		[383385] = List(), -- Rotting Surge
+		[367484] = List(), -- Vicious Clawmangle
+		[384930] = List(), -- Stealth
+		[375259] = List(), -- Essence of Decay
+		[389808] = List(), -- Predatory Instincts
+		[383161] = List(), -- Decay Infusion
+		[376800] = List(), -- Focus Earth
+		[367510] = List(), -- Pack Tactics 1
+		[367511] = List(), -- Pack Tactics 2
 	-- Halls of Infusion
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
