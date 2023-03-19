@@ -1152,6 +1152,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
+		[256060] = List(), -- Revitalizing Brew
+		[256405] = List(), -- Shark Tornado
+		[257899] = List(), -- Painful Motivation
+		[257314] = List(), -- Black Powder Bomb
+		[257870] = List(), -- Blade Barrage
+		[257736] = List(), -- Thundering Squall
+		[274860] = List(), -- Shattering Toss
+		[257741] = List(), -- Blind Rage
+		[256589] = List(), -- Barrel Smash
+		[257476] = List(), -- Bestial Wrath
+		[257757] = List(), -- Goin' Bananas
 	-- Neltharion's Lair
 		[183526] = List(), -- War Drums(Drogbar)
 		[202198] = List(), -- Kill Command
