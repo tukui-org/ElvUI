@@ -988,6 +988,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[384351] = List(), -- Spark Volley
 		[386559] = List(), -- Glacial Surge
 		[384014] = List(), -- Static Surge
+		[395694] = List(), -- Elemental Focus
+		[377402] = List(), -- Aqueous Barrier
+		[375351] = List(), -- Oceanic Breath
+		[387618] = List(), -- Infuse
+		[374823] = List(), -- Zephyr's Call
+		[393432] = List(), -- Spear Flurry
+		[377384] = List(), -- Boiling Rage
+		[374617] = List(), -- Rising Squall
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
