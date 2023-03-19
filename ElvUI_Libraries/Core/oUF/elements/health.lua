@@ -308,13 +308,8 @@ local function Enable(self)
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
 
+		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
-
-		if oUF.isRetail then
-			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
-		else
-			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-		end
 
 		if(element.colorDisconnected) then
 			oUF:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
@@ -349,12 +344,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if oUF.isRetail then
-			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-		end
-
+		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
 		oUF:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)
