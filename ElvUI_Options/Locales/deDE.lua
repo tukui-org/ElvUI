@@ -1,6 +1,23 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = true
+L["Maximum tick rate allowed for tag updates per second."] = true
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden Format"
 L["2D"] = "2D"
@@ -215,7 +232,6 @@ L["Bottom Left"] = true --No need to translate
 L["Bottom Panel"] = "Untere Leiste"
 L["Bottom Right"] = true --No need to translate
 L["Bottom to Top"] = "Von unten nach oben"
-L["Bottom"] = true --No need to translate
 L["BUFFOPTIONS_LABEL"] = "Stärkungs-/Schwächungszauber"
 L["Buffs on Debuffs"] = true
 L["Button Flash"] = "Tastenblinken"
@@ -1717,7 +1733,6 @@ L["Top Left"] = true --No need to translate
 L["Top Panel"] = "Obere Leiste"
 L["Top Right"] = true --No need to translate
 L["Top to Bottom"] = "Von oben nach unten"
-L["Top"] = true --No need to translate
 L["Torghast Level Picker"] = true
 L["TOTEM_AIR"] = "Lufttotem"
 L["TOTEM_EARTH"] = "Erdtotem"

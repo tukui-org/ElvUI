@@ -634,7 +634,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 		c.HealthTexture = true
 
-		frame.Health:SetStatusBarTexture(tx)
+		frame.Health.barTexture:SetTexture(tx)
 
 		if HealthFlash then
 			frame.HealthFlashTexture:SetTexture(tx)
@@ -707,7 +707,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
-		frame.Health:SetStatusBarTexture(tx)
+		frame.Health.barTexture:SetTexture(tx)
 	end
 end
 
@@ -1314,6 +1314,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_MAXHEALTH = false,
 	UNIT_NAME_UPDATE = false,
 	UNIT_PET = false,
+	UNIT_HEALTH = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
 	GROUP_ROSTER_UPDATE = true,
@@ -1337,12 +1338,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_THREAT_SITUATION_UPDATE = false,
 	VEHICLE_UPDATE = true
 }
-
-if E.Retail then
-	mod.StyleFilterDefaultEvents.UNIT_HEALTH = false
-else
-	mod.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
-end
 
 mod.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_START = 1,			-- start
@@ -1422,12 +1417,7 @@ function mod:StyleFilterConfigure()
 
 				if t.healthThreshold then
 					events.UNIT_MAXHEALTH = 1
-
-					if E.Retail then
-						events.UNIT_HEALTH = 1
-					else
-						events.UNIT_HEALTH_FREQUENT = 1
-					end
+					events.UNIT_HEALTH = 1
 				end
 
 				if t.powerThreshold then

@@ -1,6 +1,23 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = "Taxa de actualização da Tags."
+L["Maximum tick rate allowed for tag updates per second."] = "Taxa máxima de tick permitida para atualizações de Tags por segundo."
 L["%s and then %s"] = "%s e depois %s"
 L["24-Hour Time"] = "24 horas"
 L["2D"] = "2D"
