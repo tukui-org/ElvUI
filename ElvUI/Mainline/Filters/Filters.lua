@@ -887,6 +887,19 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[258875] = List(), -- Blackout Barrel
 		[256363] = List(), -- Ripper Punch
 	-- Neltharion's Lair
+		[199705] = List(), -- Devouring
+		[199178] = List(), -- Spiked Tongue
+		[210166] = List(), -- Toxic Retch 1
+		[217851] = List(), -- Toxic Retch 2
+		[193941] = List(), -- Impaling Shard
+		[183465] = List(), -- Viscid Bile
+		[226296] = List(), -- Piercing Shards
+		[226388] = List(), -- Rancid Ooze
+		[200154] = List(), -- Burning Hatred
+		[183407] = List(), -- Acid Splatter
+		[215898] = List(), -- Crystalline Ground
+		[188494] = List(), -- Rancid Maw
+		[192800] = List(), -- Choking Dust
 	-- Underrot
 		[265468] = List(), -- Withering Curse
 		[278961] = List(), -- Decaying Mind
@@ -1140,6 +1153,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	-- Freehold
 	-- Neltharion's Lair
+		[183526] = List(), -- War Drums(Drogbar)
+		[202198] = List(), -- Kill Command
+		[198719] = List(), -- Falling Debris 1
+		[193267] = List(), -- Falling Debris 2
+		[199775] = List(), -- Frenzy
+		[188587] = List(), -- Charskin
+		[187714] = List(), -- Brittle
+		[199246] = List(), -- Ravenous
+		[199178] = List(), -- Spiked Tongue
+		[202075] = List(), -- Scorch
+		[193803] = List(), -- Metamorphosis
+		[201983] = List(), -- Frenzy(Drogbar)
+		[183433] = List(), -- Submerge
 	-- Underrot
 		[265091] = List(), -- Gift of G'huun
 		[259830] = List(), -- Boundless Rot
