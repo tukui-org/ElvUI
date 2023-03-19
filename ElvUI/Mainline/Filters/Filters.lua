@@ -746,6 +746,30 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[391634] = List(), -- Deep Chill
 		[393444] = List(), -- Gushing Wound
 	-- Neltharus
+		[374534] = List(), -- Heated Swings
+		[373735] = List(), -- Dragon Strike
+		[377018] = List(), -- Molten Gold
+		[374842] = List(), -- Blazing Aegis 1
+		[392666] = List(), -- Blazing Aegis 2
+		[375890] = List(), -- Magma Eruption
+		[396332] = List(), -- Fiery Focus
+		[389059] = List(), -- Slag Eruption
+		[376784] = List(), -- Flame Vulnerability
+		[377542] = List(), -- Burning Ground
+		[374451] = List(), -- Burning Chain
+		[372461] = List(), -- Imbued Magma
+		[378818] = List(), -- Magma Conflagration
+		[377522] = List(), -- Burning Pursuit
+		[375204] = List(), -- Liquid Hot Magma
+		[374482] = List(), -- Grounding Chain
+		[372971] = List(), -- Reverberating Slam
+		[384161] = List(), -- Mote of Combustion
+		[374854] = List(), -- Erupted Ground
+		[373089] = List(), -- Scorching Fusillade
+		[372224] = List(), -- Dragonbone Axe
+		[372570] = List(), -- Bold Ambush
+		[372459] = List(), -- Burning
+		[372208] = List(), -- Djaradin Lava
 	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
 		[392406] = List(), -- Thunderclap
@@ -973,9 +997,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[375259] = List(), -- Essence of Decay
 		[389808] = List(), -- Predatory Instincts
 		[383161] = List(), -- Decay Infusion
-		[376800] = List(), -- Focus Earth
-		[367510] = List(), -- Pack Tactics 1
-		[367511] = List(), -- Pack Tactics 2
 	-- Halls of Infusion
 		[387585] = List(), -- Submerge
 		[389872] = List(), -- Undertow
@@ -997,6 +1018,26 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[377384] = List(), -- Boiling Rage
 		[374617] = List(), -- Rising Squall
 	-- Neltharus
+		[371992] = List(), -- Burning Chain 1
+		[374451] = List(), -- Burning Chain 2
+		[372824] = List(), -- Burning Chain 3
+		[384663] = List(), -- Forgewrought Fury
+		[383651] = List(), -- Molten Army
+		[382791] = List(), -- Molten Barrier
+		[381663] = List(), -- Candescent Tempest
+		[375957] = List(), -- Forgestorm 1
+		[375958] = List(), -- Forgestorm 2
+		[375209] = List(), -- Forgestorm 3
+		[375055] = List(), -- Fiery Focus
+		[375780] = List(), -- Magma Shield
+		[391765] = List(), -- Magma Shell
+		[372472] = List(), -- Imbued Magma
+		[374410] = List(), -- Magma Tentacle
+		[374482] = List(), -- Grounding Chain
+		[371875] = List(), -- Fired Up
+		[372202] = List(), -- Scorching Breath
+		[378149] = List(), -- Granite Shell
+		[372311] = List(), -- Magma Fist
 	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
 		[372743] = List(), -- Ice Shield
