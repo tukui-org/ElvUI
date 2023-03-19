@@ -816,6 +816,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Zaqali Invasion
 	-- Rashok
 	-- Zskarn
+		[404955] = List(), -- Shrapnel Bomb
+		[404010] = List(), -- Unstable Embers
+		[404942] = List(), -- Searing Claws
+		[403978] = List(), -- Blast Wave
+		[405592] = List(), -- Salvage Parts
+		[405462] = List(), -- Dragonfire Traps
 	-- Magmorax
 	-- Echo of Neltharion
 	-- Scalecommander Sarkareth
@@ -970,6 +976,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Zaqali Invasion
 	-- Rashok
 	-- Zskarn
+		[404939] = List(), -- Searing Claws
 	-- Magmorax
 	-- Echo of Neltharion
 	-- Scalecommander Sarkareth
