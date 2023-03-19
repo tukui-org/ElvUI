@@ -1013,6 +1013,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Freehold
 	-- Neltharion's Lair
 	-- Underrot
+		[265091] = List(), -- Gift of G'huun
+		[259830] = List(), -- Boundless Rot
+		[265081] = List(), -- Warcry
+		[269185] = List(), -- Blood Barrier
+		[266201] = List(), -- Bone Shield
+		[266209] = List(), -- Wicked Frenzy
 	-- Vortex Pinnacle
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
