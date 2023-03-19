@@ -815,6 +815,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
 	-- Rashok
+		[407547] = List(), -- Flaming Upsurge
+		[407597] = List(), -- Earthen Crush
+		[405819] = List(), -- Searing Slam
+		[408857] = List(), -- Doom Flame
 	-- Zskarn
 		[404955] = List(), -- Shrapnel Bomb
 		[404010] = List(), -- Unstable Embers
@@ -975,6 +979,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Experimentation of Dracthyr
 	-- Zaqali Invasion
 	-- Rashok
+		[401419] = List(), -- Siphon Energy
+		[405091] = List(), -- Unyielding Rage
+		[407706] = List(), -- Molten Wrath
+		[403536] = List(), -- Lava Infusion
 	-- Zskarn
 		[404939] = List(), -- Searing Claws
 	-- Magmorax
