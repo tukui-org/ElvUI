@@ -720,6 +720,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[374245] = List(), -- Rotting Creek
 		[367481] = List(), -- Bloody Bite
 	-- Halls of Infusion
+		[387571] = List(), -- Focused Deluge
+		[383935] = List(), -- Spark Volley
+		[385555] = List(), -- Gulp
+		[384524] = List(), -- Titanic Fist
+		[385963] = List(), -- Frost Shock
+		[374389] = List(), -- Gulp Swog Toxin
+		[386743] = List(), -- Polar Winds
+		[389179] = List(), -- Power Overload
+		[389181] = List(), -- Power Field
+		[257274] = List(), -- Vile Coating
+		[375384] = List(), -- Rumbling Earth
+		[374563] = List(), -- Dazzle
+		[389446] = List(), -- Nullifying Pulse
+		[374615] = List(), -- Cheap Shot
+		[391610] = List(), -- Blinding Winds
+		[374724] = List(), -- Molten Subduction
+		[385168] = List(), -- Thunderstorm
+		[387359] = List(), -- Waterlogged
+		[391613] = List(), -- Creeping Mold
+		[374706] = List(), -- Pyretic Burst
+		[389443] = List(), -- Purifying Blast
+		[374339] = List(), -- Demoralizing Shout
+		[374020] = List(), -- Containment Beam
+		[391634] = List(), -- Deep Chill
+		[393444] = List(), -- Gushing Wound
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
@@ -952,6 +977,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[367510] = List(), -- Pack Tactics 1
 		[367511] = List(), -- Pack Tactics 2
 	-- Halls of Infusion
+		[387585] = List(), -- Submerge
+		[389872] = List(), -- Undertow
+		[389056] = List(), -- Siphon Power 1
+		[389490] = List(), -- Siphon Power 2
+		[383840] = List(), -- Ablative Barrier
+		[385743] = List(), -- Hangry
+		[385442] = List(), -- Toxic Effluvia
+		[385181] = List(), -- Overpowering Croak
+		[384351] = List(), -- Spark Volley
+		[386559] = List(), -- Glacial Surge
+		[384014] = List(), -- Static Surge
 	-- Neltharus
 	-- Uldaman: Legacy of Tyr
 	-- Ruby Life Pools
