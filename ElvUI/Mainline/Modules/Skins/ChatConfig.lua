@@ -182,7 +182,6 @@ function S:ChatConfig()
 	S:HandleButton(_G.ChatConfigFrameOkayButton)
 	S:HandleButton(_G.ChatConfigFrameDefaultButton)
 	S:HandleButton(_G.ChatConfigFrameRedockButton)
-	S:HandleButton(_G.ChatConfigFrame.ToggleChatButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton, 'up')
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton, 'down')
 
