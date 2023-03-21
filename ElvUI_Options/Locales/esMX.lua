@@ -1,6 +1,23 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["ALT"] = true
+L["CTRL"] = true
+L["SHIFT"] = true
+L["NONE"] = true
+L["GROUP"] = true
+
+L["BOTTOM"] = true
+L["BOTTOMLEFT"] = true
+L["BOTTOMRIGHT"] = true
+L["TOPLEFT"] = true
+L["TOPRIGHT"] = true
+L["LEFT"] = true
+L["RIGHT"] = true
+L["TOP"] = true
+
+L["Tag Update Rate"] = "Tasa de actualización de Tags."
+L["Maximum tick rate allowed for tag updates per second."] = "Tasa máxima de tick permitida para actualizaciones de Tags por segundo."
 L["%s and then %s"] = "%s y entonces %s"
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
@@ -1705,7 +1722,7 @@ L["Toggle Anchors"] = "Reubicar Anclas"
 L["Toggle Off While In Combat"] = true
 L["Toggle On While In Combat"] = true
 L["Toggle showing of the left and right chat panels."] = "Muestra/Oculta los paneles de chat izquierdo y derecho."
-L["Toggle the chat tab panel backdrop."] = "Muestra/oculta el fondo del panel de pestañas"
+L["Toggle the chat tab panel backdrop."] = "Muestra/Oculta el fondo del panel de pestañas"
 L["Toggle Tutorials"] = "Ver/Ocultar Tutoriales"
 L["Tooltip Body"] = true
 L["Tooltip Header"] = true
@@ -1715,7 +1732,6 @@ L["Top Left"] = "Top Izquierda"
 L["Top Panel"] = true
 L["Top Right"] = "Top Derecho"
 L["Top to Bottom"] = "De Arriba hacia Abajo"
-L["Top"] = true
 L["Torghast Level Picker"] = true
 L["TOTEM_AIR"] = "Tótem de Aire"
 L["TOTEM_EARTH"] = "Tótem de Tierra"

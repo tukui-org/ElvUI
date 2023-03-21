@@ -67,6 +67,7 @@ P.general = {
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
+	tagUpdateRate = 0.25,
 	decimalLength = 1,
 	altPowerBar = {
 		enable = true,
@@ -1365,6 +1366,15 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+	instanceDifficulties = {
+		dungeonNormal = false,
+		dungeonHeroic = false,
+		dungeonMythic = false,
+		dungeonMythicKeystone = false,
+		raidNormal = false,
+		raidHeroic = false,
+		raidMythic = false,
+	}
 }
 
 local UF_Name = {
