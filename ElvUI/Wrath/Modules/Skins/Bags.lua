@@ -13,7 +13,6 @@ local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Containe
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = GetItemInfo
-local CreateFrame = CreateFrame
 
 local BANK_CONTAINER = BANK_CONTAINER
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM

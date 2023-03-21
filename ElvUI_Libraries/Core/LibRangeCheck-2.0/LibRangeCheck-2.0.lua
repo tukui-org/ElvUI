@@ -49,10 +49,9 @@ if not lib then return end
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
--- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
-local _G = _G
+-- GLOBALS: LibStub, CreateFrame
+
 local next = next
-local sort = sort
 local type = type
 local wipe = wipe
 local print = print
@@ -62,7 +61,8 @@ local tinsert = tinsert
 local tremove = tremove
 local tostring = tostring
 local setmetatable = setmetatable
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+local floor = math.floor
+
 local GetSpellInfo = GetSpellInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
@@ -82,8 +82,11 @@ local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
-local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
+
+local C_Timer_NewTicker = C_Timer.NewTicker
+
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 -- << STATIC CONFIG
 
@@ -645,8 +648,8 @@ local function createCheckerList(spellList, itemList, interactList)
 			local name, _, _, _, minRange, range = GetSpellInfo(sid)
 			local spellIdx = findSpellIdx(name)
 			if spellIdx and range then
-				minRange = math_floor(minRange + 0.5)
-				range = math_floor(range + 0.5)
+				minRange = floor(minRange + 0.5)
+				range = floor(range + 0.5)
 
 				-- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
 
@@ -692,11 +695,15 @@ local function invalidateRangeCache(maxAge)
 	end
 end
 
+local function invalidateRangeFive()
+	invalidateRangeCache(5)
+end
+
 -- returns minRange, maxRange  or nil
 local function getRangeWithCheckerList(unit, checkerList)
 	local lo, hi = 1, #checkerList
 	while lo <= hi do
-		local mid = math_floor((lo + hi) / 2)
+		local mid = floor((lo + hi) / 2)
 		local rc = checkerList[mid]
 		if rc.checker(unit) then
 			lo = mid + 1
@@ -1251,9 +1258,7 @@ function lib:activate()
 	end
 
 	if not self.cacheResetTimer then
-		self.cacheResetTimer = C_Timer.NewTicker(5, function()
-			invalidateRangeCache(5)
-		end)
+		self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
 	end
 
 	initItemRequests()

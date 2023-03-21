@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local unpack, strfind = unpack, strfind
+local unpack = unpack
 local ipairs, pairs = ipairs, pairs
 
 local HasPetUI = HasPetUI
