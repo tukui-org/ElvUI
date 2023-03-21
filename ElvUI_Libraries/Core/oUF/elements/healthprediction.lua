@@ -256,15 +256,17 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 		element.SetUseHealComm = SetUseHealComm
 
-		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:RegisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
+			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
 			element:SetUseHealComm(true)
+
+			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
 		if (not element.maxOverflow) then
@@ -340,15 +342,17 @@ local function Disable(self)
 			element.overHealAbsorb:Hide()
 		end
 
-		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_HEAL_PREDICTION', Path)
 
 		if oUF.isRetail then
+			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 		else
 			element:SetUseHealComm(false)
+
+			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 	end
 end
