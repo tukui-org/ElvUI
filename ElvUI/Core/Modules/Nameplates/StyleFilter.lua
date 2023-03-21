@@ -1338,10 +1338,10 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	VEHICLE_UPDATE = true
 }
 
-if E.Retail then
-	mod.StyleFilterDefaultEvents.UNIT_HEALTH = false
-else
+if E.Classic then
 	mod.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
+else
+	mod.StyleFilterDefaultEvents.UNIT_HEALTH = false
 end
 
 mod.StyleFilterCastEvents = {
@@ -1423,10 +1423,10 @@ function mod:StyleFilterConfigure()
 				if t.healthThreshold then
 					events.UNIT_MAXHEALTH = 1
 
-					if E.Retail then
-						events.UNIT_HEALTH = 1
-					else
+					if E.Classic then
 						events.UNIT_HEALTH_FREQUENT = 1
+					else
+						events.UNIT_HEALTH = 1
 					end
 				end
 

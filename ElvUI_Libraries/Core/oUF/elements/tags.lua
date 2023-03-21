@@ -575,7 +575,7 @@ elseif oUF.isWrath then
 end
 
 for tag, events in pairs(tagEvents) do -- ElvUI: UNIT_HEALTH is bugged on TBC, use same method to convert as E.AddTag
-	tagEvents[tag] = (oUF.isRetail and gsub(events, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')) or gsub(events, 'UNIT_HEALTH([^%s_]?)', 'UNIT_HEALTH_FREQUENT%1')
+	tagEvents[tag] = (oUF.isClassic and gsub(events, 'UNIT_HEALTH([^%s_]?)', 'UNIT_HEALTH_FREQUENT%1')) or gsub(events, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')
 end
 
 local stringsToUpdate = {}
