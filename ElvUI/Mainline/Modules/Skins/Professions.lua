@@ -146,6 +146,9 @@ function S:Blizzard_Professions()
 		S:HandleTab(tab)
 	end
 
+	ProfessionsFrame.TabSystem:ClearAllPoints()
+	ProfessionsFrame.TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
+
 	for _, name in pairs({'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot', 'FishingGear0Slot', 'FishingGear1Slot'}) do
 		local button = CraftingPage[name]
 		if button then
@@ -238,6 +241,8 @@ function S:Blizzard_Professions()
 	local SpecPage = ProfessionsFrame.SpecPage
 	S:HandleButton(SpecPage.UnlockTabButton)
 	S:HandleButton(SpecPage.ApplyButton)
+	S:HandleButton(SpecPage.ViewPreviewButton)
+	S:HandleButton(SpecPage.BackToFullTreeButton)
 	SpecPage.TreeView:StripTextures()
 	SpecPage.TreeView.Background:Hide()
 	SpecPage.TreeView:CreateBackdrop('Transparent')
@@ -313,7 +318,7 @@ function S:Blizzard_Professions()
 	OrderInfo:StripTextures()
 	OrderInfo:CreateBackdrop('Transparent')
 	S:HandleButton(OrderInfo.BackButton)
-	S:HandleButton(OrderInfo.IgnoreButton)
+	--S:HandleButton(OrderInfo.IgnoreButton) -- plx check that
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)

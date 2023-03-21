@@ -50,6 +50,9 @@ function S:Blizzard_ClassTalentUI()
 		S:HandleTab(tab)
 	end
 
+	ClassTalentFrame.TabSystem:ClearAllPoints()
+	ClassTalentFrame.TabSystem:Point('TOPLEFT', ClassTalentFrame, 'BOTTOMLEFT', -3, 0)
+
 	hooksecurefunc(ClassTalentFrame.SpecTab, 'UpdateSpecFrame', function(frame)
 		for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
 			if not specContentFrame.isSkinned then
