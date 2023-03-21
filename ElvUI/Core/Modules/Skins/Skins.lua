@@ -1071,7 +1071,7 @@ do
 	local closeOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 	function S:HandleCloseButton(f, point, x, y)
-		assert(f, 'doenst exist!')
+		if f.isSkinned then return end
 
 		f:StripTextures()
 
@@ -1088,6 +1088,8 @@ do
 		if point then
 			f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
 		end
+
+		f.isSkinned = true
 	end
 
 	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)

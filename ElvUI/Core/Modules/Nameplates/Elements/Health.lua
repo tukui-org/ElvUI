@@ -71,11 +71,13 @@ function NP:Construct_Health(nameplate)
 
 	NP.StatusBars[Health] = true
 
-	local statusBarTexture = Health:GetStatusBarTexture()
+	local healthBarTexture = Health:GetStatusBarTexture()
+	Health.barTexture = healthBarTexture
+
 	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', 'OVERLAY')
 	healthFlashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
-	healthFlashTexture:Point('BOTTOMLEFT', statusBarTexture, 'BOTTOMLEFT')
-	healthFlashTexture:Point('TOPRIGHT', statusBarTexture, 'TOPRIGHT')
+	healthFlashTexture:Point('BOTTOMLEFT', healthBarTexture, 'BOTTOMLEFT')
+	healthFlashTexture:Point('TOPRIGHT', healthBarTexture, 'TOPRIGHT')
 	healthFlashTexture:Hide()
 	nameplate.HealthFlashTexture = healthFlashTexture
 

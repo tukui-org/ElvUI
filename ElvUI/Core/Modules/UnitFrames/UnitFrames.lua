@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local type, unpack, assert, tostring = type, unpack, assert, tostring
+local wipe, type, select, unpack, assert, tostring = wipe, type, select, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
@@ -28,7 +28,6 @@ local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
 local UnitGUID = UnitGUID
 
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
@@ -430,7 +429,7 @@ function UF:UpdateColors()
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
-	for i=1, 6 do
+	for i = 1, 6 do
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
@@ -451,7 +450,7 @@ function UF:UpdateColors()
 	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
 	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
 
-	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0,	1, 1, 0} end
+	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
 	-- end
 
 	ElvUF.colors.reaction[1] = ElvUF.colors.reaction.bad
@@ -523,38 +522,58 @@ function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
 
-function UF:Configure_Fader(frame)
-	local db = frame.db and frame.db.enable and frame.db.fader
-	if db and db.enable then
-		if not frame:IsElementEnabled('Fader') then
-			frame:EnableElement('Fader')
+do
+	local instanceDifficultly = {}
+	local function addInstanceDifficultly(...)
+		for i = 1, select('#', ...) do
+			local val = select(i, ...)
+			instanceDifficultly[val] = true
 		end
+	end
 
-		local fader = frame.Fader
-		fader:SetOption('Hover', db.hover)
-		fader:SetOption('Combat', db.combat)
-		fader:SetOption('PlayerTarget', db.playertarget)
-		fader:SetOption('Focus', db.focus)
-		fader:SetOption('Health', db.health)
-		fader:SetOption('Power', db.power)
-		fader:SetOption('Vehicle', db.vehicle)
-		fader:SetOption('Casting', db.casting)
-		fader:SetOption('MinAlpha', db.minAlpha)
-		fader:SetOption('MaxAlpha', db.maxAlpha)
+	function UF:Configure_Fader(frame)
+		local db = frame.db and frame.db.enable and frame.db.fader
+		if db and db.enable then
+			if not frame:IsElementEnabled('Fader') then
+				frame:EnableElement('Fader')
+			end
 
-		if frame ~= _G.ElvUF_Player then
-			fader:SetOption('Range', db.range)
-			fader:SetOption('UnitTarget', db.unittarget)
+			local fader = frame.Fader
+			fader:SetOption('Hover', db.hover)
+			fader:SetOption('Combat', db.combat)
+			fader:SetOption('PlayerTarget', db.playertarget)
+			fader:SetOption('Focus', db.focus)
+			fader:SetOption('Health', db.health)
+			fader:SetOption('Power', db.power)
+			fader:SetOption('Vehicle', db.vehicle)
+			fader:SetOption('Casting', db.casting)
+			fader:SetOption('MinAlpha', db.minAlpha)
+			fader:SetOption('MaxAlpha', db.maxAlpha)
+
+			if frame ~= _G.ElvUF_Player then
+				fader:SetOption('Range', db.range)
+				fader:SetOption('UnitTarget', db.unittarget)
+			end
+
+			fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
+			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
+
+			wipe(instanceDifficultly)
+			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1) end
+			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2) end
+			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23) end
+			if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficultly(8) end
+			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14) end
+			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15) end
+			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
+			fader:SetOption('InstanceDifficulty', next(instanceDifficultly) and instanceDifficultly or nil)
+
+			fader:ClearTimers()
+			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
+		elseif frame:IsElementEnabled('Fader') then
+			frame:DisableElement('Fader')
+			E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 		end
-
-		fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
-		fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
-
-		fader:ClearTimers()
-		fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
-	elseif frame:IsElementEnabled('Fader') then
-		frame:DisableElement('Fader')
-		E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
 	end
 end
 
@@ -1389,17 +1408,19 @@ do
 				end
 			end
 		end
+	end
 
-		if E.private.nameplates.enable and strmatch(unit, 'nameplate%d+$') then
-			local frame = C_NamePlate_GetNamePlateForUnit(unit)
-			local plate = frame and frame.UnitFrame
-			if plate and not disabledPlates[plate] then
-				disabledPlates[plate] = true
+	function ElvUF:DisableNamePlate()
+		if not E.private.nameplates.enable then return end
 
-				HandleFrame(plate, true)
+		local plate = self and self.UnitFrame
+		if not plate or plate:IsForbidden() then return end
 
-				hooksecurefunc(plate, 'Show', plate.Hide)
-			end
+		if not disabledPlates[plate] then
+			disabledPlates[plate] = true
+
+			HandleFrame(plate, true)
+			hooksecurefunc(plate, 'Show', plate.Hide)
 		end
 	end
 end
@@ -1432,14 +1453,20 @@ function UF:ResetUnitSettings(unit)
 	UF:Update_AllFrames()
 end
 
-function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
+function UF:ToggleForceShowFrame(unit)
+	local frame = UF[unit]
+	if not frame then return end
+
+	if not frame.isForced then
+		UF:ForceShow(frame)
+	else
+		UF:UnforceShow(frame)
+	end
+end
+
+function UF:ToggleForceShowGroupFrames(group, numGroup)
 	for i = 1, numGroup do
-		local frame = UF[unitGroup..i]
-		if frame and not frame.isForced then
-			UF:ForceShow(frame)
-		elseif frame then
-			UF:UnforceShow(frame)
-		end
+		UF:ToggleForceShowFrame(group..i)
 	end
 end
 

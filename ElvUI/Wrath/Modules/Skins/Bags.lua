@@ -13,7 +13,6 @@ local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Containe
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = GetItemInfo
-local CreateFrame = CreateFrame
 
 local BANK_CONTAINER = BANK_CONTAINER
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
@@ -166,14 +165,6 @@ function S:ContainerFrame()
 
 		E:RegisterCooldown(cooldown, 'bags')
 	end
-
-	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate()
-	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
-
-	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate()
-	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	S:HandleButton(_G.BankFramePurchaseButton)
 

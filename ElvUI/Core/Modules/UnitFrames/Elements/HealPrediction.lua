@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
+
 function UF.HealthClipFrame_HealComm(frame)
 	if frame.HealthPrediction then
 		UF:SetAlpha_HealComm(frame.HealthPrediction, 1)

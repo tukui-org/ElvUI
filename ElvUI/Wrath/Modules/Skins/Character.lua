@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local unpack, strfind = unpack, strfind
+local unpack = unpack
 local ipairs, pairs = ipairs, pairs
 
 local HasPetUI = HasPetUI
@@ -166,8 +166,6 @@ function S:CharacterFrame()
 	-- Character Frame
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
-
-	S:HandleCloseButton(_G.CharacterFrameCloseButton)
 
 	S:HandleDropDownBox(_G.PlayerStatFrameRightDropDown, 145)
 	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropDown, 147)
@@ -555,8 +553,9 @@ function S:CharacterFrame()
 	_G.TokenFrameCancelButton:Kill()
 	_G.TokenFrameMoneyFrame:Kill()
 
+	-- try to find the close button
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
-		if not child:GetName() and strfind(child:GetNormalTexture():GetTexture(), 'MinimizeButton') then
+		if child.Hide and child:IsShown() and not child:GetName() then
 			child:Hide()
 			break
 		end

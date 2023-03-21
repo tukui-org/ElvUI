@@ -49,7 +49,8 @@ if not lib then return end
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
--- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
+-- GLOBALS: LibStub, CreateFrame
+
 local next = next
 local type = type
 local wipe = wipe
@@ -60,7 +61,8 @@ local tinsert = tinsert
 local tremove = tremove
 local tostring = tostring
 local setmetatable = setmetatable
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+local floor = math.floor
+
 local GetSpellInfo = GetSpellInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
@@ -70,6 +72,7 @@ local UnitCanAttack = UnitCanAttack
 local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
+local UnitGUID = UnitGUID
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
 local IsSpellInRange = IsSpellInRange
@@ -79,8 +82,11 @@ local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
-local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
+
+local C_Timer_NewTicker = C_Timer.NewTicker
+
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 -- << STATIC CONFIG
 
@@ -338,8 +344,8 @@ local FriendItems  = {
 		21991, -- Heavy Netherweave Bandage
 		34721, -- Frostweave Bandage
 		34722, -- Heavy Frostweave Bandage
-		38643, -- Thick Frostweave Bandage
-		38640, -- Dense Frostweave Bandage
+		--38643, -- Thick Frostweave Bandage (uncomment for Wotlk)
+		--38640, -- Dense Frostweave Bandage (uncomment for Wotlk)
 	},
 	[20] = {
 		21519, -- Mistletoe
@@ -642,8 +648,8 @@ local function createCheckerList(spellList, itemList, interactList)
 			local name, _, _, _, minRange, range = GetSpellInfo(sid)
 			local spellIdx = findSpellIdx(name)
 			if spellIdx and range then
-				minRange = math_floor(minRange + 0.5)
-				range = math_floor(range + 0.5)
+				minRange = floor(minRange + 0.5)
+				range = floor(range + 0.5)
 
 				-- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
 
@@ -673,11 +679,31 @@ local function createCheckerList(spellList, itemList, interactList)
 	return res
 end
 
+local rangeCache = {}
+
+local function resetRangeCache()
+	wipe(rangeCache)
+end
+
+local function invalidateRangeCache(maxAge)
+	local currentTime = GetTime()
+	for k, v in pairs(rangeCache) do
+		-- if the entry is older than maxAge, clear this data from the cache
+		if v.updateTime + maxAge < currentTime then
+			rangeCache[k] = nil
+		end
+	end
+end
+
+local function invalidateRangeFive()
+	invalidateRangeCache(5)
+end
+
 -- returns minRange, maxRange  or nil
-local function getRange(unit, checkerList)
+local function getRangeWithCheckerList(unit, checkerList)
 	local lo, hi = 1, #checkerList
 	while lo <= hi do
-		local mid = math_floor((lo + hi) / 2)
+		local mid = floor((lo + hi) / 2)
 		local rc = checkerList[mid]
 		if rc.checker(unit) then
 			lo = mid + 1
@@ -692,6 +718,57 @@ local function getRange(unit, checkerList)
 	else
 		return checkerList[lo].range, checkerList[lo - 1].range
 	end
+end
+
+local function getRange(unit, noItems)
+	local canAssist = UnitCanAssist("player", unit)
+	if UnitIsDeadOrGhost(unit) then
+		if canAssist then
+			return getRangeWithCheckerList(unit, lib.resRC)
+		else
+			return getRangeWithCheckerList(unit, lib.miscRC)
+		end
+	end
+
+	if UnitCanAttack("player", unit) then
+		return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRC or lib.harmRC)
+	elseif UnitIsUnit("pet", unit) then
+		local minRange, maxRange = getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
+		if minRange or maxRange then
+			return minRange, maxRange
+		else
+			return getRangeWithCheckerList(unit, lib.petRC)
+		end
+	elseif canAssist then
+		return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
+	else
+		return getRangeWithCheckerList(unit, lib.miscRC)
+	end
+end
+
+local function getCachedRange(unit, noItems, maxCacheAge)
+	-- maxCacheAge has a default of 0.1 and a maximum of 1 second
+	maxCacheAge = maxCacheAge or 0.1;
+	maxCacheAge = maxCacheAge > 1 and 1 or maxCacheAge;
+
+	-- compose cache key out of unit guid and noItems
+	local guid = UnitGUID(unit)
+	local cacheKey = guid .. (noItems and "-1" or "-0")
+	local cacheItem = rangeCache[cacheKey]
+
+	local currentTime = GetTime()
+
+	-- if then cache item is valid return it
+	if cacheItem and cacheItem.updateTime + maxCacheAge > currentTime then
+		return cacheItem.minRange, cacheItem.maxRange
+	end
+
+	-- otherwise create a new or update the exisitng cache item
+	local result = cacheItem or {}
+	result.minRange, result.maxRange = getRange(unit, noItems)
+	result.updateTime = currentTime
+	rangeCache[cacheKey] = result
+	return result.minRange, result.maxRange
 end
 
 local function updateCheckers(origList, newList)
@@ -1004,13 +1081,15 @@ end
 --- Get a range estimate as **minRange**, **maxRange**.
 -- @param unit the target unit to check range to.
 -- @param checkVisible if set to true, then a UnitIsVisible check is made, and **nil** is returned if the unit is not visible
+-- @param noItems if set to true, no items and only spells are being used for the range check
+-- @param maxCacheAge the timespan a cached range value is considered valid (default 0.1 seconds, maximum 1 second)
 -- @return **minRange**, **maxRange** pair if a range estimate could be determined, **nil** otherwise. **maxRange** is **nil** if **unit** is further away than the highest possible range we can check.
 -- Includes checks for unit validity and friendly/enemy status.
 -- @usage
 -- local rc = LibStub("LibRangeCheck-2.0")
 -- local minRange, maxRange = rc:GetRange('target')
 -- local minRangeIfVisible, maxRangeIfVisible = rc:GetRange('target', true)
-function lib:GetRange(unit, checkVisible, noItems)
+function lib:GetRange(unit, checkVisible, noItems, maxCacheAge)
 	if not UnitExists(unit) then
 		return nil
 	end
@@ -1019,29 +1098,7 @@ function lib:GetRange(unit, checkVisible, noItems)
 		return nil
 	end
 
-	local canAssist = UnitCanAssist("player", unit)
-	if UnitIsDeadOrGhost(unit) then
-		if canAssist then
-			return getRange(unit, self.resRC)
-		else
-			return getRange(unit, self.miscRC)
-		end
-	end
-
-	if UnitCanAttack("player", unit) then
-		return getRange(unit, noItems and self.harmNoItemsRC or self.harmRC)
-	elseif UnitIsUnit("pet", unit) then
-		local minRange, maxRange = getRange(unit, noItems and self.friendNoItemsRC or self.friendRC)
-		if minRange or maxRange then
-			return minRange, maxRange
-		else
-			return getRange(unit, self.petRC)
-		end
-	elseif canAssist then
-		return getRange(unit, noItems and self.friendNoItemsRC or self.friendRC)
-	else
-		return getRange(unit, self.miscRC)
-	end
+	return getCachedRange(unit, noItems, maxCacheAge)
 end
 
 -- keep this for compatibility
@@ -1198,6 +1255,10 @@ function lib:activate()
 			-- Mage and Shaman gladiator gloves modify spell ranges
 			frame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 		end
+	end
+
+	if not self.cacheResetTimer then
+		self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
 	end
 
 	initItemRequests()

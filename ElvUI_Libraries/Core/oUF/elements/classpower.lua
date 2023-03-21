@@ -256,7 +256,7 @@ end
 do
 	function ClassPowerEnable(self)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
 		if not oUF.isRetail then
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
@@ -276,7 +276,7 @@ do
 	end
 
 	function ClassPowerDisable(self)
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		if oUF.isRetail then

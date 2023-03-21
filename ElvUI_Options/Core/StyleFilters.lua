@@ -191,6 +191,8 @@ end
 function C:StyleFilterSetConfig(filter)
 	C.StyleFilterSelected = filter
 	UpdateFilterGroup()
+
+	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'nameplates', 'stylefilters', filter and 'triggers' or 'import')
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplates.filters[value]) end

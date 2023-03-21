@@ -67,6 +67,7 @@ P.general = {
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
+	tagUpdateRate = 0.25,
 	decimalLength = 1,
 	altPowerBar = {
 		enable = true,
@@ -1365,6 +1366,15 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+	instanceDifficulties = {
+		dungeonNormal = false,
+		dungeonHeroic = false,
+		dungeonMythic = false,
+		dungeonMythicKeystone = false,
+		raidNormal = false,
+		raidHeroic = false,
+		raidMythic = false,
+	}
 }
 
 local UF_Name = {
@@ -1761,6 +1771,7 @@ P.unitframe = {
 				width = 10,
 			},
 			aurabar = CopyTable(UF_AuraBars),
+			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			customTexts = {},
@@ -1794,6 +1805,7 @@ P.unitframe = {
 			disableFocusGlow = true,
 			CombatIcon = CopyTable(UF_CombatIcon),
 			aurabar = CopyTable(UF_AuraBars),
+			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			customTexts = {},

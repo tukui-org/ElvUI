@@ -20,6 +20,7 @@ local RegisterStateDriver = RegisterStateDriver
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
+local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
 local configEnv
 local originalEnvs = {}
@@ -113,14 +114,13 @@ function UF:ForceShow(frame)
 		frame.oldOnUpdate = frame:GetScript('OnUpdate')
 	end
 
-	frame:SetScript('OnUpdate', nil)
 	frame.forceShowAuras = true
+	frame:SetScript('OnUpdate', nil)
+	frame:EnableMouse(false)
+	frame:Show()
+
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame, true)
-
-	frame:EnableMouse(false)
-
-	frame:Show()
 
 	if frame.Update then
 		frame:Update()
@@ -137,24 +137,22 @@ end
 
 function UF:UnforceShow(frame)
 	if InCombatLockdown() then return end
-	if not frame.isForced then
-		return
-	end
-	frame.forceShowAuras = nil
+	if not frame.isForced then return end
+
+	frame.unit = frame.oldUnit or frame.unit
+	frame.oldUnit = nil
 	frame.isForced = nil
+	frame.forceShowAuras = nil
+	frame:EnableMouse(true)
 
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
 
-	frame:EnableMouse(true)
-
 	if frame.oldOnUpdate then
 		frame:SetScript('OnUpdate', frame.oldOnUpdate)
 		frame.oldOnUpdate = nil
 	end
-
-	frame.unit = frame.oldUnit or frame.unit
 
 	if _G[frame:GetName()..'Target'] then
 		self:UnforceShow(_G[frame:GetName()..'Target'])
@@ -175,10 +173,10 @@ function UF:ShowChildUnits(header, ...)
 	local length = select('#', ...) -- Limit number of players shown, if Display Player option is disabled
 	if not UF.isForcedHidePlayer and not header.db.showPlayer and (header.groupName == 'party' or header.groupName == 'raid') then
 		UF.isForcedHidePlayer = true
-		length = _G.MAX_PARTY_MEMBERS
+		length = MAX_PARTY_MEMBERS
 	end
 
-	for i=1, length do
+	for i = 1, length do
 		local frame = select(i, ...)
 		frame:SetID(i)
 		self:ForceShow(frame)
@@ -189,20 +187,59 @@ function UF:UnshowChildUnits(header, ...)
 	header.isForced = nil
 	UF.isForcedHidePlayer = nil
 
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local frame = select(i, ...)
 		self:UnforceShow(frame)
 	end
 end
 
-local function OnAttributeChanged(self)
+local function OnAttributeChanged(self, attr)
 	if not self:IsShown() or (not self:GetParent().forceShow and not self.forceShow) then return end
 
 	local db = self.db or self:GetParent().db
-	local index = not db.raidWideSorting and -4 or -(min((db.numGroups or 1) * ((db.groupsPerRowCol or 1) * 5), MAX_RAID_MEMBERS) + 1)
+	local tankAssist = self.groupName == 'tank' or self.groupName == 'assist'
+	local index = tankAssist and -1 or not db.raidWideSorting and -4 or -(min((db.numGroups or 1) * ((db.groupsPerRowCol or 1) * 5), MAX_RAID_MEMBERS) + 1)
 	if self:GetAttribute('startingIndex') ~= index then
 		self:SetAttribute('startingIndex', index)
 		UF:ShowChildUnits(self, self:GetChildren())
+	elseif tankAssist then -- for showing target frames
+		if attr == 'startingindex' then
+			self.waitForTarget = db.targetsGroup.enable or nil
+		elseif self.waitForTarget and attr == 'statehidden' then
+			UF:ShowChildUnits(self, self:GetChildren())
+			self.waitForTarget = nil
+		end
+	end
+end
+
+function UF:HeaderForceShow(header, group, configMode)
+	if group:IsShown() then
+		group.forceShow = header.forceShow
+		group.forceShowAuras = header.forceShowAuras
+
+		if not group.hasOnAttributeChanged then
+			group:HookScript('OnAttributeChanged', OnAttributeChanged)
+			group.hasOnAttributeChanged = true
+		end
+
+		if configMode then
+			for key in pairs(attributeBlacklist) do
+				group:SetAttribute(key, nil)
+			end
+
+			OnAttributeChanged(group)
+
+			group:Update()
+		else
+			for key in pairs(attributeBlacklist) do
+				group:SetAttribute(key, true)
+			end
+
+			UF:UnshowChildUnits(group, group:GetChildren())
+			group:SetAttribute('startingIndex', 1)
+
+			group:Update()
+		end
 	end
 end
 
@@ -233,40 +270,21 @@ function UF:HeaderConfig(header, configMode)
 
 		RegisterStateDriver(header, 'visibility', header.db.visibility)
 
-		if header:GetScript('OnEvent') then
-			header:GetScript('OnEvent')(header, 'PLAYER_ENTERING_WORLD')
+		local onEvent = header:GetScript('OnEvent')
+		if onEvent then
+			onEvent(header, 'PLAYER_ENTERING_WORLD')
 		end
 	end
 
-	for i=1, #header.groups do
-		local group = header.groups[i]
-
-		if group:IsShown() then
-			group.forceShow = header.forceShow
-			group.forceShowAuras = header.forceShowAuras
-			group:HookScript('OnAttributeChanged', OnAttributeChanged)
-			if configMode then
-				for key in pairs(attributeBlacklist) do
-					group:SetAttribute(key, nil)
-				end
-
-				OnAttributeChanged(group)
-
-				group:Update()
-			else
-				for key in pairs(attributeBlacklist) do
-					group:SetAttribute(key, true)
-				end
-
-				UF:UnshowChildUnits(group, group:GetChildren())
-				group:SetAttribute('startingIndex', 1)
-
-				group:Update()
-			end
+	if header.groups then
+		for i = 1, #header.groups do
+			UF:HeaderForceShow(header, header.groups[i], configMode)
 		end
-	end
 
-	UF.headerFunctions[header.groupName]:AdjustVisibility(header)
+		UF.headerFunctions[header.groupName]:AdjustVisibility(header)
+	else -- used to show tank/assist
+		UF:HeaderForceShow(header, header, configMode)
+	end
 end
 
 function UF:PLAYER_REGEN_DISABLED()
@@ -282,7 +300,7 @@ function UF:PLAYER_REGEN_DISABLED()
 		end
 	end
 
-	for i=1, 8 do
+	for i = 1, 8 do
 		if i < 6 then
 			local arena = self['arena'..i]
 			if arena and arena.isForced then
