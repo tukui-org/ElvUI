@@ -73,13 +73,15 @@ local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetCha
 local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
 local C_Texture_GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
+local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
-local RecruitLinkType = E.Retail and Enum.RafLinkType.Recruit
-local TitleIconVersion_Small = E.Retail and Enum.TitleIconVersion.Small
-local CHATCHANNELRULESET_MENTOR = E.Retail and Enum.ChatChannelRuleset.Mentor
-local PLAYERMENTORSHIPSTATUS_NEWCOMER = E.Retail and Enum.PlayerMentorshipStatus.Newcomer
-local NPEV2_CHAT_USER_TAG_GUIDE = E.Retail and gsub(NPEV2_CHAT_USER_TAG_GUIDE, '(|A.-|a).+', '%1') -- we only want the icon
-local SOCIAL_QUEUE_QUEUED_FOR = E.Retail and gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') -- some language have `:` on end
+local RecruitLinkType = Enum.RafLinkType and Enum.RafLinkType.Recruit
+local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.Small
+local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
+local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
+
+local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 -- GLOBALS: ElvCharacterDB
 
 CH.GuidCache = {}
@@ -2026,20 +2028,28 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
 
 				if clientProgram and clientProgram ~= '' then
-					C_Texture_GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
-						if success then
-							local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
-							local linkDisplayText = format('[%s] (%s)', arg2, charName)
-							local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-							frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
+					if C_Texture_GetTitleIconTexture then
+						C_Texture_GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
+							if success then
+								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
+								local linkDisplayText = format('[%s] (%s)', arg2, charName)
+								local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 
-							if notChatHistory then
-								FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
+								if notChatHistory then
+									FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
+								end
 							end
-						end
-					end)
+						end)
 
-					return
+						return
+					else
+						local clientTexture = GetClientTexture(clientProgram, 14)
+						local charName = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
+						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
+						local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+						message = format(globalstring, playerLink)
+					end
 				else
 					local linkDisplayText = format('[%s]', arg2)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
