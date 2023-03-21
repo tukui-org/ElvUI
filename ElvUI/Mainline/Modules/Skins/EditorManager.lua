@@ -65,11 +65,14 @@ function S:EditorManagerFrame()
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)
 
+	-- TODO Season 2
+	--[[
 	for _, frame in next, { editMode.AccountSettings.Settings:GetChildren() } do
 		if frame.Button then
 			S:HandleCheckBox(frame.Button)
 		end
 	end
+	]]
 
 	-- Layout Creator
 	local layout = _G.EditModeNewLayoutDialog

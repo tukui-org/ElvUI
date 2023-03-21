@@ -142,6 +142,8 @@ function S:Blizzard_Professions()
 	GuildFrame.Container:StripTextures()
 	GuildFrame.Container:CreateBackdrop('Transparent')
 
+	S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
+
 	for _, tab in next, { ProfessionsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
 	end
@@ -183,8 +185,10 @@ function S:Blizzard_Professions()
 
 	if E.private.skins.parchmentRemoverEnable then
 		SchematicForm.Background:SetAlpha(0)
+		SchematicForm.MinimalBackground:SetAlpha(0)
 	else
 		SchematicForm.Background:SetAlpha(.25)
+		SchematicForm.MinimalBackground:SetAlpha(.25)
 	end
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
