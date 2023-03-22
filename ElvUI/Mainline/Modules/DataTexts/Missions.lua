@@ -287,7 +287,7 @@ local function OnEnter()
 
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
-		AddInProgressMissions(GARRISONFOLLOWERTYPE_6_2)
+		AddInProgressMissions(GARRISONFOLLOWERTYPE_6_0_BOAT)
 
 		--Buildings
 		data = C_Garrison_GetBuildings(GARRISONTYPE_6_0)
