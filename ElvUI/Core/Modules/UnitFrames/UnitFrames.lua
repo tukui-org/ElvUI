@@ -1410,10 +1410,10 @@ do
 		end
 	end
 
-	function ElvUF:DisableNamePlate()
+	function ElvUF:DisableNamePlate(frame)
 		if not E.private.nameplates.enable then return end
 
-		local plate = self and self.UnitFrame
+		local plate = frame and frame.UnitFrame
 		if not plate or plate:IsForbidden() then return end
 
 		if not disabledPlates[plate] then
