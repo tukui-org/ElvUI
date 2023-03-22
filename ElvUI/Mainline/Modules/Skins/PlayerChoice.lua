@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 function S:PlayerChoice_SetupButtons(buttons)
@@ -30,6 +31,16 @@ function S:PlayerChoice_SetupRewards(rewards)
 			end
 		end
 	end
+end
+
+local function ReskinSpellWidget(spell)
+	if not spell.Icon.backdrop then
+		spell.Border:SetAlpha(0)
+		S:HandleIcon(spell.Icon, true)
+	end
+
+	spell.IconMask:Hide()
+	spell.Text:SetTextColor(1, .8, 0)
 end
 
 S.PlayerChoice_TextureKits = {
@@ -82,6 +93,18 @@ function S:PlayerChoice_SetupOptions()
 
 			S:PlayerChoice_SetupRewards(option.rewards)
 			S:PlayerChoice_SetupButtons(option.buttons)
+
+			local widgetContainer = option.WidgetContainer
+			if widgetContainer and widgetContainer.widgetFrames then
+				for _, widgetFrame in pairs(widgetContainer.widgetFrames) do
+					if widgetFrame.Text then
+						widgetFrame.Text:SetTextColor(1, 1, 1)
+					end
+					if widgetFrame.Spell then
+						ReskinSpellWidget(widgetFrame.Spell)
+					end
+				end
+			end
 		end
 	end
 end
