@@ -35,12 +35,15 @@ end
 
 local function ReskinSpellWidget(spell)
 	if spell.Icon and not spell.Icon.backdrop then
-		spell.Border:SetAlpha(0)
 		S:HandleIcon(spell.Icon, true)
 	end
 
 	if spell.IconMask then
 		spell.IconMask:Hide()
+	end
+
+	if spell.Border then
+		spell.Border:SetAlpha(0)
 	end
 
 	if spell.Text then
