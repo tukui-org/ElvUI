@@ -34,13 +34,18 @@ function S:PlayerChoice_SetupRewards(rewards)
 end
 
 local function ReskinSpellWidget(spell)
-	if not spell.Icon.backdrop then
+	if spell.Icon and not spell.Icon.backdrop then
 		spell.Border:SetAlpha(0)
 		S:HandleIcon(spell.Icon, true)
 	end
 
-	spell.IconMask:Hide()
-	spell.Text:SetTextColor(1, .8, 0)
+	if spell.IconMask then
+		spell.IconMask:Hide()
+	end
+
+	if spell.Text then
+		spell.Text:SetTextColor(1, .8, 0)
+	end
 end
 
 S.PlayerChoice_TextureKits = {
@@ -94,14 +99,15 @@ function S:PlayerChoice_SetupOptions()
 			S:PlayerChoice_SetupRewards(option.rewards)
 			S:PlayerChoice_SetupButtons(option.buttons)
 
-			local widgetContainer = option.WidgetContainer
-			if widgetContainer and widgetContainer.widgetFrames then
-				for _, widgetFrame in pairs(widgetContainer.widgetFrames) do
-					if widgetFrame.Text then
-						widgetFrame.Text:SetTextColor(1, 1, 1)
+			local container = option.WidgetContainer
+			if container and container.widgetFrames then
+				for _, frame in pairs(container.widgetFrames) do
+					if frame.Text then
+						frame.Text:SetTextColor(1, 1, 1)
 					end
-					if widgetFrame.Spell then
-						ReskinSpellWidget(widgetFrame.Spell)
+
+					if frame.Spell then
+						ReskinSpellWidget(frame.Spell)
 					end
 				end
 			end
