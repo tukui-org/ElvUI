@@ -187,7 +187,7 @@ end
 
 function B:UpdateMainButtonCount()
 	local mainCount = B.BagBar.buttons[1].Count
-	mainCount:SetShown(GetCVarBool('displayFreeBagSlots'))
+	mainCount:SetShown(E.db.bags.bagBar.showCount)
 	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
