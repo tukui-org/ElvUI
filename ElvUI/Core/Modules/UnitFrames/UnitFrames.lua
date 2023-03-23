@@ -1410,6 +1410,12 @@ do
 		end
 	end
 
+	local function PlateShown(plate, show)
+		if show then
+			plate:Hide()
+		end
+	end
+
 	function ElvUF:DisableNamePlate(frame)
 		if not E.private.nameplates.enable then return end
 
@@ -1421,6 +1427,7 @@ do
 
 			HandleFrame(plate, true)
 			hooksecurefunc(plate, 'Show', plate.Hide)
+			hooksecurefunc(plate, 'SetShown', PlateShown)
 		end
 	end
 end
