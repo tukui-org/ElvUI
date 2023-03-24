@@ -346,28 +346,30 @@ function mod:StyleFilterDispelCheck(frame, filter)
 	end
 end
 
-function mod:StyleFilterAuraData(frame, filter)
+function mod:StyleFilterAuraData(frame, filter, unit)
 	local temp = {}
 
-	local index = 1
-	local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
-	while name do
-		local info = temp[name] or temp[spellID]
-		if not info then info = {} end
+	if unit then
+		local index = 1
+		local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, filter)
+		while name do
+			local info = temp[name] or temp[spellID]
+			if not info then info = {} end
 
-		temp[name] = info
-		temp[spellID] = info
+			temp[name] = info
+			temp[spellID] = info
 
-		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
+			info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
 
-		index = index + 1
-		name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
+			index = index + 1
+			name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, filter)
+		end
 	end
 
 	return temp
 end
 
-function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
+function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
 	local total, matches, now = 0, 0, GetTime()
 	local temp -- data of current auras
 
@@ -375,7 +377,9 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
-			if not temp then temp = mod:StyleFilterAuraData(frame, filter) end
+			if not temp then
+				temp = mod:StyleFilterAuraData(frame, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
+			end
 
 			local spell, count = strmatch(key, mod.StyleFilterStackPattern)
 			local info = temp[spell] or temp[tonumber(spell)]
@@ -1154,7 +1158,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1170,7 +1174,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end

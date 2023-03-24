@@ -16,6 +16,8 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["On Me"] = true
+L["On Pet"] = true
 L["Tag Update Rate"] = true
 L["Maximum tick rate allowed for tag updates per second."] = true
 L["%s and then %s"] = "%s ve ardından %s"
