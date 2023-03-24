@@ -239,10 +239,15 @@ local options = {
 	},
 	Health = {
 		enable = function(self)
-			self:RegisterEvent('UNIT_HEALTH', Update)
+			if oUF.isClassic then
+				self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
+			else
+				self:RegisterEvent('UNIT_HEALTH', Update)
+			end
+
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end,
-		events = {'UNIT_HEALTH','UNIT_MAXHEALTH'}
+		events = oUF.isClassic and {'UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'} or {'UNIT_HEALTH','UNIT_MAXHEALTH'}
 	},
 	Power = {
 		enable = function(self)

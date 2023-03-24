@@ -188,7 +188,7 @@ Bags.args.bagBar = ACH:Group(L["Bag Bar"], nil, 3, nil, function(info) return E.
 Bags.args.bagBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.bags.bagBar end, function(_, value) E.private.bags.bagBar = value E.ShowPopup = true end)
 Bags.args.bagBar.args.showBackdrop = ACH:Toggle(L["Backdrop"], nil, 2)
 Bags.args.bagBar.args.mouseover = ACH:Toggle(L["Mouseover"], L["The frame is not shown unless you mouse over the frame."], 3)
-Bags.args.bagBar.args.showCount = ACH:Toggle(L["Show Count"], nil, 4, nil, nil, nil, function() return GetCVarBool('displayFreeBagSlots') end, function(_, value) SetCVar('displayFreeBagSlots', value and 1 or 0) B:SizeAndPositionBagBar() end)
+Bags.args.bagBar.args.showCount = ACH:Toggle(L["Show Count"], nil, 4)
 Bags.args.bagBar.args.size = ACH:Range(L["Button Size"], L["Set the size of your bag buttons."], 5, { min = 12, max = 128, step = 1 })
 Bags.args.bagBar.args.justBackpack = ACH:Toggle(L["Backpack Only"], nil, 6)
 Bags.args.bagBar.args.spacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 7, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.bags.bagBar.justBackpack end)
@@ -197,7 +197,7 @@ Bags.args.bagBar.args.sortDirection = ACH:Select(L["Sort Direction"], L["The dir
 Bags.args.bagBar.args.growthDirection = ACH:Select(L["Bar Direction"], L["The direction that the bag frames be (Horizontal or Vertical)."], 10, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
 Bags.args.bagBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 12, true, 'full', nil, function(_, value) E.db.bags.bagBar.visibility = value B:SizeAndPositionBagBar() end)
 
-Bags.args.bagBar.args.countGroup = ACH:Group(L["Font"], nil, 11, nil, nil, function(info, value) E.db.bags.bagBar[info[#info]] = value B:SizeAndPositionBagBar() end, nil, function() return not GetCVarBool('displayFreeBagSlots') end)
+Bags.args.bagBar.args.countGroup = ACH:Group(L["Font"], nil, 11, nil, nil, nil, nil, function() return not E.db.bags.bagBar.showCount end)
 Bags.args.bagBar.args.countGroup.inline = true
 Bags.args.bagBar.args.countGroup.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the unitframes will use."], 1)
 Bags.args.bagBar.args.countGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
