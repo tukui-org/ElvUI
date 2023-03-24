@@ -7,7 +7,7 @@ L["SHIFT"] = true
 L["NONE"] = "Nichts"
 L["GROUP"] = "Gruppe"
 
-L["BOTTOM"] = Unten
+L["BOTTOM"] = "Unten"
 L["BOTTOMLEFT"] = "Unten Links"
 L["BOTTOMRIGHT"] = "Unten Rechts"
 L["TOPLEFT"] = "Oben Links"
@@ -16,6 +16,8 @@ L["LEFT"] = "Links"
 L["RIGHT"] = "Rechts"
 L["TOP"] = "Oben"
 
+L["On Me"] = true
+L["On Pet"] = true
 L["Tag Update Rate"] = true
 L["Maximum tick rate allowed for tag updates per second."] = "Maximal zulässige Tickrate für Tag Updates pro Sekunde."
 L["%s and then %s"] = "%s und dann %s"

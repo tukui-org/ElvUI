@@ -16,6 +16,8 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["On Me"] = "Em Mim"
+L["On Pet"] = "Em Pet"
 L["Tag Update Rate"] = "Taxa de actualização da Tags."
 L["Maximum tick rate allowed for tag updates per second."] = "Taxa máxima de tick permitida para atualizações de Tags por segundo."
 L["%s and then %s"] = "%s e depois %s"
