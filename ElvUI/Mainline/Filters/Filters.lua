@@ -931,6 +931,14 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[401809] = List(), -- Corrupting Shadow
 		[405394] = List(), -- Shadowflame
 	-- Experimentation of Dracthyr
+		[406317] = List(), -- Mutilation 1
+		[406365] = List(), -- Mutilation 2
+		[405392] = List(), -- Disintegrate 1
+		[405423] = List(), -- Disintegrate 2
+		[406233] = List(), -- Deep Breath
+		[407327] = List(), -- Unstable Essence
+		[406313] = List(), -- Infused Strikes
+		[407302] = List(), -- Infused Explosion
 	-- Zaqali Invasion
 	-- Rashok
 		[407547] = List(), -- Flaming Upsurge
@@ -1201,6 +1209,9 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Molgoth
 		[406730] = List(), -- Crucible Instability
 	-- Experimentation of Dracthyr
+		[410019] = List(), -- Volatile Spew
+		[406358] = List(), -- Mutilation
+		[405413] = List(), -- Disintegrate
 	-- Zaqali Invasion
 	-- Rashok
 		[401419] = List(), -- Siphon Energy
