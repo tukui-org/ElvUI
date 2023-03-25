@@ -953,6 +953,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[405592] = List(), -- Salvage Parts
 		[405462] = List(), -- Dragonfire Traps
 	-- Magmorax
+		[404846] = List(), -- Incinerating Maws 1
+		[408955] = List(), -- Incinerating Maws 2
+		[402994] = List(), -- Molten Spittle
+		[403747] = List(), -- Igniting Roar
 	-- Echo of Neltharion
 	-- Scalecommander Sarkareth
 	---------------------------------------------------------
@@ -1221,6 +1225,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Zskarn
 		[404939] = List(), -- Searing Claws
 	-- Magmorax
+		[404846] = List(), -- Incinerating Maws
 	-- Echo of Neltharion
 	-- Scalecommander Sarkareth
 	---------------------------------------------------------
