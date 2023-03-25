@@ -958,6 +958,21 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[402994] = List(), -- Molten Spittle
 		[403747] = List(), -- Igniting Roar
 	-- Echo of Neltharion
+		[409373] = List(), -- Disrupt Earth
+		[407220] = List(), -- Rushing Shadows 1
+		[407182] = List(), -- Rushing Shadows 2
+		[405484] = List(), -- Surrendering to Corruption
+		[409058] = List(), -- Seeping Lava
+		[402120] = List(), -- Collapsed Earth
+		[407728] = List(), -- Sundered Shadow
+		[401998] = List(), -- Calamitous Strike
+		[408160] = List(), -- Shadow Strike
+		[403846] = List(), -- Sweeping Shadows
+		[401133] = List(), -- Wildshift (Druid)
+		[401131] = List(), -- Wild Summoning (Warlock)
+		[401130] = List(), -- Wild Magic (Mage)
+		[401135] = List(), -- Wild Breath (Evoker)
+		[408071] = List(), -- Shapeshifter's Fervor
 	-- Scalecommander Sarkareth
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
@@ -1227,6 +1242,11 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Magmorax
 		[404846] = List(), -- Incinerating Maws
 	-- Echo of Neltharion
+		[404430] = List(), -- Wild Breath
+		[403049] = List(), -- Shadow Barrier
+		[404045] = List(), -- Annihilating Shadows
+		[407088] = List(), -- Empowered Shadows
+		[407039] = List(), -- Empower Shadows
 	-- Scalecommander Sarkareth
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
