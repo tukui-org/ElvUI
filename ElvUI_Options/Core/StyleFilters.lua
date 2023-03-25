@@ -464,6 +464,8 @@ do
 		option.hasNoStealable = ACH:Toggle(L["Has No Stealable"], L["If enabled then the filter will only activate when the unit has no stealable buff(s)."], 7)
 		option.fromMe = ACH:Toggle(L["From Me"], nil, 8)
 		option.fromPet = ACH:Toggle(L["From Pet"], nil, 9)
+		option.onMe = ACH:Toggle(L["On Me"], nil, 10)
+		option.onPet = ACH:Toggle(L["On Pet"], nil, 11)
 
 		option.changeList = ACH:Group(L["Add / Remove"], nil, 10)
 		option.changeList.inline = true
