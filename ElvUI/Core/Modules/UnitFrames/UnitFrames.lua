@@ -1253,6 +1253,7 @@ do
 	local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 	local MAX_BOSS_FRAMES = 8
 
+	local disabledElements = {}
 	local disabledPlates = {}
 	local handledUnits = {}
 	local lockedFrames = {}
@@ -1284,26 +1285,18 @@ do
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		local health = frame.healthBar or frame.healthbar or frame.HealthBar
-		if health then health:UnregisterAllEvents() end
+		tinsert(disabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
+		tinsert(disabledElements, frame.manabar or frame.ManaBar or nil)
+		tinsert(disabledElements, frame.castBar or frame.spellbar or nil)
+		tinsert(disabledElements, frame.petFrame or frame.PetFrame or nil)
+		tinsert(disabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(disabledElements, frame.BuffFrame or nil)
+		tinsert(disabledElements, frame.totFrame or nil)
 
-		local power = frame.manabar or frame.ManaBar
-		if power then power:UnregisterAllEvents() end
-
-		local spell = frame.castBar or frame.spellbar
-		if spell then spell:UnregisterAllEvents() end
-
-		local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
-		if altpowerbar then altpowerbar:UnregisterAllEvents() end
-
-		local buffFrame = frame.BuffFrame
-		if buffFrame then buffFrame:UnregisterAllEvents() end
-
-		local petFrame = frame.petFrame or frame.PetFrame
-		if petFrame then petFrame:UnregisterAllEvents() end
-
-		local totFrame = frame.totFrame
-		if totFrame then totFrame:UnregisterAllEvents() end
+		for index, element in ipairs(disabledElements) do
+			element:UnregisterAllEvents() -- turn elements off
+			disabledElements[index] = nil -- keep this clean
+		end
 	end
 
 	function ElvUF:DisableBlizzard(unit)
