@@ -1421,13 +1421,15 @@ do
 		or (not E.private.nameplates.enable) then return end
 
 		local plate = frame.UnitFrame
-		if plate and not disabledPlates[plate] then
-			disabledPlates[plate] = true
-
+		if plate then
 			HandleFrame(plate, true)
 
-			hooksecurefunc(plate, 'Show', plate.Hide)
-			hooksecurefunc(plate, 'SetShown', PlateShown)
+			if not disabledPlates[plate] then
+				disabledPlates[plate] = true
+
+				hooksecurefunc(plate, 'Show', plate.Hide)
+				hooksecurefunc(plate, 'SetShown', PlateShown)
+			end
 		end
 	end
 end
