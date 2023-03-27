@@ -1284,17 +1284,26 @@ do
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		for _, child in next, {
-			frame.petFrame or frame.PetFrame,
-			frame.healthBar or frame.healthbar or frame.HealthBar,
-			frame.manabar or frame.ManaBar,
-			frame.castBar or frame.spellbar,
-			frame.powerBarAlt or frame.PowerBarAlt,
-			frame.totFrame,
-			frame.BuffFrame
-		} do
-			child:UnregisterAllEvents()
-		end
+		local health = frame.healthBar or frame.healthbar or frame.HealthBar
+		if health then health:UnregisterAllEvents() end
+
+		local power = frame.manabar or frame.ManaBar
+		if power then power:UnregisterAllEvents() end
+
+		local spell = frame.castBar or frame.spellbar
+		if spell then spell:UnregisterAllEvents() end
+
+		local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
+		if altpowerbar then altpowerbar:UnregisterAllEvents() end
+
+		local buffFrame = frame.BuffFrame
+		if buffFrame then buffFrame:UnregisterAllEvents() end
+
+		local petFrame = frame.petFrame or frame.PetFrame
+		if petFrame then petFrame:UnregisterAllEvents() end
+
+		local totFrame = frame.totFrame
+		if totFrame then totFrame:UnregisterAllEvents() end
 	end
 
 	function ElvUF:DisableBlizzard(unit)
