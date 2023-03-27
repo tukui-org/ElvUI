@@ -185,11 +185,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NDIVIDE"] = 'N\\'
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N\\"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
