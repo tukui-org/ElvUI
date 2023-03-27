@@ -1266,10 +1266,6 @@ do
 	end
 
 	local function HandleFrame(frame, doNotReparent)
-		if type(frame) == 'string' then
-			frame = _G[frame]
-		end
-
 		if not frame then return end
 
 		local lockParent = doNotReparent == 1
@@ -1351,10 +1347,10 @@ do
 
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
-					HandleFrame('Boss'..id..'TargetFrame', true)
+					HandleFrame(_G['Boss'..id..'TargetFrame'], true)
 				else
 					for i = 1, MAX_BOSS_FRAMES do
-						HandleFrame('Boss'..i..'TargetFrame', true)
+						HandleFrame(_G['Boss'..i..'TargetFrame'], true)
 					end
 				end
 			elseif disable.party and strmatch(unit, 'party%d?$') then
@@ -1371,12 +1367,12 @@ do
 
 				local id = strmatch(unit, 'party(%d)')
 				if id then
-					HandleFrame('PartyMemberFrame'..id)
-					HandleFrame('CompactPartyFrameMember'..id)
+					HandleFrame(_G['PartyMemberFrame'..id])
+					HandleFrame(_G['CompactPartyFrameMember'..id])
 				else
 					for i = 1, MAX_PARTY do
-						HandleFrame('PartyMemberFrame'..i)
-						HandleFrame('CompactPartyFrameMember'..i)
+						HandleFrame(_G['PartyMemberFrame'..i])
+						HandleFrame(_G['CompactPartyFrameMember'..i])
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
@@ -1400,12 +1396,12 @@ do
 				-- actually handle the sub frames now
 				local id = strmatch(unit, 'arena(%d)')
 				if id then
-					HandleFrame('ArenaEnemyMatchFrame'..id, true)
-					HandleFrame('ArenaEnemyPrepFrame'..id, true)
+					HandleFrame(_G['ArenaEnemyMatchFrame'..id], true)
+					HandleFrame(_G['ArenaEnemyPrepFrame'..id], true)
 				else
 					for i = 1, MAX_ARENA_ENEMIES do
-						HandleFrame('ArenaEnemyMatchFrame'..i, true)
-						HandleFrame('ArenaEnemyPrepFrame'..i, true)
+						HandleFrame(_G['ArenaEnemyMatchFrame'..i], true)
+						HandleFrame(_G['ArenaEnemyPrepFrame'..i], true)
 					end
 				end
 			end
