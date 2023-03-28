@@ -10,9 +10,9 @@ E.Options.args.skins = Skins
 
 Skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
 Skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E.ShowPopup = true end)
-Skins.args.general.values = { ace3Enable = 'Ace3', libDropdown = L["Lib Dropdown"], blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }
+Skins.args.general.values = { ace3Enable = 'Ace3', libDropdown = L["Library Dropdown"], blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }
 Skins.args.general.sortByValue = true
-Skins.args.general.customWidth = 130
+Skins.args.general.customWidth = 140
 
 Skins.args.talkingHead = ACH:Group(L["Talking Head"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not E.Retail)
 Skins.args.talkingHead.inline = true

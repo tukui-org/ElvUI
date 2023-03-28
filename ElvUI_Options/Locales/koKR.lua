@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
 L["Tag Update Rate"] = true
