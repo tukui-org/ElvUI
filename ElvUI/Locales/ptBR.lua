@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["UPDATE_REQUEST"] = "Parece haver um problema com sua instalação ElvUI. Isto pode ser o resultado de seu cliente Tukui estar desatualizado. Por favor, visite nossa página de download e atualize seu cliente Tukui, depois reinstale ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "O quadro %s está conflitando com outro ponto de fixação. Forçando os Buffs serem anexados ao Quadro de Unidade principal."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s está tentando compartilhar os filtros dele com você. Gostaria de aceitar o pedido?"
