@@ -582,7 +582,7 @@ do -- Early Skin Loading
 				if prefix and not S[prefix..'_UIDropDownMenuSkinned'] then
 					if early then
 						tinsert(S.EarlyDropdowns, prefix)
-					elseif E.private.skins.libDropdowns then
+					elseif E.private.skins.libDropdown then
 						S:SkinLibDropDownMenu(prefix)
 					end
 				end
