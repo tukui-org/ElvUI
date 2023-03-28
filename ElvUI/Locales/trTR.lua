@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s cercevesinin cakisan bir baglanti noktasi var. Guclendirmeler'i Ana cerceveye baglamaya zorluyor.'"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s Filtrelerini sizinle paylasmak istiyor. istegi kabul etmek ister misiniz?"
@@ -99,7 +100,6 @@ L["Debuffs"] = "Zayiflaticilar"
 L["Deficit:"] = "Acik:"
 L["Delete gray items?"] = "Gri ogeler silinsin mi?"
 L["Deposit Reagents"] = "Sarf Malzemelerini Koy"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "ElvUI Options eklentinizin guncel olmadigi tespit edildi. Bu, Tukui istemcinizin guncel olmamasinin bir sonucu olabilir. Lutfen indirme sayfamizi ziyaret edin ve Tukui istemcinizi guncelleyin, ardindan ElvUI'yi yeniden yukleyin. ElvUI Options eklentinizin guncel olmamasi seceneklerin kaybolmasina neden olacaktir."
 L["Disable Warning"] = "Uyariyi Devre Disi Birak"
 L["Disable"] = "Devre Disi Birak"
 L["Disabled"] = "Devre Disi Birakildi"
@@ -186,10 +186,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N\\"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
