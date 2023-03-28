@@ -1994,7 +1994,9 @@ function E:Initialize()
 	if E.version ~= E.Libs.version then
 		E.updateRequestTriggered = true
 		E:StaticPopup_Show('UPDATE_REQUEST')
-	elseif GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
+	end
+
+	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
 
