@@ -11,7 +11,6 @@ local pairs, tinsert, tContains = pairs, tinsert, tContains
 local hooksecurefunc = hooksecurefunc
 local EnableAddOn = EnableAddOn
 local LoadAddOn = LoadAddOn
-local GetAddOnMetadata = GetAddOnMetadata
 local GetAddOnInfo = GetAddOnInfo
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
