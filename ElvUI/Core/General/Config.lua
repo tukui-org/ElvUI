@@ -11,7 +11,6 @@ local pairs, tinsert, tContains = pairs, tinsert, tContains
 local hooksecurefunc = hooksecurefunc
 local EnableAddOn = EnableAddOn
 local LoadAddOn = LoadAddOn
-local GetAddOnMetadata = GetAddOnMetadata
 local GetAddOnInfo = GetAddOnInfo
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
@@ -78,7 +77,7 @@ function E:ToggleMoveMode(which)
 		mode = true
 	end
 
-	self:ToggleMovers(mode, which)
+	E:ToggleMovers(mode, which)
 
 	if mode then
 		E:Grid_Show()
@@ -631,21 +630,21 @@ local function Config_SortButtons(a,b)
 	end
 end
 
-local function ConfigSliderOnMouseWheel(self, offset)
-	local _, maxValue = self:GetMinMaxValues()
+local function ConfigSliderOnMouseWheel(frame, offset)
+	local _, maxValue = frame:GetMinMaxValues()
 	if maxValue == 0 then return end
 
-	local newValue = self:GetValue() - offset
+	local newValue = frame:GetValue() - offset
 	if newValue < 0 then newValue = 0 end
 	if newValue > maxValue then return end
 
-	self:SetValue(newValue)
-	self.buttons:Point('TOPLEFT', 0, newValue * 36)
+	frame:SetValue(newValue)
+	frame.buttons:Point('TOPLEFT', 0, newValue * 36)
 end
 
-local function ConfigSliderOnValueChanged(self, value)
-	self:SetValue(value)
-	self.buttons:Point('TOPLEFT', 0, value * 36)
+local function ConfigSliderOnValueChanged(frame, value)
+	frame:SetValue(value)
+	frame.buttons:Point('TOPLEFT', 0, value * 36)
 end
 
 function E:Config_SetButtonText(btn, noColor)
@@ -1076,30 +1075,28 @@ end
 
 function E:ToggleOptions(msg)
 	if InCombatLockdown() then
-		self:Print(ERR_NOT_IN_COMBAT)
+		E:Print(ERR_NOT_IN_COMBAT)
 		self.ShowOptions = true
 		return
 	end
 
 	if not IsAddOnLoaded('ElvUI_Options') then
-		local noConfig
 		local _, _, _, _, reason = GetAddOnInfo('ElvUI_Options')
 
-		if reason ~= 'MISSING' then
+		if reason == 'MISSING' then
+			E:Print('|cffff0000Error|r -- Addon "ElvUI_Options" not found.')
+			return
+		else
 			EnableAddOn('ElvUI_Options')
 			LoadAddOn('ElvUI_Options')
 
-			-- version check elvui options if it's actually enabled
-			if GetAddOnMetadata('ElvUI_Options', 'Version') ~= '1.09' then
-				self:StaticPopup_Show('CLIENT_UPDATE_REQUEST')
+			-- version check if it's actually enabled
+			local config = E.Config and E.Config[1]
+			if not config or (E.version ~= config.version) then
+				E.updateRequestTriggered = true
+				E:StaticPopup_Show('UPDATE_REQUEST')
+				return
 			end
-		else
-			noConfig = true
-		end
-
-		if noConfig then
-			self:Print('|cffff0000Error -- Addon "ElvUI_Options" not found.|r')
-			return
 		end
 	end
 

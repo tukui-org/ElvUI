@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00키로 다음의 행동을 실행합니다 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 프레임에 버프를 본체 프레임에 강제로 연결하는 충돌 앵커가 있습니다."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터설정을 전송하려 합니다. 받으시겠습니까?"
@@ -99,7 +100,6 @@ L["Debuffs"] = "약화효과"
 L["Deficit:"] = "손해:"
 L["Delete gray items?"] = "잡템을 삭제하시겠습니까?"
 L["Deposit Reagents"] = _G.REAGENTBANK_DEPOSIT
-L["Detected that your ElvUI OptionsUI addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI OptionsUI addon up to date will result in missing options."] = "ElvUI_OptionsUI 가 오래된 버전입니다. Tukui Client 프로그램을 쓰고 있으면 클라이언트를 업데이트하고 ElvUI를 재설치하세요."
 L["Disable Warning"] = "비활성화 경고"
 L["Disable"] = "비활성화"
 L["Disabled"] = "장애가 있는"
@@ -185,11 +185,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "W▼"
 L["KEY_MOUSEWHEELUP"] = "W▲"
-L["KEY_NDIVIDE"] = 'N\\'
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "P▼"
 L["KEY_PAGEUP"] = "P▲"

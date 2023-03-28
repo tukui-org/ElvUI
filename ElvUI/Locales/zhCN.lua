@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架有一个冲突的锚点。强制将增益附加到主单元框架上。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 试图与你分享过滤器配置. 你是否接受?"
@@ -98,7 +99,6 @@ L["Debuffs"] = "减益光环"
 L["Deficit:"] = "亏损:"
 L["Delete gray items?"] = "删除灰色物品?"
 L["Deposit Reagents"] = "导入材料"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "检测到您的ElvUI设置插件已过期.这可能是因为您的 Tukui 客户端已过期.请访问我们的下载页面并更新 Tukui 客户端，然后重新安装ElvUI.ElvUI设置插件过期会造成某些选项丢失"
 L["Disable Warning"] = "禁用警告"
 L["Disable"] = "禁用"
 L["Disabled"] = "已禁用"
@@ -184,11 +184,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NDIVIDE"] = 'N\\'
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"

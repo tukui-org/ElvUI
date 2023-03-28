@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"
@@ -98,7 +99,6 @@ L["Debuffs"] = "Дебаффы"
 L["Deficit:"] = "Убыток:"
 L["Delete gray items?"] = "Удалить серый предметы?"
 L["Deposit Reagents"] = "Сложить материалы"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "Мы обнаружили, что ElvUI Options устарел. Это может быть результатом устаревшей версии Tukui Client. Пожалуйста, посетите нашу страницу загрузок и обновите Tukui Client, а затем переустановите ElvUI. Устаревший ElvUI Options может привести к отсутствию некоторых опций."
 L["Disable Warning"] = "Отключить предупреждение"
 L["Disable"] = "Выключить"
 L["Disabled"] = "Отключено"
@@ -184,11 +184,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NDIVIDE"] = 'N\\'
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"

@@ -53,7 +53,6 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	end,
 	hideOnEscape = 1,
 	button1 = OKAY,
-	OnAccept = E.noop,
 	EditBoxOnEnterPressed = function(self)
 		ChatEdit_FocusActiveWindow()
 		self:GetParent():Hide()
@@ -109,16 +108,14 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 		self:HighlightText()
 		self:ClearFocus()
 	end,
-	OnAccept = E.noop,
 	whileDead = 1,
 	preferredIndex = 3,
 	hideOnEscape = 1,
 }
 
-E.PopupDialogs.CLIENT_UPDATE_REQUEST = {
-	text = L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."],
+E.PopupDialogs.UPDATE_REQUEST = {
+	text = L["UPDATE_REQUEST"],
 	button1 = OKAY,
-	OnAccept = E.noop,
 	showAlert = 1,
 }
 
@@ -392,7 +389,6 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 		SetCVar('scriptProfile', 0)
 		ReloadUI()
 	end,
-	OnCancel = E.noop,
 	showAlert = 1,
 	whileDead = 1,
 	hideOnEscape = false,

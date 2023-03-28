@@ -55,12 +55,12 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
-E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
+E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
-E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
+E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
@@ -1989,6 +1989,11 @@ function E:Initialize()
 
 	if not E.private.install_complete then
 		E:Install()
+	end
+
+	if E.version ~= E.Libs.version then
+		E.updateRequestTriggered = true
+		E:StaticPopup_Show('UPDATE_REQUEST')
 	end
 
 	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then

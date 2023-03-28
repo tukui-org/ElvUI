@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Library Dropdown"] = true
 L["On Me"] = "En Mí"
 L["On Pet"] = "En Mascota"
 L["Tag Update Rate"] = "Tasa de actualización de Tags."

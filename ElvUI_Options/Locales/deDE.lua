@@ -16,6 +16,7 @@ L["LEFT"] = "Links"
 L["RIGHT"] = "Rechts"
 L["TOP"] = "Oben"
 
+L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
 L["Tag Update Rate"] = true
