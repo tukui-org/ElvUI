@@ -99,7 +99,6 @@ L["Debuffs"] = true
 L["Deficit:"] = "Défice:"
 L["Delete gray items?"] = "Deletar itens cinzentos?"
 L["Deposit Reagents"] = "Depositar Reagentes"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = true
 L["Disable Warning"] = "Desativar Aviso"
 L["Disable"] = "Desativar"
 L["Disabled"] = true
