@@ -92,7 +92,7 @@ do -- this is different from E.locale because we need to convert for ace locale 
 end
 
 do
-	E.Libs = { version = tonumber(GetAddOnMetadata('ElvUI_Libraries', 'Version')) }
+	E.Libs = { version = tonumber(C_AddOns.GetAddOnMetadata('ElvUI_Libraries', 'Version')) }
 	E.LibsMinor = {}
 	function E:AddLib(name, major, minor)
 		if not name then return end

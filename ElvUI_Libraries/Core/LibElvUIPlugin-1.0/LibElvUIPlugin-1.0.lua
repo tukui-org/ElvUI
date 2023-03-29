@@ -36,7 +36,7 @@ local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmat
 
 local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
-local GetAddOnMetadata = GetAddOnMetadata
+local C_AddOns_GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
@@ -107,8 +107,8 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 	local plugin = {
 		name = name,
 		callback = callback,
-		title = GetAddOnMetadata(name, 'Title'),
-		author = GetAddOnMetadata(name, 'Author')
+		title = C_AddOns_GetAddOnMetadata(name, 'Title'),
+		author = C_AddOns_GetAddOnMetadata(name, 'Author')
 	}
 
 	if plugin.title then plugin.title = strtrim(plugin.title) end
@@ -118,7 +118,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		plugin.isLib = true
 		plugin.version = libVersion or 1
 	else
-		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, 'Version') or UNKNOWN
+		plugin.version = (name == MAJOR and MINOR) or C_AddOns_GetAddOnMetadata(name, 'Version') or UNKNOWN
 	end
 
 	lib.plugins[name] = plugin

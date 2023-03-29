@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
-	version = tonumber(GetAddOnMetadata('ElvUI_Options', 'Version')),
+	version = tonumber(C_AddOns.GetAddOnMetadata('ElvUI_Options', 'Version')),
 	Blank = function() return '' end
 }
 

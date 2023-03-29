@@ -33,6 +33,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local C_AddOns_GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 -- GLOBALS: ElvCharacterDB
 
 --Modules
@@ -55,8 +56,8 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
-E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
-E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
+E.toc = tonumber(C_AddOns_GetAddOnMetadata('ElvUI', 'X-Interface'))
+E.version = tonumber(C_AddOns_GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
