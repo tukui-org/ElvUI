@@ -381,12 +381,13 @@ do --this can save some main file locals
 		z['Unluckyone-LaughingSkull']	= ElvGreen -- [Horde] Shaman
 		z['Luckydruid-LaughingSkull']	= ElvGreen -- [Alliance] Druid
 		-- Repooc
-		z['Sifpooc-Stormrage']			= itsPooc	-- DH
-		z['Fragmented-Stormrage']		= itsPooc	-- Warlock
-		z['Dapooc-Stormrage']			= itsPooc	-- Druid
-		z['Poocvoker-Stormrage']		= itsPooc	-- Evoker
-		z['Sifupooc-Spirestone']		= itsPooc	-- Monk
-		z['Repooc-Spirestone']			= itsPooc	-- Paladin
+		z['Sifpooc-Stormrage']			= itsPooc	-- [Alliance] DH
+		z['Fragmented-Stormrage']		= itsPooc	-- [Alliance] Warlock
+		z['Dapooc-Stormrage']			= itsPooc	-- [Alliance] Druid
+		z['Poocvoker-Stormrage']		= itsPooc	-- [Alliance] Evoker
+		z['Sifupooc-Stormrage']			= itsPooc	-- [Alliance] Monk
+		z['Pooc-Stormrage']				= itsPooc	-- [Alliance] Paladin
+		z['Repøøc-Stormrage']			= itsPooc	-- [Alliance] Shaman
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
