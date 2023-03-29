@@ -2,9 +2,11 @@ local E = unpack(ElvUI)
 local D = E:GetModule('Distributor')
 local S = E:GetModule('Skins')
 
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
-	version = tonumber(C_AddOns.GetAddOnMetadata('ElvUI_Options', 'Version')),
+	version = tonumber(GetAddOnMetadata('ElvUI_Options', 'Version')),
 	Blank = function() return '' end
 }
 
