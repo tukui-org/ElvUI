@@ -223,6 +223,8 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
 
+
+	-- local spellRewards = C_QuestInfoSystem.GetQuestRewardSpells(questID) or {} -- 10.1 we need to change it to new api: FrameXML\QuestInfo.lua -> line 554
 	local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 	if numSpellRewards > 0 then
 		if E.private.skins.parchmentRemoverEnable then
