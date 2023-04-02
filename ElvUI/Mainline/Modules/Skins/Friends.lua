@@ -149,6 +149,8 @@ function S:FriendsFrame()
 		_G[object]:StripTextures()
 	end
 
+	-- TODO Season 2
+	--[[
 	local mainFrames = {
 		'WhoFrame',
 		'LFRQueueFrame',
@@ -157,6 +159,7 @@ function S:FriendsFrame()
 	for _, frame in pairs(mainFrames) do
 		_G[frame]:StripTextures()
 	end
+	]]
 
 	local FriendsFrame = _G.FriendsFrame
 	S:HandlePortraitFrame(FriendsFrame)

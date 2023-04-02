@@ -547,7 +547,7 @@ function S:Blizzard_EncounterJournal()
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
 		HandleButton(ItemSetsFrame.ClassButton, true)
-		S:HandleScrollBar(ItemSetsFrame.scrollBar)
+		-- S:HandleScrollBar(ItemSetsFrame.scrollBar) TODO Season 2
 
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()

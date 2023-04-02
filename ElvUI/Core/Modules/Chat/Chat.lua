@@ -794,7 +794,7 @@ function CH:StyleChat(frame)
 	if scroll then
 		scroll:Kill()
 		scrollToBottom:Kill()
-		scrollTex:Kill()
+		-- scrollTex:Kill() TODO Season 2
 	end
 
 	--Character count
