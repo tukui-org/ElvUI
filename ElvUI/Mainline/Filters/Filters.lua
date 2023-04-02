@@ -602,6 +602,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[36900]		= List(), -- Soul Split: Evil!
 		[36901]		= List(), -- Soul Split: Good
 		[41425]		= List(), -- Hypothermia
+		[49822]		= List(), -- Bloated
 		[55711]		= List(), -- Weakened Heart
 		[57723]		= List(), -- Exhaustion (heroism debuff)
 		[57724]		= List(), -- Sated (lust debuff)
@@ -619,6 +620,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[124274]	= List(), -- Stagger
 		[124275]	= List(), -- Stagger
 		[195776]	= List(), -- Moonfeather Fever
+		[196342]	= List(), -- Zanzil's Embrace
 		[206150]	= List(), -- Challenger's Burden SL
 		[206151]	= List(), -- Challenger's Burden BfA
 		[206662]	= List(), -- Experience Eliminated (in range)
@@ -634,7 +636,6 @@ G.unitframe.aurafilters.Blacklist = {
 		[383600]	= List(), -- Surrounding Storm (Strunraan)
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
-		[196342]	= List(), -- Zanzil's Embrace
 		[374037]	= List(), -- Overwhelming Rage
 	},
 }
