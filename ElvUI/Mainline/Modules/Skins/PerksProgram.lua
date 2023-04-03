@@ -13,8 +13,8 @@ local function ReplaceIconString(frame, text)
 	if count > 0 then frame:SetFormattedText('%s', newText) end
 end
 
-local function HandleRewardButton(button)
-	local container = button.ContentsContainer
+local function HandleRewardButton(box)
+	local container = box.ContentsContainer
 	if container and not container.isSkinned then
 		container.isSkinned = true
 
@@ -24,11 +24,10 @@ local function HandleRewardButton(button)
 	end
 end
 
--- See Barber Skin
+-- Same as Barber Skin
 local function HandleButton(button)
 	S:HandleNextPrevButton(button)
 
-	-- remove these to fix error on SetHighlightAtlas from AlphaHighlightButtonMixin
 	button:SetScript('OnMouseUp', nil)
 	button:SetScript('OnMouseDown', nil)
 end
@@ -41,42 +40,48 @@ function S:Blizzard_PerksProgram()
 	local productsFrame = frame.ProductsFrame
 	if productsFrame then
 		S:HandleButton(productsFrame.PerksProgramFilter.FilterDropDownButton)
-		productsFrame.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
+
 		S:HandleIcon(productsFrame.PerksProgramCurrencyFrame.Icon)
+		productsFrame.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
 		productsFrame.PerksProgramCurrencyFrame.Icon:Size(30)
 
-		productsFrame.PerksProgramProductDetailsContainerFrame.Border:Hide()
-		productsFrame.PerksProgramProductDetailsContainerFrame:SetTemplate('Transparent')
+		local details = productsFrame.PerksProgramProductDetailsContainerFrame
+		details.Border:Hide()
+		details:SetTemplate('Transparent')
 
-		HandleButton(productsFrame.PerksProgramProductDetailsContainerFrame.CarouselFrame.IncrementButton, nil, nil, true)
-		HandleButton(productsFrame.PerksProgramProductDetailsContainerFrame.CarouselFrame.DecrementButton, nil, nil, true)
+		local carousel = details.CarouselFrame
+		if carousel then
+			HandleButton(carousel.IncrementButton)
+			HandleButton(carousel.DecrementButton)
+		end
 
-		local productsContainer = productsFrame.ProductsScrollBoxContainer
-		productsContainer:StripTextures()
-		productsContainer:SetTemplate('Transparent')
-		S:HandleTrimScrollBar(productsFrame.ProductsScrollBoxContainer.ScrollBar, true)
-		productsContainer.PerksProgramHoldFrame:StripTextures()
-		productsContainer.PerksProgramHoldFrame:CreateBackdrop('Transparent')
-		productsContainer.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
+		local container = productsFrame.ProductsScrollBoxContainer
+		container:StripTextures()
+		container:SetTemplate('Transparent')
+		S:HandleTrimScrollBar(container.ScrollBar, true)
+		container.PerksProgramHoldFrame:StripTextures()
+		container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
+		container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
 
-		hooksecurefunc(productsContainer.ScrollBox, 'Update', function(container)
-			container:ForEachFrame(HandleRewardButton)
+		hooksecurefunc(container.ScrollBox, 'Update', function(box)
+			box:ForEachFrame(HandleRewardButton)
 		end)
 	end
 
 	local footer = frame.FooterFrame
 	if footer then
+		S:HandleCheckBox(footer.TogglePlayerPreview)
+		S:HandleCheckBox(footer.ToggleHideArmor)
+
 		S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
 
-		if footer.RotateButtonContainer then
-			S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
+		local rotate = footer.RotateButtonContainer
+		if rotate then
+			S:HandleButton(rotate.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(rotate.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 		end
-
-		S:HandleCheckBox(footer.TogglePlayerPreview)
-		S:HandleCheckBox(footer.ToggleHideArmor)
 	end
 end
 
