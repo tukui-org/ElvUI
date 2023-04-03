@@ -24,6 +24,12 @@ local function HandleRewardButton(box)
 	end
 end
 
+local function HandleRewards(box)
+	if box then
+		box:ForEachFrame(HandleRewardButton)
+	end
+end
+
 -- Same as Barber Skin
 local function HandleButton(button)
 	S:HandleNextPrevButton(button)
@@ -36,36 +42,41 @@ function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
 	local frame = _G.PerksProgramFrame
+	local products = frame.ProductsFrame
+	if products then
+		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
 
-	local productsFrame = frame.ProductsFrame
-	if productsFrame then
-		S:HandleButton(productsFrame.PerksProgramFilter.FilterDropDownButton)
-
-		S:HandleIcon(productsFrame.PerksProgramCurrencyFrame.Icon)
-		productsFrame.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
-		productsFrame.PerksProgramCurrencyFrame.Icon:Size(30)
-
-		local details = productsFrame.PerksProgramProductDetailsContainerFrame
-		details.Border:Hide()
-		details:SetTemplate('Transparent')
-
-		local carousel = details.CarouselFrame
-		if carousel then
-			HandleButton(carousel.IncrementButton)
-			HandleButton(carousel.DecrementButton)
+		local currency = products.PerksProgramCurrencyFrame
+		if currency then
+			S:HandleIcon(currency.Icon)
+			currency.Icon:Size(30)
+			currency.Text:FontTemplate(nil, 30)
 		end
 
-		local container = productsFrame.ProductsScrollBoxContainer
-		container:StripTextures()
-		container:SetTemplate('Transparent')
-		S:HandleTrimScrollBar(container.ScrollBar, true)
-		container.PerksProgramHoldFrame:StripTextures()
-		container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
-		container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
+		local details = products.PerksProgramProductDetailsContainerFrame
+		if details then
+			details.Border:Hide()
+			details:SetTemplate('Transparent')
 
-		hooksecurefunc(container.ScrollBox, 'Update', function(box)
-			box:ForEachFrame(HandleRewardButton)
-		end)
+			local carousel = details.CarouselFrame
+			if carousel then
+				HandleButton(carousel.IncrementButton)
+				HandleButton(carousel.DecrementButton)
+			end
+		end
+
+		local container = products.ProductsScrollBoxContainer
+		if container then
+			container:StripTextures()
+			container:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(container.ScrollBar, true)
+
+			container.PerksProgramHoldFrame:StripTextures()
+			container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
+			container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
+
+			hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
+		end
 	end
 
 	local footer = frame.FooterFrame
