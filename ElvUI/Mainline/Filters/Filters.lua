@@ -937,6 +937,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[402420] = List(), -- Molten Scar
 		[402253] = List(), -- Ray of Anguish
 		[406525] = List(), -- Dread Rift
+		[404743] = List(), -- Terror Claws
 	-- Molgoth
 		[405084] = List(), -- Lingering Umbra
 		[405645] = List(), -- Engulfing Heat
@@ -966,6 +967,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[403978] = List(), -- Blast Wave
 		[405592] = List(), -- Salvage Parts
 		[405462] = List(), -- Dragonfire Traps
+		[409942] = List(), -- Elimination Protocol
 	-- Magmorax
 		[404846] = List(), -- Incinerating Maws 1
 		[408955] = List(), -- Incinerating Maws 2
@@ -1267,6 +1269,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[403536] = List(), -- Lava Infusion
 	-- Zskarn
 		[404939] = List(), -- Searing Claws
+		[409463] = List(), -- Reinforced
 	-- Magmorax
 		[404846] = List(), -- Incinerating Maws
 	-- Echo of Neltharion
