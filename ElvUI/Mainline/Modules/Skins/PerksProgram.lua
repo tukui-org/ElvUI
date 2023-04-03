@@ -37,15 +37,15 @@ function S:Blizzard_PerksProgram()
 
 	local frame = _G.PerksProgramFrame
 
-	local productsFrame = frame.ProductsFrame
-	if productsFrame then
-		S:HandleButton(productsFrame.PerksProgramFilter.FilterDropDownButton)
+	local products = frame.ProductsFrame
+	if products then
+		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
 
-		S:HandleIcon(productsFrame.PerksProgramCurrencyFrame.Icon)
-		productsFrame.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
-		productsFrame.PerksProgramCurrencyFrame.Icon:Size(30)
+		S:HandleIcon(products.PerksProgramCurrencyFrame.Icon)
+		products.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
+		products.PerksProgramCurrencyFrame.Icon:Size(30)
 
-		local details = productsFrame.PerksProgramProductDetailsContainerFrame
+		local details = products.PerksProgramProductDetailsContainerFrame
 		details.Border:Hide()
 		details:SetTemplate('Transparent')
 
@@ -55,7 +55,7 @@ function S:Blizzard_PerksProgram()
 			HandleButton(carousel.DecrementButton)
 		end
 
-		local container = productsFrame.ProductsScrollBoxContainer
+		local container = products.ProductsScrollBoxContainer
 		container:StripTextures()
 		container:SetTemplate('Transparent')
 		S:HandleTrimScrollBar(container.ScrollBar, true)
