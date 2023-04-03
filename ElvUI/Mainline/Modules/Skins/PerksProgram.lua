@@ -24,6 +24,12 @@ local function HandleRewardButton(box)
 	end
 end
 
+local function HandleRewards(box)
+	if box then
+		box:ForEachFrame(HandleRewardButton)
+	end
+end
+
 -- Same as Barber Skin
 local function HandleButton(button)
 	S:HandleNextPrevButton(button)
@@ -36,36 +42,40 @@ function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
 	local frame = _G.PerksProgramFrame
-
 	local products = frame.ProductsFrame
 	if products then
 		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
 
-		S:HandleIcon(products.PerksProgramCurrencyFrame.Icon)
-		products.PerksProgramCurrencyFrame.Text:FontTemplate(nil, 30)
-		products.PerksProgramCurrencyFrame.Icon:Size(30)
+		local currency = products.PerksProgramCurrencyFrame
+		if currency then
+			S:HandleIcon(currency.Icon)
+			currency.Icon:Size(30)
+			currency.Text:FontTemplate(nil, 30)
+		end
 
 		local details = products.PerksProgramProductDetailsContainerFrame
-		details.Border:Hide()
-		details:SetTemplate('Transparent')
+		if details then
+			details.Border:Hide()
+			details:SetTemplate('Transparent')
 
-		local carousel = details.CarouselFrame
-		if carousel then
-			HandleButton(carousel.IncrementButton)
-			HandleButton(carousel.DecrementButton)
+			local carousel = details.CarouselFrame
+			if carousel then
+				HandleButton(carousel.IncrementButton)
+				HandleButton(carousel.DecrementButton)
+			end
 		end
 
 		local container = products.ProductsScrollBoxContainer
-		container:StripTextures()
-		container:SetTemplate('Transparent')
-		S:HandleTrimScrollBar(container.ScrollBar, true)
-		container.PerksProgramHoldFrame:StripTextures()
-		container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
-		container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
+		if container then
+			container:StripTextures()
+			container:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(container.ScrollBar, true)
+			container.PerksProgramHoldFrame:StripTextures()
+			container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
+			container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
 
-		hooksecurefunc(container.ScrollBox, 'Update', function(box)
-			box:ForEachFrame(HandleRewardButton)
-		end)
+			hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
+		end
 	end
 
 	local footer = frame.FooterFrame
