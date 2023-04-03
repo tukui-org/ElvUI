@@ -916,6 +916,19 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[266107] = List(), -- Thirst for Blood
 		[260455] = List(), -- Serrated Fangs
 	-- Vortex Pinnacle
+		[87618] = List(), -- Static Cling
+		[410870] = List(), -- Cyclone
+		[86292] = List(), -- Cyclone Shield
+		[88282] = List(), -- Upwind of Altairus
+		[88286] = List(), -- Downwind of Altairus
+		[410997] = List(), -- Rushing Wind
+		[411003] = List(), -- Turbulence
+		[87771] = List(), -- Crusader Strike
+		[87759] = List(), -- Shockwave
+		[88314] = List(), -- Twisting Winds
+		[76622] = List(), -- Sunder Armor
+		[88171] = List(), -- Hurricane
+		[88182] = List(), -- Lethargic Poison
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
@@ -1213,6 +1226,20 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[266201] = List(), -- Bone Shield
 		[266209] = List(), -- Wicked Frenzy
 	-- Vortex Pinnacle
+		[87721] = List(), -- Beam A
+		[87722] = List(), -- Beam B
+		[87723] = List(), -- Beam C
+		[86930] = List(), -- Supremacy of the Storm
+		[86911] = List(), -- Unstable Grounding Field
+		[85084] = List(), -- Howling Gale
+		[411002] = List(), -- Turbulence
+		[87780] = List(), -- Desperate Speed
+		[88186] = List(), -- Vapor Form
+		[410998] = List(), -- Wind Flurry
+		[85467] = List(), -- Lurk
+		[87762] = List(), -- Lightning Lash
+		[87761] = List(), -- Rally
+		[87726] = List(), -- Grounding Field
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
