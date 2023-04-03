@@ -239,10 +239,12 @@ function S:Blizzard_Professions()
 	end
 
 	local SpecPage = ProfessionsFrame.SpecPage
+	S:HandleButton(SpecPage.ViewTreeButton)
 	S:HandleButton(SpecPage.UnlockTabButton)
 	S:HandleButton(SpecPage.ApplyButton)
 	S:HandleButton(SpecPage.ViewPreviewButton)
 	S:HandleButton(SpecPage.BackToFullTreeButton)
+	S:HandleButton(SpecPage.BackToPreviewButton)
 	SpecPage.TreeView:StripTextures()
 	SpecPage.TreeView.Background:Hide()
 	SpecPage.TreeView:CreateBackdrop('Transparent')
