@@ -381,12 +381,13 @@ do --this can save some main file locals
 		z['Unluckyone-LaughingSkull']	= ElvGreen -- [Horde] Shaman
 		z['Luckydruid-LaughingSkull']	= ElvGreen -- [Alliance] Druid
 		-- Repooc
-		z['Sifpooc-Stormrage']			= itsPooc	-- DH
-		z['Fragmented-Stormrage']		= itsPooc	-- Warlock
-		z['Dapooc-Stormrage']			= itsPooc	-- Druid
-		z['Poocvoker-Stormrage']		= itsPooc	-- Evoker
-		z['Sifupooc-Spirestone']		= itsPooc	-- Monk
-		z['Repooc-Spirestone']			= itsPooc	-- Paladin
+		z['Sifpooc-Stormrage']			= itsPooc	-- [Alliance] DH
+		z['Fragmented-Stormrage']		= itsPooc	-- [Alliance] Warlock
+		z['Dapooc-Stormrage']			= itsPooc	-- [Alliance] Druid
+		z['Poocvoker-Stormrage']		= itsPooc	-- [Alliance] Evoker
+		z['Sifupooc-Stormrage']			= itsPooc	-- [Alliance] Monk
+		z['Pooc-Stormrage']				= itsPooc	-- [Alliance] Paladin
+		z['Repøøc-Stormrage']			= itsPooc	-- [Alliance] Shaman
 		-- Simpy
 		z['Arieva-Cenarius']			= itsSimpy -- Hunter
 		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
@@ -2081,7 +2082,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			local showLink = 1
-			if strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS' then
+			local isMonster = strsub(chatType, 1, 7) == 'MONSTER'
+			if isMonster or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 				showLink = nil
 
 				-- fix blizzard formatting errors from localization strings
@@ -2144,39 +2146,41 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Player Flags
 			local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-			local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
-			if type(chatIcon) == 'function' then
-				local icon, prettify, var1, var2, var3 = chatIcon()
-				if prettify and not CH:MessageIsProtected(message) then
-					if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
-						var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
+			if not isMonster then
+				local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
+				if type(chatIcon) == 'function' then
+					local icon, prettify, var1, var2, var3 = chatIcon()
+					if prettify and not CH:MessageIsProtected(message) then
+						if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
+							var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
+						end
+
+						if var2 then
+							if var1 ~= '' then var1 = prettify(var1) end
+							if var3 ~= '' then var3 = prettify(var3) end
+
+							message = var1..var2..var3
+						else
+							message = prettify(message)
+						end
 					end
 
-					if var2 then
-						if var1 ~= '' then var1 = prettify(var1) end
-						if var3 ~= '' then var3 = prettify(var3) end
-
-						message = var1..var2..var3
-					else
-						message = prettify(message)
-					end
+					chatIcon = icon or ''
 				end
 
-				chatIcon = icon or ''
-			end
-
-			-- LFG Role Flags
-			local lfgRole = lfgRoles[playerName]
-			if lfgRole and (chatType == 'PARTY_LEADER' or chatType == 'PARTY' or chatType == 'RAID' or chatType == 'RAID_LEADER' or chatType == 'INSTANCE_CHAT' or chatType == 'INSTANCE_CHAT_LEADER') then
-				pflag = pflag..lfgRole
-			end
-			-- Special Chat Icon
-			if chatIcon then
-				pflag = pflag..chatIcon
-			end
-			-- Plugin Chat Icon
-			if pluginChatIcon then
-				pflag = pflag..pluginChatIcon
+				-- LFG Role Flags
+				local lfgRole = (chatType == 'PARTY_LEADER' or chatType == 'PARTY' or chatType == 'RAID' or chatType == 'RAID_LEADER' or chatType == 'INSTANCE_CHAT' or chatType == 'INSTANCE_CHAT_LEADER') and lfgRoles[playerName]
+				if lfgRole then
+					pflag = pflag..lfgRole
+				end
+				-- Special Chat Icon
+				if chatIcon then
+					pflag = pflag..chatIcon
+				end
+				-- Plugin Chat Icon
+				if pluginChatIcon then
+					pflag = pflag..pluginChatIcon
+				end
 			end
 
 			if usingDifferentLanguage then

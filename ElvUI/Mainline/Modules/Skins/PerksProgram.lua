@@ -24,6 +24,15 @@ local function HandleRewardButton(button)
 	end
 end
 
+-- See Barber Skin
+local function HandleButton(button)
+	S:HandleNextPrevButton(button)
+
+	-- remove these to fix error on SetHighlightAtlas from AlphaHighlightButtonMixin
+	button:SetScript('OnMouseUp', nil)
+	button:SetScript('OnMouseDown', nil)
+end
+
 function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
@@ -38,6 +47,9 @@ function S:Blizzard_PerksProgram()
 
 		productsFrame.PerksProgramProductDetailsContainerFrame.Border:Hide()
 		productsFrame.PerksProgramProductDetailsContainerFrame:SetTemplate('Transparent')
+
+		HandleButton(productsFrame.PerksProgramProductDetailsContainerFrame.CarouselFrame.IncrementButton, nil, nil, true)
+		HandleButton(productsFrame.PerksProgramProductDetailsContainerFrame.CarouselFrame.DecrementButton, nil, nil, true)
 
 		local productsContainer = productsFrame.ProductsScrollBoxContainer
 		productsContainer:StripTextures()

@@ -1893,7 +1893,8 @@ function S:Initialize()
 			S:Ace3_SkinTooltip(LibStub(n, true))
 		end
 	end
-	if S.EarlyDropdowns then
+
+	if E.private.skins.libDropdown and S.EarlyDropdowns then
 		for _, n in next, S.EarlyDropdowns do
 			S:SkinLibDropDownMenu(n)
 		end

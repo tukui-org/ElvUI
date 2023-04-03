@@ -68,6 +68,7 @@ V.chat = {
 
 V.skins = {
 	ace3Enable = true,
+	libDropdown = true,
 	checkBoxSkin = true,
 	parchmentRemoverEnable = false,
 	blizzard = {
