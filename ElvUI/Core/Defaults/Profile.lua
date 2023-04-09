@@ -197,7 +197,9 @@ P.general = {
 		growthDirection = 'VERTICAL',
 		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
 		size = 40,
+		height = 40,
 		spacing = 4,
+		keepSizeRatio = true,
 	},
 	kittys = false
 }

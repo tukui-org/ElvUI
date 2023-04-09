@@ -54,7 +54,10 @@ function T:PositionAndSize()
 	for i = 1, MAX_TOTEMS do
 		local button = T.bar[i]
 		local prevButton = T.bar[i-1]
-		button:Size(T.db.size)
+		local width = T.db.size
+		local height = T.db.keepSizeRatio and T.db.size or T.db.height
+
+		button:Size(width, height)
 		button:ClearAllPoints()
 
 		if T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'ASCENDING' then
