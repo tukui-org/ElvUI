@@ -194,7 +194,10 @@ function AB:PositionAndSizeTotemBar()
 	local barFrame = _G.MultiCastActionBarFrame
 	local numActiveSlots = barFrame.numActiveSlots
 	local buttonSpacing = AB.db.totemBar.spacing
-	local size = AB.db.totemBar.buttonSize
+
+	local size = AB.db.totemBar.buttonSize -- will be obsolete if we use the "buttonWidth"
+	--local buttonWidth = AB.db.totemBar.buttonSize -- new stuff from mera @Simpy
+	local buttonHeight = AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize or AB.db.totemBar.buttonSize
 
 	local mainSize = (size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
 	bar:Width(mainSize)

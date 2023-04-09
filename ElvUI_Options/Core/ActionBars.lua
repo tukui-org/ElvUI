@@ -228,7 +228,12 @@ ActionBar.args.totemBar.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2)
 ActionBar.args.totemBar.args.spacer1 = ACH:Spacer(3, 'full')
 ActionBar.args.totemBar.args.spacing = ACH:Range(L["Button Spacing"], nil, 5, { min = 1, max = 10, step = 1 })
 ActionBar.args.totemBar.args.buttonSize = ACH:Range(L["Button Size"], nil, 6, { min = 24, max = 60, step = 1 })
-ActionBar.args.totemBar.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 7, { min = 0, max = 1, step = 0.01, isPercent = true })
+ActionBar.args.totemBar.args.buttonHeight = ACH:Range(L["Button Height"], nil, 7, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.buttonSize.name = function() return E.db.actionbar.totemBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
+ActionBar.args.totemBar.args.buttonSize.desc = function() return E.db.actionbar.totemBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
+ActionBar.args.totemBar.args.buttonHeight.hidden = function() return E.db.actionbar.totemBar.keepSizeRatio end
+ActionBar.args.totemBar.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 8)
+ActionBar.args.totemBar.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 9, { min = 0, max = 1, step = 0.01, isPercent = true })
 
 ActionBar.args.totemBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 10, nil, 'full')
 
