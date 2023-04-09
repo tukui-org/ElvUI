@@ -200,6 +200,7 @@ function AB:TrimIcon(button, masque)
 
 	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
 	local changeRatio = button.db and not button.db.keepSizeRatio
+
 	if changeRatio then
 		local width, height = button:GetSize()
 		local ratio = width / height

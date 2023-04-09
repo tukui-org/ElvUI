@@ -73,6 +73,7 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
+	button.db = AB.db.totemBar
 
 	if normal then normal:SetTexture(nil) end
 	if button.overlayTex then button.overlayTex:Hide() end
@@ -84,7 +85,6 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	if not useMasque then
 		button:StyleButton()
-		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetDrawLayer('ARTWORK')
 		icon:SetInside(button)
 	else
@@ -132,7 +132,8 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 			button:Size(buttonWidth, buttonHeight)
 			button:ClearAllPoints()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+
+			AB:TrimIcon(button, useMasque)
 
 			local anchor = (i == 1 and parent) or frame.buttons[i - 1]
 			if AB.db.totemBar.flyoutDirection == 'UP' then
@@ -200,6 +201,7 @@ function AB:PositionAndSizeTotemBar()
 
 	local buttonWidth = AB.db.totemBar.buttonSize
 	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize) or AB.db.totemBar.buttonHeight
+	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 
 	local mainWidth = (buttonWidth * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
 	bar:Width(mainWidth)
@@ -227,10 +229,14 @@ function AB:PositionAndSizeTotemBar()
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]
+		local actionButton = _G['MultiCastActionButton'..i]
 		local lastButton = _G['MultiCastSlotButton'..i - 1]
 
 		button:Size(buttonWidth, buttonHeight)
 		button:ClearAllPoints()
+
+		actionButton:SetSize(button:GetSize()) -- these need to match for icon trim setting
+		AB:TrimIcon(actionButton, useMasque)
 
 		if i == 1 then
 			button:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
@@ -241,6 +247,9 @@ function AB:PositionAndSizeTotemBar()
 
 	_G.MultiCastRecallSpellButton:Size(buttonWidth, buttonHeight)
 	AB:MultiCastRecallSpellButton_Update()
+
+	AB:TrimIcon(summonButton, useMasque)
+	AB:TrimIcon(_G.MultiCastRecallSpellButton, useMasque)
 
 	_G.MultiCastFlyoutFrameCloseButton:Width(buttonWidth)
 	_G.MultiCastFlyoutFrameOpenButton:Width(buttonWidth)
