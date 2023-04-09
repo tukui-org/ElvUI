@@ -3,8 +3,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, pairs = ipairs, pairs
-local unpack, gsub = unpack, gsub
+local ipairs, pairs, gsub = ipairs, pairs, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
