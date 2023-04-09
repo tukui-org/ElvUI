@@ -2497,6 +2497,7 @@ P.actionbar = {
 		buttonHeight = 32,
 		flyoutDirection = 'UP',
 		flyoutSize = 28,
+		flyoutHeight = 28,
 		flyoutSpacing = 2,
 		font = 'PT Sans Narrow',
 		fontOutline = 'OUTLINE',

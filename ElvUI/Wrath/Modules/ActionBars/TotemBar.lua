@@ -107,9 +107,12 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	frame.middle:SetTexture(nil)
 
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
-	local numButtons = 0
-	local totalHeight = 0
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
+	local numButtons, totalHeight = 0, 0
+
+	local buttonWidth = AB.db.totemBar.flyoutSize
+	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.flyoutSize) or AB.db.totemBar.flyoutHeight
+	local buttonSpacing = AB.db.totemBar.flyoutSpacing
 
 	for i, button in ipairs(frame.buttons) do
 		if not button.isSkinned then
@@ -127,18 +130,18 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 				button:SetBackdropBorderColor(color.r, color.g, color.b)
 			end
 
-			button:Size(AB.db.totemBar.flyoutSize)
+			button:Size(buttonWidth, buttonHeight)
 			button:ClearAllPoints()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 
-			local anchor = i == 1 and parent or frame.buttons[i - 1]
+			local anchor = (i == 1 and parent) or frame.buttons[i - 1]
 			if AB.db.totemBar.flyoutDirection == 'UP' then
-				button:Point('BOTTOM', anchor, 'TOP', 0, AB.db.totemBar.flyoutSpacing)
+				button:Point('BOTTOM', anchor, 'TOP', 0, buttonSpacing)
 			else
-				button:Point('TOP', anchor, 'BOTTOM', 0, -AB.db.totemBar.flyoutSpacing)
+				button:Point('TOP', anchor, 'BOTTOM', 0, -buttonSpacing)
 			end
 
-			totalHeight = totalHeight + button:GetHeight() + AB.db.totemBar.flyoutSpacing
+			totalHeight = totalHeight + button:GetHeight() + buttonSpacing
 		end
 	end
 
@@ -195,15 +198,14 @@ function AB:PositionAndSizeTotemBar()
 	local numActiveSlots = barFrame.numActiveSlots
 	local buttonSpacing = AB.db.totemBar.spacing
 
-	local size = AB.db.totemBar.buttonSize -- will be obsolete if we use the "buttonWidth"
-	--local buttonWidth = AB.db.totemBar.buttonSize -- new stuff from mera @Simpy
-	local buttonHeight = AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize or AB.db.totemBar.buttonSize
+	local buttonWidth = AB.db.totemBar.buttonSize
+	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize) or AB.db.totemBar.buttonHeight
 
-	local mainSize = (size * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
-	bar:Width(mainSize)
-	barFrame:Width(mainSize)
-	bar:Height(size + 2)
-	barFrame:Height(size + 2)
+	local mainWidth = (buttonWidth * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
+	bar:Width(mainWidth)
+	barFrame:Width(mainWidth)
+	bar:Height(buttonHeight + 2)
+	barFrame:Height(buttonHeight + 2)
 
 	local _, barFrameAnchor = barFrame:GetPoint()
 	if barFrameAnchor ~= bar then
@@ -221,13 +223,13 @@ function AB:PositionAndSizeTotemBar()
 	local summonButton = _G.MultiCastSummonSpellButton
 	summonButton:ClearAllPoints()
 	summonButton:Point('BOTTOMLEFT')
-	summonButton:Size(size)
+	summonButton:Size(buttonWidth, buttonHeight)
 
 	for i = 1, numActiveSlots do
 		local button = _G['MultiCastSlotButton'..i]
 		local lastButton = _G['MultiCastSlotButton'..i - 1]
 
-		button:Size(size)
+		button:Size(buttonWidth, buttonHeight)
 		button:ClearAllPoints()
 
 		if i == 1 then
@@ -237,11 +239,11 @@ function AB:PositionAndSizeTotemBar()
 		end
 	end
 
-	_G.MultiCastRecallSpellButton:Size(size)
+	_G.MultiCastRecallSpellButton:Size(buttonWidth, buttonHeight)
 	AB:MultiCastRecallSpellButton_Update()
 
-	_G.MultiCastFlyoutFrameCloseButton:Width(size)
-	_G.MultiCastFlyoutFrameOpenButton:Width(size)
+	_G.MultiCastFlyoutFrameCloseButton:Width(buttonWidth)
+	_G.MultiCastFlyoutFrameOpenButton:Width(buttonWidth)
 end
 
 function AB:UpdateTotemBindings()
