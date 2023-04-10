@@ -227,13 +227,13 @@ ActionBar.args.totemBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 
 ActionBar.args.totemBar.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2)
 ActionBar.args.totemBar.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
 ActionBar.args.totemBar.args.spacer1 = ACH:Spacer(5, 'full')
-ActionBar.args.totemBar.args.spacing = ACH:Range(L["Button Spacing"], nil, 10, { min = 1, max = 10, step = 1 })
-ActionBar.args.totemBar.args.buttonSize = ACH:Range(L["Button Size"], nil, 11, { min = 24, max = 60, step = 1 })
-ActionBar.args.totemBar.args.buttonHeight = ACH:Range(L["Button Height"], nil, 12, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 10, { min = 0, max = 1, step = 0.01, isPercent = true })
+ActionBar.args.totemBar.args.spacing = ACH:Range(L["Button Spacing"], nil, 11, { min = 1, max = 10, step = 1 })
+ActionBar.args.totemBar.args.buttonSize = ACH:Range(L["Button Size"], nil, 12, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.buttonHeight = ACH:Range(L["Button Height"], nil, 13, { min = 24, max = 60, step = 1 })
 ActionBar.args.totemBar.args.buttonSize.name = function() return E.db.actionbar.totemBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.totemBar.args.buttonSize.desc = function() return E.db.actionbar.totemBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.totemBar.args.buttonHeight.hidden = function() return E.db.actionbar.totemBar.keepSizeRatio end
-ActionBar.args.totemBar.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 13, { min = 0, max = 1, step = 0.01, isPercent = true })
 
 ActionBar.args.totemBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 20, nil, 'full')
 
@@ -244,10 +244,10 @@ ActionBar.args.totemBar.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font 
 ActionBar.args.totemBar.args.fontGroup.inline = true
 
 ActionBar.args.totemBar.args.flyoutGroup = ACH:Group("Flyout Options", nil, 50)
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSpacing = ACH:Range("Flyout Spacing", nil, 5, { min = 1, max = 10, step = 1 })
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 6, { UP = L["Up"], DOWN = L["Down"] })
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize = ACH:Range("Flyout Size", nil, 1, { min = 24, max = 60, step = 1 })
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutHeight = ACH:Range(L["Flyout Height"], nil, 2, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 1, { UP = L["Up"], DOWN = L["Down"] })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSpacing = ACH:Range("Flyout Spacing", nil, 2, { min = 1, max = 10, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize = ACH:Range("Flyout Size", nil, 3, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutHeight = ACH:Range(L["Flyout Height"], nil, 4, { min = 24, max = 60, step = 1 })
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize.name = function() return E.db.actionbar.totemBar.keepSizeRatio and L["Flyout Size"] or L["Flyout Width"] end
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize.desc = function() return E.db.actionbar.totemBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutHeight.hidden = function() return E.db.actionbar.totemBar.keepSizeRatio end
