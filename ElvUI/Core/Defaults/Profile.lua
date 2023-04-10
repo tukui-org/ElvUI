@@ -197,7 +197,9 @@ P.general = {
 		growthDirection = 'VERTICAL',
 		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
 		size = 40,
+		height = 40,
 		spacing = 4,
+		keepSizeRatio = true,
 	},
 	kittys = false
 }
@@ -2490,9 +2492,12 @@ P.actionbar = {
 		enable = true,
 		alpha = 1,
 		spacing = 4,
+		keepSizeRatio = true,
 		buttonSize = 32,
+		buttonHeight = 32,
 		flyoutDirection = 'UP',
 		flyoutSize = 28,
+		flyoutHeight = 28,
 		flyoutSpacing = 2,
 		font = 'PT Sans Narrow',
 		fontOutline = 'OUTLINE',

@@ -201,7 +201,6 @@ do
 	local alwaysDisable = {
 		'ElvUI_AuraBarsMovers',
 		'ElvUI_CastBarOverlay',
-		'ElvUI_ChatTweaks', -- https://github.com/cr4ckp0t/ElvUI_ChatTweaks/issues/58
 		'ElvUI_CustomTags',
 		'ElvUI_CustomTweaks',
 		'ElvUI_DTBars2',
