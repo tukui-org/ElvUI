@@ -67,15 +67,15 @@ GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automaticall
 
 GenGen.totems = ACH:Group(L["Totem Tracker"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TotemTracker:PositionAndSize() end)
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemTracker end, function(_, value) E.private.general.totemTracker = value; E.ShowPopup = true end)
-GenGen.totems.args.size = ACH:Range(L["Button Size"], nil, 2, { min = 24, max = 60, step = 1 })
-GenGen.totems.args.height = ACH:Range(L["Button Height"], nil, 3, { min = 24, max = 60, step = 1 })
+GenGen.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 2, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+GenGen.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 3, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
+GenGen.totems.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
+GenGen.totems.args.spacing = ACH:Range(L["Button Spacing"], nil, 5, { min = 1, max = 10, step = 1 })
+GenGen.totems.args.size = ACH:Range(L["Button Size"], nil, 6, { min = 24, max = 60, step = 1 })
+GenGen.totems.args.height = ACH:Range(L["Button Height"], nil, 7, { min = 24, max = 60, step = 1 })
 GenGen.totems.args.size.name = function() return E.db.general.totems.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 GenGen.totems.args.size.desc = function() return E.db.general.totems.keepSizeRatio and L["The size of the Totem buttons."] or L["The width of the totem buttons."] end
 GenGen.totems.args.height.hidden = function() return E.db.general.totems.keepSizeRatio end
-GenGen.totems.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
-GenGen.totems.args.spacing = ACH:Range(L["Button Spacing"], nil, 5, { min = 1, max = 10, step = 1 })
-GenGen.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 6, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
-GenGen.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 7, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
 GenGen.totems.inline = true
 
 General.media = ACH:Group(L["Media"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
