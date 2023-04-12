@@ -747,7 +747,7 @@ StyleFilters.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { m
 StyleFilters.actions.args.glow = ACH:Group(L["Custom Glow"], nil, 40, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFilters.actions.args.glow.inline = true
 StyleFilters.actions.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
+StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
 StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 2, true)
 StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(3, 'full')
 StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 4, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
