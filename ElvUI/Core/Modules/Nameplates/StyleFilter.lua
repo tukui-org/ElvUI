@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 local ElvUF = E.oUF
 
 local _G = _G
@@ -528,7 +529,7 @@ do
 	end
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, Glow)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -600,6 +601,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
 		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a or 1)
 	end
+	if Glow then
+		local hc = actions.glow
+		c.Glow = true
+		LCG.PixelGlow_Start(frame.Health,{hc.glowColor.r,hc.glowColor.g,hc.glowColor.b,hc.glowColor.a}, hc.lines, hc.speed, hc.size, 4, 3, 3, false, nil, 6)
+	end
 	if PowerColor then
 		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
 		c.PowerColor = true
@@ -659,7 +665,7 @@ function mod:StyleFilterClearVisibility(frame, previous)
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, Glow)
 	local db = mod:PlateDB(frame)
 
 	local c = frame.StyleFilterChanges
@@ -692,6 +698,9 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 			h:SetStatusBarColor(h.r, h.g, h.b)
 			frame.Cutaway.Health:SetVertexColor(h.r * 1.5, h.g * 1.5, h.b * 1.5, 1)
 		end
+	end
+	if Glow then
+		LCG.PixelGlow_Stop(frame.Health)
 	end
 	if PowerColor then
 		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
@@ -1234,7 +1243,8 @@ function mod:StyleFilterPass(frame, actions)
 		(actions.tags and actions.tags.level and actions.tags.level ~= ''), --LevelTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
-		(actions.hide) --Visibility
+		(actions.hide), --Visibility
+		(actions.glow.enable and actions.glow.glowColor.r and actions.glow.glowColor.g and actions.glow.glowColor.b and actions.glow.glowColor.a and  actions.glow.lines and  actions.glow.speed and  actions.glow.size) --Glow
 	)
 end
 
@@ -1243,7 +1253,7 @@ function mod:StyleFilterClear(frame)
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility, c.Glow)
 	end
 end
 

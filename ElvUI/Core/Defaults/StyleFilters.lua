@@ -356,6 +356,13 @@ E.StyleFilterDefaults = {
 			health = '',
 			power = ''
 		},
+		glow = {
+			enable = false,
+			glowColor = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+			speed = 0.3,
+			lines = 8,
+			size = 1
+		},
 		hide = false,
 		usePortrait = false,
 		nameOnly = false,

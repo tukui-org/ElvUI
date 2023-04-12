@@ -676,6 +676,12 @@ local actionDefaults = {
 		color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
 		speed = 4
 	},
+	glow = {
+		glowColor = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		speed = 0.3,
+		lines = 8,
+		size = 1
+	}
 }
 
 local function actionHidePlate() local _, actions = GetFilter(true) return actions.hide end
@@ -738,7 +744,17 @@ StyleFilters.actions.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
 StyleFilters.actions.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
 StyleFilters.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
 
-StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 40, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
+StyleFilters.actions.args.glow = ACH:Group(L["Custom Glow"], nil, 40, nil, actionSubGroup, actionSubGroup, actionHidePlate)
+StyleFilters.actions.args.glow.inline = true
+StyleFilters.actions.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+StyleFilters.actions.args.glow.args.glowColor = ACH:Color(L["COLOR"], nil, 2, true)
+StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(3, 'full')
+StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 4, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
+StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 5, { min = 1, max = 5, step = 1 })
+StyleFilters.actions.args.glow.args.lines = ACH:Range(L["Lines"], nil, 6, { min = 1, max = 20, step = 1 })
+
+
+StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 50, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
 StyleFilters.actions.args.text_format.inline = true
 StyleFilters.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')
 StyleFilters.actions.args.text_format.args.name = ACH:Input(L["Name"], nil, 1, nil, 'full')
