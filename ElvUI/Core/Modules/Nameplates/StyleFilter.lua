@@ -603,8 +603,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if Glow then
 		local hc = actions.glow
-		c.Glow = true
-		LCG.PixelGlow_Start(frame.Health,{hc.glowColor.r,hc.glowColor.g,hc.glowColor.b,hc.glowColor.a}, hc.lines, hc.speed, hc.size, 4, 3, 3, false, nil, 6)
+		c.Glow = hc.style
+		LCG.ShowOverlayGlow(frame.Health, true, hc)
 	end
 	if PowerColor then
 		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
@@ -700,7 +700,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		end
 	end
 	if Glow then
-		LCG.PixelGlow_Stop(frame.Health)
+		LCG.HideOverlayGlow(frame.Health, Glow)
 	end
 	if PowerColor then
 		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
@@ -1244,7 +1244,7 @@ function mod:StyleFilterPass(frame, actions)
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
 		(actions.hide), --Visibility
-		(actions.glow.enable and actions.glow.glowColor.r and actions.glow.glowColor.g and actions.glow.glowColor.b and actions.glow.glowColor.a and  actions.glow.lines and  actions.glow.speed and  actions.glow.size) --Glow
+		(actions.glow.enable and actions.glow.style ~= '' and actions.glow.color.r and actions.glow.color.g and actions.glow.color.b and actions.glow.color.a and actions.glow.lines and actions.glow.speed and actions.glow.size) --Glow
 	)
 end
 

@@ -153,8 +153,8 @@ end
 
 do -- expand LibCustomGlow for button handling
 	local LCG, frames = E.Libs.CustomGlow, {}
-	function LCG.ShowOverlayGlow(button)
-		local opt = E.db.general.customGlow
+	function LCG.ShowOverlayGlow(button, isStyleFilter, actions)
+		local opt = isStyleFilter and actions or E.db.general.customGlow
 		local glow = LCG.startList[opt.style]
 		if glow then
 			local arg3, arg4, arg6
@@ -168,8 +168,8 @@ do -- expand LibCustomGlow for button handling
 		end
 	end
 
-	function LCG.HideOverlayGlow(button)
-		local glow = LCG.stopList[E.db.general.customGlow.style]
+	function LCG.HideOverlayGlow(button, style)
+		local glow = LCG.stopList[style or E.db.general.customGlow.style]
 		if glow then
 			glow(button)
 
