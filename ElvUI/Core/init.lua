@@ -153,8 +153,8 @@ end
 
 do -- expand LibCustomGlow for button handling
 	local LCG, frames = E.Libs.CustomGlow, {}
-	function LCG.ShowOverlayGlow(button, isStyleFilter, actions)
-		local opt = isStyleFilter and actions or E.db.general.customGlow
+	function LCG.ShowOverlayGlow(button, styleFilter)
+		local opt = styleFilter and styleFilter or E.db.general.customGlow
 		local glow = LCG.startList[opt.style]
 		if glow then
 			local arg3, arg4, arg6
@@ -163,12 +163,12 @@ do -- expand LibCustomGlow for button handling
 			if pixel then arg6 = opt.size end
 
 			local r, g, b, a
-			if isStyleFilter then
-				r, g, b, a = actions.color.r, actions.color.g, actions.color.b, actions.color.a
+			if styleFilter then
+				r, g, b, a = styleFilter.color.r, styleFilter.color.g, styleFilter.color.b, styleFilter.color.a
 			else
 				r, g, b, a = E.media.customGlowColor.r, E.media.customGlowColor.g, E.media.customGlowColor.b, E.media.customGlowColor.a
 			end
-			glow(button, (isStyleFilter or opt.useColor) and {r, g, b, a}, arg3, arg4, nil, arg6)
+			glow(button, (styleFilter or opt.useColor) and {r, g, b, a}, arg3, arg4, nil, arg6)
 
 			frames[button] = true
 		end

@@ -604,7 +604,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	if Glow then
 		local hc = actions.glow
 		c.Glow = hc.style
-		LCG.ShowOverlayGlow(frame.Health, true, hc)
+		LCG.ShowOverlayGlow(frame.Health, hc)
 	end
 	if PowerColor then
 		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
