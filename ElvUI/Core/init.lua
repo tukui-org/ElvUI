@@ -162,7 +162,13 @@ do -- expand LibCustomGlow for button handling
 			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
 			if pixel then arg6 = opt.size end
 
-			glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
+			local r, g, b, a
+			if isStyleFilter then
+				r, g, b, a = actions.color.r, actions.color.g, actions.color.b, actions.color.a
+			else
+				r, g, b, a = E.media.customGlowColor.r, E.media.customGlowColor.g, E.media.customGlowColor.b, E.media.customGlowColor.a
+			end
+			glow(button, (isStyleFilter or opt.useColor) and {r, g, b, a}, arg3, arg4, nil, arg6)
 
 			frames[button] = true
 		end
