@@ -12,10 +12,6 @@ local function HandlePanel(panel)
 	if panel.CloseButton then
 		S:HandleCloseButton(panel.CloseButton)
 	end
-
-	if panel.MajorFactionList then
-		-- 🧁
-	end
 end
 
 function S:Blizzard_ExpansionLandingPage()
@@ -31,6 +27,11 @@ function S:Blizzard_ExpansionLandingPage()
 
 			if child.DragonridingPanel then
 				HandlePanel(child)
+			end
+
+			if child.MajorFactionList then
+				-- 🧁
+				S:HandleTrimScrollBar(child.MajorFactionList.ScrollBar) -- fix me 10.1 grrrr Merathilis is not worthy to skin me -.-
 			end
 		end
 	end
