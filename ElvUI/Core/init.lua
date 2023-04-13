@@ -157,14 +157,13 @@ do -- expand LibCustomGlow for button handling
 		local opt = custom or E.db.general.customGlow
 		local glow = LCG.startList[opt.style]
 		if glow then
-			local arg3, arg4, arg6, arg9, arg11
 			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
-			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
-			if pixel then arg6, arg11 = opt.size, opt.frameLevel end
-			if cast then arg9 = opt.frameLevel end
+			local arg3, arg4, arg6, arg9, arg11
 
-			local color = opt.color or E.media.customGlowColor
-			glow(button, opt.useColor and color, arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+			if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
+
+			glow(button, opt.useColor and (opt.color or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
 
 			frames[button] = true
 		end
