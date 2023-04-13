@@ -677,7 +677,7 @@ local actionDefaults = {
 		speed = 4
 	},
 	glow = {
-		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		color = { 0.09, 0.52, 0.82, 0.9 },
 		speed = 0.3,
 		lines = 8,
 		size = 1
@@ -747,7 +747,7 @@ StyleFilters.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { m
 StyleFilters.actions.args.glow = ACH:Group(L["Custom Glow"], nil, 40, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFilters.actions.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 2, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
-StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 3, true, nil, function() local _, actions = GetFilter(true) local t = actions.glow.color return t[1], t[2], t[3], t[4] end, function(_, r, g, b, a) local _, actions = GetFilter(true) local t = actions.glow.color t[1], t[2], t[3], t[4] = r, g, b, a NP:ConfigureAll() end)
+StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 3, true, nil, function(info) local _, actions = GetFilter(true) local d = actionDefaults.glow.color local t = actions.glow.color return t[1], t[2], t[3], t[4], d[1], d[2], d[3], d[4] end, function(_, r, g, b, a) local _, actions = GetFilter(true) local t = actions.glow.color t[1], t[2], t[3], t[4] = r, g, b, a NP:ConfigureAll() end)
 StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(4, 'full')
 StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 5, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
 StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 6, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' end)
