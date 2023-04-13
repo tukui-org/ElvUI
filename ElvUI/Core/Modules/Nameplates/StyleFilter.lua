@@ -529,7 +529,7 @@ do
 	end
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, Glow)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -601,11 +601,6 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
 		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a or 1)
 	end
-	if Glow then
-		local hc = actions.glow
-		c.Glow = hc.style
-		LCG.ShowOverlayGlow(frame.Health, hc)
-	end
 	if PowerColor then
 		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
 		c.PowerColor = true
@@ -622,6 +617,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		if frame.Power.backdrop and db.power.enable then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 		end
+	end
+	if HealthGlow then
+		c.HealthGlow = actions.glow.style
+		LCG.ShowOverlayGlow(frame.Health, actions.glow)
 	end
 	if HealthFlash then
 		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
@@ -665,7 +664,7 @@ function mod:StyleFilterClearVisibility(frame, previous)
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, Glow)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
 	local c = frame.StyleFilterChanges
@@ -699,8 +698,8 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 			frame.Cutaway.Health:SetVertexColor(h.r * 1.5, h.g * 1.5, h.b * 1.5, 1)
 		end
 	end
-	if Glow then
-		LCG.HideOverlayGlow(frame.Health, Glow)
+	if HealthGlow then
+		LCG.HideOverlayGlow(frame.Health, HealthGlow)
 	end
 	if PowerColor then
 		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
@@ -1234,6 +1233,7 @@ function mod:StyleFilterPass(frame, actions)
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
+		(healthBarShown and actions.glow and actions.glow.enable), --HealthGlow
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
 		(actions.tags and actions.tags.name and actions.tags.name ~= ''), --NameTag
@@ -1243,8 +1243,7 @@ function mod:StyleFilterPass(frame, actions)
 		(actions.tags and actions.tags.level and actions.tags.level ~= ''), --LevelTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
-		(actions.hide), --Visibility
-		(actions.glow.enable and actions.glow.style ~= '' and actions.glow.color.r and actions.glow.color.g and actions.glow.color.b and actions.glow.color.a and actions.glow.lines and actions.glow.speed and actions.glow.size) --Glow
+		(actions.hide) --Visibility
 	)
 end
 
@@ -1253,7 +1252,7 @@ function mod:StyleFilterClear(frame)
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility, c.Glow)
+		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.HealthGlow, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
 	end
 end
 

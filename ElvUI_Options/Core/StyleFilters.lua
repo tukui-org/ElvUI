@@ -745,14 +745,14 @@ StyleFilters.actions.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], n
 StyleFilters.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
 
 StyleFilters.actions.args.glow = ACH:Group(L["Custom Glow"], nil, 40, nil, actionSubGroup, actionSubGroup, actionHidePlate)
-StyleFilters.actions.args.glow.inline = true
 StyleFilters.actions.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
-StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 2, true)
-StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(3, 'full')
-StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 4, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
-StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 5, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' end)
-StyleFilters.actions.args.glow.args.lines = ACH:Range(function() local _, actions = GetFilter(true) return actions.glow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 6, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' and actions.glow.style ~= 'Autocast Shine' end)
+StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 2, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
+StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 3, true, nil, function() local _, actions = GetFilter(true) local t = actions.glow.color return t[1], t[2], t[3], t[4] end, function(_, r, g, b, a) local _, actions = GetFilter(true) local t = actions.glow.color t[1], t[2], t[3], t[4] = r, g, b, a NP:ConfigureAll() end)
+StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(4, 'full')
+StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 5, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
+StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 6, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' end)
+StyleFilters.actions.args.glow.args.lines = ACH:Range(function() local _, actions = GetFilter(true) return actions.glow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 7, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' and actions.glow.style ~= 'Autocast Shine' end)
+StyleFilters.actions.args.glow.inline = true
 
 StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 50, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
 StyleFilters.actions.args.text_format.inline = true
