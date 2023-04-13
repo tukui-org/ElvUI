@@ -359,6 +359,7 @@ E.StyleFilterDefaults = {
 		glow = {
 			enable = false,
 			useColor = true, -- not a real option
+			frameLevel = 5, -- not a real option
 			color = { 0.09, 0.52, 0.82, 0.9 }, -- lib uses old index table
 			style = 'Pixel Glow',
 			speed = 0.3,
