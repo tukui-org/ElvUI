@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 local ElvUF = E.oUF
 
 local _G = _G
@@ -528,7 +529,7 @@ do
 	end
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -617,6 +618,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 		end
 	end
+	if HealthGlow then
+		c.HealthGlow = actions.glow.style
+		LCG.ShowOverlayGlow(frame.Health, actions.glow)
+	end
 	if HealthFlash then
 		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
@@ -659,7 +664,7 @@ function mod:StyleFilterClearVisibility(frame, previous)
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
 	local c = frame.StyleFilterChanges
@@ -692,6 +697,9 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 			h:SetStatusBarColor(h.r, h.g, h.b)
 			frame.Cutaway.Health:SetVertexColor(h.r * 1.5, h.g * 1.5, h.b * 1.5, 1)
 		end
+	end
+	if HealthGlow then
+		LCG.HideOverlayGlow(frame.Health, HealthGlow)
 	end
 	if PowerColor then
 		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
@@ -1225,6 +1233,7 @@ function mod:StyleFilterPass(frame, actions)
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
+		(healthBarShown and actions.glow and actions.glow.enable), --HealthGlow
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
 		(actions.tags and actions.tags.name and actions.tags.name ~= ''), --NameTag
@@ -1243,7 +1252,7 @@ function mod:StyleFilterClear(frame)
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.HealthGlow, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
 	end
 end
 
