@@ -60,7 +60,7 @@ if E.Retail then
 			scale = 1.15,
 			color = {
 				health = true,
-				healthColor = {r = 0, g = 255, b = 255}
+				healthColor = { r = 0, g = 1, b = 1 }
 			}
 		}
 	}
@@ -333,11 +333,11 @@ E.StyleFilterDefaults = {
 			power = false,
 			border = false,
 			healthClass = false,
-			healthColor = {r = 1, g = 1, b = 1, a = 1},
+			healthColor = { r = 1, g = 1, b = 1, a = 1 },
 			powerClass = false,
-			powerColor = {r = 1, g = 1, b = 1, a = 1},
+			powerColor = { r = 1, g = 1, b = 1, a = 1 },
 			borderClass = false,
-			borderColor = {r = 1, g = 1, b = 1, a = 1}
+			borderColor = { r = 1, g = 1, b = 1, a = 1 }
 		},
 		texture = {
 			enable = false,
@@ -355,6 +355,16 @@ E.StyleFilterDefaults = {
 			title = '',
 			health = '',
 			power = ''
+		},
+		glow = {
+			enable = false,
+			useColor = true, -- not a real option
+			frameLevel = 5, -- not a real option
+			color = { 0.09, 0.52, 0.82, 0.9 }, -- lib uses old index table
+			style = 'Pixel Glow',
+			speed = 0.3,
+			lines = 8,
+			size = 1
 		},
 		hide = false,
 		usePortrait = false,

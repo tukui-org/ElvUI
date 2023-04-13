@@ -155,23 +155,24 @@ end
 
 do -- expand LibCustomGlow for button handling
 	local LCG, frames = E.Libs.CustomGlow, {}
-	function LCG.ShowOverlayGlow(button)
-		local opt = E.db.general.customGlow
+	function LCG.ShowOverlayGlow(button, custom)
+		local opt = custom or E.db.general.customGlow
 		local glow = LCG.startList[opt.style]
 		if glow then
-			local arg3, arg4, arg6
 			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
-			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
-			if pixel then arg6 = opt.size end
+			local arg3, arg4, arg6, arg9, arg11
 
-			glow(button, opt.useColor and E.media.customGlowColor, arg3, arg4, nil, arg6)
+			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+			if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
+
+			glow(button, opt.useColor and (opt.color or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
 
 			frames[button] = true
 		end
 	end
 
-	function LCG.HideOverlayGlow(button)
-		local glow = LCG.stopList[E.db.general.customGlow.style]
+	function LCG.HideOverlayGlow(button, style)
+		local glow = LCG.stopList[style or E.db.general.customGlow.style]
 		if glow then
 			glow(button)
 
