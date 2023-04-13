@@ -59,7 +59,7 @@ function S:LootFrame()
 	-- Loot history frame
 	local LootHistoryFrame = _G.LootHistoryFrame
 	LootHistoryFrame:StripTextures()
-	S:HandleCloseButton(LootHistoryFrame.CloseButton)
+	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
 	LootHistoryFrame.ResizeButton:StripTextures()
@@ -73,10 +73,10 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
 	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-	_G.LootHistoryFrameScrollFrame:StripTextures()
+
 	-- S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar) TODO Season 2
 
-	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
+	hooksecurefunc(LootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Needs checking
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
