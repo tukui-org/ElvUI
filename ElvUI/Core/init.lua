@@ -163,7 +163,7 @@ do -- expand LibCustomGlow for button handling
 			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
 			if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
 
-			glow(button, opt.useColor and (opt.color or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+			glow(button, opt.useColor and ((custom and custom.color) or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
 
 			frames[button] = true
 		end
