@@ -955,6 +955,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[406313] = List(), -- Infused Strikes
 		[407302] = List(), -- Infused Explosion
 	-- Zaqali Invasion
+		[408873] = List(), -- Heavy Cudgel
+		[410353] = List(), -- Flaming Cudgel
+		[407017] = List(), -- Vigorous Gale
+		[401407] = List(), -- Blazing Spear 1
+		[401452] = List(), -- Blazing Spear 2
+		[409275] = List(), -- Magma Flow
 	-- Rashok
 		[407547] = List(), -- Flaming Upsurge
 		[407597] = List(), -- Earthen Crush
@@ -1262,6 +1268,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[406358] = List(), -- Mutilation
 		[405413] = List(), -- Disintegrate
 	-- Zaqali Invasion
+		[410791] = List(), -- Blazing Focus
+		[409696] = List(), -- Molten Empowerment
+		[408620] = List(), -- Scorching Roar
+		[397383] = List(), -- Molten Barrier
+		[409271] = List(), -- Magma Flow
+		[409359] = List(), -- Desperate Immolation
+		[406585] = List(), -- Ignara's Fury
+		[411230] = List(), -- Ignara's Flame
 	-- Rashok
 		[401419] = List(), -- Siphon Energy
 		[405091] = List(), -- Unyielding Rage
