@@ -17,6 +17,21 @@ local UnitName = UnitName
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
+local function GetTargetClassColor(englishClass)
+    local classColor = "ffffcc00"
+
+    if englishClass then
+        local classColorRaw = C_ClassColor.GetClassColor(englishClass)
+        if classColorRaw then
+            classColor = classColorRaw:GenerateHexColor()
+        end
+    else
+        return classColor
+    end
+
+    return classColor
+end
+
 function NP:Castbar_CheckInterrupt(unit)
 	if unit == 'vehicle' then
 		unit = 'player'
@@ -38,6 +53,15 @@ function NP:Castbar_CheckInterrupt(unit)
 end
 
 function NP:Castbar_CustomDelayText(duration)
+    local plate = self.__owner
+    local unit = plate.unit
+    local target = UnitName(unit .. "target")
+    if target and target ~= '' then
+        local _, englishClass, _ = UnitClass(unit .. "target")
+        local classColor = GetTargetClassColor(englishClass)
+        self.Text:SetText(self.spellName .. ' -> |c' .. classColor .. target .. "|r")
+    end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
@@ -62,6 +86,15 @@ function NP:Castbar_CustomDelayText(duration)
 end
 
 function NP:Castbar_CustomTimeText(duration)
+    local plate = self.__owner
+    local unit = plate.unit
+    local target = UnitName(unit .. "target")
+    if target and target ~= '' then
+        local _, englishClass, _ = UnitClass(unit .. "target")
+        local classColor = GetTargetClassColor(englishClass)
+        self.Text:SetText(self.spellName .. ' -> |c' .. classColor .. target .. "|r")
+    end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
