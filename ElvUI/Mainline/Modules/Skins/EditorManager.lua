@@ -64,15 +64,41 @@ function S:EditorManagerFrame()
 
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)
+	S:HandleCheckBox(editMode.EnableAdvancedOptionsCheckButton.Button)
 
-	-- TODO Season 2
-	--[[
-	for _, frame in next, { editMode.AccountSettings.Settings:GetChildren() } do
+	S:HandleTrimScrollBar(editMode.AccountSettings.SettingsContainer.ScrollBar)
+	editMode.AccountSettings.SettingsContainer.BorderArt:StripTextures()
+	editMode.AccountSettings.SettingsContainer:SetTemplate('Transparent')
+
+	-- BasicOptions Container
+	for _, frame in next, { editMode.AccountSettings.SettingsContainer.ScrollChild.BasicOptionsContainer:GetChildren() } do
 		if frame.Button then
 			S:HandleCheckBox(frame.Button)
 		end
 	end
-	]]
+
+	-- Frames Container
+	for _, frame in next, { editMode.AccountSettings.SettingsContainer.ScrollChild.AdvancedOptionsContainer.FramesContainer:GetChildren() } do
+		if frame.Button then
+			S:HandleCheckBox(frame.Button)
+		end
+	end
+
+	-- Combat Container
+	for _, frame in next, { editMode.AccountSettings.SettingsContainer.ScrollChild.AdvancedOptionsContainer.CombatContainer:GetChildren() } do
+		if frame.Button then
+			S:HandleCheckBox(frame.Button)
+		end
+	end
+
+	-- Misc Container
+	for _, frame in next, { editMode.AccountSettings.SettingsContainer.ScrollChild.AdvancedOptionsContainer.MiscContainer:GetChildren() } do
+		if frame.Button then
+			S:HandleCheckBox(frame.Button)
+		end
+	end
+
+	editMode.AccountSettings.Expander.Divider:StripTextures()
 
 	-- Layout Creator
 	local layout = _G.EditModeNewLayoutDialog
