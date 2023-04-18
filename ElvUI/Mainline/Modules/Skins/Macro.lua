@@ -13,12 +13,11 @@ function S:Blizzard_MacroUI()
 	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
 
-	_G.MacroFrame.MacroSelector.ScrollBox:StripTextures()
 	_G.MacroFrame.MacroSelector.ScrollBox:SetTemplate('Transparent')
 	_G.MacroFrameTextBackground.NineSlice:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(MacroFrame.MacroSelector.ScrollBar)
-	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.MacroFrame.MacroSelector.ScrollBar)
+	S:HandleTrimScrollBar(_G.MacroFrameScrollFrame.ScrollBar)
 
 	for _, button in next, {
 		_G.MacroSaveButton,
