@@ -18,6 +18,7 @@ local hooksecurefunc = hooksecurefunc
 local C_QuestLog_GetRequiredMoney = C_QuestLog.GetRequiredMoney
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
+local C_QuestInfoSystem_GetQuestRewardSpells = C_QuestInfoSystem.GetQuestRewardSpells
 
 local sealFrameTextColor = {
 	['480404'] = 'c20606',
@@ -223,9 +224,12 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
 
+	-- 10.1 please check the block below -- Merathilis
+	local numSpellRewards
+	local questID = isQuestLog and C_QuestLog_GetSelectedQuest() or GetQuestID()
+	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID) or {}
+	numSpellRewards = #spellRewards
 
-	-- local spellRewards = C_QuestInfoSystem.GetQuestRewardSpells(questID) or {} -- 10.1 we need to change it to new api: FrameXML\QuestInfo.lua -> line 554
-	local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 	if numSpellRewards > 0 then
 		if E.private.skins.parchmentRemoverEnable then
 			for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
