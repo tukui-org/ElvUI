@@ -213,7 +213,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Ícone de Perda de Controle"
 L["lvl"] = "nível"
 L["MA Frames"] = "Quadro do Assistente Principal"
-L["MawBuffsWidget"] = true
 L["Max Level"] = true
 L["Micro Bar"] = "Micro Barra"
 L["Minimap Cluster"] = true

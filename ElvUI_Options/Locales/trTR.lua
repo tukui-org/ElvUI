@@ -1044,7 +1044,6 @@ L["Match if Item Name or ID is NOT in the list."] = "Oge Ismi veya Kimligi liste
 L["Match if Name or NPC ID is NOT in the list."] = "Isim veya NPC Kimligi listede YOKSA eslestirin."
 L["Match Player Level"] = "Oyuncu Seviyesini Eslestir"
 L["Match this trigger if the spell is not known."] = true
-L["Maw Buffs Position"] = "Maw Guclendiricileri Pozisyonu"
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = "Maksimum Alfa"
 L["Max amount of overflow allowed to extend past the end of the health bar."] = "Saglik cubugunun sonunu gecmesine izin verilen maksimum tasma miktari."

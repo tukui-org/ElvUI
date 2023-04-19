@@ -47,7 +47,6 @@ P.general = {
 	objectiveFrameAutoHide = true,
 	objectiveFrameAutoHideInKeystone = false,
 	bonusObjectivePosition = 'LEFT',
-	torghastBuffsPosition = 'LEFT',
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,

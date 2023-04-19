@@ -1043,7 +1043,6 @@ L["Match if Item Name or ID is NOT in the list."] = true
 L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the spell is not known."] = true
-L["Maw Buffs Position"] = true
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = true
 L["Max amount of overflow allowed to extend past the end of the health bar."] = true

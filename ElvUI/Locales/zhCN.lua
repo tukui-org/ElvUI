@@ -213,7 +213,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "失去控制图标"
 L["lvl"] = "等级"
 L["MA Frames"] = "主助理框"
-L["MawBuffsWidget"] = "爬塔小部件"
 L["Max Level"] = "最高等级"
 L["Micro Bar"] = "微型系统菜单"
 L["Minimap Cluster"] = true

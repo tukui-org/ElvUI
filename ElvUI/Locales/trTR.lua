@@ -215,7 +215,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Kontrol Kaybi Ikonu"
 L["lvl"] = "svy"
 L["MA Frames"] = "MA Cercevesi"
-L["MawBuffsWidget"] = "MawGuclendiriciBileseni"
 L["Max Level"] = "Maks. Seviye"
 L["Micro Bar"] = "Mikro Cubuk"
 L["Minimap Cluster"] = true
