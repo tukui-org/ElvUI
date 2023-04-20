@@ -12,7 +12,7 @@ P.dbConverted = nil -- use this to let DBConversions run once per profile
 --Core
 P.general = {
 	messageRedirect = _G.DEFAULT_CHAT_FRAME:GetName(),
-	smoothingAmount = 0.33,
+	smoothingAmount = 0.33, -- AMOUNT should match in general/smoothie file
 	taintLog = false,
 	stickyFrames = true,
 	loginmessage = true,
@@ -67,7 +67,7 @@ P.general = {
 	afk = true,
 	afkChat = true,
 	numberPrefixStyle = 'ENGLISH',
-	tagUpdateRate = 0.25,
+	tagUpdateRate = 0.25, -- eventTimerThreshold should match in oUF tags file
 	decimalLength = 1,
 	altPowerBar = {
 		enable = true,
