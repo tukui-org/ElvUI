@@ -1984,7 +1984,11 @@ function E:Initialize()
 
 	E.initialized = true
 
-	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
+	if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+		E:TagUpdateRate(E.db.general.tagUpdateRate)
+	end
+
+	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
 		E:SetSmoothingAmount(E.db.general.smoothingAmount)
 	end
 
