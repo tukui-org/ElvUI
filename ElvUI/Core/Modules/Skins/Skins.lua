@@ -689,6 +689,7 @@ do
 
 		local thumb = frame:GetThumb()
 		if thumb then
+			thumb:DisableDrawLayer('ARTWORK')
 			thumb:DisableDrawLayer('BACKGROUND')
 			thumb:CreateBackdrop('Transparent')
 			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
