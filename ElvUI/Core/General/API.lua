@@ -604,14 +604,6 @@ function E:SetupGameMenu()
 	end
 end
 
-function E:IsDragonRiding()
-	for spellID in next, E.MountDragons do
-		if E:GetAuraByID('player', spellID, 'HELPFUL') then
-			return true
-		end
-	end
-end
-
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
