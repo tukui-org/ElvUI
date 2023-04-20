@@ -220,11 +220,9 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
 
-	-- 10.1
 	local questID = Quest_GetQuestID()
-	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID) or {}
-	local numSpellRewards = #spellRewards
-	if numSpellRewards > 0 then
+	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID)
+	if spellRewards and (#spellRewards > 0) then
 		if E.private.skins.parchmentRemoverEnable then
 			for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 				spellHeader:SetVertexColor(1, 1, 1)
