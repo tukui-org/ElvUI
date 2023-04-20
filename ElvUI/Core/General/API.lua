@@ -38,8 +38,8 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
 
-local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
-local GetSpecializationRole = (E.Classic or E.Wrath and LCS.GetSpecializationRole) or GetSpecializationRole
+local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
+local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole
 
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
