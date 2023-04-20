@@ -605,6 +605,14 @@ function E:SetupGameMenu()
 	end
 end
 
+function E:IsDragonRiding()
+	for spellID in next, E.MountDragons do
+		if E:GetAuraByID('player', spellID, 'HELPFUL') then
+			return true
+		end
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -617,16 +625,12 @@ function E:LoadAPI()
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID, _, isActive, _, _, _, _, _, _, _, _, isForDragonriding = C_MountJournal_GetMountInfoByID(mountID)
+			local _, spellID, _, _, _, _, _, _, _, _, _, _, isForDragonriding = C_MountJournal_GetMountInfoByID(mountID)
 			E.MountIDs[spellID] = mountID
 			E.MountText[mountID] = sourceText
 
 			if isForDragonriding then
 				E.MountDragons[spellID] = mountID
-
-				if isActive then
-					AB.WasDragonflying = 1
-				end
 			end
 		end
 

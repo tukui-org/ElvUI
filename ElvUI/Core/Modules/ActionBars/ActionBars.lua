@@ -69,6 +69,7 @@ local buttonDefaults = {
 	},
 }
 
+AB.WasDragonflying = 0
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -868,7 +869,7 @@ function AB:FadeParent_OnEvent(event, _, _, arg3)
 	else
 		if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
 		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
-		or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or ((event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 1 or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying) and IsMounted())) then
+		or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or (IsMounted() and (event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 0 and E:IsDragonRiding() or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying))) then
 			self.mouseLock = true
 			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 			AB:FadeBlings(1)
