@@ -860,28 +860,25 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
-do
-	local wasDragon
-	function AB:FadeParent_OnEvent(event, _, _, arg3)
-		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			wasDragon = E.MountDragons[arg3] and arg3
+function AB:FadeParent_OnEvent(event, _, _, arg3)
+	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
+		AB.WasDragonflying = E.MountDragons[arg3] and arg3
+	else
+		if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
+		or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or ((event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 1 or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying) and IsMounted())) then
+			self.mouseLock = true
+			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			AB:FadeBlings(1)
 		else
-			if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-			or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
-			or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or (event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and IsMounted() and wasDragon)) then
-				self.mouseLock = true
-				E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-				AB:FadeBlings(1)
-			else
-				self.mouseLock = false
-				local a = 1 - (AB.db.globalFadeAlpha or 0)
-				E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
-				AB:FadeBlings(a)
-			end
+			self.mouseLock = false
+			local a = 1 - (AB.db.globalFadeAlpha or 0)
+			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+			AB:FadeBlings(a)
+		end
 
-			if event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= wasDragon then
-				wasDragon = nil
-			end
+		if event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying then
+			AB.WasDragonflying = nil
 		end
 	end
 end
@@ -1713,9 +1710,9 @@ function AB:Initialize()
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
+		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
-		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 	end
 
 	if E.Retail or E.Wrath then
