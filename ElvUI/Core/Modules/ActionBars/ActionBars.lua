@@ -859,9 +859,24 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
+local function IsDragonRiding()
+	local dragonSpellIDs = C_MountJournal.GetCollectedDragonridingMounts()
+	if IsMounted() then
+		for _, mountId in ipairs(dragonSpellIDs) do
+			local spellId = select(2, C_MountJournal.GetMountInfoByID(mountId))
+			if C_UnitAuras.GetPlayerAuraBySpellID(spellId) then
+				return true
+			end
+		end
+		return false
+	else
+		return false
+	end
+end
+
 function AB:FadeParent_OnEvent()
 	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus') or UnitExists('vehicle')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar()) then
+	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or IsDragonRiding()) then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)
@@ -1701,6 +1716,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 	end
 
 	if E.Retail or E.Wrath then
