@@ -9,10 +9,8 @@ local GetMoney = GetMoney
 local GetQuestID = GetQuestID
 local CreateFrame = CreateFrame
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
-local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
-local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
 
 local C_QuestLog_GetRequiredMoney = C_QuestLog.GetRequiredMoney
@@ -204,8 +202,6 @@ end
 
 function S:QuestInfo_Display(parentFrame) -- self is template, not S
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
-	local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
-
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 		if point and relativeTo and relativePoint then
@@ -224,12 +220,10 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
 
-	-- 10.1 please check the block below -- Merathilis
-	local numSpellRewards
-	local questID = isQuestLog and C_QuestLog_GetSelectedQuest() or GetQuestID()
+	-- 10.1
+	local questID = Quest_GetQuestID()
 	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID) or {}
-	numSpellRewards = #spellRewards
-
+	local numSpellRewards = #spellRewards
 	if numSpellRewards > 0 then
 		if E.private.skins.parchmentRemoverEnable then
 			for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
