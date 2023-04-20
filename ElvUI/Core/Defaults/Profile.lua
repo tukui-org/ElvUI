@@ -12,7 +12,7 @@ P.dbConverted = nil -- use this to let DBConversions run once per profile
 --Core
 P.general = {
 	messageRedirect = _G.DEFAULT_CHAT_FRAME:GetName(),
-	smoothingAmount = 0.33,
+	smoothingAmount = 0.33, -- AMOUNT should match in general/smoothie file
 	taintLog = false,
 	stickyFrames = true,
 	loginmessage = true,
