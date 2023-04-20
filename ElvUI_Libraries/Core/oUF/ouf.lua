@@ -1,4 +1,3 @@
-
 local parent, ns = ...
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local global = GetAddOnMetadata(parent, 'X-oUF')
