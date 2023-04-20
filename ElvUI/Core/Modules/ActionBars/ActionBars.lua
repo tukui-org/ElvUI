@@ -864,7 +864,7 @@ end
 function AB:FadeParent_OnEvent(event, _, _, arg3)
 	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
 		if not AB.WasDragonflying then -- this gets spammed on init login
-			AB.WasDragonflying = E.MountDragons[arg3]
+			AB.WasDragonflying = E.MountDragons[arg3] and arg3
 		end
 	else
 		if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
@@ -880,7 +880,7 @@ function AB:FadeParent_OnEvent(event, _, _, arg3)
 			AB:FadeBlings(a)
 		end
 
-		if event ~= 'UNIT_SPELLCAST_STOP' and event ~= 'UNIT_HEALTH' then
+		if event ~= 'UNIT_HEALTH' and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
 			AB.WasDragonflying = nil
 		end
 	end
