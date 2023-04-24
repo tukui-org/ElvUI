@@ -80,6 +80,7 @@ L["Chat"] = true
 L["Choose a theme layout you wish to use for your initial setup."] = true
 L["Class Bar"] = true
 L["Classic"] = true
+L["Combat Indicator"] = true
 L["Combat"] = true
 L["Combat/Arena Time"] = true
 L["Config Mode:"] = true

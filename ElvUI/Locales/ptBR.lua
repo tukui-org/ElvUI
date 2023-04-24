@@ -80,6 +80,7 @@ L["Chat"] = "Bate-papo"
 L["Choose a theme layout you wish to use for your initial setup."] = "Escolha o tema de layout que deseje usar inicialmente."
 L["Class Bar"] = "Barra da Classe"
 L["Classic"] = "Clássico"
+L["Combat Indicator"] = true
 L["Combat"] = "Combate"
 L["Combat/Arena Time"] = "Tempo de Combate/Arena"
 L["Config Mode:"] = "Modo de configuração"

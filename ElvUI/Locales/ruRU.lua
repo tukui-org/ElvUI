@@ -2,7 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
-L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
+L["UPDATE_REQUEST"] = "Похоже, что с вашим ElvUI что-то не так. Возможно Tukui Client устарел. Пожалуйста, обновите Tukui Client, а затем переустановите ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"
@@ -80,6 +80,7 @@ L["Chat"] = "Чат"
 L["Choose a theme layout you wish to use for your initial setup."] = "Выберите тему, которую Вы хотите использовать."
 L["Class Bar"] = "Полоса класса"
 L["Classic"] = "Классическая"
+L["Combat Indicator"] = "Индикатор боя"
 L["Combat"] = "Бой"
 L["Combat/Arena Time"] = "Время боя/арены"
 L["Config Mode:"] = "Режим настройки:"
