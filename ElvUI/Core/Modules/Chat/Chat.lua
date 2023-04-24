@@ -3010,8 +3010,9 @@ function CH:DefaultSmileys()
 	CH:AddSmiley(':\'%(', E:TextureString(E.Media.ChatEmojis.Cry,x))
 	CH:AddSmiley(':\'%-%(', E:TextureString(E.Media.ChatEmojis.Cry,x))
 	CH:AddSmiley(':F', E:TextureString(E.Media.ChatEmojis.MiddleFinger,x))
-	CH:AddSmiley('<3', E:TextureString(E.Media.ChatEmojis.Heart,x))
 	CH:AddSmiley('</3', E:TextureString(E.Media.ChatEmojis.BrokenHeart,x))
+	CH:AddSmiley('<3', E:TextureString(E.Media.ChatEmojis.Heart,x))
+	CH:AddSmiley('♥', E:TextureString(E.Media.ChatEmojis.Heart,x))
 end
 
 local channelButtons = {
