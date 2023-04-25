@@ -66,9 +66,9 @@ end
 
 local function OnEvent(self)
 	local wm = C_PvP_IsWarModeDesired()
-	local color, icon = wm and RED_FONT_COLOR or GREEN_FONT_COLOR, wm and [[ |TInterface\Icons\ui_warmode:16:16|t]] or ''
+	local color, icon = wm and RED_FONT_COLOR or GREEN_FONT_COLOR, wm and [[|TInterface\Icons\ui_warmode:16:16|t]] or ''
 
-	self.text:SetText(format('%s%s%s', icon, E:RGBToHex(color.r, color.g, color.b, nil, PVP_LABEL_WAR_MODE or NOT_APPLICABLE), icon))
+	self.text:SetFormattedText(wm and '%s %s %s' or '%s%s%s', icon, E:RGBToHex(color.r, color.g, color.b, nil, PVP_LABEL_WAR_MODE or NOT_APPLICABLE), icon)
 end
 
 DT:RegisterDatatext('WarMode', nil, {'WAR_MODE_STATUS_UPDATE', 'PLAYER_FLAGS_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, PVP_LABEL_WAR_MODE)

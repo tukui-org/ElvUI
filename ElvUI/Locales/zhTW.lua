@@ -80,6 +80,7 @@ L["Chat"] = "對話"
 L["Choose a theme layout you wish to use for your initial setup."] = "為你的個人設定選擇一個你喜歡的皮膚主題."
 L["Class Bar"] = "職業特有條"
 L["Classic"] = "經典"
+L["Combat Indicator"] = true
 L["Combat"] = "戰鬥"
 L["Combat/Arena Time"] = "戰鬥時間"
 L["Config Mode:"] = "設定模式:"
