@@ -83,9 +83,9 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
 	-- Bug fix, don't show it if player is initiator
-	ReadyCheckFrame:HookScript('OnShow', function(self)
-		if self.initiator and UnitIsUnit('player', self.initiator) then
-			self:Hide()
+	ReadyCheckFrame:HookScript('OnShow', function(frame)
+		if frame.initiator and UnitIsUnit('player', frame.initiator) then
+			frame:Hide()
 		end
 	end)
 
