@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local UnitXP = UnitXP
@@ -58,6 +59,24 @@ function B:QuestXPPercent()
 	end
 end
 
+function B:HandleAddonCompartment()
+	local compartment = _G.AddonCompartmentFrame
+	if compartment then
+		if not compartment.mover then
+			compartment:SetParent(_G.UIParent)
+			compartment:ClearAllPoints()
+			compartment:Point('TOPLEFT', _G.MMHolder or _G.Minimap, 3, -3)
+			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"])
+		end
+
+		local db = E.db.general.addonCompartment
+		compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		compartment:SetFrameLevel(db.frameLevel or 20)
+		compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
+		compartment:Size(db.size or 18)
+	end
+end
+
 function B:Initialize()
 	B.Initialized = true
 
@@ -66,8 +85,6 @@ function B:Initialize()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
-	local MinimapAnchor = _G.MMHolder or _G.Minimap
-
 	if not E.Retail then
 		B:KillBlizzard()
 	else
@@ -75,12 +92,9 @@ function B:Initialize()
 		B:DisableTutorials()
 		B:SkinBlizzTimers()
 		B:HandleTalkingHead()
+		B:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
-
-		_G.AddonCompartmentFrame:ClearAllPoints()
-		_G.AddonCompartmentFrame:Point('TOPLEFT', MinimapAnchor, 3, -3)
-		E:CreateMover(_G.AddonCompartmentFrame, 'AddonCompartmentMover', L["Addon Compartment"])
 
 		--Add (+X%) to quest rewards experience text
 		B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
@@ -102,6 +116,7 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
+	local MinimapAnchor = _G.MMHolder or _G.Minimap
 	do -- Battle.Net Frame
 		_G.BNToastFrame:ClearAllPoints()
 		_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)

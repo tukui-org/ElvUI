@@ -503,7 +503,7 @@ NamePlates.colorsGroup.args.castGroup.args.castNoInterruptColor = ACH:Color(L["N
 NamePlates.colorsGroup.args.castGroup.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 3)
 NamePlates.colorsGroup.args.castGroup.args.castbarDesaturate = ACH:Toggle(L["Desaturated Icon"], L["Show the castbar icon desaturated if a spell is not interruptible."], 4, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end)
 
-NamePlates.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(E.NewSign..L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+NamePlates.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.castGroup.args.empowerStage.inline = true
 
 for i = 1, 4 do
@@ -569,7 +569,7 @@ NamePlates.colorsGroup.args.COMBO_POINTS.inline = true
 NamePlates.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.CHI_POWER.inline = true
 
-NamePlates.colorsGroup.args.EVOKER = ACH:Group(E.NewSign..L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER[i], P.nameplates.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+NamePlates.colorsGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER[i], P.nameplates.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.EVOKER.inline = true
 
 for i = 1, 7 do

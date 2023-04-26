@@ -200,6 +200,14 @@ P.general = {
 		height = 40,
 		spacing = 4,
 		keepSizeRatio = true,
+	},
+	addonCompartment = {
+		size = 18,
+		font = 'Expressway',
+		fontSize = 13,
+		fontOutline = 'NONE',
+		frameStrata = 'MEDIUM',
+		frameLevel = 20
 	}
 }
 
