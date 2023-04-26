@@ -11,6 +11,7 @@
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 ## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
+## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\AddOnCore
 
 Core\Load.xml
 

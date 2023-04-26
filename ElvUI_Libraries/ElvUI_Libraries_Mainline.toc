@@ -4,5 +4,6 @@
 ## Version: 13.29
 ## Interface: 100100
 ## X-oUF: ElvUF
+## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\AddOnLibraries
 
 Mainline\Libs.xml

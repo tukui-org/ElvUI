@@ -5,5 +5,6 @@
 ## Interface: 100100
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
+## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\AddOnOptions
 
 Core\Load.xml
