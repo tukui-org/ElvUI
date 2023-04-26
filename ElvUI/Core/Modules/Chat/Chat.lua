@@ -363,8 +363,9 @@ do --this can save some main file locals
 		z['Melisendra-Shattrath']	= ElvBlue	-- [Alliance] Mage
 		z['Merathilis-Shattrath']	= ElvOrange	-- [Alliance] Druid
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
-		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
+		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
+		z['Jahzzy-Garrosh']			= ElvRed	-- [Alliance] DK
 		-- Luckyone
 		z['Luckyone-LaughingSkull']		= ElvGreen -- [Horde] Druid
 		z['Luckypriest-LaughingSkull']	= ElvGreen -- [Horde] Priest
@@ -3009,8 +3010,9 @@ function CH:DefaultSmileys()
 	CH:AddSmiley(':\'%(', E:TextureString(E.Media.ChatEmojis.Cry,x))
 	CH:AddSmiley(':\'%-%(', E:TextureString(E.Media.ChatEmojis.Cry,x))
 	CH:AddSmiley(':F', E:TextureString(E.Media.ChatEmojis.MiddleFinger,x))
-	CH:AddSmiley('<3', E:TextureString(E.Media.ChatEmojis.Heart,x))
 	CH:AddSmiley('</3', E:TextureString(E.Media.ChatEmojis.BrokenHeart,x))
+	CH:AddSmiley('<3', E:TextureString(E.Media.ChatEmojis.Heart,x))
+	CH:AddSmiley('♥', E:TextureString(E.Media.ChatEmojis.Heart,x))
 end
 
 local channelButtons = {
