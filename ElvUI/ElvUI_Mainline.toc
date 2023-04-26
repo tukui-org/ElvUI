@@ -10,6 +10,7 @@
 ## X-Interface: 100100
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
+## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
 
 Core\Load.xml
 

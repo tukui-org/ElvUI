@@ -84,6 +84,14 @@ E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
 
+do
+	function E:AddonCompartmentFunc()
+		E:ToggleOptions()
+	end
+
+	_G.ElvUI_AddonCompartmentFunc = E.AddonCompartmentFunc
+end
+
 do -- this is different from E.locale because we need to convert for ace locale files
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
 	local gameLocale = convert[E.locale] or E.locale or 'enUS'
@@ -225,6 +233,33 @@ do
 	end
 end
 
+function E:SetEasyMenuAnchor(menu, frame)
+	local point = E:GetScreenQuadrant(frame)
+	local bottom = point and strfind(point, 'BOTTOM')
+	local left = point and strfind(point, 'LEFT')
+
+	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
+	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
+
+	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, frame, anchor2)
+end
+
+function E:ResetProfile()
+	E:StaggeredUpdateAll()
+end
+
+function E:OnProfileReset()
+	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
+end
+
+function E:ResetPrivateProfile()
+	ReloadUI()
+end
+
+function E:OnPrivateProfileReset()
+	E:StaticPopup_Show('RESET_PRIVATE_PROFILE_PROMPT')
+end
+
 function E:OnEnable()
 	E:Initialize()
 end
@@ -283,31 +318,4 @@ function E:OnInitialize()
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
-end
-
-function E:SetEasyMenuAnchor(menu, frame)
-	local point = E:GetScreenQuadrant(frame)
-	local bottom = point and strfind(point, 'BOTTOM')
-	local left = point and strfind(point, 'LEFT')
-
-	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
-	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
-
-	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, frame, anchor2)
-end
-
-function E:ResetProfile()
-	E:StaggeredUpdateAll()
-end
-
-function E:OnProfileReset()
-	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
-end
-
-function E:ResetPrivateProfile()
-	ReloadUI()
-end
-
-function E:OnPrivateProfileReset()
-	E:StaticPopup_Show('RESET_PRIVATE_PROFILE_PROMPT')
 end
