@@ -53,6 +53,14 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
+	local compartment = _G.AddonCompartmentFrame
+	if compartment then
+		compartment:StripTextures()
+		compartment:CreateBackdrop('Transparent')
+		compartment.Text:FontTemplate(nil, 12, 'NONE')
+		compartment:Size(18)
+	end
+
 	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')

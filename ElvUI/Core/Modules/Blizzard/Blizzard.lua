@@ -66,6 +66,8 @@ function B:Initialize()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
 
+	local MinimapAnchor = _G.MMHolder or _G.Minimap
+
 	if not E.Retail then
 		B:KillBlizzard()
 	else
@@ -75,6 +77,10 @@ function B:Initialize()
 		B:HandleTalkingHead()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
+
+		_G.AddonCompartmentFrame:ClearAllPoints()
+		_G.AddonCompartmentFrame:Point('TOPLEFT', MinimapAnchor, 3, -3)
+		E:CreateMover(_G.AddonCompartmentFrame, 'AddonCompartmentMover', L["Addon Compartment"])
 
 		--Add (+X%) to quest rewards experience text
 		B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
@@ -97,13 +103,14 @@ function B:Initialize()
 	end
 
 	-- Battle.Net Frame
-	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
+	_G.BNToastFrame:ClearAllPoints()
+	_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
 	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
 
 	if GetCurrentRegion() == 2 then -- TimeAlertFrame Frame
-		_G.TimeAlertFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -80)
+		_G.TimeAlertFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -80)
 		E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 		_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
 		B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
