@@ -56,7 +56,7 @@ function S:BlizzardMiscFrames()
 	local compartment = _G.AddonCompartmentFrame
 	if compartment then
 		compartment:StripTextures()
-		compartment:CreateBackdrop('Transparent')
+		compartment:SetTemplate('Transparent')
 	end
 
 	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame } do
