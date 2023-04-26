@@ -102,12 +102,13 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	-- Battle.Net Frame
-	_G.BNToastFrame:ClearAllPoints()
-	_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)
-	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
-	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
-	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+	do -- Battle.Net Frame
+		_G.BNToastFrame:ClearAllPoints()
+		_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)
+		E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
+		_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
+		B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+	end
 
 	if GetCurrentRegion() == 2 then -- TimeAlertFrame Frame
 		_G.TimeAlertFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -80)
