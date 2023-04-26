@@ -1105,17 +1105,7 @@ do
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		if E.Retail then
-			do
-				local manager = _G.StatusTrackingBarManager
-				manager:UnregisterAllEvents()
-				manager.UpdateBarsShown = E.noop
-				if manager.barContainers then
-					for _, barContainer in ipairs(manager.barContainers) do
-						barContainer:Hide()
-					end
-				end
-			end
-
+			_G.StatusTrackingBarManager:Kill()
 			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
