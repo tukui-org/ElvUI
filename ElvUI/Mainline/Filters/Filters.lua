@@ -855,7 +855,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[373048] = List(3), -- Suffocating Webs
 	-- Dathea, Ascended
 		[391686] = List(5), -- Conductive Mark
-		[378277] = List(2), -- Elemental Equilbrium
 		[388290] = List(4), -- Cyclone
 	-- Kurog Grimtotem
 		[377780] = List(5), -- Skeletal Fractures
