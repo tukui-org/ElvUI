@@ -35,10 +35,12 @@ end
 
 -- Blizzard_TutorialManager: sort of similar to NPE
 local tutorialFrames = {
-	'TutorialWalk_Frame',
 	'TutorialSingleKey_Frame',
 	'TutorialMainFrame_Frame',
-	'TutorialKeyboardMouseFrame_Frame'
+
+	-- dead on PTR (10.1)
+	'TutorialKeyboardMouseFrame_Frame',
+	'TutorialWalk_Frame'
 }
 
 local function ShutdownTM()
@@ -48,7 +50,10 @@ local function ShutdownTM()
 
 		-- these aren't hidden by the shutdown
 		for _, name in next, tutorialFrames do
-			_G[name]:Kill()
+			local frame = _G[name]
+			if frame then
+				frame:Kill()
+			end
 		end
 	end
 
