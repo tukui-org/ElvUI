@@ -20,26 +20,6 @@ P.general = {
 	autoRepair = 'NONE',
 	autoTrackReputation = false,
 	autoAcceptInvite = false,
-	topPanel = false,
-	customGlow = {
-		style = 'Pixel Glow',
-		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
-		useColor = false,
-		speed = 0.3,
-		lines = 8,
-		size = 1,
-	},
-	topPanelSettings = {
-		transparent = true,
-		height = 22,
-		width = 0
-	},
-	bottomPanel = true,
-	bottomPanelSettings = {
-		transparent = true,
-		height = 22,
-		width = 0
-	},
 	hideErrorFrame = true,
 	hideZoneText = false,
 	enhancedPvpMessages = true,
@@ -54,6 +34,35 @@ P.general = {
 	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	questXPPercent = true,
+	durabilityScale = 1,
+	lockCameraDistanceMax = true,
+	cameraDistanceMax = E.Retail and 2.6 or 4,
+	afk = true,
+	afkChat = true,
+	cropIcon = 2,
+	objectiveTracker = true,
+	numberPrefixStyle = 'ENGLISH',
+	tagUpdateRate = 0.25, -- eventTimerThreshold should match in oUF tags file
+	decimalLength = 1,
+	fontSize = 12,
+	font = 'PT Sans Narrow',
+	fontStyle = 'OUTLINE',
+	topPanel = false,
+	bottomPanel = true,
+	bottomPanelSettings = {
+		transparent = true,
+		height = 22,
+		width = 0
+	},
+	topPanelSettings = {
+		transparent = true,
+		height = 22,
+		width = 0
+	},
+	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
+	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
+	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
+	valuecolor = { r = 0.09, g = 0.52, b = 0.82 },
 	itemLevel = {
 		displayCharacterInfo = true,
 		displayInspectInfo = true,
@@ -61,14 +70,14 @@ P.general = {
 		itemLevelFontSize = 12,
 		itemLevelFontOutline = 'OUTLINE',
 	},
-	durabilityScale = 1,
-	lockCameraDistanceMax = true,
-	cameraDistanceMax = E.Retail and 2.6 or 4,
-	afk = true,
-	afkChat = true,
-	numberPrefixStyle = 'ENGLISH',
-	tagUpdateRate = 0.25, -- eventTimerThreshold should match in oUF tags file
-	decimalLength = 1,
+	customGlow = {
+		style = 'Pixel Glow',
+		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		useColor = false,
+		speed = 0.3,
+		lines = 8,
+		size = 1,
+	},
 	altPowerBar = {
 		enable = true,
 		width = 250,
@@ -82,14 +91,6 @@ P.general = {
 		statusBarColor = { r = 0.2, g = 0.4, b = 0.8 },
 		smoothbars = false,
 	},
-	fontSize = 12,
-	font = 'PT Sans Narrow',
-	fontStyle = 'OUTLINE',
-	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
-	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
-	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
-	valuecolor = { r = 0.09, g = 0.52, b = 0.82 },
-	cropIcon = 2,
 	minimap = {
 		size = 175,
 		scale = 1,
@@ -192,7 +193,6 @@ P.general = {
 		nameFontSize = 12,
 		nameFontOutline = 'OUTLINE',
 	},
-	objectiveTracker = true,
 	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
 		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
@@ -200,8 +200,7 @@ P.general = {
 		height = 40,
 		spacing = 4,
 		keepSizeRatio = true,
-	},
-	kittys = false
+	}
 }
 
 P.databars = {
