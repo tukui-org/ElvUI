@@ -13,6 +13,7 @@ local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
 local SetPrivateWarningTextAnchor = C_UnitAuras.SetPrivateWarningTextAnchor
 
 local warningAnchor = {
+	relativeTo = nil, -- added in WarningText_Reposition
 	relativePoint = 'TOP',
 	point = 'TOP',
 	offsetX = 0,
