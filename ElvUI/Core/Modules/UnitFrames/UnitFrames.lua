@@ -524,6 +524,8 @@ function UF:Construct_PrivateAuras(frame)
 end
 
 function UF:Configure_PrivateAuras(frame)
+	if not E.Retail then return end -- dont exist on classic
+
 	if frame.PrivateAuras then
 		PA:RemoveAuras(frame.PrivateAuras)
 	end
