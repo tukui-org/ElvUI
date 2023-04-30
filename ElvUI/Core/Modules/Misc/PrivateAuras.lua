@@ -147,7 +147,13 @@ function PA:PlayerPrivateAuras()
 		end
 	end
 
-	PA:SetupPrivateAuras(nil, PA.Auras, 'player')
+	if E.db.general.privateAuras.enable then
+		PA:SetupPrivateAuras(nil, PA.Auras, 'player')
+
+		E:EnableMover(PA.Auras.mover.name)
+	else
+		E:DisableMover(PA.Auras.mover.name)
+	end
 end
 
 function PA:WarningText_Reposition(_, anchor)

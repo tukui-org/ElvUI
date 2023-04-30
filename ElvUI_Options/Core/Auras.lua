@@ -76,8 +76,9 @@ Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
 
 Auras.args.privateAuras = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end, nil, not E.Retail)
-Auras.args.privateAuras.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil, 1)
-Auras.args.privateAuras.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 2)
+Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Auras.args.privateAuras.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil, 2)
+Auras.args.privateAuras.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 3)
 
 Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:PlayerPrivateAuras() end)
 Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })

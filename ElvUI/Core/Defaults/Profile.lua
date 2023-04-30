@@ -210,6 +210,7 @@ P.general = {
 		frameLevel = 20
 	},
 	privateAuras = {
+		enable = true,
 		auraCooldown = false,
 		frameCooldown = true,
 		icon = {
@@ -1591,6 +1592,9 @@ local UF_ClassBar = {
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 }
 
+local UF_PrivateAuras = CopyTable(P.general.privateAuras)
+UF_PrivateAuras.enable = false
+
 --UnitFrame
 P.unitframe = {
 	smoothbars = false,
@@ -1814,7 +1818,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		target = {
 			enable = true,
@@ -1849,7 +1853,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		targettarget = {
 			enable = true,
@@ -1904,7 +1908,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		pet = {
 			enable = true,
@@ -1933,7 +1937,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		boss = {
 			enable = true,
@@ -1963,7 +1967,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		arena = {
 			enable = true,
@@ -2049,7 +2053,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		tank = {
 			enable = true,
@@ -2075,7 +2079,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
 			targetsGroup = CopyTable(UF_SubGroup),
-			privateAuras = CopyTable(P.general.privateAuras)
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 	},
 }
