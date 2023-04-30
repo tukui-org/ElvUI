@@ -2,9 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local PA = E:GetModule('PrivateAuras')
 
 local _G = _G
+local format = format
+local hooksecurefunc = hooksecurefunc
+
 local C_UnitAuras = C_UnitAuras
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 local AddPrivateAuraAnchor = C_UnitAuras.AddPrivateAuraAnchor
 local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
@@ -46,18 +48,18 @@ local tempAnchor = {
 	}
 }
 
-function PA:CreateAnchor(parent, unit, index, db)
+function PA:CreateAnchor(aura, parent, unit, index, db)
 	if not unit then unit = parent.unit end
 
 	-- clear any old ones, respawn the new ones
-	local anchorID = parent.auraAnchors[index]
-	if anchorID then
-		RemovePrivateAuraAnchor(anchorID)
+	local previousAura = parent.auraIcons[index]
+	if previousAura then
+		RemovePrivateAuraAnchor(previousAura.anchorID)
 	end
 
 	-- update all possible entries to this as the table is dirty
 	tempAnchor.unitToken = unit
-	tempAnchor.parent = parent
+	tempAnchor.parent = aura
 	tempAnchor.auraIndex = index
 
 	tempAnchor.showCountdownFrame = db.frameCooldown
@@ -67,76 +69,85 @@ function PA:CreateAnchor(parent, unit, index, db)
 	if not iconSize then iconSize = 32 end
 
 	local iconPoint = db.icon.point
-	if index == 1 or not iconPoint then iconPoint = 'CENTER' end
+	if not iconPoint then iconPoint = 'CENTER' end
 
 	local durationPoint = db.duration.point
-	if index == 1 or not durationPoint then durationPoint = 'CENTER' end
-
-	local iconX, iconY, durationX, durationY = PA:CalculateDirection(db, index, (index - 1) * iconSize)
+	if not durationPoint then durationPoint = 'CENTER' end
 
 	local icon = tempAnchor.iconInfo
 	icon.iconWidth = iconSize
 	icon.iconHeight = iconSize
-	icon.iconAnchor.relativeTo = parent
+	icon.iconAnchor.relativeTo = aura
 	icon.iconAnchor.point = iconPoint
 	icon.iconAnchor.relativePoint = iconPoint
-	icon.iconAnchor.offsetX = iconX
-	icon.iconAnchor.offsetY = iconY
+	icon.iconAnchor.offsetX = 0
+	icon.iconAnchor.offsetY = 0
 
 	local duration = tempAnchor.durationAnchor
-	duration.relativeTo = parent
+	duration.relativeTo = aura
 	duration.point = E.InversePoints[durationPoint]
 	duration.relativePoint = durationPoint
-	duration.offsetX = durationX
-	duration.offsetY = durationY
+	duration.offsetX = db.duration.offsetX
+	duration.offsetY = db.duration.offsetY
 
 	return AddPrivateAuraAnchor(tempAnchor)
 end
 
-function PA:CalculateDirection(db, index, size)
-	if index == 1 then
-		return 0, 0, 0, 0
-	else
-		local dir = db.icon.direction
-		local duraX, duraY = db.duration.offsetX or 0, db.duration.offsetY or 0
-		local iconX = (dir == 'LEFT' or dir == 'RIGHT') and db.icon.offset or 0
-		local iconY = (dir == 'UP' or dir == 'DOWN') and db.icon.offset or 0
-
-		if dir == 'LEFT' then
-			return -(size + iconX), -iconY, -(size + duraX), -duraY
-		elseif dir == 'RIGHT' then
-			return (size + iconX), iconY, (size + duraX), duraY
-		elseif dir == 'DOWN' then
-			return -iconX, -(size + iconY), -duraX, -(size + duraY)
-		else
-			return iconX, (size + iconY), duraX, (size + duraY)
-		end
+function PA:CreateAura(parent, unit, index, db)
+	local aura = PA.Auras.auraIcons[index]
+	if not aura then
+		aura = CreateFrame('Frame', format('%s%d', parent:GetName(), index), parent)
 	end
+
+	aura:ClearAllPoints()
+
+	if index == 1 then
+		aura:Point('CENTER', parent, 0, 0)
+	else
+		local offsetX, offsetY = 0, 0
+		if db.icon.point == 'RIGHT' then
+			offsetX = db.icon.offset
+		elseif db.icon.point == 'LEFT' then
+			offsetX = -db.icon.offset
+		elseif db.icon.point == 'TOP' then
+			offsetY = db.icon.offset
+		else
+			offsetY = -db.icon.offset
+		end
+
+		aura:Point(E.InversePoints[db.icon.point], PA.Auras.auraIcons[index-1], db.icon.point, offsetX, offsetY)
+	end
+
+	aura:Size(db.icon.size)
+
+	aura.anchorID = PA:CreateAnchor(aura, parent, unit or 'player', index, db)
+
+	return aura
 end
 
 function PA:SetupPrivateAuras(db, parent, unit)
 	if not db then db = E.db.general.privateAuras end
 	if not parent then parent = _G.UIParent end
 
-	if not parent.auraAnchors then
-		parent.auraAnchors = {}
+	PA.Auras:Size(db.icon.size)
+
+	if not parent.auraIcons then
+		parent.auraIcons = {}
 	end
 
 	for i = 1, db.icon.amount do
-		parent.auraAnchors[i] = PA:CreateAnchor(parent, unit or 'player', i, db)
+		parent.auraIcons[i] = PA:CreateAura(parent, unit or 'player', i, db)
 	end
 end
 
 function PA:PlayerPrivateAuras()
-	if PA.auras.auraAnchors then
-		for _, anchorID in pairs(PA.auras.auraAnchors) do
-			RemovePrivateAuraAnchor(anchorID)
+	if PA.Auras.auraIcons then
+		for _, auraIcon in pairs(PA.Auras.auraIcons) do
+			RemovePrivateAuraAnchor(auraIcon.anchorID)
 		end
 	end
 
-	local db = E.db.general.privateAuras
-	PA:SetupPrivateAuras(nil, PA.auras, 'player')
-	PA.auras:Size(db.icon.size)
+	PA:SetupPrivateAuras(nil, PA.Auras, 'player')
 end
 
 function PA:WarningText_Reposition(_, anchor)
@@ -162,10 +173,10 @@ function PA:WarningText_Reparent(parent)
 end
 
 function PA:Initialize()
-	PA.auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
-	PA.auras:Point('CENTER', _G.UIParent)
-	PA.auras:SetSize(32, 32)
-	E:CreateMover(PA.auras, 'PrivateAurasMover', L["Private Auras"])
+	PA.Auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
+	PA.Auras:Point('CENTER', _G.UIParent)
+	PA.Auras:Size(32)
+	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"])
 	PA:PlayerPrivateAuras()
 
 	local warningText = _G.PrivateRaidBossEmoteFrameAnchor

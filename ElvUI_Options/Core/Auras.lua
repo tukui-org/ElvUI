@@ -80,17 +80,16 @@ Auras.args.privateAuras.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil
 Auras.args.privateAuras.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 2)
 
 Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:PlayerPrivateAuras() end)
-Auras.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 1, { min = -60, max = 60, step = 1 })
-Auras.args.privateAuras.args.icon.args.direction = ACH:Select(L["Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"] })
-Auras.args.privateAuras.args.icon.args.spacer = ACH:Spacer(5, 'full')
-Auras.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 6, { min = 1, max = 5, step = 1 })
-Auras.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 7, { min = 6, max = 80, step = 1 })
+Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
+Auras.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
+Auras.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
+Auras.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
 Auras.args.privateAuras.args.icon.inline = true
 
 Auras.args.privateAuras.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.general.privateAuras.duration[info[#info]] end, function(info, value) E.db.general.privateAuras.duration[info[#info]] = value; PA:PlayerPrivateAuras() end)
-Auras.args.privateAuras.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 1, { min = -60, max = 60, step = 1 })
-Auras.args.privateAuras.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 2, { min = -60, max = 60, step = 1 })
-Auras.args.privateAuras.args.duration.args.point = ACH:Select(L["Point"], nil, 3, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
+Auras.args.privateAuras.args.duration.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
+Auras.args.privateAuras.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -60, max = 60, step = 1 })
+Auras.args.privateAuras.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -60, max = 60, step = 1 })
 Auras.args.privateAuras.args.duration.inline = true
 
 Auras.args.masqueGroup = ACH:Group(L["Masque"], nil, 13, nil, nil, nil, function() return not E.Masque or not E.private.auras.enable end)

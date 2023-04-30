@@ -213,15 +213,15 @@ P.general = {
 		auraCooldown = false,
 		frameCooldown = true,
 		icon = {
+			offset = 3,
+			point = 'LEFT',
 			amount = 2,
-			size = 32,
-			offset = 0,
-			direction = 'RIGHT'
+			size = 32
 		},
 		duration = {
 			point = 'BOTTOM',
 			offsetX = 0,
-			offsetY = -2
+			offsetY = -1
 		}
 	}
 }
