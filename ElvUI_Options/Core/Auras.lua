@@ -75,7 +75,7 @@ Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
 
-Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end)
+Auras.args.privateAuras = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end)
 Auras.args.privateAuras.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil, 1)
 Auras.args.privateAuras.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 2)
 

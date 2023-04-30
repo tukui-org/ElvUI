@@ -1814,6 +1814,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		target = {
 			enable = true,
@@ -1848,6 +1849,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		targettarget = {
 			enable = true,
@@ -1902,6 +1904,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		pet = {
 			enable = true,
@@ -1930,6 +1933,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		boss = {
 			enable = true,
@@ -1959,6 +1963,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		arena = {
 			enable = true,
@@ -2044,6 +2049,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 		tank = {
 			enable = true,
@@ -2069,6 +2075,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
 			targetsGroup = CopyTable(UF_SubGroup),
+			privateAuras = CopyTable(P.general.privateAuras)
 		},
 	},
 }
@@ -2183,6 +2190,7 @@ P.unitframe.units.focustarget.debuffs.priority = 'Blacklist,Personal,Boss,RaidDe
 P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
+P.unitframe.units.focustarget.privateAuras = nil
 
 P.unitframe.units.pet.aurabar.enable = false
 P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
@@ -2214,6 +2222,7 @@ P.unitframe.units.pettarget.debuffs.maxDuration = 300
 P.unitframe.units.pettarget.debuffs.priority = 'Blacklist,Boss,RaidDebuffs,Dispellable,Whitelist'
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
+P.unitframe.units.pettarget.privateAuras = nil
 
 P.unitframe.units.boss.buffs.enable = true
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
