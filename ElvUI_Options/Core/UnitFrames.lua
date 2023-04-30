@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local UF = E:GetModule('UnitFrames')
+local PA = E:GetModule('PrivateAuras')
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
@@ -75,7 +76,7 @@ local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
 local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
-	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end)
+	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end, nil, not E.Retail)
 	config.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil, 1)
 	config.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 2)
 
