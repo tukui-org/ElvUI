@@ -520,10 +520,7 @@ function UF:Update_FontStrings()
 end
 
 function UF:Construct_PrivateAuras(frame)
-	local aura = CreateFrame('Frame', '$parent_PrivateAuras', frame.RaisedElementParent)
-	aura:SetInside(frame)
-
-	return aura
+	return CreateFrame('Frame', '$parent_PrivateAuras', frame.RaisedElementParent)
 end
 
 function UF:Configure_PrivateAuras(frame)
@@ -534,6 +531,10 @@ function UF:Configure_PrivateAuras(frame)
 	local db = frame.db and frame.db.privateAuras
 	if db and db.enable then
 		PA:SetupPrivateAuras(db, frame.PrivateAuras, frame.unit)
+
+		frame.PrivateAuras:ClearAllPoints()
+		frame.PrivateAuras:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		frame.PrivateAuras:Size(db.icon.size)
 	end
 end
 

@@ -224,6 +224,11 @@ P.general = {
 			point = 'BOTTOM',
 			offsetX = 0,
 			offsetY = -1
+		},
+		parent = {
+			point = 'TOP',
+			offsetX = 0,
+			offsetY = 0
 		}
 	}
 }
