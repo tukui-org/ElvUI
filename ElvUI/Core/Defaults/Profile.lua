@@ -208,6 +208,21 @@ P.general = {
 		fontOutline = 'NONE',
 		frameStrata = 'MEDIUM',
 		frameLevel = 20
+	},
+	privateAuras = {
+		auraCooldown = false,
+		frameCooldown = true,
+		icon = {
+			amount = 2,
+			size = 32,
+			offset = 0,
+			direction = 'RIGHT'
+		},
+		duration = {
+			point = 'BOTTOM',
+			offsetX = 0,
+			offsetY = -2
+		}
 	}
 }
 
