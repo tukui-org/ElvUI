@@ -22,7 +22,7 @@ local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
 	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(_G.ScriptErrorsFrameScrollBar)
+	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar, true)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 
 	ScriptErrorsFrame.ScrollFrame:SetTemplate()
