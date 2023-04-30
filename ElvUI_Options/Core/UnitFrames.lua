@@ -76,22 +76,24 @@ local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
 local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
-	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end, nil, not E.Retail)
+	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.frameCooldown = ACH:Toggle(L["Frame Cooldown"], nil, 2)
-	config.args.auraCooldown = ACH:Toggle(L["Aura Cooldown"], nil, 3)
+	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
+	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 
-	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value; PA:PlayerPrivateAuras() end)
+	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
 	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
 	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
 	config.args.icon.inline = true
 
-	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value; PA:PlayerPrivateAuras() end)
-	config.args.duration.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -60, max = 60, step = 1 })
-	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -60, max = 60, step = 1 })
+	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.duration.args.enable.customWidth = 100
+	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
+	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -60, max = 60, step = 1 })
+	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -60, max = 60, step = 1 })
 	config.args.duration.inline = true
 
 	return config

@@ -211,8 +211,8 @@ P.general = {
 	},
 	privateAuras = {
 		enable = true,
-		auraCooldown = false,
-		frameCooldown = true,
+		countdownFrame = true,
+		countdownNumbers = true,
 		icon = {
 			offset = 3,
 			point = 'LEFT',
@@ -220,6 +220,7 @@ P.general = {
 			size = 32
 		},
 		duration = {
+			enable = true,
 			point = 'BOTTOM',
 			offsetX = 0,
 			offsetY = -1
@@ -1594,6 +1595,8 @@ local UF_ClassBar = {
 
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
+UF_PrivateAuras.icon.size = 28
+UF_PrivateAuras.duration.enable = false
 
 --UnitFrame
 P.unitframe = {

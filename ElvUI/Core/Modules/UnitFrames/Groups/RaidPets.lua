@@ -24,6 +24,7 @@ function UF:Construct_RaidpetFrames()
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
+	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 
 	self.customTexts = {}
 
@@ -84,6 +85,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	UF:Configure_Fader(frame)
 	UF:Configure_AuraWatch(frame, true)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_PrivateAuras(frame)
 	UF:Configure_CustomTexts(frame)
 
 	UF:HandleRegisterClicks(frame)
