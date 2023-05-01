@@ -1,7 +1,6 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local UF = E:GetModule('UnitFrames')
-local PA = E:GetModule('PrivateAuras')
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
