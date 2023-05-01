@@ -357,7 +357,6 @@ end
 function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
-	-- TODO Season 2
 	S:HandleTrimScrollBar(_G.QuestProgressScrollFrame.ScrollBar, true)
 	S:HandleTrimScrollBar(_G.QuestRewardScrollFrame.ScrollBar, true)
 	S:HandleTrimScrollBar(_G.QuestDetailScrollFrame.ScrollBar, true)

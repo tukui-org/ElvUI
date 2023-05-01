@@ -73,7 +73,7 @@ function S:Blizzard_GuildControlUI()
 	S:HandleButton(_G.GuildControlUIRankOrderFrameNewButton)
 	S:HandleCloseButton(_G.GuildControlUICloseButton)
 	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropDown, 180)
-	-- S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrame.ScrollBar, true)
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
 	_G.GuildControlUINavigationDropDownButton:Width(20)

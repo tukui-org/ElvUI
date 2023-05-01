@@ -413,7 +413,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	S:HandleTrimScrollBar(_G.EncounterJournal.LootJournal.ScrollBar)
+	S:HandleTrimScrollBar(LJ.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
 		HandleButton(button, true)
@@ -548,7 +548,7 @@ function S:Blizzard_EncounterJournal()
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
 		HandleButton(ItemSetsFrame.ClassButton, true)
-		-- S:HandleScrollBar(ItemSetsFrame.scrollBar) TODO Season 2
+		S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar, true)
 
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()

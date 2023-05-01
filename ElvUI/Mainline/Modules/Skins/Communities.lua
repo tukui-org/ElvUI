@@ -397,7 +397,7 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderBottomLeft2:Hide()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
-	-- S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame.ScrollBar, true)
 	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
@@ -476,7 +476,7 @@ function S:Blizzard_Communities()
 	EditFrame:StripTextures()
 	EditFrame:SetTemplate('Transparent')
 	EditFrame.Container.NineSlice:SetTemplate('Transparent')
-	-- S:HandleScrollBar(_G.CommunitiesGuildTextEditFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(EditFrame.Container.ScrollFrame.ScrollBar, true)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
 	local closeButton = select(4, _G.CommunitiesGuildTextEditFrame:GetChildren())
@@ -489,7 +489,7 @@ function S:Blizzard_Communities()
 	GuildLogFrame:SetTemplate('Transparent')
 	GuildLogFrame.Container.NineSlice:SetTemplate('Transparent')
 
-	-- S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(GuildLogFrame.Container.ScrollFrame.ScrollBar, true)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
 	closeButton = select(3, _G.CommunitiesGuildLogFrame:GetChildren()) -- swap local variable
 	S:HandleButton(closeButton)
