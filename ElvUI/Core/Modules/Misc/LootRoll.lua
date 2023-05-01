@@ -33,27 +33,6 @@ local cachedRolls = {}
 local completedRolls = {}
 M.RollBars = {}
 
-local function GetLootRollTimeLeft(rollid)
-	return 20
-end
-local function GetLootRollItemLink(rollID)
-	return '|cffffffff|Hitem:25::::::::1:::::::::|h[Worn Shortsword]|h|r'
-end
-local function GetLootRollItemInfo(RollID)
-	local Texture = 135226
-	local Name = 'Atiesh, Greatstaff of the Guardian'
-	local Count = RollID
-	local Quality = RollID + 1
-	local BindOnPickUp = true
-	local CanNeed = true
-	local CanGreed = false
-	local CanDisenchant = true
-	local CanTransmog = true
-	local ReasonNeed = 0
-	local ReasonGreed = 0
-	return Texture, Name, Count, Quality, BindOnPickUp, CanNeed, CanGreed, CanDisenchant, ReasonNeed, ReasonGreed, nil, nil, CanTransmog
-end
-
 local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
@@ -512,12 +491,6 @@ function M:UpdateLootRollFrames()
 			bar.name:Point('RIGHT', bar.bind, 'LEFT', -1, 0)
 			bar.bind:Point('RIGHT', bar.need, 'LEFT', -1, 0)
 		end
-	end
-end
-
-function TEST()
-	for rollID = 1, NUM_GROUP_LOOT_FRAMES do
-	   M:START_LOOT_ROLL(_, rollID, GetLootRollTimeLeft(rollID))
 	end
 end
 
