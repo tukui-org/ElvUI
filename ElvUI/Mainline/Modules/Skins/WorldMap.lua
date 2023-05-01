@@ -87,7 +87,7 @@ function S:WorldMapFrame()
 	end
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
-	S:HandleTrimScrollBar(QuestScrollFrameScrollBar)
+	S:HandleTrimScrollBar(QuestScrollFrameScrollBar, true)
 	QuestScrollFrameScrollBar:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPRIGHT', 1, -15)
 	QuestScrollFrameScrollBar:Point('BOTTOMLEFT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', 6, 10)
 
