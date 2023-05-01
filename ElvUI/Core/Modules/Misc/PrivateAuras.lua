@@ -201,7 +201,7 @@ end
 
 function PA:Initialize()
 	PA.Auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
-	PA.Auras:Point('CENTER', _G.UIParent)
+	PA.Auras:Point('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'BOTTOMLEFT', -(6 + E.Border), -4)
 	PA.Auras:Size(32)
 	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"])
 	PA:PlayerPrivateAuras()
