@@ -636,6 +636,12 @@ local NP_QuestIcon = {
 	fontSize = 12
 }
 
+local NP_PrivateAuras = CopyTable(P.general.privateAuras)
+NP_PrivateAuras.enable = false
+NP_PrivateAuras.icon.size = 24
+NP_PrivateAuras.parent.point = 'BOTTOM'
+NP_PrivateAuras.duration.enable = false
+
 --NamePlate
 P.nameplates = {
 	clampToScreen = false,
@@ -906,6 +912,7 @@ for unit, data in next, P.nameplates.units do
 		data.power = CopyTable(NP_Power)
 		data.pvpindicator = CopyTable(NP_PvPIcon)
 		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
+		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
 
 		if strfind(unit, '_NPC') then
