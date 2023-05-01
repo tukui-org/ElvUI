@@ -7,8 +7,7 @@
 	<Script file='CallToArms.lua'/>
 	<Script file='Leech.lua'/>
 	<Script file='Mastery.lua'/>
-	<!--TODO Season 2-->
-	<!--Script file='Missions.lua'/-->
+	<Script file='Missions.lua'/>
 	<Script file='Quickjoin.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Versatility.lua'/>
