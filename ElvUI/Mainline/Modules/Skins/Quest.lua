@@ -485,7 +485,7 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
-	-- S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar, true)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
@@ -494,7 +494,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameShareButton)
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
-	-- S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(_G.QuestLogPopupDetailFrameScrollFrame.ScrollBar, true)
 	QuestLogPopupDetailFrame:SetTemplate('Transparent')
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
