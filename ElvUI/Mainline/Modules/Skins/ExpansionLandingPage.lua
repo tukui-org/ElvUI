@@ -16,7 +16,9 @@ local function HandlePanel(panel)
 end
 
 local function HandleScrollBar(frame)
-	S:HandleTrimScrollBar(frame.MajorFactionList.ScrollBar, true)
+	if frame.MajorFactionList then
+		S:HandleTrimScrollBar(frame.MajorFactionList.ScrollBar, true)
+	end
 end
 
 local function DelayedMajorFactionList(frame)
