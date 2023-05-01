@@ -1608,6 +1608,7 @@ local UF_ClassBar = {
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
 UF_PrivateAuras.icon.size = 28
+UF_PrivateAuras.parent.point = 'BOTTOM'
 UF_PrivateAuras.duration.enable = false
 
 --UnitFrame
