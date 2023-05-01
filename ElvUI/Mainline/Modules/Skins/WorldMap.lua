@@ -105,13 +105,12 @@ function S:WorldMapFrame()
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)
 	CampaignOverview.ScrollFrame:StripTextures()
-	-- S:HandleScrollBar(_G.QuestMapFrameScrollBar) TODO Season 2
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
 	end
 
-	S:HandleScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar, true)
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
