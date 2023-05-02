@@ -115,6 +115,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.CreateButton)
 	S:HandleButton(CraftingPage.CreateAllButton)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
+	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 
 	if E.global.general.disableTutorialButtons then
