@@ -112,11 +112,11 @@ end
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar, true)
 
 	local StripAllTextures = {
 		'FriendsTabHeaderTab1',
@@ -147,15 +147,6 @@ function S:FriendsFrame()
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
-	end
-
-	local mainFrames = {
-		'WhoFrame',
-		'LFRQueueFrame',
-	}
-
-	for _, frame in pairs(mainFrames) do
-		_G[frame]:StripTextures()
 	end
 
 	local FriendsFrame = _G.FriendsFrame
@@ -261,6 +252,7 @@ function S:FriendsFrame()
 	end)
 
 	--Who Frame
+	_G.WhoFrame:StripTextures()
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
 	_G.WhoFrameEditBoxInset:StripTextures()

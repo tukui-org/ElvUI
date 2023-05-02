@@ -11,6 +11,8 @@ function S:PetitionFrame()
 	PetitionFrame:SetTemplate('Transparent')
 	_G.PetitionFrameInset:Kill()
 
+	S:HandleTrimScrollBar(PetitionFrame.ScrollBar)
+
 	S:HandleButton(_G.PetitionFrameSignButton)
 	S:HandleButton(_G.PetitionFrameRequestButton)
 	S:HandleButton(_G.PetitionFrameRenameButton)

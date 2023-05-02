@@ -156,7 +156,7 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.bg:Kill()
 
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
+	S:HandleTrimScrollBar(InstanceSelect.ScrollBar, true)
 
 	-- Bottom tabs
 	for _, tab in next, {
@@ -218,8 +218,9 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
-	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar)
-	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar)
+	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar, true)
+	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar, true)
+
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point('CENTER', 0, 40)
@@ -228,9 +229,9 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -56)
 
-	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar)
-	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar)
-	S:HandleTrimScrollBar(EncounterInfo.LootContainer.ScrollBar)
+	S:HandleTrimScrollBar(EncounterInfo.overviewScroll.ScrollBar, true)
+	S:HandleTrimScrollBar(EncounterInfo.detailsScroll.ScrollBar, true)
+	S:HandleTrimScrollBar(EncounterInfo.LootContainer.ScrollBar, true)
 
 	EncounterInfo.detailsScroll:Height(360)
 	EncounterInfo.LootContainer:Height(360)
@@ -412,7 +413,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	S:HandleTrimScrollBar(_G.EncounterJournal.LootJournal.ScrollBar)
+	S:HandleTrimScrollBar(LJ.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
 		HandleButton(button, true)
@@ -547,7 +548,7 @@ function S:Blizzard_EncounterJournal()
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
 		HandleButton(ItemSetsFrame.ClassButton, true)
-		S:HandleScrollBar(ItemSetsFrame.scrollBar)
+		S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar, true)
 
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()

@@ -139,7 +139,7 @@ function EM:Initialize()
 		mixin.RefreshVehicleLeaveButton = E.noop
 		mixin.RefreshActionBarShown = E.noop
 		mixin.RefreshEncounterBar = E.noop
-		mixin.RefreshReputationBar = E.noop
+		mixin.RefreshStatusTrackingBar2 = E.noop
 
 		if _G.MainStatusTrackingBarContainer then -- Ignore Experience Bar in EditMode
 			_G.MainStatusTrackingBarContainer.OnEditModeEnter = E.noop

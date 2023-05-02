@@ -35,6 +35,7 @@ function UF:Construct_RaidFrames()
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
+	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 	self.customTexts = {}
 
 	if E.Retail then
@@ -130,6 +131,7 @@ function UF:Update_RaidFrames(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_PhaseIcon(frame)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_PrivateAuras(frame)
 	UF:Configure_ClassBar(frame)
 	UF:UpdateNameSettings(frame)
 

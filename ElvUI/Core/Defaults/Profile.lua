@@ -27,7 +27,6 @@ P.general = {
 	objectiveFrameAutoHide = true,
 	objectiveFrameAutoHideInKeystone = false,
 	bonusObjectivePosition = 'LEFT',
-	torghastBuffsPosition = 'LEFT',
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
@@ -200,6 +199,36 @@ P.general = {
 		height = 40,
 		spacing = 4,
 		keepSizeRatio = true,
+	},
+	addonCompartment = {
+		size = 18,
+		font = 'Expressway',
+		fontSize = 13,
+		fontOutline = 'NONE',
+		frameStrata = 'MEDIUM',
+		frameLevel = 20
+	},
+	privateAuras = {
+		enable = true,
+		countdownFrame = true,
+		countdownNumbers = true,
+		icon = {
+			offset = 3,
+			point = 'LEFT',
+			amount = 2,
+			size = 32
+		},
+		duration = {
+			enable = true,
+			point = 'BOTTOM',
+			offsetX = 0,
+			offsetY = -1
+		},
+		parent = {
+			point = 'TOP',
+			offsetX = 0,
+			offsetY = 0
+		}
 	}
 }
 
@@ -606,6 +635,13 @@ local NP_QuestIcon = {
 	fontSize = 12
 }
 
+local NP_PrivateAuras = CopyTable(P.general.privateAuras)
+NP_PrivateAuras.enable = false
+NP_PrivateAuras.icon.size = 20
+NP_PrivateAuras.parent.point = 'BOTTOM'
+NP_PrivateAuras.duration.enable = false
+NP_PrivateAuras.countdownNumbers = false
+
 --NamePlate
 P.nameplates = {
 	clampToScreen = false,
@@ -876,6 +912,7 @@ for unit, data in next, P.nameplates.units do
 		data.power = CopyTable(NP_Power)
 		data.pvpindicator = CopyTable(NP_PvPIcon)
 		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
+		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
 
 		if strfind(unit, '_NPC') then
@@ -1568,6 +1605,12 @@ local UF_ClassBar = {
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 }
 
+local UF_PrivateAuras = CopyTable(P.general.privateAuras)
+UF_PrivateAuras.enable = false
+UF_PrivateAuras.icon.size = 24
+UF_PrivateAuras.parent.point = 'BOTTOM'
+UF_PrivateAuras.duration.enable = false
+
 --UnitFrame
 P.unitframe = {
 	smoothbars = false,
@@ -1791,6 +1834,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		target = {
 			enable = true,
@@ -1825,6 +1869,7 @@ P.unitframe = {
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		targettarget = {
 			enable = true,
@@ -1879,6 +1924,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		pet = {
 			enable = true,
@@ -1907,6 +1953,7 @@ P.unitframe = {
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		boss = {
 			enable = true,
@@ -1936,6 +1983,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		arena = {
 			enable = true,
@@ -2021,6 +2069,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		tank = {
 			enable = true,
@@ -2046,6 +2095,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
 			targetsGroup = CopyTable(UF_SubGroup),
+			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 	},
 }
@@ -2160,6 +2210,7 @@ P.unitframe.units.focustarget.debuffs.priority = 'Blacklist,Personal,Boss,RaidDe
 P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
+P.unitframe.units.focustarget.privateAuras = nil
 
 P.unitframe.units.pet.aurabar.enable = false
 P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
@@ -2191,6 +2242,7 @@ P.unitframe.units.pettarget.debuffs.maxDuration = 300
 P.unitframe.units.pettarget.debuffs.priority = 'Blacklist,Boss,RaidDebuffs,Dispellable,Whitelist'
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
+P.unitframe.units.pettarget.privateAuras = nil
 
 P.unitframe.units.boss.buffs.enable = true
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
@@ -2200,6 +2252,10 @@ P.unitframe.units.boss.buffs.priority = 'Blacklist,CastByUnit,Dispellable,Whitel
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
 P.unitframe.units.boss.buffIndicator.enable = true
+P.unitframe.units.boss.privateAuras.enable = true
+P.unitframe.units.boss.privateAuras.countdownNumbers = false
+P.unitframe.units.boss.privateAuras.icon.size = 20
+P.unitframe.units.boss.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.debuffs.enable = true
 P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'
@@ -2252,6 +2308,10 @@ P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.buffIndicator.enable = true
+P.unitframe.units.party.privateAuras.enable = true
+P.unitframe.units.party.privateAuras.countdownNumbers = false
+P.unitframe.units.party.privateAuras.icon.size = 20
+P.unitframe.units.party.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
@@ -2284,6 +2344,10 @@ P.unitframe.units.raid1.groupBy = 'GROUP'
 P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
 P.unitframe.units.raid1.buffIndicator.enable = true
+P.unitframe.units.raid1.privateAuras.enable = true
+P.unitframe.units.raid1.privateAuras.countdownNumbers = false
+P.unitframe.units.raid1.privateAuras.icon.size = 18
+P.unitframe.units.raid1.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.raid1.castbar = nil
 P.unitframe.units.raid1.CombatIcon = nil
 P.unitframe.units.raid1.debuffs.enable = false
@@ -2350,6 +2414,10 @@ P.unitframe.units.tank.debuffs.yOffset = 1
 P.unitframe.units.tank.name.position = 'CENTER'
 P.unitframe.units.tank.name.text_format = '[classcolor][name:medium]'
 P.unitframe.units.tank.name.xOffset = 0
+P.unitframe.units.tank.privateAuras.enable = true
+P.unitframe.units.tank.privateAuras.countdownNumbers = false
+P.unitframe.units.tank.privateAuras.icon.size = 18
+P.unitframe.units.tank.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0

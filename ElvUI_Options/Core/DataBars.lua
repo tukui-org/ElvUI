@@ -101,7 +101,7 @@ DataBars.args.reputation.args.enable.set = function(info, value) DB.db.reputatio
 DataBars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 15)
 DataBars.args.reputation.args.showReward.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
+DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, C.Values.SidePositions)
 DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end

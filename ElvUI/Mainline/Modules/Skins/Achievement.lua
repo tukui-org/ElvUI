@@ -355,7 +355,7 @@ function S:Blizzard_AchievementUI()
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
 	_G.AchievementFrameStatsBG:SetInside(_G.AchievementFrameStats.ScrollBox, 1, 1)
-	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
+	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar, true)
 
 	-- Comparison
 	local Comparison = _G.AchievementFrameComparison

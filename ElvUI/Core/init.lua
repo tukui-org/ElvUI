@@ -19,6 +19,8 @@ local ReloadUI = ReloadUI
 local RegisterCVar = C_CVar.RegisterCVar
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
@@ -59,6 +61,7 @@ E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0')
 E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
 E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 E.PluginInstaller = E:NewModule('PluginInstaller')
+E.PrivateAuras = E:NewModule('PrivateAuras')
 E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
 E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
 E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
@@ -81,6 +84,14 @@ E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
+
+do
+	function E:AddonCompartmentFunc()
+		E:ToggleOptions()
+	end
+
+	_G.ElvUI_AddonCompartmentFunc = E.AddonCompartmentFunc
+end
 
 do -- this is different from E.locale because we need to convert for ace locale files
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}

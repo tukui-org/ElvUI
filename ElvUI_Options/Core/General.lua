@@ -263,4 +263,14 @@ blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or not E.db.general.objectiveFrameAutoHide end)
 blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:SetObjectiveFrameHeight() end, nil, not E.Wrath)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
-blizz.objectiveFrameGroup.args.torghastBuffsPosition = ACH:Select(L["Maw Buffs Position"], L["Position of the Maw Buffs list relative to the objective tracker."], 5, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:HandleMawBuffsFrame() end, nil, not E.Retail)
+
+blizz.addonCompartment = ACH:Group(E.NewSign..L["Addon Compartment"], nil, 6, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; Blizzard:HandleAddonCompartment() end, nil, not E.Retail)
+blizz.addonCompartment.args.size = ACH:Range(L["Size"], nil, 1, { min = 10, max = 40, step = 1 })
+blizz.addonCompartment.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, { min = 2, max = 128, step = 1 })
+blizz.addonCompartment.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 3, C.Values.Strata)
+
+blizz.addonCompartment.args.fontGroup = ACH:Group(L["Font Group"], nil, 50, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; Blizzard:HandleAddonCompartment() end)
+blizz.addonCompartment.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+blizz.addonCompartment.args.fontGroup.inline = true

@@ -214,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = true
 L["lvl"] = true
 L["MA Frames"] = true
-L["MawBuffsWidget"] = true
 L["Max Level"] = true
 L["Micro Bar"] = true
 L["Minimap Cluster"] = true

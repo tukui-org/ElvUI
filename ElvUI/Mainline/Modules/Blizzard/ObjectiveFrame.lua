@@ -44,28 +44,6 @@ local function AutoHider_OnShow()
 	end
 end
 
-local function MawBuffsList_OnShow(list)
-	list.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
-	list.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
-	list.button:SetButtonState('PUSHED', true)
-	list.button:SetButtonState('NORMAL')
-end
-
-function B:HandleMawBuffsFrame()
-	if not IsInJailersTower() then return end
-
-	local container = _G.ScenarioBlocksFrame.MawBuffsBlock.Container
-	container.List:ClearAllPoints()
-
-	local buffsPos = E.db.general.torghastBuffsPosition or 'AUTO'
-	if buffsPos == 'RIGHT' or (buffsPos == 'AUTO' and IsFramePositionedLeft(_G.ScenarioBlocksFrame)) then
-		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
-		container.List:SetScript('OnShow', MawBuffsList_OnShow)
-	else
-		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)
-	end
-end
-
 function B:SetObjectiveFrameAutoHide()
 	if not _G.ObjectiveTrackerFrame.AutoHider then
 		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
@@ -94,7 +72,4 @@ function B:MoveObjectiveFrame()
 	end
 
 	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
-
-	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'HandleMawBuffsFrame')
-	B:HandleMawBuffsFrame()
 end

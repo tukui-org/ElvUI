@@ -214,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "제어손실 표시"
 L["lvl"] = "레벨"
 L["MA Frames"] = "지원공격 전담 프레임"
-L["MawBuffsWidget"] = "토르가스트 버프바"
 L["Max Level"] = "최고 래벨"
 L["Micro Bar"] = "메뉴모음 바"
 L["Minimap Cluster"] = "미니맵 클러스터"
