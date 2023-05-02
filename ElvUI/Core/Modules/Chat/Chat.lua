@@ -787,18 +787,23 @@ function CH:StyleChat(frame)
 
 	_G[name..'ButtonFrame']:Kill()
 
-	local scrollTex = _G[name..'ThumbTexture']
-	local scrollToBottom = frame.ScrollToBottomButton
 	local scroll = frame.ScrollBar
-	local editbox = frame.editBox
-
 	if scroll then
 		scroll:Kill()
+	end
+
+	local scrollToBottom = frame.ScrollToBottomButton
+	if scrollToBottom then
 		scrollToBottom:Kill()
+	end
+
+	local scrollTex = _G[name..'ThumbTexture']
+	if scrollTex then
 		scrollTex:Kill()
 	end
 
 	--Character count
+	local editbox = frame.editBox
 	local charCount = editbox:CreateFontString(nil, 'ARTWORK')
 	charCount:FontTemplate()
 	charCount:SetTextColor(190, 190, 190, 0.4)
