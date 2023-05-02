@@ -156,7 +156,7 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.bg:Kill()
 
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
+	S:HandleTrimScrollBar(InstanceSelect.ScrollBar, true)
 
 	-- Bottom tabs
 	for _, tab in next, {
