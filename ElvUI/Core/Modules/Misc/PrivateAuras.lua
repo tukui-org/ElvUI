@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local PA = E:GetModule('PrivateAuras')
 
 local _G = _G
+local next = next
 local format = format
 local hooksecurefunc = hooksecurefunc
 
@@ -114,7 +115,7 @@ end
 
 function PA:RemoveAuras(parent)
 	if parent.auraIcons then
-		for _, aura in pairs(parent.auraIcons) do
+		for _, aura in next, parent.auraIcons do
 			PA:RemoveAura(aura)
 		end
 	end

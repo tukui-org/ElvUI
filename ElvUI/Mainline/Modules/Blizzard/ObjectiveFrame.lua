@@ -6,7 +6,6 @@ local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
-local IsInJailersTower = IsInJailersTower
 local hooksecurefunc = hooksecurefunc
 
 local function IsFramePositionedLeft(frame)
