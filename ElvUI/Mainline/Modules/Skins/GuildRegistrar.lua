@@ -10,6 +10,8 @@ function S:GuildRegistrarFrame()
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
 	S:HandlePortraitFrame(GuildRegistrarFrame)
 
+	S:HandleTrimScrollBar(GuildRegistrarFrame.ScrollBar)
+
 	_G.GuildRegistrarFrameEditBox:StripTextures()
 	_G.GuildRegistrarGreetingFrame:StripTextures()
 	S:HandleButton(_G.GuildRegistrarFrameGoodbyeButton)
