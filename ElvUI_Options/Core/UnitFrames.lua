@@ -81,7 +81,7 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
 	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 
 	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName) end)
-	config.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
+	config.args.icon.args.point = ACH:Select(L["Point"], nil, 1, C.Values.Positions)
 	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
 	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
@@ -90,15 +90,15 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
 	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.duration.args.enable.customWidth = 100
-	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -60, max = 60, step = 1 })
-	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -60, max = 60, step = 1 })
+	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
 	config.args.duration.inline = true
 
 	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName) end)
-	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -60, max = 60, step = 1 })
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -60, max = 60, step = 1 })
+	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
 	config.args.parent.inline = true
 
 	return config
