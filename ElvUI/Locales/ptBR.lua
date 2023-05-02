@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["UPDATE_REQUEST"] = "Parece haver um problema com sua instalação ElvUI. Isto pode ser o resultado de seu cliente Tukui estar desatualizado. Por favor, visite nossa página de download e atualize seu cliente Tukui, depois reinstale ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "O quadro %s está conflitando com outro ponto de fixação. Forçando os Buffs serem anexados ao Quadro de Unidade principal."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s está tentando compartilhar os filtros dele com você. Gostaria de aceitar o pedido?"
@@ -79,6 +80,7 @@ L["Chat"] = "Bate-papo"
 L["Choose a theme layout you wish to use for your initial setup."] = "Escolha o tema de layout que deseje usar inicialmente."
 L["Class Bar"] = "Barra da Classe"
 L["Classic"] = "Clássico"
+L["Combat Indicator"] = true
 L["Combat"] = "Combate"
 L["Combat/Arena Time"] = "Tempo de Combate/Arena"
 L["Config Mode:"] = "Modo de configuração"
@@ -98,7 +100,6 @@ L["Debuffs"] = true
 L["Deficit:"] = "Défice:"
 L["Delete gray items?"] = "Deletar itens cinzentos?"
 L["Deposit Reagents"] = "Depositar Reagentes"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = true
 L["Disable Warning"] = "Desativar Aviso"
 L["Disable"] = "Desativar"
 L["Disabled"] = true
@@ -184,10 +185,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
@@ -212,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Ícone de Perda de Controle"
 L["lvl"] = "nível"
 L["MA Frames"] = "Quadro do Assistente Principal"
-L["MawBuffsWidget"] = true
 L["Max Level"] = true
 L["Micro Bar"] = "Micro Barra"
 L["Minimap Cluster"] = true

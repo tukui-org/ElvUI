@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 local ElvUF = E.oUF
 
 local _G = _G
@@ -346,28 +347,30 @@ function mod:StyleFilterDispelCheck(frame, filter)
 	end
 end
 
-function mod:StyleFilterAuraData(frame, filter)
+function mod:StyleFilterAuraData(frame, filter, unit)
 	local temp = {}
 
-	local index = 1
-	local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
-	while name do
-		local info = temp[name] or temp[spellID]
-		if not info then info = {} end
+	if unit then
+		local index = 1
+		local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, filter)
+		while name do
+			local info = temp[name] or temp[spellID]
+			if not info then info = {} end
 
-		temp[name] = info
-		temp[spellID] = info
+			temp[name] = info
+			temp[spellID] = info
 
-		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
+			info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
 
-		index = index + 1
-		name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(frame.unit, index, filter)
+			index = index + 1
+			name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnitAura(unit, index, filter)
+		end
 	end
 
 	return temp
 end
 
-function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet)
+function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
 	local total, matches, now = 0, 0, GetTime()
 	local temp -- data of current auras
 
@@ -375,7 +378,9 @@ function mod:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mi
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
-			if not temp then temp = mod:StyleFilterAuraData(frame, filter) end
+			if not temp then
+				temp = mod:StyleFilterAuraData(frame, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
+			end
 
 			local spell, count = strmatch(key, mod.StyleFilterStackPattern)
 			local info = temp[spell] or temp[tonumber(spell)]
@@ -524,7 +529,7 @@ do
 	end
 end
 
-function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -613,6 +618,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 		end
 	end
+	if HealthGlow then
+		c.HealthGlow = actions.glow.style
+		LCG.ShowOverlayGlow(frame.Health, actions.glow)
+	end
 	if HealthFlash then
 		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
@@ -655,7 +664,7 @@ function mod:StyleFilterClearVisibility(frame, previous)
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
 	local c = frame.StyleFilterChanges
@@ -688,6 +697,9 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 			h:SetStatusBarColor(h.r, h.g, h.b)
 			frame.Cutaway.Health:SetVertexColor(h.r * 1.5, h.g * 1.5, h.b * 1.5, 1)
 		end
+	end
+	if HealthGlow then
+		LCG.HideOverlayGlow(frame.Health, HealthGlow)
 	end
 	if PowerColor then
 		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
@@ -1154,7 +1166,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet)
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1170,7 +1182,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet)
+		local debuff = mod:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end
@@ -1221,6 +1233,7 @@ function mod:StyleFilterPass(frame, actions)
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
+		(healthBarShown and actions.glow and actions.glow.enable), --HealthGlow
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
 		(actions.tags and actions.tags.name and actions.tags.name ~= ''), --NameTag
@@ -1239,7 +1252,7 @@ function mod:StyleFilterClear(frame)
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.HealthGlow, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
 	end
 end
 

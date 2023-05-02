@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架存在一個衝突錨點, 將強制將Buff附加到主單位框架之上。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 試圖與你分享過濾器設定. 你是否接受?"
@@ -79,6 +80,7 @@ L["Chat"] = "對話"
 L["Choose a theme layout you wish to use for your initial setup."] = "為你的個人設定選擇一個你喜歡的皮膚主題."
 L["Class Bar"] = "職業特有條"
 L["Classic"] = "經典"
+L["Combat Indicator"] = true
 L["Combat"] = "戰鬥"
 L["Combat/Arena Time"] = "戰鬥時間"
 L["Config Mode:"] = "設定模式:"
@@ -98,7 +100,6 @@ L["Debuffs"] = "減益光環"
 L["Deficit:"] = "赤字:"
 L["Delete gray items?"] = "刪除灰色物品?"
 L["Deposit Reagents"] = "存入材料"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "偵測到你的 ElvUI 設定插件已過期. 這可能是因為你的 Tukui 客戶端已過期. 請拜訪我們的下載頁面並更新 Tukui 客戶端然後再重新安裝 ElvUI. ElvUI 設定插件過期會造成某些選項遺失"
 L["Disable Warning"] = "停用警告"
 L["Disable"] = "停用"
 L["Disabled"] = "停用"
@@ -184,10 +185,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
@@ -212,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "失去控制圖示"
 L["lvl"] = "等級"
 L["MA Frames"] = "主助理框架"
-L["MawBuffsWidget"] = "心能之力"
 L["Max Level"] = "最高等級"
 L["Micro Bar"] = "微型系統菜單"
 L["Minimap Cluster"] = true

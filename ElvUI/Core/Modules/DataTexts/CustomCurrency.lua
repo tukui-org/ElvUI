@@ -19,7 +19,7 @@ local function OnEvent(self)
 		end
 
 		if currency.showMax and (info.maxQuantity and info.maxQuantity > 0) then
-			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
+			displayString = strjoin(' ', displayString or '%d', '/', info.maxQuantity)
 		end
 
 		self.text:SetFormattedText(displayString or '%d', info.quantity)

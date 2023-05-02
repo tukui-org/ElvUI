@@ -115,6 +115,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.CreateButton)
 	S:HandleButton(CraftingPage.CreateAllButton)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
+	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 
 	if E.global.general.disableTutorialButtons then
@@ -141,6 +142,8 @@ function S:Blizzard_Professions()
 	GuildFrame:CreateBackdrop('Transparent')
 	GuildFrame.Container:StripTextures()
 	GuildFrame.Container:CreateBackdrop('Transparent')
+
+	S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
 
 	for _, tab in next, { ProfessionsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
@@ -183,8 +186,10 @@ function S:Blizzard_Professions()
 
 	if E.private.skins.parchmentRemoverEnable then
 		SchematicForm.Background:SetAlpha(0)
+		SchematicForm.MinimalBackground:SetAlpha(0)
 	else
 		SchematicForm.Background:SetAlpha(.25)
+		SchematicForm.MinimalBackground:SetAlpha(.25)
 	end
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
@@ -239,10 +244,12 @@ function S:Blizzard_Professions()
 	end
 
 	local SpecPage = ProfessionsFrame.SpecPage
+	S:HandleButton(SpecPage.ViewTreeButton)
 	S:HandleButton(SpecPage.UnlockTabButton)
 	S:HandleButton(SpecPage.ApplyButton)
 	S:HandleButton(SpecPage.ViewPreviewButton)
 	S:HandleButton(SpecPage.BackToFullTreeButton)
+	S:HandleButton(SpecPage.BackToPreviewButton)
 	SpecPage.TreeView:StripTextures()
 	SpecPage.TreeView.Background:Hide()
 	SpecPage.TreeView:CreateBackdrop('Transparent')

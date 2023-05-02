@@ -25,7 +25,7 @@ local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
-local ROLL_DISENCHANT = ROLL_DISENCHANT
+local TRANSMOGRIFY, ROLL_DISENCHANT = TRANSMOGRIFY, ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
@@ -37,7 +37,7 @@ local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
 
-local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [0] = 'pass' }
+local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 	GameTooltip:AddLine(button.tiptext)
@@ -104,6 +104,7 @@ local iconCoords = {
 	[2] = {0.05, 1.05, -0.025, 0.85}, -- greed
 	[1] = {0.05, 1.05, -0.05, .95}, -- need
 	[3] = {0.05, 1.05, -0.05, .95}, -- disenchant
+	[4] = {0, 1, 0, 1}, -- transmog
 }
 
 local function RollTexCoords(button, icon, rolltype, minX, maxX, minY, maxY)
@@ -156,7 +157,7 @@ local function CreateRollButton(parent, texture, rolltype, tiptext)
 	button:SetMotionScriptsWhileDisabled(true)
 	button:SetHitRectInsets(3, 3, 3, 3)
 
-	RollButtonTextures(button, texture..'-Up', rolltype)
+	RollButtonTextures(button, texture, rolltype)
 
 	button.parent = parent
 	button.rolltype = rolltype
@@ -218,10 +219,11 @@ function M:LootRoll_Create(index)
 	button.questIcon:SetTexCoord(1, 0, 0, 1)
 	button.questIcon:Hide()
 
-	bar.pass = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Pass]], 0, PASS)
-	bar.disenchant = E.Retail and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE]], 3, ROLL_DISENCHANT) or nil
-	bar.greed = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Coin]], 2, GREED)
-	bar.need = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Dice]], 1, NEED)
+	bar.pass = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], 0, PASS)
+	bar.disenchant = E.Retail and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE-Up]], 3, ROLL_DISENCHANT) or nil
+	bar.transmog = E.Retail and CreateRollButton(bar, [[Interface\MINIMAP\TRACKING\Transmogrifier]], 4, TRANSMOGRIFY) or nil
+	bar.greed = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], 2, GREED)
+	bar.need = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], 1, NEED)
 
 	local name = bar:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, nil, 'OUTLINE')
@@ -260,7 +262,7 @@ function M:CANCEL_LOOT_ROLL(_, rollID)
 end
 
 function M:START_LOOT_ROLL(event, rollID, rollTime)
-	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant = GetLootRollItemInfo(rollID)
+	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant, _, _, _, _, canTransmog = GetLootRollItemInfo(rollID)
 	if not name then -- also done in GroupLootFrame_OnShow
 		for _, rollBar in next, M.RollBars do
 			if rollBar.rollID == rollID then
@@ -294,16 +296,20 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 	bar.button.ilvl:SetText(itemLevel)
 	bar.button.questIcon:SetShown(B:GetItemQuestInfo(itemLink, bindType, itemClassID))
 
-	bar.need:SetEnabled(canNeed)
-	bar.greed:SetEnabled(canGreed)
-
 	bar.need.text:SetText(0)
 	bar.greed.text:SetText(0)
 	bar.pass.text:SetText(0)
+	bar.need:SetEnabled(canNeed)
+	bar.greed:SetEnabled(canGreed and not canTransmog)
 
 	if bar.disenchant then
 		bar.disenchant.text:SetText(0)
 		bar.disenchant:SetEnabled(canDisenchant)
+	end
+
+	if bar.transmog then
+		bar.transmog.text:SetText(0)
+		bar.transmog:SetEnabled(canTransmog)
 	end
 
 	bar.name:SetText(name)
@@ -467,7 +473,8 @@ function M:UpdateLootRollFrames()
 		if db.leftButtons then
 			bar.need:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', 3, 0)
 			if bar.disenchant then bar.disenchant:Point('LEFT', bar.need, 'RIGHT', 3, 0) end
-			bar.greed:Point('LEFT', bar.disenchant or bar.need, 'RIGHT', 3, 0)
+			if bar.transmog then bar.transmog:Point('LEFT', bar.disenchant or bar.need, 'RIGHT', 3, 0) end
+			bar.greed:Point('LEFT', bar.transmog or bar.disenchant or bar.need, 'RIGHT', 3, 0)
 			bar.pass:Point('LEFT', bar.greed, 'RIGHT', 3, 0)
 
 			bar.name:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', full and -3 or -1, full and 0 or 3)
@@ -476,7 +483,8 @@ function M:UpdateLootRollFrames()
 		else
 			bar.pass:Point(full and 'RIGHT' or 'BOTTOMRIGHT', anchor, full and 'RIGHT' or 'TOPRIGHT', -3, 0)
 			if bar.disenchant then bar.disenchant:Point('RIGHT', bar.pass, 'LEFT', -3, 0) end
-			bar.greed:Point('RIGHT', bar.disenchant or bar.pass, 'LEFT', -3, 0)
+			if bar.transmog then bar.transmog:Point('RIGHT', bar.disenchant or bar.pass, 'LEFT', -3, 0) end
+			bar.greed:Point('RIGHT', bar.transmog or bar.disenchant or bar.pass, 'LEFT', -3, 0)
 			bar.need:Point('RIGHT', bar.greed, 'LEFT', -3, 0)
 
 			bar.name:Point(full and 'LEFT' or 'BOTTOMLEFT', anchor, full and 'LEFT' or 'TOPLEFT', full and 3 or 1, full and 0 or 3)
@@ -492,9 +500,12 @@ function M:LoadLootRoll()
 	M:UpdateLootRollFrames()
 
 	M:RegisterEvent('START_LOOT_ROLL')
-	M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
-	M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
+
+	if not E.Retail then
+		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
+		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
+	end
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
 	_G.UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')

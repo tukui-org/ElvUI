@@ -16,6 +16,9 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Library Dropdown"] = true
+L["On Me"] = "Em Mim"
+L["On Pet"] = "Em Pet"
 L["Tag Update Rate"] = "Taxa de actualização da Tags."
 L["Maximum tick rate allowed for tag updates per second."] = "Taxa máxima de tick permitida para atualizações de Tags por segundo."
 L["%s and then %s"] = "%s e depois %s"
@@ -1261,7 +1264,6 @@ L["Poison Effect"] = "Efeito de veneno"
 L["Portrait"] = "Retrato"
 L["Position of bonus quest reward frame relative to the objective tracker."] = "Posição da recompensa bonus de quest relativo ao rastreador de objetivos"
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = "A posição da caixa de edição do bate-papo, será forçada para cima do bate-papo se os textos informativos estiverem desativados."
-L["Position of the Maw Buffs list relative to the objective tracker."] = true
 L["Position the Model horizontally."] = "Posicionar o Modelo horizontalmente"
 L["Position the Model vertically."] = "Posicionar o Modelo verticalmente"
 L["Position"] = "Posição"

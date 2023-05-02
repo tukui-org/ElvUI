@@ -22,7 +22,7 @@ local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
 	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
+	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar, true)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 
 	ScriptErrorsFrame.ScrollFrame:SetTemplate()
@@ -78,7 +78,7 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
-	S:HandleScrollBar(frame.LinesScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar, true)
 
 	frame.isSkinned = true
 end

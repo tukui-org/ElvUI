@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local UnitXP = UnitXP
@@ -58,6 +59,24 @@ function B:QuestXPPercent()
 	end
 end
 
+function B:HandleAddonCompartment()
+	local compartment = _G.AddonCompartmentFrame
+	if compartment then
+		if not compartment.mover then
+			compartment:SetParent(_G.UIParent)
+			compartment:ClearAllPoints()
+			compartment:Point('TOPLEFT', _G.MMHolder or _G.Minimap, 3, -3)
+			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"])
+		end
+
+		local db = E.db.general.addonCompartment
+		compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		compartment:SetFrameLevel(db.frameLevel or 20)
+		compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
+		compartment:Size(db.size or 18)
+	end
+end
+
 function B:Initialize()
 	B.Initialized = true
 
@@ -73,6 +92,7 @@ function B:Initialize()
 		B:DisableTutorials()
 		B:SkinBlizzTimers()
 		B:HandleTalkingHead()
+		B:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
@@ -96,14 +116,17 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	-- Battle.Net Frame
-	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
-	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
-	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
-	B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+	local MinimapAnchor = _G.MMHolder or _G.Minimap
+	do -- Battle.Net Frame
+		_G.BNToastFrame:ClearAllPoints()
+		_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)
+		E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
+		_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
+		B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+	end
 
 	if GetCurrentRegion() == 2 then -- TimeAlertFrame Frame
-		_G.TimeAlertFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -80)
+		_G.TimeAlertFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -80)
 		E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 		_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
 		B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')

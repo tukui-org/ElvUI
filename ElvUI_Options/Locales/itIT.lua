@@ -16,6 +16,9 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Library Dropdown"] = true
+L["On Me"] = true
+L["On Pet"] = true
 L["Tag Update Rate"] = true
 L["Maximum tick rate allowed for tag updates per second."] = true
 L["%s and then %s"] = true
@@ -1040,7 +1043,6 @@ L["Match if Item Name or ID is NOT in the list."] = true
 L["Match if Name or NPC ID is NOT in the list."] = true
 L["Match Player Level"] = true
 L["Match this trigger if the spell is not known."] = true
-L["Maw Buffs Position"] = true
 L["Max Allowed Groups"] = true
 L["Max Alpha"] = true
 L["Max amount of overflow allowed to extend past the end of the health bar."] = true

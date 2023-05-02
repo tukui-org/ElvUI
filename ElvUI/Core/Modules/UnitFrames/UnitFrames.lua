@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
@@ -515,6 +516,27 @@ function UF:Update_FontStrings()
 	local font, size, outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
 	for obj in pairs(UF.fontstrings) do
 		obj:FontTemplate(font, size, outline)
+	end
+end
+
+function UF:Construct_PrivateAuras(frame)
+	return CreateFrame('Frame', '$parent_PrivateAuras', frame.RaisedElementParent)
+end
+
+function UF:Configure_PrivateAuras(frame)
+	if not E.Retail then return end -- dont exist on classic
+
+	if frame.PrivateAuras then
+		PA:RemoveAuras(frame.PrivateAuras)
+	end
+
+	local db = frame.db and frame.db.privateAuras
+	if db and db.enable then
+		PA:SetupPrivateAuras(db, frame.PrivateAuras, frame.unit)
+
+		frame.PrivateAuras:ClearAllPoints()
+		frame.PrivateAuras:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		frame.PrivateAuras:Size(db.icon.size)
 	end
 end
 
@@ -1253,6 +1275,7 @@ do
 	local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 	local MAX_BOSS_FRAMES = 8
 
+	local disabledElements = {}
 	local disabledPlates = {}
 	local handledUnits = {}
 	local lockedFrames = {}
@@ -1265,10 +1288,6 @@ do
 	end
 
 	local function HandleFrame(frame, doNotReparent)
-		if type(frame) == 'string' then
-			frame = _G[frame]
-		end
-
 		if not frame then return end
 
 		local lockParent = doNotReparent == 1
@@ -1284,16 +1303,17 @@ do
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		for _, child in next, {
-			frame.petFrame or frame.PetFrame,
-			frame.healthBar or frame.healthbar or frame.HealthBar,
-			frame.manabar or frame.ManaBar,
-			frame.castBar or frame.spellbar,
-			frame.powerBarAlt or frame.PowerBarAlt,
-			frame.totFrame,
-			frame.BuffFrame
-		} do
-			child:UnregisterAllEvents()
+		tinsert(disabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
+		tinsert(disabledElements, frame.manabar or frame.ManaBar or nil)
+		tinsert(disabledElements, frame.castBar or frame.spellbar or nil)
+		tinsert(disabledElements, frame.petFrame or frame.PetFrame or nil)
+		tinsert(disabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(disabledElements, frame.BuffFrame or nil)
+		tinsert(disabledElements, frame.totFrame or nil)
+
+		for index, element in ipairs(disabledElements) do
+			element:UnregisterAllEvents() -- turn elements off
+			disabledElements[index] = nil -- keep this clean
 		end
 	end
 
@@ -1349,10 +1369,10 @@ do
 
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
-					HandleFrame('Boss'..id..'TargetFrame', true)
+					HandleFrame(_G['Boss'..id..'TargetFrame'], true)
 				else
 					for i = 1, MAX_BOSS_FRAMES do
-						HandleFrame('Boss'..i..'TargetFrame', true)
+						HandleFrame(_G['Boss'..i..'TargetFrame'], true)
 					end
 				end
 			elseif disable.party and strmatch(unit, 'party%d?$') then
@@ -1369,12 +1389,12 @@ do
 
 				local id = strmatch(unit, 'party(%d)')
 				if id then
-					HandleFrame('PartyMemberFrame'..id)
-					HandleFrame('CompactPartyFrameMember'..id)
+					HandleFrame(_G['PartyMemberFrame'..id])
+					HandleFrame(_G['CompactPartyFrameMember'..id])
 				else
 					for i = 1, MAX_PARTY do
-						HandleFrame('PartyMemberFrame'..i)
-						HandleFrame('CompactPartyFrameMember'..i)
+						HandleFrame(_G['PartyMemberFrame'..i])
+						HandleFrame(_G['CompactPartyFrameMember'..i])
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
@@ -1398,29 +1418,38 @@ do
 				-- actually handle the sub frames now
 				local id = strmatch(unit, 'arena(%d)')
 				if id then
-					HandleFrame('ArenaEnemyMatchFrame'..id, true)
-					HandleFrame('ArenaEnemyPrepFrame'..id, true)
+					HandleFrame(_G['ArenaEnemyMatchFrame'..id], true)
+					HandleFrame(_G['ArenaEnemyPrepFrame'..id], true)
 				else
 					for i = 1, MAX_ARENA_ENEMIES do
-						HandleFrame('ArenaEnemyMatchFrame'..i, true)
-						HandleFrame('ArenaEnemyPrepFrame'..i, true)
+						HandleFrame(_G['ArenaEnemyMatchFrame'..i], true)
+						HandleFrame(_G['ArenaEnemyPrepFrame'..i], true)
 					end
 				end
 			end
 		end
 	end
 
-	function ElvUF:DisableNamePlate()
-		if not E.private.nameplates.enable then return end
+	local function PlateShown(plate, show)
+		if show then
+			plate:Hide()
+		end
+	end
 
-		local plate = self and self.UnitFrame
-		if not plate or plate:IsForbidden() then return end
+	function ElvUF:DisableNamePlate(frame)
+		if (not frame or frame:IsForbidden())
+		or (not E.private.nameplates.enable) then return end
 
-		if not disabledPlates[plate] then
-			disabledPlates[plate] = true
-
+		local plate = frame.UnitFrame
+		if plate then
 			HandleFrame(plate, true)
-			hooksecurefunc(plate, 'Show', plate.Hide)
+
+			if not disabledPlates[plate] then
+				disabledPlates[plate] = true
+
+				hooksecurefunc(plate, 'Show', plate.Hide)
+				hooksecurefunc(plate, 'SetShown', PlateShown)
+			end
 		end
 	end
 end

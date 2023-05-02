@@ -7,28 +7,7 @@ local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
-local function UpdateLoots()
-	local numItems = C_LootHistory_GetNumItems()
-	for i=1, numItems do
-		local frame = _G.LootHistoryFrame.itemFrames[i]
-		if frame and not frame.isSkinned then
-			local Icon = frame.Icon:GetTexture()
-			frame:StripTextures()
-			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
-
-			-- create a backdrop around the icon
-			frame:CreateBackdrop()
-			frame.backdrop:SetOutside(frame.Icon)
-			frame.Icon:SetParent(frame.backdrop)
-
-			frame.isSkinned = true
-		end
-	end
-end
 
 function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
@@ -55,28 +34,6 @@ function S:LootFrame()
 			end
 		end
 	end)
-
-	-- Loot history frame
-	local LootHistoryFrame = _G.LootHistoryFrame
-	LootHistoryFrame:StripTextures()
-	S:HandleCloseButton(LootHistoryFrame.CloseButton)
-	LootHistoryFrame:StripTextures()
-	LootHistoryFrame:SetTemplate('Transparent')
-	LootHistoryFrame.ResizeButton:StripTextures()
-	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
-	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
-	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
-	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
-	LootHistoryFrame.ResizeButton.text:SetText('v v v v')
-	LootHistoryFrame.ResizeButton:SetTemplate()
-	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
-	LootHistoryFrame.ResizeButton:Height(19)
-	LootHistoryFrame.ResizeButton:ClearAllPoints()
-	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-	_G.LootHistoryFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
-
-	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame

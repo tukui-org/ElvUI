@@ -36,7 +36,7 @@ local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmat
 
 local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
-local GetAddOnMetadata = GetAddOnMetadata
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 local GetNumGroupMembers = GetNumGroupMembers
 local GetLocale, IsInGuild = GetLocale, IsInGuild
 local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded

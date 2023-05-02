@@ -379,7 +379,7 @@ function M:UpdateSettings()
 
 			-- let it update once because we changed the setting back to cluster
 			if layoutCall == IndicatorLayout then
-				layoutCall()
+				layoutCall(indicator)
 			end
 		end
 	end

@@ -9,15 +9,14 @@ local GetMoney = GetMoney
 local GetQuestID = GetQuestID
 local CreateFrame = CreateFrame
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
-local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
-local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
 
 local C_QuestLog_GetRequiredMoney = C_QuestLog.GetRequiredMoney
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
+local C_QuestInfoSystem_GetQuestRewardSpells = C_QuestInfoSystem.GetQuestRewardSpells
 
 local sealFrameTextColor = {
 	['480404'] = 'c20606',
@@ -203,8 +202,6 @@ end
 
 function S:QuestInfo_Display(parentFrame) -- self is template, not S
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
-	local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
-
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 		if point and relativeTo and relativePoint then
@@ -223,8 +220,9 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
 
-	local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
-	if numSpellRewards > 0 then
+	local questID = Quest_GetQuestID()
+	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID)
+	if spellRewards and (#spellRewards > 0) then
 		if E.private.skins.parchmentRemoverEnable then
 			for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 				spellHeader:SetVertexColor(1, 1, 1)
@@ -359,10 +357,10 @@ end
 function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
-	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestRewardScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestDetailScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestGreetingScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.QuestProgressScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.QuestRewardScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.QuestDetailScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.QuestGreetingScrollFrame.ScrollBar, true)
 
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
 	QuestInfoSkillPointFrame:StripTextures()
@@ -486,7 +484,7 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
-	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar, true)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
@@ -495,7 +493,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameShareButton)
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.QuestLogPopupDetailFrameScrollFrame.ScrollBar, true)
 	QuestLogPopupDetailFrame:SetTemplate('Transparent')
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()

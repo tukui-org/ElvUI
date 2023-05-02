@@ -15,17 +15,18 @@ local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
+local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
 local IsItemAction = IsItemAction
+local IsMounted = IsMounted
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
-local HideUIPanel = HideUIPanel
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -68,6 +69,7 @@ local buttonDefaults = {
 	},
 }
 
+AB.WasDragonflying = 0
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -200,6 +202,7 @@ function AB:TrimIcon(button, masque)
 
 	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
 	local changeRatio = button.db and not button.db.keepSizeRatio
+
 	if changeRatio then
 		local width, height = button:GetSize()
 		local ratio = width / height
@@ -858,17 +861,28 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
-function AB:FadeParent_OnEvent()
-	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus') or UnitExists('vehicle')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar()) then
-		self.mouseLock = true
-		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-		AB:FadeBlings(1)
+function AB:FadeParent_OnEvent(event, _, _, arg3)
+	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
+		if not AB.WasDragonflying then -- this gets spammed on init login
+			AB.WasDragonflying = E.MountDragons[arg3] and arg3
+		end
 	else
-		self.mouseLock = false
-		local a = 1 - (AB.db.globalFadeAlpha or 0)
-		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
-		AB:FadeBlings(a)
+		if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
+		or E.Retail and (IsPossessBarVisible() or HasOverrideActionBar() or (IsMounted() and (event == 'UPDATE_OVERRIDE_ACTIONBAR' and AB.WasDragonflying == 0 and E:IsDragonRiding() or event == 'PLAYER_MOUNT_DISPLAY_CHANGED' and AB.WasDragonflying))) then
+			self.mouseLock = true
+			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			AB:FadeBlings(1)
+		else
+			self.mouseLock = false
+			local a = 1 - (AB.db.globalFadeAlpha or 0)
+			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+			AB:FadeBlings(a)
+		end
+
+		if event ~= 'UNIT_HEALTH' and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
+			AB.WasDragonflying = nil
+		end
 	end
 end
 
@@ -1091,7 +1105,7 @@ do
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		if E.Retail then
-			_G.StatusTrackingBarManager:UnregisterAllEvents()
+			_G.StatusTrackingBarManager:Kill()
 			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
@@ -1381,6 +1395,7 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'INSERT', L["KEY_INSERT"])
 		text = gsub(text, 'HOME', L["KEY_HOME"])
 		text = gsub(text, 'DELETE', L["KEY_DELETE"])
+		text = gsub(text, 'NDIVIDE', L["KEY_NDIVIDE"])
 		text = gsub(text, 'NMULTIPLY', L["KEY_NMULTIPLY"])
 		text = gsub(text, 'NMINUS', L["KEY_NMINUS"])
 		text = gsub(text, 'NPLUS', L["KEY_NPLUS"])
@@ -1697,6 +1712,8 @@ function AB:Initialize()
 	if E.Retail then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
+		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
+		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 	end

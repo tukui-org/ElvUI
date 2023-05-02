@@ -131,8 +131,8 @@ function S:Blizzard_GuildUI()
 	S:HandleScrollBar(_G.GuildNewsContainerScrollBar)
 
 	--Info Frame
-	S:HandleScrollBar(_G.GuildInfoDetailsFrameScrollBar)
-	S:HandleScrollBar(_G.GuildInfoFrameInfoMOTDScrollFrameScrollBar)
+	S:HandleTrimScrollBar(_G.GuildInfoDetailsFrameScrollBar, true)
+	S:HandleTrimScrollBar(_G.GuildInfoFrameInfoMOTDScrollFrameScrollBar, true)
 
 	_G.GuildInfoFrameTab1:StripTextures()
 	_G.GuildInfoFrameTab1:SetTemplate('Transparent')

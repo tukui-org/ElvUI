@@ -1,9 +1,10 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptions|r
 ## Notes: Powers the configuration window.|n|cffff3333Does not store any profile data.|r
 ## Author: Elv, Simpy
-## Version: 1.09
-## Interface: 100007
+## Version: 13.30
+## Interface: 100100
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
+## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
 
 Core\Load.xml

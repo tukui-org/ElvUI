@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local T = E:GetModule('TotemTracker')
+local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs = ipairs
-local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
@@ -20,7 +20,7 @@ function T:UpdateButton(button, totem)
 	button:SetShown(haveTotem and duration > 0)
 
 	if haveTotem then
-		button.iconTexture:SetTexture(icon)
+		button.icon:SetTexture(icon)
 		button.cooldown:SetCooldown(startTime, duration)
 
 		if totem:GetParent() ~= button.holder then
@@ -54,8 +54,13 @@ function T:PositionAndSize()
 	for i = 1, MAX_TOTEMS do
 		local button = T.bar[i]
 		local prevButton = T.bar[i-1]
-		button:Size(T.db.size)
+		local width = T.db.size
+		local height = T.db.keepSizeRatio and T.db.size or T.db.height
+
+		button:Size(width, height)
 		button:ClearAllPoints()
+
+		AB:TrimIcon(button)
 
 		if T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
@@ -107,27 +112,28 @@ function T:Initialize()
 	T.db = E.db.general.totems
 
 	for i = 1, MAX_TOTEMS do
-		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
-		frame:SetID(i)
-		frame:SetTemplate()
-		frame:StyleButton()
-		frame:Hide()
+		local button = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
+		button:SetID(i)
+		button:SetTemplate()
+		button:StyleButton()
+		button:Hide()
 
-		frame.holder = CreateFrame('Frame', nil, frame)
-		frame.holder:SetAlpha(0)
-		frame.holder:SetAllPoints()
+		button.db = T.db
 
-		frame.iconTexture = frame:CreateTexture(nil, 'ARTWORK')
-		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
-		frame.iconTexture:SetInside()
+		button.holder = CreateFrame('Frame', nil, button)
+		button.holder:SetAlpha(0)
+		button.holder:SetAllPoints()
 
-		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
-		frame.cooldown:SetReverse(true)
-		frame.cooldown:SetInside()
+		button.icon = button:CreateTexture(nil, 'ARTWORK')
+		button.icon:SetInside()
 
-		E:RegisterCooldown(frame.cooldown)
+		button.cooldown = CreateFrame('Cooldown', button:GetName()..'Cooldown', button, 'CooldownFrameTemplate')
+		button.cooldown:SetReverse(true)
+		button.cooldown:SetInside()
 
-		T.bar[i] = frame
+		E:RegisterCooldown(button.cooldown)
+
+		T.bar[i] = button
 	end
 
 	T:PositionAndSize()

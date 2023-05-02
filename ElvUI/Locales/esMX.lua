@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["UPDATE_REQUEST"] = "Parece que hay un problema con tu instalación de ElvUI. Esto puede ser el resultado de que tu cliente Tukui no esté actualizado. Por favor visita nuestra página de descargas y actualiza tu Cliente Tukui, luego reinstala ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "El marco de %s tiene un punto de anclaje en conflicto. Obligar a los Buffs a unirse a la unidad principal."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s quiere compartir sus filtros contigo. ¿Aceptas la petición?"
@@ -79,6 +80,7 @@ L["Chat"] = "Chat"
 L["Choose a theme layout you wish to use for your initial setup."] = "Elige un tema de distribución para usar en tu configuración inicial."
 L["Class Bar"] = "Barra de Clase"
 L["Classic"] = "Clásico"
+L["Combat Indicator"] = true
 L["Combat"] = "Combate"
 L["Combat/Arena Time"] = "Tiempo de Combate / Arena"
 L["Config Mode:"] = "Modo de Configuración"
@@ -98,7 +100,6 @@ L["Debuffs"] = "Perjuicios"
 L["Deficit:"] = "Déficit:"
 L["Delete gray items?"] = "¿Eliminar objetos grises?"
 L["Deposit Reagents"] = "Depositar Componentes"
-L["Detected that your ElvUI Options addon is out of date. This may be a result of your Tukui Client being out of date. Please visit our download page and update your Tukui Client, then reinstall ElvUI. Not having your ElvUI Options addon up to date will result in missing options."] = "Se ha detectado que tu addon de ElvUI Options está desactualizado. Ésto puede darse como resultado de que tu cliente Tukui esté desactualizado. Por favor visita nuestra página de descargas y actualiza tu cliente Tukui y entonces reinstala ElvUI. No tener tu addon ElvUI Options actualizado podría resultar en opciones faltantes."
 L["Disable Warning"] = "Deshabilitar Advertencia"
 L["Disable"] = "Desactivar"
 L["Disabled"] = true
@@ -184,10 +185,11 @@ L["KEY_INSERT"] = "Ins"
 L["KEY_MOUSEBUTTON"] = "M"
 L["KEY_MOUSEWHEELDOWN"] = "MwD"
 L["KEY_MOUSEWHEELUP"] = "MwU"
-L["KEY_NEQUALS"] = 'N='
-L["KEY_NMINUS"] = 'N-'
-L["KEY_NMULTIPLY"] = '*'
-L["KEY_NPLUS"] = 'N+'
+L["KEY_NDIVIDE"] = "N/"
+L["KEY_NEQUALS"] = "N="
+L["KEY_NMINUS"] = "N-"
+L["KEY_NMULTIPLY"] = "N*"
+L["KEY_NPLUS"] = "N+"
 L["KEY_NUMPAD"] = "N"
 L["KEY_PAGEDOWN"] = "PD"
 L["KEY_PAGEUP"] = "PU"
@@ -212,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Icono de Pérdida de Control"
 L["lvl"] = "Niv"
 L["MA Frames"] = "Marcos de AP"
-L["MawBuffsWidget"] = true
 L["Max Level"] = true
 L["Micro Bar"] = "Micro Barra"
 L["Minimap Cluster"] = true

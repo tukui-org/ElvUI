@@ -27,12 +27,13 @@ local GetBindingKey = GetBindingKey
 local SetBinding = SetBinding
 local SaveBindings = SaveBindings
 local GetCurrentBindingSet = GetCurrentBindingSet
-local GetSpecialization = (E.Classic or E.Wrath and LCS.GetSpecialization) or GetSpecialization
+local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 -- GLOBALS: ElvCharacterDB
 
 --Modules
@@ -55,12 +56,12 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
-E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
+E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
-E.mylevel = UnitLevel('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
+E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
@@ -129,7 +130,7 @@ E.BadDispels = {
 --Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
--- Socket Type info from 8.2
+-- Socket Type info from 10.0.7
 E.GemTypeInfo = {
 	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
 	Red				= { r = 1.00, g = 0.47, b = 0.47 },
@@ -141,6 +142,10 @@ E.GemTypeInfo = {
 	PunchcardRed	= { r = 1.00, g = 0.47, b = 0.47 },
 	PunchcardYellow	= { r = 0.97, g = 0.82, b = 0.29 },
 	PunchcardBlue	= { r = 0.47, g = 0.67, b = 1.00 },
+	Domination		= { r = 0.24, g = 0.50, b = 0.70 },
+	Cypher			= { r = 1.00, g = 0.80, b = 0.00 },
+	Tinker			= { r = 1.00, g = 0.47, b = 0.47 },
+	Primordial		= { r = 1.00, g = 0.00, b = 1.00 },
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
@@ -1979,12 +1984,21 @@ function E:Initialize()
 
 	E.initialized = true
 
-	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= 0.33) then
+	if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+		E:TagUpdateRate(E.db.general.tagUpdateRate)
+	end
+
+	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
 		E:SetSmoothingAmount(E.db.general.smoothingAmount)
 	end
 
 	if not E.private.install_complete then
 		E:Install()
+	end
+
+	if E.version ~= E.Libs.version then
+		E.updateRequestTriggered = true
+		E:StaticPopup_Show('UPDATE_REQUEST')
 	end
 
 	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
