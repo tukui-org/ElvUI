@@ -249,7 +249,7 @@ local function SkinPetFrame()
 	S:HandleCloseButton(_G.PetJournalFilterButton.ResetButton)
 	_G.PetJournalFilterButton.ResetButton:ClearAllPoints()
 	_G.PetJournalFilterButton.ResetButton:Point('CENTER', _G.PetJournalFilterButton, 'TOPRIGHT', 0, 0)
-	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
+	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar, true)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
