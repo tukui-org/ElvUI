@@ -359,7 +359,7 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 
-	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
+	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar, true)
 
 	if E.private.skins.parchmentRemoverEnable then
 		GuildBenefitsFrame.Perks:StripTextures()
@@ -450,7 +450,7 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
-	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar, true)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
