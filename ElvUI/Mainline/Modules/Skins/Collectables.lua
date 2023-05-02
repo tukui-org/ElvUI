@@ -205,7 +205,7 @@ local function SkinMountFrame()
 
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
-	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
+	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar, true)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
