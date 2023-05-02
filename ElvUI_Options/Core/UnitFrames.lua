@@ -81,7 +81,7 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
 	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 
 	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName) end)
-	config.args.icon.args.point = ACH:Select(L["Point"], nil, 1, C.Values.AllPositions)
+	config.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.SidePositions)
 	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
 	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
