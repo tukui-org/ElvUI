@@ -154,7 +154,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
+	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar, true)
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 
@@ -333,7 +333,7 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(MemberList.ScrollBar)
+	S:HandleTrimScrollBar(MemberList.ScrollBar, true)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
 		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
