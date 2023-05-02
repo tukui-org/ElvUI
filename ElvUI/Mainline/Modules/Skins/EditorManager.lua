@@ -66,7 +66,7 @@ function S:EditorManagerFrame()
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableAdvancedOptionsCheckButton.Button)
 
-	S:HandleTrimScrollBar(editMode.AccountSettings.SettingsContainer.ScrollBar)
+	S:HandleTrimScrollBar(editMode.AccountSettings.SettingsContainer.ScrollBar, true)
 	editMode.AccountSettings.SettingsContainer.BorderArt:StripTextures()
 	editMode.AccountSettings.SettingsContainer:SetTemplate('Transparent')
 	editMode.AccountSettings.Expander.Divider:StripTextures()
