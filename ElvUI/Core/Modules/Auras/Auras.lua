@@ -545,7 +545,7 @@ function A:Initialize()
 	A.db = E.db.auras
 
 	local xoffset = -(6 + E.Border)
-	if E.private.auras.buffsHeader and false then
+	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 
 		A.BuffFrame:ClearAllPoints()
@@ -554,7 +554,7 @@ function A:Initialize()
 		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
-	if E.private.auras.debuffsHeader and false then
+	if E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		A.DebuffFrame:ClearAllPoints()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.MMHolder or _G.MinimapCluster, 'BOTTOMLEFT', xoffset, E.Spacing)
