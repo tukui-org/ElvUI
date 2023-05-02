@@ -638,9 +638,10 @@ local NP_QuestIcon = {
 
 local NP_PrivateAuras = CopyTable(P.general.privateAuras)
 NP_PrivateAuras.enable = false
-NP_PrivateAuras.icon.size = 24
+NP_PrivateAuras.icon.size = 20
 NP_PrivateAuras.parent.point = 'BOTTOM'
 NP_PrivateAuras.duration.enable = false
+NP_PrivateAuras.countdownNumbers = false
 
 --NamePlate
 P.nameplates = {
@@ -1607,7 +1608,7 @@ local UF_ClassBar = {
 
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
-UF_PrivateAuras.icon.size = 28
+UF_PrivateAuras.icon.size = 24
 UF_PrivateAuras.parent.point = 'BOTTOM'
 UF_PrivateAuras.duration.enable = false
 
@@ -2252,6 +2253,10 @@ P.unitframe.units.boss.buffs.priority = 'Blacklist,CastByUnit,Dispellable,Whitel
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
 P.unitframe.units.boss.buffIndicator.enable = true
+P.unitframe.units.boss.privateAuras.enable = true
+P.unitframe.units.boss.privateAuras.countdownNumbers = false
+P.unitframe.units.boss.privateAuras.icon.size = 20
+P.unitframe.units.boss.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.debuffs.enable = true
 P.unitframe.units.boss.debuffs.anchorPoint = 'LEFT'
@@ -2304,6 +2309,10 @@ P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.buffIndicator.enable = true
+P.unitframe.units.party.privateAuras.enable = true
+P.unitframe.units.party.privateAuras.countdownNumbers = false
+P.unitframe.units.party.privateAuras.icon.size = 20
+P.unitframe.units.party.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0}
@@ -2336,6 +2345,10 @@ P.unitframe.units.raid1.groupBy = 'GROUP'
 P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
 P.unitframe.units.raid1.buffIndicator.enable = true
+P.unitframe.units.raid1.privateAuras.enable = true
+P.unitframe.units.raid1.privateAuras.countdownNumbers = false
+P.unitframe.units.raid1.privateAuras.icon.size = 18
+P.unitframe.units.raid1.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.raid1.castbar = nil
 P.unitframe.units.raid1.CombatIcon = nil
 P.unitframe.units.raid1.debuffs.enable = false
@@ -2402,6 +2415,10 @@ P.unitframe.units.tank.debuffs.yOffset = 1
 P.unitframe.units.tank.name.position = 'CENTER'
 P.unitframe.units.tank.name.text_format = '[classcolor][name:medium]'
 P.unitframe.units.tank.name.xOffset = 0
+P.unitframe.units.tank.privateAuras.enable = true
+P.unitframe.units.tank.privateAuras.countdownNumbers = false
+P.unitframe.units.tank.privateAuras.icon.size = 18
+P.unitframe.units.tank.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
