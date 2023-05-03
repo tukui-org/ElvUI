@@ -90,7 +90,7 @@ AB.barDefaults = {
 }
 
 do
-	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar,vehicleui] %d; [overridebar] %d; [vehicleui][possessbar] %d;', GetVehicleBarIndex(), GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
