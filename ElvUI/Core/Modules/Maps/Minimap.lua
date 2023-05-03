@@ -634,9 +634,6 @@ function M:Initialize()
 			garrison:Kill()
 			garrison.IsShown = function() return true end
 		end
-
-		-- Dirt 'Editmode-is-messing-with-it' fix
-		M:SecureHookScript(QueueStatusButton, 'OnShow', M.HandleQueueButton)
 	end
 
 	if E.Classic then
