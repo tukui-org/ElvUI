@@ -104,30 +104,39 @@ function M:QueueStatusReparent(parent)
 end
 
 function M:HandleQueueStatus(creation)
-	local db = E.db.general.queueStatus
-
 	local queueButton = M:GetQueueStatusButton()
-	if queueButton then
-		if creation then
-			hooksecurefunc(queueButton, 'SetParent', M.QueueStatusReparent)
-			hooksecurefunc(queueButton, 'SetPoint', M.QueueStatusReposition)
+	if not queueButton then return end
 
-			queueButton:SetIgnoreParentScale(true)
-		end
+	if creation then
+		hooksecurefunc(queueButton, 'SetParent', M.QueueStatusReparent)
+		hooksecurefunc(queueButton, 'SetPoint', M.QueueStatusReposition)
 
-		queueButton:SetFrameStrata(db.frameStrata)
-		queueButton:SetFrameLevel(db.frameLevel)
-		queueButton:SetScale(db.scale)
+		queueButton:SetIgnoreParentScale(true)
+	end
 
-		local queueDisplay = M.QueueStatusDisplay
-		if queueDisplay then
-			queueDisplay.text:ClearAllPoints()
-			queueDisplay.text:Point(db.position, queueButton, db.xOffset, db.yOffset)
-			queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+	if not E.Retail then -- trigger the hook
+		queueButton:SetPoint('CENTER')
+	end
 
-			if not db.enable and queueDisplay.title then
-				M:ClearQueueStatus()
-			end
+	local db = E.db.general.queueStatus
+	queueButton:SetFrameStrata(db.frameStrata)
+	queueButton:SetFrameLevel(db.frameLevel)
+
+	local scale = db.scale * (E.Retail and 1 or 2)
+	queueButton:SetScale(scale)
+
+	local width, height = queueButton:GetSize()
+	local status = scale * (E.Retail and 1.3 or 1) -- account for the border on retail
+	M.QueueStatus:SetSize(width * status, height * status)
+
+	local queueDisplay = M.QueueStatusDisplay
+	if queueDisplay then
+		queueDisplay.text:ClearAllPoints()
+		queueDisplay.text:Point(db.position, queueButton, db.xOffset, db.yOffset)
+		queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+
+		if not db.enable and queueDisplay.title then
+			M:ClearQueueStatus()
 		end
 	end
 end
@@ -137,7 +146,7 @@ function M:GetQueueStatusButton()
 end
 
 function M:LoadQueueStatus()
-	if not E.private.actionbar.enable and not E.private.general.queueStatus then return end
+	if (E.Retail and not E.private.actionbar.enable) and not E.private.general.queueStatus then return end
 
 	M.QueueStatus = CreateFrame('Frame', 'ElvUIQueueStatus', E.UIParent)
 	M.QueueStatus:Point('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMRIGHT', -5, 25)

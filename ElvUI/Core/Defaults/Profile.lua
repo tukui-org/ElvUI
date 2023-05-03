@@ -232,7 +232,7 @@ P.general = {
 	},
 	queueStatus = {
 		enable = true,
-		scale = E.Retail and 0.5 or 1,
+		scale = 0.5,
 		position = 'BOTTOMRIGHT',
 		xOffset = -2,
 		yOffset = 2,
