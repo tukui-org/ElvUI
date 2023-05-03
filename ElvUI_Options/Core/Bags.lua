@@ -7,13 +7,9 @@ local gsub, next, pairs = gsub, next, pairs
 local format, strmatch = format, strmatch
 local tonumber = tonumber
 
-local SetCVar = SetCVar
-local GetCVarBool = GetCVarBool
 local GameTooltip = GameTooltip
 local GetItemInfo = GetItemInfo
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
-
-local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
 local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
 E.Options.args.bags = Bags
@@ -112,7 +108,7 @@ Bags.args.general.args.countGroup.args.fontGroup.args.countFont = ACH:SharedMedi
 Bags.args.general.args.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
 Bags.args.general.args.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
 Bags.args.general.args.countGroup.args.positionGroup.inline = true
-Bags.args.general.args.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, textAnchors)
+Bags.args.general.args.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.TextPositions)
 Bags.args.general.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
 Bags.args.general.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
@@ -137,7 +133,7 @@ Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFont = ACH:Sh
 Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 8, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup = ACH:Group(L["Position"], nil, 9, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup.inline = true
-Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, textAnchors, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, C.Values.TextPositions, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelxOffset = ACH:Range(L["X-Offset"], nil, 11, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 

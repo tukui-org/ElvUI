@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local function HandlePanel(panel)
 	if panel.DragonridingPanel then
@@ -12,18 +13,29 @@ local function HandlePanel(panel)
 	if panel.CloseButton then
 		S:HandleCloseButton(panel.CloseButton)
 	end
+end
 
-	if panel.MajorFactionList then
-		-- 🧁
+local function HandleScrollBar(frame)
+	if frame.MajorFactionList then
+		S:HandleTrimScrollBar(frame.MajorFactionList.ScrollBar, true)
 	end
+end
+
+local function DelayedMajorFactionList(frame)
+	E:Delay(0.1, HandleScrollBar, frame)
 end
 
 function S:Blizzard_ExpansionLandingPage()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.expansionLanding) then return end
 
-	local frame = _G.ExpansionLandingPage
-	if frame.Overlay then
-		for _, child in next, { frame.Overlay:GetChildren() } do
+	local factionList = _G.LandingPageMajorFactionList
+	if factionList then
+		hooksecurefunc(factionList, 'Create', DelayedMajorFactionList)
+	end
+
+	local overlay = _G.ExpansionLandingPage.Overlay
+	if overlay then
+		for _, child in next, { overlay:GetChildren() } do
 			if E.private.skins.parchmentRemoverEnable then
 				child:StripTextures()
 				child:SetTemplate('Transparent')

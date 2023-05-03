@@ -64,10 +64,21 @@ function S:EditorManagerFrame()
 
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)
+	S:HandleCheckBox(editMode.EnableAdvancedOptionsCheckButton.Button)
 
-	for _, frame in next, { editMode.AccountSettings.Settings:GetChildren() } do
-		if frame.Button then
-			S:HandleCheckBox(frame.Button)
+	S:HandleTrimScrollBar(editMode.AccountSettings.SettingsContainer.ScrollBar, true)
+	editMode.AccountSettings.SettingsContainer.BorderArt:StripTextures()
+	editMode.AccountSettings.SettingsContainer:SetTemplate('Transparent')
+	editMode.AccountSettings.Expander.Divider:StripTextures()
+
+	-- Group Containers (Basic, Frames, Combat, Misc)
+	for _, frames in next, { editMode.AccountSettings.SettingsContainer.ScrollChild:GetChildren() } do
+		for _, frame in next, { frames:GetChildren() } do
+			for _, child in next, { frame:GetChildren() } do
+				if child.Button then
+					S:HandleCheckBox(child.Button)
+				end
+			end
 		end
 	end
 

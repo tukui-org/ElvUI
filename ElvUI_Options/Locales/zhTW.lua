@@ -1044,7 +1044,6 @@ L["Match if Item Name or ID is NOT in the list."] = "匹配不在列表中的物
 L["Match if Name or NPC ID is NOT in the list."] = "匹配不在列表中的名字或 NPC ID."
 L["Match Player Level"] = "符合玩家等級"
 L["Match this trigger if the spell is not known."] = "當法術未知時觸發此觸發器."
-L["Maw Buffs Position"] = "托伽司增益位置"
 L["Max Allowed Groups"] = "最大允許隊伍數"
 L["Max Alpha"] = "最大透明度"
 L["Max amount of overflow allowed to extend past the end of the health bar."] = "顯示在生命值條末端的治療吸收盾的最大量"

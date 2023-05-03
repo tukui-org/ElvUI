@@ -74,6 +74,36 @@ local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
+local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
+	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName) end, nil, not E.Retail)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
+	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
+
+	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.SidePositions)
+	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
+	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
+	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
+	config.args.icon.inline = true
+
+	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.duration.args.enable.customWidth = 100
+	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+	config.args.duration.inline = true
+
+	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+	config.args.parent.inline = true
+
+	return config
+end
+
 local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, subGroup)
 	local config = ACH:Group(L["Strata and Level"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.useCustomStrata = ACH:Toggle(L["Use Custom Strata"], nil, 1)
@@ -185,12 +215,12 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
 	config.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
 	config.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
-	config.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT' })
+	config.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, C.Values.AllPoints)
 
 	config.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.inline = true
 	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
-	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT' })
+	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.Anchors)
 
 	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
 	config.args.filtersGroup.inline = true
@@ -1107,7 +1137,7 @@ Colors.castBars.args.castColor = ACH:Color(function() return (E.Retail or E.Wrat
 Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath))
 
-Colors.castBars.args.empowerStage = ACH:Group(E.NewSign..L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
 for i = 1, 4 do
@@ -1219,7 +1249,7 @@ Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.CHI_POWER.inline = true
 
-Colors.classResourceGroup.args.EVOKER = ACH:Group(E.NewSign..L["POWER_TYPE_ESSENCE"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER[i], P.unitframe.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER[i], P.unitframe.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.EVOKER.inline = true
 
 for i = 1, 7 do
@@ -1335,7 +1365,8 @@ local unitSettingsFunc = {
 	resurrectIcon = GetOptionsTable_ResurrectIcon,
 	roleIcon = GetOptionsTable_RoleIcons,
 	strataAndLevel = GetOptionsTable_StrataAndFrameLevel,
-	summonIcon = GetOptionsTable_SummonIcon
+	summonIcon = GetOptionsTable_SummonIcon,
+	privateAuras = GetOptionsTable_PrivateAuras
 }
 
 local function GetUnitSettings(unitType, updateFunc, numUnits)

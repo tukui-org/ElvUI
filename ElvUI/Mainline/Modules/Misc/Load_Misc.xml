@@ -1,4 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='..\..\..\Core\Modules\Misc\TotemTracker.lua'/>
 	<Script file='..\..\..\Core\Modules\Misc\EditorMode.lua'/>
+	<Script file='..\..\..\Core\Modules\Misc\PrivateAuras.lua'/>
 </Ui>

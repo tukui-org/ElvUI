@@ -13,7 +13,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i=1, numItems do
-		local frame = _G.LootHistoryFrame.itemFrames[i]
+		local frame = _G.GroupLootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
@@ -42,7 +42,7 @@ function S:LootFrame()
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			local item = button.Item
 			if item and not item.backdrop then
-				--item:StripTextures() -- this will also kill the icon
+				item:StripTextures() -- this will also kill the icon
 				S:HandleIcon(item.icon, true)
 				S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 			end
@@ -57,9 +57,9 @@ function S:LootFrame()
 	end)
 
 	-- Loot history frame
-	local LootHistoryFrame = _G.LootHistoryFrame
+	local LootHistoryFrame = _G.GroupLootHistoryFrame
 	LootHistoryFrame:StripTextures()
-	S:HandleCloseButton(LootHistoryFrame.CloseButton)
+	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
 	LootHistoryFrame.ResizeButton:StripTextures()
@@ -73,10 +73,10 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
 	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-	_G.LootHistoryFrameScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
+	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar, true)
+	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
 
-	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
+	hooksecurefunc(_G.LootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Monitor this, the hook is still to LootHistoryFrame, probably renaming soonish
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame

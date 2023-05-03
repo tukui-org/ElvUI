@@ -215,7 +215,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Kontrollverlustsymbol"
 L["lvl"] = "lvl"
 L["MA Frames"] = "MA Fenster"
-L["MawBuffsWidget"] = "Schlund Buffs Widget"
 L["Max Level"] = true
 L["Micro Bar"] = "Mikroleiste"
 L["Minimap Cluster"] = "Minikarte Gruppe"

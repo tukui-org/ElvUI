@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
@@ -515,6 +516,27 @@ function UF:Update_FontStrings()
 	local font, size, outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
 	for obj in pairs(UF.fontstrings) do
 		obj:FontTemplate(font, size, outline)
+	end
+end
+
+function UF:Construct_PrivateAuras(frame)
+	return CreateFrame('Frame', '$parent_PrivateAuras', frame.RaisedElementParent)
+end
+
+function UF:Configure_PrivateAuras(frame)
+	if not E.Retail then return end -- dont exist on classic
+
+	if frame.PrivateAuras then
+		PA:RemoveAuras(frame.PrivateAuras)
+	end
+
+	local db = frame.db and frame.db.privateAuras
+	if db and db.enable then
+		PA:SetupPrivateAuras(db, frame.PrivateAuras, frame.unit)
+
+		frame.PrivateAuras:ClearAllPoints()
+		frame.PrivateAuras:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		frame.PrivateAuras:Size(db.icon.size)
 	end
 end
 

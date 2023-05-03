@@ -214,7 +214,6 @@ L["Lord! It's a miracle! The download up and vanished like a fart in the wind! T
 L["Loss Control Icon"] = "Иконка потери контроля"
 L["lvl"] = "ур."
 L["MA Frames"] = "Помощники"
-L["MawBuffsWidget"] = "Баффы Утробы"
 L["Max Level"] = "Макс. уровень"
 L["Micro Bar"] = "Микроменю"
 L["Minimap Cluster"] = "Кластер миникарты"

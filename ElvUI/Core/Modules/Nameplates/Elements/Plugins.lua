@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
+local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 
 local strfind = strfind
@@ -300,5 +301,27 @@ function NP:Update_Cutaway(nameplate)
 		else
 			nameplate.Cutaway.Power:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
+	end
+end
+
+function NP:Construct_PrivateAuras(nameplate)
+	return CreateFrame('Frame', nameplate:GetName() .. 'PrivateAuras', nameplate)
+end
+
+function NP:Update_PrivateAuras(nameplate, disable)
+	if not E.Retail then return end -- dont exist on classic
+
+	if nameplate.PrivateAuras then
+		PA:RemoveAuras(nameplate.PrivateAuras)
+	end
+
+	local plateDB = not disable and NP:PlateDB(nameplate)
+	local db = plateDB and plateDB.privateAuras
+	if db and db.enable then
+		PA:SetupPrivateAuras(db, nameplate.PrivateAuras, nameplate.unit)
+
+		nameplate.PrivateAuras:ClearAllPoints()
+		nameplate.PrivateAuras:Point(E.InversePoints[db.parent.point], nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		nameplate.PrivateAuras:Size(db.icon.size)
 	end
 end

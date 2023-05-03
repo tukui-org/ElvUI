@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local UnitXP = UnitXP
@@ -58,6 +59,24 @@ function B:QuestXPPercent()
 	end
 end
 
+function B:HandleAddonCompartment()
+	local compartment = _G.AddonCompartmentFrame
+	if compartment then
+		if not compartment.mover then
+			compartment:SetParent(_G.UIParent)
+			compartment:ClearAllPoints()
+			compartment:Point('TOPLEFT', _G.MMHolder or _G.Minimap, 3, -3)
+			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"])
+		end
+
+		local db = E.db.general.addonCompartment
+		compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		compartment:SetFrameLevel(db.frameLevel or 20)
+		compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
+		compartment:Size(db.size or 18)
+	end
+end
+
 function B:Initialize()
 	B.Initialized = true
 
@@ -73,6 +92,7 @@ function B:Initialize()
 		B:DisableTutorials()
 		B:SkinBlizzTimers()
 		B:HandleTalkingHead()
+		B:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 

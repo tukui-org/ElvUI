@@ -46,6 +46,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
+	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.customTexts = {}
 
 	if not E.Retail and E.myclass ~= 'WARRIOR' then
@@ -120,6 +121,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_AuraBars(frame)
 	UF:Configure_PVPIcon(frame)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_PrivateAuras(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_CombatIndicator(frame)
 	UF:Configure_ClassBar(frame)
