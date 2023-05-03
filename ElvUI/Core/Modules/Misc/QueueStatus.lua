@@ -114,13 +114,10 @@ function M:HandleQueueStatus(creation)
 		queueButton:SetIgnoreParentScale(true)
 	end
 
-	if not E.Retail then -- trigger the hook
-		queueButton:SetPoint('CENTER')
-	end
-
 	local db = E.db.general.queueStatus
 	queueButton:SetFrameStrata(db.frameStrata)
 	queueButton:SetFrameLevel(db.frameLevel)
+	queueButton:SetPoint('CENTER') -- trigger the hook
 
 	local scale = db.scale * (E.Retail and 1 or 2)
 	queueButton:SetScale(scale)
