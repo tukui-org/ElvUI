@@ -283,7 +283,7 @@ function S:CharacterFrame()
 	_G.CharacterFramePortrait:Kill()
 
 	for _, scrollbar in pairs({ _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar }) do
-		S:HandleTrimScrollBar(scrollbar)
+		S:HandleTrimScrollBar(scrollbar, true)
 	end
 
 	for _, object in pairs(charframe) do
