@@ -229,7 +229,19 @@ P.general = {
 			offsetX = 0,
 			offsetY = 0
 		}
-	}
+	},
+	queueStatus = {
+		enable = true,
+		scale = E.Retail and 0.5 or 1,
+		position = 'BOTTOMRIGHT',
+		xOffset = -2,
+		yOffset = 2,
+		font = 'Expressway',
+		fontSize = 11,
+		fontOutline = 'OUTLINE',
+		frameStrata = 'MEDIUM',
+		frameLevel = 20
+	},
 }
 
 P.databars = {

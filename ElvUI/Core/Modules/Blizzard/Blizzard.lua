@@ -65,8 +65,8 @@ function B:HandleAddonCompartment()
 		if not compartment.mover then
 			compartment:SetParent(_G.UIParent)
 			compartment:ClearAllPoints()
-			compartment:Point('TOPLEFT', _G.MMHolder or _G.Minimap, 3, -3)
-			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"])
+			compartment:Point('RIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, -5, 10)
+			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements,addonCompartment')
 		end
 
 		local db = E.db.general.addonCompartment
@@ -116,7 +116,7 @@ function B:Initialize()
 		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
-	local MinimapAnchor = _G.MMHolder or _G.Minimap
+	local MinimapAnchor = _G.ElvUI_MinimapHolder or _G.Minimap
 	do -- Battle.Net Frame
 		_G.BNToastFrame:ClearAllPoints()
 		_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)

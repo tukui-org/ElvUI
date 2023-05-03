@@ -202,9 +202,9 @@ end
 
 function PA:Initialize()
 	PA.Auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
-	PA.Auras:Point('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'BOTTOMLEFT', -(6 + E.Border), -4)
+	PA.Auras:Point('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', -(9 + E.Border), -4)
 	PA.Auras:Size(32)
-	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"])
+	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"], nil, nil, nil, nil, nil, 'auras,privateAuras')
 	PA:PlayerPrivateAuras()
 
 	local warningText = _G.PrivateRaidBossEmoteFrameAnchor
