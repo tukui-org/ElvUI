@@ -268,6 +268,7 @@ blizz.addonCompartment = ACH:Group(E.NewSign..L["Addon Compartment"], nil, 6, ni
 blizz.addonCompartment.args.size = ACH:Range(L["Size"], nil, 1, { min = 10, max = 40, step = 1 })
 blizz.addonCompartment.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, { min = 2, max = 128, step = 1 })
 blizz.addonCompartment.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 3, C.Values.Strata)
+blizz.addonCompartment.args.hide = ACH:Toggle(L["Hide"], nil, 4)
 
 blizz.addonCompartment.args.fontGroup = ACH:Group(L["Font Group"], nil, 50, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; Blizzard:HandleAddonCompartment() end)
 blizz.addonCompartment.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)

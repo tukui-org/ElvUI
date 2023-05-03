@@ -202,6 +202,7 @@ P.general = {
 	},
 	addonCompartment = {
 		size = 18,
+		hide = false,
 		font = 'Expressway',
 		fontSize = 13,
 		fontOutline = 'NONE',

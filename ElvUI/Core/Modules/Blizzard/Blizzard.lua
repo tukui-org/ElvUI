@@ -70,10 +70,17 @@ function B:HandleAddonCompartment()
 		end
 
 		local db = E.db.general.addonCompartment
-		compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-		compartment:SetFrameLevel(db.frameLevel or 20)
-		compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
-		compartment:Size(db.size or 18)
+		if db.hide then
+			E:DisableMover(compartment.mover.name)
+			compartment:SetParent(E.HiddenFrame)
+		else
+			E:EnableMover(compartment.mover.name)
+			compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			compartment:SetFrameLevel(db.frameLevel or 20)
+			compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
+			compartment:SetParent(_G.UIParent)
+			compartment:Size(db.size or 18)
+		end
 	end
 end
 
