@@ -33,6 +33,9 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankInfoScrollFrame:StripTextures()
 	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 
+	S:HandleTrimScrollBar(_G.GuildBankInfoScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(frame.Log.ScrollBar, true)
+
 	frame.BlackBG:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, 1)
 	frame.BlackBG.backdrop:Point('TOPLEFT', frame.BlackBG, 'TOPLEFT', 4, 0)
 	frame.BlackBG.backdrop:Point('BOTTOMRIGHT', frame.BlackBG, 'BOTTOMRIGHT', -3, 3)
