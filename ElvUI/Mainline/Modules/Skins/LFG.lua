@@ -491,7 +491,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
-	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
+	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar, true)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
