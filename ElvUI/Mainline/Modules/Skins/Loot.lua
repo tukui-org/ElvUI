@@ -13,7 +13,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i=1, numItems do
-		local frame = _G.LootHistoryFrame.itemFrames[i]
+		local frame = _G.GroupLootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
@@ -42,7 +42,7 @@ function S:LootFrame()
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
 			local item = button.Item
 			if item and not item.backdrop then
-				--item:StripTextures() -- this will also kill the icon
+				item:StripTextures() -- this will also kill the icon
 				S:HandleIcon(item.icon, true)
 				S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 			end
@@ -57,7 +57,7 @@ function S:LootFrame()
 	end)
 
 	-- Loot history frame
-	local LootHistoryFrame = _G.LootHistoryFrame
+	local LootHistoryFrame = _G.GroupLootHistoryFrame or _G.LootHistoryFrame
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	LootHistoryFrame:StripTextures()
@@ -76,7 +76,7 @@ function S:LootFrame()
 
 	-- S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar) TODO Season 2
 
-	hooksecurefunc(LootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Needs checking
+	--hooksecurefunc(GroupLootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Needs checking
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
