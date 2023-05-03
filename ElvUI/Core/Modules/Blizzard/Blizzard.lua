@@ -64,7 +64,7 @@ function B:HandleAddonCompartment()
 	if compartment then
 		if not compartment.mover then
 			compartment:SetParent(_G.UIParent)
-			compartment:SetFrameLevel(10)
+			compartment:SetFrameLevel(10) -- over minimap mover
 			compartment:ClearAllPoints()
 			compartment:Point('RIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, -5, 10)
 			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements,addonCompartment')
