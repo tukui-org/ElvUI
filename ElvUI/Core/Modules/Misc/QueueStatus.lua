@@ -147,6 +147,7 @@ function M:LoadQueueStatus()
 
 	M.QueueStatus = CreateFrame('Frame', 'ElvUIQueueStatus', E.UIParent)
 	M.QueueStatus:Point('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMRIGHT', -5, 25)
+	M.QueueStatus:SetFrameLevel(10)
 	M.QueueStatus:Size(32)
 	E:CreateMover(M.QueueStatus, 'QueueStatusMover', L["Queue Status"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements,queueStatus')
 
