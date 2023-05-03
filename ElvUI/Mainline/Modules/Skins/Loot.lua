@@ -57,7 +57,7 @@ function S:LootFrame()
 	end)
 
 	-- Loot history frame
-	local LootHistoryFrame = _G.GroupLootHistoryFrame or _G.LootHistoryFrame
+	local LootHistoryFrame = _G.GroupLootHistoryFrame
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	LootHistoryFrame:StripTextures()
@@ -73,7 +73,8 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
 	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-	-- S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar) TODO Season 2
+	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar, true)
+	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
 
 	hooksecurefunc(_G.LootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Monitor this, the hook is still to LootHistoryFrame, probably renaming soonish
 
