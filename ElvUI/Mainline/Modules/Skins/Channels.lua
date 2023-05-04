@@ -19,7 +19,7 @@ function S:Blizzard_Channels()
 	ChannelFrame.NewButton:ClearAllPoints()
 	ChannelFrame.NewButton:Point('BOTTOMLEFT', ChannelFrame, 4, 4) -- make it match settings button
 
-	S:HandleTrimScrollBar(ChannelFrame.ChannelRoster.ScrollBar, true)
+	S:HandleTrimScrollBar(ChannelFrame.ChannelRoster.ScrollBar)
 
 	S:HandleScrollBar(ChannelFrame.ChannelList.ScrollBar)
 	ChannelFrame.ChannelList.ScrollBar:Point('BOTTOMLEFT', ChannelFrame.ChannelList, 'BOTTOMRIGHT', 0, 15)

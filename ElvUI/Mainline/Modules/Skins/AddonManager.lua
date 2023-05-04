@@ -92,7 +92,7 @@ function S:AddonList()
 	S:HandleButton(AddonList.OkayButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(AddonList.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleDropDownBox(_G.AddonCharacterDropDown, 165)
-	S:HandleTrimScrollBar(_G.AddonList.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.AddonList.ScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 	_G.AddonListForceLoad:Size(26, 26)
 

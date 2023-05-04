@@ -205,7 +205,7 @@ local function SkinMountFrame()
 
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
-	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
 	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
@@ -249,7 +249,7 @@ local function SkinPetFrame()
 	S:HandleCloseButton(_G.PetJournalFilterButton.ResetButton)
 	_G.PetJournalFilterButton.ResetButton:ClearAllPoints()
 	_G.PetJournalFilterButton.ResetButton:Point('CENTER', _G.PetJournalFilterButton, 'TOPRIGHT', 0, 0)
-	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
@@ -553,7 +553,7 @@ local function SkinTransmogFrames()
 	SetsCollectionFrame:SetTemplate('Transparent')
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame.LeftInset:StripTextures()
-	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar, true)
+	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
 
 	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', function(button)
 		for _, child in next, { button.ScrollTarget:GetChildren() } do

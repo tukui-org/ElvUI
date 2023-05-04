@@ -419,7 +419,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
 	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
@@ -491,7 +491,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
-	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
@@ -591,7 +591,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.BrowseGroupsButton:Size(120, 22)
 
-	S:HandleTrimScrollBar(LFGListFrame.ApplicationViewer.ScrollBar, true)
+	S:HandleTrimScrollBar(LFGListFrame.ApplicationViewer.ScrollBar)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
 		frame.RemoveEntryButton:ClearAllPoints()

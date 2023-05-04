@@ -196,7 +196,7 @@ local function SkinMissionFrame(frame, strip)
 	local missionList = frame.MissionTab.MissionList
 	missionList:StripTextures()
 
-	S:HandleTrimScrollBar(missionList.ScrollBar, true)
+	S:HandleTrimScrollBar(missionList.ScrollBar)
 
 	hooksecurefunc(missionList.ScrollBox, 'Update', ReskinMissionList)
 
@@ -340,7 +340,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
-	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar)
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 
 	local FollowerTab = GarrisonMissionFrame.FollowerTab
@@ -354,7 +354,7 @@ function S:Blizzard_GarrisonUI()
 	local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
 
 	MissionList:DisableDrawLayer('BORDER')
-	S:HandleTrimScrollBar(_G.GarrisonMissionFrameMissions.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.GarrisonMissionFrameMissions.ScrollBar)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
@@ -434,7 +434,7 @@ function S:Blizzard_GarrisonUI()
 
 	local List = Report.List
 	List:StripTextures()
-	S:HandleTrimScrollBar(List.ScrollBar, true)
+	S:HandleTrimScrollBar(List.ScrollBar)
 
 	hooksecurefunc(Report.List.ScrollBox, 'Update', function(frame)
 		for _, button in next, { frame.ScrollTarget:GetChildren() } do
@@ -460,7 +460,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.FollowerHeaderBar:Hide()
 	FollowerList.FollowerScrollFrame:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
-	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
@@ -514,7 +514,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList:StripTextures()
 	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame.BG:StripTextures()
-	S:HandleTrimScrollBar(_G.GarrisonShipyardFrameFollowers.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.GarrisonShipyardFrameFollowers.ScrollBar)
 	S:HandleEditBox(FollowerList.SearchBox)
 
 	-- MissionFrame
@@ -536,7 +536,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
 
-	S:HandleTrimScrollBar(Follower.ScrollBar, true)
+	S:HandleTrimScrollBar(Follower.ScrollBar)
 
 	Follower:StripTextures()
 	FollowerList:StripTextures()

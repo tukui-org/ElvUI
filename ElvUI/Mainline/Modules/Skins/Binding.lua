@@ -64,7 +64,7 @@ function S:Blizzard_ClickBindingUI()
 		S:HandleButton(frame[v])
 	end
 
-	S:HandleTrimScrollBar(frame.ScrollBar, true)
+	S:HandleTrimScrollBar(frame.ScrollBar)
 	frame.ScrollBoxBackground:Hide()
 	hooksecurefunc(frame.ScrollBox, 'Update', HandleScrollChild)
 
