@@ -185,12 +185,12 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 		HandleAuctionButtons(frame.RefreshFrame.RefreshButton)
 	end
 
-	S:HandleTrimScrollBar(frame.ScrollBar)
+	S:HandleTrimScrollBar(frame.ScrollBar, true)
 
 	if fitScrollBar then
 		frame.ScrollBar:ClearAllPoints()
-		frame.ScrollBar:Point('TOPRIGHT', frame, 1, -16)
-		frame.ScrollBar:Point('BOTTOMRIGHT', frame, 1, 16)
+		frame.ScrollBar:Point('TOPRIGHT', frame, -6, -16)
+		frame.ScrollBar:Point('BOTTOMRIGHT', frame, -6, 16)
 	end
 
 	if hasHeader then
@@ -233,6 +233,7 @@ local function LoadSkin()
 	--[[ Main Frame | TAB 1]]--
 	local Frame = _G.AuctionHouseFrame
 	S:HandlePortraitFrame(Frame)
+	Frame:Width(810) -- to make space for the Browse ScrollBar (Default: 800)
 
 	-- handle tab spacing
 	hooksecurefunc('PanelTemplates_SetNumTabs', HandleTabs)
@@ -248,7 +249,7 @@ local function LoadSkin()
 	Categories:StripTextures()
 	Categories.NineSlice:SetTemplate('Transparent')
 	Categories.NineSlice:SetInside(Categories)
-	S:HandleTrimScrollBar(Categories.ScrollBar)
+	S:HandleTrimScrollBar(Categories.ScrollBar, true)
 
 	hooksecurefunc('AuctionHouseFilterButton_SetUp', function(button)
 		local r, g, b = unpack(E.media.rgbvaluecolor)
@@ -266,8 +267,8 @@ local function LoadSkin()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar)
 	BrowseList:SetTemplate('Transparent')
 	BrowseList.ScrollBar:ClearAllPoints()
-	BrowseList.ScrollBar:Point('TOPRIGHT', BrowseList, 1, -16)
-	BrowseList.ScrollBar:Point('BOTTOMRIGHT', BrowseList, 1, 16)
+	BrowseList.ScrollBar:Point('TOPRIGHT', BrowseList, -6, -16)
+	BrowseList.ScrollBar:Point('BOTTOMRIGHT', BrowseList, -6, 16)
 
 	--[[ BuyOut Frame]]
 	local CommoditiesBuyFrame = Frame.CommoditiesBuyFrame
@@ -278,7 +279,7 @@ local function LoadSkin()
 	CommoditiesBuyList:StripTextures()
 	CommoditiesBuyList:SetTemplate('Transparent')
 	S:HandleButton(CommoditiesBuyList.RefreshFrame.RefreshButton)
-	S:HandleTrimScrollBar(CommoditiesBuyList.ScrollBar)
+	S:HandleTrimScrollBar(CommoditiesBuyList.ScrollBar, true)
 
 	local BuyDisplay = Frame.CommoditiesBuyFrame.BuyDisplay
 	S:HandleEditBox(BuyDisplay.QuantityInput.InputBox)
@@ -296,7 +297,7 @@ local function LoadSkin()
 	local ItemBuyList = ItemBuyFrame.ItemList
 	ItemBuyList:StripTextures()
 	ItemBuyList:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(ItemBuyList.ScrollBar)
+	S:HandleTrimScrollBar(ItemBuyList.ScrollBar, true)
 	S:HandleButton(ItemBuyList.RefreshFrame.RefreshButton)
 	hooksecurefunc(ItemBuyList, 'RefreshScrollFrame', HandleHeaders)
 
@@ -362,8 +363,8 @@ local function LoadSkin()
 	S:HandleButton(AuctionsFrame.CancelAuctionButton)
 
 	SummaryList.ScrollBar:ClearAllPoints()
-	SummaryList.ScrollBar:Point('TOPRIGHT', SummaryList, -3, -20)
-	SummaryList.ScrollBar:Point('BOTTOMRIGHT', SummaryList, -3, 20)
+	SummaryList.ScrollBar:Point('TOPRIGHT', SummaryList, -5, -20)
+	SummaryList.ScrollBar:Point('BOTTOMRIGHT', SummaryList, -5, 20)
 
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
 	HandleSellList(AllAuctionsList, true, true)
