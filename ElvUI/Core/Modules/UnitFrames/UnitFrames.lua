@@ -7,13 +7,12 @@ local ElvUF = E.oUF
 local _G = _G
 local wipe, type, select, unpack, assert, tostring = wipe, type, select, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
-local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
+local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-local CompactUnitFrame_SetUnit = CompactUnitFrame_SetUnit
 
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -1216,6 +1215,7 @@ do
 	local SetFrameUp = {}
 	local SetFrameUnit = {}
 	local SetFrameHidden = {}
+	local DisabledElements = {}
 	local AllowedFuncs = {
 		[_G.DefaultCompactUnitFrameSetup] = true,
 		[_G.DefaultCompactNamePlatePlayerFrameSetup] = true,
@@ -1249,10 +1249,28 @@ do
 		end
 	end
 
+	function UF:DisableBlizzard_DisableElements(frame)
+		frame:UnregisterAllEvents()
+		pcall(frame.Hide, frame)
+
+		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
+		tinsert(DisabledElements, frame.manabar or frame.ManaBar or nil)
+		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
+		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
+		tinsert(DisabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(DisabledElements, frame.BuffFrame or nil)
+		tinsert(DisabledElements, frame.totFrame or nil)
+
+		for index, element in ipairs(DisabledElements) do
+			element:UnregisterAllEvents() -- turn elements off
+			DisabledElements[index] = nil -- keep this clean
+		end
+	end
+
 	function UF:DisableBlizzard_HideFrames(frame, pattern)
 		if not frame then return end
 
-		frame:UnregisterAllEvents()
+		UF:DisableBlizzard_DisableElements(frame)
 
 		if SetFrameUp[frame] ~= pattern then
 			SetFrameUp[frame] = pattern
@@ -1339,7 +1357,6 @@ do
 	local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 	local MAX_BOSS_FRAMES = 8
 
-	local disabledElements = {}
 	local handledUnits = {}
 	local lockedFrames = {}
 
@@ -1363,21 +1380,7 @@ do
 			end
 		end
 
-		frame:UnregisterAllEvents()
-		frame:Hide()
-
-		tinsert(disabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
-		tinsert(disabledElements, frame.manabar or frame.ManaBar or nil)
-		tinsert(disabledElements, frame.castBar or frame.spellbar or nil)
-		tinsert(disabledElements, frame.petFrame or frame.PetFrame or nil)
-		tinsert(disabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
-		tinsert(disabledElements, frame.BuffFrame or nil)
-		tinsert(disabledElements, frame.totFrame or nil)
-
-		for index, element in ipairs(disabledElements) do
-			element:UnregisterAllEvents() -- turn elements off
-			disabledElements[index] = nil -- keep this clean
-		end
+		UF:DisableBlizzard_DisableElements(frame)
 	end
 
 	function ElvUF:DisableBlizzard(unit)
