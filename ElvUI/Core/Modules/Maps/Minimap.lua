@@ -3,10 +3,8 @@ local M = E:GetModule('Minimap')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local mod = mod
 local next = next
 local sort = sort
-local floor = floor
 local tinsert = tinsert
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
@@ -16,7 +14,6 @@ local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
 local GetMinimapZoneText = GetMinimapZoneText
-local GetTime = GetTime
 local GetZonePVPInfo = GetZonePVPInfo
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
@@ -136,33 +133,6 @@ function M:HandleExpansionButton()
 	if box then
 		box:SetScale(1 / scale)
 		box:SetClampedToScreen(true)
-	end
-end
-
-function M:HandleQueueButton()
-	local queueDisplay = M.QueueStatusDisplay
-	if queueDisplay then
-		local db = E.db.general.minimap.icons.queueStatus
-		local _, position, xOffset, yOffset = M:GetIconSettings('queueStatus')
-		queueDisplay.text:ClearAllPoints()
-		queueDisplay.text:Point(position, Minimap, xOffset, yOffset)
-		queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-
-		if not db.enable and queueDisplay.title then
-			M:ClearQueueStatus()
-		end
-	end
-
-	local queueButton = M:GetQueueStatusButton()
-	if queueButton then
-		queueButton:SetParent(Minimap)
-		queueButton:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
-
-		local scale, position, xOffset, yOffset = M:GetIconSettings('lfgEye')
-		queueButton:ClearAllPoints()
-		queueButton:Point(position, Minimap, xOffset, yOffset)
-
-		M:SetScale(queueButton, scale)
 	end
 end
 
@@ -351,15 +321,7 @@ function M:GetIconSettings(button)
 	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
 end
 
-function M:GetQueueStatusButton()
-	return _G.QueueStatusButton or _G.MiniMapLFGFrame
-end
-
 function M:UpdateSettings()
-	if M.Initialized or E.private.actionbar.enable then
-		M:HandleQueueButton()
-	end
-
 	if not M.Initialized then return end
 
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
@@ -554,86 +516,6 @@ function M:SetGetMinimapShape()
 	Minimap:Size(E.db.general.minimap.size)
 end
 
-function M:QueueStatusTimeFormat(seconds)
-	local hours = floor(mod(seconds,86400)/3600)
-	if hours > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dh', hours) end
-
-	local mins = floor(mod(seconds,3600)/60)
-	if mins > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%dm', mins) end
-
-	local secs = mod(seconds,60)
-	if secs > 0 then return M.QueueStatusDisplay.text:SetFormattedText('%ds', secs) end
-end
-
-function M:QueueStatusSetTime(seconds)
-	local timeInQueue = GetTime() - seconds
-	M:QueueStatusTimeFormat(timeInQueue)
-
-	local wait = M.QueueStatusDisplay.averageWait
-	local waitTime = wait and wait > 0 and (timeInQueue / wait)
-	if not waitTime or waitTime >= 1 then
-		M.QueueStatusDisplay.text:SetTextColor(1, 1, 1)
-	else
-		M.QueueStatusDisplay.text:SetTextColor(E:ColorGradient(waitTime, 1,.1,.1, 1,1,.1, .1,1,.1))
-	end
-end
-
-function M:QueueStatusOnUpdate(elapsed)
-	-- Replicate QueueStatusEntry_OnUpdate throttle
-	self.updateThrottle = self.updateThrottle - elapsed
-	if self.updateThrottle <= 0 then
-		M:QueueStatusSetTime(self.queuedTime)
-		self.updateThrottle = 0.1
-	end
-end
-
-function M:SetFullQueueStatus(title, queuedTime, averageWait)
-	local db = E.db.general.minimap.icons.queueStatus
-	if not db or not db.enable then return end
-
-	local display = M.QueueStatusDisplay
-	if not display.title or display.title == title then
-		if queuedTime then
-			display.title = title
-			display.updateThrottle = 0
-			display.queuedTime = queuedTime
-			display.averageWait = averageWait
-			display:SetScript('OnUpdate', M.QueueStatusOnUpdate)
-		else
-			M:ClearQueueStatus()
-		end
-	end
-end
-
-function M:SetMinimalQueueStatus(title)
-	if M.QueueStatusDisplay.title == title then
-		M:ClearQueueStatus()
-	end
-end
-
-function M:ClearQueueStatus()
-	local display = M.QueueStatusDisplay
-	display.text:SetText('')
-	display.title = nil
-	display.queuedTime = nil
-	display.averageWait = nil
-	display:SetScript('OnUpdate', nil)
-end
-
-function M:CreateQueueStatusText()
-	local display = CreateFrame('Frame', 'ElvUIQueueStatusDisplay', _G.QueueStatusButton)
-	display:SetIgnoreParentScale(true)
-	display:SetScale(E.uiscale)
-	display.text = display:CreateFontString(nil, 'OVERLAY')
-	display.text:FontTemplate()
-
-	M.QueueStatusDisplay = display
-
-	_G.QueueStatusButton:HookScript('OnHide', M.ClearQueueStatus)
-	hooksecurefunc('QueueStatusEntry_SetMinimalDisplay', M.SetMinimalQueueStatus)
-	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
-end
-
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	local frame = (noCluster and _G.UIParent) or M.ClusterHolder
@@ -649,10 +531,6 @@ function M:Initialize()
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
 	else
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
-
-		if E.private.actionbar.enable then
-			M:HandleQueueButton()
-		end
 
 		return
 	end
@@ -688,8 +566,6 @@ function M:Initialize()
 		Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetQuestBlobRingAlpha(0)
 		Minimap:SetQuestBlobRingScalar(0)
-
-		_G.QueueStatusFrame:SetClampedToScreen(true)
 	end
 
 	M:ClusterPoint()
@@ -758,9 +634,6 @@ function M:Initialize()
 			garrison:Kill()
 			garrison.IsShown = function() return true end
 		end
-
-		-- Dirt 'Editmode-is-messing-with-it' fix
-		M:SecureHookScript(QueueStatusButton, 'OnShow', M.HandleQueueButton)
 	end
 
 	if E.Classic then
@@ -781,9 +654,7 @@ function M:Initialize()
 		M:SetupHybridMinimap()
 	end
 
-	if _G.QueueStatusButton then
-		M:CreateQueueStatusText()
-	elseif _G.MiniMapLFGFrame then
+	if _G.MiniMapLFGFrame then
 		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 

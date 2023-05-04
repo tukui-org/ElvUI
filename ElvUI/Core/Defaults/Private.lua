@@ -30,6 +30,7 @@ V.general = {
 	replaceBlizzFonts = true,
 	unifiedBlizzFonts = false,
 	totemTracker = true,
+	queueStatus = true,
 	minimap = {
 		enable = true,
 		hideClassHallReport = false,

@@ -202,6 +202,7 @@ P.general = {
 	},
 	addonCompartment = {
 		size = 18,
+		hide = false,
 		font = 'Expressway',
 		fontSize = 13,
 		fontOutline = 'NONE',
@@ -229,7 +230,19 @@ P.general = {
 			offsetX = 0,
 			offsetY = 0
 		}
-	}
+	},
+	queueStatus = {
+		enable = true,
+		scale = 0.5,
+		position = 'BOTTOMRIGHT',
+		xOffset = -2,
+		yOffset = 2,
+		font = 'Expressway',
+		fontSize = 11,
+		fontOutline = 'OUTLINE',
+		frameStrata = 'MEDIUM',
+		frameLevel = 20
+	},
 }
 
 P.databars = {

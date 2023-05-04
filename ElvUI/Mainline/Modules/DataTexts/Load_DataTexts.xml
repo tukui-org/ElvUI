@@ -12,4 +12,5 @@
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Versatility.lua'/>
 	<Script file='Warmode.lua'/>
+	<Script file='Crests.lua'/>
 </Ui>

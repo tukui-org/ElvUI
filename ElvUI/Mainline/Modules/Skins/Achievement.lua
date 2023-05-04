@@ -152,8 +152,8 @@ function S:Blizzard_AchievementUI()
 
 	local Result = AchievementFrame.SearchResults
 	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
-	S:HandleFrame(Result, true, nil, -10)
-	S:HandleTrimScrollBar(Result.ScrollBar)
+	S:HandleFrame(Result, true, nil, -8)
+	S:HandleTrimScrollBar(Result.ScrollBar, true)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
@@ -169,8 +169,8 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar)
-	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar)
+	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar, true)
 
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
@@ -367,12 +367,12 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonHeader.backdrop:Point('TOPLEFT', 20, -20)
 	_G.AchievementFrameComparisonHeader.backdrop:Point('BOTTOMRIGHT', -28, -5)
 
-	S:HandleTrimScrollBar(Comparison.AchievementContainer.ScrollBar)
+	S:HandleTrimScrollBar(Comparison.AchievementContainer.ScrollBar, true)
 
 	HandleSummaryBar(Comparison.Summary.Player)
 	HandleSummaryBar(Comparison.Summary.Friend)
 
-	S:HandleTrimScrollBar(Comparison.StatContainer.ScrollBar)
+	S:HandleTrimScrollBar(Comparison.StatContainer.ScrollBar, true)
 
 	-- The section below is usually handled in our hook but another addon
 	-- may have loaded the AchievementUI before we were ready. <Categories>

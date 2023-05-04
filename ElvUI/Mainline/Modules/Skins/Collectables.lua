@@ -553,7 +553,7 @@ local function SkinTransmogFrames()
 	SetsCollectionFrame:SetTemplate('Transparent')
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame.LeftInset:StripTextures()
-	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
+	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar, true)
 
 	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', function(button)
 		for _, child in next, { button.ScrollTarget:GetChildren() } do
