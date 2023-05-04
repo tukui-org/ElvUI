@@ -38,11 +38,11 @@ local crests = {
 }
 
 local currency = {}
-local fragmentText, fragmentSplit = '%s | %s', '%s / 15'
 local crestText = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s / %s'
+local fragmentText, fragmentSplit, fragmentAdd = '%s | %s', '%s / 15', '%s+%s'
 
 local function GetFragmentText(text, crest, count, fragments)
-	return format(fragmentText, text, crest.color:WrapTextInColorCode((fragments and fragments > 0) and format('%s+%s', count, fragments) or count))
+	return format(fragmentText, text, crest.color:WrapTextInColorCode((fragments and fragments > 0) and format(fragmentAdd, count, fragments) or count))
 end
 
 local function GetCrestText(crest, currency)
