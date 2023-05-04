@@ -26,7 +26,7 @@ function S:Blizzard_BlackMarketUI()
 	BlackMarketFrame.Inset:SetTemplate('Transparent')
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
-	S:HandleTrimScrollBar(BlackMarketFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(BlackMarketFrame.ScrollBar)
 	SkinTab(BlackMarketFrame.ColumnName)
 	SkinTab(BlackMarketFrame.ColumnLevel)
 	SkinTab(BlackMarketFrame.ColumnType)

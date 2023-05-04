@@ -17,7 +17,7 @@ end
 
 local function HandleScrollBar(frame)
 	if frame.MajorFactionList then
-		S:HandleTrimScrollBar(frame.MajorFactionList.ScrollBar, true)
+		S:HandleTrimScrollBar(frame.MajorFactionList.ScrollBar)
 	end
 end
 

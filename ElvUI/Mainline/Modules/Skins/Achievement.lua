@@ -153,7 +153,7 @@ function S:Blizzard_AchievementUI()
 	local Result = AchievementFrame.SearchResults
 	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
 	S:HandleFrame(Result, true, nil, -8)
-	S:HandleTrimScrollBar(Result.ScrollBar, true)
+	S:HandleTrimScrollBar(Result.ScrollBar)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
@@ -169,8 +169,8 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar)
+	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar)
 
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
@@ -355,7 +355,7 @@ function S:Blizzard_AchievementUI()
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
 	_G.AchievementFrameStatsBG:SetInside(_G.AchievementFrameStats.ScrollBox, 1, 1)
-	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
 
 	-- Comparison
 	local Comparison = _G.AchievementFrameComparison
@@ -367,12 +367,12 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameComparisonHeader.backdrop:Point('TOPLEFT', 20, -20)
 	_G.AchievementFrameComparisonHeader.backdrop:Point('BOTTOMRIGHT', -28, -5)
 
-	S:HandleTrimScrollBar(Comparison.AchievementContainer.ScrollBar, true)
+	S:HandleTrimScrollBar(Comparison.AchievementContainer.ScrollBar)
 
 	HandleSummaryBar(Comparison.Summary.Player)
 	HandleSummaryBar(Comparison.Summary.Friend)
 
-	S:HandleTrimScrollBar(Comparison.StatContainer.ScrollBar, true)
+	S:HandleTrimScrollBar(Comparison.StatContainer.ScrollBar)
 
 	-- The section below is usually handled in our hook but another addon
 	-- may have loaded the AchievementUI before we were ready. <Categories>
