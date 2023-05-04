@@ -1218,10 +1218,13 @@ do
 	local DisabledElements = {}
 	local AllowedFuncs = {
 		[_G.DefaultCompactUnitFrameSetup] = true,
-		[_G.DefaultCompactNamePlatePlayerFrameSetup] = true,
 		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true,
 		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
 	}
+
+	if E.Retail then
+		AllowedFuncs[_G.DefaultCompactNamePlatePlayerFrameSetup] = true
+	end
 
 	local function FrameShown(frame, shown)
 		if shown then
