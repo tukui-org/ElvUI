@@ -74,9 +74,13 @@ function S:EditorManagerFrame()
 	-- Group Containers (Basic, Frames, Combat, Misc)
 	for _, frames in next, { editMode.AccountSettings.SettingsContainer.ScrollChild:GetChildren() } do
 		for _, frame in next, { frames:GetChildren() } do
-			for _, child in next, { frame:GetChildren() } do
-				if child.Button then
-					S:HandleCheckBox(child.Button)
+			if frame.Button then -- BasicOptionsContainer
+				S:HandleCheckBox(frame.Button)
+			else -- AdvancedOptionsContainer
+				for _, child in next, { frame:GetChildren() } do
+					if child.Button then
+						S:HandleCheckBox(child.Button)
+					end
 				end
 			end
 		end
