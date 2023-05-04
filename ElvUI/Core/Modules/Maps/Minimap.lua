@@ -391,7 +391,6 @@ function M:UpdateSettings()
 		M.ClusterBackdrop:SetSize(width, height)
 		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
 
-		-- elements
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
 		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
@@ -516,6 +515,13 @@ function M:SetGetMinimapShape()
 	Minimap:Size(E.db.general.minimap.size)
 end
 
+function M:ClusterSize(width, height)
+	local holder = M.ClusterHolder
+	if holder and (width ~= holder.savedWidth or height ~= holder.savedHeight) then
+		self:Size(holder.savedWidth, holder.savedHeight)
+	end
+end
+
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
 	local frame = (noCluster and _G.UIParent) or M.ClusterHolder
@@ -550,8 +556,10 @@ function M:Initialize()
 		MinimapCluster:KillEditMode()
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
+		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
-		clusterHolder:Size(MinimapCluster:GetSize())
+		clusterHolder:Size(clusterHolder.savedWidth, clusterHolder.savedHeight)
+		clusterHolder:SetFrameLevel(10) -- over minimap mover
 		E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
 		M.ClusterHolder = clusterHolder
 
@@ -572,6 +580,7 @@ function M:Initialize()
 	MinimapCluster:EnableMouse(false)
 	MinimapCluster:SetFrameLevel(20) -- set before minimap itself
 	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
+	hooksecurefunc(MinimapCluster, 'SetSize', M.ClusterSize)
 
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetFrameLevel(10)
