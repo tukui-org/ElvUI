@@ -1158,6 +1158,61 @@ function UF:UpdateAllHeaders(skip)
 end
 
 do
+	local function EventlessUpdate(frame, elapsed)
+		if not frame.unit or not UnitExists(frame.unit) then
+			return
+		else
+			local frequency = frame.elapsed or 0
+			if frequency > frame.onUpdateElements then
+				local guid = UnitGUID(frame.unit)
+				if frame.lastGUID ~= guid then
+					frame:UpdateAllElements('OnUpdate')
+					frame.lastGUID = guid
+				else
+					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
+					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
+				end
+
+				frame.elapsed = 0
+			else
+				frame.elapsed = frequency + elapsed
+			end
+
+			local prediction = frame.elapsedPrediction or 0
+			if prediction > frame.onUpdatePrediction then
+				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
+				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
+				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
+
+				frame.elapsedPrediction = 0
+			else
+				frame.elapsedPrediction = prediction + elapsed
+			end
+
+			local auras = frame.elapsedAuras or 0
+			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
+				if frame.Auras then frame.Auras:ForceUpdate() end
+				if frame.Buffs then frame.Buffs:ForceUpdate() end
+				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
+
+				frame.elapsedAuras = 0
+			else
+				frame.elapsedAuras = auras + elapsed
+			end
+		end
+	end
+
+	function ElvUF:HandleEventlessUnit(frame)
+		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
+		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
+		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
+
+		frame.__eventless = true
+		frame:SetScript('OnUpdate', EventlessUpdate)
+	end
+end
+
+do
 	local SetFrameUp = {}
 	local SetFrameUnit = {}
 	local SetFrameHidden = {}
@@ -1276,61 +1331,6 @@ do
 				end
 			end
 		end
-	end
-end
-
-do
-	local function EventlessUpdate(frame, elapsed)
-		if not frame.unit or not UnitExists(frame.unit) then
-			return
-		else
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateElements then
-				local guid = UnitGUID(frame.unit)
-				if frame.lastGUID ~= guid then
-					frame:UpdateAllElements('OnUpdate')
-					frame.lastGUID = guid
-				else
-					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
-					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
-				end
-
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
-			end
-
-			local prediction = frame.elapsedPrediction or 0
-			if prediction > frame.onUpdatePrediction then
-				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
-
-				frame.elapsedPrediction = 0
-			else
-				frame.elapsedPrediction = prediction + elapsed
-			end
-
-			local auras = frame.elapsedAuras or 0
-			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
-				if frame.Auras then frame.Auras:ForceUpdate() end
-				if frame.Buffs then frame.Buffs:ForceUpdate() end
-				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
-
-				frame.elapsedAuras = 0
-			else
-				frame.elapsedAuras = auras + elapsed
-			end
-		end
-	end
-
-	function ElvUF:HandleEventlessUnit(frame)
-		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
-		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
-		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
-
-		frame.__eventless = true
-		frame:SetScript('OnUpdate', EventlessUpdate)
 	end
 end
 
