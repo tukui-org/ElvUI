@@ -1161,6 +1161,12 @@ do
 	local SetFrameUp = {}
 	local SetFrameUnit = {}
 	local SetFrameHidden = {}
+	local AllowedFuncs = {
+		[_G.DefaultCompactUnitFrameSetup] = true,
+		[_G.DefaultCompactNamePlatePlayerFrameSetup] = true,
+		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true,
+		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
+	}
 
 	local function FrameShown(frame, shown)
 		if shown then
@@ -1169,11 +1175,11 @@ do
 	end
 
 	function UF:DisableBlizzard_SetUpFrame(func)
-		if func ~= _G.DefaultCompactUnitFrameSetup then
-			return -- so far we only use this for party and raid, only check that function
-		end
+		if not AllowedFuncs[func] then return end
 
-		local name = self:GetName()
+		local name = (not self.IsForbidden or not self:IsForbidden()) and self:GetDebugName()
+		if not name then return end
+
 		for _, pattern in next, SetFrameUp do
 			if strmatch(name, pattern) then
 				SetFrameUnit[self] = name
@@ -1202,6 +1208,16 @@ do
 
 			hooksecurefunc(frame, 'Show', frame.Hide)
 			hooksecurefunc(frame, 'SetShown', FrameShown)
+		end
+	end
+
+	function ElvUF:DisableNamePlate(frame)
+		if (not frame or frame:IsForbidden())
+		or (not E.private.nameplates.enable) then return end
+
+		local plate = frame.UnitFrame
+		if plate then
+			UF:DisableBlizzard_HideFrames(plate, 'NamePlate%d+%.UnitFrame')
 		end
 	end
 
@@ -1324,7 +1340,6 @@ do
 	local MAX_BOSS_FRAMES = 8
 
 	local disabledElements = {}
-	local disabledPlates = {}
 	local handledUnits = {}
 	local lockedFrames = {}
 
@@ -1474,29 +1489,6 @@ do
 						HandleFrame(_G['ArenaEnemyPrepFrame'..i], true)
 					end
 				end
-			end
-		end
-	end
-
-	local function PlateShown(plate, show)
-		if show then
-			plate:Hide()
-		end
-	end
-
-	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden())
-		or (not E.private.nameplates.enable) then return end
-
-		local plate = frame.UnitFrame
-		if plate then
-			HandleFrame(plate, true)
-
-			if not disabledPlates[plate] then
-				disabledPlates[plate] = true
-
-				hooksecurefunc(plate, 'Show', plate.Hide)
-				hooksecurefunc(plate, 'SetShown', PlateShown)
 			end
 		end
 	end
