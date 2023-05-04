@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 41
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 42
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -102,6 +102,7 @@ local function checkElvUI()
 end
 
 function lib:RegisterPlugin(name, callback, isLib, libVersion)
+	if not IsAddOnLoaded(name) then return end
 	checkElvUI()
 
 	local plugin = {
