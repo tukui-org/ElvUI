@@ -49,7 +49,7 @@ local function GetCrestText(crest, currency)
 	return crest.color:WrapTextInColorCode(format(crestText, currency.iconFileID, currency.quantity, currency.maxQuantity))
 end
 
-local function OnEvent(self, _)
+local function OnEvent(self)
 	local text = ''
 	for id, crest in next, crests do
 		if crest.fragment then
