@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local PA = E:GetModule('PrivateAuras')
 
 local _G = _G
+local next = next
 local format = format
 local hooksecurefunc = hooksecurefunc
 
@@ -114,7 +115,7 @@ end
 
 function PA:RemoveAuras(parent)
 	if parent.auraIcons then
-		for _, aura in pairs(parent.auraIcons) do
+		for _, aura in next, parent.auraIcons do
 			PA:RemoveAura(aura)
 		end
 	end
@@ -201,9 +202,9 @@ end
 
 function PA:Initialize()
 	PA.Auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
-	PA.Auras:Point('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'BOTTOMLEFT', -(6 + E.Border), -4)
+	PA.Auras:Point('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', -(9 + E.Border), -4)
 	PA.Auras:Size(32)
-	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"])
+	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"], nil, nil, nil, nil, nil, 'auras,privateAuras')
 	PA:PlayerPrivateAuras()
 
 	local warningText = _G.PrivateRaidBossEmoteFrameAnchor

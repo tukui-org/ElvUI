@@ -100,7 +100,7 @@ local function ReskinOutputLog(outputlog)
 	outputlog:SetTemplate('Transparent')
 
 	S:HandleCloseButton(outputlog.ClosePanelButton)
-	S:HandleTrimScrollBar(outputlog.ScrollBar, true)
+	S:HandleTrimScrollBar(outputlog.ScrollBar)
 
 	hooksecurefunc(outputlog.ScrollBox, 'Update', HandleOutputButtons)
 end
@@ -165,7 +165,7 @@ function S:Blizzard_Professions()
 
 	local CraftList = CraftingPage.RecipeList
 	CraftList:StripTextures()
-	S:HandleTrimScrollBar(CraftList.ScrollBar, true)
+	S:HandleTrimScrollBar(CraftList.ScrollBar)
 
 	if CraftList.BackgroundNineSlice then
 		if E.private.skins.parchmentRemoverEnable then
@@ -290,14 +290,14 @@ function S:Blizzard_Professions()
 
 	local BrowseList = Orders.BrowseFrame.RecipeList
 	BrowseList:StripTextures()
-	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
+	S:HandleTrimScrollBar(BrowseList.ScrollBar)
 	S:HandleEditBox(BrowseList.SearchBox)
 	S:HandleButton(BrowseList.FilterButton)
 	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local OrderList = Orders.BrowseFrame.OrderList
 	OrderList:StripTextures()
-	S:HandleTrimScrollBar(OrderList.ScrollBar, true)
+	S:HandleTrimScrollBar(OrderList.ScrollBar)
 
 	local OrderView = Orders.OrderView
 

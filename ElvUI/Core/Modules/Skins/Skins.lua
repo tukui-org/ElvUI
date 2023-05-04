@@ -670,7 +670,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame, small)
+	function S:HandleTrimScrollBar(frame)
 		assert(frame, 'does not exist.')
 
 		frame:StripTextures()
@@ -696,11 +696,6 @@ do
 
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
-
-			if not small then
-				thumb.backdrop:Point('TOPLEFT', 4, -1)
-				thumb.backdrop:Point('BOTTOMRIGHT', -4, 1)
-			end
 
 			thumb:HookScript('OnEnter', ThumbOnEnter)
 			thumb:HookScript('OnLeave', ThumbOnLeave)

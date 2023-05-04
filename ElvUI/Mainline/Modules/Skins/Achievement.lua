@@ -152,7 +152,7 @@ function S:Blizzard_AchievementUI()
 
 	local Result = AchievementFrame.SearchResults
 	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
-	S:HandleFrame(Result, true, nil, -10)
+	S:HandleFrame(Result, true, nil, -8)
 	S:HandleTrimScrollBar(Result.ScrollBar)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
@@ -355,7 +355,7 @@ function S:Blizzard_AchievementUI()
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')
 	_G.AchievementFrameStatsBG:SetInside(_G.AchievementFrameStats.ScrollBox, 1, 1)
-	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.AchievementFrameStats.ScrollBar)
 
 	-- Comparison
 	local Comparison = _G.AchievementFrameComparison

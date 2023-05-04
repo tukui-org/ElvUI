@@ -171,6 +171,9 @@ function NP:SetCVars()
 	-- Blizzard bug resets them after reload
 	NP:SetCVar('nameplateOverlapH', NP.db.overlapH)
 	NP:SetCVar('nameplateOverlapV', NP.db.overlapV)
+
+	-- 10.1 things
+	NP:SetCVar('nameplatePlayerMaxDistance', 60)
 end
 
 function NP:PLAYER_REGEN_DISABLED()

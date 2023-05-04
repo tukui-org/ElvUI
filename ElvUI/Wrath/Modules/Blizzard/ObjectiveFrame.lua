@@ -31,7 +31,7 @@ end
 
 function B:MoveObjectiveFrame()
 	local holder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
-	holder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	holder:Point('TOPRIGHT', E.UIParent, -135, -300)
 	holder:Size(130, 22)
 
 	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
@@ -40,12 +40,12 @@ function B:MoveObjectiveFrame()
 	local tracker = _G.WatchFrame
 	tracker:SetClampedToScreen(false)
 	tracker:ClearAllPoints()
-	tracker:SetPoint('TOP', holder, 'TOP')
+	tracker:SetPoint('TOP', holder)
 
 	hooksecurefunc(tracker, 'SetPoint', function(_, _, parent)
 		if parent ~= holder then
 			tracker:ClearAllPoints()
-			tracker:SetPoint('TOP', holder, 'TOP')
+			tracker:SetPoint('TOP', holder)
 		end
 	end)
 

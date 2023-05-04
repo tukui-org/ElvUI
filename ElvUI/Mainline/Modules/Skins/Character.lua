@@ -204,8 +204,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandlePortraitFrame(CharacterFrame)
 
-	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar)
 
 	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then

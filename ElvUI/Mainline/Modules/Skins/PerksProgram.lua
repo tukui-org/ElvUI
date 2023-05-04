@@ -69,7 +69,7 @@ function S:Blizzard_PerksProgram()
 		if container then
 			container:StripTextures()
 			container:SetTemplate('Transparent')
-			S:HandleTrimScrollBar(container.ScrollBar, true)
+			S:HandleTrimScrollBar(container.ScrollBar)
 
 			container.PerksProgramHoldFrame:StripTextures()
 			container.PerksProgramHoldFrame:CreateBackdrop('Transparent')

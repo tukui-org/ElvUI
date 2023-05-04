@@ -112,11 +112,11 @@ end
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
 
 	local StripAllTextures = {
 		'FriendsTabHeaderTab1',

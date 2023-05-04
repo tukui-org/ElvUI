@@ -67,7 +67,7 @@ function S:SettingsPanel()
 	SettingsPanel.CategoryList:CreateBackdrop('Transparent')
 	SettingsPanel.CategoryList.backdrop:SetInside()
 
-	S:HandleTrimScrollBar(SettingsPanel.CategoryList.ScrollBar, true)
+	S:HandleTrimScrollBar(SettingsPanel.CategoryList.ScrollBar)
 
 	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
@@ -92,7 +92,7 @@ function S:SettingsPanel()
 	SettingsPanel.Container:CreateBackdrop('Transparent')
 	SettingsPanel.Container.backdrop:SetInside()
 	S:HandleButton(SettingsPanel.Container.SettingsList.Header.DefaultsButton)
-	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar, true)
+	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
