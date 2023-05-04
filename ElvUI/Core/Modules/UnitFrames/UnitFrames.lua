@@ -1218,8 +1218,8 @@ do
 	local DisabledElements = {}
 	local AllowedFuncs = {
 		[_G.DefaultCompactUnitFrameSetup] = true,
-		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true,
-		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
+		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true,
+		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
 	}
 
 	if E.Retail then
