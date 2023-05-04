@@ -1600,7 +1600,7 @@ do
 				end
 			end
 		else
-			S:HandleTrimScrollBar(frame.IconSelector.ScrollBar)
+			S:HandleTrimScrollBar(frame.IconSelector.ScrollBar, true)
 
 			for _, button in next, { frame.IconSelector.ScrollBox.ScrollTarget:GetChildren() } do
 				handleButton(button)

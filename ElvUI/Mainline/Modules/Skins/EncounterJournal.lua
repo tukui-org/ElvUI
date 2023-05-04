@@ -302,7 +302,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
-	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
+	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar, true)
 
 	-- Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
@@ -413,7 +413,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	S:HandleTrimScrollBar(LJ.ScrollBar)
+	S:HandleTrimScrollBar(LJ.ScrollBar, true)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
 		HandleButton(button, true)

@@ -341,7 +341,7 @@ function S:FriendsFrame()
 	RecruitList.Header:StripTextures()
 	RecruitList.ScrollFrameInset:StripTextures()
 	RecruitList.ScrollFrameInset:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(RecruitList.ScrollBar)
+	S:HandleTrimScrollBar(RecruitList.ScrollBar, true)
 
 	-- Recruitment
 	local Recruitment = _G.RecruitAFriendRecruitmentFrame

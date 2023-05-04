@@ -43,7 +43,7 @@ function S:GossipFrame()
 	S:HandlePortraitFrame(GossipFrame, true)
 
 	S:HandleTrimScrollBar(_G.ItemTextScrollFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
+	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar, true)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)

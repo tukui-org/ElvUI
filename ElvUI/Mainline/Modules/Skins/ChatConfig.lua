@@ -195,7 +195,7 @@ function S:ChatConfig()
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineBySource)
 	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineByTarget)
-	S:HandleTrimScrollBar(_G.ChatConfigCombatSettingsFilters.ScrollBar)
+	S:HandleTrimScrollBar(_G.ChatConfigCombatSettingsFilters.ScrollBar, true)
 
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()

@@ -264,7 +264,7 @@ local function LoadSkin()
 	local BrowseList = Browse.ItemList
 	BrowseList:StripTextures()
 	hooksecurefunc(BrowseList, 'RefreshScrollFrame', HandleHeaders)
-	S:HandleTrimScrollBar(BrowseList.ScrollBar)
+	S:HandleTrimScrollBar(BrowseList.ScrollBar, true)
 	BrowseList:SetTemplate('Transparent')
 	BrowseList.ScrollBar:ClearAllPoints()
 	BrowseList.ScrollBar:Point('TOPRIGHT', BrowseList, -6, -16)
