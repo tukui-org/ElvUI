@@ -152,8 +152,8 @@ function S:Blizzard_AchievementUI()
 
 	local Result = AchievementFrame.SearchResults
 	Result:Point('BOTTOMLEFT', AchievementFrame, 'BOTTOMRIGHT', 15, -1)
-	S:HandleFrame(Result, true, nil, -10)
-	S:HandleTrimScrollBar(Result.ScrollBar)
+	S:HandleFrame(Result, true, nil, -8)
+	S:HandleTrimScrollBar(Result.ScrollBar, true)
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
