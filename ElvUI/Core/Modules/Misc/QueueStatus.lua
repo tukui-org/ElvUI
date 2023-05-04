@@ -103,6 +103,17 @@ function M:QueueStatusReparent(parent)
 	end
 end
 
+function M:QueueStatusRescale(eyesize)
+	local scale = E.db.general.queueStatus.scale * (E.Retail and 1 or 2)
+	if eyesize ~= scale then
+		self:SetScale(scale)
+
+		local width, height = self:GetSize()
+		local status = scale * (E.Retail and 1.3 or 1) -- account for the border on retail
+		M.QueueStatus:SetSize(width * status, height * status)
+	end
+end
+
 function M:HandleQueueStatus(creation)
 	local queueButton = M:GetQueueStatusButton()
 	if not queueButton then return end
@@ -110,6 +121,7 @@ function M:HandleQueueStatus(creation)
 	if creation then
 		hooksecurefunc(queueButton, 'SetParent', M.QueueStatusReparent)
 		hooksecurefunc(queueButton, 'SetPoint', M.QueueStatusReposition)
+		hooksecurefunc(queueButton, 'SetScale', M.QueueStatusRescale)
 
 		queueButton:SetIgnoreParentScale(true)
 	end
@@ -118,13 +130,7 @@ function M:HandleQueueStatus(creation)
 	queueButton:SetFrameStrata(db.frameStrata)
 	queueButton:SetFrameLevel(db.frameLevel)
 	queueButton:SetPoint('CENTER') -- trigger the hook
-
-	local scale = db.scale * (E.Retail and 1 or 2)
-	queueButton:SetScale(scale)
-
-	local width, height = queueButton:GetSize()
-	local status = scale * (E.Retail and 1.3 or 1) -- account for the border on retail
-	M.QueueStatus:SetSize(width * status, height * status)
+	queueButton:SetScale(1) -- trigger the scale
 
 	local queueDisplay = M.QueueStatusDisplay
 	if queueDisplay then
