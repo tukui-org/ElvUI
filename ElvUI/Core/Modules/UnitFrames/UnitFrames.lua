@@ -1249,7 +1249,7 @@ do
 		end
 	end
 
-	function UF:DisableBlizzard_DisableElements(frame)
+	function UF:DisableBlizzard_DisableFrame(frame)
 		frame:UnregisterAllEvents()
 		pcall(frame.Hide, frame)
 
@@ -1270,7 +1270,7 @@ do
 	function UF:DisableBlizzard_HideFrames(frame, pattern)
 		if not frame then return end
 
-		UF:DisableBlizzard_DisableElements(frame)
+		UF:DisableBlizzard_DisableFrame(frame)
 
 		if SetFrameUp[frame] ~= pattern then
 			SetFrameUp[frame] = pattern
@@ -1380,7 +1380,7 @@ do
 			end
 		end
 
-		UF:DisableBlizzard_DisableElements(frame)
+		UF:DisableBlizzard_DisableFrame(frame)
 	end
 
 	function ElvUF:DisableBlizzard(unit)
