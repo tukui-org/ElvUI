@@ -1290,7 +1290,7 @@ do
 
 		local plate = frame.UnitFrame
 		if plate then
-			UF:DisableBlizzard_HideFrame(plate, 'NamePlate%d+%.UnitFrame')
+			UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
 		end
 	end
 
@@ -1309,12 +1309,12 @@ do
 
 		-- shutdown some background updates on party unitframes
 		if disable.party then
-			UF:DisableBlizzard_HideFrame(_G.CompactPartyFrame, 'CompactPartyFrameMember%d+')
+			UF:DisableBlizzard_HideFrame(_G.CompactPartyFrame, '^CompactPartyFrameMember%d+$')
 		end
 
 		-- also handle it for background raid frames and the raid utility
 		if disable.raid then
-			UF:DisableBlizzard_HideFrame(_G.CompactRaidFrameContainer, 'CompactRaidGroup%d+Member%d+')
+			UF:DisableBlizzard_HideFrame(_G.CompactRaidFrameContainer, '^CompactRaidGroup%d+Member%d+$')
 
 			-- Raid Utility
 			if _G.CompactRaidFrameManager then
