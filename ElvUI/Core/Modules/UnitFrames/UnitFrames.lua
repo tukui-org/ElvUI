@@ -1183,7 +1183,8 @@ do
 
 	function UF:DisableBlizzard_SetUnit(token)
 		if SetFrameUnit[self] and token ~= nil then
-			CompactUnitFrame_SetUnit(self) -- arg2 is nil here, removing the unit and powering it down
+			self:SetScript('OnEvent', nil)
+			self:SetScript('OnUpdate', nil)
 		end
 	end
 
