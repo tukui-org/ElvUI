@@ -1219,12 +1219,12 @@ do
 
 		-- shutdown some background updates on party unitframes
 		if disable.party then
-			UF:DisableBlizzard_HideFrames(_G.CompactPartyFrame, 'CompactPartyFrameMember%d')
+			UF:DisableBlizzard_HideFrames(_G.CompactPartyFrame, 'CompactPartyFrameMember%d+')
 		end
 
 		-- also handle it for background raid frames and the raid utility
 		if disable.raid then
-			UF:DisableBlizzard_HideFrames(_G.CompactRaidFrameContainer, 'CompactRaidGroup%dMember%d')
+			UF:DisableBlizzard_HideFrames(_G.CompactRaidFrameContainer, 'CompactRaidGroup%d+Member%d+')
 
 			if _G.CompactRaidFrameManager then
 				_G.CompactRaidFrameManager:UnregisterAllEvents()
