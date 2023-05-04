@@ -13,6 +13,7 @@ local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
+local CompactUnitFrame_SetUnit = CompactUnitFrame_SetUnit
 
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -1156,60 +1157,100 @@ function UF:UpdateAllHeaders(skip)
 	end
 end
 
-function UF:DisableBlizzard()
-	local disable = E.private.unitframe.disabledBlizzardFrames
-	if disable.party or disable.raid then
-		-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
-		-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-		_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
-	end
+do
+	local SetFrameUp = {}
+	local SetFrameUnit = {}
+	local SetFrameHidden = {}
 
-	-- shutdown monk stagger bar background updates
-	if disable.player and _G.MonkStaggerBar then
-		_G.MonkStaggerBar:UnregisterAllEvents()
-	end
-
-	-- shutdown some background updates on party unitframes
-	if disable.party and _G.CompactPartyFrame then
-		_G.CompactPartyFrame:UnregisterAllEvents()
-	end
-
-	-- also handle it for background raid frames and the raid utility
-	if disable.raid then
-		if _G.CompactRaidFrameContainer then
-			_G.CompactRaidFrameContainer:UnregisterAllEvents()
+	function UF:DisableBlizzard_SetUpFrame(func)
+		if func ~= _G.DefaultCompactUnitFrameSetup then
+			return -- so far we only use this for party and raid, only check that function
 		end
 
-		-- Raid Utility
-		if not CompactRaidFrameManager_SetSetting then
-			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
-		else
-			CompactRaidFrameManager_SetSetting('IsShown', '0')
-		end
-
-		if _G.CompactRaidFrameManager then
-			_G.CompactRaidFrameManager:UnregisterAllEvents()
-			_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
+		local name = self:GetName()
+		for _, pattern in next, SetFrameUp do
+			if strmatch(name, pattern) then
+				SetFrameUnit[self] = name
+			end
 		end
 	end
 
-	-- handle arena ones as well
-	if disable.arena then
-		if _G.UnitFrameThreatIndicator_Initialize then
-			UF:SecureHook('UnitFrameThreatIndicator_Initialize')
+	function UF:DisableBlizzard_SetUnit(token)
+		if SetFrameUnit[self] and token ~= nil then
+			CompactUnitFrame_SetUnit(self) -- arg2 is nil here, removing the unit and powering it down
+		end
+	end
+
+	function UF:DisableBlizzard_HideFrame(frame, pattern)
+		if not frame then return end
+
+		frame:UnregisterAllEvents()
+
+		if SetFrameUp[frame] ~= pattern then
+			SetFrameUp[frame] = pattern
 		end
 
-		if E.Retail then
-			ElvUF:DisableBlizzard('arena')
-		else
-			Arena_LoadUI = E.noop
-			-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
-			-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
+		if not SetFrameHidden[frame] then
+			SetFrameHidden[frame] = true
 
-			if IsAddOnLoaded('Blizzard_ArenaUI') then
+			hooksecurefunc(frame, 'Show', frame.Hide)
+			hooksecurefunc(frame, 'SetShown', frame.Hide)
+		end
+	end
+
+	function UF:DisableBlizzard()
+		local disable = E.private.unitframe.disabledBlizzardFrames
+		if disable.party or disable.raid then
+			-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
+			-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
+			_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+		end
+
+		-- shutdown monk stagger bar background updates
+		if disable.player and _G.MonkStaggerBar then
+			_G.MonkStaggerBar:UnregisterAllEvents()
+		end
+
+		-- shutdown some background updates on party unitframes
+		if disable.party then
+			UF:DisableBlizzard_HideFrame(_G.CompactPartyFrame, 'CompactPartyFrameMember')
+		end
+
+		-- also handle it for background raid frames and the raid utility
+		if disable.raid then
+			UF:DisableBlizzard_HideFrame(_G.CompactRaidFrameContainer, 'CompactRaidGroup%dMember')
+
+			if _G.CompactRaidFrameManager then
+				_G.CompactRaidFrameManager:UnregisterAllEvents()
+				_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
+			end
+
+			-- Raid Utility
+			if not CompactRaidFrameManager_SetSetting then
+				E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
+			else
+				CompactRaidFrameManager_SetSetting('IsShown', '0')
+			end
+		end
+
+		-- handle arena ones as well
+		if disable.arena then
+			if _G.UnitFrameThreatIndicator_Initialize then
+				UF:SecureHook('UnitFrameThreatIndicator_Initialize')
+			end
+
+			if E.Retail then
 				ElvUF:DisableBlizzard('arena')
 			else
-				UF:RegisterEvent('ADDON_LOADED')
+				Arena_LoadUI = E.noop
+				-- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+				-- this noop happens normally in oUF.DisableBlizzard but we have our own ElvUF.DisableBlizzard
+
+				if IsAddOnLoaded('Blizzard_ArenaUI') then
+					ElvUF:DisableBlizzard('arena')
+				else
+					UF:RegisterEvent('ADDON_LOADED')
+				end
 			end
 		end
 	end
@@ -1763,6 +1804,9 @@ function UF:Initialize()
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
 	UF:DisableBlizzard()
+
+	hooksecurefunc('CompactUnitFrame_SetUpFrame', UF.DisableBlizzard_SetUpFrame)
+	hooksecurefunc('CompactUnitFrame_SetUnit', UF.DisableBlizzard_SetUnit)
 
 	if _G.Clique and _G.Clique.BLACKLIST_CHANGED then
 		hooksecurefunc(_G.Clique, 'BLACKLIST_CHANGED', UF.UpdateRegisteredClicks)
