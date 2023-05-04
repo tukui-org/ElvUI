@@ -1367,7 +1367,7 @@ do
 		end
 	end
 
-	local function HandleFrame(frame, doNotReparent)
+	local function HideFrame(frame, doNotReparent)
 		if not frame then return end
 
 		local lockParent = doNotReparent == 1
@@ -1393,7 +1393,7 @@ do
 			if unit == 'player' then
 				if disable.player then
 					local frame = _G.PlayerFrame
-					HandleFrame(frame)
+					HideFrame(frame)
 
 					-- For the damn vehicle support:
 					frame:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -1410,8 +1410,8 @@ do
 
 				if E.Retail then
 					if disable.castbar then
-						HandleFrame(_G.PlayerCastingBarFrame)
-						HandleFrame(_G.PetCastingBarFrame)
+						HideFrame(_G.PlayerCastingBarFrame)
+						HideFrame(_G.PetCastingBarFrame)
 					end
 				elseif disable.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
 					CastingBarFrame_SetUnit(_G.CastingBarFrame)
@@ -1421,53 +1421,53 @@ do
 					PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 				end
 			elseif disable.player and unit == 'pet' then
-				HandleFrame(_G.PetFrame)
+				HideFrame(_G.PetFrame)
 			elseif disable.target and unit == 'target' then
-				HandleFrame(_G.TargetFrame)
-				HandleFrame(_G.ComboFrame)
+				HideFrame(_G.TargetFrame)
+				HideFrame(_G.ComboFrame)
 			elseif disable.focus and unit == 'focus' then
-				HandleFrame(_G.FocusFrame)
-				HandleFrame(_G.TargetofFocusFrame)
+				HideFrame(_G.FocusFrame)
+				HideFrame(_G.TargetofFocusFrame)
 			elseif disable.target and unit == 'targettarget' then
-				HandleFrame(_G.TargetFrameToT)
+				HideFrame(_G.TargetFrameToT)
 			elseif disable.boss and strmatch(unit, 'boss%d?$') then
-				HandleFrame(_G.BossTargetFrameContainer, 1)
+				HideFrame(_G.BossTargetFrameContainer, 1)
 
 				local id = strmatch(unit, 'boss(%d)')
 				if id then
-					HandleFrame(_G['Boss'..id..'TargetFrame'], true)
+					HideFrame(_G['Boss'..id..'TargetFrame'], true)
 				else
 					for i = 1, MAX_BOSS_FRAMES do
-						HandleFrame(_G['Boss'..i..'TargetFrame'], true)
+						HideFrame(_G['Boss'..i..'TargetFrame'], true)
 					end
 				end
 			elseif disable.party and strmatch(unit, 'party%d?$') then
 				local frame = _G.PartyFrame
 				if frame then -- Retail
-					HandleFrame(frame, 1)
+					HideFrame(frame, 1)
 
 					for child in frame.PartyMemberFramePool:EnumerateActive() do
-						HandleFrame(child, true)
+						HideFrame(child, true)
 					end
 				else
-					HandleFrame(_G.PartyMemberBackground)
+					HideFrame(_G.PartyMemberBackground)
 				end
 
 				local id = strmatch(unit, 'party(%d)')
 				if id then
-					HandleFrame(_G['PartyMemberFrame'..id])
-					HandleFrame(_G['CompactPartyFrameMember'..id])
+					HideFrame(_G['PartyMemberFrame'..id])
+					HideFrame(_G['CompactPartyFrameMember'..id])
 				else
 					for i = 1, MAX_PARTY do
-						HandleFrame(_G['PartyMemberFrame'..i])
-						HandleFrame(_G['CompactPartyFrameMember'..i])
+						HideFrame(_G['PartyMemberFrame'..i])
+						HideFrame(_G['CompactPartyFrameMember'..i])
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
 				if _G.ArenaEnemyFramesContainer then -- Retail
-					HandleFrame(_G.ArenaEnemyFramesContainer, 1)
-					HandleFrame(_G.ArenaEnemyPrepFramesContainer, 1)
-					HandleFrame(_G.ArenaEnemyMatchFramesContainer, 1)
+					HideFrame(_G.ArenaEnemyFramesContainer, 1)
+					HideFrame(_G.ArenaEnemyPrepFramesContainer, 1)
+					HideFrame(_G.ArenaEnemyMatchFramesContainer, 1)
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()
@@ -1484,12 +1484,12 @@ do
 				-- actually handle the sub frames now
 				local id = strmatch(unit, 'arena(%d)')
 				if id then
-					HandleFrame(_G['ArenaEnemyMatchFrame'..id], true)
-					HandleFrame(_G['ArenaEnemyPrepFrame'..id], true)
+					HideFrame(_G['ArenaEnemyMatchFrame'..id], true)
+					HideFrame(_G['ArenaEnemyPrepFrame'..id], true)
 				else
 					for i = 1, MAX_ARENA_ENEMIES do
-						HandleFrame(_G['ArenaEnemyMatchFrame'..i], true)
-						HandleFrame(_G['ArenaEnemyPrepFrame'..i], true)
+						HideFrame(_G['ArenaEnemyMatchFrame'..i], true)
+						HideFrame(_G['ArenaEnemyPrepFrame'..i], true)
 					end
 				end
 			end
