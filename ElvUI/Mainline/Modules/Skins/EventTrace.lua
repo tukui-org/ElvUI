@@ -40,7 +40,7 @@ end
 
 local function ReskinEventTraceFrame(frame)
 	ReskinEventTraceScrollBox(frame.ScrollBox)
-	S:HandleTrimScrollBar(frame.ScrollBar, true)
+	S:HandleTrimScrollBar(frame.ScrollBar)
 end
 
 function S:Blizzard_EventTrace()

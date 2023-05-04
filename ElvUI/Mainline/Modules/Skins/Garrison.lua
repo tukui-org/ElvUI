@@ -536,6 +536,8 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
 
+	S:HandleTrimScrollBar(Follower.ScrollBar)
+
 	Follower:StripTextures()
 	FollowerList:StripTextures()
 	FollowerList:CreateBackdrop('Transparent')

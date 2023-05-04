@@ -154,7 +154,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar, true)
+	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 
@@ -197,7 +197,7 @@ function S:Blizzard_Communities()
 
 	CommunitiesFrame.Chat:StripTextures()
 	CommunitiesFrame.Chat.InsetFrame:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(CommunitiesFrame.Chat.ScrollBar, true)
+	S:HandleTrimScrollBar(CommunitiesFrame.Chat.ScrollBar)
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
@@ -244,7 +244,7 @@ function S:Blizzard_Communities()
 			if frame.GuildCards then HandleGuildCards(frame.GuildCards) end
 			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
 			if frame.CommunityCards then
-				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar, true)
+				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
 				hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 			if frame.PendingCommunityCards then
@@ -333,7 +333,7 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
 	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(MemberList.ScrollBar, true)
+	S:HandleTrimScrollBar(MemberList.ScrollBar)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
 		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
@@ -359,7 +359,7 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 
-	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar, true)
+	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
 
 	if E.private.skins.parchmentRemoverEnable then
 		GuildBenefitsFrame.Perks:StripTextures()
@@ -397,7 +397,7 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderBottomLeft2:Hide()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
@@ -450,7 +450,7 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
@@ -476,7 +476,7 @@ function S:Blizzard_Communities()
 	EditFrame:StripTextures()
 	EditFrame:SetTemplate('Transparent')
 	EditFrame.Container.NineSlice:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(EditFrame.Container.ScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(EditFrame.Container.ScrollFrame.ScrollBar)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
 	local closeButton = select(4, _G.CommunitiesGuildTextEditFrame:GetChildren())
@@ -489,7 +489,7 @@ function S:Blizzard_Communities()
 	GuildLogFrame:SetTemplate('Transparent')
 	GuildLogFrame.Container.NineSlice:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(GuildLogFrame.Container.ScrollFrame.ScrollBar, true)
+	S:HandleTrimScrollBar(GuildLogFrame.Container.ScrollFrame.ScrollBar)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
 	closeButton = select(3, _G.CommunitiesGuildLogFrame:GetChildren()) -- swap local variable
 	S:HandleButton(closeButton)

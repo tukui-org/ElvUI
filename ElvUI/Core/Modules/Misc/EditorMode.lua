@@ -20,9 +20,15 @@ local CheckBossFrame = function() return E.private.unitframe.enable and E.privat
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
+local ignoreFrames = {
+	'MainStatusTrackingBarContainer',	-- Experience Bar
+	'MicroMenuContainer'				-- MicroBar / Menu
+}
+
 local hideFrames = {}
 EM.needsUpdate = false
-EM.hideFrames = hideFrames
+EM.hideFrames = hideFrames -- used to temp hide editmode panels
+EM.ignoreFrames = ignoreFrames -- used to ignore stuff in actionbar
 
 function EM:LAYOUTS_UPDATED(event, arg1)
 	local allow = event ~= 'PLAYER_SPECIALIZATION_CHANGED' or arg1 == 'player'
@@ -141,8 +147,11 @@ function EM:Initialize()
 		mixin.RefreshEncounterBar = E.noop
 		mixin.RefreshStatusTrackingBar2 = E.noop
 
-		if _G.MainStatusTrackingBarContainer then -- Ignore Experience Bar in EditMode
-			_G.MainStatusTrackingBarContainer.OnEditModeEnter = E.noop
+		for _, name in next, ignoreFrames do
+			local frame = _G[name]
+			if frame then
+				frame.OnEditModeEnter = E.noop
+			end
 		end
 	end
 end

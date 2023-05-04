@@ -189,8 +189,8 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 
 	if fitScrollBar then
 		frame.ScrollBar:ClearAllPoints()
-		frame.ScrollBar:Point('TOPRIGHT', frame, 1, -16)
-		frame.ScrollBar:Point('BOTTOMRIGHT', frame, 1, 16)
+		frame.ScrollBar:Point('TOPRIGHT', frame, -6, -16)
+		frame.ScrollBar:Point('BOTTOMRIGHT', frame, -6, 16)
 	end
 
 	if hasHeader then
@@ -233,6 +233,7 @@ local function LoadSkin()
 	--[[ Main Frame | TAB 1]]--
 	local Frame = _G.AuctionHouseFrame
 	S:HandlePortraitFrame(Frame)
+	Frame:Width(810) -- to make space for the Browse ScrollBar (Default: 800)
 
 	-- handle tab spacing
 	hooksecurefunc('PanelTemplates_SetNumTabs', HandleTabs)
@@ -266,8 +267,8 @@ local function LoadSkin()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar)
 	BrowseList:SetTemplate('Transparent')
 	BrowseList.ScrollBar:ClearAllPoints()
-	BrowseList.ScrollBar:Point('TOPRIGHT', BrowseList, 1, -16)
-	BrowseList.ScrollBar:Point('BOTTOMRIGHT', BrowseList, 1, 16)
+	BrowseList.ScrollBar:Point('TOPRIGHT', BrowseList, -6, -16)
+	BrowseList.ScrollBar:Point('BOTTOMRIGHT', BrowseList, -6, 16)
 
 	--[[ BuyOut Frame]]
 	local CommoditiesBuyFrame = Frame.CommoditiesBuyFrame
@@ -362,8 +363,8 @@ local function LoadSkin()
 	S:HandleButton(AuctionsFrame.CancelAuctionButton)
 
 	SummaryList.ScrollBar:ClearAllPoints()
-	SummaryList.ScrollBar:Point('TOPRIGHT', SummaryList, -3, -20)
-	SummaryList.ScrollBar:Point('BOTTOMRIGHT', SummaryList, -3, 20)
+	SummaryList.ScrollBar:Point('TOPRIGHT', SummaryList, -5, -20)
+	SummaryList.ScrollBar:Point('BOTTOMRIGHT', SummaryList, -5, 20)
 
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
 	HandleSellList(AllAuctionsList, true, true)

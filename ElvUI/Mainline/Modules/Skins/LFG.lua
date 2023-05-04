@@ -419,7 +419,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar, true)
+	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
 	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame

@@ -336,6 +336,7 @@ function M:Initialize()
 	M:LoadChatBubbles()
 	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
+	M:LoadQueueStatus()
 	M:ZoneTextToggle()
 
 	M:RegisterEvent('MERCHANT_SHOW')
