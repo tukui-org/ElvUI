@@ -1162,6 +1162,12 @@ do
 	local SetFrameUnit = {}
 	local SetFrameHidden = {}
 
+	local function FrameShown(frame, shown)
+		if shown then
+			frame:Hide()
+		end
+	end
+
 	function UF:DisableBlizzard_SetUpFrame(func)
 		if func ~= _G.DefaultCompactUnitFrameSetup then
 			return -- so far we only use this for party and raid, only check that function
@@ -1194,7 +1200,7 @@ do
 			SetFrameHidden[frame] = true
 
 			hooksecurefunc(frame, 'Show', frame.Hide)
-			hooksecurefunc(frame, 'SetShown', frame.Hide)
+			hooksecurefunc(frame, 'SetShown', FrameShown)
 		end
 	end
 
