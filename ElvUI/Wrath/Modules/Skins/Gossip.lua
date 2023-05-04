@@ -52,7 +52,7 @@ function S:GossipFrame()
 	S:HandleCloseButton(_G.ItemTextCloseButton)
 
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
-	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
+	S:HandleTrimScrollBar(GreetingPanel.ScrollBar, true)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
 
 	GreetingPanel:StripTextures()

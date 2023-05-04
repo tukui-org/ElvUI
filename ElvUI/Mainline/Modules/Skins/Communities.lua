@@ -248,7 +248,7 @@ function S:Blizzard_Communities()
 				hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 			if frame.PendingCommunityCards then
-				S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
+				S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar, true)
 				hooksecurefunc(frame.PendingCommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 			end
 		end
@@ -398,7 +398,7 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
 	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame.ScrollBar, true)
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
+	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar, true)
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
@@ -554,7 +554,7 @@ function S:Blizzard_Communities()
 	Avatar.Selector:StripTextures()
 	Avatar:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(Avatar.ScrollBar)
+	S:HandleTrimScrollBar(Avatar.ScrollBar, true)
 	S:HandleButton(Avatar.Selector.OkayButton)
 	S:HandleButton(Avatar.Selector.CancelButton)
 

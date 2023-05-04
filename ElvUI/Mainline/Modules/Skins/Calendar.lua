@@ -134,7 +134,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventFrame:SetTemplate('Transparent')
 	_G.CalendarCreateEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarCreateEventFrame.Header:StripTextures()
-	S:HandleTrimScrollBar(_G.CalendarCreateEventInviteList.ScrollBar)
+	S:HandleTrimScrollBar(_G.CalendarCreateEventInviteList.ScrollBar, true)
 
 	S:HandleButton(_G.CalendarCreateEventCreateButton, true)
 	S:HandleButton(_G.CalendarCreateEventMassInviteButton, true)
@@ -244,7 +244,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarEventPickerFrame.Header:StripTextures()
 	_G.CalendarEventPickerFrame:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(_G.CalendarEventPickerFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.CalendarEventPickerFrame.ScrollBar, true)
 	S:HandleButton(_G.CalendarEventPickerCloseButton, true)
 end
 

@@ -17,7 +17,7 @@ function S:Blizzard_PVPMatch()
 	PVPMatchScoreboard.Content.TabContainer.InsetBorderTop:Hide()
 
 	S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
-	S:HandleTrimScrollBar(PVPMatchScoreboard.Content.ScrollBar)
+	S:HandleTrimScrollBar(PVPMatchScoreboard.Content.ScrollBar, true)
 
 	--Also have a look at the tabs
 	local tabs = {
@@ -44,7 +44,7 @@ function S:Blizzard_PVPMatch()
 	S:HandleCloseButton(PVPMatchResults.CloseButton)
 	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
 	S:HandleButton(PVPMatchResults.buttonContainer.requeueButton)
-	S:HandleTrimScrollBar(PVPMatchResults.content.scrollBar)
+	S:HandleTrimScrollBar(PVPMatchResults.content.scrollBar, true)
 
 	local tabz = {
 		PVPMatchResults.content.tabContainer.tabGroup.tab1,
