@@ -11,26 +11,31 @@ local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local FRAGMENTS_EARNED = gsub(_G.ITEM_UPGRADE_FRAGMENTS_TOTAL, '%s*|c.+$', '')
 
 local crests = {
-	[2245] = { -- Flightstones
+	{ -- Flightstones
+		id = 2245,
 		fragment = false,
 		color = _G.HEIRLOOM_BLUE_COLOR
 	},
-	[204193] = { -- Whelpling's Shadowflame Crest
+	{ -- Whelpling's Shadowflame Crest
+		id = 204193,
 		fragment = 204075,
 		fragmentCap = 2409,
 		color = _G.UNCOMMON_GREEN_COLOR
 	},
-	[204195] = { -- Drake's Shadowflame Crest
+	{ -- Drake's Shadowflame Crest
+		id = 204195,
 		fragment = 204076,
 		fragmentCap = 2410,
 		color = _G.RARE_BLUE_COLOR
 	},
-	[204196] = { -- Wyrm's Shadowflame Crest
+	{ -- Wyrm's Shadowflame Crest
+		id = 204196,
 		fragment = 204077,
 		fragmentCap = 2411,
 		color = _G.EPIC_PURPLE_COLOR
 	},
-	[204194] = { -- Aspect's Shadowflame Crest
+	{ -- Aspect's Shadowflame Crest
+		id = 204194,
 		fragment = 204078,
 		fragmentCap = 2412,
 		color = _G.LEGENDARY_ORANGE_COLOR
@@ -51,11 +56,11 @@ end
 
 local function OnEvent(self)
 	local text = ''
-	for id, crest in next, crests do
+	for _, crest in next, crests do
 		if crest.fragment then
-			text = GetFragmentText(text, crest, GetItemCount(id) or 0, floor((GetItemCount(crest.fragment) or 0) / 15))
+			text = GetFragmentText(text, crest, GetItemCount(crest.id) or 0, floor((GetItemCount(crest.fragment) or 0) / 15))
 		else
-			currency = C_CurrencyInfo_GetCurrencyInfo(id)
+			currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
 			text = crest.color:WrapTextInColorCode(currency.quantity)
 		end
 	end
@@ -67,8 +72,8 @@ local function OnEnter(self)
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(FRAGMENTS_EARNED)
 
-	for id, crest in next, crests do
-		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or id)
+	for _, crest in next, crests do
+		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
 		if currency then
 			if crest.fragment then
 				if currency.maxQuantity > 0 then
