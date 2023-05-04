@@ -1316,12 +1316,12 @@ do
 		if disable.raid then
 			UF:DisableBlizzard_HideFrame(_G.CompactRaidFrameContainer, 'CompactRaidGroup%d+Member%d+')
 
+			-- Raid Utility
 			if _G.CompactRaidFrameManager then
 				_G.CompactRaidFrameManager:UnregisterAllEvents()
 				_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
 			end
 
-			-- Raid Utility
 			if not CompactRaidFrameManager_SetSetting then
 				E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
 			else
