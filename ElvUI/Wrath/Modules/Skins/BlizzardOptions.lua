@@ -290,7 +290,6 @@ function S:BlizzardOptions()
 	S:HandleButton(_G.InterfaceOptionsFrameTab1)
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	S:HandleButton(_G.InterfaceOptionsFrameTab2)
-	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
 	-- Features tab
 	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelEquipmentManager)
