@@ -19,7 +19,7 @@
 	<Script file='..\Core\LibDeflate\LibDeflate.lua'/>
 	<Script file='..\Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='..\Core\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
-	<Include file='..\Core\Taintless\Taintless.xml'/>
+	<Include file='..\Core\Taintless\Taintless-Wrath-Temporary.xml'/>
 	<Include file='..\Core\UTF8\UTF8.xml'/>
 
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
