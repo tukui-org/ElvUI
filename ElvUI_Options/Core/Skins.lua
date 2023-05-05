@@ -74,6 +74,7 @@ Skins.args.blizzard.values = {
 	tooltip = L["Tooltip"],
 	trade = L["TRADE"],
 	tradeskill = L["TRADESKILLS"],
+	trainer = L["Trainer Frame"],
 	tutorials = L["Tutorials"],
 	worldmap = L["WORLD_MAP"],
 }
@@ -136,7 +137,6 @@ else
 	end
 
 	blizzard.battlefield = L["Battlefield"]
-	blizzard.trainer = L["Trainer Frame"]
 end
 
 if E.Retail or E.Wrath then

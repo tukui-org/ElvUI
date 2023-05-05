@@ -518,7 +518,7 @@ end
 function M:ClusterSize(width, height)
 	local holder = M.ClusterHolder
 	if holder and (width ~= holder.savedWidth or height ~= holder.savedHeight) then
-		self:Size(holder.savedWidth, holder.savedHeight)
+		self:SetSize(holder.savedWidth, holder.savedHeight)
 	end
 end
 
@@ -558,7 +558,7 @@ function M:Initialize()
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
-		clusterHolder:Size(clusterHolder.savedWidth, clusterHolder.savedHeight)
+		clusterHolder:SetSize(clusterHolder.savedWidth, clusterHolder.savedHeight)
 		clusterHolder:SetFrameLevel(10) -- over minimap mover
 		E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
 		M.ClusterHolder = clusterHolder
