@@ -23,7 +23,10 @@ function S:StyleTooltips()
 		_G.QuickKeybindTooltip,
 		-- ours
 		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip
+		_G.ElvUISpellBookTooltip,
+		-- libs
+		_G.LibDBIconTooltip,
+		_G.SettingsTooltip,
 	}) do
 		TT:SetStyle(tt)
 	end

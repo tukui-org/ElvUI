@@ -143,6 +143,10 @@ function S:SettingsPanel()
 					S:HandleButton(child.Button1)
 					S:HandleButton(child.Button2)
 				end
+				if child.NewButton and child.DeleteButton then
+					S:HandleButton(child.NewButton)
+					S:HandleButton(child.DeleteButton)
+				end
 
 				child.isSkinned = true
 			end
