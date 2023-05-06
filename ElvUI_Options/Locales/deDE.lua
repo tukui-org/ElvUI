@@ -1124,6 +1124,7 @@ L["New Item Glow"] = "Neuer Gegenstand Leuchten"
 L["New Panel"] = "Neues Panel"
 L["No Alert In Combat"] = "Kein Alarm im Kampf"
 L["No Duration"] = "Keine Dauer"
+L["No Icon"] = true
 L["No Label"] = "Keine Beschriftung"
 L["No NPC Title"] = true
 L["No Sorting"] = "Nicht Sortieren"

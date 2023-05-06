@@ -1125,6 +1125,7 @@ L["New Item Glow"] = "新物品高亮"
 L["New Panel"] = "新面板"
 L["No Alert In Combat"] = "战斗中不警报"
 L["No Duration"] = "无持续时间"
+L["No Icon"] = true
 L["No Label"] = "无标签"
 L["No NPC Title"] = true
 L["No Sorting"] = "不排序"
