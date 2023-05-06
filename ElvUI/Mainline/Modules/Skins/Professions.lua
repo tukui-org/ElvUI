@@ -24,7 +24,7 @@ local function ReskinQualityContainer(container)
 end
 
 local function ReskinSlotButton(button)
-	if button and not button.isSkinned then
+	if button --[[and not button.isSkinned]] then
 		local texture = button.Icon:GetTexture()
 		button:StripTextures()
 		button:SetNormalTexture(E.ClearTexture)
@@ -43,7 +43,7 @@ local function ReskinSlotButton(button)
 			button.SlotBackground:Hide()
 		end
 
-		button.isSkinned = true
+		--button.isSkinned = true
 	end
 end
 
