@@ -52,6 +52,7 @@ G.datatexts = {
 		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
 		DualSpecialization = { NoLabel = false },
 		ElvUI = { Label = '' },
+		['Equipment Sets'] = { Label = '', NoLabel = false, NoIcon = false },
 		Experience = { textFormat = 'CUR' },
 		Friends = {
 			Label = '', NoLabel = false,

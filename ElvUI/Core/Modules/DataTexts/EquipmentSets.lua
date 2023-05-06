@@ -13,6 +13,7 @@ local C_EquipmentSet_UseEquipmentSet = C_EquipmentSet.UseEquipmentSet
 
 local eqSets = {}
 local hexColor = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -54,11 +55,20 @@ local function OnEvent(self, event)
 	if not activeSetIndex then
 		self.text:SetText('No Set Equipped')
 	elseif set then
-		self.text:SetFormattedText('Set: %s%s|r |T%s:16:16:0:0:64:64:4:60:4:60|t', hexColor, set.name, set.iconFileID)
+		if db.NoLabel then
+			self.text:SetFormattedText(displayString, hexColor, set.name, not db.NoIcon and set.iconFileID or '')
+		else
+			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or 'Set: ', hexColor, set.name, not db.NoIcon and set.iconFileID or '')
+		end
 	end
 end
 
-local function ApplySettings(_, hex)
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
+
 	hexColor = hex
 end
 

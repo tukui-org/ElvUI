@@ -1124,6 +1124,7 @@ L["New Item Glow"] = "Свечение нового предмета"
 L["New Panel"] = "Новая панель"
 L["No Alert In Combat"] = "Без оповещений в бою"
 L["No Duration"] = "Без длительности"
+L["No Icon"] = true
 L["No Label"] = "Без ярлыка"
 L["No NPC Title"] = "Нет титула НИП"
 L["No Sorting"] = "Без сортировки"
