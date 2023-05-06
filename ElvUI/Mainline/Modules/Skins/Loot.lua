@@ -63,6 +63,7 @@ function S:LootFrame()
 				button.NameFrame:StripTextures()
 				button.NameFrame:CreateBackdrop('Transparent')
 				button.NameFrame.backdrop:SetAllPoints()
+				button.NameFrame.backdrop:SetFrameLevel(2)
 			end
 
 			if button.IconQuestTexture then button.IconQuestTexture:SetAlpha(0) end
