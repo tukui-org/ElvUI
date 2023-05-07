@@ -36,10 +36,12 @@ local function ReskinSlotButton(button)
 	hl:SetColorTexture(1, 1, 1, .25)
 	hl:SetOutside(button)
 
-	if not button.isSkinned then
-		button:SetNormalTexture(E.ClearTexture)
-		button:SetPushedTexture(E.ClearTexture)
+	local ps = button:GetPushedTexture()
+	ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+	ps:SetBlendMode('ADD')
+	ps:SetOutside(button)
 
+	if not button.isSkinned then
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
