@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local tinsert = tinsert
+local strjoin = strjoin
 local pairs = pairs
 local wipe = wipe
 
@@ -12,7 +13,6 @@ local C_EquipmentSet_GetEquipmentSetInfo = C_EquipmentSet.GetEquipmentSetInfo
 local C_EquipmentSet_UseEquipmentSet = C_EquipmentSet.UseEquipmentSet
 
 local eqSets = {}
-local hexColor = ''
 local displayString, db = ''
 
 local function OnEnter()
@@ -56,9 +56,9 @@ local function OnEvent(self, event)
 		self.text:SetText('No Set Equipped')
 	elseif set then
 		if db.NoLabel then
-			self.text:SetFormattedText(displayString, hexColor, set.name, not db.NoIcon and set.iconFileID or '')
+			self.text:SetFormattedText(displayString, '', set.name, not db.NoIcon and set.iconFileID or '')
 		else
-			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or 'Set: ', hexColor, set.name, not db.NoIcon and set.iconFileID or '')
+			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or 'Set: ', set.name, not db.NoIcon and set.iconFileID or '')
 		end
 	end
 end
@@ -67,9 +67,8 @@ local function ApplySettings(self, hex)
 	if not db then
 		db = E.global.datatexts.settings[self.name]
 	end
-	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
 
-	hexColor = hex
+	displayString = strjoin('', '%s', hex, '%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
 end
 
 DT:RegisterDatatext('Equipment Sets', nil, { 'EQUIPMENT_SETS_CHANGED', 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, nil, nil, ApplySettings)
