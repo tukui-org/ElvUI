@@ -382,7 +382,9 @@ end
 function E:ValueFuncCall()
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
 	for obj, func in pairs(E.valueColorUpdateFuncs) do
-		func(obj, hex, r, g, b)
+		if type(func) == 'function' then
+			func(obj, hex, r, g, b)
+		end
 	end
 end
 
