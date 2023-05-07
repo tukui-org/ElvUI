@@ -24,24 +24,27 @@ local function ReskinQualityContainer(container)
 end
 
 local function ReskinSlotButton(button)
-	if button and not button.isSkinned then
-		local texture = button.Icon:GetTexture()
-		button:StripTextures()
-		button:SetNormalTexture(E.ClearTexture)
-		button:SetPushedTexture(E.ClearTexture)
+	local icon = button and button.Icon
+	if not icon then return end
 
-		S:HandleIcon(button.Icon, true)
-		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
-		button.Icon:SetOutside(button)
-		button.Icon:SetTexture(texture)
+	if button.CropFrame then button.CropFrame:SetAlpha(0) end
+	if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
+	if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
+	if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
 
-		local hl = button:GetHighlightTexture()
-		hl:SetColorTexture(1, 1, 1, .25)
-		hl:SetOutside(button)
+	local hl = button:GetHighlightTexture()
+	hl:SetColorTexture(1, 1, 1, .25)
+	hl:SetOutside(button)
 
-		if button.SlotBackground then
-			button.SlotBackground:Hide()
-		end
+	local ps = button:GetPushedTexture()
+	ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+	ps:SetBlendMode('ADD')
+	ps:SetOutside(button)
+
+	if not button.isSkinned then
+		S:HandleIcon(icon, true)
+		S:HandleIconBorder(button.IconBorder, icon.backdrop)
+		icon:SetOutside(button)
 
 		button.isSkinned = true
 	end
@@ -226,6 +229,11 @@ function S:Blizzard_Professions()
 	if QualityDialog then
 		QualityDialog:StripTextures()
 		QualityDialog:CreateBackdrop('Transparent')
+
+		if QualityDialog.Bg then
+			QualityDialog.Bg:SetAlpha(0)
+		end
+
 		S:HandleCloseButton(QualityDialog.ClosePanelButton)
 		S:HandleButton(QualityDialog.AcceptButton)
 		S:HandleButton(QualityDialog.CancelButton)

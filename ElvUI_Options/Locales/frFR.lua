@@ -1124,6 +1124,7 @@ L["New Item Glow"] = true
 L["New Panel"] = true
 L["No Alert In Combat"] = "Pas d'alerte en combat"
 L["No Duration"] = true
+L["No Icon"] = true
 L["No Label"] = true
 L["No NPC Title"] = true
 L["No Sorting"] = "Aucun tri"

@@ -93,27 +93,33 @@ end
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
 		local button = slot and slot.Button
-		if button and not button.IsSkinned then
-			button:SetNormalTexture(0)
-			button:SetPushedTexture(0)
-			S:HandleIcon(button.Icon, true)
-			S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		local icon = button and button.Icon
+		if icon then
+			if button.CropFrame then button.CropFrame:SetAlpha(0) end
+			if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
+			if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
+			if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
 
-			if button.SlotBackground then
-				button.SlotBackground:Hide()
+			local hl = button:GetHighlightTexture()
+			hl:SetColorTexture(1, 1, 1, .25)
+			hl:SetOutside(button)
+
+			local ps = button:GetPushedTexture()
+			ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+			ps:SetBlendMode('ADD')
+			ps:SetOutside(button)
+
+			if not button.isSkinned then
+				S:HandleIcon(icon, true)
+				S:HandleIconBorder(button.IconBorder, icon.backdrop)
+				icon:SetOutside(button)
+
+				if slot.Checkbox then
+					S:HandleCheckBox(slot.Checkbox)
+				end
+
+				button.isSkinned = true
 			end
-
-			if button.HighlightTexture then
-				button.HighlightTexture:SetAlpha(0)
-			end
-
-			local highlight = button:GetHighlightTexture()
-			highlight:SetColorTexture(1, 1, 1, .25)
-			highlight:SetAllPoints(button)
-
-			S:HandleCheckBox(slot.Checkbox)
-
-			button.IsSkinned = true
 		end
 	end
 end
@@ -307,6 +313,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	if qualityDialog then
 		qualityDialog:StripTextures()
 		qualityDialog:SetTemplate('Transparent')
+
+		if qualityDialog.Bg then
+			qualityDialog.Bg:SetAlpha(0)
+		end
+
 		S:HandleCloseButton(qualityDialog.ClosePanelButton)
 		S:HandleButton(qualityDialog.AcceptButton)
 		S:HandleButton(qualityDialog.CancelButton)

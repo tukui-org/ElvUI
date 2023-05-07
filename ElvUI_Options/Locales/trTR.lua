@@ -1124,6 +1124,7 @@ L["New Item Glow"] = "Yeni Oge Pariltisi"
 L["New Panel"] = "Yeni Panel"
 L["No Alert In Combat"] = "Catismada Uyari Yok"
 L["No Duration"] = "Sure Yok"
+L["No Icon"] = true
 L["No Label"] = "Etiket yok"
 L["No NPC Title"] = true
 L["No Sorting"] = "Siralama Yok"

@@ -1123,6 +1123,7 @@ L["New Item Glow"] = true
 L["New Panel"] = true
 L["No Alert In Combat"] = true
 L["No Duration"] = true
+L["No Icon"] = true
 L["No Label"] = true
 L["No NPC Title"] = true
 L["No Sorting"] = true
