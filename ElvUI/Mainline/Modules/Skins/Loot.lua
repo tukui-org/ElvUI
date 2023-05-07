@@ -36,7 +36,11 @@ function S:LootFrame()
 	local LootFrame = _G.LootFrame
 	LootFrame:StripTextures()
 	LootFrame:SetTemplate('Transparent')
-	LootFrame.Bg:SetAlpha(0)
+
+	if LootFrame.Bg then
+		LootFrame.Bg:SetAlpha(0)
+	end
+
 	S:HandleCloseButton(LootFrame.ClosePanelButton)
 
 	hooksecurefunc(LootFrame.ScrollBox, 'Update', function(frame)
