@@ -27,9 +27,8 @@ local function ReskinSlotButton(button)
 	local icon = button and button.Icon
 	if not icon then return end
 
-	if button.NormalTexture then
-		button.NormalTexture:SetAlpha(0)
-	end
+	if button.CropFrame then button.CropFrame:SetAlpha(0) end
+	if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
 
 	if not button.isSkinned then
 		button:SetNormalTexture(E.ClearTexture)
