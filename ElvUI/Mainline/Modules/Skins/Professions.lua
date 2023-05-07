@@ -229,7 +229,10 @@ function S:Blizzard_Professions()
 	if QualityDialog then
 		QualityDialog:StripTextures()
 		QualityDialog:CreateBackdrop('Transparent')
-		QualityDialog.Bg:SetAlpha(0)
+
+		if QualityDialog.Bg then
+			QualityDialog.Bg:SetAlpha(0)
+		end
 
 		S:HandleCloseButton(QualityDialog.ClosePanelButton)
 		S:HandleButton(QualityDialog.AcceptButton)

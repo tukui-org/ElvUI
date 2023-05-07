@@ -313,7 +313,10 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	if qualityDialog then
 		qualityDialog:StripTextures()
 		qualityDialog:SetTemplate('Transparent')
-		qualityDialog.Bg:SetAlpha(0)
+
+		if qualityDialog.Bg then
+			qualityDialog.Bg:SetAlpha(0)
+		end
 
 		S:HandleCloseButton(qualityDialog.ClosePanelButton)
 		S:HandleButton(qualityDialog.AcceptButton)
