@@ -29,6 +29,12 @@ local function ReskinSlotButton(button)
 
 	if button.CropFrame then button.CropFrame:SetAlpha(0) end
 	if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
+	if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
+	if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
+
+	local hl = button:GetHighlightTexture()
+	hl:SetColorTexture(1, 1, 1, .25)
+	hl:SetOutside(button)
 
 	if not button.isSkinned then
 		button:SetNormalTexture(E.ClearTexture)
@@ -37,14 +43,6 @@ local function ReskinSlotButton(button)
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
-
-		local hl = button:GetHighlightTexture()
-		hl:SetColorTexture(1, 1, 1, .25)
-		hl:SetOutside(button)
-
-		if button.SlotBackground then
-			button.SlotBackground:Hide()
-		end
 
 		button.isSkinned = true
 	end

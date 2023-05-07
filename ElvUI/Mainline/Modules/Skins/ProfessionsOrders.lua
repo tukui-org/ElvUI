@@ -93,27 +93,31 @@ end
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
 		local button = slot and slot.Button
-		if button and not button.IsSkinned then
-			button:SetNormalTexture(0)
-			button:SetPushedTexture(0)
-			S:HandleIcon(button.Icon, true)
-			S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		local icon = button and button.Icon
+		if icon then
+			if button.CropFrame then button.CropFrame:SetAlpha(0) end
+			if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
+			if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
+			if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
 
-			if button.SlotBackground then
-				button.SlotBackground:Hide()
+			local hl = button:GetHighlightTexture()
+			hl:SetColorTexture(1, 1, 1, .25)
+			hl:SetOutside(button)
+
+			if not button.isSkinned then
+				button:SetNormalTexture(E.ClearTexture)
+				button:SetPushedTexture(E.ClearTexture)
+
+				S:HandleIcon(icon, true)
+				S:HandleIconBorder(button.IconBorder, icon.backdrop)
+				icon:SetOutside(button)
+
+				if slot.Checkbox then
+					S:HandleCheckBox(slot.Checkbox)
+				end
+
+				button.isSkinned = true
 			end
-
-			if button.HighlightTexture then
-				button.HighlightTexture:SetAlpha(0)
-			end
-
-			local highlight = button:GetHighlightTexture()
-			highlight:SetColorTexture(1, 1, 1, .25)
-			highlight:SetAllPoints(button)
-
-			S:HandleCheckBox(slot.Checkbox)
-
-			button.IsSkinned = true
 		end
 	end
 end
