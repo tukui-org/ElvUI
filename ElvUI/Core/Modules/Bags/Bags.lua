@@ -1322,6 +1322,7 @@ B.ExcludeGrays = E.Retail and {
 	[11406] = "Rotting Bear Carcass",
 	[11944] = "Dark Iron Baby Booties",
 	[25402] = "The Stoppable Force",
+	[30507] = "Lucky Rock",
 	[36812] = "Ground Gear",
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",

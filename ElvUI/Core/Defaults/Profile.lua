@@ -140,12 +140,6 @@ P.general = {
 				xOffset = 3,
 				yOffset = 4,
 			},
-			lfgEye = {
-				scale = E.Retail and 0.6 or 1,
-				position = 'BOTTOMRIGHT',
-				xOffset = 3,
-				yOffset = -3
-			},
 			queueStatus = {
 				enable = true,
 				position = 'BOTTOMRIGHT',
