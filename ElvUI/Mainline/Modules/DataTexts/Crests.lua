@@ -50,8 +50,8 @@ local function GetFragmentText(text, crest, count, fragments)
 	return format(fragmentText, text, crest.color:WrapTextInColorCode((fragments and fragments > 0) and format(fragmentAdd, count, fragments) or count))
 end
 
-local function GetCrestText(crest, currency)
-	return crest.color:WrapTextInColorCode(format(crestText, currency.iconFileID, currency.quantity, currency.maxQuantity))
+local function GetCrestText(crest, info)
+	return crest.color:WrapTextInColorCode(format(crestText, info.iconFileID, info.quantity, info.maxQuantity))
 end
 
 local function OnEvent(self)
