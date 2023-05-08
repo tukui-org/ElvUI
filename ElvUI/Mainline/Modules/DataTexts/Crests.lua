@@ -68,12 +68,12 @@ local function OnEvent(self)
 	self.text:SetFormattedText(text)
 end
 
-local function OnEnter(self)
+local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(FRAGMENTS_EARNED)
 
 	for _, crest in next, crests do
-		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
+		currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
 		if currency then
 			if crest.fragment then
 				if currency.maxQuantity > 0 then
