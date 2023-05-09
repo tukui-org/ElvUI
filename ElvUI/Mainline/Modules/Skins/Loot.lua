@@ -7,27 +7,16 @@ local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-local function UpdateLoots()
-	local numItems = C_LootHistory_GetNumItems()
-	for i=1, numItems do
-		local frame = _G.GroupLootHistoryFrame.itemFrames[i]
-		if frame and not frame.isSkinned then
-			local Icon = frame.Icon:GetTexture()
-			frame:StripTextures()
-			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+local function LootHistoryElements(frame)
+	if not frame then return end
 
-			-- create a backdrop around the icon
-			frame:CreateBackdrop()
-			frame.backdrop:SetOutside(frame.Icon)
-			frame.Icon:SetParent(frame.backdrop)
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
 
-			frame.isSkinned = true
-		end
-	end
+	S:HandleIcon(frame.Item.icon, true)
+	S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
 end
 
 function S:LootFrame()
@@ -97,7 +86,7 @@ function S:LootFrame()
 	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar)
 	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
 
-	hooksecurefunc(_G.LootHistoryFrameMixin, 'DoFullRefresh', UpdateLoots) -- Monitor this, the hook is still to LootHistoryFrame, probably renaming soonish
+	hooksecurefunc(_G.LootHistoryElementMixin, 'OnShow', LootHistoryElements) -- OnShow is the only hook that seems to do anything
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
