@@ -12,15 +12,13 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local function LootHistoryElements(frame)
 	if not frame then return end
 
-	if frame and not frame.IsSkinned then
-		frame:StripTextures()
-		frame:SetTemplate('Transparent')
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
 
-		S:HandleIcon(frame.Item.icon, true)
-		S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
+	S:HandleIcon(frame.Item.icon, true)
+	S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
 
-		frame.IsSkinned = true
-	end
+	frame.IsSkinned = true
 end
 
 function S:LootFrame()
