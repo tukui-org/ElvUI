@@ -58,7 +58,7 @@ local function MasterLooterShow()
 	local item = looter.Item
 	if item then
 		local icon = item.Icon
-		local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
+		local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality or 1]
 
 		local texture = icon:GetTexture() -- keep before strip textures
 		item:StripTextures()
