@@ -17,8 +17,6 @@ local function LootHistoryElements(frame)
 
 	S:HandleIcon(frame.Item.icon, true)
 	S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
-
-	frame.IsSkinned = true
 end
 
 function S:LootFrame()
