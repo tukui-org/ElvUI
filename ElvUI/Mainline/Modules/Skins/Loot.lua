@@ -58,12 +58,12 @@ local function MasterLooterShow()
 	local item = looter.Item
 	if item then
 		local icon = item.Icon
-		local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality or 1]
+		local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality or 1]
 
 		local texture = icon:GetTexture() -- keep before strip textures
 		item:StripTextures()
 		item:SetTemplate()
-		item:SetBackdropBorderColor(c.r, c.g, c.b)
+		item:SetBackdropBorderColor(color.r, color.g, color.b)
 
 		icon:SetTexture(texture)
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -77,6 +77,7 @@ local function MasterLooterShow()
 				child:SetTemplate()
 				child:StyleButton()
 			end
+
 			child.isSkinned = true
 		end
 	end
