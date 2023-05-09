@@ -89,8 +89,9 @@ local function StartBonusRoll()
 	local BonusRollFrameLevel = frame:GetFrameLevel()
 	frame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2)
 
-	if frame.BlackBackgroundHoist.backdrop then
-		frame.BlackBackgroundHoist.backdrop:SetFrameLevel(BonusRollFrameLevel+1)
+	local hoist = frame.BlackBackgroundHoist
+	if hoist and hoist.backdrop then
+		hoist.backdrop:SetFrameLevel(BonusRollFrameLevel+1)
 	end
 
 	-- set currency icons position at bottom right (or left of the spec icon, on the bottom right)
@@ -140,34 +141,37 @@ function S:LootFrame()
 	local LootFrame = _G.LootFrame
 	LootFrame:StripTextures()
 	LootFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(LootFrame.ClosePanelButton)
+	hooksecurefunc(LootFrame.ScrollBox, 'Update', LootFrameUpdate)
 
 	if LootFrame.Bg then
 		LootFrame.Bg:SetAlpha(0)
 	end
 
-	S:HandleCloseButton(LootFrame.ClosePanelButton)
-	hooksecurefunc(LootFrame.ScrollBox, 'Update', LootFrameUpdate)
-
 	-- Loot history frame
 	local LootHistoryFrame = _G.GroupLootHistoryFrame
 	LootHistoryFrame:StripTextures()
-	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
-	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
-	LootHistoryFrame.ResizeButton:StripTextures()
-	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
-	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
-	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
-	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
-	LootHistoryFrame.ResizeButton.text:SetText('v v v v')
-	LootHistoryFrame.ResizeButton:SetTemplate()
-	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
-	LootHistoryFrame.ResizeButton:Height(19)
-	LootHistoryFrame.ResizeButton:ClearAllPoints()
-	LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar)
+
+	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
+	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar)
 	hooksecurefunc(_G.LootHistoryElementMixin, 'OnShow', LootHistoryElements) -- OnShow is the only hook that seems to do anything
+
+	local resize = LootHistoryFrame.ResizeButton
+	if resize then
+		resize:StripTextures()
+		resize:SetTemplate()
+		resize:ClearAllPoints()
+		resize:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
+		resize:Size(LootHistoryFrame:GetWidth(), 19)
+
+		resize.text = resize:CreateFontString(nil, 'OVERLAY')
+		resize.text:FontTemplate(nil, 16, 'OUTLINE')
+		resize.text:SetJustifyH('CENTER')
+		resize.text:Point('CENTER', resize)
+		resize.text:SetText('v v v v')
+	end
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
@@ -184,33 +188,38 @@ function S:LootFrame()
 	hooksecurefunc('BonusRollFrame_StartBonusRoll', StartBonusRoll)
 
 	local prompt = BonusRollFrame.PromptFrame
-	prompt.Icon:SetTexCoord(unpack(E.TexCoords))
 	prompt.IconBackdrop = CreateFrame('Frame', nil, prompt)
 	prompt.IconBackdrop:SetFrameLevel(prompt.IconBackdrop:GetFrameLevel() - 1)
 	prompt.IconBackdrop:SetOutside(prompt.Icon)
 	prompt.IconBackdrop:SetTemplate()
+	prompt.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	prompt.Timer:SetStatusBarTexture(E.media.normTex)
 	prompt.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 
+	local hoist = BonusRollFrame.BlackBackgroundHoist
+	if hoist then
+		hoist.Background:Hide()
+		hoist.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
+		hoist.backdrop:SetTemplate()
+		hoist.backdrop:SetOutside(prompt.Timer)
+	end
+
 	local specIcon = BonusRollFrame.SpecIcon
-	specIcon.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
-	specIcon.backdrop:SetTemplate()
-	specIcon.backdrop:Point('BOTTOMRIGHT', BonusRollFrame, -2, 2)
-	specIcon.backdrop:Size(specIcon:GetSize())
-	specIcon.backdrop:SetFrameLevel(6)
+	if specIcon then
+		specIcon.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
+		specIcon.backdrop:SetTemplate()
+		specIcon.backdrop:Point('BOTTOMRIGHT', BonusRollFrame, -2, 2)
+		specIcon.backdrop:Size(specIcon:GetSize())
+		specIcon.backdrop:SetFrameLevel(6)
 
-	specIcon:SetParent(specIcon.backdrop)
-	specIcon:SetTexCoord(unpack(E.TexCoords))
-	specIcon:SetInside()
+		specIcon:SetParent(specIcon.backdrop)
+		specIcon:SetTexCoord(unpack(E.TexCoords))
+		specIcon:SetInside()
 
-	hooksecurefunc(specIcon, 'Hide', SpecIconHide)
-	hooksecurefunc(specIcon, 'Show', SpecIconShow)
-
-	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
-	BonusRollFrame.BlackBackgroundHoist.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
-	BonusRollFrame.BlackBackgroundHoist.backdrop:SetTemplate()
-	BonusRollFrame.BlackBackgroundHoist.backdrop:SetOutside(prompt.Timer)
+		hooksecurefunc(specIcon, 'Hide', SpecIconHide)
+		hooksecurefunc(specIcon, 'Show', SpecIconShow)
+	end
 end
 
 S:AddCallback('LootFrame')
