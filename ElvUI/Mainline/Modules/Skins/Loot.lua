@@ -15,8 +15,20 @@ local function LootHistoryElements(frame)
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 
-	S:HandleIcon(frame.Item.icon, true)
-	S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
+	if not frame.Item.backdrop then
+		frame.Item:StyleButton()
+		frame.Item.icon:SetInside(frame.Item)
+
+		S:HandleIcon(frame.Item.icon, true)
+		S:HandleIconBorder(frame.Item.IconBorder, frame.Item.icon.backdrop)
+	end
+
+	-- check is needed here (untested)
+	if frame.Timer then
+		frame.Timer:StripTextures()
+		frame.Timer:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(frame.Timer)
+	end
 end
 
 local function LootFrameUpdate(frame)
