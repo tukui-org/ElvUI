@@ -27,7 +27,6 @@ local function LootHistoryElements(frame)
 	if frame.Timer then
 		frame.Timer:StripTextures()
 		frame.Timer:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(frame.Timer)
 	end
 end
 
