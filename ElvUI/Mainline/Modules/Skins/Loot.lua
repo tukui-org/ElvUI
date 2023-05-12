@@ -175,14 +175,21 @@ function S:LootFrame()
 		HistoryFrame:StripTextures()
 		HistoryFrame:SetTemplate('Transparent')
 
-		local bar = HistoryFrame.Timer
-		if bar then
-			bar:StripTextures()
-			bar:CreateBackdrop('Transparent')
+		if HistoryFrame.Bg then
+			HistoryFrame.Bg:SetAlpha(0)
+		end
 
-			if bar.Fill then
-				bar.Fill:SetTexture(E.media.normTex)
-				bar.Fill:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		local Timer = HistoryFrame.Timer
+		if Timer then
+			Timer:StripTextures()
+			Timer:CreateBackdrop('Transparent')
+			Timer:SetWidth(234) -- dont use Width
+
+			if Timer.Fill then
+				Timer.Fill:SetTexture(E.media.normTex)
+				Timer.Fill:SetVertexColor(unpack(E.media.rgbvaluecolor))
+				Timer.Fill:ClearAllPoints()
+				Timer.Fill:Point('LEFT', Timer.backdrop, 1, 0)
 			end
 		end
 
