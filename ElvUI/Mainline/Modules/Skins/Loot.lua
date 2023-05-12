@@ -179,11 +179,24 @@ function S:LootFrame()
 			HistoryFrame.Bg:SetAlpha(0)
 		end
 
+		local Dropdown = HistoryFrame.EncounterDropDown
+		if Dropdown then
+			S:HandleDropDownBox(Dropdown)
+
+			Dropdown:ClearAllPoints()
+			Dropdown:Point('TOP', -6, -32)
+		end
+
 		local Timer = HistoryFrame.Timer
 		if Timer then
 			Timer:StripTextures()
 			Timer:CreateBackdrop('Transparent')
-			Timer:SetWidth(234) -- dont use Width
+			Timer:SetWidth(234) -- dont use Width, this is the fullFillWidth
+
+			if Dropdown then
+				Timer:ClearAllPoints()
+				Timer:Point('TOP', Dropdown, 'BOTTOM', 2, 2)
+			end
 
 			if Timer.Fill then
 				Timer.Fill:SetTexture(E.media.normTex)
@@ -194,7 +207,6 @@ function S:LootFrame()
 		end
 
 		S:HandleCloseButton(HistoryFrame.ClosePanelButton)
-		S:HandleDropDownBox(HistoryFrame.EncounterDropDown)
 		S:HandleTrimScrollBar(HistoryFrame.ScrollBar)
 		hooksecurefunc(HistoryFrame.ScrollBox, 'Update', HandleScrollElements)
 
