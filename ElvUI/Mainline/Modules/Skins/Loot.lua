@@ -9,6 +9,9 @@ local CreateFrame = CreateFrame
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
+local fullFillWidth = 234 -- picked by Blizzard in LootHistory.lua
+local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via the skinning)
+
 local function LootHistoryElements(button)
 	if button.IsSkinned then return end
 
@@ -155,6 +158,12 @@ local function SpecIconShow(bonusSpecIcon)
 	end
 end
 
+local function EncounterDropdownWidth(dropdown, width)
+	if width ~= fullDropWidth then
+		dropdown:SetWidth(fullDropWidth)
+	end
+end
+
 function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
 
@@ -182,6 +191,7 @@ function S:LootFrame()
 		local Dropdown = HistoryFrame.EncounterDropDown
 		if Dropdown then
 			S:HandleDropDownBox(Dropdown)
+			hooksecurefunc(Dropdown, 'SetWidth', EncounterDropdownWidth)
 
 			Dropdown:ClearAllPoints()
 			Dropdown:Point('TOP', -6, -32)
@@ -191,11 +201,11 @@ function S:LootFrame()
 		if Timer then
 			Timer:StripTextures()
 			Timer:CreateBackdrop('Transparent')
-			Timer:SetWidth(234) -- dont use Width, this is the fullFillWidth
+			Timer:SetWidth(fullFillWidth) -- dont use Width
 
 			if Dropdown then
 				Timer:ClearAllPoints()
-				Timer:Point('TOP', Dropdown, 'BOTTOM', 2, 2)
+				Timer:Point('TOP', Dropdown, 'BOTTOM', 6, 2)
 			end
 
 			if Timer.Fill then
