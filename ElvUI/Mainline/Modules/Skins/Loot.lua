@@ -10,25 +10,31 @@ local CreateFrame = CreateFrame
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function LootHistoryElements(button)
-	if not button.IsSkinned then
-		if button.NameFrame then
-			button.NameFrame:SetAlpha(0)
-		end
+	if button.IsSkinned then return end
 
-		if button.BorderFrame then
-			button.BorderFrame:SetAlpha(0)
-			button.BorderFrame:CreateBackdrop('Transparent')
-		end
+	if button.NameFrame then
+		button.NameFrame:SetAlpha(0)
+	end
 
-		local item = button.Item
-		local icon = item and item.icon
-		if item then
-			item:StripTextures()
-			S:HandleIcon(icon, true)
-			S:HandleIconBorder(item.IconBorder, icon.backdrop)
-		end
+	if button.BorderFrame then
+		button.BorderFrame:SetAlpha(0)
+		button.BorderFrame:CreateBackdrop('Transparent')
+	end
 
-		button.IsSkinned = true
+	local item = button.Item
+	local icon = item and item.icon
+	if item then
+		item:StripTextures()
+		S:HandleIcon(icon, true)
+		S:HandleIconBorder(item.IconBorder, icon.backdrop)
+	end
+
+	button.IsSkinned = true
+end
+
+local function HandleScrollElements(box)
+	if box then
+		box:ForEachFrame(LootHistoryElements)
 	end
 end
 
@@ -153,94 +159,102 @@ function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
 
 	local LootFrame = _G.LootFrame
-	LootFrame:StripTextures()
-	LootFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(LootFrame.ClosePanelButton)
-	hooksecurefunc(LootFrame.ScrollBox, 'Update', LootFrameUpdate)
+	if LootFrame then
+		LootFrame:StripTextures()
+		LootFrame:SetTemplate('Transparent')
+		S:HandleCloseButton(LootFrame.ClosePanelButton)
+		hooksecurefunc(LootFrame.ScrollBox, 'Update', LootFrameUpdate)
 
-	if LootFrame.Bg then
-		LootFrame.Bg:SetAlpha(0)
+		if LootFrame.Bg then
+			LootFrame.Bg:SetAlpha(0)
+		end
 	end
 
-	local LootHistoryFrame = _G.GroupLootHistoryFrame
-	LootHistoryFrame:StripTextures()
-	LootHistoryFrame:SetTemplate('Transparent')
+	local HistoryFrame = _G.GroupLootHistoryFrame
+	if HistoryFrame then
+		HistoryFrame:StripTextures()
+		HistoryFrame:SetTemplate('Transparent')
 
-	local bar = LootHistoryFrame.Timer
-	if bar then
-		bar:StripTextures()
-		bar:CreateBackdrop('Transparent')
-		bar.Fill:SetTexture(E.media.normTex)
-		bar.Fill:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	end
+		local bar = HistoryFrame.Timer
+		if bar then
+			bar:StripTextures()
+			bar:CreateBackdrop('Transparent')
 
-	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
-	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
-	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar)
+			if bar.Fill then
+				bar.Fill:SetTexture(E.media.normTex)
+				bar.Fill:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			end
+		end
 
-	hooksecurefunc(LootHistoryFrame.ScrollBox, 'Update', function(self)
-		self:ForEachFrame(LootHistoryElements)
-	end)
+		S:HandleCloseButton(HistoryFrame.ClosePanelButton)
+		S:HandleDropDownBox(HistoryFrame.EncounterDropDown)
+		S:HandleTrimScrollBar(HistoryFrame.ScrollBar)
+		hooksecurefunc(HistoryFrame.ScrollBox, 'Update', HandleScrollElements)
 
-	local LootResize = LootHistoryFrame.ResizeButton
-	if LootResize then
-		LootResize:StripTextures()
-		LootResize:SetTemplate()
-		LootResize:ClearAllPoints()
-		LootResize:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
-		LootResize:Size(LootHistoryFrame:GetWidth(), 19)
+		local LootResize = HistoryFrame.ResizeButton
+		if LootResize then
+			LootResize:StripTextures()
+			LootResize:SetTemplate()
+			LootResize:ClearAllPoints()
+			LootResize:Point('TOP', HistoryFrame, 'BOTTOM', 0, -2)
+			LootResize:Size(HistoryFrame:GetWidth(), 19)
 
-		LootResize.text = LootResize:CreateFontString(nil, 'OVERLAY')
-		LootResize.text:FontTemplate(nil, 16, 'OUTLINE')
-		LootResize.text:SetJustifyH('CENTER')
-		LootResize.text:Point('CENTER', LootResize)
-		LootResize.text:SetText('v v v v')
+			LootResize.text = LootResize:CreateFontString(nil, 'OVERLAY')
+			LootResize.text:FontTemplate(nil, 16, 'OUTLINE')
+			LootResize.text:SetJustifyH('CENTER')
+			LootResize.text:Point('CENTER', LootResize)
+			LootResize.text:SetText('v v v v')
+		end
 	end
 
 	local MasterLooterFrame = _G.MasterLooterFrame
-	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:SetTemplate()
-	hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)
-
-	local BonusRollFrame = _G.BonusRollFrame
-	BonusRollFrame:StripTextures()
-	BonusRollFrame:SetTemplate('Transparent')
-	BonusRollFrame.SpecRing:SetTexture()
-	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
-	hooksecurefunc('BonusRollFrame_StartBonusRoll', StartBonusRoll)
-
-	local BonusPrompt = BonusRollFrame.PromptFrame
-	BonusPrompt.IconBackdrop = CreateFrame('Frame', nil, BonusPrompt)
-	BonusPrompt.IconBackdrop:SetFrameLevel(BonusPrompt.IconBackdrop:GetFrameLevel() - 1)
-	BonusPrompt.IconBackdrop:SetOutside(BonusPrompt.Icon)
-	BonusPrompt.IconBackdrop:SetTemplate()
-	BonusPrompt.Icon:SetTexCoord(unpack(E.TexCoords))
-
-	BonusPrompt.Timer:SetStatusBarTexture(E.media.normTex)
-	BonusPrompt.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
-
-	local BonusHoist = BonusRollFrame.BlackBackgroundHoist
-	if BonusHoist then
-		BonusHoist.Background:Hide()
-		BonusHoist.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
-		BonusHoist.backdrop:SetTemplate()
-		BonusHoist.backdrop:SetOutside(BonusPrompt.Timer)
+	if MasterLooterFrame then
+		MasterLooterFrame:StripTextures()
+		MasterLooterFrame:SetTemplate()
+		hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)
 	end
 
-	local BonusSpecIcon = BonusRollFrame.SpecIcon
-	if BonusSpecIcon then
-		BonusSpecIcon.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
-		BonusSpecIcon.backdrop:SetTemplate()
-		BonusSpecIcon.backdrop:Point('BOTTOMRIGHT', BonusRollFrame, -2, 2)
-		BonusSpecIcon.backdrop:Size(BonusSpecIcon:GetSize())
-		BonusSpecIcon.backdrop:SetFrameLevel(6)
+	local BonusRollFrame = _G.BonusRollFrame
+	if BonusRollFrame then
+		BonusRollFrame:StripTextures()
+		BonusRollFrame:SetTemplate('Transparent')
+		BonusRollFrame.SpecRing:SetTexture()
+		BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
+		hooksecurefunc('BonusRollFrame_StartBonusRoll', StartBonusRoll)
 
-		BonusSpecIcon:SetParent(BonusSpecIcon.backdrop)
-		BonusSpecIcon:SetTexCoord(unpack(E.TexCoords))
-		BonusSpecIcon:SetInside()
+		local BonusPrompt = BonusRollFrame.PromptFrame
+		BonusPrompt.IconBackdrop = CreateFrame('Frame', nil, BonusPrompt)
+		BonusPrompt.IconBackdrop:SetFrameLevel(BonusPrompt.IconBackdrop:GetFrameLevel() - 1)
+		BonusPrompt.IconBackdrop:SetOutside(BonusPrompt.Icon)
+		BonusPrompt.IconBackdrop:SetTemplate()
+		BonusPrompt.Icon:SetTexCoord(unpack(E.TexCoords))
 
-		hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)
-		hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
+		BonusPrompt.Timer:SetStatusBarTexture(E.media.normTex)
+		BonusPrompt.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
+
+		local BonusHoist = BonusRollFrame.BlackBackgroundHoist
+		if BonusHoist then
+			BonusHoist.Background:Hide()
+			BonusHoist.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
+			BonusHoist.backdrop:SetTemplate()
+			BonusHoist.backdrop:SetOutside(BonusPrompt.Timer)
+		end
+
+		local BonusSpecIcon = BonusRollFrame.SpecIcon
+		if BonusSpecIcon then
+			BonusSpecIcon.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
+			BonusSpecIcon.backdrop:SetTemplate()
+			BonusSpecIcon.backdrop:Point('BOTTOMRIGHT', BonusRollFrame, -2, 2)
+			BonusSpecIcon.backdrop:Size(BonusSpecIcon:GetSize())
+			BonusSpecIcon.backdrop:SetFrameLevel(6)
+
+			BonusSpecIcon:SetParent(BonusSpecIcon.backdrop)
+			BonusSpecIcon:SetTexCoord(unpack(E.TexCoords))
+			BonusSpecIcon:SetInside()
+
+			hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)
+			hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
+		end
 	end
 end
 
