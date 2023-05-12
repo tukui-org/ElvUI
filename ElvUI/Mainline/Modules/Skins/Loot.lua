@@ -9,26 +9,26 @@ local CreateFrame = CreateFrame
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-local function LootHistoryElements(frame)
-	if not frame then return end
+local function LootHistoryElements(button)
+	if not button.IsSkinned then
+		if button.NameFrame then
+			button.NameFrame:SetAlpha(0)
+		end
 
-	frame:StripTextures()
-	frame:SetTemplate('Transparent')
+		if button.BorderFrame then
+			button.BorderFrame:SetAlpha(0)
+			button.BorderFrame:CreateBackdrop('Transparent')
+		end
 
-	local item = frame.Item
-	local icon = item and item.icon
-	if icon and not icon.backdrop then
-		item:StyleButton()
-		icon:SetInside(item)
+		local item = button.Item
+		local icon = item and item.icon
+		if item then
+			item:StripTextures()
+			S:HandleIcon(icon, true)
+			S:HandleIconBorder(item.IconBorder, icon.backdrop)
+		end
 
-		S:HandleIcon(icon, true)
-		S:HandleIconBorder(item.IconBorder, icon.backdrop)
-	end
-
-	-- check is needed here (untested)
-	if frame.Timer then
-		frame.Timer:StripTextures()
-		frame.Timer:SetStatusBarTexture(E.media.normTex)
+		button.IsSkinned = true
 	end
 end
 
@@ -166,10 +166,20 @@ function S:LootFrame()
 	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
 
+	local bar = LootHistoryFrame.Timer
+	if bar then
+		bar:StripTextures()
+		bar:CreateBackdrop('Transparent')
+		bar.Fill:SetTexture(E.media.normTex)
+	end
+
 	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
 	S:HandleDropDownBox(LootHistoryFrame.EncounterDropDown)
 	S:HandleTrimScrollBar(LootHistoryFrame.ScrollBar)
-	hooksecurefunc(_G.LootHistoryElementMixin, 'OnShow', LootHistoryElements) -- OnShow is the only hook that seems to do anything
+
+	hooksecurefunc(LootHistoryFrame.ScrollBox, 'Update', function(self)
+		self:ForEachFrame(LootHistoryElements)
+	end)
 
 	local LootResize = LootHistoryFrame.ResizeButton
 	if LootResize then
