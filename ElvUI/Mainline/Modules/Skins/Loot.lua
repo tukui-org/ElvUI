@@ -171,6 +171,7 @@ function S:LootFrame()
 		bar:StripTextures()
 		bar:CreateBackdrop('Transparent')
 		bar.Fill:SetTexture(E.media.normTex)
+		bar.Fill:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	end
 
 	S:HandleCloseButton(LootHistoryFrame.ClosePanelButton)
