@@ -42,7 +42,6 @@ local crests = {
 	}
 }
 
-local currency = {}
 local crestText = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s / %s'
 local fragmentText, fragmentSplit, fragmentAdd = '%s | %s', '%s / 15', '%s+%s'
 
@@ -60,8 +59,10 @@ local function OnEvent(self)
 		if crest.fragment then
 			text = GetFragmentText(text, crest, GetItemCount(crest.id) or 0, floor((GetItemCount(crest.fragment) or 0) / 15))
 		else
-			currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
-			text = crest.color:WrapTextInColorCode(currency.quantity)
+			local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
+			if currency then
+				text = crest.color:WrapTextInColorCode(currency.quantity)
+			end
 		end
 	end
 
@@ -73,7 +74,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(FRAGMENTS_EARNED)
 
 	for _, crest in next, crests do
-		currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
+		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
 		if currency then
 			if crest.fragment then
 				if currency.maxQuantity > 0 then
