@@ -999,6 +999,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[401135] = List(), -- Wild Breath (Evoker)
 		[408071] = List(), -- Shapeshifter's Fervor
 	-- Scalecommander Sarkareth
+		[403520] = List(), -- Embrace of Nothingness
+		[401383] = List(), -- Oppressing Howl
+		[401951] = List(), -- Oblivion
+		[407496] = List(), -- Infinite Duress
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
@@ -1295,6 +1299,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[407088] = List(), -- Empowered Shadows
 		[407039] = List(), -- Empower Shadows
 	-- Scalecommander Sarkareth
+		[404705] = List(), -- Rescind
+		[404269] = List(), -- Ebon Might
+		[401810] = List(), -- Glittering Surge
+		[410631] = List(), -- Void Empowerment 1
+		[403284] = List(), -- Void Empowerment 2
+		[410654] = List(), -- Void Empowerment 3
+		[410625] = List(), -- End Existence
 	---------------------------------------------------------
 	---------------- Vault of the Incarnates ----------------
 	---------------------------------------------------------
