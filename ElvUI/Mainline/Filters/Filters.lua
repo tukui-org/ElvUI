@@ -771,6 +771,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[372570] = List(), -- Bold Ambush
 		[372459] = List(), -- Burning
 		[372208] = List(), -- Djaradin Lava
+		[414585] = List(), -- Fiery Demise
 	-- Uldaman: Legacy of Tyr
 		[368996] = List(), -- Purging Flames
 		[369792] = List(), -- Skullcracker
@@ -1130,6 +1131,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[372202] = List(), -- Scorching Breath
 		[378149] = List(), -- Granite Shell
 		[372311] = List(), -- Magma Fist
+		[376780] = List(), -- Magma Shield
 	-- Uldaman: Legacy of Tyr
 		[369791] = List(), -- Skullcracker
 		[369602] = List(), -- Defensive Bulwark 1
