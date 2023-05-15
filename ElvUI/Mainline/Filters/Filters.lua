@@ -887,6 +887,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[274555] = List(), -- Scabrous Bites
 		[258875] = List(), -- Blackout Barrel
 		[256363] = List(), -- Ripper Punch
+		[258352] = List(), -- Grapeshot
+		[413136] = List(), -- Whirling Dagger 1
+		[413131] = List(), -- Whirling Dagger 2
 	-- Neltharion's Lair
 		[199705] = List(), -- Devouring
 		[199178] = List(), -- Spiked Tongue
