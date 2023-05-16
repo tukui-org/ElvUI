@@ -2456,6 +2456,7 @@ P.cooldown = {
 	targetAura = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
+	showModRate = false,
 
 	expiringColor = { r = 1, g = 0.2, b = 0.2 },
 	secondsColor = { r = 1, g = 1, b = 0.2 },

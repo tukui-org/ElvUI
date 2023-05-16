@@ -55,7 +55,7 @@ function E:Cooldown_OnUpdate(elapsed)
 				self.nextUpdate = 500
 			end
 		elseif self.endTime then
-			local timeLeft = (self.endTime - now) / (self.modRate or 1)
+			local timeLeft = (self.endTime - now) / self.modRate
 			if E:Cooldown_TextThreshold(self, timeLeft) then
 				self.text:SetText('')
 				if not forced then
@@ -147,6 +147,7 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.targetAura = E.db.cooldown.targetAura and parent.targetAura
 	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
 	timer.roundTime = E.db.cooldown.roundTime
+	timer.showModRate = db.showModRate
 
 	if db.reverse ~= nil then
 		local enabled = E:CooldownEnabled()
@@ -222,9 +223,10 @@ function E:OnSetCooldown(start, duration, modRate)
 
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
+
 		timer.start = start
-		timer.duration = duration
-		timer.modRate = modRate
+		timer.modRate = timer.showModRate and modRate or 1
+		timer.duration = duration * (not timer.showModRate and modRate or 1)
 		timer.endTime = start + duration
 		timer.endCooldown = timer.endTime - 0.05
 		timer.paused = nil -- a new cooldown was called
