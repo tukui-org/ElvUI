@@ -280,6 +280,22 @@ function E:GetColorTable(data)
 	return { r, g, b, a, r = r, g = g, b = b, a = a }
 end
 
+local CooldownEntries = {
+	'expireIndicator', 'secondsIndicator', 'minutesIndicator', 'hoursIndicator', 'daysIndicator', 'hhmmColorIndicator', 'mmssColorIndicator',
+	'modRateColor', 'expiringColor', 'secondsColor', 'minutesColor', 'hoursColor', 'daysColor', 'mmssColor', 'hhmmColor',
+	'targetAuraColor', 'expiringAuraColor', 'targetAuraIndicator', 'expiringAuraIndicator'
+}
+
+local function CheckCooldownColors(module)
+	local db = module == 'cooldown' and E.db.cooldown or E.db[module].cooldown
+	for _, myentry in pairs(CooldownEntries) do
+		local option = db[myentry]
+		if option and type(option) == 'table' then
+			E:UpdateClassColor(option)
+		end
+	end
+end
+
 function E:UpdateMedia(mediaType)
 	if not E.db.general or not E.private.general then return end
 
@@ -315,6 +331,7 @@ function E:UpdateMedia(mediaType)
 		E:UpdateClassColor(E.db.nameplates.colors.glowColor)
 		E:UpdateClassColor(E.db.nameplates.colors.lowHealthColor)
 		E:UpdateClassColor(E.db.nameplates.colors.lowHealthHalf)
+		CheckCooldownColors('nameplates')
 	end
 
 	if E.private.chat.enable then
@@ -333,6 +350,25 @@ function E:UpdateMedia(mediaType)
 			RightChatPanel.tex:SetAlpha(a)
 		end
 	end
+
+	if E.private.actionbar.enable then
+		CheckCooldownColors('actionbar')
+	end
+
+	if E.private.auras.enable then
+		CheckCooldownColors('auras')
+	end
+
+	if E.private.bags.enable then
+		CheckCooldownColors('bags')
+	end
+
+	if E.private.unitframe.enable then
+		CheckCooldownColors('unitframe')
+	end
+
+	CheckCooldownColors('cooldown')
+	CheckCooldownColors('WeakAuras')
 
 	E:ValueFuncCall()
 	E:UpdateBlizzardFonts()
