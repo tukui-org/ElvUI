@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local next, ipairs, pairs = next, ipairs, pairs
-local floor, tinsert = floor, tinsert
+local time, floor, tinsert = time, floor, tinsert
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -227,9 +227,19 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.start = start
 		timer.modRate = timer.showModRate and modRate or 1
 		timer.duration = duration * (not timer.showModRate and modRate or 1)
-		timer.endTime = start + duration
-		timer.endCooldown = timer.endTime - 0.05
 		timer.paused = nil -- a new cooldown was called
+
+		local now = GetTime()
+		if start <= now then
+			timer.endTime = start + duration
+		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
+			local startup = time() - now
+			local cdtime = (2 ^ 32) / 1000 - start
+			local startTime = startup - cdtime
+			timer.endTime = startTime + duration
+		end
+
+		timer.endCooldown = timer.endTime - 0.05
 
 		E:Cooldown_TimerUpdate(timer)
 	elseif self.timer then
