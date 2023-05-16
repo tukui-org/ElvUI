@@ -7,6 +7,7 @@ local floor, tinsert = floor, tinsert
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local hooksecurefunc = hooksecurefunc
 
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
@@ -363,8 +364,8 @@ function E:UpdateCooldownOverride(module)
 end
 
 do
-	local function RGB(db) return E:CopyTable({r = 1, g = 1, b = 1}, db) end
-	local function HEX(db) return E:RGBToHex(db.r, db.g, db.b) end
+	local function RGB(db) E:UpdateClassColor(db) return E:CopyTable({r = 1, g = 1, b = 1}, db) end
+	local function HEX(db) E:UpdateClassColor(db) return E:RGBToHex(db.r, db.g, db.b) end
 	local dummy9th = '|cFFffffff'
 
 	function E:GetCooldownColors(db)
@@ -462,5 +463,9 @@ function E:UpdateCooldownSettings(module)
 		E:UpdateCooldownSettings('actionbar')
 		E:UpdateCooldownSettings('unitframe')
 		E:UpdateCooldownSettings('auras')
+
+		if IsAddOnLoaded('WeakAuras') then
+			E:UpdateCooldownSettings('WeakAuras')
+		end
 	end
 end
