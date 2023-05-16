@@ -55,7 +55,7 @@ function E:Cooldown_OnUpdate(elapsed)
 				self.nextUpdate = 500
 			end
 		elseif self.endTime then
-			local timeLeft = (self.endTime - now) / self.modRate
+			local timeLeft = (self.endTime - now) / (self.modRate or 1)
 			if E:Cooldown_TextThreshold(self, timeLeft) then
 				self.text:SetText('')
 				if not forced then
