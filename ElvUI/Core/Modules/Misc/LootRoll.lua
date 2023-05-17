@@ -38,7 +38,7 @@ local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
 
-local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
+local rollTypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
 local rollState = Enum.EncounterLootDropRollState and {
 	[Enum.EncounterLootDropRollState.NeedMainSpec] = 1,
 	[Enum.EncounterLootDropRollState.NeedOffSpec] = 1,
@@ -371,7 +371,7 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 				tinsert(bar.rolls[rollType], { rollerInfo[1], rollerInfo[2] }) -- name, playerClass
 
-				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
+				bar[rollTypes[rollType]].text:SetText(#bar.rolls[rollType])
 			end
 
 			break
@@ -393,7 +393,7 @@ function M:UpdateLootRollDrop(rollID, rollType, name, playerClass, rollIndex)
 					tinsert(bar.rolls[rollType], rollInfo)
 				end
 
-				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
+				bar[rollTypes[rollType]].text:SetText(#bar.rolls[rollType])
 
 				rollIsHidden = false
 
@@ -481,7 +481,7 @@ function M:UpdateLootRollFrames()
 		bar.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 		bar.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
-		for _, button in next, rolltypes do
+		for _, button in next, rollTypes do
 			local icon = bar[button]
 			if icon then
 				icon:Size(db.buttonSize)
