@@ -26,7 +26,7 @@ lib.DispelList = DispelList
 local BleedList = {}
 lib.BleedList = BleedList
 
-if Retail then
+if Retail then -- updated May 17th 2023 (patch 10.1): https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
 	BleedList[102066] = "Flesh Rip"
 	BleedList[10266] = "Lung Puncture"
 	BleedList[102925] = "Garrote"
