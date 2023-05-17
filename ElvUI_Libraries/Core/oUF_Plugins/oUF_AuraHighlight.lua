@@ -12,20 +12,20 @@ local BleedList = LibDispel:GetBleedList()
 
 local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
 	local spell = list and (list[spellID] or list[name])
-	local dispel = auraType or (BleedList[spellID] and 'Bleed') or nil
+	local dispelType = auraType or (BleedList[spellID] and 'Bleed') or nil
 
 	if spell then
 		if spell.enable then
-			return dispel, icon, true, spell.style, spell.color
+			return dispelType, icon, true, spell.style, spell.color
 		end
-	elseif dispel then
+	elseif dispelType then
 		local allow = not check
 		if not allow then
-			allow = DispelFilter[dispel]
+			allow = DispelFilter[dispelType]
 		end
 
 		if allow and not BlockList[spellID] then
-			return dispel, icon
+			return dispelType, icon
 		end
 	end
 end
