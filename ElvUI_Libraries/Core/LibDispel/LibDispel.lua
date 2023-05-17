@@ -24,10 +24,6 @@ lib.DispelList = DispelList
 local BleedList = {}
 lib.BleedList = BleedList
 
-if Retail then
-	BleedList[1079] = 'Rip'
-end
-
 local BadList = {} -- Dispels that backfire
 lib.BadList = BadList
 
@@ -116,7 +112,6 @@ do
 		elseif myClass == 'DRUID' then
 			local cure = Retail and CheckSpell(88423) -- Nature's Cure
 			local corruption = CheckSpell(2782) -- Remove Corruption (retail), Curse (classic)
-			DispelList.Bleed = true
 			DispelList.Magic = cure
 			DispelList.Curse = cure or corruption
 			DispelList.Poison = cure or (Retail and corruption) or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
