@@ -45,7 +45,7 @@ local rollState = Enum.EncounterLootDropRollState and {
 	[Enum.EncounterLootDropRollState.Greed] = 2,
 	[Enum.EncounterLootDropRollState.Transmog] = 4,
 	[Enum.EncounterLootDropRollState.Pass] = 0
-}
+} or {}
 
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
