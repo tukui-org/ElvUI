@@ -432,16 +432,17 @@ end
 
 function UF:PostUpdateAura(_, button)
 	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
-	local enemyNPC = not button.isFriend and not button.isPlayer
+	local enemyNPC = not button.isFriend and not button.isPlayer and DebuffColors.EnemyNPC
+	local steal, bad = DebuffColors.Stealable, DebuffColors.BadDispel
+	local r, g, b
 
-	local steal, r, g, b = DebuffColors.Stealable
 	if button.isDebuff then
 		if enemyNPC then
 			if db.auraByType then
-				r, g, b = .9, .1, .1
+				r, g, b = enemyNPC.r, enemyNPC.g, enemyNPC.b
 			end
 		elseif db.auraByDispels and BadDispels[button.spellID] and button.debuffType and E:IsDispellableByMe(button.debuffType) then
-			r, g, b = .05, .85, .94
+			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
 			local bleed = not button.debuffType and BleedList[button.spellID] and E:IsDispellableByMe('Bleed') and DebuffColors.Bleed
 			if bleed then

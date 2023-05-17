@@ -16,6 +16,8 @@ lib.DebuffTypeColor = DebuffColors
 
 -- These dont exist in Blizzards color table
 DebuffColors.Bleed = { r = 1, g = 0.2, b = 0.6 }
+DebuffColors.EnemyNPC = { r = 0.9, g = 0.1, b = 0.1 }
+DebuffColors.BadDispel = { r = 0.05, g = 0.85, b = 0.94 }
 DebuffColors.Stealable = { r = 0.93, g = 0.91, b = 0.55 }
 
 local DispelList = {}
