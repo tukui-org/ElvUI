@@ -22,6 +22,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
+local C_LootHistory_GetSortedInfoForDrop = C_LootHistory.GetSortedInfoForDrop
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
@@ -29,15 +30,23 @@ local TRANSMOGRIFY, ROLL_DISENCHANT = TRANSMOGRIFY, ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
-local cachedRolls = {}
-local completedRolls = {}
 M.RollBars = {}
+
+local cachedRolls = {}
 
 local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
 
-local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
+local rollTypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
+local rollState = Enum.EncounterLootDropRollState and {
+	[Enum.EncounterLootDropRollState.NeedMainSpec] = 1,
+	[Enum.EncounterLootDropRollState.NeedOffSpec] = 1,
+	[Enum.EncounterLootDropRollState.Greed] = 2,
+	[Enum.EncounterLootDropRollState.Transmog] = 4,
+	[Enum.EncounterLootDropRollState.Pass] = 0
+} or {}
+
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 	GameTooltip:AddLine(button.tiptext)
@@ -354,52 +363,75 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 	_G.AlertFrame:UpdateAnchors()
 
-	--Add cached roll info, if any
+	-- Add cached roll info, if any
 	for rollid, rollTable in pairs(cachedRolls) do
-		if bar.rollID == rollid then --rollid matches cached rollid
+		if bar.rollID == rollid then -- rollid matches cached rollid
 			for rollType, rollerInfo in pairs(rollTable) do
-				local rollerName, class = rollerInfo[1], rollerInfo[2]
 				if not bar.rolls[rollType] then bar.rolls[rollType] = {} end
-				tinsert(bar.rolls[rollType], { rollerName, class })
-				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
+
+				tinsert(bar.rolls[rollType], { rollerInfo[1], rollerInfo[2] }) -- name, playerClass
+
+				bar[rollTypes[rollType]].text:SetText(#bar.rolls[rollType])
 			end
 
-			completedRolls[rollid] = true
 			break
 		end
 	end
 end
 
-function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
-	local rollID = C_LootHistory_GetItem(itemIdx)
-	local name, class, rollType = C_LootHistory_GetPlayerInfo(itemIdx, playerIdx)
-
+function M:UpdateLootRollDrop(rollID, rollType, name, playerClass, rollIndex)
 	local rollIsHidden = true
 	if name and rollType then
+		local rollInfo = { name, playerClass }
 		for _, bar in next, M.RollBars do
 			if bar.rollID == rollID then
 				if not bar.rolls[rollType] then bar.rolls[rollType] = {} end
-				tinsert(bar.rolls[rollType], { name, class })
-				bar[rolltypes[rollType]].text:SetText(#bar.rolls[rollType])
+
+				if rollIndex then
+					tinsert(bar.rolls[rollType], rollIndex, rollInfo)
+				else
+					tinsert(bar.rolls[rollType], rollInfo)
+				end
+
+				bar[rollTypes[rollType]].text:SetText(#bar.rolls[rollType])
+
 				rollIsHidden = false
+
 				break
 			end
 		end
 
-		--History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
-		if rollIsHidden then
-			if not cachedRolls[rollID] then cachedRolls[rollID] = {} end
-			if not cachedRolls[rollID][rollType] then
-				if not cachedRolls[rollID][rollType] then cachedRolls[rollID][rollType] = {} end
-				tinsert(cachedRolls[rollID][rollType], { name, class })
-			end
+		-- History changed for a loot roll that hasn't popped up for the player yet, so cache it for later
+		if not rollIsHidden then return end
+		if not cachedRolls[rollID] then cachedRolls[rollID] = {} end
+		if not cachedRolls[rollID][rollType] then cachedRolls[rollID][rollType] = {} end
+
+		if rollIndex then
+			tinsert(cachedRolls[rollID][rollType], rollIndex, rollInfo)
+		else
+			tinsert(cachedRolls[rollID][rollType], rollInfo)
 		end
 	end
 end
 
+function M:LOOT_HISTORY_UPDATE_DROP(_, encounterID, lootListID)
+	local dropInfo = C_LootHistory_GetSortedInfoForDrop(encounterID, lootListID)
+	if dropInfo and dropInfo.rollInfos then
+		for rollIndex, roll in next, dropInfo.rollInfos do
+			M:UpdateLootRollDrop(roll.roll, rollState[roll.state] or -1, roll.playerName, roll.playerClass, rollIndex)
+		end
+	end
+end
+
+function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
+	local name, playerClass, rollType = C_LootHistory_GetPlayerInfo(itemIdx, playerIdx)
+	local rollID = C_LootHistory_GetItem(itemIdx)
+
+	M:UpdateLootRollDrop(rollID, rollType, name, playerClass)
+end
+
 function M:ClearLootRollCache()
 	wipe(cachedRolls)
-	wipe(completedRolls)
 end
 
 function M:UpdateLootRollAnchors(POSITION)
@@ -449,7 +481,7 @@ function M:UpdateLootRollFrames()
 		bar.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 		bar.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
 
-		for _, button in next, rolltypes do
+		for _, button in next, rollTypes do
 			local icon = bar[button]
 			if icon then
 				icon:Size(db.buttonSize)
@@ -502,11 +534,8 @@ function M:LoadLootRoll()
 
 	M:RegisterEvent('START_LOOT_ROLL')
 	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
-
-	if not E.Retail then
-		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
-		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
-	end
+	M:RegisterEvent(E.Retail and 'LOOT_HISTORY_UPDATE_DROP' or 'LOOT_HISTORY_ROLL_CHANGED')
+	M:RegisterEvent(E.Retail and 'LOOT_HISTORY_CLEAR_HISTORY' or 'LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
 	_G.UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')
