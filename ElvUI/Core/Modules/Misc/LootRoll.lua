@@ -416,7 +416,7 @@ end
 
 function M:LOOT_HISTORY_UPDATE_DROP(_, encounterID, lootListID)
 	local dropInfo = C_LootHistory_GetSortedInfoForDrop(encounterID, lootListID)
-	if dropInfo then
+	if dropInfo and dropInfo.rollInfos then
 		for rollIndex, roll in next, dropInfo.rollInfos do
 			M:UpdateLootRollDrop(roll.roll, rollState[roll.state] or -1, roll.playerName, roll.playerClass, rollIndex)
 		end
