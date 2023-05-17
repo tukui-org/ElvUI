@@ -26,6 +26,39 @@ lib.DispelList = DispelList
 local BleedList = {}
 lib.BleedList = BleedList
 
+if Retail then
+	BleedList[193639] = 'Bone Chomp'
+	BleedList[256363] = 'Ripper Punch'
+	BleedList[260455] = 'Serrated Fangs'
+	BleedList[265019] = 'Savage Cleave'
+	BleedList[265377] = 'Hooked Snare'
+	BleedList[265533] = 'Blood Maw'
+	BleedList[274389] = 'Rat Traps'
+	BleedList[367481] = 'Bloody Bite'
+	BleedList[367521] = 'Bone Bolt'
+	BleedList[369828] = 'Chomp'
+	BleedList[372087] = 'Blazing Rush' -- 3s
+	BleedList[372088] = 'Blazing Rush' -- instant
+	BleedList[372224] = 'Dragonbone Axe'
+	BleedList[372570] = 'Bold Ambush'
+	BleedList[372718] = 'Earthen Shards'
+	BleedList[372796] = 'Blazing Rush' -- buff
+	BleedList[372860] = 'Searing Wounds'
+	BleedList[375416] = 'Bleeding'
+	BleedList[375937] = 'Rending Strike'
+	BleedList[376997] = 'Savage Peck'
+	BleedList[377732] = 'Jagged Bite'
+	BleedList[378020] = 'Gash Frenzy'
+	BleedList[381692] = 'Swift Stab'
+	BleedList[384134] = 'Pierce'
+	BleedList[384575] = 'Crippling Bite' -- instant
+	BleedList[384577] = 'Crippling Bite' -- 5s
+	BleedList[388912] = 'Severing Slash'
+	BleedList[393444] = 'Gushing Wound'
+	BleedList[413131] = 'Whirling Dagger'
+	BleedList[413136] = 'Whirling Dagger' -- Bouncy Chain Missiles
+end
+
 local BadList = {} -- Dispels that backfire
 lib.BadList = BadList
 
