@@ -120,14 +120,7 @@ E.InverseAnchors = {
 	TOPRIGHT = 'BOTTOMLEFT'
 }
 
-E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
-
-E.BadDispels = {
-	[34914]		= 'Vampiric Touch',		-- horrifies
-	[233490]	= 'Unstable Affliction'	-- silences
-}
-
---Workaround for people wanting to use white and it reverting to their class color.
+-- Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
 -- Socket Type info from 10.0.7

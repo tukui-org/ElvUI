@@ -1781,6 +1781,7 @@ P.unitframe = {
 			Curse = {r = 0.6, g = 0, b = 1, a = 0.45},
 			Disease = {r = 0.6, g = 0.4, b = 0, a = 0.45},
 			Poison = {r = 0, g = 0.6, b = 0, a = 0.45},
+			Bleed = {r = 1, g = 0.2, b = 0.6, a = 0.45},
 			blendMode = 'ADD',
 		},
 	},
@@ -2456,6 +2457,7 @@ P.cooldown = {
 	targetAura = true,
 	hideBlizzard = false,
 	useIndicatorColor = false,
+	showModRate = false,
 
 	expiringColor = { r = 1, g = 0.2, b = 0.2 },
 	secondsColor = { r = 1, g = 1, b = 0.2 },

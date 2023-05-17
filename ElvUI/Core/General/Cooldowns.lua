@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local next, ipairs, pairs = next, ipairs, pairs
-local floor, tinsert = floor, tinsert
+local time, floor, tinsert = time, floor, tinsert
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -46,7 +46,6 @@ function E:Cooldown_OnUpdate(elapsed)
 		return 2
 	else
 		local now = GetTime()
-
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -147,6 +146,7 @@ function E:Cooldown_Options(timer, db, parent)
 	timer.targetAura = E.db.cooldown.targetAura and parent.targetAura
 	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
 	timer.roundTime = E.db.cooldown.roundTime
+	timer.showModRate = db.showModRate
 
 	if db.reverse ~= nil then
 		local enabled = E:CooldownEnabled()
@@ -222,10 +222,21 @@ function E:OnSetCooldown(start, duration, modRate)
 
 	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
+
 		timer.start = start
-		timer.duration = duration
-		timer.modRate = modRate
-		timer.endTime = start + duration
+		timer.modRate = timer.showModRate and modRate or 1
+		timer.duration = duration * (not timer.showModRate and modRate or 1)
+
+		local now = GetTime()
+		if start <= (now + 1) then -- this second is for Target Aura
+			timer.endTime = start + duration
+		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
+			local startup = time() - now
+			local cdtime = (2 ^ 32) / 1000 - start
+			local startTime = startup - cdtime
+			timer.endTime = startTime + duration
+		end
+
 		timer.endCooldown = timer.endTime - 0.05
 		timer.paused = nil -- a new cooldown was called
 
