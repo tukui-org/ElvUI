@@ -20,13 +20,34 @@ DebuffColors.EnemyNPC = { r = 0.9, g = 0.1, b = 0.1 }
 DebuffColors.BadDispel = { r = 0.05, g = 0.85, b = 0.94 }
 DebuffColors.Stealable = { r = 0.93, g = 0.91, b = 0.55 }
 
-local DispelList = {}
+local DispelList = {} -- List of types the player can dispel
 lib.DispelList = DispelList
 
-local BleedList = {}
+local BleedList = {} -- Contains spells classified as Applied Aura Bleeds: https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
 lib.BleedList = BleedList
 
-if Retail then -- updated May 17th 2023 (patch 10.1): https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
+local BlockList = {} -- Spells blocked from AuraHighlight
+lib.BlockList = BlockList
+
+local BadList = {} -- Spells that backfire when dispelled
+lib.BadList = BadList
+
+if Retail then
+	-- Bad to dispel spells
+	BadList[34914] = "Vampiric Touch"		-- horrifies
+	BadList[233490] = "Unstable Affliction"	-- silences
+
+	-- Block spells from AuraHighlight
+	BlockList[140546] = "Fully Mutated"
+	BlockList[136184] = "Thick Bones"
+	BlockList[136186] = "Clear Mind"
+	BlockList[136182] = "Improved Synapses"
+	BlockList[136180] = "Keen Eyesight"
+	BlockList[105171] = "Deep Corruption"
+	BlockList[108220] = "Deep Corruption"
+	BlockList[116095] = "Disable" -- Slow
+
+	-- Bleed spells updated May 17th 2023 (patch 10.1)
 	BleedList[102066] = "Flesh Rip"
 	BleedList[10266] = "Lung Puncture"
 	BleedList[102925] = "Garrote"
@@ -663,28 +684,6 @@ if Retail then -- updated May 17th 2023 (patch 10.1): https://www.wowhead.com/sp
 	BleedList[97357] = "Gaping Wound"
 	BleedList[98282] = "Tiny Rend"
 	BleedList[99100] = "Mangle"
-end
-
-local BadList = {} -- Dispels that backfire
-lib.BadList = BadList
-
-if Retail then
-	BadList[34914] = 'Vampiric Touch'		-- horrifies
-	BadList[233490] = 'Unstable Affliction'	-- silences
-end
-
-local BlockList = {} -- Blocked from AuraHighlight
-lib.BlockList = BlockList
-
-if Retail then
-	BlockList[140546] = 'Fully Mutated'
-	BlockList[136184] = 'Thick Bones'
-	BlockList[136186] = 'Clear Mind'
-	BlockList[136182] = 'Improved Synapses'
-	BlockList[136180] = 'Keen Eyesight'
-	BlockList[105171] = 'Deep Corruption'
-	BlockList[108220] = 'Deep Corruption'
-	BlockList[116095] = 'Disable' -- Slow
 end
 
 function lib:GetDebuffTypeColor()
