@@ -990,6 +990,7 @@ L["Left Panel Width"] = "左面板寬度"
 L["Left Position"] = "左邊位置"
 L["Left Shift"] = "左 Shift"
 L["Left to Right"] = "左到右"
+L["Left"] = true
 L["LEVEL_BOSS"] = "為團隊首領框架設定等級為 -1, 也可以設定為 0 來關閉."
 L["LF Guild Frame"] = "尋求公會"
 L["LFG Queue"] = "隨機隊列"
