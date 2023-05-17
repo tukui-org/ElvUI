@@ -11,8 +11,60 @@ local GetCVar, SetCVar = GetCVar, SetCVar
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local IsPlayerSpell = IsPlayerSpell
 
+local DebuffColors = CopyTable(DebuffTypeColor)
+lib.DebuffTypeColor = DebuffColors
+
+-- These dont exist in Blizzards color table
+DebuffColors.Bleed = { r = 1, g = 0.2, b = 0.6 }
+DebuffColors.Stealable = { r = 0.93, g = 0.91, b = 0.55 }
+
 local DispelList = {}
 lib.DispelList = DispelList
+
+local BleedList = {}
+lib.BleedList = BleedList
+
+if Retail then
+	BleedList[1079] = 'Rip'
+end
+
+local BadList = {} -- Dispels that backfire
+lib.BadList = BadList
+
+if Retail then
+	BadList[34914] = 'Vampiric Touch'		-- horrifies
+	BadList[233490] = 'Unstable Affliction'	-- silences
+end
+
+local BlockList = {} -- Blocked from AuraHighlight
+lib.BlockList = BlockList
+
+if Retail then
+	BlockList[140546] = 'Fully Mutated'
+	BlockList[136184] = 'Thick Bones'
+	BlockList[136186] = 'Clear Mind'
+	BlockList[136182] = 'Improved Synapses'
+	BlockList[136180] = 'Keen Eyesight'
+	BlockList[105171] = 'Deep Corruption'
+	BlockList[108220] = 'Deep Corruption'
+	BlockList[116095] = 'Disable' -- Slow
+end
+
+function lib:GetDebuffTypeColor()
+	return DebuffColors
+end
+
+function lib:GetBleedList()
+	return BleedList
+end
+
+function lib:GetBadList()
+	return BadList
+end
+
+function lib:GetBlockList()
+	return BlockList
+end
 
 function lib:GetMyDispelTypes()
 	return DispelList
@@ -64,6 +116,7 @@ do
 		elseif myClass == 'DRUID' then
 			local cure = Retail and CheckSpell(88423) -- Nature's Cure
 			local corruption = CheckSpell(2782) -- Remove Corruption (retail), Curse (classic)
+			DispelList.Bleed = true
 			DispelList.Magic = cure
 			DispelList.Curse = cure or corruption
 			DispelList.Poison = cure or (Retail and corruption) or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
@@ -98,12 +151,13 @@ do
 		elseif myClass == 'EVOKER' then
 			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
 			local expunge = CheckSpell(365585) -- Expunge (Devastation)
-			local cauterizing = CheckSpell(374251) -- Cauterizing Flame (Still need bleed support.)
+			local cauterizing = CheckSpell(374251) -- Cauterizing Flame
 
 			DispelList.Magic = naturalize
 			DispelList.Poison = naturalize or expunge or cauterizing
 			DispelList.Disease = cauterizing
 			DispelList.Curse = cauterizing
+			DispelList.Bleed = cauterizing
 		end
 
 		if undoRanks then

@@ -12,6 +12,8 @@ local GetTime = GetTime
 local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 
+local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+
 NP.BossMods_ActiveUnitGUID = {}
 NP.BossMods_TextureCache = {}
 
@@ -152,7 +154,7 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate, skip)
 	if desaturate then
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	else
-		local color = _G.DebuffTypeColor.none
+		local color = DebuffColors.none
 		button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 	end
 
