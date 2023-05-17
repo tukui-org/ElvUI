@@ -713,14 +713,14 @@ end
 do
 	local _, myClass = UnitClass("player")
 	local WarlockPetSpells = {
-		[89808] = 'Singe',
-		[19505] = 'Devour Magic Rank 1',
-		[19731] = 'Devour Magic Rank 2',
-		[19734] = 'Devour Magic Rank 3',
-		[19736] = 'Devour Magic Rank 4',
-		[27276] = 'Devour Magic Rank 5',
-		[27277] = 'Devour Magic Rank 6',
-		[48011] = 'Devour Magic Rank 7'
+		[89808] = "Singe",
+		[19505] = "Devour Magic Rank 1",
+		[19731] = "Devour Magic Rank 2",
+		[19734] = "Devour Magic Rank 3",
+		[19736] = "Devour Magic Rank 4",
+		[27276] = "Devour Magic Rank 5",
+		[27277] = "Devour Magic Rank 6",
+		[48011] = "Devour Magic Rank 7"
 	}
 
 	local function CheckSpell(spellID, pet)
