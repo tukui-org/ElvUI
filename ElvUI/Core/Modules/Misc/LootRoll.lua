@@ -81,16 +81,25 @@ end
 
 local function StatusUpdate(button, elapsed)
 	local bar = button.parent
-	if not bar.rollID then
+	local rollID = bar.rollID
+	if not rollID then
 		bar:Hide()
 		return
 	end
 
 	if button.elapsed and button.elapsed > 0.1 then
-		local timeLeft = GetLootRollTimeLeft(bar.rollID)
+		local timeLeft = GetLootRollTimeLeft(rollID)
 		if timeLeft <= 0 then -- workaround for other addons auto-passing loot
-			M.CANCEL_LOOT_ROLL(bar, 'OnUpdate', bar.rollID)
+			M.CANCEL_LOOT_ROLL(bar, 'OnUpdate', rollID)
 		else
+			if E.Retail then
+				local _, name, count = GetLootRollItemInfo(rollID)
+				if name then
+					bar.button.stack:SetShown(count > 1)
+					bar.button.stack:SetText(count)
+				end
+			end
+
 			button:SetValue(timeLeft)
 			button.elapsed = 0
 		end
