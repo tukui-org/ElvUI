@@ -229,7 +229,7 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.paused = nil -- a new cooldown was called
 
 		local now = GetTime()
-		if start <= (now + 1) then
+		if start <= (now + 1) then -- this second is for Target Aura
 			timer.endTime = start + duration
 		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
 			local startup = time() - now
