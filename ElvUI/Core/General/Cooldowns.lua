@@ -226,7 +226,6 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.start = start
 		timer.modRate = timer.showModRate and modRate or 1
 		timer.duration = duration * (not timer.showModRate and modRate or 1)
-		timer.paused = nil -- a new cooldown was called
 
 		local now = GetTime()
 		if start <= (now + 1) then -- this second is for Target Aura
@@ -239,6 +238,7 @@ function E:OnSetCooldown(start, duration, modRate)
 		end
 
 		timer.endCooldown = timer.endTime - 0.05
+		timer.paused = nil -- a new cooldown was called
 
 		E:Cooldown_TimerUpdate(timer)
 	elseif self.timer then
