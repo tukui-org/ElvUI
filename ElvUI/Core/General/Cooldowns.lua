@@ -46,7 +46,6 @@ function E:Cooldown_OnUpdate(elapsed)
 		return 2
 	else
 		local now = GetTime()
-
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -230,7 +229,7 @@ function E:OnSetCooldown(start, duration, modRate)
 		timer.paused = nil -- a new cooldown was called
 
 		local now = GetTime()
-		if start <= now then
+		if start <= (now + 1) then
 			timer.endTime = start + duration
 		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
 			local startup = time() - now
