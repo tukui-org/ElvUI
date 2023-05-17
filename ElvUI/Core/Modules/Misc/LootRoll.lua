@@ -39,6 +39,14 @@ local function ClickRoll(button)
 end
 
 local rolltypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
+local rollState = Enum.EncounterLootDropRollState and {
+	[Enum.EncounterLootDropRollState.NeedMainSpec] = 1,
+	[Enum.EncounterLootDropRollState.NeedOffSpec] = 1,
+	[Enum.EncounterLootDropRollState.Greed] = 2,
+	[Enum.EncounterLootDropRollState.Transmog] = 4,
+	[Enum.EncounterLootDropRollState.Pass] = 0
+}
+
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
 	GameTooltip:AddLine(button.tiptext)
@@ -410,7 +418,7 @@ function M:LOOT_HISTORY_UPDATE_DROP(_, encounterID, lootListID)
 	local dropInfo = C_LootHistory_GetSortedInfoForDrop(encounterID, lootListID)
 	if dropInfo then
 		for rollIndex, roll in next, dropInfo.rollInfos do
-			M:UpdateLootRollDrop(roll.roll, roll.state, roll.playerName, roll.playerClass, rollIndex)
+			M:UpdateLootRollDrop(roll.roll, rollState[roll.state] or -1, roll.playerName, roll.playerClass, rollIndex)
 		end
 	end
 end
