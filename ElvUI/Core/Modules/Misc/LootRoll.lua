@@ -357,7 +357,7 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 	-- Add cached roll info, if any
 	for rollid, rollTable in pairs(cachedRolls) do
-		if bar.rollID == rollid then --rollid matches cached rollid
+		if bar.rollID == rollid then -- rollid matches cached rollid
 			for rollType, rollerInfo in pairs(rollTable) do
 				if not bar.rolls[rollType] then bar.rolls[rollType] = {} end
 
