@@ -507,11 +507,11 @@ function M:LoadLootRoll()
 	M:UpdateLootRollFrames()
 
 	M:RegisterEvent('START_LOOT_ROLL')
-	M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
 
 	if E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
+		M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
 	end
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
