@@ -508,7 +508,7 @@ function M:LoadLootRoll()
 
 	M:RegisterEvent('START_LOOT_ROLL')
 
-	if E.Retail then
+	if not E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 		M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
