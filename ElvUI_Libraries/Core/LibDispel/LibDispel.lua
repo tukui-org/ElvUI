@@ -47,6 +47,9 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- Slow
 
+	-- Important
+	BlockList[393444] = "Gushing Wound" -- Halls of Infusion
+
 	-- Bleed spells updated May 17th 2023 (patch 10.1)
 	BleedList[102066] = "Flesh Rip"
 	BleedList[10266] = "Lung Puncture"
