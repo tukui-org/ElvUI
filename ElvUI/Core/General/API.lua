@@ -2,7 +2,6 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
-local AB = E:GetModule('ActionBars')
 local LCS = E.Libs.LCS
 
 local _G = _G
