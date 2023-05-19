@@ -73,7 +73,7 @@ function S:AddonList()
 				end
 
 				if disabled or reason == 'DEP_DISABLED' then
-					string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
+					string:SetText(E:StripString(title or name, true))
 				end
 
 				if enabledForSome then
