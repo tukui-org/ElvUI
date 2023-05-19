@@ -48,7 +48,7 @@ if Retail then
 	BlockList[116095] = "Disable" -- Slow
 
 	-- Important
-	BlockList[393444] = "Gushing Wound" -- Halls of Infusion
+	BleedList[393444] = "Gushing Wound" -- Halls of Infusion
 
 	-- Bleed spells updated May 17th 2023 (patch 10.1)
 	BleedList[102066] = "Flesh Rip"
