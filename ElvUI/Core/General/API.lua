@@ -2,7 +2,6 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
-local AB = E:GetModule('ActionBars')
 local LCS = E.Libs.LCS
 
 local _G = _G
@@ -56,6 +55,8 @@ local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvDB, ElvUF
+
+local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 E.MountIDs = {}
 E.MountText = {}
@@ -200,6 +201,29 @@ end
 
 function E:IsDispellableByMe(debuffType)
 	return E.Libs.Dispel:IsDispellableByMe(debuffType)
+end
+
+function E:UpdateDispelColors()
+	local colors = E.db.general.debuffColors
+	for debuffType, db in next, colors do
+		local color = DebuffColors[debuffType]
+		if color then
+			E:UpdateClassColor(db)
+			color.r, color.g, color.b, color.a = db.r, db.g, db.b, db.a
+		end
+	end
+end
+
+function E:UpdateDispelColor(debuffType, r, g, b, a)
+	local color = DebuffColors[debuffType]
+	if color then
+		color.r, color.g, color.b, color.a = r, g, b, a
+	end
+
+	local db = E.db.general.debuffColors[debuffType]
+	if db then
+		db.r, db.g, db.b, db.a = r, g, b, a
+	end
 end
 
 do

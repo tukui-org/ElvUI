@@ -58,6 +58,19 @@ P.general = {
 		height = 22,
 		width = 0
 	},
+	debuffColors = { -- handle colors of LibDispel
+		none = { r = 0.8, g = 0, b = 0 },
+		Magic = { r = 0.2, g = 0.6, b = 1 },
+		Curse = { r = 0.6, g = 0, b = 1 },
+		Disease = { r = 0.6, g = 0.4, b = 0 },
+		Poison = { r = 0, g = 0.6, b = 0 },
+
+		-- These dont exist in Blizzards color table
+		EnemyNPC = { r = 0.9, g = 0.1, b = 0.1 },
+		BadDispel = { r = 0.05, g = 0.85, b = 0.94 },
+		Bleed = { r = 1, g = 0.2, b = 0.6 },
+		Stealable = { r = 0.93, g = 0.91, b = 0.55 },
+	},
 	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
