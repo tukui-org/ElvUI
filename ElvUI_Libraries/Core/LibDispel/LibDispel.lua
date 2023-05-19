@@ -48,7 +48,7 @@ if Retail then
 	BlockList[116095] = "Disable" -- Slow
 
 	-- Bleed spells updated May 19th 2023 (Patch 10.1)
-	--- Combined lists:
+	--- Combined lists (without duplicates):
 	---- Apply Aura> Physical DoT:		https://www.wowhead.com/spells/school:0/live-only:on?filter=29;3;0
 	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15/live-only:on?filter=109;6;0
 
