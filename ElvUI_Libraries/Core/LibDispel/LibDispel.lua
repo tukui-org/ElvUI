@@ -856,7 +856,6 @@ if Retail then
 	BleedList[411101] = "Artifact Shards"
 	BleedList[411437] = "Brutal Lacerations"
 	BleedList[411924] = "Drilljaws"
-	BleedList[411924] = "Drilljaws"
 end
 
 function lib:GetDebuffTypeColor()
