@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub = gsub
 local unpack = unpack
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnEnableState = GetAddOnEnableState
