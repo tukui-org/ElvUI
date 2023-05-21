@@ -63,7 +63,7 @@ function DB:ReputationBar_Update()
 
 			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
 			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-			label = format('%s%s|r %s', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
+			label = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
 
 			DB:ReputationBar_QuestRep(factionID)
 		end

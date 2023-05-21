@@ -1207,6 +1207,7 @@ Colors.debuffHighlight.args.Magic = ACH:Color(L["Magic Effect"], nil, 4, true)
 Colors.debuffHighlight.args.Curse = ACH:Color(L["Curse Effect"], nil, 5, true)
 Colors.debuffHighlight.args.Disease = ACH:Color(L["Disease Effect"], nil, 6, true)
 Colors.debuffHighlight.args.Poison = ACH:Color(L["Poison Effect"], nil, 7, true)
+Colors.debuffHighlight.args.Bleed = ACH:Color(L["Bleed Effect"], nil, 8, true)
 
 Colors.threatGroup = ACH:Group(L["Threat"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 Colors.threatGroup.args['0'] = ACH:Color(L["Low Threat"], nil, 1)

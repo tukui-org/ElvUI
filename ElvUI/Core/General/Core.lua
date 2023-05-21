@@ -120,14 +120,7 @@ E.InverseAnchors = {
 	TOPRIGHT = 'BOTTOMLEFT'
 }
 
-E.DispelFilter = E.Libs.Dispel:GetMyDispelTypes()
-
-E.BadDispels = {
-	[34914]		= 'Vampiric Touch',		-- horrifies
-	[233490]	= 'Unstable Affliction'	-- silences
-}
-
---Workaround for people wanting to use white and it reverting to their class color.
+-- Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
 -- Socket Type info from 10.0.7
@@ -197,7 +190,7 @@ function E:GrabColorPickerValues(r, g, b)
 	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
 
 	-- set and define the new values
-	_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
 	r, g, b = _G.ColorPickerFrame:GetColorRGB()
 
 	-- swap back to the old values
@@ -1441,6 +1434,7 @@ end
 
 function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
+	E:UpdateDispelColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
@@ -1971,6 +1965,7 @@ function E:Initialize()
 	E:RefreshModulesDB()
 	E:LoadMovers()
 	E:UpdateMedia()
+	E:UpdateDispelColors()
 	E:UpdateCooldownSettings('all')
 	E:Contruct_StaticPopups()
 

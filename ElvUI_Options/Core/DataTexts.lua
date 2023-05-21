@@ -157,6 +157,8 @@ local function CreateDTOptions(name, data)
 				optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
 			elseif key == 'NoLabel' then
 				optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
+			elseif key == 'NoIcon' then
+				optionTable.args[key] = ACH:Toggle(L["No Icon"], nil, 3)
 			elseif key == 'ShowOthers' then
 				optionTable.args[key] = ACH:Toggle(L["Other AddOns"], nil, 4)
 			elseif key == 'decimalLength' then

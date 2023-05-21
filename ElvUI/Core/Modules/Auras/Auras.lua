@@ -24,6 +24,8 @@ local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
 local MasqueGroupDebuffs = Masque and Masque:Group('ElvUI', 'Debuffs')
 
+local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+
 local DIRECTION_TO_POINT = {
 	DOWN_RIGHT = 'TOPLEFT',
 	DOWN_LEFT = 'TOPRIGHT',
@@ -269,7 +271,7 @@ function A:UpdateAura(button, index)
 
 	local dtype = debuffType or 'none'
 	if button.debuffType ~= dtype then
-		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and _G.DebuffTypeColor[dtype]) or E.db.general.bordercolor
+		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and DebuffColors[dtype]) or E.db.general.bordercolor
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype

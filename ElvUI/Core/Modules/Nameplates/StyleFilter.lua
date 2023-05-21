@@ -54,6 +54,8 @@ local UnitThreatSituation = UnitThreatSituation
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
+local BleedList = E.Libs.Dispel:GetBleedList()
+
 local FallbackColor = {r=1, b=1, g=1}
 
 mod.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
@@ -332,18 +334,20 @@ end
 
 function mod:StyleFilterDispelCheck(frame, filter)
 	local index = 1
-	local name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+	local name, _, _, auraType, _, _, _, isStealable, _, spellID = UnitAura(frame.unit, index, filter)
 	while name do
 		if filter == 'HELPFUL' then
 			if isStealable then
 				return true
 			end
-		elseif debuffType and E:IsDispellableByMe(debuffType) then
+		elseif auraType and E:IsDispellableByMe(auraType) then
+			return true
+		elseif not auraType and BleedList[spellID] and E:IsDispellableByMe('Bleed') then
 			return true
 		end
 
 		index = index + 1
-		name, _, _, debuffType, _, _, _, isStealable = UnitAura(frame.unit, index, filter)
+		name, _, _, auraType, _, _, _, isStealable, _, spellID = UnitAura(frame.unit, index, filter)
 	end
 end
 

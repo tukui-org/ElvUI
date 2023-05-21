@@ -4,7 +4,6 @@ local NP = E:GetModule('NamePlates')
 local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local format, strlower = format, strlower
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, unpack, next, floor = sort, wipe, unpack, next, floor
@@ -17,6 +16,10 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
+local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+local BleedList = E.Libs.Dispel:GetBleedList()
+local BadDispels = E.Libs.Dispel:GetBadList()
+
 UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
 UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
@@ -24,6 +27,7 @@ UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
 UF.SourceStacks = { -- stack any source
 	[370898] = 'Permeating Chill'	-- Evoker
 }
+
 UF.ExcludeStacks = {
 	[110960] = 'Greater Invisibility',	-- Mage
 	[295378] = 'Concentrated Flame',	-- Heart of Azeroth
@@ -429,21 +433,27 @@ end
 function UF:PostUpdateAura(_, button)
 	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
-
+	local steal, bad, enemy = DebuffColors.Stealable, DebuffColors.BadDispel, DebuffColors.EnemyNPC
 	local r, g, b
+
 	if button.isDebuff then
 		if enemyNPC then
-			if db.auraByType then
-				r, g, b = .9, .1, .1
+			if enemy and db.auraByType then
+				r, g, b = enemy.r, enemy.g, enemy.b
 			end
-		elseif db.auraByDispels and button.debuffType and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.debuffType) then
-			r, g, b = .05, .85, .94
+		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and E:IsDispellableByMe(button.debuffType) then
+			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
-			local color = _G.DebuffTypeColor[button.debuffType] or _G.DebuffTypeColor.none
-			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
+			local bleed = not button.debuffType and BleedList[button.spellID] and E:IsDispellableByMe('Bleed') and DebuffColors.Bleed
+			if bleed then
+				r, g, b = bleed.r, bleed.g, bleed.b
+			else
+				local color = DebuffColors[button.debuffType or 'none']
+				r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
+			end
 		end
-	elseif db.auraByDispels and button.isStealable and not button.isFriend then
-		r, g, b = .93, .91, .55
+	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
+		r, g, b = steal.r, steal.g, steal.b
 	end
 
 	if not r then
@@ -609,6 +619,9 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
 	local dispel = self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType)
+
+	local bleed = not dispel and not debuffType and E:IsDispellableByMe('Bleed')
+	if bleed then dispel = BleedList[spellID] end
 
 	button.canDesaturate = db.desaturate
 	button.myPet = source == 'pet'
