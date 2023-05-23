@@ -153,15 +153,6 @@ P.general = {
 				xOffset = 3,
 				yOffset = 4,
 			},
-			queueStatus = {
-				enable = true,
-				position = 'BOTTOMRIGHT',
-				xOffset = -2,
-				yOffset = 2,
-				font = 'Expressway',
-				fontSize = 11,
-				fontOutline = 'OUTLINE',
-			},
 			battlefield = {
 				scale = 1.1,
 				position = 'BOTTOMRIGHT',
