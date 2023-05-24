@@ -74,20 +74,20 @@ local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
-local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
-	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName) end, nil, not E.Retail)
+local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
+	local config = ACH:Group(E.NewSign..L["Private Auras"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 
-	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.SidePositions)
 	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
 	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
 	config.args.icon.inline = true
 
-	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.duration.args.enable.customWidth = 100
 	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
@@ -95,7 +95,7 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName)
 	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
 	config.args.duration.inline = true
 
-	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName) end)
+	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
 	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
@@ -1207,6 +1207,7 @@ Colors.debuffHighlight.args.Magic = ACH:Color(L["Magic Effect"], nil, 4, true)
 Colors.debuffHighlight.args.Curse = ACH:Color(L["Curse Effect"], nil, 5, true)
 Colors.debuffHighlight.args.Disease = ACH:Color(L["Disease Effect"], nil, 6, true)
 Colors.debuffHighlight.args.Poison = ACH:Color(L["Poison Effect"], nil, 7, true)
+Colors.debuffHighlight.args.Bleed = ACH:Color(L["Bleed Effect"], nil, 8, true)
 
 Colors.threatGroup = ACH:Group(L["Threat"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 Colors.threatGroup.args['0'] = ACH:Color(L["Low Threat"], nil, 1)

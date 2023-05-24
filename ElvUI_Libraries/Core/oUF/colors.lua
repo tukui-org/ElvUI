@@ -4,6 +4,9 @@ local Private = oUF.Private
 
 local frame_metatable = Private.frame_metatable
 
+local LibDispel = LibStub('LibDispel-1.0')
+local DebuffColors = LibDispel:GetDebuffTypeColor()
+
 local colorMixin = {
 	SetRGBA = function(self, r, g, b, a)
 		if(r > 1 or g > 1 or b > 1) then
@@ -139,7 +142,7 @@ if(not customClassColors()) then
 	end)
 end
 
-for debuffType, color in next, _G.DebuffTypeColor do
+for debuffType, color in next, DebuffColors do
 	colors.debuff[debuffType] = oUF:CreateColor(color.r, color.g, color.b)
 end
 

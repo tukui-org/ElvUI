@@ -22,6 +22,9 @@ local GameTooltip = GameTooltip
 
 local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 
+local LibDispel = LibStub('LibDispel-1.0')
+local DebuffColors = LibDispel:GetDebuffTypeColor()
+
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
 	if s == infinity then return end
@@ -125,7 +128,7 @@ local function updateBar(element, bar)
 			debuffType = 'none'
 		end
 
-		local color = _G.DebuffTypeColor[debuffType]
+		local color = DebuffColors[debuffType]
 		r, g, b = color.r, color.g, color.b
 	end
 

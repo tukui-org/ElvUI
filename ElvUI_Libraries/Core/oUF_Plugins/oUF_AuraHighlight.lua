@@ -3,59 +3,50 @@ local oUF = ns.oUF
 
 local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
-local BlackList = {}
--- GLOBALS: DebuffTypeColor
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
+local DebuffColors = LibDispel:GetDebuffTypeColor()
+local DispelFilter = LibDispel:GetMyDispelTypes()
+local BlockList = LibDispel:GetBlockList()
+local BleedList = LibDispel:GetBleedList()
 
-if oUF.isRetail then
-	BlackList[140546] = true -- Fully Mutated
-	BlackList[136184] = true -- Thick Bones
-	BlackList[136186] = true -- Clear mind
-	BlackList[136182] = true -- Improved Synapses
-	BlackList[136180] = true -- Keen Eyesight
-	BlackList[105171] = true -- Deep Corruption
-	BlackList[108220] = true -- Deep Corruption
-	BlackList[116095] = true -- Disable, Slow
-	BlackList[137637] = true -- Warbringer, Slow
-end
-
-local function DebuffLoop(check, list, name, icon, _, debuffType, _, _, _, _, _, spellID)
+local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
 	local spell = list and (list[spellID] or list[name])
+	local dispelType = auraType or (BleedList[spellID] and 'Bleed') or nil
+
 	if spell then
 		if spell.enable then
-			return debuffType, icon, true, spell.style, spell.color
+			return dispelType, icon, true, spell.style, spell.color
 		end
-	elseif debuffType then
+	elseif dispelType then
 		local allow = not check
 		if not allow then
-			local filter = LibDispel:GetMyDispelTypes()
-			allow = filter and filter[debuffType]
+			allow = DispelFilter[dispelType]
 		end
 
-		if allow and not (BlackList[spellID] or BlackList[name]) then
-			return debuffType, icon
+		if allow and not BlockList[spellID] then
+			return dispelType, icon
 		end
 	end
 end
 
-local function BuffLoop(_, list, name, icon, _, debuffType, _, _, source, _, _, spellID)
+local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, spellID)
 	local spell = list and (list[spellID] or list[name])
 	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
-		return debuffType, icon, true, spell.style, spell.color
+		return auraType, icon, true, spell.style, spell.color
 	end
 end
 
 local function Looper(unit, filter, check, list, func)
 	local index = 1
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
 	while name do
-		local DebuffType, Icon, filtered, style, color = func(check, list, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 		if Icon then
-			return DebuffType, Icon, filtered, style, color
+			return AuraType, Icon, filtered, style, color
 		else
 			index = index + 1
-			name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
 		end
 	end
 end
@@ -63,17 +54,17 @@ end
 local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local debuffType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
-	if icon then return debuffType, icon, filtered, style, color end
+	local auraType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
+	if icon then return auraType, icon, filtered, style, color end
 
-	debuffType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
-	if icon then return debuffType, icon, filtered, style, color end
+	auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+	if icon then return auraType, icon, filtered, style, color end
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
 	if not unit or self.unit ~= unit then return end
 
-	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
 	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then
@@ -83,8 +74,8 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			self.AuraHightlightGlow:Hide()
 			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
-	elseif debuffType then
-		color = DebuffTypeColor[debuffType or 'none']
+	elseif auraType then
+		color = DebuffColors[auraType or 'none']
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
@@ -107,7 +98,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 	end
 
 	if self.AuraHighlight.PostUpdate then
-		self.AuraHighlight:PostUpdate(self, debuffType, texture, wasFiltered, style, color)
+		self.AuraHighlight:PostUpdate(self, auraType, texture, wasFiltered, style, color)
 	end
 end
 

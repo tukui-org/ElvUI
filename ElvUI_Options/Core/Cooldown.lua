@@ -18,8 +18,9 @@ local function group(order, db, label)
 	E.Options.args.cooldown.args[db] = main
 
 	local mainArgs = main.args
-	mainArgs.reverse = ACH:Toggle(L["Reverse Toggle"], L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."], 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
-	mainArgs.hideBlizzard = ACH:Toggle(L["Force Hide Blizzard Text"], L["This option will force hide Blizzard's cooldown text if it is enabled at [Interface > ActionBars > Show Numbers on Cooldown]."], 2, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, nil, function() if db == 'global' then return E.db.cooldown.enable else return (E.db.cooldown.enable and not profile(db).reverse) or (not E.db.cooldown.enable and profile(db).reverse) end end)
+	mainArgs.showModRate = ACH:Toggle(E.NewSign..L["Display Modified Rate"], nil, 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
+	mainArgs.reverse = ACH:Toggle(L["Reverse Toggle"], L["Reverse Toggle will enable Cooldown Text on this module when the global setting is disabled and disable them when the global setting is enabled."], 5, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
+	mainArgs.hideBlizzard = ACH:Toggle(L["Force Hide Blizzard Text"], L["This option will force hide Blizzard's cooldown text if it is enabled at [Interface > ActionBars > Show Numbers on Cooldown]."], 6, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, nil, function() if db == 'global' then return E.db.cooldown.enable else return (E.db.cooldown.enable and not profile(db).reverse) or (not E.db.cooldown.enable and profile(db).reverse) end end)
 
 	local seconds = ACH:Group(L["Text Threshold"], nil, 10, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, function() return not (profile(db)).checkSeconds end)
 	seconds.inline = true
@@ -70,7 +71,7 @@ local function group(order, db, label)
 		mainArgs.colorGroup.disabled = nil
 		mainArgs.colorGroup.name = L["Colors"]
 
-		mainArgs.roundTime = ACH:Toggle(L["Round Timers"], nil, 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
+		mainArgs.roundTime = ACH:Toggle(L["Round Timers"], nil, 2, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 
 		-- keep these two in this order
 		E.Options.args.cooldown.args.hideBlizzard = mainArgs.hideBlizzard
@@ -78,6 +79,7 @@ local function group(order, db, label)
 	elseif db == 'auras' then
 		mainArgs.reverse = nil
 		mainArgs.hideBlizzard = nil
+		mainArgs.showModRate = nil
 		mainArgs.fontGroup = nil
 	elseif db == 'actionbar' then
 		local auraGroup = ACH:Group(L["Target Aura"], nil, 5)

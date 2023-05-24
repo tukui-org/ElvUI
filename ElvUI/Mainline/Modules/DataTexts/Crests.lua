@@ -42,7 +42,6 @@ local crests = {
 	}
 }
 
-local currency = {}
 local crestText = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s / %s'
 local fragmentText, fragmentSplit, fragmentAdd = '%s | %s', '%s / 15', '%s+%s'
 
@@ -50,8 +49,8 @@ local function GetFragmentText(text, crest, count, fragments)
 	return format(fragmentText, text, crest.color:WrapTextInColorCode((fragments and fragments > 0) and format(fragmentAdd, count, fragments) or count))
 end
 
-local function GetCrestText(crest, currency)
-	return crest.color:WrapTextInColorCode(format(crestText, currency.iconFileID, currency.quantity, currency.maxQuantity))
+local function GetCrestText(crest, info)
+	return crest.color:WrapTextInColorCode(format(crestText, info.iconFileID, info.quantity, info.maxQuantity))
 end
 
 local function OnEvent(self)
@@ -60,15 +59,17 @@ local function OnEvent(self)
 		if crest.fragment then
 			text = GetFragmentText(text, crest, GetItemCount(crest.id) or 0, floor((GetItemCount(crest.fragment) or 0) / 15))
 		else
-			currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
-			text = crest.color:WrapTextInColorCode(currency.quantity)
+			local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
+			if currency then
+				text = crest.color:WrapTextInColorCode(currency.quantity)
+			end
 		end
 	end
 
 	self.text:SetFormattedText(text)
 end
 
-local function OnEnter(self)
+local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(FRAGMENTS_EARNED)
 

@@ -381,6 +381,7 @@ do --this can save some main file locals
 		z['Notlucky-LaughingSkull']		= ElvGreen -- [Horde] Warrior
 		z['Unluckyone-LaughingSkull']	= ElvGreen -- [Horde] Shaman
 		z['Luckydruid-LaughingSkull']	= ElvGreen -- [Alliance] Druid
+		z['Lucky-LaughingSkull']		= ElvGreen -- [Horde] x
 		-- Repooc
 		z['Sifpooc-Stormrage']			= itsPooc	-- [Alliance] DH
 		z['Fragmented-Stormrage']		= itsPooc	-- [Alliance] Warlock

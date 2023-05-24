@@ -10,7 +10,8 @@ if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
+local DispelFilter = LibDispel:GetMyDispelTypes()
 
 local abs = math.abs
 local format, floor = format, floor
@@ -186,8 +187,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			if addon.FilterDispellableDebuff then
 				DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority --Make Dispel buffs on top of Boss Debuffs
 
-				local filter = LibDispel:GetMyDispelTypes()
-				priority = filter and filter[debuffType] and DispelPriority[debuffType] or 0
+				priority = DispelFilter[debuffType] and DispelPriority[debuffType] or 0
 				if priority == 0 then
 					debuffType = nil
 				end

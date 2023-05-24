@@ -354,6 +354,8 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
+	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
+
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 		button:SetState(0, 'action', i)
@@ -365,8 +367,8 @@ function AB:CreateBar(id)
 			button:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
-		if (E.Retail or E.Wrath) and i == 12 then
-			button:SetState(GetVehicleBarIndex(), 'custom', AB.customExitButton)
+		if vehicleIndex and i == 12 then
+			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
 		end
 
 		if E.Retail then
