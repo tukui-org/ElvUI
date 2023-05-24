@@ -43,6 +43,28 @@ G.nameplates.filters = {
 	}
 }
 
+if E.Retail then
+	G.nameplates.filters.ElvUI_Incorporeal = {
+		triggers = {
+			priority = 2,
+			nameplateType = {
+				enable = true,
+				enemyNPC = true
+			},
+			names = {
+				['204560'] = true -- Incorporeal Being
+			}
+		},
+		actions = {
+			scale = 1.15,
+			color = {
+				health = true,
+				healthColor = { r = 0, g = 1, b = 1 }
+			}
+		}
+	}
+end
+
 E.StyleFilterDefaults = {
 	triggers = {
 		priority = 1,
