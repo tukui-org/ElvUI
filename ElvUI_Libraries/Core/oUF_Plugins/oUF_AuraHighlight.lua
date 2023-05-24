@@ -4,7 +4,7 @@ local oUF = ns.oUF
 local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
 local BlockList = LibDispel:GetBlockList()
