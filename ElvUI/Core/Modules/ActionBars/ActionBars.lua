@@ -91,7 +91,8 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Wrath) and format('[vehicleui][possessbar] %d; [overridebar] %d;', GetVehicleBarIndex(), GetOverrideBarIndex()) or ''
+	local vehicleIndex = GetVehicleBarIndex() -- for now, a vehicle has precedence over override bars
+	local fullConditions = (E.Retail or E.Wrath) and format('[vehicleui] %d; [overridebar] %d; [possessbar] %d;', vehicleIndex, GetOverrideBarIndex(), vehicleIndex) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
