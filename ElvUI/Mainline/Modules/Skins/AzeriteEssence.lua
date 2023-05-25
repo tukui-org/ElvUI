@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
+local hooksecurefunc = hooksecurefunc
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
 function S:Blizzard_AzeriteEssenceUI()
@@ -21,25 +22,43 @@ function S:Blizzard_AzeriteEssenceUI()
 	AzeriteEssenceUI.OrbBackground:SetAllPoints(AzeriteEssenceUI.ItemModelScene)
 	AzeriteEssenceUI.OrbRing:Size(483, 480)
 
-	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
+	S:HandleTrimScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
 
 	-- Essence List on the right
-	for _, button in pairs(AzeriteEssenceUI.EssenceList.buttons) do
-		button:DisableDrawLayer('ARTWORK')
-		button:StyleButton()
+	hooksecurefunc(AzeriteEssenceUI.EssenceList.ScrollBox, 'Update', function(box)
+		if not box.ScrollTarget then return end
 
-		S:HandleIcon(button.Icon)
-		button.Icon:Point('LEFT', button, 'LEFT', 6, 0)
+		for _, button in next, { box.ScrollTarget:GetChildren() } do
+			if not button.IsSkinned then
+				button:DisableDrawLayer('ARTWORK')
+				button:StyleButton()
 
-		button:CreateBackdrop()
-		button.backdrop:Point('TOPLEFT', 2, -3)
-		button.backdrop:Point('BOTTOMRIGHT', -2, 3)
-	end
+				local icon = button.Icon
+				if icon and not icon.backdrop then
+					S:HandleIcon(icon, true)
 
-	-- Header on the Essence List
-	AzeriteEssenceUI:HookScript('OnShow', function(s)
-		s.EssenceList.HeaderButton:StripTextures()
-		s.EssenceList.HeaderButton:SetTemplate('Transparent')
+					icon:ClearAllPoints()
+					icon:Point('TOPLEFT', button, 4, -4)
+					icon:Size(33)
+				end
+
+				if not button.backdrop then
+					button:CreateBackdrop('Transparent')
+					button.backdrop:SetInside(button, 1, 1)
+
+					if button.hover then
+						button.hover:SetInside(button.backdrop)
+					end
+				end
+
+				if button.PendingGlow then
+					button.PendingGlow:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+					button.PendingGlow:SetInside(button.backdrop)
+				end
+
+				button.IsSkinned = true
+			end
+		end
 	end)
 end
 
