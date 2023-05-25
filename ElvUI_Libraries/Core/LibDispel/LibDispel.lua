@@ -853,6 +853,7 @@ if Retail then
 	BleedList[403662] = "Garrote"
 	BleedList[404978] = "Devastating Rend"
 	BleedList[405233] = "Thrash"
+	BleedList[406365] = "Rending Charge"
 	BleedList[411101] = "Artifact Shards"
 	BleedList[411437] = "Brutal Lacerations"
 	BleedList[411924] = "Drilljaws"
