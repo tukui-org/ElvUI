@@ -990,6 +990,7 @@ L["Left Panel Width"] = "左面板宽度"
 L["Left Position"] = "左边位置"
 L["Left Shift"] = "左Shift键"
 L["Left to Right"] = "左到右"
+L["Left"] = true
 L["LEVEL_BOSS"] = "对首领请设置为-1, 或者设为0以禁用."
 L["LF Guild Frame"] = "寻求公会"
 L["LFG Queue"] = "随机队列"
