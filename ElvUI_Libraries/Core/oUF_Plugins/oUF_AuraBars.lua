@@ -22,7 +22,7 @@ local GameTooltip = GameTooltip
 
 local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60

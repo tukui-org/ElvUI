@@ -4,7 +4,7 @@ local Private = oUF.Private
 
 local frame_metatable = Private.frame_metatable
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
 local colorMixin = {

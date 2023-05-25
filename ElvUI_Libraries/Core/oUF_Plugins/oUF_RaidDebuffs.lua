@@ -10,7 +10,7 @@ if not _G.oUF_RaidDebuffs then
 	_G.oUF_RaidDebuffs = addon
 end
 
-local LibDispel = _G.LibStub('LibDispel-1.0')
+local LibDispel = LibStub('LibDispel-1.0')
 local DispelFilter = LibDispel:GetMyDispelTypes()
 
 local abs = math.abs

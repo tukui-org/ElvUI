@@ -989,6 +989,7 @@ L["Left Panel Width"] = true
 L["Left Position"] = true
 L["Left Shift"] = true
 L["Left to Right"] = true
+L["Left"] = true
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = true
 L["LFG Queue"] = true
