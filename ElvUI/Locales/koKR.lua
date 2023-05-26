@@ -431,8 +431,8 @@ L["EHELP_COMMANDS"] = ([=[*ElvUI의 주요 단축키 목록입니다.|r commands
  */emove|r  -  프레임 이동 모드를 켭니다.
  */ereset|r  -  모든 프레임을 원래 위치로 재설정합니다.
  */bgstats|r  -  전장전용 정보문자 통계를 ON/OFF합니다.
- */estatus|r  -  Important informations for support questions.
- */egrid|r ^64|r or ^128|r or ^256|r  -  픽셀 격자를 변경합니다..
+ */estatus|r  -  ElvUI의 AddOn 상세 정보와 Plugins 정보창을 표시합니다.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  픽셀 격자를 변경합니다.
  */edebug|r ^on|r or ^off|r  -  ElvUI를 제외한 모든 애드온을 비활성화합니다.
  참고: */edebug|r ^off\r 명령어는 */edebug|r ^on|r 명령어를 통해 비활성화된 애드온을 다시 활성화합니다.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
