@@ -425,7 +425,7 @@ L["DESC_MOVERCONFIG"] = [=[프레임을 드래그하여 원하는 위치로 이�
   Ctrl + 우클릭 - 프레임 위치를 기본값으로 초기화합니다.
 ]=]
 
-L["EHELP_COMMANDS"] = ([=[*ElvUI의 주요 단축키 목록입니다.|r commands:
+L["EHELP_COMMANDS"] = ([=[*ElvUI의 주요 명령어 목록입니다.|r 명령어:
  */ec|r or */elvui|r  -  ElvUI *설정|r을 열거나 닫습니다.
  */kb|r  -  단축키 설정 모드를 켭니다.
  */emove|r  -  프레임 이동 모드를 켭니다.
