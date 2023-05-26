@@ -22,4 +22,4 @@ jobs:
           zip -9 -r elvui-$VERSION.zip ElvUI ElvUI_Libraries ElvUI_Options
       - name: Publish package
         run: |
-          curl https://tukui-api.acidweb.dev/v1/upload/elvui-$VERSION.zip --upload-file elvui-$VERSION.zip -H "X-Tukui-Upload-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
+          curl https://tukui-api.acidweb.dev/v1/upload/elvui-$VERSION.zip --upload-file elvui-$VERSION.zip -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
