@@ -47,10 +47,10 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- Slow
 
-	-- Bleed spells updated May 20th 2023 by Simpy for Patch 10.1
+	-- Bleed spells updated May 25th 2023 by Simpy for Patch 10.1
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
-	---- Apply Aura> Physical DoT:		https://www.wowhead.com/spells/school:0/live-only:on?filter=29;3;0
-	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15/live-only:on?filter=109;6;0
+	---- Apply Aura> Physical DoT:		https://www.wowhead.com/spells/school:0?filter=29;3;0
+	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
 
 	BleedList[703] = "Garrote"
 	BleedList[1079] = "Rip"
@@ -847,15 +847,26 @@ if Retail then
 	BleedList[397092] = "Impaling Horn"
 	BleedList[397112] = "Primal Devastation"
 	BleedList[397364] = "Thunderous Roar"
+	BleedList[398392] = "Stomp"
+	BleedList[398497] = "Rock Needle"
 	BleedList[400050] = "Claw Rip"
 	BleedList[400941] = "Ragged Slash"
+	BleedList[401370] = "Deep Claws"
 	BleedList[403589] = "Gushing Wound"
 	BleedList[403662] = "Garrote"
+	BleedList[403790] = "Vicious Swipe"
+	BleedList[404907] = "Rupturing Slash"
 	BleedList[404978] = "Devastating Rend"
 	BleedList[405233] = "Thrash"
+	BleedList[406183] = "Time Slash"
+	BleedList[406215] = "Vicious Bite"
+	BleedList[406365] = "Rending Charge"
+	BleedList[406499] = "Ravening Leaps"
 	BleedList[411101] = "Artifact Shards"
 	BleedList[411437] = "Brutal Lacerations"
 	BleedList[411924] = "Drilljaws"
+	BleedList[413131] = "Whirling Dagger"
+	BleedList[413136] = "Whirling Dagger"
 end
 
 function lib:GetDebuffTypeColor()
