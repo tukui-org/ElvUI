@@ -396,7 +396,7 @@ L["You can quickly change your displayed DataTexts by mousing over them while ho
 L["You can see someones average item level inside the tooltip by holding shift and mousing over them."] = "Shift를 누른 상태에서 마우스를 가져가면 툴팁 내에서 누군가의 평균 아이템 레벨을 볼 수 있습니다."
 L["You don't have enough money to repair."] = "수리 비용이 부족합니다."
 L["You don't have permission to mark targets."] = "레이드 아이콘을 지정할 권한이 없습니다."
-L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "적용을 위해 UI 다시 불러오기가 필요할 수 있는 설정을 가져왔습니다. 지금 UI를 재시작하시겠습니까?"
+L["You have imported settings which may require a UI reload to take effect. Reload now?"] = "적용을 위해 UI 재시작이 필요할 수 있는 설정을 가져왔습니다. 지금 UI를 재시작하시겠습니까?"
 L["You must be at a vendor."] = "상인을 만나야 가능합니다."
 L["You must purchase a bank slot first!"] = "우선 은행 가방 칸을 구입해야 합니다!"
 L["Your items have been repaired for: "] = "자동으로 수리하고 비용을 지불했습니다: "
