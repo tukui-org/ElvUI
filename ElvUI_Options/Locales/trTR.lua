@@ -990,6 +990,7 @@ L["Left Panel Width"] = "Sol Panel Genisligi"
 L["Left Position"] = "Sol Pozisyon"
 L["Left Shift"] = "Sol shift"
 L["Left to Right"] = "Soldan saga"
+L["Left"] = true
 L["LEVEL_BOSS"] = "Patron birimleri için seviyeyi -1'e veya devre dışı bırakmak için 0'a ayarlayın."
 L["LF Guild Frame"] = "Lonca Ariyorum Cercevesi"
 L["LFG Queue"] = "LFG Sirasi"

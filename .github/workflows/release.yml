@@ -1,0 +1,25 @@
+name: Release pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Publish release to CDN
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v3
+      - name: Prepare environment
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+      - name: Prepare package
+        run: |
+          zip -9 -r elvui-$VERSION.zip ElvUI ElvUI_Libraries ElvUI_Options
+      - name: Publish package
+        run: |
+          curl https://tukui-api.acidweb.dev/v1/upload/elvui-$VERSION.zip --upload-file elvui-$VERSION.zip -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
