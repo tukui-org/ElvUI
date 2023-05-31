@@ -705,6 +705,10 @@ function NP:UpdatePlateBase(nameplate)
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
+	if not nameplate.UpdateAllElements then
+		return -- prevent error when loading in with our plates and Plater
+	end
+
 	if event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
 
