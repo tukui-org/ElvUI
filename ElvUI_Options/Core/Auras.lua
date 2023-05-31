@@ -39,14 +39,14 @@ SharedOptions.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, 
 SharedOptions.countGroup.args.countXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
 SharedOptions.countGroup.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
 
-SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
-SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2)
-SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3)
-SharedOptions.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true)
-SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5)
-SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 })
-SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
+SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1)
+SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2, nil, nil, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5, nil, nil, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
+SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 }, nil, nil, nil, function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end)
 
 local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E.ShowPopup = true end)
 E.Options.args.auras = Auras
