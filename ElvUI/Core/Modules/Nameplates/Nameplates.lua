@@ -772,11 +772,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.widgetContainer:ClearAllPoints()
 
 			local db = NP.db.widgets
-			if db.below then
-				nameplate.widgetContainer:SetPoint('TOP', nameplate, 'BOTTOM', db.xOffset, db.yOffset)
-			else
-				nameplate.widgetContainer:SetPoint('BOTTOM', nameplate, 'TOP', db.xOffset, db.yOffset)
-			end
+			local below = db.below and 'BOTTOM' or 'TOP'
+			nameplate.widgetContainer:SetPoint(E.InversePoints[below], nameplate, below, db.xOffset, db.yOffset)
 		end
 
 		if nameplate.widgetsOnly then
