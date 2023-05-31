@@ -713,8 +713,8 @@ P.nameplates = {
 	},
 	widgets = {
 		below = true,
-		yOffset = -3,
-		xOffset = 0
+		xOffset = 0,
+		yOffset = -3
 	},
 	colors = {
 		auraByType = true,
