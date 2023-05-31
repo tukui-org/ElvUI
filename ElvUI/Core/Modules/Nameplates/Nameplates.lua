@@ -705,7 +705,10 @@ function NP:UpdatePlateBase(nameplate)
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if not nameplate.UpdateAllElements then
+	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
+		NP:SetupTarget(nameplate) -- pass it, even as nil here
+		return -- don't proceed
+	elseif not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
 	end
 
@@ -726,8 +729,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this after UpdatePlateBase
 		nameplate.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
-	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
-		NP:SetupTarget(nameplate) -- pass it, even as nil here
 	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		if not unit then unit = nameplate.unit end
 
