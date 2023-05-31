@@ -711,6 +711,11 @@ P.nameplates = {
 		ElvUI_NonTarget = {triggers = {enable = true}},
 		ElvUI_Incorporeal = {triggers = {enable = true}},
 	},
+	widgets = {
+		below = true,
+		yOffset = -3,
+		xOffset = 0
+	},
 	colors = {
 		auraByType = true,
 		auraByDispels = true,
