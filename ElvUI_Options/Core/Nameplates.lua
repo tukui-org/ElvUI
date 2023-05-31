@@ -495,7 +495,7 @@ NamePlates.generalGroup.args.threatGroup.args.beingTankedByTank = ACH:Toggle(L["
 NamePlates.generalGroup.args.threatGroup.args.beingTankedByPet = ACH:Toggle(L["Off Tank (Pets)"], nil, 5, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.generalGroup.args.threatGroup.args.indicator = ACH:Toggle(L["Show Icon"], nil, 6, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
 
-NamePlates.generalGroup.args.widgetGroup = ACH:Group(L["Widget"], nil, 90, nil, function(info) return E.db.nameplates.widgets[info[#info]] end, function(info, value) E.db.nameplates.widgets[info[#info]] = value NP:ConfigureAll() end)
+NamePlates.generalGroup.args.widgetGroup = ACH:Group(E.NewSign..L["Widget"], nil, 90, nil, function(info) return E.db.nameplates.widgets[info[#info]] end, function(info, value) E.db.nameplates.widgets[info[#info]] = value NP:ConfigureAll() end)
 NamePlates.generalGroup.args.widgetGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 1, { min = -100, max = 100, step = 1 })
 NamePlates.generalGroup.args.widgetGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
 NamePlates.generalGroup.args.widgetGroup.args.below = ACH:Toggle(L["Below"], nil, 3)
