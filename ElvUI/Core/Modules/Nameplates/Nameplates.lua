@@ -708,7 +708,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
 		return -- don't proceed
-	elseif not nameplate.UpdateAllElements then
+	elseif not nameplate or not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
 	end
 
