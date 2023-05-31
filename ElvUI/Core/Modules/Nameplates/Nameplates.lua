@@ -755,10 +755,17 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 
-		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame
+		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame or nil
 		if nameplate.softTargetFrame then
 			nameplate.softTargetFrame:SetParent(nameplate)
 			nameplate.softTargetFrame:SetIgnoreParentAlpha(true)
+		end
+
+		nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer or nil
+		if nameplate.widgetContainer then
+			nameplate.widgetContainer:SetParent(nameplate)
+			nameplate.widgetContainer:ClearAllPoints()
+			nameplate.widgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
 		end
 
 		if nameplate.widgetsOnly then
@@ -766,13 +773,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 			if nameplate.RaisedElement:IsShown() then
 				nameplate.RaisedElement:Hide()
-			end
-
-			nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer
-			if nameplate.widgetContainer then
-				nameplate.widgetContainer:SetParent(nameplate)
-				nameplate.widgetContainer:ClearAllPoints()
-				nameplate.widgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
 			end
 
 			nameplate.previousType = nil -- dont get the plate stuck for next unit
@@ -807,20 +807,24 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
-		if nameplate.softTargetFrame then
-			nameplate.softTargetFrame:SetParent(nameplate.blizzPlate)
-			nameplate.softTargetFrame:SetIgnoreParentAlpha(false)
-		end
-
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
 
 			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
-		elseif nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
+		end
+
+		if nameplate.softTargetFrame then
+			nameplate.softTargetFrame:SetParent(nameplate.blizzPlate)
+			nameplate.softTargetFrame:SetIgnoreParentAlpha(false)
+			nameplate.softTargetFrame = nil
+		end
+
+		if nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
 			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
 			nameplate.widgetContainer:ClearAllPoints()
 			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
+			nameplate.widgetContainer = nil
 		end
 
 		-- these can appear on SoftTarget nameplates and they aren't
