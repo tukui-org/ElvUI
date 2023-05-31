@@ -760,13 +760,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 
-		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame or nil
+		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame
 		if nameplate.softTargetFrame then
 			nameplate.softTargetFrame:SetParent(nameplate)
 			nameplate.softTargetFrame:SetIgnoreParentAlpha(true)
 		end
 
-		nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer or nil
+		nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer
 		if nameplate.widgetContainer then
 			nameplate.widgetContainer:SetParent(nameplate)
 			nameplate.widgetContainer:ClearAllPoints()
@@ -822,14 +822,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.softTargetFrame then
 			nameplate.softTargetFrame:SetParent(nameplate.blizzPlate)
 			nameplate.softTargetFrame:SetIgnoreParentAlpha(false)
-			nameplate.softTargetFrame = nil
 		end
 
 		if nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
 			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
 			nameplate.widgetContainer:ClearAllPoints()
 			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
-			nameplate.widgetContainer = nil
 		end
 
 		-- these can appear on SoftTarget nameplates and they aren't
