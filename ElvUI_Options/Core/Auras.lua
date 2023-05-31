@@ -40,7 +40,7 @@ SharedOptions.countGroup.args.countXOffset = ACH:Range(L["X-Offset"], nil, 4, { 
 SharedOptions.countGroup.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
 
 do
-	local notBarShow = function(info) if E.db.auras[info[#info-2]] then return not E.db.auras[info[#info-2]].barShow end end
+	local notBarShow = function(info) local db = E.db.auras[info[#info-2]] if db then return not db.barShow end end
 	SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1)
 	SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2, nil, nil, nil, nil, nil, notBarShow)
 	SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3, nil, nil, nil, notBarShow)
