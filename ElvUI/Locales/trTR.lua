@@ -2,7 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
-L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. Please reinstall ElvUI."
+L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s cercevesinin cakisan bir baglanti noktasi var. Guclendirmeler'i Ana cerceveye baglamaya zorluyor.'"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s Filtrelerini sizinle paylasmak istiyor. istegi kabul etmek ister misiniz?"

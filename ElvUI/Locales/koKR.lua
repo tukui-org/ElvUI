@@ -2,7 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
-L["UPDATE_REQUEST"] = "There seems to be an issue with your ElvUI installation. Please reinstall ElvUI."
+L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00키로 다음의 행동을 실행합니다 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 프레임에 버프를 본체 프레임에 강제로 연결하는 충돌 앵커가 있습니다."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터 설정을 전송하려 합니다. 받으시겠습니까?"
