@@ -45,9 +45,9 @@ body:
     id: terms
     attributes:
       label: ElvUI Changelog & Troubleshooting
-      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://www.tukui.org/forum/viewtopic.php?p=28#p28)
+      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot)
       options:
-        - label: I have confirmed that I have read the [Changelog](https://www.tukui.org/download.php?ui=elvui&changelog).
+        - label: I have confirmed that I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
           required: true
         - label: I have verfied ElvUI is up to date by checking /estatus.
           required: true

@@ -31,7 +31,7 @@ local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE
 -- GLOBALS: ElvUIBindPopupWindowCheckButton
 
-local DOWNLOAD_URL = 'https://www.tukui.org/download.php?ui=elvui'
+local DOWNLOAD_URL = 'https://www.tukui.org/elvui'
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
