@@ -21,7 +21,7 @@ E.TutorialList = {
 	L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."],
 	L["You can quickly change your displayed DataTexts by mousing over them while holding ALT."],
 	L["To quickly move around certain elements of the UI, type /emove"],
-	L["From time to time you should compare your ElvUI version against the most recent version on our website or the Tukui client."],
+	L["From time to time you should compare your ElvUI version against the most recent version on our website."],
 	L["To list all available ElvUI commands, type in chat /ehelp"]
 }
 
