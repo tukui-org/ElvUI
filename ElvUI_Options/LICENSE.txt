@@ -1,12 +1,12 @@
 Custom License for: ElvUI_Options
-	Copyright © 2009-2023 The contents of this addon, excluding third-party resources, are
+	Copyright ©2009-2023 The contents of this addon, excluding third-party resources, are
 	copyrighted to their authors with all rights reserved.
 
-	This addon is free to use and the authors hereby grants you the following rights:
+	This addon is free to use and the authors hereby grant you the following rights:
 
 	1. 	You may make modifications to this addon for private use only, you
 		may not publicize any portion of this addon. The only exception being you may
-		upload to the tukui.org or github website.
+		upload to the GitHub website.
 
 	2. 	Do not modify the name of this addon, including the addon folders.
 
