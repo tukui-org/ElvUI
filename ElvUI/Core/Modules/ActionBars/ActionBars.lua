@@ -882,8 +882,8 @@ do
 				AB.WasDragonflying = E.MountDragons[arg3] and arg3
 			end
 		else
-			local dragonCheck = E.Retail and IsMounted() and DragonChecks[event]
-			local dragonMount = dragonCheck and dragonCheck()
+			local dragonCheck = E.Retail and DragonChecks[event]
+			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
 
 			if dragonMount or (E.Retail and (IsPossessBarVisible() or HasOverrideActionBar()))
 			or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
