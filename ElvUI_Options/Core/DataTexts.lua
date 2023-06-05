@@ -53,53 +53,68 @@ end
 
 local dts = { [''] = L["None"] }
 
+local function CopyList()
+	return E:CopyTable(dts, DT.DataTextList)
+end
+
 function DT:SetupPanelOptions(name, data)
-	local options = E.Options.args.datatexts.args.panels.args[name]
-	local customPanel = E.global.datatexts.customPanels[name]
 	if not data then data = DT.db.panels[name] end
 
+	local custom = E.global.datatexts.customPanels[name]
+	local options = E.Options.args.datatexts.args.panels.args[name]
 	if not options then
-		options = ACH:Group(ColorizeName(name, not customPanel and 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
+		options = ACH:Group(ColorizeName(name, not custom and 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
 		E.Options.args.datatexts.args.panels.args[name] = options
 
-		if customPanel then
-			options.set = function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end
+		if custom then
+			options.set = function(info, value)
+				E.db.datatexts.panels[name][info[#info]] = value
+				DT:UpdatePanelAttributes(name, custom)
+			end
+
 			options.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
-			options.args.panelOptions = ACH:Group(L["Panel Options"], nil, 5, nil, function(info) return E.global.datatexts.customPanels[name][info[#info]] end, function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end)
+			options.args.panelOptions = ACH:Group(L["Panel Options"], nil, 5, nil, function(info) return custom[info[#info]] end, function(info, value) custom[info[#info]] = value DT:UpdatePanelAttributes(name, custom) end)
 			options.args.panelOptions.inline = true
 
 			options.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(name) end, nil, true, 'full')
 
-			options.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return E.global.datatexts.customPanels[name].fonts[info[#info]] end, function(info, value) E.global.datatexts.customPanels[name].fonts[info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end, function() return not E.global.datatexts.customPanels[name].fonts.enable end)
+			options.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return custom.fonts[info[#info]] end, function(info, value) custom.fonts[info[#info]] = value DT:UpdatePanelAttributes(name, custom) end, function() return not custom.fonts.enable end)
 			options.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, false)
 			options.args.panelOptions.args.fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 			options.args.panelOptions.args.fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
 			options.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 
 			local panelOpts = E:CopyTable(options.args.panelOptions.args, DTPanelOptions)
-			panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[name][info[#info]] = value DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) DT:SetupPanelOptions(name) end
-			panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
-			panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[name].tooltipAnchor == 'ANCHOR_CURSOR' end
-			panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[name][key] end
-			panelOpts.templateGroup.set = function(_, key, value) E.global.datatexts.customPanels[name][key] = value; DT:UpdatePanelAttributes(name, E.global.datatexts.customPanels[name]) end
-		elseif not (P.datatexts.panels[name] or customPanel) then
+			panelOpts.tooltip.args.tooltipYOffset.disabled = function() return custom.tooltipAnchor == 'ANCHOR_CURSOR' end
+			panelOpts.tooltip.args.tooltipXOffset.disabled = function() return custom.tooltipAnchor == 'ANCHOR_CURSOR' end
+
+			-- we dont need to set the get here
+			panelOpts.numPoints.set = function(info, value)
+				custom[info[#info]] = value
+				DT:UpdatePanelAttributes(name, custom)
+				DT:SetupPanelOptions(name)
+			end
+
+			panelOpts.templateGroup.get = function(_, key) return custom[key] end
+			panelOpts.templateGroup.set = function(_, key, value)
+				custom[key] = value
+				DT:UpdatePanelAttributes(name, custom)
+			end
+		elseif not (P.datatexts.panels[name] or custom) then
 			options.args.delete = ACH:Execute(L["Delete"], nil, 2, function() PanelGroup_Delete(name) end)
 			return
 		end
 	end
 
 	for dtSlot in ipairs(DT.db.panels[name]) do
-		local dtStr = tostring(dtSlot)
 		if not options.args.dts then
 			options.args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 			options.args.dts.inline = true
 		end
-		if customPanel and dtSlot > customPanel.numPoints then
-			options.args.dts.args[dtStr] = nil
-		else
-			options.args.dts.args[dtStr] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
-		end
+
+		local dtStr = tostring(dtSlot)
+		options.args.dts.args[dtStr] = (custom and dtSlot <= custom.numPoints) and ACH:Select('', nil, dtSlot, CopyList) or nil
 
 		if data and data.battleground ~= nil then
 			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
@@ -109,11 +124,7 @@ function DT:SetupPanelOptions(name, data)
 				options.args.battledts.inline = true
 			end
 
-			if customPanel and dtSlot > customPanel.numPoints then
-				options.args.battledts.args[dtStr] = nil
-			else
-				options.args.battledts.args[dtStr] = ACH:Select('', nil, dtSlot, function() return E:CopyTable(dts, DT.DataTextList) end)
-			end
+			options.args.battledts.args[dtStr] = (custom and dtSlot <= custom.numPoints) and ACH:Select('', nil, dtSlot, CopyList) or nil
 		end
 	end
 end
