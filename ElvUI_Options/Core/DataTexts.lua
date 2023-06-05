@@ -86,7 +86,6 @@ function DT:SetupPanelOptions(name, data)
 			options.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 
 			local panelOpts = E:CopyTable(options.args.panelOptions.args, DTPanelOptions)
-			panelOpts.numPoints.get = function() return custom.numPoints end
 			panelOpts.numPoints.set = function(info, value)
 				custom[info[#info]] = value
 				DT:UpdatePanelAttributes(name, custom)
