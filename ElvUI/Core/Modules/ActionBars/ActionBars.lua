@@ -867,7 +867,14 @@ end
 do
 	local DragonChecks = {
 		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
-		PLAYER_TARGET_CHANGED = function() return E:IsDragonRiding() end
+		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end
+	}
+
+	local DragonIgnore = {
+		UNIT_HEALTH = true,
+		PLAYER_TARGET_CHANGED = true,
+		UPDATE_OVERRIDE_ACTIONBAR = true,
+		PLAYER_MOUNT_DISPLAY_CHANGED = true
 	}
 
 	DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = function()
@@ -898,7 +905,7 @@ do
 				AB:FadeBlings(a)
 			end
 
-			if event ~= 'UNIT_HEALTH' and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
+			if not DragonIgnore[event] and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
 				AB.WasDragonflying = nil
 			end
 		end
