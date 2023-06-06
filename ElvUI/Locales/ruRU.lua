@@ -2,7 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
-L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
+L["UPDATE_REQUEST"] = "Кажется, возникла проблема с установкой. Пожалуйста, переустановите ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"
@@ -134,7 +134,7 @@ L["Focus Frame"] = "Фокус"
 L["FocusTarget Frame"] = "Цель фокуса"
 L["Frame"] = "Рамка"
 L["Friends List"] = "Список друзей"
-L["From time to time you should compare your ElvUI version against the most recent version on our website."] = true
+L["From time to time you should compare your ElvUI version against the most recent version on our website."] = "Периодически Вы должны сравнивать свою версию ElvUI с самой последней версией на нашем сайте."
 L["G"] = "Г"
 L["Ghost"] = "Призрак"
 L["GM Ticket Frame"] = "Запрос ГМу"
