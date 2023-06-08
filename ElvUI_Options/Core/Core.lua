@@ -253,7 +253,7 @@ E.Options.args.info.args.spacer = ACH:Spacer(2)
 E.Options.args.info.args.support = ACH:Group(L["Support"], nil, 3)
 E.Options.args.info.args.support.inline = true
 E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 140)
-E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.gg/xFWcfgE') end, nil, nil, 140)
+E.Options.args.info.args.support.args.discord = ACH:Execute(L["Discord"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org') end, nil, nil, 140)
 
 E.Options.args.info.args.download = ACH:Group(L["Download"], nil, 4)
 E.Options.args.info.args.download.inline = true
