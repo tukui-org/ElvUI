@@ -950,6 +950,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[402617] = List(), -- Blazing Heat
 		[401809] = List(), -- Corrupting Shadow
 		[405394] = List(), -- Shadowflame
+		[405914] = List(), -- Withering Vulnerability 1
+		[413597] = List(), -- Withering Vulnerability 2
 	-- Experimentation of Dracthyr
 		[406317] = List(), -- Mutilation 1
 		[406365] = List(), -- Mutilation 2
