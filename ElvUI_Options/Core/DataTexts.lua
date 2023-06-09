@@ -60,15 +60,16 @@ end
 function DT:SetupPanelOptions(name, data)
 	if not data then data = DT.db.panels[name] end
 
+	local db = E.db.datatexts.panels[name]
 	local custom = E.global.datatexts.customPanels[name]
 	local options = E.Options.args.datatexts.args.panels.args[name]
 	if not options then
-		options = ACH:Group(ColorizeName(name, not custom and 'ffffff'), nil, nil, nil, function(info) return E.db.datatexts.panels[name][info[#info]] end, function(info, value) E.db.datatexts.panels[name][info[#info]] = value DT:UpdatePanelInfo(name) end)
+		options = ACH:Group(ColorizeName(name, not custom and 'ffffff'), nil, nil, nil, function(info) return db[info[#info]] end, function(info, value) db[info[#info]] = value DT:UpdatePanelInfo(name) end)
 		E.Options.args.datatexts.args.panels.args[name] = options
 
 		if custom then
 			options.set = function(info, value)
-				E.db.datatexts.panels[name][info[#info]] = value
+				db[info[#info]] = value
 				DT:UpdatePanelAttributes(name, custom)
 			end
 
@@ -109,12 +110,12 @@ function DT:SetupPanelOptions(name, data)
 
 	for i = 1, DTPanelOptions.numPoints.softMax do
 		if not options.args.dts then
-			options.args.dts = ACH:Group(' ', nil, 3, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] or '' end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
+			options.args.dts = ACH:Group(' ', nil, 3, nil, function(info) return db[tonumber(info[#info])] or '' end, function(info, value) db[tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 			options.args.dts.inline = true
 		end
 
 		local idx = tostring(i)
-		local hasPoint = custom and i <= custom.numPoints
+		local hasPoint = (not custom and i <= (db.numPoints or 3)) or (custom and i <= custom.numPoints)
 		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList) or nil
 
 		if data and data.battleground ~= nil then
