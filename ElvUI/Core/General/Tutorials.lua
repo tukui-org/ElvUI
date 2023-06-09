@@ -8,7 +8,7 @@ local HIDE = HIDE
 -- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
-	L["Need help? Join our Discord: https://discord.gg/xFWcfgE"],
+	L["Need help? Join our Discord: https://discord.tukui.org"],
 	L["You can enter the keybind mode by typing /kb"],
 	L["Don't forget to backup your WTF folder, all your profiles and settings are in there."],
 	L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."],
