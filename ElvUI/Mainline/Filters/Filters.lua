@@ -684,6 +684,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = List(), -- Sanguine
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
+		[409492] = List(), -- Afflicted Cry
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------

@@ -33,14 +33,13 @@ function S:AddonList()
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
 		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do
 			local index = AddonList.offset + i
 			if index <= numEntrys then
 				local entry = _G['AddonListEntry'..i]
-				local string = _G['AddonListEntry'..i..'Title']
+				local entryTitle = _G['AddonListEntry'..i..'Title']
 				local checkbox = _G['AddonListEntry'..i..'Enabled']
 				local name, title, _, loadable, reason = GetAddOnInfo(index)
 
@@ -56,11 +55,11 @@ function S:AddonList()
 				local checkstate = GetAddOnEnableState(character, index)
 				local enabled = checkstate > 0
 
-				string:FontTemplate(font, 13, 'NONE')
-				entry.Status:FontTemplate(font, 11, 'NONE')
-				entry.Reload:FontTemplate(font, 11, 'NONE')
+				entryTitle:SetFontObject('ElvUIFontNormal')
+				entry.Status:SetFontObject('ElvUIFontSmall')
+				entry.Reload:SetFontObject('ElvUIFontSmall')
 				entry.Reload:SetTextColor(1.0, 0.3, 0.3)
-				entry.LoadAddonButton.Text:FontTemplate(font, 11, 'NONE')
+				entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
 
 				local enabledForSome = not character and checkstate == 1
 				local disabled = not enabled or enabledForSome
@@ -72,17 +71,17 @@ function S:AddonList()
 				end
 
 				if disabled or reason == 'DEP_DISABLED' then
-					string:SetText(E:StripString(title or name, true))
+					entryTitle:SetText(E:StripString(title or name, true))
 				end
 
 				if enabledForSome then
-					string:SetTextColor(0.5, 0.5, 0.5)
+					entryTitle:SetTextColor(0.5, 0.5, 0.5)
 				elseif enabled and (loadable or reason == 'DEP_DEMAND_LOADED' or reason == 'DEMAND_LOADED') then
-					string:SetTextColor(0.9, 0.9, 0.9)
+					entryTitle:SetTextColor(0.9, 0.9, 0.9)
 				elseif enabled and reason ~= 'DEP_DISABLED' then
-					string:SetTextColor(1.0, 0.2, 0.2)
+					entryTitle:SetTextColor(1.0, 0.2, 0.2)
 				else
-					string:SetTextColor(0.3, 0.3, 0.3)
+					entryTitle:SetTextColor(0.3, 0.3, 0.3)
 				end
 
 				local checktex = checkbox:GetCheckedTexture()

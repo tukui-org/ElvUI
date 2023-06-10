@@ -990,6 +990,7 @@ L["Left Panel Width"] = true
 L["Left Position"] = true
 L["Left Shift"] = "Shift (esquerdo)"
 L["Left to Right"] = "Esquerda para Direita"
+L["Left"] = true
 L["LEVEL_BOSS"] = "Coloque level -1 para unidades Boss ou coloque 0 para disabilitar."
 L["LF Guild Frame"] = "Localizador de Guildas"
 L["LFG Queue"] = "Fila de LFG"

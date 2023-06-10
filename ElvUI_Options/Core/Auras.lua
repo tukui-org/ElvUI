@@ -39,14 +39,17 @@ SharedOptions.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, 
 SharedOptions.countGroup.args.countXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
 SharedOptions.countGroup.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
 
-SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
-SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2)
-SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3)
-SharedOptions.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true)
-SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5)
-SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 })
-SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
+do
+	local notBarShow = function(info) local db = E.db.auras[info[#info-2]] if db then return not db.barShow end end
+	SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1)
+	SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2, nil, nil, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5, nil, nil, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 }, nil, nil, nil, notBarShow)
+end
 
 local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E.ShowPopup = true end)
 E.Options.args.auras = Auras
@@ -75,14 +78,12 @@ end
 
 Auras.args.buffs = ACH:Group(L["Buffs"], nil, 10, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
 Auras.args.buffs.args = CopyTable(SharedOptions)
-Auras.args.buffs.args.statusBar.disabled = function() return not E.db.auras.buffs.barShow end
 Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.buffs.barColor local d = P.auras.buffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
 Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 11, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
 Auras.args.debuffs.args = CopyTable(SharedOptions)
-Auras.args.debuffs.args.statusBar.disabled = function() return not E.db.auras.debuffs.barShow end
 Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end

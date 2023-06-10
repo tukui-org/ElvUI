@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibDispel-1.0", 2
+local MAJOR, MINOR = "LibDispel-1.0", 3
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -47,10 +47,10 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- Slow
 
-	-- Bleed spells updated May 20th 2023 by Simpy for Patch 10.1
+	-- Bleed spells updated May 25th 2023 by Simpy for Patch 10.1
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
-	---- Apply Aura> Physical DoT:		https://www.wowhead.com/spells/school:0/live-only:on?filter=29;3;0
-	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15/live-only:on?filter=109;6;0
+	---- Apply Aura> Physical DoT:		https://www.wowhead.com/spells/school:0?filter=29;3;0
+	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
 
 	BleedList[703] = "Garrote"
 	BleedList[1079] = "Rip"
@@ -847,15 +847,26 @@ if Retail then
 	BleedList[397092] = "Impaling Horn"
 	BleedList[397112] = "Primal Devastation"
 	BleedList[397364] = "Thunderous Roar"
+	BleedList[398392] = "Stomp"
+	BleedList[398497] = "Rock Needle"
 	BleedList[400050] = "Claw Rip"
 	BleedList[400941] = "Ragged Slash"
+	BleedList[401370] = "Deep Claws"
 	BleedList[403589] = "Gushing Wound"
 	BleedList[403662] = "Garrote"
+	BleedList[403790] = "Vicious Swipe"
+	BleedList[404907] = "Rupturing Slash"
 	BleedList[404978] = "Devastating Rend"
 	BleedList[405233] = "Thrash"
+	BleedList[406183] = "Time Slash"
+	BleedList[406215] = "Vicious Bite"
+	BleedList[406365] = "Rending Charge"
+	BleedList[406499] = "Ravening Leaps"
 	BleedList[411101] = "Artifact Shards"
 	BleedList[411437] = "Brutal Lacerations"
 	BleedList[411924] = "Drilljaws"
+	BleedList[413131] = "Whirling Dagger"
+	BleedList[413136] = "Whirling Dagger"
 end
 
 function lib:GetDebuffTypeColor()
@@ -885,28 +896,29 @@ end
 do
 	local _, myClass = UnitClass("player")
 	local WarlockPetSpells = {
-		[89808] = "Singe",
-		[19505] = "Devour Magic Rank 1",
-		[19731] = "Devour Magic Rank 2",
-		[19734] = "Devour Magic Rank 3",
-		[19736] = "Devour Magic Rank 4",
-		[27276] = "Devour Magic Rank 5",
-		[27277] = "Devour Magic Rank 6",
-		[48011] = "Devour Magic Rank 7"
+		[89808] = "Singe"
 	}
+
+	if Retail then
+		WarlockPetSpells[132411] = "Singe Magic" -- Grimoire of Sacrifice
+	else
+		WarlockPetSpells[19505] = "Devour Magic Rank 1"
+		WarlockPetSpells[19731] = "Devour Magic Rank 2"
+		WarlockPetSpells[19734] = "Devour Magic Rank 3"
+		WarlockPetSpells[19736] = "Devour Magic Rank 4"
+		WarlockPetSpells[27276] = "Devour Magic Rank 5"
+		WarlockPetSpells[27277] = "Devour Magic Rank 6"
+		WarlockPetSpells[48011] = "Devour Magic Rank 7"
+	end
 
 	local function CheckSpell(spellID, pet)
 		return IsSpellKnownOrOverridesKnown(spellID, pet) and true or nil
 	end
 
 	local function CheckPetSpells()
-		if Retail then
-			return CheckSpell(89808, true)
-		else
-			for spellID in next, WarlockPetSpells do
-				if CheckSpell(spellID, true) then
-					return true
-				end
+		for spellID in next, WarlockPetSpells do
+			if CheckSpell(spellID, true) then
+				return true
 			end
 		end
 	end

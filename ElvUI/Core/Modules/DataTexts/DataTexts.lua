@@ -525,7 +525,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			icon:Hide()
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
 			icon:SetTexCoord(unpack(E.TexCoords))
-
 			dt.icon = icon
 
 			DT.FontStrings[text] = true
@@ -589,7 +588,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 
-		local data = DT.RegisteredDataTexts[ (battlePanel and DT.db.battlePanel or DT.db.panels)[panelName][i] ]
+		local panelDB = battlePanel and DT.db.battlePanel or DT.db.panels
+		local data = DT.RegisteredDataTexts[panelDB[panelName][i]]
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
 
@@ -871,17 +871,17 @@ function DT:Initialize()
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
 	E.EasyMenu.MenuSetItem = function(dt, value)
-		local panel = (dt.battlePanel and DT.db.battlePanel or DT.db.panels)
+		local panelDB = dt.battlePanel and DT.db.battlePanel or DT.db.panels
 
-		panel[dt.parentName][dt.pointIndex] = value
+		panelDB[dt.parentName][dt.pointIndex] = value
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
 		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
-		local panel = (dt.battlePanel and DT.db.battlePanel or DT.db.panels)
-		return dt and (panel[dt.parentName] and panel[dt.parentName][dt.pointIndex] == value)
+		local panelDB = dt.battlePanel and DT.db.battlePanel or DT.db.panels
+		return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
 	end
 
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then

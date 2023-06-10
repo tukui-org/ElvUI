@@ -8,7 +8,7 @@ local HIDE = HIDE
 -- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
-	L["Need help? Join our Discord: https://discord.gg/xFWcfgE"],
+	L["Need help? Join our Discord: https://discord.tukui.org"],
 	L["You can enter the keybind mode by typing /kb"],
 	L["Don't forget to backup your WTF folder, all your profiles and settings are in there."],
 	L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."],
@@ -21,7 +21,7 @@ E.TutorialList = {
 	L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."],
 	L["You can quickly change your displayed DataTexts by mousing over them while holding ALT."],
 	L["To quickly move around certain elements of the UI, type /emove"],
-	L["From time to time you should compare your ElvUI version against the most recent version on our website or the Tukui client."],
+	L["From time to time you should compare your ElvUI version against the most recent version on our website."],
 	L["To list all available ElvUI commands, type in chat /ehelp"]
 }
 

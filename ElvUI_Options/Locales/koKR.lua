@@ -1005,6 +1005,7 @@ L["Left Panel Width"] = "왼쪽 패널 너비"
 L["Left Position"] = "왼쪽 위치"
 L["Left Shift"] = "왼쪽 Shift"
 L["Left to Right"] = "왼쪽에서 오른쪽으로"
+L["Left"] = true
 L["LEVEL_BOSS"] = "대상이 BOSS인 경우 -1로 설정하고 비활성화하려면 0으로 설정하십시오."
 L["Left"] = "왼쪽"
 L["Level"] = "레벨"

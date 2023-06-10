@@ -827,13 +827,15 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			end
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
 			local nameplate = GetNamePlateForUnit('target')
+			local unitFrame = nameplate and nameplate.unitFrame
+
 			if(nameplateCallback) then
-				nameplateCallback(nameplate and nameplate.unitFrame, event, 'target')
+				nameplateCallback(unitFrame, event, 'target')
 			end
 
 			-- UAE is called after the callback to reduce the number of
 			-- ForceUpdate calls layout devs have to do themselves
-			if(nameplate) then
+			if unitFrame and unitFrame.UpdateAllElements then
 				nameplate.unitFrame:UpdateAllElements(event)
 			end
 		elseif(event == 'UNIT_FACTION' and unit) then
@@ -869,7 +871,9 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 
 			-- UAE is called after the callback to reduce the number of
 			-- ForceUpdate calls layout devs have to do themselves
-			nameplate.unitFrame:UpdateAllElements(event)
+			if nameplate.unitFrame.UpdateAllElements then
+				nameplate.unitFrame:UpdateAllElements(event)
+			end
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
 			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
