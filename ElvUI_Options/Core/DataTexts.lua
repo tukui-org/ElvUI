@@ -115,7 +115,7 @@ function DT:SetupPanelOptions(name, data)
 		end
 
 		local idx = tostring(i)
-		local hasPoint = (not custom and i <= (db.numPoints or 3)) or (custom and i <= custom.numPoints)
+		local hasPoint = i <= (custom and custom.numPoints or db.numPoints or 3)
 		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList) or nil
 
 		if data and data.battleground ~= nil then
