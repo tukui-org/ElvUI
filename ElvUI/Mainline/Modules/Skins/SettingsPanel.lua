@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local next, select = next, select
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTabs(tab)
@@ -27,6 +27,10 @@ local function UpdateHeaderExpand(self, expanded)
 	UpdateKeybindButtons(self)
 end
 
+local function forceSaturation(self)
+	self.CheckBox:DesaturateHierarchy(1)
+end
+
 local function HandleCheckbox(checkbox)
 	checkbox:CreateBackdrop()
 	checkbox.backdrop:SetInside(nil, 4, 4)
@@ -44,6 +48,19 @@ local function HandleCheckbox(checkbox)
 			else
 				region:SetTexture('')
 			end
+		end
+	end
+end
+
+local function HandleControlGroup(controls)
+	for i = 1, controls:GetNumChildren() do
+		local element = select(i, controls:GetChildren())
+		if element.SliderWithSteppers then
+			S:HandleStepSlider(element.SliderWithSteppers)
+		end
+		if element.CheckBox then
+			S:HandleCheckBox(element.CheckBox)
+			hooksecurefunc(element, 'DesaturateHierarchy', forceSaturation)
 		end
 	end
 end
@@ -97,10 +114,15 @@ function S:SettingsPanel()
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.isSkinned then
+				if child.NineSlice then
+					child.NineSlice:SetAlpha(0)
+					child:CreateBackdrop('Transparent')
+					child.backdrop:Point('TOPLEFT', 15, -30)
+					child.backdrop:Point('BOTTOMRIGHT', -30, -5)
+				end
 				if child.CheckBox then
 					HandleCheckbox(child.CheckBox) -- this is atlas shit, so S.HandleCheckBox wont work right now
 				end
-
 				if child.Button then
 					if child.Button:GetWidth() < 250 then
 						S:HandleButton(child.Button)
@@ -142,6 +164,26 @@ function S:SettingsPanel()
 				if child.Button1 and child.Button2 then
 					S:HandleButton(child.Button1)
 					S:HandleButton(child.Button2)
+				end
+				if child.Controls then
+					for i = 1, #child.Controls do
+						local control = child.Controls[i]
+						if control.SliderWithSteppers then
+							S:HandleStepSlider(control.SliderWithSteppers)
+						end
+					end
+				end
+				if child.BaseTab then
+					child.BaseTab:StripTextures()
+				end
+				if child.RaidTab then
+					child.RaidTab:StripTextures()
+				end
+				if child.BaseQualityControls then
+					HandleControlGroup(child.BaseQualityControls)
+				end
+				if child.RaidQualityControls then
+					HandleControlGroup(child.RaidQualityControls)
 				end
 
 				child.isSkinned = true
