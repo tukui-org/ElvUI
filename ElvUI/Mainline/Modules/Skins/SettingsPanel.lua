@@ -27,10 +27,6 @@ local function UpdateHeaderExpand(self, expanded)
 	UpdateKeybindButtons(self)
 end
 
-local function forceSaturation(self)
-	self.CheckBox:DesaturateHierarchy(1)
-end
-
 local function HandleCheckbox(checkbox)
 	checkbox:CreateBackdrop()
 	checkbox.backdrop:SetInside(nil, 4, 4)
@@ -53,14 +49,12 @@ local function HandleCheckbox(checkbox)
 end
 
 local function HandleControlGroup(controls)
-	for i = 1, controls:GetNumChildren() do
-		local element = select(i, controls:GetChildren())
-		if element.SliderWithSteppers then
-			S:HandleStepSlider(element.SliderWithSteppers)
+	for _, child in next, { controls:GetChildren() } do
+		if child.SliderWithSteppers then
+			S:HandleStepSlider(child.SliderWithSteppers)
 		end
-		if element.CheckBox then
-			S:HandleCheckBox(element.CheckBox)
-			hooksecurefunc(element, 'DesaturateHierarchy', forceSaturation)
+		if child.CheckBox then
+			S:HandleCheckBox(child.CheckBox)
 		end
 	end
 end
