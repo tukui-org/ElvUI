@@ -6,7 +6,9 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTabs(tab)
-	if tab then tab:StripTextures(true) end
+	if tab then
+		tab:StripTextures(true)
+	end
 end
 
 local function UpdateKeybindButtons(self)
