@@ -105,8 +105,7 @@ local function ReskinMissionButton(button)
 end
 
 local function ReskinMissionList(frame)
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local button = select(i, frame.ScrollTarget:GetChildren())
+	for _, button in next, { frame.ScrollTarget:GetChildren() } do
 		ReskinMissionButton(button)
 	end
 end
