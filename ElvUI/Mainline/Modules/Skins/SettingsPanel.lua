@@ -65,6 +65,15 @@ local function HandleControlGroup(controls)
 	end
 end
 
+local function HandleControlTab(tab)
+	tab:StripTextures(nil, true)
+	tab:CreateBackdrop()
+
+	local spacing = E.Retail and 3 or 10
+	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -12 or -14)
+	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
+end
+
 function S:SettingsPanel()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -174,10 +183,10 @@ function S:SettingsPanel()
 					end
 				end
 				if child.BaseTab then
-					child.BaseTab:StripTextures()
+					HandleControlTab(child.BaseTab)
 				end
 				if child.RaidTab then
-					child.RaidTab:StripTextures()
+					HandleControlTab(child.RaidTab)
 				end
 				if child.BaseQualityControls then
 					HandleControlGroup(child.BaseQualityControls)
