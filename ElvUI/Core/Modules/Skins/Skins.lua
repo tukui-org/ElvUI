@@ -1088,7 +1088,7 @@ do
 		f.isSkinned = true
 	end
 
-	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)
+	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel, buttonSize)
 		if btn.isSkinned then return end
 
 		if not arrowDir then
@@ -1127,8 +1127,9 @@ do
 
 		local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 
+		btn:Size(buttonSize or (noBackdrop and 20 or 18))
+
 		if noBackdrop then
-			btn:Size(20, 20)
 			Disabled:SetVertexColor(.5, .5, .5)
 			btn.Texture = Normal
 
@@ -1137,7 +1138,6 @@ do
 				btn:HookScript('OnLeave', closeOnLeave)
 			end
 		else
-			btn:Size(18, 18)
 			Disabled:SetVertexColor(.3, .3, .3)
 		end
 

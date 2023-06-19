@@ -1,3 +1,14 @@
+## Version 13.34 \[ June 10th 2023 \]
+*   Azerite Essence skin is fixed.
+*   Added a few missing Bleed spells.
+*   Nameplate Widgets not appearing for Goblins.
+*   Nameplate Widgets now have option to place below, including offsets.
+*   Number of Datatexts slider on Custom Panel now functions properly.
+*   Global Fade now works properly while Dragonriding, various Hide issues are now resolved.
+*   Using Spec Datatext to open Talent Frame will no longer cause button issues.
+*   Warlock Singe Magic from Grimoire of Sacrifice will trigger dispel highlight.
+*   Withering Vulnerability added to Raid Debuff filters.
+
 ## Version 13.33 \[ May 24th 2023 \]
 *   **Evoker bleed dispel is finally supported.**
     *   Ability to change Debuff colors under (Buffs and Debuffs > Debuff Colors) this applies to several things in the UI.

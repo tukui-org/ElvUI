@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibDispel-1.0", 2
+local MAJOR, MINOR = "LibDispel-1.0", 3
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -896,28 +896,29 @@ end
 do
 	local _, myClass = UnitClass("player")
 	local WarlockPetSpells = {
-		[89808] = "Singe",
-		[19505] = "Devour Magic Rank 1",
-		[19731] = "Devour Magic Rank 2",
-		[19734] = "Devour Magic Rank 3",
-		[19736] = "Devour Magic Rank 4",
-		[27276] = "Devour Magic Rank 5",
-		[27277] = "Devour Magic Rank 6",
-		[48011] = "Devour Magic Rank 7"
+		[89808] = "Singe"
 	}
+
+	if Retail then
+		WarlockPetSpells[132411] = "Singe Magic" -- Grimoire of Sacrifice
+	else
+		WarlockPetSpells[19505] = "Devour Magic Rank 1"
+		WarlockPetSpells[19731] = "Devour Magic Rank 2"
+		WarlockPetSpells[19734] = "Devour Magic Rank 3"
+		WarlockPetSpells[19736] = "Devour Magic Rank 4"
+		WarlockPetSpells[27276] = "Devour Magic Rank 5"
+		WarlockPetSpells[27277] = "Devour Magic Rank 6"
+		WarlockPetSpells[48011] = "Devour Magic Rank 7"
+	end
 
 	local function CheckSpell(spellID, pet)
 		return IsSpellKnownOrOverridesKnown(spellID, pet) and true or nil
 	end
 
 	local function CheckPetSpells()
-		if Retail then
-			return CheckSpell(89808, true)
-		else
-			for spellID in next, WarlockPetSpells do
-				if CheckSpell(spellID, true) then
-					return true
-				end
+		for spellID in next, WarlockPetSpells do
+			if CheckSpell(spellID, true) then
+				return true
 			end
 		end
 	end
