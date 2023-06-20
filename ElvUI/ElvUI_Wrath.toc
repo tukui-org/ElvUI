@@ -1,13 +1,13 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bWrath|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
-## Version: 13.34
+## Version: 13.35
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 30401
-## X-Interface: 30401
+## Interface: 30402
+## X-Interface: 30402
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 

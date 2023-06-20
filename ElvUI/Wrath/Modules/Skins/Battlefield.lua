@@ -23,6 +23,8 @@ function S:SkinBattlefield()
 
 	_G.BattlefieldFrameGroupJoinButton:Point('RIGHT', _G.BattlefieldFrameJoinButton, 'LEFT', -2, 0)
 
+	S:HandleScrollBar(_G.BattlefieldFrameTypeScrollFrameScrollBar)
+
 	local backdrop_level = BattlefieldFrame.backdrop:GetFrameLevel()
 
 	-- Custom Backdrop 1

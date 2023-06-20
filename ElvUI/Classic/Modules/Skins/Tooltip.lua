@@ -3,12 +3,12 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local pairs = pairs
+local next = next
 
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
-	for _, tt in pairs({
+	for _, tt in next, {
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
@@ -23,8 +23,11 @@ function S:StyleTooltips()
 		_G.QuickKeybindTooltip,
 		-- ours
 		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip
-	}) do
+		_G.ElvUISpellBookTooltip,
+		-- libs
+		_G.LibDBIconTooltip,
+		_G.SettingsTooltip,
+	} do
 		TT:SetStyle(tt)
 	end
 end

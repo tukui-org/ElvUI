@@ -1,3 +1,9 @@
+## Version 13.35 \[ June 20th 2023 \]
+*   Skinned a dropdown on the Profession Orders frame.
+*   Actionbar for Dragonflight fading sometimes didn't work properly on login.
+*   Small tweaks to the Profession and Settings skins.
+*   Ready for Wrath patch.
+
 ## Version 13.34 \[ June 10th 2023 \]
 *   Azerite Essence skin is fixed.
 *   Added a few missing Bleed spells.

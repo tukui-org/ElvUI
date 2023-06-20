@@ -38,6 +38,7 @@
 	<Script file='PVP.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='Raid.lua'/>
+	<Script file='SettingsPanel.lua'/>
 	<Script file='Socket.lua'/>
 	<Script file='SpellBook.lua'/>
 	<Script file='Stable.lua'/>

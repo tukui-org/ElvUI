@@ -1011,13 +1011,12 @@ function TT:Initialize()
 	statusText:Point('CENTER', statusBar, 0, 0)
 	statusBar.text = statusText
 
-	--Tooltip Fonts
-	if not GameTooltip.hasMoney then
-		--Force creation of the money lines, so we can set font for it
+	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
 		SetTooltipMoney(GameTooltip, 1, nil, '', '')
 		SetTooltipMoney(GameTooltip, 1, nil, '', '')
 		GameTooltip_ClearMoney(GameTooltip)
 	end
+
 	TT:SetTooltipFonts()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
@@ -1026,12 +1025,13 @@ function TT:Initialize()
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
 
+	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
+
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
-	TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 	TT:SecureHook(GameTooltip, 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
@@ -1055,7 +1055,9 @@ function TT:Initialize()
 		end
 	end
 
-	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
+	if not E.Wrath then
+		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
+	end
 
 	if E.Retail then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
