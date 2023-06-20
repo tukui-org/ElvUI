@@ -68,7 +68,8 @@ local function Update(self, event, unit)
 	local mainType = UnitPowerType(unit)
 	local mainMax = UnitPowerMax(unit, mainType)
 	local isPlayer = UnitIsUnit('player', unit)
-	local altManaInfo = isPlayer and oUF.isRetail and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]
+	local DISPLAY_INFO = isPlayer and oUF.isRetail and (ALT_POWER_BAR_PAIR_DISPLAY_INFO or ALT_MANA_BAR_PAIR_DISPLAY_INFO)
+	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[playerClass]
 	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
