@@ -1012,13 +1012,12 @@ function TT:Initialize()
 	statusText:Point('CENTER', statusBar, 0, 0)
 	statusBar.text = statusText
 
-	--Tooltip Fonts
-	if not GameTooltip.hasMoney then
-		--Force creation of the money lines, so we can set font for it
+	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
 		SetTooltipMoney(GameTooltip, 1, nil, '', '')
 		SetTooltipMoney(GameTooltip, 1, nil, '', '')
 		GameTooltip_ClearMoney(GameTooltip)
 	end
+
 	TT:SetTooltipFonts()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
@@ -1026,6 +1025,8 @@ function TT:Initialize()
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
+
+	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
@@ -1054,8 +1055,6 @@ function TT:Initialize()
 			TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
 		end
 	end
-
-	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	if not E.Wrath then
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
