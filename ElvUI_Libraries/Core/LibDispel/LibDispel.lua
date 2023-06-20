@@ -49,11 +49,13 @@ if Retail then
 
 	-- Bleed spells updated June 20th 2023 by Simpy for Patch 10.1
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
-	---- Apply Aura> Physical DoT> Damage Type = None:		https://www.wowhead.com/spells/school:0?filter=29:40;3:1;0:0
-	---- Apply Aura> Physical DoT> Damage Type = Magic:		https://www.wowhead.com/spells/school:0?filter=29:40;3:2;0:0
-	---- Apply Aura> Physical DoT> Damage Type = Melee:		https://www.wowhead.com/spells/school:0?filter=29:40;3:3;0:0
-	---- Apply Aura> Physical DoT> Damage Type = Ranged:	https://www.wowhead.com/spells/school:0?filter=29:40;3:4;0:0
-	---- Apply Aura> Mechanic Bleeding:	https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
+	----> Apply Aura
+	-----> Mechanic Bleeding: https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
+	-----> Physical DoT > Damage Type
+	------> None:	https://www.wowhead.com/spells/school:0?filter=29:40;3:1;0:0
+	------> Magic:	https://www.wowhead.com/spells/school:0?filter=29:40;3:2;0:0
+	------> Melee:	https://www.wowhead.com/spells/school:0?filter=29:40;3:3;0:0
+	------> Ranged:	https://www.wowhead.com/spells/school:0?filter=29:40;3:4;0:0
 
 	BleedList[703] = "Garrote"
 	BleedList[1079] = "Rip"
