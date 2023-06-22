@@ -5,50 +5,37 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-function S:HandleMirrorTimer()
-	local i = 1
-	local frame = _G.MirrorTimer1
-	while frame do
-		if not frame.atlasHolder then
-			frame.atlasHolder = CreateFrame('Frame', nil, frame)
-			frame.atlasHolder:SetClipsChildren(true)
-			frame.atlasHolder:SetInside()
+local function SetupTimer(self, timer)
+	local bar = self:GetAvailableTimer(timer)
+	if bar then
+		bar.atlasHolder = CreateFrame('Frame', nil, bar)
+		bar.atlasHolder:SetClipsChildren(true)
+		bar.atlasHolder:SetInside()
 
-			frame.StatusBar:SetParent(frame.atlasHolder)
-			frame.StatusBar:ClearAllPoints()
-			frame.StatusBar:SetSize(204, 22)
-			frame.StatusBar:Point('TOP', 0, 2)
+		bar.StatusBar:SetParent(bar.atlasHolder)
+		bar.StatusBar:ClearAllPoints()
+		bar.StatusBar:SetSize(204, 22)
+		bar.StatusBar:Point('TOP', 0, 2)
 
-			frame:SetSize(200, 18)
+		bar:SetSize(200, 18)
 
-			frame.Text:FontTemplate()
-			frame.Text:ClearAllPoints()
-			frame.Text:SetParent(frame.StatusBar)
-			frame.Text:Point('CENTER', frame.StatusBar, 0, 1)
-		end
+		bar.Text:FontTemplate()
+		bar.Text:ClearAllPoints()
+		bar.Text:SetParent(bar.StatusBar)
+		bar.Text:Point('CENTER', bar.StatusBar, 0, 1)
 
-		frame:StripTextures()
-		frame:SetTemplate('Transparent')
+		bar:StripTextures()
+		bar:SetTemplate('Transparent')
 
-		i = i + 1
-		frame = _G['MirrorTimer'..i]
+		-- ToDO: look at the blizz mover stuff
 	end
 end
 
 function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
 
-	local i = 1
-	local frame = _G.MirrorTimer1
-	while frame do
-		E:CreateMover(frame, 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
-
-		i = i + 1
-		frame = _G['MirrorTimer'..i]
-	end
-
 	-- ToDO: 10.1.5
-	--hooksecurefunc('MirrorTimer_Show', S.HandleMirrorTimer)
+	hooksecurefunc(_G.MirrorTimerContainer, 'SetupTimer', SetupTimer)
 end
 
 S:AddCallback('MirrorTimers')
