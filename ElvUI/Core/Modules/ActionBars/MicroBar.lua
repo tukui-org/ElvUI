@@ -108,22 +108,22 @@ function AB:HandleMicroCoords(button, name)
 		end
 	end
 
-	button:GetNormalTexture():SetTexCoord(l, r, t, b)
-	button:GetPushedTexture():SetTexCoord(l, r, t, b)
+	--button:GetNormalTexture():SetTexCoord(l, r, t, b)
+	--button:GetPushedTexture():SetTexCoord(l, r, t, b)
 
 	if button.FlashBorder then
 		button.FlashBorder:SetTexCoord(l, r, t, b)
 	end
 
-	local disabled = button:GetDisabledTexture()
-	if disabled then
-		disabled:SetTexCoord(l, r, t, b)
-	end
+	--local disabled = button:GetDisabledTexture()
+	--if disabled then
+		--disabled:SetTexCoord(l, r, t, b)
+	--end
 end
 
 function AB:HandleMicroTextures(button, name)
-	local normal = button:GetNormalTexture()
-	local pushed = button:GetPushedTexture()
+	--local normal = button:GetNormalTexture() -- ToDO: 10.1.5
+	--local pushed = button:GetPushedTexture()
 
 	local icons = AB.db.microbar.useIcons
 	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
@@ -131,39 +131,39 @@ function AB:HandleMicroTextures(button, name)
 	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
 	local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 	if stock then
-		normal:SetTexture(faction or stock.normal)
-		pushed:SetTexture(character or faction or stock.pushed)
+		--normal:SetTexture(faction or stock.normal)
+		--pushed:SetTexture(character or faction or stock.pushed)
 	elseif texture then
-		normal:SetTexture(texture)
-		pushed:SetTexture(character or texture)
+		--normal:SetTexture(texture)
+		--pushed:SetTexture(character or texture)
 	elseif character then
-		normal:SetTexture()
-		pushed:SetTexture(character)
+		--normal:SetTexture()
+		--pushed:SetTexture(character)
 	end
 
 	if character then
-		pushed:SetDrawLayer('OVERLAY', 1)
-		pushed:SetBlendMode('ADD')
-		pushed:SetAlpha(0.25)
+		--pushed:SetDrawLayer('OVERLAY', 1)
+		--pushed:SetBlendMode('ADD')
+		--pushed:SetAlpha(0.25)
 	end
 
-	normal:SetInside(button.backdrop)
-	pushed:SetInside(button.backdrop)
+	--normal:SetInside(button.backdrop)
+	--pushed:SetInside(button.backdrop)
 
 	local color = E.media.rgbvaluecolor
 	if color then
-		pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
+		--pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
 	end
 
-	local highlight = button:GetHighlightTexture()
-	highlight:SetColorTexture(1, 1, 1, 0.2)
+	--local highlight = button:GetHighlightTexture()
+	--highlight:SetColorTexture(1, 1, 1, 0.2)
 
-	local disabled = button:GetDisabledTexture()
-	if disabled then
-		disabled:SetTexture(texture)
-		disabled:SetDesaturated(true)
-		disabled:SetInside(button.backdrop)
-	end
+	--local disabled = button:GetDisabledTexture()
+	--if disabled then
+		--disabled:SetTexture(texture)
+		--disabled:SetDesaturated(true)
+		--disabled:SetInside(button.backdrop)
+	--end
 
 	if button.FlashBorder then
 		button.FlashBorder:SetInside(button.backdrop)

@@ -28,11 +28,11 @@ local function VehicleSetUp(vehicleID)
 
 		for i = 1, numIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
-			button:Size(fourth)
+			--button:Size(fourth)
 
 			local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i)
-			button:ClearAllPoints()
-			button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * size, -yOffset * size)
+			--button:ClearAllPoints()
+			--button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * size, -yOffset * size)
 		end
 	end
 end
@@ -45,7 +45,7 @@ function B:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
 	if not indicator.PositionVehicleFrameHooked then
 		hooksecurefunc(indicator, 'SetPoint', SetPosition)
-		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+		--hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
 
 		indicator:ClearAllPoints()
 		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)

@@ -105,13 +105,18 @@ function S:MerchantFrame()
 
 	S:HandleButton(_G.MerchantGuildBankRepairButton)
 	_G.MerchantGuildBankRepairButton:StyleButton()
-	_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
-	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
+	-- ToDO: 10.1.5
 	S:HandleButton(_G.MerchantRepairAllButton)
-	_G.MerchantRepairAllIcon:StyleButton()
-	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
-	_G.MerchantRepairAllIcon:SetInside()
+	_G.MerchantRepairAllButton:StyleButton()
+	_G.MerchantRepairAllButton:GetRegions():SetTexCoord(0.61, 0.82, 0.1, 0.52)
+	_G.MerchantRepairAllButton:GetRegions():SetInside()
+
+	S:HandleButton(_G.MerchantSellAllJunkButton)
+	_G.MerchantSellAllJunkButton:StyleButton()
+	_G.MerchantSellAllJunkButton:GetRegions():SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	_G.MerchantSellAllJunkButton:GetRegions():SetInside()
+	--
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)

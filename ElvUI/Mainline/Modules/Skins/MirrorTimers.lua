@@ -47,7 +47,8 @@ function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
 		frame = _G['MirrorTimer'..i]
 	end
 
-	hooksecurefunc('MirrorTimer_Show', S.HandleMirrorTimer)
+	-- ToDO: 10.1.5
+	--hooksecurefunc('MirrorTimer_Show', S.HandleMirrorTimer)
 end
 
 S:AddCallback('MirrorTimers')

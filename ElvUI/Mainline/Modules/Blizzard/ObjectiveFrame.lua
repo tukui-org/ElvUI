@@ -108,5 +108,5 @@ function B:MoveObjectiveFrame()
 		ObjectiveTrackerFrame.IsInDefaultPosition = E.noop
 	end
 
-	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
+	--hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition) -- ToDO 10.1.5
 end
