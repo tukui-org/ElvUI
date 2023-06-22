@@ -115,8 +115,10 @@ function AB:PositionAndSizeBarShapeShift()
 	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
 	--ToDo: 10.1.5
-	--bar.backdrop:SetShown(db.backdrop)
-	--bar.backdrop:ClearAllPoints()
+	if bar.backdrop then
+		bar.backdrop:SetShown(db.backdrop)
+		bar.backdrop:ClearAllPoints()
+	end
 
 	AB:MoverMagic(bar)
 
