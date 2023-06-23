@@ -671,7 +671,7 @@ function S:Blizzard_ChallengesUI()
 		end
 	end)
 
-	hooksecurefunc(ChallengesFrameWeeklyInfoMixin, 'SetUp', function(info)
+	hooksecurefunc(_G.ChallengesFrameWeeklyInfoMixin, 'SetUp', function(info)
 		if C_MythicPlus_GetCurrentAffixes() then
 			HandleAffixIcons(info.Child)
 		end
