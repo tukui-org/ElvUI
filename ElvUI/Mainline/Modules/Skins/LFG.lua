@@ -187,7 +187,6 @@ function S:LookingForGroupFrames()
 		if _G.LFGDungeonReadyDialog:IsShown() then
 			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
 			_G.LFGDungeonReadyDialog.bottomArt:Hide()
-			_G.LFGDungeonReadyDialog.filigree:Hide()
 			_G.LFGDungeonReadyDialog.Border:Hide()
 		end
 
@@ -672,7 +671,7 @@ function S:Blizzard_ChallengesUI()
 		end
 	end)
 
-	hooksecurefunc(ChallengesFrame.WeeklyInfo, 'SetUp', function(info)
+	hooksecurefunc(ChallengesFrameWeeklyInfoMixin, 'SetUp', function(info)
 		if C_MythicPlus_GetCurrentAffixes() then
 			HandleAffixIcons(info.Child)
 		end
