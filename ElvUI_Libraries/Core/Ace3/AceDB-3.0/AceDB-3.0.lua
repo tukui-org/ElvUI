@@ -260,7 +260,7 @@ local factionrealmKey = factionKey .. " - " .. realmKey
 local localeKey = GetLocale():lower()
 
 local regionTable = { "US", "KR", "EU", "TW", "CN" }
-local regionKey = regionTable[GetCurrentRegion()]
+local regionKey = regionTable[GetCurrentRegion()] or "US" -- ToDO: 10.1.5 it seems it needs a fallback now :thinking:
 local factionrealmregionKey = factionrealmKey .. " - " .. regionKey
 
 -- Actual database initialization function
