@@ -498,11 +498,15 @@ local function SkinTransmogFrames()
 				for _, region in next, { Model:GetRegions() } do
 					if region:IsObjectType('Texture') then -- check for hover glow
 						local texture = region:GetTexture()
+
+						--[[ --ToDO: 10.1.5 find new way to apply the overlay texture WIHTOUT breaking the new Blizzard functionallity
 						if texture == 1116940 or texture == 1569530 then -- transmogrify.blp (items:1116940 or sets:1569530)
 							region:SetColorTexture(1, 1, 1, 0.3)
 							region:SetBlendMode('ADD')
 							region:SetAllPoints(Model)
 						end
+						--]]
+
 					end
 				end
 
