@@ -905,7 +905,7 @@ do
 				AB:FadeBlings(a)
 			end
 
-			if (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
+			if AB.WasDragonflying ~= 0 and (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
 				AB.WasDragonflying = nil
 			end
 		end
