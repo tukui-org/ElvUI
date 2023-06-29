@@ -947,6 +947,62 @@ function B:Layout(isBank)
 		f.purchaseBagButton:SetShown(not f.fullBank)
 	end
 
+	if not isBank then
+		local currencies = f.currencyButton
+		if B.numTrackedTokens == 0 then
+			if f.bottomOffset > 8 then
+				f.bottomOffset = 8
+			end
+		else
+			local currentRow = 1
+
+			if E.Retail then
+				local rowWidth = 0
+				for i = 1, B.numTrackedTokens do
+					local token = currencies[i]
+					if not token then return end
+
+					local tokenWidth = token.text:GetWidth() + 28
+					rowWidth = rowWidth + tokenWidth
+					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
+						currentRow = currentRow + 1
+						rowWidth = tokenWidth
+					end
+
+					token:ClearAllPoints()
+
+					if i == 1 then
+						token:Point('TOPLEFT', currencies, 1, -3)
+					elseif rowWidth == tokenWidth then
+						token:Point('TOPLEFT', currencies, 1 , -3 -(24 * (currentRow - 1)))
+					else
+						token:Point('TOPLEFT', currencies, rowWidth - tokenWidth , -3 - (24 * (currentRow - 1)))
+					end
+				end
+			else
+				local c1, c2, c3 = unpack(currencies)
+				if B.numTrackedTokens == 1 then
+					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
+				elseif B.numTrackedTokens == 2 then
+					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
+					c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
+				else
+					c1:Point('BOTTOMLEFT', currencies, 3, 3)
+					c2:Point('BOTTOM', currencies, -c2.text:GetWidth() / 3, 3)
+					c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
+				end
+			end
+
+			local height = 24 * currentRow
+			currencies:Height(height)
+
+			local offset = height + 8
+			if f.bottomOffset ~= offset then
+				f.bottomOffset = offset
+			end
+		end
+	end
+
 	for _, bagID in next, f.BagIDs do
 		if isSplit then
 			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and B.db.split['bag'..bagID] or false
@@ -1011,62 +1067,6 @@ function B:Layout(isBank)
 
 				lastButton = slot
 				numBagSlots = numBagSlots + 1
-			end
-		end
-	end
-
-	if not isBank then
-		local currencies = f.currencyButton
-		if B.numTrackedTokens == 0 then
-			if f.bottomOffset > 8 then
-				f.bottomOffset = 8
-			end
-		else
-			local currentRow = 1
-
-			if E.Retail then
-				local rowWidth = 0
-				for i = 1, B.numTrackedTokens do
-					local token = currencies[i]
-					if not token then return end
-
-					local tokenWidth = token.text:GetWidth() + 28
-					rowWidth = rowWidth + tokenWidth
-					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
-						currentRow = currentRow + 1
-						rowWidth = tokenWidth
-					end
-
-					token:ClearAllPoints()
-
-					if i == 1 then
-						token:Point('TOPLEFT', currencies, 1, -3)
-					elseif rowWidth == tokenWidth then
-						token:Point('TOPLEFT', currencies, 1 , -3 -(24 * (currentRow - 1)))
-					else
-						token:Point('TOPLEFT', currencies, rowWidth - tokenWidth , -3 - (24 * (currentRow - 1)))
-					end
-				end
-			else
-				local c1, c2, c3 = unpack(currencies)
-				if B.numTrackedTokens == 1 then
-					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() * 0.5, 3)
-				elseif B.numTrackedTokens == 2 then
-					c1:Point('BOTTOM', currencies, -c1.text:GetWidth() - (c1:GetWidth() * 3), 3)
-					c2:Point('BOTTOMLEFT', currencies, 'BOTTOM', c2:GetWidth() * 3, 3)
-				else
-					c1:Point('BOTTOMLEFT', currencies, 3, 3)
-					c2:Point('BOTTOM', currencies, -c2.text:GetWidth() / 3, 3)
-					c3:Point('BOTTOMRIGHT', currencies, -c3.text:GetWidth() - (c3:GetWidth() * 0.5), 3)
-				end
-			end
-
-			local height = 24 * currentRow
-			currencies:Height(height)
-
-			local offset = height + 8
-			if f.bottomOffset ~= offset then
-				f.bottomOffset = offset
 			end
 		end
 	end

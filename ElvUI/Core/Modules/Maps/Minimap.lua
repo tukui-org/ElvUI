@@ -149,6 +149,10 @@ function M:HandleTrackingButton()
 		tracking:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(tracking, scale)
 
+		if E.Retail and (tracking:GetScript('OnMouseDown') ~= M.TrackingButton_OnMouseDown) then
+			tracking:SetScript('OnMouseDown', M.TrackingButton_OnMouseDown)
+		end
+
 		if _G.MiniMapTrackingButtonBorder then
 			_G.MiniMapTrackingButtonBorder:Hide()
 		end
@@ -248,6 +252,12 @@ function M:MapCanvas_OnMouseDown(btn)
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
+		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
+	end
+end
+
+function M:TrackingButton_OnMouseDown()
+	if M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	end
 end
