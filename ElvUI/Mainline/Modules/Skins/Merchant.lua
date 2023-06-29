@@ -109,14 +109,16 @@ function S:MerchantFrame()
 	-- ToDO: 10.1.5
 	S:HandleButton(_G.MerchantRepairAllButton)
 	_G.MerchantRepairAllButton:StyleButton()
-	_G.MerchantRepairAllButton:GetRegions():SetTexCoord(0.61, 0.82, 0.1, 0.52)
-	_G.MerchantRepairAllButton:GetRegions():SetInside()
+	local firstRepairAllButton = _G.MerchantRepairAllButton:GetRegions()
+	firstRepairAllButton:SetTexCoord(0.61, 0.82, 0.1, 0.52)
+	firstRepairAllButton:SetInside()
 
+	-- ToDO: 10.1.5
 	S:HandleButton(_G.MerchantSellAllJunkButton)
 	_G.MerchantSellAllJunkButton:StyleButton()
-	_G.MerchantSellAllJunkButton:GetRegions():SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
-	_G.MerchantSellAllJunkButton:GetRegions():SetInside()
-	--
+	local firstSellAllJunk = _G.MerchantSellAllJunkButton:GetRegions()
+	firstSellAllJunk:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	firstSellAllJunk:SetInside()
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)

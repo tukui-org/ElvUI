@@ -5,9 +5,11 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function SetupTimer(self, timer)
-	local bar = self:GetAvailableTimer(timer)
-	if bar then
+local function SetupTimer(container, timer)
+	local bar = container:GetAvailableTimer(timer)
+	if not bar then return end
+
+	if not bar.atlasHolder then
 		bar.atlasHolder = CreateFrame('Frame', nil, bar)
 		bar.atlasHolder:SetClipsChildren(true)
 		bar.atlasHolder:SetInside()
@@ -23,12 +25,12 @@ local function SetupTimer(self, timer)
 		bar.Text:ClearAllPoints()
 		bar.Text:SetParent(bar.StatusBar)
 		bar.Text:Point('CENTER', bar.StatusBar, 0, 1)
-
-		bar:StripTextures()
-		bar:SetTemplate('Transparent')
-
-		-- ToDO: look at the blizz mover stuff
 	end
+
+	bar:StripTextures()
+	bar:SetTemplate('Transparent')
+
+	-- ToDO: 10.1.5 look at the blizz mover stuff
 end
 
 function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
