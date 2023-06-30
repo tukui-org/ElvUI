@@ -1056,7 +1056,7 @@ function TT:Initialize()
 		end
 	end
 
-	if not E.Wrath then
+	if E.Retail then
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 	end
 

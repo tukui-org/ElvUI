@@ -338,8 +338,6 @@ function S:BlizzardOptions()
 	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
 	S:HandleSliderFrame(_G.UnitPopupVoiceMicrophoneVolume.Slider)
 	S:HandleSliderFrame(_G.UnitPopupVoiceUserVolume.Slider)
-
-	print("yep got here")
 end
 
 S:AddCallback('BlizzardOptions')
