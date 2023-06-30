@@ -97,6 +97,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
 
 	S:HandleButton(_G.MerchantRepairItemButton)
+	S:HandleIcon(_G.MerchantRepairItemButton.Icon)
 	_G.MerchantRepairItemButton:StyleButton()
 	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
 	_G.MerchantRepairItemButton:GetRegions():SetInside()
@@ -104,10 +105,12 @@ function S:MerchantFrame()
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
 	S:HandleButton(_G.MerchantGuildBankRepairButton)
+	S:HandleIcon(_G.MerchantGuildBankRepairButton.Icon)
 	_G.MerchantGuildBankRepairButton:StyleButton()
 
 	-- ToDO: 10.1.5
 	S:HandleButton(_G.MerchantRepairAllButton)
+	S:HandleIcon(_G.MerchantRepairAllButton.Icon)
 	_G.MerchantRepairAllButton:StyleButton()
 	local firstRepairAllButton = _G.MerchantRepairAllButton:GetRegions()
 	firstRepairAllButton:SetTexCoord(0.61, 0.82, 0.1, 0.52)
@@ -115,6 +118,7 @@ function S:MerchantFrame()
 
 	-- ToDO: 10.1.5
 	S:HandleButton(_G.MerchantSellAllJunkButton)
+	S:HandleIcon(_G.MerchantSellAllJunkButton.Icon)
 	_G.MerchantSellAllJunkButton:StyleButton()
 	local firstSellAllJunk = _G.MerchantSellAllJunkButton:GetRegions()
 	firstSellAllJunk:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
