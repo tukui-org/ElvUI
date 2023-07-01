@@ -87,7 +87,7 @@ function S:SpellBookFrame()
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
-		button.bg:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
+		button.bg:SetFrameLevel(button:GetFrameLevel() - 1)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 
