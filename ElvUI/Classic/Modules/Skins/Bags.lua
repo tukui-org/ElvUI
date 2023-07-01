@@ -6,19 +6,15 @@ local _G = _G
 local select, unpack = select, unpack
 local hooksecurefunc = hooksecurefunc
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID
-local GetContainerItemLink = GetContainerItemLink
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
-local GetInventoryItemLink = GetInventoryItemLink
+local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
+local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
+local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
+local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Container.GetInventoryItemLink)
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = GetItemInfo
-local CreateFrame = CreateFrame
 
 local BANK_CONTAINER = BANK_CONTAINER
-local MAX_CONTAINER_ITEMS = MAX_CONTAINER_ITEMS
-local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
-local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
 local bagIconCache = {
@@ -48,7 +44,7 @@ function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	-- ContainerFrame
-	for i = 1, NUM_CONTAINER_FRAMES do
+	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		local frame = _G['ContainerFrame'..i]
 		local closeButton = _G['ContainerFrame'..i..'CloseButton']
 
@@ -57,7 +53,7 @@ function S:ContainerFrame()
 
 		S:HandleCloseButton(closeButton, frame.backdrop)
 
-		for j = 1, MAX_CONTAINER_ITEMS do
+		for j = 1, _G.MAX_CONTAINER_ITEMS do
 			local item = _G['ContainerFrame'..i..'Item'..j]
 			local icon = _G['ContainerFrame'..i..'Item'..j..'IconTexture']
 			local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
@@ -96,13 +92,15 @@ function S:ContainerFrame()
 	end)
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
-		local id, frameName = frame:GetID(), frame:GetName()
+		local frameName = frame:GetName()
+		local id = frame:GetID()
 		local _, bagType = GetContainerNumFreeSlots(id)
+		local item, questIcon, link
 
 		for i = 1, frame.size do
-			local item = _G[frameName..'Item'..i]
-			local questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
-			local link = GetContainerItemLink(id, item:GetID())
+			item = _G[frameName..'Item'..i]
+			questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
+			link = GetContainerItemLink(id, item:GetID())
 
 			questIcon:Hide()
 
@@ -138,13 +136,15 @@ function S:ContainerFrame()
 	-- BankFrame
 	local BankFrame = _G.BankFrame
 	BankFrame:StripTextures(true)
-	S:HandleFrame(BankFrame, true, nil, 11, -12, -32, 93)
+	S:HandleFrame(BankFrame, true, nil, 12, 0, 10, 80)
 
 	S:HandleCloseButton(_G.BankCloseButton, BankFrame.backdrop)
 
 	_G.BankSlotsFrame:StripTextures()
 
-	for i = 1, NUM_BANKGENERIC_SLOTS do
+	_G.BankFrameMoneyFrame:Point('RIGHT', 0, 0)
+
+	for i = 1, _G.NUM_BANKGENERIC_SLOTS do
 		local button = _G['BankFrameItem'..i]
 		local icon = _G['BankFrameItem'..i..'IconTexture']
 		local cooldown = _G['BankFrameItem'..i..'Cooldown']
@@ -165,18 +165,6 @@ function S:ContainerFrame()
 
 		E:RegisterCooldown(cooldown, 'bags')
 	end
-
-	BankFrame.itemBackdrop = CreateFrame('Frame', 'BankFrameItemBackdrop', BankFrame)
-	BankFrame.itemBackdrop:SetTemplate()
-	BankFrame.itemBackdrop:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
-	BankFrame.itemBackdrop:Point('BOTTOMRIGHT', _G.BankFrameItem24, 'BOTTOMRIGHT', 6, -6)
-	BankFrame.itemBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
-
-	BankFrame.bagBackdrop = CreateFrame('Frame', 'BankFrameBagBackdrop', BankFrame)
-	BankFrame.bagBackdrop:SetTemplate()
-	BankFrame.bagBackdrop:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
-	BankFrame.bagBackdrop:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag6, 'BOTTOMRIGHT', 6, -6)
-	BankFrame.bagBackdrop:SetFrameLevel(BankFrame:GetFrameLevel())
 
 	S:HandleButton(_G.BankFramePurchaseButton)
 
