@@ -375,11 +375,8 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs:SetShadowColor(0, 0, 0, 0)
 	end
 
-	-- convert because of bad values between versions
-	if style == 'NONE' and not E.Classic then
+	if style == 'NONE' or not style then
 		style = ''
-	elseif style == '' and E.Classic then
-		style = 'NONE'
 	end
 
 	fs:SetFont(font or E.media.normFont, size, style)
