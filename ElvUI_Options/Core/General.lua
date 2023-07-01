@@ -293,4 +293,3 @@ blizz.queueStatus.args.fontGroup.args.position = ACH:Select(L["Position"], nil, 
 blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
-
