@@ -370,13 +370,10 @@ local function FontTemplate(fs, font, size, style, skip)
 	if style == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
+		style = ''
 	else
 		fs:SetShadowOffset(0, 0)
 		fs:SetShadowColor(0, 0, 0, 0)
-	end
-
-	if style == 'NONE' or not style then
-		style = ''
 	end
 
 	fs:SetFont(font or E.media.normFont, size, style)
