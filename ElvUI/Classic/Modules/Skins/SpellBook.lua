@@ -30,7 +30,8 @@ function S:SpellBookFrame()
 
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCheckBox(_G.ShowAllSpellRanksCheckBox)
-	_G.ShowAllSpellRanksCheckBox:Point('TOPLEFT', _G.SpellButton1, 'TOPLEFT', -11, 32)
+	_G.ShowAllSpellRanksCheckBox:ClearAllPoints()
+	_G.ShowAllSpellRanksCheckBox:Point('TOPLEFT', _G.SpellButton1, -11, 32)
 
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
