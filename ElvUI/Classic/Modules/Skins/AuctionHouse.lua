@@ -9,7 +9,6 @@ local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
 
-
 local function NameColor(frame, r, g, b)
 	local button = frame.itemButton
 	if not button then return end
