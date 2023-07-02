@@ -19,4 +19,3 @@ local function ApplySettings(_, hex)
 end
 
 DT:RegisterDatatext('Parry', STAT_CATEGORY_DEFENSE, { 'UNIT_STATS', 'UNIT_AURA', 'SKILL_LINES_CHANGED' }, OnEvent, nil, nil, nil, nil, PARRY, nil, ApplySettings)
-

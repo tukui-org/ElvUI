@@ -19,4 +19,3 @@ local function ApplySettings(_, hex)
 end
 
 DT:RegisterDatatext('Dodge', STAT_CATEGORY_DEFENSE, { 'UNIT_STATS', 'UNIT_AURA', 'SKILL_LINES_CHANGED' }, OnEvent, nil, nil, nil, nil, DODGE, nil, ApplySettings)
-

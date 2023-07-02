@@ -12,7 +12,6 @@ local function SkinPvpTalents(slot)
 	slot.Border:Hide()
 end
 
-
 local function HandleTabs()
 	local tab = _G.InspectFrameTab1
 	local index, lastTab = 1, tab
