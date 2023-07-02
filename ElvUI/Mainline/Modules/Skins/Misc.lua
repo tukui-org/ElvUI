@@ -415,6 +415,13 @@ function S:BlizzardMiscFrames()
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
 	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
+
+	-- Basic Message Dialog
+	local MessageDialog = _G.BasicMessageDialog
+	if MessageDialog then
+		S:HandleFrame(MessageDialog)
+		S:HandleButton(_G.BasicMessageDialogButton)
+	end
 end
 
 S:AddCallback('BlizzardMiscFrames')
