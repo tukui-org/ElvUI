@@ -9,6 +9,7 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
+	local TabardModel = _G.TabardModel
 	S:HandlePortraitFrame(TabardFrame)
 
 	S:HandleButton(_G.TabardFrameCancelButton)
@@ -16,7 +17,7 @@ function S:TabardFrame()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:SetTemplate()
+	TabardModel:SetTemplate()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 	_G.TabardFrameMoneyInset:Kill()
@@ -30,7 +31,7 @@ function S:TabardFrame()
 		_G.TabardFrameEmblemBottomLeft,
 	}
 	for _, frame in pairs(emblemFrames) do
-		frame:SetParent(TabardFrame)
+		frame:SetParent(TabardModel)
 		frame.Show = nil
 		frame:Show()
 	end
@@ -52,11 +53,11 @@ function S:TabardFrame()
 		end
 	end
 
-	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4)
+	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', TabardModel, 'BOTTOMLEFT', 4, 4)
 	_G.TabardCharacterModelRotateRightButton:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
 	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(s, _, _, _, _, _, forced)
 		if forced ~= true then
-			s:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4, true)
+			s:Point('BOTTOMLEFT', TabardModel, 'BOTTOMLEFT', 4, 4, true)
 		end
 	end)
 
