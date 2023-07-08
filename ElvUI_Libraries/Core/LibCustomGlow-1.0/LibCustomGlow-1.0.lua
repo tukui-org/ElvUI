@@ -638,7 +638,8 @@ function lib.ButtonGlow_Start(r,color,frequency,frameLevel)
             for texture in pairs(ButtonGlowTextures) do
                 f[texture]:SetDesaturated(nil)
                 f[texture]:SetVertexColor(1,1,1)
-                f[texture]:SetAlpha(f[texture]:GetAlpha()/(f.color and f.color[4] or 1))
+                local alpha = math.min(f[texture]:GetAlpha()/(f.color and f.color[4] or 1), 1)
+                f[texture]:SetAlpha(alpha)
                 updateAlphaAnim(f, 1)
             end
             f.color = false
@@ -646,7 +647,8 @@ function lib.ButtonGlow_Start(r,color,frequency,frameLevel)
             for texture in pairs(ButtonGlowTextures) do
                 f[texture]:SetDesaturated(1)
                 f[texture]:SetVertexColor(color[1],color[2],color[3])
-                f[texture]:SetAlpha(f[texture]:GetAlpha()/(f.color and f.color[4] or 1)*color[4])
+                local alpha = math.min(f[texture]:GetAlpha()/(f.color and f.color[4] or 1)*color[4], 1)
+                f[texture]:SetAlpha(alpha)
                 updateAlphaAnim(f,color and color[4] or 1)
             end
             f.color = color
