@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 function S:TabardFrame()
@@ -16,50 +16,64 @@ function S:TabardFrame()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:SetTemplate()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 	_G.TabardFrameMoneyInset:Kill()
 	_G.TabardFrameMoneyBg:StripTextures()
 
-	--Add Tabard Emblem back
-	local emblemFrames = {
+	local TabardModel = _G.TabardModel
+	TabardModel:SetTemplate()
+
+	-- Add Tabard Emblem back
+	for _, frame in next, {
 		_G.TabardFrameEmblemTopRight,
 		_G.TabardFrameEmblemBottomRight,
 		_G.TabardFrameEmblemTopLeft,
 		_G.TabardFrameEmblemBottomLeft,
-	}
-	for _, frame in pairs(emblemFrames) do
-		frame:SetParent(TabardFrame)
+	} do
+		frame:SetParent(TabardModel)
 		frame.Show = nil
 		frame:Show()
 	end
 
-	for i = 1, 5 do
-		local custom = 'TabardFrameCustomization'..i
-		local button = _G[custom]
+	do
+		local i = 1
+		local button, previous = _G['TabardFrameCustomization'..i]
+		while button do
+			button:StripTextures()
 
-		button:StripTextures()
-		S:HandleNextPrevButton(_G[custom..'LeftButton'])
-		S:HandleNextPrevButton(_G[custom..'RightButton'])
+			local left = _G['TabardFrameCustomization'..i..'LeftButton']
+			if left then
+				S:HandleNextPrevButton(left)
+			end
 
-		if i > 1 then
-			button:ClearAllPoints()
-			button:Point('TOP', _G['TabardFrameCustomization'..i - 1], 'BOTTOM', 0, -6)
-		else
-			local point, anchor, point2, x, y = button:GetPoint()
-			button:Point(point, anchor, point2, x, y+4)
+			local right = _G['TabardFrameCustomization'..i..'RightButton']
+			if right then
+				S:HandleNextPrevButton(right)
+			end
+
+			if previous then
+				button:ClearAllPoints()
+				button:Point('TOP', previous, 'BOTTOM', 0, -6)
+			else
+				local point, anchor, point2, x, y = button:GetPoint()
+				button:Point(point, anchor, point2, x, y + 4)
+			end
+
+			i = i + 1
+			previous = button
+			button = _G['TabardFrameCustomization'..i]
 		end
 	end
 
-	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4)
-	_G.TabardCharacterModelRotateRightButton:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
+	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', TabardModel, 'BOTTOMLEFT', 4, 4)
 	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(s, _, _, _, _, _, forced)
 		if forced ~= true then
-			s:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4, true)
+			s:Point('BOTTOMLEFT', TabardModel, 'BOTTOMLEFT', 4, 4, true)
 		end
 	end)
 
+	_G.TabardCharacterModelRotateRightButton:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
 	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(s, _, _, _, _, _, forced)
 		if forced ~= true then
 			s:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0, true)
