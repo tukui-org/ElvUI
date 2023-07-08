@@ -1413,8 +1413,14 @@ function B:VendorGrays(delete)
 end
 
 function B:VendorGrayCheck()
-	local value = B:GetGraysValue()
+	-- Blizzards sell grays
+	if SellAllJunkItems and B.db.useBlizzardJunk then
+		SellAllJunkItems()
+		return
+	end
 
+	-- our sell grays
+	local value = B:GetGraysValue()
 	if value == 0 then
 		E:Print(L["No gray items to delete."])
 	elseif not _G.MerchantFrame:IsShown() and not E.Retail then
