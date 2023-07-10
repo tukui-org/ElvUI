@@ -112,10 +112,9 @@ function S:Blizzard_PVPUI()
 		if s.bg then s.bg:SetDesaturated(true) end
 	end)
 
-	-- New tiny Role icons in Bfa
-	S:HandleCheckBox(HonorFrame.TankIcon.CheckBox)
-	S:HandleCheckBox(HonorFrame.HealerIcon.CheckBox)
-	S:HandleCheckBox(HonorFrame.DPSIcon.CheckBox)
+	S:HandleCheckBox(HonorFrame.TankIcon.checkButton)
+	S:HandleCheckBox(HonorFrame.HealerIcon.checkButton)
+	S:HandleCheckBox(HonorFrame.DPSIcon.checkButton)
 
 	-- Conquest Frame
 	local ConquestFrame = _G.ConquestFrame
@@ -124,9 +123,9 @@ function S:Blizzard_PVPUI()
 
 	S:HandleButton(_G.ConquestJoinButton)
 
-	S:HandleCheckBox(ConquestFrame.TankIcon.CheckBox)
-	S:HandleCheckBox(ConquestFrame.HealerIcon.CheckBox)
-	S:HandleCheckBox(ConquestFrame.DPSIcon.CheckBox)
+	S:HandleCheckBox(ConquestFrame.TankIcon.checkButton)
+	S:HandleCheckBox(ConquestFrame.HealerIcon.checkButton)
+	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
 
 	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
