@@ -315,8 +315,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[358267]	= List(), -- Hover
 		[357210]	= List(), -- Deep Breath
 		[371807]	= List(), -- Recall
-		[395296]	= List(), -- [Evoker] Ebon Might < self
-		[395152]	= List(), -- [Evoker] Ebon Might < others
+		[395296]	= List(), -- Ebon Might < self
+		[395152]	= List(), -- Ebon Might < others
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
