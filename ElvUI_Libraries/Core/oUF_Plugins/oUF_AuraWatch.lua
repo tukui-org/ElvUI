@@ -65,7 +65,7 @@ local function customFilter(element, _, button, _, _, count)
 			stackAuras[spellID] = button
 			stack = button
 
-			stack.matches = (count or 0) + 1
+			stack.matches = count or 1
 		else
 			stack.matches = stack.matches + 1
 		end
