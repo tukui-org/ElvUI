@@ -335,18 +335,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 end
 
 local inspectGUIDCache = {}
-local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
-	local specName = TT:GetSpecializationInfo('mouseover')
-	if specName and itemLevel then
+	if itemLevel then
 		local inspectCache = inspectGUIDCache[unitGUID]
 		if inspectCache then
 			inspectCache.time = GetTime()
 			inspectCache.itemLevel = itemLevel
-			inspectCache.specName = specName
 		end
 
-		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, unpack((inspectCache and inspectCache.unitColor) or inspectColorFallback))
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
 	end
@@ -382,17 +378,6 @@ function TT:INSPECT_READY(event, unitGUID)
 	end
 end
 
-function TT:GetSpecializationInfo(unit, isPlayer)
-	local spec = (isPlayer and GetSpecialization()) or (unit and GetInspectSpecialization(unit))
-	if spec and spec > 0 then
-		if isPlayer then
-			return select(2, GetSpecializationInfo(spec))
-		else
-			return select(2, GetSpecializationInfoByID(spec))
-		end
-	end
-end
-
 local lastGUID
 function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
@@ -402,7 +387,6 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 	local cache = inspectGUIDCache[unitGUID]
 
 	if unitGUID == E.myguid then
-		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', TT:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
 		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
 	elseif cache and cache.time then
 		local specName, itemLevel = cache.specName, cache.itemLevel
