@@ -395,7 +395,7 @@ end
 
 local lastGUID
 function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
-	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
+	if tt.ItemLevelShown or (not unit) or (numTries > 3) or not CanInspect(unit) then return end
 
 	local unitGUID = UnitGUID(unit)
 	if not unitGUID then return end
