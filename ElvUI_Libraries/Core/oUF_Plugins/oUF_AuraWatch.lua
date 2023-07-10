@@ -64,16 +64,14 @@ local function customFilter(element, _, button, _, _, count)
 		local stack = stackAuras[spellID]
 		if not stack then
 			stackAuras[spellID] = button
-			stack = button
-
-			stack.matches = total
+			button.matches = total
 		else
 			stack.matches = stack.matches + total
 			stack.count:SetText(stack.matches)
 			return false
 		end
 	elseif button.matches then
-		button.matches = nil -- stackAuras
+		button.matches = nil
 	end
 
 	button.onlyShowMissing = setting.onlyShowMissing
