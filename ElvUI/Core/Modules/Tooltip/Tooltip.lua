@@ -336,8 +336,6 @@ end
 local inspectGUIDCache = {}
 local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
-	if GameTooltip.ItemLevelShown then return end
-
 	local specName = TT:GetSpecializationInfo('mouseover')
 	if specName and itemLevel then
 		local inspectCache = inspectGUIDCache[unitGUID]
@@ -579,7 +577,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 				TT:AddMythicInfo(self, unit)
 			end
 
-			if isShiftKeyDown and color and TT.db.inspectDataEnable then
+			if isShiftKeyDown and color and TT.db.inspectDataEnable and not self.ItemLevelShown then
 				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
 			end
 		end
