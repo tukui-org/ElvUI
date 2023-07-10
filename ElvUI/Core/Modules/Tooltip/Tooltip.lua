@@ -357,7 +357,6 @@ end
 function TT:INSPECT_READY(event, unitGUID)
 	if UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
 		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel('mouseover')
-		if not itemLevel then NotifyInspect('mouseover') return end
 		if itemLevel == 'tooSoon' then
 			E:Delay(0.05, function()
 				local canUpdate = true
