@@ -120,7 +120,7 @@ function AB:HandleMicroCoords(button, name)
 		button.FlashBorder:SetTexCoord(l, r, t, b)
 	end
 
-	local disabled = button:GetDisabledTexture()
+	local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
 	if disabled then
 		disabled:SetTexCoord(l, r, t, b)
 	end
@@ -180,7 +180,7 @@ function AB:HandleMicroTextures(button, name)
 			pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
 		end
 
-		local disabled = button:GetDisabledTexture()
+		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
 		if disabled then
 			disabled:SetTexture(texture)
 			disabled:SetDesaturated(true)
