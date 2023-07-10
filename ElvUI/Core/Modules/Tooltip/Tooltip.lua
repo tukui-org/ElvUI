@@ -376,25 +376,25 @@ function TT:INSPECT_READY(event, unitGUID)
 end
 
 local lastGUID
-function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
-	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
+function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
+	if tt.ItemLevelShown or (not unit) or (numTries > 3) or not CanInspect(unit) then return end
 
 	local unitGUID = UnitGUID(unit)
 	if not unitGUID then return end
 	local cache = inspectGUIDCache[unitGUID]
 
 	if unitGUID == E.myguid then
-		tooltip.ItemLevelShown = true
-		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
 	elseif cache and cache.time then
 		local itemLevel = cache.itemLevel
 		if not itemLevel or (GetTime() - cache.time > 120) then
 			cache.time, cache.itemLevel = nil, nil
-			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
+			return E:Delay(0.33, TT.AddInspectInfo, TT, tt, unit, numTries + 1, r, g, b)
 		end
 
-		tooltip.ItemLevelShown = true
-		tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif unitGUID then
 		if not inspectGUIDCache[unitGUID] then
 			inspectGUIDCache[unitGUID] = { unitColor = {r, g, b} }
