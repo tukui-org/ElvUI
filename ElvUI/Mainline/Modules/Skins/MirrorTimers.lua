@@ -29,14 +29,11 @@ local function SetupTimer(container, timer)
 
 	bar:StripTextures()
 	bar:SetTemplate('Transparent')
-
-	-- ToDO: 10.1.5 look at the blizz mover stuff
 end
 
 function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
 
-	-- ToDO: 10.1.5
 	hooksecurefunc(_G.MirrorTimerContainer, 'SetupTimer', SetupTimer)
 end
 

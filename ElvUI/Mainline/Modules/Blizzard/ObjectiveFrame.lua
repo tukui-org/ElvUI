@@ -14,8 +14,10 @@ local function IsFramePositionedLeft(frame)
 	return x and x < (E.screenWidth * 0.5) -- positioned on left side
 end
 
-local function RewardsFrame_SetPosition(block, data)
+local function RewardsFrame_SetPosition(block)
 	local rewards = _G.ObjectiveTrackerBonusRewardsFrame
+	if not rewards then return end
+
 	rewards:ClearAllPoints()
 
 	if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
@@ -108,6 +110,5 @@ function B:MoveObjectiveFrame()
 		ObjectiveTrackerFrame.IsInDefaultPosition = E.noop
 	end
 
-	-- ToDo: 10.1.5: Untested!
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', RewardsFrame_SetPosition)
 end
