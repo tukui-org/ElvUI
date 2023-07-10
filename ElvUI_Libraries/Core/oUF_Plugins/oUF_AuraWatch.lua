@@ -60,14 +60,16 @@ local function customFilter(element, _, button, _, _, count)
 
 	-- fake stacking for spells with same spell ID
 	if element.allowStacks and element.allowStacks[spellID] then
+		local total = (not count or count < 1) and 1 or count
+
 		local stack = stackAuras[spellID]
 		if not stack then
 			stackAuras[spellID] = button
 			stack = button
 
-			stack.matches = (count or 0) + 1
+			stack.matches = total
 		else
-			stack.matches = stack.matches + 1
+			stack.matches = stack.matches + total
 		end
 
 		if stack.matches > 1 then
