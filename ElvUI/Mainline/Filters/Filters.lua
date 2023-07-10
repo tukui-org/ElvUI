@@ -1389,8 +1389,8 @@ G.unitframe.aurawatch = {
 		-- Augmentation
 		[360827]	= Aura(360827, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Blistering Scales
 		[410089]	= Aura(410089, nil, 'TOP', {0.13, 0.87, 0.50}), -- Prescience
-		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}), -- Ebon Might < self
-		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}), -- Ebon Might < others
+		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true), -- Ebon Might < self
+		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true, nil, nil, nil, -20), -- Ebon Might < others
 		[406732]	= Aura(406732, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Spatial Paradox
 	},
 	ROGUE = {
