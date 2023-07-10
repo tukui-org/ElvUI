@@ -336,6 +336,8 @@ end
 local inspectGUIDCache = {}
 local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
+	if GameTooltip.InspectInfoAdded then return end
+	
 	local specName = TT:GetSpecializationInfo('mouseover')
 	if specName and itemLevel then
 		local inspectCache = inspectGUIDCache[unitGUID]
@@ -345,6 +347,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 			inspectCache.specName = specName
 		end
 
+		GameTooltip.InspectInfoAdded = true
 		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, unpack((inspectCache and inspectCache.unitColor) or inspectColorFallback))
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
@@ -354,6 +357,7 @@ end
 function TT:INSPECT_READY(event, unitGUID)
 	if UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
 		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel('mouseover')
+		if not itemLevel then NotifyInspect('mouseover') return end
 		if itemLevel == 'tooSoon' then
 			E:Delay(0.05, function()
 				local canUpdate = true
@@ -401,6 +405,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 	local cache = inspectGUIDCache[unitGUID]
 
 	if unitGUID == E.myguid then
+		tooltip.InspectInfoAdded = true
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', TT:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
 		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
 	elseif cache and cache.time then
@@ -410,6 +415,7 @@ function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
 			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
 		end
 
+		tooltip.InspectInfoAdded = true
 		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, r, g, b)
 		tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif unitGUID then
@@ -652,6 +658,8 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 			tt:SetBackdropBorderColor(r, g, b)
 		end
 	end
+	
+	tt.InspectInfoAdded = false
 
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
