@@ -345,6 +345,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 			inspectCache.specName = specName
 		end
 
+		GameTooltip.ItemLevelShown = true
 		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, unpack((inspectCache and inspectCache.unitColor) or inspectColorFallback))
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
@@ -393,25 +394,27 @@ function TT:GetSpecializationInfo(unit, isPlayer)
 end
 
 local lastGUID
-function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
-	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
+function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
+	if tt.ItemLevelShown or (not unit) or (numTries > 3) or not CanInspect(unit) then return end
 
 	local unitGUID = UnitGUID(unit)
 	if not unitGUID then return end
 	local cache = inspectGUIDCache[unitGUID]
 
 	if unitGUID == E.myguid then
-		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', TT:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
-		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(_G.SPECIALIZATION..':', TT:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
 	elseif cache and cache.time then
 		local specName, itemLevel = cache.specName, cache.itemLevel
 		if not (specName and itemLevel) or (GetTime() - cache.time > 120) then
 			cache.time, cache.specName, cache.itemLevel = nil, nil, nil
-			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
+			return E:Delay(0.33, TT.AddInspectInfo, TT, tt, unit, numTries + 1, r, g, b)
 		end
 
-		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, r, g, b)
-		tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, r, g, b)
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif unitGUID then
 		if not inspectGUIDCache[unitGUID] then
 			inspectGUIDCache[unitGUID] = { unitColor = {r, g, b} }
@@ -574,7 +577,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 				TT:AddMythicInfo(self, unit)
 			end
 
-			if isShiftKeyDown and color and TT.db.inspectDataEnable then
+			if isShiftKeyDown and color and TT.db.inspectDataEnable and not self.ItemLevelShown then
 				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
 			end
 		end
@@ -652,6 +655,8 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 			tt:SetBackdropBorderColor(r, g, b)
 		end
 	end
+
+	tt.ItemLevelShown = nil
 
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
