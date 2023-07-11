@@ -82,7 +82,7 @@ local function onEnter(button)
 		button:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
 
-	-- when we skin it the normal isn't backed into the highlight texture so readd it
+	-- when we skin it the normal isn't baked into the highlight texture so readd it
 	local normal = button.GetNormalTexture and button:GetNormalTexture()
 	if normal then
 		normal:SetAlpha(1)
