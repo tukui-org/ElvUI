@@ -205,6 +205,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	local frame = _G.ProfessionsCustomerOrdersFrame
 	S:HandleFrame(frame)
 	HandleTabs(frame)
+	S:HandleCheckBox(frame.Form.AllocateBestQualityCheckBox)
 
 	-- Item flyout
 	if _G.OpenProfessionsItemFlyout then
