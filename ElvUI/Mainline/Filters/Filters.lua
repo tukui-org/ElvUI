@@ -690,6 +690,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[385361] = List(), -- Rotting Sickness
 		[378020] = List(), -- Gash Frenzy
@@ -1076,6 +1078,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[384764] = List(), -- Feeding Frenzy
 		[376933] = List(), -- Grasping Vines
