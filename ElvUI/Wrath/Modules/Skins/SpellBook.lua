@@ -142,4 +142,3 @@ function S:SpellBookFrame()
 end
 
 S:AddCallback('SpellBookFrame')
-

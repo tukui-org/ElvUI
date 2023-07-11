@@ -113,15 +113,17 @@ function B:Initialize()
 		end
 	end
 
-	if not E.Classic then
+	if E.Classic then
+		if E.db.general.objectiveTracker then
+			B:QuestWatch_MoveFrames()
+			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
+		end
+	elseif E.Wrath then
 		B:PositionVehicleFrame()
 
 		if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 			B:MoveObjectiveFrame()
 		end
-	elseif E.db.general.objectiveTracker then -- classic check
-		B:QuestWatch_MoveFrames()
-		hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 	end
 
 	local MinimapAnchor = _G.ElvUI_MinimapHolder or _G.Minimap

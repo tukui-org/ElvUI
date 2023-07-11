@@ -25,7 +25,8 @@ UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' 
 UF.MatchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
 UF.MatchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
 UF.SourceStacks = { -- stack any source
-	[370898] = 'Permeating Chill'	-- Evoker
+	[370898] = 'Permeating Chill',	-- Evoker
+	[395152] = 'Ebon Might'			-- Evoker (others)
 }
 
 UF.ExcludeStacks = {

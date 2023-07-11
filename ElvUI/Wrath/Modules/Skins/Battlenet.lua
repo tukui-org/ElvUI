@@ -10,7 +10,7 @@ function S:BattleNetFrames()
 	local skins = {
 		_G.BNToastFrame,
 		_G.TimeAlertFrame,
-		_G.TicketStatusFrameButton,
+		_G.TicketStatusFrameButton.NineSlice
 	}
 
 	for i = 1, #skins do

@@ -43,7 +43,6 @@ local function OnEvent(self)
 		ratingIndex = CR_CRIT_MELEE
 	end
 
-
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
 	else

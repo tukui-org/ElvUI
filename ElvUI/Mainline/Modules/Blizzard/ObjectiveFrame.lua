@@ -16,6 +16,8 @@ end
 
 local function RewardsFrame_SetPosition(block)
 	local rewards = _G.ObjectiveTrackerBonusRewardsFrame
+	if not rewards then return end
+
 	rewards:ClearAllPoints()
 
 	if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
@@ -108,5 +110,5 @@ function B:MoveObjectiveFrame()
 		ObjectiveTrackerFrame.IsInDefaultPosition = E.noop
 	end
 
-	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
+	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', RewardsFrame_SetPosition)
 end

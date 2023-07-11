@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local UnitDefense = UnitDefense
 
 local DEFENSE = DEFENSE
@@ -19,4 +18,3 @@ local function ApplySettings(_, hex)
 end
 
 DT:RegisterDatatext('Defense', STAT_CATEGORY_DEFENSE, { 'UNIT_STATS', 'UNIT_AURA', 'SKILL_LINES_CHANGED' }, OnEvent, nil, nil, nil, nil, DEFENSE, nil, ApplySettings)
-

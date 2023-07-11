@@ -12,6 +12,39 @@ local GetItemQualityColor = GetItemQualityColor
 local GetSendMailItem = GetSendMailItem
 local hooksecurefunc = hooksecurefunc
 
+local function MailFrameSkin()
+	for i = 1, _G.ATTACHMENTS_MAX_SEND do
+		local button = _G['SendMailAttachment'..i]
+		if not button.template then
+			button:StripTextures()
+			button:SetTemplate(nil, true)
+			button:StyleButton(nil, true)
+		end
+
+		local name = GetSendMailItem(i)
+		if name then
+			local _, _, quality = GetItemInfo(name)
+			if quality and quality > 1 then
+				local r, g, b = GetItemQualityColor(quality)
+				button:SetBackdropBorderColor(r, g, b)
+			else
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+
+			local icon = button:GetNormalTexture()
+			if icon then
+				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetInside()
+			end
+		else
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
+
+	_G.MailEditBox:SetHeight(_G.SendStationeryBackgroundLeft:GetHeight())
+	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
+end
+
 function S:MailFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
@@ -101,41 +134,10 @@ function S:MailFrame()
 	_G.SendStationeryBackgroundRight:Hide()
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
-	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
 
-	hooksecurefunc('SendMailFrame_Update', function()
-		for i = 1, _G.ATTACHMENTS_MAX_SEND do
-			local button = _G['SendMailAttachment'..i]
-			if not button.template then
-				button:StripTextures()
-				button:SetTemplate(nil, true)
-				button:StyleButton(nil, true)
-			end
-
-			local name = GetSendMailItem(i)
-			if name then
-				local _, _, quality = GetItemInfo(name)
-				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-
-				local icon = button:GetNormalTexture()
-				if icon then
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetInside()
-				end
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-
-		_G.MailEditBox:SetHeight(_G.SendStationeryBackgroundLeft:GetHeight())
-	end)
+	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
 
 	S:HandleScrollBar(_G.MailEditBoxScrollBar)
 	S:HandleEditBox(_G.SendMailNameEditBox)

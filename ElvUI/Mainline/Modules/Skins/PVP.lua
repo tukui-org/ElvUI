@@ -13,20 +13,6 @@ local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
-local function HandleRoleChecks(button, ...)
-	button:StripTextures()
-	button:DisableDrawLayer('ARTWORK')
-	button:DisableDrawLayer('OVERLAY')
-
-	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture(E.Media.Textures.RolesHQ)
-	button.bg:SetTexCoord(...)
-	button.bg:Point('CENTER')
-	button.bg:Size(40, 40)
-	button.bg:SetAlpha(0.6)
-	S:HandleCheckBox(button.checkButton)
-end
-
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -126,10 +112,9 @@ function S:Blizzard_PVPUI()
 		if s.bg then s.bg:SetDesaturated(true) end
 	end)
 
-	-- New tiny Role icons in Bfa
-	HandleRoleChecks(HonorFrame.TankIcon, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HandleRoleChecks(HonorFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(HonorFrame.DPSIcon, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	S:HandleCheckBox(HonorFrame.TankIcon.checkButton)
+	S:HandleCheckBox(HonorFrame.HealerIcon.checkButton)
+	S:HandleCheckBox(HonorFrame.DPSIcon.checkButton)
 
 	-- Conquest Frame
 	local ConquestFrame = _G.ConquestFrame
@@ -138,9 +123,9 @@ function S:Blizzard_PVPUI()
 
 	S:HandleButton(_G.ConquestJoinButton)
 
-	HandleRoleChecks(ConquestFrame.TankIcon, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-	HandleRoleChecks(ConquestFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-	HandleRoleChecks(ConquestFrame.DPSIcon, _G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
+	S:HandleCheckBox(ConquestFrame.TankIcon.checkButton)
+	S:HandleCheckBox(ConquestFrame.HealerIcon.checkButton)
+	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
 
 	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
@@ -247,8 +232,6 @@ function S:PVPReadyDialog()
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
-	_G.PVPReadyDialogRoleIcon.texture:SetTexture(E.Media.Textures.RolesHQ)
-	_G.PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
 	hooksecurefunc('PVPReadyDialog_Display', function(s, _, _, _, queueType, _, role)
 		if role == 'DAMAGER' then
