@@ -11,4 +11,5 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellCrit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellHit.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellPower.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Spirit.lua'/>
 </Ui>

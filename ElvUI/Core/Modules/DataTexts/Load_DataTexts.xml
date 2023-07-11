@@ -6,15 +6,15 @@
 	<Script file='AttackPower.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Battlegrounds.lua'/>
-	<Script file='CombatTime.lua'/>
 	<Script file='CombatIndicator.lua'/>
-	<Script file='ElvUI.lua'/>
+	<Script file='CombatTime.lua'/>
 	<Script file='Coordinates.lua'/>
 	<Script file='Crit.lua'/>
 	<Script file='CustomCurrency.lua'/>
 	<Script file='Date.lua'/>
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
+	<Script file='ElvUI.lua'/>
 	<Script file='Experience.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Gold.lua'/>
@@ -31,7 +31,6 @@
 	<Script file='PrimaryStat.lua'/>
 	<Script file='Quests.lua'/>
 	<Script file='Reputation.lua'/>
-	<Script file='Spirit.lua'/>
 	<Script file='Stamina.lua'/>
 	<Script file='Strength.lua'/>
 	<Script file='System.lua'/>

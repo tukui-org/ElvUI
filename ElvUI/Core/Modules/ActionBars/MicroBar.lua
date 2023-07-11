@@ -108,79 +108,104 @@ function AB:HandleMicroCoords(button, name)
 		end
 	end
 
-	--button:GetNormalTexture():SetTexCoord(l, r, t, b)
-	--button:GetPushedTexture():SetTexCoord(l, r, t, b)
+	local normal = button.GetNormalTexture and button:GetNormalTexture()
+	if normal then
+		normal:SetTexCoord(l, r, t, b)
+
+		local pushed = button.GetPushedTexture and button:GetPushedTexture()
+		pushed:SetTexCoord(l, r, t, b)
+	end
 
 	if button.FlashBorder then
 		button.FlashBorder:SetTexCoord(l, r, t, b)
 	end
 
-	--local disabled = button:GetDisabledTexture()
-	--if disabled then
-		--disabled:SetTexCoord(l, r, t, b)
-	--end
+	local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
+	if disabled then
+		disabled:SetTexCoord(l, r, t, b)
+	end
 end
 
 function AB:HandleMicroTextures(button, name)
-	--local normal = button:GetNormalTexture() -- ToDO: 10.1.5
-	--local pushed = button:GetPushedTexture()
-
-	local icons = AB.db.microbar.useIcons
-	local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
-	local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
-	local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
-	local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
-	if stock then
-		--normal:SetTexture(faction or stock.normal)
-		--pushed:SetTexture(character or faction or stock.pushed)
-	elseif texture then
-		--normal:SetTexture(texture)
-		--pushed:SetTexture(character or texture)
-	elseif character then
-		--normal:SetTexture()
-		--pushed:SetTexture(character)
+	local highlight = button.GetHighlightTexture and button:GetHighlightTexture()
+	if highlight then
+		highlight:SetColorTexture(1, 1, 1, 0.2)
 	end
 
-	if character then
-		--pushed:SetDrawLayer('OVERLAY', 1)
-		--pushed:SetBlendMode('ADD')
-		--pushed:SetAlpha(0.25)
-	end
+	local normal = button.GetNormalTexture and button:GetNormalTexture()
+	if not normal then -- no pushed yet either, probably character
+		local pushed = button.GetPushedTexture and button:GetPushedTexture()
+		if not pushed then
+			button:SetPushedTexture(E.Media.Textures.White8x8)
 
-	--normal:SetInside(button.backdrop)
-	--pushed:SetInside(button.backdrop)
+			pushed = button.GetPushedTexture and button:GetPushedTexture()
+			pushed:SetDrawLayer('OVERLAY', 1)
+			pushed:SetAlpha(0.2)
+			pushed:SetInside()
+		end
 
-	local color = E.media.rgbvaluecolor
-	if color then
-		--pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
-	end
+		local color = E.media.rgbvaluecolor
+		if color then
+			pushed:SetVertexColor(color.r, color.g, color.b)
+		end
+	else
+		local icons = AB.db.microbar.useIcons
+		local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
+		local faction = name == 'PVPMicroButton' and E.Media.Textures[E.myfaction == 'Horde' and 'PVPHorde' or 'PVPAlliance']
+		local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
+		local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
+		local pushed = button.GetPushedTexture and button:GetPushedTexture()
+		if stock then
+			normal:SetTexture(faction or stock.normal)
+			pushed:SetTexture(character or faction or stock.pushed)
+		elseif texture then
+			normal:SetTexture(texture)
+			pushed:SetTexture(character or texture)
+		elseif character then
+			normal:SetTexture()
+			pushed:SetTexture(character)
+		end
 
-	--local highlight = button:GetHighlightTexture()
-	--highlight:SetColorTexture(1, 1, 1, 0.2)
+		if character then
+			pushed:SetDrawLayer('OVERLAY', 1)
+			pushed:SetBlendMode('ADD')
+			pushed:SetAlpha(0.25)
+		end
 
-	--local disabled = button:GetDisabledTexture()
-	--if disabled then
-		--disabled:SetTexture(texture)
-		--disabled:SetDesaturated(true)
-		--disabled:SetInside(button.backdrop)
-	--end
+		normal:SetInside(button.backdrop)
+		pushed:SetInside(button.backdrop)
 
-	if button.FlashBorder then
-		button.FlashBorder:SetInside(button.backdrop)
+		local color = E.media.rgbvaluecolor
+		if color then
+			pushed:SetVertexColor(color.r * 1.5, color.g * 1.5, color.b * 1.5)
+		end
 
-		if icons then
-			button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
-		else
-			button.FlashBorder:SetColorTexture(1, 1, 1, 0.2)
+		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
+		if disabled then
+			disabled:SetTexture(texture)
+			disabled:SetDesaturated(true)
+			disabled:SetInside(button.backdrop)
+		end
+
+		if button.FlashBorder then
+			button.FlashBorder:SetInside(button.backdrop)
+
+			if icons then
+				button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
+			else
+				button.FlashBorder:SetColorTexture(1, 1, 1, 0.2)
+			end
 		end
 	end
 
-	if button.FlashContent then
-		button.FlashContent:SetTexture()
-	end
+	if button.PushedBackground then button.PushedBackground:SetTexture() end
+	if button.PushedShadow then button.PushedShadow:SetTexture() end
+	if button.FlashContent then button.FlashContent:SetTexture() end
+	if button.Background then button.Background:SetTexture() end
+	if button.Flash then button.Flash:SetTexture() end
 
-	if button.Flash then
-		button.Flash:SetTexture()
+	if button.PortraitMask then
+		button.PortraitMask:Hide()
 	end
 end
 
@@ -189,8 +214,8 @@ function AB:HandleMicroButton(button, name)
 
 	button:SetTemplate()
 	button:SetParent(microBar)
-	button:HookScript('OnEnter', onEnter)
-	button:HookScript('OnLeave', onLeave)
+	button:SetScript('OnEnter', onEnter)
+	button:SetScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if not E.Retail then
@@ -325,6 +350,10 @@ function AB:UpdateMicroBarTextures()
 	end
 end
 
+function AB:HandleCharacterPortrait()
+	self.Portrait:SetInside()
+end
+
 function AB:SetupMicroBar()
 	microBar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
@@ -338,10 +367,15 @@ function AB:SetupMicroBar()
 		local button = _G[name]
 		AB:HandleMicroButton(button, name)
 
-		if name == 'MainMenuMicroButton' then
+		if E.Retail or name == 'MainMenuMicroButton' then
 			hooksecurefunc(button, (E.Retail and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
 				AB:UpdateMicroButtonTexture(name)
 			end)
+
+			if name == 'CharacterMicroButton' then
+				hooksecurefunc(button, 'SetPushed', AB.HandleCharacterPortrait)
+				hooksecurefunc(button, 'SetNormal', AB.HandleCharacterPortrait)
+			end
 		end
 	end
 

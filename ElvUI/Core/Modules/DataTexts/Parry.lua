@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetParryChance = GetParryChance
 
 local PARRY = PARRY

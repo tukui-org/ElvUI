@@ -315,6 +315,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[358267]	= List(), -- Hover
 		[357210]	= List(), -- Deep Breath
 		[371807]	= List(), -- Recall
+		[395296]	= List(), -- Ebon Might < self
+		[395152]	= List(), -- Ebon Might < others
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -688,6 +690,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[385361] = List(), -- Rotting Sickness
 		[378020] = List(), -- Gash Frenzy
@@ -1074,6 +1078,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[384764] = List(), -- Feeding Frenzy
 		[376933] = List(), -- Grasping Vines
@@ -1387,7 +1393,8 @@ G.unitframe.aurawatch = {
 		-- Augmentation
 		[360827]	= Aura(360827, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Blistering Scales
 		[410089]	= Aura(410089, nil, 'TOP', {0.13, 0.87, 0.50}), -- Prescience
-		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.14, 1.00, 0.88}), -- Ebon Might
+		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true), -- Ebon Might < self
+		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true, nil, nil, nil, -20), -- Ebon Might < others
 		[406732]	= Aura(406732, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Spatial Paradox
 	},
 	ROGUE = {
@@ -1533,7 +1540,9 @@ G.unitframe.AuraBarColors = {
 	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Heroism
 	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Mage] Time Warp
 	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Hunter] Ancient Hysteria
-	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Evoker] Fury of the Aspects
+	[390386]	= { enable = true, color = {r = 0.99, g = 0.82, b = 0.24 }}, -- [Evoker] Fury of the Aspects
+	[395296]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < self
+	[395152]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < others
 }
 
 G.unitframe.AuraHighlightColors = {}

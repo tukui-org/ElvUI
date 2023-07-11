@@ -990,11 +990,22 @@ if Retail then
 	BleedList[406215] = "Vicious Bite"
 	BleedList[406365] = "Rending Charge"
 	BleedList[406499] = "Ravening Leaps"
+	BleedList[407120] = "Serrated Axe"
+	BleedList[407313] = "Shrapnel"
 	BleedList[411101] = "Artifact Shards"
 	BleedList[411437] = "Brutal Lacerations"
+	BleedList[411700] = "Slobbering Bite"
 	BleedList[411924] = "Drilljaws"
+	BleedList[412285] = "Stonebolt"
+	BleedList[412505] = "Rending Cleave"
 	BleedList[413131] = "Whirling Dagger"
 	BleedList[413136] = "Whirling Dagger"
+	BleedList[414466] = "Jagged Gills"
+	BleedList[414552] = "Stonecrack"
+	BleedList[416258] = "Stonebolt"
+	BleedList[418009] = "Serrated Arrows"
+	BleedList[418160] = "Sawblade-Storm"
+	BleedList[418624] = "Rending Slash"
 end
 
 function lib:GetDebuffTypeColor()

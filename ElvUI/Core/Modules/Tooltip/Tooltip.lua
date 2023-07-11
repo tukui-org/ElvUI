@@ -21,16 +21,12 @@ local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
-local GetInspectSpecialization = GetInspectSpecialization
 local GetItemCount = GetItemCount
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetMouseFocus = GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetSpecialization = GetSpecialization
-local GetSpecializationInfo = GetSpecializationInfo
-local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -90,8 +86,7 @@ local UNKNOWN = UNKNOWN
 
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
--- TODO: 10.1.5
-local LEVEL2 = E.Retail and '' or strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
+local LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS and strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s:|r %d'
 local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r'
@@ -196,19 +191,15 @@ function TT:RemoveTrashLines(tt)
 	end
 end
 
-function TT:GetLevelLine(tt, offset, guildName)
+function TT:GetLevelLine(tt, offset, player)
 	if tt:IsForbidden() then return end
-
-	if guildName and not E.Classic then
-		offset = 3
-	end
 
 	for i = offset, tt:NumLines() do
 		local tipLine = _G['GameTooltipTextLeft'..i]
 		local tipText = tipLine and tipLine:GetText()
 		local tipLower = tipText and strlower(tipText)
-		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
-			return tipLine
+		if tipLower and (strfind(tipLower, LEVEL1) or LEVEL2 and strfind(tipLower, LEVEL2)) then
+			return tipLine, player and _G['GameTooltipTextLeft'..i+1] or nil
 		end
 	end
 end
@@ -246,7 +237,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local awayText = UnitIsAFK(unit) and AFK_LABEL or UnitIsDND(unit) and DND_LABEL or ''
 		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
 
-		local levelLine = TT:GetLevelLine(tt, 2, guildName)
+		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 3) or 2, E.Retail)
 		if guildName then
 			if guildRealm and isShiftKeyDown then
 				guildName = guildName..'-'..guildRealm
@@ -268,9 +259,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
 			else
-				levelLine:SetFormattedText('%s%s|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', unitGender or '', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
+			end
+
+			local specText = specLine and specLine:GetText()
+			if specText then
+				specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
 			end
 		end
 
@@ -335,18 +331,15 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 end
 
 local inspectGUIDCache = {}
-local inspectColorFallback = {1,1,1}
 function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
-	local specName = TT:GetSpecializationInfo('mouseover')
-	if specName and itemLevel then
+	if itemLevel then
 		local inspectCache = inspectGUIDCache[unitGUID]
 		if inspectCache then
 			inspectCache.time = GetTime()
 			inspectCache.itemLevel = itemLevel
-			inspectCache.specName = specName
 		end
 
-		GameTooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, unpack((inspectCache and inspectCache.unitColor) or inspectColorFallback))
+		GameTooltip.ItemLevelShown = true
 		GameTooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 		GameTooltip:Show()
 	end
@@ -382,37 +375,26 @@ function TT:INSPECT_READY(event, unitGUID)
 	end
 end
 
-function TT:GetSpecializationInfo(unit, isPlayer)
-	local spec = (isPlayer and GetSpecialization()) or (unit and GetInspectSpecialization(unit))
-	if spec and spec > 0 then
-		if isPlayer then
-			return select(2, GetSpecializationInfo(spec))
-		else
-			return select(2, GetSpecializationInfoByID(spec))
-		end
-	end
-end
-
 local lastGUID
-function TT:AddInspectInfo(tooltip, unit, numTries, r, g, b)
-	if (not unit) or (numTries > 3) or not CanInspect(unit) then return end
+function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
+	if tt.ItemLevelShown or (not unit) or (numTries > 3) or not CanInspect(unit) then return end
 
 	local unitGUID = UnitGUID(unit)
 	if not unitGUID then return end
 	local cache = inspectGUIDCache[unitGUID]
 
 	if unitGUID == E.myguid then
-		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', TT:GetSpecializationInfo(unit, true), nil, nil, nil, r, g, b)
-		tooltip:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(L["Item Level:"], E:GetUnitItemLevel(unit), nil, nil, nil, 1, 1, 1)
 	elseif cache and cache.time then
-		local specName, itemLevel = cache.specName, cache.itemLevel
-		if not (specName and itemLevel) or (GetTime() - cache.time > 120) then
-			cache.time, cache.specName, cache.itemLevel = nil, nil, nil
-			return E:Delay(0.33, TT.AddInspectInfo, TT, tooltip, unit, numTries + 1, r, g, b)
+		local itemLevel = cache.itemLevel
+		if not itemLevel or (GetTime() - cache.time > 120) then
+			cache.time, cache.itemLevel = nil, nil
+			return E:Delay(0.33, TT.AddInspectInfo, TT, tt, unit, numTries + 1, r, g, b)
 		end
 
-		tooltip:AddDoubleLine(_G.SPECIALIZATION..':', specName, nil, nil, nil, r, g, b)
-		tooltip:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
+		tt.ItemLevelShown = true
+		tt:AddDoubleLine(L["Item Level:"], itemLevel, nil, nil, nil, 1, 1, 1)
 	elseif unitGUID then
 		if not inspectGUIDCache[unitGUID] then
 			inspectGUIDCache[unitGUID] = { unitColor = {r, g, b} }
@@ -575,7 +557,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 				TT:AddMythicInfo(self, unit)
 			end
 
-			if isShiftKeyDown and color and TT.db.inspectDataEnable then
+			if isShiftKeyDown and color and TT.db.inspectDataEnable and not self.ItemLevelShown then
 				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
 			end
 		end
@@ -653,6 +635,8 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 			tt:SetBackdropBorderColor(r, g, b)
 		end
 	end
+
+	tt.ItemLevelShown = nil
 
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
