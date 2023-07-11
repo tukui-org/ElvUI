@@ -64,7 +64,7 @@ Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function()
 Auras.args.colorGroup = ACH:MultiSelect(L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
 
 do
-	Auras.args.debuffColors = ACH:Group(E.NewSign..L["Debuff Colors"], nil, 7, nil, function(info) local t, d = E.db.general.debuffColors[info[#info]], P.general.debuffColors[info[#info]] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) E:UpdateDispelColor(info[#info], r, g, b) end)
+	Auras.args.debuffColors = ACH:Group(L["Debuff Colors"], nil, 7, nil, function(info) local t, d = E.db.general.debuffColors[info[#info]], P.general.debuffColors[info[#info]] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) E:UpdateDispelColor(info[#info], r, g, b) end)
 	Auras.args.debuffColors.args.spacer1 = ACH:Spacer(10, 'full')
 	Auras.args.debuffColors.inline = true
 
@@ -88,7 +88,7 @@ Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
 
-Auras.args.privateAuras = ACH:Group(E.NewSign..L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end, nil, not E.Retail)
+Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:PlayerPrivateAuras() end, nil, not E.Retail)
 Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Auras.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 Auras.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
