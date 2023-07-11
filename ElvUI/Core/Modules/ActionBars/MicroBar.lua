@@ -82,6 +82,12 @@ local function onEnter(button)
 		button:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
 
+	-- when we skin it the normal isn't backed into the highlight texture so readd it
+	local normal = button.GetNormalTexture and button:GetNormalTexture()
+	if normal then
+		normal:SetAlpha(1)
+	end
+
 	-- bag keybind support from actionbar module
 	if E.private.actionbar.enable then
 		AB:BindUpdate(button, 'MICRO')
@@ -214,8 +220,8 @@ function AB:HandleMicroButton(button, name)
 
 	button:SetTemplate()
 	button:SetParent(microBar)
-	button:SetScript('OnEnter', onEnter)
-	button:SetScript('OnLeave', onLeave)
+	button:HookScript('OnEnter', onEnter)
+	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if not E.Retail then
