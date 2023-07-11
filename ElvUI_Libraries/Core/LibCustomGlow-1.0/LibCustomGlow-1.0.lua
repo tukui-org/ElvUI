@@ -6,7 +6,7 @@ https://www.wowace.com/projects/libbuttonglow-1-0
 -- luacheck: globals CreateFromMixins ObjectPoolMixin CreateTexturePool CreateFramePool
 
 local MAJOR_VERSION = "LibCustomGlow-1.0"
-local MINOR_VERSION = 16
+local MINOR_VERSION = 17
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -711,3 +711,191 @@ end
 table.insert(lib.glowList, "Action Button Glow")
 lib.startList["Action Button Glow"] = lib.ButtonGlow_Start
 lib.stopList["Action Button Glow"] = lib.ButtonGlow_Stop
+
+
+-- ProcGlow
+
+local function ProcGlowResetter(framePool, frame)
+    frame:Hide()
+    frame:ClearAllPoints()
+    frame:SetScript("OnShow", nil)
+    frame:SetScript("OnHide", nil)
+    local parent = frame:GetParent()
+    if frame.key and parent[frame.key] then
+        parent[frame.key] = nil
+    end
+end
+
+local ProcGlowPool = CreateFramePool("Frame", GlowParent, nil, ProcGlowResetter)
+lib.ProcGlowPool = ProcGlowPool
+
+local function InitProcGlow(f)
+    f.ProcStart = f:CreateTexture(nil, "ARTWORK")
+    f.ProcStart:SetBlendMode("ADD")
+    f.ProcStart:SetAtlas("UI-HUD-ActionBar-Proc-Start-Flipbook")
+    f.ProcStart:SetAlpha(1)
+    f.ProcStart:SetSize(150, 150)
+    f.ProcStart:SetPoint("CENTER")
+
+    f.ProcLoop = f:CreateTexture(nil, "ARTWORK")
+    f.ProcLoop:SetAtlas("UI-HUD-ActionBar-Proc-Loop-Flipbook")
+    f.ProcLoop:SetAlpha(0)
+    f.ProcLoop:SetAllPoints()
+
+    f.ProcLoopAnim = f:CreateAnimationGroup()
+    f.ProcLoopAnim:SetLooping("REPEAT")
+    f.ProcLoopAnim:SetToFinalAlpha(true)
+
+    local alphaRepeat = f.ProcLoopAnim:CreateAnimation("Alpha")
+    alphaRepeat:SetChildKey("ProcLoop")
+    alphaRepeat:SetFromAlpha(1)
+    alphaRepeat:SetToAlpha(1)
+    alphaRepeat:SetDuration(.001)
+    alphaRepeat:SetOrder(0)
+    f.ProcLoopAnim.alphaRepeat = alphaRepeat
+
+    local flipbookRepeat = f.ProcLoopAnim:CreateAnimation("FlipBook")
+    flipbookRepeat:SetChildKey("ProcLoop")
+    flipbookRepeat:SetDuration(1)
+    flipbookRepeat:SetOrder(1)
+    flipbookRepeat:SetFlipBookRows(6)
+    flipbookRepeat:SetFlipBookColumns(5)
+    flipbookRepeat:SetFlipBookFrames(30)
+    flipbookRepeat:SetFlipBookFrameWidth(0)
+    flipbookRepeat:SetFlipBookFrameHeight(0)
+    f.ProcLoopAnim.flipbookRepeat = flipbookRepeat
+
+    f.ProcStartAnim = f:CreateAnimationGroup()
+    f.ProcStartAnim:SetToFinalAlpha(true)
+
+    local flipbookStartAlphaIn = f.ProcStartAnim:CreateAnimation("Alpha")
+    flipbookStartAlphaIn:SetChildKey("ProcStart")
+    flipbookStartAlphaIn:SetDuration(.001)
+    flipbookStartAlphaIn:SetOrder(0)
+    flipbookStartAlphaIn:SetFromAlpha(1)
+    flipbookStartAlphaIn:SetToAlpha(1)
+
+    local flipbookStart = f.ProcStartAnim:CreateAnimation("FlipBook")
+    flipbookStart:SetChildKey("ProcStart")
+    flipbookStart:SetDuration(0.7)
+    flipbookStart:SetOrder(1)
+    flipbookStart:SetFlipBookRows(6)
+    flipbookStart:SetFlipBookColumns(5)
+    flipbookStart:SetFlipBookFrames(30)
+    flipbookStart:SetFlipBookFrameWidth(0)
+    flipbookStart:SetFlipBookFrameHeight(0)
+
+    local flipbookStartAlphaOut = f.ProcStartAnim:CreateAnimation("Alpha")
+    flipbookStartAlphaOut:SetChildKey("ProcStart")
+    flipbookStartAlphaOut:SetDuration(.001)
+    flipbookStartAlphaOut:SetOrder(2)
+    flipbookStartAlphaOut:SetFromAlpha(1)
+    flipbookStartAlphaOut:SetToAlpha(0)
+
+    f.ProcStartAnim.flipbookStart = flipbookStart
+    f.ProcStartAnim:SetScript("OnFinished", function(self)
+        self:GetParent().ProcLoopAnim:Play()
+        self:GetParent().ProcLoop:Show()
+    end)
+
+end
+
+local function SetupProcGlow(f, options)
+    f.key = "_ProcGlow" .. options.key -- for resetter
+    f:SetScript("OnHide", function(self)
+        if self.ProcStartAnim:IsPlaying() then
+            self.ProcStartAnim:Stop()
+        end
+        if self.ProcLoopAnim:IsPlaying() then
+            self.ProcLoopAnim:Stop()
+        end
+    end)
+    f:SetScript("OnShow", function(self)
+        if self.startAnim then
+            if not self.ProcStartAnim:IsPlaying() and not self.ProcLoopAnim:IsPlaying() then
+                --[[
+to future me:
+i wish you'r ok, if you wonder where are this constants coming from, check:
+https://github.com/Gethe/wow-ui-source/blob/eb4459c679a1bd8919cad92934ea83c4f5e77e8b/Interface/FrameXML/ActionButton.lua#L816
+https://github.com/Gethe/wow-ui-source/blob/d8e8ebf572c3b28237cf83e8fc5c0583b5453a2b/Interface/FrameXML/ActionButtonTemplate.xml#L5-L14
+                ]]
+                local width, height = self:GetSize()
+                self.ProcStart:SetSize((width / 42 * 150) / 1.4, (height / 42 * 150) / 1.4)
+                self.ProcStart:Show()
+                self.ProcLoop:Hide()
+                self.ProcStartAnim:Play()
+            end
+        else
+            if not self.ProcLoopAnim:IsPlaying() then
+                self.ProcStart:Hide()
+                self.ProcLoop:Show()
+                self.ProcLoopAnim:Play()
+            end
+        end
+    end)
+    if not options.color then
+        f.ProcStart:SetDesaturated(nil)
+        f.ProcStart:SetVertexColor(1, 1, 1, 1)
+        f.ProcLoop:SetDesaturated(nil)
+        f.ProcLoop:SetVertexColor(1, 1, 1, 1)
+    else
+        f.ProcStart:SetDesaturated(1)
+        f.ProcStart:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
+        f.ProcLoop:SetDesaturated(1)
+        f.ProcLoop:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
+    end
+    f.ProcLoopAnim.flipbookRepeat:SetDuration(options.duration)
+    f.startAnim = options.startAnim
+end
+
+local ProcGlowDefaults = {
+    frameLevel = 8,
+    color = nil,
+    startAnim = true,
+    xOffset = 0,
+    yOffset = 0,
+    duration = 1,
+    key = ""
+}
+
+function lib.ProcGlow_Start(r, options)
+    if not r then
+        return
+    end
+    options = options or {}
+    setmetatable(options, { __index = ProcGlowDefaults })
+    local key = "_ProcGlow" .. options.key
+    local f, new
+    if r[key] then
+        f = r[key]
+    else
+        f, new = ProcGlowPool:Acquire()
+        if new then
+            InitProcGlow(f)
+        end
+        r[key] = f
+    end
+    f:SetParent(r)
+    f:SetFrameLevel(r:GetFrameLevel() + options.frameLevel)
+
+    local width, height = r:GetSize()
+    local xOffset = options.xOffset + width * 0.2
+    local yOffset = options.yOffset + height * 0.2
+    f:SetPoint("TOPLEFT", r, "TOPLEFT", -xOffset, yOffset)
+    f:SetPoint("BOTTOMRIGHT", r, "BOTTOMRIGHT", xOffset, -yOffset)
+
+    SetupProcGlow(f, options)
+    f:Show()
+end
+
+function lib.ProcGlow_Stop(r, key)
+    key = key or ""
+    local f = r["_ProcGlow" .. key]
+    if f then
+        ProcGlowPool:Release(f)
+    end
+end
+
+table.insert(lib.glowList, "Proc Glow")
+lib.startList["Proc Glow"] = lib.ProcGlow_Start
+lib.stopList["Proc Glow"] = lib.ProcGlow_Stop
