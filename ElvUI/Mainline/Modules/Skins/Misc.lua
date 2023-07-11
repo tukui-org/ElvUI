@@ -383,6 +383,11 @@ function S:BlizzardMiscFrames()
 		S:HandleFrame(MessageDialog)
 		S:HandleButton(_G.BasicMessageDialogButton)
 	end
+
+	-- SplashFrame (Whats New)
+	local SplashFrame = _G.SplashFrame
+	S:HandleCloseButton(SplashFrame.TopCloseButton)
+	S:HandleButton(SplashFrame.BottomCloseButton)
 end
 
 S:AddCallback('BlizzardMiscFrames')
