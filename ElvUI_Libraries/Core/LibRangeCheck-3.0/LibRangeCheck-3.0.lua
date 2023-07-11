@@ -48,7 +48,7 @@ if not lib then return end
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
--- GLOBALS: LibStub, CreateFrame, C_Map
+-- GLOBALS: LibStub, CreateFrame
 local next = next
 local type = type
 local wipe = wipe
