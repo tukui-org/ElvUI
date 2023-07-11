@@ -53,7 +53,7 @@ local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBa
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local SellAllJunkItems = C_MerchantFrame and C_MerchantFrame.SellAllJunkItems
+--local SellAllJunkItems = C_MerchantFrame and C_MerchantFrame.SellAllJunkItems
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
@@ -1383,11 +1383,11 @@ function B:VendorGrays(delete)
 	local npcID = not delete and NP:UnitNPCID('npc')
 	if B.ExcludeVendors[npcID] then return end
 
-	-- Blizzards sell grays
+	--[[ Blizzards sell grays
 	if SellAllJunkItems and B.db.useBlizzardJunk then
 		SellAllJunkItems()
 		return
-	end
+	end]]
 
 	-- our sell grays
 	B:GetGrays(true)
@@ -1413,11 +1413,11 @@ function B:VendorGrays(delete)
 end
 
 function B:VendorGrayCheck()
-	-- Blizzards sell grays
+	--[[ Blizzards sell grays
 	if SellAllJunkItems and B.db.useBlizzardJunk then
 		SellAllJunkItems()
 		return
-	end
+	end]]
 
 	-- our sell grays
 	local value = B:GetGraysValue()
