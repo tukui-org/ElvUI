@@ -10,7 +10,7 @@
 *   Option to prefer using Blizzard Sell Junk method (temporarily disabled while they fix it on their end).
 *   Microbar will use the new art on retail when "use icons" is unchecked.
 *   Vehicle Seat, Equipment Manager, and Archaeology Bar are controlled by Edit Mode for Retail now.
-*   Spec removed from Item Level display on tooltips (blizzard added it by default).
+*   Spec removed from Item Level display on tooltips (Blizzard added it by default).
 *   Item Level should stop appearing multiple times on the tooltip. (Thanks Etern213)
 
 ## Version 13.35 \[ June 20th 2023 \]
@@ -630,7 +630,7 @@
 
 ## Version 12.68 \[ March 11th 2022 \]
 *   **Hotfix:** better Clique compatibility
-*   **Chat:** fixed a blizzard format error from Charged Constructor
+*   **Chat:** fixed a Blizzard format error from Charged Constructor
 
 ## Version 12.67 \[ March 10th 2022 \]
 *   **Bags:** let sort ignore bags which are flagged to be ignored
@@ -1568,7 +1568,7 @@
     *   Threat tags have now leveled up there tag game.
     *   Threat on Unitframes in Border mode would sometimes not update the borders correctly, they behave like good bois now.
     *   Cutaway colors react instantly now, ninja status achieved.
-    *   Highlight texture for Items on the Character page are now the old style instead of the blizzard style.
+    *   Highlight texture for Items on the Character page are now the old style instead of the Blizzard style.
     *   Stance Bar will now get placed in the correct place, it was rolling a placement dice, we took it away.
     *   Deathknight Runes can use the custom backdrop color now, epic.
     *   Raid Debuffs has unlearned never-appear-unintentionally!
@@ -1847,7 +1847,7 @@
 *   **Misc. Changes:**
     *   Added back the tag: 'name:abbrev'.
     *   Removed our clipping for UI Scale.
-    *   Updated the Chat module & Guild and Friends DataText to use the new API blizzard switched too, with a few minor bug fixes.
+    *   Updated the Chat module & Guild and Friends DataText to use the new API Blizzard switched too, with a few minor bug fixes.
 
 ## Version 11.23 \[ September 24th 2019 \]
 *   **New Additions:**
@@ -1896,7 +1896,7 @@
 *   **Misc. Changes:**
     *   Tweaked and updated some of the Cutaway lib again (it now uses clipped textures, so it wont overflow).
     *   Fixed General Dock Manager skin not applying correctly.
-    *   Fixed a couple skin issues which would show blizzard borders on some frames.
+    *   Fixed a couple skin issues which would show Blizzard borders on some frames.
     *   Moved the Class Color Override setting for unitframes to the health tab.
     *   Changed a bit the style of the Communities Frame Buttons.
     *   Added EP Boss one debuffs to Raid Debuffs.
@@ -2004,7 +2004,7 @@
 *   **New Additions:**
     *   Added options to invert the CastBar, AuraBars, and Power colors on UnitFrames status bars when in transparent mode; as well as added custom backdrop options for these status bars.
     *   Added custom backdrop for ClassBars on UnitFrames.
-    *   Added nameplate friendly NPC option "always show" this is used to toggle npc nameplates using blizzards setting; so that they can go into blizzard name-only mode.
+    *   Added nameplate friendly NPC option "always show" this is used to toggle npc nameplates using Blizzards setting; so that they can go into Blizzard name-only mode.
     *   Added new Tags, which allows transliteration. E.g. 'name:medium:translit'. For more tags, visit our Custom Tag Guide on our forum.
     *   Added Glimmer of Light for Paladins to the BuffIndicator.
     *   Added Gale Slash to RaidDebuffs.
@@ -2736,7 +2736,7 @@ From now on you can choose your UI scale within the ElvUI config, or press the "
     *   Added new "Quick Join" datatext.
     *   Added new style filter action "Power Color".
     *   Added options to hide specific sections in the Friends datatext tooltip.
-    *   Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).
+    *   Added the ability to assign items to bags like in Blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).
     *   Added new command "/estatus" which will show a Status Report frame with helpful information for troubleshooting purposes.
 *   **Bug Fixes:**
     *   Fixed issue with missing border colors on some elements after a login or reload.
