@@ -205,7 +205,6 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	local frame = _G.ProfessionsCustomerOrdersFrame
 	S:HandleFrame(frame)
 	HandleTabs(frame)
-	S:HandleCheckBox(frame.Form.AllocateBestQualityCheckBox)
 
 	-- Item flyout
 	if _G.OpenProfessionsItemFlyout then
@@ -251,18 +250,23 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	hooksecurefunc(frame.BrowseOrders, 'StartSearch', HandleListIcon)
 
 	-- Form
-	S:HandleButton(frame.Form.BackButton)
-	S:HandleCheckBox(frame.Form.TrackRecipeCheckBox.Checkbox)
-	frame.Form.RecipeHeader:Hide()
-	frame.Form.RecipeHeader:CreateBackdrop('Transparent')
-	frame.Form.LeftPanelBackground:StripTextures()
-	frame.Form.LeftPanelBackground:CreateBackdrop('Transparent')
-	frame.Form.LeftPanelBackground.backdrop:SetInside(nil, 2, 2)
-	frame.Form.RightPanelBackground:StripTextures()
-	frame.Form.RightPanelBackground:CreateBackdrop('Transparent')
-	frame.Form.RightPanelBackground.backdrop:SetInside(nil, 2, 2)
+	local form = frame.Form
+	S:HandleButton(form.BackButton)
+	S:HandleCheckBox(form.TrackRecipeCheckBox.Checkbox)
+	S:HandleCheckBox(form.AllocateBestQualityCheckBox)
 
-	local itemButton = frame.Form.OutputIcon
+	form.RecipeHeader:Hide()
+	form.RecipeHeader:CreateBackdrop('Transparent')
+
+	form.LeftPanelBackground:StripTextures()
+	form.LeftPanelBackground:CreateBackdrop('Transparent')
+	form.LeftPanelBackground.backdrop:SetInside(nil, 2, 2)
+
+	form.RightPanelBackground:StripTextures()
+	form.RightPanelBackground:CreateBackdrop('Transparent')
+	form.RightPanelBackground.backdrop:SetInside(nil, 2, 2)
+
+	local itemButton = form.OutputIcon
 	itemButton.CircleMask:Hide()
 	S:HandleIcon(itemButton.Icon, true)
 	S:HandleIconBorder(itemButton.IconBorder, itemButton.Icon.backdrop)
@@ -271,11 +275,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	itemHighlight:SetColorTexture(1, 1, 1, .25)
 	itemHighlight:SetInside(itemButton.backdrop)
 
-	S:HandleEditBox(frame.Form.OrderRecipientTarget)
-	frame.Form.OrderRecipientTarget.backdrop:SetPoint('TOPLEFT', -8, -2)
-	frame.Form.OrderRecipientTarget.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
+	S:HandleEditBox(form.OrderRecipientTarget)
+	form.OrderRecipientTarget.backdrop:SetPoint('TOPLEFT', -8, -2)
+	form.OrderRecipientTarget.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
 
-	local payment = frame.Form.PaymentContainer
+	local payment = form.PaymentContainer
 	if payment then
 		payment.NoteEditBox:StripTextures()
 		payment.NoteEditBox:CreateBackdrop('Transparent')
@@ -283,8 +287,8 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
 	end
 
-	S:HandleDropDownBox(frame.Form.MinimumQuality.DropDown)
-	S:HandleDropDownBox(frame.Form.OrderRecipientDropDown)
+	S:HandleDropDownBox(form.MinimumQuality.DropDown)
+	S:HandleDropDownBox(form.OrderRecipientDropDown)
 	HandleMoneyInput(payment.TipMoneyInputFrame.GoldBox)
 	HandleMoneyInput(payment.TipMoneyInputFrame.SilverBox)
 	S:HandleDropDownBox(payment.DurationDropDown)
@@ -298,7 +302,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	viewListingTexture:SetAllPoints()
 	viewListingTexture:SetTexture([[Interface\CURSOR\Crosshair\Repair]])
 
-	local currentListings = frame.Form.CurrentListings
+	local currentListings = form.CurrentListings
 	if currentListings then
 		currentListings:StripTextures()
 		currentListings:SetTemplate('Transparent')
@@ -310,7 +314,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
 	end
 
-	local qualityDialog = frame.Form.QualityDialog
+	local qualityDialog = form.QualityDialog
 	if qualityDialog then
 		qualityDialog:StripTextures()
 		qualityDialog:SetTemplate('Transparent')
@@ -328,7 +332,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		ReskinQualityContainer(qualityDialog.Container3)
 	end
 
-	hooksecurefunc(frame.Form, 'Init', FormInit)
+	hooksecurefunc(form, 'Init', FormInit)
 
 	-- Orders
 	S:HandleButton(frame.MyOrdersPage.RefreshButton)
