@@ -48,10 +48,8 @@ if not lib then return end
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
--- GLOBALS: LibStub, CreateFrame, C_Map, FriendColor (??), HarmColor (??)
-local _G = _G
+-- GLOBALS: LibStub, CreateFrame, C_Map
 local next = next
-local sort = sort
 local type = type
 local wipe = wipe
 local print = print
@@ -61,7 +59,6 @@ local tinsert = tinsert
 local tremove = tremove
 local tostring = tostring
 local setmetatable = setmetatable
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 local GetSpellInfo = GetSpellInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
@@ -83,6 +80,9 @@ local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
+
+local C_Timer_NewTicker = C_Timer.NewTicker
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 -- << STATIC CONFIG
 
@@ -1229,6 +1229,10 @@ end
 
 -- << load-time initialization
 
+local function invalidateRangeFive()
+	invalidateRangeCache(5)
+end
+
 function lib:activate()
 	if not self.frame then
 		local frame = CreateFrame("Frame")
@@ -1250,9 +1254,7 @@ function lib:activate()
 	end
 
 	if not self.cacheResetTimer then
-		self.cacheResetTimer = C_Timer.NewTicker(5, function()
-			invalidateRangeCache(5)
-		end)
+		self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
 	end
 
 	initItemRequests()
