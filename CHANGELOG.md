@@ -1,3 +1,18 @@
+## Version 13.36 \[ July 11th 2023 \]
+*   Bleed dispel list updated, it contains about 100 more bleeds.
+*   Minimap Tracking button menu will spawn in correct location.
+*   Send Mail text color being incorrect after reopening on Wrath.
+*   Bag Currencies being displayed under slots when using Reverse Bag Slots was fixed.
+*   Hit and Spirit Datatext removed from Retail.
+*   Several skin adjustments for Retail patch.
+*   Augmentation spells added for filters (including Ebon Might).
+*   Aura Indicator will stack Ebon Might on raid frames.
+*   Option to prefer using Blizzard Sell Junk method (temporarily disabled while they fix it on their end).
+*   Microbar will use the new art on retail when "use icons" is unchecked.
+*   Vehicle Seat, Equipment Manager, and Archaeology Bar are controlled by Edit Mode for Retail now.
+*   Spec removed from Item Level display on tooltips (blizzard added it by default).
+*   Item Level should stop appearing multiple times on the tooltip. (Thanks Etern213)
+
 ## Version 13.35 \[ June 20th 2023 \]
 *   Skinned a dropdown on the Profession Orders frame.
 *   Actionbar for Dragonflight fading sometimes didn't work properly on login.
