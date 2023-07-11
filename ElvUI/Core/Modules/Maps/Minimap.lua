@@ -23,7 +23,7 @@ local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UIDropDownMenu_Refresh = UIDropDownMenu_Refresh
+local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
@@ -215,7 +215,7 @@ end
 
 function M:MinimapTracking_UpdateTracking()
 	if _G.UIDROPDOWNMENU_OPEN_MENU == M.TrackingDropdown then
-		UIDropDownMenu_Refresh(M.TrackingDropdown)
+		UIDropDownMenu_RefreshAll(M.TrackingDropdown)
 	end
 end
 
