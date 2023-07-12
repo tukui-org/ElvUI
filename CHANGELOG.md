@@ -1,3 +1,13 @@
+## Version 13.37 \[ July 12th 2023 \]
+*   Removed obsolete bleed spells.
+*   Microbar missing it's tooltip.
+*   Invite Roll Popup having messed up icon.
+*   Private Aura mover size will match icon size.
+*   Minimap Tracking not appearing correctly after changes.
+*   Loot Rolling should work correctly again on Retail with a new option to set the Max Bars amount in (General > Blizz Improvement > Loot Roll).
+*   Ready Check should display on Party and Raid once again.
+*   Chat Config tab size should fit a little better.
+
 ## Version 13.36 \[ July 11th 2023 \]
 *   Bleed dispel list updated, it contains about 100 more bleeds.
 *   Minimap Tracking button menu will spawn in correct location.
