@@ -239,10 +239,10 @@ local function GetClassPower(Class)
 	end
 
 	-- try additional mana
-	local barIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[Class]
-	if barIndex and barIndex[UnitPowerType('player')] then
-		min = UnitPower('player', POWERTYPE_MANA)
-		max = UnitPowerMax('player', POWERTYPE_MANA)
+	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[Class]
+	local altMin = altIndex and UnitPower('player', POWERTYPE_MANA)
+	if altMin and altMin ~= 0 then
+		min, max = altMin, UnitPowerMax('player', POWERTYPE_MANA)
 
 		local mana = ElvUF.colors.power.MANA
 		r, g, b = mana.r, mana.g, mana.b
@@ -300,12 +300,10 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	end)
 
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-		local barIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
-		if barIndex and barIndex[UnitPowerType(unit)] then
-			local min = UnitPower(unit, POWERTYPE_MANA)
-			if min ~= 0 then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
-			end
+		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+		local min = altIndex and UnitPower(unit, POWERTYPE_MANA)
+		if min and min ~= 0 then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end, not E.Retail)
 
@@ -360,12 +358,10 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end)
 
 		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-			local barIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
-			if barIndex and barIndex[UnitPowerType(unit)] then
-				local min = UnitPower(unit, POWERTYPE_MANA)
-				if min ~= 0 and tagFormat ~= 'deficit' then
-					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
-				end
+			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			local min = altIndex and UnitPower(unit, POWERTYPE_MANA)
+			if min and min ~= 0 and tagFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 			end
 		end, not E.Retail)
 
