@@ -13,6 +13,7 @@ local headers = {
 	_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
 	_G.ObjectiveTrackerBlocksFrame.ProfessionHeader,
 	_G.ObjectiveTrackerBlocksFrame.MonthlyActivitiesHeader,
+	_G.ObjectiveTrackerBlocksFrame.AdventureHeader,
 	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
 	_G.WORLD_QUEST_TRACKER_MODULE.Header,
 	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader

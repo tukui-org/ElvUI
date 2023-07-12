@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local strfind = strfind
 local next, unpack = next, unpack
 local ipairs, pairs = ipairs, pairs
 
@@ -497,8 +498,8 @@ local function SkinTransmogFrames()
 
 				for _, region in next, { Model:GetRegions() } do
 					if region:IsObjectType('Texture') then -- check for hover glow
-						local texture = region:GetTexture()
-						if texture == 1116940 or texture == 1569530 then -- transmogrify.blp (items:1116940 or sets:1569530)
+						local texture = region:GetTexture()  -- find transmogrify.blp (sets:1569530 or items:1116940)
+						if texture == 1569530 or (texture == 1116940 and not strfind(region:GetDebugName(), 'DisabledOverlay')) then
 							region:SetColorTexture(1, 1, 1, 0.3)
 							region:SetBlendMode('ADD')
 							region:SetAllPoints(Model)

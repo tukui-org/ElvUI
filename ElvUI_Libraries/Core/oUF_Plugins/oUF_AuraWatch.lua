@@ -50,10 +50,28 @@ local function createAuraIcon(element, index)
 	return button
 end
 
-local function customFilter(element, _, button)
-	local setting = element.watched[button.spellID]
+local stackAuras = {}
+local function customFilter(element, _, button, _, _, count)
+	local spellID = button.spellID
+	local setting = element.watched[spellID]
 	if not setting then
 		return false
+	end
+
+	-- fake stacking for spells with same spell ID
+	if element.allowStacks and element.allowStacks[spellID] then
+		local total = (not count or count < 1) and 1 or count
+		local stack = stackAuras[spellID]
+		if not stack then
+			stackAuras[spellID] = button
+			button.matches = total
+		else
+			stack.matches = stack.matches + total
+			stack.count:SetText(stack.matches)
+			return false
+		end
+	elseif button.matches then
+		button.matches = nil
 	end
 
 	button.onlyShowMissing = setting.onlyShowMissing
@@ -99,7 +117,9 @@ local function handleElements(element, unit, button, setting, icon, count, durat
 	end
 
 	if button.count then
-		if count and count > 1 then
+		if button.matches and button.matches > 1 then
+			button.count:SetText(button.matches)
+		elseif count and count > 1 then
 			button.count:SetText(count)
 		else
 			button.count:SetText()
@@ -243,6 +263,7 @@ local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
 		if element.PreUpdate then element:PreUpdate(unit) end
 
 		preOnlyMissing(element)
+		wipe(stackAuras) -- clear stacking table
 
 		local numBuffs = element.numBuffs or 32
 		local numDebuffs = element.numDebuffs or 16

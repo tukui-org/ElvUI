@@ -8,9 +8,8 @@ function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame('Frame', frame:GetName() .. 'AuraWatch', frame)
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 	auras:SetInside(frame.Health)
-	auras.presentAlpha = 1
-	auras.missingAlpha = 0
-	auras.strictMatching = true
+
+	auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
 	auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
 	auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
 

@@ -5,6 +5,49 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local function HandleIconButton(button, ...)
+	S:HandleButton(button)
+	button:StyleButton()
+
+	S:HandleIcon(button.Icon)
+	button.Icon:SetInside()
+
+	local region = button:GetRegions()
+	region:SetTexCoord(...)
+	region:SetInside()
+end
+
+local function UpdateRepairButtons()
+	_G.MerchantRepairAllButton:ClearAllPoints()
+	_G.MerchantRepairAllButton:Point('BOTTOMRIGHT', _G.MerchantFrame, 'BOTTOMLEFT', 90, 32)
+	_G.MerchantRepairItemButton:ClearAllPoints()
+	_G.MerchantRepairItemButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', -5, 0)
+
+	if _G.MerchantSellAllJunkButton then
+		_G.MerchantSellAllJunkButton:ClearAllPoints()
+		_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
+	end
+end
+
+local function UpdateMerchantInfo()
+	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
+		local button = _G['MerchantItem'..i..'ItemButton']
+
+		local money = _G['MerchantItem'..i..'MoneyFrame']
+		money:ClearAllPoints()
+		money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+
+		local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
+		currency:ClearAllPoints()
+
+		if button.price and button.extendedCost then
+			currency:Point('LEFT', money, 'RIGHT', -8, 0)
+		else
+			currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+		end
+	end
+end
+
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
@@ -61,27 +104,8 @@ function S:MerchantFrame()
 		S:HandleIconBorder(button.IconBorder)
 	end
 
-	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
-		for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
-			local button = _G['MerchantItem'..i..'ItemButton']
-
-			local money = _G['MerchantItem'..i..'MoneyFrame']
-			money:ClearAllPoints()
-			money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
-
-			local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
-			currency:ClearAllPoints()
-
-			if button.price and button.extendedCost then
-				currency:Point('LEFT', money, 'RIGHT', -8, 0)
-			else
-				currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
-			end
-		end
-	end)
-
 	-- Skin buyback item frame + icon
-	_G.MerchantBuyBackItem:Point('TOPLEFT', _G.MerchantItem10, 'BOTTOMLEFT', 0, -45)
+	_G.MerchantBuyBackItem:Point('TOPLEFT', _G.MerchantItem10, 'BOTTOMLEFT', 0, -50)
 	_G.MerchantBuyBackItem:StripTextures(true)
 	_G.MerchantBuyBackItem:CreateBackdrop('Transparent')
 	_G.MerchantBuyBackItem.backdrop:Point('TOPLEFT', -6, 6)
@@ -91,32 +115,31 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
+	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
+
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
 
-	S:HandleButton(_G.MerchantRepairItemButton)
-	_G.MerchantRepairItemButton:StyleButton()
-	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
-	_G.MerchantRepairItemButton:GetRegions():SetInside()
+	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
+	HandleIconButton(_G.MerchantRepairAllButton, 0.61, 0.82, 0.1, 0.52)
+	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)
 
-	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
+	if _G.MerchantSellAllJunkButton then
+		HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	end
 
-	S:HandleButton(_G.MerchantGuildBankRepairButton)
-	_G.MerchantGuildBankRepairButton:StyleButton()
-	_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
-	_G.MerchantGuildBankRepairButtonIcon:SetInside()
-
-	S:HandleButton(_G.MerchantRepairAllButton)
-	_G.MerchantRepairAllIcon:StyleButton()
-	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
-	_G.MerchantRepairAllIcon:SetInside()
+	_G.MerchantGuildBankRepairButton:SetPoint('LEFT', _G.MerchantRepairAllButton, 'RIGHT', 5, 0)
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
 	_G.MerchantNextPageButton:ClearAllPoints() -- Monitor this
 	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
+
+	-- setup some hooks to fix placement
+	hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
+	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', UpdateMerchantInfo)
 end
 
 S:AddCallback('MerchantFrame')

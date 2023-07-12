@@ -315,6 +315,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[358267]	= List(), -- Hover
 		[357210]	= List(), -- Deep Breath
 		[371807]	= List(), -- Recall
+		[395296]	= List(), -- Ebon Might < self
+		[395152]	= List(), -- Ebon Might < others
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -366,6 +368,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[208253]	= List(), -- Essence of G'Hanir
 		[194223]	= List(), -- Celestial Alignment
 		[102560]	= List(), -- Incarnation: Chosen of Elune
+		[390414]	= List(), -- Orbital Strike (Incarnation: Chosen of Elune)
 		[102543]	= List(), -- Incarnation: King of the Jungle
 		[102558]	= List(), -- Incarnation: Guardian of Ursoc
 		[117679]	= List(), -- Incarnation
@@ -688,6 +691,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[385361] = List(), -- Rotting Sickness
 		[378020] = List(), -- Gash Frenzy
@@ -1074,6 +1079,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		-- TODO
 	-- Brackenhide Hollow
 		[384764] = List(), -- Feeding Frenzy
 		[376933] = List(), -- Grasping Vines
@@ -1375,6 +1382,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	EVOKER = {
+		-- Preservation
 		[355941]	= Aura(355941, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Dream Breath
 		[376788]	= Aura(376788, nil, 'TOPRIGHT', {0.25, 0.25, 0.58}, nil, nil, nil, nil, -20), -- Dream Breath (echo)
 		[363502]	= Aura(363502, nil, 'BOTTOMLEFT', {0.33, 0.33, 0.70}), -- Dream Flight
@@ -1383,6 +1391,12 @@ G.unitframe.aurawatch = {
 		[373267]	= Aura(373267, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Life Bind (Verdant Embrace)
 		[364343]	= Aura(364343, nil, 'TOP', {0.13, 0.87, 0.50}), -- Echo
 		[357170]	= Aura(357170, nil, 'BOTTOM', {0.11, 0.57, 0.71}), -- Time Dilation
+		-- Augmentation
+		[360827]	= Aura(360827, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Blistering Scales
+		[410089]	= Aura(410089, nil, 'TOP', {0.13, 0.87, 0.50}), -- Prescience
+		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true), -- Ebon Might < self
+		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true, nil, nil, nil, -20), -- Ebon Might < others
+		[406732]	= Aura(406732, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Spatial Paradox
 	},
 	ROGUE = {
 		[57934]		= Aura(57934, nil, 'TOPRIGHT', {0.89, 0.09, 0.05}), -- Tricks of the Trade
@@ -1527,7 +1541,9 @@ G.unitframe.AuraBarColors = {
 	[32182]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Heroism
 	[80353]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Mage] Time Warp
 	[90355]		= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Hunter] Ancient Hysteria
-	[390386]	= { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Evoker] Fury of the Aspects
+	[390386]	= { enable = true, color = {r = 0.99, g = 0.82, b = 0.24 }}, -- [Evoker] Fury of the Aspects
+	[395296]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < self
+	[395152]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < others
 }
 
 G.unitframe.AuraHighlightColors = {}
