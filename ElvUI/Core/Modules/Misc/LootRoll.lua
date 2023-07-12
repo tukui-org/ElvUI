@@ -27,7 +27,6 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local TRANSMOGRIFY, ROLL_DISENCHANT = TRANSMOGRIFY, ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
-local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
 M.RollBars = {}
 
@@ -44,7 +43,6 @@ local rollTypes = {
 local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
-
 
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
@@ -465,8 +463,9 @@ function M:UpdateLootRollFrames()
 
 	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
+	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
 
-	for i = 1, NUM_GROUP_LOOT_FRAMES do
+	for i = 1, maxBars do
 		local bar = M:LootRoll_GetFrame(i)
 		bar:Size(db.width, db.height)
 
