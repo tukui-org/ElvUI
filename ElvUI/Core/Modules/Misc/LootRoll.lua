@@ -267,8 +267,8 @@ function M:LootRoll_GetFrame(i)
 	end
 end
 
-function M:LootRoll_OnEvent(bar, event, rollID)
-	M[event](bar, event, rollID)
+function M:LootRoll_OnEvent(event, rollID)
+	M[event](self, event, rollID)
 end
 
 function M:LootRoll_ClearBar(bar, event)
