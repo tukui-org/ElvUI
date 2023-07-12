@@ -97,7 +97,7 @@ Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(
 Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
 Auras.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 Auras.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
-Auras.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
+Auras.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 10, max = 80, step = 1 })
 Auras.args.privateAuras.args.icon.inline = true
 
 Auras.args.privateAuras.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.general.privateAuras.duration[info[#info]] end, function(info, value) E.db.general.privateAuras.duration[info[#info]] = value; PA:PlayerPrivateAuras() end)
