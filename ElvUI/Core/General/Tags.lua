@@ -240,7 +240,7 @@ local function GetClassPower(Class)
 
 	-- try additional mana
 	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[Class]
-	local altMin = altIndex and UnitPower('player', POWERTYPE_MANA)
+	local altMin = altIndex and altIndex[UnitPowerType('player')] and UnitPower('player', POWERTYPE_MANA)
 	if altMin and altMin ~= 0 then
 		min, max = altMin, UnitPowerMax('player', POWERTYPE_MANA)
 
