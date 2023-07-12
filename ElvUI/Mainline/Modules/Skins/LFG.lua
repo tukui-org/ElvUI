@@ -11,7 +11,6 @@ local hooksecurefunc = hooksecurefunc
 local GetItemInfo = GetItemInfo
 local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
@@ -89,11 +88,6 @@ local function SkinItemButton(parentFrame, _, index)
 
 		S:HandleIconBorder(item.IconBorder)
 	end
-end
-
-local function SetRoleIcon(self, resultID)
-	local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
-	self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
 end
 
 local function HandleAffixIcons(self)
@@ -425,8 +419,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
-
-	hooksecurefunc('LFGListInviteDialog_Show', SetRoleIcon)
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
