@@ -368,6 +368,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[208253]	= List(), -- Essence of G'Hanir
 		[194223]	= List(), -- Celestial Alignment
 		[102560]	= List(), -- Incarnation: Chosen of Elune
+		[390414]	= List(), -- Orbital Strike (Incarnation: Chosen of Elune)
 		[102543]	= List(), -- Incarnation: King of the Jungle
 		[102558]	= List(), -- Incarnation: Guardian of Ursoc
 		[117679]	= List(), -- Incarnation

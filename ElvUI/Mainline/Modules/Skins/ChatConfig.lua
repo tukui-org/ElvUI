@@ -85,18 +85,21 @@ function S:ChatConfig()
 
 				tab.IsSkinned = true
 			end
+
+			tab:SetWidth(80)
 		end
 	end)
 
-	for i = 1, 5 do
+	do
+		local i = 1
 		local tab = _G['CombatConfigTab'..i]
-		if tab then
+		while tab do
 			tab:StripTextures()
 
-			local text = tab.Text
-			if text then
-				text:SetWidth(text:GetWidth() + 10)
-			end
+			tab:SetWidth(i <= 2 and 90 or 70)
+
+			i = i + 1
+			tab = _G['CombatConfigTab'..i]
 		end
 	end
 
