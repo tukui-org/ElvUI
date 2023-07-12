@@ -53,6 +53,8 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitPowerType = UnitPowerType
 local UnitPowerMax = UnitPowerMax
 local UnitIsUnit = UnitIsUnit
+
+local POWERTYPE_MANA = Enum.PowerType.Mana
 local ALT_POWER_BAR_PAIR_DISPLAY_INFO = ALT_POWER_BAR_PAIR_DISPLAY_INFO
 -- end block
 
@@ -95,7 +97,7 @@ local function Update(self, event, unit)
 					element.mainCost = mainCost
 
 					break
-				elseif hasAltManaBar and checkSpec and ctype == (_G.ADDITIONAL_POWER_BAR_INDEX or 0) then
+				elseif hasAltManaBar and checkSpec and ctype == POWERTYPE_MANA then
 					altCost = cost
 					element.altCost = altCost
 
@@ -119,7 +121,7 @@ local function Update(self, event, unit)
 	end
 
 	if(element.altBar and hasAltManaBar) then
-		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, _G.ADDITIONAL_POWER_BAR_INDEX or 0))
+		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, POWERTYPE_MANA))
 		element.altBar:SetValue(altCost)
 		element.altBar:Show()
 	end
