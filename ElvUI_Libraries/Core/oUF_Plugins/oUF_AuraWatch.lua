@@ -81,11 +81,7 @@ local function customFilter(element, _, button, _, _, count)
 		button.matches = nil
 	end
 
-	if setting.enabled then
-		return not setting.onlyShowMissing
-	end
-
-	return false
+	return setting.enabled and not setting.onlyShowMissing
 end
 
 local function getIcon(element, visible, offset)
