@@ -46,6 +46,10 @@ local _G = _G
 local GetReadyCheckStatus = GetReadyCheckStatus
 local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
 
+local readyTexture = [[Interface\RaidFrame\ReadyCheck-Ready]]
+local notReadyTexture = [[Interface\RaidFrame\ReadyCheck-NotReady]]
+local waitingTexture = [[Interface\RaidFrame\ReadyCheck-Waiting]]
+
 local function OnFinished(self)
 	local element = self:GetParent()
 	element:Hide()
@@ -61,7 +65,7 @@ local function OnFinished(self)
 end
 
 local function SetIcon(element, texture)
-	if texture and C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
 		element:SetAtlas(texture)
 	else
 		element:SetTexture(texture)
@@ -84,11 +88,11 @@ local function Update(self, event)
 	local status = GetReadyCheckStatus(unit)
 	if(unitExists(unit) and status) then
 		if(status == 'ready') then
-			SetIcon(element, element.readyTexture)
+			SetIcon(element, element.readyTexture or readyTexture)
 		elseif(status == 'notready') then
-			SetIcon(element, element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture or notReadyTexture)
 		else
-			SetIcon(element, element.waitingTexture)
+			SetIcon(element, element.waitingTexture or waitingTexture)
 		end
 
 		element.status = status
@@ -100,7 +104,7 @@ local function Update(self, event)
 
 	if(event == 'READY_CHECK_FINISHED') then
 		if(element.status == 'waiting') then
-			SetIcon(element, element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture or notReadyTexture)
 		end
 
 		element.Animation:Play()
