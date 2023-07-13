@@ -29,12 +29,6 @@ local function LFDQueueFrameRoleButtonIconOnHide(self)
 	LCG.HideOverlayGlow(self:GetParent().checkButton)
 end
 
-local function ClearSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetTexture()
-	end
-end
-
 local function HandleGoldIcon(button)
 	local Button = _G[button]
 	if Button.backdrop then return end

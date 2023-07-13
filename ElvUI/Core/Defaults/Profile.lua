@@ -177,6 +177,7 @@ P.general = {
 		width = 325,
 		height = 30,
 		spacing = 4,
+		maxBars = 5,
 		buttonSize = 20,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',

@@ -258,16 +258,24 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr') then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
+
+			local levelText
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
+				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
 			else
-				levelLine:SetFormattedText('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
+				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
 			end
 
-			local specText = specLine and specLine:GetText()
-			if specText then
-				specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+			if E.Retail then
+				local specText = specLine and specLine:GetText()
+				if specText then
+					specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+				end
+			else -- put the class in classic
+				levelText = format('%s |c%s%s|r', levelText, nameColor.colorStr, localeClass)
 			end
+
+			levelLine:SetFormattedText(levelText)
 		end
 
 		if TT.db.showElvUIUsers then

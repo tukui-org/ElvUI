@@ -42,6 +42,10 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
+local _G = _G
+local GetReadyCheckStatus = GetReadyCheckStatus
+local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
+
 local function OnFinished(self)
 	local element = self:GetParent()
 	element:Hide()
@@ -53,6 +57,14 @@ local function OnFinished(self)
 	--]]
 	if(element.PostUpdateFadeOut) then
 		element:PostUpdateFadeOut()
+	end
+end
+
+local function SetIcon(element, texture)
+	if texture and C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+		element:SetAtlas(texture)
+	else
+		element:SetTexture(texture)
 	end
 end
 
@@ -72,11 +84,11 @@ local function Update(self, event)
 	local status = GetReadyCheckStatus(unit)
 	if(unitExists(unit) and status) then
 		if(status == 'ready') then
-			element:SetTexture(element.readyTexture)
+			SetIcon(element, element.readyTexture)
 		elseif(status == 'notready') then
-			element:SetTexture(element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture)
 		else
-			element:SetTexture(element.waitingTexture)
+			SetIcon(element, element.waitingTexture)
 		end
 
 		element.status = status
@@ -88,7 +100,7 @@ local function Update(self, event)
 
 	if(event == 'READY_CHECK_FINISHED') then
 		if(element.status == 'waiting') then
-			element:SetTexture(element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture)
 		end
 
 		element.Animation:Play()
@@ -127,19 +139,28 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		element.readyTexture = element.readyTexture or _G.READY_CHECK_READY_TEXTURE
-		element.notReadyTexture = element.notReadyTexture or _G.READY_CHECK_NOT_READY_TEXTURE
-		element.waitingTexture = element.waitingTexture or _G.READY_CHECK_WAITING_TEXTURE
+		if not element.readyTexture then element.readyTexture = _G.READY_CHECK_READY_TEXTURE end
+		if not element.notReadyTexture then element.notReadyTexture = _G.READY_CHECK_NOT_READY_TEXTURE end
+		if not element.waitingTexture then element.waitingTexture = _G.READY_CHECK_WAITING_TEXTURE end
 
-		local AnimationGroup = element:CreateAnimationGroup()
-		AnimationGroup:HookScript('OnFinished', OnFinished)
-		element.Animation = AnimationGroup
+		local anim = element.Animation
+		if not anim then
+			anim = element:CreateAnimationGroup()
+			element.Animation = anim
+		end
 
-		local Animation = AnimationGroup:CreateAnimation('Alpha')
-		Animation:SetFromAlpha(1)
-		Animation:SetToAlpha(0)
-		Animation:SetDuration(element.fadeTime or 1.5)
-		Animation:SetStartDelay(element.finishedTime or 10)
+		anim:SetScript('OnFinished', OnFinished) -- use Set to purge other scripts on reenable
+
+		local animAlpha = anim.Alpha
+		if not animAlpha then
+			animAlpha = anim:CreateAnimation('Alpha')
+			anim.Alpha = animAlpha
+		end
+
+		animAlpha:SetFromAlpha(1)
+		animAlpha:SetToAlpha(0)
+		animAlpha:SetDuration(element.fadeTime or 1.5)
+		animAlpha:SetStartDelay(element.finishedTime or 10)
 
 		self:RegisterEvent('READY_CHECK', Path, true)
 		self:RegisterEvent('READY_CHECK_CONFIRM', Path, true)
