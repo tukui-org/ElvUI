@@ -58,13 +58,13 @@ local function customFilter(element, _, button, _, _, count)
 		return false
 	end
 
-	button.onlyShowMissing = setting.onlyShowMissing
-	button.anyUnit = setting.anyUnit
-
 	local allowUnit = (not setting.anyUnit and button.isPlayer) or (setting.anyUnit and button.castByPlayer)
 	if not allowUnit then
 		return false
 	end
+
+	button.onlyShowMissing = setting.onlyShowMissing
+	button.anyUnit = setting.anyUnit
 
 	if element.allowStacks and element.allowStacks[spellID] then
 		local total = (not count or count < 1) and 1 or count
