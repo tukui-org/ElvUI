@@ -115,6 +115,12 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
+	-- Since we move the MerchantBuyIcon we also have to move this thingi
+	local UndoFrame = _G.UndoFrame
+	if UndoFrame then
+		UndoFrame.Arrow:Point('CENTER', _G.MerchantBuyBackItemItemButton, 'CENTER')
+	end
+
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
