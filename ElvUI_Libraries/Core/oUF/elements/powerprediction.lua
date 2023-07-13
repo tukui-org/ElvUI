@@ -43,11 +43,19 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
--- sourced from FrameXML/AlternatePowerBar.lua
-local ADDITIONAL_POWER_BAR_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
-local ALT_MANA_BAR_PAIR_DISPLAY_INFO = _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO
-
 local _, playerClass = UnitClass('player')
+
+-- ElvUI block
+local next = next
+local GetSpellPowerCost = GetSpellPowerCost
+local UnitCastingInfo = UnitCastingInfo
+local UnitPowerType = UnitPowerType
+local UnitPowerMax = UnitPowerMax
+local UnitIsUnit = UnitIsUnit
+
+local POWERTYPE_MANA = Enum.PowerType.Mana
+local ALT_POWER_BAR_PAIR_DISPLAY_INFO = ALT_POWER_BAR_PAIR_DISPLAY_INFO
+-- end block
 
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
@@ -68,7 +76,7 @@ local function Update(self, event, unit)
 	local mainType = UnitPowerType(unit)
 	local mainMax = UnitPowerMax(unit, mainType)
 	local isPlayer = UnitIsUnit('player', unit)
-	local DISPLAY_INFO = isPlayer and oUF.isRetail and (ALT_POWER_BAR_PAIR_DISPLAY_INFO or ALT_MANA_BAR_PAIR_DISPLAY_INFO)
+	local DISPLAY_INFO = isPlayer and ALT_POWER_BAR_PAIR_DISPLAY_INFO
 	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[playerClass]
 	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
@@ -88,7 +96,7 @@ local function Update(self, event, unit)
 					element.mainCost = mainCost
 
 					break
-				elseif hasAltManaBar and checkSpec and ctype == ADDITIONAL_POWER_BAR_INDEX then
+				elseif hasAltManaBar and checkSpec and ctype == POWERTYPE_MANA then
 					altCost = cost
 					element.altCost = altCost
 
@@ -112,7 +120,7 @@ local function Update(self, event, unit)
 	end
 
 	if(element.altBar and hasAltManaBar) then
-		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX))
+		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, POWERTYPE_MANA))
 		element.altBar:SetValue(altCost)
 		element.altBar:Show()
 	end

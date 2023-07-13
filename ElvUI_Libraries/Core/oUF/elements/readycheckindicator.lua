@@ -46,6 +46,11 @@ local _G = _G
 local GetReadyCheckStatus = GetReadyCheckStatus
 local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
 
+-- fallback blizzard icons (incase a plugin fails to change icon properly)
+local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
+local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
+local WAITING_TEX = [[Interface\RaidFrame\ReadyCheck-Waiting]]
+
 local function OnFinished(self)
 	local element = self:GetParent()
 	element:Hide()
@@ -84,11 +89,11 @@ local function Update(self, event)
 	local status = GetReadyCheckStatus(unit)
 	if(unitExists(unit) and status) then
 		if(status == 'ready') then
-			SetIcon(element, element.readyTexture)
+			SetIcon(element, element.readyTexture or READY_TEX)
 		elseif(status == 'notready') then
-			SetIcon(element, element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture or NOT_READY_TEX)
 		else
-			SetIcon(element, element.waitingTexture)
+			SetIcon(element, element.waitingTexture or WAITING_TEX)
 		end
 
 		element.status = status
@@ -100,7 +105,7 @@ local function Update(self, event)
 
 	if(event == 'READY_CHECK_FINISHED') then
 		if(element.status == 'waiting') then
-			SetIcon(element, element.notReadyTexture)
+			SetIcon(element, element.notReadyTexture or NOT_READY_TEX)
 		end
 
 		element.Animation:Play()

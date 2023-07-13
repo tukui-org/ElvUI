@@ -58,10 +58,17 @@ local function customFilter(element, _, button, _, _, count)
 		return false
 	end
 
-	-- fake stacking for spells with same spell ID
+	local allowUnit = (not setting.anyUnit and button.isPlayer) or (setting.anyUnit and button.castByPlayer)
+	if not allowUnit then
+		return false
+	end
+
+	button.onlyShowMissing = setting.onlyShowMissing
+	button.anyUnit = setting.anyUnit
+
 	if element.allowStacks and element.allowStacks[spellID] then
 		local total = (not count or count < 1) and 1 or count
-		local stack = stackAuras[spellID]
+		local stack = stackAuras[spellID] -- fake stacking for spells with same spell ID
 		if not stack then
 			stackAuras[spellID] = button
 			button.matches = total
@@ -74,14 +81,7 @@ local function customFilter(element, _, button, _, _, count)
 		button.matches = nil
 	end
 
-	button.onlyShowMissing = setting.onlyShowMissing
-	button.anyUnit = setting.anyUnit
-
-	if setting.enabled and ((not setting.anyUnit and button.isPlayer) or (setting.anyUnit and button.castByPlayer)) then
-		return not setting.onlyShowMissing
-	end
-
-	return false
+	return setting.enabled and not setting.onlyShowMissing
 end
 
 local function getIcon(element, visible, offset)
