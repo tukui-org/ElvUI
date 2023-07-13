@@ -1,3 +1,9 @@
+## Version 13.38 \[ July 13th 2023 \]
+*   Additional Power Tags should be functioning properly again.
+*   Protected plugins from accidently breaking Ready Check icons.
+*   Simplified how Aura Indicator handles Ebon Might.
+*   Reposition Merchant Frame Sell Arrow Thingy.
+
 ## Version 13.37 \[ July 12th 2023 \]
 *   Removed obsolete bleed spells.
 *   Microbar missing it's tooltip.
