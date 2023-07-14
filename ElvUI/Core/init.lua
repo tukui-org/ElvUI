@@ -163,7 +163,7 @@ do
 end
 
 do -- expand LibCustomGlow for button handling
-	local LCG, proc, frames = E.Libs.CustomGlow, {}, {}
+	local LCG, frames, proc = E.Libs.CustomGlow, {}, { xOffset = 3, yOffset = 3 }
 	function LCG.ShowOverlayGlow(button, custom)
 		local db = custom or E.db.general.customGlow
 		local glow = LCG.startList[db.style]
