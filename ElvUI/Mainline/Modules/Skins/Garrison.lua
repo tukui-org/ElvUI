@@ -92,7 +92,7 @@ local function ReskinMissionButton(button)
 		end
 		if rareOverlay then
 			rareOverlay:SetDrawLayer('BACKGROUND')
-			rareOverlay:SetTexture('Interface\\ChatFrame\\ChatFrameBackground')
+			rareOverlay:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 			rareOverlay:SetAllPoints()
 			rareOverlay:SetVertexColor(.098, .537, .969, .2)
 		end
