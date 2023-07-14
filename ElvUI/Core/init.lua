@@ -163,7 +163,7 @@ do
 end
 
 do -- expand LibCustomGlow for button handling
-	local LCG, frames = E.Libs.CustomGlow, {}
+	local LCG, proc, frames = E.Libs.CustomGlow, {}, {}
 	function LCG.ShowOverlayGlow(button, custom)
 		local db = custom or E.db.general.customGlow
 		local glow = LCG.startList[db.style]
@@ -171,19 +171,14 @@ do -- expand LibCustomGlow for button handling
 			local color = db.useColor and ((custom and custom.color) or E.media.customGlowColor)
 
 			if db.style == 'Proc Glow' then -- this uses an options table
-				if not button.glowSettings then
-					button.glowSettings = {}
-				end
+				wipe(proc) -- clean the table
 
-				local opt = button.glowSettings
-				wipe(opt)
+				proc.color = color
+				proc.duration = db.duration
+				proc.startAnim = db.startAnimation
+				proc.frameLevel = db.frameLevel
 
-				opt.color = color
-				opt.duration = db.duration
-				opt.startAnim = db.startAnimation
-				opt.frameLevel = db.frameLevel
-
-				glow(button, opt)
+				glow(button, proc)
 			else
 				local pixel, cast = db.style == 'Pixel Glow', db.style == 'Autocast Shine'
 				local arg3, arg4, arg6, arg9, arg11
