@@ -2158,7 +2158,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 				if type(chatIcon) == 'function' then
 					local icon, prettify, var1, var2, var3 = chatIcon()
-					if prettify and not CH:MessageIsProtected(message) then
+					if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not CH:MessageIsProtected(message) then
 						if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
 							var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 						end
@@ -2217,7 +2217,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					elseif chatType == 'TEXT_EMOTE' then
 						body = gsub(message, arg2, pflag..playerLink, 1)
 					elseif chatType == 'GUILD_ITEM_LOOTED' then
-						body = gsub(message, '$s', GetPlayerLink(arg2, playerLinkDisplayText))
+						body = gsub(message, '$s', pflag..playerLink)
 					else
 						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
 					end
