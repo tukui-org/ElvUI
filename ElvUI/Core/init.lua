@@ -171,8 +171,6 @@ do -- expand LibCustomGlow for button handling
 			local color = db.useColor and ((custom and custom.color) or E.media.customGlowColor)
 
 			if db.style == 'Proc Glow' then -- this uses an options table
-				wipe(proc) -- clean the table
-
 				proc.color = color
 				proc.duration = db.duration
 				proc.startAnim = db.startAnimation
