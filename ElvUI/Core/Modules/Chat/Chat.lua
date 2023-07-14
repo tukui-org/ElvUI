@@ -2217,7 +2217,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					elseif chatType == 'TEXT_EMOTE' then
 						body = gsub(message, arg2, pflag..playerLink, 1)
 					elseif chatType == 'GUILD_ITEM_LOOTED' then
-						body = gsub(message, '$s', pflag..playerLink)
+						body = gsub(message, '$s', pflag..playerLink, 1)
 					else
 						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
 					end
