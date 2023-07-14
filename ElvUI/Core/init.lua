@@ -5,7 +5,7 @@
 ]]
 
 local _G, next, strfind = _G, next, strfind
-local gsub, tinsert, type = gsub, tinsert, type
+local wipe, gsub, tinsert, type = wipe, gsub, tinsert, type
 
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBuildInfo = GetBuildInfo
@@ -167,14 +167,28 @@ do -- expand LibCustomGlow for button handling
 	function LCG.ShowOverlayGlow(button, custom)
 		local opt = custom or E.db.general.customGlow
 		local glow = LCG.startList[opt.style]
-		if glow then
-			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
-			local arg3, arg4, arg6, arg9, arg11
+		if glow then -- TODO: frameLevel isnt actually used yet
+			local color = opt.useColor and ((custom and custom.color) or E.media.customGlowColor)
 
-			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
-			if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
+			if opt.style == 'Proc Glow' then -- this uses an options table
+				local settings = button.glowSettings or {}
+				wipe(settings)
 
-			glow(button, opt.useColor and ((custom and custom.color) or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+				settings.color = color
+				settings.duration = opt.duration
+				settings.startAnim = opt.startAnimation
+				settings.frameLevel = opt.frameLevel
+
+				glow(button, settings)
+			else
+				local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
+				local arg3, arg4, arg6, arg9, arg11
+
+				if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
+				if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
+
+				glow(button, color, arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+			end
 
 			frames[button] = true
 		end
