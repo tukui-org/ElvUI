@@ -3,19 +3,50 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+
+local MAX_TALENT_TABS = MAX_TALENT_TABS
 
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
-	local PlayerTalentFrame = _G.PlayerTalentFrame
-	S:HandleFrame(PlayerTalentFrame, true, nil, 11, -12, -32, 76)
+	S:HandleFrame(_G.PlayerTalentFrame, true, nil, 11, -12, -32, 76)
+	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, _G.PlayerTalentFrame.backdrop)
 
-	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, PlayerTalentFrame.backdrop)
-
-	_G.PlayerTalentFrameCancelButton:Kill()
-
-	for i = 1, 5 do
+	for i = 1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
+	end
+
+	_G.PlayerTalentFrameRoleButton:ClearAllPoints()
+	_G.PlayerTalentFrameRoleButton:Point('TOPRIGHT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 0, 0)
+
+	hooksecurefunc('PlayerTalentFrameRole_UpdateRole', function(button)
+		local highlightTexture = button:GetHighlightTexture()
+		highlightTexture:ClearAllPoints()
+		highlightTexture:Point('TOPLEFT', button, 'TOPLEFT', 5, -5)
+		highlightTexture:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -5, 5)
+
+		button:SetHighlightTexture(E.media.normTex)
+		button:SetNormalTexture(E.Media.Textures.RoleIcons)
+	end)
+
+	for i = 1, MAX_TALENT_TABS do
+		local tab = _G['PlayerSpecTab'..i]
+		tab:GetRegions():Hide()
+
+		tab:SetTemplate()
+		tab:StyleButton(nil, true)
+
+		tab:GetNormalTexture():SetInside()
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+	end
+
+	if _G.PlayerTalentFrameActivateButton then
+		S:HandleButton(_G.PlayerTalentFrameActivateButton)
+	end
+
+	if _G.PlayerTalentFrameStatusFrame then
+		_G.PlayerTalentFrameStatusFrame:StripTextures()
 	end
 
 	_G.PlayerTalentFrameScrollFrame:StripTextures()
@@ -24,8 +55,8 @@ function S:Blizzard_TalentUI()
 	S:HandleScrollBar(_G.PlayerTalentFrameScrollFrameScrollBar)
 	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
 
-	_G.PlayerTalentFrameSpentPoints:Point('TOP', 0, -42)
-	_G.PlayerTalentFrameTalentPointsText:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMLEFT', 220, 84)
+	_G.PlayerTalentFrameSpentPointsText:Point('LEFT', _G.PlayerTalentFramePointsBar, 'LEFT', 12, -1)
+	_G.PlayerTalentFrameTalentPointsText:Point('RIGHT', _G.PlayerTalentFramePointsBar, 'RIGHT', -12, -1)
 
 	for i = 1, _G.MAX_NUM_TALENTS do
 		local talent = _G['PlayerTalentFrameTalent'..i]
@@ -44,6 +75,19 @@ function S:Blizzard_TalentUI()
 			rank:FontTemplate(nil, 12, 'OUTLINE')
 		end
 	end
-end
 
+	-- Talent preview section / SetCVar('previewTalents', 1)
+	_G.PlayerTalentFramePreviewBar:StripTextures()
+	_G.PlayerTalentFramePreviewBarFiller:StripTextures()
+
+	S:HandleButton(_G.PlayerTalentFrameLearnButton)
+	_G.PlayerTalentFrameLearnButton:ClearAllPoints()
+	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', 18, 80)
+
+	S:HandleButton(_G.PlayerTalentFrameResetButton)
+	_G.PlayerTalentFrameResetButton:ClearAllPoints()
+	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', _G.PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
+
+	_G.PlayerTalentFramePointsBar:StripTextures()
+end
 S:AddCallbackForAddon('Blizzard_TalentUI')
