@@ -198,7 +198,7 @@ function TT:GetLevelLine(tt, offset, player)
 		local tipLine = _G['GameTooltipTextLeft'..i]
 		local tipText = tipLine and tipLine:GetText()
 		local tipLower = tipText and strlower(tipText)
-		if tipLower and (strfind(tipLower, LEVEL1) or LEVEL2 and strfind(tipLower, LEVEL2)) then
+		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
 			return tipLine, player and _G['GameTooltipTextLeft'..i+1] or nil
 		end
 	end
