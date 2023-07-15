@@ -2,30 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next = next
+local pairs = pairs
+local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
-
-local function NameColor(frame, r, g, b)
-	local button = frame.itemButton
-	if not button then return end
-
-	if not (r == g) then
-		button:SetBackdropBorderColor(r, g, b)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-end
-
-local function NameHide(frame)
-	local button = frame.itemButton
-	if not button then return end
-
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-end
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
@@ -39,6 +23,7 @@ function S:Blizzard_AuctionUI()
 		_G.BrowseBidButton,
 		_G.BrowseBuyoutButton,
 		_G.BrowseCloseButton,
+		_G.BrowseResetButton,
 		_G.BidBidButton,
 		_G.BidBuyoutButton,
 		_G.BidCloseButton,
@@ -51,7 +36,11 @@ function S:Blizzard_AuctionUI()
 
 	local CheckBoxes = {
 		_G.IsUsableCheckButton,
-		_G.ShowOnPlayerCheckButton
+		_G.ShowOnPlayerCheckButton,
+		_G.SortByBidPriceButton,
+		_G.SortByBuyoutPriceButton,
+		_G.SortByTotalPriceButton,
+		_G.SortByUnitPriceButton
 	}
 
 	local EditBoxes = {
@@ -134,9 +123,18 @@ function S:Blizzard_AuctionUI()
 		_G[Filter..'NormalTexture'].SetAlpha = E.noop
 	end
 
-	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
+	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
 
-	S:HandleCloseButton(_G.AuctionFrameCloseButton, AuctionFrame.backdrop)
+	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
+		if child:IsObjectType('Button') then
+			S:HandleButton(child)
+		end
+	end
+
+	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
+	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+
+	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
 	_G.AuctionFrameMoneyFrame:Point('BOTTOMRIGHT', AuctionFrame, 'BOTTOMLEFT', 181, 11)
 
@@ -147,9 +145,6 @@ function S:Blizzard_AuctionUI()
 	_G.BrowseScrollFrame:StripTextures()
 
 	_G.BrowseFilterScrollFrame:StripTextures()
-
-	_G.BrowseBidText:ClearAllPoints()
-	_G.BrowseBidText:Point('RIGHT', _G.BrowseBidButton, 'LEFT', -270, 2)
 
 	_G.BrowseCloseButton:Point('BOTTOMRIGHT', 66, 6)
 	_G.BrowseBuyoutButton:Point('RIGHT', _G.BrowseCloseButton, 'LEFT', -4, 0)
@@ -182,7 +177,7 @@ function S:Blizzard_AuctionUI()
 	_G.BidScrollFrameScrollBar:Point('TOPRIGHT', _G.BidScrollFrame, 'TOPRIGHT', 23, -18)
 	_G.BidScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.BidScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
-	--Auctions Frame
+	-- Auctions Frame
 	_G.AuctionsTitle:ClearAllPoints()
 	_G.AuctionsTitle:Point('TOP', AuctionFrame, 'TOP', 0, -5)
 
@@ -240,11 +235,7 @@ function S:Blizzard_AuctionUI()
 	AuctionProgressFrameCancelButton:Size(28)
 	AuctionProgressFrameCancelButton:Point('LEFT', _G.AuctionProgressBar, 'RIGHT', 8, 0)
 
-	for Frame, NumButtons in pairs({
-		Browse = _G.NUM_BROWSE_TO_DISPLAY,
-		Auctions = _G.NUM_AUCTIONS_TO_DISPLAY,
-		Bid = _G.NUM_BIDS_TO_DISPLAY
-	}) do
+	for Frame, NumButtons in pairs({['Browse'] = _G.NUM_BROWSE_TO_DISPLAY, ['Auctions'] = _G.NUM_AUCTIONS_TO_DISPLAY, ['Bid'] = _G.NUM_BIDS_TO_DISPLAY}) do
 		for i = 1, NumButtons do
 			local Button = _G[Frame..'Button'..i]
 			local ItemButton = _G[Frame..'Button'..i..'Item']
@@ -267,9 +258,15 @@ function S:Blizzard_AuctionUI()
 			Texture:SetInside()
 
 			if Name then
-				Name.itemButton = ItemButton
-				hooksecurefunc(Name, 'SetVertexColor', NameColor)
-				hooksecurefunc(Name, 'Hide', NameHide)
+				hooksecurefunc(Name, 'SetVertexColor', function(_, r, g, b)
+					if not (r == g) then
+						ItemButton:SetBackdropBorderColor(r, g, b)
+					else
+						ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
+				end)
+
+				hooksecurefunc(Name, 'Hide', function() ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 			end
 		end
 	end
