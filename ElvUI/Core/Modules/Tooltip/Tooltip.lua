@@ -86,7 +86,7 @@ local UNKNOWN = UNKNOWN
 
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
-local LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS and strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
+local LEVEL2 = strlower((_G.TOOLTIP_UNIT_LEVEL_RACE or _G.TOOLTIP_UNIT_LEVEL_CLASS):gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s:|r %d'
 local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r'
@@ -198,7 +198,7 @@ function TT:GetLevelLine(tt, offset, player)
 		local tipLine = _G['GameTooltipTextLeft'..i]
 		local tipText = tipLine and tipLine:GetText()
 		local tipLower = tipText and strlower(tipText)
-		if tipLower and (strfind(tipLower, LEVEL1) or LEVEL2 and strfind(tipLower, LEVEL2)) then
+		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
 			return tipLine, player and _G['GameTooltipTextLeft'..i+1] or nil
 		end
 	end

@@ -85,7 +85,9 @@ P.general = {
 	customGlow = {
 		style = 'Pixel Glow',
 		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		startAnimation = true,
 		useColor = false,
+		duration = 1,
 		speed = 0.3,
 		lines = 8,
 		size = 1,
@@ -1423,6 +1425,7 @@ local UF_Fader = {
 	unittarget = false,
 	vehicle = false,
 	instanceDifficulties = {
+		none = false,
 		dungeonNormal = false,
 		dungeonHeroic = false,
 		dungeonMythic = false,

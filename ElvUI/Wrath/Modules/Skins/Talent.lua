@@ -100,8 +100,8 @@ function S:Blizzard_GlyphUI()
 	_G.GlyphFrameBackground:Size(334, 385)
 	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -47)
 
-	_G.GlyphFrameBackground:SetTexture('Interface\\Spellbook\\UI-GlyphFrame')
-	_G.GlyphFrameGlow:SetTexture('Interface\\Spellbook\\UI-GlyphFrame-Glow')
+	_G.GlyphFrameBackground:SetTexture([[Interface\Spellbook\UI-GlyphFrame]])
+	_G.GlyphFrameGlow:SetTexture([[Interface\Spellbook\UI-GlyphFrame-Glow]])
 	_G.GlyphFrameGlow:SetAllPoints(_G.GlyphFrameBackground)
 
 	_G.GlyphFrameBackground:SetTexCoord(0.041015625, 0.65625, 0.140625, 0.8046875)
