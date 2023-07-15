@@ -580,7 +580,7 @@ do
 			fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
 			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
 
-			wipe(instanceDifficultly)
+			wipe(instanceDifficultly) -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 			if db.instanceDifficulties.none then addInstanceDifficultly(0) end
 			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1, 38, 173) end
 			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2, 39, 174) end

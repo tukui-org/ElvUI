@@ -96,7 +96,7 @@ mod.TriggerConditions = {
 		[2] = 'goodTransition',
 		[3] = 'bad'
 	},
-	difficulties = {
+	difficulties = { -- also has IDs maintained in Difficulty Datatext
 		-- dungeons
 		[1] = 'normal',
 		[2] = 'heroic',
