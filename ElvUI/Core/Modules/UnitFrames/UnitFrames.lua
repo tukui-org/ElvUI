@@ -581,6 +581,7 @@ do
 			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
 
 			wipe(instanceDifficultly)
+			if db.instanceDifficulties.none then addInstanceDifficultly(0) end
 			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1) end
 			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2) end
 			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23) end

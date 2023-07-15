@@ -1425,6 +1425,7 @@ local UF_Fader = {
 	unittarget = false,
 	vehicle = false,
 	instanceDifficulties = {
+		none = false,
 		dungeonNormal = false,
 		dungeonHeroic = false,
 		dungeonMythic = false,
