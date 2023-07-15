@@ -582,12 +582,12 @@ do
 
 			wipe(instanceDifficultly)
 			if db.instanceDifficulties.none then addInstanceDifficultly(0) end
-			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1) end
-			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2) end
-			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23) end
+			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1, 38, 173) end
+			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2, 39, 174) end
+			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23, 40) end
 			if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficultly(8) end
-			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14) end
-			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15) end
+			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14, 175, 176) end
+			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15, 193, 194) end
 			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
 			fader:SetOption('InstanceDifficulty', next(instanceDifficultly) and instanceDifficultly or nil)
 
