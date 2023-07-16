@@ -70,8 +70,6 @@ local SplitContainerItem = SplitContainerItem or (C_Container and C_Container.Sp
 local SetItemSearch = SetItemSearch or (C_Container and C_Container.SetItemSearch)
 local GetBagSlotFlag = GetBagSlotFlag or (C_Container and C_Container.GetBagSlotFlag)
 local SetBagSlotFlag = SetBagSlotFlag or (C_Container and C_Container.SetBagSlotFlag)
-local GetBankBagSlotFlag = GetBankBagSlotFlag or (C_Container and C_Container.GetBankBagSlotFlag)
-local SetBankBagSlotFlag = SetBankBagSlotFlag or (C_Container and C_Container.SetBankBagSlotFlag)
 local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled or (C_Container and C_Container.GetBackpackAutosortDisabled)
 local GetBankAutosortDisabled = GetBankAutosortDisabled or (C_Container and C_Container.GetBankAutosortDisabled)
@@ -847,18 +845,16 @@ function B:IsSortIgnored(bagID)
 		return GetBankAutosortDisabled()
 	elseif bagID == BACKPACK_CONTAINER then
 		return GetBackpackAutosortDisabled()
-	elseif bagID > NUM_BAG_SLOTS and E.Classic then
-		return GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE)
 	else
 		return GetBagSlotFlag(bagID, FILTER_FLAG_IGNORE)
 	end
 end
 
-function B:GetFilterFlagInfo(bagID, isBank)
+function B:GetFilterFlagInfo(bagID) -- arg2 is isBank
 	for _, flag in next, B.GearFilters do
 		if flag ~= FILTER_FLAG_IGNORE then
 			local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-			if canAssign and ((isBank and E.Classic and GetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag)) or GetBagSlotFlag(bagID, flag)) then
+			if canAssign and GetBagSlotFlag(bagID, flag) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
 		end
@@ -870,7 +866,7 @@ function B:SetFilterFlag(bagID, flag, value)
 
 	local isBank = bagID > NUM_BAG_SLOTS
 	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-	return canAssign and ((isBank and E.Classic and SetBankBagSlotFlag(bagID - NUM_BAG_SLOTS, flag, value)) or SetBagSlotFlag(bagID, flag, value))
+	return canAssign and SetBagSlotFlag(bagID, flag, value)
 end
 
 function B:GetBagAssignedInfo(holder, isBank)
@@ -2724,8 +2720,6 @@ function B:Initialize()
 					SetBankAutosortDisabled(not value)
 				elseif holder.BagID == BACKPACK_CONTAINER then
 					SetBackpackAutosortDisabled(not value)
-				elseif holder.BagID > NUM_BAG_SLOTS and E.Classic then
-					SetBankBagSlotFlag(holder.BagID - NUM_BAG_SLOTS, FILTER_FLAG_IGNORE, not value)
 				else
 					SetBagSlotFlag(holder.BagID, FILTER_FLAG_IGNORE, not value)
 				end
