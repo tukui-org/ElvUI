@@ -546,20 +546,35 @@ end
 
 do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 	local diffs = {
-		none = {0},
-		dungeonNormal = {1, 38, 173},
-		dungeonHeroic = {2, 39, 174},
-		dungeonMythic = {23, 40},
-		dungeonMythicKeystone = {8},
-		raidNormal = {3, 4, 14, 148, 175, 176, 185, 186}, -- 148 is ZG/AQ40
-		raidHeroic = {5, 6, 15, 193, 194},
-		raidMythic = {16},
+		keys = {
+			none = {0},
+			dungeonNormal = {1, 38, 173},
+			dungeonHeroic = {2, 39, 174},
+			dungeonMythic = {23, 40},
+			dungeonMythicKeystone = {8},
+			raidNormal = {3, 4, 14, 148, 175, 176, 185, 186}, -- 148 is ZG/AQ40
+			raidHeroic = {5, 6, 15, 193, 194},
+			raidMythic = {16},
+		}
 	}
 
-	local function addDifficulties(fader, ids)
-		for _, val in next, ids do
-			diffs[fader][val] = true
+	local function HandleDifficulties(fader, db)
+		if not diffs[fader] then
+			diffs[fader] = {}
+		else
+			wipe(diffs[fader])
 		end
+
+		for key, ids in next, diffs.keys do
+			if db.instanceDifficulties[key] then
+				for _, val in next, ids do
+					diffs[fader][val] = true
+				end
+			end
+		end
+
+		return next(diffs[fader]) and diffs[fader] or nil
+
 	end
 
 	function UF:Configure_Fader(frame)
@@ -588,22 +603,7 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 
 			fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
 			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
-
-			if not diffs[fader] then
-				diffs[fader] = {}
-			else
-				wipe(diffs[fader])
-			end
-
-			if db.instanceDifficulties.none then addDifficulties(fader, diffs.none) end
-			if db.instanceDifficulties.dungeonNormal then addDifficulties(fader, diffs.dungeonNormal) end
-			if db.instanceDifficulties.dungeonHeroic then addDifficulties(fader, diffs.dungeonHeroic) end
-			if db.instanceDifficulties.dungeonMythic then addDifficulties(fader, diffs.dungeonMythic) end
-			if db.instanceDifficulties.dungeonMythicKeystone then addDifficulties(fader, diffs.dungeonMythicKeystone) end
-			if db.instanceDifficulties.raidNormal then addDifficulties(fader, diffs.raidNormal) end
-			if db.instanceDifficulties.raidHeroic then addDifficulties(fader, diffs.raidHeroic) end
-			if db.instanceDifficulties.raidMythic then addDifficulties(fader, diffs.raidMythic) end
-			fader:SetOption('InstanceDifficulty', next(diffs[fader]) and diffs[fader] or nil)
+			fader:SetOption('InstanceDifficulty', HandleDifficulties(fader, db))
 
 			fader:ClearTimers()
 			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
