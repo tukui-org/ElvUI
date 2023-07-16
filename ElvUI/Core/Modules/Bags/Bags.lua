@@ -864,7 +864,6 @@ end
 function B:SetFilterFlag(bagID, flag, value)
 	B.AssignBagDropdown.holder = nil
 
-	local isBank = bagID > NUM_BAG_SLOTS
 	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 	return canAssign and SetBagSlotFlag(bagID, flag, value)
 end
