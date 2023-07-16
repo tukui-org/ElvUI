@@ -586,7 +586,7 @@ do
 			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2, 39, 174) end
 			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23, 40) end
 			if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficultly(8) end
-			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14, 175, 176) end
+			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14, 175, 176, 148) end -- 148 is ZG/AQ40
 			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15, 193, 194) end
 			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
 			fader:SetOption('InstanceDifficulty', next(instanceDifficultly) and instanceDifficultly or nil)
