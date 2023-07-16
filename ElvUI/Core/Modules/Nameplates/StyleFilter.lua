@@ -141,11 +141,13 @@ mod.TriggerConditions = {
 		[148] = 'legacy20normal',
 		[173] = 'normal',
 		[174] = 'heroic',
+		[185] = 'legacy20normal',
+		[186] = 'legacy40normal',
 		-- wotlk
 		[175] = 'legacy10normal',
 		[176] = 'legacy25normal',
 		[193] = 'legacy10heroic',
-		[194] = 'legacy25heroic',
+		[194] = 'legacy25heroic'
 	}
 }
 

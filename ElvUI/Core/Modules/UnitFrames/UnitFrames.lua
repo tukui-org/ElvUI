@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local wipe, type, select, unpack, assert, tostring = wipe, type, select, unpack, assert, tostring
+local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
@@ -544,12 +544,21 @@ function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
 
-do
-	local instanceDifficultly = {}
-	local function addInstanceDifficultly(...)
-		for i = 1, select('#', ...) do
-			local val = select(i, ...)
-			instanceDifficultly[val] = true
+do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
+	local diffs = {
+		none = {0},
+		dungeonNormal = {1, 38, 173},
+		dungeonHeroic = {2, 39, 174},
+		dungeonMythic = {23, 40},
+		dungeonMythicKeystone = {8},
+		raidNormal = {3, 4, 14, 148, 175, 176, 185, 186}, -- 148 is ZG/AQ40
+		raidHeroic = {5, 6, 15, 193, 194},
+		raidMythic = {16},
+	}
+
+	local function addDifficulties(fader, ids)
+		for _, val in next, ids do
+			diffs[fader][val] = true
 		end
 	end
 
@@ -580,16 +589,21 @@ do
 			fader:SetOption('Smooth', (db.smooth > 0 and db.smooth) or nil)
 			fader:SetOption('Delay', (db.delay > 0 and db.delay) or nil)
 
-			wipe(instanceDifficultly) -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
-			if db.instanceDifficulties.none then addInstanceDifficultly(0) end
-			if db.instanceDifficulties.dungeonNormal then addInstanceDifficultly(1, 38, 173) end
-			if db.instanceDifficulties.dungeonHeroic then addInstanceDifficultly(2, 39, 174) end
-			if db.instanceDifficulties.dungeonMythic then addInstanceDifficultly(23, 40) end
-			if db.instanceDifficulties.dungeonMythicKeystone then addInstanceDifficultly(8) end
-			if db.instanceDifficulties.raidNormal then addInstanceDifficultly(3, 4, 14, 175, 176, 148) end -- 148 is ZG/AQ40
-			if db.instanceDifficulties.raidHeroic then addInstanceDifficultly(5, 6, 15, 193, 194) end
-			if db.instanceDifficulties.raidMythic then addInstanceDifficultly(16) end
-			fader:SetOption('InstanceDifficulty', next(instanceDifficultly) and instanceDifficultly or nil)
+			if not diffs[fader] then
+				diffs[fader] = {}
+			else
+				wipe(diffs[fader])
+			end
+
+			if db.instanceDifficulties.none then addDifficulties(fader, diffs.none) end
+			if db.instanceDifficulties.dungeonNormal then addDifficulties(fader, diffs.dungeonNormal) end
+			if db.instanceDifficulties.dungeonHeroic then addDifficulties(fader, diffs.dungeonHeroic) end
+			if db.instanceDifficulties.dungeonMythic then addDifficulties(fader, diffs.dungeonMythic) end
+			if db.instanceDifficulties.dungeonMythicKeystone then addDifficulties(fader, diffs.dungeonMythicKeystone) end
+			if db.instanceDifficulties.raidNormal then addDifficulties(fader, diffs.raidNormal) end
+			if db.instanceDifficulties.raidHeroic then addDifficulties(fader, diffs.raidHeroic) end
+			if db.instanceDifficulties.raidMythic then addDifficulties(fader, diffs.raidMythic) end
+			fader:SetOption('InstanceDifficulty', next(diffs[fader]) and diffs[fader] or nil)
 
 			fader:ClearTimers()
 			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
