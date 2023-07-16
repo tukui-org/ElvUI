@@ -551,7 +551,7 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 		dungeonHeroic = {2, 39, 174},
 		dungeonMythic = {23, 40},
 		dungeonMythicKeystone = {8},
-		raidNormal = {3, 4, 14, 175, 176, 148}, -- 148 is ZG/AQ40
+		raidNormal = {3, 4, 14, 148, 175, 176, 185, 186}, -- 148 is ZG/AQ40
 		raidHeroic = {5, 6, 15, 193, 194},
 		raidMythic = {16},
 	}
