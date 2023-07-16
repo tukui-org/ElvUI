@@ -574,7 +574,6 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 		end
 
 		return next(diffs[fader]) and diffs[fader] or nil
-
 	end
 
 	function UF:Configure_Fader(frame)
