@@ -280,7 +280,7 @@ local options = {
 			self:RegisterEvent('PLAYER_ENTERING_WORLD', onInstanceDifficulty, true)
 			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty, true)
 		end,
-		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
+		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_ENTERING_WORLD', 'PLAYER_DIFFICULTY_CHANGED'}
 	},
 	MinAlpha = {
 		countIgnored = true,
