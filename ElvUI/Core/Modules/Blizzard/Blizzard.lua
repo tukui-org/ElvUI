@@ -94,20 +94,20 @@ function B:ObjectiveTracker_HasQuestTracker()
 end
 
 function B:ObjectiveTracker_AutoHide()
-	local frame = (E.Wrath and _G.WatchFrame) or _G.ObjectiveTrackerFrame
-	if not frame then return end
+	local tracker = (E.Wrath and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	if not tracker then return end
 
-	if not frame.AutoHider then
-		frame.AutoHider = CreateFrame('Frame', nil, frame, 'SecureHandlerStateTemplate')
-		frame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		frame.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHide_OnHide)
-		frame.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHide_OnShow)
+	if not tracker.AutoHider then
+		tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
+		tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+		tracker.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHide_OnHide)
+		tracker.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHide_OnShow)
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(frame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
+		RegisterStateDriver(tracker.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
 	else
-		UnregisterStateDriver(frame.AutoHider, 'objectiveHider')
+		UnregisterStateDriver(tracker.AutoHider, 'objectiveHider')
 	end
 end
 
