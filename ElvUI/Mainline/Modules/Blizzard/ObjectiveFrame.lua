@@ -63,20 +63,20 @@ local function ObjectiveTracker_Expand()
 end
 -- end clone
 
-function B:ObjectiveTracker_AutoHide_OnHide()
-	if not Tracker.collapsed then
-		if E.db.general.objectiveFrameAutoHideInKeystone then
+function B:ObjectiveTracker_AutoHideOnHide()
+	if Tracker.collapsed then return end
+
+	if E.db.general.objectiveFrameAutoHideInKeystone then
+		ObjectiveTracker_Collapse()
+	else
+		local _, _, difficultyID = GetInstanceInfo()
+		if difficultyID ~= 8 then -- ignore hide in keystone runs
 			ObjectiveTracker_Collapse()
-		else
-			local _, _, difficultyID = GetInstanceInfo()
-			if difficultyID ~= 8 then -- ignore hide in keystone runs
-				ObjectiveTracker_Collapse()
-			end
 		end
 	end
 end
 
-function B:ObjectiveTracker_AutoHide_OnShow()
+function B:ObjectiveTracker_AutoHideOnShow()
 	if Tracker.collapsed then
 		ObjectiveTracker_Expand()
 	end

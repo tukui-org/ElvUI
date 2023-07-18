@@ -26,13 +26,13 @@ function B:ObjectiveTracker_SetHeight()
 	Tracker:Height(frameHeight)
 end
 
-function B:ObjectiveTracker_AutoHide_OnHide()
+function B:ObjectiveTracker_AutoHideOnHide()
 	if not Tracker.userCollapsed then
 		Tracker_Collapse(Tracker)
 	end
 end
 
-function B:ObjectiveTracker_AutoHide_OnShow()
+function B:ObjectiveTracker_AutoHideOnShow()
 	if Tracker.userCollapsed then
 		Tracker_Expand(Tracker)
 	end

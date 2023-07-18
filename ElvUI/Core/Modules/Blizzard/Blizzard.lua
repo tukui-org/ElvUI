@@ -100,8 +100,8 @@ function B:ObjectiveTracker_AutoHide()
 	if not tracker.AutoHider then
 		tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 		tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		tracker.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHide_OnHide)
-		tracker.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHide_OnShow)
+		tracker.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHideOnHide)
+		tracker.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHideOnShow)
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
