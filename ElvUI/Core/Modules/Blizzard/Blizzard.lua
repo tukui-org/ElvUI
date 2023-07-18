@@ -85,6 +85,10 @@ function B:HandleAddonCompartment()
 	end
 end
 
+function B:HasQuestTracker()
+	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
+end
+
 function B:Initialize()
 	B.Initialized = true
 
@@ -123,7 +127,7 @@ function B:Initialize()
 			B:PositionVehicleFrame()
 		end
 
-		if not E:IsAddOnEnabled('!KalielsTracker') and not E:IsAddOnEnabled('DugisGuideViewerZ') then
+		if not B:HasQuestTracker() then
 			B:ObjectiveTracker_Setup()
 		end
 	end
