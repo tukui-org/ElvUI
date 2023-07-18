@@ -55,6 +55,6 @@ function B:ObjectiveTracker_Setup()
 	Tracker.holder = holder
 	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
-	B:ObjectiveTracker_AutoHide()
+	B:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
 	B:ObjectiveTracker_SetHeight()
 end
