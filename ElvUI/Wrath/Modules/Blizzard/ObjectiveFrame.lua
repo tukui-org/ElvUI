@@ -4,13 +4,11 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local min = min
 local CreateFrame = CreateFrame
-local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
 local hooksecurefunc = hooksecurefunc
 
-local WatchFrame_Collapse = WatchFrame_Collapse
-local WatchFrame_Expand = WatchFrame_Expand
-local WatchFrame = WatchFrame
+local Tracker_Collapse = WatchFrame_Collapse
+local Tracker_Expand = WatchFrame_Expand
+local Tracker = WatchFrame
 
 local function ObjectiveTracker_SetPoint(frame, _, parent)
 	if parent ~= frame.holder then
@@ -19,39 +17,24 @@ local function ObjectiveTracker_SetPoint(frame, _, parent)
 	end
 end
 
-local function AutoHider_OnHide()
-	if not WatchFrame.userCollapsed then
-		WatchFrame_Collapse(WatchFrame)
-	end
-end
-
-local function AutoHider_OnShow()
-	if WatchFrame.userCollapsed then
-		WatchFrame_Expand(WatchFrame)
-	end
-end
-
 function B:ObjectiveTracker_SetHeight()
-	local top = WatchFrame:GetTop() or 0
+	local top = Tracker:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
 	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	WatchFrame:Height(watchFrameHeight)
+	Tracker:Height(watchFrameHeight)
 end
 
-function B:ObjectiveTracker_AutoHide()
-	if not WatchFrame.AutoHider then
-		WatchFrame.AutoHider = CreateFrame('Frame', nil, WatchFrame, 'SecureHandlerStateTemplate')
-		WatchFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		WatchFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
-		WatchFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
+function B:ObjectiveTracker_AutoHide_OnHide()
+	if not Tracker.userCollapsed then
+		Tracker_Collapse(Tracker)
 	end
+end
 
-	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(WatchFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
-	else
-		UnregisterStateDriver(WatchFrame.AutoHider, 'objectiveHider')
+function B:ObjectiveTracker_AutoHide_OnShow()
+	if Tracker.userCollapsed then
+		Tracker_Expand(Tracker)
 	end
 end
 
@@ -63,12 +46,12 @@ function B:ObjectiveTracker_Setup()
 	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
-	WatchFrame:SetClampedToScreen(false)
-	WatchFrame:ClearAllPoints()
-	WatchFrame:SetPoint('TOP', holder)
+	Tracker:SetClampedToScreen(false)
+	Tracker:ClearAllPoints()
+	Tracker:SetPoint('TOP', holder)
 
-	WatchFrame.holder = holder
-	hooksecurefunc(WatchFrame, 'SetPoint', ObjectiveTracker_SetPoint)
+	Tracker.holder = holder
+	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
 	B:ObjectiveTracker_AutoHide()
 	B:ObjectiveTracker_SetHeight()

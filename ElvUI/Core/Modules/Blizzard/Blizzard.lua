@@ -5,9 +5,13 @@ local LSM = E.Libs.LSM
 local _G = _G
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
+local CreateFrame = CreateFrame
 local GetRewardXP = GetRewardXP
 local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
+
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local hooksecurefunc = hooksecurefunc
@@ -85,8 +89,26 @@ function B:HandleAddonCompartment()
 	end
 end
 
-function B:HasQuestTracker()
+function B:ObjectiveTracker_HasQuestTracker()
 	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
+end
+
+function B:ObjectiveTracker_AutoHide()
+	local frame = (E.Wrath and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	if not frame then return end
+
+	if not frame.AutoHider then
+		frame.AutoHider = CreateFrame('Frame', nil, frame, 'SecureHandlerStateTemplate')
+		frame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+		frame.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHide_OnHide)
+		frame.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHide_OnShow)
+	end
+
+	if E.db.general.objectiveFrameAutoHide then
+		RegisterStateDriver(frame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
+	else
+		UnregisterStateDriver(frame.AutoHider, 'objectiveHider')
+	end
 end
 
 function B:Initialize()
@@ -126,7 +148,7 @@ function B:Initialize()
 			B:QuestWatch_MoveFrames()
 			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 		end
-	elseif not B:HasQuestTracker() then
+	elseif not B:ObjectiveTracker_HasQuestTracker() then
 		B:ObjectiveTracker_Setup()
 	end
 
