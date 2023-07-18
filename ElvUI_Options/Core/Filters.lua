@@ -25,7 +25,7 @@ local function GetSelectedFilters()
 	local pet = selectedFilter == 'Aura Indicator (Pet)'
 	local profile = selectedFilter == 'Aura Indicator (Profile)'
 	local selected = (profile and E.db.unitframe.filters.aurawatch) or (pet and E.global.unitframe.aurawatch.PET) or (class and E.global.unitframe.aurawatch[E.myclass]) or E.global.unitframe.aurawatch.GLOBAL
-	local default = (profile and P.unitframe.filters.aurawatch) or (pet and G.unitframe.aurawatch.PET) or class and G.unitframe.aurawatch[E.myclass] or G.unitframe.aurawatch.GLOBAL
+	local default = (profile and P.unitframe.filters.aurawatch) or (pet and G.unitframe.aurawatch.PET) or (class and G.unitframe.aurawatch[E.myclass]) or G.unitframe.aurawatch.GLOBAL
 	return selected or {}, default
 end
 
