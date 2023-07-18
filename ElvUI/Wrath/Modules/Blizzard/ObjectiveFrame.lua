@@ -10,10 +10,10 @@ local Tracker_Collapse = WatchFrame_Collapse
 local Tracker_Expand = WatchFrame_Expand
 local Tracker = WatchFrame
 
-local function ObjectiveTracker_SetPoint(frame, _, parent)
-	if parent ~= frame.holder then
-		frame:ClearAllPoints()
-		frame:SetPoint('TOP', frame.holder)
+local function ObjectiveTracker_SetPoint(tracker, _, parent)
+	if parent ~= tracker.holder then
+		tracker:ClearAllPoints()
+		tracker:SetPoint('TOP', tracker.holder)
 	end
 end
 
@@ -21,9 +21,9 @@ function B:ObjectiveTracker_SetHeight()
 	local top = Tracker:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
-	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
+	local frameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	Tracker:Height(watchFrameHeight)
+	Tracker:Height(frameHeight)
 end
 
 function B:ObjectiveTracker_AutoHide_OnHide()
