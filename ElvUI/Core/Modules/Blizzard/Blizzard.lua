@@ -117,19 +117,17 @@ function B:Initialize()
 		end
 	end
 
+	if E.Wrath then
+		B:PositionVehicleFrame()
+	end
+
 	if E.Classic then
 		if E.db.general.objectiveTracker then
 			B:QuestWatch_MoveFrames()
 			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 		end
-	else
-		if E.Wrath then
-			B:PositionVehicleFrame()
-		end
-
-		if not B:HasQuestTracker() then
-			B:ObjectiveTracker_Setup()
-		end
+	elseif not B:HasQuestTracker() then
+		B:ObjectiveTracker_Setup()
 	end
 
 	local MinimapAnchor = _G.ElvUI_MinimapHolder or _G.Minimap
