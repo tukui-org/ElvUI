@@ -27,13 +27,15 @@ function B:ObjectiveTracker_SetHeight()
 end
 
 function B:ObjectiveTracker_AutoHideOnHide()
-	if not Tracker.userCollapsed then
+	if not Tracker.collapsed then
+		Tracker.userCollapsed = true
 		Tracker_Collapse(Tracker)
 	end
 end
 
 function B:ObjectiveTracker_AutoHideOnShow()
-	if Tracker.userCollapsed then
+	if Tracker.collapsed then
+		Tracker.userCollapsed = nil
 		Tracker_Expand(Tracker)
 	end
 end
