@@ -3,29 +3,53 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local min = min
+
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local hooksecurefunc = hooksecurefunc
+
+local WatchFrame_Collapse = WatchFrame_Collapse
+local WatchFrame_Expand = WatchFrame_Expand
+local WatchFrame = WatchFrame
+
+local function WatchFramePoints(frame, _, parent)
+	if parent ~= frame.holder then
+		frame:ClearAllPoints()
+		frame:SetPoint('TOP', frame.holder)
+	end
+end
+
+local function AutoHider_OnHide()
+	if not WatchFrame.userCollapsed then
+		WatchFrame_Collapse(WatchFrame)
+	end
+end
+
+local function AutoHider_OnShow()
+	if WatchFrame.userCollapsed then
+		WatchFrame_Expand(WatchFrame)
+	end
+end
 
 function B:SetObjectiveFrameHeight()
-	local top = _G.WatchFrame:GetTop() or 0
+	local top = WatchFrame:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
 	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	_G.WatchFrame:Height(watchFrameHeight)
+	WatchFrame:Height(watchFrameHeight)
 end
 
 function B:SetObjectiveFrameAutoHide()
-	if not _G.WatchFrame.AutoHider then
+	if not WatchFrame.AutoHider then
 		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(_G.WatchFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
+		RegisterStateDriver(WatchFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
 	else
-		UnregisterStateDriver(_G.WatchFrame.AutoHider, 'objectiveHider')
+		UnregisterStateDriver(WatchFrame.AutoHider, 'objectiveHider')
 	end
 end
 
@@ -37,17 +61,17 @@ function B:MoveObjectiveFrame()
 	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
-	local tracker = _G.WatchFrame
-	tracker:SetClampedToScreen(false)
-	tracker:ClearAllPoints()
-	tracker:SetPoint('TOP', holder)
+	WatchFrame:SetClampedToScreen(false)
+	WatchFrame:ClearAllPoints()
+	WatchFrame:SetPoint('TOP', holder)
 
-	hooksecurefunc(tracker, 'SetPoint', function(_, _, parent)
-		if parent ~= holder then
-			tracker:ClearAllPoints()
-			tracker:SetPoint('TOP', holder)
-		end
-	end)
+	WatchFrame.AutoHider = CreateFrame('Frame', nil, WatchFrame, 'SecureHandlerStateTemplate')
+	WatchFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+	WatchFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
+	WatchFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
+
+	WatchFrame.holder = holder
+	hooksecurefunc(WatchFrame, 'SetPoint', WatchFramePoints)
 
 	B:SetObjectiveFrameHeight()
 end

@@ -118,11 +118,17 @@ function B:Initialize()
 			B:QuestWatch_MoveFrames()
 			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
 		end
-	elseif E.Wrath then
-		B:PositionVehicleFrame()
+	else
+		if E.Wrath then
+			B:PositionVehicleFrame()
+		end
 
-		if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
-			B:MoveObjectiveFrame()
+		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
+			if E.Wrath then
+				B:MoveObjectiveFrame()
+			end
+
+			B:SetObjectiveFrameAutoHide()
 		end
 	end
 

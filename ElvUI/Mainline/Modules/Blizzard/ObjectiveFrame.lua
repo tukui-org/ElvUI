@@ -103,7 +103,6 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
-	B:SetObjectiveFrameAutoHide()
 
 	-- force this never case, to fix a taint when actionbars in use
 	if E.private.actionbar.enable then
