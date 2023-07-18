@@ -3,10 +3,10 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 local ObjectiveTrackerFrame = ObjectiveTrackerFrame
+local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 
 local function IsFramePositionedLeft(frame)
