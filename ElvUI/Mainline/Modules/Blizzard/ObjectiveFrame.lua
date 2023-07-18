@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local Tracker = ObjectiveTrackerFrame
 
-local function ObjectiveTracker_PositionedLeft()
+local function ObjectiveTracker_IsLeft()
 	local x = Tracker:GetCenter()
 	return x and x < (E.screenWidth * 0.5) -- positioned on left side
 end
@@ -18,7 +18,7 @@ local function BonusRewards_SetPosition(block)
 
 	rewards:ClearAllPoints()
 
-	if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and ObjectiveTracker_PositionedLeft()) then
+	if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and ObjectiveTracker_IsLeft()) then
 		rewards:Point('TOPLEFT', block, 'TOPRIGHT', -10, -4)
 	else
 		rewards:Point('TOPRIGHT', block, 'TOPLEFT', 10, -4)
