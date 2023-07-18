@@ -123,12 +123,8 @@ function B:Initialize()
 			B:PositionVehicleFrame()
 		end
 
-		if not E:IsAddOnEnabled('DugisGuideViewerZ') and not E:IsAddOnEnabled('!KalielsTracker') then
-			if E.Wrath then
-				B:MoveObjectiveFrame()
-			end
-
-			B:SetObjectiveFrameAutoHide()
+		if not E:IsAddOnEnabled('!KalielsTracker') and not E:IsAddOnEnabled('DugisGuideViewerZ') then
+			B:ObjectiveTracker_Setup()
 		end
 	end
 

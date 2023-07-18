@@ -13,7 +13,7 @@ local WatchFrame_Collapse = WatchFrame_Collapse
 local WatchFrame_Expand = WatchFrame_Expand
 local WatchFrame = WatchFrame
 
-local function WatchFramePoints(frame, _, parent)
+local function ObjectiveTracker_SetPoint(frame, _, parent)
 	if parent ~= frame.holder then
 		frame:ClearAllPoints()
 		frame:SetPoint('TOP', frame.holder)
@@ -32,7 +32,7 @@ local function AutoHider_OnShow()
 	end
 end
 
-function B:SetObjectiveFrameHeight()
+function B:ObjectiveTracker_SetHeight()
 	local top = WatchFrame:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
@@ -41,9 +41,12 @@ function B:SetObjectiveFrameHeight()
 	WatchFrame:Height(watchFrameHeight)
 end
 
-function B:SetObjectiveFrameAutoHide()
+function B:ObjectiveTracker_AutoHide()
 	if not WatchFrame.AutoHider then
-		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+		WatchFrame.AutoHider = CreateFrame('Frame', nil, WatchFrame, 'SecureHandlerStateTemplate')
+		WatchFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+		WatchFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
+		WatchFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
@@ -53,7 +56,7 @@ function B:SetObjectiveFrameAutoHide()
 	end
 end
 
-function B:MoveObjectiveFrame()
+function B:ObjectiveTracker_Setup()
 	local holder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	holder:Point('TOPRIGHT', E.UIParent, -135, -300)
 	holder:Size(130, 22)
@@ -65,13 +68,9 @@ function B:MoveObjectiveFrame()
 	WatchFrame:ClearAllPoints()
 	WatchFrame:SetPoint('TOP', holder)
 
-	WatchFrame.AutoHider = CreateFrame('Frame', nil, WatchFrame, 'SecureHandlerStateTemplate')
-	WatchFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-	WatchFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
-	WatchFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
-
 	WatchFrame.holder = holder
-	hooksecurefunc(WatchFrame, 'SetPoint', WatchFramePoints)
+	hooksecurefunc(WatchFrame, 'SetPoint', ObjectiveTracker_SetPoint)
 
-	B:SetObjectiveFrameHeight()
+	B:ObjectiveTracker_AutoHide()
+	B:ObjectiveTracker_SetHeight()
 end

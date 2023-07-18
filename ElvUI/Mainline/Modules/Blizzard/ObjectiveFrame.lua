@@ -84,9 +84,12 @@ local function AutoHider_OnShow()
 	end
 end
 
-function B:SetObjectiveFrameAutoHide()
+function B:ObjectiveTracker_AutoHide()
 	if not ObjectiveTrackerFrame.AutoHider then
-		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+		ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
+		ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+		ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
+		ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
@@ -98,16 +101,12 @@ end
 
 -- keeping old name, not used to move just to handle the objective things
 -- wrath has it's own file, which actually has the mover on that client
-function B:MoveObjectiveFrame()
-	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', AutoHider_OnHide)
-	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', AutoHider_OnShow)
-
-	-- force this never case, to fix a taint when actionbars in use
-	if E.private.actionbar.enable then
+function B:ObjectiveTracker_Setup()
+	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
 		ObjectiveTrackerFrame.IsInDefaultPosition = E.noop
 	end
 
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', RewardsFrame_SetPosition)
+
+	B:ObjectiveTracker_AutoHide()
 end
