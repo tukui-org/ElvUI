@@ -468,6 +468,10 @@ local function SkinTransmogFrames()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
+	if E.global.general.disableTutorialButtons then
+		WardrobeCollectionFrame.InfoButton:Kill()
+	end
+
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
