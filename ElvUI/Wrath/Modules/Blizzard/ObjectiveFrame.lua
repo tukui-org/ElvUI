@@ -27,13 +27,15 @@ function B:ObjectiveTracker_SetHeight()
 end
 
 function B:ObjectiveTracker_AutoHideOnHide()
-	if not Tracker.userCollapsed then
+	if not Tracker.collapsed then
+		Tracker.userCollapsed = true
 		Tracker_Collapse(Tracker)
 	end
 end
 
 function B:ObjectiveTracker_AutoHideOnShow()
-	if Tracker.userCollapsed then
+	if Tracker.collapsed then
+		Tracker.userCollapsed = nil
 		Tracker_Expand(Tracker)
 	end
 end
@@ -53,6 +55,6 @@ function B:ObjectiveTracker_Setup()
 	Tracker.holder = holder
 	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
-	B:ObjectiveTracker_AutoHide()
+	B:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
 	B:ObjectiveTracker_SetHeight()
 end

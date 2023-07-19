@@ -150,7 +150,7 @@ local function handleElements(element, unit, button, setting, icon, count, durat
 
 	button:Show()
 	button:ClearAllPoints()
-	button:SetPoint(setting.point, setting.xOffset, setting.yOffset)
+	button:SetPoint(setting.point or 'TOPRIGHT', setting.xOffset or 0, setting.yOffset or 0)
 end
 
 local missing = {}
