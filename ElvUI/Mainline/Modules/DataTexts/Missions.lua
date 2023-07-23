@@ -12,6 +12,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
+local ExpansionLandingPageMinimapButton = ExpansionLandingPageMinimapButton
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_GetBuildings = C_Garrison.GetBuildings
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
@@ -324,8 +325,8 @@ local function OnClick(self, btn)
 	if btn == 'RightButton' then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
-	else
-		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
+	elseif ExpansionLandingPageMinimapButton:IsShown() then
+		ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end
 end
 
