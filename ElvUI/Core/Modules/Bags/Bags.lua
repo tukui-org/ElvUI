@@ -1469,8 +1469,8 @@ function B:ToggleBag(holder)
 	local slotID = 'bag'..holder.BagID
 	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
 
-	local showIconTexture = B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
-	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+	local showIconTexture = B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
+	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(showIconTexture) then
 		holder.shownIcon:SetAtlas(showIconTexture)
 	else
 		holder.shownIcon:SetTexture(showIconTexture)
@@ -1606,7 +1606,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.shownIcon:Size(16)
 		holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
 		local showIconTexture = B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
-		if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+		if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(showIconTexture) then
 			holder.shownIcon:SetAtlas(showIconTexture)
 		else
 			holder.shownIcon:SetTexture(showIconTexture)
