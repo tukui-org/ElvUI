@@ -62,6 +62,7 @@ local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
+local C_Texture_GetAtlasInfo = C_Texture.GetAtlasInfo
 
 local SortBags = SortBags or (C_Container and C_Container.SortBags)
 local SortBankBags = SortBankBags or (C_Container and C_Container.SortBankBags)
@@ -1468,7 +1469,12 @@ function B:ToggleBag(holder)
 	local slotID = 'bag'..holder.BagID
 	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
 
-	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+	local showIconTexture = B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
+	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+		holder.shownIcon:SetAtlas(showIconTexture)
+	else
+		holder.shownIcon:SetTexture(showIconTexture)
+	end
 
 	B:Layout(holder.isBank)
 end
@@ -1599,7 +1605,12 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
 		holder.shownIcon:Size(16)
 		holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
-		holder.shownIcon:SetTexture(B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
+		local showIconTexture = B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
+		if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+			holder.shownIcon:SetAtlas(showIconTexture)
+		else
+			holder.shownIcon:SetTexture(showIconTexture)
+		end
 
 		B:CreateFilterIcon(holder)
 
