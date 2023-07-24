@@ -162,9 +162,8 @@ function S:Blizzard_AuctionUI()
 
 	_G.BrowseCloseButton:Point('BOTTOMRIGHT', 66, 6)
 	_G.BrowseBuyoutButton:Point('RIGHT', _G.BrowseCloseButton, 'LEFT', -4, 0)
-	_G.BrowseBidButton:Point('RIGHT', _G.BrowseBuyoutButton, 'LEFT', -4, 0)
 
-	_G.BrowseBidPrice:Point('BOTTOM', 25, 10)
+	_G.BrowseBidPrice:Point('BOTTOM', -102, 10)
 
 	S:HandleScrollBar(_G.BrowseFilterScrollFrameScrollBar)
 	S:HandleScrollBar(_G.BrowseScrollFrameScrollBar)
