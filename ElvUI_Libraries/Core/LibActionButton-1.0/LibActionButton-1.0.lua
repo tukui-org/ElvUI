@@ -2495,7 +2495,7 @@ if WoWClassic then
 		Action.GetCount = function(self) return LibClassicSpellActionCount:GetActionCount(self._state_action) end
 	else
 		-- if we don't have the library, only show count for items, like the default UI
-		Action.IsConsumableOrStackable = function(self) return IsItemAction(self._state_action) and (IsConsumableAction(self._state_action) or IsStackableAction(self._state_action)) end
+		Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._state_action) or IsStackableAction(self._state_action) or (not IsItemAction(self._state_action) and GetActionCount(self._state_action) > 0) end
 	end
 end
 
