@@ -54,6 +54,7 @@ local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 --local SellAllJunkItems = C_MerchantFrame and C_MerchantFrame.SellAllJunkItems
+local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
@@ -62,7 +63,6 @@ local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
-local C_Texture_GetAtlasInfo = C_Texture.GetAtlasInfo
 
 local SortBags = SortBags or (C_Container and C_Container.SortBags)
 local SortBankBags = SortBankBags or (C_Container and C_Container.SortBankBags)
@@ -114,6 +114,9 @@ local FILTER_FLAG_EQUIPMENT = (BagSlotFlags and BagSlotFlags.PriorityEquipment) 
 local FILTER_FLAG_IGNORE = (BagSlotFlags and BagSlotFlags.DisableAutoSort) or LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.PriorityJunk) or LE_BAG_FILTER_FLAG_JUNK
 local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
+
+local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
+local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
 
 local BAG_FILTER_LABELS = BAG_FILTER_LABELS or {
 	[FILTER_FLAG_EQUIPMENT] = BAG_FILTER_EQUIPMENT,
@@ -1463,19 +1466,23 @@ function B:BagItemAction(button, holder, func, id)
 	end
 end
 
+function B:SetBagShownTexture(icon, shown)
+	local texture = shown and (_G.READY_CHECK_READY_TEXTURE or READY_TEX) or (_G.READY_CHECK_NOT_READY_TEXTURE or NOT_READY_TEX)
+	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+		icon:SetAtlas(texture)
+	else
+		icon:SetTexture(texture)
+	end
+end
+
 function B:ToggleBag(holder)
 	if not holder then return end
 
 	local slotID = 'bag'..holder.BagID
-	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
+	local swap = not B.db.shownBags[slotID]
+	B.db.shownBags[slotID] = swap
 
-	local showIconTexture = B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
-	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(showIconTexture) then
-		holder.shownIcon:SetAtlas(showIconTexture)
-	else
-		holder.shownIcon:SetTexture(showIconTexture)
-	end
-
+	B:SetBagShownTexture(holder.shownIcon, swap)
 	B:Layout(holder.isBank)
 end
 
@@ -1605,13 +1612,8 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
 		holder.shownIcon:Size(16)
 		holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
-		local showIconTexture = B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE
-		if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(showIconTexture) then
-			holder.shownIcon:SetAtlas(showIconTexture)
-		else
-			holder.shownIcon:SetTexture(showIconTexture)
-		end
 
+		B:SetBagShownTexture(holder.shownIcon, B.db.shownBags['bag'..bagID])
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
