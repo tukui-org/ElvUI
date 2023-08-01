@@ -692,7 +692,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Dawn of the Infinite
-		-- TODO
+		[413041] = List(), -- Sheared Lifespan 1
+		[416716] = List(), -- Sheared Lifespan 2
+		[413013] = List(), -- Chronoshear
+		[413208] = List(), -- Sand Buffeted
+		[408084] = List(), -- Necrofrost
+		[413142] = List(), -- Eon Shatter
+		[409266] = List(), -- Extinction Blast 1
+		[414300] = List(), -- Extinction Blast 2
+		[401667] = List(), -- Time Stasis
+		[412027] = List(), -- Chronal Burn
+		[400681] = List(), -- Spark of Tyr
+		[404141] = List(), -- Chrono-faded
+		[407147] = List(), -- Blight Seep
+		[410497] = List(), -- Mortal Wounds
+		[418009] = List(), -- Serrated Arrows
+		[407406] = List(), -- Corrosion
+		[401420] = List(), -- Sand Stomp
+		[403912] = List(), -- Accelerating Time
+		[403910] = List(), -- Decaying Time
 	-- Brackenhide Hollow
 		[385361] = List(), -- Rotting Sickness
 		[378020] = List(), -- Gash Frenzy
