@@ -1080,7 +1080,18 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
 	-- Dawn of the Infinite
-		-- TODO
+		[415114] = List(), -- Malignant Transferal 1
+		[415097] = List(), -- Malignant Transferal 2
+		[415122] = List(), -- Malignant Transferal 3
+		[410249] = List(), -- Radiant Barrier
+		[409456] = List(), -- Earthsurge
+		[407978] = List(), -- Necrotic Winds
+		[400642] = List(), -- Siphon Oathstone
+		[414177] = List(), -- Cataclysmic Obliteration
+		[419611] = List(), -- Battle Senses
+		[419596] = List(), -- Temporal Shift
+		[407057] = List(), -- Blight Seep
+		[412768] = List(), -- Anachronistic Decay
 	-- Brackenhide Hollow
 		[384764] = List(), -- Feeding Frenzy
 		[376933] = List(), -- Grasping Vines
