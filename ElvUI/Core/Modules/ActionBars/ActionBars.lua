@@ -50,6 +50,7 @@ local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
 local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
@@ -864,51 +865,19 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
-do
-	local DragonChecks = {
-		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
-		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end
-	}
-
-	local DragonIgnore = {
-		UNIT_HEALTH = true,
-		PLAYER_TARGET_CHANGED = true,
-		UPDATE_OVERRIDE_ACTIONBAR = true,
-		PLAYER_MOUNT_DISPLAY_CHANGED = true
-	}
-
-	DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = function()
-		DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = nil -- only need to check this once, its for the login check
-
-		return AB.WasDragonflying == 0 and E:IsDragonRiding()
-	end
-
-	function AB:FadeParent_OnEvent(event, _, _, arg3)
-		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			if not AB.WasDragonflying then -- this gets spammed on init login
-				AB.WasDragonflying = E.MountDragons[arg3] and arg3
-			end
-		else
-			local dragonCheck = E.Retail and DragonChecks[event]
-			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
-
-			if dragonMount or (E.Retail and (IsPossessBarVisible() or HasOverrideActionBar()))
-			or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-			or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
-				self.mouseLock = true
-				E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-				AB:FadeBlings(1)
-			else
-				self.mouseLock = false
-				local a = 1 - (AB.db.globalFadeAlpha or 0)
-				E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
-				AB:FadeBlings(a)
-			end
-
-			if AB.WasDragonflying ~= 0 and (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
-				AB.WasDragonflying = nil
-			end
-		end
+function AB:FadeParent_OnEvent()
+	local canGlide = E.Retail and select(2, C_PlayerInfo_GetGlidingInfo())
+	if (E.Retail and (canGlide or IsPossessBarVisible() or HasOverrideActionBar()))
+	or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
+	or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+		self.mouseLock = true
+		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+		AB:FadeBlings(1)
+	else
+		self.mouseLock = false
+		local a = 1 - (AB.db.globalFadeAlpha or 0)
+		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+		AB:FadeBlings(a)
 	end
 end
 
@@ -1742,6 +1711,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
 	if E.Retail or E.Wrath then
