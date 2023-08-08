@@ -629,7 +629,7 @@ function E:SetupGameMenu()
 	end
 end
 
-function E:IsDragonRiding()
+function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
 	for spellID in next, E.MountDragons do
 		if E:GetAuraByID('player', spellID, 'HELPFUL') then
 			return true
