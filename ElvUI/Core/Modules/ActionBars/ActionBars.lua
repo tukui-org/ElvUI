@@ -70,7 +70,6 @@ local buttonDefaults = {
 	},
 }
 
-AB.WasDragonflying = 0
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -865,29 +864,38 @@ function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
 end
 
-function AB:FadeParent_OnEvent()
-	local canGlide = E.Retail and select(2, C_PlayerInfo_GetGlidingInfo())
-	if (E.Retail and (canGlide or IsPossessBarVisible() or HasOverrideActionBar()))
-	or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-	or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
-		self.mouseLock = true
-		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-		AB:FadeBlings(1)
-	else
-		self.mouseLock = false
-		local a = 1 - (AB.db.globalFadeAlpha or 0)
-		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
-		AB:FadeBlings(a)
+do
+	local function CanGlide()
+		if not C_PlayerInfo_GetGlidingInfo then return end
+
+		local _, canGlide = C_PlayerInfo_GetGlidingInfo()
+		return canGlide
+	end
+
+	function AB:FadeParent_OnEvent()
+		if (E.Retail and (CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
+		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+			self.mouseLock = true
+			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			AB:FadeBlings(1)
+		else
+			self.mouseLock = false
+			local a = 1 - (AB.db.globalFadeAlpha or 0)
+			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+			AB:FadeBlings(a)
+		end
 	end
 end
 
--- these calls are tainted when accessed by ValidateActionBarTransition
-local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
-function AB:SetNoopsi(frame)
-	if not frame then return end
-	for _, func in pairs(noops) do
-		if frame[func] ~= E.noop then
-			frame[func] = E.noop
+do -- these calls are tainted when accessed by ValidateActionBarTransition
+	local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
+	function AB:SetNoopsi(frame)
+		if not frame then return end
+		for _, func in pairs(noops) do
+			if frame[func] ~= E.noop then
+				frame[func] = E.noop
+			end
 		end
 	end
 end
