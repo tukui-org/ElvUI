@@ -1274,6 +1274,7 @@ do
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
 		tinsert(DisabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(DisabledElements, frame.classPowerBar or nil)
 		tinsert(DisabledElements, frame.BuffFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
 
@@ -1411,17 +1412,19 @@ do
 					local frame = _G.PlayerFrame
 					HideFrame(frame)
 
-					-- For the damn vehicle support:
-					frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-					frame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-					frame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-					frame:RegisterEvent('UNIT_EXITING_VEHICLE')
-					frame:RegisterEvent('UNIT_EXITED_VEHICLE')
+					if not E.Retail then
+						-- For the damn vehicle support:
+						frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+						frame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+						frame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+						frame:RegisterEvent('UNIT_EXITING_VEHICLE')
+						frame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
-					-- User placed frames don't animate
-					frame:SetMovable(true)
-					frame:SetUserPlaced(true)
-					frame:SetDontSavePosition(true)
+						-- User placed frames don't animate
+						frame:SetMovable(true)
+						frame:SetUserPlaced(true)
+						frame:SetDontSavePosition(true)
+					end
 				end
 
 				if E.Retail then
