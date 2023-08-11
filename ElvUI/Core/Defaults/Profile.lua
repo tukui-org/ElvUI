@@ -2223,7 +2223,6 @@ P.unitframe.units.focus.name.text_format = '[classcolor][name:medium]'
 
 P.unitframe.units.focustarget = CopyTable(P.unitframe.units.focus)
 P.unitframe.units.focustarget.enable = false
-P.unitframe.units.focustarget.aurabar = nil
 P.unitframe.units.focustarget.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit,RaidBuffsElvUI'
 P.unitframe.units.focustarget.debuffs.enable = false
 P.unitframe.units.focustarget.debuffs.anchorPoint = 'BOTTOMRIGHT'
@@ -2232,7 +2231,11 @@ P.unitframe.units.focustarget.debuffs.priority = 'Blacklist,Personal,Boss,RaidDe
 P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
+P.unitframe.units.focustarget.aurabar = nil
+P.unitframe.units.focustarget.castbar = nil
 P.unitframe.units.focustarget.privateAuras = nil
+P.unitframe.units.focustarget.buffIndicator = nil
+P.unitframe.units.focustarget.CombatIcon = nil
 
 P.unitframe.units.pet.aurabar.enable = false
 P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
@@ -2264,7 +2267,10 @@ P.unitframe.units.pettarget.debuffs.maxDuration = 300
 P.unitframe.units.pettarget.debuffs.priority = 'Blacklist,Boss,RaidDebuffs,Dispellable,Whitelist'
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
+P.unitframe.units.pettarget.aurabar = nil
+P.unitframe.units.pettarget.castbar = nil
 P.unitframe.units.pettarget.privateAuras = nil
+P.unitframe.units.pettarget.buffIndicator = nil
 
 P.unitframe.units.boss.buffs.enable = true
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
