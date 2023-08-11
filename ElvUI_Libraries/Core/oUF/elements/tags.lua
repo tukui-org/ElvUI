@@ -593,7 +593,7 @@ eventFrame:SetScript('OnEvent', function(_, event, unit)
 end)
 
 local eventTimer = 0
-local eventTimerThreshold = 0.25
+local eventTimerThreshold = 0.1
 
 eventFrame:SetScript('OnUpdate', function(_, elapsed)
 	eventTimer = eventTimer + elapsed
@@ -991,7 +991,7 @@ oUF.Tags = {
 		if(not timer) then return end
 		if(not type(timer) == 'number') then return end
 
-		eventTimerThreshold = max(0.1, timer)
+		eventTimerThreshold = max(0.05, timer)
 	end,
 }
 
