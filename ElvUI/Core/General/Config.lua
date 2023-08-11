@@ -1158,7 +1158,7 @@ function E:ToggleOptions(msg)
 			close:SetScript('OnClick', E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
 			close:Point('TOPRIGHT', unskinned and -8 or 1, unskinned and -8 or 2)
-			close:Size(32, 32)
+			close:Size(32)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 

@@ -74,7 +74,7 @@ function S:Blizzard_PVPUI()
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:SetTemplate()
-		reward.EnlistmentBonus:Size(20, 20)
+		reward.EnlistmentBonus:Size(20)
 		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
 		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()

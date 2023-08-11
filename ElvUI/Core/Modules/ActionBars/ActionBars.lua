@@ -1157,7 +1157,7 @@ do
 			_G.MainMenuBarArtFrame:UnregisterAllEvents()
 
 			-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-			_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+			_G.VerticalMultiBarsContainer:Size(10) -- dummy values so GetTop etc doesnt fail without replacing
 			AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 			-- hide some interface options we dont use

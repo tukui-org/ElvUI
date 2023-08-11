@@ -513,7 +513,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
 
