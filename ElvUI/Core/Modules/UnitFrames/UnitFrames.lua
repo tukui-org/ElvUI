@@ -1486,10 +1486,12 @@ do
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
-				if _G.ArenaEnemyFramesContainer then -- Retail
-					HideFrame(_G.ArenaEnemyFramesContainer, 1)
-					HideFrame(_G.ArenaEnemyPrepFramesContainer, 1)
-					HideFrame(_G.ArenaEnemyMatchFramesContainer, 1)
+				if _G.CompactArenaFrame then -- Retail
+					HideFrame(_G.CompactArenaFrame, 1)
+
+					for _, frame in next, _G.CompactArenaFrame.memberUnitFrames do
+						HideFrame(frame, true)
+					end
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()
