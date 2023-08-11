@@ -7,6 +7,7 @@ local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
 -- sourced from FrameXML/TargetFrame.lua
 local MAX_BOSS_FRAMES = 8
 
+local hookedNameplates = {}
 local isArenaHooked = false
 local isPartyHooked = false
 
@@ -14,7 +15,7 @@ local hiddenParent = CreateFrame('Frame', nil, UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
-local function insecureOnShow(self)
+local function insecureHide(self)
 	self:Hide()
 end
 
@@ -137,9 +138,10 @@ function oUF:DisableNamePlate(frame)
 	if(not(frame and frame.UnitFrame)) then return end
 	if(frame.UnitFrame:IsForbidden()) then return end
 
-	if(not frame.UnitFrame.isHooked) then
-		frame.UnitFrame:HookScript('OnShow', insecureOnShow)
-		frame.UnitFrame.isHooked = true
+	if(not hookedNameplates[frame]) then
+		frame.UnitFrame:HookScript('OnShow', insecureHide)
+
+		hookedNameplates[frame] = true
 	end
 
 	handleFrame(frame.UnitFrame, true)
