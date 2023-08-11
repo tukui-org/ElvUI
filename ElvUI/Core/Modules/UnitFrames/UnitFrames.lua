@@ -1274,7 +1274,10 @@ do
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
 		tinsert(DisabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(DisabledElements, frame.CastingBarFrame or nil)
+		tinsert(DisabledElements, frame.CcRemoverFrame or nil)
 		tinsert(DisabledElements, frame.classPowerBar or nil)
+		tinsert(DisabledElements, frame.DebuffFrame or nil)
 		tinsert(DisabledElements, frame.BuffFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
 
