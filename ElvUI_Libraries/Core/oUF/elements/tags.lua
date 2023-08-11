@@ -989,7 +989,7 @@ oUF.Tags = {
 	end,
 	SetEventUpdateTimer = function(_, timer)
 		if(not timer) then return end
-		if(not type(timer) == 'number') then return end
+		if(type(timer) ~= 'number') then return end
 
 		eventTimerThreshold = max(0.05, timer)
 	end,

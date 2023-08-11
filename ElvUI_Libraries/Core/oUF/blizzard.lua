@@ -117,18 +117,10 @@ function oUF:DisableBlizzard(unit)
 		if(not isArenaHooked) then
 			isArenaHooked = true
 
-			-- this disables ArenaEnemyFramesContainer
-			SetCVar('showArenaEnemyFrames', '0')
-			SetCVar('showArenaEnemyPets', '0')
+			handleFrame(CompactArenaFrame)
 
-			-- but still UAE all containers
-			ArenaEnemyFramesContainer:UnregisterAllEvents()
-			ArenaEnemyPrepFramesContainer:UnregisterAllEvents()
-			ArenaEnemyMatchFramesContainer:UnregisterAllEvents()
-
-			for i = 1, MAX_ARENA_ENEMIES do
-				handleFrame('ArenaEnemyMatchFrame' .. i)
-				handleFrame('ArenaEnemyPrepFrame' .. i)
+			for _, frame in next, CompactArenaFrame.memberUnitFrames do
+				handleFrame(frame, true)
 			end
 		end
 	end
