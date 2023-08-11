@@ -5,7 +5,7 @@
 ]]
 
 local _G, next, strfind = _G, next, strfind
-local wipe, gsub, tinsert, type = wipe, gsub, tinsert, type
+local gsub, tinsert, type = gsub, tinsert, type
 
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBuildInfo = GetBuildInfo
