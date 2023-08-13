@@ -190,7 +190,7 @@ function S:Blizzard_Communities()
 	S:HandleInsetFrame(CommunitiesFrame.MemberList.InsetFrame)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
-	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
+	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(members)
 		for _, child in next, { members.ColumnDisplay:GetChildren() } do

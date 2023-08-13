@@ -184,7 +184,7 @@ end
 function S:QuestLogQuests_Update() -- self is not S
 	for _, child in next, { _G.QuestMapFrame.QuestsFrame.Contents:GetChildren() } do
 		if child.ButtonText and not child.questID then
-			child:Size(16, 16)
+			child:Size(16)
 
 			for _, tex in next, { child:GetRegions() } do
 				if tex.GetAtlas then
@@ -327,7 +327,7 @@ function S:CampaignCollapseButton_UpdateState(isCollapsed) -- self is button, no
 		self:SetPushedTexture(E.Media.Textures.MinusButton)
 	end
 
-	self:Size(16, 16)
+	self:Size(16)
 end
 
 function S:QuestFrameProgressItems_Update() -- self is not S

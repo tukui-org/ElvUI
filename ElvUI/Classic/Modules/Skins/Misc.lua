@@ -204,7 +204,7 @@ function S:BlizzardMiscFrames()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			normTex:SetRotation(S.ArrowRotation.right)
-			expandArrow:Size(12, 12)
+			expandArrow:Size(12)
 		end
 
 		local Backdrop = _G[listFrameName..'Backdrop']
@@ -260,13 +260,13 @@ function S:BlizzardMiscFrames()
 				if co == 0 then
 					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(20, 20)
+					check:Size(20)
 					check:SetDesaturated(true)
 					button.backdrop:SetInside(check, 4, 4)
 				else
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(10, 10)
+					check:Size(10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
 				end
@@ -274,7 +274,7 @@ function S:BlizzardMiscFrames()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
-				check:Size(16, 16)
+				check:Size(16)
 			end
 		end
 	end)

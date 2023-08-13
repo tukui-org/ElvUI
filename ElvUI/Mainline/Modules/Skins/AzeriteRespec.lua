@@ -27,7 +27,7 @@ function S:Blizzard_AzeriteRespecUI()
 	Lines:SetAlpha(0.5)
 
 	local ItemSlot = AzeriteRespecFrame.ItemSlot
-	ItemSlot:Size(64, 64)
+	ItemSlot:Size(64)
 	ItemSlot:Point('CENTER', AzeriteRespecFrame)
 	ItemSlot.Icon:SetInside()
 	ItemSlot.GlowOverlay:SetAlpha(0)

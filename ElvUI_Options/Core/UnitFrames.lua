@@ -1377,7 +1377,8 @@ local unitSettingsFunc = {
 local function GetUnitSettings(unitType, updateFunc, numUnits)
 	local config = { enable = ACH:Toggle(L["Enable"], nil, 1) }
 
-	for element in pairs(P.unitframe.units[unitType]) do
+	local defaults = P.unitframe.units[unitType]
+	for element in pairs(defaults) do
 		local isIndividual = individual[unitType]
 		if element == 'health' then
 			config[element] = GetOptionsTable_Health(not isIndividual, updateFunc, unitType, numUnits)
@@ -1395,7 +1396,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			group.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
 			group.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
 
-			for subElement in pairs(P.unitframe.units[unitType][element]) do
+			for subElement in pairs(defaults[element]) do
 				if subElement == 'colorPetByUnitClass' then
 					group.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 				else

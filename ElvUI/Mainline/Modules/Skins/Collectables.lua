@@ -171,7 +171,7 @@ local function JournalScrollButtons(frame)
 
 					bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 					bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
-					bu.favorite:Size(32, 32)
+					bu.favorite:Size(32)
 
 					hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
 					hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)

@@ -110,7 +110,7 @@ local function UpdateCurrencySkins()
 					button.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 
-				button.icon:Size(17, 17)
+				button.icon:Size(17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)
 				button.backdrop:Show()
@@ -129,7 +129,7 @@ local function UpdateCurrencySkins()
 					-- adding them here will prevent additional calls
 					button.expandIcon:ClearAllPoints()
 					button.expandIcon:Point('LEFT', 4, 0)
-					button.expandIcon:Size(15, 15)
+					button.expandIcon:Size(15)
 				end
 
 				if button.isHeader then

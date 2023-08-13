@@ -361,7 +361,7 @@ function AFK:Initialize()
 
 	--Use this frame to control position of the model
 	local modelHolder = CreateFrame('Frame', nil, bottom)
-	modelHolder:Size(150, 150)
+	modelHolder:Size(150)
 	modelHolder:Point('BOTTOMRIGHT', bottom, 'BOTTOMRIGHT', -200, 220)
 	bottom.modelHolder = modelHolder
 

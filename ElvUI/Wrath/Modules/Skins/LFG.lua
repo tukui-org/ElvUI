@@ -86,7 +86,7 @@ function S:Blizzard_LookingForGroupUI()
 
 	-- Refresh
 	S:HandleButton(_G.LFGBrowseFrameRefreshButton)
-	_G.LFGBrowseFrameRefreshButton:Size(22, 22)
+	_G.LFGBrowseFrameRefreshButton:Size(22)
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 

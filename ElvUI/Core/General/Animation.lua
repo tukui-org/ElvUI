@@ -28,7 +28,7 @@ E:SetUpAnimGroup(t, 'Number', 10, 5)
 local b = CreateFrame('BUTTON', nil, UIParent)
 b:Point('CENTER', 0, -100)
 b:SetTemplate()
-b:Size(40,30)
+b:Size(40, 30)
 b:EnableMouse(true)
 b:SetScript('OnClick', function()
 	if t:GetText() == 10 then
