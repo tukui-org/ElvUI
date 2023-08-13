@@ -41,11 +41,12 @@ local setTextColor = function(info, r, g, b, a) local t = E.db.actionbar[info[#i
 SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = _G.NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsPerRow = ACH:Range(L["Buttons Per Row"], L["The amount of buttons to display per row."], 2, { min = 1, max = _G.NUM_ACTIONBAR_BUTTONS, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonSpacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = -3, max = 20, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonSpacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = -64, max = 64, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonSize = ACH:Range('', nil, 4, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 SharedBarOptions.buttonGroup.args.wrapXOffset = ACH:Range(L["Wrapped X-Offset"], L["Horizontal offset applied to buttons in the each line that was wrapped."], 6, { min = -128, max = 128, step = 1 })
 SharedBarOptions.buttonGroup.args.wrapYOffset = ACH:Range(L["Wrapped Y-Offset"], L["Vertical offset applied to buttons in the each line that was wrapped."], 7, { min = -128, max = 128, step = 1 })
+SharedBarOptions.buttonGroup.args.stagger = ACH:Range(L["Stagger"], L["Y-axis button stagger."], 8, { min = -128, max = 128, step = 1 })
 
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })

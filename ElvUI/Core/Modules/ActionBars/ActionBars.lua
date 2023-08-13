@@ -143,6 +143,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	local buttonsPerRow = db.buttonsPerRow
 	local wrapXOffset = db.wrapXOffset
 	local wrapYOffset = db.wrapYOffset
+	local stagger = db.stagger
 	local buttonWidth = db.buttonSize
 	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 
@@ -176,7 +177,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 		x = x + wrapXOffset
 		y = y + wrapYOffset
 	else
-		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', db.buttonSpacing, 0
+		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', db.buttonSpacing, stagger
 		if anchorLeft then
 			point, relativePoint, x = 'RIGHT', 'LEFT', -db.buttonSpacing
 		end
