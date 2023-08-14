@@ -38,6 +38,7 @@ P.general = {
 	cameraDistanceMax = E.Retail and 2.6 or 4,
 	afk = true,
 	afkChat = true,
+	afkSpin = true,
 	cropIcon = 2,
 	objectiveTracker = true,
 	numberPrefixStyle = 'ENGLISH',

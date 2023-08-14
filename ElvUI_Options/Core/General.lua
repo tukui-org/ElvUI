@@ -171,8 +171,9 @@ Cosmetic.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, {
 Cosmetic.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
 Cosmetic.afkGroup.inline = true
 Cosmetic.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 3, function() AFK:ResetChatPosition(true) end)
+Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the camera spin on the AFK screen."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
+Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true
