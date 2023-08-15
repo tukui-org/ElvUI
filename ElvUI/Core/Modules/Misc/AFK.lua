@@ -64,11 +64,21 @@ function AFK:UpdateTimer()
 	bottom.time:SetFormattedText('%02d:%02d', floor(time/60), time % 60)
 end
 
+function AFK:CameraSpin(status)
+	if status and E.db.general.afkSpin then
+		MoveViewLeftStart(CAMERA_SPEED)
+	else
+		MoveViewLeftStop()
+	end
+end
+
 function AFK:SetAFK(status)
 	if status then
-		MoveViewLeftStart(CAMERA_SPEED)
-		afk:Show()
+		AFK:CameraSpin(status)
+
 		CloseAllWindows()
+
+		afk:Show()
 		_G.UIParent:Hide()
 
 		if IsInGuild() then
@@ -99,8 +109,8 @@ function AFK:SetAFK(status)
 	elseif AFK.isAFK then
 		_G.UIParent:Show()
 		afk:Hide()
-		MoveViewLeftStop()
 
+		AFK:CameraSpin()
 		AFK:CancelTimer(AFK.timer)
 		AFK:CancelTimer(AFK.animTimer)
 
