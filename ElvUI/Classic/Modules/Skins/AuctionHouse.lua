@@ -11,20 +11,6 @@ local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
 
-local function ItemButtonNameColor(name, r, g, b)
-	local button = name:GetParent()
-	if r ~= g then
-		button:SetBackdropBorderColor(r, g, b)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-end
-
-local function ItemButtonNameHide(name)
-	local button = name:GetParent()
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-end
-
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -274,11 +260,6 @@ function S:Blizzard_AuctionUI()
 
 			S:HandleIcon(Texture)
 			Texture:SetInside()
-
-			if Name then
-				hooksecurefunc(Name, 'SetVertexColor', ItemButtonNameColor)
-				hooksecurefunc(Name, 'Hide', ItemButtonNameHide)
-			end
 		end
 	end
 
