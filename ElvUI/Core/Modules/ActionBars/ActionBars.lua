@@ -50,6 +50,7 @@ local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
 local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
@@ -69,7 +70,6 @@ local buttonDefaults = {
 	},
 }
 
-AB.WasDragonflying = 0
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -865,60 +865,37 @@ function AB:BlizzardOptionsPanel_OnEvent()
 end
 
 do
-	local DragonChecks = {
-		PLAYER_MOUNT_DISPLAY_CHANGED = function() return AB.WasDragonflying end,
-		PLAYER_TARGET_CHANGED = function() return AB.WasDragonflying end
-	}
+	local function CanGlide()
+		if not C_PlayerInfo_GetGlidingInfo then return end
 
-	local DragonIgnore = {
-		UNIT_HEALTH = true,
-		PLAYER_TARGET_CHANGED = true,
-		UPDATE_OVERRIDE_ACTIONBAR = true,
-		PLAYER_MOUNT_DISPLAY_CHANGED = true
-	}
-
-	DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = function()
-		DragonChecks.UPDATE_OVERRIDE_ACTIONBAR = nil -- only need to check this once, its for the login check
-
-		return AB.WasDragonflying == 0 and E:IsDragonRiding()
+		local _, canGlide = C_PlayerInfo_GetGlidingInfo()
+		return canGlide
 	end
 
-	function AB:FadeParent_OnEvent(event, _, _, arg3)
-		if event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			if not AB.WasDragonflying then -- this gets spammed on init login
-				AB.WasDragonflying = E.MountDragons[arg3] and arg3
-			end
+	function AB:FadeParent_OnEvent()
+		if (E.Retail and (CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
+		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+			self.mouseLock = true
+			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+			AB:FadeBlings(1)
 		else
-			local dragonCheck = E.Retail and DragonChecks[event]
-			local dragonMount = dragonCheck and IsMounted() and dragonCheck()
-
-			if dragonMount or (E.Retail and (IsPossessBarVisible() or HasOverrideActionBar()))
-			or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-			or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
-				self.mouseLock = true
-				E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-				AB:FadeBlings(1)
-			else
-				self.mouseLock = false
-				local a = 1 - (AB.db.globalFadeAlpha or 0)
-				E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
-				AB:FadeBlings(a)
-			end
-
-			if AB.WasDragonflying ~= 0 and (not DragonIgnore[event] or not dragonMount) and (event ~= 'UNIT_SPELLCAST_STOP' or arg3 ~= AB.WasDragonflying) then
-				AB.WasDragonflying = nil
-			end
+			self.mouseLock = false
+			local a = 1 - (AB.db.globalFadeAlpha or 0)
+			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+			AB:FadeBlings(a)
 		end
 	end
 end
 
--- these calls are tainted when accessed by ValidateActionBarTransition
-local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
-function AB:SetNoopsi(frame)
-	if not frame then return end
-	for _, func in pairs(noops) do
-		if frame[func] ~= E.noop then
-			frame[func] = E.noop
+do -- these calls are tainted when accessed by ValidateActionBarTransition
+	local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
+	function AB:SetNoopsi(frame)
+		if not frame then return end
+		for _, func in pairs(noops) do
+			if frame[func] ~= E.noop then
+				frame[func] = E.noop
+			end
 		end
 	end
 end
@@ -1180,7 +1157,7 @@ do
 			_G.MainMenuBarArtFrame:UnregisterAllEvents()
 
 			-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-			_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+			_G.VerticalMultiBarsContainer:Size(10) -- dummy values so GetTop etc doesnt fail without replacing
 			AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 			-- hide some interface options we dont use
@@ -1742,6 +1719,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
 	if E.Retail or E.Wrath then

@@ -14,7 +14,7 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', frameName..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
-	Buffs:Size(1, 1)
+	Buffs:Size(1)
 	Buffs.size = 27
 	Buffs.num = 4
 	Buffs.spacing = E.Border * 2
@@ -33,7 +33,7 @@ function NP:Construct_Auras(nameplate)
 	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
-	Debuffs:Size(1, 1)
+	Debuffs:Size(1)
 	Debuffs.size = 27
 	Debuffs.num = 4
 	Debuffs.spacing = E.Border * 2

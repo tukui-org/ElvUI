@@ -789,7 +789,7 @@ do
 		for name, direction in pairs(btns) do
 			local button = frame[name]
 			if button then
-				button:Size(14, 14)
+				button:Size(14)
 				button:ClearAllPoints()
 				button:Point('CENTER')
 				button:SetHitRectInsets(1, 1, 1, 1)
@@ -979,13 +979,13 @@ do
 
 		local InsideMask = Button:CreateMaskTexture()
 		InsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-		InsideMask:Size(10, 10)
+		InsideMask:Size(10)
 		InsideMask:Point('CENTER')
 		Button.InsideMask = InsideMask
 
 		local OutsideMask = Button:CreateMaskTexture()
 		OutsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-		OutsideMask:Size(13, 13)
+		OutsideMask:Size(13)
 		OutsideMask:Point('CENTER')
 		Button.OutsideMask = OutsideMask
 
@@ -1075,7 +1075,7 @@ do
 			f.Texture = f:CreateTexture(nil, 'OVERLAY')
 			f.Texture:Point('CENTER')
 			f.Texture:SetTexture(E.Media.Textures.Close)
-			f.Texture:Size(12, 12)
+			f.Texture:Size(12)
 			f:HookScript('OnEnter', closeOnEnter)
 			f:HookScript('OnLeave', closeOnLeave)
 			f:SetHitRectInsets(6, 6, 7, 7)

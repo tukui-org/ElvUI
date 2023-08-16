@@ -1274,6 +1274,10 @@ do
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
 		tinsert(DisabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
+		tinsert(DisabledElements, frame.CastingBarFrame or nil)
+		tinsert(DisabledElements, frame.CcRemoverFrame or nil)
+		tinsert(DisabledElements, frame.classPowerBar or nil)
+		tinsert(DisabledElements, frame.DebuffFrame or nil)
 		tinsert(DisabledElements, frame.BuffFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
 
@@ -1411,17 +1415,19 @@ do
 					local frame = _G.PlayerFrame
 					HideFrame(frame)
 
-					-- For the damn vehicle support:
-					frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-					frame:RegisterEvent('UNIT_ENTERING_VEHICLE')
-					frame:RegisterEvent('UNIT_ENTERED_VEHICLE')
-					frame:RegisterEvent('UNIT_EXITING_VEHICLE')
-					frame:RegisterEvent('UNIT_EXITED_VEHICLE')
+					if not E.Retail then
+						-- For the damn vehicle support:
+						frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+						frame:RegisterEvent('UNIT_ENTERING_VEHICLE')
+						frame:RegisterEvent('UNIT_ENTERED_VEHICLE')
+						frame:RegisterEvent('UNIT_EXITING_VEHICLE')
+						frame:RegisterEvent('UNIT_EXITED_VEHICLE')
 
-					-- User placed frames don't animate
-					frame:SetMovable(true)
-					frame:SetUserPlaced(true)
-					frame:SetDontSavePosition(true)
+						-- User placed frames don't animate
+						frame:SetMovable(true)
+						frame:SetUserPlaced(true)
+						frame:SetDontSavePosition(true)
+					end
 				end
 
 				if E.Retail then
@@ -1480,10 +1486,12 @@ do
 					end
 				end
 			elseif disable.arena and strmatch(unit, 'arena%d?$') then
-				if _G.ArenaEnemyFramesContainer then -- Retail
-					HideFrame(_G.ArenaEnemyFramesContainer, 1)
-					HideFrame(_G.ArenaEnemyPrepFramesContainer, 1)
-					HideFrame(_G.ArenaEnemyMatchFramesContainer, 1)
+				if _G.CompactArenaFrame then -- Retail
+					HideFrame(_G.CompactArenaFrame, 1)
+
+					for _, frame in next, _G.CompactArenaFrame.memberUnitFrames do
+						HideFrame(frame, true)
+					end
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
 					_G.ArenaPrepFrames:UnregisterAllEvents()

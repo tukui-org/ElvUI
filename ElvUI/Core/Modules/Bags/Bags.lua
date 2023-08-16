@@ -54,6 +54,7 @@ local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 --local SellAllJunkItems = C_MerchantFrame and C_MerchantFrame.SellAllJunkItems
+local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
@@ -111,6 +112,9 @@ local FILTER_FLAG_EQUIPMENT = (BagSlotFlags and BagSlotFlags.PriorityEquipment) 
 local FILTER_FLAG_IGNORE = (BagSlotFlags and BagSlotFlags.DisableAutoSort) or LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.PriorityJunk) or LE_BAG_FILTER_FLAG_JUNK
 local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
+
+local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
+local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
 
 local BAG_FILTER_LABELS = BAG_FILTER_LABELS or {
 	[FILTER_FLAG_EQUIPMENT] = BAG_FILTER_EQUIPMENT,
@@ -902,7 +906,7 @@ function B:CreateFilterIcon(parent)
 	local FilterBackdrop = CreateFrame('Frame', nil, parent)
 	FilterBackdrop:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	FilterBackdrop:SetTemplate()
-	FilterBackdrop:Size(20, 20)
+	FilterBackdrop:Size(20)
 
 	parent.filterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
 	parent.filterIcon:SetTexture(E.Media.Textures.GreenPotion)
@@ -1457,14 +1461,23 @@ function B:BagItemAction(button, holder, func, id)
 	end
 end
 
+function B:SetBagShownTexture(icon, shown)
+	local texture = shown and (_G.READY_CHECK_READY_TEXTURE or READY_TEX) or (_G.READY_CHECK_NOT_READY_TEXTURE or NOT_READY_TEX)
+	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+		icon:SetAtlas(texture)
+	else
+		icon:SetTexture(texture)
+	end
+end
+
 function B:ToggleBag(holder)
 	if not holder then return end
 
 	local slotID = 'bag'..holder.BagID
-	B.db.shownBags[slotID] = not B.db.shownBags[slotID]
+	local swap = not B.db.shownBags[slotID]
+	B.db.shownBags[slotID] = swap
 
-	holder.shownIcon:SetTexture(B.db.shownBags[slotID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
-
+	B:SetBagShownTexture(holder.shownIcon, swap)
 	B:Layout(holder.isBank)
 end
 
@@ -1594,8 +1607,8 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
 		holder.shownIcon:Size(16)
 		holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
-		holder.shownIcon:SetTexture(B.db.shownBags['bag'..bagID] and _G.READY_CHECK_READY_TEXTURE or _G.READY_CHECK_NOT_READY_TEXTURE)
 
+		B:SetBagShownTexture(holder.shownIcon, B.db.shownBags['bag'..bagID])
 		B:CreateFilterIcon(holder)
 
 		if bagID == BACKPACK_CONTAINER then
@@ -2559,7 +2572,7 @@ end
 
 function B:CreateSellFrame()
 	B.SellFrame = CreateFrame('Frame', 'ElvUIVendorGraysFrame', E.UIParent)
-	B.SellFrame:Size(200,40)
+	B.SellFrame:Size(200, 40)
 	B.SellFrame:Point('CENTER', E.UIParent)
 	B.SellFrame:CreateBackdrop('Transparent')
 	B.SellFrame:SetAlpha(B.db.vendorGrays.progressBar and 1 or 0)

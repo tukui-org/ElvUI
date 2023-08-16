@@ -31,7 +31,7 @@ local GenGen = General.general.args
 
 GenGen.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
 GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
-GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.1, max = 0.5, step = 0.01, bigStep = 0.1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
+GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.05, max = 0.5, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
 GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
 GenGen.taintLog = ACH:Toggle(L["Log Taints"], L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."], 5)
@@ -171,8 +171,9 @@ Cosmetic.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, {
 Cosmetic.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
 Cosmetic.afkGroup.inline = true
 Cosmetic.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 3, function() AFK:ResetChatPosition(true) end)
+Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the camera spin on the AFK screen."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
+Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true

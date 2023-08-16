@@ -24,7 +24,7 @@ function S:AddonList()
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 
-	_G.AddonListForceLoad:Size(26, 26)
+	_G.AddonListForceLoad:Size(26)
 
 	S:HandleFrame(_G.AddonListScrollFrame, true, nil, -14, 0, 0, -1)
 

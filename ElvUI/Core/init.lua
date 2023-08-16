@@ -5,7 +5,7 @@
 ]]
 
 local _G, next, strfind = _G, next, strfind
-local wipe, gsub, tinsert, type = wipe, gsub, tinsert, type
+local gsub, tinsert, type = gsub, tinsert, type
 
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBuildInfo = GetBuildInfo
@@ -233,7 +233,6 @@ do
 		'ElvUI_VisualAuraTimers',
 		'ElvUI_SecondsToBuff',
 		'ElvUI_BuffHighlight',
-		'WunderUI',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
