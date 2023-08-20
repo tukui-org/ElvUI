@@ -65,7 +65,7 @@ function DB:ReputationBar_Update()
 		DB:ReputationBar_QuestRep(factionID)
 	end
 
-	if not label and C_Reputation_IsFactionParagon(factionID) then
+	if not label and factionID and C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
 		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
@@ -138,9 +138,9 @@ function DB:ReputationBar_OnEnter()
 
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
-	local isParagon = C_Reputation_IsFactionParagon(factionID)
+	local isParagon = factionID and C_Reputation_IsFactionParagon(factionID)
 
-	if factionID and isParagon then
+	if isParagon then
 		local current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 		if current and threshold then
 			standing, minValue, maxValue, curValue = L["Paragon"], 0, threshold, current % threshold
@@ -168,7 +168,7 @@ function DB:ReputationBar_OnEnter()
 
 		if not isParagon and isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			curValue = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
 			maxValue = majorFactionData.renownLevelThreshold
 			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(curValue, 0, maxValue)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
 
