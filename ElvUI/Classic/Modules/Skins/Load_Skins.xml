@@ -21,7 +21,6 @@
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
 	<Script file='Inspect.lua'/>
-	<Script file='LFG.lua'/>
 	<Script file='Loot.lua'/>
 	<Script file='Macro.lua'/>
 	<Script file='Mail.lua'/>
