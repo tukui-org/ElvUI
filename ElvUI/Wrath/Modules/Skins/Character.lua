@@ -558,6 +558,11 @@ function S:CharacterFrame()
 	S:HandleTab(_G.PVPParentFrameTab1)
 	S:HandleTab(_G.PVPParentFrameTab2)
 
+	-- Reposition Tabs
+	_G._G.PVPParentFrameTab1:ClearAllPoints()
+	_G._G.PVPParentFrameTab1:Point('TOPLEFT', _G.PVPParentFrame, 'BOTTOMLEFT', 1, 76)
+	_G._G.PVPParentFrameTab2:Point('TOPLEFT', _G._G.PVPParentFrameTab1, 'TOPRIGHT', -19, 0)
+
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
 	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
