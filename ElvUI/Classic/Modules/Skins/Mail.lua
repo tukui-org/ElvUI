@@ -92,8 +92,13 @@ function S:MailFrame()
 		local tab = _G['MailFrameTab'..i]
 
 		tab:StripTextures()
+		tab:ClearAllPoints()
 		S:HandleTab(tab)
 	end
+
+	-- Reposition Tabs
+	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -15, 0)
+	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -19, 0)
 
 	-- Send Mail Frame
 	_G.SendMailFrame:StripTextures()
@@ -227,7 +232,7 @@ function S:MailFrame()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
-	_G.OpenMailBodyText:SetTextColor(1, 1, 1)
+	-- _G.OpenMailBodyText:SetTextColor(1, 1, 1)
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
 	_G.OpenMailInvoiceBuyMode:SetTextColor(1, 0.80, 0.10)

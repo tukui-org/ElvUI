@@ -58,6 +58,14 @@ function S:FriendsFrame()
 		S:HandleTab(_G['FriendsFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.FriendsFrameTab1:ClearAllPoints()
+	_G.FriendsFrameTab1:Point('TOPLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -15, 0)
+	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab4, 'TOPRIGHT', -19, 0)
+
 	-- Friends List Frame
 	for i = 1, _G.FRIEND_HEADER_TAB_IGNORE do
 		local tab = _G['FriendsTabHeaderTab'..i]
