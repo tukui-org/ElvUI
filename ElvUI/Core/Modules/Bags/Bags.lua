@@ -20,6 +20,8 @@ local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCVarBool = GetCVarBool
+local GetCursorMoney = GetCursorMoney
+local GetPlayerTradeMoney = GetPlayerTradeMoney
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -1311,7 +1313,7 @@ end
 
 function B:UpdateGoldText()
 	B.BagFrame.goldText:SetShown(B.db.moneyFormat ~= 'HIDE')
-	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
+	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney() - GetCursorMoney() - GetPlayerTradeMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
 -- These items should not be destroyed/sold automatically
@@ -1866,6 +1868,12 @@ function B:ConstructContainerFrame(name, isBank)
 		f.goldText:FontTemplate()
 		f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -10, -2)
 		f.goldText:SetJustifyH('RIGHT')
+
+		f.pickupGold = CreateFrame('Button', nil, f)
+		f.pickupGold:SetAllPoints(f.goldText)
+		f.pickupGold:SetScript('OnClick', function()
+			StaticPopup_Show('PICKUP_MONEY')
+		end)
 
 		-- Stack/Transfer Button
 		f.stackButton.ttText = L["Stack Items In Bags"]
