@@ -406,6 +406,10 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildFrameAddMemberButton)
 	S:HandleButton(_G.GuildFrameControlButton)
 
+	if _G.GuildFrameImpeachButton then
+		S:HandleButton(_G.GuildFrameImpeachButton)
+	end
+
 	-- Member Detail Frame
 	_G.GuildMemberDetailFrame:StripTextures()
 	_G.GuildMemberDetailFrame:CreateBackdrop('Transparent')
