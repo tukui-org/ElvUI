@@ -178,8 +178,7 @@ function DB:ReputationBar_OnEnter()
 			local current, _, percent = GetValues(QuestRep, 0, maxValue)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
 		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and maxValue > 0 then
-			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
-			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
+			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(curValue, minValue, maxValue)), 1, 1, 1)
 		end
 
 		GameTooltip:Show()
