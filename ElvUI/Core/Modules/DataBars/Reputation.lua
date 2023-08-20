@@ -87,7 +87,7 @@ function DB:ReputationBar_Update()
 	local total = maxValue > 0 and maxValue or 1 -- we need to correct the min/max of friendship factions to display the bar at 100%
 
 	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
-	bar:SetMinMaxValues((minValue == maxValue or maxValue == -1) and 0 or minValue, total)
+	bar:SetMinMaxValues((minValue == maxValue or maxValue == -1) and 0 or minValue, total) -- we force min to 0 because the min will match max when a rep is maxed and cause the bar to be 0%
 	bar:SetValue(curValue)
 
 	bar.Reward:ClearAllPoints()
