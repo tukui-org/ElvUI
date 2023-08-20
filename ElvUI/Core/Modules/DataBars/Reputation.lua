@@ -157,7 +157,7 @@ function DB:ReputationBar_OnEnter()
 
 		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
-			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
+			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or -1, info.standing or 1
 		end
 
 		if not standing then
@@ -177,7 +177,7 @@ function DB:ReputationBar_OnEnter()
 
 			local current, _, percent = GetValues(QuestRep, 0, maxValue)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
-		elseif isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION) then
+		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and maxValue > 0 then
 			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
