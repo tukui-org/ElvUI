@@ -53,24 +53,26 @@ function DB:ReputationBar_Update()
 	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
 		label, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
-	elseif factionID and C_Reputation_IsMajorFaction(factionID) then
-		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-		local renownColor = DB.db.colors.factionColors[10]
-		local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
-
-		reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
-		curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-		label = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
-
-		DB:ReputationBar_QuestRep(factionID)
 	end
 
-	if not label and factionID and C_Reputation_IsFactionParagon(factionID) then
-		local current, threshold
-		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+	if not label and factionID then
+		if C_Reputation_IsFactionParagon(factionID) then
+			local current, threshold
+			current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
-		if current and threshold then
-			label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
+			if current and threshold then
+				label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
+			end
+		elseif C_Reputation_IsMajorFaction(factionID) then
+			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			local renownColor = DB.db.colors.factionColors[10]
+			local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
+
+			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
+			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			label = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
+
+			DB:ReputationBar_QuestRep(factionID)
 		end
 	end
 
@@ -153,17 +155,14 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:AddLine(name)
 		GameTooltip:AddLine(' ')
 
-		local friendID, friendTextLevel, _
-		if E.Retail and factionID then
-			friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
-			if friendID and friendID.friendshipFactionID > 0 then
-				standing = friendID.reaction
-			end
+		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
+			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
 		end
 
 		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then
-			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
+			GameTooltip:AddDoubleLine(STANDING..':', standing, 1, 1, 1)
 		end
 
 		if not isParagon and isMajorFaction then
