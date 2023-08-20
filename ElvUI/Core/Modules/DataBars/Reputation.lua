@@ -52,7 +52,7 @@ function DB:ReputationBar_Update()
 
 	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
-		standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
+		standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or -1, info.standing or 1
 	end
 
 	if not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
@@ -84,16 +84,17 @@ function DB:ReputationBar_Update()
 	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
 	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
+	local total = maxValue > 0 and maxValue or 1 -- we need to correct the min/max of friendship factions to display the bar at 100%
 
 	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
-	bar:SetMinMaxValues(minValue == maxValue and 0 or minValue, maxValue)
+	bar:SetMinMaxValues((minValue == maxValue or maxValue == -1) and 0 or minValue, total)
 	bar:SetValue(curValue)
 
 	bar.Reward:ClearAllPoints()
 	bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
-	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
+	local current, maximum, percent, capped = GetValues(curValue, minValue, total)
 	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
 		displayString = format('%s: [%s]', name, standing)
 	elseif textFormat == 'PERCENT' then
