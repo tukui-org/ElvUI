@@ -101,10 +101,14 @@ function S:Blizzard_AuctionUI()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 20, -30)
+			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 0, -32)
 			tab.SetPoint = E.noop
 		end
 	end
+
+	-- Reposition Tabs
+	_G.AuctionFrameTab2:Point('TOPLEFT', _G.AuctionFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.AuctionFrameTab3:Point('TOPLEFT', _G.AuctionFrameTab2, 'TOPRIGHT', -19, 0)
 
 	for _, Tab in pairs(SortTabs) do
 		Tab:StripTextures()

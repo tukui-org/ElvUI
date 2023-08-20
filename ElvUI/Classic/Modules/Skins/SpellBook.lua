@@ -132,7 +132,7 @@ function S:SpellBookFrame()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
 		if i == 1 then
-			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -32, -70)
+			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 		end
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)
