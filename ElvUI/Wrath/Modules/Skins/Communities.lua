@@ -301,6 +301,14 @@ function S:Blizzard_Communities()
 	for i = 1, 5 do
 		S:HandleTab(_G['CommunitiesFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.CommunitiesFrameTab1:ClearAllPoints()
+	_G.CommunitiesFrameTab1:Point('TOPLEFT', _G.CommunitiesFrame, 'BOTTOMLEFT', -10, 0)
+	_G.CommunitiesFrameTab2:Point('TOPLEFT', _G.CommunitiesFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab3:Point('TOPLEFT', _G.CommunitiesFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab4:Point('TOPLEFT', _G.CommunitiesFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab5:Point('TOPLEFT', _G.CommunitiesFrameTab4, 'TOPRIGHT', -19, 0)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')

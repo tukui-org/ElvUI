@@ -121,6 +121,11 @@ function S:MerchantFrame()
 		S:HandleTab(_G['MerchantFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.MerchantFrameTab1:ClearAllPoints()
+	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', -15, -1)
+	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', -19, 0)
+
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local numMerchantItems = GetMerchantNumItems()
 		local index = (MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE

@@ -60,9 +60,15 @@ function S:SpellBookFrame()
 
 		S:HandleTab(tab)
 
-		tab.backdrop:Point('TOPLEFT', 14, E.PixelMode and -16 or -19)
-		tab.backdrop:Point('BOTTOMRIGHT', -14, 19)
+		tab.backdrop:Point('TOPLEFT', 8, -18)
+		tab.backdrop:Point('BOTTOMRIGHT', -8, 24)
 	end
+
+	-- Reposition Tabs
+	_G.SpellBookFrameTabButton1:ClearAllPoints()
+	_G.SpellBookFrameTabButton1:Point('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', 3, 93)
+	_G.SpellBookFrameTabButton2:Point('TOPLEFT', _G.SpellBookFrameTabButton1, 'TOPRIGHT', -15, 0)
+	_G.SpellBookFrameTabButton3:Point('TOPLEFT', _G.SpellBookFrameTabButton2, 'TOPRIGHT', -15, 0)
 
 	-- Spell Buttons
 	for i = 1, _G.SPELLS_PER_PAGE do
@@ -131,7 +137,7 @@ function S:SpellBookFrame()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
 		if i == 1 then
-			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -32, -70)
+			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 		end
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)

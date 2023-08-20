@@ -11,20 +11,6 @@ local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
 
-local function ItemButtonNameColor(name, r, g, b)
-	local button = name:GetParent()
-	if r ~= g then
-		button:SetBackdropBorderColor(r, g, b)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
-end
-
-local function ItemButtonNameHide(name)
-	local button = name:GetParent()
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-end
-
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -115,10 +101,14 @@ function S:Blizzard_AuctionUI()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 20, -30)
+			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 0, -32)
 			tab.SetPoint = E.noop
 		end
 	end
+
+	-- Reposition Tabs
+	_G.AuctionFrameTab2:Point('TOPLEFT', _G.AuctionFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.AuctionFrameTab3:Point('TOPLEFT', _G.AuctionFrameTab2, 'TOPRIGHT', -19, 0)
 
 	for _, Tab in pairs(SortTabs) do
 		Tab:StripTextures()
@@ -275,11 +265,6 @@ function S:Blizzard_AuctionUI()
 
 			S:HandleIcon(Texture)
 			Texture:SetInside()
-
-			if Name then
-				hooksecurefunc(Name, 'SetVertexColor', ItemButtonNameColor)
-				hooksecurefunc(Name, 'Hide', ItemButtonNameHide)
-			end
 		end
 	end
 

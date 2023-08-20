@@ -178,6 +178,20 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.CharacterFrameTab1:ClearAllPoints()
+	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+
+	if E.myclass == 'HUNTER' or E.myclass == 'WARLOCK' then
+		_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -19, 0)
+	else
+		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+	end
+
+	_G.CharacterFrameTab4:Point('TOPLEFT', _G.CharacterFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab5:Point('TOPLEFT', _G.CharacterFrameTab4, 'TOPRIGHT', -19, 0)
+
 	-- HandleTab looks weird
 	for i = 1, 3 do
 		local tab = _G['PetPaperDollFrameTab'..i]
