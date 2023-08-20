@@ -86,7 +86,7 @@ function DB:ReputationBar_Update()
 	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
 
 	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
-	bar:SetMinMaxValues(minValue, maxValue)
+	bar:SetMinMaxValues(minValue == maxValue and 0 or minValue, maxValue)
 	bar:SetValue(curValue)
 
 	bar.Reward:ClearAllPoints()
