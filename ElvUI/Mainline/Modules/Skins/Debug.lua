@@ -22,14 +22,17 @@ local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
 	ScriptErrorsFrame:SetTemplate('Transparent')
-	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 
 	ScriptErrorsFrame.ScrollFrame:SetTemplate()
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
 	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
-	for i=1, #FrameTexs do
+	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
+	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
+	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
+
+	for i = 1, #FrameTexs do
 		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
 	end
 
