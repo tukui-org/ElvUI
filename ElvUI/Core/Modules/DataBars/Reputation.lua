@@ -139,8 +139,8 @@ function DB:ReputationBar_OnEnter()
 	end
 
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 	local isParagon = factionID and C_Reputation_IsFactionParagon(factionID)
+	local standing
 
 	if isParagon then
 		local current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
@@ -158,6 +158,10 @@ function DB:ReputationBar_OnEnter()
 		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
 			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
+		end
+
+		if not standing then
+			standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 		end
 
 		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
