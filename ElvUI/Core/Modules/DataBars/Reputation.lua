@@ -64,7 +64,7 @@ function DB:ReputationBar_Update()
 		end
 	end
 
-	if not standing and factionID and C_Reputation_IsMajorFaction(factionID) then
+	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 		local renownColor = DB.db.colors.factionColors[10]
 		local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
@@ -165,7 +165,7 @@ function DB:ReputationBar_OnEnter()
 			standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 		end
 
-		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
+		local isMajorFaction = factionID and E.Retail and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then
 			GameTooltip:AddDoubleLine(STANDING..':', standing, 1, 1, 1)
 		end
