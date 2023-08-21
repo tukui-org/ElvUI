@@ -1943,3 +1943,28 @@ Atenção:
 Example: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Para a maioria dos usuários seria mais fácil simplesmente copiar o ficheiro tga na pasta do WoW e depois escrever o nome dele aqui.]=]
+
+----------  FilterHelp  ----------
+L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = true
+L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = true
+L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = true
+L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
+L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
+L["*Personal:|r ^Auras cast by yourself.|r"] = true
+L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
+L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
+L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
+L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
+L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = true
+L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = true
+L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = true
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = true
+L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
+L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
+L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true
+----------------------------------
