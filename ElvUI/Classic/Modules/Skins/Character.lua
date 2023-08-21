@@ -244,9 +244,11 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
 	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
+		local minus, plus = 130821, 130838
+		local texture = _G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture()
+		if texture == minus then
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
+		elseif texture == plus then
 			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		end
 	end)
@@ -271,10 +273,12 @@ function S:CharacterFrame()
 	end
 
 	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex, numSkills)
+		local minus, plus = 130821, 130838
 		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
+		local texture = skillLine:GetNormalTexture():GetTexture()
+		if texture == minus then
 			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
+		elseif texture == plus then
 			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
 		end
 	end)
