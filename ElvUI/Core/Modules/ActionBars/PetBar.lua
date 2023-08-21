@@ -9,6 +9,7 @@ local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
 local GetPetActionInfo = GetPetActionInfo
 local IsPetAttackAction = IsPetAttackAction
+local GetPetActionSlotUsable = GetPetActionSlotUsable
 local GetPetActionCooldown = GetPetActionCooldown
 local RegisterStateDriver = RegisterStateDriver
 local GameTooltip = GameTooltip
