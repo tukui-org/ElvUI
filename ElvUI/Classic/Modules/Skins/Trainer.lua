@@ -46,9 +46,7 @@ function S:Blizzard_TrainerUI()
 
 	for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
 		local button = _G['ClassTrainerSkill'..i]
-
-		button:SetNormalTexture(E.Media.Textures.PlusButton)
-		button.SetNormalTexture = E.noop
+		S:HandleCollapseTexture(button, nil, true)
 
 		local normal = button:GetNormalTexture()
 		if normal then
@@ -61,25 +59,11 @@ function S:Blizzard_TrainerUI()
 			highlight:SetTexture('')
 			highlight.SetTexture = E.noop
 		end
-
-		S:HandleCollapseTexture(button)
 	end
 
-	_G.ClassTrainerCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-	_G.ClassTrainerCollapseAllButton.SetNormalTexture = E.noop
-	_G.ClassTrainerCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
-	_G.ClassTrainerCollapseAllButton:GetNormalTexture():Size(15)
-
-	_G.ClassTrainerCollapseAllButton:SetHighlightTexture(E.ClearTexture)
-	_G.ClassTrainerCollapseAllButton.SetHighlightTexture = E.noop
-
-	_G.ClassTrainerCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
-	_G.ClassTrainerCollapseAllButton.SetDisabledTexture = E.noop
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():SetPoint('LEFT', 3, 2)
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():Size(15)
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
-
-	S:HandleCollapseTexture(_G.ClassTrainerCollapseAllButton)
+	local ClassTrainerCollapseAllButton = _G.ClassTrainerCollapseAllButton
+	S:HandleCollapseTexture(ClassTrainerCollapseAllButton, nil, true)
+	ClassTrainerCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 end
 
 S:AddCallbackForAddon('Blizzard_TrainerUI')
