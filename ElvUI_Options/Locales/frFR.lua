@@ -3,7 +3,7 @@ local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
 
 L["ALT"] = true
 L["CTRL"] = true
-L["SHIFT"] = "MAJ"
+L["SHIFT"] = true
 L["NONE"] = "AUCUN"
 L["GROUP"] = "GROUPE"
 
