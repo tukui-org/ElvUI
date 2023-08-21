@@ -423,11 +423,7 @@ function S:CharacterFrame()
 			factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 			factionIndex = factionOffset + i
 			if factionIndex <= numFactions then
-				if factionBarButton.isCollapsed then
-					factionBarButton:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					factionBarButton:SetNormalTexture(E.Media.Textures.MinusButton)
-				end
+				S:HandleCollapseTexture(factionBarButton, nil, true)
 			end
 		end
 	end)
