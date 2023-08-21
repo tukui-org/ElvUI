@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local gsub, strmatch, unpack = gsub, strmatch, unpack
-local next, pairs, select = next, pairs, select
+local next, pairs = next, pairs
 
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
