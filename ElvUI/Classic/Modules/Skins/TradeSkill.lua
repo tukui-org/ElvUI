@@ -64,7 +64,7 @@ function S:Blizzard_TradeSkillUI()
 
 		normal:Size(14)
 		normal:SetPoint('LEFT', 2, 1)
-		S:HandleCollapseTexture(normal, nil, true)
+		S:HandleCollapseTexture(button, nil, true)
 
 		highlight:SetTexture('')
 		highlight.SetTexture = E.noop
