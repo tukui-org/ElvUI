@@ -1896,7 +1896,7 @@ L["RAID_TARGET_7"] = "Croix"
 L["RAID_TARGET_8"] = "Crâne"
 
 ----------------------------------
-L["BlizzardNameplate"] = true
+L["BlizzardNameplate"] = "Blizzard Nameplate"
 L["blockCastByPlayers"] = "[Block] Cast By Players"
 L["blockDispellable"] = "[Block] Dispellable"
 L["blockNoDuration"] = "[Block] No Duration"
