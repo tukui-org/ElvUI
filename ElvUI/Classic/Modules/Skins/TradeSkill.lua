@@ -70,14 +70,11 @@ function S:Blizzard_TradeSkillUI()
 		highlight.SetTexture = E.noop
 	end
 
-	hooksecurefunc('TradeSkillFrame_Update', function()
-		TradeSkillCollapseAllButton:SetNormalTexture(TradeSkillCollapseAllButton.collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
-	end)
-
 	_G.TradeSkillDetailScrollFrame:StripTextures()
 	_G.TradeSkillListScrollFrame:StripTextures()
 	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
+	S:HandleCollapseTexture(_G.TradeSkillCollapseAllButton, nil, true)
 	S:HandleScrollBar(_G.TradeSkillListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TradeSkillDetailScrollFrameScrollBar)
 
