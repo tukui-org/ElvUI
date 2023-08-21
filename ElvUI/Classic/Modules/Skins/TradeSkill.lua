@@ -72,12 +72,10 @@ function S:Blizzard_TradeSkillUI()
 		for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 			local button = _G['TradeSkillSkill'..i]
 			local texture = button:GetNormalTexture():GetTexture()
-			if texture then
-				if strfind(texture, 'MinusButton') then
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				end
+			if texture == 130821 then
+				button:SetNormalTexture(E.Media.Textures.MinusButton)
+			elseif texture == 130838 then
+				button:SetNormalTexture(E.Media.Textures.PlusButton)
 			end
 		end
 
