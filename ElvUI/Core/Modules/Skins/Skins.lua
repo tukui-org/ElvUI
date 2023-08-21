@@ -1469,7 +1469,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 
 	if portrait.PortraitRing then
 		portrait.PortraitRing:Hide()
-		portrait.PortraitRingQuality:SetTexture('')
+		portrait.PortraitRingQuality:SetTexture(E.ClearTexture)
 		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
 		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
 	end

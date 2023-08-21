@@ -110,7 +110,7 @@ local function handleItemButton(item)
 
 	for _, Region in next, { item:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
-			Region:SetTexture('')
+			Region:SetTexture(E.ClearTexture)
 		end
 	end
 end

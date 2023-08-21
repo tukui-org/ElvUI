@@ -3187,7 +3187,7 @@ function CH:SetupQuickJoin(holder)
 	-- Skin the `QuickJoinToastButton.Toast`
 	Button.Toast:ClearAllPoints()
 	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
-	Button.Toast.Background:SetTexture('')
+	Button.Toast.Background:SetTexture(E.ClearTexture)
 	Button.Toast:CreateBackdrop('Transparent')
 	Button.Toast.backdrop:Hide()
 

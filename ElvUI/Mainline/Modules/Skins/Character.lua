@@ -325,9 +325,9 @@ function S:CharacterFrame()
 	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if child.icon and not child.isSkinned then
-				child.BgTop:SetTexture('')
-				child.BgMiddle:SetTexture('')
-				child.BgBottom:SetTexture('')
+				child.BgTop:SetTexture(E.ClearTexture)
+				child.BgMiddle:SetTexture(E.ClearTexture)
+				child.BgBottom:SetTexture(E.ClearTexture)
 				S:HandleIcon(child.icon)
 				child.HighlightBar:SetColorTexture(1, 1, 1, .25)
 				child.HighlightBar:SetDrawLayer('BACKGROUND')
