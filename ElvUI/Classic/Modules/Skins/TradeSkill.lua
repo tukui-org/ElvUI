@@ -59,15 +59,19 @@ function S:Blizzard_TradeSkillUI()
 
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
-		local highlight = _G['TradeSkillSkill'..i..'Highlight']
-		local normal = button:GetNormalTexture()
-
-		normal:Size(14)
-		normal:SetPoint('LEFT', 2, 1)
 		S:HandleCollapseTexture(button, nil, true)
 
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(14)
+			normal:SetPoint('LEFT', 2, 1)
+		end
+
+		local highlight = _G['TradeSkillSkill'..i..'Highlight']
+		if highlight then
+			highlight:SetTexture('')
+			highlight.SetTexture = E.noop
+		end
 	end
 
 	_G.TradeSkillDetailScrollFrame:StripTextures()

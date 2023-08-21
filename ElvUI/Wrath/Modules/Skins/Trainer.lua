@@ -46,16 +46,21 @@ function S:Blizzard_TrainerUI()
 
 	for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
 		local button = _G['ClassTrainerSkill'..i]
-		local highlight = _G['ClassTrainerSkill'..i..'Highlight']
 
 		button:SetNormalTexture(E.Media.Textures.PlusButton)
 		button.SetNormalTexture = E.noop
 
-		button:GetNormalTexture():Size(16)
-		button:GetNormalTexture():Point('LEFT', 5, 0)
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(16)
+			normal:Point('LEFT', 5, 0)
+		end
 
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		local highlight = _G['ClassTrainerSkill'..i..'Highlight']
+		if highlight then
+			highlight:SetTexture('')
+			highlight.SetTexture = E.noop
+		end
 
 		S:HandleCollapseTexture(button)
 	end

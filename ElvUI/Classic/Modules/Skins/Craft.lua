@@ -65,13 +65,18 @@ function S:SkinCraft()
 
 	for i = 1, _G.CRAFTS_DISPLAYED do
 		local button = _G['Craft'..i]
+
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(14)
+			normal:Point('LEFT', 4, 1)
+		end
+
 		local highlight = _G['Craft'..i..'Highlight']
-
-		button:GetNormalTexture():Size(14)
-		button:GetNormalTexture():Point('LEFT', 4, 1)
-
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		if highlight then
+			highlight:SetTexture('')
+			highlight.SetTexture = E.noop
+		end
 	end
 
 	for i = 1, _G.MAX_CRAFT_REAGENTS do
