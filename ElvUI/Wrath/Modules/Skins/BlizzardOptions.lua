@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs, next = ipairs, pairs, next
-local hooksecurefunc = hooksecurefunc
 
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, pairs, strfind = unpack, pairs, strfind
+local unpack, pairs = unpack, pairs
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -21,7 +21,6 @@ local ResistanceCoords = {
 	[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
 	[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
-
 
 local function HandleHappiness(frame)
 	local happiness = GetPetHappiness()

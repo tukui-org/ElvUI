@@ -6,7 +6,6 @@ local next = next
 local pairs = pairs
 local unpack = unpack
 
-local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
