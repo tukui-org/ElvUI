@@ -358,7 +358,7 @@ local function debuffIndicator(info, value)
 	end
 end
 
-E.Options.args.filters = ACH:Group(L["FILTERS"], nil, 3, 'tab')
+E.Options.args.filters = ACH:Group(L["Filters"], nil, 3, 'tab')
 local Filters = E.Options.args.filters.args
 
 Filters.mainOptions = ACH:Group(L["Main Options"], nil, 1)

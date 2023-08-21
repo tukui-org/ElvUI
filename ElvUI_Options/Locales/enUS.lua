@@ -629,7 +629,6 @@ L["Filter Priority"] = true
 L["Filter Search"] = true
 L["Filter Type"] = true
 L["Filters Page"] = true
-L["FILTERS"] = "Filters"
 L["Filters"] = true
 L["Flash Client Icon"] = true
 L["Flash Invites"] = true
