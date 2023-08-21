@@ -419,21 +419,21 @@ function S:BlizzardQuestFrames()
 	local questLogTitle = _G['QuestLogTitle'..questLogIndex]
 	while questLogTitle do
 		if questLogTitle.isHeader then
-			questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
-			questLogTitle.SetNormalTexture = E.noop
-
 			questLogTitle:SetHighlightTexture(E.ClearTexture)
-			questLogTitle.SetHighlightTexture = E.noop
-
-			local normalTex = questLogTitle:GetNormalTexture()
-			normalTex:Size(16)
-			normalTex:Point('LEFT', 5, 0)
-
 			questLogTitle:Width(300)
 
-			_G['QuestLogTitle'..questLogIndex..'Highlight']:SetAlpha(0)
+			local normal = questLogTitle:GetNormalTexture()
+			if normal then
+				normal:Size(16)
+				normal:Point('LEFT', 5, 0)
+			end
 
-			S:HandleCollapseTexture(questLogTitle)
+			local highlight = _G['QuestLogTitle'..questLogIndex..'Highlight']
+			if highlight then
+				highlight:SetAlpha(0)
+			end
+
+			S:HandleCollapseTexture(questLogTitle, nil, true)
 		end
 
 		questLogIndex = questLogIndex + 1
@@ -441,23 +441,12 @@ function S:BlizzardQuestFrames()
 	end
 
 	local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
+	S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)
+
 	QuestLogCollapseAllButton:StripTextures()
 	QuestLogCollapseAllButton:Point('TOPLEFT', -45, 7)
-
-	QuestLogCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetNormalTexture = E.noop
 	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
-
 	QuestLogCollapseAllButton:SetHighlightTexture(E.ClearTexture)
-	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
-
-	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetDisabledTexture = E.noop
-	QuestLogCollapseAllButton:GetDisabledTexture():Size(16)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
-
-	S:HandleCollapseTexture(_G.QuestLogCollapseAllButton)
 end
 
 S:AddCallback('BlizzardQuestFrames')
