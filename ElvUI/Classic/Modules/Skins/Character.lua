@@ -243,15 +243,7 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
 	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
-	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		local texture = _G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture()
-		if texture == 130821 then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		elseif texture == 130838 then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
-
+	S:HandleCollapseTexture(_G.SkillFrameCollapseAllButton, nil, true)
 	S:HandleButton(_G.SkillFrameCancelButton)
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
@@ -269,17 +261,8 @@ function S:CharacterFrame()
 
 		label:GetNormalTexture():Size(14)
 		label:SetHighlightTexture(E.ClearTexture)
+		S:HandleCollapseTexture(label, nil, true)
 	end
-
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID) -- arg2: skillIndex, numSkills
-		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		local texture = skillLine:GetNormalTexture():GetTexture()
-		if texture == 130821 then
-			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
-		elseif texture == 130838 then
-			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
 
 	_G.SkillListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.SkillListScrollFrameScrollBar)

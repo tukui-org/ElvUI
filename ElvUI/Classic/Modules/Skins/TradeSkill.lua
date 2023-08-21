@@ -60,30 +60,18 @@ function S:Blizzard_TradeSkillUI()
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
 		local highlight = _G['TradeSkillSkill'..i..'Highlight']
+		local normal = button:GetNormalTexture()
 
-		button:GetNormalTexture():Size(14)
-		button:GetNormalTexture():SetPoint('LEFT', 2, 1)
+		normal:Size(14)
+		normal:SetPoint('LEFT', 2, 1)
+		S:HandleCollapseTexture(normal, nil, true)
 
 		highlight:SetTexture('')
 		highlight.SetTexture = E.noop
 	end
 
 	hooksecurefunc('TradeSkillFrame_Update', function()
-		for i = 1, _G.TRADE_SKILLS_DISPLAYED do
-			local button = _G['TradeSkillSkill'..i]
-			local texture = button:GetNormalTexture():GetTexture()
-			if texture == 130821 then
-				button:SetNormalTexture(E.Media.Textures.MinusButton)
-			elseif texture == 130838 then
-				button:SetNormalTexture(E.Media.Textures.PlusButton)
-			end
-		end
-
-		if TradeSkillCollapseAllButton.collapsed then
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
+		TradeSkillCollapseAllButton:SetNormalTexture(TradeSkillCollapseAllButton.collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
 	end)
 
 	_G.TradeSkillDetailScrollFrame:StripTextures()

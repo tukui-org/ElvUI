@@ -1630,11 +1630,11 @@ do -- Handle collapse
 		button:SetPushedTexture(normal, true)
 	end
 
-	function S:HandleCollapseTexture(button, syncPushed)
+	function S:HandleCollapseTexture(button, syncPushed, ignorePushed)
 		if syncPushed then -- not needed always
 			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
 			syncPushTexture(button)
-		else
+		elseif not ignorePushed then
 			button:SetPushedTexture(E.ClearTexture)
 		end
 
