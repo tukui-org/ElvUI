@@ -1610,8 +1610,12 @@ do -- Handle collapse
 	local function UpdateCollapseTexture(button, texture, skip)
 		if skip then return end
 
-		if type(texture) == 'number' then -- 130821 minus, 130838 plus
-			button:SetNormalTexture(texture == 130838 and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton, true)
+		if type(texture) == 'number' then
+			if texture == 130838 then -- Interface/Buttons/UI-PlusButton-UP
+				button:SetNormalTexture(E.Media.Textures.PlusButton, true)
+			elseif texture == 130821 then -- Interface/Buttons/UI-MinusButton-UP
+				button:SetNormalTexture(E.Media.Textures.MinusButton, true)
+			end
 		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then
 			button:SetNormalTexture(E.Media.Textures.PlusButton, true)
 		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
