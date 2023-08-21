@@ -7,14 +7,14 @@ L["SHIFT"] = true
 L["NONE"] = true
 L["GROUP"] = true
 
-L["BOTTOM"] = true
-L["BOTTOMLEFT"] = true
-L["BOTTOMRIGHT"] = true
-L["TOPLEFT"] = true
-L["TOPRIGHT"] = true
-L["LEFT"] = true
-L["RIGHT"] = true
-L["TOP"] = true
+L["BOTTOM"] = "아래쪽"
+L["BOTTOMLEFT"] = "아래 왼쪽"
+L["BOTTOMRIGHT"] = "아래 오른쪽"
+L["TOPLEFT"] = "위 왼쪽"
+L["TOPRIGHT"] = "위 오른쪽"
+L["LEFT"] = "왼쪽"
+L["RIGHT"] = "오른쪽"
+L["TOP"] = "위쪽"
 
 L["Library Dropdown"] = true
 L["On Me"] = true
@@ -1903,6 +1903,7 @@ L["|cffFF3333This is for information. This will not change the tags in the UI.|r
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333경고:|r 이 항목의 변경 옵션은 모든 버프 표시기 오라에 적용됩니다.\n\n하나의 오라만 변경하려면 '오라 설정'을 클릭하고 특정 오라 설정을 변경하십시오.\n\n'프로필 설정'을 선택하면 해당 필터 세트에 적용됩니다."
 L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333경고:|r 주문 목록을 보려면 드롭 다운 상자의 화살표를 클릭하십시오."
 L["|cffFF9933You are using Overflow with Max Overflow at zero.|r "] = " |cffFF9933'오버힐 바 크기' 최대값은 0으로 설정중입니다.|r" --UnitFrames.lua 로컬 기호 빠저 있어 추가해줘야됨
+
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "매우 적대적"
 L["FACTION_STANDING_LABEL2"] = "적대적"
@@ -1922,6 +1923,27 @@ L["RAID_TARGET_6"] = "네모"
 L["RAID_TARGET_7"] = "가위표"
 L["RAID_TARGET_8"] = "해골"
 
+----------------------------------
+L["BlizzardNameplate"] = true
+L["blockCastByPlayers"] = "[Block] Cast By Players"
+L["blockDispellable"] = "[Block] Dispellable"
+L["blockNoDuration"] = "[Block] No Duration"
+L["blockNonPersonal"] = "[Block] Non Personal"
+L["blockNotDispellable"] = "[Block] Not Dispellable"
+L["blockMount"] = "[Block] Mount"
+L["Mount"] = "Monture"
+L["CastByNPC"] = "Incanté par PNJ"
+L["CastByPlayers"] = "Incanté par les joueurs"
+L["CastByUnit"] = "Incanté par l'unité"
+L["Dispellable"] = "Dissipable"
+L["MyPet"] = "Mon familier"
+L["nonPersonal"] = "Non personnel"
+L["notCastByUnit"] = "Non incanté par l'unité"
+L["notDispellable"] = "Non dissipable"
+L["OtherPet"] = "Autre familier"
+L["Personal"] = "Personnel"
+----------------------------------
+
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."
 L["AURAS_DESC"] = "미니맵 근처에 표시되는 강화/약화효과 아이콘에 관련된 옵션들입니다."
 L["BAGS_DESC"] = "통합가방과 가방바에 관련된 옵션들입니다."
@@ -1934,13 +1956,7 @@ L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
 L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
-L["VISIBILITY_DESC"] = [=[체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다.
-
- |cffff8000Defaults:|r
-    Party: [@raid6,exists][nogroup] hide;show
-    Raid: [@raid6,noexists][@raid26,exists] hide;show
-    Raid40: [@raid26,noexists] hide;show
-    Raid Pet: [group:raid] show; hide]=]
+L["VISIBILITY_DESC"] = "체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다."
 L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
 
 |cff2eb7e4< 예시 >|r
@@ -1954,16 +1970,6 @@ L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치�
 - 확장자는 .tga 포맷만 가능
 
 간단히는 그림을 와우 설치 폴더에 넣은후 파일명만 적으세요.]=]
-
--- DataTexts.lua
-L["BOTTOM"] = "아래쪽"
-L["BOTTOMLEFT"] = "아래 왼쪽"
-L["BOTTOMRIGHT"] = "아래 오른쪽"
-L["LEFT"] = "왼쪽"
-L["RIGHT"] = "오른쪽"
-L["TOP"] = "위쪽"
-L["TOPLEFT"] = "위 왼쪽"
-L["TOPRIGHT"] = "위 오른쪽"
 
 ----------------------------------
 --FilterHelp--
