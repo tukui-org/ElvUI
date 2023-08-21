@@ -1924,24 +1924,24 @@ L["RAID_TARGET_7"] = "가위표"
 L["RAID_TARGET_8"] = "해골"
 
 ----------------------------------
-L["BlizzardNameplate"] = true
+L["BlizzardNameplate"] = "Blizzard Nameplate"
 L["blockCastByPlayers"] = "[Block] Cast By Players"
 L["blockDispellable"] = "[Block] Dispellable"
 L["blockNoDuration"] = "[Block] No Duration"
 L["blockNonPersonal"] = "[Block] Non Personal"
 L["blockNotDispellable"] = "[Block] Not Dispellable"
 L["blockMount"] = "[Block] Mount"
-L["Mount"] = "Monture"
-L["CastByNPC"] = "Incanté par PNJ"
-L["CastByPlayers"] = "Incanté par les joueurs"
-L["CastByUnit"] = "Incanté par l'unité"
-L["Dispellable"] = "Dissipable"
-L["MyPet"] = "Mon familier"
-L["nonPersonal"] = "Non personnel"
-L["notCastByUnit"] = "Non incanté par l'unité"
-L["notDispellable"] = "Non dissipable"
-L["OtherPet"] = "Autre familier"
-L["Personal"] = "Personnel"
+L["Mount"] = true
+L["CastByNPC"] = "Cast By NPC"
+L["CastByPlayers"] = "Cast By Players"
+L["CastByUnit"] = "Cast By Unit"
+L["Dispellable"] = true
+L["MyPet"] = "My Pet"
+L["nonPersonal"] = "Non Personal"
+L["notCastByUnit"] = "Not Cast By Unit"
+L["notDispellable"] = "Not Dispellable"
+L["OtherPet"] = "Other Pet"
+L["Personal"] = true
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."
