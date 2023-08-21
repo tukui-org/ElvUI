@@ -84,7 +84,7 @@ function S:Blizzard_TradeSkillUI()
 
 		local highlight = _G['TradeSkillSkill'..i..'Highlight']
 		if highlight then
-			highlight:SetTexture('')
+			highlight:SetTexture(E.ClearTexture)
 			highlight.SetTexture = E.noop
 		end
 	end

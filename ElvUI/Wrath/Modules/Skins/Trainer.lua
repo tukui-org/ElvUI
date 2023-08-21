@@ -56,7 +56,7 @@ function S:Blizzard_TrainerUI()
 
 		local highlight = _G['ClassTrainerSkill'..i..'Highlight']
 		if highlight then
-			highlight:SetTexture('')
+			highlight:SetTexture(E.ClearTexture)
 			highlight.SetTexture = E.noop
 		end
 	end
