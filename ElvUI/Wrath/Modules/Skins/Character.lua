@@ -12,14 +12,12 @@ local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local UnitFactionGroup = UnitFactionGroup
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
