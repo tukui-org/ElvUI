@@ -2712,7 +2712,7 @@ local AB_Bar = {
 	},
 }
 
-for i = 1, (E.Classic and 10 or 15) do
+for i = 1, 15 do
 	if i ~= 11 and i ~= 12 then
 		local barN = 'bar'..i
 		P.actionbar[barN] = CopyTable(AB_Bar)
