@@ -1933,15 +1933,6 @@ L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
 L["VISIBILITY_DESC"] = "为了显示设定过的过滤器下面的宏必须启用."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.
- 例如: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条显示或隐藏.
- 例如: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[若要设定聊天框背景, 请你指定位于WoW目录下的「Textures」文件夹中的材质文件名.
 
 请注意：

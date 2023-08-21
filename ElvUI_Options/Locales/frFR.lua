@@ -1031,7 +1031,7 @@ L["Major Factions"] = "Factions majeures"
 L["Make textures transparent."] = "Rendre les textures transparentes."
 L["Make the unitframe glow when it is below this percent of health."] = "Faire briller le cadre d'unité lorsqu'il est en dessous de ce pourcentage de santé."
 L["Make the world map smaller."] = "Rendre la carte du monde plus petite."
-L["MANA"] = true
+L["MANA"] = "Mana"
 L["Map ID"] = "ID de la carte"
 L["Map Opacity When Moving"] = "Opacité de la carte en mouvement"
 L["MAP_FADE_TEXT"] = "Fondu de la carte en mouvement"
@@ -1929,15 +1929,6 @@ L["TOGGLESKIN_DESC"] = "Active ou désactive l'habillage ElvUI des éléments ci
 L["TOOLTIP_DESC"] = "Configuration des infobulles."
 L["UNITFRAME_DESC"] = "Modifier les options des cadres d'unités."
 L["VISIBILITY_DESC"] = "La macro suivante doit être cochée pour que le groupe soit affiché, en plus de la configuration des filtres."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour avoir une pagination de la barre d'actions différente.
-Exemple: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour afficher ou masquer la barre d'actions différemment.
-Exemple: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Indiquez un nom de fichier situé dans le répertoire World of Warcraft, le dossier des Textures que vous souhaitez utiliser en fond de panneau.
 
 Notez:

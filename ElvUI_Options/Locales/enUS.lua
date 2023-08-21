@@ -1930,13 +1930,6 @@ L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."
 L["TOOLTIP_DESC"] = "Setup options for the Tooltip."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
 L["VISIBILITY_DESC"] = "The following macro must be true in order for the group to be shown, in addition to any filter that may already be set."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = true
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = true
-
 L["TEXTURE_EXAMPLE"] = [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
 Please Note:

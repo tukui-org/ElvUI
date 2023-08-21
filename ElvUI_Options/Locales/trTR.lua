@@ -1933,13 +1933,6 @@ L["TOGGLESKIN_DESC"] = "Bu dis gorunumu Etkinlestir/Devre Disi Birak."
 L["TOOLTIP_DESC"] = "Ipucu penceresi icin kurulum secenekleri."
 L["UNITFRAME_DESC"] = "Birim cerceve ayarlarini degistirin."
 L["VISIBILITY_DESC"] = "Grubun gosterilebilmesi icin, onceden ayarlanmis herhangi bir filtreye ek olarak asagidaki makro dogru olmalidir."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = true
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = true
-
 L["TEXTURE_EXAMPLE"] = [=[Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.
 
 Please Note:

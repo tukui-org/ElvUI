@@ -1936,30 +1936,11 @@ L["TOOLTIP_DESC"] = "툴팁에 관련된 옵션들입니다."
 L["UNITFRAME_DESC"] = "유닛프레임 설정을 변경합니다."
 L["VISIBILITY_DESC"] = [=[체크시 그룹의 표시 설정이 설정됩니다. 필터를 추가해서 수정이 가능합니다.
 
-|cffff8000Defaults:|r
+ |cffff8000Defaults:|r
     Party: [@raid6,exists][nogroup] hide;show
     Raid: [@raid6,noexists][@raid26,exists] hide;show
     Raid40: [@raid26,noexists] hide;show
     Raid Pet: [group:raid] show; hide]=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바의 페이지를 자동으로 전환시킬 수 있습니다.
-
-매크로처럼 작성하세요.
-
-|cff2eb7e4< 예시 >|r
-|cffceff00[combat]2;1|r
- : 전투에 돌입하면 2번 페이지로 변경, 전투가 끝나면 1번 페이지로 변경 ]=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[이곳에 작성한 조건(예를 들어 전투여부)에 따라 이 행동단축바를 자동으로 숨기거나 표시할 수 있게 해줍니다.
-
-매크로처럼 작성하세요.
-
-|cff2eb7e4< 예시 >|r
-|cffceff00[combat]show;hide|r
- : 전투에 돌입하면 표시, 전투가 끝나면 숨김]=]
-
 L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
 
 |cff2eb7e4< 예시 >|r

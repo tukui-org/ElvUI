@@ -1933,15 +1933,6 @@ L["TOGGLESKIN_DESC"] = "Ativa/Desativa a aparência deste quadro."
 L["TOOLTIP_DESC"] = "Opções de configuração para a Tooltip."
 L["UNITFRAME_DESC"] = "Modificar as configurações de Quadros de Unidade."
 L["VISIBILITY_DESC"] = "O macro seguinte tem de ser verdadeira para que o grupo seja mostrado, em adição a qualquer outro filtro que possa já estar definido."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
-Example: '[combat] 2;']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para que a barra de ação pagine de forma diferente.
-Exemplo: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
-Example: '[combat] show;hide']=] ] = [=[Isto funciona como uma macro, você pode executar várias situações para mostrar/ocultar a barra de ação de forma diferente.
-Exemplo: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Especificar o nome de um ficheiro (arquivo) localizado na diretório do WoW. Ficheiros de textura que deseje ter como fundo dos painéis.
 
 Atenção:

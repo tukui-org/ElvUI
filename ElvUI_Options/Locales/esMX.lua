@@ -1931,15 +1931,6 @@ L["TOGGLESKIN_DESC"] = "Activa/Desactiva esta cubierta."
 L["TOOLTIP_DESC"] = "Configuración para las Descripciones Emergentes."
 L["UNITFRAME_DESC"] = "Modify the unitframe settings."
 L["VISIBILITY_DESC"] = "La siguiente macro debe ser verdadera para que el grupo se muestre, además de cualquier filtro que ya exista."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Esto funciona como una macro. Puedes ejecutar diferentes situaciones para paginar la barra de acción de forma diferente.
- Ejemplo: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Esto funciona como una macro. Puede ejecutar diferentes situaciones para mostrar u ocultar la barra de acción de forma diferente.
- Ejemplo: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Especifica un archivo ubicado en el directorio texture de World of Warcraft que deseas tener establecido como fondo de panel.
 
 Nota:

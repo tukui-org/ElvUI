@@ -1935,15 +1935,6 @@ L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
 L["VISIBILITY_DESC"] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
- Beispiel: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
- Beispiel: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
 
 Bitte beachten:

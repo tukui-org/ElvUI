@@ -1943,15 +1943,6 @@ L["TOGGLESKIN_DESC"] = "Включить/выключить этот скин."
 L["TOOLTIP_DESC"] = "Опций подсказки"
 L["UNITFRAME_DESC"] = "Изменение настроек рамок юнитов."
 L["VISIBILITY_DESC"] = "Следующий фильтр должен быть верен для отображения группы в дополнение к любому другому уже установленному фильтру."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Работает как макрос. Вы можете задать различные условия для отображения разных панелей.
- Пример: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Работает как макрос. Вы можете задать различные условия для показа/скрытия панели.
- Пример: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Укажите имя файла в папке World of Warcraft, который Вы хотите использовать в качестве фона панелей.
 
 Пожалуйста, учтите:
