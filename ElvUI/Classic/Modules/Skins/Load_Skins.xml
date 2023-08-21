@@ -21,7 +21,6 @@
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
 	<Script file='Inspect.lua'/>
-	<Script file='LFG.lua'/>
 	<Script file='Loot.lua'/>
 	<Script file='Macro.lua'/>
 	<Script file='Mail.lua'/>
@@ -32,6 +31,7 @@
 	<Script file='Quest.lua'/>
 	<Script file='QuestTimers.lua'/>
 	<Script file='Raid.lua'/>
+	<Script file='SettingsPanel.lua'/>
 	<Script file='SpellBook.lua'/>
 	<Script file='Stable.lua'/>
 	<Script file='Tabard.lua'/>

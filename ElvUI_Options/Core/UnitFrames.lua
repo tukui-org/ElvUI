@@ -141,7 +141,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 15, { min = 0, max = 100, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end)
 	config.args.spacing = ACH:Range(L["Spacing"], nil, 16, { min = 0, softMax = 20, step = 1 })
 
-	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
+	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
 	config.args.filtersGroup.inline = true
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
@@ -222,7 +222,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
 	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.Anchors)
 
-	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
+	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
 	config.args.filtersGroup.inline = true
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })

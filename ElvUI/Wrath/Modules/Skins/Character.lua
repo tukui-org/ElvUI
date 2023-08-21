@@ -178,6 +178,14 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.CharacterFrameTab1:ClearAllPoints()
+	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+	_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab4:Point('TOPLEFT', _G.CharacterFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab5:Point('TOPLEFT', _G.CharacterFrameTab4, 'TOPRIGHT', -19, 0)
+
 	-- HandleTab looks weird
 	for i = 1, 3 do
 		local tab = _G['PetPaperDollFrameTab'..i]
@@ -543,6 +551,11 @@ function S:CharacterFrame()
 	-- BG Queue Tabs
 	S:HandleTab(_G.PVPParentFrameTab1)
 	S:HandleTab(_G.PVPParentFrameTab2)
+
+	-- Reposition Tabs
+	_G.PVPParentFrameTab1:ClearAllPoints()
+	_G.PVPParentFrameTab1:Point('TOPLEFT', _G.PVPParentFrame, 'BOTTOMLEFT', 1, 76)
+	_G.PVPParentFrameTab2:Point('TOPLEFT', _G.PVPParentFrameTab1, 'TOPRIGHT', -19, 0)
 
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)

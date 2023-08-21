@@ -29,6 +29,9 @@ function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
+	S:HandleCheckBox(_G.ShowAllSpellRanksCheckBox)
+	_G.ShowAllSpellRanksCheckBox:ClearAllPoints()
+	_G.ShowAllSpellRanksCheckBox:Point('TOPLEFT', _G.SpellButton1, -11, 32)
 
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
@@ -58,9 +61,15 @@ function S:SpellBookFrame()
 
 		S:HandleTab(tab)
 
-		tab.backdrop:Point('TOPLEFT', 14, E.PixelMode and -16 or -19)
-		tab.backdrop:Point('BOTTOMRIGHT', -14, 19)
+		tab.backdrop:Point('TOPLEFT', 14, -14)
+		tab.backdrop:Point('BOTTOMRIGHT', -14, 22)
 	end
+
+	-- Reposition Tabs
+	_G.SpellBookFrameTabButton1:ClearAllPoints()
+	_G.SpellBookFrameTabButton1:Point('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -3, 89)
+	_G.SpellBookFrameTabButton2:Point('TOPLEFT', _G.SpellBookFrameTabButton1, 'TOPRIGHT', -27, 0)
+	_G.SpellBookFrameTabButton3:Point('TOPLEFT', _G.SpellBookFrameTabButton2, 'TOPRIGHT', -27, 0)
 
 	-- Spell Buttons
 	for i = 1, _G.SPELLS_PER_PAGE do
@@ -76,16 +85,16 @@ function S:SpellBookFrame()
 		end
 
 		button:CreateBackdrop(nil, true)
-		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
+		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel())
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
 		button.bg = CreateFrame('Frame', nil, button)
-		button.bg:CreateBackdrop('Transparent', true)
+		button.bg:SetTemplate('Transparent', true)
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
-		button.bg:SetFrameLevel(button.bg:GetFrameLevel() - 2)
+		button.bg:SetFrameLevel(button:GetFrameLevel() - 1)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -129,7 +138,7 @@ function S:SpellBookFrame()
 		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
 		if i == 1 then
-			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -32, -70)
+			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 		end
 
 		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)

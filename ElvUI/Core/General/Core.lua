@@ -74,7 +74,7 @@ E.perfect = 768 / E.physicalHeight
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
-E.ClearTexture = not E.Classic and 0 or '' -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
+E.ClearTexture = 0 -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
 E.UserList = {}
 
 -- oUF Defines
@@ -907,7 +907,7 @@ do
 					E:Print(L["ElvUI is out of date. You can download the newest version from tukui.org."])
 
 					if msg and ((msg - ver) >= 0.05) and not inCombat then
-						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."]..format('|n|nSender %s : Version %s', sender, msg)
+						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."]..format('\n\nSender %s : Version %s', sender, msg)
 
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
 					end

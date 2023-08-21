@@ -55,23 +55,28 @@ function S:ContainerFrame()
 
 		for j = 1, _G.MAX_CONTAINER_ITEMS do
 			local item = _G['ContainerFrame'..i..'Item'..j]
-			local icon = _G['ContainerFrame'..i..'Item'..j..'IconTexture']
-			local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
-			local cooldown = _G['ContainerFrame'..i..'Item'..j..'Cooldown']
-
 			item:SetNormalTexture(E.ClearTexture)
 			item:SetTemplate(nil, true)
 			item:StyleButton()
 
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
+			local icon = _G['ContainerFrame'..i..'Item'..j..'IconTexture']
+			if icon then
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
+			end
 
-			questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
-			questIcon.SetTexture = E.noop
-			questIcon:SetTexCoord(0, 1, 0, 1)
-			questIcon:SetInside()
+			local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
+			if questIcon then
+				questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
+				questIcon.SetTexture = E.noop
+				questIcon:SetTexCoord(0, 1, 0, 1)
+				questIcon:SetInside()
+			end
 
-			E:RegisterCooldown(cooldown, 'bags')
+			local cooldown = _G['ContainerFrame'..i..'Item'..j..'Cooldown']
+			if cooldown then
+				E:RegisterCooldown(cooldown, 'bags')
+			end
 		end
 	end
 
@@ -92,17 +97,18 @@ function S:ContainerFrame()
 	end)
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
-		local frameName = frame:GetName()
 		local id = frame:GetID()
+		local frameName = frame:GetName()
 		local _, bagType = GetContainerNumFreeSlots(id)
-		local item, questIcon, link
 
 		for i = 1, frame.size do
-			item = _G[frameName..'Item'..i]
-			questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
-			link = GetContainerItemLink(id, item:GetID())
+			local item = _G[frameName..'Item'..i]
+			local link = GetContainerItemLink(id, item:GetID())
 
-			questIcon:Hide()
+			local questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
+			if questIcon then
+				questIcon:Hide()
+			end
 
 			local profession = B.ProfessionColors[bagType]
 			if profession then

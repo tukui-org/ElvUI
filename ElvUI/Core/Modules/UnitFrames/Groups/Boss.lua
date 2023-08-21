@@ -121,4 +121,6 @@ function UF:Update_BossFrames(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}
+if not E.Classic then
+	UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}
+end

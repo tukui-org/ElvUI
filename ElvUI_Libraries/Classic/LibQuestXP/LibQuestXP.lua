@@ -1,12 +1,13 @@
 --[[
-    Title: LibQuestXP
-    Author: MrFox
-    Email: gyussz@live.com
-    Version: 1.0.7
-    Notes: Library that re-implements GetQuestLogRewardXP for Classic WoW and provides XP reward information for all quests
+	## Interface: 11401
+	## Title: LibQuestXP
+	## Author: MrFox
+	## Email: gyussz@live.com
+	## Version: 1.0.9
+	## Notes: Library that re-implements GetQuestLogRewardXP for Classic WoW and provides XP reward information for all quests
 ]]
 
-local MAJOR, MINOR = "LibQuestXP-1.0", 7
+local MAJOR, MINOR = "LibQuestXP-1.0", 9
 local LibQuestXP = LibStub:NewLibrary(MAJOR, MINOR)
 
 if _G.WOW_PROJECT_ID == _G.WOW_PROJECT_MAINLINE then
@@ -56,15 +57,24 @@ function LibQuestXP:GetAdjustedXP(xp, qLevel)
         xp = 50 * floor((xp + 25) / 50);
     end
 
+    if C_Seasons ~= nil and C_Seasons.HasActiveSeason() and (C_Seasons.GetActiveSeason() == Enum.SeasonID.SeasonOfMastery) then
+        local roundFactor = 50;
+        if xp < 1000 then
+            roundFactor = 10;
+        end
+
+        xp = floor(xp / roundFactor + 0.5) * roundFactor * 2.0;
+    end
+
     return xp;
 end
 
 function GetQuestLogRewardXP(questID)
-    local qLevel, xp, _
+    local title, qLevel, xp, _
 
     -- Try getting the quest from the quest log if no questID was provided
     if questID == nil and selectedQuestLogIndex ~= nil then
-        _, _, _, _, _, _, _, questID = GetQuestLogTitle(selectedQuestLogIndex)
+        title, qLevel, _, _, _, _, _, questID = GetQuestLogTitle(selectedQuestLogIndex)
     end
 
     -- Return 0 if quest ID is not found for some reason

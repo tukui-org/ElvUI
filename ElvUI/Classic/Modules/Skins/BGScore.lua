@@ -17,6 +17,12 @@ function S:SkinWorldStateScore()
 		_G['WorldStateScoreFrameTab'..i..'Text']:SetPoint('CENTER', 0, 2)
 	end
 
+	-- Reposition Tabs
+	_G.WorldStateScoreFrameTab1:ClearAllPoints()
+	_G.WorldStateScoreFrameTab1:Point('TOPLEFT', _G.WorldStateScoreFrame, 'BOTTOMLEFT', -10, 25)
+	_G.WorldStateScoreFrameTab2:Point('TOPLEFT', _G.WorldStateScoreFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.WorldStateScoreFrameTab3:Point('TOPLEFT', _G.WorldStateScoreFrameTab2, 'TOPRIGHT', -19, 0)
+
 	S:HandleButton(_G.WorldStateScoreFrameLeaveButton)
 	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton)
 

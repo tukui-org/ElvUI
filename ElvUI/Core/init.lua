@@ -322,10 +322,6 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if E.Classic then
-		RegisterCVar('fstack_showhighlight', '1')
-	end
-
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end

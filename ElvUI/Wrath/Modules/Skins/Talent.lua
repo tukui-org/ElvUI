@@ -17,6 +17,13 @@ function S:Blizzard_TalentUI()
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.PlayerTalentFrameTab1:ClearAllPoints()
+	_G.PlayerTalentFrameTab1:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', 1, 76)
+	_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.PlayerTalentFrameTab4:Point('TOPLEFT', _G.PlayerTalentFrameTab3, 'TOPRIGHT', -19, 0)
+
 	_G.PlayerTalentFrameRoleButton:ClearAllPoints()
 	_G.PlayerTalentFrameRoleButton:Point('TOPRIGHT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 0, 0)
 
