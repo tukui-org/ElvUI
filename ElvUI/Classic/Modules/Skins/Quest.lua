@@ -415,30 +415,20 @@ function S:BlizzardQuestFrames()
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
 
-	local questLogIndex = 1
-	local questLogTitle = _G['QuestLogTitle'..questLogIndex]
-	while questLogTitle do
-		if questLogTitle.isHeader then
-			questLogTitle:SetHighlightTexture(E.ClearTexture)
-			questLogTitle:Width(300)
-
-			local normal = questLogTitle:GetNormalTexture()
-			if normal then
-				normal:Size(16)
-				normal:Point('LEFT', 5, 0)
+	hooksecurefunc('QuestLog_Update', function()
+		if not _G.QuestLogFrame:IsShown() then return end
+		for i = 1, 20 do
+			local questLogTitle = _G['QuestLogTitle'..i]
+			local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(i)
+			if isHeader then
+				if isCollapsed then
+					questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
+				else
+					questLogTitle:SetNormalTexture(E.Media.Textures.MinusButton)
+				end
 			end
-
-			local highlight = _G['QuestLogTitle'..questLogIndex..'Highlight']
-			if highlight then
-				highlight:SetAlpha(0)
-			end
-
-			S:HandleCollapseTexture(questLogTitle, nil, true)
 		end
-
-		questLogIndex = questLogIndex + 1
-		questLogTitle = _G['QuestLogTitle'..questLogIndex]
-	end
+	end)
 
 	local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
 	S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)
