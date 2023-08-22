@@ -217,6 +217,24 @@ function S:BlizzardOptions()
 		end
 	end)
 
+	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
+		local boxName = frame:GetName()..'Box'
+
+		if frame.boxTable then
+			for index in next, frame.boxTable do
+				local box = _G[boxName..index]
+				if box then
+					box.NineSlice:SetTemplate('Transparent')
+				end
+			end
+		end
+
+		for i = 1, #CHAT_CONFIG_AVAILABLE_CHANNEL_LIST do
+			local button = _G['ChatConfigChannelSettingsAvailableBox'..i..'Button']
+			S:HandleButton(button)
+		end
+	end)
+
 	local OptionsFrames = { _G.InterfaceOptionsFrame, _G.InterfaceOptionsFrameCategories, _G.InterfaceOptionsFramePanelContainer, _G.InterfaceOptionsFrameAddOns, _G.VideoOptionsFrame, _G.VideoOptionsFrameCategoryFrame, _G.VideoOptionsFramePanelContainer, _G.Display_, _G.Graphics_, _G.RaidGraphics_ }
 	local OptionsFrameBackdrops = { _G.AudioOptionsSoundPanelHardware, _G.AudioOptionsSoundPanelVolume, _G.AudioOptionsSoundPanelPlayback, _G.AudioOptionsVoicePanelTalking, _G.AudioOptionsVoicePanelListening, _G.AudioOptionsVoicePanelBinding }
 	local OptionsButtons = { _G.GraphicsButton, _G.RaidButton }
