@@ -1608,7 +1608,7 @@ end
 
 do -- Handle collapse
 	local function UpdateCollapseTexture(button, texture, skip)
-		if skip then return end
+		if skip or not texture then return end
 
 		if type(texture) == 'number' then
 			if texture == 130838 then -- Interface/Buttons/UI-PlusButton-UP

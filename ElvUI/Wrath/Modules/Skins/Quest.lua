@@ -274,23 +274,22 @@ function S:BlizzardQuestFrames()
 			if lastIndex < numDisplayed then
 				for i = lastIndex, numDisplayed do
 					local title = buttons[i]
-					if title and title.isHeader then
-						if not title.isSkinned then
-							S:HandleCollapseTexture(title, nil, true)
+					if not title then break end
 
-							title.isSkinned = true
-						end
+					if not title.isSkinned then
+						S:HandleCollapseTexture(title, nil, true)
 
-						local normal = title:GetNormalTexture()
-						if normal then
-							normal:Size(16)
-						end
+						title.isSkinned = true
+					end
 
-						title:SetHighlightTexture(E.ClearTexture)
-						local highlight = _G[title:GetName()..'Highlight']
-						if highlight then
-							highlight:SetAlpha(0)
-						end
+					local normal = title:GetNormalTexture()
+					if normal then
+						normal:Size(16)
+					end
+
+					local highlight = _G[title:GetName()..'Highlight']
+					if highlight then
+						highlight:SetAlpha(0)
 					end
 				end
 
