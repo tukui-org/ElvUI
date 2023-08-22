@@ -74,7 +74,6 @@ function S:Blizzard_MacroUI()
 		if not frame.isSkinned then
 			S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
 			S:HandleDropDownBox(_G.MacroPopupFrame.BorderBox.IconTypeDropDown.DropDownMenu, 160)
-			frame.isSkinned = true
 		end
 	end)
 end
