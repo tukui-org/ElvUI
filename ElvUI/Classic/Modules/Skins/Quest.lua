@@ -417,7 +417,7 @@ function S:BlizzardQuestFrames()
 
 	hooksecurefunc('QuestLog_Update', function()
 		if not _G.QuestLogFrame:IsShown() then return end
-		for i = 1, 20 do
+		for i = 1, QUESTS_DISPLAYED do
 			local questLogTitle = _G['QuestLogTitle'..i]
 			local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(i)
 			if isHeader then
