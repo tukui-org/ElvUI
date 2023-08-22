@@ -437,7 +437,7 @@ function S:BlizzardQuestFrames()
 					if highlight then
 						highlight:SetAlpha(0)
 					end
-			end
+				end
 
 				lastIndex = numDisplayed
 			end
