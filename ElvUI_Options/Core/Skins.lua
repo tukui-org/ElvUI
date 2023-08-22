@@ -4,6 +4,7 @@ local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
 
 local pairs = pairs
+local format = format
 
 local Skins = ACH:Group(L["Skins"], nil, 2, 'tab')
 E.Options.args.skins = Skins
@@ -45,7 +46,7 @@ Skins.args.blizzard.values = {
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
 	eventLog = L["Event Log"],
-	friends = E.Retail and L["Friends"] or L["Friends"]..' & '..L["Guild"],
+	friends = format(E.Retail and '%s' or '%s & %s', L["Friends"], L["Guild"]),
 	gossip = L["Gossip Frame"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],
