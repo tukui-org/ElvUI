@@ -298,27 +298,6 @@ function S:BlizzardQuestFrames()
 			end
 		end)
 	end
-	hooksecurefunc('QuestLog_Update', function()
-		if not _G.QuestLogFrame:IsShown() then return end
-
-		local numEntries = GetNumQuestLogEntries()
-		local scrollOffset = HybridScrollFrame_GetOffset(_G.QuestLogListScrollFrame)
-		local buttons = _G.QuestLogListScrollFrame.buttons
-
-		for i = 1, 22 do
-			local questIndex = i + scrollOffset
-			if questIndex <= numEntries then
-				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
-				if isHeader then
-					if isCollapsed then
-						buttons[i]:SetNormalTexture(E.Media.Textures.PlusButton)
-					else
-						buttons[i]:SetNormalTexture(E.Media.Textures.MinusButton)
-					end
-				end
-			end
-		end
-	end)
 
 	hooksecurefunc('QuestLogUpdateQuestCount', function()
 		_G.QuestLogCount:ClearAllPoints()
