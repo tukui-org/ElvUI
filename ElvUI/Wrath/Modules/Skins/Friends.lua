@@ -294,6 +294,8 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:Width(127)
 
 	S:HandleFrame(_G.GuildEventLogFrame)
+	S:HandleButton(_G.GuildEventLogCancelButton)
+	S:HandleScrollBar(_G.GuildEventLogScrollFrameScrollBar)
 	S:HandleCloseButton(_G.GuildEventLogCloseButton)
 	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
 
