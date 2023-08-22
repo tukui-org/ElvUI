@@ -46,7 +46,6 @@ Skins.args.blizzard.values = {
 	dressingroom = L["DRESSUP_FRAME"],
 	eventLog = L["Event Log"],
 	friends = L["Friends"],
-	gbank = L["Guild Bank"],
 	gossip = L["Gossip Frame"],
 	guild = L["Guild"],
 	guildcontrol = L["Guild Control Frame"],
@@ -129,6 +128,7 @@ else
 	if not E.Classic then
 		blizzard.arena = L["Arena"]
 		blizzard.arenaRegistrar = L["Arena Registrar"]
+		blizzard.gbank = L["Guild Bank"]
 		blizzard.lfg = L["LFG_TITLE"]
 	end
 
