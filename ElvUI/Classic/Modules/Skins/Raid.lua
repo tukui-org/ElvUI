@@ -46,15 +46,12 @@ function S:Blizzard_RaidUI()
 	_G.RaidClassButton1:ClearAllPoints()
 	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
 
-	-- Classes on the right side of the Raid Control
-	do
+	do -- Classes on the right side of the Raid Control
 		local prevButton
-		local button, icon, count, coords
-
 		for index = 1, 13 do
-			button = _G['RaidClassButton'..index]
-			icon = _G['RaidClassButton'..index..'IconTexture']
-			count = _G['RaidClassButton'..index..'Count']
+			local button = _G['RaidClassButton'..index]
+			local icon = _G['RaidClassButton'..index..'IconTexture']
+			local count = _G['RaidClassButton'..index..'Count']
 
 			button:StripTextures()
 			button:SetTemplate()
