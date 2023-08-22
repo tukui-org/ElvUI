@@ -80,7 +80,6 @@ function S:LootFrame()
 	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
-
 	MasterLooterFrame.Item.NameBorderMid:StripTextures()
 	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
 	MasterLooterFrame.Item.NameBorderRight:StripTextures()
