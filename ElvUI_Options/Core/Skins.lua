@@ -47,7 +47,6 @@ Skins.args.blizzard.values = {
 	eventLog = L["Event Log"],
 	friends = L["Friends"],
 	gossip = L["Gossip Frame"],
-	guild = L["Guild"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],
 	help = L["Help Frame"],
@@ -99,6 +98,7 @@ if E.Retail then
 	blizzard.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	blizzard.gmChat = L["GM Chat"]
 	blizzard.guide = L["Guide Frame"]
+	blizzard.guild = L["Guild"]
 	blizzard.islandQueue = L["ISLANDS_HEADER"]
 	blizzard.islandsPartyPose = L["Island Party Pose"]
 	blizzard.itemInteraction = L["Item Interaction"]
