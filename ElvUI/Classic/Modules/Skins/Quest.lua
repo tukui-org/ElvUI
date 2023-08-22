@@ -379,8 +379,8 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
 
-	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
-	S:HandleFrame(_G.QuestLogFrame, true, nil, 11, -12, -32, 45)
+	S:HandleFrame(_G.QuestFrame, true, nil, 8, -10, -28, 66)
+	S:HandleFrame(_G.QuestLogFrame, true, nil, 8, -10, -28, 42)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
