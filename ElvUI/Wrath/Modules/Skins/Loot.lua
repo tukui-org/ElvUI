@@ -87,20 +87,22 @@ function S:LootFrame()
 	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
-		local b = MasterLooterFrame.Item
-		if b then
-			local i = b.Icon
-			local icon = i:GetTexture()
-			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
+		local item = MasterLooterFrame.Item
+		if item then
+			local icon = item.Icon
+			local texture = icon:GetTexture()
+			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
-			b:StripTextures()
-			i:SetTexture(icon)
-			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			item:StripTextures()
+			icon:SetTexture(texture)
+			icon:SetTexCoord(unpack(E.TexCoords))
+			item:CreateBackdrop()
+			item.backdrop:SetOutside(icon)
+			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
+	end)
 
+	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
 			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
 				if child:GetPushedTexture() then
