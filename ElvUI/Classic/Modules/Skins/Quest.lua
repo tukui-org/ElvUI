@@ -6,9 +6,9 @@ local unpack, gsub = unpack, gsub
 local pairs, next = pairs, next
 local strmatch = strmatch
 
+local GetMoney = GetMoney
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local GetMoney = GetMoney
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestItemLink = GetQuestItemLink
@@ -18,10 +18,11 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
+local hooksecurefunc = hooksecurefunc
+
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS
 local MAX_REQUIRED_ITEMS = MAX_REQUIRED_ITEMS
-local hooksecurefunc = hooksecurefunc
 
 local function handleItemButton(item)
 	if not item then return end
