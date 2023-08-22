@@ -1631,6 +1631,9 @@ do -- Handle collapse
 	end
 
 	function S:HandleCollapseTexture(button, syncPushed, ignorePushed)
+		if button.collapsedSkinned then return end
+		button.collapsedSkinned = true -- little bit of a safety precaution
+
 		if syncPushed then -- not needed always
 			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
 			syncPushTexture(button)

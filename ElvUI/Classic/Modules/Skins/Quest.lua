@@ -426,11 +426,7 @@ function S:BlizzardQuestFrames()
 					local title = _G['QuestLogTitle'..i]
 					if not title then break end
 
-					if not title.isSkinned then
-						S:HandleCollapseTexture(title, nil, true)
-
-						title.isSkinned = true
-					end
+					S:HandleCollapseTexture(title, nil, true)
 
 					local normal = title:GetNormalTexture()
 					if normal then
