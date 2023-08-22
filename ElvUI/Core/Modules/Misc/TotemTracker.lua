@@ -11,6 +11,7 @@ local MAX_TOTEMS = MAX_TOTEMS
 
 -- SHAMAN_TOTEM_PRIORITIES does not work here because we need to swap 3/4 instead of 1/2
 local priority = E.myclass == 'SHAMAN' and { [1]=1, [2]=2, [3]=4, [4]=3 } or STANDARD_TOTEM_PRIORITIES
+priority.classic = { [1]=2, [2]=1, [3]=4, [4]=3 } -- we need to swap 1/2 and 3/4 on classic era
 
 function T:UpdateButton(button, totem)
 	if not (button and totem) then return end
@@ -42,7 +43,7 @@ function T:Update()
 		end
 	else
 		for i = 1, MAX_TOTEMS do
-			T:UpdateButton(T.bar[priority[i]], _G['TotemFrameTotem'..i] or i)
+			T:UpdateButton(T.bar[priority[i]], _G['TotemFrameTotem'..i] or priority.classic[i])
 		end
 	end
 end
