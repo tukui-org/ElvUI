@@ -427,7 +427,7 @@ function S:Ace3_RegisterAsContainer(widget)
 	if widget.sizer_se then
 		for _, Region in next, { widget.sizer_se:GetRegions() } do
 			if Region:IsObjectType('Texture') then
-				Region:SetTexture(137057) -- Interface\Tooltips\UI-Tooltip-Border
+				Region:SetTexture(137057) -- Interface/Tooltips/UI-Tooltip-Border
 			end
 		end
 	end

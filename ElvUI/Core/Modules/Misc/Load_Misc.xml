@@ -5,6 +5,7 @@
 	<Script file='RaidMarker.lua'/>
 	<Script file='Loot.lua'/>
 	<Script file='LootRoll.lua'/>
+	<Script file='TotemTracker.lua'/>
 	<Script file='InfoItemLevel.lua'/>
 	<Script file='RaidUtility.lua'/>
 	<Script file='QueueStatus.lua'/>

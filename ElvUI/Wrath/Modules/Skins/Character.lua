@@ -12,14 +12,12 @@ local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local UnitFactionGroup = UnitFactionGroup
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
@@ -399,6 +397,7 @@ function S:CharacterFrame()
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
 		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 		local factionName = _G['ReputationBar'..i..'FactionName']
 
 		factionBar:StripTextures()
@@ -407,30 +406,13 @@ function S:CharacterFrame()
 		factionStatusBar:SetStatusBarTexture(E.media.normTex)
 		factionStatusBar:Size(108, 13)
 
+		S:HandleCollapseTexture(factionBarButton, nil, true)
 		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 	end
-
-	hooksecurefunc('ReputationFrame_Update', function()
-		local numFactions = GetNumFactions()
-		local factionIndex, factionBarButton
-		local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-
-		for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
-			factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
-			factionIndex = factionOffset + i
-			if factionIndex <= numFactions then
-				if factionBarButton.isCollapsed then
-					factionBarButton:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					factionBarButton:SetNormalTexture(E.Media.Textures.MinusButton)
-				end
-			end
-		end
-	end)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)

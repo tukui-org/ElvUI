@@ -12,6 +12,8 @@ function S:HelpFrame()
 	main.backdrop:SetOutside(main, 8, 8)
 	S:HandleCloseButton(main.CloseButton, main.backdrop)
 
+	_G.HelpFrameTitleBg:StripTextures()
+
 	local browser = _G.HelpBrowser
 	browser.BrowserInset:StripTextures()
 	browser:CreateBackdrop()

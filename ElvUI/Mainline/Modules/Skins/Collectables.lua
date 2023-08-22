@@ -564,7 +564,7 @@ local function SkinTransmogFrames()
 		for _, child in next, { button.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				child.Background:Hide()
-				child.HighlightTexture:SetTexture('')
+				child.HighlightTexture:SetTexture(E.ClearTexture)
 				child.Icon:SetSize(42, 42)
 				S:HandleIcon(child.Icon)
 				child.IconCover:SetOutside(child.Icon)

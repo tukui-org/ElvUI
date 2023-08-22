@@ -71,8 +71,9 @@ function S:Blizzard_MacroUI()
 
 	-- New icon selection
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
-		if not frame.isSkinned then
+		if not frame.isSkinned then -- set by HandleIconSelectionFrame
 			S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
+			S:HandleDropDownBox(_G.MacroPopupFrame.BorderBox.IconTypeDropDown.DropDownMenu, 160)
 		end
 	end)
 end

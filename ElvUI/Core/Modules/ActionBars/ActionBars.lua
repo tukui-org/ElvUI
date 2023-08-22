@@ -20,7 +20,6 @@ local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
 local IsItemAction = IsItemAction
-local IsMounted = IsMounted
 local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
@@ -565,10 +564,8 @@ do
 			E.db.actionbar['bar'..i][option] = value
 		end
 
-		if not E.Classic then
-			for i = 13, 15 do
-				E.db.actionbar['bar'..i][option] = value
-			end
+		for i = 13, 15 do
+			E.db.actionbar['bar'..i][option] = value
 		end
 
 		for _, bar in pairs(bars) do
@@ -1737,10 +1734,8 @@ function AB:Initialize()
 		AB:CreateBar(i)
 	end
 
-	if not E.Classic then
-		for i = 13, 15 do
-			AB:CreateBar(i)
-		end
+	for i = 13, 15 do
+		AB:CreateBar(i)
 	end
 
 	AB:CreateBarPet()

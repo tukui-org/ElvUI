@@ -51,7 +51,7 @@ local function HandleReward(frame)
 
 	for _, Region in next, { frame:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
-			Region:SetTexture('')
+			Region:SetTexture(E.ClearTexture)
 		end
 	end
 

@@ -4,6 +4,7 @@ local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
 
 local pairs = pairs
+local format = format
 
 local Skins = ACH:Group(L["Skins"], nil, 2, 'tab')
 E.Options.args.skins = Skins
@@ -45,10 +46,8 @@ Skins.args.blizzard.values = {
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
 	eventLog = L["Event Log"],
-	friends = L["Friends"],
-	gbank = L["Guild Bank"],
+	friends = format(E.Retail and '%s' or '%s & %s', L["Friends"], L["Guild"]),
 	gossip = L["Gossip Frame"],
-	guild = L["Guild"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],
 	help = L["Help Frame"],
@@ -100,6 +99,7 @@ if E.Retail then
 	blizzard.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	blizzard.gmChat = L["GM Chat"]
 	blizzard.guide = L["Guide Frame"]
+	blizzard.guild = L["Guild"]
 	blizzard.islandQueue = L["ISLANDS_HEADER"]
 	blizzard.islandsPartyPose = L["Island Party Pose"]
 	blizzard.itemInteraction = L["Item Interaction"]
@@ -129,6 +129,7 @@ else
 	if not E.Classic then
 		blizzard.arena = L["Arena"]
 		blizzard.arenaRegistrar = L["Arena Registrar"]
+		blizzard.gbank = L["Guild Bank"]
 		blizzard.lfg = L["LFG_TITLE"]
 	end
 

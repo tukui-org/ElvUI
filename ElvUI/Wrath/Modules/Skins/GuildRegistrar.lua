@@ -32,7 +32,7 @@ function S:GuildRegistrarFrame()
 	end
 
 	_G.GuildRegistrarPurchaseText:SetTextColor(1, 1, 1)
-	_G.GuildAvailableServicesText:SetTextColor(1, 1, 0)
+	_G.GuildAvailableServicesText:SetTextColor(1, 1, 1)
 end
 
 S:AddCallback('GuildRegistrarFrame')

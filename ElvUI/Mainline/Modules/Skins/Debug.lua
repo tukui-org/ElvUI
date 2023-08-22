@@ -57,6 +57,12 @@ local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 	frame.ScrollFrameArt.NineSlice:SetTemplate('Transparent')
+	frame.ScrollFrameArt.NineSlice:Point('TOPLEFT', -4, 0)
+	frame.ScrollFrameArt.NineSlice:Point('BOTTOMRIGHT', -8, 0)
+
+	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar)
+	frame.LinesScrollFrame.ScrollBar.Track.Thumb:Width(8)
+
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
@@ -81,7 +87,6 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
-	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar)
 
 	frame.isSkinned = true
 end

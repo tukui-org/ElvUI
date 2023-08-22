@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs, next = ipairs, pairs, next
-local hooksecurefunc = hooksecurefunc
 
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)
@@ -176,9 +176,8 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.checkBoxTable) do
 			local checkBoxNameString = frame:GetName()..'CheckBox'
 			local checkBoxName = checkBoxNameString..index
@@ -209,11 +208,28 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName()..'Swatch'..index]:StripTextures()
+		end
+	end)
+
+	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
+		if not frame.boxTable then return end
+
+		local boxName = frame:GetName()..'Box'
+		for index in next, frame.boxTable do
+			local box = _G[boxName..index]
+			if box then
+				if box.NineSlice then
+					box.NineSlice:SetTemplate('Transparent')
+				end
+
+				if box.Button then
+					S:HandleButton(box.Button)
+				end
+			end
 		end
 	end)
 

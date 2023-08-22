@@ -6,7 +6,6 @@ local next = next
 local pairs = pairs
 local unpack = unpack
 
-local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
@@ -127,6 +126,7 @@ function S:Blizzard_AuctionUI()
 		_G[Filter..'NormalTexture'].SetAlpha = E.noop
 	end
 
+	_G.BrowsePriceOptionsFrame:StripTextures()
 	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
 
 	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
@@ -137,6 +137,8 @@ function S:Blizzard_AuctionUI()
 
 	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
 	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+	S:HandleButton(_G.BrowsePriceOptionsButtonFrame.Button, nil, nil, true)
+	_G.BrowsePriceOptionsButtonFrame.Button.Icon:Size(24)
 
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 

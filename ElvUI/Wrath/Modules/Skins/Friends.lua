@@ -22,26 +22,6 @@ local function skinFriendRequest(frame)
 	frame.isSkinned = true
 end
 
-local function SkinPlusMinus(button, minus)
-	local texture = E.Media.Textures.PlusButton
-	if minus then
-		texture = E.Media.Textures.MinusButton
-	end
-
-	button:SetNormalTexture(texture)
-	button.SetNormalTexture = E.noop
-
-	button:SetPushedTexture(texture)
-	button.SetPushedTexture = E.noop
-
-	button:SetHighlightTexture(E.ClearTexture)
-	button.SetHighlightTexture = E.noop
-
-	button:SetDisabledTexture(texture)
-	button.SetDisabledTexture = E.noop
-	button:GetDisabledTexture():SetDesaturated(true)
-end
-
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
@@ -314,6 +294,8 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:Width(127)
 
 	S:HandleFrame(_G.GuildEventLogFrame)
+	S:HandleButton(_G.GuildEventLogCancelButton)
+	S:HandleScrollBar(_G.GuildEventLogScrollFrameScrollBar)
 	S:HandleCloseButton(_G.GuildEventLogCloseButton)
 	_G.GuildEventFrame.NineSlice:SetTemplate('Transparent')
 
@@ -428,8 +410,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildMemberGroupInviteButton)
 	_G.GuildMemberGroupInviteButton:Point('BOTTOMRIGHT', -3, 3)
 
-	-- Temp unskinned due to Taints
-	--[[
+	-- Not the reason of the taint
 	S:HandleNextPrevButton(_G.GuildFramePromoteButton, 'up')
 	_G.GuildFramePromoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFramePromoteButton:SetPoint('TOPLEFT', _G.GuildMemberDetailFrame, 'TOPLEFT', 155, -68)
@@ -437,7 +418,6 @@ function S:FriendsFrame()
 	S:HandleNextPrevButton(_G.GuildFrameDemoteButton)
 	_G.GuildFrameDemoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFrameDemoteButton:Point('LEFT', _G.GuildFramePromoteButton, 'RIGHT', 2, 0)
-	]]
 
 	_G.GuildMemberNoteBackground:StripTextures()
 	_G.GuildMemberNoteBackground:CreateBackdrop()
@@ -508,11 +488,11 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.GuildControlPopupFrameDropDown, 185)
 	_G.GuildControlPopupFrameDropDownButton:Size(18)
 
-	SkinPlusMinus(_G.GuildControlPopupFrameAddRankButton)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameAddRankButton, nil, true)
 	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropDown, 'RIGHT', -8, 3)
 
-	SkinPlusMinus(_G.GuildControlPopupFrameRemoveRankButton, true)
-	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 4, 0)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameRemoveRankButton, nil, true)
+	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 2, 0)
 
 	_G.GuildControlPopupFrameEditBox:StripTextures()
 
