@@ -225,13 +225,11 @@ function S:BlizzardOptions()
 				local box = _G[boxName..index]
 				if box then
 					box.NineSlice:SetTemplate('Transparent')
+					if box.Button then
+						S:HandleButton(box.Button)
+					end
 				end
 			end
-		end
-
-		for i = 1, #CHAT_CONFIG_AVAILABLE_CHANNEL_LIST do
-			local button = _G['ChatConfigChannelSettingsAvailableBox'..i..'Button']
-			S:HandleButton(button)
 		end
 	end)
 
