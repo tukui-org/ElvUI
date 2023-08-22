@@ -415,20 +415,39 @@ function S:BlizzardQuestFrames()
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
 
-	hooksecurefunc('QuestLog_Update', function()
-		if not _G.QuestLogFrame:IsShown() then return end
-		for i = 1, QUESTS_DISPLAYED do
-			local questLogTitle = _G['QuestLogTitle'..i]
-			local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(i)
-			if isHeader then
-				if isCollapsed then
-					questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					questLogTitle:SetNormalTexture(E.Media.Textures.MinusButton)
+	do
+		local lastIndex = 1
+		hooksecurefunc('QuestLog_Update', function()
+			if not _G.QuestLogFrame:IsShown() then return end
+
+			local numDisplayed = _G.QUESTS_DISPLAYED -- get changed by other addons, keep it global
+			if lastIndex < numDisplayed then
+				for i = lastIndex, numDisplayed do
+					local title = _G['QuestLogTitle'..i]
+					if title and title.isHeader then
+						if not title.isSkinned then
+							S:HandleCollapseTexture(title, nil, true)
+
+							title.isSkinned = true
+						end
+
+						local normal = title:GetNormalTexture()
+						if normal then
+							normal:Size(16)
+						end
+
+						title:SetHighlightTexture(E.ClearTexture)
+						local highlight = _G[title:GetName()..'Highlight']
+						if highlight then
+							highlight:SetAlpha(0)
+						end
+					end
 				end
+
+				lastIndex = numDisplayed
 			end
-		end
-	end)
+		end)
+	end
 
 	local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
 	S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)

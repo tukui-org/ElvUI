@@ -264,8 +264,43 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
+	do
+		local lastIndex = 1
+		hooksecurefunc('QuestLog_Update', function()
+			if not _G.QuestLogFrame:IsShown() then return end
+
+			local buttons = _G.QuestLogListScrollFrame.buttons
+			local numDisplayed = #buttons
+			if lastIndex < numDisplayed then
+				for i = lastIndex, numDisplayed do
+					local title = buttons[i]
+					if title and title.isHeader then
+						if not title.isSkinned then
+							S:HandleCollapseTexture(title, nil, true)
+
+							title.isSkinned = true
+						end
+
+						local normal = title:GetNormalTexture()
+						if normal then
+							normal:Size(16)
+						end
+
+						title:SetHighlightTexture(E.ClearTexture)
+						local highlight = _G[title:GetName()..'Highlight']
+						if highlight then
+							highlight:SetAlpha(0)
+						end
+					end
+				end
+
+				lastIndex = numDisplayed
+			end
+		end)
+	end
 	hooksecurefunc('QuestLog_Update', function()
 		if not _G.QuestLogFrame:IsShown() then return end
+
 		local numEntries = GetNumQuestLogEntries()
 		local scrollOffset = HybridScrollFrame_GetOffset(_G.QuestLogListScrollFrame)
 		local buttons = _G.QuestLogListScrollFrame.buttons
