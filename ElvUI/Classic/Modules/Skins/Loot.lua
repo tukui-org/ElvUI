@@ -93,9 +93,14 @@ function S:LootFrame()
 			local texture = icon:GetTexture()
 			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
+			if item.IconBorder then
+				item.IconBorder:SetAlpha(0)
+			end
+
 			item:StripTextures()
 			icon:SetTexture(texture)
 			icon:SetTexCoord(unpack(E.TexCoords))
+
 			item:CreateBackdrop()
 			item.backdrop:SetOutside(icon)
 			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
