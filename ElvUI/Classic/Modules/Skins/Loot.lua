@@ -99,8 +99,11 @@ function S:LootFrame()
 			icon:SetTexture(texture)
 			icon:SetTexCoord(unpack(E.TexCoords))
 
-			item:CreateBackdrop()
-			item.backdrop:SetOutside(icon)
+			if not item.backdrop then
+				item:CreateBackdrop()
+				item.backdrop:SetOutside(icon)
+			end
+
 			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
