@@ -89,7 +89,7 @@ function S:SpellBookFrame()
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
 		button.bg = CreateFrame('Frame', nil, button)
-		button.bg:SetTemplate('Transparent', true)
+		button.bg:SetTemplate('Transparent')
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
