@@ -4,8 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local ipairs, unpack = ipairs, unpack
 local hooksecurefunc = hooksecurefunc
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 
 local StripAllTextures = {
 	'RaidGroup1',
