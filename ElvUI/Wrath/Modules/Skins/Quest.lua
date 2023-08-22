@@ -3,11 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local gsub, strmatch, unpack = gsub, strmatch, unpack
-local next, pairs, select = next, pairs, select
+local next, pairs = next, pairs
 
+local GetMoney = GetMoney
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local GetMoney = GetMoney
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestItemLink = GetQuestItemLink
@@ -17,7 +17,6 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
-local HybridScrollFrame_GetOffset = HybridScrollFrame_GetOffset
 
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS
@@ -110,7 +109,7 @@ local function handleItemButton(item)
 
 	for _, Region in next, { item:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
-			Region:SetTexture('')
+			Region:SetTexture(E.ClearTexture)
 		end
 	end
 end
@@ -264,26 +263,35 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	hooksecurefunc('QuestLog_Update', function()
-		if not _G.QuestLogFrame:IsShown() then return end
-		local numEntries = GetNumQuestLogEntries()
-		local scrollOffset = HybridScrollFrame_GetOffset(_G.QuestLogListScrollFrame)
-		local buttons = _G.QuestLogListScrollFrame.buttons
+	do
+		local lastIndex = 1
+		hooksecurefunc('QuestLog_Update', function()
+			if not _G.QuestLogFrame:IsShown() then return end
 
-		for i = 1, 22 do
-			local questIndex = i + scrollOffset
-			if questIndex <= numEntries then
-				local _, _, _, isHeader, isCollapsed = GetQuestLogTitle(questIndex)
-				if isHeader then
-					if isCollapsed then
-						buttons[i]:SetNormalTexture(E.Media.Textures.PlusButton)
-					else
-						buttons[i]:SetNormalTexture(E.Media.Textures.MinusButton)
+			local buttons = _G.QuestLogListScrollFrame.buttons
+			local numDisplayed = #buttons
+			if lastIndex < numDisplayed then
+				for i = lastIndex, numDisplayed do
+					local title = buttons[i]
+					if not title then break end
+
+					S:HandleCollapseTexture(title, nil, true)
+
+					local normal = title:GetNormalTexture()
+					if normal then
+						normal:Size(16)
+					end
+
+					local highlight = _G[title:GetName()..'Highlight']
+					if highlight then
+						highlight:SetAlpha(0)
 					end
 				end
+
+				lastIndex = numDisplayed
 			end
-		end
-	end)
+		end)
+	end
 
 	hooksecurefunc('QuestLogUpdateQuestCount', function()
 		_G.QuestLogCount:ClearAllPoints()

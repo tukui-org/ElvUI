@@ -41,7 +41,7 @@ function S:MerchantFrame()
 		local slot = _G['MerchantItem'..i..'SlotTexture']
 
 		item:StripTextures(true)
-		item:CreateBackdrop()
+		item:CreateBackdrop('Transparent')
 		item.backdrop:Point('TOPLEFT', -1, 3)
 		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
 
@@ -120,6 +120,11 @@ function S:MerchantFrame()
 	for i = 1, 2 do
 		S:HandleTab(_G['MerchantFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.MerchantFrameTab1:ClearAllPoints()
+	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', -15, -1)
+	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', -19, 0)
 
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local numMerchantItems = GetMerchantNumItems()

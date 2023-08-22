@@ -6,9 +6,9 @@ local unpack, gsub = unpack, gsub
 local pairs, next = pairs, next
 local strmatch = strmatch
 
+local GetMoney = GetMoney
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
-local GetMoney = GetMoney
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestItemLink = GetQuestItemLink
@@ -18,10 +18,11 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
+local hooksecurefunc = hooksecurefunc
+
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS
 local MAX_REQUIRED_ITEMS = MAX_REQUIRED_ITEMS
-local hooksecurefunc = hooksecurefunc
 
 local function handleItemButton(item)
 	if not item then return end
@@ -69,7 +70,7 @@ local function handleItemButton(item)
 
 	for _, Region in next, { item:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
-			Region:SetTexture('')
+			Region:SetTexture(E.ClearTexture)
 		end
 	end
 end
@@ -379,8 +380,8 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
 
-	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
-	S:HandleFrame(_G.QuestLogFrame, true, nil, 11, -12, -32, 45)
+	S:HandleFrame(_G.QuestFrame, true, nil, 8, -10, -28, 66)
+	S:HandleFrame(_G.QuestLogFrame, true, nil, 8, -10, -28, 42)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
 	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
@@ -415,49 +416,42 @@ function S:BlizzardQuestFrames()
 	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
 	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
 
-	local questLogIndex = 1
-	local questLogTitle = _G['QuestLogTitle'..questLogIndex]
-	while questLogTitle do
-		if questLogTitle.isHeader then
-			questLogTitle:SetNormalTexture(E.Media.Textures.PlusButton)
-			questLogTitle.SetNormalTexture = E.noop
+	do
+		local lastIndex = 1
+		hooksecurefunc('QuestLog_Update', function()
+			if not _G.QuestLogFrame:IsShown() then return end
 
-			questLogTitle:SetHighlightTexture(E.ClearTexture)
-			questLogTitle.SetHighlightTexture = E.noop
+			local numDisplayed = _G.QUESTS_DISPLAYED -- get changed by other addons, keep it global
+			if lastIndex < numDisplayed then
+				for i = lastIndex, numDisplayed do
+					local title = _G['QuestLogTitle'..i]
+					if not title then break end
 
-			local normalTex = questLogTitle:GetNormalTexture()
-			normalTex:Size(16)
-			normalTex:Point('LEFT', 5, 0)
+					S:HandleCollapseTexture(title, nil, true)
 
-			questLogTitle:Width(300)
+					local normal = title:GetNormalTexture()
+					if normal then
+						normal:Size(16)
+					end
 
-			_G['QuestLogTitle'..questLogIndex..'Highlight']:SetAlpha(0)
+					local highlight = _G[title:GetName()..'Highlight']
+					if highlight then
+						highlight:SetAlpha(0)
+					end
+				end
 
-			S:HandleCollapseTexture(questLogTitle)
-		end
-
-		questLogIndex = questLogIndex + 1
-		questLogTitle = _G['QuestLogTitle'..questLogIndex]
+				lastIndex = numDisplayed
+			end
+		end)
 	end
 
 	local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
+	S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)
+
 	QuestLogCollapseAllButton:StripTextures()
 	QuestLogCollapseAllButton:Point('TOPLEFT', -45, 7)
-
-	QuestLogCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetNormalTexture = E.noop
 	QuestLogCollapseAllButton:GetNormalTexture():Size(16)
-
 	QuestLogCollapseAllButton:SetHighlightTexture(E.ClearTexture)
-	QuestLogCollapseAllButton.SetHighlightTexture = E.noop
-
-	QuestLogCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton.SetDisabledTexture = E.noop
-	QuestLogCollapseAllButton:GetDisabledTexture():Size(16)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetTexture(E.Media.Textures.PlusButton)
-	QuestLogCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
-
-	S:HandleCollapseTexture(_G.QuestLogCollapseAllButton)
 end
 
 S:AddCallback('BlizzardQuestFrames')

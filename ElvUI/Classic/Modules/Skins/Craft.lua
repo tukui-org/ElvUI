@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, strfind = unpack, strfind
+local unpack = unpack
 
 local GetItemInfo = GetItemInfo
 local GetCraftNumReagents = GetCraftNumReagents
@@ -50,28 +50,24 @@ function S:SkinCraft()
 	_G.CraftExpandButtonFrame:StripTextures()
 
 	local CraftCollapseAllButton = _G.CraftCollapseAllButton
-	CraftCollapseAllButton:Point('LEFT', _G.CraftExpandTabLeft, 'RIGHT', -8, 5)
-	CraftCollapseAllButton:GetNormalTexture():Point('LEFT', 3, 2)
-	CraftCollapseAllButton:GetNormalTexture():Size(15)
-
+	S:HandleCollapseTexture(CraftCollapseAllButton, nil, true)
 	CraftCollapseAllButton:SetHighlightTexture(E.ClearTexture)
-	CraftCollapseAllButton.SetHighlightTexture = E.noop
-
-	CraftCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)
-	CraftCollapseAllButton.SetDisabledTexture = E.noop
-	CraftCollapseAllButton:GetDisabledTexture():Point('LEFT', 3, 2)
-	CraftCollapseAllButton:GetDisabledTexture():Size(15)
-	CraftCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
 	for i = 1, _G.CRAFTS_DISPLAYED do
 		local button = _G['Craft'..i]
+		S:HandleCollapseTexture(button, nil, true)
+
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(14)
+			normal:Point('LEFT', 4, 1)
+		end
+
 		local highlight = _G['Craft'..i..'Highlight']
-
-		button:GetNormalTexture():Size(14)
-		button:GetNormalTexture():Point('LEFT', 4, 1)
-
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		if highlight then
+			highlight:SetTexture(E.ClearTexture)
+			highlight.SetTexture = E.noop
+		end
 	end
 
 	for i = 1, _G.MAX_CRAFT_REAGENTS do
@@ -92,32 +88,10 @@ function S:SkinCraft()
 	_G.CraftReagent6:Point('LEFT', _G.CraftReagent5, 'RIGHT', 3, 0)
 	_G.CraftReagent8:Point('LEFT', _G.CraftReagent7, 'RIGHT', 3, 0)
 
-	hooksecurefunc('CraftFrame_Update', function()
-		for i = 1, _G.CRAFTS_DISPLAYED do
-			local button = _G['Craft'..i]
-			local texture = button:GetNormalTexture():GetTexture()
-			if texture then
-				if strfind(texture, 'MinusButton') then
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				end
-			end
-		end
-
-		if CraftCollapseAllButton.collapsed then
-			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-	end)
-
 	CraftIcon:CreateBackdrop()
 
 	hooksecurefunc('CraftFrame_SetSelection', function(id)
-		if ( not id ) then
-			return
-		end
+		if not id then return end
 
 		local CraftReagentLabel = _G.CraftReagentLabel
 		CraftReagentLabel:Point('TOPLEFT', _G.CraftDescription, 'BOTTOMLEFT', 0, -10)

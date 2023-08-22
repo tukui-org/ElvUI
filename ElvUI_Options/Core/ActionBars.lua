@@ -366,10 +366,8 @@ for i = 1, 10 do
 	CreateBarOptions(i)
 end
 
-if not E.Classic then
-	for i = 13, 15 do
-		CreateBarOptions(i)
-	end
+for i = 13, 15 do
+	CreateBarOptions(i)
 end
 
 ActionBar.args.playerBars.args.bar1.args.pagingReset = ACH:Execute(L["Reset Action Paging"], nil, 2, function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings('bar1') end, nil, L["You are about to reset paging. Are you sure?"])

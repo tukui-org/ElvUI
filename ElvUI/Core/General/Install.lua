@@ -7,8 +7,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local format = format
-local pairs = pairs
 local ipairs = ipairs
+local pairs = pairs
+local strsub = strsub
 local tinsert = tinsert
 
 local SetCVar = SetCVar
@@ -24,11 +25,11 @@ local FCF_OpenNewWindow = FCF_OpenNewWindow
 local FCF_ResetChatWindows = FCF_ResetChatWindows
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local SetChatColorNameByClass = SetChatColorNameByClass
 local ChatFrame_AddChannel = ChatFrame_AddChannel
 local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
 local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
-local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
 local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEditBox
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
@@ -54,6 +55,17 @@ local ELV_TOONS = {
 	['Zinxbe-Spirestone']		= true,
 	['Whorlock-Spirestone']		= true,
 }
+
+local function ToggleChatColorNamesByClassGroup(checked, group)
+	local info = _G.ChatTypeGroup[group]
+	if info then
+		for _, value in pairs(info) do
+			SetChatColorNameByClass(strsub(value, 10), checked)
+		end
+	else
+		SetChatColorNameByClass(group, checked)
+	end
+end
 
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()

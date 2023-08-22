@@ -318,7 +318,7 @@ local function StripRegion(which, object, kill, zero)
 	elseif zero then
 		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
-		object:SetTexture('')
+		object:SetTexture(E.ClearTexture)
 		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')
@@ -375,11 +375,8 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs:SetShadowColor(0, 0, 0, 0)
 	end
 
-	-- convert because of bad values between versions
-	if style == 'NONE' and not E.Classic then
+	if style == 'NONE' or not style then
 		style = ''
-	elseif style == '' and E.Classic then
-		style = 'NONE'
 	end
 
 	fs:SetFont(font or E.media.normFont, size, style)

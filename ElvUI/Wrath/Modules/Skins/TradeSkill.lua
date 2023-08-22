@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strfind, unpack = strfind, unpack
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
@@ -73,35 +73,23 @@ function S:Blizzard_TradeSkillUI()
 
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
+
+		S:HandleCollapseTexture(button, nil, true)
+
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(14)
+			normal:SetPoint('LEFT', 2, 1)
+		end
+
 		local highlight = _G['TradeSkillSkill'..i..'Highlight']
-
-		button:GetNormalTexture():Size(14)
-		button:GetNormalTexture():SetPoint('LEFT', 2, 1)
-
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		if highlight then
+			highlight:SetTexture(E.ClearTexture)
+			highlight.SetTexture = E.noop
+		end
 	end
 
-	hooksecurefunc('TradeSkillFrame_Update', function()
-		for i = 1, _G.TRADE_SKILLS_DISPLAYED do
-			local button = _G['TradeSkillSkill'..i]
-			local texture = button:GetNormalTexture():GetTexture()
-			if texture then
-				if strfind(texture, 'MinusButton') then
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				end
-			end
-		end
-
-		if TradeSkillCollapseAllButton.collapsed then
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			TradeSkillCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-	end)
-
+	S:HandleCollapseTexture(_G.TradeSkillCollapseAllButton, nil, true)
 	S:HandleScrollBar(_G.TradeSkillListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TradeSkillDetailScrollFrameScrollBar)
 

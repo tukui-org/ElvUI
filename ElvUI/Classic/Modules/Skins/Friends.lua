@@ -22,26 +22,6 @@ local function skinFriendRequest(frame)
 	frame.isSkinned = true
 end
 
-local function SkinPlusMinus(button, minus)
-	local texture = E.Media.Textures.PlusButton
-	if minus then
-		texture = E.Media.Textures.MinusButton
-	end
-
-	button:SetNormalTexture(texture)
-	button.SetNormalTexture = E.noop
-
-	button:SetPushedTexture(texture)
-	button.SetPushedTexture = E.noop
-
-	button:SetHighlightTexture(E.ClearTexture)
-	button.SetHighlightTexture = E.noop
-
-	button:SetDisabledTexture(texture)
-	button.SetDisabledTexture = E.noop
-	button:GetDisabledTexture():SetDesaturated(true)
-end
-
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
@@ -57,6 +37,14 @@ function S:FriendsFrame()
 	for i = 1, #_G.FRIENDSFRAME_SUBFRAMES do
 		S:HandleTab(_G['FriendsFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.FriendsFrameTab1:ClearAllPoints()
+	_G.FriendsFrameTab1:Point('TOPLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -15, 0)
+	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab4, 'TOPRIGHT', -19, 0)
 
 	-- Friends List Frame
 	for i = 1, _G.FRIEND_HEADER_TAB_IGNORE do
@@ -286,7 +274,7 @@ function S:FriendsFrame()
 		end
 	end)
 
-	-- Guild Frame
+	-- Guild Frame (/groster)
 	_G.GuildFrame:StripTextures()
 
 	_G.GuildFrameColumnHeader3:ClearAllPoints()
@@ -398,6 +386,10 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildFrameAddMemberButton)
 	S:HandleButton(_G.GuildFrameControlButton)
 
+	if _G.GuildFrameImpeachButton then
+		S:HandleButton(_G.GuildFrameImpeachButton)
+	end
+
 	-- Member Detail Frame
 	_G.GuildMemberDetailFrame:StripTextures()
 	_G.GuildMemberDetailFrame:CreateBackdrop('Transparent')
@@ -411,6 +403,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildMemberGroupInviteButton)
 	_G.GuildMemberGroupInviteButton:Point('BOTTOMRIGHT', -3, 3)
 
+	-- Not the reason of the taint
 	S:HandleNextPrevButton(_G.GuildFramePromoteButton, 'up')
 	_G.GuildFramePromoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFramePromoteButton:SetPoint('TOPLEFT', _G.GuildMemberDetailFrame, 'TOPLEFT', 155, -68)
@@ -425,7 +418,6 @@ function S:FriendsFrame()
 	_G.GuildMemberNoteBackground.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
 	_G.PersonalNoteText:Point('TOPLEFT', 4, -4)
-	_G.PersonalNoteText:Width(197)
 
 	_G.GuildMemberOfficerNoteBackground:StripTextures()
 	_G.GuildMemberOfficerNoteBackground:CreateBackdrop()
@@ -462,7 +454,7 @@ function S:FriendsFrame()
 	_G.GuildInfoSaveButton:ClearAllPoints()
 	_G.GuildInfoSaveButton:Point('RIGHT', _G.GuildInfoCancelButton, 'LEFT', -4, 0)
 
-	-- Control Frame
+	-- Guild Control Frame (Guild Master Only)
 	_G.GuildControlPopupFrame:StripTextures()
 	_G.GuildControlPopupFrame:CreateBackdrop('Transparent')
 	_G.GuildControlPopupFrame.backdrop:Point('TOPLEFT', 3, 0)
@@ -470,11 +462,11 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.GuildControlPopupFrameDropDown, 185)
 	_G.GuildControlPopupFrameDropDownButton:Size(18)
 
-	SkinPlusMinus(_G.GuildControlPopupFrameAddRankButton)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameAddRankButton, nil, true)
 	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropDown, 'RIGHT', -8, 3)
 
-	SkinPlusMinus(_G.GuildControlPopupFrameRemoveRankButton, true)
-	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 4, 0)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameRemoveRankButton, nil, true)
+	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 2, 0)
 
 	_G.GuildControlPopupFrameEditBox:StripTextures()
 

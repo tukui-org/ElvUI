@@ -8,9 +8,8 @@ local hooksecurefunc = hooksecurefunc
 
 local function LFGTabs()
 	_G.LFGParentFrameTab1:ClearAllPoints()
-	_G.LFGParentFrameTab1:Point('TOPLEFT', _G.LFGParentFrame, 'BOTTOMLEFT', 4, 74)
-	_G.LFGParentFrameTab2:ClearAllPoints()
-	_G.LFGParentFrameTab2:Point('LEFT', _G.LFGParentFrameTab1, 'RIGHT', -14, 0)
+	_G.LFGParentFrameTab1:Point('TOPLEFT', _G.LFGParentFrame, 'BOTTOMLEFT', 1, 72)
+	_G.LFGParentFrameTab2:Point('TOPLEFT', _G.LFGParentFrameTab1, 'TOPRIGHT', -19, 0)
 end
 
 function S:Blizzard_LookingForGroupUI()
@@ -86,7 +85,7 @@ function S:Blizzard_LookingForGroupUI()
 
 	-- Refresh
 	S:HandleButton(_G.LFGBrowseFrameRefreshButton)
-	_G.LFGBrowseFrameRefreshButton:Size(22, 22)
+	_G.LFGBrowseFrameRefreshButton:Size(22)
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 

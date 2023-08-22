@@ -368,7 +368,7 @@ function PI:CreateFrame()
 	S:HandleCloseButton(close)
 
 	f.pending = CreateFrame('Frame', 'PluginInstallPendingButton', f)
-	f.pending:Size(20, 20)
+	f.pending:Size(20)
 	f.pending:Point('TOPLEFT', f, 'TOPLEFT', 8, -8)
 	f.pending.tex = f.pending:CreateTexture(nil, 'OVERLAY')
 	f.pending.tex:Point('TOPLEFT', f.pending, 'TOPLEFT', 2, -2)

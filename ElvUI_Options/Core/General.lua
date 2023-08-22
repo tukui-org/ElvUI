@@ -31,7 +31,7 @@ local GenGen = General.general.args
 
 GenGen.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
 GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
-GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.1, max = 0.5, step = 0.01, bigStep = 0.1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
+GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.05, max = 0.5, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
 GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
 GenGen.taintLog = ACH:Toggle(L["Log Taints"], L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."], 5)
@@ -145,9 +145,11 @@ Cosmetic.bordersGroup.args.cropIcon = ACH:Toggle(L["Crop Icons"], L["This is for
 Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value end)
 Cosmetic.customGlowGroup.inline = true
 Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
-Cosmetic.customGlowGroup.args.speed = ACH:Range(L["SPEED"], nil, 2, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
+Cosmetic.customGlowGroup.args.speed = ACH:Range(L["SPEED"], nil, 2, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style == 'Proc Glow' end)
+Cosmetic.customGlowGroup.args.duration = ACH:Range(L["SPEED"], nil, 2, { min = 0.1, max = 2, step = 0.1 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Proc Glow' end)
 Cosmetic.customGlowGroup.args.size = ACH:Range(L["Size"], nil, 3, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Pixel Glow' end)
 Cosmetic.customGlowGroup.args.lines = ACH:Range(function() return E.db.general.customGlow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 4, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local style = E.db.general.customGlow.style return style ~= 'Pixel Glow' and style ~= 'Autocast Shine' end)
+Cosmetic.customGlowGroup.args.startAnimation = ACH:Toggle(L["Start Animation"], nil, 5, nil, nil, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Proc Glow' end)
 Cosmetic.customGlowGroup.args.spacer1 = ACH:Spacer(10, 'full', function() return E.db.general.customGlow.style == 'Action Button Glow' end)
 Cosmetic.customGlowGroup.args.useColor = ACH:Toggle(L["Custom Color"], nil, 11)
 Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() end, function() return not E.db.general.customGlow.useColor end)
@@ -169,8 +171,9 @@ Cosmetic.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, {
 Cosmetic.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
 Cosmetic.afkGroup.inline = true
 Cosmetic.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
-Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 3, function() AFK:ResetChatPosition(true) end)
+Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the camera spin on the AFK screen."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
+Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
+Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true
@@ -224,7 +227,7 @@ blizz.general.inline = true
 blizz.quest = ACH:Group(L["Quests"], nil, 2)
 blizz.quest.args.questRewardMostValueIcon = ACH:Toggle(L["Mark Quest Reward"], L["Marks the most valuable quest reward with a gold coin."], 1)
 blizz.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
-blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 1, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, E.Retail or E.Wrath)
+blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 1, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, not E.Classic)
 blizz.quest.inline = true
 
 blizz.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 3, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value Misc:UpdateLootRollFrames() end)
@@ -259,10 +262,10 @@ blizz.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Si
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 blizz.itemLevelInfo.args.fontGroup.inline = true
 
-blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')) end, not (E.Retail or E.Wrath))
-blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:SetObjectiveFrameAutoHide() end, nil, not (E.Retail or E.Wrath))
+blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, nil, function() return Blizzard:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Wrath))
+blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:ObjectiveTracker_AutoHide() end, nil, not (E.Retail or E.Wrath))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or not E.db.general.objectiveFrameAutoHide end)
-blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:SetObjectiveFrameHeight() end, nil, not E.Wrath)
+blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:ObjectiveTracker_SetHeight() end, nil, not E.Wrath)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 
 blizz.addonCompartment = ACH:Group(L["Addon Compartment"], nil, 6, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; Blizzard:HandleAddonCompartment() end, nil, not E.Retail)

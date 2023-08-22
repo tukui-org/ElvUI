@@ -93,7 +93,7 @@ function S:AddonList()
 	S:HandleDropDownBox(_G.AddonCharacterDropDown, 165)
 	S:HandleTrimScrollBar(_G.AddonList.ScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:Size(26, 26)
+	_G.AddonListForceLoad:Size(26)
 
 	hooksecurefunc('AddonList_InitButton', HandleButton)
 end

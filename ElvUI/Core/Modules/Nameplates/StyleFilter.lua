@@ -96,7 +96,7 @@ mod.TriggerConditions = {
 		[2] = 'goodTransition',
 		[3] = 'bad'
 	},
-	difficulties = {
+	difficulties = { -- also has IDs maintained in Difficulty Datatext
 		-- dungeons
 		[1] = 'normal',
 		[2] = 'heroic',
@@ -106,6 +106,7 @@ mod.TriggerConditions = {
 		-- raids
 		[7] = 'lfr',
 		[17] = 'lfr',
+		[151] = 'timewalking', -- lfr
 		[14] = 'normal',
 		[15] = 'heroic',
 		[16] = 'mythic',
@@ -114,14 +115,39 @@ mod.TriggerConditions = {
 		[4] = 'legacy25normal',
 		[5] = 'legacy10heroic',
 		[6] = 'legacy25heroic',
+		-- pvp
+		[25] = 'pvp', -- Scenario: World PvP
+		[29] = 'pvp', -- Scenario: PvEvP
+		[32] = 'pvp', -- Scenario: World PvP
+		[34] = 'pvp',
+		[45] = 'pvp', -- Scenario: PvP
+		-- scenario
+		[11] = 'scenario', -- Scenario: Heroic
+		[12] = 'scenario', -- Scenario: Normal
+		[30] = 'scenario', -- Event
+		[38] = 'scenario', -- Normal
+		[39] = 'scenario', -- Heroic
+		[40] = 'scenario', -- Mythic
+		[147] = 'scenario', -- Warfronts
+		[149] = 'scenario', -- Warfronts: Heroic
+		[152] = 'scenario', -- Visions of N'Zoth
+		[153] = 'scenario', -- Teeming Island
+		-- event
+		[18] = 'event', -- raid
+		[19] = 'event', -- party
+		[20] = 'event', -- scenario
 		-- classic / tbc
 		[9] = 'legacy40normal',
 		[148] = 'legacy20normal',
 		[173] = 'normal',
 		[174] = 'heroic',
-		-- wotlk (pretty sure)
-		--[175] = 'legacy10heroic',
-		--[176] = 'legacy25heroic',
+		[185] = 'legacy20normal',
+		[186] = 'legacy40normal',
+		-- wotlk
+		[175] = 'legacy10normal',
+		[176] = 'legacy25normal',
+		[193] = 'legacy10heroic',
+		[194] = 'legacy25heroic'
 	}
 }
 

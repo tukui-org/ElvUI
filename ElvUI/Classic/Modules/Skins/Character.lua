@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, pairs, strfind = unpack, pairs, strfind
+local unpack, pairs = unpack, pairs
 
 local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
@@ -21,6 +21,21 @@ local ResistanceCoords = {
 	[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
 	[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
+
+local function HandleHappiness(frame)
+	local happiness = GetPetHappiness()
+	local _, isHunterPet = HasPetUI()
+	if not (happiness and isHunterPet) then return end
+
+	local texture = frame:GetRegions()
+	if happiness == 1 then
+		texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
+	elseif happiness == 2 then
+		texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
+	elseif happiness == 3 then
+		texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
+	end
+end
 
 local function HandleResistanceFrame(frameName)
 	for i = 1, 5 do
@@ -54,11 +69,25 @@ function S:CharacterFrame()
 
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
+	_G.PaperDollFrame:StripTextures()
+
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
-	_G.PaperDollFrame:StripTextures()
+	-- Reposition Tabs
+	_G.CharacterFrameTab1:ClearAllPoints()
+	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+
+	if E.myclass == 'HUNTER' or E.myclass == 'WARLOCK' then
+		_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -19, 0)
+	else
+		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+	end
+
+	_G.CharacterFrameTab4:Point('TOPLEFT', _G.CharacterFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab5:Point('TOPLEFT', _G.CharacterFrameTab4, 'TOPRIGHT', -19, 0)
 
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
@@ -126,21 +155,6 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
 	_G.PetPaperDollFrameExpBar:CreateBackdrop()
 
-	local function updHappiness(self)
-		local happiness = GetPetHappiness()
-		local _, isHunterPet = HasPetUI()
-		if not (happiness and isHunterPet) then return end
-
-		local texture = self:GetRegions()
-		if happiness == 1 then
-			texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
-		elseif happiness == 2 then
-			texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
-		elseif happiness == 3 then
-			texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
-		end
-	end
-
 	local PetPaperDollPetInfo = _G.PetPaperDollPetInfo
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
@@ -149,8 +163,8 @@ function S:CharacterFrame()
 	PetPaperDollPetInfo:Size(24)
 
 	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
-	PetPaperDollPetInfo:SetScript('OnEvent', updHappiness)
-	PetPaperDollPetInfo:SetScript('OnShow', updHappiness)
+	PetPaperDollPetInfo:SetScript('OnEvent', HandleHappiness)
+	PetPaperDollPetInfo:SetScript('OnShow', HandleHappiness)
 
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
@@ -226,17 +240,9 @@ function S:CharacterFrame()
 	_G.SkillFrameExpandButtonFrame:DisableDrawLayer('BACKGROUND')
 	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
 	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
-
 	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
-	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if strfind(_G.SkillFrameCollapseAllButton:GetNormalTexture():GetTexture(), 'MinusButton') then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
-
+	S:HandleCollapseTexture(_G.SkillFrameCollapseAllButton, nil, true)
 	S:HandleButton(_G.SkillFrameCancelButton)
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
@@ -254,16 +260,8 @@ function S:CharacterFrame()
 
 		label:GetNormalTexture():Size(14)
 		label:SetHighlightTexture(E.ClearTexture)
+		S:HandleCollapseTexture(label, nil, true)
 	end
-
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex, numSkills)
-		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		if strfind(skillLine:GetNormalTexture():GetTexture(), 'MinusButton') then
-			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
-			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
 
 	_G.SkillListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.SkillListScrollFrameScrollBar)

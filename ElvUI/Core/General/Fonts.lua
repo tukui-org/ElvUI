@@ -7,11 +7,8 @@ local strmatch = strmatch
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	if not obj then return end
 
-	-- convert because of bad values between versions
-	if (style == 'NONE' or not style) and not E.Classic then
+	if style == 'NONE' or not style then
 		style = ''
-	elseif (style == '' or not style) and E.Classic then
-		style = 'NONE'
 	end
 
 	obj:SetFont(font, size, style)

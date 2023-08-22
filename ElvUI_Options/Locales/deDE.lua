@@ -248,6 +248,7 @@ L["Buttons"] = "Tasten"
 L["By Type"] = "Nach Typ"
 L["Calendar Frame"] = "Kalenderfenster"
 L["Camera Distance Scale"] = "Kameradistanz"
+L["Camera Spin"] = true
 L["Camera"] = "Kamera"
 L["Can Attack"] = "Kann angreifen"
 L["Can Not Attack"] = "Kann nicht angreifen"
@@ -627,7 +628,6 @@ L["Filter Priority"] = "Filter Priorität"
 L["Filter Search"] = "Filter Suche"
 L["Filter Type"] = "Filter Typ"
 L["Filters Page"] = "Filter Seite"
-L["FILTERS"] = "Filter"
 L["Filters"] = "Filter"
 L["Flash Client Icon"] = "Blinkendes Clientsymbol"
 L["Flash Invites"] = "Blinkende Einladungen"
@@ -1727,6 +1727,7 @@ L["Toggle Anchors"] = "Ankerpunkte umschalten"
 L["Toggle Off While In Combat"] = "Im Kampf ausblenden"
 L["Toggle On While In Combat"] = "Im Kampf einblenden"
 L["Toggle showing of the left and right chat panels."] = "Aktiviere den Hintergrund des linken und rechten Chatfensters"
+L["Toggle the camera spin on the AFK screen."] = true
 L["Toggle the chat tab panel backdrop."] = "Aktiviere den Hintergrund der oberen Tableisten der Chatfenster"
 L["Toggle Tutorials"] = "Tutorial starten"
 L["Tooltip Body"] = "Tooltip Körper"
@@ -1934,15 +1935,6 @@ L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."
 L["TOOLTIP_DESC"] = "Konfiguriere die Einstellungen für Tooltips."
 L["UNITFRAME_DESC"] = "Konfiguriere die Einstellungen für die Einheitenfenster."
 L["VISIBILITY_DESC"] = "Das folgende Makro muss wahr sein um die Gruppe anzuzeigen. Dies gilt zusätzlich zu jeglichem Filter der möglicherweise bereits eingestellt ist."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste zu wechseln.
- Beispiel: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[Dieses funktioniert wie ein Makro, du kannst verschiedene Situationen haben um die Aktionsleiste ein-/auszublenden.
- Beispiel: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[Gib einen Dateinamen im World of Warcraft Verzeichnis an. Textures Ordner, den du als Fensterhintergrund eingestellt haben willst.
 
 Bitte beachten:
@@ -1953,3 +1945,28 @@ Bitte beachten:
 Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
+
+----------  FilterHelp  ----------
+L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = true
+L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = true
+L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = true
+L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
+L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
+L["*Personal:|r ^Auras cast by yourself.|r"] = true
+L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
+L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
+L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
+L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
+L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = true
+L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = true
+L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = true
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = true
+L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
+L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
+L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true
+----------------------------------

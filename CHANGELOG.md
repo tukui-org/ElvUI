@@ -1,3 +1,27 @@
+## Version 13.39 \[ August 22nd 2023 \]
+*   Custom Glow: Proc Glow settings are active (custom color, speed, and start animation).
+*   Adjusted Scale of LFG Queue checkboxes so that glow looks normal.
+*   Aura Indicator protected from missing offsets due to defaults being adjusted.
+*   Objective Tracker Auto Hide should work again (also it works on Wrath for Arenas now).
+*   Transmogrify Tutorial button wasn't hidden with Disable Tutorials Buttons.
+*   Bag Indicator for showing if a Bag is hidden wasn't appearing.
+*   Gold can be picked up from the Bags by clicking on the text.
+*   Tooltip Level line on Russian client was incorrect.
+*   Classic Era: Actionbars to show count for spells that require reagents.
+*   Actionbars now handle fading better with Dragon-flying.
+*   Added Evoker Time Dilation to TurtleBuffs (Thanks wing5wong).
+*   Added Dawn of the Infinite auras to Raid Buffs and Debuffs.
+*   Tag Update Rate default changed to 0.2 and minimum value lowered to 0.05
+*   Custom Text max font size increased to 128.
+*   Reputation Databars will display Paragon when met instead of Renown.
+*   Reputation Databars displaying friendship factions should display their information correctly on the tooltip.
+*   Reputation Databars not showing as full when capped.
+*   AFK mode now has an option to stop the spinning.
+*   **Unitframe Fader:**
+    *   Added support being out of an Instance (as None).
+    *   Prevented it from failing to trigger properly when reloading in an Instance in some setups.
+    *   Difficulty IDs updated, as well on Nameplate StyleFilters.
+
 ## Version 13.38 \[ July 13th 2023 \]
 *   Additional Power Tags should be functioning properly again.
 *   Protected plugins from accidently breaking Ready Check icons.

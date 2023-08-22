@@ -204,15 +204,20 @@ function S:LookingForGroupFrames()
 		_G.LFGListApplicationDialog.TankButton,
 		_G.LFGListApplicationDialog.HealerButton,
 		_G.LFGListApplicationDialog.DamagerButton,
+
+		-- these three arent scaled to 0.7
 		_G.RolePollPopupRoleButtonTank,
 		_G.RolePollPopupRoleButtonHealer,
 		_G.RolePollPopupRoleButtonDPS,
 	}) do
 		local checkButton = roleButton.checkButton or roleButton.CheckButton
+		if checkButton:GetScale() ~= 1 then
+			checkButton:SetScale(1)
+		end
 
 		S:HandleCheckBox(checkButton, nil, nil, true)
 		checkButton.backdrop:SetInside()
-		checkButton:Size(20)
+		checkButton:Size(18)
 	end
 
 	hooksecurefunc('SetCheckButtonIsRadio', function(button)
@@ -508,7 +513,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
 
