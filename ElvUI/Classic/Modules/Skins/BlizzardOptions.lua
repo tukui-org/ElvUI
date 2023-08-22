@@ -224,7 +224,10 @@ function S:BlizzardOptions()
 			for index in next, frame.boxTable do
 				local box = _G[boxName..index]
 				if box then
-					box.NineSlice:SetTemplate('Transparent')
+					if box.NineSlice then
+						box.NineSlice:SetTemplate('Transparent')
+					end
+
 					if box.Button then
 						S:HandleButton(box.Button)
 					end
