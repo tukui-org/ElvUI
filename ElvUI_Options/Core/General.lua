@@ -65,7 +65,7 @@ GenGen.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Aut
 GenGen.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })
 
-GenGen.totems = ACH:Group(L["Totem Tracker"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TotemTracker:PositionAndSize() end)
+GenGen.totems = ACH:Group(L["Totem Tracker"], nil, 70, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TotemTracker:PositionAndSize() end, nil, E.Classic)
 GenGen.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemTracker end, function(_, value) E.private.general.totemTracker = value; E.ShowPopup = true end)
 GenGen.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 2, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 GenGen.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 3, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
