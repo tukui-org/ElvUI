@@ -274,7 +274,7 @@ function S:FriendsFrame()
 		end
 	end)
 
-	-- Guild Frame
+	-- Guild Frame (/groster)
 	_G.GuildFrame:StripTextures()
 
 	_G.GuildFrameColumnHeader3:ClearAllPoints()
@@ -403,6 +403,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.GuildMemberGroupInviteButton)
 	_G.GuildMemberGroupInviteButton:Point('BOTTOMRIGHT', -3, 3)
 
+	-- Not the reason of the taint
 	S:HandleNextPrevButton(_G.GuildFramePromoteButton, 'up')
 	_G.GuildFramePromoteButton:SetHitRectInsets(0, 0, 0, 0)
 	_G.GuildFramePromoteButton:SetPoint('TOPLEFT', _G.GuildMemberDetailFrame, 'TOPLEFT', 155, -68)
@@ -417,7 +418,6 @@ function S:FriendsFrame()
 	_G.GuildMemberNoteBackground.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
 	_G.PersonalNoteText:Point('TOPLEFT', 4, -4)
-	_G.PersonalNoteText:Width(197)
 
 	_G.GuildMemberOfficerNoteBackground:StripTextures()
 	_G.GuildMemberOfficerNoteBackground:CreateBackdrop()
@@ -454,7 +454,7 @@ function S:FriendsFrame()
 	_G.GuildInfoSaveButton:ClearAllPoints()
 	_G.GuildInfoSaveButton:Point('RIGHT', _G.GuildInfoCancelButton, 'LEFT', -4, 0)
 
-	-- Control Frame
+	-- Guild Control Frame (Guild Master Only)
 	_G.GuildControlPopupFrame:StripTextures()
 	_G.GuildControlPopupFrame:CreateBackdrop('Transparent')
 	_G.GuildControlPopupFrame.backdrop:Point('TOPLEFT', 3, 0)
@@ -466,7 +466,7 @@ function S:FriendsFrame()
 	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropDown, 'RIGHT', -8, 3)
 
 	S:HandleCollapseTexture(_G.GuildControlPopupFrameRemoveRankButton, nil, true)
-	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 4, 0)
+	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 2, 0)
 
 	_G.GuildControlPopupFrameEditBox:StripTextures()
 
