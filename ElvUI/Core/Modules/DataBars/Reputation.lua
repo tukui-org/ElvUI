@@ -4,6 +4,7 @@ local DB = E:GetModule('DataBars')
 local _G = _G
 local format = format
 local ipairs = ipairs
+local huge = math.huge
 
 local GameTooltip = GameTooltip
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -52,7 +53,7 @@ function DB:ReputationBar_Update()
 
 	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
-		standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or -1, info.standing or 1
+		standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
 
 	if not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
@@ -84,10 +85,10 @@ function DB:ReputationBar_Update()
 	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
 	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
-	local total = maxValue > 0 and maxValue or 1 -- we need to correct the min/max of friendship factions to display the bar at 100%
+	local total = maxValue == huge and 1 or maxValue -- we need to correct the min/max of friendship factions to display the bar at 100%
 
 	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
-	bar:SetMinMaxValues((minValue == maxValue or maxValue == -1) and 0 or minValue, total) -- we force min to 0 because the min will match max when a rep is maxed and cause the bar to be 0%
+	bar:SetMinMaxValues((maxValue == huge or minValue == maxValue) and 0 or minValue, total) -- we force min to 0 because the min will match max when a rep is maxed and cause the bar to be 0%
 	bar:SetValue(curValue)
 
 	bar.Reward:ClearAllPoints()
@@ -158,7 +159,7 @@ function DB:ReputationBar_OnEnter()
 
 		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
-			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or -1, info.standing or 1
+			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 		end
 
 		if not standing then
@@ -178,7 +179,7 @@ function DB:ReputationBar_OnEnter()
 
 			local current, _, percent = GetValues(QuestRep, 0, maxValue)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
-		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and maxValue > 0 then
+		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and maxValue ~= huge then
 			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(curValue, minValue, maxValue)), 1, 1, 1)
 		end
 
