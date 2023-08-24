@@ -319,6 +319,9 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy
 		z['Simpy-Myzrael']			= itsSimpy -- Warlock
+		-- Luckyone
+		z["Luckyone-Nek'Rosh"]		= ElvGreen -- [Horde] Hunter
+		z["Luckyone-Stitches"]		= ElvGreen -- [Horde] Hunter
 	elseif E.Wrath then
 		-- Simpy
 		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
