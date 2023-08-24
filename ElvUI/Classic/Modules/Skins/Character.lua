@@ -243,7 +243,7 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
 	S:HandleCollapseTexture(_G.SkillFrameCollapseAllButton, nil, true)
-	S:HandleButton(_G.SkillFrameCancelButton)
+	_G.SkillFrameCancelButton:Kill() -- Random duplicate close button
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
 		local bar = _G['SkillRankFrame'..i]
