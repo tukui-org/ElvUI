@@ -276,8 +276,8 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
 	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
-	S:HandleButton(_G.SkillDetailStatusBarUnlearnButton)
-	_G.SkillDetailStatusBarUnlearnButton:Size(24)
+	_G.SkillDetailStatusBarUnlearnButton:CreateBackdrop('Transparent')
+	_G.SkillDetailStatusBarUnlearnButton:Size(26)
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
 
