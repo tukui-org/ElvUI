@@ -243,7 +243,7 @@ function S:CharacterFrame()
 	_G.SkillFrameCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
 	S:HandleCollapseTexture(_G.SkillFrameCollapseAllButton, nil, true)
-	S:HandleButton(_G.SkillFrameCancelButton)
+	_G.SkillFrameCancelButton:Kill() -- Random duplicate close button
 
 	for i = 1, _G.SKILLS_TO_DISPLAY do
 		local bar = _G['SkillRankFrame'..i]
@@ -276,8 +276,8 @@ function S:CharacterFrame()
 	E:RegisterStatusBar(_G.SkillDetailStatusBar)
 
 	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
-	S:HandleButton(_G.SkillDetailStatusBarUnlearnButton)
-	_G.SkillDetailStatusBarUnlearnButton:Size(24)
+	_G.SkillDetailStatusBarUnlearnButton:CreateBackdrop('Transparent')
+	_G.SkillDetailStatusBarUnlearnButton:Size(26)
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
 
