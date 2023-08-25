@@ -370,22 +370,21 @@ do --this can save some main file locals
 		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
 		z['Jahzzy-Garrosh']			= ElvRed	-- [Alliance] DK
-		-- Luckyone
-		z['Luckyone-LaughingSkull']		= ElvGreen -- [Horde] Druid
-		z['Luckypriest-LaughingSkull']	= ElvGreen -- [Horde] Priest
-		z['Luckymonkas-LaughingSkull']	= ElvGreen -- [Horde] Monk
-		z['Luckyhunter-LaughingSkull']	= ElvGreen -- [Horde] Hunter
-		z['Luckydh-LaughingSkull']		= ElvGreen -- [Horde] DH
-		z['Luckymage-LaughingSkull']	= ElvGreen -- [Horde] Mage
-		z['Luckypala-LaughingSkull']	= ElvGreen -- [Horde] Paladin
-		z['Luckyrogue-LaughingSkull']	= ElvGreen -- [Horde] Rogue
-		z['Luckywl-LaughingSkull']		= ElvGreen -- [Horde] Warlock
-		z['Luckydk-LaughingSkull']		= ElvGreen -- [Horde] DK
-		z['Luckyevoker-LaughingSkull']	= ElvGreen -- [Horde] Evoker
-		z['Notlucky-LaughingSkull']		= ElvGreen -- [Horde] Warrior
-		z['Unluckyone-LaughingSkull']	= ElvGreen -- [Horde] Shaman
-		z['Luckydruid-LaughingSkull']	= ElvGreen -- [Alliance] Druid
-		z['Lucky-LaughingSkull']		= ElvGreen -- [Horde] x
+		-- Luckyone (1598: LaughingSkull)
+		z['Player-1598-0F5E4639']	= ElvBlue -- [Horde] Druid: 	Luckyone
+		z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker: 	Luckyevoker
+		z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH: 		Luckydh
+		z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest: 	Luckypriest
+		z['Player-1598-0BEFA545']	= ElvBlue -- [Horde] Monk: 		Luckymonkas
+		z['Player-1598-0E1A06DE']	= ElvBlue -- [Horde] Rogue: 	Luckyrogue
+		z['Player-1598-0BF2E377']	= ElvBlue -- [Horde] Hunter: 	Luckyhunter
+		z['Player-1598-0BF18248']	= ElvBlue -- [Horde] DK: 		Luckydk
+		z['Player-1598-0BFABB95']	= ElvBlue -- [Horde] Mage: 		Luckymage
+		z['Player-1598-0E67511D']	= ElvBlue -- [Horde] Paladin: 	Luckypala
+		z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock: 	Luckywl
+		z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior: 	Notlucky
+		z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman: 	Unluckyone
+		z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid:	Luckydruid
 		-- Repooc
 		z['Sifpooc-Stormrage']			= itsPooc	-- [Alliance] DH
 		z['Fragmented-Stormrage']		= itsPooc	-- [Alliance] Warlock
