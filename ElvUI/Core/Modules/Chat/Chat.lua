@@ -3321,13 +3321,17 @@ function CH:FCFTab_UpdateColors(tab, selected)
 				tab:SetFormattedText(CH.TabStyles.NONE, tab.whisperName or name)
 			else
 				local color = CH.db.tabSelectorColor
-				local hexColor = E:RGBToHex(color.r, color.g, color.b)
+				local hexColor = color and E:RGBToHex(color.r, color.g, color.b) or '|cff4cff4c'
 				tab:SetFormattedText(CH.TabStyles[CH.db.tabSelector] or CH.TabStyles.ARROW1, hexColor, tab.whisperName or name, hexColor)
 			end
 
 			if CH.db.tabSelectedTextEnabled then
 				local color = CH.db.tabSelectedTextColor
-				tab.Text:SetTextColor(color.r, color.g, color.b)
+				if color then
+					tab.Text:SetTextColor(color.r, color.g, color.b)
+				else
+					tab.Text:SetTextColor(1, 1, 1)
+				end
 				return -- using selected text color
 			end
 		end
