@@ -404,5 +404,6 @@ function B:EnhanceColorPicker()
 	Picker:SetTemplate('Transparent')
 	Picker:SetClampedToScreen(true)
 	Picker:SetUserPlaced(true)
+	Picker:SetDontSavePosition(true)
 	Picker:EnableKeyboard(false)
 end
