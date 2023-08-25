@@ -1684,7 +1684,9 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	end
 
 	--ambiguate guild chat names
-	arg2 = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
+	if arg2 then
+		arg2 = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
+	end
 
 	local info = arg12 and _G.ChatTypeInfo[chatType]
 	if info and _G.Chat_ShouldColorChatByClass(info) then
@@ -2204,7 +2206,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				end
 			else
 				if not showLink or arg2 == '' then
-					if chatType == 'TEXT_EMOTE' then
+					if chatType == 'TEXT_EMOTE' or chatType == 'GUILD_DEATHS' then
 						body = message
 					else
 						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..arg2, arg2)
