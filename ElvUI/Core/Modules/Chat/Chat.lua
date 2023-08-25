@@ -318,16 +318,16 @@ do --this can save some main file locals
 	specialChatIcons = z
 
 	if E.Classic then
-		-- Simpy
-		z['Simpy-Myzrael']			= itsSimpy -- Warlock
-		-- Luckyone
-		z["Luckyone-Nek'Rosh"]		= ElvGreen -- [Horde] Hunter
+		-- Simpy (5099: Myzrael)
+		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
+		-- Luckyone (5261: Nek'Rosh)
+		z['Player-5261-019F4B67']	= ElvGreen -- [Horde] Hunter: Luckyone
 		z["Luckyone-Stitches"]		= ElvGreen -- [Horde] Hunter
 	elseif E.Wrath then
-		-- Simpy
-		z['Cutepally-Myzrael']		= itsSimpy -- Paladin
-		z['Kalline-Myzrael']		= itsSimpy -- Shaman
-		z['Imsojelly-Myzrael']		= itsSimpy -- [Horde] DK
+		-- Simpy (4373: Myzrael)
+		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
+		z['Player-4373-032FFEE2']		= itsSimpy -- Shaman:		Kalline
+		z['Player-4373-03351BC7']		= itsSimpy -- [Horde] DK:	Imsojelly
 		-- Luckyone
 		z['Luckyone-Gehennas']		= ElvGreen -- [Horde] Hunter
 		z['Luckygrip-Gehennas']		= ElvGreen -- [Horde] DK
@@ -394,35 +394,35 @@ do --this can save some main file locals
 		z['Sifupooc-Stormrage']			= itsPooc	-- [Alliance] Monk
 		z['Pooc-Stormrage']				= itsPooc	-- [Alliance] Paladin
 		z['Repøøc-Stormrage']			= itsPooc	-- [Alliance] Shaman
-		-- Simpy
-		z['Arieva-Cenarius']			= itsSimpy -- Hunter
-		z['Buddercup-Cenarius']			= itsSimpy -- Rogue
-		z['Cutepally-Cenarius']			= itsSimpy -- Paladin
-		z['Cuddle-Cenarius']			= itsSimpy -- Mage
-		z['Ezek-Cenarius']				= itsSimpy -- DK
-		z['Glice-Cenarius']				= itsSimpy -- Warrior
-		z['Kalline-Cenarius']			= itsSimpy -- Shaman
-		z['Puttietat-Cenarius']			= itsSimpy -- Druid
-		z['Simpy-Cenarius']				= itsSimpy -- Warlock
-		z['Twigly-Cenarius']			= itsSimpy -- Monk
-		z['Imsofire-Cenarius']			= itsSimpy -- [Horde] Evoker
-		z['Imsobeefy-Cenarius']			= itsSimpy -- [Horde] Shaman
-		z['Imsocheesy-Cenarius']		= itsSimpy -- [Horde] Priest
-		z['Imsojelly-Cenarius']			= itsSimpy -- [Horde] DK
-		z['Imsojuicy-Cenarius']			= itsSimpy -- [Horde] Druid
-		z['Imsopeachy-Cenarius']		= itsSimpy -- [Horde] DH
-		z['Imsosalty-Cenarius']			= itsSimpy -- [Horde] Paladin
-		z['Imsospicy-Cenarius']			= itsSimpy -- [Horde] Mage
-		z['Imsonutty-Cenarius']			= itsSimpy -- [Horde] Hunter
-		z['Imsotasty-Cenarius']			= itsSimpy -- [Horde] Monk
-		z['Imsosaucy-Cenarius']			= itsSimpy -- [Horde] Warlock
-		z['Imsodrippy-Cenarius']		= itsSimpy -- [Horde] Rogue
-		z['Lumee-CenarionCircle']		= itsSimpy -- [RP] Evoker
-		z['Bunne-CenarionCircle']		= itsSimpy -- [RP] Warrior
-		z['Loppie-CenarionCircle']		= itsSimpy -- [RP] Monk
-		z['Loppybunny-CenarionCircle']	= itsSimpy -- [RP] Mage
-		z['Rubee-CenarionCircle']		= itsSimpy -- [RP] DH
-		z['Wennie-CenarionCircle']		= itsSimpy -- [RP] Priest
+		-- Simpy (1168: Cenarius, 125: Cenarion Circle)
+		z['Player-1168-069A1283']		= itsSimpy -- Hunter:	Arieva
+		z['Player-1168-0698394A']		= itsSimpy -- Rogue:	Buddercup
+		z['Player-1168-069A3A12']		= itsSimpy -- Paladin:	Cutepally
+		z['Player-1168-0A99F54B']		= itsSimpy -- Mage:		Cuddle
+		z['Player-1168-0680170F']		= itsSimpy -- DK:		Ezek
+		z['Player-1168-06981C6F']		= itsSimpy -- Warrior:	Glice
+		z['Player-1168-0698066B']		= itsSimpy -- Shaman:	Kalline
+		z['Player-1168-06989ADF']		= itsSimpy -- Druid:	Puttietat
+		z['Player-1168-069837CD']		= itsSimpy -- Warlock:	Simpy
+		z['Player-1168-06984CD4']		= itsSimpy -- Monk:		Twigly
+		z['Player-1168-0A98C560']		= itsSimpy -- [Horde] Evoker:	Imsofire
+		z['Player-1168-090A34ED']		= itsSimpy -- [Horde] Shaman:	Imsobeefy
+		z['Player-1168-090A34E6']		= itsSimpy -- [Horde] Priest:	Imsocheesy
+		z['Player-1168-069838E1']		= itsSimpy -- [Horde] DK:		Imsojelly
+		z['Player-1168-0870FBCE']		= itsSimpy -- [Horde] Druid:	Imsojuicy
+		z['Player-1168-07C00783']		= itsSimpy -- [Horde] DH:		Imsopeachy
+		z['Player-1168-07B41C4C']		= itsSimpy -- [Horde] Paladin:	Imsosalty
+		z['Player-1168-0870F320']		= itsSimpy -- [Horde] Mage:		Imsospicy
+		z['Player-1168-0A395531']		= itsSimpy -- [Horde] Hunter:	Imsonutty
+		z['Player-1168-0A395540']		= itsSimpy -- [Horde] Monk:		Imsotasty
+		z['Player-1168-0A39554F']		= itsSimpy -- [Horde] Warlock:	Imsosaucy
+		z['Player-1168-0A395551']		= itsSimpy -- [Horde] Rogue:	Imsodrippy
+		z['Player-125-0A62DE05']		= itsSimpy -- [RP] Evoker:	Lumee
+		z['Player-125-09A7F9ED']		= itsSimpy -- [RP] Warrior:	Bunne
+		z['Player-125-09A8CC43']		= itsSimpy -- [RP] Monk:	Loppie
+		z['Player-125-09A7EB72']		= itsSimpy -- [RP] Mage:	Loppybunny
+		z['Player-125-09A7DAD9']		= itsSimpy -- [RP] DH:		Rubee
+		z['Player-125-09A8E282']		= itsSimpy -- [RP] Priest:	Wennie
 		-- Melbelle (Simpys Bestie)
 		z['Melbelle-Bladefist']		= itsMel -- Hunter
 		z['Deathchaser-Bladefist']	= itsMel -- DH
@@ -1655,9 +1655,9 @@ function CH:AddPluginIcons(func)
 	tinsert(PluginIconsCalls, func)
 end
 
-function CH:GetPluginIcon(sender)
+function CH:GetPluginIcon(guid, sender)
 	for _, func in ipairs(PluginIconsCalls) do
-		local icon = func(sender)
+		local icon = func(guid) or func(sender)
 		if icon and icon ~= '' then
 			return icon
 		end
@@ -2161,7 +2161,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Player Flags
 			local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 			if not isMonster then
-				local chatIcon, pluginChatIcon = specialChatIcons[playerName], CH:GetPluginIcon(playerName)
+				local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 				if type(chatIcon) == 'function' then
 					local icon, prettify, var1, var2, var3 = chatIcon()
 					if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not CH:MessageIsProtected(message) then
