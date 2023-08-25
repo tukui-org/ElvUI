@@ -358,14 +358,14 @@ do --this can save some main file locals
 		z['Chazii-Silvermoon']	= ElvBlue -- Shaman
 		-- Merathilis
 		z['Asragoth-Shattrath']		= ElvPurple	-- [Alliance] Warlock
-		z['Brítt-Shattrath'] 		= ElvBlue	-- [Alliance] Warrior
+		z['Player-1401-0421EB9F'] 	= ElvBlue	-- [Alliance] Warrior:	Brìtt
 		z['Damará-Shattrath']		= ElvRed	-- [Alliance] Paladin
 		z['Jazira-Shattrath']		= ElvBlue	-- [Alliance] Priest
 		z['Jústice-Shattrath']		= ElvYellow	-- [Alliance] Rogue
 		z['Maithilis-Shattrath']	= ElvGreen	-- [Alliance] Monk
 		z['Mattdemôn-Shattrath']	= ElvPurple	-- [Alliance] DH
 		z['Melisendra-Shattrath']	= ElvBlue	-- [Alliance] Mage
-		z['Merathilis-Shattrath']	= ElvOrange	-- [Alliance] Druid
+		z['Player-1401-04221546']	= ElvOrange	-- [Alliance] Druid:	Merathilis
 		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
 		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
 		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
