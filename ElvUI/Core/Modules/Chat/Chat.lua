@@ -1674,8 +1674,9 @@ end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
-	local chatType = strsub(event, 10)
+	if not arg2 then return end -- guild deaths is called here with no arg2
 
+	local chatType = strsub(event, 10)
 	local subType = strsub(chatType, 1, 7)
 	if subType == 'WHISPER' then
 		chatType = 'WHISPER'
@@ -1683,21 +1684,20 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		chatType = 'CHANNEL'..arg8
 	end
 
-	--ambiguate guild chat names
-	if arg2 then
-		arg2 = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
-	end
+	-- ambiguate guild chat names
+	local name = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
-	local info = arg12 and _G.ChatTypeInfo[chatType]
+	-- handle the class color
+	local info = name and arg12 and _G.ChatTypeInfo[chatType]
 	if info and _G.Chat_ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
-		local classColor = data and data.classColor
-		if classColor then
-			return format('|cff%.2x%.2x%.2x%s|r', classColor.r*255, classColor.g*255, classColor.b*255, arg2)
+		local color = data and data.classColor
+		if color then
+			return format('|cff%.2x%.2x%.2x%s|r', color.r*255, color.g*255, color.b*255, name)
 		end
 	end
 
-	return arg2
+	return name
 end
 
 --Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
