@@ -356,7 +356,7 @@ do --this can save some main file locals
 		-- Blazeflack
 		z['Blazii-Silvermoon']	= ElvBlue -- Priest
 		z['Chazii-Silvermoon']	= ElvBlue -- Shaman
-		-- Merathilis
+		-- Merathilis (1401: Shattrath)
 		z['Asragoth-Shattrath']		= ElvPurple	-- [Alliance] Warlock
 		z['Player-1401-0421EB9F'] 	= ElvBlue	-- [Alliance] Warrior:	Brìtt
 		z['Damará-Shattrath']		= ElvRed	-- [Alliance] Paladin
