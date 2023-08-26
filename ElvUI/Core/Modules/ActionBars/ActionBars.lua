@@ -1091,10 +1091,6 @@ do
 
 		AB:FixSpellBookTaint()
 
-		-- Spellbook open in combat taint, only happens sometimes
-		_G.MultiActionBar_HideAllGrids = E.noop
-		_G.MultiActionBar_ShowAllGrids = E.noop
-
 		-- shut down some events for things we dont use
 		_G.ActionBarController:UnregisterAllEvents()
 		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
