@@ -46,6 +46,10 @@ function E:Cooldown_OnUpdate(elapsed)
 		return 2
 	else
 		local now = GetTime()
+		if self.bugged then
+			now = time() - now
+		end
+
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -230,11 +234,13 @@ function E:OnSetCooldown(start, duration, modRate)
 		local now = GetTime()
 		if start <= (now + 1) then -- this second is for Target Aura
 			timer.endTime = start + duration
+			timer.bugged = nil
 		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
 			local startup = time() - now
 			local cdtime = (2 ^ 32) / 1000 - start
 			local startTime = startup - cdtime
 			timer.endTime = startTime + duration
+			timer.bugged = true
 		end
 
 		timer.endCooldown = timer.endTime - 0.05
