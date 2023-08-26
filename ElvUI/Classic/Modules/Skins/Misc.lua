@@ -8,12 +8,19 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 
+local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
+	if not skip then
+		button:Point(point, anchor, point2, 1, yoffset, true)
+	end
+end
+
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
 		return
 	end
 
-	local navButton = self.navList[#self.navList]
+	local total = #self.navList
+	local navButton = self.navList[total]
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		navButton:GetFontString():SetTextColor(1, 1, 1)
@@ -26,8 +33,13 @@ local function SkinNavBarButtons(self)
 			end
 		end
 
-		navButton.xoffset = 1
+		if total == 2 then
+			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
+			NavButtonXOffset(navButton, navButton:GetPoint())
+			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
+		end
 
+		navButton.xoffset = 1
 		navButton.isSkinned = true
 	end
 end

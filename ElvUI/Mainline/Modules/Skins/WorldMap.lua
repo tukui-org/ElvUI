@@ -46,7 +46,6 @@ function S:WorldMapFrame()
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 6, -8)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
-	WorldMapFrame.NavBar.homeButton.xoffset = 1
 	WorldMapFrame.NavBar.homeButton.text:FontTemplate()
 
 	-- Quest Frames
