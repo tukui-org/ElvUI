@@ -320,9 +320,9 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		-- Luckyone (5261: Nek'Rosh)
+		-- Luckyone (5261: Nek'Rosh, 5220: Stitches)
 		z['Player-5261-019F4B67']	= ElvBlue -- [Horde] Hunter: Luckyone
-		z["Luckyone-Stitches"]		= ElvBlue -- [Horde] Hunter
+		z['Player-5220-01A90DA4']	= ElvBlue -- [Horde] Hunter: Luckyone
 	elseif E.Wrath then
 		-- Simpy (4373: Myzrael)
 		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
