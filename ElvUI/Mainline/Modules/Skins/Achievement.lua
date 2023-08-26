@@ -9,7 +9,6 @@ local bitband = bit.band
 
 local CreateColor = CreateColor
 local hooksecurefunc = hooksecurefunc
-
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 

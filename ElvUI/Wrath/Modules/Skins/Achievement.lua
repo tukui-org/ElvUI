@@ -2,12 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs = pairs
 local unpack = unpack
-local pairs, select = pairs, select
+local select = select
+local bitband = bit.band
 
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
+
+local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
 local function blueBackdrop(frame)
@@ -385,11 +389,13 @@ function S:Blizzard_AchievementUI()
 		local numCriteria = GetAchievementNumCriteria(id)
 		local textStrings, metas, criteria, object = 0, 0
 		for i = 1, numCriteria do
-			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
+			local _, criteriaType, completed, _, _, _, flags, assetID = GetAchievementCriteriaInfo(id, i)
 			if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
 				metas = metas + 1
 				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
-			elseif criteriaType ~= 1 then
+			elseif bitband(flags, FLAG_PROGRESS_BAR) == FLAG_PROGRESS_BAR then
+				criteria, object = nil, nil
+			else
 				textStrings = textStrings + 1
 				criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
 			end
