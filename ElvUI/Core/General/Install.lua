@@ -108,6 +108,10 @@ function E:SetupChat(noDisplayMsg)
 		ChatFrame_AddMessageGroup(_G.ChatFrame1, v)
 	end
 
+	if E.ClassicHC then
+		ChatFrame_AddMessageGroup(_G.ChatFrame1, 'GUILD_DEATHS')
+	end
+
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 	ChatFrame_RemoveAllMessageGroups(rightChatFrame)
