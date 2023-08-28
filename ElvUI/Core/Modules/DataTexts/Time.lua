@@ -279,8 +279,8 @@ local function OnEnter()
 
 		sort(worldbossLockoutList, sortFunc)
 
-		for i = 1, #worldbossLockoutList do
-			local name, reset = unpack(worldbossLockoutList[i])
+		for _, info in next, worldbossLockoutList do
+			local name, reset = unpack(info)
 			if reset then
 				if not addedLine then
 					if DT.tooltip:NumLines() > 0 then
