@@ -70,8 +70,8 @@ for i = 1, _G.MAX_CLASSES do
 end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
-local spacingNormal = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softmax = 50, max = 100, step = 1 }
-local spacingLong = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softmax = 100, max = 500, step = 1 }
+local spacingNormal = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 50, max = 100, step = 1 }
+local spacingLong = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 100, max = 500, step = 1 }
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
