@@ -13,6 +13,7 @@ function E:PostAlertMove()
 	local AlertFrame = _G.AlertFrame
 	local AlertFrameMover = _G.AlertFrameMover
 
+	-- support for the Trading Post
 	local perks = _G.PerksProgramFrame
 	local perksFooter = perks and perks.FooterFrame
 	local perksAnchor = perksFooter and AlertFrame.baseAnchorFrame == perksFooter.RotateButtonContainer and perksFooter
