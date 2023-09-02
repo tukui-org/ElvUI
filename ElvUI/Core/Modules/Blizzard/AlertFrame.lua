@@ -25,7 +25,7 @@ function E:PostAlertMove()
 
 	if growUp then
 		POSITION, ANCHOR_POINT, Y_OFFSET, BASE_YOFFSET = 'BOTTOM', 'TOP', 5, perksAnchor and 40 or 0
-	else
+	else -- should match above in the cache
 		POSITION, ANCHOR_POINT, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', -5, 0
 	end
 
