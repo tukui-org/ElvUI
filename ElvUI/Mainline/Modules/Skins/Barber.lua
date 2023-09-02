@@ -46,6 +46,7 @@ function S:Blizzard_CharacterCustomize()
 
 					button.Popout:StripTextures()
 					button.Popout:SetTemplate('Transparent')
+					button.Popout:SetFrameStrata('TOOLTIP') -- to prevent text overlapping below the popout
 
 					S:HandleButton(button, nil, nil, nil, true)
 					button.backdrop:SetInside(nil, 4, 4)
