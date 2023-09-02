@@ -58,7 +58,7 @@ local function SetSelectedCategory(list)
 						local r, g, b, a = unpack(E.media.backdropfadecolor)
 						popout:StripTextures()
 						popout:SetTemplate('Transparent')
-						popout:SetBackdropColor(r, g, b, max(a, 0.8))
+						popout:SetBackdropColor(r, g, b, max(a, 0.7))
 					end
 
 					S:HandleButton(button, nil, nil, nil, true)
