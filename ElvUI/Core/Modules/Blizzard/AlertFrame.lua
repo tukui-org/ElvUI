@@ -45,6 +45,22 @@ function E:PostAlertMove()
 	end
 end
 
+function B:AdjustQueuedAnchors(relativeAlert)
+	local base = BASE_YOFFSET -- copy we can clear after the first
+	for alert in self.alertFramePool:EnumerateActive() do
+		alert:ClearAllPoints()
+		alert:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, base + Y_OFFSET)
+
+		relativeAlert = alert
+
+		if base ~= 0 then
+			base = 0 -- we only want to adjust the first alert
+		end
+	end
+
+	return relativeAlert
+end
+
 function B:AdjustAnchors(relativeAlert)
 	local alert = self.alertFrame
 	if alert:IsShown() then
@@ -67,22 +83,6 @@ function B:AdjustAnchorsNonAlert(relativeAnchor)
 	end
 
 	return relativeAnchor
-end
-
-function B:AdjustQueuedAnchors(relativeAlert)
-	local base = BASE_YOFFSET -- copy we can clear after the first
-	for alert in self.alertFramePool:EnumerateActive() do
-		alert:ClearAllPoints()
-		alert:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, base + Y_OFFSET)
-
-		relativeAlert = alert
-
-		if base ~= 0 then
-			base = 0 -- we only want to adjust the first alert
-		end
-	end
-
-	return relativeAlert
 end
 
 function B:GroupLootContainer_Update()
