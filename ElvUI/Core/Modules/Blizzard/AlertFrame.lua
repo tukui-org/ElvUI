@@ -7,40 +7,37 @@ local ipairs = ipairs
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local POSITION, ANCHOR_POINT, YOFFSET = 'TOP', 'BOTTOM', -5
+local POSITION, ANCHOR_POINT, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', -5, 0 -- should match in PostAlertMove
 
 function E:PostAlertMove()
-	local AlertFrameMover = _G.AlertFrameMover
-	local AlertFrameHolder = _G.AlertFrameHolder
-
-	local _, y = AlertFrameMover:GetCenter()
-	local screenHeight = E.UIParent:GetTop()
-	if y > (screenHeight * 0.5) then
-		POSITION = 'TOP'
-		ANCHOR_POINT = 'BOTTOM'
-		YOFFSET = -5
-		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Down)')
-	else
-		POSITION = 'BOTTOM'
-		ANCHOR_POINT = 'TOP'
-		YOFFSET = 5
-		AlertFrameMover:SetText(AlertFrameMover.textString..' (Grow Up)')
-	end
-
 	local AlertFrame = _G.AlertFrame
-	local GroupLootContainer = _G.GroupLootContainer
+	local AlertFrameMover = _G.AlertFrameMover
 
-	AlertFrame:ClearAllPoints()
-	GroupLootContainer:ClearAllPoints()
+	local perks = _G.PerksProgramFrame
+	local perksFooter = perks and perks.FooterFrame
+	local perksAnchor = perksFooter and AlertFrame.baseAnchorFrame == perksFooter.RotateButtonContainer and perksFooter
 
-	local lastRollFrame = E.private.general.lootRoll and Misc:UpdateLootRollAnchors(POSITION)
-	if lastRollFrame then
-		AlertFrame:SetAllPoints(lastRollFrame)
-		GroupLootContainer:Point(POSITION, lastRollFrame, ANCHOR_POINT, 0, YOFFSET)
-	else
-		AlertFrame:SetAllPoints(AlertFrameHolder)
-		GroupLootContainer:Point(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+	local growUp = perksAnchor
+	if not growUp then
+		local _, y = AlertFrameMover:GetCenter()
+		growUp = y < (E.UIParent:GetTop() * 0.5)
 	end
+
+	if growUp then
+		POSITION, ANCHOR_POINT, Y_OFFSET, BASE_YOFFSET = 'BOTTOM', 'TOP', 5, perksAnchor and 40
+	else
+		POSITION, ANCHOR_POINT, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', -5, 0
+	end
+
+	AlertFrameMover:SetFormattedText('%s %s', AlertFrameMover.textString, growUp and '(Grow Up)' or '(Grow Down)')
+
+	local GroupLootContainer = _G.GroupLootContainer
+	GroupLootContainer:ClearAllPoints()
+	AlertFrame:ClearAllPoints()
+
+	local anchor = perksAnchor or (E.private.general.lootRoll and Misc:UpdateLootRollAnchors(POSITION)) or _G.AlertFrameHolder
+	GroupLootContainer:Point(POSITION, anchor, ANCHOR_POINT, 0, Y_OFFSET)
+	AlertFrame:SetAllPoints(anchor)
 
 	if GroupLootContainer:IsShown() then
 		B.GroupLootContainer_Update(GroupLootContainer)
@@ -48,45 +45,58 @@ function E:PostAlertMove()
 end
 
 function B:AdjustAnchors(relativeAlert)
-	if self.alertFrame:IsShown() then
-		self.alertFrame:ClearAllPoints()
-		self.alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
-		return self.alertFrame
+	local alert = self.alertFrame
+	if alert:IsShown() then
+		alert:ClearAllPoints()
+		alert:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, Y_OFFSET)
+
+		return alert
 	end
+
 	return relativeAlert
 end
 
-function B:AdjustAnchorsNonAlert(relativeAlert)
-	if self.anchorFrame:IsShown() then
-		self.anchorFrame:ClearAllPoints()
-		self.anchorFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
-		return self.anchorFrame
+function B:AdjustAnchorsNonAlert(relativeAnchor)
+	local anchor = self.anchorFrame
+	if anchor:IsShown() then
+		anchor:ClearAllPoints()
+		anchor:Point(POSITION, relativeAnchor, ANCHOR_POINT, 0, Y_OFFSET)
+
+		return anchor
 	end
-	return relativeAlert
+
+	return relativeAnchor
 end
 
 function B:AdjustQueuedAnchors(relativeAlert)
-	for alertFrame in self.alertFramePool:EnumerateActive() do
-		alertFrame:ClearAllPoints()
-		alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
-		relativeAlert = alertFrame
+	local base = BASE_YOFFSET -- copy we can clear after the first
+	for alert in self.alertFramePool:EnumerateActive() do
+		alert:ClearAllPoints()
+		alert:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, base + Y_OFFSET)
+
+		relativeAlert = alert
+
+		if base ~= 0 then
+			base = 0 -- we only want to adjust the first alert
+		end
 	end
+
 	return relativeAlert
 end
 
 function B:GroupLootContainer_Update()
 	local lastIdx
 
-	for i=1, self.maxIndex do
+	for i = 1, self.maxIndex do
 		local frame = self.rollFrames[i]
 		if frame then
 			frame:ClearAllPoints()
 
 			local prevFrame = self.rollFrames[i-1]
 			if prevFrame and prevFrame ~= frame then
-				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
+				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, Y_OFFSET)
 			else
-				frame:Point(POSITION, self, POSITION, 0, YOFFSET)
+				frame:Point(POSITION, self, POSITION, 0, Y_OFFSET)
 			end
 
 			lastIdx = i
@@ -133,6 +143,11 @@ function B:AlertMovers()
 	hooksecurefunc(_G.AlertFrame, 'AddAlertFrameSubSystem', function(_, alertFrameSubSystem)
 		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end)
+
+	if E.Retail then -- alerts on the Perks Program Frame (Trading Post)
+		hooksecurefunc(_G.AlertFrame, 'SetBaseAnchorFrame', E.PostAlertMove)
+		hooksecurefunc(_G.AlertFrame, 'ResetBaseAnchorFrame', E.PostAlertMove)
+	end
 
 	self:SecureHook(_G.AlertFrame, 'UpdateAnchors', E.PostAlertMove)
 	hooksecurefunc('GroupLootContainer_Update', B.GroupLootContainer_Update)
