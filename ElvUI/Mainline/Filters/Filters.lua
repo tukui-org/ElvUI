@@ -1009,7 +1009,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[404846] = List(), -- Incinerating Maws 1
 		[408955] = List(), -- Incinerating Maws 2
 		[402994] = List(), -- Molten Spittle
-		[403747] = List(), -- Igniting Roar
 	-- Echo of Neltharion
 		[409373] = List(), -- Disrupt Earth
 		[407220] = List(), -- Rushing Shadows 1
