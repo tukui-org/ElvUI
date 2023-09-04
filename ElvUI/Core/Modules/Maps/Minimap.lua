@@ -23,6 +23,7 @@ local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParentLoadAddOn = UIParentLoadAddOn
+local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
@@ -210,6 +211,12 @@ function M:CreateMinimapTrackingDropdown()
 	dropdown.noResize = true
 
 	return dropdown
+end
+
+function M:MinimapTracking_UpdateTracking()
+	if _G.UIDROPDOWNMENU_OPEN_MENU == M.TrackingDropdown then
+		UIDropDownMenu_RefreshAll(M.TrackingDropdown)
+	end
 end
 
 function M:Minimap_OnMouseDown(btn)
@@ -641,6 +648,8 @@ function M:Initialize()
 
 		MinimapCluster.BorderTop:StripTextures()
 		MinimapCluster.Tracking.Background:StripTextures()
+
+		M:RegisterEvent('MINIMAP_UPDATE_TRACKING', M.MinimapTracking_UpdateTracking)
 
 		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
 			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)

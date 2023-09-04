@@ -169,6 +169,8 @@ end
 function PA:PlayerPrivateAuras()
 	PA:RemoveAuras(PA.Auras)
 
+	PA.Auras:Size(E.db.general.privateAuras.icon.size)
+
 	if E.db.general.privateAuras.enable then
 		PA:SetupPrivateAuras(nil, PA.Auras, 'player')
 
@@ -204,6 +206,7 @@ function PA:Initialize()
 	PA.Auras = CreateFrame('Frame', 'ElvUIPrivateAuras', E.UIParent)
 	PA.Auras:Point('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', -(9 + E.Border), -4)
 	PA.Auras:Size(32)
+
 	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"], nil, nil, nil, nil, nil, 'auras,privateAuras')
 	PA:PlayerPrivateAuras()
 

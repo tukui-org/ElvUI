@@ -6,7 +6,6 @@ local next = next
 local pairs = pairs
 local unpack = unpack
 
-local hooksecurefunc = hooksecurefunc
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local CreateFrame = CreateFrame
@@ -101,10 +100,14 @@ function S:Blizzard_AuctionUI()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 20, -30)
+			tab:Point('BOTTOMLEFT', AuctionFrame, 'BOTTOMLEFT', 0, -32)
 			tab.SetPoint = E.noop
 		end
 	end
+
+	-- Reposition Tabs
+	_G.AuctionFrameTab2:Point('TOPLEFT', _G.AuctionFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.AuctionFrameTab3:Point('TOPLEFT', _G.AuctionFrameTab2, 'TOPRIGHT', -19, 0)
 
 	for _, Tab in pairs(SortTabs) do
 		Tab:StripTextures()
@@ -123,6 +126,7 @@ function S:Blizzard_AuctionUI()
 		_G[Filter..'NormalTexture'].SetAlpha = E.noop
 	end
 
+	_G.BrowsePriceOptionsFrame:StripTextures()
 	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
 
 	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
@@ -133,6 +137,8 @@ function S:Blizzard_AuctionUI()
 
 	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
 	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+	S:HandleButton(_G.BrowsePriceOptionsButtonFrame.Button, nil, nil, true)
+	_G.BrowsePriceOptionsButtonFrame.Button.Icon:Size(24)
 
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
@@ -235,7 +241,11 @@ function S:Blizzard_AuctionUI()
 	AuctionProgressFrameCancelButton:Size(28)
 	AuctionProgressFrameCancelButton:Point('LEFT', _G.AuctionProgressBar, 'RIGHT', 8, 0)
 
-	for Frame, NumButtons in pairs({['Browse'] = _G.NUM_BROWSE_TO_DISPLAY, ['Auctions'] = _G.NUM_AUCTIONS_TO_DISPLAY, ['Bid'] = _G.NUM_BIDS_TO_DISPLAY}) do
+	for Frame, NumButtons in pairs({
+		Browse = _G.NUM_BROWSE_TO_DISPLAY,
+		Auctions = _G.NUM_AUCTIONS_TO_DISPLAY,
+		Bid = _G.NUM_BIDS_TO_DISPLAY
+	}) do
 		for i = 1, NumButtons do
 			local Button = _G[Frame..'Button'..i]
 			local ItemButton = _G[Frame..'Button'..i..'Item']
@@ -248,26 +258,15 @@ function S:Blizzard_AuctionUI()
 
 			Button:StripTextures()
 			Button:SetHighlightTexture(E.media.blankTex)
-			Button:GetHighlightTexture():SetVertexColor(1, 1, 1, .2)
-
 			ItemButton:GetNormalTexture():SetTexture()
-			Button:GetHighlightTexture():Point('TOPLEFT', ItemButton, 'TOPRIGHT', 2, 0)
-			Button:GetHighlightTexture():Point('BOTTOMRIGHT', Button, 'BOTTOMRIGHT', -2, 5)
+
+			local highlight = Button:GetHighlightTexture()
+			highlight:SetVertexColor(1, 1, 1, .2)
+			highlight:Point('TOPLEFT', ItemButton, 'TOPRIGHT', 2, 0)
+			highlight:Point('BOTTOMRIGHT', Button, 'BOTTOMRIGHT', -2, 5)
 
 			S:HandleIcon(Texture)
 			Texture:SetInside()
-
-			if Name then
-				hooksecurefunc(Name, 'SetVertexColor', function(_, r, g, b)
-					if not (r == g) then
-						ItemButton:SetBackdropBorderColor(r, g, b)
-					else
-						ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end
-				end)
-
-				hooksecurefunc(Name, 'Hide', function() ItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-			end
 		end
 	end
 

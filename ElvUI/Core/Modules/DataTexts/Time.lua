@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local next, unpack = next, unpack
 local format, strjoin = format, strjoin
-local sort, tinsert = sort, tinsert
+local wipe, sort, tinsert = wipe, sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
 local ToggleFrame = ToggleFrame
@@ -149,6 +149,7 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 local function sortFunc(a,b) return a[1] < b[1] end
 
 local collectedInstanceImages = false
+local lockedInstances = { raids = {}, dungeons = {} }
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
@@ -206,21 +207,22 @@ local function OnEnter()
 		end
 	end
 
-	local lockedInstances = {raids = {}, dungeons = {}}
+	wipe(lockedInstances.raids)
+	wipe(lockedInstances.dungeons)
 
 	for i = 1, GetNumSavedInstances() do
-		local name, _, _, difficulty, locked, extended, _, isRaid = GetSavedInstanceInfo(i)
-		if (locked or extended) and name then
-			local isLFR, isHeroicOrMythicDungeon = (difficulty == 7 or difficulty == 17), (difficulty == 2 or difficulty == 23 or difficulty == 174)
-			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-			local difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
-			local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
+		local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
+		local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
+		if name and (locked or extended) then
+			local isDungeon = difficulty == 2 or difficulty == 23 or difficulty == 174 or difficulty == 201
+			if isRaid or isDungeon then
+				local isLFR = difficulty == 7 or difficulty == 17
+				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+				local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+				local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
+				local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
 
-			if isRaid then
-				tinsert(lockedInstances.raids, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
-			elseif isHeroicOrMythicDungeon then
-				tinsert(lockedInstances.dungeons, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
+				tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
 			end
 		end
 	end
@@ -233,10 +235,9 @@ local function OnEnter()
 
 		sort(lockedInstances.raids, sortFunc)
 
-		for i = 1, #lockedInstances.raids do
-			local difficultyLetter = lockedInstances.raids[i][2]
-			local buttonImg = lockedInstances.raids[i][3]
-			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
+		for _, info in next, lockedInstances.raids do
+			local difficultyLetter, buttonImg = info[2], info[3]
+			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
@@ -255,10 +256,9 @@ local function OnEnter()
 
 		sort(lockedInstances.dungeons, sortFunc)
 
-		for i = 1,#lockedInstances.dungeons do
-			local difficultyLetter = lockedInstances.dungeons[i][2]
-			local buttonImg = lockedInstances.dungeons[i][3]
-			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
+		for _, info in next, lockedInstances.dungeons do
+			local difficultyLetter, buttonImg = info[2], info[3]
+			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
 			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
@@ -276,9 +276,11 @@ local function OnEnter()
 			local name, _, reset = GetSavedWorldBossInfo(i)
 			tinsert(worldbossLockoutList, {name, reset})
 		end
+
 		sort(worldbossLockoutList, sortFunc)
-		for i = 1, #worldbossLockoutList do
-			local name, reset = unpack(worldbossLockoutList[i])
+
+		for _, info in next, worldbossLockoutList do
+			local name, reset = unpack(info)
 			if reset then
 				if not addedLine then
 					if DT.tooltip:NumLines() > 0 then

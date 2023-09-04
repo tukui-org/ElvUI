@@ -164,8 +164,8 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(s)
-		s.ShowNotificationsButton:Size(20, 20)
-		s.HideNotificationsButton:Size(20, 20)
+		s.ShowNotificationsButton:Size(20)
+		s.HideNotificationsButton:Size(20)
 		S:HandleCheckBox(s.ShowNotificationsButton)
 		S:HandleCheckBox(s.HideNotificationsButton)
 	end)
@@ -193,7 +193,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
-	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
+	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
 		for _, child in next, { s.ColumnDisplay:GetChildren() } do
@@ -301,6 +301,14 @@ function S:Blizzard_Communities()
 	for i = 1, 5 do
 		S:HandleTab(_G['CommunitiesFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.CommunitiesFrameTab1:ClearAllPoints()
+	_G.CommunitiesFrameTab1:Point('TOPLEFT', _G.CommunitiesFrame, 'BOTTOMLEFT', -10, 0)
+	_G.CommunitiesFrameTab2:Point('TOPLEFT', _G.CommunitiesFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab3:Point('TOPLEFT', _G.CommunitiesFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab4:Point('TOPLEFT', _G.CommunitiesFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CommunitiesFrameTab5:Point('TOPLEFT', _G.CommunitiesFrameTab4, 'TOPRIGHT', -19, 0)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')

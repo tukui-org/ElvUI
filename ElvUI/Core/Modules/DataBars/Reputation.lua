@@ -4,6 +4,7 @@ local DB = E:GetModule('DataBars')
 local _G = _G
 local format = format
 local ipairs = ipairs
+local huge = math.huge
 
 local GameTooltip = GameTooltip
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -47,71 +48,70 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local displayString, textFormat, label, rewardPending, _ = '', DB.db.reputation.textFormat
+	local displayString, textFormat, standing, rewardPending, _ = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 
 	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
-	if info and info.friendshipFactionID then
-		local isMajorFaction = factionID and C_Reputation_IsMajorFaction(factionID)
-
-		if info and info.friendshipFactionID > 0 then
-			label, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or 1, info.standing or 1
-		elseif isMajorFaction then
-			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-			local renownColor = DB.db.colors.factionColors[10]
-			local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
-
-			reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
-			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-			label = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
-
-			DB:ReputationBar_QuestRep(factionID)
-		end
+	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
+		standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
 
-	if not label and C_Reputation_IsFactionParagon(factionID) then
+	if not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
 		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
 		if current and threshold then
-			label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
+			standing, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
 		end
 	end
 
-	if not label then
-		label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
+	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
+		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+		local renownColor = DB.db.colors.factionColors[10]
+		local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
+
+		reaction, minValue, maxValue = 10, 0, majorFactionData.renownLevelThreshold
+		curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+		standing = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
+
+		DB:ReputationBar_QuestRep(factionID)
+	end
+
+	if not standing then
+		standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 	end
 
 	local customColors = DB.db.colors.useCustomFactionColors
 	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
 	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
+	local total = maxValue == huge and 1 or maxValue -- we need to correct the min/max of friendship factions to display the bar at 100%
 
 	bar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, alpha or 1)
-	bar:SetMinMaxValues(minValue, maxValue)
+	bar:SetMinMaxValues((maxValue == huge or minValue == maxValue) and 0 or minValue, total) -- we force min to 0 because the min will match max when a rep is maxed and cause the bar to be 0%
 	bar:SetValue(curValue)
 
 	bar.Reward:ClearAllPoints()
 	bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
-	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
+	local current, maximum, percent, capped = GetValues(curValue, minValue, total)
 	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
-		displayString = format('%s: [%s]', name, label)
+		displayString = format('%s: [%s]', name, standing)
 	elseif textFormat == 'PERCENT' then
-		displayString = format('%s: %d%% [%s]', name, percent, label)
+		displayString = format('%s: %d%% [%s]', name, percent, standing)
 	elseif textFormat == 'CURMAX' then
-		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), label)
+		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
 	elseif textFormat == 'CURPERC' then
-		displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, label)
+		displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
 	elseif textFormat == 'CUR' then
-		displayString = format('%s: %s [%s]', name, E:ShortValue(current), label)
+		displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
 	elseif textFormat == 'REM' then
-		displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), label)
+		displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
 	elseif textFormat == 'CURREM' then
-		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), label)
+		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
 	elseif textFormat == 'CURPERCREM' then
-		displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), label)
+		displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
 	end
 
 	bar.text:SetText(displayString)
@@ -141,10 +141,10 @@ function DB:ReputationBar_OnEnter()
 	end
 
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
-	local isParagon = C_Reputation_IsFactionParagon(factionID)
+	local isParagon = factionID and C_Reputation_IsFactionParagon(factionID)
+	local standing
 
-	if factionID and isParagon then
+	if isParagon then
 		local current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 		if current and threshold then
 			standing, minValue, maxValue, curValue = L["Paragon"], 0, threshold, current % threshold
@@ -157,30 +157,30 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:AddLine(name)
 		GameTooltip:AddLine(' ')
 
-		local friendID, friendTextLevel, _
-		if E.Retail and factionID then
-			friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID)
-			if friendID and friendID.friendshipFactionID > 0 then
-				standing = friendID.reaction
-			end
+		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
+			standing, minValue, maxValue, curValue = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 		end
 
-		local isMajorFaction = E.Retail and factionID and C_Reputation_IsMajorFaction(factionID)
+		if not standing then
+			standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
+		end
+
+		local isMajorFaction = factionID and E.Retail and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then
-			GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
+			GameTooltip:AddDoubleLine(STANDING..':', standing, 1, 1, 1)
 		end
 
-		if isMajorFaction then
+		if not isParagon and isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
-			curValue = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
+			curValue = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
 			maxValue = majorFactionData.renownLevelThreshold
 			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(curValue, 0, maxValue)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
 
 			local current, _, percent = GetValues(QuestRep, 0, maxValue)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
-		elseif isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION) then
-			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
-			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
+		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and maxValue ~= huge then
+			GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(curValue, minValue, maxValue)), 1, 1, 1)
 		end
 
 		GameTooltip:Show()

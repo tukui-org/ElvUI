@@ -16,9 +16,8 @@ local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 
-local RegisterCVar = C_CVar.RegisterCVar
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
-
+local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
@@ -76,6 +75,7 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+E.ClassicHC = E.Classic and IsHardcoreActive()
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
@@ -125,7 +125,7 @@ do
 	E:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	E:AddLib('RangeCheck', 'LibRangeCheck-2.0')
+	E:AddLib('RangeCheck', 'LibRangeCheck-3.0')
 	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('Deflate', 'LibDeflate')
 	E:AddLib('Masque', 'Masque', true)
@@ -163,18 +163,29 @@ do
 end
 
 do -- expand LibCustomGlow for button handling
-	local LCG, frames = E.Libs.CustomGlow, {}
+	local LCG, frames, proc = E.Libs.CustomGlow, {}, { xOffset = 3, yOffset = 3 }
 	function LCG.ShowOverlayGlow(button, custom)
-		local opt = custom or E.db.general.customGlow
-		local glow = LCG.startList[opt.style]
-		if glow then
-			local pixel, cast = opt.style == 'Pixel Glow', opt.style == 'Autocast Shine'
-			local arg3, arg4, arg6, arg9, arg11
+		local db = custom or E.db.general.customGlow
+		local glow = LCG.startList[db.style]
+		if glow then -- TODO: frameLevel isnt actually used yet
+			local color = db.useColor and ((custom and custom.color) or E.media.customGlowColor)
 
-			if pixel or cast then arg3, arg4 = opt.lines, opt.speed else arg3 = opt.speed end
-			if pixel then arg6, arg11 = opt.size, opt.frameLevel elseif cast then arg9 = opt.frameLevel end
+			if db.style == 'Proc Glow' then -- this uses an options table
+				proc.color = color
+				proc.duration = db.duration
+				proc.startAnim = db.startAnimation
+				proc.frameLevel = db.frameLevel
 
-			glow(button, opt.useColor and ((custom and custom.color) or E.media.customGlowColor), arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+				glow(button, proc)
+			else
+				local pixel, cast = db.style == 'Pixel Glow', db.style == 'Autocast Shine'
+				local arg3, arg4, arg6, arg9, arg11
+
+				if pixel or cast then arg3, arg4 = db.lines, db.speed else arg3 = db.speed end
+				if pixel then arg6, arg11 = db.size, db.frameLevel elseif cast then arg9 = db.frameLevel end
+
+				glow(button, color, arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+			end
 
 			frames[button] = true
 		end
@@ -222,7 +233,6 @@ do
 		'ElvUI_VisualAuraTimers',
 		'ElvUI_SecondsToBuff',
 		'ElvUI_BuffHighlight',
-		'WunderUI',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
@@ -310,10 +320,6 @@ function E:OnInitialize()
 
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
-	end
-
-	if E.Classic then
-		RegisterCVar('fstack_showhighlight', '1')
 	end
 
 	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then

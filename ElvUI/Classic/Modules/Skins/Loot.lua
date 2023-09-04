@@ -6,13 +6,14 @@ local _G = _G
 local next = next
 local unpack = unpack
 
-local hooksecurefunc = hooksecurefunc
+local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
+local hooksecurefunc = hooksecurefunc
+local IsFishingLoot = IsFishingLoot
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
-local GetItemInfo = GetItemInfo
-local IsFishingLoot = IsFishingLoot
+
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -20,7 +21,7 @@ local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
-	for i=1, numItems do
+	for i = 1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
 		if frame and not frame.isSkinned then
 			local Icon = frame.Icon:GetTexture()
@@ -76,26 +77,38 @@ function S:LootFrame()
 
 	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
-	-- Master Loot
+	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
-	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:SetTemplate()
+	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
+	MasterLooterFrame.Item.NameBorderMid:StripTextures()
+	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
+	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
-		local b = MasterLooterFrame.Item
-		if b then
-			local i = b.Icon
-			local icon = i:GetTexture()
-			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
+		local item = MasterLooterFrame.Item
+		if item then
+			local icon = item.Icon
+			local texture = icon:GetTexture()
+			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
-			b:StripTextures()
-			i:SetTexture(icon)
-			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			if item.IconBorder then
+				item.IconBorder:SetAlpha(0)
+			end
+
+			item:StripTextures()
+			icon:SetTexture(texture)
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			if not item.backdrop then
+				item:CreateBackdrop()
+				item.backdrop:SetOutside(icon)
+			end
+
+			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
+	end)
 
+	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
 			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
 				if child:GetPushedTexture() then
@@ -104,7 +117,6 @@ function S:LootFrame()
 					child:SetTemplate()
 					child:StyleButton()
 				end
-
 				child.isSkinned = true
 			end
 		end
@@ -125,7 +137,7 @@ function S:LootFrame()
 	LootFrame.Title:Point('TOPLEFT', LootFrame, 'TOPLEFT', 4, -4)
 	LootFrame.Title:SetJustifyH('LEFT')
 
-	for i=1, _G.LOOTFRAME_NUMBUTTONS do
+	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		local button = _G['LootButton'..i]
 		_G['LootButton'..i..'NameFrame']:Hide()
 
@@ -145,16 +157,16 @@ function S:LootFrame()
 			numLootItems = #LootFrame.AutoLootTable
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1 -- make space for the page buttons
+			numLootToShow = numLootToShow - 1 -- Make space for the page buttons
 		end
 
 		local button = _G['LootButton'..index]
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index
-		if(button and button:IsShown()) then
+		if button and button:IsShown() then
 			local texture, _, isQuestItem, questId, isActive
-			if (LootFrame.AutoLootTable) then
+			if LootFrame.AutoLootTable then
 				local entry = LootFrame.AutoLootTable[slot]
-				if( entry.hide ) then
+				if entry.hide then
 					button:Hide()
 					return
 				else
@@ -182,7 +194,7 @@ function S:LootFrame()
 	LootFrame:HookScript('OnShow', function(frame)
 		if IsFishingLoot() then
 			frame.Title:SetText(L["Fishy Loot"])
-		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
+		elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
 			frame.Title:SetText(UnitName('target'))
 		else
 			frame.Title:SetText(LOOT)

@@ -47,8 +47,6 @@ local UnitName = UnitName
 local LootSlot = LootSlot
 
 local StaticPopup_Hide = StaticPopup_Hide
-local MasterLooterFrame_Show = MasterLooterFrame_Show
-local MasterLooterFrame_UpdatePlayers = MasterLooterFrame_UpdatePlayers
 
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -320,11 +318,13 @@ function M:LOOT_OPENED(_, autoloot)
 end
 
 function M:OPEN_MASTER_LOOT_LIST()
-	MasterLooterFrame_Show(_G.LootFrame.selectedLootButton)
+	_G.MasterLooterFrame_Show(_G.LootFrame.selectedLootButton)
 end
 
 function M:UPDATE_MASTER_LOOT_LIST()
-	if _G.LootFrame.selectedLootButton then MasterLooterFrame_UpdatePlayers() end
+	if _G.LootFrame.selectedLootButton then
+		_G.MasterLooterFrame_UpdatePlayers()
+	end
 end
 
 function M:LoadLoot()

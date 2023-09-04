@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, ipairs, pairs = next, ipairs, pairs
+local ipairs, pairs, next = ipairs, pairs, next
 
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
-local MAX_ADDONS_DISPLAYED = MAX_ADDONS_DISPLAYED
 
 local function HandlePushToTalkButton(button)
 	button:Size(button:GetSize())
@@ -27,6 +26,16 @@ local function HandlePushToTalkButton(button)
 	button:HookScript('OnLeave', S.SetOriginalBackdrop)
 end
 
+local function Skin_InterfaceOptions_Buttons()
+	for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
+		local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
+		if button and not button.IsSkinned then
+			S:HandleCollapseTexture(button, true)
+			button.IsSkinned = true
+		end
+	end
+end
+
 function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
 	HandlePushToTalkButton(btn.PushToTalkKeybindButton)
 end
@@ -38,21 +47,21 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrame:SetMovable(true)
 	_G.InterfaceOptionsFrame:EnableMouse(true)
 	_G.InterfaceOptionsFrame:RegisterForDrag('LeftButton', 'RightButton')
-	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(self)
+	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(frame)
 		if InCombatLockdown() then return end
-		self:StartMoving()
-		self.isMoving = true
+		frame:StartMoving()
+		frame.isMoving = true
 	end)
-	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(self)
-		self:StopMovingOrSizing()
-		self.isMoving = false
+	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(frame)
+		frame:StopMovingOrSizing()
+		frame.isMoving = false
 	end)
 
 	--Chat Config
 	local ChatConfigFrame = _G.ChatConfigFrame
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(self)
-		for tab in self.tabPool:EnumerateActive() do
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(frame)
+		for tab in frame.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
 
@@ -79,6 +88,8 @@ function S:BlizzardOptions()
 		_G.ChatConfigOtherSettingsPVP,
 		_G.ChatConfigOtherSettingsSystem,
 		_G.ChatConfigOtherSettingsCreature,
+		_G.ChatConfigChannelSettingsAvailable,
+		_G.ChatConfigChannelSettingsAvailableBox,
 		_G.ChatConfigChannelSettingsLeft,
 		_G.CombatConfigMessageSourcesDoneBy,
 		_G.CombatConfigColorsUnitColors,
@@ -147,8 +158,8 @@ function S:BlizzardOptions()
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
-	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
+	_G.ChatConfigMoveFilterUpButton:Size(19)
+	_G.ChatConfigMoveFilterDownButton:Size(19)
 	_G.ChatConfigMoveFilterUpButton:Point('TOPLEFT', '$parent', 'BOTTOMLEFT', 0, -3)
 	_G.ChatConfigMoveFilterDownButton:Point('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 3, 0)
 
@@ -165,9 +176,8 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.checkBoxTable) do
 			local checkBoxNameString = frame:GetName()..'CheckBox'
 			local checkBoxName = checkBoxNameString..index
@@ -198,11 +208,28 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName()..'Swatch'..index]:StripTextures()
+		end
+	end)
+
+	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
+		if not frame.boxTable then return end
+
+		local boxName = frame:GetName()..'Box'
+		for index in next, frame.boxTable do
+			local box = _G[boxName..index]
+			if box then
+				if box.NineSlice then
+					box.NineSlice:SetTemplate('Transparent')
+				end
+
+				if box.Button then
+					S:HandleButton(box.Button)
+				end
+			end
 		end
 	end)
 
@@ -214,20 +241,15 @@ function S:BlizzardOptions()
 		_G.InterfaceOptionsFrame,
 		_G.InterfaceOptionsControlsPanel,
 		_G.InterfaceOptionsCombatPanel,
-		_G.InterfaceOptionsCombatPanelEnemyCastBars,
-		_G.InterfaceOptionsCombatTextPanel,
 		_G.InterfaceOptionsDisplayPanel,
-		_G.InterfaceOptionsObjectivesPanel,
 		_G.InterfaceOptionsSocialPanel,
 		_G.InterfaceOptionsActionBarsPanel,
 		_G.InterfaceOptionsNamesPanel,
 		_G.InterfaceOptionsNamesPanelFriendly,
 		_G.InterfaceOptionsNamesPanelEnemy,
 		_G.InterfaceOptionsNamesPanelUnitNameplates,
-		_G.InterfaceOptionsBattlenetPanel,
 		_G.InterfaceOptionsCameraPanel,
 		_G.InterfaceOptionsMousePanel,
-		_G.InterfaceOptionsHelpPanel,
 		_G.InterfaceOptionsAccessibilityPanel,
 		_G.VideoOptionsFrame,
 		_G.Display_,
@@ -241,12 +263,6 @@ function S:BlizzardOptions()
 		_G.AudioOptionsSoundPanelVolume,
 		_G.AudioOptionsSoundPanelPlayback,
 		_G.AudioOptionsVoicePanel,
-		_G.AudioOptionsVoicePanelTalking,
-		_G.AudioOptionsVoicePanelListening,
-		_G.AudioOptionsVoicePanelBinding,
-		_G.AudioOptionsVoicePanelMicTest,
-		_G.AudioOptionsVoicePanelChatMode1,
-		_G.AudioOptionsVoicePanelChatMode2,
 		_G.CompactUnitFrameProfiles,
 		_G.CompactUnitFrameProfilesGeneralOptionsFrame,
 	}
@@ -283,30 +299,20 @@ function S:BlizzardOptions()
 		end
 	end
 
-	-- Categories Buttons
-	for i = 1, 10 do
-		local Button = _G['InterfaceOptionsFrameCategoriesButton'..i]
-		S:HandleCategoriesButtons(Button)
-	end
-
-	for i = 1, MAX_ADDONS_DISPLAYED do
-		local Button = _G['InterfaceOptionsFrameAddOnsButton'..i]
-		S:HandleCategoriesButtons(Button)
-	end
-
-	for i = 1, 6 do
-		local Button = _G['VideoOptionsFrameCategoryFrameButton'..i]
-		S:HandleCategoriesButtons(Button)
-	end
-
 	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
+	S:HandleButton(_G.InterfaceOptionsFrameTab1)
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
+	S:HandleButton(_G.InterfaceOptionsFrameTab2)
 
-	--Create New Raid Profle
+	-- Plus minus buttons in addons category
+	hooksecurefunc('InterfaceOptions_AddCategory', Skin_InterfaceOptions_Buttons)
+	Skin_InterfaceOptions_Buttons()
+
+	-- Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
-		newProfileDialog:SetTemplate('Transparent')
+		newProfileDialog:StripTextures()
+		newProfileDialog:CreateBackdrop('Transparent')
 
 		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
 		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
@@ -318,18 +324,30 @@ function S:BlizzardOptions()
 		end
 	end
 
-	--Delete Raid Profile
+	-- Delete Raid Profile
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
-		deleteProfileDialog:SetTemplate('Transparent')
+		deleteProfileDialog:StripTextures()
+		deleteProfileDialog:CreateBackdrop('Transparent')
+
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
 
-	-- Toggle Test Audio Button - Wow 8.0
+	-- Colorblind Submenu
+	S:HandleDropDownBox(_G.InterfaceOptionsColorblindPanelColorFilterDropDown, 260)
+	S:HandleSliderFrame(_G.InterfaceOptionsColorblindPanelColorblindStrengthSlider)
+
+	-- Toggle Test Audio Button
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
 
-	-- PushToTalk KeybindButton - Wow 8.0
+	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
+	VUMeter.NineSlice:Hide()
+	VUMeter.Status:CreateBackdrop()
+	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(VUMeter.Status)
+
+	-- PushToTalk KeybindButton
 	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
 	-- New Voice Sliders

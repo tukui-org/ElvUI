@@ -60,6 +60,12 @@ function S:MailFrame()
 	S:HandleTab(_G.MailFrameTab1)
 	S:HandleTab(_G.MailFrameTab2)
 
+	-- Reposition Tabs
+	_G.MailFrameTab1:ClearAllPoints()
+	_G.MailFrameTab2:ClearAllPoints()
+	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -3, 0)
+	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -5, 0)
+
 	-- send mail
 	_G.SendMailScrollFrame:StripTextures(true)
 	_G.SendMailScrollFrame:SetTemplate()

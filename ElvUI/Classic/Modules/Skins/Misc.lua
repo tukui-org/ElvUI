@@ -8,12 +8,19 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 
+local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
+	if not skip then
+		button:Point(point, anchor, point2, 1, yoffset, true)
+	end
+end
+
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
 		return
 	end
 
-	local navButton = self.navList[#self.navList]
+	local total = #self.navList
+	local navButton = self.navList[total]
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		navButton:GetFontString():SetTextColor(1, 1, 1)
@@ -26,8 +33,13 @@ local function SkinNavBarButtons(self)
 			end
 		end
 
-		navButton.xoffset = 1
+		if total == 2 then
+			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
+			NavButtonXOffset(navButton, navButton:GetPoint())
+			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
+		end
 
+		navButton.xoffset = 1
 		navButton.isSkinned = true
 	end
 end
@@ -141,6 +153,9 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
+	-- Emotes NineSlice
+	_G.ChatMenu.NineSlice:SetTemplate()
+
 	-- reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
@@ -204,7 +219,7 @@ function S:BlizzardMiscFrames()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			normTex:SetRotation(S.ArrowRotation.right)
-			expandArrow:Size(12, 12)
+			expandArrow:Size(12)
 		end
 
 		local Backdrop = _G[listFrameName..'Backdrop']
@@ -260,13 +275,13 @@ function S:BlizzardMiscFrames()
 				if co == 0 then
 					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(20, 20)
+					check:Size(20)
 					check:SetDesaturated(true)
 					button.backdrop:SetInside(check, 4, 4)
 				else
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(10, 10)
+					check:Size(10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
 				end
@@ -274,7 +289,7 @@ function S:BlizzardMiscFrames()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
-				check:Size(16, 16)
+				check:Size(16)
 			end
 		end
 	end)

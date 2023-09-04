@@ -213,7 +213,7 @@ function S:Blizzard_Communities()
 					for button in s.SpecsPool:EnumerateActive() do
 						if button.CheckBox then
 							S:HandleCheckBox(button.CheckBox)
-							button.CheckBox:Size(26, 26)
+							button.CheckBox:Size(26)
 						end
 					end
 				end)
@@ -316,7 +316,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
 	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
-	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
+	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
 	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(MemberList.ScrollBar)
 

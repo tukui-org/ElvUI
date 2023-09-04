@@ -22,8 +22,11 @@ local function UpdateRepairButtons()
 	_G.MerchantRepairAllButton:Point('BOTTOMRIGHT', _G.MerchantFrame, 'BOTTOMLEFT', 90, 32)
 	_G.MerchantRepairItemButton:ClearAllPoints()
 	_G.MerchantRepairItemButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', -5, 0)
-	_G.MerchantSellAllJunkButton:ClearAllPoints()
-	_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
+
+	if _G.MerchantSellAllJunkButton then
+		_G.MerchantSellAllJunkButton:ClearAllPoints()
+		_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
+	end
 end
 
 local function UpdateMerchantInfo()
@@ -112,6 +115,11 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
+	local UndoFrame = _G.UndoFrame
+	if UndoFrame then -- Since we move the MerchantBuyBackItemItemButton we also have to move this thingi
+		UndoFrame.Arrow:Point('CENTER', _G.MerchantBuyBackItemItemButton)
+	end
+
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -122,7 +130,10 @@ function S:MerchantFrame()
 	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
 	HandleIconButton(_G.MerchantRepairAllButton, 0.61, 0.82, 0.1, 0.52)
 	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)
-	HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+
+	if _G.MerchantSellAllJunkButton then
+		HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	end
 
 	_G.MerchantGuildBankRepairButton:SetPoint('LEFT', _G.MerchantRepairAllButton, 'RIGHT', 5, 0)
 

@@ -768,15 +768,30 @@ local function InitProcGlow(f)
 	f.ProcStartAnim = f:CreateAnimationGroup()
 	f.ProcStartAnim:SetToFinalAlpha(true)
 
+	local flipbookStartAlphaIn = f.ProcStartAnim:CreateAnimation("Alpha")
+	flipbookStartAlphaIn:SetChildKey("ProcStart")
+	flipbookStartAlphaIn:SetDuration(.001)
+	flipbookStartAlphaIn:SetOrder(0)
+	flipbookStartAlphaIn:SetFromAlpha(1)
+	flipbookStartAlphaIn:SetToAlpha(1)
+
 	local flipbookStart = f.ProcStartAnim:CreateAnimation("FlipBook")
 	flipbookStart:SetChildKey("ProcStart")
-	flipbookStart:SetDuration(0.8)
+	flipbookStart:SetDuration(0.7)
 	flipbookStart:SetOrder(1)
-	flipbookStart:SetFlipBookRows(5)
+	flipbookStart:SetFlipBookRows(6)
 	flipbookStart:SetFlipBookColumns(5)
-	flipbookStart:SetFlipBookFrames(25)
+	flipbookStart:SetFlipBookFrames(30)
 	flipbookStart:SetFlipBookFrameWidth(0)
 	flipbookStart:SetFlipBookFrameHeight(0)
+
+	local flipbookStartAlphaOut = f.ProcStartAnim:CreateAnimation("Alpha")
+	flipbookStartAlphaOut:SetChildKey("ProcStart")
+	flipbookStartAlphaOut:SetDuration(.001)
+	flipbookStartAlphaOut:SetOrder(2)
+	flipbookStartAlphaOut:SetFromAlpha(1)
+	flipbookStartAlphaOut:SetToAlpha(0)
+
 	f.ProcStartAnim.flipbookStart = flipbookStart
 	f.ProcStartAnim:SetScript("OnFinished", function(self)
 		self:GetParent().ProcLoopAnim:Play()
@@ -798,8 +813,14 @@ local function SetupProcGlow(f, options)
 	f:SetScript("OnShow", function(self)
 		if self.startAnim then
 			if not self.ProcStartAnim:IsPlaying() and not self.ProcLoopAnim:IsPlaying() then
-				self.ProcStart:SetWidth(self:GetWidth() / 42 * 150)
-				self.ProcStart:SetHeight(self:GetHeight() / 42 * 150)
+				--[[
+to future me:
+i wish you'r ok, if you wonder where are this constants coming from, check:
+https://github.com/Gethe/wow-ui-source/blob/eb4459c679a1bd8919cad92934ea83c4f5e77e8b/Interface/FrameXML/ActionButton.lua#L816
+https://github.com/Gethe/wow-ui-source/blob/d8e8ebf572c3b28237cf83e8fc5c0583b5453a2b/Interface/FrameXML/ActionButtonTemplate.xml#L5-L14
+				]]
+				local width, height = self:GetSize()
+				self.ProcStart:SetSize((width / 42 * 150) / 1.4, (height / 42 * 150) / 1.4)
 				self.ProcStart:Show()
 				self.ProcLoop:Hide()
 				self.ProcStartAnim:Play()
@@ -813,9 +834,13 @@ local function SetupProcGlow(f, options)
 		end
 	end)
 	if not options.color then
+		f.ProcStart:SetDesaturated(nil)
+		f.ProcStart:SetVertexColor(1, 1, 1, 1)
 		f.ProcLoop:SetDesaturated(nil)
 		f.ProcLoop:SetVertexColor(1, 1, 1, 1)
 	else
+		f.ProcStart:SetDesaturated(1)
+		f.ProcStart:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
 		f.ProcLoop:SetDesaturated(1)
 		f.ProcLoop:SetVertexColor(options.color[1], options.color[2], options.color[3], options.color[4])
 	end

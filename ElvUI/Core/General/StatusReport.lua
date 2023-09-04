@@ -85,6 +85,7 @@ local EnglishSpecName = {
 	[581] = 'Vengeance',
 	[1467] = 'Devastation',
 	[1468] = 'Preservation',
+	[1473] = 'Augmentation',
 }
 
 local function GetSpecName()
@@ -217,7 +218,7 @@ function E:CreateStatusFrame()
 	--Sections
 	StatusFrame.Section1 = E:CreateStatusSection(300, 125, nil, 30, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
 	StatusFrame.Section2 = E:CreateStatusSection(300, 130, nil, 30, StatusFrame, 'TOP', StatusFrame.Section1, 'BOTTOM', 0)
-	StatusFrame.Section3 = E:CreateStatusSection(300, E.Retail and 185 or 165, nil, 30, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
+	StatusFrame.Section3 = E:CreateStatusSection(300, E.Wrath and 165 or 185, nil, 30, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
 
 	PluginFrame.SectionP = E:CreateStatusSection(280, nil, nil, 30, PluginFrame, 'TOP', PluginFrame, 'TOP', -10)
 
@@ -308,6 +309,8 @@ function E:UpdateStatusFrame()
 
 	if E.Retail then
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
+	elseif E.Classic then
+		Section3.Content.Line6.Text:SetFormattedText('Hardcore: |cff4beb2c%s|r', E.ClassicHC and 'Yes' or 'No')
 	end
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))

@@ -65,7 +65,7 @@ function S:MailFrame()
 		local icon = _G['MailItem'..i..'ButtonIcon']
 
 		mail:StripTextures()
-		mail:CreateBackdrop()
+		mail:CreateBackdrop('Transparent')
 		mail.backdrop:Point('TOPLEFT', 42, -3)
 		mail.backdrop:Point('BOTTOMRIGHT', -2, 5)
 
@@ -125,8 +125,13 @@ function S:MailFrame()
 		local tab = _G['MailFrameTab'..i]
 
 		tab:StripTextures()
+		tab:ClearAllPoints()
 		S:HandleTab(tab)
 	end
+
+	-- Reposition Tabs
+	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -15, 0)
+	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -19, 0)
 
 	-- Send Mail Frame
 	_G.SendMailFrame:StripTextures()

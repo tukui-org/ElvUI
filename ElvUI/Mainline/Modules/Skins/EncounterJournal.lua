@@ -31,24 +31,48 @@ local function HandleButton(btn, strip, ...)
 	end
 end
 
-local function SkinOverviewInfo(frame, _, index)
-	local header = frame.overviews[index]
-	if not header.isSkinned then
-		for i = 4, 18 do
-			select(i, header.button:GetRegions()):SetTexture()
+local SkinOverviewInfo
+do -- this prevents a taint trying to force a color lock by setting it to E.noop
+	local LockColors = {}
+	local function LockValue(button, r, g, b)
+		local rr, gg, bb = unpack(E.media.rgbvaluecolor)
+		if r ~= rr or gg ~= g or b ~= bb then
+			button:SetTextColor(rr, gg, bb)
 		end
+	end
 
-		HandleButton(header.button)
+	local function LockWhite(button, r, g, b)
+		if r ~= 1 or g ~= 1 or b ~= 1 then
+			button:SetTextColor(1, 1, 1)
+		end
+	end
 
-		header.descriptionBG:SetAlpha(0)
-		header.descriptionBGBottom:SetAlpha(0)
-		header.description:SetTextColor(1, 1, 1)
-		header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-		header.button.title.SetTextColor = E.noop
-		header.button.expandedIcon:SetTextColor(1, 1, 1)
-		header.button.expandedIcon.SetTextColor = E.noop
+	local function LockColor(button, valuecolor)
+		if LockColors[button] then return end
 
-		header.isSkinned = true
+		hooksecurefunc(button, 'SetTextColor', (valuecolor and LockValue) or LockWhite)
+
+		LockColors[button] = true
+	end
+
+	SkinOverviewInfo = function(frame, _, index)
+		local header = frame.overviews[index]
+		if not header.isSkinned then
+			for i = 4, 18 do
+				select(i, header.button:GetRegions()):SetTexture()
+			end
+
+			HandleButton(header.button)
+
+			LockColor(header.button.title, true)
+			LockColor(header.button.expandedIcon)
+
+			header.descriptionBG:SetAlpha(0)
+			header.descriptionBGBottom:SetAlpha(0)
+			header.description:SetTextColor(1, 1, 1)
+
+			header.isSkinned = true
+		end
 	end
 end
 
@@ -144,7 +168,6 @@ function S:Blizzard_EncounterJournal()
 	EJ.navBar.backdrop:Point('TOPLEFT', -2, 0)
 	EJ.navBar.backdrop:Point('BOTTOMRIGHT')
 	HandleButton(EJ.navBar.home, true)
-	EJ.navBar.home.xoffset = 1
 
 	S:HandleEditBox(EJ.searchBox)
 	EJ.searchBox:ClearAllPoints()

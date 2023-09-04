@@ -324,7 +324,7 @@ local function OnClick(self, btn)
 	if btn == 'RightButton' then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
-	else
+	elseif _G.ExpansionLandingPageMinimapButton:IsShown() then
 		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end
 end

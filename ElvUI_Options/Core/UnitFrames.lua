@@ -70,6 +70,8 @@ for i = 1, _G.MAX_CLASSES do
 end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
+local spacingNormal = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 50, max = 100, step = 1 }
+local spacingLong = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 100, max = 500, step = 1 }
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -139,9 +141,9 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.friendlyAuraType = ACH:Select(L["Friendly Aura Type"], L["Set the type of auras to show when a unit is friendly."], 13, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] })
 	config.args.enemyAuraType = ACH:Select(L["Enemy Aura Type"], L["Set the type of auras to show when a unit is a foe."], 14, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] }, nil, nil, nil, nil, nil, groupName == 'player')
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 15, { min = 0, max = 100, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end)
-	config.args.spacing = ACH:Range(L["Spacing"], nil, 16, { min = 0, softMax = 20, step = 1 })
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 16, spacingNormal)
 
-	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
+	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
 	config.args.filtersGroup.inline = true
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
@@ -198,7 +200,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.numrows = ACH:Range(L["Num Rows"], nil, 7, { min = 1, max = 10, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
-	config.args.spacing = ACH:Range(L["Spacing"], nil, 10, { min = -1, max = 20, step = 1 })
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 10, spacingNormal)
 	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end)
 
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, C.Values.Anchors)
@@ -220,9 +222,9 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.inline = true
 	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
-	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.Anchors)
+	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 
-	config.args.filtersGroup = ACH:Group(L["FILTERS"], nil, 30)
+	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
 	config.args.filtersGroup.inline = true
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
@@ -502,7 +504,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	config.args.delete = ACH:Execute(L["Delete"], nil, 1, function() E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = nil E.db.unitframe.units[unit].customTexts[objectName] = nil UpdateCustomTextGroup(unit) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2)
 	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 3)
-	config.args.size = ACH:Range(L["Font Size"], nil, 4, C.Values.FontSize)
+	config.args.size = ACH:Range(L["Font Size"], nil, 4, { min = 8, max = 128, step = 1 }) -- custom for people that use icons
 	config.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 5)
 	config.args.justifyH = ACH:Select(L["JustifyH"], L["Sets the font instance's horizontal text alignment style."], 6, { CENTER = L["Center"], LEFT = L["Left"], RIGHT = L["Right"] })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -400, max = 400, step = 1 })
@@ -574,33 +576,37 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
+	local disabled = function() return not E.db.unitframe.units[groupName].fader.enable end
+	local disabledOrRanged = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end
+
 	local config = ACH:Group(L["Fader"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].fader[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].fader[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.range = ACH:Toggle(L["Range"], nil, 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end, groupName == 'player')
-	config.args.hover = ACH:Toggle(L["Hover"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.combat = ACH:Toggle(L["Combat"], nil, 4, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.unittarget = ACH:Toggle(L["Unit Target"], nil, 5, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end, groupName == 'player')
-	config.args.playertarget = ACH:Toggle(groupName == 'player' and L["Target"] or L["Player Target"], nil, 6, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.focus = ACH:Toggle(L["Focus"], nil, 7, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.health = ACH:Toggle(L["Health"], nil, 8, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.power = ACH:Toggle(L["Power"], nil, 9, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 10, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.casting = ACH:Toggle(L["Casting"], nil, 11, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
+	config.args.range = ACH:Toggle(L["Range"], nil, 2, nil, nil, nil, nil, nil, disabled, groupName == 'player')
+	config.args.hover = ACH:Toggle(L["Hover"], nil, 3, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.combat = ACH:Toggle(L["Combat"], nil, 4, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.unittarget = ACH:Toggle(L["Unit Target"], nil, 5, nil, nil, nil, nil, nil, disabledOrRanged, groupName == 'player')
+	config.args.playertarget = ACH:Toggle(groupName == 'player' and L["Target"] or L["Player Target"], nil, 6, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.focus = ACH:Toggle(L["Focus"], nil, 7, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.health = ACH:Toggle(L["Health"], nil, 8, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.power = ACH:Toggle(L["Power"], nil, 9, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 10, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.casting = ACH:Toggle(L["Casting"], nil, 11, nil, nil, nil, nil, nil, disabledOrRanged)
 
 	config.args.spacer1 = ACH:Spacer(12, 'full')
-	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 13, { min = 0, max = 3, step = 0.01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end)
-	config.args.smooth = ACH:Range(L["Smooth"], nil, 14, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.minAlpha = ACH:Range(L["Min Alpha"], nil, 15, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.maxAlpha = ACH:Range(L["Max Alpha"], nil, 16, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 13, { min = 0, max = 3, step = 0.01 }, nil, nil, nil, disabledOrRanged)
+	config.args.smooth = ACH:Range(L["Smooth"], nil, 14, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, disabled)
+	config.args.minAlpha = ACH:Range(L["Min Alpha"], nil, 15, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, disabled)
+	config.args.maxAlpha = ACH:Range(L["Max Alpha"], nil, 16, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, disabled)
 
 	config.args.instanceDifficulties = ACH:Group(L["Instance Difficulties"], nil, 30, nil, function(info) return E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].fader.instanceDifficulties[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.instanceDifficulties.args.dungeonNormal = ACH:Toggle(L["Dungeon (normal)"], nil, 1, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.dungeonHeroic = ACH:Toggle(L["Dungeon (heroic)"], nil, 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.dungeonMythic = ACH:Toggle(L["Dungeon (mythic)"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.raidNormal = ACH:Toggle(L["Raid (normal)"], nil, 4, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.raidHeroic = ACH:Toggle(L["Raid (heroic)"], nil, 5, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.raidMythic = ACH:Toggle(L["Raid (mythic)"], nil, 6, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
-	config.args.instanceDifficulties.args.dungeonMythicKeystone = ACH:Toggle(L["Mythic Keystone"], nil, 7, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].fader.enable end)
+	config.args.instanceDifficulties.args.none = ACH:Toggle(L["None"], nil, 1, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.dungeonNormal = ACH:Toggle(L["Dungeon (normal)"], nil, 2, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.dungeonHeroic = ACH:Toggle(L["Dungeon (heroic)"], nil, 3, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.dungeonMythic = ACH:Toggle(L["Dungeon (mythic)"], nil, 4, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.raidNormal = ACH:Toggle(L["Raid (normal)"], nil, 5, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.raidHeroic = ACH:Toggle(L["Raid (heroic)"], nil, 6, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.raidMythic = ACH:Toggle(L["Raid (mythic)"], nil, 7, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.dungeonMythicKeystone = ACH:Toggle(L["Mythic Keystone"], nil, 8, nil, nil, nil, nil, nil, disabled)
 	config.args.instanceDifficulties.inline = true
 
 	return config
@@ -855,7 +861,7 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	local config = ACH:Group(L["Ready Check Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
-	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
@@ -919,7 +925,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 3, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.verticalOrientation = ACH:Toggle(L["Vertical Fill Direction"], nil, 4, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
-		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
+		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, spacingNormal, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 6, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar')
 	end
@@ -961,9 +967,9 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, C.Values.GrowthDirection)
 		config.args.positionsGroup.args.numGroups = ACH:Range(L["Number of Groups"], nil, 7, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
 		config.args.positionsGroup.args.groupsPerRowCol = ACH:Range(L["Groups Per Row/Column"], nil, 8, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
-		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, { min = -1, max = 50, step = 1 })
-		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, { min = -1, max = 50, step = 1 })
-		config.args.positionsGroup.args.groupSpacing = ACH:Range(L["Group Spacing"], L["Additional spacing between each individual group."], 11, { min = 0, max = 50, step = 1 }, nil, nil, nil, nil, groupName == 'party')
+		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, spacingNormal)
+		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, spacingNormal)
+		config.args.positionsGroup.args.groupSpacing = ACH:Range(L["Group Spacing"], L["Additional spacing between each individual group."], 11, spacingNormal, nil, nil, nil, nil, groupName == 'party')
 
 		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 200, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 		config.args.visibilityGroup.inline = true
@@ -996,12 +1002,12 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.positionsGroup.args.width.set = function(info, value) if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then E.db.unitframe.units[groupName].castbar.width = value end E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end
 
 		if groupName == 'boss' or groupName == 'arena' then
-			config.args.positionsGroup.args.spacing = ACH:Range(L["Spacing"], nil, 3, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1 })
+			config.args.positionsGroup.args.spacing = ACH:Range(L["Spacing"], nil, 3, spacingLong)
 			config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], nil, 4, { UP = L["Bottom to Top"], DOWN = L["Top to Bottom"], LEFT = L["Right to Left"], RIGHT = L["Left to Right"] })
 		end
 
 		if groupName == 'tank' or groupName == 'assist' then
-			config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 3, { min = 0, max = 100, step = 1 })
+			config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 3, spacingLong)
 		end
 	end
 
@@ -1373,7 +1379,8 @@ local unitSettingsFunc = {
 local function GetUnitSettings(unitType, updateFunc, numUnits)
 	local config = { enable = ACH:Toggle(L["Enable"], nil, 1) }
 
-	for element in pairs(P.unitframe.units[unitType]) do
+	local defaults = P.unitframe.units[unitType]
+	for element in pairs(defaults) do
 		local isIndividual = individual[unitType]
 		if element == 'health' then
 			config[element] = GetOptionsTable_Health(not isIndividual, updateFunc, unitType, numUnits)
@@ -1391,7 +1398,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			group.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
 			group.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
 
-			for subElement in pairs(P.unitframe.units[unitType][element]) do
+			for subElement in pairs(defaults[element]) do
 				if subElement == 'colorPetByUnitClass' then
 					group.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 				else

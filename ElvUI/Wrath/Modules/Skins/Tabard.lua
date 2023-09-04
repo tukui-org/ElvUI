@@ -18,11 +18,10 @@ function S:TabardFrame()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:CreateBackdrop()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 
-	--Add Tabard Emblem back
+	-- Add Tabard Emblem back
 	local emblemFrames = {
 		_G.TabardFrameEmblemTopRight,
 		_G.TabardFrameEmblemBottomRight,

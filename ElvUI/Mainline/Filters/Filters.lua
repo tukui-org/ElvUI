@@ -173,6 +173,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[378464]	= List(), -- Nullifying Shroud (PvP)
 		[363916]	= List(), -- Obsidian Scales
 		[374348]	= List(), -- Renewing Blaze
+		[357170]	= List(), -- Time Dilation
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -368,6 +369,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[208253]	= List(), -- Essence of G'Hanir
 		[194223]	= List(), -- Celestial Alignment
 		[102560]	= List(), -- Incarnation: Chosen of Elune
+		[390414]	= List(), -- Orbital Strike (Incarnation: Chosen of Elune)
 		[102543]	= List(), -- Incarnation: King of the Jungle
 		[102558]	= List(), -- Incarnation: Guardian of Ursoc
 		[117679]	= List(), -- Incarnation
@@ -690,6 +692,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		[413041] = List(), -- Sheared Lifespan 1
+		[416716] = List(), -- Sheared Lifespan 2
+		[413013] = List(), -- Chronoshear
+		[413208] = List(), -- Sand Buffeted
+		[408084] = List(), -- Necrofrost
+		[413142] = List(), -- Eon Shatter
+		[409266] = List(), -- Extinction Blast 1
+		[414300] = List(), -- Extinction Blast 2
+		[401667] = List(), -- Time Stasis
+		[412027] = List(), -- Chronal Burn
+		[400681] = List(), -- Spark of Tyr
+		[404141] = List(), -- Chrono-faded
+		[407147] = List(), -- Blight Seep
+		[410497] = List(), -- Mortal Wounds
+		[418009] = List(), -- Serrated Arrows
+		[407406] = List(), -- Corrosion
+		[401420] = List(), -- Sand Stomp
+		[403912] = List(), -- Accelerating Time
+		[403910] = List(), -- Decaying Time
 	-- Brackenhide Hollow
 		[385361] = List(), -- Rotting Sickness
 		[378020] = List(), -- Gash Frenzy
@@ -987,7 +1009,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[404846] = List(), -- Incinerating Maws 1
 		[408955] = List(), -- Incinerating Maws 2
 		[402994] = List(), -- Molten Spittle
-		[403747] = List(), -- Igniting Roar
 	-- Echo of Neltharion
 		[409373] = List(), -- Disrupt Earth
 		[407220] = List(), -- Rushing Shadows 1
@@ -1076,6 +1097,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
+	-- Dawn of the Infinite
+		[415114] = List(), -- Malignant Transferal 1
+		[415097] = List(), -- Malignant Transferal 2
+		[415122] = List(), -- Malignant Transferal 3
+		[410249] = List(), -- Radiant Barrier
+		[409456] = List(), -- Earthsurge
+		[407978] = List(), -- Necrotic Winds
+		[400642] = List(), -- Siphon Oathstone
+		[414177] = List(), -- Cataclysmic Obliteration
+		[419611] = List(), -- Battle Senses
+		[419596] = List(), -- Temporal Shift
+		[407057] = List(), -- Blight Seep
+		[412768] = List(), -- Anachronistic Decay
 	-- Brackenhide Hollow
 		[384764] = List(), -- Feeding Frenzy
 		[376933] = List(), -- Grasping Vines
@@ -1389,8 +1423,7 @@ G.unitframe.aurawatch = {
 		-- Augmentation
 		[360827]	= Aura(360827, nil, 'TOPRIGHT', {0.33, 0.33, 0.77}), -- Blistering Scales
 		[410089]	= Aura(410089, nil, 'TOP', {0.13, 0.87, 0.50}), -- Prescience
-		[395296]	= Aura(395296, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true), -- Ebon Might < self
-		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}, true, nil, nil, nil, -20), -- Ebon Might < others
+		[395152]	= Aura(395152, nil, 'BOTTOMRIGHT', {0.98, 0.44, 0.00}), -- Ebon Might < others
 		[406732]	= Aura(406732, nil, 'RIGHT', {0.82, 0.29, 0.24}), -- Spatial Paradox
 	},
 	ROGUE = {

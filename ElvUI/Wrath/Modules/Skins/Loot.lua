@@ -79,28 +79,36 @@ function S:LootFrame()
 
 	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
-	MasterLooterFrame:SetTemplate('Transparent')
 	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
-
 	MasterLooterFrame.Item.NameBorderMid:StripTextures()
 	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
 	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
-		local b = MasterLooterFrame.Item
-		if b then
-			local i = b.Icon
-			local icon = i:GetTexture()
-			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
+		local item = MasterLooterFrame.Item
+		if item then
+			local icon = item.Icon
+			local texture = icon:GetTexture()
+			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
-			b:StripTextures()
-			i:SetTexture(icon)
-			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			if item.IconBorder then
+				item.IconBorder:SetAlpha(0)
+			end
+
+			item:StripTextures()
+			icon:SetTexture(texture)
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			if not item.backdrop then
+				item:CreateBackdrop()
+				item.backdrop:SetOutside(icon)
+			end
+
+			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
+	end)
 
+	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
 			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
 				if child:GetPushedTexture() then

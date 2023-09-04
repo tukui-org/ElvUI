@@ -38,10 +38,11 @@ P.general = {
 	cameraDistanceMax = E.Retail and 2.6 or 4,
 	afk = true,
 	afkChat = true,
+	afkSpin = true,
 	cropIcon = 2,
 	objectiveTracker = true,
 	numberPrefixStyle = 'ENGLISH',
-	tagUpdateRate = 0.25, -- eventTimerThreshold should match in oUF tags file
+	tagUpdateRate = 0.2, -- eventTimerThreshold
 	decimalLength = 1,
 	fontSize = 12,
 	font = 'PT Sans Narrow',
@@ -85,7 +86,9 @@ P.general = {
 	customGlow = {
 		style = 'Pixel Glow',
 		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		startAnimation = true,
 		useColor = false,
+		duration = 1,
 		speed = 0.3,
 		lines = 8,
 		size = 1,
@@ -177,6 +180,7 @@ P.general = {
 		width = 325,
 		height = 30,
 		spacing = 4,
+		maxBars = 5,
 		buttonSize = 20,
 		style = 'halfbar',
 		statusBarTexture = 'ElvUI Norm',
@@ -1422,6 +1426,7 @@ local UF_Fader = {
 	unittarget = false,
 	vehicle = false,
 	instanceDifficulties = {
+		none = false,
 		dungeonNormal = false,
 		dungeonHeroic = false,
 		dungeonMythic = false,
@@ -2219,7 +2224,6 @@ P.unitframe.units.focus.name.text_format = '[classcolor][name:medium]'
 
 P.unitframe.units.focustarget = CopyTable(P.unitframe.units.focus)
 P.unitframe.units.focustarget.enable = false
-P.unitframe.units.focustarget.aurabar = nil
 P.unitframe.units.focustarget.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Dispellable,CastByUnit,RaidBuffsElvUI'
 P.unitframe.units.focustarget.debuffs.enable = false
 P.unitframe.units.focustarget.debuffs.anchorPoint = 'BOTTOMRIGHT'
@@ -2228,7 +2232,11 @@ P.unitframe.units.focustarget.debuffs.priority = 'Blacklist,Personal,Boss,RaidDe
 P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
+P.unitframe.units.focustarget.aurabar = nil
+P.unitframe.units.focustarget.castbar = nil
 P.unitframe.units.focustarget.privateAuras = nil
+P.unitframe.units.focustarget.buffIndicator = nil
+P.unitframe.units.focustarget.CombatIcon = nil
 
 P.unitframe.units.pet.aurabar.enable = false
 P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
@@ -2260,7 +2268,10 @@ P.unitframe.units.pettarget.debuffs.maxDuration = 300
 P.unitframe.units.pettarget.debuffs.priority = 'Blacklist,Boss,RaidDebuffs,Dispellable,Whitelist'
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
+P.unitframe.units.pettarget.aurabar = nil
+P.unitframe.units.pettarget.castbar = nil
 P.unitframe.units.pettarget.privateAuras = nil
+P.unitframe.units.pettarget.buffIndicator = nil
 
 P.unitframe.units.boss.buffs.enable = true
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
@@ -2701,7 +2712,7 @@ local AB_Bar = {
 	},
 }
 
-for i = 1, (E.Classic and 10 or 15) do
+for i = 1, 15 do
 	if i ~= 11 and i ~= 12 then
 		local barN = 'bar'..i
 		P.actionbar[barN] = CopyTable(AB_Bar)

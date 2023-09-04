@@ -86,7 +86,7 @@ local UNKNOWN = UNKNOWN
 
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
-local LEVEL2 = _G.TOOLTIP_UNIT_LEVEL_CLASS and strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
+local LEVEL2 = strlower((_G.TOOLTIP_UNIT_LEVEL_RACE or _G.TOOLTIP_UNIT_LEVEL_CLASS):gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s:|r %d'
 local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r'
@@ -198,7 +198,7 @@ function TT:GetLevelLine(tt, offset, player)
 		local tipLine = _G['GameTooltipTextLeft'..i]
 		local tipText = tipLine and tipLine:GetText()
 		local tipLower = tipText and strlower(tipText)
-		if tipLower and (strfind(tipLower, LEVEL1) or LEVEL2 and strfind(tipLower, LEVEL2)) then
+		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
 			return tipLine, player and _G['GameTooltipTextLeft'..i+1] or nil
 		end
 	end
@@ -258,16 +258,24 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr') then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
+
+			local levelText
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
+				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
 			else
-				levelLine:SetFormattedText('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
+				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
 			end
 
-			local specText = specLine and specLine:GetText()
-			if specText then
-				specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+			if E.Retail then
+				local specText = specLine and specLine:GetText()
+				if specText then
+					specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+				end
+			else -- put the class in classic
+				levelText = format('%s |c%s%s|r', levelText, nameColor.colorStr, localeClass)
 			end
+
+			levelLine:SetFormattedText(levelText)
 		end
 
 		if TT.db.showElvUIUsers then
@@ -1040,13 +1048,10 @@ function TT:Initialize()
 		end
 	end
 
-	if not E.Wrath then
-		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
-	end
-
 	if E.Retail then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
+		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')

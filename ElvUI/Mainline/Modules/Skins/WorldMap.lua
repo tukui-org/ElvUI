@@ -46,7 +46,6 @@ function S:WorldMapFrame()
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 6, -8)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
-	WorldMapFrame.NavBar.homeButton.xoffset = 1
 	WorldMapFrame.NavBar.homeButton.text:FontTemplate()
 
 	-- Quest Frames
@@ -175,7 +174,7 @@ function S:WorldMapFrame()
 
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
-				dialog.MinimizeButton:Size(16, 16)
+				dialog.MinimizeButton:Size(16)
 
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)

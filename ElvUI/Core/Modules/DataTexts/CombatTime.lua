@@ -28,7 +28,7 @@ end
 local function OnEvent(self, event, _, timeSeconds)
 	local _, instanceType = GetInstanceInfo()
 	local inArena, started, ended = instanceType == 'arena', event == 'ENCOUNTER_START', event == 'ENCOUNTER_END'
-	timerText = db.NoLabel and '' or inArena and L["Arena"] or L["Combat"]
+	timerText = (db.NoLabel and '') or inArena and L["Arena"] or L["Combat"]
 
 	if inArena and event == 'START_TIMER' then
 		timer, startTime = 0, timeSeconds
@@ -37,7 +37,7 @@ local function OnEvent(self, event, _, timeSeconds)
 	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_ENABLED') or ended) then
 		self:SetScript('OnUpdate', nil)
 		if ended then inEncounter = nil end
-	elseif not inArena and (event == 'PLAYER_REGEN_DISABLED' or started and not inEncounter) then
+	elseif not inArena and ((not inEncounter and event == 'PLAYER_REGEN_DISABLED') or started) then
 		timer, startTime = 0, GetTime()
 		self:SetScript('OnUpdate', OnUpdate)
 		if started then inEncounter = true end

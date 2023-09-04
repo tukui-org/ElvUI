@@ -12,14 +12,12 @@ local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local UnitFactionGroup = UnitFactionGroup
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
@@ -110,7 +108,7 @@ local function UpdateCurrencySkins()
 					button.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 
-				button.icon:Size(17, 17)
+				button.icon:Size(17)
 
 				button.backdrop:SetOutside(button.icon, 1, 1)
 				button.backdrop:Show()
@@ -129,7 +127,7 @@ local function UpdateCurrencySkins()
 					-- adding them here will prevent additional calls
 					button.expandIcon:ClearAllPoints()
 					button.expandIcon:Point('LEFT', 4, 0)
-					button.expandIcon:Size(15, 15)
+					button.expandIcon:Size(15)
 				end
 
 				if button.isHeader then
@@ -177,6 +175,14 @@ function S:CharacterFrame()
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
+
+	-- Reposition Tabs
+	_G.CharacterFrameTab1:ClearAllPoints()
+	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+	_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab4:Point('TOPLEFT', _G.CharacterFrameTab3, 'TOPRIGHT', -19, 0)
+	_G.CharacterFrameTab5:Point('TOPLEFT', _G.CharacterFrameTab4, 'TOPRIGHT', -19, 0)
 
 	-- HandleTab looks weird
 	for i = 1, 3 do
@@ -391,6 +397,7 @@ function S:CharacterFrame()
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
 		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 		local factionName = _G['ReputationBar'..i..'FactionName']
 
 		factionBar:StripTextures()
@@ -399,30 +406,13 @@ function S:CharacterFrame()
 		factionStatusBar:SetStatusBarTexture(E.media.normTex)
 		factionStatusBar:Size(108, 13)
 
+		S:HandleCollapseTexture(factionBarButton, nil, true)
 		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 	end
-
-	hooksecurefunc('ReputationFrame_Update', function()
-		local numFactions = GetNumFactions()
-		local factionIndex, factionBarButton
-		local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-
-		for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
-			factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
-			factionIndex = factionOffset + i
-			if factionIndex <= numFactions then
-				if factionBarButton.isCollapsed then
-					factionBarButton:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					factionBarButton:SetNormalTexture(E.Media.Textures.MinusButton)
-				end
-			end
-		end
-	end)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
@@ -543,6 +533,11 @@ function S:CharacterFrame()
 	-- BG Queue Tabs
 	S:HandleTab(_G.PVPParentFrameTab1)
 	S:HandleTab(_G.PVPParentFrameTab2)
+
+	-- Reposition Tabs
+	_G.PVPParentFrameTab1:ClearAllPoints()
+	_G.PVPParentFrameTab1:Point('TOPLEFT', _G.PVPParentFrame, 'BOTTOMLEFT', 1, 76)
+	_G.PVPParentFrameTab2:Point('TOPLEFT', _G.PVPParentFrameTab1, 'TOPRIGHT', -19, 0)
 
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
 	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)

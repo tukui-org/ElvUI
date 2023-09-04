@@ -15,6 +15,14 @@ local FONT_SIZE = 20 --the base font size to use at a scale of 1
 local MIN_SCALE = 0.5 --the minimum scale we want to show cooldown counts at, anything below this will be hidden
 local MIN_DURATION = 1.5 --the minimum duration to show cooldown text for
 
+function E:Cooldown_UnbuggedTime(timer)
+	if timer.buggedTime then
+		return time() - GetTime()
+	else
+		return GetTime()
+	end
+end
+
 function E:Cooldown_TextThreshold(cd, timeLeft)
 	if cd.parent and cd.parent.textThreshold and cd.endTime then
 		return timeLeft >= cd.parent.textThreshold
@@ -45,7 +53,7 @@ function E:Cooldown_OnUpdate(elapsed)
 		E:Cooldown_TimerStop(self)
 		return 2
 	else
-		local now = GetTime()
+		local now = E:Cooldown_UnbuggedTime(self)
 		if self.endCooldown and now >= self.endCooldown then
 			E:Cooldown_TimerStop(self)
 		elseif E:Cooldown_BelowScale(self) then
@@ -230,11 +238,13 @@ function E:OnSetCooldown(start, duration, modRate)
 		local now = GetTime()
 		if start <= (now + 1) then -- this second is for Target Aura
 			timer.endTime = start + duration
+			timer.buggedTime = nil
 		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
 			local startup = time() - now
 			local cdtime = (2 ^ 32) / 1000 - start
 			local startTime = startup - cdtime
 			timer.endTime = startTime + duration
+			timer.buggedTime = true
 		end
 
 		timer.endCooldown = timer.endTime - 0.05
@@ -249,14 +259,15 @@ end
 function E:OnPauseCooldown()
 	local timer = self.timer
 	if timer then
-		timer.paused = GetTime()
+		timer.paused = E:Cooldown_UnbuggedTime(timer)
 	end
 end
 
 function E:OnResumeCooldown()
 	local timer = self.timer
 	if timer and timer.paused then
-		timer.endTime = timer.start + timer.duration + (GetTime() - timer.paused) -- calcuate time since paused
+		local now = E:Cooldown_UnbuggedTime(timer)
+		timer.endTime = timer.start + timer.duration + (now - timer.paused) -- calcuate time since paused
 		timer.endCooldown = timer.endTime - 0.05
 
 		timer.paused = nil

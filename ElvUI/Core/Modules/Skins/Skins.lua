@@ -789,7 +789,7 @@ do
 		for name, direction in pairs(btns) do
 			local button = frame[name]
 			if button then
-				button:Size(14, 14)
+				button:Size(14)
 				button:ClearAllPoints()
 				button:Point('CENTER')
 				button:SetHitRectInsets(1, 1, 1, 1)
@@ -979,13 +979,13 @@ do
 
 		local InsideMask = Button:CreateMaskTexture()
 		InsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-		InsideMask:Size(10, 10)
+		InsideMask:Size(10)
 		InsideMask:Point('CENTER')
 		Button.InsideMask = InsideMask
 
 		local OutsideMask = Button:CreateMaskTexture()
 		OutsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-		OutsideMask:Size(13, 13)
+		OutsideMask:Size(13)
 		OutsideMask:Point('CENTER')
 		Button.OutsideMask = OutsideMask
 
@@ -1075,7 +1075,7 @@ do
 			f.Texture = f:CreateTexture(nil, 'OVERLAY')
 			f.Texture:Point('CENTER')
 			f.Texture:SetTexture(E.Media.Textures.Close)
-			f.Texture:Size(12, 12)
+			f.Texture:Size(12)
 			f:HookScript('OnEnter', closeOnEnter)
 			f:HookScript('OnLeave', closeOnLeave)
 			f:SetHitRectInsets(6, 6, 7, 7)
@@ -1469,7 +1469,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 
 	if portrait.PortraitRing then
 		portrait.PortraitRing:Hide()
-		portrait.PortraitRingQuality:SetTexture('')
+		portrait.PortraitRingQuality:SetTexture(E.ClearTexture)
 		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
 		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
 	end
@@ -1608,10 +1608,14 @@ end
 
 do -- Handle collapse
 	local function UpdateCollapseTexture(button, texture, skip)
-		if skip then return end
+		if skip or not texture then return end
 
-		if type(texture) == 'number' then -- 130821 minus, 130838 plus
-			button:SetNormalTexture(texture == 130838 and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton, true)
+		if type(texture) == 'number' then
+			if texture == 130838 then -- Interface/Buttons/UI-PlusButton-UP
+				button:SetNormalTexture(E.Media.Textures.PlusButton, true)
+			elseif texture == 130821 then -- Interface/Buttons/UI-MinusButton-UP
+				button:SetNormalTexture(E.Media.Textures.MinusButton, true)
+			end
 		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then
 			button:SetNormalTexture(E.Media.Textures.PlusButton, true)
 		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
@@ -1626,11 +1630,14 @@ do -- Handle collapse
 		button:SetPushedTexture(normal, true)
 	end
 
-	function S:HandleCollapseTexture(button, syncPushed)
+	function S:HandleCollapseTexture(button, syncPushed, ignorePushed)
+		if button.collapsedSkinned then return end
+		button.collapsedSkinned = true -- little bit of a safety precaution
+
 		if syncPushed then -- not needed always
 			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
 			syncPushTexture(button)
-		else
+		elseif not ignorePushed then
 			button:SetPushedTexture(E.ClearTexture)
 		end
 

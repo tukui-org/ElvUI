@@ -39,6 +39,12 @@ function S:Blizzard_InspectUI()
 		S:HandleTab(_G['InspectFrameTab'..i])
 	end
 
+	-- Reposition Tabs
+	_G.InspectFrameTab1:ClearAllPoints()
+	_G.InspectFrameTab1:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', 1, 76)
+	_G.InspectFrameTab2:Point('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.InspectFrameTab3:Point('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -19, 0)
+
 	_G.InspectPaperDollFrame:StripTextures()
 
 	for _, slot in ipairs({ _G.InspectPaperDollItemsFrame:GetChildren() }) do

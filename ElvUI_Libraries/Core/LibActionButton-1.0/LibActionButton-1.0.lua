@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 43 -- the real minor version is 107
+local MINOR_VERSION = 44 -- the real minor version is 107
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2492,10 +2492,13 @@ if WoWClassic then
 	-- if the library is present, simply use it to override action counts
 	local LibClassicSpellActionCount = LibStub("LibClassicSpellActionCount-1.0", true)
 	if LibClassicSpellActionCount then
-		Action.GetCount = function(self) return LibClassicSpellActionCount:GetActionCount(self._state_action) end
-	else
-		-- if we don't have the library, only show count for items, like the default UI
-		Action.IsConsumableOrStackable = function(self) return IsItemAction(self._state_action) and (IsConsumableAction(self._state_action) or IsStackableAction(self._state_action)) end
+		Action.GetCount = function(self)
+			return LibClassicSpellActionCount:GetActionCount(self._state_action)
+		end
+	else -- if we don't have the library, only show count for items, like the default UI
+		Action.IsConsumableOrStackable = function(self)
+			return IsConsumableAction(self._state_action) or IsStackableAction(self._state_action) or (not IsItemAction(self._state_action) and GetActionCount(self._state_action) > 0)
+		end
 	end
 end
 

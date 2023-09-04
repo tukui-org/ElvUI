@@ -249,6 +249,7 @@ L["Buttons"] = "按钮数"
 L["By Type"] = "类型"
 L["Calendar Frame"] = "日历框架"
 L["Camera Distance Scale"] = "视角镜头的距离"
+L["Camera Spin"] = true
 L["Camera"] = "镜头"
 L["Can Attack"] = "可攻击"
 L["Can Not Attack"] = "不可攻击"
@@ -628,8 +629,7 @@ L["Filter Priority"] = "过滤器优先级"
 L["Filter Search"] = "筛选"
 L["Filter Type"] = "过滤器类型"
 L["Filters Page"] = "过滤器界面"
-L["FILTERS"] = "过滤器"
-L["Filters"] = true
+L["Filters"] = "过滤器"
 L["Flash Client Icon"] = true
 L["Flash Invites"] = "闪光邀请"
 L["Flash Threshold"] = "闪光阈值"
@@ -1727,6 +1727,7 @@ L["Toggle Anchors"] = "切换定位开关"
 L["Toggle Off While In Combat"] = "战斗时关闭"
 L["Toggle On While In Combat"] = "战斗时启用"
 L["Toggle showing of the left and right chat panels."] = "显示/隐藏左右聊天框"
+L["Toggle the camera spin on the AFK screen."] = true
 L["Toggle the chat tab panel backdrop."] = "显示/隐藏聊天框架标签面板背景"
 L["Toggle Tutorials"] = "教学开关"
 L["Tooltip Body"] = "浮动提示正文"
@@ -1932,15 +1933,6 @@ L["TOGGLESKIN_DESC"] = "启用/停用此外观"
 L["TOOLTIP_DESC"] = "鼠标提示信息设定选项"
 L["UNITFRAME_DESC"] = "修改单位框架设定"
 L["VISIBILITY_DESC"] = "为了显示设定过的过滤器下面的宏必须启用."
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
- Example: '[combat] 2;']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条.
- 例如: '[combat] 2;']=]
-
-L[ [=[This works like a macro, you can run different situations to get the actionbar to show/hide differently.
- Example: '[combat] show;hide']=] ] = [=[和宏写法类似, 能根据不同姿态切换动作条显示或隐藏.
- 例如: '[combat] show;hide']=]
-
 L["TEXTURE_EXAMPLE"] = [=[若要设定聊天框背景, 请你指定位于WoW目录下的「Textures」文件夹中的材质文件名.
 
 请注意：
@@ -1951,3 +1943,28 @@ L["TEXTURE_EXAMPLE"] = [=[若要设定聊天框背景, 请你指定位于WoW目�
 举例：Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 对多数玩家来说, 较简易的方式是将tga文件放入WoW文件夹中, 然后在此处输入文件名.]=]
+
+----------  FilterHelp  ----------
+L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = true
+L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = true
+L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = true
+L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
+L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
+L["*Personal:|r ^Auras cast by yourself.|r"] = true
+L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
+L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
+L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
+L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
+L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = true
+L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = true
+L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = true
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = true
+L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
+L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
+L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true
+----------------------------------

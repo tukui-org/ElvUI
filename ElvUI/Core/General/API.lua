@@ -589,8 +589,8 @@ function E:PositionGameMenuButton()
 	end
 	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
-	local button = GameMenuFrame[E.name]
-	button:SetFormattedText('%s%s|r', E.media.hexvaluecolor, E.name)
+	local button = GameMenuFrame.ElvUI
+	button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
 
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then
@@ -620,7 +620,7 @@ end
 function E:SetupGameMenu()
 	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
-	GameMenuFrame[E.name] = button
+	GameMenuFrame.ElvUI = button
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
 		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
@@ -629,7 +629,7 @@ function E:SetupGameMenu()
 	end
 end
 
-function E:IsDragonRiding()
+function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
 	for spellID in next, E.MountDragons do
 		if E:GetAuraByID('player', spellID, 'HELPFUL') then
 			return true

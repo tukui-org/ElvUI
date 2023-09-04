@@ -5,31 +5,42 @@ local _G = _G
 local min = min
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local RegisterStateDriver = RegisterStateDriver
-local UnregisterStateDriver = UnregisterStateDriver
 
-function B:SetObjectiveFrameHeight()
-	local top = _G.WatchFrame:GetTop() or 0
+local Tracker_Collapse = WatchFrame_Collapse
+local Tracker_Expand = WatchFrame_Expand
+local Tracker = WatchFrame
+
+local function ObjectiveTracker_SetPoint(tracker, _, parent)
+	if parent ~= tracker.holder then
+		tracker:ClearAllPoints()
+		tracker:SetPoint('TOP', tracker.holder)
+	end
+end
+
+function B:ObjectiveTracker_SetHeight()
+	local top = Tracker:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
-	local watchFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
+	local frameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	_G.WatchFrame:Height(watchFrameHeight)
+	Tracker:Height(frameHeight)
 end
 
-function B:SetObjectiveFrameAutoHide()
-	if not _G.WatchFrame.AutoHider then
-		return -- Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
-	end
-
-	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(_G.WatchFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
-	else
-		UnregisterStateDriver(_G.WatchFrame.AutoHider, 'objectiveHider')
+function B:ObjectiveTracker_AutoHideOnHide()
+	if not Tracker.collapsed then
+		Tracker.userCollapsed = true
+		Tracker_Collapse(Tracker)
 	end
 end
 
-function B:MoveObjectiveFrame()
+function B:ObjectiveTracker_AutoHideOnShow()
+	if Tracker.collapsed then
+		Tracker.userCollapsed = nil
+		Tracker_Expand(Tracker)
+	end
+end
+
+function B:ObjectiveTracker_Setup()
 	local holder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	holder:Point('TOPRIGHT', E.UIParent, -135, -300)
 	holder:Size(130, 22)
@@ -37,17 +48,17 @@ function B:MoveObjectiveFrame()
 	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
-	local tracker = _G.WatchFrame
-	tracker:SetClampedToScreen(false)
-	tracker:ClearAllPoints()
-	tracker:SetPoint('TOP', holder)
+	-- prevent it from being moved by blizzard (the hook below will most likely do nothing now)
+	Tracker:SetMovable(true)
+	Tracker:SetUserPlaced(true)
+	Tracker:SetDontSavePosition(true)
+	Tracker:SetClampedToScreen(false)
+	Tracker:ClearAllPoints()
+	Tracker:SetPoint('TOP', holder)
 
-	hooksecurefunc(tracker, 'SetPoint', function(_, _, parent)
-		if parent ~= holder then
-			tracker:ClearAllPoints()
-			tracker:SetPoint('TOP', holder)
-		end
-	end)
+	Tracker.holder = holder
+	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
-	B:SetObjectiveFrameHeight()
+	B:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
+	B:ObjectiveTracker_SetHeight()
 end

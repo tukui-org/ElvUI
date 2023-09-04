@@ -9,6 +9,7 @@ local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
 local GetPetActionInfo = GetPetActionInfo
 local IsPetAttackAction = IsPetAttackAction
+local GetPetActionSlotUsable = GetPetActionSlotUsable
 local GetPetActionCooldown = GetPetActionCooldown
 local RegisterStateDriver = RegisterStateDriver
 local GameTooltip = GameTooltip
@@ -101,8 +102,15 @@ function AB:UpdatePet(event, unit)
 				button:StopFlash()
 			end
 
+			button.icon:SetVertexColor(0.4, 0.4, 0.4)
 			button.icon:SetDesaturation(1)
 			button:SetChecked(false)
+		elseif GetPetActionSlotUsable(i) then
+			button.icon:SetVertexColor(1, 1, 1)
+			button.icon:SetDesaturation(0)
+		else
+			button.icon:SetVertexColor(0.4, 0.4, 0.4)
+			button.icon:SetDesaturation(1)
 		end
 	end
 end

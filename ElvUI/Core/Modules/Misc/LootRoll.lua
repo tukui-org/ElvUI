@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, next, wipe = unpack, next, wipe
-local tinsert, format = tinsert, format
+local tinsert, tremove, format = tinsert, tremove, format
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
@@ -27,24 +27,22 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local TRANSMOGRIFY, ROLL_DISENCHANT = TRANSMOGRIFY, ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
-local NUM_GROUP_LOOT_FRAMES = NUM_GROUP_LOOT_FRAMES or 4
 
 M.RollBars = {}
 
 local cachedRolls = {}
+local waitingRolls = {}
+local rollTypes = {
+	[1] = 'need',
+	[2] = 'greed',
+	[3] = 'disenchant',
+	[4] = 'transmog',
+	[0] = 'pass'
+}
 
 local function ClickRoll(button)
 	RollOnLoot(button.parent.rollID, button.rolltype)
 end
-
-local rollTypes = { [1] = 'need', [2] = 'greed', [3] = 'disenchant', [4] = 'transmog', [0] = 'pass' }
-local rollState = Enum.EncounterLootDropRollState and {
-	[Enum.EncounterLootDropRollState.NeedMainSpec] = 1,
-	[Enum.EncounterLootDropRollState.NeedOffSpec] = 1,
-	[Enum.EncounterLootDropRollState.Greed] = 2,
-	[Enum.EncounterLootDropRollState.Transmog] = 4,
-	[Enum.EncounterLootDropRollState.Pass] = 0
-} or {}
 
 local function SetTip(button)
 	GameTooltip:SetOwner(button, 'ANCHOR_RIGHT')
@@ -181,9 +179,13 @@ end
 
 function M:LootRoll_Create(index)
 	local bar = CreateFrame('Frame', 'ElvUI_LootRollFrame'..index, E.UIParent)
-	bar:SetScript('OnEvent', M.CANCEL_LOOT_ROLL)
+	bar:SetScript('OnEvent', M.LootRoll_OnEvent)
 	bar:RegisterEvent('CANCEL_LOOT_ROLL')
 	bar:Hide()
+
+	if E.Retail then
+		bar:RegisterEvent('CANCEL_ALL_LOOT_ROLLS')
+	end
 
 	local status = CreateFrame('StatusBar', nil, bar)
 	status:SetFrameLevel(bar:GetFrameLevel())
@@ -251,7 +253,7 @@ function M:LootRoll_Create(index)
 	return bar
 end
 
-function M:LootFrame_GetFrame(i)
+function M:LootRoll_GetFrame(i)
 	if i then
 		return M.RollBars[i] or M:LootRoll_Create(i)
 	else -- check for a bar to reuse
@@ -263,11 +265,30 @@ function M:LootFrame_GetFrame(i)
 	end
 end
 
-function M:CANCEL_LOOT_ROLL(_, rollID)
-	if self.rollID == rollID then
-		self.rollID = nil
-		self.time = nil
+function M:LootRoll_OnEvent(event, rollID)
+	M[event](self, event, rollID)
+end
+
+function M:LootRoll_ClearBar(bar, event)
+	bar.rollID = nil
+	bar.time = nil
+
+	if next(waitingRolls) then
+		local newRoll = waitingRolls[1]
+		tremove(waitingRolls, 1)
+
+		M:START_LOOT_ROLL(event, newRoll.rollID, newRoll.rollTime)
 	end
+end
+
+function M:CANCEL_LOOT_ROLL(event, rollID)
+	if self.rollID == rollID then
+		M:LootRoll_ClearBar(self, event)
+	end
+end
+
+function M:CANCEL_ALL_LOOT_ROLLS(event)
+	M:LootRoll_ClearBar(self, event)
 end
 
 function M:START_LOOT_ROLL(event, rollID, rollTime)
@@ -282,8 +303,14 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 		return
 	end
 
-	local bar = M:LootFrame_GetFrame()
-	if not bar then return end -- well this shouldn't happen
+	local bar = M:LootRoll_GetFrame()
+	if not bar then
+		if E.Retail then
+			tinsert(waitingRolls, { rollID = rollID, rollTime = rollTime })
+		end
+
+		return -- well this shouldn't happen
+	end
 
 	local itemLink = GetLootRollItemLink(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
@@ -436,9 +463,10 @@ function M:UpdateLootRollFrames()
 
 	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
+	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
 
-	for i = 1, NUM_GROUP_LOOT_FRAMES do
-		local bar = M:LootFrame_GetFrame(i)
+	for i = 1, maxBars do
+		local bar = M:LootRoll_GetFrame(i)
 		bar:Size(db.width, db.height)
 
 		bar.status:SetStatusBarTexture(texture)
@@ -506,13 +534,13 @@ function M:LoadLootRoll()
 
 	M:UpdateLootRollFrames()
 
-	M:RegisterEvent('START_LOOT_ROLL')
-
 	if not E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 		M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')
 	end
+
+	M:RegisterEvent('START_LOOT_ROLL')
 
 	_G.UIParent:UnregisterEvent('START_LOOT_ROLL')
 	_G.UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')

@@ -4,18 +4,15 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
+local min, select = min, select
 local unpack, ipairs, pairs = unpack, ipairs, pairs
-local min, strlower, select = min, strlower, select
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
 local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetLFGProposalMember = GetLFGProposalMember
-local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
-local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
@@ -30,12 +27,6 @@ end
 
 local function LFDQueueFrameRoleButtonIconOnHide(self)
 	LCG.HideOverlayGlow(self:GetParent().checkButton)
-end
-
-local function ClearSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetTexture()
-	end
 end
 
 local function HandleGoldIcon(button)
@@ -90,11 +81,6 @@ local function SkinItemButton(parentFrame, _, index)
 
 		S:HandleIconBorder(item.IconBorder)
 	end
-end
-
-local function SetRoleIcon(self, resultID)
-	local _,_,_,_, role = C_LFGList_GetApplicationInfo(resultID)
-	self.RoleIcon:SetTexCoord(GetBackgroundTexCoordsForRole(role))
 end
 
 local function HandleAffixIcons(self)
@@ -218,15 +204,20 @@ function S:LookingForGroupFrames()
 		_G.LFGListApplicationDialog.TankButton,
 		_G.LFGListApplicationDialog.HealerButton,
 		_G.LFGListApplicationDialog.DamagerButton,
+
+		-- these three arent scaled to 0.7
 		_G.RolePollPopupRoleButtonTank,
 		_G.RolePollPopupRoleButtonHealer,
 		_G.RolePollPopupRoleButtonDPS,
 	}) do
 		local checkButton = roleButton.checkButton or roleButton.CheckButton
+		if checkButton:GetScale() ~= 1 then
+			checkButton:SetScale(1)
+		end
 
 		S:HandleCheckBox(checkButton, nil, nil, true)
 		checkButton.backdrop:SetInside()
-		checkButton:Size(20)
+		checkButton:Size(18)
 	end
 
 	hooksecurefunc('SetCheckButtonIsRadio', function(button)
@@ -427,8 +418,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
 
-	hooksecurefunc('LFGListInviteDialog_Show', SetRoleIcon)
-
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
@@ -524,7 +513,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
 

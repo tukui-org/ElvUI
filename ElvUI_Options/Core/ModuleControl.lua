@@ -32,13 +32,11 @@ local function CreateActionbarsConfig()
 		order = order + 1
 	end
 
-	if not E.Classic then
-		for i = 13, 15 do
-			local bar = config.args['bar'..i]
-			bar.name = L["Bar "]..i
-			bar.order = order
-			order = order + 1
-		end
+	for i = 13, 15 do
+		local bar = config.args['bar'..i]
+		bar.name = L["Bar "]..i
+		bar.order = order
+		order = order + 1
 	end
 
 	config.args.barPet.name = L["Pet Bar"]
