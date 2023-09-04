@@ -41,9 +41,9 @@ function S:PetStableFrame()
 
 	_G.PetStableLeftInset:Hide()
 	_G.PetStableBottomInset:Hide()
-	PetStableFrameModelBg:Hide()
-	PetStableDietTexture:SetTexture(132165)
-	PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.PetStableFrameModelBg:Hide()
+	_G.PetStableDietTexture:SetTexture(132165)
+	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.PetStableFrameInset:SetTemplate('Transparent')
 
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
