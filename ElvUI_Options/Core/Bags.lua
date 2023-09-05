@@ -36,7 +36,7 @@ Bags.args.general.args.generalGroup.values = {
 	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
 	reverseSlots = L["Reverse Bag Slots"],
 	useBlizzardCleanup = L["Use Blizzard Cleanup"],
-	--useBlizzardJunk = E.NewSign..L["Use Blizzard Sell Junk"]
+	useBlizzardJunk = E.NewSign..L["Use Blizzard Sell Junk"]
 }
 
 if E.Retail then
