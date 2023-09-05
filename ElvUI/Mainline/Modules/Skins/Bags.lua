@@ -18,6 +18,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetContainerItemCooldown = GetContainerItemCooldown or (C_Container and C_Container.GetContainerItemCooldown)
 
+local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local QUESTS_LABEL = QUESTS_LABEL
@@ -39,7 +40,7 @@ end
 
 local function StripBlizzard(button)
 	for _, region in next, { button:GetRegions() } do
-		if region:IsObjectType('Texture') and (region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay) then
+		if region:IsObjectType('Texture') and (region ~= button.UpgradeIcon and region ~= button.JunkIcon and region ~= button.ItemContextOverlay) then
 			region:SetTexture()
 		end
 	end
@@ -110,7 +111,8 @@ local function SkinItemButton(button, bagID)
 	local quest = B:GetContainerItemQuestInfo(bagID, slotID)
 
 	button.icon:SetTexture((info.iconFileID ~= 4701874 and info.iconFileID) or E.Media.Textures.Invisible)
-	button.itemID, button.itemLink = info.itemID, info.hyperlink
+	button.itemID, button.itemLink, button.rarity = info.itemID, info.hyperlink, info.quality
+	button.isJunk = (button.rarity and button.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
 
 	if info.hyperlink then
 		button.name, _, button.quality, _, _, button.type = GetItemInfo(info.hyperlink)
@@ -120,6 +122,10 @@ local function SkinItemButton(button, bagID)
 		end
 	else
 		button.name, button.quality, button.type = nil, nil, nil
+	end
+
+	if button.JunkIcon then
+		button.JunkIcon:SetShown(button.isJunk)
 	end
 
 	if quest and (quest.questID or quest.isQuestItem) then
@@ -284,7 +290,7 @@ local function UpdateBankItem(button)
 		local container = button:GetParent():GetID()
 		local info = B:GetContainerItemInfo(container, slotID)
 		local questInfo = B:GetContainerItemQuestInfo(container, slotID)
-		button.itemID, button.itemLink = info.itemID, info.hyperlink
+		button.itemID, button.itemLink, button.rarity = info.itemID, info.hyperlink, info.quality
 
 		if info.hyperlink then
 			local _
