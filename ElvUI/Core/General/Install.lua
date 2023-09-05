@@ -108,7 +108,7 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
-	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
+	chatGroup = { E.Retail and 'PING' or nil, 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 	ChatFrame_RemoveAllMessageGroups(rightChatFrame)
 	for _, v in next, chatGroup do
 		ChatFrame_AddMessageGroup(rightChatFrame, v)
