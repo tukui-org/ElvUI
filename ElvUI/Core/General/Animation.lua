@@ -297,7 +297,7 @@ function E:UIFrameFade(frame, info)
 
 	frame:SetAlpha(info.startAlpha)
 
-	if not frame:IsProtected() and not issecurevariable(frame, 'Show') then
+	if not frame:IsShown() and not frame:IsProtected() and not issecurevariable(frame, 'Show') then
 		frame:Show()
 	end
 
