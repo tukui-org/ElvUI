@@ -64,16 +64,16 @@ local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
 
-local C_SocialQueue_GetGroupMembers = E.Retail and C_SocialQueue.GetGroupMembers
-local C_SocialQueue_GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
+local GetGroupMembers = E.Retail and C_SocialQueue.GetGroupMembers
+local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 
 local IsChatLineCensored = E.Retail and C_ChatInfo.IsChatLineCensored
-local C_ChatInfo_GetChannelRuleset = E.Retail and C_ChatInfo.GetChannelRuleset
-local C_ChatInfo_GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChannelRulesetForChannelID
-local C_ChatInfo_GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
-local C_ChatInfo_IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
+local GetChannelRuleset = E.Retail and C_ChatInfo.GetChannelRuleset
+local GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChannelRulesetForChannelID
+local GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
+local IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
 
-local C_Texture_GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
+local GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
 local RecruitLinkType = Enum.RafLinkType and Enum.RafLinkType.Recruit
@@ -1757,11 +1757,11 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 			return [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
 		elseif E.Retail then
 			if specialFlag == 'GUIDE' then
-				if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
+				if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
 					return NPEV2_CHAT_USER_TAG_GUIDE
 				end
 			elseif specialFlag == 'NEWCOMER' then
-				if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
+				if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
 					return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 				end
 			end
@@ -1790,11 +1790,11 @@ local function ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
 	end
 
 	-- Only add regional channels
-	if not C_ChatInfo_IsChannelRegionalForChannelID(channelID) then
+	if not IsChannelRegionalForChannelID(channelID) then
 		return false
 	end
 
-	return _G.ChatFrame_AddChannel(chatFrame, C_ChatInfo_GetChannelShortcutForChannelID(channelID)) ~= nil
+	return _G.ChatFrame_AddChannel(chatFrame, GetChannelShortcutForChannelID(channelID)) ~= nil
 end
 
 -- Clone of FCFManager_GetChatTarget as it doesn't exist on Classic ERA
@@ -2169,7 +2169,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8)
 			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12)
 
-			if E.Retail and arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
+			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)
 				_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox)
 			else
@@ -2211,8 +2211,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
 
 				if clientProgram and clientProgram ~= '' then
-					if C_Texture_GetTitleIconTexture then
-						C_Texture_GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
+					if GetTitleIconTexture then
+						GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
 							if success then
 								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
 								local linkDisplayText = format('[%s] (%s)', arg2, charName)
@@ -2870,7 +2870,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if not CH.db.socialQueueMessages then return end
 	if numAddedItems == 0 or not guid then return end
 
-	local players = C_SocialQueue_GetGroupMembers(guid)
+	local players = GetGroupMembers(guid)
 	if not players then return end
 
 	local firstMember, numMembers, extraCount, coloredName = players[1], #players, ''
@@ -2884,7 +2884,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		coloredName = format('{%s%s}', UNKNOWN, extraCount)
 	end
 
-	local queues = C_SocialQueue_GetGroupQueues(guid)
+	local queues = GetGroupQueues(guid)
 	local firstQueue = queues and queues[1]
 	local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
 
