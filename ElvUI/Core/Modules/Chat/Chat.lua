@@ -67,7 +67,7 @@ local UNKNOWN = UNKNOWN
 local GetGroupMembers = E.Retail and C_SocialQueue.GetGroupMembers
 local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 
-local IsChatLineCensored = E.Retail and C_ChatInfo.IsChatLineCensored
+local IsChatLineCensored = C_ChatInfo and C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = E.Retail and C_ChatInfo.GetChannelRuleset
 local GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChannelRulesetForChannelID
 local GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
