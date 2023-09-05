@@ -15,7 +15,9 @@ local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local InCombatLockdown = InCombatLockdown
-local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
+local IsMetaKeyDown = IsMetaKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
@@ -103,9 +105,10 @@ function AB:BindListener(key)
 		local alt = IsAltKeyDown() and 'ALT-' or ''
 		local ctrl = IsControlKeyDown() and 'CTRL-' or ''
 		local shift = IsShiftKeyDown() and 'SHIFT-' or ''
+		local meta = IsMetaKeyDown() and 'META-' or ''
 
-		SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
-		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
+		SetBinding(alt..ctrl..shift..meta..key, bind.button.bindstring)
+		E:Print(alt..ctrl..shift..meta..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
 	end
 
 	self:BindUpdate(bind.button, bind.spellmacro)
