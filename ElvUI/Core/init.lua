@@ -17,6 +17,7 @@ local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
+local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
@@ -74,6 +75,7 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 -- Expansions
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+E.ClassicHC = E.Classic and IsHardcoreActive()
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 

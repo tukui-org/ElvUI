@@ -9,7 +9,7 @@ local function ReplaceIconString(frame, text)
 	if not text then text = frame:GetText() end
 	if not text or text == '' then return end
 
-	local newText, count = gsub(text, '|T(%d+):24:24[^|]*|t', ' |T%1:16:16:0:0:64:64:5:59:5:59|t')
+	local newText, count = gsub(text, '|T(%d-):%d-:%d-[^|]*|t', ' |T%1:18:18:0:0:64:64:5:59:5:59|t')
 	if count > 0 then frame:SetFormattedText('%s', newText) end
 end
 
@@ -30,12 +30,72 @@ local function HandleRewards(box)
 	end
 end
 
+local function HandleSortLabel(button)
+	if button and button.Label then
+		button.Label:FontTemplate()
+	end
+end
+
 -- Same as Barber Skin
 local function HandleButton(button)
+	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
+	button:SetScale(E.uiscale)
+	button:Size(200, 50)
+end
+
+local function HandleNextPrev(button)
 	S:HandleNextPrevButton(button)
 
 	button:SetScript('OnMouseUp', nil)
 	button:SetScript('OnMouseDown', nil)
+end
+
+local function PurchaseButton_EnterLeave(button, enter)
+	local perks = _G.PerksProgramFrame
+	local footer = perks and perks.FooterFrame
+	local enabled = footer and footer.purchaseButtonEnabled
+	local label = button:GetFontString()
+
+	if enter then
+		if enabled then
+			label:SetTextColor(0.3, 1, 0.3, 1)
+		else
+			label:SetTextColor(1, 1, 1, 1)
+		end
+	elseif enabled then
+		label:SetTextColor(0.3, 0.8, 0.3, 1)
+	else
+		label:SetTextColor(1, 0.8, 0, 1)
+	end
+end
+
+local function PurchaseButton_OnEnter(button)
+	PurchaseButton_EnterLeave(button, true)
+end
+
+local function PurchaseButton_OnLeave(button)
+	PurchaseButton_EnterLeave(button)
+end
+
+local function GlowEmitterFactory_Toggle(frame, target, show)
+	local perks = _G.PerksProgramFrame
+	local footer = perks and perks.FooterFrame
+	local button = footer and footer.PurchaseButton
+	if not button or target ~= button then return end
+
+	if show then
+		frame:Hide(target) -- turn the glow off
+	end
+
+	PurchaseButton_EnterLeave(target, target:IsMouseOver()) -- update the text color instantly
+end
+
+local function GlowEmitterFactory_Show(frame, target)
+	GlowEmitterFactory_Toggle(frame, target, true)
+end
+
+local function GlowEmitterFactory_Hide(frame, target)
+	GlowEmitterFactory_Toggle(frame, target)
 end
 
 function S:Blizzard_PerksProgram()
@@ -48,7 +108,7 @@ function S:Blizzard_PerksProgram()
 
 		local currency = products.PerksProgramCurrencyFrame
 		if currency then
-			S:HandleIcon(currency.Icon)
+			S:HandleIcon(currency.Icon, true)
 			currency.Icon:Size(30)
 			currency.Text:FontTemplate(nil, 30)
 		end
@@ -59,9 +119,9 @@ function S:Blizzard_PerksProgram()
 			details:SetTemplate('Transparent')
 
 			local carousel = details.CarouselFrame
-			if carousel then
-				HandleButton(carousel.IncrementButton)
-				HandleButton(carousel.DecrementButton)
+			if carousel and carousel.IncrementButton then
+				HandleNextPrev(carousel.IncrementButton)
+				HandleNextPrev(carousel.DecrementButton)
 			end
 		end
 
@@ -71,9 +131,15 @@ function S:Blizzard_PerksProgram()
 			container:SetTemplate('Transparent')
 			S:HandleTrimScrollBar(container.ScrollBar)
 
-			container.PerksProgramHoldFrame:StripTextures()
-			container.PerksProgramHoldFrame:CreateBackdrop('Transparent')
-			container.PerksProgramHoldFrame.backdrop:SetInside(3, 3)
+			local hold = container.PerksProgramHoldFrame
+			if hold then
+				hold:StripTextures()
+				hold:CreateBackdrop('Transparent')
+				hold.backdrop:SetInside(3, 3)
+			end
+
+			HandleSortLabel(container.NameSortButton)
+			HandleSortLabel(container.PriceSortButton)
 
 			hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
 		end
@@ -84,12 +150,27 @@ function S:Blizzard_PerksProgram()
 		S:HandleCheckBox(footer.TogglePlayerPreview)
 		S:HandleCheckBox(footer.ToggleHideArmor)
 
-		S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
-		S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
-		S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
+		local armorText = footer.ToggleHideArmor.Text
+		if armorText then
+			armorText:FontTemplate()
+		end
+
+		local purchase = footer.PurchaseButton
+		if purchase then
+			HandleButton(footer.LeaveButton)
+			HandleButton(footer.RefundButton)
+			HandleButton(footer.PurchaseButton)
+
+			purchase:HookScript('OnEnter', PurchaseButton_OnEnter)
+			purchase:HookScript('OnLeave', PurchaseButton_OnLeave)
+
+			-- handle the glow
+			hooksecurefunc(_G.GlowEmitterFactory, 'Show', GlowEmitterFactory_Show)
+			hooksecurefunc(_G.GlowEmitterFactory, 'Hide', GlowEmitterFactory_Hide)
+		end
 
 		local rotate = footer.RotateButtonContainer
-		if rotate then
+		if rotate and rotate.RotateLeftButton then
 			S:HandleButton(rotate.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(rotate.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 		end

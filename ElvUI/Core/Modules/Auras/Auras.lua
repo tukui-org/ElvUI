@@ -528,6 +528,10 @@ function A:Initialize()
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
 
+		if E.Retail then -- edit mode error
+			_G.BuffFrame.numHideableBuffs = 0
+		end
+
 		if _G.DebuffFrame then
 			_G.DebuffFrame:Kill()
 		end

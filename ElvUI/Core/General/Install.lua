@@ -5,10 +5,9 @@ local CH = E:GetModule('Chat')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack = unpack
 local format = format
-local ipairs = ipairs
-local pairs = pairs
 local strsub = strsub
 local tinsert = tinsert
 
@@ -59,7 +58,7 @@ local ELV_TOONS = {
 local function ToggleChatColorNamesByClassGroup(checked, group)
 	local info = _G.ChatTypeGroup[group]
 	if info then
-		for _, value in pairs(info) do
+		for _, value in next, info do
 			SetChatColorNameByClass(strsub(value, 10), checked)
 		end
 	else
@@ -73,7 +72,7 @@ function E:SetupChat(noDisplayMsg)
 	local rightChatFrame = FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(rightChatFrame)
 
-	for _, name in ipairs(_G.CHAT_FRAMES) do
+	for _, name in next, _G.CHAT_FRAMES do
 		local frame = _G[name]
 		local id = frame:GetID()
 
@@ -102,16 +101,16 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
-	local chatGroup = { 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
+	local chatGroup = { 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', E.ClassicHC and 'GUILD_DEATHS' or nil, 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
 	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame1)
-	for _, v in ipairs(chatGroup) do
+	for _, v in next, chatGroup do
 		ChatFrame_AddMessageGroup(_G.ChatFrame1, v)
 	end
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 	ChatFrame_RemoveAllMessageGroups(rightChatFrame)
-	for _, v in ipairs(chatGroup) do
+	for _, v in next, chatGroup do
 		ChatFrame_AddMessageGroup(rightChatFrame, v)
 	end
 
@@ -124,7 +123,7 @@ function E:SetupChat(noDisplayMsg)
 	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
 		tinsert(chatGroup, 'CHANNEL'..i)
 	end
-	for _, v in ipairs(chatGroup) do
+	for _, v in next, chatGroup do
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
 
@@ -333,7 +332,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.general.totems.spacing = 8
 			E.db.general.autoTrackReputation = true
 		--Movers
-			for mover, position in pairs(E.LayoutMoverPositions.ALL) do
+			for mover, position in next, E.LayoutMoverPositions.ALL do
 				E.db.movers[mover] = position
 				E:SaveMoverDefaultPosition(mover)
 			end
@@ -464,7 +463,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				These are changes that deviate from the shared base layout.
 			]]
 			if E.LayoutMoverPositions[layout] then
-				for mover, position in pairs(E.LayoutMoverPositions[layout]) do
+				for mover, position in next, E.LayoutMoverPositions[layout] do
 					E.db.movers[mover] = position
 					E:SaveMoverDefaultPosition(mover)
 				end

@@ -1,3 +1,19 @@
+## Version 13.40 \[ September 5th 2023 \]
+*   Reputation Databars not displaying Hated reputation information.
+*   Classic HC chat death message having additional brackets.
+*   Classic HC dungeon lockouts will appear in Time Datatext.
+*   Chat error that was complaining about color not existing.
+*   Alerts should work correctly on Trading Post now.
+*   Encounter Journal taint error about OnOpen from ToggleEncounterJournal (known: can still happen from Blizzard_MapCanvas).
+*   Spellbook taint error about CastSpell.
+*   Achievements displaying text when they were collapsed.
+*   Cooldowns displaying in days when they shouldn't.
+*   Wrath Quest Log error about UNKNOWN.
+*   Unitframe spacing options increased slightly.
+*   Edit Mode error about Buff Frame when Blizzard's are disabled.
+*   Junk icon will show when using the Bag skin for Blizzard Bags.
+*   Reimplemented the Sell All Junk to use Blizzard's new API.
+
 ## Version 13.39 \[ August 22nd 2023 \]
 *   Custom Glow: Proc Glow settings are active (custom color, speed, and start animation).
 *   Adjusted Scale of LFG Queue checkboxes so that glow looks normal.

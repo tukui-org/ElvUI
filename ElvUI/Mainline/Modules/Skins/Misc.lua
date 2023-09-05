@@ -21,11 +21,18 @@ local NavBarCheck = {
 	end
 }
 
+local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
+	if not skip then
+		button:Point(point, anchor, point2, 1, yoffset, true)
+	end
+end
+
 local function SkinNavBarButtons(self)
 	local func = NavBarCheck[self:GetParent():GetName()]
 	if func and not func() then return end
 
-	local navButton = self.navList[#self.navList]
+	local total = #self.navList
+	local navButton = self.navList[total]
 	if navButton and not navButton.isSkinned then
 		S:HandleButton(navButton, true)
 		navButton:GetFontString():SetTextColor(1, 1, 1)
@@ -37,6 +44,12 @@ local function SkinNavBarButtons(self)
 				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
 				navButton.MenuArrowButton.Art:SetRotation(3.14)
 			end
+		end
+
+		if total == 2 then
+			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
+			NavButtonXOffset(navButton, navButton:GetPoint())
+			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
 		end
 
 		navButton.xoffset = 1
@@ -107,7 +120,7 @@ function S:BlizzardMiscFrames()
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:SetTemplate('Transparent')
