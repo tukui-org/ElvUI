@@ -39,19 +39,21 @@ function S:PetStableFrame()
 	local PetStableFrame = _G.PetStableFrame
 	S:HandlePortraitFrame(PetStableFrame)
 
-	_G.PetStableLeftInset:StripTextures()
-	_G.PetStableBottomInset:StripTextures()
+	_G.PetStableLeftInset:Hide()
+	_G.PetStableBottomInset:Hide()
+	_G.PetStableFrameModelBg:Hide()
+	_G.PetStableDietTexture:SetTexture(132165)
+	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.PetStableFrameInset:SetTemplate('Transparent')
 
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
-	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
-	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
 	local p = E.PixelMode and 1 or 2
 	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
+
 		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
 		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
 		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
