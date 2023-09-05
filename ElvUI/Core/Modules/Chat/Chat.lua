@@ -358,20 +358,21 @@ do --this can save some main file locals
 		-- Blazeflack
 		z['Blazii-Silvermoon']	= ElvBlue -- Priest
 		z['Chazii-Silvermoon']	= ElvBlue -- Shaman
-		-- Merathilis (1401: Shattrath)
-		z['Asragoth-Shattrath']		= ElvPurple	-- [Alliance] Warlock
-		z['Player-1401-0421EB9F'] 	= ElvBlue	-- [Alliance] Warrior:	Brìtt
-		z['Damará-Shattrath']		= ElvRed	-- [Alliance] Paladin
-		z['Jazira-Shattrath']		= ElvBlue	-- [Alliance] Priest
-		z['Jústice-Shattrath']		= ElvYellow	-- [Alliance] Rogue
-		z['Maithilis-Shattrath']	= ElvGreen	-- [Alliance] Monk
-		z['Mattdemôn-Shattrath']	= ElvPurple	-- [Alliance] DH
-		z['Melisendra-Shattrath']	= ElvBlue	-- [Alliance] Mage
+		-- Merathilis (1401: Shattrath/Garrosh)
+		z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
+		z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
+		z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
+		z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
+		z['Player-1401-041CD0A6']	= ElvYellow	-- [Alliance] Rogue:	Jústice
+		z['Player-1401-041E4D64']	= ElvGreen	-- [Alliance] Monk:		Maithilis
+		z['Player-1401-0648F4AD']	= ElvPurple	-- [Alliance] DH:		Mattdemôn
+		z['Player-1401-0421F27B']	= ElvBlue	-- [Alliance] Mage:		Melisendra
 		z['Player-1401-04221546']	= ElvOrange	-- [Alliance] Druid:	Merathilis
-		z['Merathilîs-Shattrath']	= ElvBlue	-- [Alliance] Shaman
-		z['Meravoker-Shattrath']	= ElvGreen	-- [Alliance] Hunter
-		z['Róhal-Shattrath']		= ElvGreen	-- [Alliance] Hunter
-		z['Jahzzy-Garrosh']			= ElvRed	-- [Alliance] DK
+		z['Player-1401-04221344']	= ElvBlue	-- [Alliance] Shaman:	Merathilîs
+		z['Player-1401-0A80006F']	= ElvBlue	-- [Alliance] Shaman:	Ronan
+		z['Player-1401-0A4C8DF4']	= ElvGreen	-- [Alliance] Evoker:	Meravoker
+		z['Player-1401-041C0AE2']	= ElvGreen	-- [Alliance] Hunter:	Róhal
+		z['Player-1401-05CEABFA']	= ElvRed	-- [Alliance] DK:		Jahzzy
 		-- Luckyone (1598: LaughingSkull)
 		z['Player-1598-0F5E4639']	= ElvBlue -- [Horde] Druid: 	Luckyone
 		z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker: 	Luckyevoker
