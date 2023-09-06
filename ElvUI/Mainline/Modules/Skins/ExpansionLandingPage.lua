@@ -39,6 +39,7 @@ function S:Blizzard_ExpansionLandingPage()
 			if E.private.skins.parchmentRemoverEnable then
 				child:StripTextures()
 				child:SetTemplate('Transparent')
+				if child.ScrollFadeOverlay then child.ScrollFadeOverlay:Hide() end
 			end
 
 			if child.DragonridingPanel then
