@@ -80,14 +80,25 @@ function RU:OnLeave_Button()
 	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
-function RU:CreateCheckBox(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, eventFunc, clickFunc)
-	local box = CreateFrame('CheckButton', name, parent, template or 'UICheckButtonTemplate')
+function RU:CreateCheckBox(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, events, eventFunc, clickFunc)
+	local checkbox = type(name) == 'table' and name
+	local box = checkbox or CreateFrame('CheckButton', name, parent, template or 'UICheckButtonTemplate')
 	box:Size(height)
 
-	box.eventFunc = eventFunc -- custom function to execute on events within ToggleRaidUtil
+	if events then
+		box:UnregisterAllEvents()
+
+		for _, event in next, events do
+			box:RegisterEvent(event)
+		end
+	end
+
+	box:SetScript('OnEvent', eventFunc)
 	box:SetScript('OnClick', clickFunc)
 
-	S:HandleCheckBox(box)
+	if not box.isSkinned then
+		S:HandleCheckBox(box)
+	end
 
 	if box.Text then
 		box.Text:Point('LEFT', box, 'RIGHT', 2, 0)
@@ -157,13 +168,6 @@ function RU:ToggleRaidUtil(event)
 	if InCombatLockdown() then
 		RU:RegisterEvent('PLAYER_REGEN_ENABLED', 'ToggleRaidUtil')
 		return
-	end
-
-	-- handle checkbox updates
-	for name, frame in next, RU.CheckBoxes do
-		if frame.eventFunc then
-			frame:eventFunc(name, event)
-		end
 	end
 
 	local panel = _G.RaidUtilityPanel
@@ -476,10 +480,10 @@ function RU:Initialize()
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')
 
-	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
+	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
 
 	if SetRestrictPings then
-		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
+		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
 	end
 
 	if E.Retail then
@@ -508,7 +512,6 @@ function RU:Initialize()
 
 	-- Automatically show/hide the frame if we have RaidLeader or RaidOfficer
 	RU:RegisterEvent('GROUP_ROSTER_UPDATE', 'ToggleRaidUtil')
-	RU:RegisterEvent('PARTY_LEADER_CHANGED', 'ToggleRaidUtil')
 	RU:RegisterEvent('PLAYER_ENTERING_WORLD', 'ToggleRaidUtil')
 end
 
