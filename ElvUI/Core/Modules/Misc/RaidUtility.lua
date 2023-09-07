@@ -462,7 +462,7 @@ function RU:Initialize()
 		RoleCheckButton:SetScript('OnMouseUp', RU.OnClick_RoleCheckButton)
 	end
 
-	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and RoleCheckButton) or _G.ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
+	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and RoleCheckButton) or ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
 	RaidControlButton:SetScript('OnMouseUp', RU.OnClick_RaidControlButton)
 
 	if DoCountdown then
