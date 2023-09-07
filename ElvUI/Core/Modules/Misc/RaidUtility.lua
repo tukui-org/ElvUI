@@ -144,7 +144,7 @@ function RU:ToggleRaidUtil(event)
 	-- handle checkbox updates
 	for name, frame in next, RU.CheckBoxes do
 		if frame.eventFunc then
-			frame.eventFunc(frame, name, event)
+			frame:eventFunc(name, event)
 		end
 	end
 
