@@ -294,14 +294,14 @@ function RU:OnEnter_Role()
 		end
 	end
 
-	for Group, list in next, roleIconRoster do
+	for group, list in next, roleIconRoster do
 		sort(list, sortColoredNames)
 
-		for _, Name in next, list do
-			GameTooltip:AddLine(format('[%d] %s', Group, Name), 1, 1, 1)
+		for _, name in next, list do
+			GameTooltip:AddLine(format('[%d] %s', group, name), 1, 1, 1)
 		end
 
-		roleIconRoster[Group] = nil
+		roleIconRoster[group] = nil
 	end
 
 	GameTooltip:Show()
