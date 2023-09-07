@@ -60,7 +60,7 @@ function RU:CleanButton(button)
 	button:SetDisabledTexture(E.ClearTexture)
 end
 
---Check if We are Raid Leader or Raid Officer
+-- Check if We are Raid Leader or Raid Officer
 function RU:CheckRaidStatus()
 	if UnitIsGroupLeader('player') or UnitIsGroupAssistant('player') then
 		local _, instanceType = GetInstanceInfo()
@@ -68,13 +68,13 @@ function RU:CheckRaidStatus()
 	end
 end
 
---Change border when mouse is inside the button
+-- Change border when mouse is inside the button
 function RU:OnEnter_Button()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
---Change border back to normal when mouse leaves button
+-- Change border back to normal when mouse leaves button
 function RU:OnLeave_Button()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -425,7 +425,8 @@ function RU:Initialize()
 			end
 
 			local texture = frame:CreateTexture(nil, 'OVERLAY')
-			texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
+			texture:SetTexture(E.Media.Textures.RoleIcons) -- 337499
+
 			local texA, texB, texC, texD = GetTexCoordsForRole(role)
 			texture:SetTexCoord(texA, texB, texC, texD)
 			texture:Point('TOPLEFT', frame, 'TOPLEFT', -2, 2)
@@ -494,7 +495,6 @@ function RU:Initialize()
 			marker:HookScript('OnEnter', RU.OnEnter_Button)
 			marker:HookScript('OnLeave', RU.OnLeave_Button)
 			RU:CleanButton(marker)
-
 			RU.MarkerButton = marker
 
 			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
@@ -508,7 +508,7 @@ function RU:Initialize()
 		end
 	end
 
-	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
+	-- Automatically show/hide the frame if we have RaidLeader or RaidOfficer
 	RU:RegisterEvent('GROUP_ROSTER_UPDATE', 'ToggleRaidUtil')
 	RU:RegisterEvent('PARTY_LEADER_CHANGED', 'ToggleRaidUtil')
 	RU:RegisterEvent('PLAYER_ENTERING_WORLD', 'ToggleRaidUtil')
