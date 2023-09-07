@@ -3,8 +3,8 @@ local RU = E:GetModule('RaidUtility')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local unpack, next = unpack, next
 local strsub, format, gsub, type = strsub, format, gsub, type
-local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 
 local IsInRaid = IsInRaid
@@ -38,6 +38,7 @@ local PANEL_HEIGHT = E.Retail and 180 or 130
 local PANEL_WIDTH = 230
 local BUTTON_HEIGHT = 20
 
+local roles = { 'TANK', 'HEALER', 'DAMAGER' }
 local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate')
 ShowButton:SetMovable(true)
 ShowButton:SetClampedToScreen(true)
@@ -141,7 +142,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 end
 
 function RU:UpdateMedia()
-	for _, btn in pairs(RU.Buttons) do
+	for _, btn in next, RU.Buttons do
 		if btn.text then btn.text:FontTemplate() end
 		if btn.texture then btn.texture:SetTexture(btn.texture.tex) end
 		btn:SetTemplate(nil, true)
@@ -295,11 +296,13 @@ function RU:OnEnter_Role()
 		end
 	end
 
-	for Group, list in ipairs(roleIconRoster) do
+	for Group, list in next, roleIconRoster do
 		sort(list, sortColoredNames)
-		for _, Name in ipairs(list) do
+
+		for _, Name in next, list do
 			GameTooltip:AddLine(format('[%d] %s', Group, Name), 1, 1, 1)
 		end
+
 		roleIconRoster[Group] = nil
 	end
 
@@ -415,8 +418,7 @@ function RU:Initialize()
 		RoleIcons:SetScript('OnEvent', RU.OnEvent_RoleIcons)
 		RoleIcons.icons = {}
 
-		local roles = {'TANK', 'HEALER', 'DAMAGER'}
-		for i, role in ipairs(roles) do
+		for i, role in next, roles do
 			local frame = CreateFrame('Frame', '$parent_'..role, RoleIcons)
 			if i == 1 then
 				frame:Point('TOP', 0, -5)
