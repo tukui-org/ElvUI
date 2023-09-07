@@ -325,11 +325,9 @@ function RU:OnEvent_RoleIcons()
 	local isInRaid = IsInRaid()
 	self:SetShown(isInRaid)
 
-	if isInRaid then
-		RU:PositionRoleIcons()
-	else
-		return
-	end
+	if not isInRaid then return end
+
+	RU:PositionRoleIcons()
 
 	wipe(count)
 
