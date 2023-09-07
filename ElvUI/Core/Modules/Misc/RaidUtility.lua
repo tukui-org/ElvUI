@@ -68,7 +68,7 @@ function RU:CreateCheckBox(name, parent, template, width, height, point, relativ
 	local box = CreateFrame('CheckButton', name, parent, template or 'UICheckButtonTemplate')
 	box:Size(height)
 
-	box.OnEvent = eventFunc -- custom function to execute on events within ToggleRaidUtil
+	box.eventFunc = eventFunc -- custom function to execute on events within ToggleRaidUtil
 	box:SetScript('OnClick', clickFunc)
 
 	S:HandleCheckBox(box)
@@ -143,7 +143,9 @@ function RU:ToggleRaidUtil(event)
 
 	-- handle checkbox updates
 	for name, frame in next, RU.CheckBoxes do
-		frame.OnEvent(frame, name, event)
+		if frame.eventFunc then
+			frame.eventFunc(frame, name, event)
+		end
 	end
 
 	local panel = _G.RaidUtilityPanel
