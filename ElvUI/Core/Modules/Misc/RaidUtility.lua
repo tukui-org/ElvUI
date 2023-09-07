@@ -286,13 +286,11 @@ function RU:OnEnter_Role()
 	GameTooltip:Point(anchor1, self, anchor2, anchorX, 0)
 	GameTooltip:SetText(_G['INLINE_' .. role .. '_ICON'] .. _G[role])
 
-	local name, group, class, groupRole, color, coloredName, _
 	for i = 1, GetNumGroupMembers() do
-		name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
+		local name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
 		if name and groupRole == role then
-			color = E:ClassColor(class, true) or PRIEST_COLOR
-			coloredName = format('|cff%02x%02x%02x%s', color.r * 255, color.g * 255, color.b * 255, gsub(name, '%-.+', '*'))
-			tinsert(roleIconRoster[group], coloredName)
+			local color = E:ClassColor(class, true) or PRIEST_COLOR
+			tinsert(roleIconRoster[group], format('|cff%02x%02x%02x%s', color.r * 255, color.g * 255, color.b * 255, gsub(name, '%-.+', '*')))
 		end
 	end
 
