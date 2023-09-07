@@ -44,6 +44,21 @@ ShowButton:SetClampedToScreen(true)
 ShowButton:SetClampRectInsets(0, 0, -1, 1)
 ShowButton:Hide()
 
+function RU:CleanButton(button)
+	button.BottomLeft:SetAlpha(0)
+	button.BottomRight:SetAlpha(0)
+	button.BottomMiddle:SetAlpha(0)
+	button.TopMiddle:SetAlpha(0)
+	button.TopLeft:SetAlpha(0)
+	button.TopRight:SetAlpha(0)
+	button.MiddleLeft:SetAlpha(0)
+	button.MiddleRight:SetAlpha(0)
+	button.MiddleMiddle:SetAlpha(0)
+
+	button:SetHighlightTexture(E.ClearTexture)
+	button:SetDisabledTexture(E.ClearTexture)
+end
+
 --Check if We are Raid Leader or Raid Officer
 function RU:CheckRaidStatus()
 	if UnitIsGroupLeader('player') or UnitIsGroupAssistant('player') then
@@ -53,13 +68,13 @@ function RU:CheckRaidStatus()
 end
 
 --Change border when mouse is inside the button
-function RU:Button_OnEnter()
+function RU:OnEnter_Button()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
 --Change border back to normal when mouse leaves button
-function RU:Button_OnLeave()
+function RU:OnLeave_Button()
 	if self.backdrop then self = self.backdrop end
 	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
@@ -92,10 +107,12 @@ end
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, texture)
 	local button = type(name) == 'table' and name
 	local btn = button or CreateFrame('Button', name, parent, template)
-	btn:HookScript('OnEnter', RU.Button_OnEnter)
-	btn:HookScript('OnLeave', RU.Button_OnLeave)
+	btn:HookScript('OnEnter', RU.OnEnter_Button)
+	btn:HookScript('OnLeave', RU.OnLeave_Button)
 	btn:Size(width, height)
 	btn:SetTemplate(nil, true)
+
+	RU:CleanButton(btn)
 
 	if not btn:GetPoint() then
 		btn:Point(point, relativeto, point2, xOfs, yOfs)
@@ -247,7 +264,7 @@ local function sortColoredNames(a, b)
 end
 
 local roleIconRoster = {}
-function RU:Role_OnEnter()
+function RU:OnEnter_Role()
 	wipe(roleIconRoster)
 
 	for i = 1, NUM_RAID_GROUPS do
@@ -303,7 +320,7 @@ function RU:PositionRoleIcons()
 end
 
 local count = {}
-function RU:RoleIcons_OnEvent()
+function RU:OnEvent_RoleIcons()
 	local isInRaid = IsInRaid()
 	self:SetShown(isInRaid)
 
@@ -395,7 +412,7 @@ function RU:Initialize()
 		RoleIcons:SetTemplate('Transparent')
 		RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
 		RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
-		RoleIcons:SetScript('OnEvent', RU.RoleIcons_OnEvent)
+		RoleIcons:SetScript('OnEvent', RU.OnEvent_RoleIcons)
 		RoleIcons.icons = {}
 
 		local roles = {'TANK', 'HEALER', 'DAMAGER'}
@@ -421,7 +438,7 @@ function RU:Initialize()
 			frame.count = Count
 
 			frame.role = role
-			frame:SetScript('OnEnter', RU.Role_OnEnter)
+			frame:SetScript('OnEnter', RU.OnEnter_Role)
 			frame:SetScript('OnLeave', GameTooltip_Hide)
 			frame:Size(28)
 
@@ -466,33 +483,18 @@ function RU:Initialize()
 		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
 	end
 
-	local buttons = {
-		'RaidUtility_DisbandRaidButton',
-		'RaidUtility_ReadyCheckButton',
-		'RaidUtility_RaidControlButton',
-		'RaidUtility_MainTankButton',
-		'RaidUtility_MainAssistButton',
-		'RaidUtility_ShowButton',
-		'RaidUtility_CloseButton'
-	}
-
-	if E.Retail or E.Wrath then
-		tinsert(buttons, 'RaidUtility_RoleCheckButton')
-	end
-
 	if E.Retail then
-		tinsert(buttons, 'RaidUtility_RaidCountdownButton')
-
 		if _G.CompactRaidFrameManager then
-			--Reposition/Resize and Reuse the World Marker Button
-			tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
+			-- Reposition/Resize and Reuse the World Marker Button
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 			marker:SetParent(RaidUtilityPanel)
 			marker:ClearAllPoints()
 			marker:Point('TOPLEFT', RoleCheckButton, 'TOPRIGHT', 3, 0)
 			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-			marker:HookScript('OnEnter', RU.Button_OnEnter)
-			marker:HookScript('OnLeave', RU.Button_OnLeave)
+			marker:HookScript('OnEnter', RU.OnEnter_Button)
+			marker:HookScript('OnLeave', RU.OnLeave_Button)
+			RU:CleanButton(marker)
+
 			RU.MarkerButton = marker
 
 			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
@@ -504,23 +506,6 @@ function RU:Initialize()
 		else
 			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
 		end
-	end
-
-	--Reskin Stuff
-	for _, button in pairs(buttons) do
-		local f = _G[button]
-		f.BottomLeft:SetAlpha(0)
-		f.BottomRight:SetAlpha(0)
-		f.BottomMiddle:SetAlpha(0)
-		f.TopMiddle:SetAlpha(0)
-		f.TopLeft:SetAlpha(0)
-		f.TopRight:SetAlpha(0)
-		f.MiddleLeft:SetAlpha(0)
-		f.MiddleRight:SetAlpha(0)
-		f.MiddleMiddle:SetAlpha(0)
-
-		f:SetHighlightTexture(E.ClearTexture)
-		f:SetDisabledTexture(E.ClearTexture)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
