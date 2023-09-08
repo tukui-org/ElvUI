@@ -769,7 +769,6 @@ function UF.groupPrototype:Configure_Groups(Header)
 			UF:ConvertGroupDB(group)
 			group:ClearAllPoints()
 			group:ClearChildPoints()
-			group:ActivatePingReceivers()
 			group.db = db
 
 			local point = DIRECTION_TO_POINT[direction]
@@ -901,6 +900,8 @@ function UF.groupPrototype:Update(Header)
 	for _, Group in ipairs(Header.groups) do
 		Group.db = db
 		Group:Update()
+
+		Group:ActivatePingReceivers()
 	end
 end
 
