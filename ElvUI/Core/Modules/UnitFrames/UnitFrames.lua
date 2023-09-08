@@ -728,6 +728,16 @@ function UF:SetHeaderSortGroup(group, groupBy)
 	func(group)
 end
 
+function UF:SetupPingReceiver()
+	if not self:GetAttribute('ping-receiver') then
+		self:SetAttribute('ping-receiver', true)
+
+		if not self.GetTargetPingGUID then
+			Mixin(self, PingMixin)
+		end
+	end
+end
+
 --Keep an eye on this one, it may need to be changed too
 function UF.groupPrototype:GetAttribute(name)
 	return self.groups[1]:GetAttribute(name)
@@ -872,19 +882,9 @@ function UF.headerPrototype:ExecuteForChildren(method, func, ...)
 	end
 end
 
-function UF.headerPrototype:SetupPingReceiver()
-	if not self:GetAttribute('ping-receiver') then
-		self:SetAttribute('ping-receiver', true)
-
-		if not self.GetTargetPingGUID then
-			Mixin(self, PingMixin)
-		end
-	end
-end
-
 function UF.headerPrototype:ActivatePingReceivers()
 	if PingMixin then
-		self:ExecuteForChildren(nil, UF.headerPrototype.SetupPingReceiver)
+		self:ExecuteForChildren(nil, UF.SetupPingReceiver)
 	end
 end
 
@@ -900,8 +900,6 @@ function UF.groupPrototype:Update(Header)
 	for _, Group in ipairs(Header.groups) do
 		Group.db = db
 		Group:Update()
-
-		Group:ActivatePingReceivers()
 	end
 end
 
@@ -925,13 +923,23 @@ end
 function UF.headerPrototype:UpdateChild(index, header, func, db)
 	func(UF, self, db) -- self is child
 
+	header:ActivatePingReceivers() -- setup the ping receivers for groups
+
 	local name = self:GetName()
 
-	local target = name..'Target'
-	if _G[target] then func(UF, _G[target], db) end
+	local target = _G[name..'Target']
+	if target then
+		func(UF, target, db)
 
-	local pet = name..'Pet'
-	if _G[pet] then func(UF, _G[pet], db) end
+		UF.SetupPingReceiver(target)
+	end
+
+	local pet = _G[name..'Pet']
+	if pet then
+		func(UF, pet, db)
+
+		UF.SetupPingReceiver(pet)
+	end
 end
 
 function UF.headerPrototype:Update(isForced)
@@ -1088,7 +1096,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			groupFunctions:AdjustVisibility(Header)
 			groupFunctions:Configure_Groups(Header)
 		end
-	elseif not groupFunctions.Update then
+	elseif not groupFunctions.Update then -- tank / assist
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
