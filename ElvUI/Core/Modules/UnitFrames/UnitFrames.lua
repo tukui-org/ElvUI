@@ -883,7 +883,7 @@ function UF.headerPrototype:ExecuteForChildren(method, func, ...)
 end
 
 function UF.headerPrototype:ActivatePingReceivers()
-	if PingMixin then
+	if PingMixin then -- setup the ping receivers for groups
 		self:ExecuteForChildren(nil, UF.SetupPingReceiver)
 	end
 end
@@ -945,8 +945,7 @@ function UF.headerPrototype:Update(isForced)
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
-	self:ActivatePingReceivers() -- setup the ping receivers for groups
-
+	self:ActivatePingReceivers()
 	self:ExecuteForChildren(nil, self.UpdateChild, self, UF[self.UpdateFrames], db)
 end
 
@@ -1100,8 +1099,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
-			header:ActivatePingReceivers() -- setup the ping receivers for groups
-
+			header:ActivatePingReceivers()
 			header:ExecuteForChildren(nil, header.UpdateChild, header, UF[header.UpdateFrames], header.db)
 		end
 	end
