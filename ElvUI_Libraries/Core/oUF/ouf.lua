@@ -33,6 +33,9 @@ local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
+local Mixin = Mixin
+local PingMixin = PingableType_UnitFrameMixin
+
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterAttributeDriver = RegisterAttributeDriver
 local UnregisterUnitWatch = UnregisterUnitWatch
@@ -852,9 +855,13 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate.unitFrame) then
 				nameplate.style = style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
+				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, PingMixin and 'PingReceiverAttributeTemplate' or nil)
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
+
+				if PingMixin then
+					Mixin(nameplate.unitFrame, PingMixin)
+				end
 
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 
