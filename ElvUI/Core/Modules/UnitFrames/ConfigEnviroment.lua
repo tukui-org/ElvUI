@@ -186,7 +186,7 @@ do
 	function UF:ShowChildUnits(header)
 		header.isForced = true
 
-		local length
+		local length -- Limit number of players shown, if Display Player option is disabled
 		if not UF.isForcedHidePlayer and not header.db.showPlayer and allowHidePlayer[header.groupName] then
 			UF.isForcedHidePlayer = true
 			length = MAX_PARTY_MEMBERS + 1
