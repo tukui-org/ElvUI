@@ -180,6 +180,7 @@ L["joined a group"] = "gruba katildi."
 L["Key"] = true
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
+L["KEY_META"] = "M"
 L["KEY_DELETE"] = "Del"
 L["KEY_HOME"] = "Hm"
 L["KEY_INSERT"] = "Ins"

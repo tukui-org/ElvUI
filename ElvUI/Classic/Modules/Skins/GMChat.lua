@@ -48,14 +48,16 @@ function S:Blizzard_GMChatUI()
 	end)
 
 	local GMChatTab = _G.GMChatTab
-	S:HandleFrame(GMChatTab, true)
+	GMChatTab:StripTextures()
+	GMChatTab:SetTemplate('Transparent')
 	GMChatTab:SetBackdropColor(0, .6, 1, .3)
-	GMChatTab:SetPoint('BOTTOMLEFT', GMChatFrame, 'TOPLEFT', 0, 3)
-	GMChatTab:SetPoint('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
+	GMChatTab:ClearAllPoints()
+	GMChatTab:Point('BOTTOMLEFT', GMChatFrame, 'TOPLEFT', 0, 2)
+	GMChatTab:Point('TOPRIGHT', GMChatFrame, 'TOPRIGHT', 0, 28)
 	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
 	local GMChatFrameCloseButton = _G.GMChatFrameCloseButton
-	S:HandleCloseButton(GMChatFrameCloseButton, GMChatTab.backdrop, 2, 4)
+	S:HandleCloseButton(GMChatFrameCloseButton, GMChatTab, 2, 4)
 
 	TicketStatusFrame:HookScript('OnShow', function(frame)
 		GMChatStatusFrame:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, 1)
