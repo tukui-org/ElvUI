@@ -167,29 +167,43 @@ function UF:UnforceShow(frame)
 	end
 end
 
-function UF:ShowChildUnits(header, ...)
-	header.isForced = true
+do
+	local allowHidePlayer = {
+		party = true,
+		raid1 = true,
+		raid2 = true,
+		raid3 = true
+	}
 
-	local length = select('#', ...) -- Limit number of players shown, if Display Player option is disabled
-	if not UF.isForcedHidePlayer and not header.db.showPlayer and (header.groupName == 'party' or header.groupName == 'raid') then
-		UF.isForcedHidePlayer = true
-		length = MAX_PARTY_MEMBERS
+	local function ForceShow(frame, index, length)
+		frame:SetID(index)
+
+		if not length or (index % length) > 0 then
+			UF:ForceShow(frame)
+		end
 	end
 
-	for i = 1, length do
-		local frame = select(i, ...)
-		frame:SetID(i)
-		self:ForceShow(frame)
+	function UF:ShowChildUnits(header)
+		header.isForced = true
+
+		local length
+		if not UF.isForcedHidePlayer and not header.db.showPlayer and allowHidePlayer[header.groupName] then
+			UF.isForcedHidePlayer = true
+			length = MAX_PARTY_MEMBERS + 1
+		end
+
+		header:ExecuteForChildren(nil, ForceShow, length)
 	end
-end
 
-function UF:UnshowChildUnits(header, ...)
-	header.isForced = nil
-	UF.isForcedHidePlayer = nil
+	local function UnforceShow(frame)
+		UF:UnforceShow(frame)
+	end
 
-	for i = 1, select('#', ...) do
-		local frame = select(i, ...)
-		self:UnforceShow(frame)
+	function UF:UnshowChildUnits(header)
+		header.isForced = nil
+		UF.isForcedHidePlayer = nil
+
+		header:ExecuteForChildren(nil, UnforceShow)
 	end
 end
 
@@ -201,12 +215,12 @@ local function OnAttributeChanged(self, attr)
 	local index = tankAssist and -1 or not db.raidWideSorting and -4 or -(min((db.numGroups or 1) * ((db.groupsPerRowCol or 1) * 5), MAX_RAID_MEMBERS) + 1)
 	if self:GetAttribute('startingIndex') ~= index then
 		self:SetAttribute('startingIndex', index)
-		UF:ShowChildUnits(self, self:GetChildren())
+		UF:ShowChildUnits(self)
 	elseif tankAssist then -- for showing target frames
 		if attr == 'startingindex' then
 			self.waitForTarget = db.targetsGroup.enable or nil
 		elseif self.waitForTarget and attr == 'statehidden' then
-			UF:ShowChildUnits(self, self:GetChildren())
+			UF:ShowChildUnits(self)
 			self.waitForTarget = nil
 		end
 	end
@@ -235,7 +249,7 @@ function UF:HeaderForceShow(header, group, configMode)
 				group:SetAttribute(key, true)
 			end
 
-			UF:UnshowChildUnits(group, group:GetChildren())
+			UF:UnshowChildUnits(group)
 			group:SetAttribute('startingIndex', 1)
 
 			group:Update()

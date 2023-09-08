@@ -769,6 +769,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			UF:ConvertGroupDB(group)
 			group:ClearAllPoints()
 			group:ClearChildPoints()
+			group:ActivatePingReceivers()
 			group.db = db
 
 			local point = DIRECTION_TO_POINT[direction]
@@ -854,6 +855,44 @@ function UF.groupPrototype:Configure_Groups(Header)
 	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
+function UF.headerPrototype:ExecuteForChildren(method, func, ...)
+	local i = 1
+	local child = self:GetAttribute('child'..i)
+	while child do
+		if func then
+			func(child, i, ...)
+		else
+			local methodFunc = method and child[method]
+			if methodFunc then
+				methodFunc(child, ...)
+			end
+		end
+
+		i = i + 1
+		child = self:GetAttribute('child'..i)
+	end
+end
+
+function UF.headerPrototype:SetupPingReceiver()
+	if not self:GetAttribute('ping-receiver') then
+		self:SetAttribute('ping-receiver', true)
+
+		if not self.GetTargetPingGUID then
+			Mixin(self, PingMixin)
+		end
+	end
+end
+
+function UF.headerPrototype:ActivatePingReceivers()
+	if PingMixin then
+		self:ExecuteForChildren(nil, UF.headerPrototype.SetupPingReceiver)
+	end
+end
+
+function UF.headerPrototype:ClearChildPoints()
+	self:ExecuteForChildren('ClearAllPoints')
+end
+
 function UF.groupPrototype:Update(Header)
 	local db = UF.db.units[Header.groupName]
 
@@ -874,7 +913,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 			elseif group.forceShow then
 				group:Hide()
 				group:SetAttribute('startingIndex', 1)
-				UF:UnshowChildUnits(group, group:GetChildren())
+				UF:UnshowChildUnits(group)
 			else
 				group:Reset()
 			end
@@ -882,16 +921,10 @@ function UF.groupPrototype:AdjustVisibility(Header)
 	end
 end
 
-function UF.headerPrototype:ClearChildPoints()
-	for _, child in pairs({ self:GetChildren() }) do
-		child:ClearAllPoints()
-	end
-end
+function UF.headerPrototype:UpdateChild(index, header, func, db)
+	func(UF, self, db) -- self is child
 
-function UF.headerPrototype:UpdateChild(func, child, db)
-	func(UF, child, db)
-
-	local name = child:GetName()
+	local name = self:GetName()
 
 	local target = name..'Target'
 	if _G[target] then func(UF, _G[target], db) end
@@ -905,16 +938,7 @@ function UF.headerPrototype:Update(isForced)
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
-	local i = 1
-	local child = self:GetAttribute('child'..i)
-	local func = UF[self.UpdateFrames]
-
-	while child do
-		self:UpdateChild(func, child, db)
-
-		i = i + 1
-		child = self:GetAttribute('child'..i)
-	end
+	self:ExecuteForChildren(nil, self.UpdateChild, self, UF[self.UpdateFrames], db)
 end
 
 function UF.headerPrototype:Reset()
@@ -1001,14 +1025,6 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 		header[k] = v
 	end
 
-	if PingMixin then
-		for _, child in pairs({ header:GetChildren() }) do
-			Mixin(child, PingMixin)
-
-			child:SetAttribute('ping-receiver', true)
-		end
-	end
-
 	return header
 end
 
@@ -1075,9 +1091,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
-			for _, child in ipairs({ header:GetChildren() }) do
-				header:UpdateChild(UF[header.UpdateFrames], child, header.db)
-			end
+			header:ExecuteForChildren(nil, header.UpdateChild, header, UF[header.UpdateFrames], header.db)
 		end
 	end
 
