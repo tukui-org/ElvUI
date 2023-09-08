@@ -17,7 +17,6 @@ local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
-local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
 local UnitExists = UnitExists
@@ -28,6 +27,10 @@ local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
 local UnitGUID = UnitGUID
+local Mixin = Mixin
+
+local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
+local PingMixin = PingableType_UnitFrameMixin
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
@@ -682,9 +685,13 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
+
+			if PingMixin then
+				Mixin(frame, PingMixin)
+			end
 
 			UF[unit] = frame
 		end
@@ -994,6 +1001,14 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 		header[k] = v
 	end
 
+	if PingMixin then
+		for _, child in pairs({ header:GetChildren() }) do
+			Mixin(child, PingMixin)
+
+			child:SetAttribute('ping-receiver', true)
+		end
+	end
+
 	return header
 end
 
@@ -1092,7 +1107,11 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
+
+		if PingMixin then
+			Mixin(frame, PingMixin)
+		end
 
 		UF.units[unit] = frame
 		UF[unit] = frame
