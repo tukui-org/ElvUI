@@ -728,8 +728,9 @@ function UF:SetHeaderSortGroup(group, groupBy)
 	func(group)
 end
 
+-- setup the ping receivers for units
 function UF:SetupPingReceiver()
-	if not self:GetAttribute('ping-receiver') then
+	if PingMixin and not self:GetAttribute('ping-receiver') then
 		self:SetAttribute('ping-receiver', true)
 
 		if not self.GetTargetPingGUID then
@@ -882,12 +883,6 @@ function UF.headerPrototype:ExecuteForChildren(method, func, ...)
 	end
 end
 
-function UF.headerPrototype:ActivatePingReceivers()
-	if PingMixin then -- setup the ping receivers for groups
-		self:ExecuteForChildren(nil, UF.SetupPingReceiver)
-	end
-end
-
 function UF.headerPrototype:ClearChildPoints()
 	self:ExecuteForChildren('ClearAllPoints')
 end
@@ -923,6 +918,8 @@ end
 function UF.headerPrototype:UpdateChild(index, header, func, db)
 	func(UF, self, db) -- self is child
 
+	UF.SetupPingReceiver(self)
+
 	local name = self:GetName()
 
 	local target = _G[name..'Target']
@@ -945,7 +942,6 @@ function UF.headerPrototype:Update(isForced)
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
-	self:ActivatePingReceivers()
 	self:ExecuteForChildren(nil, self.UpdateChild, self, UF[self.UpdateFrames], db)
 end
 
@@ -1099,7 +1095,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
-			header:ActivatePingReceivers()
 			header:ExecuteForChildren(nil, header.UpdateChild, header, UF[header.UpdateFrames], header.db)
 		end
 	end
