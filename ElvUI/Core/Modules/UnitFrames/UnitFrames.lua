@@ -17,7 +17,6 @@ local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
-local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
 local UnitExists = UnitExists
@@ -28,6 +27,10 @@ local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
 local UnitGUID = UnitGUID
+local Mixin = Mixin
+
+local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
+local PingMixin = PingableType_UnitFrameMixin
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
@@ -682,9 +685,13 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
+
+			if PingMixin then
+				Mixin(frame, PingMixin)
+			end
 
 			UF[unit] = frame
 		end
@@ -719,6 +726,17 @@ end
 function UF:SetHeaderSortGroup(group, groupBy)
 	local func = UF.headerGroupBy[groupBy] or UF.headerGroupBy.INDEX
 	func(group)
+end
+
+-- setup the ping receivers for units
+function UF:SetupPingReceiver()
+	if PingMixin and not self:GetAttribute('ping-receiver') then
+		self:SetAttribute('ping-receiver', true)
+
+		if not self.GetTargetPingGUID then
+			Mixin(self, PingMixin)
+		end
+	end
 end
 
 --Keep an eye on this one, it may need to be changed too
@@ -847,6 +865,28 @@ function UF.groupPrototype:Configure_Groups(Header)
 	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
+function UF.headerPrototype:ExecuteForChildren(method, func, ...)
+	local i = 1
+	local child = self:GetAttribute('child'..i)
+	while child do
+		if func then
+			func(child, i, ...)
+		else
+			local methodFunc = method and child[method]
+			if methodFunc then
+				methodFunc(child, ...)
+			end
+		end
+
+		i = i + 1
+		child = self:GetAttribute('child'..i)
+	end
+end
+
+function UF.headerPrototype:ClearChildPoints()
+	self:ExecuteForChildren('ClearAllPoints')
+end
+
 function UF.groupPrototype:Update(Header)
 	local db = UF.db.units[Header.groupName]
 
@@ -867,7 +907,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 			elseif group.forceShow then
 				group:Hide()
 				group:SetAttribute('startingIndex', 1)
-				UF:UnshowChildUnits(group, group:GetChildren())
+				UF:UnshowChildUnits(group)
 			else
 				group:Reset()
 			end
@@ -875,22 +915,26 @@ function UF.groupPrototype:AdjustVisibility(Header)
 	end
 end
 
-function UF.headerPrototype:ClearChildPoints()
-	for _, child in pairs({ self:GetChildren() }) do
-		child:ClearAllPoints()
+function UF.headerPrototype:UpdateChild(index, header, func, db)
+	func(UF, self, db) -- self is child
+
+	UF.SetupPingReceiver(self)
+
+	local name = self:GetName()
+
+	local target = _G[name..'Target']
+	if target then
+		func(UF, target, db)
+
+		UF.SetupPingReceiver(target)
 	end
-end
 
-function UF.headerPrototype:UpdateChild(func, child, db)
-	func(UF, child, db)
+	local pet = _G[name..'Pet']
+	if pet then
+		func(UF, pet, db)
 
-	local name = child:GetName()
-
-	local target = name..'Target'
-	if _G[target] then func(UF, _G[target], db) end
-
-	local pet = name..'Pet'
-	if _G[pet] then func(UF, _G[pet], db) end
+		UF.SetupPingReceiver(pet)
+	end
 end
 
 function UF.headerPrototype:Update(isForced)
@@ -898,16 +942,7 @@ function UF.headerPrototype:Update(isForced)
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
-	local i = 1
-	local child = self:GetAttribute('child'..i)
-	local func = UF[self.UpdateFrames]
-
-	while child do
-		self:UpdateChild(func, child, db)
-
-		i = i + 1
-		child = self:GetAttribute('child'..i)
-	end
+	self:ExecuteForChildren(nil, self.UpdateChild, self, UF[self.UpdateFrames], db)
 end
 
 function UF.headerPrototype:Reset()
@@ -1056,13 +1091,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			groupFunctions:AdjustVisibility(Header)
 			groupFunctions:Configure_Groups(Header)
 		end
-	elseif not groupFunctions.Update then
+	elseif not groupFunctions.Update then -- tank / assist
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
-			for _, child in ipairs({ header:GetChildren() }) do
-				header:UpdateChild(UF[header.UpdateFrames], child, header.db)
-			end
+			header:ExecuteForChildren(nil, header.UpdateChild, header, UF[header.UpdateFrames], header.db)
 		end
 	end
 
@@ -1092,7 +1125,11 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
+
+		if PingMixin then
+			Mixin(frame, PingMixin)
+		end
 
 		UF.units[unit] = frame
 		UF[unit] = frame
