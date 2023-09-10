@@ -19,8 +19,6 @@ function S:Blizzard_MacroUI()
 	S:HandleTrimScrollBar(_G.MacroFrame.MacroSelector.ScrollBar)
 	S:HandleTrimScrollBar(_G.MacroFrameScrollFrame.ScrollBar)
 
-	S:HandleDropDownBox(_G.MacroPopupFrame.BorderBox.IconTypeDropDown.DropDownMenu)
-
 	for _, button in next, {
 		_G.MacroSaveButton,
 		_G.MacroCancelButton,
@@ -72,8 +70,12 @@ function S:Blizzard_MacroUI()
 
 	-- New icon selection
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
-		if not frame.isSkinned then
-			S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
+		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
+
+		S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
+
+		if frame.BorderBox and frame.BorderBox.IconTypeDropDown then
+			S:HandleDropDownBox(frame.BorderBox.IconTypeDropDown.DropDownMenu)
 		end
 	end)
 end
