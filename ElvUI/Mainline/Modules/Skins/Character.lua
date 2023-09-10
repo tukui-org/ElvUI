@@ -343,7 +343,9 @@ function S:CharacterFrame()
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end
 		S:HandleIconSelectionFrame(frame)
+		S:HandleDropDownBox(frame.BorderBox.IconTypeDropDown.DropDownMenu)
 	end)
+	--S:HandleDropDownBox(_G.GearManagerPopupFrame.BorderBox.IconTypeDropDown.DropDownMenu)
 
 	-- Reposition Tabs
 	_G.CharacterFrameTab1:ClearAllPoints()
