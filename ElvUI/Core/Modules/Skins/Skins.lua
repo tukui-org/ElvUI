@@ -1563,6 +1563,11 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
+			local dropdown = borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu
+			if dropdown then
+				S:HandleDropDownBox(dropdown)
+			end
+
 			local button = borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton
 			if button then
 				button:DisableDrawLayer('BACKGROUND')

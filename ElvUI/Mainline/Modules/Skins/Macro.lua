@@ -73,10 +73,6 @@ function S:Blizzard_MacroUI()
 		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
 
 		S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
-
-		if frame.BorderBox and frame.BorderBox.IconTypeDropDown then
-			S:HandleDropDownBox(frame.BorderBox.IconTypeDropDown.DropDownMenu)
-		end
 	end)
 end
 

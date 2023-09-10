@@ -344,10 +344,6 @@ function S:CharacterFrame()
 		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
 
 		S:HandleIconSelectionFrame(frame)
-
-		if frame.BorderBox and frame.BorderBox.IconTypeDropDown then
-			S:HandleDropDownBox(frame.BorderBox.IconTypeDropDown.DropDownMenu)
-		end
 	end)
 
 	do --Handle Tabs at bottom of character frame
