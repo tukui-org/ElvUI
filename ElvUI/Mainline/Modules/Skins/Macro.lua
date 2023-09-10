@@ -19,6 +19,8 @@ function S:Blizzard_MacroUI()
 	S:HandleTrimScrollBar(_G.MacroFrame.MacroSelector.ScrollBar)
 	S:HandleTrimScrollBar(_G.MacroFrameScrollFrame.ScrollBar)
 
+	S:HandleDropDownBox(_G.MacroPopupFrame.BorderBox.IconTypeDropDown.DropDownMenu)
+
 	for _, button in next, {
 		_G.MacroSaveButton,
 		_G.MacroCancelButton,
