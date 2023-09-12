@@ -104,7 +104,7 @@ P.general = {
 		textFormat = 'NAMECURMAX',
 		statusBarColorGradient = false,
 		statusBarColor = { r = 0.2, g = 0.4, b = 0.8 },
-		smoothbars = false,
+		smoothbars = true,
 	},
 	minimap = {
 		size = 175,
