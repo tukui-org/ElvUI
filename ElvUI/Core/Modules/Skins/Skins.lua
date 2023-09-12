@@ -165,7 +165,7 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 end
 
 function S:HandleInsetFrame(frame)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
 	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
@@ -183,7 +183,7 @@ end
 
 -- All frames that have a Portrait
 function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
 
@@ -476,7 +476,7 @@ do
 end
 
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
-	assert(button, 'doesnt exist!')
+	assert(button, 'doesn\'t exist!')
 
 	if button.isSkinned then return end
 
@@ -569,7 +569,7 @@ do
 	local thumbButtons = {'ThumbTexture', 'thumbTexture', 'Thumb'}
 
 	function S:HandleScrollBar(frame, thumbY, thumbX, template)
-		assert(frame, 'doesnt exist!')
+		assert(frame, 'doesn\'t exist!')
 
 		if frame.backdrop then return end
 
@@ -671,7 +671,7 @@ do
 	end
 
 	function S:HandleTrimScrollBar(frame)
-		assert(frame, 'does not exist.')
+		assert(frame, 'doesn\'t exist.')
 
 		frame:StripTextures()
 
@@ -780,7 +780,7 @@ do
 	end
 
 	function S:HandleMaxMinFrame(frame)
-		assert(frame, 'does not exist.')
+		assert(frame, 'doesn\'t exist.')
 
 		if frame.isSkinned then return end
 
@@ -827,7 +827,7 @@ function S:HandleBlizzardRegions(frame, name, kill, zero)
 end
 
 function S:HandleEditBox(frame, template)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	if frame.backdrop then return end
 
@@ -843,7 +843,7 @@ function S:HandleEditBox(frame, template)
 end
 
 function S:HandleDropDownBox(frame, width, pos, template)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	local frameName = frame.GetName and frame:GetName()
 	local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
@@ -908,7 +908,7 @@ do
 	end
 
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
-		assert(frame, 'does not exist.')
+		assert(frame, 'doesn\'t exist.')
 
 		if frame.isSkinned then return end
 
@@ -1167,7 +1167,7 @@ do
 end
 
 function S:HandleSliderFrame(frame, template, frameLevel)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
@@ -1206,7 +1206,7 @@ end
 -- ToDO: DF => UpdateME => Credits: NDUI
 local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 function S:HandleStepSlider(frame, minimal)
-	assert(frame, 'doesnt exist!')
+	assert(frame, 'doesn\'t exist!')
 
 	frame:StripTextures()
 
@@ -1562,6 +1562,11 @@ do
 
 		if borderBox then
 			borderBox:StripTextures()
+
+			local dropdown = borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu
+			if dropdown then
+				S:HandleDropDownBox(dropdown)
+			end
 
 			local button = borderBox.SelectedIconArea and borderBox.SelectedIconArea.SelectedIconButton
 			if button then

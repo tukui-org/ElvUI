@@ -341,23 +341,26 @@ function S:CharacterFrame()
 
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
-		if frame.isSkinned then return end
+		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
+
 		S:HandleIconSelectionFrame(frame)
 	end)
 
-	-- Reposition Tabs
-	_G.CharacterFrameTab1:ClearAllPoints()
-	_G.CharacterFrameTab2:ClearAllPoints()
-	_G.CharacterFrameTab3:ClearAllPoints()
-	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
-	_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -5, 0)
-	_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -5, 0)
-
 	do --Handle Tabs at bottom of character frame
 		local i = 1
-		local tab = _G['CharacterFrameTab'..i]
+		local tab, prev = _G['CharacterFrameTab'..i]
 		while tab do
 			S:HandleTab(tab)
+
+			tab:ClearAllPoints()
+
+			if prev then -- Reposition Tabs
+				tab:Point('TOPLEFT', prev, 'TOPRIGHT', -5, 0)
+			else
+				tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -3, 0)
+			end
+
+			prev = tab
 
 			i = i + 1
 			tab = _G['CharacterFrameTab'..i]
