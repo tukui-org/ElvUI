@@ -6,8 +6,6 @@ local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 
--- GLOBALS: VehicleSeatIndicator_UnloadTextures
-
 local function SetPosition(_, _, relativeTo)
 	local mover = _G.VehicleSeatIndicator.mover
 	if mover and relativeTo ~= mover then
