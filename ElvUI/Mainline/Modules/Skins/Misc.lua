@@ -32,28 +32,31 @@ local function SkinNavBarButtons(self)
 	if func and not func() then return end
 
 	local total = #self.navList
-	local navButton = self.navList[total]
-	if navButton and not navButton.isSkinned then
-		S:HandleButton(navButton, true)
-		navButton:GetFontString():SetTextColor(1, 1, 1)
+	local button = self.navList[total]
+	if button and not button.isSkinned then
+		S:HandleButton(button, true)
+		button:GetFontString():SetTextColor(1, 1, 1)
 
-		if navButton.MenuArrowButton then
-			navButton.MenuArrowButton:StripTextures()
-			if navButton.MenuArrowButton.Art then
-				navButton.MenuArrowButton.Art:SetTexture(E.Media.Textures.ArrowUp)
-				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
-				navButton.MenuArrowButton.Art:SetRotation(3.14)
+		local arrow = button.MenuArrowButton
+		if arrow then
+			arrow:StripTextures()
+
+			local art = arrow.Art
+			if art then
+				art:SetTexture(E.Media.Textures.ArrowUp)
+				art:SetTexCoord(0, 1, 0, 1)
+				art:SetRotation(3.14)
 			end
 		end
 
+		-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
 		if total == 2 then
-			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
-			NavButtonXOffset(navButton, navButton:GetPoint())
-			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
+			NavButtonXOffset(button, button:GetPoint())
+			hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
 		end
 
-		navButton.xoffset = 1
-		navButton.isSkinned = true
+		button.xoffset = 1
+		button.isSkinned = true
 	end
 end
 
