@@ -6,8 +6,6 @@ local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 
--- GLOBALS: VehicleSeatIndicator_UnloadTextures
-
 local function SetPosition(_, _, relativeTo)
 	local mover = _G.VehicleSeatIndicator.mover
 	if mover and relativeTo ~= mover then
@@ -58,10 +56,12 @@ function B:PositionVehicleFrame()
 	B:UpdateVehicleFrame()
 
 	if E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
-		VehicleSeatIndicator_UnloadTextures = function()
-			_G.VehicleSeatIndicatorBackgroundTexture:SetTexture()
-			_G.VehicleSeatIndicator:Hide()
-			_G.VehicleSeatIndicator.currSkin = nil
+		indicator.UnloadTextures = function(frame) -- removes UIParent_ManageFramePositions()
+			frame.BackgroundTexture:SetTexture()
+			frame.currSkin = nil
+
+			frame:HideButtons()
+			frame:UpdateShownState()
 
 			_G.DurabilityFrame:SetAlerts()
 		end

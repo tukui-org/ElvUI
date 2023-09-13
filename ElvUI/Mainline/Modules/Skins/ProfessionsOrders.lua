@@ -285,6 +285,10 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		payment.NoteEditBox:CreateBackdrop('Transparent')
 		payment.NoteEditBox.backdrop:SetPoint('TOPLEFT', 15, 5)
 		payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
+
+		if payment.CancelOrderButton then
+			S:HandleButton(payment.CancelOrderButton)
+		end
 	end
 
 	S:HandleDropDownBox(form.MinimumQuality.DropDown)

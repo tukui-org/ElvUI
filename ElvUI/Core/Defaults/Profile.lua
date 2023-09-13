@@ -104,7 +104,7 @@ P.general = {
 		textFormat = 'NAMECURMAX',
 		statusBarColorGradient = false,
 		statusBarColor = { r = 0.2, g = 0.4, b = 0.8 },
-		smoothbars = false,
+		smoothbars = true,
 	},
 	minimap = {
 		size = 175,
@@ -301,6 +301,7 @@ end
 
 P.databars.threat.hideInCombat = nil -- always on in code
 P.databars.threat.tankStatus = true
+P.databars.threat.smoothbars = true
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.showLevel = false

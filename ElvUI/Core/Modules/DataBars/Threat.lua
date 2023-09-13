@@ -103,6 +103,8 @@ function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
 
+	E:SetSmoothing(bar, bar.db.smoothbars)
+
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover.name)
 
