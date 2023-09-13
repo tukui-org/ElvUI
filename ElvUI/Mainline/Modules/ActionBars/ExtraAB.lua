@@ -170,9 +170,6 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
-	-- try to shutdown the container movement and taints
-	ExtraAbilityContainer:KillEditMode()
-
 	AB:ExtraButtons_Reparent()
 
 	ZoneAbilityFrame:ClearAllPoints()
@@ -182,6 +179,13 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
+
+	-- try to shutdown the container movement and taints
+	ExtraAbilityContainer:KillEditMode()
+	ExtraAbilityContainer:SetScript('OnShow', nil)
+	ExtraAbilityContainer:SetScript('OnUpdate', nil)
+	ExtraAbilityContainer.OnUpdate = nil --  remove BaseLayoutMixin.OnUpdate
+	ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
