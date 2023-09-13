@@ -171,8 +171,6 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 	-- try to shutdown the container movement and taints
-	ExtraAbilityContainer.SetSize = E.noop
-	ExtraAbilityContainer.SetPoint = E.noop
 	ExtraAbilityContainer:KillEditMode()
 
 	AB:ExtraButtons_Reparent()
