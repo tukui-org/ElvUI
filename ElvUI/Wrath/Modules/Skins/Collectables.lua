@@ -202,6 +202,7 @@ local function SkinPetFrame()
 	S:HandleButton(_G.PetJournalSummonButton)
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
+	_G.PetJournalPetCard.ShadowOverlay:StripTextures()
 
 	local PetJournal = _G.PetJournal
 	PetJournal.PetCount:StripTextures()
@@ -214,6 +215,14 @@ local function SkinPetFrame()
 	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
 	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
+
+	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateLeftButton)
+	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateRightButton)
+
+	_G.PetJournalPetCard:StripTextures()
+	_G.PetJournalPetCard:SetTemplate('Transparent')
+
+	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 end
 
 local function SkinToyFrame()
