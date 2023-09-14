@@ -89,7 +89,6 @@ if E.Retail then
 	blizzard.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
 	blizzard.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
 	blizzard.chromieTime = L["Chromie Time Frame"]
-	blizzard.collections = L["COLLECTIONS"]
 	blizzard.contribution = L["Contribution"]
 	blizzard.covenantPreview = L["Covenant Preview"]
 	blizzard.covenantRenown = L["Covenant Renown"]
@@ -129,6 +128,7 @@ else
 	if not E.Classic then
 		blizzard.arena = L["Arena"]
 		blizzard.arenaRegistrar = L["Arena Registrar"]
+		blizzard.collections = L["COLLECTIONS"]
 		blizzard.gbank = L["Guild Bank"]
 		blizzard.lfg = L["LFG_TITLE"]
 	end
