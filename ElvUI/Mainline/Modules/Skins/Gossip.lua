@@ -65,6 +65,10 @@ function S:GossipFrame()
 
 		if GossipFrame.Background then
 			GossipFrame.Background:CreateBackdrop('Transparent')
+
+			hooksecurefunc(GossipFrame.Background, 'SetAtlas', function(frame)
+				frame:Height(frame:GetHeight() - 2)
+			end)
 		end
 	else
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
