@@ -8,6 +8,18 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 
+local NavBarCheck = {
+	EncounterJournal = function()
+		return E.private.skins.blizzard.encounterjournal
+	end,
+	WorldMapFrame = function()
+		return E.private.skins.blizzard.worldmap
+	end,
+	HelpFrameKnowledgebase = function()
+		return E.private.skins.blizzard.help
+	end
+}
+
 local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
 	if not skip then
 		button:Point(point, anchor, point2, 1, yoffset, true)
@@ -15,32 +27,34 @@ local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
 end
 
 local function SkinNavBarButtons(self)
-	if (self:GetParent():GetName() == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
-		return
-	end
+	local func = NavBarCheck[self:GetParent():GetName()]
+	if func and not func() then return end
 
 	local total = #self.navList
-	local navButton = self.navList[total]
-	if navButton and not navButton.isSkinned then
-		S:HandleButton(navButton, true)
-		navButton:GetFontString():SetTextColor(1, 1, 1)
-		if navButton.MenuArrowButton then
-			navButton.MenuArrowButton:StripTextures()
-			if navButton.MenuArrowButton.Art then
-				navButton.MenuArrowButton.Art:SetTexture(E.Media.Textures.ArrowUp)
-				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
-				navButton.MenuArrowButton.Art:SetRotation(3.14)
+	local button = self.navList[total]
+	if button and not button.isSkinned then
+		S:HandleButton(button, true)
+		button:GetFontString():SetTextColor(1, 1, 1)
+
+		local arrow = button.MenuArrowButton
+		if arrow then
+			arrow:StripTextures()
+
+			local art = arrow.Art
+			if art then
+				art:SetTexture(E.Media.Textures.ArrowUp)
+				art:SetTexCoord(0, 1, 0, 1)
+				art:SetRotation(3.14)
 			end
 		end
 
-		if total == 2 then
-			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
-			NavButtonXOffset(navButton, navButton:GetPoint())
-			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
+		-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
+		if total > 1 then
+			NavButtonXOffset(button, button:GetPoint())
+			hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
 		end
 
-		navButton.xoffset = 1
-		navButton.isSkinned = true
+		button.isSkinned = true
 	end
 end
 
