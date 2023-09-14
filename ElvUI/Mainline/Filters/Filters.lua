@@ -902,6 +902,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[388544] = List(), -- Barkbreaker
 		[377008] = List(), -- Deafening Screech
 	----------------------------------------------------------
+	---------------- Dragonflight (Season 3) -----------------
+	----------------------------------------------------------
+	-- Dawn of the Infinites: Galakrond's Fall
+	-- Dawn of the Infinites: Murozond's Rise
+	-- Darkheart Thicket
+	-- Black Rook Hold
+	-- Waycrest Manor
+	-- Atal'Dazar
+	-- Everbloom
+	-- Throne of the Tides
+	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
@@ -958,6 +969,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[76622] = List(), -- Sunder Armor
 		[88171] = List(), -- Hurricane
 		[88182] = List(), -- Lethargic Poison
+	---------------------------------------------------------
+	------------ Amirdrassil: The Dream's Hope --------------
+	---------------------------------------------------------
+	-- Gnarlroot
+	-- Igira the Cruel
+	-- Volcoross
+	-- Council of Dreams
+	-- Larodar, Keeper of the Flame
+	-- Nymue, Weaver of the Cycle
+	-- Smolderon
+	-- Tindral Sageswift, Seer of the Flame
+	-- Fyrakk the Blazing
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
@@ -1245,6 +1268,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[390938] = List(), -- Agitation
 		[390297] = List(), -- Dormant
 	----------------------------------------------------------
+	---------------- Dragonflight (Season 3) -----------------
+	----------------------------------------------------------
+	-- Dawn of the Infinites: Galakrond's Fall
+	-- Dawn of the Infinites: Murozond's Rise
+	-- Darkheart Thicket
+	-- Black Rook Hold
+	-- Waycrest Manor
+	-- Atal'Dazar
+	-- Everbloom
+	-- Throne of the Tides
+	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
@@ -1295,6 +1329,18 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[87762] = List(), -- Lightning Lash
 		[87761] = List(), -- Rally
 		[87726] = List(), -- Grounding Field
+	---------------------------------------------------------
+	------------ Amirdrassil: The Dream's Hope --------------
+	---------------------------------------------------------
+	-- Gnarlroot
+	-- Igira the Cruel
+	-- Volcoross
+	-- Council of Dreams
+	-- Larodar, Keeper of the Flame
+	-- Nymue, Weaver of the Cycle
+	-- Smolderon
+	-- Tindral Sageswift, Seer of the Flame
+	-- Fyrakk the Blazing
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
