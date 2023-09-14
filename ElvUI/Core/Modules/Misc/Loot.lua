@@ -45,6 +45,7 @@ local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 local LootSlot = LootSlot
+local UIParent = UIParent
 
 local StaticPopup_Hide = StaticPopup_Hide
 
@@ -238,7 +239,7 @@ function M:LOOT_OPENED(_, autoloot)
 		local scale = lootFrame:GetEffectiveScale()
 		local x, y = GetCursorPosition()
 
-		lootFrame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', (x / scale) - 40, (y / scale) + 20)
+		lootFrame:Point('TOPLEFT', UIParent, 'BOTTOMLEFT', (x / scale) - 40, (y / scale) + 20)
 		lootFrame:GetCenter()
 		lootFrame:Raise()
 		E:DisableMover('LootFrameMover')

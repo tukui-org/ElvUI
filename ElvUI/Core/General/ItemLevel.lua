@@ -6,6 +6,7 @@ local select, tonumber, format = select, tonumber, format
 local next, max, wipe, gsub = next, max, wipe, gsub
 local utf8sub = string.utf8sub
 
+local UIParent = UIParent
 local UnitIsUnit = UnitIsUnit
 local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
@@ -77,7 +78,7 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
-	tt:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+	tt:SetOwner(UIParent, 'ANCHOR_NONE')
 	tt:SetInventoryItem(unit, slot)
 	tt:Show()
 

@@ -36,6 +36,7 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
+local UIParent = UIParent
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole
@@ -259,7 +260,7 @@ do
 			_G.OrderHallCommandBar:UnregisterAllEvents()
 			_G.OrderHallCommandBar:SetScript('OnShow', _G.OrderHallCommandBar.Hide)
 			_G.OrderHallCommandBar:Hide()
-			_G.UIParent:UnregisterEvent('UNIT_AURA') --Only used for OrderHall Bar
+			UIParent:UnregisterEvent('UNIT_AURA') --Only used for OrderHall Bar
 		elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
 			_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
 			_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
@@ -333,7 +334,7 @@ function E:AddNonPetBattleFrames()
 		if type(data) == 'table' then
 			parent, strata = data.parent, data.strata
 		elseif data == true then
-			parent = _G.UIParent
+			parent = UIParent
 		end
 
 		local obj = _G[object] or object

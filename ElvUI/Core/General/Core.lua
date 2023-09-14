@@ -23,6 +23,7 @@ local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
+local UIParent = UIParent
 local GetBindingKey = GetBindingKey
 local SetBinding = SetBinding
 local SaveBindings = SaveBindings
@@ -142,8 +143,8 @@ E.GemTypeInfo = {
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
-E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
-E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
+E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
+E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
@@ -153,7 +154,7 @@ E.UFParent = _G.ElvUFParent -- created in oUF
 E.UFParent:SetParent(E.UIParent)
 E.UFParent:SetFrameStrata('LOW')
 
-E.HiddenFrame = CreateFrame('Frame', nil, _G.UIParent)
+E.HiddenFrame = CreateFrame('Frame', nil, UIParent)
 E.HiddenFrame:SetPoint('BOTTOM')
 E.HiddenFrame:SetSize(1,1)
 E.HiddenFrame:Hide()

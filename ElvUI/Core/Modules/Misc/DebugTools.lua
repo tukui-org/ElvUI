@@ -7,6 +7,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
+local UIParent = UIParent
 local StaticPopup_Hide = StaticPopup_Hide
 
 local BUTTON_WIDTH = 75
@@ -89,7 +90,7 @@ function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
 end
 
 function D:PLAYER_REGEN_ENABLED()
-	_G.ScriptErrorsFrame:SetParent(_G.UIParent)
+	_G.ScriptErrorsFrame:SetParent(UIParent)
 	D.MessagePrinted = nil
 end
 

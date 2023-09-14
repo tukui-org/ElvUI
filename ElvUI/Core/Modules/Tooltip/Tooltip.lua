@@ -11,6 +11,7 @@ local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
+local UIParent = UIParent
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
@@ -149,7 +150,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
 
-	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.GameTooltipDefaultContainer or anchor == _G.UIParent or anchor == E.UIParent then
+	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.GameTooltipDefaultContainer or anchor == UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
 
 		if not E:HasMoverBeenMoved('TooltipMover') then
@@ -527,7 +528,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 
 	local _, unit = self:GetUnit()
 	local isPlayerUnit = UnitIsPlayer(unit)
-	if self:GetOwner() ~= _G.UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
+	if self:GetOwner() ~= UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		self:Hide()
 		return
 	end
@@ -789,7 +790,7 @@ end
 function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
-		if owner == _G.UIParent and UnitExists('mouseover') then
+		if owner == UIParent and UnitExists('mouseover') then
 			if E.Retail then
 				GameTooltip:RefreshData()
 			else

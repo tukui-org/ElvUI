@@ -6,6 +6,7 @@ local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
 
+local UIParent = UIParent
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -98,7 +99,7 @@ NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 local function GetQuests(unitID)
 	if IsInInstance() then return end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 

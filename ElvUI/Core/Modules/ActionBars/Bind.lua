@@ -18,6 +18,7 @@ local InCombatLockdown = InCombatLockdown
 local IsMetaKeyDown = IsMetaKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
+local UIParent = UIParent
 local IsShiftKeyDown = IsShiftKeyDown
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
@@ -341,7 +342,7 @@ function AB:LoadKeyBinder()
 	end
 
 	--Special Popup
-	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
+	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)

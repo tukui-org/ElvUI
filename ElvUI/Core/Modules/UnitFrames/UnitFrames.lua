@@ -27,6 +27,7 @@ local UnitFrame_OnLeave = UnitFrame_OnLeave
 local UnregisterStateDriver = UnregisterStateDriver
 local PlaySound = PlaySound
 local UnitGUID = UnitGUID
+local UIParent = UIParent
 local Mixin = Mixin
 
 local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
@@ -1356,7 +1357,7 @@ do
 		if disable.party or disable.raid then
 			-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
 			-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-			_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+			UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		end
 
 		-- shutdown monk stagger bar background updates

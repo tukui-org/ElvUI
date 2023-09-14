@@ -8,6 +8,7 @@ local select, strsplit, tostring = select, strsplit, tostring
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
+local UIParent = UIParent
 local GetCVar = GetCVar
 local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
@@ -927,13 +928,13 @@ function NP:Initialize()
 
 	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player:ClearAllPoints()
-	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Point('TOP', UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
-	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', UIParent, 'SecureUnitButtonTemplate')
 	StaticSecure:SetAttribute('unit', 'player')
 	StaticSecure:SetAttribute('*type1', 'target')
 	StaticSecure:SetAttribute('*type2', 'togglemenu')
@@ -951,7 +952,7 @@ function NP:Initialize()
 
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:ClearAllPoints()
-	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')
