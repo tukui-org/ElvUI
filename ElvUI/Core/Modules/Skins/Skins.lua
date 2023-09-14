@@ -118,12 +118,12 @@ do
 		end
 	end
 
-	function S:HandleNavBarButtons(frame)
-		local func = NavBarCheck[frame:GetParent():GetName()]
+	function S:HandleNavBarButtons()
+		local func = NavBarCheck[self:GetParent():GetName()]
 		if func and not func() then return end
 
-		local total = #frame.navList
-		local button = frame.navList[total]
+		local total = #self.navList
+		local button = self.navList[total]
 		if button and not button.isSkinned then
 			S:HandleButton(button, true)
 			button:GetFontString():SetTextColor(1, 1, 1)
