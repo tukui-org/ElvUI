@@ -135,14 +135,6 @@ function S:BlizzardMiscFrames()
 	} do
 		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, nil, nil, true)
 		roleButton:DisableDrawLayer('OVERLAY')
-
-		--[=[ these use the ready check icons, which are more square
-		for _, region in next, { roleButton:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetTexture() == [[Interface\LFGFrame\UI-LFG-ICON-ROLES]] then
-				region:SetTexture(E.Media.Textures.RoleIcons)
-			end
-		end
-		]=]
 	end
 
 	-- reskin popup buttons
