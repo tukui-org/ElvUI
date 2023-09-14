@@ -18,16 +18,17 @@ local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
+local Mixin = Mixin
+local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
+local UIParent = UIParent
 local UnitExists = UnitExists
-local UnitIsEnemy = UnitIsEnemy
-local UnitIsFriend = UnitIsFriend
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
-local UnregisterStateDriver = UnregisterStateDriver
-local PlaySound = PlaySound
 local UnitGUID = UnitGUID
-local Mixin = Mixin
+local UnitIsEnemy = UnitIsEnemy
+local UnitIsFriend = UnitIsFriend
+local UnregisterStateDriver = UnregisterStateDriver
 
 local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 local PingMixin = PingableType_UnitFrameMixin
@@ -1356,7 +1357,7 @@ do
 		if disable.party or disable.raid then
 			-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
 			-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-			_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+			UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		end
 
 		-- shutdown monk stagger bar background updates

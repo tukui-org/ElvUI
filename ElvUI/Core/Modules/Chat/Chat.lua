@@ -46,6 +46,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupLeader = UnitIsGroupLeader
@@ -1222,13 +1223,13 @@ function CH:UpdateChatTab(chat)
 
 	local tab = CH:GetTab(chat)
 	if chat == CH.LeftChatWindow then
-		tab:SetParent(_G.LeftChatPanel or _G.UIParent)
-		chat:SetParent(_G.LeftChatPanel or _G.UIParent)
+		tab:SetParent(_G.LeftChatPanel or UIParent)
+		chat:SetParent(_G.LeftChatPanel or UIParent)
 
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
-		tab:SetParent(_G.RightChatPanel or _G.UIParent)
-		chat:SetParent(_G.RightChatPanel or _G.UIParent)
+		tab:SetParent(_G.RightChatPanel or UIParent)
+		chat:SetParent(_G.RightChatPanel or UIParent)
 
 		CH:HandleFadeTabs(chat, fadeRight)
 	else
@@ -1236,8 +1237,8 @@ function CH:UpdateChatTab(chat)
 		local parent = CH:GetDockerParent(docker, chat)
 
 		-- we need to update the tab parent to mimic the docker if its not docked
-		if not chat.isDocked then tab:SetParent(parent or _G.UIParent) end
-		chat:SetParent(parent or _G.UIParent)
+		if not chat.isDocked then tab:SetParent(parent or UIParent) end
+		chat:SetParent(parent or UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
@@ -3068,7 +3069,7 @@ end
 function CH:GetAnchorParents(chat)
 	local Left = (chat == CH.LeftChatWindow and _G.LeftChatPanel)
 	local Right = (chat == CH.RightChatWindow and _G.RightChatPanel)
-	local Chat, TabPanel = Left or Right or _G.UIParent
+	local Chat, TabPanel = Left or Right or UIParent
 	if CH.db.panelTabBackdrop and not ((CH.db.panelBackdrop == 'HIDEBOTH') or (Left and CH.db.panelBackdrop == 'RIGHT') or (Right and CH.db.panelBackdrop == 'LEFT')) then
 		TabPanel = (Left and _G.LeftChatTab) or (Right and _G.RightChatTab)
 	end

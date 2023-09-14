@@ -6,15 +6,16 @@ local select, tonumber, format = select, tonumber, format
 local next, max, wipe, gsub = next, max, wipe, gsub
 local utf8sub = string.utf8sub
 
-local UnitIsUnit = UnitIsUnit
-local GetCVarBool = GetCVarBool
-local GetItemInfo = GetItemInfo
 local GetAverageItemLevel = GetAverageItemLevel
+local GetCVarBool = GetCVarBool
+local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInspectSpecialization = GetInspectSpecialization
-local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
+local GetItemInfo = GetItemInfo
+local UIParent = UIParent
+local UnitIsUnit = UnitIsUnit
 
+local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
 
@@ -77,7 +78,7 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
-	tt:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+	tt:SetOwner(UIParent, 'ANCHOR_NONE')
 	tt:SetInventoryItem(unit, slot)
 	tt:Show()
 

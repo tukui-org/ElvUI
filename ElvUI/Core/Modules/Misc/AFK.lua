@@ -22,6 +22,7 @@ local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
 local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
+local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
@@ -79,7 +80,7 @@ function AFK:SetAFK(status)
 		CloseAllWindows()
 
 		afk:Show()
-		_G.UIParent:Hide()
+		UIParent:Hide()
 
 		if IsInGuild() then
 			local guildName, guildRankName = GetGuildInfo('player')
@@ -107,7 +108,7 @@ function AFK:SetAFK(status)
 
 		AFK.isAFK = true
 	elseif AFK.isAFK then
-		_G.UIParent:Show()
+		UIParent:Show()
 		afk:Hide()
 
 		AFK:CameraSpin()
@@ -300,7 +301,7 @@ function AFK:Initialize()
 
 	afk:SetFrameLevel(1)
 	afk:SetScale(E.uiscale)
-	afk:SetAllPoints(_G.UIParent)
+	afk:SetAllPoints(UIParent)
 	afk:EnableKeyboard(true)
 	afk:SetScript('OnKeyDown', AFK.OnKeyDown)
 	afk:Hide()

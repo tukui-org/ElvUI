@@ -8,6 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_UnitAuras = C_UnitAuras
 local CreateFrame = CreateFrame
+local UIParent = UIParent
 
 local AddPrivateAuraAnchor = C_UnitAuras.AddPrivateAuraAnchor
 local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
@@ -22,7 +23,7 @@ local warningAnchor = {
 }
 
 local tempDuration = {
-	relativeTo = _G.UIParent,
+	relativeTo = UIParent,
 	point = 'BOTTOM',
 	relativePoint = 'BOTTOM',
 	offsetX = 0,
@@ -31,7 +32,7 @@ local tempDuration = {
 
 local tempAnchor = {
 	unitToken = 'player',
-	parent = _G.UIParent,
+	parent = UIParent,
 	auraIndex = 1,
 
 	showCountdownFrame = true,
@@ -43,7 +44,7 @@ local tempAnchor = {
 		iconWidth = 32,
 		iconHeight = 32,
 		iconAnchor = {
-			relativeTo = _G.UIParent,
+			relativeTo = UIParent,
 			point = 'CENTER',
 			relativePoint = 'CENTER',
 			offsetX = 0,
@@ -155,7 +156,7 @@ end
 
 function PA:SetupPrivateAuras(db, parent, unit)
 	if not db then db = E.db.general.privateAuras end
-	if not parent then parent = _G.UIParent end
+	if not parent then parent = UIParent end
 
 	if not parent.auraIcons then
 		parent.auraIcons = {}
@@ -183,7 +184,7 @@ end
 function PA:WarningText_Reposition(_, anchor)
 	if not anchor then
 		anchor = _G.PrivateRaidBossEmoteFrameAnchor
-		warningAnchor.relativeTo = anchor.mover or _G.UIParent
+		warningAnchor.relativeTo = anchor.mover or UIParent
 		SetPrivateWarningTextAnchor(anchor, warningAnchor)
 	elseif anchor ~= self.mover then
 		self:ClearAllPoints()
@@ -192,8 +193,8 @@ function PA:WarningText_Reposition(_, anchor)
 end
 
 function PA:WarningText_Reparent(parent)
-	if parent ~= _G.UIParent then
-		self:SetParent(_G.UIParent)
+	if parent ~= UIParent then
+		self:SetParent(UIParent)
 	end
 
 	local _, anchor = self:GetPoint()

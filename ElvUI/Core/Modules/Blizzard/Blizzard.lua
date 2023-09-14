@@ -3,13 +3,14 @@ local B = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local UnitXP = UnitXP
-local UnitXPMax = UnitXPMax
 local CreateFrame = CreateFrame
-local GetRewardXP = GetRewardXP
 local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
+local GetRewardXP = GetRewardXP
 local RegisterStateDriver = RegisterStateDriver
+local UIParent = UIParent
+local UnitXP = UnitXP
+local UnitXPMax = UnitXPMax
 local UnregisterStateDriver = UnregisterStateDriver
 
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
@@ -67,7 +68,7 @@ function B:HandleAddonCompartment()
 	local compartment = _G.AddonCompartmentFrame
 	if compartment then
 		if not compartment.mover then
-			compartment:SetParent(_G.UIParent)
+			compartment:SetParent(UIParent)
 			compartment:SetFrameLevel(10) -- over minimap mover
 			compartment:ClearAllPoints()
 			compartment:Point('RIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, -5, 10)
@@ -83,7 +84,7 @@ function B:HandleAddonCompartment()
 			compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 			compartment:SetFrameLevel(db.frameLevel or 20)
 			compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
-			compartment:SetParent(_G.UIParent)
+			compartment:SetParent(UIParent)
 			compartment:Size(db.size or 18)
 		end
 	end

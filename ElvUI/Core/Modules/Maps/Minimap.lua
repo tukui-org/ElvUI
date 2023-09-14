@@ -22,11 +22,12 @@ local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
@@ -202,7 +203,7 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:CreateMinimapTrackingDropdown()
-	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', _G.UIParent, 'UIDropDownMenuTemplate')
+	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, 'UIDropDownMenuTemplate')
 	dropdown:SetID(1)
 	dropdown:SetClampedToScreen(true)
 	dropdown:Hide()
@@ -541,7 +542,7 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local frame = (noCluster and _G.UIParent) or M.ClusterHolder
+	local frame = (noCluster and UIParent) or M.ClusterHolder
 
 	if anchor ~= frame then
 		MinimapCluster:ClearAllPoints()

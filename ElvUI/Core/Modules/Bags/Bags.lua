@@ -11,17 +11,16 @@ local tinsert, tremove, wipe = tinsert, tremove, wipe
 local type, ipairs, unpack, select = type, ipairs, unpack, select
 local next, max, floor, format, strsub = next, max, floor, format, strsub
 
-local EasyMenu = EasyMenu
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
 local CursorHasItem = CursorHasItem
 local DepositReagentBank = DepositReagentBank
+local EasyMenu = EasyMenu
 local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
-local GetCVarBool = GetCVarBool
 local GetCursorMoney = GetCursorMoney
-local GetPlayerTradeMoney = GetPlayerTradeMoney
+local GetCVarBool = GetCVarBool
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -29,11 +28,12 @@ local GetItemSpell = GetItemSpell
 local GetKeyRingSize = GetKeyRingSize
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
+local GetPlayerTradeMoney = GetPlayerTradeMoney
 local hooksecurefunc = hooksecurefunc
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
-local PlaySound = PlaySound
 local PickupBagFromSlot = PickupBagFromSlot
+local PlaySound = PlaySound
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
 local PutKeyInKeyRing = PutKeyInKeyRing
@@ -46,6 +46,7 @@ local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 local UnitAffectingCombat = UnitAffectingCombat
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
@@ -550,7 +551,7 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
 		return true, true
 	else
-		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetHyperlink(itemLink)
 		E.ScanTooltip:Show()
 

@@ -8,21 +8,23 @@ local next, format = next, format
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local HideUIPanel = HideUIPanel
+local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
 local GetSpellBookItemName = GetSpellBookItemName
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsMetaKeyDown = IsMetaKeyDown
-local IsControlKeyDown = IsControlKeyDown
 local IsAltKeyDown = IsAltKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsMetaKeyDown = IsMetaKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
+local SetBinding = SetBinding
+local UIParent = UIParent
+
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
-local SetBinding = SetBinding
-local GameTooltip = GameTooltip
 local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
@@ -341,7 +343,7 @@ function AB:LoadKeyBinder()
 	end
 
 	--Special Popup
-	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
+	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)
