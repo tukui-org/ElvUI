@@ -45,6 +45,7 @@ function S:GossipFrame()
 	S:HandleTrimScrollBar(_G.ItemTextScrollFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
 	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
+	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
@@ -60,8 +61,21 @@ function S:GossipFrame()
 	if not E.private.skins.parchmentRemoverEnable then
 		local pageBG = _G.ItemTextFramePageBg:GetTexture()
 		_G.ItemTextFrame:StripTextures()
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+		_G.ItemTextScrollFrame:CreateBackdrop('Transparent')
+
 		_G.ItemTextFramePageBg:SetTexture(pageBG)
 		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
+		_G.ItemTextFramePageBg:SetInside(_G.ItemTextScrollFrame.backdrop)
+
+		if GossipFrame.Background then
+			GossipFrame.Background:CreateBackdrop('Transparent')
+
+			hooksecurefunc(GossipFrame.Background, 'SetAtlas', function(frame)
+				frame:Height(frame:GetHeight() - 2)
+			end)
+		end
 	else
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
@@ -71,6 +85,9 @@ function S:GossipFrame()
 		end)
 
 		_G.ItemTextFrame:StripTextures(true)
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.GossipFrameInset:Hide()
 
@@ -93,10 +110,6 @@ function S:GossipFrame()
 			end
 		end)
 	end
-
-	_G.ItemTextFrame:SetTemplate('Transparent')
-	_G.ItemTextScrollFrame:StripTextures()
-	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 end
 
 S:AddCallback('GossipFrame')
