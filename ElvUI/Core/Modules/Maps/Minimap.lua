@@ -10,7 +10,6 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 local utf8sub = string.utf8sub
 
-local UIParent = UIParent
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
@@ -23,11 +22,12 @@ local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster

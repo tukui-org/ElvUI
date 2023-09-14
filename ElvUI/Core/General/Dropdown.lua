@@ -2,9 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
 local tinsert = tinsert
-local ToggleFrame = ToggleFrame
-local GetCursorPosition = GetCursorPosition
+
 local CreateFrame = CreateFrame
+local GetCursorPosition = GetCursorPosition
+local ToggleFrame = ToggleFrame
 local UIParent = UIParent
 
 local PADDING = 10

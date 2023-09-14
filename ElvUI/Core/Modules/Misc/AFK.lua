@@ -13,7 +13,6 @@ local CreateFrame = CreateFrame
 local GetBattlefieldStatus = GetBattlefieldStatus
 local GetGuildInfo = GetGuildInfo
 local GetTime = GetTime
-local UIParent = UIParent
 local InCombatLockdown = InCombatLockdown
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
@@ -23,6 +22,7 @@ local PVEFrame_ToggleFrame = PVEFrame_ToggleFrame
 local RemoveExtraSpaces = RemoveExtraSpaces
 local Screenshot = Screenshot
 local SetCVar = SetCVar
+local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 

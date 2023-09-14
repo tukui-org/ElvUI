@@ -9,8 +9,8 @@ local unpack, next, wipe = unpack, next, wipe
 local tinsert, tremove, format = tinsert, tremove, format
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
 local GameTooltip = GameTooltip
+local GetItemInfo = GetItemInfo
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft

@@ -39,13 +39,13 @@ local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
 local IsFishingLoot = IsFishingLoot
 local IsModifiedClick = IsModifiedClick
+local LootSlot = LootSlot
 local LootSlotHasItem = LootSlotHasItem
 local ResetCursor = ResetCursor
+local UIParent = UIParent
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
-local LootSlot = LootSlot
-local UIParent = UIParent
 
 local StaticPopup_Hide = StaticPopup_Hide
 

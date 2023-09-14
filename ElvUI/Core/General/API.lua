@@ -27,6 +27,7 @@ local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local SetCVar = SetCVar
+local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAura = UnitAura
 local UnitFactionGroup = UnitFactionGroup
@@ -36,7 +37,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsUnit = UnitIsUnit
-local UIParent = UIParent
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole

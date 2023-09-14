@@ -6,10 +6,11 @@ local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
 
-local UIParent = UIParent
-local IsInInstance = IsInInstance
-local UnitIsPlayer = UnitIsPlayer
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local IsInInstance = IsInInstance
+local UIParent = UIParent
+local UnitIsPlayer = UnitIsPlayer
+
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex

@@ -2,22 +2,23 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 local next, strsplit = next, strsplit
 local unpack, sort, gsub, wipe = unpack, sort, gsub, wipe
 local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select, type, min = floor, select, type, min
 local pairs, tinsert, tContains = pairs, tinsert, tContains
 
-local hooksecurefunc = hooksecurefunc
-local EnableAddOn = EnableAddOn
-local LoadAddOn = LoadAddOn
-local GetAddOnInfo = GetAddOnInfo
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
+local EnableAddOn = EnableAddOn
+local GetAddOnInfo = GetAddOnInfo
 local InCombatLockdown = InCombatLockdown
-local IsControlKeyDown = IsControlKeyDown
+local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown = IsAltKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local LoadAddOn = LoadAddOn
 local UIParent = UIParent
+
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT

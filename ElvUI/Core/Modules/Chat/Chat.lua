@@ -12,7 +12,6 @@ local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tostring, tinsert, tremove, tconcat = tostring, tinsert, tremove, table.concat
 
-local UIParent = UIParent
 local Ambiguate = Ambiguate
 local BetterDate = BetterDate
 local BNGetNumFriendInvites = BNGetNumFriendInvites
@@ -47,6 +46,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupLeader = UnitIsGroupLeader

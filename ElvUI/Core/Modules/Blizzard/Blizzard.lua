@@ -3,14 +3,14 @@ local B = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local UnitXP = UnitXP
-local UIParent = UIParent
-local UnitXPMax = UnitXPMax
 local CreateFrame = CreateFrame
-local GetRewardXP = GetRewardXP
 local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
+local GetRewardXP = GetRewardXP
 local RegisterStateDriver = RegisterStateDriver
+local UIParent = UIParent
+local UnitXP = UnitXP
+local UnitXPMax = UnitXPMax
 local UnregisterStateDriver = UnregisterStateDriver
 
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards

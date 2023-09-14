@@ -7,12 +7,12 @@
 local _G, next, strfind = _G, next, strfind
 local gsub, tinsert, type = gsub, tinsert, type
 
+local CreateFrame = CreateFrame
+local DisableAddOn = DisableAddOn
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBuildInfo = GetBuildInfo
 local GetLocale = GetLocale
 local GetTime = GetTime
-local CreateFrame = CreateFrame
-local DisableAddOn = DisableAddOn
 local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 local UIParent = UIParent
