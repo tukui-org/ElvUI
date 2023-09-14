@@ -435,6 +435,9 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
+
+		_G.QuestNPCModelTextFrame:StripTextures()
+		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
 		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
 		_G.QuestProgressScrollFrame:SetTemplate('Transparent')
@@ -454,6 +457,8 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetInside(_G.QuestGreetingScrollFrame)
+
+		S:HandleBlizzardRegions(_G.QuestNPCModelTextFrame)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
@@ -491,16 +496,26 @@ function S:BlizzardQuestFrames()
 		button.hover = hover
 	end
 
-	_G.QuestModelScene:StripTextures()
-	_G.QuestModelScene:SetTemplate('Transparent')
-
 	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
+		local mapFrame = _G.QuestMapFrame:GetParent()
+
 		_G.QuestModelScene:ClearAllPoints()
-		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + 6, y or 0)
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
 	end)
 
-	_G.QuestNPCModelTextFrame:StripTextures()
-	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
+	_G.QuestModelScene:Height(247)
+	_G.QuestModelScene:StripTextures()
+	_G.QuestModelScene:CreateBackdrop('Transparent')
+	_G.QuestNPCModelTextFrame:CreateBackdrop('Transparent')
+
+	_G.QuestNPCModelNameText:ClearAllPoints()
+	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:FontTemplate(nil, 19, 'OUTLINE')
+
+	_G.QuestNPCModelText:SetJustifyH('CENTER')
+	_G.QuestNPCModelTextScrollFrame:SetInside(_G.QuestNPCModelTextFrame)
+	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
+
 	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
