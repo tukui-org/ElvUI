@@ -8,59 +8,15 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 
-local NavBarCheck = {
-	EncounterJournal = function()
-		return E.private.skins.blizzard.encounterjournal
-	end,
-	WorldMapFrame = function()
-		return E.private.skins.blizzard.worldmap
-	end,
-	HelpFrameKnowledgebase = function()
-		return E.private.skins.blizzard.help
-	end
-}
-
-local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
-	if not skip then
-		button:Point(point, anchor, point2, 1, yoffset, true)
-	end
-end
-
-local function SkinNavBarButtons(self)
-	local func = NavBarCheck[self:GetParent():GetName()]
-	if func and not func() then return end
-
-	local total = #self.navList
-	local button = self.navList[total]
-	if button and not button.isSkinned then
-		S:HandleButton(button, true)
-		button:GetFontString():SetTextColor(1, 1, 1)
-
-		local arrow = button.MenuArrowButton
-		if arrow then
-			arrow:StripTextures()
-
-			local art = arrow.Art
-			if art then
-				art:SetTexture(E.Media.Textures.ArrowUp)
-				art:SetTexCoord(0, 1, 0, 1)
-				art:SetRotation(3.14)
-			end
-		end
-
-		-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
-		if total > 1 then
-			NavButtonXOffset(button, button:GetPoint())
-			hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
-		end
-
-		button.isSkinned = true
-	end
-end
-
 local function ClearSetTexture(texture, tex)
 	if tex ~= nil then
 		texture:SetTexture()
+	end
+end
+
+local function FixReadyCheckFrame(frame)
+	if frame.initiator and UnitIsUnit('player', frame.initiator) then
+		frame:Hide() -- bug fix, don't show it if player is initiator
 	end
 end
 
@@ -94,12 +50,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', function(self)
-		-- bug fix, don't show it if player is initiator
-		if self.initiator and UnitIsUnit('player', self.initiator) then
-			self:Hide()
-		end
-	end)
+	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
@@ -349,8 +300,8 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
-	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
+	-- NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
+	hooksecurefunc('NavBar_AddButton', S.HandleNavBarButtons)
 end
 
 S:AddCallback('BlizzardMiscFrames')
