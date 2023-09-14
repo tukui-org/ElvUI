@@ -140,7 +140,7 @@ do
 				end
 			end
 
-			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
+			-- setting the xoffset will cause a taint, use the hook below instead to lock the xoffset to 1
 			if total > 1 then
 				NavButtonXOffset(button, button:GetPoint())
 				hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
