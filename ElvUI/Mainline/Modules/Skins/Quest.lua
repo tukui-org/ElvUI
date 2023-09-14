@@ -447,8 +447,8 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
 
-		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
-		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, nil, nil, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, nil, nil, true)
 
 		_G.QuestFrameDetailPanel.SealMaterialBG:SetInside(_G.QuestDetailScrollFrame)
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
