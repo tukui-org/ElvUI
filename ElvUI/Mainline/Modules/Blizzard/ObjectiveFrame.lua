@@ -90,6 +90,7 @@ function B:ObjectiveTracker_ClearDefaultPosition()
 	-- we only need to do something when it was in the default position
 	info.isInDefaultPosition = nil
 
+	-- something in here is magic and lets the Legion Scenario quest button work when actionbar module is on
 	-- this lets the first move in edit mode actually work without clicking [Reset To Default Position]
 	local parent = Tracker:GetManagedFrameContainer()
 	if parent and parent.showingFrames and parent.showingFrames[Tracker] then
