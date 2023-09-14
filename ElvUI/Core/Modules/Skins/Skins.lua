@@ -99,6 +99,58 @@ do
 	end
 end
 
+do
+	local NavBarCheck = {
+		EncounterJournal = function()
+			return E.private.skins.blizzard.encounterjournal
+		end,
+		WorldMapFrame = function()
+			return E.private.skins.blizzard.worldmap
+		end,
+		HelpFrameKnowledgebase = function()
+			return E.private.skins.blizzard.help
+		end
+	}
+
+	local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
+		if not skip then
+			button:Point(point, anchor, point2, 1, yoffset, true)
+		end
+	end
+
+	function S:HandleNavBarButtons()
+		local func = NavBarCheck[self:GetParent():GetName()]
+		if func and not func() then return end
+
+		local total = #self.navList
+		local button = self.navList[total]
+		if button and not button.isSkinned then
+			S:HandleButton(button, true)
+			button:GetFontString():SetTextColor(1, 1, 1)
+
+			local arrow = button.MenuArrowButton
+			if arrow then
+				arrow:StripTextures()
+
+				local art = arrow.Art
+				if art then
+					art:SetTexture(E.Media.Textures.ArrowUp)
+					art:SetTexCoord(0, 1, 0, 1)
+					art:SetRotation(3.14)
+				end
+			end
+
+			-- setting the xoffset will cause a taint, use the hook below instead to lock the xoffset to 1
+			if total > 1 then
+				NavButtonXOffset(button, button:GetPoint())
+				hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
+			end
+
+			button.isSkinned = true
+		end
+	end
+end
+
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
 		frame:SetHighlightTexture(E.ClearTexture)
