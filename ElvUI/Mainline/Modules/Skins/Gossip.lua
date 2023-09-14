@@ -62,6 +62,10 @@ function S:GossipFrame()
 		_G.ItemTextFrame:StripTextures()
 		_G.ItemTextFramePageBg:SetTexture(pageBG)
 		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
+
+		if GossipFrame.Background then
+			GossipFrame.Background:CreateBackdrop('Transparent')
+		end
 	else
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
@@ -96,6 +100,7 @@ function S:GossipFrame()
 
 	_G.ItemTextFrame:SetTemplate('Transparent')
 	_G.ItemTextScrollFrame:StripTextures()
+
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 end
 

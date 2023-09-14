@@ -357,6 +357,7 @@ function S:BlizzardQuestFrames()
 	S:HandleTrimScrollBar(_G.QuestRewardScrollFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuestDetailScrollFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuestGreetingScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.QuestLogPopupDetailFrameScrollFrame.ScrollBar)
 
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
 	QuestInfoSkillPointFrame:StripTextures()
@@ -405,16 +406,12 @@ function S:BlizzardQuestFrames()
 	_G.QuestProgressScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestGreetingScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestRewardScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 
 	_G.QuestDetailScrollChildFrame:StripTextures(true)
 	_G.QuestRewardScrollChildFrame:StripTextures(true)
 	_G.QuestFrameProgressPanel:StripTextures(true)
 	_G.QuestFrameRewardPanel:StripTextures(true)
-
-	_G.QuestDetailScrollFrame:SetTemplate('Transparent')
-	_G.QuestProgressScrollFrame:SetTemplate('Transparent')
-	_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
-	_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
@@ -428,11 +425,23 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
 		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', S.QuestInfoSealFrameText)
 
+		_G.QuestDetailScrollFrame:SetTemplate('NoBackdrop')
+		_G.QuestProgressScrollFrame:SetTemplate('NoBackdrop')
+		_G.QuestGreetingScrollFrame:SetTemplate('NoBackdrop')
+		_G.QuestRewardScrollFrame:SetTemplate('NoBackdrop')
+		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('NoBackdrop')
+
 		_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
 	else
+		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
+		_G.QuestProgressScrollFrame:SetTemplate('Transparent')
+		_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
+		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
+		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
+
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
 
@@ -495,8 +504,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameAbandonButton)
 	S:HandleButton(_G.QuestLogPopupDetailFrameShareButton)
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
-	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
-	S:HandleTrimScrollBar(_G.QuestLogPopupDetailFrameScrollFrame.ScrollBar)
+
 	QuestLogPopupDetailFrame:SetTemplate('Transparent')
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
