@@ -108,14 +108,14 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride
 		scrollFrame.spellTex:Show()
 		scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 		scrollFrame.spellTex:Point('TOPLEFT', inset and 1 or 0, inset and -1 or 0)
-		scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
+		scrollFrame.spellTex:Size(widthOverride or 509, heightOverride or 618)
 		scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 	end
 end
 
 S.QuestInfo_StyleScrollFrames = {
-	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 506, height = 615, inset = true },
-	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 506, height = 615, inset = true },
+	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 509, height = 618, inset = true },
+	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 509, height = 618, inset = true },
 	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
 		frame = _G.QuestLogPopupDetailFrameScrollFrame,
 		width = 509, height = 630, inset = false,
@@ -441,6 +441,11 @@ function S:BlizzardQuestFrames()
 		_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
 		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
+
+		_G.QuestFrameDetailPanel.Bg:SetAlpha(0)
+		_G.QuestFrameRewardPanel.Bg:SetAlpha(0)
+		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
+		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
 
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
