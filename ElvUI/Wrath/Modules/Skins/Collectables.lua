@@ -1,25 +1,16 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local strfind = strfind
 local next, unpack = next, unpack
-local ipairs, pairs = ipairs, pairs
 
-local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 
 local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
-
-local function clearBackdrop(backdrop)
-	backdrop:SetBackdropColor(0, 0, 0, 0)
-end
 
 local function toyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
@@ -58,19 +49,6 @@ local function mountNameColor(object)
 		end
 
 		name:SetTextColor(0.9, 0.9, 0.9)
-	end
-end
-
-local function selectedTextureSetShown(texture, shown) -- used sets list
-	local parent = texture:GetParent()
-	local icon = parent.icon or parent.Icon
-	if shown then
-		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
-		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-	else
-		local r, g, b = unpack(E.media.bordercolor)
-		parent.backdrop:SetBackdropBorderColor(r, g, b)
-		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
