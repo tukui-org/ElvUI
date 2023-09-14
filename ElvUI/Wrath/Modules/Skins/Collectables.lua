@@ -202,7 +202,6 @@ local function SkinPetFrame()
 	S:HandleButton(_G.PetJournalSummonButton)
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
-	_G.PetJournalPetCard.ShadowOverlay:StripTextures()
 
 	local PetJournal = _G.PetJournal
 	PetJournal.PetCount:StripTextures()
@@ -220,7 +219,7 @@ local function SkinPetFrame()
 	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateRightButton)
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:SetTemplate('Transparent')
+	_G.PetJournalPetCard.ShadowOverlay:StripTextures()
 
 	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 end
