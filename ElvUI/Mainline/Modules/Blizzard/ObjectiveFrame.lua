@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local UIParent = UIParent
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 
@@ -83,8 +84,21 @@ function B:ObjectiveTracker_AutoHideOnShow()
 end
 
 function B:ObjectiveTracker_ClearDefaultPosition()
-	if Tracker.systemInfo then
-		Tracker.systemInfo.isInDefaultPosition = nil
+	local info = Tracker.systemInfo
+	if not info or not info.isInDefaultPosition then return end
+
+	-- we only need to do something when it was in the default position
+	info.isInDefaultPosition = nil
+
+	-- this lets the first move in edit mode actually work without clicking [Reset To Default Position]
+	local parent = Tracker:GetManagedFrameContainer()
+	if parent and parent.showingFrames and parent.showingFrames[Tracker] then
+		parent:RemoveManagedFrame(Tracker)
+
+		-- now set this to UIParent when its not already the parent
+		if Tracker:GetParent() ~= UIParent then
+			Tracker:SetParent(UIParent)
+		end
 	end
 end
 
