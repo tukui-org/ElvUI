@@ -513,7 +513,9 @@ function S:BlizzardQuestFrames()
 	_G.QuestNPCModelNameText:FontTemplate(nil, 19, 'OUTLINE')
 
 	_G.QuestNPCModelText:SetJustifyH('CENTER')
-	_G.QuestNPCModelTextScrollFrame:SetInside(_G.QuestNPCModelTextFrame)
+	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
+	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestNPCModelTextFrame, 2, -2)
+	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestNPCModelTextFrame, -10, 6)
 	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
 
 	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
