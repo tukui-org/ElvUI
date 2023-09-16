@@ -78,7 +78,7 @@ function S:SpellBookFrame()
 		local highlight = _G['SpellButton'..i..'Highlight']
 
 		for _, region in next, { button:GetRegions() } do
-			if region:GetObjectType() == 'Texture' and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
+			if region:IsObjectType('Texture') and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
 				region:SetTexture(nil)
 			end
 		end
