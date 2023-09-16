@@ -29,6 +29,12 @@ local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
 
+local petClasses = {
+	HUNTER = true,
+	WARLOCK = true,
+	DEATHKNIGHT = true
+}
+
 local function Update_GearManagerDialogPopup()
 	_G.GearManagerDialogPopup:ClearAllPoints()
 	_G.GearManagerDialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'TOPRIGHT', 4, 0)
@@ -177,12 +183,6 @@ function S:CharacterFrame()
 	end
 
 	-- Reposition Tabs
-	local petClasses = {
-		['HUNTER'] = true,
-		['WARLOCK'] = true,
-		['DEATHKNIGHT'] = true
-	}
-
 	_G.CharacterFrameTab1:ClearAllPoints()
 	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
 
