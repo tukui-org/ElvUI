@@ -202,7 +202,7 @@ function S:SettingsPanel()
 				S:HandleCheckBox(child)
 			elseif child:IsObjectType('Button') then
 				S:HandleButton(child)
-			elseif child.Left and child.Middle and child.Right and child:IsObjectType('Frame') then
+			elseif child:IsObjectType('Frame') and (child.Left and child.Middle and child.Right) then
 				S:HandleDropdownBox(child)
 			end
 		end

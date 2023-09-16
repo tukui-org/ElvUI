@@ -295,7 +295,7 @@ function S:BlizzardOptions()
 					S:HandleSliderFrame(Child)
 				elseif Child:IsObjectType('Tab') then
 					S:HandleTab(Child)
-				elseif Child:IsObjectType('Frame') and Child.Left and Child.Middle and Child.Right then
+				elseif Child:IsObjectType('Frame') and (Child.Left and Child.Middle and Child.Right) then
 					S:HandleDropDownBox(Child)
 				end
 			end
