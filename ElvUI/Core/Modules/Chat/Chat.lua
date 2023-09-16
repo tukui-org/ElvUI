@@ -327,7 +327,7 @@ do --this can save some main file locals
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
 		z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
 		z['Luckyone-Stitches']		= ElvBlue -- [Horde] Hunter
-		z["Luckyone-Shazzrah"]		= ElvBlue -- [Horde] Hunter
+		z['Luckyone-Shazzrah']		= ElvBlue -- [Horde] Hunter
 	elseif E.Wrath then
 		-- Simpy (4373: Myzrael)
 		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
