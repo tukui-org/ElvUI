@@ -326,6 +326,7 @@ do --this can save some main file locals
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
 		z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
+		z["Gigachad-Nek'Rosh"] 		= ElvBlue -- [Horde] Druid
 		z['Luckyone-Stitches']		= ElvBlue -- [Horde] Hunter
 		z['Luckyone-Shazzrah']		= ElvBlue -- [Horde] Hunter
 	elseif E.Wrath then
