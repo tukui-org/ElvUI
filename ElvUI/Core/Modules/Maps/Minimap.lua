@@ -633,19 +633,19 @@ function M:Initialize()
 	local killFrames = {
 		_G.MinimapBorder,
 		_G.MinimapBorderTop,
+		_G.MinimapCompassTexture,
+		_G.MiniMapMailBorder,
+		_G.MinimapNorthTag,
+		_G.MiniMapWorldMapButton,
+		_G.MinimapZoneTextButton,
 		_G.MinimapZoomIn,
 		_G.MinimapZoomOut,
-		_G.MinimapNorthTag,
-		_G.MinimapZoneTextButton,
-		_G.MiniMapWorldMapButton,
-		_G.MiniMapMailBorder,
 		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
 	if E.Retail then
 		tinsert(killFrames, Minimap.ZoomIn)
 		tinsert(killFrames, Minimap.ZoomOut)
-		tinsert(killFrames, _G.MinimapCompassTexture)
 
 		MinimapCluster.BorderTop:StripTextures()
 		MinimapCluster.Tracking.Background:StripTextures()
