@@ -18,7 +18,6 @@ local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-local Mixin = Mixin
 local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
 local UIParent = UIParent
@@ -31,7 +30,6 @@ local UnitIsFriend = UnitIsFriend
 local UnregisterStateDriver = UnregisterStateDriver
 
 local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
-local PingMixin = PingableType_UnitFrameMixin
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
@@ -686,13 +684,9 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
-
-			if PingMixin then
-				Mixin(frame, PingMixin)
-			end
 
 			UF[unit] = frame
 		end
@@ -727,17 +721,6 @@ end
 function UF:SetHeaderSortGroup(group, groupBy)
 	local func = UF.headerGroupBy[groupBy] or UF.headerGroupBy.INDEX
 	func(group)
-end
-
--- setup the ping receivers for units
-function UF:SetupPingReceiver()
-	if PingMixin and not self:GetAttribute('ping-receiver') then
-		self:SetAttribute('ping-receiver', true)
-
-		if not self.GetTargetPingGUID then
-			Mixin(self, PingMixin)
-		end
-	end
 end
 
 --Keep an eye on this one, it may need to be changed too
@@ -919,22 +902,16 @@ end
 function UF.headerPrototype:UpdateChild(index, header, func, db)
 	func(UF, self, db) -- self is child
 
-	UF.SetupPingReceiver(self)
-
 	local name = self:GetName()
 
 	local target = _G[name..'Target']
 	if target then
 		func(UF, target, db)
-
-		UF.SetupPingReceiver(target)
 	end
 
 	local pet = _G[name..'Pet']
 	if pet then
 		func(UF, pet, db)
-
-		UF.SetupPingReceiver(pet)
 	end
 end
 
@@ -1126,11 +1103,7 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, PingMixin and 'SecureUnitButtonTemplate, PingReceiverAttributeTemplate' or 'SecureUnitButtonTemplate')
-
-		if PingMixin then
-			Mixin(frame, PingMixin)
-		end
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 
 		UF.units[unit] = frame
 		UF[unit] = frame

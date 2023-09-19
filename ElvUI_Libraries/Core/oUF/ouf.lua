@@ -33,9 +33,7 @@ local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
-local Mixin = Mixin
-local PingMixin = PingableType_UnitFrameMixin
-
+local PingableType_UnitFrameMixin = PingableType_UnitFrameMixin
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterAttributeDriver = RegisterAttributeDriver
 local UnregisterUnitWatch = UnregisterUnitWatch
@@ -44,6 +42,7 @@ local CreateFrame = CreateFrame
 local IsLoggedIn = IsLoggedIn
 local UnitGUID = UnitGUID
 local SetCVar = SetCVar
+local Mixin = Mixin
 -- end
 
 local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')
@@ -315,6 +314,18 @@ local function initObject(unit, style, styleFunc, header, ...)
 
 		-- Expose the frame through oUF.objects.
 		tinsert(objects, object)
+
+		--[[ frame.IsPingable
+		This boolean can be set to false to disable the frame from being pingable. Enabled by default.
+		--]]
+		--[[ Override: frame:GetContextualPingType()
+		Used to define which contextual ping is used for the frame.
+		By default this wraps `C_Ping.GetContextualPingTypeForUnit(UnitGUID(frame.unit))`.
+		--]]
+		if PingableType_UnitFrameMixin then
+			object:SetAttribute('ping-receiver', true)
+			Mixin(object, PingableType_UnitFrameMixin)
+		end
 
 		-- We have to force update the frames when PEW fires.
 		-- It's also important to evaluate units before running an update
@@ -855,13 +866,9 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate.unitFrame) then
 				nameplate.style = style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, PingMixin and 'PingReceiverAttributeTemplate' or nil)
+				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
-
-				if PingMixin then
-					Mixin(nameplate.unitFrame, PingMixin)
-				end
 
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 
