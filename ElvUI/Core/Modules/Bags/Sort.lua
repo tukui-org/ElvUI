@@ -604,12 +604,14 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 		end
 	end
 
-	local itemFamily = (equipSlot == 'INVTYPE_BAG' and 1) or GetItemFamily(item)
-	if itemFamily then
-		local _, bagFamily = GetContainerNumFreeSlots(targetBag)
-		return (bagFamily == 0) or band(itemFamily, bagFamily) > 0
-	else
-		return false
+	local _, bagFamily = GetContainerNumFreeSlots(targetBag)
+	if bagFamily == 0 then
+		return true -- target bag is normal
+	elseif bagFamily then
+		local itemFamily = GetItemFamily(item)
+		if itemFamily then
+			return band(itemFamily, bagFamily) > 0
+		end
 	end
 end
 
