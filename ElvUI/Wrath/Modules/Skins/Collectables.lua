@@ -315,9 +315,9 @@ local function HandleTabs()
 		tab:ClearAllPoints()
 
 		if index == 1 then
-			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -10, 0)
 		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
 			lastTab = tab
 		end
 
