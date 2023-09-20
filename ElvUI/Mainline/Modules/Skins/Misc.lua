@@ -43,7 +43,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Point('TOP', 0, -30)
 
 	-- Bug fix, don't show it if player is initiator
 	ReadyCheckFrame:HookScript('OnShow', function(frame)
