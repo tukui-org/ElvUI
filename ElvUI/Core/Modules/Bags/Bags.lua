@@ -1282,8 +1282,11 @@ function B:UpdateTokens()
 		button:Hide()
 	end
 
+	local currencyFormat = B.db.currencyFormat
+	local numCurrencies = currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS or 0
+
 	local numTokens = 0
-	for i = 1, MAX_WATCHED_TOKENS do
+	for i = 1, numCurrencies do
 		local info = B:GetBackpackCurrencyInfo(i)
 		if not (info and info.name) then break end
 
