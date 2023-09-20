@@ -34,7 +34,6 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	S:HandleFrame(_G.ReadyCheckListenerFrame)
 	_G.ReadyCheckPortrait:Kill()
 	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
@@ -43,7 +42,15 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Point('TOP', 0, -30)
+
+	local ListenerFrame = _G.ReadyCheckListenerFrame
+	S:HandleFrame(ListenerFrame)
+
+	local TitleContainer = ListenerFrame.TitleContainer
+	TitleContainer:ClearAllPoints()
+	TitleContainer:Point('TOPLEFT', 1, -1)
+	TitleContainer:Point('TOPRIGHT', -1, 0)
 
 	-- Bug fix, don't show it if player is initiator
 	ReadyCheckFrame:HookScript('OnShow', function(frame)
