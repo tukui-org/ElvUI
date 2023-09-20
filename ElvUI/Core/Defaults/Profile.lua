@@ -1060,6 +1060,7 @@ P.chat = {
 	lfgIcons = true,
 	maxLines = 100,
 	channelAlerts = {
+		CHANNEL = {},
 		GUILD = 'None',
 		OFFICER = 'None',
 		INSTANCE = 'None',

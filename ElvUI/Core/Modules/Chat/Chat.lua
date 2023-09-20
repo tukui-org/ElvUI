@@ -2272,7 +2272,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- beep boops
-			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and CH.db.channelAlerts[historyTypes[event]]
+			local historyType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and historyTypes[event]
+			local alertType = (historyType ~= 'CHANNEL' and CH.db.channelAlerts[historyType]) or (historyType == 'CHANNEL' and CH.db.channelAlerts.CHANNEL[arg9])
 			if alertType and alertType ~= 'None' and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch('sound', alertType), 'Master')
@@ -3692,18 +3693,18 @@ function CH:Initialize()
 		local ChatTypeInfo = _G.ChatTypeInfo
 		local info = ChatTypeInfo[chatType]
 		local chanTarget = editbox:GetAttribute('channelTarget')
-		local chanName = chanTarget and GetChannelName(chanTarget)
+		local chanIndex = chanTarget and GetChannelName(chanTarget)
 
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 		editbox:SetTemplate(nil, true)
 
-		if chanName and (chatType == 'CHANNEL') then
-			if chanName == 0 then
+		if chanIndex and (chatType == 'CHANNEL') then
+			if chanIndex == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
-				info = ChatTypeInfo[chatType..chanName]
+				info = ChatTypeInfo[chatType..chanIndex]
 				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 			end
 		else
