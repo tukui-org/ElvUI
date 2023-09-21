@@ -217,6 +217,19 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 		else
 			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 		end
+
+		if not E.db.general.itemLevel.itemLevelRarity then
+			for i = 1, 17 do
+				if i ~= 4 then
+					local ilvl = iLevelDB[i]
+					if ilvl then
+						local inspectItem = _G[which..InspectItems[i]]
+						local r, g, b = E:ColorizeItemLevel(ilvl - AvgItemLevel)
+						inspectItem.iLvlText:SetTextColor(r, g, b)
+					end
+				end
+			end
+		end
 	else
 		frame.ItemLevelText:SetText('')
 	end

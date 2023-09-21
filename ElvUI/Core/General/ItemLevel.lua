@@ -1,16 +1,17 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
+local pi = math.pi
+local utf8sub = string.utf8sub
 local tinsert, strfind, strmatch = tinsert, strfind, strmatch
 local select, tonumber, format = select, tonumber, format
 local next, max, wipe, gsub = next, max, wipe, gsub
-local utf8sub = string.utf8sub
 
 local GetAverageItemLevel = GetAverageItemLevel
-local GetCVarBool = GetCVarBool
 local GetInspectSpecialization = GetInspectSpecialization
-local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventoryItemLink = GetInventoryItemLink
+local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
 local UIParent = UIParent
 local UnitIsUnit = UnitIsUnit
@@ -39,20 +40,20 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
 		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
 
-		local lr, lg, lb = line:GetTextColor()
-		slotInfo.enchantColors[1] = lr
-		slotInfo.enchantColors[2] = lg
-		slotInfo.enchantColors[3] = lb
+		local r, g, b = line:GetTextColor()
+		slotInfo.enchantColors[1] = r
+		slotInfo.enchantColors[2] = g
+		slotInfo.enchantColors[3] = b
 	end
 
 	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
 	if itemLevel then
 		slotInfo.iLvl = tonumber(itemLevel)
 
-		local tr, tg, tb = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
-		slotInfo.itemLevelColors[1] = tr
-		slotInfo.itemLevelColors[2] = tg
-		slotInfo.itemLevelColors[3] = tb
+		local r, g, b = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
+		slotInfo.itemLevelColors[1] = r
+		slotInfo.itemLevelColors[2] = g
+		slotInfo.itemLevelColors[3] = b
 	end
 end
 
@@ -188,6 +189,14 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 	end
 
 	return isOK and format('%0.2f', E:Round(total / 16, 2))
+end
+
+function E:ColorizeItemLevel(num)
+	if num >= 0 then
+		return .1, 1, .1
+	else
+		return E:ColorGradient(-(pi/num), 1, .1, .1, 1, 1, .1, .1, 1, .1)
+	end
 end
 
 function E:GetPlayerItemLevel()
