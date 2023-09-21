@@ -207,8 +207,6 @@ local function SkinMountFrame()
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
-	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
 
 	MountJournal.BottomLeftInset:StripTextures()
 	MountJournal.BottomLeftInset:SetTemplate('Transparent')
