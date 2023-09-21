@@ -13,6 +13,12 @@ local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
+local function HandleRoleCheckBox(button)
+	button:SetFrameLevel(button:GetFrameLevel() + 1)
+
+	S:HandleCheckBox(button)
+end
+
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -112,9 +118,9 @@ function S:Blizzard_PVPUI()
 		if s.bg then s.bg:SetDesaturated(true) end
 	end)
 
-	S:HandleCheckBox(HonorFrame.TankIcon.checkButton)
-	S:HandleCheckBox(HonorFrame.HealerIcon.checkButton)
-	S:HandleCheckBox(HonorFrame.DPSIcon.checkButton)
+	HandleRoleCheckBox(HonorFrame.TankIcon.checkButton)
+	HandleRoleCheckBox(HonorFrame.HealerIcon.checkButton)
+	HandleRoleCheckBox(HonorFrame.DPSIcon.checkButton)
 
 	-- Conquest Frame
 	local ConquestFrame = _G.ConquestFrame
@@ -123,9 +129,9 @@ function S:Blizzard_PVPUI()
 
 	S:HandleButton(_G.ConquestJoinButton)
 
-	S:HandleCheckBox(ConquestFrame.TankIcon.checkButton)
-	S:HandleCheckBox(ConquestFrame.HealerIcon.checkButton)
-	S:HandleCheckBox(ConquestFrame.DPSIcon.checkButton)
+	HandleRoleCheckBox(ConquestFrame.TankIcon.checkButton)
+	HandleRoleCheckBox(ConquestFrame.HealerIcon.checkButton)
+	HandleRoleCheckBox(ConquestFrame.DPSIcon.checkButton)
 
 	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
