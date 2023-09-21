@@ -298,14 +298,19 @@ function S:CharacterFrame()
 
 	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 
+	local controlFrame = _G.CharacterModelScene.ControlFrame
 	for _, button in pairs({
-		'CharacterModelSceneZoomInButton',
-		'CharacterModelSceneZoomOutButton',
-		'CharacterModelSceneRotateLeftButton',
-		'CharacterModelSceneRotateRightButton',
-		'CharacterModelSceneRotateResetButton',
+		controlFrame.zoomInButton,
+		controlFrame.zoomOutButton,
+		controlFrame.rotateLeftButton,
+		controlFrame.rotateRightButton,
+		controlFrame.resetButton,
 	}) do
-		S:HandleButton(_G[button])
+		S:HandleButton(button)
+
+		if button.Icon then
+			button.Icon:SetInside(nil, 1, 1)
+		end
 	end
 
 	--Titles
