@@ -33,10 +33,11 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
-		local text = gsub(enchant, '%s?|A.-|a', '')
-		slotInfo.enchantText = text
-		slotInfo.enchantTextShort = utf8sub(text, 1, 18)
-		slotInfo.enchantTextReal = enchant -- contains Atlas
+		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
+		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
+		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
 
 		local lr, lg, lb = line:GetTextColor()
 		slotInfo.enchantColors[1] = lr
