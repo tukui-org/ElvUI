@@ -19,6 +19,10 @@ local function HandleRoleButton(button)
 	S:HandleCheckBox(checkbox)
 
 	button:Size(40)
+
+	if button.IconPulse then button.IconPulse:Size(40) end
+	if button.EdgePulse then button.EdgePulse:Size(40) end
+	if button.shortageBorder then button.shortageBorder:Size(40) end
 end
 
 function S:Blizzard_PVPUI()

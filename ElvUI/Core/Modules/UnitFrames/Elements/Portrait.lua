@@ -42,6 +42,7 @@ function UF:Construct_Portrait(frame, which)
 		hooksecurefunc(frame, 'SetAlpha', UF.ModelAlphaFix)
 	end
 
+	portrait.__owner = frame -- set this for both, oUF will only set it when active
 	portrait.PostUpdate = self.PortraitUpdate
 
 	return portrait
