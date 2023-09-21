@@ -218,6 +218,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
 		end
 
+		-- we have to wait to do this on inspect so handle it in here
 		if not E.db.general.itemLevel.itemLevelRarity then
 			for i = 1, 17 do
 				if i ~= 4 then
