@@ -208,6 +208,21 @@ local function SkinMountFrame()
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
 
+	local controlFrame = _G.MountJournal.MountDisplay.ModelScene.ControlFrame
+	for _, button in pairs({
+		controlFrame.zoomInButton,
+		controlFrame.zoomOutButton,
+		controlFrame.rotateLeftButton,
+		controlFrame.rotateRightButton,
+		controlFrame.resetButton,
+	}) do
+		S:HandleButton(button)
+
+		if button.Icon then
+			button.Icon:SetInside(nil, 1, 1)
+		end
+	end
+
 	MountJournal.BottomLeftInset:StripTextures()
 	MountJournal.BottomLeftInset:SetTemplate('Transparent')
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
