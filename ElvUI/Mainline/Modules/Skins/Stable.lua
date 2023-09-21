@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local unpack = unpack
 local CreateFrame = CreateFrame
 
 local function PetButtons(btn, p)
@@ -46,21 +46,7 @@ function S:PetStableFrame()
 	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.PetStableFrameInset:SetTemplate('Transparent')
 
-	local controlFrame = _G.PetStableModelScene.ControlFrame
-	for _, button in pairs({
-		controlFrame.zoomInButton,
-		controlFrame.zoomOutButton,
-		controlFrame.rotateLeftButton,
-		controlFrame.rotateRightButton,
-		controlFrame.resetButton,
-	}) do
-		S:HandleButton(button)
-
-		if button.Icon then
-			button.Icon:SetInside(nil, 1, 1)
-		end
-	end
-
+	S:HandleModelSceneControlButtons(_G.PetStableModelScene.ControlFrame)
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
 

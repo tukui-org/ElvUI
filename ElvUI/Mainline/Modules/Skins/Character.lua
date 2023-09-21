@@ -295,23 +295,9 @@ function S:CharacterFrame()
 	_G.CharacterModelScene:CreateBackdrop()
 	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
-
 	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 
-	local controlFrame = _G.CharacterModelScene.ControlFrame
-	for _, button in pairs({
-		controlFrame.zoomInButton,
-		controlFrame.zoomOutButton,
-		controlFrame.rotateLeftButton,
-		controlFrame.rotateRightButton,
-		controlFrame.resetButton,
-	}) do
-		S:HandleButton(button)
-
-		if button.Icon then
-			button.Icon:SetInside(nil, 1, 1)
-		end
-	end
+	S:HandleModelSceneControlButtons(_G.CharacterModelScene.ControlFrame)
 
 	--Titles
 	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(frame)
