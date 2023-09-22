@@ -12,6 +12,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
+local C_PetBattles_GetBreedQuality = C_PetBattles.GetBreedQuality
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
 local function SkinPetButton(self, bf)
@@ -223,6 +224,13 @@ function S:PetBattleFrame()
 
 	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(s)
 		s.Icon:SetTexCoord(unpack(E.TexCoords))
+
+		local petOwner, petIndex = s.petOwner, s.petIndex
+		if not petOwner or not petIndex then return end
+		if s.Icon.backdrop and s.Icon.backdrop:IsShown() then
+			local rarity = C_PetBattles.GetBreedQuality(petOwner, petIndex)
+			s.Icon.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[rarity-1].r, ITEM_QUALITY_COLORS[rarity-1].g, ITEM_QUALITY_COLORS[rarity-1].b)
+		end
 	end)
 
 	f.TopVersusText:ClearAllPoints()
