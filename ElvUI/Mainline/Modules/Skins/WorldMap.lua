@@ -140,6 +140,9 @@ function S:WorldMapFrame()
 	WorldMapFrame.overlayFrames[3].Icon:SetAtlas('Waypoint-MapPin-Untracked')
 	WorldMapFrame.overlayFrames[3].ActiveTexture:SetAtlas([[Waypoint-MapPin-Tracked]])
 	WorldMapFrame.overlayFrames[3].ActiveTexture:SetAllPoints(WorldMapFrame.overlayFrames[3].Icon)
+	WorldMapFrame.overlayFrames[3]:SetHighlightTexture([[Interface/waypoint/waypoinmappinui]], 'ADD')
+	WorldMapFrame.overlayFrames[3]:GetHighlightTexture():SetAllPoints(WorldMapFrame.overlayFrames[3].Icon)
+	WorldMapFrame.overlayFrames[3]:GetHighlightTexture():SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
 	QuestMapFrame.QuestSessionManagement:StripTextures()
