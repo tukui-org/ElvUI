@@ -81,20 +81,17 @@ function S:WorldMapFrame()
 
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
-	WorldMapFrame.BorderFrame:StripTextures()
-	WorldMapFrame.BorderFrame:SetFrameStrata(WorldMapFrame:GetFrameStrata())
-	WorldMapFrame.BorderFrame.NineSlice:Hide()
-	WorldMapFrame.NavBar:StripTextures()
-	WorldMapFrame.NavBar.overlay:StripTextures()
-	WorldMapFrame.NavBar:Point('TOPLEFT', 1, -40)
-
 	WorldMapFrame.ScrollContainer:SetTemplate()
 	WorldMapFrame:CreateBackdrop('Transparent')
 	WorldMapFrame.backdrop:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 6, -8)
 
-	S:HandleButton(WorldMapFrame.NavBar.homeButton)
-	WorldMapFrame.NavBar.homeButton.text:FontTemplate()
+	local MapNavBar = WorldMapFrame.NavBar
+	MapNavBar:StripTextures()
+	MapNavBar.overlay:StripTextures()
+	MapNavBar:Point('TOPLEFT', 1, -40)
+	S:HandleButton(MapNavBar.homeButton)
+	MapNavBar.homeButton.text:FontTemplate()
 
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
@@ -168,11 +165,16 @@ function S:WorldMapFrame()
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
 
-	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
-	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
+	local MapBorderFrame = WorldMapFrame.BorderFrame
+	MapBorderFrame:StripTextures()
+	MapBorderFrame:SetFrameStrata(WorldMapFrame:GetFrameStrata())
+	MapBorderFrame.NineSlice:Hide()
+
+	S:HandleCloseButton(MapBorderFrame.CloseButton)
+	S:HandleMaxMinFrame(MapBorderFrame.MaximizeMinimizeFrame)
 
 	if E.global.general.disableTutorialButtons then
-		WorldMapFrame.BorderFrame.Tutorial:Kill()
+		MapBorderFrame.Tutorial:Kill()
 	end
 
 	do -- Add a hook to adjust the OverlayFrames
