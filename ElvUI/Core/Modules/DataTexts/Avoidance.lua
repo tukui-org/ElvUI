@@ -38,20 +38,20 @@ end
 local function OnEvent(self)
 	targetLevel, playerLevel = UnitLevel('target'), E.mylevel
 
-	local levelDifference
+	local levelDiff
 	if not UnitExists('target') then -- If there's no target, we'll assume we're talking about a lvl +3 boss. You can click yourself to see against your level
-		levelDifference = 3
+		levelDiff = 3
 		targetLevel = 73
 	elseif targetLevel == -1 then
-		levelDifference = 3
+		levelDiff = 3
 	elseif (targetLevel > playerLevel) or (targetLevel > 0) then
-		levelDifference = targetLevel - playerLevel
+		levelDiff = targetLevel - playerLevel
 	else
-		levelDifference = 0
+		levelDiff = 0
 	end
 
-	local decayRate = levelDifference * 0.2 -- According to Light's Club discord, avoidance decay should be 0.2% per level per avoidance (thus 102.4 for +3 crush cap)
-	local useDecayRate = (levelDifference >= 0 and decayRate) or abs(decayRate)
+	local decayRate = levelDiff * 0.2 -- According to Light's Club discord, avoidance decay should be 0.2% per level per avoidance (thus 102.4 for +3 crush cap)
+	local useDecayRate = (levelDiff >= 0 and decayRate) or abs(decayRate)
 
 	dodge = GetDodgeChance() - useDecayRate
 	parry = GetParryChance() - useDecayRate
