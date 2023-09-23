@@ -6,27 +6,73 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local QUESTSESSIONCOMMAND_START = Enum.QuestSessionCommand.Start
-local QUESTSESSIONCOMMAND_STOP = Enum.QuestSessionCommand.Stop
+local SessionCommand_ButtonAtlases = {
+	[Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
+	[Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
+}
+
+local function UpdateExecuteCommandAtlases(frame, command)
+	frame.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
+	frame.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
+	frame.ExecuteSessionCommand:SetDisabledTexture(E.ClearTexture)
+
+	local atlas = SessionCommand_ButtonAtlases[command]
+	if atlas then
+		frame.ExecuteSessionCommand.normalIcon:SetAtlas(atlas)
+	end
+end
+
+local function NotifyDialogShow(_, dialog)
+	if dialog.isSkinned then return end
+
+	dialog:StripTextures()
+	dialog:SetTemplate('Transparent')
+
+	S:HandleButton(dialog.ButtonContainer.Confirm)
+	S:HandleButton(dialog.ButtonContainer.Decline)
+
+	local minimize = dialog.MinimizeButton
+	if minimize then
+		minimize:StripTextures()
+		minimize:Size(16)
+
+		minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
+		minimize.tex:SetTexture(E.Media.Textures.MinusButton)
+		minimize.tex:SetInside()
+
+		minimize:SetHighlightTexture(130837, 'ADD') -- Interface/Buttons/UI-PlusButton-Hilight
+	end
+
+	dialog.isSkinned = true
+end
 
 local function SkinHeaders(header)
-	if not header.IsSkinned then
-		if header.TopFiligree then header.TopFiligree:Hide() end
+	if header.IsSkinned then return end
 
-		header:SetAlpha(.8)
+	if header.TopFiligree then
+		header.TopFiligree:Hide()
+	end
 
-		header.HighlightTexture:SetAllPoints(header.Background)
-		header.HighlightTexture:SetAlpha(0)
+	header:SetAlpha(.8)
 
-		header.IsSkinned = true
+	header.HighlightTexture:SetAllPoints(header.Background)
+	header.HighlightTexture:SetAlpha(0)
+
+	header.IsSkinned = true
+end
+
+local function QuestLogQuests()
+	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
+		SkinHeaders(header)
 	end
 end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
 function S:WorldMap_QuestMapHide()
-	if self:GetParent() == _G.QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
-		_G.QuestModelScene:SetParent(nil)
-		_G.QuestModelScene:Hide()
+	local QuestModelScene = _G.QuestModelScene
+	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
+		QuestModelScene:SetParent(nil)
+		QuestModelScene:Hide()
 	end
 end
 
@@ -55,55 +101,59 @@ function S:WorldMapFrame()
 	QuestMapFrame.VerticalSeparator:Hide()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
+	local DetailsFrame = QuestMapFrame.DetailsFrame
 	if E.private.skins.parchmentRemoverEnable then
-		QuestMapFrame.DetailsFrame:StripTextures(true)
-		QuestMapFrame.DetailsFrame:CreateBackdrop()
-		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
-		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
-		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
-		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
-		QuestMapFrame.DetailsFrame.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
-		QuestMapFrame.DetailsFrame.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
+		DetailsFrame:StripTextures(true)
+		DetailsFrame:CreateBackdrop()
+		DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
+		DetailsFrame.backdrop:Point('BOTTOMRIGHT', DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
+		DetailsFrame.RewardsFrame:StripTextures()
+		DetailsFrame.RewardsFrame:CreateBackdrop()
+		DetailsFrame.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
+		DetailsFrame.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
 		end
 
-		if QuestMapFrame.DetailsFrame.SealMaterialBG then
-			QuestMapFrame.DetailsFrame.SealMaterialBG:SetAlpha(0)
+		if DetailsFrame.SealMaterialBG then
+			DetailsFrame.SealMaterialBG:SetAlpha(0)
 		end
 	end
 
 	local QuestScrollFrame = _G.QuestScrollFrame
-	QuestScrollFrame.DetailFrame:StripTextures()
-	QuestScrollFrame.DetailFrame.BottomDetail:Hide()
+	QuestScrollFrame.Edge:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
+	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 
-	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
-	QuestScrollFrame.DetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 1)
+	local QuestDetailFrame = QuestScrollFrame.DetailFrame
+	QuestDetailFrame:StripTextures()
+	QuestDetailFrame.BottomDetail:Hide()
+	QuestDetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 1)
 
-	if QuestScrollFrame.DetailFrame.backdrop then
-		QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
-		QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
+	if QuestDetailFrame.backdrop then
+		QuestDetailFrame.backdrop:Point('TOPLEFT', QuestDetailFrame, 'TOPLEFT', 3, 1)
+		QuestDetailFrame.backdrop:Point('BOTTOMRIGHT', QuestDetailFrame, 'BOTTOMRIGHT', -2, -7)
 	end
 
-	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
-	S:HandleTrimScrollBar(QuestScrollFrameScrollBar)
-	QuestScrollFrameScrollBar:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPRIGHT', 4, -15)
-	QuestScrollFrameScrollBar:Point('BOTTOMLEFT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', 9, 10)
+	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
+	S:HandleTrimScrollBar(QuestScrollBar)
+	QuestScrollBar:Point('TOPLEFT', QuestDetailFrame, 'TOPRIGHT', 4, -15)
+	QuestScrollBar:Point('BOTTOMLEFT', QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
 
-	QuestScrollFrame.Edge:SetAlpha(0)
+	S:HandleButton(DetailsFrame.CompleteQuestFrame.CompleteButton, true)
+	DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton, true)
-	QuestMapFrame.DetailsFrame.BackButton:SetFrameLevel(5)
-	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton, true)
-	QuestMapFrame.DetailsFrame.AbandonButton:SetFrameLevel(5)
-	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
-	QuestMapFrame.DetailsFrame.ShareButton:SetFrameLevel(5)
-	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton, true)
-	QuestMapFrame.DetailsFrame.TrackButton:SetFrameLevel(5)
-	QuestMapFrame.DetailsFrame.TrackButton:Width(95)
-	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
+	S:HandleButton(DetailsFrame.BackButton, true)
+	S:HandleButton(DetailsFrame.AbandonButton, true)
+	S:HandleButton(DetailsFrame.ShareButton, true)
+	S:HandleButton(DetailsFrame.TrackButton, true)
+
+	DetailsFrame.BackButton:SetFrameLevel(5)
+	DetailsFrame.AbandonButton:SetFrameLevel(5)
+	DetailsFrame.ShareButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:Width(95)
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)
@@ -114,8 +164,6 @@ function S:WorldMapFrame()
 	end
 
 	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
-
-	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
@@ -134,7 +182,7 @@ function S:WorldMapFrame()
 		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
 		Tracking:StripTextures()
-		Tracking.Icon:SetTexture(136460) -- Interface\\Minimap\\Tracking\\None
+		Tracking.Icon:SetTexture(136460) -- Interface/Minimap/Tracking/None
 		Tracking:SetHighlightTexture(136460, 'ADD')
 
 		local TrackingHighlight = Tracking:GetHighlightTexture()
@@ -144,7 +192,7 @@ function S:WorldMapFrame()
 		Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
 		Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
 		Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\\Waypoint\\WaypoinMapPinUI
+		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface/Waypoint/WaypoinMapPinUI
 
 		local PinHighlight = Pin:GetHighlightTexture()
 		PinHighlight:SetAllPoints(Pin.Icon)
@@ -158,54 +206,14 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand:SetTemplate()
 	ExecuteSessionCommand:StyleButton()
 
-	local icon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
-	icon:Point('TOPLEFT', 0, 0)
-	icon:Point('BOTTOMRIGHT', 0, 0)
-	ExecuteSessionCommand.normalIcon = icon
+	local ExecuteSessionIcon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
+	ExecuteSessionIcon:Point('TOPLEFT', 0, 0)
+	ExecuteSessionIcon:Point('BOTTOMRIGHT', 0, 0)
+	ExecuteSessionCommand.normalIcon = ExecuteSessionIcon
 
-	local sessionCommandToButtonAtlas = {
-		[QUESTSESSIONCOMMAND_START] = 'QuestSharing-DialogIcon',
-		[QUESTSESSIONCOMMAND_STOP] = 'QuestSharing-Stop-DialogIcon'
-	}
-
-	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
-		s.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
-		s.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
-		s.ExecuteSessionCommand:SetDisabledTexture(E.ClearTexture)
-
-		local atlas = sessionCommandToButtonAtlas[command]
-		if atlas then
-			s.ExecuteSessionCommand.normalIcon:SetAtlas(atlas)
-		end
-	end)
-
-	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', function(_, dialog)
-		if not dialog.isSkinned then
-			dialog:StripTextures()
-			dialog:SetTemplate('Transparent')
-
-			S:HandleButton(dialog.ButtonContainer.Confirm)
-			S:HandleButton(dialog.ButtonContainer.Decline)
-
-			if dialog.MinimizeButton then
-				dialog.MinimizeButton:StripTextures()
-				dialog.MinimizeButton:Size(16)
-
-				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
-				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-				dialog.MinimizeButton.tex:SetInside()
-				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
-			end
-
-			dialog.isSkinned = true
-		end
-	end)
-
-	hooksecurefunc('QuestLogQuests_Update', function()
-		for header in QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
-			SkinHeaders(header)
-		end
-	end)
+	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', UpdateExecuteCommandAtlases)
+	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', NotifyDialogShow)
+	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
 end
 
 S:AddCallback('WorldMapFrame')
