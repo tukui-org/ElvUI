@@ -11,8 +11,7 @@ local displayString = ''
 
 local function OnEvent(self)
 	local baseDefense, armorDefense = UnitDefense('player')
-	local defense = baseDefense + (armorDefense or 0)
-	self.text:SetFormattedText(displayString, DEFENSE, defense)
+	self.text:SetFormattedText(displayString, DEFENSE, (baseDefense or 0) + (armorDefense or 0))
 end
 
 local function ApplySettings(_, hex)

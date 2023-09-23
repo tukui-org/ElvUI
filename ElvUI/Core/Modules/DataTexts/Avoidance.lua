@@ -21,9 +21,9 @@ local DODGE_CHANCE = DODGE_CHANCE
 local PARRY_CHANCE = PARRY_CHANCE
 local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 
-local chanceString = '%.2f%%'
-local displayString, targetLevel, playerLevel, db
-local baseMiss, baseDefense, armorDefense, levelDifference, miss, dodge, parry, block, unhittable
+local chanceString, db = '%.2f%%'
+local displayString, targetLevel, playerLevel
+local miss, dodge, parry, block, unhittable
 
 local function IsWearingShield()
 	local slotID = GetInventorySlotInfo('SecondaryHandSlot')
@@ -38,6 +38,7 @@ end
 local function OnEvent(self)
 	targetLevel, playerLevel = UnitLevel('target'), E.mylevel
 
+	local levelDifference
 	if not UnitExists('target') then -- If there's no target, we'll assume we're talking about a lvl +3 boss. You can click yourself to see against your level
 		levelDifference = 3
 		targetLevel = 73
@@ -67,9 +68,9 @@ local function OnEvent(self)
 		block, numAvoids = 0, numAvoids - 1
 	end
 
-	baseDefense, armorDefense = UnitDefense('player')
-	baseMiss = 5 - useDecayRate -- Base miss chance is 5%
-	miss = baseMiss + (armorDefense + baseDefense - (5 * playerLevel)) * 0.04
+	local baseDefense, armorDefense = UnitDefense('player')
+	local baseMiss = 5 - useDecayRate -- Base miss chance is 5%
+	miss = baseMiss + ((baseDefense or 0) + (armorDefense or 0) - (5 * playerLevel)) * 0.04
 
 	local unhittableMax = 100 + (decayRate * numAvoids) -- unhittableMax is 100
 	local avoidance = (dodge + parry + miss) + block -- First roll on hit table determining if the hit missed
