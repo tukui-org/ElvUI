@@ -301,7 +301,7 @@ function M:LOOT_OPENED(_, autoloot)
 
 		slot.name:SetText(L["No Loot"])
 		slot.name:SetTextColor(color.r, color.g, color.b)
-		slot.icon:SetTexture(136511) -- Interface\\PaperDoll\\UI-PaperDoll-Slot-Bag
+		slot.icon:SetTexture(136511) -- Interface/PaperDoll/UI-PaperDoll-Slot-Bag
 
 		max_width = max(max_width, slot.name:GetStringWidth())
 

@@ -53,7 +53,7 @@ function S:PetBattleFrame()
 	-- TOP FRAMES
 	f:StripTextures()
 
-	local borderSpace = E.PixelMode and 2 or 3
+	local borderSpace = E.PixelMode and 1 or 3
 	for index, infoBar in pairs(infoBars) do
 		infoBar.Border:SetAlpha(0)
 		infoBar.Border2:SetAlpha(0)
@@ -225,11 +225,12 @@ function S:PetBattleFrame()
 	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(s)
 		s.Icon:SetTexCoord(unpack(E.TexCoords))
 
-		local petOwner, petIndex = s.petOwner, s.petIndex
-		if not petOwner or not petIndex then return end
-		if s.Icon.backdrop and s.Icon.backdrop:IsShown() then
-			local rarity = C_PetBattles.GetBreedQuality(petOwner, petIndex)
-			s.Icon.backdrop:SetBackdropBorderColor(ITEM_QUALITY_COLORS[rarity-1].r, ITEM_QUALITY_COLORS[rarity-1].g, ITEM_QUALITY_COLORS[rarity-1].b)
+		if s.petOwner and s.petIndex and (s.Icon.backdrop and s.Icon.backdrop:IsShown()) then
+			local rarity = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
+			if rarity then
+				local color = ITEM_QUALITY_COLORS[rarity-1]
+				s.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			end
 		end
 	end)
 
@@ -287,6 +288,12 @@ function S:PetBattleFrame()
 		infoBar:SetTemplate()
 		infoBar:ClearAllPoints()
 		infoBar.healthBarWidth = 40
+
+		infoBar.BorderDead:SetTexture(629739) -- Interface/PetBattles/DeadPetIcon
+		infoBar.BorderDead:SetTexCoord(0, 1, 0, 1)
+		infoBar.BorderDead:ClearAllPoints()
+		infoBar.BorderDead:Point('TOPLEFT', -3, 4)
+		infoBar.BorderDead:Point('BOTTOMRIGHT', 3, -2)
 
 		infoBar.BorderAlive:SetAlpha(0)
 		infoBar.HealthBarBG:SetAlpha(0)
