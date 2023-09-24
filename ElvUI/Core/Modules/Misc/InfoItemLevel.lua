@@ -32,11 +32,6 @@ local InspectItems = {
 	'SecondaryHandSlot',
 }
 
-local whileOpenEvents = {
-	UPDATE_INVENTORY_DURABILITY = true,
-	AZERITE_ESSENCE_UPDATE = true
-}
-
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
 	texture:Point('BOTTOM', x, y)
@@ -69,14 +64,9 @@ function M:UpdateInspectInfo(_, arg1)
 end
 
 function M:UpdateCharacterInfo(event)
-	if (not E.db.general.itemLevel.displayCharacterInfo)
-	or (whileOpenEvents[event] and not _G.CharacterFrame:IsShown()) then return end
+	if not (E.db.general.itemLevel.displayCharacterInfo and _G.CharacterFrame:IsShown()) then return end
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
-end
-
-function M:UpdateCharacterItemLevel()
-	M:UpdateAverageString(_G.CharacterFrame, 'Character')
 end
 
 function M:ClearPageInfo(frame, which)
@@ -99,6 +89,7 @@ end
 
 function M:ToggleItemLevelInfo(setupCharacterPage)
 	if not E.Retail then return end
+
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
@@ -106,8 +97,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.db.general.itemLevel.displayCharacterInfo then
 		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
@@ -122,8 +113,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	else
 		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
 
@@ -147,7 +138,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 	end
 
 	inspectItem.iLvlText:SetText(slotInfo.iLvl)
-	if slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
+	if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
 		inspectItem.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 	end
 
@@ -208,14 +199,20 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
-	local isCharPage = which == 'Character'
-	local AvgItemLevel = (isCharPage and E:GetPlayerItemLevel()) or (frame.unit and E:CalculateAverageItemLevel(iLevelDB, frame.unit))
-	if AvgItemLevel then
-		if isCharPage then
-			frame.ItemLevelText:SetText(AvgItemLevel)
+	local charPage, avgItemLevel, avgTotal = which == 'Character'
+
+	if charPage then
+		avgTotal, avgItemLevel = E:GetPlayerItemLevel() -- rounded average, rounded equipped
+	elseif frame.unit then
+		avgItemLevel = E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	end
+
+	if avgItemLevel then
+		if charPage then
+			frame.ItemLevelText:SetText(avgItemLevel)
 			frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
 		else
-			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], avgItemLevel)
 		end
 
 		-- we have to wait to do this on inspect so handle it in here
@@ -225,7 +222,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 					local ilvl = iLevelDB[i]
 					if ilvl then
 						local inspectItem = _G[which..InspectItems[i]]
-						local r, g, b = E:ColorizeItemLevel(ilvl - AvgItemLevel)
+						local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel))
 						inspectItem.iLvlText:SetTextColor(r, g, b)
 					end
 				end
