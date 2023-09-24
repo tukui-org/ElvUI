@@ -32,11 +32,6 @@ local InspectItems = {
 	'SecondaryHandSlot',
 }
 
-local whileOpenEvents = {
-	UPDATE_INVENTORY_DURABILITY = true,
-	AZERITE_ESSENCE_UPDATE = true
-}
-
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
 	texture:Point('BOTTOM', x, y)
@@ -69,14 +64,9 @@ function M:UpdateInspectInfo(_, arg1)
 end
 
 function M:UpdateCharacterInfo(event)
-	if (not E.db.general.itemLevel.displayCharacterInfo)
-	or (whileOpenEvents[event] and not _G.CharacterFrame:IsShown()) then return end
+	if not (E.db.general.itemLevel.displayCharacterInfo and _G.CharacterFrame:IsShown()) then return end
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
-end
-
-function M:UpdateCharacterItemLevel()
-	M:UpdateAverageString(_G.CharacterFrame, 'Character')
 end
 
 function M:ClearPageInfo(frame, which)
@@ -99,6 +89,7 @@ end
 
 function M:ToggleItemLevelInfo(setupCharacterPage)
 	if not E.Retail then return end
+
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
@@ -106,8 +97,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.db.general.itemLevel.displayCharacterInfo then
 		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterItemLevel')
 
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 
@@ -122,8 +113,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	else
 		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
 		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 
 		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
 
