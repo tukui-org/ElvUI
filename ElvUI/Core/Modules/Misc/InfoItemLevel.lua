@@ -199,14 +199,20 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
-	local isCharPage = which == 'Character'
-	local AvgItemLevel = (isCharPage and E:GetPlayerItemLevel()) or (frame.unit and E:CalculateAverageItemLevel(iLevelDB, frame.unit))
-	if AvgItemLevel then
-		if isCharPage then
-			frame.ItemLevelText:SetText(AvgItemLevel)
+	local charPage, avgItemLevel, avgTotal = which == 'Character'
+
+	if charPage then
+		avgTotal, avgItemLevel = E:GetPlayerItemLevel() -- rounded average, rounded equipped
+	elseif frame.unit then
+		avgItemLevel = E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	end
+
+	if avgItemLevel then
+		if charPage then
+			frame.ItemLevelText:SetText(avgItemLevel)
 			frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
 		else
-			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], AvgItemLevel)
+			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], avgItemLevel)
 		end
 
 		-- we have to wait to do this on inspect so handle it in here
@@ -216,7 +222,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 					local ilvl = iLevelDB[i]
 					if ilvl then
 						local inspectItem = _G[which..InspectItems[i]]
-						local r, g, b = E:ColorizeItemLevel(ilvl - AvgItemLevel)
+						local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel))
 						inspectItem.iLvlText:SetTextColor(r, g, b)
 					end
 				end

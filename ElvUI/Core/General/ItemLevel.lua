@@ -3,8 +3,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local _G = _G
 local pi = math.pi
 local utf8sub = string.utf8sub
+local tonumber, format = tonumber, format
 local tinsert, strfind, strmatch = tinsert, strfind, strmatch
-local select, tonumber, format = select, tonumber, format
 local next, max, wipe, gsub = next, max, wipe, gsub
 
 local GetAverageItemLevel = GetAverageItemLevel
@@ -188,7 +188,7 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		isOK = false
 	end
 
-	return isOK and format('%0.2f', E:Round(total / 16, 2))
+	return isOK and E:Round(total / 16, 2)
 end
 
 function E:ColorizeItemLevel(num)
@@ -200,14 +200,16 @@ function E:ColorizeItemLevel(num)
 end
 
 function E:GetPlayerItemLevel()
-	return format('%0.2f', E:Round((select(2, GetAverageItemLevel())), 2))
+	local average, equipped = GetAverageItemLevel()
+	return E:Round(average, 2), E:Round(equipped, 2)
 end
 
 do
 	local iLevelDB, tryAgain = {}, {}
 	function E:GetUnitItemLevel(unit)
 		if UnitIsUnit(unit, 'player') then
-			return E:GetPlayerItemLevel()
+			local _, equipped = E:GetPlayerItemLevel()
+			return equipped
 		end
 
 		if next(iLevelDB) then wipe(iLevelDB) end
