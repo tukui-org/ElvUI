@@ -138,7 +138,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 	end
 
 	inspectItem.iLvlText:SetText(slotInfo.iLvl)
-	if slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
+	if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
 		inspectItem.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 	end
 
