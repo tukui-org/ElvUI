@@ -1594,7 +1594,7 @@ do
 		end
 	end
 
-	local function HasGuildBankTabInfo()
+	local function HasGuildBankTabInfo() -- prevents an error on Wrath
 		return GetGuildBankTabInfo(GetCurrentGuildBankTab())
 	end
 
