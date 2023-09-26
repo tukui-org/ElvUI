@@ -63,6 +63,16 @@ function B:GuildBank_Update()
 	local frame = _G.GuildBankFrame
 	if not frame or not frame:IsShown() then return end
 
+	if E.Wrath then -- they copy pasted too much
+		for i = 1, _G.MAX_GUILDBANK_TABS do
+			local tab = _G['GuildBankTab'..i]
+			local button = tab and tab.Button
+			if button then
+				button:UnregisterEvent('INVENTORY_SEARCH_UPDATE')
+			end
+		end
+	end
+
 	for i = 1, NUM_GUILDBANK_COLUMNS do
 		local column = frame['Column'..i]
 
