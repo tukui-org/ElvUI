@@ -218,7 +218,7 @@ function E:SlideIn(obj, customName)
 
 	anim.out1:Stop()
 	anim:Play()
-	obj:Show()
+	obj:Show() -- Show is a secure variable and out1 play will hide it again OnFinished
 end
 
 function E:SlideOut(obj, customName)
@@ -227,7 +227,7 @@ function E:SlideOut(obj, customName)
 
 	anim:Finish()
 	anim:Stop()
-	anim.out1:Play()
+	anim.out1:Play() -- Hide is also secure and triggers AnimMoveOut which hides obj
 end
 
 local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
@@ -289,8 +289,6 @@ end
 function E:UIFrameFade(frame, info)
 	if not frame or frame:IsForbidden() then return end
 
-	frame.fadeInfo = info
-
 	if not info.mode then
 		info.mode = 'IN'
 	end
@@ -305,11 +303,8 @@ function E:UIFrameFade(frame, info)
 		if not info.diffAlpha then info.diffAlpha = info.startAlpha - info.endAlpha end
 	end
 
+	frame.fadeInfo = info
 	frame:SetAlpha(info.startAlpha)
-
-	if not frame:IsShown() and not frame:IsProtected() and not issecurevariable(frame, 'Show') then
-		frame:Show()
-	end
 
 	if not FADEFRAMES[frame] then
 		FADEFRAMES[frame] = info -- read below comment
