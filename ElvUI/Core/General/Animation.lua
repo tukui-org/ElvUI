@@ -216,9 +216,9 @@ function E:SlideIn(obj, customName)
 	local anim = obj[customName or 'anim']
 	if not anim then return end
 
-	anim.out1:Stop()
+	anim.out1:Stop() -- out1 OnFinish will call Hide, see SlideOut
 	anim:Play()
-	obj:Show() -- Show is a secure variable and out1 play will hide it again OnFinished
+	obj:Show() -- Show is likely a secure var
 end
 
 function E:SlideOut(obj, customName)
@@ -227,7 +227,7 @@ function E:SlideOut(obj, customName)
 
 	anim:Finish()
 	anim:Stop()
-	anim.out1:Play() -- Hide is also secure and triggers AnimMoveOut which hides obj
+	anim.out1:Play() -- triggers AnimMoveOut which calls Hide (likely secure var) on obj
 end
 
 local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
