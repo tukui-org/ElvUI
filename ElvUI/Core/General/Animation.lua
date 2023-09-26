@@ -150,9 +150,7 @@ end
 
 function E:Elasticize(obj, width, height)
 	if not obj.elastic then
-		if not width then width = obj:GetWidth() end
-		if not height then height = obj:GetHeight() end
-		E:SetUpAnimGroup(obj, 'Elastic', width, height, 2, false)
+		E:SetUpAnimGroup(obj, 'Elastic', width or obj:GetWidth(), height or obj:GetHeight(), 2, false)
 	end
 
 	obj.elastic[1]:Play()
