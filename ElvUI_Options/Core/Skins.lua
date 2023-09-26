@@ -129,7 +129,6 @@ else
 		blizzard.arena = L["Arena"]
 		blizzard.arenaRegistrar = L["Arena Registrar"]
 		blizzard.collections = L["COLLECTIONS"]
-		blizzard.gbank = L["Guild Bank"]
 		blizzard.lfg = L["LFG_TITLE"]
 	end
 
@@ -145,5 +144,6 @@ if E.Retail or E.Wrath then
 	blizzard.alertframes = L["Alert Frames"]
 	blizzard.barber = L["BARBERSHOP"]
 	blizzard.calendar = L["Calendar Frame"]
+	blizzard.gbank = L["Guild Bank"]
 	blizzard.pvp = L["PvP Frames"]
 end

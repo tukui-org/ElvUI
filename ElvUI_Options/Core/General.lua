@@ -298,3 +298,33 @@ blizz.queueStatus.args.fontGroup.args.position = ACH:Select(L["Position"], nil, 
 blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
+
+blizz.guildBank = ACH:Group(E.NewSign..L["Guild Bank"], nil, 70)
+blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 1, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value Blizzard:GuildBank_Update() end)
+blizz.guildBank.args.ilvlGroup.args.itemLevel = ACH:Toggle(L["Display Item Level"], L["Displays item level on equippable items."], 1)
+blizz.guildBank.args.ilvlGroup.args.itemLevelCustomColorEnable = ACH:Toggle(L["Custom Color"], nil, 2, nil, nil, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.itemLevelCustomColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.general.guildBank[info[#info]] local d = P.general.guildBank[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.guildBank[info[#info]] t.r, t.g, t.b = r, g, b Blizzard:GuildBank_Update() end, nil, function() return not E.db.general.guildBank.itemLevel or not E.db.general.guildBank.itemLevelCustomColorEnable end)
+blizz.guildBank.args.ilvlGroup.args.itemLevelThreshold = ACH:Range(L["Item Level Threshold"], L["The minimum item level required for it to be shown."], 4, { min = 1, max = 500, step = 1 }, nil, nil, function(info, value) E.db.general.guildBank[info[#info]] = value Blizzard:GuildBank_Update() end, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 5, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.fontGroup.inline = true
+blizz.guildBank.args.ilvlGroup.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 7, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 8, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.positionGroup = ACH:Group(L["Position"], nil, 9, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.positionGroup.inline = true
+blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, C.Values.TextPositions, nil, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelxOffset = ACH:Range(L["X-Offset"], nil, 11, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
+
+blizz.guildBank.args.countGroup = ACH:Group(L["Item Count"], nil, 2, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value Blizzard:GuildBank_Update() end)
+blizz.guildBank.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.guildBank[info[#info]] local d = P.general.guildBank[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.guildBank[info[#info]] t.r, t.g, t.b = r, g, b Blizzard:GuildBank_Update() end)
+blizz.guildBank.args.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+blizz.guildBank.args.countGroup.args.fontGroup.inline = true
+blizz.guildBank.args.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+blizz.guildBank.args.countGroup.args.fontGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+blizz.guildBank.args.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+blizz.guildBank.args.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+blizz.guildBank.args.countGroup.args.positionGroup.inline = true
+blizz.guildBank.args.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.TextPositions)
+blizz.guildBank.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+blizz.guildBank.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
