@@ -5,6 +5,8 @@ local _G = _G
 local next, unpack = next, unpack
 local CreateFrame = CreateFrame
 
+local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
+local NUM_GUILDBANK_COLUMNS = 7
 local NUM_GUILDBANK_ICONS_PER_ROW = 10
 local NUM_GUILDBANK_ICON_ROWS = 9
 local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
@@ -42,11 +44,11 @@ function S:Blizzard_GuildBankUI()
 		icon:SetInside()
 	end
 
-	for i = 1, 7 do
-		local column = _G.GuildBankFrame['Column'..i]
+	for i = 1, NUM_GUILDBANK_COLUMNS do
+		local column = GuildBankFrame['Column'..i]
 		column:StripTextures()
 
-		for x = 1, 14 do
+		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = column['Button'..x]
 			button:StripTextures()
 			button:StyleButton()
