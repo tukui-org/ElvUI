@@ -128,7 +128,7 @@ DataBars.args.threat.args = CopyTable(SharedOptions)
 DataBars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
 DataBars.args.threat.args.displayText = ACH:Toggle(L["Display Text"], nil, 5)
 DataBars.args.threat.args.tankStatus = ACH:Toggle(L["Tank Colors"], nil, 6)
-DataBars.args.threat.args.smoothbars = ACH:Toggle(E.NewSign..L["Smooth Bars"], L["Bars will transition smoothly."], 7)
+DataBars.args.threat.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
 DataBars.args.threat.args.textFormat = nil
 DataBars.args.threat.args.conditionGroup = nil
 DataBars.args.threat.args.showBubbles = nil

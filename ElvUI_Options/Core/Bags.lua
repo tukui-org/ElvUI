@@ -42,7 +42,7 @@ if E.Retail then
 	Bags.args.general.args.generalGroup.values.scrapIcon = L["Scrap Icon"]
 	Bags.args.general.args.generalGroup.values.upgradeIcon = L["Upgrade Icon"]
 	Bags.args.general.args.generalGroup.values.showAssignedIcon = L["Assigned Icon"]
-	Bags.args.general.args.generalGroup.values.useBlizzardJunk = E.NewSign..L["Use Blizzard Sell Junk"]
+	Bags.args.general.args.generalGroup.values.useBlizzardJunk = L["Use Blizzard Sell Junk"]
 end
 
 local excludeUpdates = {
