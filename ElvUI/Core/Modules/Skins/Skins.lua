@@ -6,9 +6,12 @@ local _G = _G
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
 local unpack, assert, type, strfind = unpack, assert, type, strfind
 
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
+local GetGuildBankTabInfo = GetGuildBankTabInfo
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 S.allowBypass = {}
@@ -1591,6 +1594,10 @@ do
 		end
 	end
 
+	local function HasGuildBankTabInfo()
+		return GetGuildBankTabInfo(GetCurrentGuildBankTab())
+	end
+
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
 		assert(frame, 'doesn\'t exist!')
 
@@ -1598,7 +1605,11 @@ do
 			return
 		elseif not E.Retail and (nameOverride and nameOverride ~= 'MacroPopup') then -- skip macros because it skins on show
 			frame:Show() -- spawn the info so we can skin the buttons
-			if frame.Update then frame:Update() end -- guild bank popup has update function
+
+			if frame.Update and (nameOverride ~= 'GuildBankPopup' or HasGuildBankTabInfo()) then
+				frame:Update() -- guild bank popup has update function
+			end
+
 			frame:Hide() -- can hide it right away
 		end
 
