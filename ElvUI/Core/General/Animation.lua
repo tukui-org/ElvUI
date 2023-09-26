@@ -4,8 +4,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local issecurevariable = issecurevariable
-local random, next, unpack, strsub = random, next, unpack, strsub
+local random, next = random, next
+local unpack, strsub = unpack, strsub
 
 --[[ just to test the number thing
 	local t = UIParent:CreateFontString(nil, 'OVERLAY', 'GameTooltipText')
