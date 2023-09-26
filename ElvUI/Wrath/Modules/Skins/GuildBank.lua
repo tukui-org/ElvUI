@@ -101,7 +101,7 @@ function S:Blizzard_GuildBankUI()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', GuildBankFrame, 'BOTTOMLEFT', 0, -24)
+			tab:Point('BOTTOMLEFT', GuildBankFrame, 'BOTTOMLEFT', -2, -26)
 		end
 	end
 
