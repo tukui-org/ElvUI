@@ -246,6 +246,25 @@ P.general = {
 		frameStrata = 'MEDIUM',
 		frameLevel = 20
 	},
+	guildBank = {
+		itemLevel = true,
+		itemLevelThreshold = 1,
+		itemLevelFont = 'Homespun',
+		itemLevelFontSize = 10,
+		itemLevelFontOutline = 'MONOCHROMEOUTLINE',
+		itemLevelCustomColorEnable = false,
+		itemLevelCustomColor = { r = 1, g = 1, b = 1 },
+		itemLevelPosition = 'BOTTOMRIGHT',
+		itemLevelxOffset = 0,
+		itemLevelyOffset = 2,
+		countFont = 'Homespun',
+		countFontSize = 10,
+		countFontOutline = 'MONOCHROMEOUTLINE',
+		countFontColor = { r = 1, g = 1, b = 1 },
+		countPosition = 'BOTTOMRIGHT',
+		countxOffset = 0,
+		countyOffset = 2,
+	}
 }
 
 P.databars = {

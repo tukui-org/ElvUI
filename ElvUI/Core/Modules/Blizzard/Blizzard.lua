@@ -112,6 +112,14 @@ function B:ObjectiveTracker_AutoHide()
 	end
 end
 
+function B:ADDON_LOADED(_, addon)
+	if addon == 'Blizzard_GuildBankUI' then
+		B:ImproveGuildBank()
+	elseif B.TryDisableTutorials then
+		B:ShutdownTutorials()
+	end
+end
+
 function B:Initialize()
 	B.Initialized = true
 
@@ -119,6 +127,8 @@ function B:Initialize()
 	B:AlertMovers()
 	B:HandleWidgets()
 	B:PositionCaptureBar()
+
+	B:RegisterEvent('ADDON_LOADED')
 
 	if not E.Retail then
 		B:KillBlizzard()

@@ -2,6 +2,7 @@
 	<Script file='Blizzard.lua'/>
 	<Script file='ColorPicker.lua'/>
 	<Script file='Vehicle.lua'/>
+	<Script file='GuildBank.lua'/>
 	<Script file='CaptureBar.lua'/>
 	<Script file='AlertFrame.lua'/>
 	<Script file='TalkingHeadFrame.lua'/>
