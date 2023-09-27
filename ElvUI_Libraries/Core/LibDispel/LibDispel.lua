@@ -1,10 +1,9 @@
-local MAJOR, MINOR = "LibDispel-1.0", 3
+local MAJOR, MINOR = "LibDispel-1.0", 4
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
 local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -1043,7 +1042,7 @@ do
 		end
 
 		-- this will fix a problem where spells dont show as existing because they are 'hidden'
-		local undoRanks = Wrath and GetCVar('ShowAllSpellRanks') ~= '1' and SetCVar('ShowAllSpellRanks', 1)
+		local undoRanks = (not Retail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', 1)
 
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
