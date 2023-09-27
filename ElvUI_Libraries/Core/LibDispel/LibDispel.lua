@@ -4,6 +4,7 @@ local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
 local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
 local GetCVar, SetCVar = GetCVar, SetCVar
