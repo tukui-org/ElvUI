@@ -105,23 +105,48 @@ function B:ObjectiveTracker_HandleDefaultPosition(isDefault)
 	end
 end
 
-local function SetDefaultPosition()
-	B:ObjectiveTracker_HandleDefaultPosition(not not Tracker:IsInDefaultPosition())
+function B:ObjectiveTracker_CorrectDefaultPositions(manager, default)
+	local info = Tracker.systemInfo
+	local systemID = info and info.system
+	if not systemID then return end
+
+	local managerInfo = manager.layoutInfo
+	local layouts = managerInfo and managerInfo.layouts
+	if not layouts then return end
+
+	for _, layout in next, layouts do
+		local systems = layout.systems
+		if systems then
+			for _, system in next, systems do
+				if system.system == systemID and system.isInDefaultPosition == nil then
+					system.isInDefaultPosition = default
+				end
+			end
+		end
+	end
 end
 
-local function ClearDefaultPosition()
+function B:ObjectiveTracker_SetDefaultPosition()
+	local default = not not Tracker:IsInDefaultPosition()
+	B:ObjectiveTracker_HandleDefaultPosition(default)
+
+	-- this fixes an error with Make New Layout
+	B:ObjectiveTracker_CorrectDefaultPositions(self, default)
+end
+
+function B:ObjectiveTracker_ClearDefaultPosition()
 	B:ObjectiveTracker_HandleDefaultPosition()
 end
 
 function B:ObjectiveTracker_Setup()
 	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
-		hooksecurefunc(Tracker, 'UpdateSystem', ClearDefaultPosition)
-		ClearDefaultPosition() -- fake it to not default on loading in
+		hooksecurefunc(Tracker, 'UpdateSystem', B.ObjectiveTracker_ClearDefaultPosition)
+		B.ObjectiveTracker_ClearDefaultPosition() -- fake it to not default on loading in
 
 		-- this fixes an error while saving a new layout when `isInDefaultPosition` is sent to the C side
 		-- it happens because this var is not nilable but we need it to be nil in order to bypass `UIParent_ManageFramePositions`
-		hooksecurefunc(_G.EditModeManagerFrame, 'PrepareSystemsForSave', SetDefaultPosition)
-		hooksecurefunc(_G.EditModeManagerFrame, 'SaveLayouts', ClearDefaultPosition)
+		hooksecurefunc(_G.EditModeManagerFrame, 'PrepareSystemsForSave', B.ObjectiveTracker_SetDefaultPosition)
+		hooksecurefunc(_G.EditModeManagerFrame, 'SaveLayouts', B.ObjectiveTracker_ClearDefaultPosition)
 	end
 
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)
