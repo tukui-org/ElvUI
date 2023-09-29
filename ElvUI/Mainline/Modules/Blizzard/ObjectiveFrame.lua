@@ -84,23 +84,17 @@ function B:ObjectiveTracker_AutoHideOnShow()
 	end
 end
 
-function B:ObjectiveTracker_FixNewLayoutSave(inDefault)
+function B:ObjectiveTracker_ClearDefaultPosition(isDefault)
 	local info = Tracker.systemInfo
-	if info then
-		info.isInDefaultPosition = inDefault
-	end
-end
-
-function B:ObjectiveTracker_ClearDefaultPosition()
-	local info = Tracker.systemInfo
-	if not info or not info.isInDefaultPosition then return end
+	if not info then return end
 
 	-- we only need to do something when it was in the default position
-	info.isInDefaultPosition = nil
+	local wasDefault = info.isInDefaultPosition
+	info.isInDefaultPosition = isDefault
 
 	-- something in here is magic and lets the Legion Scenario quest button work when actionbar module is on
 	-- this lets the first move in edit mode actually work without clicking [Reset To Default Position]
-	local parent = Tracker:GetManagedFrameContainer()
+	local parent = wasDefault and Tracker:GetManagedFrameContainer()
 	if parent and parent.showingFrames and parent.showingFrames[Tracker] then
 		parent:RemoveManagedFrame(Tracker)
 
@@ -111,15 +105,24 @@ function B:ObjectiveTracker_ClearDefaultPosition()
 	end
 end
 
+local function SetDefaultPosition()
+	local default = Tracker:IsInDefaultPosition()
+	B:ObjectiveTracker_ClearDefaultPosition(default)
+end
+
+local function ClearDefaultPosition()
+	B:ObjectiveTracker_ClearDefaultPosition()
+end
+
 function B:ObjectiveTracker_Setup()
 	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
-		hooksecurefunc(Tracker, 'UpdateSystem', B.ObjectiveTracker_ClearDefaultPosition)
-		B:ObjectiveTracker_ClearDefaultPosition()
+		hooksecurefunc(Tracker, 'UpdateSystem', ClearDefaultPosition)
+		ClearDefaultPosition()
 
 		-- this fixes an error while saving a new layout when `isInDefaultPosition` is sent to the C side
 		-- it happens because this var is not nilable but we need it to be nil in order to bypass `UIParent_ManageFramePositions`
-		hooksecurefunc(_G.EditModeManagerFrame, 'PrepareSystemsForSave', function() B:ObjectiveTracker_FixNewLayoutSave(false) end)
-		hooksecurefunc(_G.EditModeManagerFrame, 'SaveLayouts', function() B:ObjectiveTracker_FixNewLayoutSave() end)
+		hooksecurefunc(_G.EditModeManagerFrame, 'PrepareSystemsForSave', SetDefaultPosition)
+		hooksecurefunc(_G.EditModeManagerFrame, 'SaveLayouts', ClearDefaultPosition)
 	end
 
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)
