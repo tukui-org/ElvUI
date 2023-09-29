@@ -6,9 +6,10 @@ local _G = _G
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
 local unpack, assert, type, strfind = unpack, assert, type, strfind
 
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 S.allowBypass = {}
@@ -1610,13 +1611,7 @@ do
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
 		assert(frame, 'doesn\'t exist!')
 
-		if frame.isSkinned then
-			return
-		elseif not E.Retail and (nameOverride and nameOverride ~= 'MacroPopup') then -- skip macros because it skins on show
-			frame:Show() -- spawn the info so we can skin the buttons
-			if frame.Update then frame:Update() end -- guild bank popup has update function
-			frame:Hide() -- can hide it right away
-		end
+		if frame.isSkinned then return end
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets
 			frame:HookScript('OnShow', selectionOffset)

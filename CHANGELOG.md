@@ -1,3 +1,32 @@
+## Version 13.41 \[ September 28th 2023 \]
+*   Ping support on Unitframes and Nameplates (retail).
+*   Mac Meta key support in Keybind mode.
+*   Mail skin text color fixed on Classic.
+*   Cleaned up Landing Page skin a little.
+*   Upgraded the Raid Utility which now includes the Everyone Assist (all) and Restrict Pings (retail).
+*   Bag sorting failed when a normal bag attempted to move into a quiver bag: "Only arrows can be placed in that."
+*   Transmog Collections invalid slot not showing properly for Evokers.
+*   Objective Tracker error complaining about SetHeight.
+*   Legion Scenario Quest button not working when Actionbars were enabled.
+*   Encounter Journal and World Map taint about xoffset fixed.
+*   Quest Frame parchment borders adjusted to look cleaner along with the Model Scene.
+*   None option added to Bag Currency Format which lets you hide tracked currencies; however can still be tracked with Currency Datatext.
+*   Ready Check frame text is properly aligned.
+*   Select your role frame is skinned now.
+*   Chat Alerts can now be set for more channels like Trade or custom channels.
+*   Item Level for Character and Inspect can now be colored based on the average Item Level (uncheck Rarity Level in Blizz Improvements > Item Level).
+*   Border Colors during a Pet Battle will match Pet rarity now and the Dead icon will be borderless.
+*   Defense Datatext now includes defense gained from armor as well; Block Parry and Dodge now have the option to set decimal length.
+*   Bonus Rolls weren't anchored to the Alert Loot mover.
+*   World Map Pin style that fits better with the skin.
+*   Prevent an error when switching from Class to 3D portrait.
+*   GM Chat skin error on Classic.
+*   Guild Bank would error when trying to search using Bag module (wrath).
+*   Guild Bank option is displayed again in the skins section (retail).
+*   Guild Bank now has the ability to show Item Level on items and Count font settings under (General > Blizz Improvements > Guild Bank).
+*   Dispels wouldn't appear when Show All Spell Ranks was unchecked (classic).
+*   Attack Power Datatext would error when on Hunter (classic).
+
 ## Version 13.40 \[ September 5th 2023 \]
 *   Reputation Databars not displaying Hated reputation information.
 *   Classic HC chat death message having additional brackets.
