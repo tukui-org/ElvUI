@@ -84,7 +84,7 @@ function B:ObjectiveTracker_AutoHideOnShow()
 	end
 end
 
-function B:ObjectiveTracker_ClearDefaultPosition(isDefault)
+function B:ObjectiveTracker_HandleDefaultPosition(isDefault)
 	local info = Tracker.systemInfo
 	if not info then return end
 
@@ -106,18 +106,17 @@ function B:ObjectiveTracker_ClearDefaultPosition(isDefault)
 end
 
 local function SetDefaultPosition()
-	local default = Tracker:IsInDefaultPosition()
-	B:ObjectiveTracker_ClearDefaultPosition(default)
+	B:ObjectiveTracker_HandleDefaultPosition(not not Tracker:IsInDefaultPosition())
 end
 
 local function ClearDefaultPosition()
-	B:ObjectiveTracker_ClearDefaultPosition()
+	B:ObjectiveTracker_HandleDefaultPosition()
 end
 
 function B:ObjectiveTracker_Setup()
 	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
 		hooksecurefunc(Tracker, 'UpdateSystem', ClearDefaultPosition)
-		ClearDefaultPosition()
+		ClearDefaultPosition() -- fake it to not default on loading in
 
 		-- this fixes an error while saving a new layout when `isInDefaultPosition` is sent to the C side
 		-- it happens because this var is not nilable but we need it to be nil in order to bypass `UIParent_ManageFramePositions`
