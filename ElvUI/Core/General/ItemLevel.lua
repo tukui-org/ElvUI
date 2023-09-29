@@ -1,20 +1,22 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local tinsert, strfind, strmatch = tinsert, strfind, strmatch
-local select, tonumber, format = select, tonumber, format
-local next, max, wipe, gsub = next, max, wipe, gsub
+local pi = math.pi
 local utf8sub = string.utf8sub
+local tonumber, format = tonumber, format
+local tinsert, strfind, strmatch = tinsert, strfind, strmatch
+local next, max, wipe, gsub = next, max, wipe, gsub
 
-local UnitIsUnit = UnitIsUnit
+local GetAverageItemLevel = GetAverageItemLevel
+local GetInspectSpecialization = GetInspectSpecialization
+local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventoryItemLink = GetInventoryItemLink
 local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
-local GetAverageItemLevel = GetAverageItemLevel
-local GetInventoryItemLink = GetInventoryItemLink
-local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInspectSpecialization = GetInspectSpecialization
-local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
+local UIParent = UIParent
+local UnitIsUnit = UnitIsUnit
 
+local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
 
@@ -32,25 +34,26 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
-		local text = gsub(enchant, '%s?|A.-|a', '')
-		slotInfo.enchantText = text
-		slotInfo.enchantTextShort = utf8sub(text, 1, 18)
-		slotInfo.enchantTextReal = enchant -- contains Atlas
+		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
+		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
+		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
 
-		local lr, lg, lb = line:GetTextColor()
-		slotInfo.enchantColors[1] = lr
-		slotInfo.enchantColors[2] = lg
-		slotInfo.enchantColors[3] = lb
+		local r, g, b = line:GetTextColor()
+		slotInfo.enchantColors[1] = r
+		slotInfo.enchantColors[2] = g
+		slotInfo.enchantColors[3] = b
 	end
 
 	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
 	if itemLevel then
 		slotInfo.iLvl = tonumber(itemLevel)
 
-		local tr, tg, tb = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
-		slotInfo.itemLevelColors[1] = tr
-		slotInfo.itemLevelColors[2] = tg
-		slotInfo.itemLevelColors[3] = tb
+		local r, g, b = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
+		slotInfo.itemLevelColors[1] = r
+		slotInfo.itemLevelColors[2] = g
+		slotInfo.itemLevelColors[3] = b
 	end
 end
 
@@ -77,7 +80,7 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
-	tt:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+	tt:SetOwner(UIParent, 'ANCHOR_NONE')
 	tt:SetInventoryItem(unit, slot)
 	tt:Show()
 
@@ -185,18 +188,28 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		isOK = false
 	end
 
-	return isOK and format('%0.2f', E:Round(total / 16, 2))
+	return isOK and E:Round(total / 16, 2)
+end
+
+function E:ColorizeItemLevel(num)
+	if num >= 0 then
+		return .1, 1, .1
+	else
+		return E:ColorGradient(-(pi/num), 1, .1, .1, 1, 1, .1, .1, 1, .1)
+	end
 end
 
 function E:GetPlayerItemLevel()
-	return format('%0.2f', E:Round((select(2, GetAverageItemLevel())), 2))
+	local average, equipped = GetAverageItemLevel()
+	return E:Round(average, 2), E:Round(equipped, 2)
 end
 
 do
 	local iLevelDB, tryAgain = {}, {}
 	function E:GetUnitItemLevel(unit)
 		if UnitIsUnit(unit, 'player') then
-			return E:GetPlayerItemLevel()
+			local _, equipped = E:GetPlayerItemLevel()
+			return equipped
 		end
 
 		if next(iLevelDB) then wipe(iLevelDB) end

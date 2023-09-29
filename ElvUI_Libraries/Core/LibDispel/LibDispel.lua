@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibDispel-1.0", 3
+local MAJOR, MINOR = "LibDispel-1.0", 4
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -47,7 +47,7 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- slow
 
-	-- Bleed spells updated July 11th 2023 by Simpy for Patch 10.1.5
+	-- Bleed spells updated September 27th 2023 by Simpy for Patch 10.1.7
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
 	----> Apply Aura
 	-----> Mechanic Bleeding: https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
@@ -226,7 +226,6 @@ if Retail then
 	BleedList[76507] = "Claw Puncture"
 	BleedList[76524] = "Grievous Whirl"
 	BleedList[76594] = "Rend"
-	BleedList[76807] = "Lacerate"
 	BleedList[78842] = "Carnivorous Bite"
 	BleedList[78859] = "Elementium Spike Shield"
 	BleedList[79444] = "Impale"
@@ -976,11 +975,13 @@ if Retail then
 	BleedList[413131] = "Whirling Dagger"
 	BleedList[413136] = "Whirling Dagger"
 	BleedList[414466] = "Jagged Gills"
+	BleedList[414506] = "Lacerate"
 	BleedList[414552] = "Stonecrack"
 	BleedList[416258] = "Stonebolt"
 	BleedList[418009] = "Serrated Arrows"
 	BleedList[418160] = "Sawblade-Storm"
 	BleedList[418624] = "Rending Slash"
+	BleedList[423431] = "Crushing Blow"
 end
 
 function lib:GetDebuffTypeColor()
@@ -1043,7 +1044,7 @@ do
 		end
 
 		-- this will fix a problem where spells dont show as existing because they are 'hidden'
-		local undoRanks = Wrath and GetCVar('ShowAllSpellRanks') ~= '1' and SetCVar('ShowAllSpellRanks', 1)
+		local undoRanks = (not Retail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', 1)
 
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()

@@ -1,6 +1,6 @@
 <Ui><Script><![CDATA[--[[
 
-TaintLess [23-05-18]
+TaintLess [23-09-09]
 https://www.townlong-yak.com/addons/taintless
 
 All rights reserved.
@@ -8,36 +8,19 @@ All rights reserved.
 Permission is hereby granted to distribute unmodified copies of this file.
 ]]
 
-local function purgeKey(t, k)
-	local logLevel, c = GetCVar("taintLog"), -42
-	if (tonumber(logLevel) or 0) > 1 then
-		if CVarCallbackRegistry then
-			CVarCallbackRegistry:UnregisterEvent("CVAR_UPDATE")
-		end
-		SetCVar("taintLog", "1")
-	else
-		logLevel = nil
-	end
-	t[k] = nil
-	repeat
-		if t[c] == nil then
-			t[c] = nil
-		end
-		c = c - 1
-	until issecurevariable(t, k)
-	if logLevel then
-		SetCVar("taintLog", logLevel)
-		if CVarCallbackRegistry then
-			CVarCallbackRegistry:RegisterEvent("CVAR_UPDATE")
-		end
+local purgeKey do
+	local e = {}
+	function purgeKey(t, k)
+		e.textures = t
+		TextureLoadingGroupMixin.RemoveTexture(e, k)
 	end
 end
 
 local patch do
-	local q, skips = {}, securecall(function()
+	local skips = securecall(function()
 		local cb, r, _, an = select(4,GetBuildInfo()), {moon="haunted"}
 		r.moon, _, an = nil, issecurevariable(r, "moon")
-		for m, v, clo, chi in (GetAddOnMetadata(an, "X-TaintLess-DisableMitigations") or ""):gmatch("([%a_]+)=(%d+):?(%d*):?(%d*)") do
+		for m, v, clo, chi in (C_AddOns.GetAddOnMetadata(an, "X-TaintLess-DisableMitigations") or ""):gmatch("([%a_]+)=(%d+):?(%d*):?(%d*)") do
 			if (clo == "" or cb >= clo+0) and (chi == "" or chi+0 >= cb) then
 				r[m] = v + 0
 			end
@@ -45,18 +28,15 @@ local patch do
 		return r
 	end)
 	function patch(name, version, impl)
-		if name == nil then
-			for qf, v in pairs(q) do
-				securecall(qf, v)
-			end
-		elseif not ((tonumber(_G[name]) or 0) >= version or skips and skips[name] == version) then
-			_G[name], q[impl] = version, version
+		if not ((tonumber(_G[name]) or 0) >= version or skips and skips[name] == version) then
+			_G[name] = version
+			securecall(impl, version)
 		end
 	end
 end
 
 -- https://www.townlong-yak.com/addons/taintless/fixes/RefreshOverread
-patch("UIDD_REFRESH_OVERREAD_PATCH_VERSION", 3, function(V)
+patch("UIDD_REFRESH_OVERREAD_PATCH_VERSION", 5, function(V)
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function()
 		for i=1, UIDD_REFRESH_OVERREAD_PATCH_VERSION == V and UIDROPDOWNMENU_MAXLEVELS or 0 do
 			for j=1+_G["DropDownList" .. i].numButtons, UIDROPDOWNMENU_MAXBUTTONS do
@@ -69,7 +49,7 @@ patch("UIDD_REFRESH_OVERREAD_PATCH_VERSION", 3, function(V)
 end)
 
 -- https://www.townlong-yak.com/addons/taintless/fixes/DisplayModeTaint
-patch("UIDROPDOWNMENU_OPEN_PATCH_VERSION", 1, function(V)
+patch("UIDROPDOWNMENU_OPEN_PATCH_VERSION", 3, function(V)
 	hooksecurefunc("UIDropDownMenu_InitializeHelper", function(frame)
 		if UIDROPDOWNMENU_OPEN_PATCH_VERSION == V
 		   and UIDROPDOWNMENU_OPEN_MENU and UIDROPDOWNMENU_OPEN_MENU ~= frame
@@ -79,19 +59,8 @@ patch("UIDROPDOWNMENU_OPEN_PATCH_VERSION", 1, function(V)
 	end)
 end)
 
--- https://www.townlong-yak.com/addons/taintless/fixes/IOFrameSelection
-patch("IOFRAME_SELECTION_PATCH_VERSION", 5, function(V)
-	if type(InterfaceOptionsFrame) == "table" and type(InterfaceOptionsFrame.HookScript) == "function" then
-		InterfaceOptionsFrame:HookScript("OnHide", function()
-			if IOFRAME_SELECTION_PATCH_VERSION == V then
-				InterfaceOptionsFrameCategories.selection = nil
-			end
-		end)
-	end
-end)
-
 -- https://www.townlong-yak.com/addons/taintless/fixes/EditModeOpenDrop
-patch("EDITMAN_OPENDROP_PATCH_VERSION", 3, function(V)
+patch("EDITMAN_OPENDROP_PATCH_VERSION", 5, function(V)
 	if not (type(EditModeManagerFrame) == "table" and
 	        type(EditModeManagerFrame.GetAttribute) == "function" and
 	        type(FriendsFrameStatusDropDown) == "table") then
@@ -117,7 +86,7 @@ patch("EDITMAN_OPENDROP_PATCH_VERSION", 3, function(V)
 end)
 
 -- https://www.townlong-yak.com/addons/taintless/fixes/ObjectiveTrackerUpdate
-patch("OBJTRACK_DELAYUPDATE_PATCH_VERSION", 3, function(V)
+patch("OBJTRACK_DELAYUPDATE_PATCH_VERSION", 5, function(V)
 	if not (type(ObjectiveTrackerFrame) == "table" and
 	        type(ObjectiveTrackerFrame.HeaderMenu) == "table" and
 	        type(ObjectiveTrackerFrame.HeaderMenu.Title) == "table") then
@@ -134,8 +103,7 @@ patch("OBJTRACK_DELAYUPDATE_PATCH_VERSION", 3, function(V)
 	end)
 	hooksecurefunc("ObjectiveTracker_Update", function()
 		if OBJTRACK_DELAYUPDATE_PATCH_VERSION == V and didDelayUpdate then
-			didDelayUpdate = nil
-			purgeKey(ObjectiveTrackerFrame, "isUpdating")
+			ObjectiveTrackerFrame.isUpdating, didDelayUpdate = nil
 		end
 	end)
 	hooksecurefunc(ObjectiveTrackerFrame.HeaderMenu.Title, "ClearAllPoints", function()
@@ -154,5 +122,4 @@ patch("OBJTRACK_DELAYUPDATE_PATCH_VERSION", 3, function(V)
 	end)
 end)
 
-patch()
 ]]></Script></Ui>

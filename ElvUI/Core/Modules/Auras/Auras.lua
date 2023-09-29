@@ -181,7 +181,6 @@ function A:CreateIcon(button)
 	A:UpdateIcon(button)
 
 	E:SetSmoothing(button.statusBar)
-	E:SetUpAnimGroup(button)
 
 	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))

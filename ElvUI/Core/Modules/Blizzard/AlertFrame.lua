@@ -16,7 +16,7 @@ function E:PostAlertMove()
 	-- support for the Trading Post
 	local perks = _G.PerksProgramFrame
 	local perksFooter = perks and perks.FooterFrame
-	local perksAnchor = perksFooter and AlertFrame.baseAnchorFrame == perksFooter.RotateButtonContainer and perksFooter
+	local perksAnchor = (perksFooter and AlertFrame.baseAnchorFrame == perksFooter.RotateButtonContainer) and perksFooter
 
 	local growUp = perksAnchor
 	if not growUp then
@@ -32,13 +32,13 @@ function E:PostAlertMove()
 
 	AlertFrameMover:SetFormattedText('%s %s', AlertFrameMover.textString, growUp and '(Grow Up)' or '(Grow Down)')
 
+	local anchor = perksAnchor or (E.private.general.lootRoll and Misc:UpdateLootRollAnchors(POSITION)) or _G.AlertFrameHolder
+	AlertFrame:ClearAllPoints()
+	AlertFrame:SetAllPoints(anchor)
+
 	local GroupLootContainer = _G.GroupLootContainer
 	GroupLootContainer:ClearAllPoints()
-	AlertFrame:ClearAllPoints()
-
-	local anchor = perksAnchor or (E.private.general.lootRoll and Misc:UpdateLootRollAnchors(POSITION)) or _G.AlertFrameHolder
 	GroupLootContainer:Point(POSITION, anchor, ANCHOR_POINT, 0, Y_OFFSET)
-	AlertFrame:SetAllPoints(anchor)
 
 	if GroupLootContainer:IsShown() then
 		B.GroupLootContainer_Update(GroupLootContainer)
@@ -127,10 +127,13 @@ function B:AlertMovers()
 	AlertFrameHolder:Size(180, 20)
 	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', 0, -20)
 
-	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	E:CreateMover(AlertFrameHolder, 'AlertFrameMover', L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,blizzUIImprovements')
 
-	if not E.Retail then
+	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
+
+	if E.Retail then
+		_G.GroupLootContainer.ignoreInLayout = true
+	else
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	end
 

@@ -2,9 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
 local tinsert = tinsert
-local ToggleFrame = ToggleFrame
-local GetCursorPosition = GetCursorPosition
+
 local CreateFrame = CreateFrame
+local GetCursorPosition = GetCursorPosition
+local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 
 local PADDING = 10
 local BUTTON_HEIGHT = 16
@@ -78,7 +80,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	local x, y = GetCursorPosition()
 
 	frame:ClearAllPoints()
-	frame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', (x / E.uiscale) + xOffset, (y / E.uiscale) + yOffset)
+	frame:Point('TOPLEFT', UIParent, 'BOTTOMLEFT', (x / E.uiscale) + xOffset, (y / E.uiscale) + yOffset)
 
 	ToggleFrame(frame)
 end

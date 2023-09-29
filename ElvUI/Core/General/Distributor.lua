@@ -90,6 +90,11 @@ D.GeneratedKeys = {
 		datatexts = {
 			panels = true,
 		},
+		chat = {
+			channelAlerts = {
+				CHANNEL = true
+			}
+		},
 		unitframe = {
 			units = {} -- required for the scope below for customTexts
 		}

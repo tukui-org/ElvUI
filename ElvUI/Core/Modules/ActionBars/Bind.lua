@@ -8,19 +8,23 @@ local next, format = next, format
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local HideUIPanel = HideUIPanel
+local GameTooltip = GameTooltip
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
 local GetSpellBookItemName = GetSpellBookItemName
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
+local IsAltKeyDown = IsAltKeyDown
+local IsControlKeyDown = IsControlKeyDown
+local IsMetaKeyDown = IsMetaKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
+local SetBinding = SetBinding
+local UIParent = UIParent
+
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
-local SetBinding = SetBinding
-local GameTooltip = GameTooltip
 local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
@@ -103,9 +107,10 @@ function AB:BindListener(key)
 		local alt = IsAltKeyDown() and 'ALT-' or ''
 		local ctrl = IsControlKeyDown() and 'CTRL-' or ''
 		local shift = IsShiftKeyDown() and 'SHIFT-' or ''
+		local meta = IsMetaKeyDown() and 'META-' or ''
 
-		SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
-		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
+		SetBinding(alt..ctrl..shift..meta..key, bind.button.bindstring)
+		E:Print(alt..ctrl..shift..meta..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
 	end
 
 	self:BindUpdate(bind.button, bind.spellmacro)
@@ -338,7 +343,7 @@ function AB:LoadKeyBinder()
 	end
 
 	--Special Popup
-	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
+	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)

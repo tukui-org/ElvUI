@@ -14,31 +14,9 @@ local function ClearSetTexture(texture, tex)
 	end
 end
 
-local function SkinNavBarButtons(self)
-	local parentName = self:GetParent():GetName()
-	if (parentName == 'EncounterJournal' and not E.private.skins.blizzard.encounterjournal)
-	or (parentName == 'WorldMapFrame' and not E.private.skins.blizzard.worldmap)
-	or (parentName == 'HelpFrameKnowledgebase' and not E.private.skins.blizzard.help) then
-		return
-	end
-
-	local navButton = self.navList[#self.navList]
-	if navButton and not navButton.isSkinned then
-		S:HandleButton(navButton, true)
-		navButton:GetFontString():SetTextColor(1, 1, 1)
-
-		if navButton.MenuArrowButton then
-			navButton.MenuArrowButton:StripTextures()
-
-			if navButton.MenuArrowButton.Art then
-				navButton.MenuArrowButton.Art:SetTexture(E.Media.Textures.ArrowUp)
-				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
-				navButton.MenuArrowButton.Art:SetRotation(3.14)
-			end
-		end
-
-		navButton.xoffset = 1
-		navButton.isSkinned = true
+local function FixReadyCheckFrame(frame)
+	if frame.initiator and UnitIsUnit('player', frame.initiator) then
+		frame:Hide() -- bug fix, don't show it if player is initiator
 	end
 end
 
@@ -68,12 +46,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', function(frame)
-		-- Bug fix, don't show it if player is initiator
-		if frame.initiator and UnitIsUnit('player', frame.initiator) then
-			frame:Hide()
-		end
-	end)
+	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
@@ -313,8 +286,8 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
-	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
+	-- NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
+	hooksecurefunc('NavBar_AddButton', S.HandleNavBarButtons)
 end
 
 S:AddCallback('BlizzardMiscFrames')

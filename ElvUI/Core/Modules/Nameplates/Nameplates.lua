@@ -17,6 +17,7 @@ local GetPartyAssignment = GetPartyAssignment
 local InCombatLockdown = InCombatLockdown
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
+local UIParent = UIParent
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -24,17 +25,18 @@ local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
+local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
-local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitReaction = UnitReaction
-local UnitWidgetSet = UnitWidgetSet
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
+local UnitWidgetSet = UnitWidgetSet
+
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
@@ -927,13 +929,13 @@ function NP:Initialize()
 
 	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player:ClearAllPoints()
-	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Point('TOP', UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
-	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', UIParent, 'SecureUnitButtonTemplate')
 	StaticSecure:SetAttribute('unit', 'player')
 	StaticSecure:SetAttribute('*type1', 'target')
 	StaticSecure:SetAttribute('*type2', 'togglemenu')
@@ -951,7 +953,7 @@ function NP:Initialize()
 
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:ClearAllPoints()
-	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')

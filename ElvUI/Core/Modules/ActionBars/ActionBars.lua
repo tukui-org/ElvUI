@@ -28,6 +28,7 @@ local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
+local UIParent = UIParent
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
@@ -461,7 +462,7 @@ function AB:CreateVehicleLeave()
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,vehicleExitButton')
 
 	button:ClearAllPoints()
-	button:SetParent(_G.UIParent)
+	button:SetParent(UIParent)
 	button:Point('CENTER', holder)
 
 	-- taints because of EditModeManager, in UpdateBottomActionBarPositions
@@ -488,7 +489,7 @@ function AB:CreateVehicleLeave()
 	hooksecurefunc(button, 'SetPoint', function(_, _, parent)
 		if parent ~= holder then
 			button:ClearAllPoints()
-			button:SetParent(_G.UIParent)
+			button:SetParent(UIParent)
 			button:Point('CENTER', holder)
 		end
 	end)
@@ -1381,6 +1382,7 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
 		text = gsub(text, 'ALT%-', L["KEY_ALT"])
 		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
+		text = gsub(text, 'META%-', L["KEY_META"])
 		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
 		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
 		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
@@ -1690,7 +1692,7 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)
 
-	AB.fadeParent = CreateFrame('Frame', 'Elv_ABFade', _G.UIParent)
+	AB.fadeParent = CreateFrame('Frame', 'Elv_ABFade', UIParent)
 	AB.fadeParent:SetAlpha(1 - (AB.db.globalFadeAlpha or 0))
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local UIParent = UIParent
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 
@@ -82,9 +83,30 @@ function B:ObjectiveTracker_AutoHideOnShow()
 	end
 end
 
+function B:ObjectiveTracker_ClearDefaultPosition()
+	local info = Tracker.systemInfo
+	if not info or not info.isInDefaultPosition then return end
+
+	-- we only need to do something when it was in the default position
+	info.isInDefaultPosition = nil
+
+	-- something in here is magic and lets the Legion Scenario quest button work when actionbar module is on
+	-- this lets the first move in edit mode actually work without clicking [Reset To Default Position]
+	local parent = Tracker:GetManagedFrameContainer()
+	if parent and parent.showingFrames and parent.showingFrames[Tracker] then
+		parent:RemoveManagedFrame(Tracker)
+
+		-- now set this to UIParent when its not already the parent
+		if Tracker:GetParent() ~= UIParent then
+			Tracker:SetParent(UIParent)
+		end
+	end
+end
+
 function B:ObjectiveTracker_Setup()
 	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
-		Tracker.IsInDefaultPosition = E.noop
+		hooksecurefunc(Tracker, 'UpdateSystem', B.ObjectiveTracker_ClearDefaultPosition)
+		B:ObjectiveTracker_ClearDefaultPosition()
 	end
 
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)

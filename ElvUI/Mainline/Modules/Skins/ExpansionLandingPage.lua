@@ -35,10 +35,15 @@ function S:Blizzard_ExpansionLandingPage()
 
 	local overlay = _G.ExpansionLandingPage.Overlay
 	if overlay then
+		local clean = E.private.skins.parchmentRemoverEnable
 		for _, child in next, { overlay:GetChildren() } do
-			if E.private.skins.parchmentRemoverEnable then
+			if clean then
 				child:StripTextures()
 				child:SetTemplate('Transparent')
+
+				if child.ScrollFadeOverlay then
+					child.ScrollFadeOverlay:Hide()
+				end
 			end
 
 			if child.DragonridingPanel then

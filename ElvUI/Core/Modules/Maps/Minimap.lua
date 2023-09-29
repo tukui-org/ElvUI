@@ -22,11 +22,12 @@ local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
-local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
+local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
@@ -202,7 +203,7 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:CreateMinimapTrackingDropdown()
-	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', _G.UIParent, 'UIDropDownMenuTemplate')
+	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, 'UIDropDownMenuTemplate')
 	dropdown:SetID(1)
 	dropdown:SetClampedToScreen(true)
 	dropdown:Hide()
@@ -541,7 +542,7 @@ end
 
 function M:ClusterPoint(_, anchor)
 	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	local frame = (noCluster and _G.UIParent) or M.ClusterHolder
+	local frame = (noCluster and UIParent) or M.ClusterHolder
 
 	if anchor ~= frame then
 		MinimapCluster:ClearAllPoints()
@@ -632,19 +633,19 @@ function M:Initialize()
 	local killFrames = {
 		_G.MinimapBorder,
 		_G.MinimapBorderTop,
+		_G.MinimapCompassTexture,
+		_G.MiniMapMailBorder,
+		_G.MinimapNorthTag,
+		_G.MiniMapWorldMapButton,
+		_G.MinimapZoneTextButton,
 		_G.MinimapZoomIn,
 		_G.MinimapZoomOut,
-		_G.MinimapNorthTag,
-		_G.MinimapZoneTextButton,
-		_G.MiniMapWorldMapButton,
-		_G.MiniMapMailBorder,
 		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
 	if E.Retail then
 		tinsert(killFrames, Minimap.ZoomIn)
 		tinsert(killFrames, Minimap.ZoomOut)
-		tinsert(killFrames, _G.MinimapCompassTexture)
 
 		MinimapCluster.BorderTop:StripTextures()
 		MinimapCluster.Tracking.Background:StripTextures()

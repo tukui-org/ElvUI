@@ -6,10 +6,12 @@ local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, m
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
-local CreateFrame = CreateFrame
-local UnitPosition = UnitPosition
-local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
+local CreateFrame = CreateFrame
+local GetPlayerFacing = GetPlayerFacing
+local UIParent = UIParent
+local UnitPosition = UnitPosition
+
 local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
@@ -324,7 +326,7 @@ function E:WaitFunc(elapse)
 end
 
 E.WaitTable = {}
-E.WaitFrame = CreateFrame('Frame', 'ElvUI_WaitFrame', _G.UIParent)
+E.WaitFrame = CreateFrame('Frame', 'ElvUI_WaitFrame', UIParent)
 E.WaitFrame:SetScript('OnUpdate', E.WaitFunc)
 
 --Add time before calling a function

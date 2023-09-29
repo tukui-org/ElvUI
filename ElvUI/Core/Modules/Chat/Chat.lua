@@ -46,6 +46,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupLeader = UnitIsGroupLeader
@@ -321,11 +322,15 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		-- Luckyone (5261: Nek'Rosh, 5220: Stitches)
-		z["Lucky-Nek'Rosh"]		= ElvBlue -- [Horde] Rogue
-		z["Luckyone-Nek'Rosh"]	= ElvBlue -- [Horde] Hunter
-		z['Luckyone-Stitches']	= ElvBlue -- [Horde] Hunter
-		z["Luckyone-Shazzrah"]	= ElvBlue -- [Horde] Hunter
+		-- Luckyone Hardcore
+		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
+		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
+		z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
+		z["Gigachad-Nek'Rosh"] 		= ElvBlue -- [Horde] Druid
+		z['Luckyone-Stitches']		= ElvBlue -- [Horde] Hunter
+		-- Luckyone Classic Era (5233: Firemaw)
+		z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
+		z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
 	elseif E.Wrath then
 		-- Simpy (4373: Myzrael)
 		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
@@ -1222,13 +1227,13 @@ function CH:UpdateChatTab(chat)
 
 	local tab = CH:GetTab(chat)
 	if chat == CH.LeftChatWindow then
-		tab:SetParent(_G.LeftChatPanel or _G.UIParent)
-		chat:SetParent(_G.LeftChatPanel or _G.UIParent)
+		tab:SetParent(_G.LeftChatPanel or UIParent)
+		chat:SetParent(_G.LeftChatPanel or UIParent)
 
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
-		tab:SetParent(_G.RightChatPanel or _G.UIParent)
-		chat:SetParent(_G.RightChatPanel or _G.UIParent)
+		tab:SetParent(_G.RightChatPanel or UIParent)
+		chat:SetParent(_G.RightChatPanel or UIParent)
 
 		CH:HandleFadeTabs(chat, fadeRight)
 	else
@@ -1236,8 +1241,8 @@ function CH:UpdateChatTab(chat)
 		local parent = CH:GetDockerParent(docker, chat)
 
 		-- we need to update the tab parent to mimic the docker if its not docked
-		if not chat.isDocked then tab:SetParent(parent or _G.UIParent) end
-		chat:SetParent(parent or _G.UIParent)
+		if not chat.isDocked then tab:SetParent(parent or UIParent) end
+		chat:SetParent(parent or UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
@@ -2129,8 +2134,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- Append [Share] hyperlink
 			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,18) == 'GUILD_ACHIEVEMENT' then
-			local message = format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName)))
-			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'PING' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'IGNORED' then
@@ -2270,7 +2274,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- beep boops
-			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and CH.db.channelAlerts[historyTypes[event]]
+			local historyType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and historyTypes[event]
+			local alertType = (historyType ~= 'CHANNEL' and CH.db.channelAlerts[historyType]) or (historyType == 'CHANNEL' and CH.db.channelAlerts.CHANNEL[arg9])
 			if alertType and alertType ~= 'None' and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch('sound', alertType), 'Master')
@@ -3069,7 +3074,7 @@ end
 function CH:GetAnchorParents(chat)
 	local Left = (chat == CH.LeftChatWindow and _G.LeftChatPanel)
 	local Right = (chat == CH.RightChatWindow and _G.RightChatPanel)
-	local Chat, TabPanel = Left or Right or _G.UIParent
+	local Chat, TabPanel = Left or Right or UIParent
 	if CH.db.panelTabBackdrop and not ((CH.db.panelBackdrop == 'HIDEBOTH') or (Left and CH.db.panelBackdrop == 'RIGHT') or (Right and CH.db.panelBackdrop == 'LEFT')) then
 		TabPanel = (Left and _G.LeftChatTab) or (Right and _G.RightChatTab)
 	end
@@ -3690,18 +3695,18 @@ function CH:Initialize()
 		local ChatTypeInfo = _G.ChatTypeInfo
 		local info = ChatTypeInfo[chatType]
 		local chanTarget = editbox:GetAttribute('channelTarget')
-		local chanName = chanTarget and GetChannelName(chanTarget)
+		local chanIndex = chanTarget and GetChannelName(chanTarget)
 
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 		editbox:SetTemplate(nil, true)
 
-		if chanName and (chatType == 'CHANNEL') then
-			if chanName == 0 then
+		if chanIndex and (chatType == 'CHANNEL') then
+			if chanIndex == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
-				info = ChatTypeInfo[chatType..chanName]
+				info = ChatTypeInfo[chatType..chanIndex]
 				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 			end
 		else

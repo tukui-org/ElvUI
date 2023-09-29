@@ -105,17 +105,15 @@ local function ShutdownTD() -- Blizzard_TutorialDispatcher
 	return TD
 end
 
-local function ShutdownTutorials(event)
+function B:ShutdownTutorials()
 	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
 	if NPE and GT and TM and TD then -- they exist unregister this
-		B:UnregisterEvent(event)
+		B.TryDisableTutorials = nil
 	end
 end
 
 -- disable new player experience stuff
 function B:DisableTutorials()
 	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
-	if not NPE or not GT or not TM or not TD then -- wait for them to exist
-		B:RegisterEvent('ADDON_LOADED', ShutdownTutorials)
-	end
+	B.TryDisableTutorials = not NPE or not GT or not TM or not TD or nil -- wait for them to exist
 end

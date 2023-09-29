@@ -17,17 +17,19 @@ local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
-local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
+local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
+local UIParent = UIParent
 local UnitExists = UnitExists
-local UnitIsEnemy = UnitIsEnemy
-local UnitIsFriend = UnitIsFriend
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
-local UnregisterStateDriver = UnregisterStateDriver
-local PlaySound = PlaySound
 local UnitGUID = UnitGUID
+local UnitIsEnemy = UnitIsEnemy
+local UnitIsFriend = UnitIsFriend
+local UnregisterStateDriver = UnregisterStateDriver
+
+local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
@@ -682,7 +684,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
 
@@ -847,6 +849,28 @@ function UF.groupPrototype:Configure_Groups(Header)
 	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
+function UF.headerPrototype:ExecuteForChildren(method, func, ...)
+	local i = 1
+	local child = self:GetAttribute('child'..i)
+	while child do
+		if func then
+			func(child, i, ...)
+		else
+			local methodFunc = method and child[method]
+			if methodFunc then
+				methodFunc(child, ...)
+			end
+		end
+
+		i = i + 1
+		child = self:GetAttribute('child'..i)
+	end
+end
+
+function UF.headerPrototype:ClearChildPoints()
+	self:ExecuteForChildren('ClearAllPoints')
+end
+
 function UF.groupPrototype:Update(Header)
 	local db = UF.db.units[Header.groupName]
 
@@ -867,7 +891,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 			elseif group.forceShow then
 				group:Hide()
 				group:SetAttribute('startingIndex', 1)
-				UF:UnshowChildUnits(group, group:GetChildren())
+				UF:UnshowChildUnits(group)
 			else
 				group:Reset()
 			end
@@ -875,22 +899,20 @@ function UF.groupPrototype:AdjustVisibility(Header)
 	end
 end
 
-function UF.headerPrototype:ClearChildPoints()
-	for _, child in pairs({ self:GetChildren() }) do
-		child:ClearAllPoints()
+function UF.headerPrototype:UpdateChild(index, header, func, db)
+	func(UF, self, db) -- self is child
+
+	local name = self:GetName()
+
+	local target = _G[name..'Target']
+	if target then
+		func(UF, target, db)
 	end
-end
 
-function UF.headerPrototype:UpdateChild(func, child, db)
-	func(UF, child, db)
-
-	local name = child:GetName()
-
-	local target = name..'Target'
-	if _G[target] then func(UF, _G[target], db) end
-
-	local pet = name..'Pet'
-	if _G[pet] then func(UF, _G[pet], db) end
+	local pet = _G[name..'Pet']
+	if pet then
+		func(UF, pet, db)
+	end
 end
 
 function UF.headerPrototype:Update(isForced)
@@ -898,16 +920,7 @@ function UF.headerPrototype:Update(isForced)
 
 	UF[self.UpdateHeader](UF, self, db, isForced)
 
-	local i = 1
-	local child = self:GetAttribute('child'..i)
-	local func = UF[self.UpdateFrames]
-
-	while child do
-		self:UpdateChild(func, child, db)
-
-		i = i + 1
-		child = self:GetAttribute('child'..i)
-	end
+	self:ExecuteForChildren(nil, self.UpdateChild, self, UF[self.UpdateFrames], db)
 end
 
 function UF.headerPrototype:Reset()
@@ -1056,13 +1069,11 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			groupFunctions:AdjustVisibility(Header)
 			groupFunctions:Configure_Groups(Header)
 		end
-	elseif not groupFunctions.Update then
+	elseif not groupFunctions.Update then -- tank / assist
 		groupFunctions.Update = function(_, header)
 			UF[header.UpdateHeader](UF, header, header.db)
 
-			for _, child in ipairs({ header:GetChildren() }) do
-				header:UpdateChild(UF[header.UpdateFrames], child, header.db)
-			end
+			header:ExecuteForChildren(nil, header.UpdateChild, header, UF[header.UpdateFrames], header.db)
 		end
 	end
 
@@ -1092,7 +1103,7 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 
 		UF.units[unit] = frame
 		UF[unit] = frame
@@ -1319,7 +1330,7 @@ do
 		if disable.party or disable.raid then
 			-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
 			-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-			_G.UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+			UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
 		end
 
 		-- shutdown monk stagger bar background updates

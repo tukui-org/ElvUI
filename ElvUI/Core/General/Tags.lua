@@ -34,11 +34,12 @@ local GetTitleName = GetTitleName
 local GetUnitSpeed = GetUnitSpeed
 local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
-local IsInRaid = IsInRaid
 local IsInInstance = IsInInstance
+local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UnitBattlePetLevel = UnitBattlePetLevel
+local UIParent = UIParent
 local UnitAffectingCombat = UnitAffectingCombat
+local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
@@ -175,8 +176,8 @@ end
 E.TagFunctions.Abbrev = Abbrev
 
 -- percentages at which the bar should change color
-local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
-local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
+local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION or 0.3
+local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
 -- table indices of bar colors
 local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
 local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
@@ -1097,7 +1098,7 @@ do
 	local function GetTitleNPC(unit, custom)
 		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
 
-		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
 
@@ -1124,7 +1125,7 @@ do
 	local function GetQuestData(unit, which, Hex)
 		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
 
-		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
 

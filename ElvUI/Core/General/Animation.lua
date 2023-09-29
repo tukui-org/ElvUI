@@ -4,47 +4,58 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local issecurevariable = issecurevariable
-local random, next, unpack, strsub = random, next, unpack, strsub
+local random, next = random, next
+local unpack, strsub = unpack, strsub
+
+--[[ just to test the number thing
+	local t = UIParent:CreateFontString(nil, 'OVERLAY', 'GameTooltipText')
+	t:SetText(0)
+	t:Point('CENTER')
+	t:FontTemplate(nil, 20)
+	E:SetUpAnimGroup(t, 'Number', 10, 5)
+
+	local b = CreateFrame('BUTTON', nil, UIParent)
+	b:Point('CENTER', 0, -100)
+	b:SetTemplate()
+	b:Size(40, 30)
+	b:EnableMouse(true)
+	b:SetScript('OnClick', function()
+		if t:GetText() == 10 then
+			t.NumberAnim:SetChange(0)
+			t.NumberAnimGroup:Play()
+		else
+			t.NumberAnim:SetChange(10)
+			t.NumberAnimGroup:Play()
+		end
+	end)
+]]
 
 E.AnimShake = {{-9,7,-7,12}, {-5,9,-9,5}, {-5,7,-7,5}, {-9,9,-9,9}, {-5,7,-7,5}, {-9,7,-9,5}}
 E.AnimShakeH = {-5,5,-2,5,-2,5}
+E.AnimMoveOut = function(out1) out1.parent:Hide() end
+E.AnimElastic = {
+	function(anim) anim:Stop() anim.elastic[2]:Play() end,
+	function(anim) anim:Stop() if anim.loop then anim.elastic[1]:Play() end end,
+	function(anim) anim:Stop() anim.elastic[4]:Play() end,
+	function(anim) anim:Stop() if anim.loop then anim.elastic[3]:Play() end end
+}
 
 function E:FlashLoopFinished(requested)
 	if not requested then self:Play() end
 end
 
 function E:RandomAnimShake(index)
-	local s = E.AnimShake[index]
-	return random(s[1], s[2]), random(s[3], s[4])
+	local p1, p2, p3, p4 = unpack(E.AnimShake[index])
+	return random(p1, p2), random(p3, p4)
 end
 
---TEST
---[[local t = UIParent:CreateFontString(nil, 'OVERLAY', 'GameTooltipText')
-t:SetText(0)
-t:Point('CENTER')
-t:FontTemplate(nil, 20)
-E:SetUpAnimGroup(t, 'Number', 10, 5)
-
-local b = CreateFrame('BUTTON', nil, UIParent)
-b:Point('CENTER', 0, -100)
-b:SetTemplate()
-b:Size(40, 30)
-b:EnableMouse(true)
-b:SetScript('OnClick', function()
-	if t:GetText() == 10 then
-		t.NumberAnim:SetChange(0)
-		t.NumberAnimGroup:Play()
-	else
-		t.NumberAnim:SetChange(10)
-		t.NumberAnimGroup:Play()
+function E:SetUpAnimGroup(obj, animType, ...)
+	if not animType then -- default it to something basic
+		animType = 'Flash'
 	end
-end)]]
 
-function E:SetUpAnimGroup(obj, Type, ...)
-	if not Type then Type = 'Flash' end
-
-	if strsub(Type, 1, 5) == 'Flash' then
+	local shortType = strsub(animType, 1, 5)
+	if shortType == 'Flash' then
 		obj.anim = obj:CreateAnimationGroup('Flash')
 		obj.anim.fadein = obj.anim:CreateAnimation('ALPHA', 'FadeIn')
 		obj.anim.fadein:SetFromAlpha(0)
@@ -56,49 +67,51 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		obj.anim.fadeout:SetToAlpha(0)
 		obj.anim.fadeout:SetOrder(1)
 
-		if Type == 'FlashLoop' then
+		if animType == 'FlashLoop' then
 			obj.anim:SetScript('OnFinished', E.FlashLoopFinished)
 		end
-	elseif strsub(Type, 1, 5) == 'Shake' then
-		local shake = obj:CreateAnimationGroup(Type)
+	elseif shortType == 'Shake' then
+		local shake = obj:CreateAnimationGroup(animType)
 		shake:SetLooping('REPEAT')
 		shake.path = shake:CreateAnimation('Path')
 
-		if Type == 'Shake' then
+		if animType == 'Shake' then
 			shake.path:SetDuration(0.7)
 			obj.shake = shake
-		elseif Type == 'ShakeH' then
+		elseif animType == 'ShakeH' then
 			shake.path:SetDuration(2)
 			obj.shakeh = shake
 		end
 
 		for i = 1, 6 do
-			shake.path[i] = shake.path:CreateControlPoint()
-			shake.path[i]:SetOrder(i)
+			local point = shake.path:CreateControlPoint()
+			point:SetOrder(i)
 
-			if Type == 'Shake' then
-				shake.path[i]:SetOffset(E:RandomAnimShake(i))
+			if animType == 'Shake' then
+				point:SetOffset(E:RandomAnimShake(i))
 			else
-				shake.path[i]:SetOffset(E.AnimShakeH[i], 0)
+				point:SetOffset(E.AnimShakeH[i], 0)
 			end
+
+			shake.path[i] = point
 		end
-	elseif Type == 'Elastic' then
+	elseif animType == 'Elastic' then
 		local width, height, duration, loop = ...
-		obj.elastic = _G.CreateAnimationGroup(obj)
+		local elastic = _G.CreateAnimationGroup(obj)
+		obj.elastic = elastic
 
 		for i = 1, 4 do
-			local anim = obj.elastic:CreateAnimation(i < 3 and 'width' or 'height')
+			local anim = elastic:CreateAnimation(i < 3 and 'width' or 'height')
 			anim:SetChange((i==1 and width*0.45) or (i==2 and width) or (i==3 and height*0.45) or height)
 			anim:SetEasing('inout-elastic')
 			anim:SetDuration(duration)
-			obj.elastic[i] = anim
-		end
+			anim:SetScript('OnFinished', E.AnimElastic[i])
+			anim.elastic = elastic
+			anim.loop = loop
 
-		obj.elastic[1]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[2]:Play() end)
-		obj.elastic[3]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[4]:Play() end)
-		obj.elastic[2]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[1]:Play() end end)
-		obj.elastic[4]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[3]:Play() end end)
-	elseif Type == 'Number' then
+			elastic[i] = anim
+		end
+	elseif animType == 'Number' then
 		local endingNumber, duration = ...
 		obj.NumberAnimGroup = _G.CreateAnimationGroup(obj)
 		obj.NumberAnim = obj.NumberAnimGroup:CreateAnimation('number')
@@ -107,11 +120,10 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		obj.NumberAnim:SetDuration(duration)
 	else
 		local x, y, duration, customName = ...
-		if not customName then customName = 'anim' end
-
 		local anim = obj:CreateAnimationGroup('Move_In')
-		obj[customName] = anim
+		obj[customName or 'anim'] = anim
 
+		-- anim play will cause it to move
 		anim.in1 = anim:CreateAnimation('Translation')
 		anim.in1:SetDuration(0)
 		anim.in1:SetOrder(1)
@@ -123,8 +135,10 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.in2:SetSmoothing('OUT')
 		anim.in2:SetOffset(-x, -y)
 
+		-- out animation to play backwards (to start position of anim play)
 		anim.out1 = obj:CreateAnimationGroup('Move_Out')
-		anim.out1:SetScript('OnFinished', function() obj:Hide() end)
+		anim.out1:SetScript('OnFinished', E.AnimMoveOut)
+		anim.out1.parent = obj
 
 		anim.out2 = anim.out1:CreateAnimation('Translation')
 		anim.out2:SetDuration(duration)
@@ -136,9 +150,7 @@ end
 
 function E:Elasticize(obj, width, height)
 	if not obj.elastic then
-		if not width then width = obj:GetWidth() end
-		if not height then height = obj:GetHeight() end
-		E:SetUpAnimGroup(obj, 'Elastic', width, height, 2, false)
+		E:SetUpAnimGroup(obj, 'Elastic', width or obj:GetWidth(), height or obj:GetHeight(), 2, false)
 	end
 
 	obj.elastic[1]:Play()
@@ -199,25 +211,21 @@ function E:StopFlash(obj)
 end
 
 function E:SlideIn(obj, customName)
-	if not customName then customName = 'anim' end
-
-	local anim = obj[customName]
+	local anim = obj[customName or 'anim']
 	if not anim then return end
 
-	anim.out1:Stop()
+	anim.out1:Stop() -- out1 OnFinish will call Hide, see SlideOut
 	anim:Play()
-	obj:Show()
+	obj:Show() -- Show is likely a secure var
 end
 
 function E:SlideOut(obj, customName)
-	if not customName then customName = 'anim' end
-
-	local anim = obj[customName]
+	local anim = obj[customName or 'anim']
 	if not anim then return end
 
 	anim:Finish()
 	anim:Stop()
-	anim.out1:Play()
+	anim.out1:Play() -- triggers AnimMoveOut which calls Hide (likely secure var) on obj
 end
 
 local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
@@ -279,8 +287,6 @@ end
 function E:UIFrameFade(frame, info)
 	if not frame or frame:IsForbidden() then return end
 
-	frame.fadeInfo = info
-
 	if not info.mode then
 		info.mode = 'IN'
 	end
@@ -295,11 +301,8 @@ function E:UIFrameFade(frame, info)
 		if not info.diffAlpha then info.diffAlpha = info.startAlpha - info.endAlpha end
 	end
 
+	frame.fadeInfo = info
 	frame:SetAlpha(info.startAlpha)
-
-	if not frame:IsShown() and not frame:IsProtected() and not issecurevariable(frame, 'Show') then
-		frame:Show()
-	end
 
 	if not FADEFRAMES[frame] then
 		FADEFRAMES[frame] = info -- read below comment

@@ -9,6 +9,7 @@ local unpack = unpack
 local tinsert = tinsert
 local strmatch = strmatch
 
+local UIParent = UIParent
 local RaiseFrameLevel = RaiseFrameLevel
 local LowerFrameLevel = LowerFrameLevel
 local hooksecurefunc = hooksecurefunc
@@ -606,7 +607,7 @@ do -- Early Skin Loading
 
 	for n in next, LibStub.libs do
 		if n == 'AceGUI-3.0' then
-			for _, x in ipairs({_G.UIParent:GetChildren()}) do
+			for _, x in ipairs({UIParent:GetChildren()}) do
 				if x and x.obj then earlyWidget(x.obj) end
 			end
 		end

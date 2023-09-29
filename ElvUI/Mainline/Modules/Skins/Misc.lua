@@ -9,54 +9,6 @@ local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 local hooksecurefunc = hooksecurefunc
 
-local NavBarCheck = {
-	EncounterJournal = function()
-		return E.private.skins.blizzard.encounterjournal
-	end,
-	WorldMapFrame = function()
-		return E.private.skins.blizzard.worldmap
-	end,
-	HelpFrameKnowledgebase = function()
-		return E.private.skins.blizzard.help
-	end
-}
-
-local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
-	if not skip then
-		button:Point(point, anchor, point2, 1, yoffset, true)
-	end
-end
-
-local function SkinNavBarButtons(self)
-	local func = NavBarCheck[self:GetParent():GetName()]
-	if func and not func() then return end
-
-	local total = #self.navList
-	local navButton = self.navList[total]
-	if navButton and not navButton.isSkinned then
-		S:HandleButton(navButton, true)
-		navButton:GetFontString():SetTextColor(1, 1, 1)
-
-		if navButton.MenuArrowButton then
-			navButton.MenuArrowButton:StripTextures()
-			if navButton.MenuArrowButton.Art then
-				navButton.MenuArrowButton.Art:SetTexture(E.Media.Textures.ArrowUp)
-				navButton.MenuArrowButton.Art:SetTexCoord(0, 1, 0, 1)
-				navButton.MenuArrowButton.Art:SetRotation(3.14)
-			end
-		end
-
-		if total == 2 then
-			-- EJ.navBar.home.xoffset = 1 (this causes a taint, use the hook below instead)
-			NavButtonXOffset(navButton, navButton:GetPoint())
-			hooksecurefunc(navButton, 'SetPoint', NavButtonXOffset)
-		end
-
-		navButton.xoffset = 1
-		navButton.isSkinned = true
-	end
-end
-
 local function ClearSetTexture(texture, tex)
 	if tex ~= nil then
 		texture:SetTexture()
@@ -82,7 +34,6 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	S:HandleFrame(_G.ReadyCheckListenerFrame)
 	_G.ReadyCheckPortrait:Kill()
 	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
@@ -91,7 +42,15 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Point('TOP', 0, -30)
+
+	local ListenerFrame = _G.ReadyCheckListenerFrame
+	S:HandleFrame(ListenerFrame)
+
+	local TitleContainer = ListenerFrame.TitleContainer
+	TitleContainer:ClearAllPoints()
+	TitleContainer:Point('TOPLEFT', 1, -1)
+	TitleContainer:Point('TOPRIGHT', -1, 0)
 
 	-- Bug fix, don't show it if player is initiator
 	ReadyCheckFrame:HookScript('OnShow', function(frame)
@@ -183,14 +142,6 @@ function S:BlizzardMiscFrames()
 	} do
 		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, nil, nil, true)
 		roleButton:DisableDrawLayer('OVERLAY')
-
-		--[=[ these use the ready check icons, which are more square
-		for _, region in next, { roleButton:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetTexture() == [[Interface\LFGFrame\UI-LFG-ICON-ROLES]] then
-				region:SetTexture(E.Media.Textures.RoleIcons)
-			end
-		end
-		]=]
 	end
 
 	-- reskin popup buttons
@@ -387,8 +338,8 @@ function S:BlizzardMiscFrames()
 		S:HandleNextPrevButton(button, nil, nil, true)
 	end
 
-	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
-	hooksecurefunc('NavBar_AddButton', SkinNavBarButtons)
+	-- NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
+	hooksecurefunc('NavBar_AddButton', S.HandleNavBarButtons)
 
 	-- Basic Message Dialog
 	local MessageDialog = _G.BasicMessageDialog

@@ -79,6 +79,7 @@ P.general = {
 	itemLevel = {
 		displayCharacterInfo = true,
 		displayInspectInfo = true,
+		itemLevelRarity = true,
 		itemLevelFont = 'PT Sans Narrow',
 		itemLevelFontSize = 12,
 		itemLevelFontOutline = 'OUTLINE',
@@ -104,7 +105,7 @@ P.general = {
 		textFormat = 'NAMECURMAX',
 		statusBarColorGradient = false,
 		statusBarColor = { r = 0.2, g = 0.4, b = 0.8 },
-		smoothbars = false,
+		smoothbars = true,
 	},
 	minimap = {
 		size = 175,
@@ -245,6 +246,25 @@ P.general = {
 		frameStrata = 'MEDIUM',
 		frameLevel = 20
 	},
+	guildBank = {
+		itemLevel = true,
+		itemLevelThreshold = 1,
+		itemLevelFont = 'Homespun',
+		itemLevelFontSize = 10,
+		itemLevelFontOutline = 'MONOCHROMEOUTLINE',
+		itemLevelCustomColorEnable = false,
+		itemLevelCustomColor = { r = 1, g = 1, b = 1 },
+		itemLevelPosition = 'BOTTOMRIGHT',
+		itemLevelxOffset = 0,
+		itemLevelyOffset = 2,
+		countFont = 'Homespun',
+		countFontSize = 10,
+		countFontOutline = 'MONOCHROMEOUTLINE',
+		countFontColor = { r = 1, g = 1, b = 1 },
+		countPosition = 'BOTTOMRIGHT',
+		countxOffset = 0,
+		countyOffset = 2,
+	}
 }
 
 P.databars = {
@@ -301,6 +321,7 @@ end
 
 P.databars.threat.hideInCombat = nil -- always on in code
 P.databars.threat.tankStatus = true
+P.databars.threat.smoothbars = true
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.showLevel = false
@@ -1059,6 +1080,7 @@ P.chat = {
 	lfgIcons = true,
 	maxLines = 100,
 	channelAlerts = {
+		CHANNEL = {},
 		GUILD = 'None',
 		OFFICER = 'None',
 		INSTANCE = 'None',

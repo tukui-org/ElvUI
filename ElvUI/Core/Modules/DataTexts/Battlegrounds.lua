@@ -115,13 +115,13 @@ end
 
 E.valueColorUpdateFuncs.Battlegrounds = ValueColorUpdate
 
-DT:RegisterDatatext('PvP: Kills', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
-DT:RegisterDatatext('PvP: Honorable Kills', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
-DT:RegisterDatatext('PvP: Heals', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
-DT:RegisterDatatext('PvP: Deaths', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
-DT:RegisterDatatext('PvP: Damage Done', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
-DT:RegisterDatatext('PvP: Honor Gained', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Kills', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Honorable Kills', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Heals', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Deaths', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Damage Done', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
+DT:RegisterDatatext('PvP: Honor Gained', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
 
 if E.Retail then
-	DT:RegisterDatatext('PvP: Objectives', 'PvP', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats, DT.HoverBattleStats)
+	DT:RegisterDatatext('PvP: Objectives', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats, DT.HoverBattleStats)
 end
