@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local next = next
 local UIParent = UIParent
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
@@ -83,6 +84,13 @@ function B:ObjectiveTracker_AutoHideOnShow()
 	end
 end
 
+function B:ObjectiveTracker_FixNewLayoutSave(inDefault)
+	local info = Tracker.systemInfo
+	if info then
+		info.isInDefaultPosition = inDefault
+	end
+end
+
 function B:ObjectiveTracker_ClearDefaultPosition()
 	local info = Tracker.systemInfo
 	if not info or not info.isInDefaultPosition then return end
@@ -107,6 +115,11 @@ function B:ObjectiveTracker_Setup()
 	if E.private.actionbar.enable then -- force this never case, to fix a taint when actionbars in use
 		hooksecurefunc(Tracker, 'UpdateSystem', B.ObjectiveTracker_ClearDefaultPosition)
 		B:ObjectiveTracker_ClearDefaultPosition()
+
+		-- this fixes an error while saving a new layout when `isInDefaultPosition` is sent to the C side
+		-- it happens because this var is not nilable but we need it to be nil in order to bypass `UIParent_ManageFramePositions`
+		hooksecurefunc(_G.EditModeManagerFrame, 'PrepareSystemsForSave', function() B:ObjectiveTracker_FixNewLayoutSave(false) end)
+		hooksecurefunc(_G.EditModeManagerFrame, 'SaveLayouts', function() B:ObjectiveTracker_FixNewLayoutSave() end)
 	end
 
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)
