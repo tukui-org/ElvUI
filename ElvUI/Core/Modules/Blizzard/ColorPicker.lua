@@ -7,8 +7,9 @@ local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strlen, strjoin, gsub, next = strlen, strjoin, gsub, next
-local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
+local format, next, wipe = format, next, wipe
+local strlen, strjoin, gsub = strlen, strjoin, gsub
+local tonumber, floor, strsub = tonumber, floor, strsub
 
 local CreateFrame = CreateFrame
 local IsControlKeyDown = IsControlKeyDown
@@ -84,7 +85,7 @@ local function UpdateColorTexts(r, g, b, box)
 	-- we want those /255 values
 	r, g, b = r*255, g*255, b*255
 
-	_G.ColorPPBoxH:SetText(('%.2x%.2x%.2x'):format(r, g, b))
+	_G.ColorPPBoxH:SetText(format('%.2x%.2x%.2x', r, g, b))
 	_G.ColorPPBoxR:SetText(r)
 	_G.ColorPPBoxG:SetText(g)
 	_G.ColorPPBoxB:SetText(b)
