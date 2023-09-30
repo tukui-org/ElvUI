@@ -1,3 +1,6 @@
+## Version 13.42 \[ September 29th 2023 \]
+*   Saving Edit Mode was a little buggy.
+
 ## Version 13.41 \[ September 28th 2023 \]
 *   Ping support on Unitframes and Nameplates (retail).
 *   Mac Meta key support in Keybind mode.
