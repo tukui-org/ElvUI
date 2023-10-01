@@ -405,7 +405,6 @@ end
 
 function A:Header_OnUpdate(elapsed)
 	local header = self.frame
-
 	if header.elapsedSpells and header.elapsedSpells > 0.1 then
 		local button, value = next(header.spells)
 		while button do
