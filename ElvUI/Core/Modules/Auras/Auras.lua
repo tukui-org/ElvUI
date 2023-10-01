@@ -128,6 +128,7 @@ function A:CreateIcon(button)
 	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
 	if button.enchantIndex then
 		button.header['enchant'..button.enchantIndex] = button
+		button.header.enchantButtons[button.enchantIndex] = button
 	else
 		button.instant = true -- let update on attribute change
 	end
@@ -390,9 +391,20 @@ function A:Button_OnAttributeChanged(attr, value)
 	end
 end
 
+function A:Header_OnEvent(event)
+	if event == 'WEAPON_ENCHANT_CHANGED' then
+		local header = self.frame
+		for enchantIndex, button in next, header.enchantButtons do
+			if header.enchants[enchantIndex] ~= button then
+				header.enchants[enchantIndex] = button
+				header.elapsedEnchants = 0 -- reset the timer so we can wait for the data to be ready
+			end
+		end
+	end
+end
+
 function A:Header_OnUpdate(elapsed)
 	local header = self.frame
-
 	if header.elapsedSpells and header.elapsedSpells > 0.1 then
 		local button, value = next(header.spells)
 		while button do
@@ -493,11 +505,14 @@ function A:CreateAuraHeader(filter)
 	header:RegisterUnitEvent('UNIT_AURA', 'player', 'vehicle')
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
+	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
+	header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
 	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
+	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter

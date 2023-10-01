@@ -115,7 +115,7 @@ end
 
 S.QuestInfo_StyleScrollFrames = {
 	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 509, height = 618, inset = true },
-	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 509, height = 618, inset = true },
+	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 509, height = 616, inset = true },
 	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
 		frame = _G.QuestLogPopupDetailFrameScrollFrame,
 		width = 509, height = 630, inset = false,
