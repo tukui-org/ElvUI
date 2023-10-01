@@ -510,13 +510,16 @@ function A:CreateAuraHeader(filter)
 	header.spells = {}
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
-	header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
 	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
 	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
 	header.name = name
+
+	if E.Retail then
+		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
+	end
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
