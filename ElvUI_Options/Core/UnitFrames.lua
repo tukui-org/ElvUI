@@ -1546,7 +1546,7 @@ Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'ar
 Arena.pvpTrinket = ACH:Group(L["PVP Trinket"], nil, nil, nil, function(info) return E.db.unitframe.units.arena.pvpTrinket[info[#info]] end, function(info, value) E.db.unitframe.units.arena.pvpTrinket[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end)
 Arena.pvpTrinket.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Arena.pvpTrinket.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
-Arena.pvpTrinket.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+Arena.pvpTrinket.args.position = ACH:Select(L["Position"], nil, 3, C.Values.LeftRightPosition)
 Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 
