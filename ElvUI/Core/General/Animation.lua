@@ -118,6 +118,46 @@ function E:SetUpAnimGroup(obj, animType, ...)
 		obj.NumberAnim:SetChange(endingNumber)
 		obj.NumberAnim:SetEasing('in-circular')
 		obj.NumberAnim:SetDuration(duration)
+	elseif animType == 'Spinner' then
+		if not obj.Spinner then
+			local spinner = obj:CreateTexture()
+			spinner:SetTexture(443270) -- Interface\Common\StreamFrame
+			spinner:SetPoint('CENTER')
+			spinner:SetAlpha(0.5)
+			obj.Spinner = spinner
+		end
+
+		if not obj.Circle then
+			local circle = obj:CreateTexture(nil, 'BORDER')
+			circle:SetTexture(443269) -- Interface\Common\StreamCircle
+			circle:SetPoint('CENTER')
+			obj.Circle = circle
+
+			local anim = circle:CreateAnimationGroup()
+			anim:SetLooping('REPEAT')
+			circle.Anim = anim
+
+			local rotation = anim:CreateAnimation('Rotation')
+			rotation:SetDuration(1)
+			rotation:SetDegrees(-360)
+			anim.Rotation = rotation
+		end
+
+		if not obj.Spark then
+			local spark = obj:CreateTexture(nil, 'OVERLAY')
+			spark:SetTexture(457289) -- Interface\Common\StreamSpark
+			spark:SetPoint('CENTER')
+			obj.Spark = spark
+
+			local anim = spark:CreateAnimationGroup()
+			anim:SetLooping('REPEAT')
+			spark.Anim = anim
+
+			local rotation = anim:CreateAnimation('Rotation')
+			rotation:SetDuration(1)
+			rotation:SetDegrees(-360)
+			anim.Rotation = rotation
+		end
 	else
 		local x, y, duration, customName = ...
 		local anim = obj:CreateAnimationGroup('Move_In')
@@ -210,80 +250,38 @@ function E:StopFlash(obj)
 	end
 end
 
-E.CreatedSpinnerFrames = {}
-
-function E:CreateSpinnerFrame()
-	local frame = CreateFrame('Frame')
-	frame:EnableMouse(true)
-	frame:Hide()
-
-	frame.Background = frame:CreateTexture(nil, 'BACKGROUND')
-	frame.Background:SetTexture(0, 0, 0, 0.5)
-	frame.Background:SetAllPoints()
-
-	frame.Frame = frame:CreateTexture()
-	frame.Frame:Size(48)
-	frame.Frame:SetTexture([[Interface\Common\StreamFrame]])
-	frame.Frame:SetPoint('CENTER')
-
-	frame.Circle = frame:CreateTexture(nil, 'BORDER')
-	frame.Circle:Size(48)
-	frame.Circle:SetTexture([[Interface\Common\StreamCircle]])
-	frame.Circle:SetVertexColor(1, .82, 0)
-	frame.Circle:SetPoint('CENTER')
-
-	frame.Circle.Anim = frame.Circle:CreateAnimationGroup()
-	frame.Circle.Anim:SetLooping('REPEAT')
-	frame.Circle.Anim.Rotation = frame.Circle.Anim:CreateAnimation('Rotation')
-	frame.Circle.Anim.Rotation:SetDuration(1)
-	frame.Circle.Anim.Rotation:SetDegrees(-360)
-
-	frame.Spark = frame:CreateTexture(nil, 'OVERLAY')
-	frame.Spark:Size(48)
-	frame.Spark:SetTexture([[Interface\Common\StreamSpark]])
-	frame.Spark:SetPoint('CENTER')
-
-	frame.Spark.Anim = frame.Spark:CreateAnimationGroup()
-	frame.Spark.Anim:SetLooping('REPEAT')
-	frame.Spark.Anim.Rotation = frame.Spark.Anim:CreateAnimation('Rotation')
-	frame.Spark.Anim.Rotation:SetDuration(1)
-	frame.Spark.Anim.Rotation:SetDegrees(-360)
-
-	return frame
-end
-
-function E:StartSpinnerFrame(parent, left, top, right, bottom)
-	if parent.SpinnerFrame then return end
-
-	local frame = #self.CreatedSpinnerFrames > 0 and tremove(self.CreatedSpinnerFrames) or self:CreateSpinnerFrame()
-
-	frame:SetParent(parent)
-	frame:SetFrameLevel(parent:GetFrameLevel() + 10)
-	frame:ClearAllPoints()
-	if top or bottom or left or right then
-		frame:Point('TOPLEFT', left or 0, -top or 0)
-		frame:Point('BOTTOMRIGHT', -right or 0, bottom or 0)
-	else
-		frame:SetAllPoints()
+function E:StartSpinner(obj, size, left, top, right, bottom, r, g, b)
+	if not obj.Spinner then
+		E:SetUpAnimGroup(obj, 'Spinner')
 	end
 
-	frame:Show()
-	frame.Circle.Anim:Play()
-	frame.Spark.Anim:Play()
+	obj.Spark:Size(size or 48)
+	obj.Spinner:Size(size or 48)
+	obj.Circle:Size(size or 48)
+	obj.Circle:SetVertexColor(r or 1, g or 0.82, b or 0)
 
-	parent.SpinnerFrame = frame
+	obj:ClearAllPoints()
+	obj:Show()
+
+	if top or bottom or left or right then
+		obj:Point('TOPLEFT', left or 0, top or 0)
+		obj:Point('BOTTOMRIGHT', right or 0, bottom or 0)
+	else
+		obj:SetAllPoints()
+	end
+
+	if not obj.Circle.Anim:IsPlaying() then
+		obj.Circle.Anim:Play()
+		obj.Spark.Anim:Play()
+	end
 end
 
-function E:StopSpinnerFrame(parent)
-	if not parent.SpinnerFrame then return end
-
-	local frame = parent.SpinnerFrame
-	frame:Hide()
-	frame.Circle.Anim:Stop()
-	frame.Spark.Anim:Stop()
-
-	parent.SpinnerFrame = nil
-	tinsert(self.CreatedSpinnerFrames, frame)
+function E:StopSpinner(obj)
+	if obj.Circle and obj.Circle.Anim:IsPlaying() then
+		obj.Circle.Anim:Stop()
+		obj.Spark.Anim:Stop()
+		obj:Hide()
+	end
 end
 
 function E:SlideIn(obj, customName)

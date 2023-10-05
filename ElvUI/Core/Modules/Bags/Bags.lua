@@ -699,6 +699,10 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 	bagFrame.sortingSlots = sortingSlots
 
+	if bagFrame.spinnerIcon then
+		E:StartSpinner(bagFrame.spinnerIcon)
+	end
+
 	for _, bagID in next, bagFrame.BagIDs do
 		local slotMax = B:GetContainerNumSlots(bagID)
 		for slotID = 1, slotMax do
@@ -1711,11 +1715,17 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox.Middle:SetTexture()
 	f.editBox.Right:SetTexture()
 	f.editBox:SetAutoFocus(false)
-	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
+	f.editBox:SetFrameLevel(10)
 	f.editBox:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	f.editBox:HookScript('OnTextChanged', B.SearchUpdate)
 	f.editBox:SetScript('OnEscapePressed', B.SearchClear)
 	f.editBox.clearButton:HookScript('OnClick', B.SearchClear)
+
+	--Spinner
+	f.spinnerIcon = CreateFrame('Frame', name..'SpinnerIcon', f.holderFrame)
+	f.spinnerIcon:SetFrameLevel(20)
+	f.spinnerIcon:EnableMouse(false)
+	f.spinnerIcon:Hide()
 
 	if isBank then
 		f.notPurchased = {}
@@ -1749,14 +1759,14 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
 			f.reagentFrame.cover:SetTemplate(nil, true)
-			f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
+			f.reagentFrame.cover:SetFrameLevel(15)
 
 			f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
 			f.reagentFrame.cover.purchaseButton:Height(20)
 			f.reagentFrame.cover.purchaseButton:Width(150)
 			f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
 			Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
-			f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
+			f.reagentFrame.cover.purchaseButton:SetFrameLevel(16)
 			f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 			f.reagentFrame.cover.purchaseButton.text:FontTemplate()
 			f.reagentFrame.cover.purchaseButton.text:Point('CENTER')
@@ -1832,8 +1842,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
-
-					E:StartSpinnerFrame(f.holderFrame)
 				end
 			elseif E.Retail then
 				SortReagentBankBags()
@@ -1905,8 +1913,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 				if not f.sortingSlots then B:SortingFadeBags(f, true) end
 				B:CommandDecorator(B.SortBags, 'bags')()
-
-				E:StartSpinnerFrame(f.holderFrame)
 			end
 		end)
 
@@ -2058,7 +2064,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.isReagent = true
 	end
 
-	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
+	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 
 	slot.IconBorder:SetAlpha(0)
 	slot.IconOverlay:SetInside()
@@ -2814,7 +2820,7 @@ function B:Initialize()
 	local BagFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	BagFrameHolder:Width(200)
 	BagFrameHolder:Height(22)
-	BagFrameHolder:SetFrameLevel(BagFrameHolder:GetFrameLevel() + 400)
+	BagFrameHolder:SetFrameLevel(40)
 
 	if not E.private.bags.enable then
 		-- Set a different default anchor
@@ -2838,7 +2844,7 @@ function B:Initialize()
 	BankFrameHolder:Width(200)
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 0, 22 + E.Border*4 - E.Spacing*2)
-	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
+	BankFrameHolder:SetFrameLevel(40)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Set some variables on movers

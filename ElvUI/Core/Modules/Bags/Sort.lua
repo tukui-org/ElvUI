@@ -869,7 +869,9 @@ function B:RegisterUpdateDelayed()
 			B:UpdateAllSlots(bagFrame)
 			B:SetListeners(bagFrame)
 
-			E:StopSpinnerFrame(bagFrame.holderFrame)
+			if bagFrame.spinnerIcon then
+				E:StopSpinner(bagFrame.spinnerIcon)
+			end
 		end
 	end
 
