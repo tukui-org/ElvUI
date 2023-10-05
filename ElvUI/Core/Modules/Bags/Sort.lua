@@ -868,6 +868,10 @@ function B:RegisterUpdateDelayed()
 
 			B:UpdateAllSlots(bagFrame)
 			B:SetListeners(bagFrame)
+
+			if bagFrame.spinnerIcon then
+				E:StopSpinner(bagFrame.spinnerIcon)
+			end
 		end
 	end
 
