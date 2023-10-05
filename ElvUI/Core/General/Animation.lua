@@ -250,7 +250,7 @@ function E:StopFlash(obj)
 	end
 end
 
-function E:StartSpinner(obj, size, left, top, right, bottom, r, g, b)
+function E:StartSpinner(obj, left, top, right, bottom, size, r, g, b)
 	if not obj.Spinner then
 		E:SetUpAnimGroup(obj, 'Spinner')
 	end
@@ -261,7 +261,6 @@ function E:StartSpinner(obj, size, left, top, right, bottom, r, g, b)
 	obj.Circle:SetVertexColor(r or 1, g or 0.82, b or 0)
 
 	obj:ClearAllPoints()
-	obj:Show()
 
 	if top or bottom or left or right then
 		obj:Point('TOPLEFT', left or 0, top or 0)
@@ -273,6 +272,7 @@ function E:StartSpinner(obj, size, left, top, right, bottom, r, g, b)
 	if not obj.Circle.Anim:IsPlaying() then
 		obj.Circle.Anim:Play()
 		obj.Spark.Anim:Play()
+		obj:Show()
 	end
 end
 
