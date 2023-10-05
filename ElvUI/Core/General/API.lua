@@ -8,7 +8,6 @@ local _G = _G
 local wipe, max, next = wipe, max, next
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
-local tremove = tremove
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -463,82 +462,6 @@ function E:ExitVehicleShowFrames(_, unit)
 	for object, originalParent in pairs(E.VehicleLocks) do
 		object:SetParent(originalParent)
 	end
-end
-
-E.CreatedSpinnerFrames = {}
-
-function E:CreateSpinnerFrame()
-	local frame = CreateFrame('Frame')
-	frame:EnableMouse(true)
-	frame:Hide()
-
-	frame.Background = frame:CreateTexture(nil, 'BACKGROUND')
-	frame.Background:SetTexture(0, 0, 0, 0.5)
-	frame.Background:SetAllPoints()
-
-	frame.Frame = frame:CreateTexture()
-	frame.Frame:Size(48)
-	frame.Frame:SetTexture([[Interface\Common\StreamFrame]])
-	frame.Frame:SetPoint('CENTER')
-
-	frame.Circle = frame:CreateTexture(nil, 'BORDER')
-	frame.Circle:Size(48)
-	frame.Circle:SetTexture([[Interface\Common\StreamCircle]])
-	frame.Circle:SetVertexColor(1, .82, 0)
-	frame.Circle:SetPoint('CENTER')
-
-	frame.Circle.Anim = frame.Circle:CreateAnimationGroup()
-	frame.Circle.Anim:SetLooping('REPEAT')
-	frame.Circle.Anim.Rotation = frame.Circle.Anim:CreateAnimation('Rotation')
-	frame.Circle.Anim.Rotation:SetDuration(1)
-	frame.Circle.Anim.Rotation:SetDegrees(-360)
-
-	frame.Spark = frame:CreateTexture(nil, 'OVERLAY')
-	frame.Spark:Size(48)
-	frame.Spark:SetTexture([[Interface\Common\StreamSpark]])
-	frame.Spark:SetPoint('CENTER')
-
-	frame.Spark.Anim = frame.Spark:CreateAnimationGroup()
-	frame.Spark.Anim:SetLooping('REPEAT')
-	frame.Spark.Anim.Rotation = frame.Spark.Anim:CreateAnimation('Rotation')
-	frame.Spark.Anim.Rotation:SetDuration(1)
-	frame.Spark.Anim.Rotation:SetDegrees(-360)
-
-	return frame
-end
-
-function E:StartSpinnerFrame(parent, left, top, right, bottom)
-	if parent.SpinnerFrame then return end
-
-	local frame = #self.CreatedSpinnerFrames > 0 and tremove(self.CreatedSpinnerFrames) or self:CreateSpinnerFrame()
-
-	frame:SetParent(parent)
-	frame:SetFrameLevel(parent:GetFrameLevel() + 10)
-	frame:ClearAllPoints()
-	if top or bottom or left or right then
-		frame:Point('TOPLEFT', left or 0, -top or 0)
-		frame:Point('BOTTOMRIGHT', -right or 0, bottom or 0)
-	else
-		frame:SetAllPoints()
-	end
-
-	frame:Show()
-	frame.Circle.Anim:Play()
-	frame.Spark.Anim:Play()
-
-	parent.SpinnerFrame = frame
-end
-
-function E:StopSpinnerFrame(parent)
-	if not parent.SpinnerFrame then return end
-
-	local frame = parent.SpinnerFrame
-	frame:Hide()
-	frame.Circle.Anim:Stop()
-	frame.Spark.Anim:Stop()
-
-	parent.SpinnerFrame = nil
-	tinsert(self.CreatedSpinnerFrames, frame)
 end
 
 function E:RequestBGInfo()
