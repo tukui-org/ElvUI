@@ -700,7 +700,7 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	bagFrame.sortingSlots = sortingSlots
 
 	if bagFrame.spinnerIcon and B.db.spinner.enable then
-		local color = B.db.spinner.color
+		local color = E:UpdateClassColor(B.db.spinner.color)
 		E:StartSpinner(bagFrame.spinnerIcon, nil, nil, nil, nil, B.db.spinner.size, color.r, color.g, color.b)
 	end
 
