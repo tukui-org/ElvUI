@@ -699,8 +699,9 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 	bagFrame.sortingSlots = sortingSlots
 
-	if bagFrame.spinnerIcon then
-		E:StartSpinner(bagFrame.spinnerIcon)
+	if bagFrame.spinnerIcon and B.db.spinner.enable then
+		local color = B.db.spinner.color
+		E:StartSpinner(bagFrame.spinnerIcon, B.db.spinner.size, nil, nil, nil, nil, color.r, color.g, color.b)
 	end
 
 	for _, bagID in next, bagFrame.BagIDs do

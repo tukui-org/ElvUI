@@ -449,6 +449,11 @@ P.bags = {
 		guildBank = false,
 		trade = false,
 	},
+	spinner = {
+		enable = true,
+		size = 48,
+		color = { r = 1, g = 0.82, b = 0 }
+	},
 	bagBar = {
 		growthDirection = 'VERTICAL',
 		sortDirection = 'ASCENDING',
