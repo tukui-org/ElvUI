@@ -1832,6 +1832,8 @@ function B:ConstructContainerFrame(name, isBank)
 
 					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
+
+					E:StartSpinnerFrame(f.holderFrame)
 				end
 			elseif E.Retail then
 				SortReagentBankBags()
@@ -1903,6 +1905,8 @@ function B:ConstructContainerFrame(name, isBank)
 
 				if not f.sortingSlots then B:SortingFadeBags(f, true) end
 				B:CommandDecorator(B.SortBags, 'bags')()
+
+				E:StartSpinnerFrame(f.holderFrame)
 			end
 		end)
 
