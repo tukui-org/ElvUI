@@ -65,6 +65,7 @@ local function HandleOutputButtons(frame)
 				S:HandleIconBorder(item.IconBorder, icon.backdrop)
 
 				itemContainer.CritFrame:SetAlpha(0)
+				itemContainer.NameFrame:Hide()
 				itemContainer.BorderFrame:Hide()
 				itemContainer.HighlightNameFrame:SetAlpha(0)
 				itemContainer.PushedNameFrame:SetAlpha(0)
@@ -101,6 +102,7 @@ end
 local function ReskinOutputLog(outputlog)
 	outputlog:StripTextures()
 	outputlog:SetTemplate('Transparent')
+	outputlog.Bg:SetAlpha(0)
 
 	S:HandleCloseButton(outputlog.ClosePanelButton)
 	S:HandleTrimScrollBar(outputlog.ScrollBar)
@@ -171,11 +173,7 @@ function S:Blizzard_Professions()
 	S:HandleTrimScrollBar(CraftList.ScrollBar)
 
 	if CraftList.BackgroundNineSlice then
-		if E.private.skins.parchmentRemoverEnable then
-			CraftList.BackgroundNineSlice:Hide()
-		else
-			CraftList.BackgroundNineSlice:SetAlpha(.25)
-		end
+		CraftList.BackgroundNineSlice:Hide()
 	end
 
 	CraftList:CreateBackdrop('Transparent')
@@ -191,11 +189,14 @@ function S:Blizzard_Professions()
 		SchematicForm.Background:SetAlpha(0)
 		SchematicForm.MinimalBackground:SetAlpha(0)
 	else
-		SchematicForm.Background:SetAlpha(.25)
-		SchematicForm.MinimalBackground:SetAlpha(.25)
+		SchematicForm.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+		SchematicForm.Background:SetAlpha(0.6)
+		SchematicForm.MinimalBackground:SetAlpha(0.6)
 	end
+
 	SchematicForm:CreateBackdrop('Transparent')
 	SchematicForm.backdrop:SetInside()
+	SchematicForm.Background:SetInside(SchematicForm.backdrop)
 
 	hooksecurefunc(SchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
@@ -216,13 +217,13 @@ function S:Blizzard_Professions()
 	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
 	if TrackRecipeCheckBox then
 		S:HandleCheckBox(TrackRecipeCheckBox)
-		TrackRecipeCheckBox:SetSize(24, 24)
+		TrackRecipeCheckBox:Size(24)
 	end
 
 	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckBox
 	if QualityCheckBox then
 		S:HandleCheckBox(QualityCheckBox)
-		QualityCheckBox:SetSize(24, 24)
+		QualityCheckBox:Size(24)
 	end
 
 	local QualityDialog = SchematicForm.QualityDialog
@@ -258,11 +259,22 @@ function S:Blizzard_Professions()
 	S:HandleButton(SpecPage.ViewPreviewButton)
 	S:HandleButton(SpecPage.BackToFullTreeButton)
 	S:HandleButton(SpecPage.BackToPreviewButton)
-	SpecPage.TreeView:StripTextures()
-	SpecPage.TreeView.Background:Hide()
-	SpecPage.TreeView:CreateBackdrop('Transparent')
-	SpecPage.TreeView.backdrop:SetInside()
+
 	SpecPage.PanelFooter:StripTextures()
+	SpecPage.TreeView:StripTextures()
+	SpecPage.TreeView:CreateBackdrop('Transparent')
+	SpecPage.TreeView.Background:SetInside(SpecPage.TreeView.backdrop)
+	SpecPage.TreeView.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+
+	SpecPage.TreeView.backdrop:ClearAllPoints()
+	SpecPage.TreeView.backdrop:Point('TOPLEFT', -1, -1)
+	SpecPage.TreeView.backdrop:Point('BOTTOMRIGHT', -41, 1)
+
+	if E.private.skins.parchmentRemoverEnable then
+		SpecPage.TreeView.Background:SetAlpha(0)
+	else
+		SpecPage.TreeView.Background:SetAlpha(0.6)
+	end
 
 	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
 		for tab in frame.tabsPool:EnumerateActive() do
@@ -276,10 +288,13 @@ function S:Blizzard_Professions()
 	local DetailedView = SpecPage.DetailedView
 	DetailedView:StripTextures()
 	DetailedView:CreateBackdrop('Transparent')
-	DetailedView.backdrop:SetInside()
 	S:HandleButton(DetailedView.UnlockPathButton)
 	S:HandleButton(DetailedView.SpendPointsButton)
 	S:HandleIcon(DetailedView.UnspentPoints.Icon)
+
+	DetailedView.backdrop:ClearAllPoints()
+	DetailedView.backdrop:Point('TOPLEFT', -1, -1)
+	DetailedView.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 	ReskinOutputLog(CraftingPage.CraftingOutputLog)
 
