@@ -55,7 +55,10 @@ function S:EditorManagerFrame()
 	local editMode = _G.EditModeManagerFrame
 	editMode:StripTextures()
 	editMode:CreateBackdrop('Transparent')
-	editMode.Tutorial:Kill()
+
+	if E.global.general.disableTutorialButtons then
+		editMode.Tutorial:Kill()
+	end
 
 	S:HandleCloseButton(editMode.CloseButton)
 	S:HandleButton(editMode.RevertAllChangesButton)

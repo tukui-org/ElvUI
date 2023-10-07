@@ -207,7 +207,11 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
-	S:HandleTrimScrollBar(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBar)
+	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
+
+	if E.global.general.disableTutorialButtons then
+		EJ.MonthlyActivitiesFrame.HelpButton:Kill()
+	end
 
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
@@ -375,7 +379,7 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		_G.EncounterJournalMonthlyActivitiesFrame.Bg:SetAlpha(0)
+		EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
 		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
 
 		local suggestFrame = EJ.suggestFrame
