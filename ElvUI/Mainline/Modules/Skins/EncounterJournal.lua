@@ -167,19 +167,19 @@ local function ItemSetElements(set)
 
 	if set.ItemButtons then
 		for _, button in next, set.ItemButtons do
-			if button.Icon then
-				if not button.Icon.backdrop then
-					S:HandleIcon(button.Icon, true)
-				end
+			local icon = button.Icon
+			if icon and not icon.backdrop then
+				S:HandleIcon(icon, true)
+			end
 
-				if button.Border and not button.Border.isSkinned then
-					button.Border:SetAlpha(0)
+			local border = button.Border
+			if border and not border.isSkinned then
+				border:SetAlpha(0)
 
-					ItemSetsItemBorder(button.Border, button.Border:GetAtlas()) -- handle first one
-					hooksecurefunc(button.Border, 'SetAtlas', ItemSetsItemBorder)
+				ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
+				hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
 
-					button.Border.isSkinned = true
-				end
+				border.isSkinned = true
 			end
 		end
 	end
