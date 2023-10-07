@@ -65,13 +65,13 @@ General.fontGroup.args.spacer = ACH:Spacer(2)
 
 General.fontGroup.args.header = ACH:Group(L["Tooltip Header"], nil, 3)
 General.fontGroup.args.header.args.headerFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-General.fontGroup.args.header.args.headerFontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
+General.fontGroup.args.header.args.headerFontOutline = ACH:FontFlags(L["Font Outline"], nil, 2)
 General.fontGroup.args.header.args.headerFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 General.fontGroup.args.header.inline = true
 
 General.fontGroup.args.body = ACH:Group(L["Tooltip Body"], nil, 4)
 General.fontGroup.args.body.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-General.fontGroup.args.body.args.fontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
+General.fontGroup.args.body.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 2)
 General.fontGroup.args.body.args.textFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 General.fontGroup.args.body.inline = true
 
