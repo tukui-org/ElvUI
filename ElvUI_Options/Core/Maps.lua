@@ -64,13 +64,13 @@ Maps.args.minimap.args.locationTextGroup = ACH:Group(L["Location Text"], nil, 15
 Maps.args.minimap.args.locationTextGroup.args.locationText = ACH:Select(L["Location Text"], L["Change settings for the display of the location text that is on the minimap."], 1, { MOUSEOVER = L["Minimap Mouseover"], SHOW = L["Always Display"], HIDE = L["Hide"] }, nil, nil, nil, nil, nil, function() return E.Retail and not E.db.general.minimap.clusterDisable end)
 Maps.args.minimap.args.locationTextGroup.args.locationFont = ACH:SharedMediaFont(L["Font"], nil, 2)
 Maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["Font Size"], nil, 3, textFontSize)
-Maps.args.minimap.args.locationTextGroup.args.locationFontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
+Maps.args.minimap.args.locationTextGroup.args.locationFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4)
 Maps.args.minimap.args.locationTextGroup.inline = true
 
 Maps.args.minimap.args.timeTextGroup = ACH:Group(L["Time Text"], nil, 20, nil, function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end, function() return not E.private.general.minimap.enable end, not E.Retail)
 Maps.args.minimap.args.timeTextGroup.args.timeFont = ACH:SharedMediaFont(L["Font"], nil, 2)
 Maps.args.minimap.args.timeTextGroup.args.timeFontSize = ACH:Range(L["Font Size"], nil, 3, textFontSize)
-Maps.args.minimap.args.timeTextGroup.args.timeFontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
+Maps.args.minimap.args.timeTextGroup.args.timeFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4)
 Maps.args.minimap.args.timeTextGroup.inline = true
 
 Maps.args.minimap.args.icons = ACH:Group(L["Minimap Buttons"], nil, 50, nil, function(info) return E.db.general.minimap.icons[info[#info - 1]][info[#info]] end, function(info, value) E.db.general.minimap.icons[info[#info - 1]][info[#info]] = value; MM:UpdateSettings() end)

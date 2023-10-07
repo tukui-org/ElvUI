@@ -53,7 +53,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 
 			frame.buttons[i].text = frame.buttons[i]:CreateFontString(nil, 'BORDER')
 			frame.buttons[i].text:SetAllPoints()
-			frame.buttons[i].text:FontTemplate(nil, nil, '')
+			frame.buttons[i].text:FontTemplate(nil, nil, 'NONE')
 			frame.buttons[i].text:SetJustifyH('LEFT')
 
 			frame.buttons[i]:SetScript('OnEnter', OnEnter)

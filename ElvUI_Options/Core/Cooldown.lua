@@ -34,7 +34,7 @@ local function group(order, db, label)
 	fonts.args.enable = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1, nil, nil, nil, nil, nil, false)
 	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 2)
 	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, { min = 10, max = 50, step = 1 })
-	fonts.args.fontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
+	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 4)
 	mainArgs.fontGroup = fonts
 
 	local colors = ACH:Group(L["Color Override"], nil, 12, nil, nil, nil, function() return not (profile(db)).override end)

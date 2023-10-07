@@ -30,13 +30,16 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	FontFlags = {
-		NONE = L["None"],
+	FontFlags = { -- should match in LibAceConfigHelper FontFlagValues
+		NONE = 'None',
 		OUTLINE = 'Outline',
 		THICKOUTLINE = 'Thick',
-		MONOCHROME = '|cffaaaaaaMono|r',
-		MONOCHROMEOUTLINE = '|cffaaaaaaMono|r Outline',
-		MONOCHROMETHICKOUTLINE = '|cffaaaaaaMono|r Thick',
+		SHADOW = '|cff888888Shadow|r',
+		SHADOWOUTLINE = '|cff888888Shadow|r Outline',
+		SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
+		MONOCHROME = '|cFFAAAAAAMono|r',
+		MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
+		MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
 	},
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20

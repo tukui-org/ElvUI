@@ -3,7 +3,8 @@ local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
-local pairs, pcall, unpack, type, next = pairs, pcall, unpack, type, next
+local pairs, pcall, unpack = pairs, pcall, unpack
+local strsub, type, next = strsub, type, next
 local hooksecurefunc = hooksecurefunc
 local getmetatable = getmetatable
 
@@ -366,17 +367,17 @@ local function FontTemplate(fs, font, size, style, skip)
 	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
 	if not size then size = E.db.general.fontSize or P.general.fontSize end
 
-	-- shadow mode when using 'NONE'
-	if style == 'NONE' then
-		fs:SetShadowOffset(1, -0.5)
-		fs:SetShadowColor(0, 0, 0, 1)
+	if style and strsub(style, 0, 6) == 'SHADOW' then
+		style = strsub(style, 7) -- shadow isnt a real style
+		fs:SetShadowOffset(1, -1)
+		fs:SetShadowColor(0, 0, 0, style == '' and 1 or 0.6)
 	else
 		fs:SetShadowOffset(0, 0)
 		fs:SetShadowColor(0, 0, 0, 0)
 	end
 
 	if style == 'NONE' or not style then
-		style = ''
+		style = '' -- none isnt a real style
 	end
 
 	fs:SetFont(font or E.media.normFont, size, style)
