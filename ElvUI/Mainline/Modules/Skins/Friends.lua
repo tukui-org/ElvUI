@@ -42,6 +42,11 @@ local function RAFRewardQuality(button)
 end
 
 local function RAFRewards()
+	local Claiming = _G.RecruitAFriendFrame.RewardClaiming
+	if Claiming and Claiming.NextRewardButton then
+		Claiming.NextRewardButton.Icon:SetDesaturation(0)
+	end
+
 	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
 		local button = reward.Button
 		button:StyleButton(nil, true)
@@ -361,7 +366,6 @@ function S:FriendsFrame()
 	NextReward.CircleMask:Hide()
 	NextReward.IconBorder:SetAlpha(0)
 	NextReward.IconOverlay:SetAlpha(0)
-	NextReward.Icon:SetDesaturation(0)
 	RAFRewardQuality(NextReward)
 
 	local RecruitList = RAF.RecruitList
