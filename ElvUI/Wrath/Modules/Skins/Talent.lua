@@ -24,19 +24,6 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
 	_G.PlayerTalentFrameTab4:Point('TOPLEFT', _G.PlayerTalentFrameTab3, 'TOPRIGHT', -19, 0)
 
-	_G.PlayerTalentFrameRoleButton:ClearAllPoints()
-	_G.PlayerTalentFrameRoleButton:Point('TOPRIGHT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 0, 0)
-
-	hooksecurefunc('PlayerTalentFrameRole_UpdateRole', function(button)
-		local highlightTexture = button:GetHighlightTexture()
-		highlightTexture:ClearAllPoints()
-		highlightTexture:Point('TOPLEFT', button, 'TOPLEFT', 5, -5)
-		highlightTexture:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -5, 5)
-
-		button:SetHighlightTexture(E.media.normTex)
-		button:SetNormalTexture(E.Media.Textures.RoleIcons)
-	end)
-
 	for i = 1, MAX_TALENT_TABS do
 		local tab = _G['PlayerSpecTab'..i]
 		tab:GetRegions():Hide()
