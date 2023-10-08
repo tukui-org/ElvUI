@@ -208,7 +208,7 @@ function S:BlizzardMiscFrames()
 	end)
 
 	hooksecurefunc('ToggleDropDownMenu', function(level)
-		if ( not level ) then
+		if not level then
 			level = 1
 		end
 
@@ -230,30 +230,28 @@ function S:BlizzardMiscFrames()
 				button:CreateBackdrop()
 			end
 
-			button.backdrop:Hide()
-
 			if not button.notCheckable then
 				S:HandlePointXY(text, 5)
-
 				uncheck:SetTexture()
-				local _, co = check:GetTexCoord()
-				if co == 0 then
-					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
-					check:SetVertexColor(r, g, b, 1)
-					check:Size(20)
-					check:SetDesaturated(true)
-					button.backdrop:SetInside(check, 4, 4)
-				else
+
+				if E.private.skins.checkBoxSkin then
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
 					check:Size(10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
+				else
+					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
+					check:SetVertexColor(r, g, b, 1)
+					check:Size(20)
+					check:SetDesaturated(true)
+					button.backdrop:SetInside(check, 4, 4)
 				end
 
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
+				button.backdrop:Hide()
 				check:Size(16)
 			end
 		end
