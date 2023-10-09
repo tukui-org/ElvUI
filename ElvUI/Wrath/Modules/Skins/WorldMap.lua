@@ -17,6 +17,10 @@ function S:WorldMapFrame()
 	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
 	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -25)
 
+	S:HandleScrollBar(_G.QuestScrollFrame.ScrollBar)
+	S:HandleScrollBar(_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar)
+	S:HandleCheckBox(_G.WorldMapTrackQuest)
+
 	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropDown)
 	S:HandleDropDownBox(_G.WorldMapContinentDropDown)
