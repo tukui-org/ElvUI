@@ -97,7 +97,6 @@ function S:Blizzard_TalentUI()
 
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
-S:AddCallbackForAddon('Blizzard_TalentUI')
 
 function S:Blizzard_GlyphUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
@@ -128,4 +127,6 @@ function S:Blizzard_GlyphUI()
 		_G.PlayerTalentFrameScrollFrame:Show()
 	end)
 end
+
+S:AddCallbackForAddon('Blizzard_TalentUI')
 S:AddCallbackForAddon('Blizzard_GlyphUI')

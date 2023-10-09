@@ -36,8 +36,7 @@ local function HandleSortLabel(button)
 	end
 end
 
--- Same as Barber Skin
-local function HandleButton(button)
+local function HandleButton(button) -- Same as Barber Skin
 	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
 	button:SetScale(E.uiscale)
 	button:Size(200, 50)
