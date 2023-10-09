@@ -1,7 +1,7 @@
 --[[
 Name: LibRangeCheck-3.0
-Author(s): mitch0, WoWUI Dev community
-Website: http://www.wowace.com/projects/librangecheck-2-0/
+Author(s): mitch0, WoWUIDev Community
+Website: https://www.curseforge.com/wow/addons/librangecheck-3-0
 Description: A range checking library based on interact distances and spell ranges
 Dependencies: LibStub
 License: MIT
@@ -305,7 +305,7 @@ tinsert(PetSpells.WARLOCK, 755)     -- Health Funnel (45 yards)
 
 -- Items [Special thanks to Maldivia for the nice list]
 
-local FriendItems  = {
+local FriendItems = {
 	[2] = {
 		37727, -- Ruby Acorn
 	},
@@ -668,7 +668,7 @@ local function createCheckerList(spellList, itemList, interactList)
 
 	if interactList and not next(res) then
 		for index, range in pairs(interactList) do
-			addChecker(res, range, nil,  checkers_Interact[index], "interact:" .. index)
+			addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
 		end
 	end
 
@@ -740,8 +740,8 @@ end
 
 local function getCachedRange(unit, noItems, maxCacheAge)
 	-- maxCacheAge has a default of 0.1 and a maximum of 1 second
-	maxCacheAge = maxCacheAge or 0.1;
-	maxCacheAge = maxCacheAge > 1 and 1 or maxCacheAge;
+	maxCacheAge = maxCacheAge or 0.1
+	maxCacheAge = maxCacheAge > 1 and 1 or maxCacheAge
 
 	-- compose cache key out of unit guid and noItems
 	local guid = UnitGUID(unit)
@@ -755,7 +755,7 @@ local function getCachedRange(unit, noItems, maxCacheAge)
 		return cacheItem.minRange, cacheItem.maxRange
 	end
 
-	-- otherwise create a new or update the exisitng cache item
+	-- otherwise create a new or update the existing cache item
 	local result = cacheItem or {}
 	result.minRange, result.maxRange = getRange(unit, noItems)
 	result.updateTime = currentTime
@@ -820,8 +820,7 @@ local function getChecker(checkerList, range)
 	end
 end
 
-local function null()
-end
+local function null() end
 
 local function createSmartChecker(friendChecker, harmChecker, miscChecker)
 	miscChecker = miscChecker or null
@@ -901,7 +900,7 @@ end
 
 -- initialize RangeCheck if not yet initialized or if "forced"
 function lib:init(forced)
-	if self.initialized and (not forced) then
+	if self.initialized and not forced then
 		return
 	end
 	self.initialized = true
@@ -1120,19 +1119,19 @@ function lib:SPELLS_CHANGED()
 	self:scheduleInit()
 end
 
-function lib:UNIT_INVENTORY_CHANGED(event, unit)
+function lib:UNIT_INVENTORY_CHANGED(_, unit)
 	if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
 		self:scheduleInit()
 	end
 end
 
-function lib:UNIT_AURA(event, unit)
+function lib:UNIT_AURA(_, unit)
 	if self.initialized and unit == "player" then
 		self:scheduleAuraCheck()
 	end
 end
 
-function lib:GET_ITEM_INFO_RECEIVED(event, item, success)
+function lib:GET_ITEM_INFO_RECEIVED(_, item, success)
 	-- print("### GET_ITEM_INFO_RECEIVED: " .. tostring(item) .. ", " .. tostring(success))
 	if item == pendingItemRequest then
 		pendingItemRequest = nil
@@ -1156,7 +1155,7 @@ function lib:processItemRequests(itemRequests)
 				-- print("### processItemRequests: failed: " .. tostring(item))
 				tremove(items, i)
 			elseif item == pendingItemRequest and GetTime() < itemRequestTimeoutAt then
-				return true; -- still waiting for server response
+				return true -- still waiting for server response
 			elseif GetItemInfo(item) then
 				-- print("### processItemRequests: found: " .. tostring(item))
 				if itemRequestTimeoutAt then
