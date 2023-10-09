@@ -6,22 +6,6 @@ local max = max
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local function HandleButton(button)
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-	button:SetScale(E.uiscale)
-	button:Size(200, 50)
-end
-
-function S:Blizzard_BarbershopUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
-
-	local frame = _G.BarberShopFrame
-	HandleButton(frame.ResetButton)
-	HandleButton(frame.CancelButton)
-	HandleButton(frame.AcceptButton)
-end
-S:AddCallbackForAddon('Blizzard_BarbershopUI')
-
 local function HandleNextPrev(button)
 	S:HandleNextPrevButton(button)
 
@@ -100,4 +84,20 @@ function S:Blizzard_CharacterCustomize()
 	hooksecurefunc(frame, 'SetSelectedCategory', SetSelectedCategory)
 end
 
+local function HandleButton(button) -- Same as PerksProgram Skin
+	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
+	button:SetScale(E.uiscale)
+	button:Size(200, 50)
+end
+
+function S:Blizzard_BarbershopUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
+
+	local frame = _G.BarberShopFrame
+	HandleButton(frame.ResetButton)
+	HandleButton(frame.CancelButton)
+	HandleButton(frame.AcceptButton)
+end
+
+S:AddCallbackForAddon('Blizzard_BarbershopUI')
 S:AddCallbackForAddon('Blizzard_CharacterCustomize')
