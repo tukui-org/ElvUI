@@ -63,6 +63,10 @@ local function HandleSkillButton(button)
 	button:GetPushedTexture():SetColorTexture(1, 1, 1, .5)
 	button.IconTexture:SetInside()
 
+	if button.cooldown then
+		E:RegisterCooldown(button.cooldown)
+	end
+
 	S:HandleIcon(button.IconTexture, true)
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
@@ -112,7 +116,6 @@ function S:SpellBookFrame()
 
 	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G['SpellButton'..i]
-		local icon = _G['SpellButton'..i..'IconTexture']
 		local highlight =_G['SpellButton'..i..'Highlight']
 
 		for _, region in next, { button:GetRegions() } do
@@ -123,11 +126,11 @@ function S:SpellBookFrame()
 			end
 		end
 
-		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
-		S:HandleIcon(icon)
+		E:RegisterCooldown(button.cooldown)
+		S:HandleIcon(button.IconTexture)
 
 		button:CreateBackdrop(nil, true)
-		icon:SetInside(button.backdrop)
+		button.IconTexture:SetInside(button.backdrop)
 
 		local ht = button.SpellHighlightTexture
 		if ht then
@@ -145,7 +148,7 @@ function S:SpellBookFrame()
 			button:SetHighlightTexture(E.ClearTexture)
 		end
 
-		highlight:SetAllPoints(icon)
+		highlight:SetAllPoints(button.IconTexture)
 		hooksecurefunc(highlight, 'SetTexture', spellButtonHighlight)
 
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
