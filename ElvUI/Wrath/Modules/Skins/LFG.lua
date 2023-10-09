@@ -291,6 +291,16 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
+	local RoleDialog = _G.LFGListCreateRoleDialog
+	RoleDialog:StripTextures()
+	RoleDialog:SetTemplate('Transparent')
+	S:HandleButton(RoleDialog.SignUpButton)
+	S:HandleButton(RoleDialog.CancelButton)
+
+	S:HandleCheckBox(RoleDialog.DamagerButton.CheckButton)
+	S:HandleCheckBox(RoleDialog.TankButton.CheckButton)
+	S:HandleCheckBox(RoleDialog.HealerButton.CheckButton)
+
 	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
