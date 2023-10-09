@@ -34,12 +34,12 @@ function S:Blizzard_AuctionUI()
 	}
 
 	local CheckBoxes = {
-		_G.IsUsableCheckButton,
-		_G.ShowOnPlayerCheckButton,
 		_G.SortByBidPriceButton,
 		_G.SortByBuyoutPriceButton,
 		_G.SortByTotalPriceButton,
-		_G.SortByUnitPriceButton
+		_G.SortByUnitPriceButton,
+		_G.IsUsableCheckButton,
+		_G.ShowOnPlayerCheckButton
 	}
 
 	local EditBoxes = {
@@ -84,8 +84,16 @@ function S:Blizzard_AuctionUI()
 		S:HandleButton(Button, true)
 	end
 
-	for _, CheckBox in pairs(CheckBoxes) do
+	for i, CheckBox in pairs(CheckBoxes) do
 		S:HandleCheckBox(CheckBox)
+
+		if i <= 4 then
+			CheckBox:Size(24)
+
+			S:HandlePointXY(CheckBox, nil, (i == 1 and -40) or (i == 3 and -5) or 3)
+		elseif CheckBox.Text then
+			CheckBox.Text:Point('LEFT', CheckBox, 'Right', 2, 0)
+		end
 	end
 
 	for _, EditBox in pairs(EditBoxes) do
