@@ -70,21 +70,6 @@ function E:LuaError(msg)
 	end
 end
 
-local function OnCallback(command)
-	_G.MacroEditBox:GetScript('OnEvent')(_G.MacroEditBox, 'EXECUTE_CHAT_LINE', command)
-end
-
-function E:DelayScriptCall(msg)
-	local secs, command = msg:match('^(%S+)%s+(.*)$')
-	secs = tonumber(secs)
-	if not secs or (#command == 0) then
-		self:Print('usage: /in <seconds> <command>')
-		self:Print('example: /in 1.5 /say hi')
-	else
-		E:Delay(secs, OnCallback, command)
-	end
-end
-
 function E:DisplayCommands()
 	print(L["EHELP_COMMANDS"])
 end
@@ -229,7 +214,6 @@ function E:LoadCommands()
 		self:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 
-	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptions')
 	self:RegisterChatCommand('elvui', 'ToggleOptions')
 
