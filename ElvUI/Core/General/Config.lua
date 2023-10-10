@@ -22,7 +22,7 @@ local UIParent = UIParent
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
 local RESET = RESET
--- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
+-- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
 
 local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
 

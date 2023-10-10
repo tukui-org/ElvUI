@@ -654,7 +654,7 @@ do
 				if Name then
 					_G.ChatFrame_SendTell(Name, self.chatFrame)
 				else
-					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
+					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))

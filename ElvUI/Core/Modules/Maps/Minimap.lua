@@ -5,8 +5,8 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next = next
 local sort = sort
-local tinsert = tinsert
 local unpack = unpack
+local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 local utf8sub = string.utf8sub
 

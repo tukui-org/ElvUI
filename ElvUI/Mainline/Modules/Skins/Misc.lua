@@ -5,8 +5,8 @@ local _G = _G
 local next = next
 local unpack = unpack
 
-local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local function ClearSetTexture(texture, tex)
