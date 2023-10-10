@@ -902,6 +902,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[388544] = List(), -- Barkbreaker
 		[377008] = List(), -- Deafening Screech
 	----------------------------------------------------------
+	---------------- Dragonflight (Season 3) -----------------
+	----------------------------------------------------------
+	-- Dawn of the Infinites: Galakrond's Fall
+	-- Dawn of the Infinites: Murozond's Rise
+	-- Darkheart Thicket
+	-- Black Rook Hold
+	-- Waycrest Manor
+	-- Atal'Dazar
+	-- Everbloom
+	-- Throne of the Tides
+	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
@@ -958,6 +969,54 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[76622] = List(), -- Sunder Armor
 		[88171] = List(), -- Hurricane
 		[88182] = List(), -- Lethargic Poison
+	---------------------------------------------------------
+	------------ Amirdrassil: The Dream's Hope --------------
+	---------------------------------------------------------
+	-- Gnarlroot
+		[421972] = List(), -- Controlled Burn
+		[424734] = List(), -- Uprooted Agony
+		[426106] = List(), -- Dreadfire Barrage
+		[425002] = List(), -- Ember-Charred I
+		[421038] = List(), -- Ember-Charred II
+	-- Igira the Cruel
+		[414367] = List(), -- Gathering Torment
+		[424065] = List(), -- Wracking Skewer I
+		[416056] = List(), -- Wracking Skever II
+		[414888] = List(), -- Blistering Spear
+	-- Volcoross
+		[419054] = List(), -- Molten Venom
+		[421207] = List(), -- Coiling Flames
+		[423494] = List(), -- Tidal Blaze
+		[423759] = List(), -- Serpent's Crucible
+	-- Council of Dreams
+		[420948] = List(), -- Barreling Charge
+		[421032] = List(), -- Captivating Finale
+		[420858] = List(), -- Poisonous Javelin
+		[418589] = List(), -- Polymorph Bomb
+		[421031] = List(6), -- Song of the Dragon
+		[426390] = List(), -- Corrosive Pollen
+	-- Larodar, Keeper of the Flame
+	-- Nymue, Weaver of the Cycle
+		[423195] = List(), -- Inflorescence
+		[427137] = List(), -- Threads of Life I
+		[427138] = List(), -- Threads of Life II
+		[426520] = List(), -- Weaver's Burden
+		[428273] = List(), -- Woven Resonance
+	-- Smolderon
+		[426018] = List(), -- Seeking Inferno
+		[421455] = List(), -- Overheated
+		[421643] = List(5), -- Emberscar's Mark
+		[421656] = List(), -- Cauterizing Wound
+		[425574] = List(), -- Lingering Burn
+	-- Tindral Sageswift, Seer of the Flame
+		[427297] = List(), -- Flame Surge
+		[424581] = List(), -- Fiery Growth
+		[424580] = List(), -- Falling Stars
+		[424578] = List(), -- Blazing Mushroom
+		[424579] = List(6), -- Suppressive Ember
+		[424495] = List(), -- Mass Entanblement
+		[424665] = List(), -- Seed of Flame
+	-- Fyrakk the Blazing
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------
@@ -1245,6 +1304,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[390938] = List(), -- Agitation
 		[390297] = List(), -- Dormant
 	----------------------------------------------------------
+	---------------- Dragonflight (Season 3) -----------------
+	----------------------------------------------------------
+	-- Dawn of the Infinites: Galakrond's Fall
+	-- Dawn of the Infinites: Murozond's Rise
+	-- Darkheart Thicket
+	-- Black Rook Hold
+	-- Waycrest Manor
+	-- Atal'Dazar
+	-- Everbloom
+	-- Throne of the Tides
+	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
 	-- Freehold
@@ -1295,6 +1365,42 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[87762] = List(), -- Lightning Lash
 		[87761] = List(), -- Rally
 		[87726] = List(), -- Grounding Field
+	---------------------------------------------------------
+	------------ Amirdrassil: The Dream's Hope --------------
+	---------------------------------------------------------
+	-- Gnarlroot
+		[425709] = List(), -- Rising Mania
+		[421013] = List(), -- Potent Fertilization
+		[424352] = List(), -- Dreadfire Barrage
+	-- Igira the Cruel
+		[420251] = List(), -- Harvest of Screams
+		[422961] = List(), -- Marked for Torment
+	-- Volcoross
+		[421675] = List(), -- Burning Vertebrae
+		[421672] = List(), -- Serpent's Fury
+		[420933] = List(), -- Flood of the Firelands
+	-- Council of Dreams
+		[421029] = List(), -- Song of the Dragon
+		[420525] = List(), -- Blind Rage I
+		[420604] = List(), -- Blind Rage II
+		[418757] = List(), -- Polymorph Bomb
+		[420979] = List(), -- Barreling Charge
+	-- Larodar, Keeper of the Flame
+	-- Nymue, Weaver of the Cycle
+		[413443] = List(), -- Protector's Shroud
+		[420553] = List(), -- Growing Power of the Dream
+	-- Smolderon
+		[425885] = List(), -- Seeking Inferno
+		[421859] = List(), -- Ignited Essence
+		[423896] = List(), -- Heating Up
+		[422067] = List(), -- Blazing Soul
+		[422172] = List(), -- World In Flames
+	-- Tindral Sageswift, Seer of the Flame
+		[422115] = List(), -- Incarnation: Tree of Flame
+		[421603] = List(), -- Incarnation: Owl of the Flame
+		[420540] = List(), -- Incarnation: Moonkin
+		[423265] = List(), -- Tranquility of Flame
+	-- Fyrakk the Blazing
 	---------------------------------------------------------
 	------------ Aberrus, the Shadowed Crucible -------------
 	---------------------------------------------------------

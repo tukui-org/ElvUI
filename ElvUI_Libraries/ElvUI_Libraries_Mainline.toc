@@ -2,7 +2,7 @@
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
 ## Version: 13.42
-## Interface: 100107
+## Interface: 100200
 ## X-oUF: ElvUF
 ## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
 

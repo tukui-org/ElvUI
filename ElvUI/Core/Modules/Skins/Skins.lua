@@ -533,6 +533,22 @@ do
 	end
 end
 
+function S:HandleModelSceneControlButtons(frame)
+	for _, button in next, {
+		frame.zoomInButton,
+		frame.zoomOutButton,
+		frame.rotateLeftButton,
+		frame.rotateRightButton,
+		frame.resetButton,
+	} do
+		S:HandleButton(button)
+
+		if button.Icon then
+			button.Icon:SetInside(nil, 1, 1)
+		end
+	end
+end
+
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesn\'t exist!')
 
