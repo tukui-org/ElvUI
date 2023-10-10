@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LSM = E.Libs.LSM
 
 local _G = _G
+local strsub = strsub
 local strmatch = strmatch
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
@@ -11,14 +12,24 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 		style = ''
 	end
 
+	local shadow
+	if strsub(style, 0, 6) == 'SHADOW' then
+		style = strsub(style, 7) -- shadow isnt a real style
+		shadow = true
+	end
+
 	obj:SetFont(font, size, style)
 
 	if sr and sg and sb then
 		obj:SetShadowColor(sr, sg, sb, sa)
+	elseif shadow then
+		obj:SetShadowColor(0, 0, 0, style == '' and 1 or 0.6)
 	end
 
 	if sox and soy then
 		obj:SetShadowOffset(sox, soy)
+	elseif shadow then
+		obj:SetShadowOffset(1, -1)
 	end
 
 	if r and g and b then
@@ -44,7 +55,7 @@ function E:UpdateBlizzardFonts()
 	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
 	if db.replaceCombatText then -- Blizzard_CombatText
-		SetFont(_G.CombatTextFont, COMBAT, 120, nil, nil, nil, nil, nil, 1, -1)
+		SetFont(_G.CombatTextFont, COMBAT, 120, 'SHADOW')
 	end
 	if db.replaceBubbleFont then
 		local BUBBLE = LSM:Fetch('font', db.chatBubbleFont)
@@ -175,7 +186,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, stock and enormous or 32, outline)	-- 32  World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, outline)						-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22)									-- 25  FlightMap
-		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
+		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, 'SHADOW')
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')						-- 16
