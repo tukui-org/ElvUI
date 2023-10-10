@@ -94,8 +94,11 @@ if E.Retail then
 	blizzard.covenantRenown = L["Covenant Renown"]
 	blizzard.covenantSanctum = L["Covenant Sanctum"]
 	blizzard.deathRecap = L["DEATH_RECAP_TITLE"]
+	blizzard.editor = L["Editor Manager"]
 	blizzard.encounterjournal = L["ENCOUNTER_JOURNAL"]
+	blizzard.expansionLanding = L["Expansion Landing Page"]
 	blizzard.garrison = L["GARRISON_LOCATION_TOOLTIP"]
+	blizzard.genericTrait = L["Generic Trait"]
 	blizzard.gmChat = L["GM Chat"]
 	blizzard.guide = L["Guide Frame"]
 	blizzard.guild = L["Guild"]
@@ -105,6 +108,7 @@ if E.Retail then
 	blizzard.itemUpgrade = L["Item Upgrade"]
 	blizzard.lfguild = L["LF Guild Frame"]
 	blizzard.losscontrol = L["LOSS_OF_CONTROL"]
+	blizzard.majorFactions = L["Major Factions"]
 	blizzard.nonraid = L["Non-Raid Frame"]
 	blizzard.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	blizzard.obliterum = L["OBLITERUM_FORGE_TITLE"]
@@ -120,22 +124,16 @@ if E.Retail then
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]
 	blizzard.weeklyRewards = L["Weekly Rewards"]
-	blizzard.majorFactions = L["Major Factions"]
-	blizzard.expansionLanding = L["Expansion Landing Page"]
-	blizzard.genericTrait = L["Generic Trait"]
-	blizzard.editor = L["Editor Manager"]
 else
-	if not E.Classic then
+	if E.Wrath then
 		blizzard.arena = L["Arena"]
 		blizzard.arenaRegistrar = L["Arena Registrar"]
-		blizzard.collections = L["COLLECTIONS"]
 		blizzard.lfg = L["LFG_TITLE"]
-	end
-
-	if not E.Wrath then
+	elseif E.Classic then
 		blizzard.craft = L["Craft"]
 	end
 
+	-- classic / wrath
 	blizzard.battlefield = L["Battlefield"]
 end
 
@@ -144,6 +142,7 @@ if E.Retail or E.Wrath then
 	blizzard.alertframes = L["Alert Frames"]
 	blizzard.barber = L["BARBERSHOP"]
 	blizzard.calendar = L["Calendar Frame"]
+	blizzard.collections = L["COLLECTIONS"]
 	blizzard.gbank = L["Guild Bank"]
 	blizzard.pvp = L["PvP Frames"]
 end
