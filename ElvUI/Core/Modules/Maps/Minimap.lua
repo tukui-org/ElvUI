@@ -229,8 +229,9 @@ function M:Minimap_OnMouseDown(btn)
 
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
-		if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-		E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+		if not E:AlertCombat() then
+			E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	elseif E.Retail then
@@ -249,8 +250,9 @@ function M:MapCanvas_OnMouseDown(btn)
 
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
-		if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-		E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+		if not E:AlertCombat() then
+			E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	end

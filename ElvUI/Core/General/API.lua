@@ -55,6 +55,7 @@ local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
+local UIErrorsFrame = UIErrorsFrame
 -- GLOBALS: ElvDB, ElvUF
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
@@ -636,6 +637,15 @@ function E:IsDragonRiding() -- currently unused, was used to help actionbars fad
 			return true
 		end
 	end
+end
+
+function E:AlertCombat()
+	local combat = InCombatLockdown()
+	if combat then
+		UIErrorsFrame:AddMessage(E.InfoColor..ERR_NOT_IN_COMBAT)
+	end
+
+	return combat
 end
 
 function E:LoadAPI()

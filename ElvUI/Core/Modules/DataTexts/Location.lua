@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local InCombatLockdown = InCombatLockdown
 local GetZonePVPInfo = GetZonePVPInfo
 local IsInInstance = IsInInstance
 local ToggleFrame = ToggleFrame
@@ -50,9 +49,9 @@ local function OnEvent(self)
 end
 
 local function OnClick()
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-
-	ToggleFrame(_G.WorldMapFrame)
+	if not E:AlertCombat() then
+		ToggleFrame(_G.WorldMapFrame)
+	end
 end
 
 DT:RegisterDatatext('Location', nil, { 'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED_NEW_AREA', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED' }, OnEvent, nil, OnClick, nil, nil, L["Location"])
