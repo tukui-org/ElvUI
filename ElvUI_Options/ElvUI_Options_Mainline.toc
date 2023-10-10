@@ -2,7 +2,7 @@
 ## Notes: Powers the configuration window.|n|cffff3333Does not store any profile data.|r
 ## Author: Elv, Simpy
 ## Version: 13.42
-## Interface: 100200
+## Interface: 100107
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
 ## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
