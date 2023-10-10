@@ -462,7 +462,7 @@ do --this can save some main file locals
 		z['Gur-Area52']				= itsThradex -- Horde
 		z['Archmage-Area52']		= itsThradex -- Horde
 		z['Counselor-Area52']		= itsThradex -- Horde
-		z['Psychiatrist-Area 52']	= itsThradex -- Horde
+		z['Psychiatrist-Area52']	= itsThradex -- Horde
 		z['Monk-CenarionCircle']	= itsThradex
 		z['Thradex-Stormrage']		= itsThradex
 		z['Wrecked-Stormrage']		= itsThradex
