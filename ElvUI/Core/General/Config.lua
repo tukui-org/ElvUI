@@ -21,7 +21,6 @@ local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
@@ -69,8 +68,8 @@ end
 
 function E:ToggleMoveMode(which)
 	if InCombatLockdown() then return end
-	local mode = not E.ConfigurationMode
 
+	local mode = not E.ConfigurationMode
 	if not which or which == '' then
 		E.ConfigurationMode = mode
 		which = 'all'
@@ -1076,8 +1075,7 @@ function E:Config_GetToggleMode(frame, msg)
 end
 
 function E:ToggleOptions(msg)
-	if InCombatLockdown() then
-		E:Print(ERR_NOT_IN_COMBAT)
+	if E:AlertCombat() then
 		self.ShowOptions = true
 		return
 	end
