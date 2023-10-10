@@ -3,8 +3,6 @@ local MAJOR, MINOR = 'LibAceConfigHelper', 10
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
-local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-
 if not ACH then return end
 local type, pairs = type, pairs
 

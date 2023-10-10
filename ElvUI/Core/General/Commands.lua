@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local _G = _G
 local type, pairs, select, tonumber = type, pairs, select, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 
