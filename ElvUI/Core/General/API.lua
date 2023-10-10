@@ -508,29 +508,41 @@ function E:PLAYER_REGEN_ENABLED()
 	end
 end
 
-function E:PLAYER_REGEN_DISABLED()
-	local err
-
-	if IsAddOnLoaded('ElvUI_Options') then
-		local ACD = E.Libs.AceConfigDialog
-		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-			ACD:Close('ElvUI')
-			err = true
-		end
+do
+	local function NoCombat()
+		UIErrorsFrame:AddMessage(E.InfoColor..ERR_NOT_IN_COMBAT)
 	end
 
-	if E.CreatedMovers then
-		for name in pairs(E.CreatedMovers) do
-			local mover = _G[name]
-			if mover and mover:IsShown() then
-				mover:Hide()
-				err = true
+	function E:PLAYER_REGEN_DISABLED()
+		local wasShown
+
+		if IsAddOnLoaded('ElvUI_Options') then
+			local ACD = E.Libs.AceConfigDialog
+			if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+				ACD:Close('ElvUI')
+				wasShown = true
 			end
 		end
+
+		if E.CreatedMovers then
+			for name in pairs(E.CreatedMovers) do
+				local mover = _G[name]
+				if mover and mover:IsShown() then
+					mover:Hide()
+					wasShown = true
+				end
+			end
+		end
+
+		if wasShown then
+			NoCombat()
+		end
 	end
 
-	if err then
-		E:Print(ERR_NOT_IN_COMBAT)
+	function E:AlertCombat()
+		local combat = InCombatLockdown()
+		if combat then NoCombat() end
+		return combat
 	end
 end
 
@@ -637,15 +649,6 @@ function E:IsDragonRiding() -- currently unused, was used to help actionbars fad
 			return true
 		end
 	end
-end
-
-function E:AlertCombat()
-	local combat = InCombatLockdown()
-	if combat then
-		UIErrorsFrame:AddMessage(E.InfoColor..ERR_NOT_IN_COMBAT)
-	end
-
-	return combat
 end
 
 function E:LoadAPI()
