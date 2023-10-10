@@ -208,7 +208,7 @@ P.general = {
 		hide = false,
 		font = 'Expressway',
 		fontSize = 13,
-		fontOutline = 'NONE',
+		fontOutline = 'SHADOW',
 		frameStrata = 'MEDIUM',
 		frameLevel = 20
 	},
@@ -247,6 +247,7 @@ P.general = {
 		frameLevel = 20
 	},
 	guildBank = {
+		itemQuality = true,
 		itemLevel = true,
 		itemLevelThreshold = 1,
 		itemLevelFont = 'Homespun',
@@ -303,7 +304,7 @@ for _, databar in next, {'experience', 'reputation', 'honor', 'threat', 'azerite
 		textFormat = 'NONE',
 		fontSize = 11,
 		font = 'PT Sans Narrow',
-		fontOutline = 'NONE',
+		fontOutline = 'SHADOW',
 		xOffset = 0,
 		yOffset = 0,
 		displayText = true,
@@ -448,6 +449,11 @@ P.bags = {
 		professions = false,
 		guildBank = false,
 		trade = false,
+	},
+	spinner = {
+		enable = true,
+		size = 48,
+		color = { r = 1, g = 0.82, b = 0 }
 	},
 	bagBar = {
 		growthDirection = 'VERTICAL',
@@ -1069,7 +1075,7 @@ P.chat = {
 	fade = true,
 	inactivityTimer = 100,
 	font = 'PT Sans Narrow',
-	fontOutline = 'NONE',
+	fontOutline = 'SHADOW',
 	fontSize = 10,
 	sticky = true,
 	emotionIcons = true,
@@ -1137,7 +1143,7 @@ P.chat = {
 	socialQueueMessages = false,
 	tabFont = 'PT Sans Narrow',
 	tabFontSize = 12,
-	tabFontOutline = 'NONE',
+	tabFontOutline = 'SHADOW',
 	copyChatLines = false,
 	useBTagName = false,
 	panelColor = {r = .06, g = .06, b = .06, a = 0.8},
@@ -1152,7 +1158,7 @@ P.chat = {
 P.datatexts = {
 	font = 'PT Sans Narrow',
 	fontSize = 12,
-	fontOutline = 'NONE',
+	fontOutline = 'SHADOW',
 	wordWrap = false,
 	panels = {
 		LeftChatDataPanel = {
@@ -1227,10 +1233,10 @@ P.tooltip = {
 	role = true,
 	gender = false,
 	font = 'PT Sans Narrow',
-	fontOutline = 'NONE',
+	fontOutline = 'SHADOW',
 	textFontSize = 12, -- is fontSize (has old name)
 	headerFont = 'PT Sans Narrow',
-	headerFontOutline = 'NONE',
+	headerFontOutline = 'SHADOW',
 	headerFontSize = 13,
 	smallTextFontSize = 12,
 	colorAlpha = 0.8,

@@ -3,14 +3,14 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local date = date
-local InCombatLockdown = InCombatLockdown
 local FormatShortDate = FormatShortDate
 
 local displayString
 
 local function OnClick()
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	_G.GameTimeFrame:Click()
+	if not E:AlertCombat() then
+		_G.GameTimeFrame:Click()
+	end
 end
 
 local function OnEvent(self)

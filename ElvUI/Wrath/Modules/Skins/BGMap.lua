@@ -87,8 +87,6 @@ function S:Blizzard_BattlefieldMap()
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnEnter', setRealAlpha)
 	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnLeave', setOldAlpha)
 	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnEnter', setRealAlpha)
-
-	S:HandleSliderFrame(_G.OpacityFrameSlider)
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')

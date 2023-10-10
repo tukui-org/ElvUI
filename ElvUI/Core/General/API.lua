@@ -55,6 +55,7 @@ local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
+local UIErrorsFrame = UIErrorsFrame
 -- GLOBALS: ElvDB, ElvUF
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
@@ -507,29 +508,41 @@ function E:PLAYER_REGEN_ENABLED()
 	end
 end
 
-function E:PLAYER_REGEN_DISABLED()
-	local err
-
-	if IsAddOnLoaded('ElvUI_Options') then
-		local ACD = E.Libs.AceConfigDialog
-		if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-			ACD:Close('ElvUI')
-			err = true
-		end
+do
+	local function NoCombat()
+		UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.2, 0.2, 1.0)
 	end
 
-	if E.CreatedMovers then
-		for name in pairs(E.CreatedMovers) do
-			local mover = _G[name]
-			if mover and mover:IsShown() then
-				mover:Hide()
-				err = true
+	function E:PLAYER_REGEN_DISABLED()
+		local wasShown
+
+		if IsAddOnLoaded('ElvUI_Options') then
+			local ACD = E.Libs.AceConfigDialog
+			if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
+				ACD:Close('ElvUI')
+				wasShown = true
 			end
 		end
+
+		if E.CreatedMovers then
+			for name in pairs(E.CreatedMovers) do
+				local mover = _G[name]
+				if mover and mover:IsShown() then
+					mover:Hide()
+					wasShown = true
+				end
+			end
+		end
+
+		if wasShown then
+			NoCombat()
+		end
 	end
 
-	if err then
-		E:Print(ERR_NOT_IN_COMBAT)
+	function E:AlertCombat()
+		local combat = InCombatLockdown()
+		if combat then NoCombat() end
+		return combat
 	end
 end
 

@@ -1,3 +1,14 @@
+## Version 13.43 \[ October 10th 2023 \]
+*   Quest Rewards Complete page border misaligned.
+*   Weapon Enchants not updating correctly on Retail.
+*   Bags visual sorting added under Bags > Sort Spinner. (Thanks Crum)
+*   New Font Outline settings added: Shadow, Shadow Outline, and Shadow Thick. None setting no longer has a shadow.
+*   Spellbook skin now handles the profession icon cooldown.
+*   Guild Bank Item Quality is now handled on Wrath (General > Blizz Improvements > Guild Bank).
+*   Minimap middle-click dropdown not placed to the right of cursor when map on left.
+*   Encounter Journal Item Sets skin fixed.
+*   Recruit a Friend rewards skin fixed.
+
 ## Version 13.42 \[ September 29th 2023 \]
 *   Saving Edit Mode was a little buggy.
 

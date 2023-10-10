@@ -1,9 +1,7 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 9
+local MAJOR, MINOR = 'LibAceConfigHelper', 10
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
-
-local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 if not ACH then return end
 local type, pairs = type, pairs
@@ -158,13 +156,16 @@ local FontFlagValues = {
 	NONE = 'None',
 	OUTLINE = 'Outline',
 	THICKOUTLINE = 'Thick',
+	SHADOW = '|cff888888Shadow|r',
+	SHADOWOUTLINE = '|cff888888Shadow|r Outline',
+	SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
 	MONOCHROME = '|cFFAAAAAAMono|r',
 	MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
-	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick',
+	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
 }
 
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
-	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues }
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues, sortByValue = true }
 
 	if width then insertWidth(optionTable, width) end
 

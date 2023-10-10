@@ -32,7 +32,7 @@ SharedOptions.sizeGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill Direction"
 SharedOptions.fontGroup.inline = true
 SharedOptions.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedOptions.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-SharedOptions.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 3, C.Values.FontFlags)
+SharedOptions.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 SharedOptions.fontGroup.args.spacer = ACH:Spacer(4, 'full')
 SharedOptions.fontGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 5, C.Values.AllPoints)
 SharedOptions.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
@@ -101,7 +101,7 @@ DataBars.args.reputation.args.enable.set = function(info, value) DB.db.reputatio
 DataBars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 15)
 DataBars.args.reputation.args.showReward.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, C.Values.SidePositions)
+DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 16, C.Values.EdgePositions)
 DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end

@@ -30,7 +30,6 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
@@ -1795,7 +1794,7 @@ function E:ResetAllUI()
 end
 
 function E:ResetUI(...)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	if E:AlertCombat() then return end
 
 	if ... == '' or ... == ' ' or ... == nil then
 		E:StaticPopup_Show('RESETUI_CHECK')

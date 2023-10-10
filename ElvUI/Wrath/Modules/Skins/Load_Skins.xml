@@ -16,6 +16,7 @@
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
+	<Script file='Collectables.lua'/>
 	<Script file='CombatLog.lua'/>
 	<Script file='Communities.lua'/>
 	<Script file='Debug.lua'/>

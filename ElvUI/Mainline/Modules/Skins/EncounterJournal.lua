@@ -93,7 +93,7 @@ local function HandleTabs(tab)
 	local str = tab:GetFontString()
 	tab:StripTextures()
 	tab:SetText(tab.tooltip)
-	str:FontTemplate(nil, nil, '')
+	str:FontTemplate(nil, nil, 'NONE')
 	tab:SetTemplate()
 	tab:SetScript('OnEnter', E.noop)
 	tab:SetScript('OnLeave', E.noop)
@@ -155,6 +155,40 @@ local function ItemSetsItemBorder(border, atlas)
 	end
 end
 
+local function ItemSetElements(set)
+	local parchment = E.private.skins.parchmentRemoverEnable
+	if parchment and not set.backdrop then
+		set:CreateBackdrop('Transparent')
+	end
+
+	if parchment and set.Background then
+		set.Background:Hide()
+	end
+
+	if set.ItemButtons then
+		for _, button in next, set.ItemButtons do
+			local icon = button.Icon
+			if icon and not icon.backdrop then
+				S:HandleIcon(icon, true)
+			end
+
+			local border = button.Border
+			if border and not border.isSkinned then
+				border:SetAlpha(0)
+
+				ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
+				hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
+
+				border.isSkinned = true
+			end
+		end
+	end
+end
+
+local function HandleItemSetsElements(scrollBox)
+	scrollBox:ForEachFrame(ItemSetElements)
+end
+
 function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
@@ -173,7 +207,11 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
-	S:HandleTrimScrollBar(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBar)
+	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
+
+	if E.global.general.disableTutorialButtons then
+		EJ.MonthlyActivitiesFrame.HelpButton:Kill()
+	end
 
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
@@ -341,7 +379,7 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		_G.EncounterJournalMonthlyActivitiesFrame.Bg:SetAlpha(0)
+		EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
 		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
 
 		local suggestFrame = EJ.suggestFrame
@@ -435,7 +473,7 @@ function S:Blizzard_EncounterJournal()
 	LJ.ClassDropDownButton:SetFrameLevel(10)
 	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
 	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
-
+	S:HandleDropDownBox(EJ.LootJournalViewDropDown)
 	S:HandleTrimScrollBar(LJ.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
@@ -564,10 +602,6 @@ function S:Blizzard_EncounterJournal()
 		end
 	end
 
-	local LootDropdown = _G.EncounterJournalLootJournalViewDropDown
-	S:HandleDropDownBox(LootDropdown)
-	LootDropdown:SetScript('OnShow', function(dd) dd:SetFrameLevel(5) end) -- might be able to hook a function later; hotfix builds didn't export Blizzard_LootJournalItems.xml
-
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
 		HandleButton(ItemSetsFrame.ClassButton, true)
@@ -576,35 +610,9 @@ function S:Blizzard_EncounterJournal()
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()
 			EJ.LootJournalItems:SetTemplate('Transparent')
-
-			hooksecurefunc(ItemSetsFrame, 'UpdateList', function(frame)
-				if frame.buttons then
-					for _, button in ipairs(frame.buttons) do
-						if button and not button.backdrop then
-							button:CreateBackdrop('Transparent')
-							button.Background:Hide()
-						end
-					end
-				end
-			end)
 		end
 
-		hooksecurefunc(ItemSetsFrame, 'ConfigureItemButton', function(_, button)
-			if not button.Icon then return end
-
-			if not button.Icon.backdrop then
-				S:HandleIcon(button.Icon, true)
-			end
-
-			if button.Border and not button.Border.isSkinned then
-				button.Border:SetAlpha(0)
-
-				ItemSetsItemBorder(button.Border, button.Border:GetAtlas()) -- handle first one
-				hooksecurefunc(button.Border, 'SetAtlas', ItemSetsItemBorder)
-
-				button.Border.isSkinned = true
-			end
-		end)
+		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 end
 

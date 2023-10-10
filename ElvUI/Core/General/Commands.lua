@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local _G = _G
 local type, pairs, select, tonumber = type, pairs, select, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 
@@ -67,21 +66,6 @@ function E:LuaError(msg)
 		end
 	else
 		E:Print('/edebug on - /edebug off')
-	end
-end
-
-local function OnCallback(command)
-	_G.MacroEditBox:GetScript('OnEvent')(_G.MacroEditBox, 'EXECUTE_CHAT_LINE', command)
-end
-
-function E:DelayScriptCall(msg)
-	local secs, command = msg:match('^(%S+)%s+(.*)$')
-	secs = tonumber(secs)
-	if not secs or (#command == 0) then
-		self:Print('usage: /in <seconds> <command>')
-		self:Print('example: /in 1.5 /say hi')
-	else
-		E:Delay(secs, OnCallback, command)
 	end
 end
 
@@ -229,7 +213,6 @@ function E:LoadCommands()
 		self:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 
-	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptions')
 	self:RegisterChatCommand('elvui', 'ToggleOptions')
 

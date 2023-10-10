@@ -118,6 +118,46 @@ function E:SetUpAnimGroup(obj, animType, ...)
 		obj.NumberAnim:SetChange(endingNumber)
 		obj.NumberAnim:SetEasing('in-circular')
 		obj.NumberAnim:SetDuration(duration)
+	elseif animType == 'Spinner' then
+		if not obj.Spinner then
+			local spinner = obj:CreateTexture()
+			spinner:SetTexture(443270) -- Interface\Common\StreamFrame
+			spinner:SetPoint('CENTER')
+			spinner:SetAlpha(0.5)
+			obj.Spinner = spinner
+		end
+
+		if not obj.Circle then
+			local circle = obj:CreateTexture(nil, 'BORDER')
+			circle:SetTexture(443269) -- Interface\Common\StreamCircle
+			circle:SetPoint('CENTER')
+			obj.Circle = circle
+
+			local anim = circle:CreateAnimationGroup()
+			anim:SetLooping('REPEAT')
+			circle.Anim = anim
+
+			local rotation = anim:CreateAnimation('Rotation')
+			rotation:SetDuration(1)
+			rotation:SetDegrees(-360)
+			anim.Rotation = rotation
+		end
+
+		if not obj.Spark then
+			local spark = obj:CreateTexture(nil, 'OVERLAY')
+			spark:SetTexture(457289) -- Interface\Common\StreamSpark
+			spark:SetPoint('CENTER')
+			obj.Spark = spark
+
+			local anim = spark:CreateAnimationGroup()
+			anim:SetLooping('REPEAT')
+			spark.Anim = anim
+
+			local rotation = anim:CreateAnimation('Rotation')
+			rotation:SetDuration(1)
+			rotation:SetDegrees(-360)
+			anim.Rotation = rotation
+		end
 	else
 		local x, y, duration, customName = ...
 		local anim = obj:CreateAnimationGroup('Move_In')
@@ -207,6 +247,40 @@ end
 function E:StopFlash(obj)
 	if obj.anim and obj.anim:IsPlaying() then
 		obj.anim:Stop()
+	end
+end
+
+function E:StartSpinner(obj, left, top, right, bottom, size, r, g, b)
+	if not obj.Spinner then
+		E:SetUpAnimGroup(obj, 'Spinner')
+	end
+
+	obj.Spark:Size(size or 48)
+	obj.Spinner:Size(size or 48)
+	obj.Circle:Size(size or 48)
+	obj.Circle:SetVertexColor(r or 1, g or 0.82, b or 0)
+
+	obj:ClearAllPoints()
+
+	if top or bottom or left or right then
+		obj:Point('TOPLEFT', left or 0, top or 0)
+		obj:Point('BOTTOMRIGHT', right or 0, bottom or 0)
+	else
+		obj:SetAllPoints()
+	end
+
+	if not obj.Circle.Anim:IsPlaying() then
+		obj.Circle.Anim:Play()
+		obj.Spark.Anim:Play()
+		obj:Show()
+	end
+end
+
+function E:StopSpinner(obj)
+	if obj.Circle and obj.Circle.Anim:IsPlaying() then
+		obj.Circle.Anim:Stop()
+		obj.Spark.Anim:Stop()
+		obj:Hide()
 	end
 end
 

@@ -32,4 +32,5 @@ function S:Blizzard_BarbershopUI()
 	S:HandleButton(_G.BarberShopFrameCancelButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(_G.BarberShopFrameOkayButton, nil, nil, nil, true, nil, nil, nil, true)
 end
+
 S:AddCallbackForAddon('Blizzard_BarbershopUI')

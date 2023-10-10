@@ -5,8 +5,8 @@ local _G = _G
 local next = next
 local unpack = unpack
 
-local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local function ClearSetTexture(texture, tex)
@@ -266,6 +266,7 @@ function S:BlizzardMiscFrames()
 			local check = _G['DropDownList'..level..'Button'..i..'Check']
 			local uncheck = _G['DropDownList'..level..'Button'..i..'UnCheck']
 			local highlight = _G['DropDownList'..level..'Button'..i..'Highlight']
+			local text = _G['DropDownList'..level..'Button'..i..'NormalText']
 
 			highlight:SetTexture(E.Media.Textures.Highlight)
 			highlight:SetBlendMode('BLEND')
@@ -277,21 +278,21 @@ function S:BlizzardMiscFrames()
 			end
 
 			if not button.notCheckable then
+				S:HandlePointXY(text, 15)
 				uncheck:SetTexture()
 
-				local _, co = check:GetTexCoord()
-				if co == 0 then
-					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
-					check:SetVertexColor(r, g, b, 1)
-					check:Size(20)
-					check:SetDesaturated(true)
-					button.backdrop:SetInside(check, 4, 4)
-				else
+				if E.private.skins.checkBoxSkin then
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
 					check:Size(10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
+				else
+					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
+					check:SetVertexColor(r, g, b, 1)
+					check:Size(20)
+					check:SetDesaturated(true)
+					button.backdrop:SetInside(check, 4, 4)
 				end
 
 				button.backdrop:Show()

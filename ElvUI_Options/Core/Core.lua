@@ -30,18 +30,22 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	FontFlags = {
-		NONE = L["None"],
+	FontFlags = { -- should match in LibAceConfigHelper FontFlagValues
+		NONE = 'None',
 		OUTLINE = 'Outline',
 		THICKOUTLINE = 'Thick',
-		MONOCHROME = '|cffaaaaaaMono|r',
-		MONOCHROMEOUTLINE = '|cffaaaaaaMono|r Outline',
-		MONOCHROMETHICKOUTLINE = '|cffaaaaaaMono|r Thick',
+		SHADOW = '|cff888888Shadow|r',
+		SHADOWOUTLINE = '|cff888888Shadow|r Outline',
+		SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
+		MONOCHROME = '|cFFAAAAAAMono|r',
+		MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
+		MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
 	},
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
 	AllPositions = { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
-	SidePositions = { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
+	EdgePositions = { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },
+	SidePositions = { LEFT = 'LEFT', RIGHT = 'RIGHT' },
 	TextPositions = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' },
 	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
 	Anchors = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM' },

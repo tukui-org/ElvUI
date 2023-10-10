@@ -96,4 +96,5 @@ function S:Blizzard_TalentUI()
 
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
+
 S:AddCallbackForAddon('Blizzard_TalentUI')

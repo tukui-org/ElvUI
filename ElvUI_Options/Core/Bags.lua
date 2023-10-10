@@ -145,6 +145,11 @@ if E.Retail then
 	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = L["Soul Binds"]
 end
 
+Bags.args.general.args.spinnerGroup = ACH:Group(E.NewSign..L["Sort Spinner"], nil, 12, nil, function(info) return E.db.bags.spinner[info[#info]] end, function(info, value) E.db.bags.spinner[info[#info]] = value end)
+Bags.args.general.args.spinnerGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Bags.args.general.args.spinnerGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 20, max = 80, step = 1 })
+Bags.args.general.args.spinnerGroup.args.color = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.bags.spinner[info[#info]] local d = P.bags.spinner[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags.spinner[info[#info]] t.r, t.g, t.b = r, g, b end)
+
 Bags.args.colorGroup = ACH:Group(L["Colors"], nil, 2, nil, function(info) local t = E.db.bags.colors[info[#info - 1]][info[#info]] local d = P.bags.colors[info[#info - 1]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags.colors[info[#info - 1]][info[#info]] t.r, t.g, t.b = r, g, b B:UpdateBagColors(info[#info - 1], info[#info], r, g, b) B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
 Bags.args.colorGroup.args.general = ACH:Group(L["General"], nil, 0, nil, function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
 Bags.args.colorGroup.args.general.inline = true

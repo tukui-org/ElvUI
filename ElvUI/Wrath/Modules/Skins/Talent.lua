@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-local hooksecurefunc = hooksecurefunc
 
 local MAX_TALENT_TABS = MAX_TALENT_TABS
 
@@ -23,19 +22,6 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
 	_G.PlayerTalentFrameTab4:Point('TOPLEFT', _G.PlayerTalentFrameTab3, 'TOPRIGHT', -19, 0)
-
-	_G.PlayerTalentFrameRoleButton:ClearAllPoints()
-	_G.PlayerTalentFrameRoleButton:Point('TOPRIGHT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 0, 0)
-
-	hooksecurefunc('PlayerTalentFrameRole_UpdateRole', function(button)
-		local highlightTexture = button:GetHighlightTexture()
-		highlightTexture:ClearAllPoints()
-		highlightTexture:Point('TOPLEFT', button, 'TOPLEFT', 5, -5)
-		highlightTexture:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -5, 5)
-
-		button:SetHighlightTexture(E.media.normTex)
-		button:SetNormalTexture(E.Media.Textures.RoleIcons)
-	end)
 
 	for i = 1, MAX_TALENT_TABS do
 		local tab = _G['PlayerSpecTab'..i]
@@ -97,7 +83,6 @@ function S:Blizzard_TalentUI()
 
 	_G.PlayerTalentFramePointsBar:StripTextures()
 end
-S:AddCallbackForAddon('Blizzard_TalentUI')
 
 function S:Blizzard_GlyphUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
@@ -128,4 +113,6 @@ function S:Blizzard_GlyphUI()
 		_G.PlayerTalentFrameScrollFrame:Show()
 	end)
 end
+
+S:AddCallbackForAddon('Blizzard_TalentUI')
 S:AddCallbackForAddon('Blizzard_GlyphUI')

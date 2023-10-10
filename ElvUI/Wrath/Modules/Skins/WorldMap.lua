@@ -8,11 +8,24 @@ function S:WorldMapFrame()
 
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
-	WorldMapFrame.BorderFrame:SetTemplate('Transparent')
 
+	WorldMapFrame.BorderFrame:StripTextures()
+	WorldMapFrame.BorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.BorderFrame.backdrop:Point('TOPLEFT', 0, -0.5)
+
+	WorldMapFrame.MiniBorderFrame:StripTextures()
+	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -25)
+
+	S:HandleScrollBar(_G.QuestScrollFrame.ScrollBar)
+	S:HandleScrollBar(_G.QuestMapFrame.DetailsFrame.ScrollFrame.ScrollBar)
+	S:HandleCheckBox(_G.WorldMapTrackQuest)
+
+	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropDown)
 	S:HandleDropDownBox(_G.WorldMapContinentDropDown)
 	S:HandleDropDownBox(_G.WorldMapZoneDropDown)
+	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
 	_G.WorldMapContinentDropDown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
 	_G.WorldMapContinentDropDown:Width(205)
@@ -32,6 +45,7 @@ function S:WorldMapFrame()
 	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
 
 	S:HandleButton(_G.WorldMapZoomOutButton)
+	S:HandleSliderFrame(_G.OpacityFrameSlider)
 
 	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)

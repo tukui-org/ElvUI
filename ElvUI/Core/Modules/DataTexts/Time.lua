@@ -21,7 +21,6 @@ local GetSavedWorldBossInfo = GetSavedWorldBossInfo
 local GetWorldPVPAreaInfo = GetWorldPVPAreaInfo
 local RequestRaidInfo = RequestRaidInfo
 local SecondsToTime = SecondsToTime
-local InCombatLockdown = InCombatLockdown
 
 local QUEUE_TIME_UNAVAILABLE = QUEUE_TIME_UNAVAILABLE
 local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
@@ -91,7 +90,7 @@ local function CalculateTimeValues(tooltip)
 end
 
 local function OnClick(_, btn)
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
+	if E:AlertCombat() then return end
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)

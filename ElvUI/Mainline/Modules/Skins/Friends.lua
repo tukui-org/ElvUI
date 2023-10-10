@@ -34,10 +34,34 @@ local function BattleNetFrame_OnLeave(button)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
+local function RAFRewardQuality(button)
+	local color = button.item and button.item:GetItemQualityColor()
+	if color and button.Icon then
+		button.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
 local function RAFRewards()
+	local Claiming = _G.RecruitAFriendFrame.RewardClaiming
+	if Claiming and Claiming.NextRewardButton then
+		Claiming.NextRewardButton.Icon:SetDesaturation(0)
+	end
+
 	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
-		S:HandleIcon(reward.Button.Icon)
-		reward.Button.IconBorder:Kill()
+		local button = reward.Button
+		button:StyleButton(nil, true)
+		button.hover:SetAllPoints()
+		button.IconOverlay:SetAlpha(0)
+		button.IconBorder:SetAlpha(0)
+
+		local icon = button.Icon
+		icon:SetDesaturation(0)
+		S:HandleIcon(icon, true)
+
+		RAFRewardQuality(button)
+
+		local text = reward.Months
+		text:SetTextColor(1, 1, 1)
 	end
 end
 
@@ -332,10 +356,17 @@ function S:FriendsFrame()
 	local Claiming = RAF.RewardClaiming
 	Claiming:StripTextures()
 	Claiming:SetTemplate('Transparent')
-	S:HandleIcon(Claiming.NextRewardButton.Icon)
-	Claiming.NextRewardButton.CircleMask:Hide()
-	Claiming.NextRewardButton.IconBorder:Kill()
+	Claiming:Point('TOPLEFT', 4, -84)
+	Claiming.Background:SetAlpha(0)
+	Claiming.Watermark:SetAlpha(0)
 	S:HandleButton(Claiming.ClaimOrViewRewardButton)
+
+	local NextReward = Claiming.NextRewardButton
+	S:HandleIcon(NextReward.Icon, true)
+	NextReward.CircleMask:Hide()
+	NextReward.IconBorder:SetAlpha(0)
+	NextReward.IconOverlay:SetAlpha(0)
+	RAFRewardQuality(NextReward)
 
 	local RecruitList = RAF.RecruitList
 	RecruitList.Header:StripTextures()
@@ -355,6 +386,8 @@ function S:FriendsFrame()
 	local Reward = _G.RecruitAFriendRewardsFrame
 	Reward:StripTextures()
 	Reward:SetTemplate('Transparent')
+	Reward.Background:SetAlpha(0)
+	Reward.Watermark:SetAlpha(0)
 	S:HandleCloseButton(Reward.CloseButton)
 
 	hooksecurefunc(Reward, 'UpdateRewards', RAFRewards)

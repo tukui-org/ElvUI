@@ -4,9 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local select, wipe = select, wipe
 local format, pairs = format, pairs
-local GetInventoryItemDurability = GetInventoryItemDurability
 local ToggleCharacter = ToggleCharacter
-local InCombatLockdown = InCombatLockdown
+local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
 local GetMoneyString = GetMoneyString
@@ -80,8 +79,9 @@ local function OnEvent(self)
 end
 
 local function Click()
-	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	ToggleCharacter('PaperDollFrame')
+	if not E:AlertCombat() then
+		ToggleCharacter('PaperDollFrame')
+	end
 end
 
 local function OnEnter()
