@@ -10,7 +10,6 @@ local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
-local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local hooksecurefunc = hooksecurefunc
 
 E.CreatedMovers = {}
@@ -94,7 +93,7 @@ local function HandlePostDrag(self, event)
 end
 
 local function OnDragStart(self)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	if E:AlertCombat() then return end
 
 	if _G.ElvUIGrid then
 		E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1)
@@ -108,7 +107,7 @@ local function OnDragStart(self)
 end
 
 local function OnDragStop(self)
-	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+	if E:AlertCombat() then return end
 
 	if _G.ElvUIGrid and E.ConfigurationMode then
 		E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)

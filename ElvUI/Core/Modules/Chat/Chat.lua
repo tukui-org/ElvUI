@@ -337,15 +337,19 @@ do --this can save some main file locals
 		z['Player-4373-032FFEE2']		= itsSimpy -- Shaman:		Kalline
 		z['Player-4373-03351BC7']		= itsSimpy -- [Horde] DK:	Imsojelly
 		-- Luckyone (4440: Everlook, 4476: Gehennas, 4811: Giantstalker)
-		z['Player-4476-03BF41C9']	= ElvBlue -- [Horde] Hunter: Luckyone
-		z['Player-4476-049F4831']	= ElvBlue -- [Horde] DK: Luckygrip
-		z['Player-4440-037C92D4']	= ElvBlue -- [Alliance] Druid: Luckyone
-		z['Player-4440-037C7CC8']	= ElvBlue -- [Alliance] Priest: Luckypriest
-		z['Player-4440-03AD654A']	= ElvBlue -- [Alliance] Rogue: Luckyrogue
-		z['Player-4440-037C7E29']	= ElvBlue -- [Alliance] DK: Luckydk
-		z['Player-4440-03ADE2DF']	= ElvBlue -- [Alliance] Shaman: Luckykek
-		z['Player-4811-038DA128']	= ElvBlue -- [Alliance] Paladin: Luckyone
-		z['Luckyhunter-Everlook']	= ElvBlue -- [Alliance] Hunter
+		z['Player-4476-03BF41C9']		= ElvBlue -- [Horde] Hunter: Luckyone
+		z['Player-4476-049F4831']		= ElvBlue -- [Horde] DK: Luckygrip
+		z['Player-4440-037C7E29']		= ElvBlue -- [Alliance] DK: Luckydk
+		z['Player-4440-03ADE2DF']		= ElvBlue -- [Alliance] Shaman: Luckykek
+		z['Player-4811-038DA128']		= ElvBlue -- [Alliance] Paladin: Luckyone
+		z['Luckyone-Everlook']			= ElvBlue -- [Alliance] Druid
+		z['Luckypriest-Everlook']		= ElvBlue -- [Alliance] Priest
+		z['Luckyrogue-Everlook']		= ElvBlue -- [Alliance] Rogue
+		z['Luckyhunter-Everlook']		= ElvBlue -- [Alliance] Hunter
+		z['Luckydruid-Earthshaker']		= ElvBlue -- [Alliance] Druid
+		z['Luckypriest-Earthshaker']	= ElvBlue -- [Alliance] Priest
+		z['Luckydruid-Firemaw']			= ElvBlue -- [Alliance] Druid
+		z['Unluckyone-Firemaw']			= ElvBlue -- [Alliance] Priest
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -362,8 +366,8 @@ do --this can save some main file locals
 		z['Zinxbe-Spirestone']		= itsElv
 		z['Whorlock-Spirestone']	= itsElv
 		-- Blazeflack
-		z['Blazii-Silvermoon']	= ElvBlue -- Priest
-		z['Chazii-Silvermoon']	= ElvBlue -- Shaman
+		z['Blazii-Silvermoon']		= ElvBlue -- Priest
+		z['Chazii-Silvermoon']		= ElvBlue -- Shaman
 		-- Merathilis (1401: Shattrath/Garrosh)
 		z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
 		z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
@@ -380,7 +384,8 @@ do --this can save some main file locals
 		z['Player-1401-041C0AE2']	= ElvGreen	-- [Alliance] Hunter:	Róhal
 		z['Player-1401-05CEABFA']	= ElvRed	-- [Alliance] DK:		Jahzzy
 		-- Luckyone (1598: LaughingSkull)
-		z['Player-1598-0F5E4639']	= ElvBlue -- [Horde] Druid: 	Luckyone
+		z['Player-1598-0F5E4639']	= ElvBlue -- [Alliance] Druid: 	Luckyone
+		z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid:	Luckydruid
 		z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker: 	Luckyevoker
 		z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH: 		Luckydh
 		z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest: 	Luckypriest
@@ -393,44 +398,43 @@ do --this can save some main file locals
 		z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock: 	Luckywl
 		z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior: 	Notlucky
 		z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman: 	Unluckyone
-		z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid:	Luckydruid
 		-- Repooc
-		z['Sifpooc-Stormrage']			= itsPooc	-- [Alliance] DH
-		z['Fragmented-Stormrage']		= itsPooc	-- [Alliance] Warlock
-		z['Dapooc-Stormrage']			= itsPooc	-- [Alliance] Druid
-		z['Poocvoker-Stormrage']		= itsPooc	-- [Alliance] Evoker
-		z['Sifupooc-Stormrage']			= itsPooc	-- [Alliance] Monk
-		z['Pooc-Stormrage']				= itsPooc	-- [Alliance] Paladin
-		z['Repøøc-Stormrage']			= itsPooc	-- [Alliance] Shaman
+		z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
+		z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
+		z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
+		z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
+		z['Sifupooc-Stormrage']		= itsPooc	-- [Alliance] Monk
+		z['Pooc-Stormrage']			= itsPooc	-- [Alliance] Paladin
+		z['Repøøc-Stormrage']		= itsPooc	-- [Alliance] Shaman
 		-- Simpy (1168: Cenarius, 125: Cenarion Circle)
-		z['Player-1168-069A1283']		= itsSimpy -- Hunter:	Arieva
-		z['Player-1168-0698394A']		= itsSimpy -- Rogue:	Buddercup
-		z['Player-1168-069A3A12']		= itsSimpy -- Paladin:	Cutepally
-		z['Player-1168-0A99F54B']		= itsSimpy -- Mage:		Cuddle
-		z['Player-1168-0680170F']		= itsSimpy -- DK:		Ezek
-		z['Player-1168-06981C6F']		= itsSimpy -- Warrior:	Glice
-		z['Player-1168-0698066B']		= itsSimpy -- Shaman:	Kalline
-		z['Player-1168-06989ADF']		= itsSimpy -- Druid:	Puttietat
-		z['Player-1168-069837CD']		= itsSimpy -- Warlock:	Simpy
-		z['Player-1168-06984CD4']		= itsSimpy -- Monk:		Twigly
-		z['Player-1168-0A98C560']		= itsSimpy -- [Horde] Evoker:	Imsofire
-		z['Player-1168-090A34ED']		= itsSimpy -- [Horde] Shaman:	Imsobeefy
-		z['Player-1168-090A34E6']		= itsSimpy -- [Horde] Priest:	Imsocheesy
-		z['Player-1168-069838E1']		= itsSimpy -- [Horde] DK:		Imsojelly
-		z['Player-1168-0870FBCE']		= itsSimpy -- [Horde] Druid:	Imsojuicy
-		z['Player-1168-07C00783']		= itsSimpy -- [Horde] DH:		Imsopeachy
-		z['Player-1168-07B41C4C']		= itsSimpy -- [Horde] Paladin:	Imsosalty
-		z['Player-1168-0870F320']		= itsSimpy -- [Horde] Mage:		Imsospicy
-		z['Player-1168-0A395531']		= itsSimpy -- [Horde] Hunter:	Imsonutty
-		z['Player-1168-0A395540']		= itsSimpy -- [Horde] Monk:		Imsotasty
-		z['Player-1168-0A39554F']		= itsSimpy -- [Horde] Warlock:	Imsosaucy
-		z['Player-1168-0A395551']		= itsSimpy -- [Horde] Rogue:	Imsodrippy
-		z['Player-125-0A62DE05']		= itsSimpy -- [RP] Evoker:	Lumee
-		z['Player-125-09A7F9ED']		= itsSimpy -- [RP] Warrior:	Bunne
-		z['Player-125-09A8CC43']		= itsSimpy -- [RP] Monk:	Loppie
-		z['Player-125-09A7EB72']		= itsSimpy -- [RP] Mage:	Loppybunny
-		z['Player-125-09A7DAD9']		= itsSimpy -- [RP] DH:		Rubee
-		z['Player-125-09A8E282']		= itsSimpy -- [RP] Priest:	Wennie
+		z['Player-1168-069A1283']	= itsSimpy -- Hunter:	Arieva
+		z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup
+		z['Player-1168-069A3A12']	= itsSimpy -- Paladin:	Cutepally
+		z['Player-1168-0A99F54B']	= itsSimpy -- Mage:		Cuddle
+		z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
+		z['Player-1168-06981C6F']	= itsSimpy -- Warrior:	Glice
+		z['Player-1168-0698066B']	= itsSimpy -- Shaman:	Kalline
+		z['Player-1168-06989ADF']	= itsSimpy -- Druid:	Puttietat
+		z['Player-1168-069837CD']	= itsSimpy -- Warlock:	Simpy
+		z['Player-1168-06984CD4']	= itsSimpy -- Monk:		Twigly
+		z['Player-1168-0A98C560']	= itsSimpy -- [Horde] Evoker:	Imsofire
+		z['Player-1168-090A34ED']	= itsSimpy -- [Horde] Shaman:	Imsobeefy
+		z['Player-1168-090A34E6']	= itsSimpy -- [Horde] Priest:	Imsocheesy
+		z['Player-1168-069838E1']	= itsSimpy -- [Horde] DK:		Imsojelly
+		z['Player-1168-0870FBCE']	= itsSimpy -- [Horde] Druid:	Imsojuicy
+		z['Player-1168-07C00783']	= itsSimpy -- [Horde] DH:		Imsopeachy
+		z['Player-1168-07B41C4C']	= itsSimpy -- [Horde] Paladin:	Imsosalty
+		z['Player-1168-0870F320']	= itsSimpy -- [Horde] Mage:		Imsospicy
+		z['Player-1168-0A395531']	= itsSimpy -- [Horde] Hunter:	Imsonutty
+		z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
+		z['Player-1168-0A39554F']	= itsSimpy -- [Horde] Warlock:	Imsosaucy
+		z['Player-1168-0A395551']	= itsSimpy -- [Horde] Rogue:	Imsodrippy
+		z['Player-125-0A62DE05']	= itsSimpy -- [RP] Evoker:	Lumee
+		z['Player-125-09A7F9ED']	= itsSimpy -- [RP] Warrior:	Bunne
+		z['Player-125-09A8CC43']	= itsSimpy -- [RP] Monk:	Loppie
+		z['Player-125-09A7EB72']	= itsSimpy -- [RP] Mage:	Loppybunny
+		z['Player-125-09A7DAD9']	= itsSimpy -- [RP] DH:		Rubee
+		z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
 		-- Melbelle (Simpys Bestie)
 		z['Melbelle-Bladefist']		= itsMel -- Hunter
 		z['Deathchaser-Bladefist']	= itsMel -- DH
@@ -458,7 +462,7 @@ do --this can save some main file locals
 		z['Gur-Area52']				= itsThradex -- Horde
 		z['Archmage-Area52']		= itsThradex -- Horde
 		z['Counselor-Area52']		= itsThradex -- Horde
-		z['Psychiatrist-Area 52']	= itsThradex -- Horde
+		z['Psychiatrist-Area52']	= itsThradex -- Horde
 		z['Monk-CenarionCircle']	= itsThradex
 		z['Thradex-Stormrage']		= itsThradex
 		z['Wrecked-Stormrage']		= itsThradex
@@ -469,17 +473,17 @@ do --this can save some main file locals
 		z['Akavaya-BurningLegion']		= Gem
 		z['Athyneos-BurningLegion']		= Gem
 		-- Affinity
-		z['Affinichi-Illidan']	= Bathrobe
-		z['Affinitii-Illidan']	= Bathrobe
-		z['Affinity-Illidan']	= Bathrobe
-		z['Uplift-Illidan']		= Bathrobe
+		z['Affinichi-Illidan']		= Bathrobe
+		z['Affinitii-Illidan']		= Bathrobe
+		z['Affinity-Illidan']		= Bathrobe
+		z['Uplift-Illidan']			= Bathrobe
 		-- Tirain (NOTE: lol)
-		z['Tierone-Spirestone']	= TyroneBiggums
-		z['Tirain-Spirestone']	= TyroneBiggums
-		z['Sinth-Spirestone']	= TyroneBiggums
-		z['Tee-Spirestone']		= TyroneBiggums
-		z['Teepac-Area52']		= TyroneBiggums
-		z['Teekettle-Area52']	= TyroneBiggums
+		z['Tierone-Spirestone']		= TyroneBiggums
+		z['Tirain-Spirestone']		= TyroneBiggums
+		z['Sinth-Spirestone']		= TyroneBiggums
+		z['Tee-Spirestone']			= TyroneBiggums
+		z['Teepac-Area52']			= TyroneBiggums
+		z['Teekettle-Area52']		= TyroneBiggums
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		z['Twunk-Area52']			= itsMis
 		z['Twunkie-Area52']			= itsMis
@@ -497,7 +501,7 @@ do --this can save some main file locals
 		z['Bladesdruid-Spirestone']	= SuperBear
 		z['Rollerblade-Spirestone']	= SuperBear
 		--Bozaum
-		z['Bozaum-Spirestone']	= Beer
+		z['Bozaum-Spirestone']		= Beer
 	end
 end
 
@@ -650,7 +654,7 @@ do
 				if Name then
 					_G.ChatFrame_SendTell(Name, self.chatFrame)
 				else
-					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
+					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))

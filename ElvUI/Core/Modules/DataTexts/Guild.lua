@@ -23,7 +23,6 @@ local ToggleGuildFrame = ToggleGuildFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 
 local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
@@ -216,12 +215,12 @@ local function Click(self, btn)
 
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
-	elseif InCombatLockdown() then
-		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
-	elseif E.Retail then
-		ToggleGuildFrame()
-	else
-		ToggleFriendsFrame(3)
+	elseif not E:AlertCombat() then
+		if E.Retail then
+			ToggleGuildFrame()
+		else
+			ToggleFriendsFrame(3)
+		end
 	end
 end
 

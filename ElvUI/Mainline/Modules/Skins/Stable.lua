@@ -46,7 +46,6 @@ function S:PetStableFrame()
 	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.PetStableFrameInset:SetTemplate('Transparent')
 
-	S:HandleModelSceneControlButtons(_G.PetStableModelScene.ControlFrame)
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
 
