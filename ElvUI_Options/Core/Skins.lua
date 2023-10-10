@@ -124,17 +124,14 @@ if E.Retail then
 	blizzard.transmogrify = L["TRANSMOGRIFY"]
 	blizzard.voidstorage = L["VOID_STORAGE"]
 	blizzard.weeklyRewards = L["Weekly Rewards"]
-else
-	if E.Wrath then
-		blizzard.arena = L["Arena"]
-		blizzard.arenaRegistrar = L["Arena Registrar"]
-		blizzard.lfg = L["LFG_TITLE"]
-	elseif E.Classic then
-		blizzard.craft = L["Craft"]
-	end
-
-	-- classic / wrath
+elseif E.Wrath then
+	blizzard.arena = L["Arena"]
+	blizzard.arenaRegistrar = L["Arena Registrar"]
 	blizzard.battlefield = L["Battlefield"]
+	blizzard.lfg = L["LFG_TITLE"]
+elseif E.Classic then
+	blizzard.battlefield = L["Battlefield"]
+	blizzard.craft = L["Craft"]
 end
 
 if E.Retail or E.Wrath then
