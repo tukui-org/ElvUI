@@ -510,7 +510,7 @@ end
 
 do
 	local function NoCombat()
-		UIErrorsFrame:AddMessage(E.InfoColor..ERR_NOT_IN_COMBAT)
+		UIErrorsFrame:AddMessage(E.InfoColor .. ERR_NOT_IN_COMBAT)
 	end
 
 	function E:PLAYER_REGEN_DISABLED()
