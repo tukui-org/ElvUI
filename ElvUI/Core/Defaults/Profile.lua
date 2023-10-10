@@ -247,6 +247,7 @@ P.general = {
 		frameLevel = 20
 	},
 	guildBank = {
+		itemQuality = true,
 		itemLevel = true,
 		itemLevelThreshold = 1,
 		itemLevelFont = 'Homespun',

@@ -32,17 +32,30 @@ function B:GuildBank_ItemLevel(button)
 	if itemlink then
 		local _, _, rarity, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemlink)
 
+		if not E.Retail then
+			r, g, b = GetItemQualityColor(rarity)
+
+			if db.itemQuality then
+				button.IconBorder:SetVertexColor(r, g, b)
+				button.IconBorder:Show()
+			else
+				button.IconBorder:Hide()
+			end
+		end
+
 		local canShowItemLevel = Bags:IsItemEligibleForItemLevelDisplay(classID, subclassID, itemEquipLoc, rarity)
 		if canShowItemLevel then
 			local color = db.itemLevelCustomColorEnable and db.itemLevelCustomColor
 			if color then
 				r, g, b = color.r, color.g, color.b
-			else
+			elseif E.Retail then -- we already do this above otherwise
 				r, g, b = GetItemQualityColor(rarity)
 			end
 
 			ilvl = GetDetailedItemLevelInfo(itemlink)
 		end
+	elseif not E.Retail then
+		button.IconBorder:Hide()
 	end
 
 	button.itemLevel:SetText(ilvl and ilvl >= db.itemLevelThreshold and ilvl or '')
@@ -79,7 +92,7 @@ function B:ImproveGuildBank()
 	hooksecurefunc(_G.GuildBankFrame, 'Update', B.GuildBank_Update)
 
 	-- blizzard bug fix when trying to search after having the guild bank open
-	if E.Wrath then -- they copy pasted too much
+	if not E.Retail then -- they copy pasted too much
 		for i = 1, _G.MAX_GUILDBANK_TABS do
 			local tab = _G['GuildBankTab'..i]
 			local button = tab and tab.Button

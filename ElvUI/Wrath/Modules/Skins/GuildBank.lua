@@ -56,6 +56,8 @@ function S:Blizzard_GuildBankUI()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
+
+			S:HandleIconBorder(button.IconBorder)
 		end
 	end
 
