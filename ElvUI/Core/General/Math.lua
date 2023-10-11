@@ -1,15 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
+local next, wipe, ipairs = next, wipe, ipairs
 local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, mod
+local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-local CreateFrame = CreateFrame
 local GetPlayerFacing = GetPlayerFacing
-local UIParent = UIParent
 local UnitPosition = UnitPosition
 
 local C_Timer_After = C_Timer.After
@@ -308,44 +306,19 @@ function E:AbbreviateString(str, allUpper)
 	return newString
 end
 
-function E:WaitFunc(elapse)
-	local i = 1
-	while i <= #E.WaitTable do
-		local data = E.WaitTable[i]
-		if data[1] > elapse then
-			data[1], i = data[1] - elapse, i + 1
-		else
-			tremove(E.WaitTable, i)
-			data[2](unpack(data[3]))
-
-			if #E.WaitTable == 0 then
-				E.WaitFrame:Hide()
-			end
-		end
-	end
-end
-
-E.WaitTable = {}
-E.WaitFrame = CreateFrame('Frame', 'ElvUI_WaitFrame', UIParent)
-E.WaitFrame:SetScript('OnUpdate', E.WaitFunc)
-
---Add time before calling a function
-function E:Delay(delay, func, ...)
-	if type(delay) ~= 'number' or type(func) ~= 'function' then
-		return false
+do
+	local function CreateClosure(func, data)
+		return function() func(unpack(data)) end
 	end
 
-	-- Restrict to the lowest time that the C_Timer API allows us
-	if delay < 0.01 then delay = 0.01 end
+	function E:Delay(delay, func, ...)
+		if type(delay) ~= 'number' or type(func) ~= 'function' then return false end
 
-	if select('#', ...) <= 0 then
-		C_Timer_After(delay, func)
-	else
-		tinsert(E.WaitTable,{delay,func,{...}})
-		E.WaitFrame:Show()
+		-- delay: Restrict to the lowest time that the API allows us
+		C_Timer_After(delay < 0.01 and 0.01 or delay, (select('#', ...) <= 0 and func) or CreateClosure(func, {...}))
+
+		return true
 	end
-
-	return true
 end
 
 function E:StringTitle(str)

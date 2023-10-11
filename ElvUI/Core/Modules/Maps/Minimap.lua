@@ -49,10 +49,14 @@ local menuList = {
 	{ text = _G.GUILD, func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
-if E.Retail then
-	tinsert(menuList, { text = _G.LFG_TITLE, func = _G.ToggleLFDParentFrame })
-elseif E.Wrath then
-	tinsert(menuList, { text = _G.LFG_TITLE, func = function() if not IsAddOnLoaded('Blizzard_LookingForGroupUI') then UIParentLoadAddOn('Blizzard_LookingForGroupUI') end _G.ToggleLFGParentFrame() end })
+if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
+	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = _G.TogglePVPFrame })
+end
+
+if E.Retail or E.Wrath then
+	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
+	tinsert(menuList, { text = _G.LFG_TITLE, func = E.Retail and _G.ToggleLFDParentFrame or _G.PVEFrame_ToggleFrame })
+	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
 end
 
 if E.Retail then
@@ -60,18 +64,7 @@ if E.Retail then
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
 	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end})
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
-end
-
-if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
-	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = _G.TogglePVPFrame })
-end
-
-if E.Retail or E.Wrath then
-	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
-	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
-end
-
-if not E.Retail then
+else
 	tinsert(menuList, { text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end})
 end
 
