@@ -2,25 +2,42 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local unpack, pairs = unpack, pairs
 
 local HasPetUI = HasPetUI
-local GetPetHappiness = GetPetHappiness
-local GetInventoryItemQuality = GetInventoryItemQuality
-local GetItemQualityColor = GetItemQualityColor
 local GetNumFactions = GetNumFactions
+local GetPetHappiness = GetPetHappiness
+local GetItemQualityColor = GetItemQualityColor
+local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local hooksecurefunc = hooksecurefunc
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
-local hooksecurefunc = hooksecurefunc
 
 local ResistanceCoords = {
-	[1] = { 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-	[2] = { 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-	[3] = { 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-	[4] = { 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-	[5] = { 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
+	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
+	{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
+	{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
+	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
+
+local function HandleTabs()
+	local lastTab
+	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+		end
+
+		lastTab = tab
+	end
+end
 
 local function HandleHappiness(frame)
 	local happiness = GetPetHappiness()
@@ -76,18 +93,8 @@ function S:CharacterFrame()
 	end
 
 	-- Reposition Tabs
-	_G.CharacterFrameTab1:ClearAllPoints()
-	_G.CharacterFrameTab1:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
-
-	if E.myclass == 'HUNTER' or E.myclass == 'WARLOCK' then
-		_G.CharacterFrameTab2:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
-		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab2, 'TOPRIGHT', -19, 0)
-	else
-		_G.CharacterFrameTab3:Point('TOPLEFT', _G.CharacterFrameTab1, 'TOPRIGHT', -19, 0)
-	end
-
-	_G.CharacterFrameTab4:Point('TOPLEFT', _G.CharacterFrameTab3, 'TOPRIGHT', -19, 0)
-	_G.CharacterFrameTab5:Point('TOPLEFT', _G.CharacterFrameTab4, 'TOPRIGHT', -19, 0)
+	hooksecurefunc('PetTab_Update', HandleTabs)
+	HandleTabs()
 
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
