@@ -113,7 +113,6 @@ end
 local function OnEvent(self, event)
 	if delayed then return end
 
-	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
 	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle, self)
 end
 
