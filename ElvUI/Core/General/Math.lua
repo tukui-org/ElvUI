@@ -1,15 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
-local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
+local next, wipe, ipairs = next, wipe, ipairs
 local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, mod
+local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-local CreateFrame = CreateFrame
 local GetPlayerFacing = GetPlayerFacing
-local UIParent = UIParent
 local UnitPosition = UnitPosition
 
 local C_Timer_After = C_Timer.After

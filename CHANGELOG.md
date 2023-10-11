@@ -1,3 +1,8 @@
+## Version 13.44 \[ October 10th 2023 \]
+*   Shadow outline causing problems.
+*   Group Finder option in Minimap middle-click dropdown now works.
+*   Math delay function updated to prevent errors due to long-running script.
+
 ## Version 13.43 \[ October 10th 2023 \]
 *   Quest Rewards Complete page border misaligned.
 *   Weapon Enchants not updating correctly on Retail.
