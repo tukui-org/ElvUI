@@ -44,7 +44,7 @@ local function CreateButton(frame, i)
 
 	local text = button:CreateFontString(nil, 'BORDER')
 	text:SetAllPoints()
-	text:FontTemplate(nil, nil, 'NONE')
+	text:FontTemplate(nil, nil, 'SHADOW')
 	text:SetJustifyH('LEFT')
 	button.text = text
 
