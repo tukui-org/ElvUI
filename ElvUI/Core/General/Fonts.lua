@@ -12,10 +12,9 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 		style = ''
 	end
 
-	local shadow
-	if strsub(style, 0, 6) == 'SHADOW' then
-		style = strsub(style, 7) -- shadow isnt a real style
-		shadow = true
+	local shadow = strsub(style, 0, 6) == 'SHADOW'
+	if shadow then -- shadow isnt a real style
+		style = strsub(style, 7)
 	end
 
 	obj:SetFont(font, size, style)
