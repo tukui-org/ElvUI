@@ -79,7 +79,7 @@ function E:UpdateBlizzardFonts()
 		local small		= size * 0.9
 		local tiny		= size * 0.8
 
-		local prefix = (strmatch(style, 'SHADOW') and 'SHADOW' or '') or (strmatch(style, 'MONOCHROME') and 'MONOCHROME' or '')
+		local prefix = (strmatch(style, '(SHADOW)') or '') or (strmatch(style, '(MONOCHROME)') or '')
 		local thick, outline = prefix..'THICKOUTLINE', prefix..'OUTLINE'
 
 		E:SetFont(_G.AchievementFont_Small,					NORMAL, stock and small or size)				-- 10  Achiev dates
