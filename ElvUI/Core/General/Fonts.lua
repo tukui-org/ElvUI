@@ -151,8 +151,8 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, 22, outline)
 		E:SetFont(_G.QuestFont,								NORMAL, size)									-- 13
 		E:SetFont(_G.QuestFont_Large,						NORMAL, stock and large or 14)					-- 14
-		E:SetFont(_G.QuestFont_Larger,						NORMAL, 16)										-- 16  Wrath
-		E:SetFont(_G.QuestFont_39,							NORMAL, 39)										-- 39  Wrath
+		E:SetFont(_G.QuestFont_Larger,						NORMAL, 16)										-- Wrath
+		E:SetFont(_G.QuestFont_39,							NORMAL, 39)										-- Wrath
 		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
 		E:SetFont(_G.QuestFont_Super_Huge,					NORMAL, stock and mega or 22)					-- 24
 		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
