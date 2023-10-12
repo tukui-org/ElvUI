@@ -1007,7 +1007,7 @@ function TT:Initialize()
 
 	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
 	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar, 0, -1)
+	statusText:Point('CENTER', statusBar)
 	statusBar.text = statusText
 
 	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
