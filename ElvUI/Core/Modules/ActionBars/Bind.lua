@@ -115,57 +115,53 @@ function AB:BindListener(key)
 
 	self:BindUpdate(bind.button, bind.spellmacro)
 
-	if bind.spellmacro~='MACRO' and bind.spellmacro~='FLYOUT' and not _G.GameTooltip:IsForbidden() then
+	if bind.spellmacro ~= 'MACRO' and bind.spellmacro ~= 'FLYOUT' and not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide()
 	end
 end
 
-function AB:DisplayBindsTooltip()
-	GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-	GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
-	GameTooltip:AddLine(bind.name, 1, 1, 1)
-end
+function AB:DisplayBindings(tt)
+	tt:SetOwner(bind, 'ANCHOR_TOP')
+	tt:Point('BOTTOM', bind, 'TOP', 0, 1)
+	tt:AddLine(bind.name, 1, 1, 1)
 
-function AB:DisplayBindings()
-	if #bind.button.bindings == 0 then
-		GameTooltip:AddLine(L["No bindings set."], .6, .6, .6)
+	local numBinds = #bind.button.bindings
+	if numBinds == 0 then
+		tt:AddLine(L["No bindings set."], .6, .6, .6)
 	else
-		GameTooltip:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-		for i = 1, #bind.button.bindings do
-			GameTooltip:AddDoubleLine(L["Binding"]..i, bind.button.bindings[i], 1, 1, 1)
+		tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
+
+		for i = 1, numBinds do
+			tt:AddDoubleLine(L["Binding"]..i, bind.button.bindings[i], 1, 1, 1)
 		end
+	end
+
+	tt:Show()
+end
+
+function AB:ShowBinds()
+	if self.handlingBinds and not self:IsForbidden() then
+		AB:DisplayBindings(self)
+
+		self.handlingBinds = nil
 	end
 end
 
-do
-	local function OnHide(tt)
-		AB:DisplayBindsTooltip()
-		AB:DisplayBindings()
+function AB:BindTooltip(trigger)
+	if GameTooltip:IsForbidden() then return end
 
-		tt:Show()
-		tt:SetScript('OnHide', nil)
-	end
-
-	function AB:BindTooltip(triggerTooltip)
-		if GameTooltip:IsForbidden() then return end
-
-		if triggerTooltip then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
-			AB:DisplayBindsTooltip()
-			GameTooltip:AddLine(L["Trigger"])
-
-			GameTooltip:Show()
-			GameTooltip:SetScript('OnHide', OnHide)
-		else
-			AB:DisplayBindsTooltip()
-			AB:DisplayBindings()
-			GameTooltip:Show()
-		end
+	if trigger then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
+		GameTooltip:AddLine(L["Trigger"])
+		GameTooltip:Show()
+		GameTooltip.handlingBinds = true
+	else
+		AB:DisplayBindings(GameTooltip)
 	end
 end
 
 function AB:BindUpdate(button, spellmacro)
 	if not bind.active or InCombatLockdown() then return end
-	local triggerTooltip = false
+	local trigger = false
 
 	bind.button = button
 	bind.spellmacro = spellmacro
@@ -198,17 +194,17 @@ function AB:BindUpdate(button, spellmacro)
 	elseif spellmacro == 'MICRO' then
 		bind.name = button.tooltipText
 		button.bindstring = button.commandName
-		triggerTooltip = true
+		trigger = true
 	elseif spellmacro == 'BAG' then
 		if button.itemID then
 			bind.name = button.name
 			button.bindstring = 'ITEM item:'..button.itemID
-			triggerTooltip = true
+			trigger = true
 		end
 	else
 		bind.name = button:GetName()
 		if not bind.name then return end
-		triggerTooltip = true
+		trigger = true
 
 		if button.keyBoundTarget then
 			button.bindstring = button.keyBoundTarget
@@ -235,7 +231,7 @@ function AB:BindUpdate(button, spellmacro)
 
 	if button.bindstring then
 		button.bindings = { GetBindingKey(button.bindstring) }
-		AB:BindTooltip(triggerTooltip)
+		AB:BindTooltip(trigger)
 	end
 end
 
@@ -319,6 +315,8 @@ function AB:LoadKeyBinder()
 	bind.texture:SetAllPoints(bind)
 	bind.texture:SetColorTexture(0, 0, 0, .25)
 	bind:Hide()
+
+	hooksecurefunc(GameTooltip, 'Hide', AB.ShowBinds) -- helper for BindTooltip
 
 	if E.Retail then
 		hooksecurefunc(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)

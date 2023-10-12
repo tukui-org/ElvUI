@@ -112,7 +112,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		TT:SetCompareItems(tt, false)
-		tt:Hide()
+		tt:Hide() -- during kb mode this will trigger AB.ShowBinds
 		return
 	end
 
