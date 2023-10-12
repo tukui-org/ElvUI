@@ -24,7 +24,7 @@ function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	-- Blizzard frame we want to reskin
-	for _, frame in next, { _G.AutoCompleteBox, _G.ReadyCheckFrame } do
+	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame, _G.ReadyCheckFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end

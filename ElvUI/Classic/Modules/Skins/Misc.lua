@@ -23,15 +23,10 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	-- Blizzard frame we want to reskin
-	local skins = {
-		'AutoCompleteBox',
-		'ReadyCheckFrame'
-	}
 
-	for i = 1, #skins do
-		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:SetTemplate('Transparent')
+	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame, _G.ReadyCheckFrame } do
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
 	end
 
 	-- here we reskin all 'normal' buttons
