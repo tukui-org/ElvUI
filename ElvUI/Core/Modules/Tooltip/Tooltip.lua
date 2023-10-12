@@ -186,7 +186,7 @@ function TT:RemoveTrashLines(tt)
 		if not linetext then
 			break
 		elseif linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
-			tiptext:Hide()
+			tiptext:SetText('')
 		end
 	end
 end
@@ -329,7 +329,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			local classText = creatureType and classLine and classLine:GetText()
 			if creatureType == classText then -- we dont want to show creatureType two times
-				classLine:Hide() -- so just hide this one, we put it on the level line
+				classLine:SetText('') -- so just hide this one, we put it on the level line
 			end
 		end
 
@@ -1007,7 +1007,7 @@ function TT:Initialize()
 
 	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
 	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar, 0, 0)
+	statusText:Point('CENTER', statusBar)
 	statusBar.text = statusText
 
 	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
