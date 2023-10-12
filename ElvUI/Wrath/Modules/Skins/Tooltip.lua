@@ -12,7 +12,6 @@ function S:StyleTooltips()
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
-		_G.AutoCompleteBox,
 		_G.FriendsTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.ReputationParagonTooltip,
