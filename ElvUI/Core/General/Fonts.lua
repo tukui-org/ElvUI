@@ -147,8 +147,8 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.NumberFont_Shadow_Small,				NORMAL, stock and small or size, 'SHADOW')		-- 12
 		E:SetFont(_G.NumberFontNormalSmall,					NORMAL, stock and small or 11, 'OUTLINE')		-- 12  Calendar, EncounterJournal
 		E:SetFont(_G.PriceFont,								NORMAL, 13)
-		E:SetFont(_G.PVPArenaTextString,					NORMAL, 22, outline, nil, nil, nil, nil, 0, 0)
-		E:SetFont(_G.PVPInfoTextString,						NORMAL, 22, outline, nil, nil, nil, nil, 0, 0)
+		E:SetFont(_G.PVPArenaTextString,					NORMAL, 22, outline)
+		E:SetFont(_G.PVPInfoTextString,						NORMAL, 22, outline)
 		E:SetFont(_G.QuestFont,								NORMAL, size)									-- 13
 		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
 		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
