@@ -91,7 +91,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Fancy14Font,							NORMAL, 14)										-- Added in 7.3.5 used for ?
 		E:SetFont(_G.Fancy22Font,							NORMAL, stock and 22 or 20)						-- Talking frame Title font
 		E:SetFont(_G.Fancy24Font,							NORMAL, stock and 24 or 20)						-- Artifact frame - weapon name
-		E:SetFont(_G.FriendsFont_11,						NORMAL, 11)
+		E:SetFont(_G.FriendsFont_11,						NORMAL, 11, 'SHADOW')
 		E:SetFont(_G.FriendsFont_Large,						NORMAL, stock and large or size, 'SHADOW')		-- 14
 		E:SetFont(_G.FriendsFont_Normal,					NORMAL, size, 'SHADOW')							-- 12
 		E:SetFont(_G.FriendsFont_Small,						NORMAL, stock and small or size, 'SHADOW')		-- 10
@@ -131,14 +131,14 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number12Font,							NORMAL, 12)
 		E:SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
 		E:SetFont(_G.Number13Font,							NUMBER, 13)
-		E:SetFont(_G.Number13FontGray,						NUMBER, 13)
-		E:SetFont(_G.Number13FontWhite,						NUMBER, 13)
-		E:SetFont(_G.Number13FontYellow,					NUMBER, 13)
-		E:SetFont(_G.Number14FontGray,						NUMBER, 14)
-		E:SetFont(_G.Number14FontWhite,						NUMBER, 14)
+		E:SetFont(_G.Number13FontGray,						NUMBER, 13, 'SHADOW')
+		E:SetFont(_G.Number13FontWhite,						NUMBER, 13, 'SHADOW')
+		E:SetFont(_G.Number13FontYellow,					NUMBER, 13, 'SHADOW')
+		E:SetFont(_G.Number14FontGray,						NUMBER, 14, 'SHADOW')
+		E:SetFont(_G.Number14FontWhite,						NUMBER, 14, 'SHADOW')
 		E:SetFont(_G.Number15Font,							NORMAL, 15)
 		E:SetFont(_G.Number18Font,							NUMBER, 18)
-		E:SetFont(_G.Number18FontWhite,						NUMBER, 18)
+		E:SetFont(_G.Number18FontWhite,						NUMBER, 18, 'SHADOW')
 		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, stock and huge or 28, thick)			-- 30
 		E:SetFont(_G.NumberFont_Outline_Large,				NUMBER, stock and large or 15, outline)			-- 16
 		E:SetFont(_G.NumberFont_Outline_Med,				NUMBER, medium, 'OUTLINE')						-- 14
@@ -150,12 +150,16 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.PVPArenaTextString,					NORMAL, 22, outline)
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, 22, outline)
 		E:SetFont(_G.QuestFont,								NORMAL, size)									-- 13
-		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
-		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
 		E:SetFont(_G.QuestFont_Large,						NORMAL, stock and large or 14)					-- 14
-		E:SetFont(_G.QuestFont_Shadow_Huge,					NORMAL, stock and huge or 15, 'SHADOW')			-- 18  Quest Title
-		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, stock and size or 14, 'SHADOW')			-- 14
+		E:SetFont(_G.QuestFont_Larger,						NORMAL, 16)										-- Wrath
+		E:SetFont(_G.QuestFont_39,							NORMAL, 39)										-- Wrath
+		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
 		E:SetFont(_G.QuestFont_Super_Huge,					NORMAL, stock and mega or 22)					-- 24
+		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
+		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, stock and size or 14, 'SHADOW', 0.49, 0.35, 0.05, 1)	-- 14
+		E:SetFont(_G.QuestFont_Shadow_Huge,					NORMAL, stock and huge or 15, 'SHADOW', 0.49, 0.35, 0.05, 1)	-- 18  Quest Title
+		E:SetFont(_G.QuestFont_Shadow_Super_Huge,			NORMAL, stock and mega or 22, 'SHADOW', 0.49, 0.35, 0.05, 1)
+		E:SetFont(_G.QuestFont_Shadow_Enormous,				NORMAL, stock and enormous or 24, 'SHADOW', 0.49, 0.35, 0.05, 1)
 		E:SetFont(_G.ReputationDetailFont,					NORMAL, size, 'SHADOW')							-- 10  Rep Desc when clicking a rep
 		E:SetFont(_G.SpellFont_Small,						NORMAL, 10)
 		E:SetFont(_G.SubSpellFont,							NORMAL, 10)										-- Spellbook Sub Names
