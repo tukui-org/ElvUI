@@ -150,12 +150,16 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.PVPArenaTextString,					NORMAL, 22, outline)
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, 22, outline)
 		E:SetFont(_G.QuestFont,								NORMAL, size)									-- 13
-		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
-		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
 		E:SetFont(_G.QuestFont_Large,						NORMAL, stock and large or 14)					-- 14
-		E:SetFont(_G.QuestFont_Shadow_Huge,					NORMAL, stock and huge or 15, 'SHADOW', 0.49, 0.35, 0.50, 1)	-- 18  Quest Title
-		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, stock and size or 14, 'SHADOW', 0.49, 0.35, 0.50, 1)	-- 14
+		E:SetFont(_G.QuestFont_Larger,						NORMAL, 16)										-- 16  Wrath
+		E:SetFont(_G.QuestFont_39,							NORMAL, 39)										-- 39  Wrath
+		E:SetFont(_G.QuestFont_Huge,						NORMAL, stock and huge or 15)					-- 18  Quest rewards title, Rewards
 		E:SetFont(_G.QuestFont_Super_Huge,					NORMAL, stock and mega or 22)					-- 24
+		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, stock and enormous or 24)				-- 30  Garrison Titles
+		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, stock and size or 14, 'SHADOW', 0.49, 0.35, 0.05, 1)	-- 14
+		E:SetFont(_G.QuestFont_Shadow_Huge,					NORMAL, stock and huge or 15, 'SHADOW', 0.49, 0.35, 0.05, 1)	-- 18  Quest Title
+		E:SetFont(_G.QuestFont_Shadow_Super_Huge,			NORMAL, stock and mega or 22, 'SHADOW', 0.49, 0.35, 0.05, 1)
+		E:SetFont(_G.QuestFont_Shadow_Enormous,				NORMAL, stock and enormous or 24, 'SHADOW', 0.49, 0.35, 0.05, 1)
 		E:SetFont(_G.ReputationDetailFont,					NORMAL, size, 'SHADOW')							-- 10  Rep Desc when clicking a rep
 		E:SetFont(_G.SpellFont_Small,						NORMAL, 10)
 		E:SetFont(_G.SubSpellFont,							NORMAL, 10)										-- Spellbook Sub Names
