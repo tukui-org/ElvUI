@@ -1252,7 +1252,7 @@ P.tooltip = {
 		height = 7,
 		font = 'Homespun',
 		fontSize = 10,
-		fontOutline = 'OUTLINE',
+		fontOutline = 'MONOCHROMEOUTLINE',
 		statusPosition = 'BOTTOM',
 	},
 	useCustomFactionColors = false,
