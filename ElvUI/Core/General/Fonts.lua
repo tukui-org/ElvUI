@@ -160,7 +160,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SpellFont_Small,						NORMAL, 10)
 		E:SetFont(_G.SubSpellFont,							NORMAL, 10)										-- Spellbook Sub Names
 		E:SetFont(_G.SubZoneTextFont,						NORMAL, 24, outline)							-- 26  WorldMap, SubZone
-		E:SetFont(_G.SubZoneTextString,						NORMAL, 25, outline, nil, nil, nil, nil, 0, 0)	-- 26
+		E:SetFont(_G.SubZoneTextString,						NORMAL, 25, outline)							-- 26
 		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, 20)										-- Garrison Mission XP
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, 18, outline)							-- 20  Garrison Mission Chance
 		E:SetFont(_G.SystemFont_Huge2,						NORMAL, 22)										-- 22  Mythic+ Score
@@ -185,6 +185,6 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Tiny,						NORMAL, stock and tiny or size)					-- 09
 		E:SetFont(_G.Tooltip_Med,							NORMAL, size)									-- 12
 		E:SetFont(_G.Tooltip_Small,							NORMAL, stock and small or size)				-- 10
-		E:SetFont(_G.ZoneTextString,						NORMAL, stock and enormous or 32, outline, nil, nil, nil, nil, 0, 0)	-- 32
+		E:SetFont(_G.ZoneTextString,						NORMAL, stock and enormous or 32, outline)		-- 32
 	end
 end
