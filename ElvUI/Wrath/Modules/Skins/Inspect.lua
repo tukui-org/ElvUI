@@ -139,27 +139,6 @@ function S:Blizzard_InspectUI()
 
 		_G['InspectPVPTeam'..i..'Highlight']:Kill()
 	end
-
-	local PVPTeamDetails = _G.PVPTeamDetails
-	PVPTeamDetails:StripTextures()
-	PVPTeamDetails:SetTemplate('Transparent')
-	PVPTeamDetails:Point('TOPLEFT', InspectPVPFrame, 'TOPRIGHT', -30, -12)
-
-	for i = 1, 5 do
-		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
-		header:StripTextures()
-		header:StyleButton()
-	end
-
-	for i = 1, 10 do
-		local button = _G['PVPTeamDetailsButton'..i]
-		button:Width(335)
-		S:HandleButtonHighlight(button)
-	end
-
-	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
-	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
-	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')

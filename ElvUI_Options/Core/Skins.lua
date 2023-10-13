@@ -61,10 +61,6 @@ if E.Wrath or E.Retail then
 	toggles.pvp = L["PvP Frames"]
 end
 
-if E.Wrath or E.Classic then
-	toggles.battlefield = L["Battlefield"]
-end
-
 if E.Retail then
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
@@ -116,6 +112,7 @@ elseif E.Wrath then
 	toggles.arenaRegistrar = L["Arena Registrar"]
 	toggles.lfg = L["LFG_TITLE"]
 elseif E.Classic then
+	toggles.battlefield = L["Battlefield"]
 	toggles.craft = L["Craft"]
 end
 
