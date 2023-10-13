@@ -19,6 +19,14 @@ local sort, strmatch, strsplit = sort, strmatch, strsplit
 local format, gsub, ipairs, pairs = format, gsub, ipairs, pairs
 local tconcat, tinsert, tremove = table.concat, tinsert, tremove
 
+local UnitName = UnitName
+local UnitExists = UnitExists
+local UnitIsUnit = UnitIsUnit
+local UnitIsFriend = UnitIsFriend
+local UnitIsPlayer = UnitIsPlayer
+local GameTooltip_Hide = GameTooltip_Hide
+local ACH = E.Libs.ACH
+
 C.Values = {
 	GrowthDirection = {
 		DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
@@ -30,17 +38,7 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	FontFlags = { -- should match in LibAceConfigHelper FontFlagValues
-		NONE = 'None',
-		OUTLINE = 'Outline',
-		THICKOUTLINE = 'Thick',
-		SHADOW = '|cff888888Shadow|r',
-		SHADOWOUTLINE = '|cff888888Shadow|r Outline',
-		SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
-		MONOCHROME = '|cFFAAAAAAMono|r',
-		MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
-		MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
-	},
+	FontFlags = ACH.FontValues,
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
 	AllPositions = { LEFT = 'LEFT', RIGHT = 'RIGHT', TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' },
@@ -127,14 +125,6 @@ end
 if E.private.skins.ace3Enable then
 	S:Ace3_ColorizeEnable(L)
 end
-
-local UnitName = UnitName
-local UnitExists = UnitExists
-local UnitIsUnit = UnitIsUnit
-local UnitIsFriend = UnitIsFriend
-local UnitIsPlayer = UnitIsPlayer
-local GameTooltip_Hide = GameTooltip_Hide
-local ACH = E.Libs.ACH
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
