@@ -1,10 +1,22 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 10
+local MAJOR, MINOR = 'LibAceConfigHelper', 11
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
 if not ACH then return end
 local type, pairs = type, pairs
+
+ACH.FontValues = {
+	NONE = 'None',
+	OUTLINE = 'Outline',
+	THICKOUTLINE = 'Thick',
+	SHADOW = '|cff888888Shadow|r',
+	SHADOWOUTLINE = '|cff888888Shadow|r Outline',
+	SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
+	MONOCHROME = '|cFFAAAAAAMono|r',
+	MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
+	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
+}
 
 local function insertWidth(opt, width)
 	if type(width) == 'number' and width > 5 then
@@ -152,20 +164,8 @@ function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hid
 	return SharedMediaSelect('LSM30_Border', name, desc, order, function() return LSM:HashTable('border') end, width, get, set, disabled, hidden)
 end
 
-local FontFlagValues = {
-	NONE = 'None',
-	OUTLINE = 'Outline',
-	THICKOUTLINE = 'Thick',
-	SHADOW = '|cff888888Shadow|r',
-	SHADOWOUTLINE = '|cff888888Shadow|r Outline',
-	SHADOWTHICKOUTLINE = '|cff888888Shadow|r Thick',
-	MONOCHROME = '|cFFAAAAAAMono|r',
-	MONOCHROMEOUTLINE = '|cFFAAAAAAMono|r Outline',
-	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
-}
-
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
-	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues, sortByValue = true }
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = ACH.FontValues, sortByValue = true }
 
 	if width then insertWidth(optionTable, width) end
 

@@ -245,15 +245,6 @@ function AB:ChangeBindingProfile()
 	end
 end
 
-local function keybindButtonClick()
-	if InCombatLockdown() then return end
-
-	AB:ActivateBindMode()
-
-	HideUIPanel(_G.KeyBindingFrame)
-	HideUIPanel(_G.GameMenuFrame)
-end
-
 do
 	local function OnEnter(button)
 		AB:BindUpdate(button, 'MACRO')
@@ -283,6 +274,14 @@ do
 end
 
 do
+	local function keybindButtonClick()
+		if InCombatLockdown() then return end
+
+		AB:ActivateBindMode()
+
+		HideUIPanel(_G.SettingsPanel)
+	end
+
 	local function UpdateScrollBox(scrollBox)
 		for _, element in next, { scrollBox.ScrollTarget:GetChildren() } do
 			local data = element and element.data
@@ -302,6 +301,8 @@ do
 
 		UpdateScrollBox(list.ScrollBox)
 		hooksecurefunc(list.ScrollBox, 'Update', UpdateScrollBox)
+
+		AB:Unhook(_G.SettingsPanel, 'DisplayCategory')
 	end
 end
 
@@ -316,10 +317,10 @@ function AB:LoadKeyBinder()
 	bind.texture:SetColorTexture(0, 0, 0, .25)
 	bind:Hide()
 
-	hooksecurefunc(GameTooltip, 'Hide', AB.ShowBinds) -- helper for BindTooltip
+	AB:SecureHook(GameTooltip, 'Hide', AB.ShowBinds) -- helper for BindTooltip
 
 	if E.Retail then
-		hooksecurefunc(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
+		AB:SecureHook(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
 	end
 
 	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)

@@ -6,7 +6,6 @@
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='BGScore.lua'/>
-	<Script file='Binding.lua'/>
 	<Script file='BlizzardOptions.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>

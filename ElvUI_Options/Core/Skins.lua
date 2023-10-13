@@ -59,6 +59,7 @@ if E.Wrath or E.Retail then
 	toggles.collections = L["COLLECTIONS"]
 	toggles.gbank = L["Guild Bank"]
 	toggles.pvp = L["PvP Frames"]
+	toggles.lfg = L["LFG_TITLE"]
 end
 
 if E.Retail then
@@ -110,7 +111,6 @@ if E.Retail then
 elseif E.Wrath then
 	toggles.arena = L["Arena"]
 	toggles.arenaRegistrar = L["Arena Registrar"]
-	toggles.lfg = L["LFG_TITLE"]
 elseif E.Classic then
 	toggles.battlefield = L["Battlefield"]
 	toggles.craft = L["Craft"]
