@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
+local ACH = E.Libs.ACH
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
 	version = tonumber(GetAddOnMetadata('ElvUI_Options', 'Version')),
@@ -25,7 +26,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local GameTooltip_Hide = GameTooltip_Hide
-local ACH = E.Libs.ACH
 
 C.Values = {
 	GrowthDirection = {
