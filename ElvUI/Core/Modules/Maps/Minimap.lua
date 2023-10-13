@@ -54,13 +54,13 @@ if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
 end
 
 if E.Retail or E.Wrath then
+	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
 	tinsert(menuList, { text = _G.LFG_TITLE, func = E.Retail and _G.ToggleLFDParentFrame or _G.PVEFrame_ToggleFrame })
 	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
 end
 
 if E.Retail then
-	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
 	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
 	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end})
 	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })

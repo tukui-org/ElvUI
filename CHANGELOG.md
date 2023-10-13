@@ -1,3 +1,15 @@
+## Version 13.45 \[ October 13th 2023 \]
+*   Character tabs fixed for pet classes without pets.
+*   Collections added to Minimap middle-click dropdown on Wrath.
+*   Compare tooltips no longer get stuck in Keybind Mode.
+*   Tooltip no longer duplicates creature type on Retail.
+*   Priests' Mind Control bar should now be visible again on Classic (nopossessbar removed from visibility).
+*   Tooltip Health Bar font defaults changed (Tooltip > General > Health Bar).
+*   Missing font shadows on some Blizzard frames.
+*   Skinned Queue Status on Wrath.
+*   Looking For Group skin toggle readded on Retail.
+*   Keybind Mode button closes Settings window again.
+
 ## Version 13.44 \[ October 10th 2023 \]
 *   Shadow outline causing problems.
 *   Group Finder option in Minimap middle-click dropdown now works.

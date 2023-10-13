@@ -157,8 +157,9 @@ function M:LoadQueueStatus()
 	M.QueueStatus:Size(32)
 	E:CreateMover(M.QueueStatus, 'QueueStatusMover', L["Queue Status"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements,queueStatus')
 
-	if E.Retail then
-		_G.QueueStatusFrame:SetClampedToScreen(true)
+	local statusFrame = _G.QueueStatusFrame
+	if statusFrame then
+		statusFrame:SetClampedToScreen(true)
 	end
 
 	if _G.QueueStatusButton then

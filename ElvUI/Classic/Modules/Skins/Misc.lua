@@ -2,7 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, ipairs, unpack = pairs, ipairs, unpack
+local next, unpack = next, unpack
+local pairs, ipairs = pairs, ipairs
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
@@ -23,15 +24,10 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	-- Blizzard frame we want to reskin
-	local skins = {
-		'AutoCompleteBox',
-		'ReadyCheckFrame'
-	}
 
-	for i = 1, #skins do
-		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:SetTemplate('Transparent')
+	for _, frame in next, { _G.AutoCompleteBox, _G.ReadyCheckFrame } do
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
 	end
 
 	-- here we reskin all 'normal' buttons

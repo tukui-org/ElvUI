@@ -1249,10 +1249,10 @@ P.tooltip = {
 	},
 	healthBar = {
 		text = true,
-		height = 7,
-		font = 'Homespun',
-		fontSize = 10,
-		fontOutline = 'OUTLINE',
+		height = 12,
+		font = 'PT Sans Narrow',
+		fontSize = 12,
+		fontOutline = 'SHADOW',
 		statusPosition = 'BOTTOM',
 	},
 	useCustomFactionColors = false,
@@ -2677,7 +2677,7 @@ elseif E.Wrath then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 else
-	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.barPet.visibility = '[pet,nooverridebar] show; hide'
 	P.actionbar.stanceBar.visibility = 'show'
 end
 

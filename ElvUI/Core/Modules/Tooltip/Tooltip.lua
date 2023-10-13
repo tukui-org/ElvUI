@@ -112,7 +112,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		TT:SetCompareItems(tt, false)
-		tt:Hide()
+		tt:Hide() -- during kb mode this will trigger AB.ShowBinds
 		return
 	end
 
@@ -187,12 +187,11 @@ function TT:RemoveTrashLines(tt)
 			break
 		elseif linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
 			tiptext:SetText('')
-			tiptext:Hide()
 		end
 	end
 end
 
-function TT:GetLevelLine(tt, offset, player)
+function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 
 	for i = offset, tt:NumLines() do
@@ -200,7 +199,7 @@ function TT:GetLevelLine(tt, offset, player)
 		local tipText = tipLine and tipLine:GetText()
 		local tipLower = tipText and strlower(tipText)
 		if tipLower and (strfind(tipLower, LEVEL1) or strfind(tipLower, LEVEL2)) then
-			return tipLine, player and _G['GameTooltipTextLeft'..i+1] or nil
+			return tipLine, _G['GameTooltipTextLeft'..i+1] or nil
 		end
 	end
 end
@@ -238,7 +237,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local awayText = UnitIsAFK(unit) and AFK_LABEL or UnitIsDND(unit) and DND_LABEL or ''
 		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
 
-		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 3) or 2, E.Retail)
+		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 3) or 2)
 		if guildName then
 			if guildRealm and isShiftKeyDown then
 				guildName = guildName..'-'..guildRealm
@@ -290,20 +289,21 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		return nameColor
 	else
 		local isPetCompanion = E.Retail and UnitIsBattlePetCompanion(unit)
-		local levelLine = TT:GetLevelLine(tt, 2)
+		local levelLine, classLine = TT:GetLevelLine(tt, 2)
 		if levelLine then
 			local pvpFlag, classificationString, diffColor, level = '', ''
 			local creatureClassification = UnitClassification(unit)
-			local creatureType = UnitCreatureType(unit) or ''
+			local creatureType = UnitCreatureType(unit)
 
 			if isPetCompanion or (E.Retail and UnitIsWildBattlePet(unit)) then
 				level = UnitBattlePetLevel(unit)
 
-				local petType = _G['BATTLE_PET_NAME_'..UnitBattlePetType(unit)]
+				local petType = UnitBattlePetType(unit)
+				local petClass = _G['BATTLE_PET_NAME_'..petType]
 				if creatureType then
-					creatureType = format('%s %s', creatureType, petType)
+					creatureType = format('%s %s', creatureType, petClass)
 				else
-					creatureType = petType
+					creatureType = petClass
 				end
 
 				local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
@@ -325,7 +325,12 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				classificationString = format('%s %s|r', E:CallTag('classificationcolor', unit), E:CallTag('classification', unit))
 			end
 
-			levelLine:SetFormattedText('|cff%02x%02x%02x%s|r%s %s%s', diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or '??', classificationString, creatureType, pvpFlag)
+			levelLine:SetFormattedText('|cff%02x%02x%02x%s|r%s %s%s', diffColor.r * 255, diffColor.g * 255, diffColor.b * 255, level > 0 and level or '??', classificationString, creatureType or '', pvpFlag)
+
+			local classText = creatureType and classLine and classLine:GetText()
+			if creatureType == classText then -- we dont want to show creatureType two times
+				classLine:SetText('') -- so just hide this one, we put it on the level line
+			end
 		end
 
 		local unitReaction = UnitReaction(unit, 'player')
@@ -1002,7 +1007,7 @@ function TT:Initialize()
 
 	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
 	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar, 0, 0)
+	statusText:Point('CENTER', statusBar)
 	statusBar.text = statusText
 
 	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
