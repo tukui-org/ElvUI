@@ -314,8 +314,8 @@ do
 	function E:Delay(delay, func, ...)
 		if type(delay) ~= 'number' or type(func) ~= 'function' then return false end
 
-		-- delay: Restrict to the lowest time that the API allows us
-		C_Timer_After(delay < 0.01 and 0.01 or delay, (select('#', ...) <= 0 and func) or CreateClosure(func, {...}))
+		local args = {...} -- delay: Restrict to the lowest time that the API allows us
+		C_Timer_After(delay < 0.01 and 0.01 or delay, (#args <= 0 and func) or CreateClosure(func, args))
 
 		return true
 	end

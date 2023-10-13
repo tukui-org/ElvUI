@@ -14,7 +14,6 @@ local UnitFactionGroup = UnitFactionGroup
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
-local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
@@ -496,61 +495,6 @@ function S:CharacterFrame()
 
 	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', -6, 1)
-
-	-- Honor/Arena/PvP Tab
-	local PVPFrame = _G.PVPFrame
-	S:HandleFrame(PVPFrame, true, nil, 11, -12, -32, 76)
-	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
-	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', -26, -5)
-
-	for i = 1, MAX_ARENA_TEAMS do
-		local pvpTeam = _G['PVPTeam'..i]
-
-		pvpTeam:StripTextures()
-		pvpTeam:CreateBackdrop()
-		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
-		pvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
-
-		pvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
-		pvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
-
-		_G['PVPTeam'..i..'Highlight']:Kill()
-	end
-
-	local PVPTeamDetails = _G.PVPTeamDetails
-	PVPTeamDetails:StripTextures()
-	PVPTeamDetails:SetTemplate('Transparent')
-	PVPTeamDetails:Point('TOPLEFT', PVPFrame, 'TOPRIGHT', -30, -12)
-
-	local PVPFrameToggleButton = _G.PVPFrameToggleButton
-	S:HandleNextPrevButton(PVPFrameToggleButton)
-	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
-	PVPFrameToggleButton:Size(14)
-
-	for i = 1, 5 do
-		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
-		header:StripTextures()
-		header:StyleButton()
-	end
-
-	for i = 1, 10 do
-		local button = _G['PVPTeamDetailsButton'..i]
-		button:Width(335)
-		S:HandleButtonHighlight(button)
-	end
-
-	-- BG Queue Tabs
-	S:HandleTab(_G.PVPParentFrameTab1)
-	S:HandleTab(_G.PVPParentFrameTab2)
-
-	-- Reposition Tabs
-	_G.PVPParentFrameTab1:ClearAllPoints()
-	_G.PVPParentFrameTab1:Point('TOPLEFT', _G.PVPParentFrame, 'BOTTOMLEFT', 1, 76)
-	_G.PVPParentFrameTab2:Point('TOPLEFT', _G.PVPParentFrameTab1, 'TOPRIGHT', -19, 0)
-
-	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
-	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
-	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
