@@ -21,7 +21,7 @@ function S:Blizzard_Channels()
 
 	S:HandleTrimScrollBar(ChannelFrame.ChannelRoster.ScrollBar)
 
-	S:HandleScrollBar(ChannelFrame.ChannelList.ScrollBar)
+	S:HandleTrimScrollBar(ChannelFrame.ChannelList.ScrollBar)
 	ChannelFrame.ChannelList.ScrollBar:Point('BOTTOMLEFT', ChannelFrame.ChannelList, 'BOTTOMRIGHT', 0, 15)
 
 	S:HandleCloseButton(CreateChannelPopup.CloseButton)
