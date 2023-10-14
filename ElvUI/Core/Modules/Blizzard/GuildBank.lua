@@ -31,11 +31,12 @@ function B:GuildBank_ItemLevel(button)
 	local itemlink = tab and GetGuildBankItemLink(tab, button:GetID())
 	if itemlink then
 		local _, _, rarity, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemlink)
-
 		if not E.Retail then
-			r, g, b = GetItemQualityColor(rarity)
+			if rarity then
+				r, g, b = GetItemQualityColor(rarity)
+			end
 
-			if db.itemQuality then
+			if rarity and db.itemQuality then
 				button.IconBorder:SetVertexColor(r, g, b)
 				button.IconBorder:Show()
 			else
@@ -48,7 +49,7 @@ function B:GuildBank_ItemLevel(button)
 			local color = db.itemLevelCustomColorEnable and db.itemLevelCustomColor
 			if color then
 				r, g, b = color.r, color.g, color.b
-			elseif E.Retail then -- we already do this above otherwise
+			elseif E.Retail and rarity then -- we already do this above otherwise
 				r, g, b = GetItemQualityColor(rarity)
 			end
 
