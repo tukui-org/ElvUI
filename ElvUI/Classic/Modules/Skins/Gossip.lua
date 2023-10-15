@@ -3,35 +3,30 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local gsub = gsub
-local select = select
-local strmatch = strmatch
 local hooksecurefunc = hooksecurefunc
 
-local function ReplaceGossipFormat(button, textFormat, text)
-	local newFormat, count = gsub(textFormat, '000000', 'ffffff')
-	if count > 0 then
-		button:SetFormattedText(newFormat, text)
+local function ReplaceTextColor(text, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
+		text:SetTextColor(1, 1, 1)
 	end
 end
 
-local ReplacedGossipColor = {
-	['000000'] = 'ffffff',
-	['414141'] = '7b8489',
-}
+local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
+		pageText:SetTextColor(headerType, 1, 1, 1)
+	end
+end
 
-local function ReplaceGossipText(button, text)
-	if text and text ~= '' then
-		local newText, count = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
-		if count > 0 then
-			text = newText
-			button:SetFormattedText('%s', text)
-		end
+local function GreetingPanel_Update(frame)
+	for _, button in next, { frame.ScrollTarget:GetChildren() } do
+		if not button.IsSkinned then
+			local buttonText = button.GreetingText or (button.GetFontString and button:GetFontString())
+			if buttonText then
+				buttonText:SetTextColor(1, 1, 1)
+				hooksecurefunc(buttonText, 'SetTextColor', ReplaceTextColor)
+			end
 
-		local colorStr, rawText = strmatch(text, '|c[fF][fF](%x%x%x%x%x%x)(.-)|r')
-		colorStr = ReplacedGossipColor[colorStr]
-		if colorStr and rawText then
-			button:SetFormattedText('|cff%s%s|r', colorStr, rawText)
+			button.IsSkinned = true
 		end
 	end
 end
@@ -78,7 +73,17 @@ function S:GossipFrame()
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 
-	if not E.private.skins.parchmentRemoverEnable then
+	if E.private.skins.parchmentRemoverEnable then
+		_G.QuestFont:SetTextColor(1, 1, 1)
+		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+
+		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
+		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
+
+		if GossipFrame.Background then
+			GossipFrame.Background:Hide()
+		end
+	else
 		local spellTex = createParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
 		GreetingPanel.spellTex = spellTex
@@ -86,34 +91,6 @@ function S:GossipFrame()
 		local itemTex = createParchment(ItemTextFrame)
 		itemTex:SetInside(ItemTextScrollFrame, -5)
 		ItemTextFrame.itemTex = itemTex
-	else
-		_G.QuestFont:SetTextColor(1, 1, 1)
-		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
-
-		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
-			if r ~= 1 or g ~= 1 or b ~= 1 then
-				pageText:SetTextColor(headerType, 1, 1, 1)
-			end
-		end)
-
-		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', function(frame)
-			for _, button in next, { frame.ScrollTarget:GetChildren() } do
-				if not button.IsSkinned then
-					local buttonText = select(3, button:GetRegions())
-					if buttonText and buttonText:IsObjectType('FontString') then
-						ReplaceGossipText(button, button:GetText())
-						hooksecurefunc(button, 'SetText', ReplaceGossipText)
-						hooksecurefunc(button, 'SetFormattedText', ReplaceGossipFormat)
-					end
-
-					button.IsSkinned = true
-				end
-			end
-		end)
-
-		if GossipFrame.Background then
-			GossipFrame.Background:Hide()
-		end
 	end
 end
 

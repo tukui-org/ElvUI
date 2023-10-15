@@ -17,10 +17,6 @@ local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
 	end
 end
 
-local function GossipFrame_SetAtlas(frame)
-	frame:Height(frame:GetHeight() - 2)
-end
-
 local function GreetingPanel_Update(frame)
 	for _, button in next, { frame.ScrollTarget:GetChildren() } do
 		if not button.IsSkinned then
@@ -33,6 +29,10 @@ local function GreetingPanel_Update(frame)
 			button.IsSkinned = true
 		end
 	end
+end
+
+local function GossipFrame_SetAtlas(frame)
+	frame:Height(frame:GetHeight() - 2)
 end
 
 function S:GossipFrame()
@@ -57,7 +57,23 @@ function S:GossipFrame()
 		end
 	end
 
-	if not E.private.skins.parchmentRemoverEnable then
+	if E.private.skins.parchmentRemoverEnable then
+		_G.ItemTextFrame:StripTextures(true)
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+
+		_G.GossipFrameInset:Hide()
+		_G.QuestFont:SetTextColor(1, 1, 1)
+
+		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
+		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
+
+		if GossipFrame.Background then
+			GossipFrame.Background:Hide()
+		end
+
+	else
 		local pageBG = _G.ItemTextFramePageBg:GetTexture()
 		_G.ItemTextFrame:StripTextures()
 		_G.ItemTextFrame:SetTemplate('Transparent')
@@ -73,22 +89,6 @@ function S:GossipFrame()
 
 			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
 		end
-	else
-		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
-		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
-
-		_G.ItemTextFrame:StripTextures(true)
-		_G.ItemTextFrame:SetTemplate('Transparent')
-		_G.ItemTextScrollFrame:StripTextures()
-
-		_G.QuestFont:SetTextColor(1, 1, 1)
-		_G.GossipFrameInset:Hide()
-
-		if GossipFrame.Background then
-			GossipFrame.Background:Hide()
-		end
-
-		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 	end
 end
 
