@@ -3,14 +3,35 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local gsub = gsub
-local select = select
-local strmatch = strmatch
 local hooksecurefunc = hooksecurefunc
 
-local function ReplaceTextColor(text, r)
-	if r ~= 1 then
+local function ReplaceTextColor(text, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
 		text:SetTextColor(1, 1, 1)
+	end
+end
+
+local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
+		pageText:SetTextColor(headerType, 1, 1, 1)
+	end
+end
+
+local function GossipFrame_SetAtlas(frame)
+	frame:Height(frame:GetHeight() - 2)
+end
+
+local function GreetingPanel_Update(frame)
+	for _, button in next, { frame.ScrollTarget:GetChildren() } do
+		if not button.IsSkinned then
+			local buttonText = button.GreetingText or (button.GetFontString and button:GetFontString())
+			if buttonText then
+				buttonText:SetTextColor(1, 1, 1)
+				hooksecurefunc(buttonText, 'SetTextColor', ReplaceTextColor)
+			end
+
+			button.IsSkinned = true
+		end
 	end
 end
 
@@ -50,17 +71,11 @@ function S:GossipFrame()
 		if GossipFrame.Background then
 			GossipFrame.Background:CreateBackdrop('Transparent')
 
-			hooksecurefunc(GossipFrame.Background, 'SetAtlas', function(frame)
-				frame:Height(frame:GetHeight() - 2)
-			end)
+			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
 		end
 	else
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
-		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
-			if r ~= 1 or g ~= 1 or b ~= 1 then
-				pageText:SetTextColor(headerType, 1, 1, 1)
-			end
-		end)
+		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 
 		_G.ItemTextFrame:StripTextures(true)
 		_G.ItemTextFrame:SetTemplate('Transparent')
@@ -73,20 +88,7 @@ function S:GossipFrame()
 			GossipFrame.Background:Hide()
 		end
 
-		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', function(self)
-			for i = 1, self.ScrollTarget:GetNumChildren() do
-				local button = select(i, self.ScrollTarget:GetChildren())
-				if not button.IsSkinned then
-					local buttonText = button.GreetingText or button.GetFontString and button:GetFontString()
-					if buttonText then
-						buttonText:SetTextColor(1, 1, 1)
-						hooksecurefunc(buttonText, 'SetTextColor', ReplaceTextColor)
-					end
-
-					button.IsSkinned = true
-				end
-			end
-		end)
+		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 	end
 end
 
