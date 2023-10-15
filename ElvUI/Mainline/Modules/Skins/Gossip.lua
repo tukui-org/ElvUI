@@ -17,10 +17,6 @@ local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
 	end
 end
 
-local function GossipFrame_SetAtlas(frame)
-	frame:Height(frame:GetHeight() - 2)
-end
-
 local function GreetingPanel_Update(frame)
 	for _, button in next, { frame.ScrollTarget:GetChildren() } do
 		if not button.IsSkinned then
@@ -33,6 +29,10 @@ local function GreetingPanel_Update(frame)
 			button.IsSkinned = true
 		end
 	end
+end
+
+local function GossipFrame_SetAtlas(frame)
+	frame:Height(frame:GetHeight() - 2)
 end
 
 function S:GossipFrame()
@@ -57,23 +57,7 @@ function S:GossipFrame()
 		end
 	end
 
-	if not E.private.skins.parchmentRemoverEnable then
-		local pageBG = _G.ItemTextFramePageBg:GetTexture()
-		_G.ItemTextFrame:StripTextures()
-		_G.ItemTextFrame:SetTemplate('Transparent')
-		_G.ItemTextScrollFrame:StripTextures()
-		_G.ItemTextScrollFrame:CreateBackdrop('Transparent')
-
-		_G.ItemTextFramePageBg:SetTexture(pageBG)
-		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
-		_G.ItemTextFramePageBg:SetInside(_G.ItemTextScrollFrame.backdrop)
-
-		if GossipFrame.Background then
-			GossipFrame.Background:CreateBackdrop('Transparent')
-
-			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
-		end
-	else
+	if E.private.skins.parchmentRemoverEnable then
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 
@@ -89,6 +73,22 @@ function S:GossipFrame()
 		end
 
 		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
+	else
+		local pageBG = _G.ItemTextFramePageBg:GetTexture()
+		_G.ItemTextFrame:StripTextures()
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+		_G.ItemTextScrollFrame:CreateBackdrop('Transparent')
+
+		_G.ItemTextFramePageBg:SetTexture(pageBG)
+		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
+		_G.ItemTextFramePageBg:SetInside(_G.ItemTextScrollFrame.backdrop)
+
+		if GossipFrame.Background then
+			GossipFrame.Background:CreateBackdrop('Transparent')
+
+			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
+		end
 	end
 end
 
