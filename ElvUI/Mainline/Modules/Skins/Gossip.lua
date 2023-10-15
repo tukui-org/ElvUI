@@ -58,21 +58,21 @@ function S:GossipFrame()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
-		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
-
 		_G.ItemTextFrame:StripTextures(true)
 		_G.ItemTextFrame:SetTemplate('Transparent')
 		_G.ItemTextScrollFrame:StripTextures()
 
-		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.GossipFrameInset:Hide()
+		_G.QuestFont:SetTextColor(1, 1, 1)
+
+		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
+		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
+		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 
 		if GossipFrame.Background then
 			GossipFrame.Background:Hide()
 		end
 
-		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 	else
 		local pageBG = _G.ItemTextFramePageBg:GetTexture()
 		_G.ItemTextFrame:StripTextures()

@@ -31,7 +31,6 @@ local function GreetingPanel_Update(frame)
 	end
 end
 
-
 local function createParchment(frame)
 	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
