@@ -544,27 +544,29 @@ do
 
 	local function UpdateLayout(frame)
 		local last
-		for i, name in next, keys do
+		for _, name in next, keys do
 			local button = frame[name]
 			if button then
 				if not button.isSkinned then
 					S:HandleButton(button)
+					button:Size(22)
 
 					if button.Icon then
 						button.Icon:SetInside(nil, 2, 2)
 					end
 				end
 
-				button:ClearAllPoints()
-				button:Size(22)
+				if button:IsShown() then
+					button:ClearAllPoints()
 
-				if i == 1 then
-					button:Point('LEFT')
-				elseif last then
-					button:Point('LEFT', last, 'RIGHT', 1, 0)
+					if last then
+						button:Point('LEFT', last, 'RIGHT', 1, 0)
+					else
+						button:Point('LEFT')
+					end
+
+					last = button
 				end
-
-				last = button
 			end
 		end
 	end
