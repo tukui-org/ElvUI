@@ -562,7 +562,7 @@ do
 					if last then
 						button:Point('LEFT', last, 'RIGHT', 1, 0)
 					else
-						button:Point('LEFT')
+						button:Point('LEFT', 6, 0)
 					end
 
 					last = button
