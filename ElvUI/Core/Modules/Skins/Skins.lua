@@ -533,18 +533,46 @@ do
 	end
 end
 
-function S:HandleModelSceneControlButtons(frame)
-	for _, button in next, {
-		frame.zoomInButton,
-		frame.zoomOutButton,
-		frame.rotateLeftButton,
-		frame.rotateRightButton,
-		frame.resetButton,
-	} do
-		S:HandleButton(button)
+do
+	local keys = {
+		'zoomInButton',
+		'zoomOutButton',
+		'rotateLeftButton',
+		'rotateRightButton',
+		'resetButton',
+	}
 
-		if button.Icon then
-			button.Icon:SetInside(nil, 1, 1)
+	local function UpdateLayout(frame)
+		local last
+		for i, name in next, keys do
+			local button = frame[name]
+			if button then
+				if not button.isSkinned then
+					S:HandleButton(button)
+
+					if button.Icon then
+						button.Icon:SetInside(nil, 2, 2)
+					end
+				end
+
+				button:ClearAllPoints()
+				button:Size(22)
+
+				if i == 1 then
+					button:Point('LEFT')
+				elseif last then
+					button:Point('LEFT', last, 'RIGHT', 1, 0)
+				end
+
+				last = button
+			end
+		end
+	end
+
+	function S:HandleModelSceneControlButtons(frame)
+		if not frame.isSkinned then
+			frame.isSkinned = true
+			hooksecurefunc(frame, 'UpdateLayout', UpdateLayout)
 		end
 	end
 end
