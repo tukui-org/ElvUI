@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 local ACH = E.Libs.ACH
-local GUI = E.Libs.AceGUI
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
 	version = tonumber(GetAddOnMetadata('ElvUI_Options', 'Version')),
@@ -17,16 +16,15 @@ E.Config[1] = C
 E.Config[2] = L
 
 local _G = _G
-local sort, strmatch, strsplit = sort, strmatch, strsplit
+local next, sort, strmatch, strsplit = next, sort, strmatch, strsplit
+local tconcat, tinsert, tremove, wipe = table.concat, tinsert, tremove, wipe
 local format, gsub, ipairs, pairs = format, gsub, ipairs, pairs
-local tconcat, tinsert, tremove = table.concat, tinsert, tremove
 
 local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
-local GameTooltip_Hide = GameTooltip_Hide
 
 C.Values = {
 	GrowthDirection = {
@@ -272,243 +270,13 @@ E.Options.args.info.args.donators = ACH:Group(L["Donations:"], nil, 8)
 E.Options.args.info.args.donators.inline = true
 E.Options.args.info.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
 
-local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
-local profileTypeListOrder = { 'profile', 'private', 'global', 'filters', 'styleFilters' }
-local exportTypeItems = { text = L["Text"], luaTable = L["Table"], luaPlugin = L["Plugin"] }
-local exportTypeListOrder = { 'text', 'luaTable', 'luaPlugin' }
-
-local exportString = ''
-local function ExportButton_OnClick(button)
-	local widget = button.widget
-	widget.Label1:SetText('')
-	widget.Label2:SetText('')
-
-	local profileType, exportFormat = widget.ProfileTypeDropdown:GetValue(), widget.ExportFormatDropdown:GetValue()
-	local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
-	if not profileKey or not profileExport then
-		widget.Label1:SetText(L["Error exporting profile!"])
-	else
-		widget.Label1:SetText(format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
-
-		if profileType == 'profile' then
-			widget.Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
-		end
-	end
-
-	widget.editBox:SetText(profileExport)
-	widget.editBox:HighlightText()
-	widget.editBox:SetFocus()
-
-	exportString = profileExport
-end
-
-local function EditBox_OnChar(editbox)
-	editbox.parent:SetText(exportString)
-	editbox:HighlightText()
-end
-
-local function Export_EditBox_OnTextChanged(editbox, userInput)
-	if userInput then --Prevent user from changing export string
-		editbox.parent:SetText(exportString)
-		editbox:HighlightText()
-	else --Scroll frame doesn't scroll to the bottom by itself, so let's do that now
-		editbox.parent.scrollFrame:SetVerticalScroll(editbox.parent.scrollFrame:GetVerticalScrollRange())
-	end
-end
-
-local function ImportButton_OnClick(button)
-	local widget = button.widget
-	widget.Label1:SetText('')
-	widget.Label2:SetText('')
-
-	local success = D:ImportProfile(widget.editBox:GetText())
-	widget.Label1:SetText((success and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"])
-end
-
-local function DecodeButton_OnClick(button)
-	local widget = button.widget
-	widget.Label1:SetText('')
-	widget.Label2:SetText('')
-
-	local profileType, profileKey, profileData = D:Decode(widget.editBox:GetText())
-	local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-	local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
-	widget.editBox:SetText(importText)
-end
-
-local Import_OldText = ''
-local function Import_EditBox_OnTextChanged(editbox)
-	local widget = editbox.widget
-
-	local text = editbox:GetText()
-	if text == '' then
-		widget.Label1:SetText('')
-		widget.Label2:SetText('')
-		widget.importButton:SetDisabled(true)
-		widget.decodeButton:SetDisabled(true)
-	elseif Import_OldText ~= text then
-		local stringType = D:GetImportStringType(text)
-		widget.decodeButton:SetDisabled(stringType == 'Table')
-
-		local profileType, profileKey = D:Decode(text)
-		if not profileType or (profileType and profileType == 'profile' and not profileKey) then
-			widget.Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-			widget.Label2:SetText('')
-			widget.importButton:SetDisabled(true)
-			widget.decodeButton:SetDisabled(true)
-		else
-			widget.Label1:SetText(format('%s: %s%s|r', L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ''))
-			if profileType == 'profile' then
-				widget.Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
-			end
-
-			--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
-			editbox.parent.scrollFrame:UpdateScrollChildRect()
-			editbox.parent.scrollFrame:SetVerticalScroll(editbox.parent.scrollFrame:GetVerticalScrollRange())
-
-			widget.importButton:SetDisabled(false)
-		end
-
-		Import_OldText = text
-	end
-end
-
-local function Widget_OnClose(widget)
-	--Restore changed scripts
-	widget.editBox:SetScript('OnChar', nil)
-	widget.editBox:SetScript('OnTextChanged', widget.editBox.OnTextChangedOrig)
-	widget.editBox:SetScript('OnCursorChanged', widget.editBox.OnCursorChangedOrig)
-	widget.editBox.OnTextChangedOrig = nil
-	widget.editBox.OnCursorChangedOrig = nil
-
-	--Clear stored export string
-	exportString = ''
-
-	GUI:Release(widget)
-	E:Config_OpenWindow()
-end
-
-local function AddChild(widget, child, key)
-	widget[key] = child
-
-	child.widget = widget
-
-	widget:AddChild(child)
-end
-
-local function ExportImport_Open(mode)
-	local widget = GUI:Create('Frame')
-	widget:SetTitle('')
-	widget:EnableResize(false)
-	widget:SetWidth(800)
-	widget:SetHeight(600)
-	widget.frame:SetFrameStrata('FULLSCREEN_DIALOG')
-	widget:SetLayout('flow')
-	widget:SetCallback('OnClose', Widget_OnClose)
-
-	local Box = GUI:Create('MultiLineEditBox-ElvUI')
-	Box:SetNumLines(30)
-	Box:DisableButton(true)
-	Box:SetWidth(800)
-	Box:SetLabel('')
-	AddChild(widget, Box, 'Box')
-
-	local editbox = Box.editBox
-	--Save original script so we can restore it later
-	editbox.OnTextChangedOrig = editbox:GetScript('OnTextChanged')
-	editbox.OnCursorChangedOrig = editbox:GetScript('OnCursorChanged')
-
-	--Remove OnCursorChanged script as it causes weird behaviour with long text
-	editbox:SetScript('OnCursorChanged', nil)
-	Box.scrollFrame:UpdateScrollChildRect()
-
-	local Label1 = GUI:Create('Label')
-	Label1:SetFontObject('GameFontHighlightMedium')
-	Label1:SetText('.') --Set temporary text so height is set correctly
-	Label1:SetWidth(800)
-	AddChild(widget, Label1, 'Label1')
-
-	local Label2 = GUI:Create('Label')
-	Label2:SetFontObject('GameFontHighlightMedium')
-	Label2:SetText('.|n.')
-	Label2:SetWidth(800)
-	AddChild(widget, Label2, 'Label2')
-
-	-- link references
-	editbox.parent = Box
-	editbox.widget = widget
-	widget.editBox = editbox -- Box.editBox
-	widget.Label1 = Label1
-	widget.Label2 = Label2
-	widget.box = Box
-
-	if mode == 'export' then
-		widget:SetTitle(L["Export Profile"])
-
-		local exportButton = GUI:Create('Button-ElvUI')
-		exportButton:SetText(L["Export Now"])
-		exportButton:SetAutoWidth(true)
-		exportButton:SetCallback('OnClick', ExportButton_OnClick)
-		AddChild(widget, exportButton, 'exportButton')
-
-		local profileType = GUI:Create('Dropdown')
-		profileType:SetMultiselect(false)
-		profileType:SetLabel(L["Choose What To Export"])
-		profileType:SetList(profileTypeItems, profileTypeListOrder)
-		profileType:SetValue('profile') --Default export
-		AddChild(widget, profileType, 'ProfileTypeDropdown')
-
-		local exportFormat = GUI:Create('Dropdown')
-		exportFormat:SetMultiselect(false)
-		exportFormat:SetLabel(L["Choose Export Format"])
-		exportFormat:SetList(exportTypeItems, exportTypeListOrder)
-		exportFormat:SetValue('text') --Default format
-		exportFormat:SetWidth(150)
-		AddChild(widget, exportFormat, 'ExportFormatDropdown')
-
-		--Set scripts
-		editbox:SetScript('OnChar', EditBox_OnChar)
-		editbox:SetScript('OnTextChanged', Export_EditBox_OnTextChanged)
-	elseif mode == 'import' then
-		widget:SetTitle(L["Import Profile"])
-		local importButton = GUI:Create('Button-ElvUI') --This version changes text color on SetDisabled
-		importButton:SetDisabled(true)
-		importButton:SetText(L["Import Now"])
-		importButton:SetAutoWidth(true)
-		importButton:SetCallback('OnClick', ImportButton_OnClick)
-		AddChild(widget, importButton, 'importButton')
-
-		local decodeButton = GUI:Create('Button-ElvUI')
-		decodeButton:SetDisabled(true)
-		decodeButton:SetText(L["Decode Text"])
-		decodeButton:SetAutoWidth(true)
-		decodeButton:SetCallback('OnClick', DecodeButton_OnClick)
-		AddChild(widget, decodeButton, 'decodeButton')
-
-		editbox:SetFocus()
-		editbox:SetScript('OnChar', nil)
-		editbox:SetScript('OnTextChanged', Import_EditBox_OnTextChanged)
-	end
-
-	--Clear default text
-	Label1:SetText('')
-	Label2:SetText('')
-
-	--Close ElvUI Options
-	E.Libs.AceConfigDialog:Close('ElvUI')
-
-	GameTooltip_Hide() --The tooltip from the Export/Import button stays on screen, so hide it
-end
-
 --Create Profiles Table
 E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 4, 'tab')
 E.Options.args.profiles.args.desc = ACH:Description(L["This feature will allow you to transfer settings to other characters."], 0)
 E.Options.args.profiles.args.distributeProfile = ACH:Execute(L["Share Current Profile"], L["Sends your current profile to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name) elseif server then D:Distribute(name, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
-E.Options.args.profiles.args.distributeGlobal = ACH:Execute(L["Share Filters"], L["Sends your filter settings to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, true) elseif server then D:Distribute(name, true, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
-E.Options.args.profiles.args.exportProfile = ACH:Execute(L["Export Profile"], nil, 4, function() ExportImport_Open('export') end)
-E.Options.args.profiles.args.importProfile = ACH:Execute(L["Import Profile"], nil, 5, function() ExportImport_Open('import') end)
-E.Options.args.profiles.args.allowDistributor = ACH:Toggle(L["Allow Sharing"], L["Both users will need this option enabled."], 6, nil, nil, nil, function() return E.global.general.allowDistributor end, function(_, value) E.global.general.allowDistributor = value; D:UpdateSettings() end)
-E.Options.args.profiles.args.spacer = ACH:Spacer(6)
+E.Options.args.profiles.args.distributeGlobal = ACH:Execute(L["Share Filters"], L["Sends your filter settings to your target."], 2, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, true) elseif server then D:Distribute(name, true, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
+E.Options.args.profiles.args.allowDistributor = ACH:Toggle(L["Allow Sharing"], L["Both users will need this option enabled."], 3, nil, nil, nil, function() return E.global.general.allowDistributor end, function(_, value) E.global.general.allowDistributor = value; D:UpdateSettings() end)
+E.Options.args.profiles.args.spacer = ACH:Spacer(10)
 
 E.Options.args.profiles.args.profile = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Options.args.profiles.args.private = E.Libs.AceDBOptions:GetOptionsTable(E.charSettings)
@@ -536,4 +304,173 @@ end
 
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
 	return format(L["Copy settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
+end
+
+-- Import and Export
+local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
+local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
+
+local function DecodeString(text, plugin)
+	local profileType, profileKey, profileData = D:Decode(text)
+
+	if plugin then
+		return E:ProfileTableToPluginFormat(profileData, profileType)
+	else
+		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
+		return D:CreateProfileExport(decodedText, profileType, profileKey)
+	end
+end
+
+local function DecodeLabel(label, text, plugin)
+	if not validateString(nil, text) then
+		label.name = ''
+		return text
+	end
+
+	local decode = DecodeString(text, plugin)
+	if decode then
+		return decode
+	else
+		label.name = L["Error decoding data. Import string may be corrupted!"]
+		return text
+	end
+end
+
+local function BuildEditboxes(config, get, set, importTexts, hider)
+	local count = 0
+	for _ in next, profileTypeItems do
+		count = count + 1
+
+		local offset = count * 2
+		local textKey = 'text'..count
+		local input = ACH:Input('', nil, 50 + offset, true, 'full', get, set, nil, hider)
+		input.disableButton = true
+		config.args[textKey] = input
+
+		if importTexts then
+			input.textChanged = function(value)
+				if textKey ~= value then
+					importTexts[textKey] = value
+				end
+			end
+		end
+
+		local label = ACH:Description('', 51 + offset)
+		config.args['label'..count] = label
+	end
+end
+
+do
+	local importTexts = {}
+	local import = ACH:Group(L["Import"], nil, 3, 'tab')
+	E.Options.args.profiles.args.import = import
+
+	local function HandleImporting(which)
+		local count = 1
+		for _ in next, profileTypeItems do
+			local label = import.args['label'..count]
+			local nextInput = import.args['text'..count+1]
+
+			local textKey = 'text'..count
+			local importText = importTexts[textKey]
+
+			count = count + 1 -- keep this after the count usage
+
+			if nextInput then
+				print(textKey, count, importText, nextInput.hidden)
+				nextInput.hidden = not importText or importText == ''
+			end
+
+			if which == 'text' and validateString(nil, importText) then
+				label.name = (D:Decode(importText) and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
+			else
+				if which == 'luaTable' then
+					importTexts[textKey] = DecodeLabel(label, importText)
+				end
+
+				label.name = ''
+			end
+		end
+	end
+
+	local function Import(which)
+		HandleImporting(which)
+	end
+
+	local function Import_Set() end
+	local function Import_Get(info) return importTexts[info[#info]] end
+	local function Import_Previous(num) return tonumber(num) - 1 end
+	local function Import_Hide(info)
+		local prevKey = gsub(info[#info], '%d', Import_Previous)
+		local prevNum = strmatch(prevKey, '%d')
+		local text = importTexts[prevKey]
+
+		return (tonumber(prevNum) ~= 0) and (not text or text == '')
+	end
+
+	BuildEditboxes(import, Import_Get, Import_Set, importTexts) --, Import_Hide)
+
+	import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
+	import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
+end
+
+do
+	local exportList = { profile = true }
+	local exportTexts = {}
+	local export = ACH:Group(L["Export"], nil, 4, 'tab')
+	E.Options.args.profiles.args.export = export
+
+	local function Export_Get(info) return exportTexts[info[#info]] end
+	local function Export_Set() end
+	BuildEditboxes(export, Export_Get, Export_Set, nil, true)
+
+	local function HandleExporting(which)
+		local count = 1
+		for profileType in next, profileTypeItems do
+			local textKey = 'text'..count
+			local input = export.args[textKey]
+			local label = export.args['label'..count]
+			count = count + 1
+
+			local exporting = exportList[profileType]
+			input.hidden = not exporting
+			input.multiline = which and which ~= 'text'
+
+			if exporting then
+				local profileKey, profileExport = D:ExportProfile(profileType, which)
+				if not profileKey or not profileExport then
+					label.name = L["Error exporting profile!"]
+				else
+					label.name = format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType])
+				end
+
+				exportTexts[textKey] = profileExport or nil
+			else
+				label.name = ''
+			end
+		end
+	end
+
+	local function Filters_Empty() return not next(exportList) end
+	local function Filters_Get(_, key)
+		if Filters_Empty() then
+			HandleExporting()
+		end
+
+		return exportList[key]
+	end
+
+	local function Filters_Set(_, key, value) exportList[key] = value or nil end
+	local function Export(which)
+		if Filters_Empty() then return end
+
+		wipe(exportTexts)
+
+		HandleExporting(which)
+	end
+
+	export.args.exportButton = ACH:Execute(L["Export"], nil, 1, function() Export('text') end)
+	export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end)
+	export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end)
+	export.args.profileTye = ACH:MultiSelect(L["Choose What To Export"], nil, 10, profileTypeItems, nil, nil, Filters_Get, Filters_Set)
 end

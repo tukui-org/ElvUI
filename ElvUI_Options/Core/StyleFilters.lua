@@ -196,7 +196,7 @@ function C:StyleFilterSetConfig(filter)
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplates.filters[value]) end
-local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
+local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 
 StyleFilters.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
 StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
@@ -819,8 +819,7 @@ do
 	local function Filters_Set(_, key, value) exportList[key] = value or nil end
 	local function Export_Get() label.name = '' return exportText end
 	local function Export_Set() end
-	local function Export_Decode() exportText = DecodeLabel(label, exportText) end
-	local function Export_Button()
+	local function Export(which)
 		local data = {nameplates = {filters = {}}}
 
 		if Filters_Empty() then return end
@@ -832,20 +831,32 @@ do
 		NP:StyleFilterClearDefaults(data.nameplates.filters)
 		data = E:RemoveTableDuplicates(data, G, D.GeneratedKeys.global)
 
-		local serialData = D:Serialize(data)
-		local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
-		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
-		local printableString = LibDeflate:EncodeForPrint(compressedData)
+		local printableString
+		if which == 'text' then
+			local serialData = D:Serialize(data)
+			local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
+			local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
+			local printable = LibDeflate:EncodeForPrint(compressedData)
+			if printable then
+				printableString = format('%s%s', exportPrefix, printable)
+			end
+		elseif which == 'luaTable' then
+			local exportString = E:TableToLuaString(data)
+			printableString = D:CreateProfileExport(exportString, 'styleFilters', 'styleFilters')
+		elseif which == 'luaPlugin' then
+			printableString = E:ProfileTableToPluginFormat(data, 'styleFilters')
+		end
 
-		exportText = printableString and format('%s%s', exportPrefix, printableString) or nil
+		exportText = printableString or nil
 		StyleFilters.export.args.text.hidden = not exportText
 	end
 
 	StyleFilters.export = ACH:Group(L["Export"], nil, 20)
 	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFilters.export.args.filters.sortByValue = true
-	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
-	StyleFilters.export.args.exportDecode = ACH:Execute(L["Decode"], nil, 4, Export_Decode)
+	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, function() Export('text') end)
+	StyleFilters.export.args.exportDecode = ACH:Execute(L["Table"], nil, 4, function() Export('luaTable') end)
+	StyleFilters.export.args.exportPlugin = ACH:Execute(L["Plugin"], nil, 5, function() Export('luaPlugin') end)
 	StyleFilters.export.args.label = label
 	StyleFilters.export.args.text = ACH:Input('', nil, -1, 10, 'full', Export_Get, Export_Set, nil, true)
 	StyleFilters.export.args.text.disableButton = true
