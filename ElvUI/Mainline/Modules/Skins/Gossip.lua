@@ -54,7 +54,11 @@ local function GreetingPanel_Update(frame)
 				hooksecurefunc(button.GreetingText, 'SetTextColor', ReplaceTextColor)
 			end
 
-			if button.GetFontString and button:GetFontString() then
+			local fontString = button.GetFontString and button:GetFontString()
+			if fontString then
+				fontString:SetTextColor(1, 1, 1)
+				hooksecurefunc(fontString, 'SetTextColor', ReplaceTextColor)
+
 				ReplaceGossipText(button, button:GetText())
 				hooksecurefunc(button, 'SetText', ReplaceGossipText)
 				hooksecurefunc(button, 'SetFormattedText', ReplaceGossipFormat)
