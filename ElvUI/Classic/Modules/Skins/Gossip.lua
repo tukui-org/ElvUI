@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-local gsub, strmatch = gsub, strmatch
+local gsub, next = gsub, next
 local hooksecurefunc = hooksecurefunc
 
 local function ReplaceTextColor(text, r, g, b)
@@ -24,6 +23,10 @@ local ReplacedGossipColor = {
 	['414141'] = '7b8489',
 }
 
+local function ReplaceGossipColor(color)
+	return ReplacedGossipColor[color] or color
+end
+
 local function ReplaceGossipText(button, text)
 	if text and text ~= '' then
 		local newText, count = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
@@ -32,10 +35,9 @@ local function ReplaceGossipText(button, text)
 			button:SetFormattedText('%s', text)
 		end
 
-		local colorStr, rawText = strmatch(text, '|c[fF][fF](%x%x%x%x%x%x)(.-)|r')
-		colorStr = ReplacedGossipColor[colorStr]
-		if colorStr and rawText then
-			button:SetFormattedText('|cff%s%s|r', colorStr, rawText)
+		local fixed = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
+		if fixed then
+			button:SetFormattedText('|cff%s', fixed)
 		end
 	end
 end
