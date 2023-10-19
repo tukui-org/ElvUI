@@ -795,6 +795,7 @@ do
 	local function Import_Set() end
 	local function Import_Get() return importText end
 	local function Import_TextChanged(text) if text ~= importText then importText = text end end
+	local function Import_Clear() label.name = '' importText = '' end
 	local function Import_Decode() importText = DecodeLabel(label, importText) end
 	local function Import_Button()
 		if not validateString(nil, importText) then return end
@@ -804,6 +805,7 @@ do
 	StyleFilters.import = ACH:Group(L["Import"], nil, 15)
 	StyleFilters.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
 	StyleFilters.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode)
+	StyleFilters.import.args.importClear = ACH:Execute(L["Clear"], nil, 4, Import_Clear)
 	StyleFilters.import.args.label = label
 
 	StyleFilters.import.args.text = ACH:Input('', nil, -10, 10, 'full', Import_Get, Import_Set)

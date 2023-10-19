@@ -382,6 +382,8 @@ do
 			else
 				if which == 'luaTable' then
 					importTexts[textKey] = DecodeLabel(label, importText)
+				elseif which == 'clear' then
+					importTexts[textKey] = nil
 				end
 
 				label.name = ''
@@ -395,6 +397,7 @@ do
 
 	import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
 	import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
+	import.args.clearButton = ACH:Execute(L["Clear"], nil, 3, function() Import('clear') end)
 end
 
 do
