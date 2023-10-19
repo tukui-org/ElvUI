@@ -335,7 +335,7 @@ local function DecodeButton_OnClick(button)
 	widget.editBox:SetText(importText)
 end
 
-local oldText = ''
+local Import_OldText = ''
 local function Import_EditBox_OnTextChanged(editbox)
 	local widget = editbox.widget
 
@@ -345,7 +345,7 @@ local function Import_EditBox_OnTextChanged(editbox)
 		widget.Label2:SetText('')
 		widget.importButton:SetDisabled(true)
 		widget.decodeButton:SetDisabled(true)
-	elseif oldText ~= text then
+	elseif Import_OldText ~= text then
 		local stringType = D:GetImportStringType(text)
 		widget.decodeButton:SetDisabled(stringType == 'Table')
 
@@ -368,11 +368,11 @@ local function Import_EditBox_OnTextChanged(editbox)
 			widget.importButton:SetDisabled(false)
 		end
 
-		oldText = text
+		Import_OldText = text
 	end
 end
 
-local function Frame_OnClose(widget)
+local function Widget_OnClose(widget)
 	--Restore changed scripts
 	widget.editBox:SetScript('OnChar', nil)
 	widget.editBox:SetScript('OnTextChanged', widget.editBox.OnTextChangedOrig)
@@ -403,7 +403,7 @@ local function ExportImport_Open(mode)
 	widget:SetHeight(600)
 	widget.frame:SetFrameStrata('FULLSCREEN_DIALOG')
 	widget:SetLayout('flow')
-	widget:SetCallback('OnClose', Frame_OnClose)
+	widget:SetCallback('OnClose', Widget_OnClose)
 
 	local Box = E.Libs.AceGUI:Create('MultiLineEditBox-ElvUI')
 	Box:SetNumLines(30)
