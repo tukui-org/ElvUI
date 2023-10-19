@@ -5,6 +5,7 @@ local S = E:GetModule('Skins')
 local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 local ACH = E.Libs.ACH
+local GUI = E.Libs.AceGUI
 local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C = {
 	version = tonumber(GetAddOnMetadata('ElvUI_Options', 'Version')),
@@ -383,7 +384,7 @@ local function Widget_OnClose(widget)
 	--Clear stored export string
 	exportString = ''
 
-	E.Libs.AceGUI:Release(widget)
+	GUI:Release(widget)
 	E:Config_OpenWindow()
 end
 
@@ -396,7 +397,7 @@ local function AddChild(widget, child, key)
 end
 
 local function ExportImport_Open(mode)
-	local widget = E.Libs.AceGUI:Create('Frame')
+	local widget = GUI:Create('Frame')
 	widget:SetTitle('')
 	widget:EnableResize(false)
 	widget:SetWidth(800)
@@ -405,7 +406,7 @@ local function ExportImport_Open(mode)
 	widget:SetLayout('flow')
 	widget:SetCallback('OnClose', Widget_OnClose)
 
-	local Box = E.Libs.AceGUI:Create('MultiLineEditBox-ElvUI')
+	local Box = GUI:Create('MultiLineEditBox-ElvUI')
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
@@ -421,13 +422,13 @@ local function ExportImport_Open(mode)
 	editbox:SetScript('OnCursorChanged', nil)
 	Box.scrollFrame:UpdateScrollChildRect()
 
-	local Label1 = E.Libs.AceGUI:Create('Label')
+	local Label1 = GUI:Create('Label')
 	Label1:SetFontObject('GameFontHighlightMedium')
 	Label1:SetText('.') --Set temporary text so height is set correctly
 	Label1:SetWidth(800)
 	AddChild(widget, Label1, 'Label1')
 
-	local Label2 = E.Libs.AceGUI:Create('Label')
+	local Label2 = GUI:Create('Label')
 	Label2:SetFontObject('GameFontHighlightMedium')
 	Label2:SetText('.|n.')
 	Label2:SetWidth(800)
@@ -444,20 +445,20 @@ local function ExportImport_Open(mode)
 	if mode == 'export' then
 		widget:SetTitle(L["Export Profile"])
 
-		local exportButton = E.Libs.AceGUI:Create('Button-ElvUI')
+		local exportButton = GUI:Create('Button-ElvUI')
 		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
 		exportButton:SetCallback('OnClick', ExportButton_OnClick)
 		AddChild(widget, exportButton, 'exportButton')
 
-		local profileType = E.Libs.AceGUI:Create('Dropdown')
+		local profileType = GUI:Create('Dropdown')
 		profileType:SetMultiselect(false)
 		profileType:SetLabel(L["Choose What To Export"])
 		profileType:SetList(profileTypeItems, profileTypeListOrder)
 		profileType:SetValue('profile') --Default export
 		AddChild(widget, profileType, 'ProfileTypeDropdown')
 
-		local exportFormat = E.Libs.AceGUI:Create('Dropdown')
+		local exportFormat = GUI:Create('Dropdown')
 		exportFormat:SetMultiselect(false)
 		exportFormat:SetLabel(L["Choose Export Format"])
 		exportFormat:SetList(exportTypeItems, exportTypeListOrder)
@@ -470,14 +471,14 @@ local function ExportImport_Open(mode)
 		editbox:SetScript('OnTextChanged', Export_EditBox_OnTextChanged)
 	elseif mode == 'import' then
 		widget:SetTitle(L["Import Profile"])
-		local importButton = E.Libs.AceGUI:Create('Button-ElvUI') --This version changes text color on SetDisabled
+		local importButton = GUI:Create('Button-ElvUI') --This version changes text color on SetDisabled
 		importButton:SetDisabled(true)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
 		importButton:SetCallback('OnClick', ImportButton_OnClick)
 		AddChild(widget, importButton, 'importButton')
 
-		local decodeButton = E.Libs.AceGUI:Create('Button-ElvUI')
+		local decodeButton = GUI:Create('Button-ElvUI')
 		decodeButton:SetDisabled(true)
 		decodeButton:SetText(L["Decode Text"])
 		decodeButton:SetAutoWidth(true)
