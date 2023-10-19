@@ -23,9 +23,9 @@ end
 local function ReplaceGossipFormat(button, textFormat, text, skip)
 	if skip or not text or text == '' then return end
 
-	local formatText, formatCount = gsub(textFormat, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
-	if formatCount > 0 then
-		button:SetFormattedText(formatText, text, true)
+	local colorText, colorCount = gsub(textFormat, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
+	if colorCount > 0 then
+		button:SetFormattedText(colorText, text, true)
 	end
 end
 
