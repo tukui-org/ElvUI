@@ -11,35 +11,37 @@ local function ReplaceTextColor(text, r, g, b)
 	end
 end
 
-local function ReplaceGossipFormat(button, textFormat, text)
-	local newFormat, count = gsub(textFormat, '000000', 'ffffff')
-	if count > 0 then
-		button:SetFormattedText(newFormat, text)
-	end
-end
-
-local ReplacedGossipColor = {
+local GossipTextColors = {
 	['000000'] = 'ffffff',
 	['414141'] = '7b8489',
 }
 
 local function ReplaceGossipColor(color)
-	return ReplacedGossipColor[color] or color
+	return '|cFF' .. (GossipTextColors[color] or color)
+end
+
+local function ReplaceGossipFormat(button, textFormat, text, skip)
+	if skip or not text or text == '' then return end
+
+	local formatText, formatCount = gsub(textFormat, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
+	if formatCount > 0 then
+		button:SetFormattedText(formatText, text, true)
+	end
 end
 
 local function ReplaceGossipText(button, text)
-	if text and text ~= '' then
-		local iconText, iconCount = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
-		local iconExists = iconCount > 0
-		if iconExists then text = iconText end
+	if not text or text == '' then return end
 
-		local colorText, colorCount = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
-		local colorExists = colorCount > 0
-		if colorExists then text = '|cff' .. colorText end
+	local startText = text
 
-		if iconExists or colorExists then
-			button:SetFormattedText(text)
-		end
+	local iconText, iconCount = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
+	if iconCount > 0 then text = iconText end
+
+	local colorText, colorCount = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
+	if colorCount > 0 then text = colorText end
+
+	if startText ~= text then
+		button:SetFormattedText('%s', text, true)
 	end
 end
 
