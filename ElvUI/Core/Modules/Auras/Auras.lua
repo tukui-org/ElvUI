@@ -196,9 +196,12 @@ function A:CreateIcon(button)
 	end
 end
 
-function A:UpdateIcon(button)
+function A:UpdateIcon(button, update)
 	local db = A.db[button.auraType]
-	button:Size(db.size)
+
+	if update then
+		button:Size(db.size)
+	end
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
@@ -484,7 +487,7 @@ function A:UpdateHeader(header)
 		child.auraType = header.auraType -- used to update cooldown text
 
 		A:Update_CooldownOptions(child)
-		A:UpdateIcon(child)
+		A:UpdateIcon(child, true)
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
