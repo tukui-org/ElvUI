@@ -1,4 +1,6 @@
-local E = unpack(ElvUI)
+local E, _, V, P, G = unpack(ElvUI)
+local UF = E:GetModule('UnitFrames')
+local MC = E:GetModule('ModuleCopy')
 local D = E:GetModule('Distributor')
 local S = E:GetModule('Skins')
 
@@ -18,7 +20,7 @@ E.Config[2] = L
 local _G = _G
 local next, sort, strmatch, strsplit = next, sort, strmatch, strsplit
 local tconcat, tinsert, tremove, wipe = table.concat, tinsert, tremove, wipe
-local format, gsub, ipairs, pairs = format, gsub, ipairs, pairs
+local format, gsub, ipairs, pairs, type = format, gsub, ipairs, pairs, type
 
 local UnitName = UnitName
 local UnitExists = UnitExists
@@ -306,157 +308,419 @@ E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, valu
 	return format(L["Copy settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
 end
 
--- Import and Export
-local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
-local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
+do -- Import and Export
+	local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
+	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
 
-local function DecodeString(text, plugin)
-	local profileType, profileKey, profileData = D:Decode(text)
+	local function DecodeString(text, plugin)
+		local profileType, profileKey, profileData = D:Decode(text)
 
-	if plugin then
-		return E:ProfileTableToPluginFormat(profileData, profileType)
-	else
-		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-		return D:CreateProfileExport(decodedText, profileType, profileKey)
-	end
-end
-
-local function DecodeLabel(label, text, plugin)
-	if not validateString(nil, text) then
-		label.name = ''
-		return text
+		if plugin then
+			return E:ProfileTableToPluginFormat(profileData, profileType)
+		else
+			local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
+			return D:CreateProfileExport(decodedText, profileType, profileKey)
+		end
 	end
 
-	local decode = DecodeString(text, plugin)
-	if decode then
-		return decode
-	else
-		label.name = L["Error decoding data. Import string may be corrupted!"]
-		return text
-	end
-end
-
-local function BuildEditboxes(config, get, set, hidden, importTexts)
-	local count = 0
-	for _ in next, profileTypeItems do
-		count = count + 1
-
-		local offset = count * 2
-		local textKey = 'text'..count
-		local input = ACH:Input('', nil, 50 + offset, 5, 'full', get, set, nil, hidden)
-		input.disableButton = true
-		input.focusSelect = true
-		config.args[textKey] = input
-
-		if importTexts then
-			input.textChanged = function(value)
-				if textKey ~= value then
-					importTexts[textKey] = value
-				end
-			end
+	local function DecodeLabel(label, text, plugin)
+		if not validateString(nil, text) then
+			label.name = ''
+			return text
 		end
 
-		local label = ACH:Description('', 51 + offset)
-		config.args['label'..count] = label
+		local decode = DecodeString(text, plugin)
+		if decode then
+			return decode
+		else
+			label.name = L["Error decoding data. Import string may be corrupted!"]
+			return text
+		end
 	end
-end
 
-do
-	local importTexts = {}
-	local import = ACH:Group(L["Import"], nil, 3, 'tab')
-	E.Options.args.profiles.args.import = import
-
-	local function Import(which)
-		local count = 1
+	local function BuildEditboxes(config, get, set, hidden, importTexts)
+		local count = 0
 		for _ in next, profileTypeItems do
-			local textKey = 'text'..count
-			local importText = importTexts[textKey]
-			local label = import.args['label'..count]
-
-			count = count + 1 -- keep this after the count usage
-
-			if which == 'text' and validateString(nil, importText) then
-				local profileType = D:Decode(importText)
-				local imported = profileType and D:ImportProfile(importText)
-				label.name = (imported and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
-			else
-				if which == 'luaTable' then
-					importTexts[textKey] = DecodeLabel(label, importText)
-				elseif which == 'clear' then
-					importTexts[textKey] = nil
-				end
-
-				label.name = ''
-			end
-		end
-	end
-
-	local function Import_Set() end
-	local function Import_Get(info) return importTexts[info[#info]] end
-	BuildEditboxes(import, Import_Get, Import_Set, false, importTexts)
-
-	import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
-	import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
-	import.args.clearButton = ACH:Execute(L["Clear"], nil, 3, function() Import('clear') end)
-end
-
-do
-	local exportList = { profile = true }
-	local exportTexts = {}
-	local export = ACH:Group(L["Export"], nil, 4, 'tab')
-	E.Options.args.profiles.args.export = export
-
-	local function Export_Get(info) return exportTexts[info[#info]] end
-	local function Export_Set() end
-	BuildEditboxes(export, Export_Get, Export_Set, true)
-
-	local function HandleExporting(which)
-		local count = 1
-		for profileType in next, profileTypeItems do
-			local textKey = 'text'..count
-			local input = export.args[textKey]
-			local label = export.args['label'..count]
 			count = count + 1
 
-			local exporting = exportList[profileType]
-			input.hidden = not exporting
+			local offset = count * 2
+			local textKey = 'text'..count
+			local input = ACH:Input('', nil, 50 + offset, 5, 'full', get, set, nil, hidden)
+			input.disableButton = true
+			input.focusSelect = true
+			config.args[textKey] = input
 
-			if exporting then
-				local profileKey, profileExport = D:ExportProfile(profileType, which)
-				if not profileKey or not profileExport then
-					label.name = L["Error exporting profile!"]
-				else
-					label.name = format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType])
+			if importTexts then
+				input.textChanged = function(value)
+					if textKey ~= value then
+						importTexts[textKey] = value
+					end
 				end
+			end
 
-				exportTexts[textKey] = profileExport or nil
-			else
-				label.name = ''
+			local label = ACH:Description('', 51 + offset)
+			config.args['label'..count] = label
+		end
+	end
+
+	do
+		local importTexts = {}
+		local import = ACH:Group(L["Import"], nil, 3, 'tab')
+		E.Options.args.profiles.args.import = import
+
+		local function Import(which)
+			local count = 1
+			for _ in next, profileTypeItems do
+				local textKey = 'text'..count
+				local importText = importTexts[textKey]
+				local label = import.args['label'..count]
+
+				count = count + 1 -- keep this after the count usage
+
+				if which == 'text' and validateString(nil, importText) then
+					local profileType = D:Decode(importText)
+					local imported = profileType and D:ImportProfile(importText)
+					label.name = (imported and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
+				else
+					if which == 'luaTable' then
+						importTexts[textKey] = DecodeLabel(label, importText)
+					elseif which == 'clear' then
+						importTexts[textKey] = nil
+					end
+
+					label.name = ''
+				end
+			end
+		end
+
+		local function Import_Set() end
+		local function Import_Get(info) return importTexts[info[#info]] end
+		BuildEditboxes(import, Import_Get, Import_Set, false, importTexts)
+
+		import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
+		import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
+		import.args.clearButton = ACH:Execute(L["Clear"], nil, 3, function() Import('clear') end)
+	end
+
+	do
+		local exportList = { profile = true }
+		local exportTexts = {}
+		local export = ACH:Group(L["Export"], nil, 4, 'tab')
+		E.Options.args.profiles.args.export = export
+
+		local function Export_Get(info) return exportTexts[info[#info]] end
+		local function Export_Set() end
+		BuildEditboxes(export, Export_Get, Export_Set, true)
+
+		local function HandleExporting(which)
+			local count = 1
+			for profileType in next, profileTypeItems do
+				local textKey = 'text'..count
+				local input = export.args[textKey]
+				local label = export.args['label'..count]
+				count = count + 1
+
+				local exporting = exportList[profileType]
+				input.hidden = not exporting
+
+				if exporting then
+					local profileKey, profileExport = D:ExportProfile(profileType, which)
+					if not profileKey or not profileExport then
+						label.name = L["Error exporting profile!"]
+					else
+						label.name = format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType])
+					end
+
+					exportTexts[textKey] = profileExport or nil
+				else
+					label.name = ''
+				end
+			end
+		end
+
+		local function Filters_Empty() return not next(exportList) end
+		local function Filters_Get(_, key)
+			if Filters_Empty() then
+				HandleExporting()
+			end
+
+			return exportList[key]
+		end
+
+		local function Filters_Set(_, key, value) exportList[key] = value or nil end
+		local function Export(which)
+			if Filters_Empty() then return end
+
+			wipe(exportTexts)
+
+			HandleExporting(which)
+		end
+
+		export.args.exportButton = ACH:Execute(L["Export"], nil, 1, function() Export('text') end)
+		export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end)
+		export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end)
+		export.args.profileTye = ACH:MultiSelect(L["Choose What To Export"], nil, 10, profileTypeItems, nil, nil, Filters_Get, Filters_Set)
+		export.args.profileTye.customWidth = 225
+	end
+end
+
+do -- Module Copy
+	function MC:AddConfigOptions(settings, config)
+		for option, tbl in pairs(settings) do
+			if type(tbl) == 'table' and not (tbl.r and tbl.g and tbl.b) then
+				config.args[option] = ACH:Toggle(option)
 			end
 		end
 	end
 
-	local function Filters_Empty() return not next(exportList) end
-	local function Filters_Get(_, key)
-		if Filters_Empty() then
-			HandleExporting()
+	--Actionbars
+	local function CreateActionbarsConfig()
+		local config = MC:CreateModuleConfigGroup(L["ActionBars"], 'actionbar')
+		local order = 3
+
+		MC:AddConfigOptions(P.actionbar, config)
+
+		config.args.cooldown.name = L["Cooldown Text"]
+		config.args.cooldown.order = 2
+
+		for i = 1, 10 do
+			local bar = config.args['bar'..i]
+			bar.name = L["Bar "]..i
+			bar.order = order
+			order = order + 1
 		end
 
-		return exportList[key]
+		for i = 13, 15 do
+			local bar = config.args['bar'..i]
+			bar.name = L["Bar "]..i
+			bar.order = order
+			order = order + 1
+		end
+
+		config.args.barPet.name = L["Pet Bar"]
+		config.args.stanceBar.name = L["Stance Bar"]
+		config.args.microbar.name = L["Micro Bar"]
+		config.args.extraActionButton.name = L["Boss Button"]
+		config.args.vehicleExitButton.name = L["Vehicle Exit"]
+		config.args.zoneActionButton.name = L["Zone Ability"]
+
+		return config
 	end
 
-	local function Filters_Set(_, key, value) exportList[key] = value or nil end
-	local function Export(which)
-		if Filters_Empty() then return end
+	--Auras
+	local function CreateAurasConfig()
+		local config = MC:CreateModuleConfigGroup(L["Auras"], 'auras')
 
-		wipe(exportTexts)
+		MC:AddConfigOptions(P.auras, config)
 
-		HandleExporting(which)
+		config.args.cooldown.name = L["Cooldown Text"]
+		config.args.cooldown.order = 2
+
+		config.args.buffs.name = L["Buffs"]
+		config.args.debuffs.name = L["Debuffs"]
+
+		return config
 	end
 
-	export.args.exportButton = ACH:Execute(L["Export"], nil, 1, function() Export('text') end)
-	export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end)
-	export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end)
-	export.args.profileTye = ACH:MultiSelect(L["Choose What To Export"], nil, 10, profileTypeItems, nil, nil, Filters_Get, Filters_Set)
-	export.args.profileTye.customWidth = 225
+	--Bags
+	local function CreateBagsConfig()
+		local config = MC:CreateModuleConfigGroup(L["Bags"], 'bags')
+
+		MC:AddConfigOptions(P.bags, config)
+
+		config.args.cooldown.name = L["Cooldown Text"]
+		config.args.cooldown.order = 2
+
+		config.args.ignoredItems = nil
+		config.args.colors.name = L["Colors"]
+		config.args.bagBar.name = L["Bag Bar"]
+		config.args.split.name = L["Split"]
+		config.args.vendorGrays.name = L["Vendor Grays"]
+
+		return config
+	end
+
+	--Chat
+	local function CreateChatConfig()
+		return MC:CreateModuleConfigGroup(L["Chat"], 'chat')
+	end
+
+	--Cooldowns
+	local function CreateCooldownConfig()
+		local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], 'cooldown')
+		config.args.fonts = ACH:Toggle(L["Fonts"], nil, 2)
+
+		return config
+	end
+
+	--DataBars
+	local function CreateDatatbarsConfig()
+		local config = MC:CreateModuleConfigGroup(L["DataBars"], 'databars')
+
+		MC:AddConfigOptions(P.databars, config)
+
+		config.args.colors.name = L["Colors"]
+		config.args.experience.name = L["Experience"]
+		config.args.reputation.name = L["Reputation"]
+		config.args.honor.name = L["Honor"]
+		config.args.threat.name = L["Threat"]
+		config.args.azerite.name = L["Azerite"]
+
+		return config
+	end
+
+	--DataTexts
+	local function CreateDatatextsConfig()
+		local config = MC:CreateModuleConfigGroup(L["DataTexts"], 'datatexts')
+		config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
+
+		return config
+	end
+
+	--General
+	local function CreateGeneralConfig()
+		local config = MC:CreateModuleConfigGroup(L["General"], 'general')
+
+		MC:AddConfigOptions(P.general, config)
+
+		config.args.altPowerBar.name = L["Alternative Power"]
+		config.args.minimap.name = L["Minimap"]
+		config.args.totems.name = L["Class Totems"]
+		config.args.itemLevel.name = L["Item Level"]
+
+		return config
+	end
+
+	--NamePlates
+	local function CreateNamePlatesConfig()
+		local config = MC:CreateModuleConfigGroup(L["Nameplates"], 'nameplates')
+
+		MC:AddConfigOptions(P.nameplates, config)
+
+		-- Locales
+		config.args.cooldown.name = L["Cooldown Text"]
+		config.args.cooldown.order = 2
+
+		config.args.threat.name = L["Threat"]
+		config.args.cutaway.name = L["Cutaway Bars"]
+		config.args.clickThrough.name = L["Click Through"]
+		config.args.plateSize.name = L["Clickable Size"]
+		config.args.colors.name = L["Colors"]
+		config.args.visibility.name = L["Visibility"]
+
+		-- Modify Tables
+		config.args.filters = nil
+		config.args.units = ACH:Group(L["Nameplates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
+		config.args.units.inline = true
+
+		MC:AddConfigOptions(P.nameplates.units, config.args.units)
+
+		-- Locales
+		config.args.units.args.PLAYER.name = L["Player"]
+		config.args.units.args.TARGET.name = L["Target"]
+		config.args.units.args.FRIENDLY_PLAYER.name = L["FRIENDLY_PLAYER"]
+		config.args.units.args.ENEMY_PLAYER.name = L["ENEMY_PLAYER"]
+		config.args.units.args.FRIENDLY_NPC.name = L["FRIENDLY_NPC"]
+		config.args.units.args.ENEMY_NPC.name = L["ENEMY_NPC"]
+
+		return config
+	end
+
+	--Tooltip
+	local function CreateTooltipConfig()
+		local config = MC:CreateModuleConfigGroup(L["Tooltip"], 'tooltip')
+
+		MC:AddConfigOptions(P.tooltip, config)
+
+		config.args.visibility.name = L["Visibility"]
+		config.args.healthBar.name = L["Health Bar"]
+		config.args.factionColors.name = L["Custom Faction Colors"]
+
+		return config
+	end
+
+	--UnitFrames
+	local function CreateUnitframesConfig()
+		local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
+		config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
+		config.args.colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+		config.args.colors.inline = true
+
+		MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
+
+		config.args.colors.args.power.name = L["Power"]
+		config.args.colors.args.reaction.name = L["Reactions"]
+		config.args.colors.args.healPrediction.name = L["Heal Prediction"]
+		config.args.colors.args.classResources.name = L["Class Resources"]
+		config.args.colors.args.frameGlow.name = L["Frame Glow"]
+		config.args.colors.args.debuffHighlight.name = L["Debuff Highlighting"]
+		config.args.colors.args.powerPrediction.name = L["Power Prediction"]
+		config.args.colors.args.selection.name = L["Selection"]
+		config.args.colors.args.threat.name = L["Threat"]
+
+		config.args.units = ACH:Group(L["UnitFrames"], nil, 4, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+		config.args.units.inline = true
+
+		MC:AddConfigOptions(P.unitframe.units, config.args.units)
+
+		config.args.units.args.player.name = L["Player"]
+		config.args.units.args.target.name = L["Target"]
+		config.args.units.args.targettarget.name = L["TargetTarget"]
+		config.args.units.args.targettargettarget.name = L["TargetTargetTarget"]
+		config.args.units.args.focus.name = L["Focus"]
+		config.args.units.args.focustarget.name = L["FocusTarget"]
+		config.args.units.args.pet.name = L["Pet"]
+		config.args.units.args.pettarget.name = L["PetTarget"]
+		config.args.units.args.boss.name = L["Boss"]
+		config.args.units.args.arena.name = L["Arena"]
+		config.args.units.args.party.name = L["Party"]
+
+		for i = 1, 3 do
+			config.args.units.args['raid'..i].name = L[format("Raid %s", i)]
+		end
+
+		config.args.units.args.raidpet.name = L["Raid Pet"]
+		config.args.units.args.tank.name = L["Tank"]
+		config.args.units.args.assist.name = L["Assist"]
+
+		return config
+	end
+
+	E.Options.args.profiles.args.modulecopy = ACH:Group(L["Module Copy"], nil, 5, 'tab')
+	E.Options.args.profiles.args.modulecopy.handler = E.Options.args.profiles.handler
+	E.Options.args.profiles.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, 'medium')
+	E.Options.args.profiles.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, 'medium')
+	E.Options.args.profiles.args.modulecopy.args.profile = ACH:Select(L["Profile"], L["Select a profile to copy from/to."], 3, function() local tbl = {} for profile in pairs(E.data.profiles) do tbl[profile] = profile end return tbl end, nil, nil, function() return E.global.profileCopy.selected end, function(_, value) E.global.profileCopy.selected = value end)
+	E.Options.args.profiles.args.modulecopy.args.elvui = ACH:Group('ElvUI', L["Core |cff1784d1ElvUI|r options."], 10, 'tree')
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0)
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.actionbar = CreateActionbarsConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.auras = CreateAurasConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.bags = CreateBagsConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.chat = CreateChatConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.cooldown = CreateCooldownConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.databars = CreateDatatbarsConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.datatexts = CreateDatatextsConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.general = CreateGeneralConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.nameplates = CreateNamePlatesConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.tooltip = CreateTooltipConfig()
+	E.Options.args.profiles.args.modulecopy.args.elvui.args.uniframes = CreateUnitframesConfig()
+
+	E.Options.args.profiles.args.modulecopy.args.movers = ACH:Group(L["Movers"], L["On screen positions for different elements."], 20, 'tree')
+	E.Options.args.profiles.args.modulecopy.args.movers.args = MC:CreateMoversConfigGroup()
+
+	E.Options.args.profiles.args.modulereset = ACH:Group(L["Module Reset"], nil, 6, 'tab', nil, nil, nil, nil, function(info) E:CopyTable(E.db[info[#info]], P[info[#info]]) end)
+	E.Options.args.profiles.args.modulereset.args.header = ACH:Header(L["Module Reset"], 0)
+	E.Options.args.profiles.args.modulereset.args.intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1)
+	E.Options.args.profiles.args.modulereset.args.space1 = ACH:Spacer(2)
+	E.Options.args.profiles.args.modulereset.args.general = ACH:Execute(L["General"], nil, 3, nil, nil, L["Are you sure you want to reset General settings?"])
+	E.Options.args.profiles.args.modulereset.args.actionbar = ACH:Execute(L["ActionBars"], nil, 4, nil, nil, L["Are you sure you want to reset ActionBars settings?"])
+	E.Options.args.profiles.args.modulereset.args.bags = ACH:Execute(L["Bags"], nil, 5, nil, nil, L["Are you sure you want to reset Bags settings?"])
+	E.Options.args.profiles.args.modulereset.args.auras = ACH:Execute(L["Auras"], nil, 6, nil, nil, L["Are you sure you want to reset Auras settings?"])
+	E.Options.args.profiles.args.modulereset.args.chat = ACH:Execute(L["Chat"], nil, 7, nil, nil, L["Are you sure you want to reset Chat settings?"])
+	E.Options.args.profiles.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown Text"], nil, 8, nil, nil, L["Are you sure you want to reset Cooldown settings?"])
+	E.Options.args.profiles.args.modulereset.args.databars = ACH:Execute(L["DataBars"], nil, 9, nil, nil, L["Are you sure you want to reset DataBars settings?"])
+	E.Options.args.profiles.args.modulereset.args.datatexts = ACH:Execute(L["DataTexts"], nil, 10, nil, nil, L["Are you sure you want to reset DataTexts settings?"])
+	E.Options.args.profiles.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
+	E.Options.args.profiles.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
+	E.Options.args.profiles.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])
 end
