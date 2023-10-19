@@ -29,15 +29,16 @@ end
 
 local function ReplaceGossipText(button, text)
 	if text and text ~= '' then
-		local newText, count = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
-		if count > 0 then
-			text = newText
-			button:SetFormattedText('%s', text)
-		end
+		local iconText, iconCount = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
+		local iconExists = iconCount > 0
+		if iconExists then text = iconText end
 
-		local fixed = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
-		if fixed then
-			button:SetFormattedText('|cff%s', fixed)
+		local colorText, colorCount = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', ReplaceGossipColor)
+		local colorExists = colorCount > 0
+		if colorExists then text = '|cff' .. colorText end
+
+		if iconExists or colorExists then
+			button:SetFormattedText(text)
 		end
 	end
 end
