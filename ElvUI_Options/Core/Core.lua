@@ -277,184 +277,217 @@ local exportTypeItems = { text = L["Text"], luaTable = L["Table"], luaPlugin = L
 local exportTypeListOrder = { 'text', 'luaTable', 'luaPlugin' }
 
 local exportString = ''
+local function ExportButton_OnClick(button)
+	local widget = button.widget
+	widget.Label1:SetText('')
+	widget.Label2:SetText('')
+
+	local profileType, exportFormat = widget.ProfileTypeDropdown:GetValue(), widget.ExportFormatDropdown:GetValue()
+	local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
+	if not profileKey or not profileExport then
+		widget.Label1:SetText(L["Error exporting profile!"])
+	else
+		widget.Label1:SetText(format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+
+		if profileType == 'profile' then
+			widget.Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
+		end
+	end
+
+	widget.editBox:SetText(profileExport)
+	widget.editBox:HighlightText()
+	widget.editBox:SetFocus()
+
+	exportString = profileExport
+end
+
+local function EditBox_OnChar(editbox)
+	editbox.parent:SetText(exportString)
+	editbox:HighlightText()
+end
+
+local function Export_EditBox_OnTextChanged(editbox, userInput)
+	if userInput then --Prevent user from changing export string
+		editbox.parent:SetText(exportString)
+		editbox:HighlightText()
+	else --Scroll frame doesn't scroll to the bottom by itself, so let's do that now
+		editbox.parent.scrollFrame:SetVerticalScroll(editbox.parent.scrollFrame:GetVerticalScrollRange())
+	end
+end
+
+local function ImportButton_OnClick(button)
+	local widget = button.widget
+	widget.Label1:SetText('')
+	widget.Label2:SetText('')
+
+	local success = D:ImportProfile(widget.editBox:GetText())
+	widget.Label1:SetText((success and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"])
+end
+
+local function DecodeButton_OnClick(button)
+	local widget = button.widget
+	widget.Label1:SetText('')
+	widget.Label2:SetText('')
+
+	local profileType, profileKey, profileData = D:Decode(widget.editBox:GetText())
+	local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
+	local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
+	widget.editBox:SetText(importText)
+end
+
+local oldText = ''
+local function Import_EditBox_OnTextChanged(editbox)
+	local widget = editbox.widget
+
+	local text = editbox:GetText()
+	if text == '' then
+		widget.Label1:SetText('')
+		widget.Label2:SetText('')
+		widget.importButton:SetDisabled(true)
+		widget.decodeButton:SetDisabled(true)
+	elseif oldText ~= text then
+		local stringType = D:GetImportStringType(text)
+		widget.decodeButton:SetDisabled(stringType == 'Table')
+
+		local profileType, profileKey = D:Decode(text)
+		if not profileType or (profileType and profileType == 'profile' and not profileKey) then
+			widget.Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
+			widget.Label2:SetText('')
+			widget.importButton:SetDisabled(true)
+			widget.decodeButton:SetDisabled(true)
+		else
+			widget.Label1:SetText(format('%s: %s%s|r', L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ''))
+			if profileType == 'profile' then
+				widget.Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
+			end
+
+			--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
+			editbox.parent.scrollFrame:UpdateScrollChildRect()
+			editbox.parent.scrollFrame:SetVerticalScroll(editbox.parent.scrollFrame:GetVerticalScrollRange())
+
+			widget.importButton:SetDisabled(false)
+		end
+
+		oldText = text
+	end
+end
+
+local function Frame_OnClose(widget)
+	--Restore changed scripts
+	widget.editBox:SetScript('OnChar', nil)
+	widget.editBox:SetScript('OnTextChanged', widget.editBox.OnTextChangedOrig)
+	widget.editBox:SetScript('OnCursorChanged', widget.editBox.OnCursorChangedOrig)
+	widget.editBox.OnTextChangedOrig = nil
+	widget.editBox.OnCursorChangedOrig = nil
+
+	--Clear stored export string
+	exportString = ''
+
+	E.Libs.AceGUI:Release(widget)
+	E:Config_OpenWindow()
+end
+
+local function AddChild(widget, child, key)
+	widget[key] = child
+
+	child.widget = widget
+
+	widget:AddChild(child)
+end
+
 local function ExportImport_Open(mode)
-	local Frame = E.Libs.AceGUI:Create('Frame')
-	Frame:SetTitle('')
-	Frame:EnableResize(false)
-	Frame:SetWidth(800)
-	Frame:SetHeight(600)
-	Frame.frame:SetFrameStrata('FULLSCREEN_DIALOG')
-	Frame:SetLayout('flow')
+	local widget = E.Libs.AceGUI:Create('Frame')
+	widget:SetTitle('')
+	widget:EnableResize(false)
+	widget:SetWidth(800)
+	widget:SetHeight(600)
+	widget.frame:SetFrameStrata('FULLSCREEN_DIALOG')
+	widget:SetLayout('flow')
+	widget:SetCallback('OnClose', Frame_OnClose)
 
 	local Box = E.Libs.AceGUI:Create('MultiLineEditBox-ElvUI')
 	Box:SetNumLines(30)
 	Box:DisableButton(true)
 	Box:SetWidth(800)
 	Box:SetLabel('')
-	Frame:AddChild(Box)
+	AddChild(widget, Box, 'Box')
+
+	local editbox = Box.editBox
 	--Save original script so we can restore it later
-	Box.editBox.OnTextChangedOrig = Box.editBox:GetScript('OnTextChanged')
-	Box.editBox.OnCursorChangedOrig = Box.editBox:GetScript('OnCursorChanged')
+	editbox.OnTextChangedOrig = editbox:GetScript('OnTextChanged')
+	editbox.OnCursorChangedOrig = editbox:GetScript('OnCursorChanged')
+
 	--Remove OnCursorChanged script as it causes weird behaviour with long text
-	Box.editBox:SetScript('OnCursorChanged', nil)
+	editbox:SetScript('OnCursorChanged', nil)
 	Box.scrollFrame:UpdateScrollChildRect()
 
 	local Label1 = E.Libs.AceGUI:Create('Label')
 	Label1:SetFontObject('GameFontHighlightMedium')
 	Label1:SetText('.') --Set temporary text so height is set correctly
 	Label1:SetWidth(800)
-	Frame:AddChild(Label1)
+	AddChild(widget, Label1, 'Label1')
 
 	local Label2 = E.Libs.AceGUI:Create('Label')
 	Label2:SetFontObject('GameFontHighlightMedium')
 	Label2:SetText('.|n.')
 	Label2:SetWidth(800)
-	Frame:AddChild(Label2)
+	AddChild(widget, Label2, 'Label2')
+
+	-- link references
+	editbox.parent = Box
+	editbox.widget = widget
+	widget.editBox = editbox -- Box.editBox
+	widget.Label1 = Label1
+	widget.Label2 = Label2
+	widget.box = Box
 
 	if mode == 'export' then
-		Frame:SetTitle(L["Export Profile"])
-
-		local ProfileTypeDropdown = E.Libs.AceGUI:Create('Dropdown')
-		ProfileTypeDropdown:SetMultiselect(false)
-		ProfileTypeDropdown:SetLabel(L["Choose What To Export"])
-		ProfileTypeDropdown:SetList(profileTypeItems, profileTypeListOrder)
-		ProfileTypeDropdown:SetValue('profile') --Default export
-		Frame:AddChild(ProfileTypeDropdown)
-
-		local ExportFormatDropdown = E.Libs.AceGUI:Create('Dropdown')
-		ExportFormatDropdown:SetMultiselect(false)
-		ExportFormatDropdown:SetLabel(L["Choose Export Format"])
-		ExportFormatDropdown:SetList(exportTypeItems, exportTypeListOrder)
-		ExportFormatDropdown:SetValue('text') --Default format
-		ExportFormatDropdown:SetWidth(150)
-		Frame:AddChild(ExportFormatDropdown)
+		widget:SetTitle(L["Export Profile"])
 
 		local exportButton = E.Libs.AceGUI:Create('Button-ElvUI')
 		exportButton:SetText(L["Export Now"])
 		exportButton:SetAutoWidth(true)
-		exportButton:SetCallback('OnClick', function()
-			Label1:SetText('')
-			Label2:SetText('')
+		exportButton:SetCallback('OnClick', ExportButton_OnClick)
+		AddChild(widget, exportButton, 'exportButton')
 
-			local profileType, exportFormat = ProfileTypeDropdown:GetValue(), ExportFormatDropdown:GetValue()
-			local profileKey, profileExport = D:ExportProfile(profileType, exportFormat)
-			if not profileKey or not profileExport then
-				Label1:SetText(L["Error exporting profile!"])
-			else
-				Label1:SetText(format('%s: %s%s|r', L["Exported"], E.media.hexvaluecolor, profileTypeItems[profileType]))
+		local profileType = E.Libs.AceGUI:Create('Dropdown')
+		profileType:SetMultiselect(false)
+		profileType:SetLabel(L["Choose What To Export"])
+		profileType:SetList(profileTypeItems, profileTypeListOrder)
+		profileType:SetValue('profile') --Default export
+		AddChild(widget, profileType, 'ProfileTypeDropdown')
 
-				if profileType == 'profile' then
-					Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
-				end
-			end
-
-			Box:SetText(profileExport)
-			Box.editBox:HighlightText()
-			Box:SetFocus()
-
-			exportString = profileExport
-		end)
-		Frame:AddChild(exportButton)
+		local exportFormat = E.Libs.AceGUI:Create('Dropdown')
+		exportFormat:SetMultiselect(false)
+		exportFormat:SetLabel(L["Choose Export Format"])
+		exportFormat:SetList(exportTypeItems, exportTypeListOrder)
+		exportFormat:SetValue('text') --Default format
+		exportFormat:SetWidth(150)
+		AddChild(widget, exportFormat, 'ExportFormatDropdown')
 
 		--Set scripts
-		Box.editBox:SetScript('OnChar', function()
-			Box:SetText(exportString)
-			Box.editBox:HighlightText()
-		end)
-		Box.editBox:SetScript('OnTextChanged', function(_, userInput)
-			if userInput then
-				--Prevent user from changing export string
-				Box:SetText(exportString)
-				Box.editBox:HighlightText()
-			else
-				--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
-				Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
-			end
-		end)
+		editbox:SetScript('OnChar', EditBox_OnChar)
+		editbox:SetScript('OnTextChanged', Export_EditBox_OnTextChanged)
 	elseif mode == 'import' then
-		Frame:SetTitle(L["Import Profile"])
+		widget:SetTitle(L["Import Profile"])
 		local importButton = E.Libs.AceGUI:Create('Button-ElvUI') --This version changes text color on SetDisabled
 		importButton:SetDisabled(true)
 		importButton:SetText(L["Import Now"])
 		importButton:SetAutoWidth(true)
-		importButton:SetCallback('OnClick', function()
-			Label1:SetText('')
-			Label2:SetText('')
-
-			local success = D:ImportProfile(Box:GetText())
-			Label1:SetText((success and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"])
-		end)
-		Frame:AddChild(importButton)
+		importButton:SetCallback('OnClick', ImportButton_OnClick)
+		AddChild(widget, importButton, 'importButton')
 
 		local decodeButton = E.Libs.AceGUI:Create('Button-ElvUI')
 		decodeButton:SetDisabled(true)
 		decodeButton:SetText(L["Decode Text"])
 		decodeButton:SetAutoWidth(true)
-		decodeButton:SetCallback('OnClick', function()
-			Label1:SetText('')
-			Label2:SetText('')
+		decodeButton:SetCallback('OnClick', DecodeButton_OnClick)
+		AddChild(widget, decodeButton, 'decodeButton')
 
-			local profileType, profileKey, profileData = D:Decode(Box:GetText())
-			local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-			local importText = D:CreateProfileExport(decodedText, profileType, profileKey)
-			Box:SetText(importText)
-		end)
-		Frame:AddChild(decodeButton)
-
-		local oldText = ''
-		local function OnTextChanged()
-			local text = Box:GetText()
-			if text == '' then
-				Label1:SetText('')
-				Label2:SetText('')
-				importButton:SetDisabled(true)
-				decodeButton:SetDisabled(true)
-			elseif oldText ~= text then
-				local stringType = D:GetImportStringType(text)
-				decodeButton:SetDisabled(stringType == 'Table')
-
-				local profileType, profileKey = D:Decode(text)
-				if not profileType or (profileType and profileType == 'profile' and not profileKey) then
-					Label1:SetText(L["Error decoding data. Import string may be corrupted!"])
-					Label2:SetText('')
-					importButton:SetDisabled(true)
-					decodeButton:SetDisabled(true)
-				else
-					Label1:SetText(format('%s: %s%s|r', L["Importing"], E.media.hexvaluecolor, profileTypeItems[profileType] or ''))
-					if profileType == 'profile' then
-						Label2:SetText(format('%s: %s%s|r', L["Profile Name"], E.media.hexvaluecolor, profileKey))
-					end
-
-					--Scroll frame doesn't scroll to the bottom by itself, so let's do that now
-					Box.scrollFrame:UpdateScrollChildRect()
-					Box.scrollFrame:SetVerticalScroll(Box.scrollFrame:GetVerticalScrollRange())
-
-					importButton:SetDisabled(false)
-				end
-
-				oldText = text
-			end
-		end
-
-		Box.editBox:SetFocus()
-		Box.editBox:SetScript('OnChar', nil)
-		Box.editBox:SetScript('OnTextChanged', OnTextChanged)
+		editbox:SetFocus()
+		editbox:SetScript('OnChar', nil)
+		editbox:SetScript('OnTextChanged', Import_EditBox_OnTextChanged)
 	end
-
-	Frame:SetCallback('OnClose', function(widget)
-		--Restore changed scripts
-		Box.editBox:SetScript('OnChar', nil)
-		Box.editBox:SetScript('OnTextChanged', Box.editBox.OnTextChangedOrig)
-		Box.editBox:SetScript('OnCursorChanged', Box.editBox.OnCursorChangedOrig)
-		Box.editBox.OnTextChangedOrig = nil
-		Box.editBox.OnCursorChangedOrig = nil
-
-		--Clear stored export string
-		exportString = ''
-
-		E.Libs.AceGUI:Release(widget)
-		E:Config_OpenWindow()
-	end)
 
 	--Clear default text
 	Label1:SetText('')
