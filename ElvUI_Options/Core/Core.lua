@@ -397,9 +397,9 @@ do -- Import and Export
 		local function Import_Get(info) return importTexts[info[#info]] end
 		BuildEditboxes(import, Import_Get, Import_Set, false, importTexts)
 
-		import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
-		import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
-		import.args.clearButton = ACH:Execute(L["Clear"], nil, 3, function() Import('clear') end)
+		import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end, nil, nil, 120)
+		import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end, nil, nil, 120)
+		import.args.clearButton = ACH:Execute(L["Clear"], nil, 3, function() Import('clear') end, nil, nil, 120)
 	end
 
 	do
@@ -456,9 +456,9 @@ do -- Import and Export
 			HandleExporting(which)
 		end
 
-		export.args.exportButton = ACH:Execute(L["Export"], nil, 1, function() Export('text') end)
-		export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end)
-		export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end)
+		export.args.exportButton = ACH:Execute(L["Export"], nil, 1, function() Export('text') end, nil, nil, 120)
+		export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end, nil, nil, 120)
+		export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end, nil, nil, 120)
 		export.args.profileTye = ACH:MultiSelect(L["Choose What To Export"], nil, 10, profileTypeItems, nil, nil, Filters_Get, Filters_Set)
 		export.args.profileTye.customWidth = 225
 	end
@@ -691,8 +691,10 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, 'medium')
 	E.Options.args.profiles.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, 'medium')
 	E.Options.args.profiles.args.modulecopy.args.profile = ACH:Select(L["Profile"], L["Select a profile to copy from/to."], 3, function() local tbl = {} for profile in pairs(E.data.profiles) do tbl[profile] = profile end return tbl end, nil, nil, function() return E.global.profileCopy.selected end, function(_, value) E.global.profileCopy.selected = value end)
+	E.Options.args.profiles.args.modulecopy.args.import = ACH:Execute(L["Import"], nil, 4, nil, nil, nil, 120)
+	E.Options.args.profiles.args.modulecopy.args.export = ACH:Execute(L["Export"], nil, 5, nil, nil, nil, 120)
+
 	E.Options.args.profiles.args.modulecopy.args.elvui = ACH:Group('ElvUI', L["Core |cff1784d1ElvUI|r options."], 10, 'tree')
-	E.Options.args.profiles.args.modulecopy.args.elvui.args.header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0)
 	E.Options.args.profiles.args.modulecopy.args.elvui.args.actionbar = CreateActionbarsConfig()
 	E.Options.args.profiles.args.modulecopy.args.elvui.args.auras = CreateAurasConfig()
 	E.Options.args.profiles.args.modulecopy.args.elvui.args.bags = CreateBagsConfig()
@@ -709,7 +711,6 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulecopy.args.movers.args = MC:CreateMoversConfigGroup()
 
 	E.Options.args.profiles.args.modulereset = ACH:Group(L["Module Reset"], nil, 6, 'tab', nil, nil, nil, nil, function(info) E:CopyTable(E.db[info[#info]], P[info[#info]]) end)
-	E.Options.args.profiles.args.modulereset.args.header = ACH:Header(L["Module Reset"], 0)
 	E.Options.args.profiles.args.modulereset.args.intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1)
 	E.Options.args.profiles.args.modulereset.args.space1 = ACH:Spacer(2)
 	E.Options.args.profiles.args.modulereset.args.general = ACH:Execute(L["General"], nil, 3, nil, nil, L["Are you sure you want to reset General settings?"])

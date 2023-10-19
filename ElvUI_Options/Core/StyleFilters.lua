@@ -803,9 +803,9 @@ do
 	end
 
 	StyleFilters.import = ACH:Group(L["Import"], nil, 15)
-	StyleFilters.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
-	StyleFilters.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode)
-	StyleFilters.import.args.importClear = ACH:Execute(L["Clear"], nil, 4, Import_Clear)
+	StyleFilters.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button, nil, nil, 120)
+	StyleFilters.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode, nil, nil, 120)
+	StyleFilters.import.args.importClear = ACH:Execute(L["Clear"], nil, 4, Import_Clear, nil, nil, 120)
 	StyleFilters.import.args.label = label
 
 	StyleFilters.import.args.text = ACH:Input('', nil, -10, 10, 'full', Import_Get, Import_Set)
@@ -859,9 +859,9 @@ do
 	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFilters.export.args.filters.sortByValue = true
 
-	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, function() Export('text') end)
-	StyleFilters.export.args.exportDecode = ACH:Execute(L["Table"], nil, 4, function() Export('luaTable') end)
-	StyleFilters.export.args.exportPlugin = ACH:Execute(L["Plugin"], nil, 5, function() Export('luaPlugin') end)
+	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, function() Export('text') end, nil, nil, 120)
+	StyleFilters.export.args.exportDecode = ACH:Execute(L["Table"], nil, 4, function() Export('luaTable') end, nil, nil, 120)
+	StyleFilters.export.args.exportPlugin = ACH:Execute(L["Plugin"], nil, 5, function() Export('luaPlugin') end, nil, nil, 120)
 	StyleFilters.export.args.label = label
 
 	StyleFilters.export.args.text = ACH:Input('', nil, -10, 10, 'full', Export_Get, Export_Set, nil, true)
