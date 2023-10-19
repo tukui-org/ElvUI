@@ -336,15 +336,16 @@ local function DecodeLabel(label, text, plugin)
 	end
 end
 
-local function BuildEditboxes(config, get, set, importTexts, hider)
+local function BuildEditboxes(config, get, set, hidden, importTexts)
 	local count = 0
 	for _ in next, profileTypeItems do
 		count = count + 1
 
 		local offset = count * 2
 		local textKey = 'text'..count
-		local input = ACH:Input('', nil, 50 + offset, true, 'full', get, set, nil, hider)
+		local input = ACH:Input('', nil, 50 + offset, 5, 'full', get, set, nil, hidden)
 		input.disableButton = true
+		input.focusSelect = true
 		config.args[textKey] = input
 
 		if importTexts then
@@ -365,24 +366,19 @@ do
 	local import = ACH:Group(L["Import"], nil, 3, 'tab')
 	E.Options.args.profiles.args.import = import
 
-	local function HandleImporting(which)
+	local function Import(which)
 		local count = 1
 		for _ in next, profileTypeItems do
-			local label = import.args['label'..count]
-			local nextInput = import.args['text'..count+1]
-
 			local textKey = 'text'..count
 			local importText = importTexts[textKey]
+			local label = import.args['label'..count]
 
 			count = count + 1 -- keep this after the count usage
 
-			if nextInput then
-				print(textKey, count, importText, nextInput.hidden)
-				nextInput.hidden = not importText or importText == ''
-			end
-
 			if which == 'text' and validateString(nil, importText) then
-				label.name = (D:Decode(importText) and D:ImportProfile(importText) and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
+				local profileType = D:Decode(importText)
+				local imported = profileType and D:ImportProfile(importText)
+				label.name = (imported and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]
 			else
 				if which == 'luaTable' then
 					importTexts[textKey] = DecodeLabel(label, importText)
@@ -393,22 +389,9 @@ do
 		end
 	end
 
-	local function Import(which)
-		HandleImporting(which)
-	end
-
 	local function Import_Set() end
 	local function Import_Get(info) return importTexts[info[#info]] end
-	local function Import_Previous(num) return tonumber(num) - 1 end
-	local function Import_Hide(info)
-		local prevKey = gsub(info[#info], '%d', Import_Previous)
-		local prevNum = strmatch(prevKey, '%d')
-		local text = importTexts[prevKey]
-
-		return (tonumber(prevNum) ~= 0) and (not text or text == '')
-	end
-
-	BuildEditboxes(import, Import_Get, Import_Set, importTexts) --, Import_Hide)
+	BuildEditboxes(import, Import_Get, Import_Set, false, importTexts)
 
 	import.args.importButton = ACH:Execute(L["Import"], nil, 1, function() Import('text') end)
 	import.args.decodeButton = ACH:Execute(L["Decode"], nil, 2, function() Import('luaTable') end)
@@ -422,7 +405,7 @@ do
 
 	local function Export_Get(info) return exportTexts[info[#info]] end
 	local function Export_Set() end
-	BuildEditboxes(export, Export_Get, Export_Set, nil, true)
+	BuildEditboxes(export, Export_Get, Export_Set, true)
 
 	local function HandleExporting(which)
 		local count = 1
@@ -434,7 +417,6 @@ do
 
 			local exporting = exportList[profileType]
 			input.hidden = not exporting
-			input.multiline = which and which ~= 'text'
 
 			if exporting then
 				local profileKey, profileExport = D:ExportProfile(profileType, which)
@@ -473,4 +455,5 @@ do
 	export.args.decodeButton = ACH:Execute(L["Table"], nil, 2, function() Export('luaTable') end)
 	export.args.pluginButton = ACH:Execute(L["Plugin"], nil, 3, function() Export('luaPlugin') end)
 	export.args.profileTye = ACH:MultiSelect(L["Choose What To Export"], nil, 10, profileTypeItems, nil, nil, Filters_Get, Filters_Set)
+	export.args.profileTye.customWidth = 225
 end
