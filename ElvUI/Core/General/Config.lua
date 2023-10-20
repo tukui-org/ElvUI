@@ -1114,7 +1114,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		elseif index == 4 then
 			element:Point('BOTTOMRIGHT', frame.bottomHolder, 'BOTTOMRIGHT', -(unskinned and 24 or offset), offset)
 		elseif index > 4 then
-			element:Point('RIGHT', last, 'LEFT', -(index == 5 and 8 or (unskinned and 2) or 4), 0)
+			element:Point('RIGHT', last, 'LEFT', -(index == 5 and (unskinned and 8 or 6) or (unskinned and 2) or 4), 0)
 		else
 			element:Point('LEFT', last, 'RIGHT', unskinned and 2 or 4, 0)
 		end
