@@ -1252,7 +1252,7 @@ function E:ToggleOptions(msg)
 									region:SetAllPoints()
 
 									child.resizeTexture = region
-								else -- this is the smaller texture, we don't need it
+								elseif texture then -- this is the smaller texture, we don't need it
 									region:SetAlpha(0)
 								end
 							end
