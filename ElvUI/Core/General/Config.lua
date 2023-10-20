@@ -908,26 +908,6 @@ function E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 	return btn
 end
 
-function E:Config_HandleLeftExecute(frame, unskinned, buttons, last, index)
-	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
-
-	for _, info in ipairs({
-		{
-			var = 'ToggleAnchors',
-			name = L["Toggle Anchors"],
-			desc = L["Unlock various elements of the UI to be repositioned."],
-			func = function()
-				E:ToggleMoveMode()
-				E.ConfigurationToggled = true
-			end
-		},
-	}) do
-		last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
-	end
-
-	return last
-end
-
 function E:Config_CreateLeftButtons(frame, unskinned, options)
 	local opts = {}
 	for key, info in pairs(options) do
@@ -955,9 +935,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		info.key = key
 		info.func = function() ACD:SelectGroup('ElvUI', key) end
 
-		if key == 'search' then -- use this just to spawn the execute buttons, this one doesn't get a button but we want the ordering
-			last = E:Config_HandleLeftExecute(frame, unskinned, buttons, last, #buttons+1)
-		else
+		if key ~= 'search' then
 			last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 		end
 	end
@@ -1091,11 +1069,12 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end
 		},
 		{
-			var = 'Discord',
-			name = L["Discord"],
-			desc = L["Shows a frame with needed info for support."],
+			var = 'ToggleAnchors',
+			name = L["Movers"],
+			desc = L["Unlock various elements of the UI to be repositioned."],
 			func = function()
-				E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org')
+				E:ToggleMoveMode()
+				E.ConfigurationToggled = true
 			end
 		},
 		{

@@ -245,13 +245,14 @@ end
 local TESTER_STRING = table.concat(TESTERS, '|n')
 
 E.Options.args.info = ACH:Group(L["Information"], nil, 4)
-E.Options.args.info.args.download = ACH:Group(L["ELVUI_DESC"], nil, 4)
-E.Options.args.info.args.download.inline = true
-E.Options.args.info.args.download.args.git = ACH:Execute(L["Ticket Tracker"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 140)
-E.Options.args.info.args.download.args.changelog = ACH:Execute(L["Changelog"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md') end, nil, nil, 140)
-E.Options.args.info.args.download.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 140)
-E.Options.args.info.args.download.args.ptr = ACH:Execute(L["PTR Version"], L["Link to the latest PTR version."], 4, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip') end, nil, nil, 140)
-E.Options.args.info.args.download.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 5, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 140)
+E.Options.args.info.args.main = ACH:Group(L["ELVUI_DESC"], nil, 4)
+E.Options.args.info.args.main.inline = true
+E.Options.args.info.args.main.args.discord = ACH:Execute(L["Discord"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org') end, nil, nil, 120)
+E.Options.args.info.args.main.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 120)
+E.Options.args.info.args.main.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md') end, nil, nil, 120)
+E.Options.args.info.args.main.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 6, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 120)
+E.Options.args.info.args.main.args.ptr = ACH:Execute(L["PTR Version"], L["Link to the latest PTR version."], 7, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip') end, nil, nil, 120)
+E.Options.args.info.args.main.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 8, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 120)
 
 E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 5)
 E.Options.args.info.args.credits.inline = true
