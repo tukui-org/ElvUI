@@ -1240,6 +1240,31 @@ function E:ToggleOptions(msg)
 						end
 					end
 
+					local point = not unskinned and not frame.resizeArrow and child:GetPoint()
+					if point == 'BOTTOMRIGHT' then
+						for _, region in next, { child:GetRegions() } do
+							local texture = region:IsObjectType('Texture') and region:GetTexture()
+							if texture == 137057 then
+								if not child.resizeTexture then
+									region:SetTexture(E.Media.Textures.ArrowUp)
+									region:SetTexCoord(0, 1, 0, 1)
+									region:SetRotation(-2.35)
+									region:SetAllPoints()
+
+									child.resizeTexture = region
+								else -- this is the smaller texture, we don't need it
+									region:SetAlpha(0)
+								end
+							end
+						end
+
+						child:Size(24)
+						child:Point('BOTTOMRIGHT', 1, -1)
+						child:SetFrameLevel(200)
+
+						frame.resizeArrow = child
+					end
+
 					if child:HasScript('OnMouseUp') then
 						child:HookScript('OnMouseUp', E.Config_StopMoving)
 					end
