@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["Reset"] = "Restablecer"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffes un addon que reemplaza la interfaz completa de World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Parece que hay un problema con tu instalación. Por favor reinstala ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
@@ -288,7 +289,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banco de Componentes"
 L["Remaining:"] = "Restante"
 L["Remove Bar %d Action Page"] = "Quitar Barra %d de la paginación"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Barra de Reputación"
 L["Request was denied by user."] = "Petición denegada por el jugador."
 L["Reset Character Data: Hold Shift + Right Click"] = "Restablecer los datos de los personajes: Mantener Shift + Click derecho"

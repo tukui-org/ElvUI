@@ -1388,7 +1388,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = "Нужна цель"
 L["Reset Action Paging"] = "Сброс переключения панели"
 L["Reset all frames to their original positions."] = "Вернуть все фреймы на изначальные позиции."
-L["Reset Anchors"] = "Сбросить фиксаторы"
 L["Reset Aura Filters"] = "Сбросить фильтры аур"
 L["Reset Chat Position"] = "Сбросить позицию в чате"
 L["Reset CVars"] = "Сбросить CVar'ы"

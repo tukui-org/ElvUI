@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["Reset"] = "Reiniciar"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffé um Addon completo de substituição da interface original do World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Parece haver um problema com sua instalação. Por favor reinstale ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00Ligado a |r"
@@ -288,7 +289,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banco de Reagentes"
 L["Remaining:"] = "Restante:"
 L["Remove Bar %d Action Page"] = "Remover paginação de ação da barra %d."
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Barra de Reputação"
 L["Request was denied by user."] = "Pedido negado pelo usuário."
 L["Reset Character Data: Hold Shift + Right Click"] = true

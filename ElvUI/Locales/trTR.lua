@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["Reset"] = "sıfırla"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffWorld of Warcraft icin eksiksiz bir Kullanici Arayuzu degistirme eklentisidir.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
@@ -290,7 +291,6 @@ L["Rare"] = "Nadir"
 L["Reagent Bank"] = "Sarf Malzeme Bankasi"
 L["Remaining:"] = "Geriye Kalan:"
 L["Remove Bar %d Action Page"] = "Cubugu Kaldir %d Eylem Sayfasi"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Ýtibar Cubugu"
 L["Request was denied by user."] = "Talep kullanici tarafindan reddedildi."
 L["Reset Character Data: Hold Shift + Right Click"] = "Karakter Verilerini Sifirla: Shift tusunu basili tutun + Sag Tiklayin"
