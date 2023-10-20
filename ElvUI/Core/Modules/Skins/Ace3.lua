@@ -115,6 +115,20 @@ function S:Ace3_TabSetSelected(selected)
 	end
 end
 
+function S:Ace3_ButtonSetPoint(point, anchor, point2, xOffset, yOffset, skip)
+	if not skip and point2 == 'TOPRIGHT' then
+		self:Point(point, anchor, point2, xOffset + 2, yOffset, true)
+	end
+end
+
+function S:Ace3_SkinButton(button)
+	if not button.isSkinned then
+		S:HandleButton(button, true)
+
+		hooksecurefunc(button, 'SetPoint', S.Ace3_ButtonSetPoint)
+	end
+end
+
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
 	tab.text:Point('LEFT', 14, -1)
@@ -250,8 +264,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame.backdrop:Point('TOPLEFT', 0, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
-		local frame = widget.frame
-		S:HandleButton(frame, true)
+		S:Ace3_SkinButton(widget.frame)
 	elseif TYPE == 'Slider' or TYPE == 'Slider-ElvUI' then
 		local frame = widget.slider
 		local editbox = widget.editbox
@@ -329,11 +342,13 @@ function S:Ace3_RefreshTree(scrollToSelection)
 	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
 		self.border:Point('TOPLEFT', self.treeframe, 'TOPRIGHT', 1, 13)
 		self.border:Point('BOTTOMRIGHT', self.frame, 'BOTTOMRIGHT', 6, 0)
+		self.treeframe:Point('TOPLEFT', 0, 0)
 		self.treeframe:Hide()
 		return
 	else
 		self.border:Point('TOPLEFT', self.treeframe, 'TOPRIGHT')
 		self.border:Point('BOTTOMRIGHT', self.frame)
+		self.treeframe:Point('TOPLEFT', 0, -2)
 		self.treeframe:Show()
 	end
 
