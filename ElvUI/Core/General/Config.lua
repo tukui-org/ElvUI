@@ -644,7 +644,7 @@ local function Config_SearchUpdate(self, userInput)
 	end
 end
 
-local function Config_SearchClear(self)
+local function Config_SearchClear(self, which)
 	if not self.ClearFocus then
 		self = self:GetParent()
 	end
@@ -652,10 +652,12 @@ local function Config_SearchClear(self)
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local status = self.frame.obj.status
-	local selected = status and status.groups.selected
-	if selected == 'search' then -- only clear when viewing search
-		ACD:SelectGroup('ElvUI', 'general') -- swap back to general
+	local frame = self.frame
+	local status = frame and frame.obj and frame.obj.status
+	local selected = status and status.groups and status.groups.selected
+	local whatsNew = which == 'whatsNew' and 'search'
+	if whatsNew or (selected == 'search') then
+		ACD:SelectGroup('ElvUI', whatsNew or 'general') -- swap back to general
 	end
 
 	self:SetText('')
@@ -1089,7 +1091,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end,
 			func = function()
 				if search then
-					Config_SearchClear(search)
+					Config_SearchClear(search, 'whatsNew')
 				else
 					C:Search_ClearResults()
 					ACD:SelectGroup('ElvUI', 'search') -- trigger update
