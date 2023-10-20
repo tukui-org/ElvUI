@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = "En Mí"
 L["On Pet"] = "En Mascota"
@@ -1924,7 +1925,6 @@ L["BAGS_DESC"] = "Ajusta las opciones de las bolsas para ElvUI."
 L["CHAT_DESC"] = "Configura los ajustes del chat para ElvUI."
 L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["DATATEXT_DESC"] = "Configura el despliegue en pantalla de los textos de datos."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r es un addon que reemplaza la interfaz completa de World of Warcraft."
 L["NAMEPLATE_DESC"] = "Modifica las opciones de la placa de nombre"
 L["SKINS_DESC"] = "Configura los Ajustes de Cubiertas."
 L["TOGGLESKIN_DESC"] = "Activa/Desactiva esta cubierta."

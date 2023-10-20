@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["ELVUI_DESC"] = ("*ElvUI|r|cFFffffff는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00키로 다음의 행동을 실행합니다 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 프레임에 버프를 본체 프레임에 강제로 연결하는 충돌 앵커가 있습니다."

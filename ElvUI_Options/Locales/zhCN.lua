@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
@@ -1926,7 +1927,6 @@ L["BAGS_DESC"] = "调整ElvUI背包设置"
 L["CHAT_DESC"] = "聊天框设置"
 L["COOLDOWN_DESC"] = "调整冷却文字设置"
 L["DATATEXT_DESC"] = "设定屏幕所显示的部分信息文字"
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r为一套功能完整, 可用来替换WoW原始界面的套件"
 L["NAMEPLATE_DESC"] = "修改姓名板设定"
 L["SKINS_DESC"] = "调整外观设定"
 L["TOGGLESKIN_DESC"] = "启用/停用此外观"

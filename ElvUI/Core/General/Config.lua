@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local ACD = E.Libs.AceConfigDialog
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
@@ -8,6 +9,7 @@ local unpack, sort, gsub, wipe = unpack, sort, gsub, wipe
 local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select, type, min = floor, select, type, min
 local pairs, tinsert, tContains = pairs, tinsert, tContains
+local strmatch, strtrim, strlower = strmatch, strtrim, strlower
 
 local CreateFrame = CreateFrame
 local EnableAddOn = EnableAddOn
@@ -292,10 +294,12 @@ function E:CreateMoverPopup()
 	snapping:SetScript('OnClick', function(cb) E.db.general.stickyFrames = cb:GetChecked() end)
 	snapping.text = _G[snapName..'Text']
 	snapping.text:SetText(L["Sticky Frames"])
+	snapping.text:FontTemplate(nil, 12, 'SHADOW')
 	f.snapping = snapping
 
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
 	lock.Text:SetText(L["Lock"])
+	lock:Width(60)
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
 
@@ -309,8 +313,14 @@ function E:CreateMoverPopup()
 	end)
 	f.lock = lock
 
+	local reset = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
+	reset.Text:SetText(L["Reset Anchors"])
+	reset:SetScript('OnClick', function() E:ResetUI() end)
+	reset:Width(120)
+	f.reset = reset
+
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')
-	align:Size(24, 17)
+	align:Size(30, 22)
 	align:SetAutoFocus(false)
 	align:SetScript('OnEscapePressed', function(eb)
 		eb:SetText(E.db.gridSize)
@@ -342,15 +352,18 @@ function E:CreateMoverPopup()
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	align.text:Point('RIGHT', align, 'LEFT', -4, 0)
 	align.text:SetText(L["Grid Size:"])
+	align.text:FontTemplate(nil, 12, 'SHADOW')
 	f.align = align
 
 	--position buttons
-	snapping:Point('BOTTOMLEFT', 14, 10)
-	lock:Point('BOTTOMRIGHT', -14, 14)
-	align:Point('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
+	reset:Point('BOTTOMLEFT', 5, 5)
+	snapping:Point('BOTTOMLEFT', reset, 'TOPLEFT', -4, 0)
+	lock:Point('BOTTOMRIGHT', -5, 5)
+	align:Point('TOPRIGHT', lock, 'TOPLEFT', -3, 0)
 
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
+	S:HandleButton(reset)
 	S:HandleEditBox(align)
 
 	f:RegisterEvent('PLAYER_REGEN_DISABLED')
@@ -368,6 +381,7 @@ function E:CreateMoverPopup()
 	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
 	dropDown.text:SetText(L["Config Mode:"])
+	dropDown.text:FontTemplate(nil, 12, 'SHADOW')
 	f.dropDown = dropDown
 
 	_G.UIDropDownMenu_Initialize(dropDown, ConfigMode_Initialize)
@@ -613,6 +627,37 @@ local function Config_ButtonOnLeave()
 	ConfigTooltip:Hide()
 end
 
+local function Config_SearchUpdate(self, userInput)
+	if not userInput then return end
+
+	local C = E.Config[1]
+	C:Search_ClearResults()
+
+	local text = self:GetText()
+	if strmatch(text, '%S+') then
+		C.SearchText = strtrim(strlower(text))
+
+		C:Search_Config()
+		C:Search_AddResults()
+
+		ACD:SelectGroup('ElvUI', 'search') -- trigger update
+	end
+end
+
+local function Config_SearchClear(self)
+	if not self.ClearFocus then
+		self = self:GetParent()
+	end
+
+	local C = E.Config[1]
+	C:Search_ClearResults()
+
+	ACD:SelectGroup('ElvUI', 'search') -- trigger update
+
+	self:SetText('')
+	self:ClearFocus()
+end
+
 local function Config_StripNameColor(name)
 	if type(name) == 'function' then name = name() end
 	return E:StripString(name)
@@ -701,24 +746,37 @@ function E:Config_UpdateSliderPosition(btn)
 	end
 end
 
-function E:Config_CreateButton(info, frame, unskinned, ...)
-	local btn = CreateFrame(...)
-	btn.frame = frame
-	btn.desc = info.desc
-	btn.info = info
+function E:Config_CreateFrame(info, frame, unskinned, frameType, ...)
+	local element = CreateFrame(frameType, ...)
+	element.frame = frame
+	element.desc = info.desc
+	element.info = info
 
-	if not unskinned then
-		E.Skins:HandleButton(btn)
+	if frameType == 'Button' then
+		if not unskinned then
+			E.Skins:HandleButton(element)
+		end
+
+		E:Config_SetButtonText(element)
+		E:Config_SetButtonColor(element, element.info.key == 'general')
+		element:HookScript('OnEnter', Config_ButtonOnEnter)
+		element:HookScript('OnLeave', Config_ButtonOnLeave)
+		element:SetScript('OnClick', info.func)
+		element:Width(element:GetTextWidth() + 40)
+	elseif frameType == 'EditBox' then
+		if not unskinned then
+			E.Skins:HandleEditBox(element)
+		end
+
+		element:SetScript('OnEditFocusGained', EditBox_HighlightText)
+		element:HookScript('OnTextChanged', info.update)
+		element:SetScript('OnEscapePressed', info.clear)
+		element.clearButton:HookScript('OnClick', info.clear)
+
+		element:Size(220, 22)
 	end
 
-	E:Config_SetButtonText(btn)
-	E:Config_SetButtonColor(btn, btn.info.key == 'general')
-	btn:HookScript('OnEnter', Config_ButtonOnEnter)
-	btn:HookScript('OnLeave', Config_ButtonOnLeave)
-	btn:SetScript('OnClick', info.func)
-	btn:Width(btn:GetTextWidth() + 40)
-
-	return btn
+	return element
 end
 
 function E:Config_DialogOpened(name)
@@ -778,9 +836,9 @@ function E:Config_UpdateLeftScroller(frame)
 	slider:SetValue(0)
 
 	if max == 0 then
-		slider.thumb:Hide()
+		slider.thumb.holder:Hide()
 	else
-		slider.thumb:Show()
+		slider.thumb.holder:Show()
 	end
 end
 
@@ -801,6 +859,45 @@ function E:Config_RestoreOldPosition(frame)
 			frame:Point(unpack(position[i]))
 		end
 	end
+end
+
+function E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
+	local btn = E:Config_CreateFrame(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
+	btn:Width(176)
+
+	if not last then
+		btn:Point('TOP', buttons, 'TOP', -1, 0)
+	else
+		btn:Point('TOP', last, 'BOTTOM', 0, (last.separator and -6) or -4)
+	end
+
+	buttons[index] = btn
+
+	return btn
+end
+
+function E:Config_HandleLeftExecute(frame, unskinned, buttons, last, index)
+	for _, info in ipairs({
+		{
+			var = 'ToggleAnchors',
+			name = L["Toggle Anchors"],
+			desc = L["Unlock various elements of the UI to be repositioned."],
+			func = function()
+				E:ToggleMoveMode()
+				E.ConfigurationToggled = true
+			end
+		},
+		{
+			var = 'RepositionWindow',
+			name = L["Reposition Window"],
+			desc = L["Reset the size and position of this frame."],
+			func = function() E:Config_UpdateSize(true) end
+		},
+	}) do
+		last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
+	end
+
+	return last
 end
 
 function E:Config_CreateLeftButtons(frame, unskinned, options)
@@ -826,24 +923,17 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		end
 
 		order = opt[1]
+
 		info.key = key
-		info.func = function()
-			local ACD = E.Libs.AceConfigDialog
-			if ACD then ACD:SelectGroup('ElvUI', key) end
-		end
+		info.func = function() ACD:SelectGroup('ElvUI', key) end
 
-		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
-		btn:Width(177)
-
-		if not last then
-			btn:Point('TOP', buttons, 'TOP', 0, 0)
+		if key == 'search' then -- use this just to spawn the execute buttons, this one doesn't get a button but we want the ordering
+			last = E:Config_HandleLeftExecute(frame, unskinned, buttons, last, #buttons+1)
 		else
-			btn:Point('TOP', last, 'BOTTOM', 0, (last.separator and -6) or -4)
+			last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 		end
-
-		buttons[index] = btn
-		last = btn
 	end
+
 end
 
 function E:Config_CloseClicked()
@@ -853,10 +943,7 @@ function E:Config_CloseClicked()
 end
 
 function E:Config_CloseWindow()
-	local ACD = E.Libs.AceConfigDialog
-	if ACD then
-		ACD:Close('ElvUI')
-	end
+	ACD:Close('ElvUI')
 
 	if not ConfigTooltip:IsForbidden() then
 		ConfigTooltip:Hide()
@@ -864,8 +951,7 @@ function E:Config_CloseWindow()
 end
 
 function E:Config_OpenWindow()
-	local ACD = E.Libs.AceConfigDialog
-	if ACD then ACD:Open('ElvUI') end
+	ACD:Open('ElvUI')
 
 	if not ConfigTooltip:IsForbidden() then
 		ConfigTooltip:Hide()
@@ -873,8 +959,7 @@ function E:Config_OpenWindow()
 end
 
 function E:Config_GetWindow()
-	local ACD = E.Libs.AceConfigDialog
-	local ConfigOpen = ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI
+	local ConfigOpen = ACD.OpenFrames and ACD.OpenFrames.ElvUI
 	return ConfigOpen and ConfigOpen.frame
 end
 
@@ -933,18 +1018,16 @@ function E:Config_WindowOpened(frame)
 		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
 
 		local unskinned = not E.private.skins.ace3Enable
-		local offset = unskinned and 14 or 8
 		local version = frame.topHolder.version
 		E:Config_SaveOldPosition(version)
 		version:ClearAllPoints()
 		version:Point('LEFT', frame.topHolder, 'LEFT', unskinned and 8 or 6, unskinned and -4 or 0)
 
-		local holderHeight = frame.bottomHolder:GetHeight()
 		local content = frame.obj.content
 		E:Config_SaveOldPosition(content)
 		content:ClearAllPoints()
-		content:Point('TOPLEFT', frame, 'TOPLEFT', offset, -(unskinned and 50 or 40))
-		content:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -offset, holderHeight + 3)
+		content:Point('TOPLEFT', frame, 'TOPLEFT', unskinned and 13 or 7, -(frame.bottomHolder:GetHeight() + (unskinned and 46 or 41)))
+		content:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -(unskinned and 18 or 8), unskinned and 12 or 2)
 
 		local titlebg = frame.obj.titlebg
 		E:Config_SaveOldPosition(titlebg)
@@ -956,30 +1039,10 @@ end
 
 function E:Config_CreateBottomButtons(frame, unskinned)
 	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+	local C = E.Config[1]
 
-	local last
-	for _, info in ipairs({
-		{
-			var = 'ToggleAnchors',
-			name = L["Toggle Anchors"],
-			desc = L["Unlock various elements of the UI to be repositioned."],
-			func = function()
-				E:ToggleMoveMode()
-				E.ConfigurationToggled = true
-			end
-		},
-		{
-			var = 'ResetAnchors',
-			name = L["Reset Anchors"],
-			desc = L["Reset all frames to their original positions."],
-			func = function() E:ResetUI() end
-		},
-		{
-			var = 'RepositionWindow',
-			name = L["Reposition Window"],
-			desc = L["Reset the size and position of this frame."],
-			func = function() E:Config_UpdateSize(true) end
-		},
+	local last, search
+	for index, info in ipairs({
 		{
 			var = 'Install',
 			name = L["Install"],
@@ -990,36 +1053,75 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end
 		},
 		{
-			var = 'ToggleTutorials',
-			name = L["Toggle Tutorials"],
-			func = function()
-				E:Tutorials(true)
-				E:ToggleOptions()
-			end
-		},
-		{
 			var = 'ShowStatusReport',
-			name = L["ElvUI Status"],
+			name = L["Status"],
 			desc = L["Shows a frame with needed info for support."],
 			func = function()
 				E:ShowStatusReport()
 				E:ToggleOptions()
 				E.StatusReportToggled = true
 			end
+		},
+		{
+			var = 'Discord',
+			name = L["Discord"],
+			desc = L["Shows a frame with needed info for support."],
+			func = function()
+				E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org')
+			end
+		},
+		{
+			editbox = 'SearchBoxTemplate',
+			clear = Config_SearchClear,
+			update = Config_SearchUpdate,
+			var = 'Search',
+			name = L["Search"]
+		},
+		{
+			var = 'WhatsNew',
+			name = L["Whats New"],
+			hidden = function()
+				return C.SearchText ~= '' or next(C.SearchCache)
+			end,
+			func = function()
+				if search then
+					Config_SearchClear(search)
+				else
+					C:Search_ClearResults()
+					ACD:SelectGroup('ElvUI', 'search') -- trigger update
+				end
+
+				C:Search_Config(nil, nil, nil, true)
+				C:Search_AddResults()
+			end
 		}
 	}) do
-		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
+		local element
+		if info.editbox then
+			element = E:Config_CreateFrame(info, frame, unskinned, 'EditBox', nil, frame.bottomHolder, info.editbox)
+		else
+			element = E:Config_CreateFrame(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
+		end
+
+		if not search and (info.var == 'Search') then
+			search = element
+		end
+
 		local offset = unskinned and 14 or 8
 
 		if not last then
-			btn:Point('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
-			last = btn
+			element:Point('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
+		elseif index == 4 then
+			element:Point('BOTTOMRIGHT', frame.bottomHolder, 'BOTTOMRIGHT', -(unskinned and 24 or offset), offset)
+		elseif index > 4 then
+			element:Point('RIGHT', last, 'LEFT', -(index == 5 and 8 or (unskinned and 2) or 4), 0)
 		else
-			btn:Point('LEFT', last, 'RIGHT', 4, 0)
-			last = btn
+			element:Point('LEFT', last, 'RIGHT', unskinned and 2 or 4, 0)
 		end
 
-		frame.bottomHolder[info.var] = btn
+		last = element
+
+		frame.bottomHolder[info.var] = element
 	end
 end
 
@@ -1034,7 +1136,6 @@ function E:Config_GetToggleMode(frame, msg)
 	local empty = pages ~= nil
 	if not frame or empty then
 		if empty then
-			local ACD = E.Libs.AceConfigDialog
 			local pageCount, index, mainSel = #pages
 			if pageCount > 1 then
 				wipe(pageNodes)
@@ -1043,7 +1144,7 @@ function E:Config_GetToggleMode(frame, msg)
 				local main, mainNode, mainSelStr, sub, subNode, subSel
 				for i = 1, pageCount do
 					if i == 1 then
-						main = pages[i] and ACD and ACD.Status and ACD.Status.ElvUI
+						main = pages[i] and ACD.Status and ACD.Status.ElvUI
 						mainSel = main and main.status and main.status.groups and main.status.groups.selected
 						mainSelStr = mainSel and ('^'..E:EscapeString(mainSel)..'\001')
 						mainNode = main and main.children and main.children[pages[i]]
@@ -1057,7 +1158,7 @@ function E:Config_GetToggleMode(frame, msg)
 					index = index + 2
 				end
 			else
-				local main = pages[1] and ACD and ACD.Status and ACD.Status.ElvUI
+				local main = pages[1] and ACD.Status and ACD.Status.ElvUI
 				mainSel = main and main.status and main.status.groups and main.status.groups.selected
 			end
 
@@ -1103,15 +1204,12 @@ function E:ToggleOptions(msg)
 	local frame = E:Config_GetWindow()
 	local mode, pages = E:Config_GetToggleMode(frame, msg)
 
-	local ACD = E.Libs.AceConfigDialog
-	if ACD then
-		if not ACD.OpenHookedElvUI then
-			hooksecurefunc(E.Libs.AceConfigDialog, 'Open', E.Config_DialogOpened)
-			ACD.OpenHookedElvUI = true
-		end
-
-		ACD[mode](ACD, 'ElvUI')
+	if not ACD.OpenHookedElvUI then
+		hooksecurefunc(E.Libs.AceConfigDialog, 'Open', E.Config_DialogOpened)
+		ACD.OpenHookedElvUI = true
 	end
+
+	ACD[mode](ACD, 'ElvUI')
 
 	if not frame then
 		frame = E:Config_GetWindow()
@@ -1125,34 +1223,28 @@ function E:ToggleOptions(msg)
 			E:Config_UpdateSize()
 		end
 
+		local unskinned = not E.private.skins.ace3Enable
 		if not frame.bottomHolder then -- window was released or never opened
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
 			for _, child in next, { frame:GetChildren() } do
-				if child:IsObjectType('Button') and child:GetText() == _G.CLOSE then
+				local button = child:IsObjectType('Button')
+				if button and child:GetText() == _G.CLOSE then
 					frame.originalClose = child
 					child:Hide()
-				elseif child:IsObjectType('Frame') or child:IsObjectType('Button') then
+				elseif button or child:IsObjectType('Frame') then
+					if unskinned and child.GetBackdrop then
+						local info = child:GetBackdrop()
+						if info and info.edgeFile == [[Interface\Tooltips\UI-Tooltip-Border]] then
+							child:SetBackdrop()
+						end
+					end
+
 					if child:HasScript('OnMouseUp') then
 						child:HookScript('OnMouseUp', E.Config_StopMoving)
 					end
 				end
 			end
-
-			local unskinned = not E.private.skins.ace3Enable
-			if unskinned then
-				for _, region in next, { frame:GetRegions() } do
-					if region:IsObjectType('Texture') and region:GetTexture() == 131080 then
-						region:SetAlpha(0)
-					end
-				end
-			end
-
-			local bottom = CreateFrame('Frame', nil, frame)
-			bottom:Point('BOTTOMLEFT', 2, 2)
-			bottom:Point('BOTTOMRIGHT', -2, 2)
-			bottom:Height(37)
-			frame.bottomHolder = bottom
 
 			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
 			close:SetScript('OnClick', E.Config_CloseClicked)
@@ -1163,9 +1255,8 @@ function E:ToggleOptions(msg)
 			frame.closeButton = close
 
 			local left = CreateFrame('Frame', nil, frame)
-			left:Point('BOTTOMRIGHT', bottom, 'BOTTOMLEFT', 181, 0)
-			left:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			left:Point('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
+			left:Point('BOTTOMRIGHT', frame, 'BOTTOMLEFT', 182, 2)
 			frame.leftHolder = left
 
 			local top = CreateFrame('Frame', nil, frame)
@@ -1174,6 +1265,12 @@ function E:ToggleOptions(msg)
 			top:Point('TOPLEFT', left, 'TOPRIGHT', 1, 0)
 			top:Height(24)
 			frame.topHolder = top
+
+			local bottom = CreateFrame('Frame', nil, frame)
+			bottom:Point('TOPLEFT', top, 'BOTTOMLEFT', unskinned and -15 or 0, -(unskinned and 15 or 1))
+			bottom:Point('TOPRIGHT', top, 'BOTTOMRIGHT', unskinned and 10 or 0, -(unskinned and 15 or 1))
+			bottom:Height(37)
+			frame.bottomHolder = bottom
 
 			local LogoBottom = left:CreateTexture()
 			LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
@@ -1188,14 +1285,12 @@ function E:ToggleOptions(msg)
 			left.LogoTop = LogoTop
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
-			buttonsHolder:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
-			buttonsHolder:Point('TOPLEFT', left, 'TOPLEFT', 0, -70)
-			buttonsHolder:Point('BOTTOMRIGHT')
+			buttonsHolder:Point('TOPLEFT', unskinned and 4 or 1, -70)
+			buttonsHolder:Point('BOTTOMRIGHT', unskinned and 6 or 1, unskinned and 10 or 0)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
 			local buttons = CreateFrame('Frame', nil, buttonsHolder)
-			buttons:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			buttons:Point('BOTTOMRIGHT')
 			buttons:Point('TOPLEFT', 0, 0)
 			left.buttons = buttons
@@ -1209,22 +1304,41 @@ function E:ToggleOptions(msg)
 			slider:SetValueStep(1)
 			slider:SetValue(0)
 			slider:Width(192)
-			slider:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			slider:Point('TOPLEFT', buttons, 'TOPLEFT', 0, 0)
+			slider:Point('BOTTOMRIGHT', left, 'BOTTOMRIGHT', unskinned and 3 or 0, unskinned and 10 or 1)
 			slider.buttons = buttons
 			left.slider = slider
 
 			local thumb = slider:GetThumbTexture()
-			thumb:Point('LEFT', left, 'RIGHT', 2, 0)
-			thumb:SetVertexColor(1, 1, 1, 0.5)
+			thumb:Point('LEFT', left, 'RIGHT', unskinned and 6 or 2, 0)
 			thumb:Size(8, 12)
+			thumb:SetAlpha(0) -- hide this one, its under the unskinned buttons
 			left.slider.thumb = thumb
+
+			local thumbHolder = CreateFrame('Frame', nil, left)
+			thumbHolder:SetFrameLevel(200)
+			thumbHolder:SetAllPoints(thumb)
+			thumb.holder = thumbHolder
+
+			local thumbTexture = thumbHolder:CreateTexture()
+			thumbTexture:SetTexture(E.media.blankTex)
+			thumbTexture:SetDrawLayer('OVERLAY')
+			thumbTexture:SetVertexColor(1, 1, 1, 0.5)
+			thumbTexture:SetAllPoints()
+			thumbHolder.texture = thumbTexture
 
 			if not unskinned then
 				bottom:SetTemplate('Transparent')
 				left:SetTemplate('Transparent')
 				top:SetTemplate('Transparent')
 				E.Skins:HandleCloseButton(close)
+			else
+				for _, region in next, { frame:GetRegions() } do
+					local texture = region:IsObjectType('Texture') and region:GetTexture()
+					if texture == 131080 then
+						region:SetAlpha(0)
+					end
+				end
 			end
 
 			E:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
@@ -1233,7 +1347,7 @@ function E:ToggleOptions(msg)
 			E:Config_WindowOpened(frame)
 		end
 
-		if ACD and pages then
+		if pages then
 			ACD:SelectGroup('ElvUI', unpack(pages))
 		end
 	end

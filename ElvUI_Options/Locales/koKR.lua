@@ -16,6 +16,7 @@ L["LEFT"] = "왼쪽"
 L["RIGHT"] = "오른쪽"
 L["TOP"] = "위쪽"
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
@@ -1950,7 +1951,6 @@ L["BAGS_DESC"] = "통합가방과 가방바에 관련된 옵션들입니다."
 L["CHAT_DESC"] = "채팅과 패널에 관련된 옵션들입니다."
 L["COOLDOWN_DESC"] = "쿨 다운 설정 조정."
 L["DATATEXT_DESC"] = "정보문자에 관련된 옵션들입니다."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다."
 L["NAMEPLATE_DESC"] = "이름표에 관련된 옵션들입니다."
 L["SKINS_DESC"] = "다른 애드온이나 게임 내 여러 프레임에 체크 시 스킨을 적용합니다."
 L["TOGGLESKIN_DESC"] = "체크 시 해당 프레임에 스킨을 사용합니다."
