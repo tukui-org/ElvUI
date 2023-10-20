@@ -12,6 +12,43 @@ MC.InternalOptions = {
 	movers = true,
 }
 
+local ToggleSkins -- so it can call itself
+ToggleSkins = function(tbl, key, value)
+	if key ~= 'selected' then
+		local setting = tbl[key]
+		if type(setting) == 'table' then
+			for subkey in pairs(setting) do
+				ToggleSkins(setting, subkey, value)
+			end
+		else
+			tbl[key] = value
+		end
+	end
+end
+
+local function DefaultOptions(tbl, section, pluginSection)
+	if pluginSection then
+		if not tbl[pluginSection] then
+			tbl[pluginSection] = {}
+		end
+		if not tbl[pluginSection][section] then
+			tbl[pluginSection][section] = {}
+		end
+	elseif not tbl[section] then
+		tbl[section] = {}
+	end
+end
+
+local function DefaultMovers(tbl, section, subSection)
+	if not tbl[section] then
+		tbl[section] = {}
+	end
+
+	if subSection and tbl[section][subSection] == nil then
+		tbl[section][subSection] = false
+	end
+end
+
 --Default template for a config group for a single module.
 --Contains header, general group toggle (shown only if the setting actually exists) and imports button.
 --Usage as seen in ElvUI_Options\modulecopy.lua
@@ -41,11 +78,18 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 						E:StaticPopup_Show('MODULE_COPY_CONFIRM')
 					end
 
+					local selection = (pluginSection and E.global.profileCopy[pluginSection]) or E.global.profileCopy
+					E.Options.args.profiles.args.modulecopy.args.clear.func = function() ToggleSkins(selection, section, false) end
+					E.Options.args.profiles.args.modulecopy.args.select.func = function() ToggleSkins(selection, section, true) end
+
 					return L["General"]
 				end,
 			},
 		},
 	}
+
+	DefaultOptions(G.profileCopy, section, pluginSection) -- defaults
+	DefaultOptions(E.global.profileCopy, section, pluginSection) -- from profile
 
 	if pluginSection then
 		config.args.general.hidden = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] == nil end
@@ -79,12 +123,20 @@ function MC:CreateMoversConfigGroup()
 				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
 			end
 
+			E.Options.args.profiles.args.modulecopy.args.clear.func = function() ToggleSkins(E.global.profileCopy, 'movers', false) end
+			E.Options.args.profiles.args.modulecopy.args.select.func = function() ToggleSkins(E.global.profileCopy, 'movers', true) end
+
 			return L["On screen positions for different elements."]
 		end, 0)
 	}
 
+	DefaultMovers(G.profileCopy, 'movers')
+	DefaultMovers(E.global.profileCopy, 'movers')
+
 	for moverName, data in pairs(E.CreatedMovers) do
-		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
+		DefaultMovers(G.profileCopy, 'movers', moverName)
+		DefaultMovers(E.global.profileCopy, 'movers', moverName)
+
 		config[moverName] = {
 			order = 1,
 			type = 'toggle',
@@ -93,8 +145,11 @@ function MC:CreateMoversConfigGroup()
 			set = function(_, value) E.global.profileCopy.movers[moverName] = value end
 		}
 	end
+
 	for moverName, data in pairs(E.DisabledMovers) do
-		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
+		DefaultMovers(G.profileCopy, 'movers', moverName)
+		DefaultMovers(E.global.profileCopy, 'movers', moverName)
+
 		config[moverName] = {
 			order = 1,
 			type = 'toggle',
@@ -139,21 +194,21 @@ end
 
 --[[
 	* Valid copy templates should be as follows:
-		G.profileCopy[YourOptionGroupName] = {
+		E.global.profileCopy[YourOptionGroupName] = {
 			[SubGroupName1] = true,
 			[SubGroupName2] = true,
 			...
 		}
 	* For example:
-		G.profileCopy.auras = {
+		E.global.profileCopy.auras = {
 			general = true,
 			buffs = true,
 			debuffs = true,
 			cooldown = true,
 		}
 	* 'general' key can refer to a similar named subtable or all non-table variables inside your group
-	* If you leave the table as G.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.
-	* If set to G.profileCopy[YourOptionGroupName] = true, then this will copy everything without selecting any particular subcategory from your settings table.
+	* If you leave the table as E.global.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.
+	* If set to E.global.profileCopy[YourOptionGroupName] = true, then this will copy everything without selecting any particular subcategory from your settings table.
 	* Plugins can use 'pluginSection' argument to determain their own table if they keep settings apart from core ElvUI settings.
 	-- Examples S&L uses 'sle' table, MerathilisUI uses 'mui' table, BenikUI uses 'benikui' and core table
 ]]

@@ -462,10 +462,29 @@ do -- Import and Export
 end
 
 do -- Module Copy
-	function MC:AddConfigOptions(settings, config)
+	local function DefaultOptions(tbl, section, subSection, option)
+		if tbl[section] then
+			if subSection then
+				if not tbl[section][subSection] then
+					tbl[section][subSection] = {}
+				end
+
+				if tbl[section][subSection][option] == nil then
+					tbl[section][subSection][option] = false
+				end
+			elseif tbl[section][option] == nil then
+				tbl[section][option] = false
+			end
+		end
+	end
+
+	function MC:AddConfigOptions(settings, config, section, subSection)
 		for option, tbl in pairs(settings) do
 			if type(tbl) == 'table' and not (tbl.r and tbl.g and tbl.b) then
 				config.args[option] = ACH:Toggle(option)
+
+				DefaultOptions(G.profileCopy, section, subSection, option) -- defaults
+				DefaultOptions(E.global.profileCopy, section, subSection, option) -- from profile
 			end
 		end
 	end
@@ -475,7 +494,7 @@ do -- Module Copy
 		local config = MC:CreateModuleConfigGroup(L["ActionBars"], 'actionbar')
 		local order = 3
 
-		MC:AddConfigOptions(P.actionbar, config)
+		MC:AddConfigOptions(P.actionbar, config, 'actionbar')
 
 		config.args.cooldown.name = L["Cooldown Text"]
 		config.args.cooldown.order = 2
@@ -508,7 +527,7 @@ do -- Module Copy
 	local function CreateAurasConfig()
 		local config = MC:CreateModuleConfigGroup(L["Auras"], 'auras')
 
-		MC:AddConfigOptions(P.auras, config)
+		MC:AddConfigOptions(P.auras, config, 'auras')
 
 		config.args.cooldown.name = L["Cooldown Text"]
 		config.args.cooldown.order = 2
@@ -523,7 +542,7 @@ do -- Module Copy
 	local function CreateBagsConfig()
 		local config = MC:CreateModuleConfigGroup(L["Bags"], 'bags')
 
-		MC:AddConfigOptions(P.bags, config)
+		MC:AddConfigOptions(P.bags, config, 'bags')
 
 		config.args.cooldown.name = L["Cooldown Text"]
 		config.args.cooldown.order = 2
@@ -539,12 +558,19 @@ do -- Module Copy
 
 	--Chat
 	local function CreateChatConfig()
-		return MC:CreateModuleConfigGroup(L["Chat"], 'chat')
+		local config = MC:CreateModuleConfigGroup(L["Chat"], 'chat')
+
+		MC:AddConfigOptions(P.chat, config, 'chat')
+
+		return config
 	end
 
 	--Cooldowns
 	local function CreateCooldownConfig()
 		local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], 'cooldown')
+
+		MC:AddConfigOptions(P.cooldown, config, 'cooldown')
+
 		config.args.fonts = ACH:Toggle(L["Fonts"], nil, 2)
 
 		return config
@@ -554,7 +580,7 @@ do -- Module Copy
 	local function CreateDatatbarsConfig()
 		local config = MC:CreateModuleConfigGroup(L["DataBars"], 'databars')
 
-		MC:AddConfigOptions(P.databars, config)
+		MC:AddConfigOptions(P.databars, config, 'databars')
 
 		config.args.colors.name = L["Colors"]
 		config.args.experience.name = L["Experience"]
@@ -569,6 +595,9 @@ do -- Module Copy
 	--DataTexts
 	local function CreateDatatextsConfig()
 		local config = MC:CreateModuleConfigGroup(L["DataTexts"], 'datatexts')
+
+		MC:AddConfigOptions(P.datatexts, config, 'datatexts')
+
 		config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
 
 		return config
@@ -578,7 +607,7 @@ do -- Module Copy
 	local function CreateGeneralConfig()
 		local config = MC:CreateModuleConfigGroup(L["General"], 'general')
 
-		MC:AddConfigOptions(P.general, config)
+		MC:AddConfigOptions(P.general, config, 'general')
 
 		config.args.altPowerBar.name = L["Alternative Power"]
 		config.args.minimap.name = L["Minimap"]
@@ -592,7 +621,7 @@ do -- Module Copy
 	local function CreateNamePlatesConfig()
 		local config = MC:CreateModuleConfigGroup(L["Nameplates"], 'nameplates')
 
-		MC:AddConfigOptions(P.nameplates, config)
+		MC:AddConfigOptions(P.nameplates, config, 'nameplates')
 
 		-- Locales
 		config.args.cooldown.name = L["Cooldown Text"]
@@ -607,10 +636,10 @@ do -- Module Copy
 
 		-- Modify Tables
 		config.args.filters = nil
-		config.args.units = ACH:Group(L["Nameplates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
+		config.args.units = ACH:Group(L["Nameplates"], nil, -10, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
 		config.args.units.inline = true
 
-		MC:AddConfigOptions(P.nameplates.units, config.args.units)
+		MC:AddConfigOptions(P.nameplates.units, config.args.units, 'nameplates', 'units')
 
 		-- Locales
 		config.args.units.args.PLAYER.name = L["Player"]
@@ -627,7 +656,7 @@ do -- Module Copy
 	local function CreateTooltipConfig()
 		local config = MC:CreateModuleConfigGroup(L["Tooltip"], 'tooltip')
 
-		MC:AddConfigOptions(P.tooltip, config)
+		MC:AddConfigOptions(P.tooltip, config, 'tooltip')
 
 		config.args.visibility.name = L["Visibility"]
 		config.args.healthBar.name = L["Health Bar"]
@@ -639,11 +668,14 @@ do -- Module Copy
 	--UnitFrames
 	local function CreateUnitframesConfig()
 		local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
+
+		MC:AddConfigOptions(P.unitframe, config, 'unitframe')
+
 		config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
-		config.args.colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+		config.args.colors = ACH:Group(L["Colors"], nil, -9, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 		config.args.colors.inline = true
 
-		MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
+		MC:AddConfigOptions(P.unitframe.colors, config.args.colors, 'unitframe', 'colors')
 
 		config.args.colors.args.power.name = L["Power"]
 		config.args.colors.args.reaction.name = L["Reactions"]
@@ -655,10 +687,10 @@ do -- Module Copy
 		config.args.colors.args.selection.name = L["Selection"]
 		config.args.colors.args.threat.name = L["Threat"]
 
-		config.args.units = ACH:Group(L["UnitFrames"], nil, 4, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+		config.args.units = ACH:Group(L["UnitFrames"], nil, -10, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 		config.args.units.inline = true
 
-		MC:AddConfigOptions(P.unitframe.units, config.args.units)
+		MC:AddConfigOptions(P.unitframe.units, config.args.units, 'unitframe', 'units')
 
 		config.args.units.args.player.name = L["Player"]
 		config.args.units.args.target.name = L["Target"]
@@ -688,8 +720,10 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, 'medium')
 	E.Options.args.profiles.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, 'medium')
 	E.Options.args.profiles.args.modulecopy.args.profile = ACH:Select(L["Profile"], L["Select a profile to copy from/to."], 3, function() local tbl = {} for profile in pairs(E.data.profiles) do tbl[profile] = profile end return tbl end, nil, nil, function() return E.global.profileCopy.selected end, function(_, value) E.global.profileCopy.selected = value end)
-	E.Options.args.profiles.args.modulecopy.args.import = ACH:Execute(L["Import"], nil, 4, nil, nil, nil, 120)
-	E.Options.args.profiles.args.modulecopy.args.export = ACH:Execute(L["Export"], nil, 5, nil, nil, nil, 120)
+	E.Options.args.profiles.args.modulecopy.args.clear = ACH:Execute(L["Clear All"], nil, 4, nil, nil, nil, 120)
+	E.Options.args.profiles.args.modulecopy.args.select = ACH:Execute(L["Select All"], nil, 5, nil, nil, nil, 120)
+	E.Options.args.profiles.args.modulecopy.args.import = ACH:Execute(L["Import"], nil, 6, nil, nil, nil, 120)
+	E.Options.args.profiles.args.modulecopy.args.export = ACH:Execute(L["Export"], nil, 7, nil, nil, nil, 120)
 
 	E.Options.args.profiles.args.modulecopy.args.elvui = ACH:Group('ElvUI', L["Core |cff1784d1ElvUI|r options."], 10, 'tree')
 	E.Options.args.profiles.args.modulecopy.args.elvui.args.actionbar = CreateActionbarsConfig()
