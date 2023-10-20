@@ -299,7 +299,7 @@ function E:CreateMoverPopup()
 
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
 	lock.Text:SetText(L["Lock"])
-	lock:Width(60)
+	lock:Width(80)
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
 
@@ -314,9 +314,9 @@ function E:CreateMoverPopup()
 	f.lock = lock
 
 	local reset = CreateFrame('Button', f:GetName()..'CloseButton', f, 'UIPanelButtonTemplate')
-	reset.Text:SetText(L["Reset Anchors"])
+	reset.Text:SetText(L["Reset"])
 	reset:SetScript('OnClick', function() E:ResetUI() end)
-	reset:Width(120)
+	reset:Width(100)
 	f.reset = reset
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate')

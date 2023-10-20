@@ -1404,7 +1404,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = "대상 필요"
 L["Reset Action Paging"] = "행동단축바 순서 초기화"
 L["Reset all frames to their original positions."] = "ElvUI 에서 움직일 수 있는 모든 프레임의 위치를 기본 위치로 초기화합니다."
-L["Reset Anchors"] = "위치 초기화"
 L["Reset Aura Filters"] = "오라 필터 초기화"
 L["Reset Chat Position"] = "채팅 창 위치 재설정"
 L["Reset CVars"] = "인터페이스(콘솔) 초기화"

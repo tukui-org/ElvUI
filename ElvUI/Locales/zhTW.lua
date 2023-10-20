@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["Reset"] = "重置"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffff為一套功能完整, 可用來替換 WoW 原始介面的 UI 套件.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"

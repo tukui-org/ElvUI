@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'itIT')
 
+L["Reset"] = "Reimposta"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffè un componente aggiuntivo di sostituzione dell'interfaccia utente per World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true

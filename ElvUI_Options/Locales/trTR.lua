@@ -1379,7 +1379,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = "Eylem cagrisini Sifirla"
 L["Reset all frames to their original positions."] = true
-L["Reset Anchors"] = true
 L["Reset Aura Filters"] = "Aura Filtrelerini Sifirla"
 L["Reset Chat Position"] = "Sohbet Konumunu Sifirla"
 L["Reset CVars"] = "Cvars'i Sifirla"

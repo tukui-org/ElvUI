@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["Reset"] = "새로고침"
 L["ELVUI_DESC"] = ("*ElvUI|r|cFFffffff는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00키로 다음의 행동을 실행합니다 |r"

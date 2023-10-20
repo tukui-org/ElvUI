@@ -1378,7 +1378,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = "Setze Seitenwechsel der Aktionsleisten zurück"
 L["Reset all frames to their original positions."] = "Setze alle Fenster auf ihre ursprüngliche Position zurück."
-L["Reset Anchors"] = "Anker zurücksetzen"
 L["Reset Aura Filters"] = "Setze Aurafilter zurück"
 L["Reset Chat Position"] = "Setze Chat Position zurück"
 L["Reset CVars"] = "CVars zurücksetzen"
