@@ -290,7 +290,6 @@ L["Rare"] = "Nadir"
 L["Reagent Bank"] = "Sarf Malzeme Bankasi"
 L["Remaining:"] = "Geriye Kalan:"
 L["Remove Bar %d Action Page"] = "Cubugu Kaldir %d Eylem Sayfasi"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Ýtibar Cubugu"
 L["Request was denied by user."] = "Talep kullanici tarafindan reddedildi."
 L["Reset Character Data: Hold Shift + Right Click"] = "Karakter Verilerini Sifirla: Shift tusunu basili tutun + Sag Tiklayin"

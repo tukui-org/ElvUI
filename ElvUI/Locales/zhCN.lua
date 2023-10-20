@@ -288,7 +288,6 @@ L["Rare"] = "稀有"
 L["Reagent Bank"] = "材料银行"
 L["Remaining:"] = "剩余:"
 L["Remove Bar %d Action Page"] = "移除第%d动作条"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "声望条"
 L["Request was denied by user."] = "请求被对方拒绝."
 L["Reset Character Data: Hold Shift + Right Click"] = "重置角色数据：按住 Shift + 右键单击"

@@ -288,7 +288,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banco de Reagentes"
 L["Remaining:"] = "Restante:"
 L["Remove Bar %d Action Page"] = "Remover paginação de ação da barra %d."
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Barra de Reputação"
 L["Request was denied by user."] = "Pedido negado pelo usuário."
 L["Reset Character Data: Hold Shift + Right Click"] = true

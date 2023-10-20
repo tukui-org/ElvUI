@@ -290,7 +290,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banque de composants"
 L["Remaining:"] = "Restant :"
 L["Remove Bar %d Action Page"] = "Supprimer la barre %d de la page d'action"
-L["Reposition Window"] = "Repositionner la fenêtre"
 L["Reputation Bar"] = "Barre de réputation"
 L["Request was denied by user."] = "La demande a été refusée par l'utilisateur."
 L["Reset Character Data: Hold Shift + Right Click"] = "Réinitialiser les données du personnage : Maintenez Maj + Clic droit"

@@ -883,6 +883,8 @@ function E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 end
 
 function E:Config_HandleLeftExecute(frame, unskinned, buttons, last, index)
+	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+
 	for _, info in ipairs({
 		{
 			var = 'ToggleAnchors',

@@ -1371,7 +1371,6 @@ L["Replaces the default Blizzard fonts on various panels and frames with the fon
 L["Replaces the font on Blizzard Nameplates."] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Ersetzt die Statusleisten Textureinstellung auf Einheitsfenstern und Namensplaketten durch die primäre Textur."
 L["Reposition Window"] = "Fenster zurücksetzen"
--- L["Reposition Window"] = "Fenster neu positionieren" --from core
 L["Reputation Alpha"] = "Ruf Transparenz"
 L["Reputation"] = "Ruf"
 L["Require All"] = "Benötigt alle"
