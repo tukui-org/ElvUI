@@ -652,7 +652,11 @@ local function Config_SearchClear(self)
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	ACD:SelectGroup('ElvUI', 'search') -- trigger update
+	local status = self.frame.obj.status
+	local selected = status and status.groups.selected
+	if selected == 'search' then -- only clear when viewing search
+		ACD:SelectGroup('ElvUI', 'general') -- swap back to general
+	end
 
 	self:SetText('')
 	self:ClearFocus()
