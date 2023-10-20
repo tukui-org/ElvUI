@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 MultiLineEditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "MultiLineEditBox-ElvUI", 31
+local Type, Version = "MultiLineEditBox-ElvUI", 32
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -162,6 +162,10 @@ end
 local function OnEditFocusGained(frame)
 	AceGUI:SetFocus(frame.obj)
 	frame.obj:Fire("OnEditFocusGained")
+
+	if frame.obj.focusSelect then
+		frame.obj:HighlightText()
+	end
 end
 
 --[[-----------------------------------------------------------------------------

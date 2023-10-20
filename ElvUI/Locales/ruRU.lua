@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffэто аддон для полной замены пользовательского интерфейса World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Кажется, возникла проблема с установкой. Пожалуйста, переустановите ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."

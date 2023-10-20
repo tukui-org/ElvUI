@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffWorld of Warcraft icin eksiksiz bir Kullanici Arayuzu degistirme eklentisidir.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s cercevesinin cakisan bir baglanti noktasi var. Guclendirmeler'i Ana cerceveye baglamaya zorluyor.'"

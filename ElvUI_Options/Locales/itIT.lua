@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
@@ -1923,7 +1924,6 @@ L["BAGS_DESC"] = "Adjust bag settings for ElvUI."
 L["CHAT_DESC"] = "Adjust chat settings for ElvUI."
 L["COOLDOWN_DESC"] = "Adjust Cooldown Settings."
 L["DATATEXT_DESC"] = "Setup the on-screen display of info-texts."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r è un componente aggiuntivo di sostituzione dell'interfaccia utente per World of Warcraft."
 L["NAMEPLATE_DESC"] = "Modify the nameplate settings."
 L["SKINS_DESC"] = "Adjust Skin settings."
 L["TOGGLESKIN_DESC"] = "Enable/Disable this skin."

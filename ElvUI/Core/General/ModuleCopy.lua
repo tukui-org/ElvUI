@@ -21,39 +21,32 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 		type = 'group',
 		name = Name,
 		args = {
-			header = E.Libs.ACH:Header(Name, 0),
 			general = {
 				order = 1,
 				type = 'toggle',
-				name = L["General"],
-			},
-			spacer = E.Libs.ACH:Spacer(-4),
-			import = {
-				order = -3,
-				type = 'execute',
-				name = L["Import Now"],
-				func = function()
-					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.mynameRealm])
-					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
-						MC:ImportFromProfile(section, pluginSection)
+				name = function()
+					E.Options.args.profiles.args.modulecopy.args.import.func = function()
+						E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, E.global.profileCopy.selected, ElvDB.profileKeys[E.mynameRealm])
+						E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
+							MC:ImportFromProfile(section, pluginSection)
+						end
+						E:StaticPopup_Show('MODULE_COPY_CONFIRM')
 					end
-					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
-				end,
-			},
-			export = {
-				order = -2,
-				type = 'execute',
-				name = L["Export Now"],
-				func = function()
-					E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB.profileKeys[E.mynameRealm], E.global.profileCopy.selected)
-					E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
-						MC:ExportToProfile(section, pluginSection)
+
+					E.Options.args.profiles.args.modulecopy.args.export.func = function()
+						E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], Name, ElvDB.profileKeys[E.mynameRealm], E.global.profileCopy.selected)
+						E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
+							MC:ExportToProfile(section, pluginSection)
+						end
+						E:StaticPopup_Show('MODULE_COPY_CONFIRM')
 					end
-					E:StaticPopup_Show('MODULE_COPY_CONFIRM')
+
+					return L["General"]
 				end,
 			},
 		},
 	}
+
 	if pluginSection then
 		config.args.general.hidden = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] == nil end
 		config.get = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] end
@@ -63,38 +56,33 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 		config.get = function(info) return E.global.profileCopy[section][ info[#info] ] end
 		config.set = function(info, value) E.global.profileCopy[section][ info[#info] ] = value end
 	end
+
 	return config
 end
 
 function MC:CreateMoversConfigGroup()
 	local config = {
-		header = E.Libs.ACH:Header(L["On screen positions for different elements."], 0),
-		spacer = E.Libs.ACH:Spacer(200),
-		import = {
-			order = 201,
-			type = 'execute',
-			name = L["Import Now"],
-			func = function()
+		header = E.Libs.ACH:Header(function()
+			E.Options.args.profiles.args.modulecopy.args.import.func = function()
 				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], E.global.profileCopy.selected, ElvDB.profileKeys[E.mynameRealm])
 				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					MC:CopyMovers('import')
 				end
 				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
-			end,
-		},
-		export = {
-			order = 202,
-			type = 'execute',
-			name = L["Export Now"],
-			func = function()
+			end
+
+			E.Options.args.profiles.args.modulecopy.args.export.func = function()
 				E.PopupDialogs.MODULE_COPY_CONFIRM.text = format(L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"], L["Movers"], ElvDB.profileKeys[E.mynameRealm], E.global.profileCopy.selected)
 				E.PopupDialogs.MODULE_COPY_CONFIRM.OnAccept = function()
 					MC:CopyMovers('export')
 				end
 				E:StaticPopup_Show('MODULE_COPY_CONFIRM')
-			end,
-		},
+			end
+
+			return L["On screen positions for different elements."]
+		end, 0)
 	}
+
 	for moverName, data in pairs(E.CreatedMovers) do
 		if not G.profileCopy.movers[moverName] then G.profileCopy.movers[moverName] = false end
 		config[moverName] = {

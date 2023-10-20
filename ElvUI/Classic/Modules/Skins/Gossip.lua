@@ -2,12 +2,46 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local gsub, next = gsub, next
 local hooksecurefunc = hooksecurefunc
 
-local function ReplaceTextColor(text, r, g, b)
+local GossipTextColors = {
+	['000000'] = 'ffffff',
+	['414141'] = '7b8489',
+}
+
+local function Gossip_SetTextColor(text, r, g, b)
 	if r ~= 1 or g ~= 1 or b ~= 1 then
 		text:SetTextColor(1, 1, 1)
+	end
+end
+
+local function Gossip_ReplaceColor(color)
+	return '|cFF' .. (GossipTextColors[color] or color)
+end
+
+local function Gossip_SetFormattedText(button, textFormat, text, skip)
+	if skip or not text or text == '' then return end
+
+	local colorText, colorCount = gsub(textFormat, '|c[fF][fF](%x%x%x%x%x%x)', Gossip_ReplaceColor)
+	if colorCount > 0 then
+		button:SetFormattedText(colorText, text, true)
+	end
+end
+
+local function Gossip_SetText(button, text)
+	if not text or text == '' then return end
+
+	local startText = text
+
+	local iconText, iconCount = gsub(text, ':32:32:0:0', ':32:32:0:0:64:64:5:59:5:59')
+	if iconCount > 0 then text = iconText end
+
+	local colorText, colorCount = gsub(text, '|c[fF][fF](%x%x%x%x%x%x)', Gossip_ReplaceColor)
+	if colorCount > 0 then text = colorText end
+
+	if startText ~= text then
+		button:SetFormattedText('%s', text, true)
 	end
 end
 
@@ -20,10 +54,19 @@ end
 local function GreetingPanel_Update(frame)
 	for _, button in next, { frame.ScrollTarget:GetChildren() } do
 		if not button.IsSkinned then
-			local buttonText = button.GreetingText or (button.GetFontString and button:GetFontString())
-			if buttonText then
-				buttonText:SetTextColor(1, 1, 1)
-				hooksecurefunc(buttonText, 'SetTextColor', ReplaceTextColor)
+			if button.GreetingText then
+				button.GreetingText:SetTextColor(1, 1, 1)
+				hooksecurefunc(button.GreetingText, 'SetTextColor', Gossip_SetTextColor)
+			end
+
+			local fontString = button.GetFontString and button:GetFontString()
+			if fontString then
+				fontString:SetTextColor(1, 1, 1)
+				hooksecurefunc(fontString, 'SetTextColor', Gossip_SetTextColor)
+
+				Gossip_SetText(button, button:GetText())
+				hooksecurefunc(button, 'SetText', Gossip_SetText)
+				hooksecurefunc(button, 'SetFormattedText', Gossip_SetFormattedText)
 			end
 
 			button.IsSkinned = true
