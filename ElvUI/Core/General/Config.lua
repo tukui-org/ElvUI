@@ -652,8 +652,11 @@ local function Config_SearchClear(self, which)
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
+	local frame = self.frame
+	local status = frame and frame.obj and frame.obj.status
+	local selected = status and status.groups and status.groups.selected
 	local whatsNew = which == 'whatsNew' and 'search'
-	if whatsNew or (self.frame.obj.status.groups.selected == 'search') then
+	if whatsNew or (selected == 'search') then
 		ACD:SelectGroup('ElvUI', whatsNew or 'general') -- swap back to general
 	end
 
