@@ -613,11 +613,11 @@ function E:Config_StopMoving()
 	end
 end
 
-local function Config_ButtonOnEnter(self)
-	if ConfigTooltip:IsForbidden() or not self.desc then return end
+local function Config_ButtonOnEnter(button)
+	if ConfigTooltip:IsForbidden() or not button.desc then return end
 
-	ConfigTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 2)
-	ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
+	ConfigTooltip:SetOwner(button, 'ANCHOR_TOPRIGHT', 0, 2)
+	ConfigTooltip:AddLine(button.desc, 1, 1, 1, true)
 	ConfigTooltip:Show()
 end
 
@@ -627,13 +627,34 @@ local function Config_ButtonOnLeave()
 	ConfigTooltip:Hide()
 end
 
-local function Config_SearchUpdate(self, userInput)
+local function Reposition_ButtonOnEnter(button)
+	if button.highlight then
+		button.highlight:Show()
+	else
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		button.texture:SetVertexColor(r, g, b, 1)
+	end
+
+	Config_ButtonOnEnter(button)
+end
+
+local function Reposition_ButtonOnLeave(button)
+	if button.highlight then
+		button.highlight:Hide()
+	else
+		button.texture:SetVertexColor(1, 1, 1, 0.8)
+	end
+
+	Config_ButtonOnLeave()
+end
+
+local function Config_SearchUpdate(editbox, userInput)
 	if not userInput then return end
 
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local text = self:GetText()
+	local text = editbox:GetText()
 	if strmatch(text, '%S+') then
 		C.SearchText = strtrim(strlower(text))
 
@@ -644,15 +665,15 @@ local function Config_SearchUpdate(self, userInput)
 	end
 end
 
-local function Config_SearchClear(self, which)
-	if not self.ClearFocus then
-		self = self:GetParent()
+local function Config_SearchClear(editbox, which)
+	if not editbox.ClearFocus then
+		editbox = editbox:GetParent()
 	end
 
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local frame = self.frame
+	local frame = editbox.frame
 	local status = frame and frame.obj and frame.obj.status
 	local selected = status and status.groups and status.groups.selected
 	local whatsNew = which == 'whatsNew' and 'search'
@@ -660,8 +681,8 @@ local function Config_SearchClear(self, which)
 		ACD:SelectGroup('ElvUI', whatsNew or 'general') -- swap back to general
 	end
 
-	self:SetText('')
-	self:ClearFocus()
+	editbox:SetText('')
+	editbox:ClearFocus()
 end
 
 local function Config_StripNameColor(name)
@@ -723,6 +744,8 @@ end
 function E:Config_SetButtonColor(btn, disabled)
 	btn:SetEnabled(not disabled)
 
+	if not btn.Text then return end
+
 	if disabled then
 		btn.Text:SetTextColor(1, 1, 1)
 		E:Config_SetButtonText(btn, true)
@@ -763,12 +786,15 @@ function E:Config_CreateFrame(info, frame, unskinned, frameType, ...)
 			E.Skins:HandleButton(element)
 		end
 
-		E:Config_SetButtonText(element)
-		E:Config_SetButtonColor(element, element.info.key == 'general')
-		element:HookScript('OnEnter', Config_ButtonOnEnter)
-		element:HookScript('OnLeave', Config_ButtonOnLeave)
 		element:SetScript('OnClick', info.func)
-		element:Width(element:GetTextWidth() + 40)
+
+		if element.Text then
+			E:Config_SetButtonText(element)
+			E:Config_SetButtonColor(element, element.info.key == 'general')
+			element:HookScript('OnEnter', Config_ButtonOnEnter)
+			element:HookScript('OnLeave', Config_ButtonOnLeave)
+			element:Width(element:GetTextWidth() + 40)
+		end
 	elseif frameType == 'EditBox' then
 		if not unskinned then
 			E.Skins:HandleEditBox(element)
@@ -894,12 +920,6 @@ function E:Config_HandleLeftExecute(frame, unskinned, buttons, last, index)
 				E:ToggleMoveMode()
 				E.ConfigurationToggled = true
 			end
-		},
-		{
-			var = 'RepositionWindow',
-			name = L["Reposition Window"],
-			desc = L["Reset the size and position of this frame."],
-			func = function() E:Config_UpdateSize(true) end
 		},
 	}) do
 		last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
@@ -1102,10 +1122,39 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				C:Search_Config(nil, nil, nil, true)
 				C:Search_AddResults()
 			end
+		},
+		{
+			texture = true,
+			var = 'RepositionWindow',
+			name = L["Reposition Window"],
+			desc = L["Reset the size and position of this frame."],
+			func = function() E:Config_UpdateSize(true) end
 		}
 	}) do
 		local element
-		if info.editbox then
+		if info.var == 'RepositionWindow' then
+			element = E:Config_CreateFrame(info, frame, true, 'Button', nil, frame.bottomHolder)
+			element:Size(unskinned and 34 or 18)
+
+			local texture = element:CreateTexture()
+			texture:SetTexture(unskinned and 386859 or E.Media.Textures.Resize2)
+			texture:SetAllPoints()
+			element.texture = texture
+
+			if unskinned then
+				local highlight = element:CreateTexture()
+				highlight:SetTexture(130757)
+				highlight:SetBlendMode('ADD')
+				highlight:SetAllPoints()
+				highlight:Hide()
+				element.highlight = highlight
+			else
+				texture:SetVertexColor(1, 1, 1, 0.8)
+			end
+
+			element:HookScript('OnEnter', Reposition_ButtonOnEnter)
+			element:HookScript('OnLeave', Reposition_ButtonOnLeave)
+		elseif info.editbox then
 			element = E:Config_CreateFrame(info, frame, unskinned, 'EditBox', nil, frame.bottomHolder, info.editbox)
 		else
 			element = E:Config_CreateFrame(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
@@ -1119,7 +1168,9 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 
 		if not last then
 			element:Point('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
-		elseif index == 4 then
+		elseif info.var == 'RepositionWindow' then
+			element:Point('TOPRIGHT', frame.topHolder, 'TOPRIGHT', -(unskinned and 46 or 32), -(unskinned and 4 or 2))
+		elseif index == 4 then -- Search
 			element:Point('BOTTOMRIGHT', frame.bottomHolder, 'BOTTOMRIGHT', -(unskinned and 24 or offset), offset)
 		elseif index > 4 then
 			element:Point('RIGHT', last, 'LEFT', -(index == 5 and (unskinned and 8 or 6) or (unskinned and 2) or 4), 0)
@@ -1282,8 +1333,8 @@ function E:ToggleOptions(msg)
 			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
 			close:SetScript('OnClick', E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
-			close:Point('TOPRIGHT', unskinned and -8 or 1, unskinned and -8 or 2)
-			close:Size(32)
+			close:Point('TOPRIGHT', unskinned and -12 or 1, unskinned and -12 or 2)
+			close:Size(unskinned and 30 or 32)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 
