@@ -996,6 +996,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[421031] = List(6), -- Song of the Dragon
 		[426390] = List(), -- Corrosive Pollen
 	-- Larodar, Keeper of the Flame
+		[425888] = List(), -- Igniting Growth
+		[426249] = List(), -- Blazing Coalescence
+		[421594] = List(), -- Smoldering Suffocation
+		[427299] = List(), -- Flash Fire
+		[428901] = List(), -- Ashen Devastation
 	-- Nymue, Weaver of the Cycle
 		[423195] = List(), -- Inflorescence
 		[427137] = List(), -- Threads of Life I
@@ -1386,6 +1391,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[418757] = List(), -- Polymorph Bomb
 		[420979] = List(), -- Barreling Charge
 	-- Larodar, Keeper of the Flame
+		[417583] = List(), -- Combusting Presence
+		[417644] = List(), -- Burning Fury
+		[421316] = List(), -- Consuming Flame
+		[417634] = List(), -- Raging Inferno
 	-- Nymue, Weaver of the Cycle
 		[413443] = List(), -- Protector's Shroud
 		[420553] = List(), -- Growing Power of the Dream
