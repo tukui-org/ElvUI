@@ -708,7 +708,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	local frame = self:IsVisible() and GetMouseFocus()
+	local frame = self:HasFocus() and GetMouseFocus()
 	if frame ~= self and frame ~= self.clearButton then
 		EditBox_ClearFocus(self)
 	end
