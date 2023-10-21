@@ -694,7 +694,7 @@ function E:Config_SearchClear()
 	end
 
 	self:SetText('')
-	self:ClearFocus()
+	EditBox_ClearFocus(self)
 end
 
 function E:Config_SearchFocusGained()
