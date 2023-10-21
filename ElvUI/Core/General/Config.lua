@@ -709,7 +709,7 @@ end
 
 function E:Config_SearchOnEvent()
 	local frame = self:HasFocus() and GetMouseFocus()
-	if frame and (frame ~= self and frame ~= self.clearButton) then
+	if frame ~= self and frame ~= self.clearButton then
 		EditBox_ClearFocus(self)
 	end
 end
