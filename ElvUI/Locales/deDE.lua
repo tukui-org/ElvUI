@@ -2,7 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
-L["Reset"] = "Rücksetzen"
+L["Reset"] = "Zurücksetzen"
 L["ELVUI_DESC"] = ("*ElvUI|r ist ein komplettes Benutzerinterface für World of Warcraft."):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00gebunden zu |r"
@@ -22,7 +22,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Active Output Audio Device"] = "Aktives Audiogerät"
 L["AddOn Memory:"] = "Addon Speicher"
 L["Adjust the UI Scale to fit your screen."] = "Passe die UI Skalierung an deinen Bildschirm an."
-L["Affix"] = true
+L["Affix"] = true --No need to translate
 L["AFK"] = "AFK"
 L["All keybindings cleared for |cff00ff00%s|r."] = "Alle Tastaturbelegungen gelöscht für |cff00ff00%s|r."
 L["Alliance: "] = "Allianz: "
