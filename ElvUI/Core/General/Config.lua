@@ -656,11 +656,17 @@ local function Reposition_ButtonOnLeave(button)
 	Config_ButtonOnLeave()
 end
 
+local function Config_PreviousLocation(editbox)
+	local _, selected = E:Config_GetStatus(editbox.frame)
+	if selected ~= 'search' then
+		editbox.selected = selected or nil
+	end
+end
+
 local function Config_SearchFocus(editbox)
 	EditBox_HighlightText(editbox)
 
-	local _, selected = E:Config_GetStatus(editbox.frame)
-	editbox.selected = selected ~= 'search' and selected or nil
+	Config_PreviousLocation(editbox)
 end
 
 local function Config_SearchUpdate(editbox, userInput)
@@ -680,7 +686,7 @@ local function Config_SearchUpdate(editbox, userInput)
 	end
 end
 
-local function Config_SearchClear(editbox, which)
+local function Config_SearchClear(editbox)
 	if not editbox.ClearFocus then
 		editbox = editbox:GetParent()
 	end
@@ -689,9 +695,8 @@ local function Config_SearchClear(editbox, which)
 	C:Search_ClearResults()
 
 	local _, selected = E:Config_GetStatus(editbox.frame)
-	local whatsNew = which == 'whatsNew' and 'search'
-	if whatsNew or (selected == 'search') then
-		ACD:SelectGroup('ElvUI', whatsNew or editbox.selected or 'general') -- swap back to general
+	if selected == 'search' then
+		ACD:SelectGroup('ElvUI', editbox.selected or 'general') -- swap back to general
 	end
 
 	editbox:SetText('')
@@ -1104,15 +1109,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				return C.SearchText ~= '' or next(C.SearchCache)
 			end,
 			func = function()
-				if search then
-					Config_SearchClear(search, 'whatsNew')
-				else
-					C:Search_ClearResults()
-					ACD:SelectGroup('ElvUI', 'search') -- trigger update
-				end
+				Config_PreviousLocation(search)
 
+				C:Search_ClearResults()
 				C:Search_Config(nil, nil, nil, true)
 				C:Search_AddResults()
+
+				ACD:SelectGroup('ElvUI', 'search') -- trigger update
 			end
 		},
 		{
