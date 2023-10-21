@@ -18,6 +18,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
+local GetMouseFocus = GetMouseFocus
 local LoadAddOn = LoadAddOn
 local UIParent = UIParent
 
@@ -706,6 +707,13 @@ function E:Config_SearchFocusLost()
 	EditBox_ClearFocus(self)
 end
 
+function E:Config_SearchOnEvent()
+	local frame = self:IsVisible() and GetMouseFocus()
+	if frame ~= self and frame ~= self.clearButton then
+		EditBox_ClearFocus(self)
+	end
+end
+
 function E:Config_SliderOnMouseWheel(offset)
 	local _, maxValue = self:GetMinMaxValues()
 	if maxValue == 0 then return end
@@ -1109,6 +1117,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			update = E.Config_SearchUpdate,
 			focusLost = E.Config_SearchFocusLost,
 			focusGained = E.Config_SearchFocusGained,
+			event = E.Config_SearchOnEvent,
 			var = 'Search',
 			name = L["Search"]
 		},
@@ -1169,6 +1178,11 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 
 		if not search and (info.var == 'Search') then
 			search = element
+
+			if not E.Retail then
+				search:RegisterEvent('GLOBAL_MOUSE_DOWN')
+				search:SetScript('OnEvent', info.event)
+			end
 		end
 
 		local offset = unskinned and 14 or 8
