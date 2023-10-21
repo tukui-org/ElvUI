@@ -696,7 +696,7 @@ local function Config_SearchClear(editbox)
 
 	local _, selected = E:Config_GetStatus(editbox.frame)
 	if selected == 'search' then
-		ACD:SelectGroup('ElvUI', editbox.selected or 'general') -- swap back to general
+		ACD:SelectGroup('ElvUI', editbox.selected or 'general') -- try to stay or swap back to general if it cant
 	end
 
 	editbox:SetText('')
