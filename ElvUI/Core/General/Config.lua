@@ -1109,7 +1109,9 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				return C.SearchText ~= '' or next(C.SearchCache)
 			end,
 			func = function()
-				Config_PreviousLocation(search)
+				if search then
+					Config_PreviousLocation(search)
+				end
 
 				C:Search_ClearResults()
 				C:Search_Config(nil, nil, nil, true)
