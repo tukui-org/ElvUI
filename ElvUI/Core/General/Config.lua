@@ -561,6 +561,13 @@ function E:Config_GetSize()
 	return E.global.general.AceGUI.width, E.global.general.AceGUI.height
 end
 
+function E:Config_GetStatus(frame)
+	local status = frame and frame.obj and frame.obj.status
+	local selected = status and status.groups and status.groups.selected
+
+	return status, selected
+end
+
 function E:Config_UpdateSize(reset)
 	local frame = E:Config_GetWindow()
 	if not frame then return end
@@ -575,7 +582,7 @@ function E:Config_UpdateSize(reset)
 
 	self.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 
-	local status = frame.obj and frame.obj.status
+	local status = E:Config_GetStatus(frame)
 	if status then
 		if reset then
 			E:Config_ResetSettings()
@@ -606,7 +613,8 @@ end
 
 function E:Config_StopMoving()
 	local frame = self and self.GetParent and self:GetParent()
-	if frame and frame.obj and frame.obj.status then
+	local status = E:Config_GetStatus(frame)
+	if status then
 		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(frame:GetTop(), 2), E:Round(frame:GetLeft(), 2)
 		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(frame:GetWidth(), 2), E:Round(frame:GetHeight(), 2)
 		E:Config_UpdateLeftScroller(frame)
@@ -648,6 +656,13 @@ local function Reposition_ButtonOnLeave(button)
 	Config_ButtonOnLeave()
 end
 
+local function Config_SearchFocus(editbox)
+	EditBox_HighlightText(editbox)
+
+	local _, selected = E:Config_GetStatus(editbox.frame)
+	editbox.selected = selected ~= 'search' and selected or nil
+end
+
 local function Config_SearchUpdate(editbox, userInput)
 	if not userInput then return end
 
@@ -673,12 +688,10 @@ local function Config_SearchClear(editbox, which)
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local frame = editbox.frame
-	local status = frame and frame.obj and frame.obj.status
-	local selected = status and status.groups and status.groups.selected
+	local _, selected = E:Config_GetStatus(editbox.frame)
 	local whatsNew = which == 'whatsNew' and 'search'
 	if whatsNew or (selected == 'search') then
-		ACD:SelectGroup('ElvUI', whatsNew or 'general') -- swap back to general
+		ACD:SelectGroup('ElvUI', whatsNew or editbox.selected or 'general') -- swap back to general
 	end
 
 	editbox:SetText('')
@@ -800,7 +813,7 @@ function E:Config_CreateFrame(info, frame, unskinned, frameType, ...)
 			E.Skins:HandleEditBox(element)
 		end
 
-		element:SetScript('OnEditFocusGained', EditBox_HighlightText)
+		element:SetScript('OnEditFocusGained', info.focus)
 		element:HookScript('OnTextChanged', info.update)
 		element:SetScript('OnEscapePressed', info.clear)
 		element.clearButton:HookScript('OnClick', info.clear)
@@ -824,8 +837,7 @@ function E:Config_UpdateLeftButtons()
 	local frame = E:Config_GetWindow()
 	if not (frame and frame.leftHolder) then return end
 
-	local status = frame.obj.status
-	local selected = status and status.groups.selected
+	local _, selected = E:Config_GetStatus(frame)
 	for _, btn in ipairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
 			local enabled = btn.info.key == selected
@@ -1081,6 +1093,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			editbox = 'SearchBoxTemplate',
 			clear = Config_SearchClear,
 			update = Config_SearchUpdate,
+			focus = Config_SearchFocus,
 			var = 'Search',
 			name = L["Search"]
 		},
