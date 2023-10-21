@@ -852,7 +852,7 @@ function E:Config_UpdateLeftScroller(frame)
 	btns:Point('TOPLEFT', 0, 0)
 
 	local max = 0
-	for _, btn in ipairs(btns) do
+	for _, btn in next, btns do
 		local button = type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button')
 		if button then
 			btn.sliderValue = nil
