@@ -978,6 +978,22 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[255434] = List(), -- Serrated Teeth
 		[255371] = List(), -- Terrifying Visage
 	-- Everbloom
+		[427513] = List(), -- Noxious Discharge
+		[428834] = List(), -- Verdant Eruption
+		[427510] = List(), -- Noxious Charge
+		[427863] = List(), -- Frostbolt I
+		[169840] = List(), -- Frostbolt II
+		[428084] = List(), -- Glacial Fusion
+		[426991] = List(), -- Blazing Cinders
+		[169179] = List(), -- Colossal Blow
+		[164886] = List(), -- Dreadpetal Pollen
+		[169445] = List(), -- Noxious Eruption
+		[164294] = List(), -- Unchecked Growth I
+		[164302] = List(), -- Unchecked Growth II
+		[165123] = List(), -- Venom Burst
+		[169658] = List(), -- Poisonous Claws
+		[169839] = List(), -- Pyroblast
+		[164965] = List(), -- Choking Vines
 	-- Throne of the Tides
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
@@ -1415,6 +1431,20 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[255579] = List(), -- Gilded Claws
 		[250241] = List(), -- Rapid Decay
 	-- Everbloom
+		[428948] = List(), -- Vibrant Flourish
+		[427223] = List(), -- Cinderbolt Salvo
+		[38166]  = List(), -- Enrage
+		[165213] = List(), -- Enraged Growth
+		[172578] = List(), -- Boudning Whirl
+		[427899] = List(), -- Cinderbolt Storm
+		[428082] = List(), -- Glacial Fusion
+		[164275] = List(), -- Brittle Bark
+		[427498] = List(), -- Torrential Fury
+		[166475] = List(), -- Fire Affinity
+		[166476] = List(), -- Frost Affinity
+		[166477] = List(), -- Arcane Affinity
+		[428177] = List(), -- Growing Infestation
+		[427509] = List(), -- Terrestrial Fury
 	-- Throne of the Tides
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
