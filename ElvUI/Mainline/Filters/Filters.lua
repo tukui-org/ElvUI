@@ -908,6 +908,30 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
 	-- Black Rook Hold
+		[202019] = List(), -- Shadow Bolt Volley
+		[197521] = List(), -- Blazing Trail
+		[197478] = List(), -- Dark Rush
+		[197546] = List(), -- Brutal Glaive
+		[198079] = List(), -- Hateful Gaze
+		[224188] = List(), -- Hateful Charge
+		[201733] = List(), -- Stinging Swarm
+		[194966] = List(), -- Soul Echoes
+		[198635] = List(), -- Unerring Shear
+		[225909] = List(), -- Soul Venom
+		[198501] = List(), -- Fel Vomitus
+		[198446] = List(), -- Fel Vomit
+		[200084] = List(), -- Soul Blade
+		[197821] = List(), -- Felblazed Ground
+		[203163] = List(), -- Sic Bats!
+		[199368] = List(), -- Legacy of the Ravencrest
+		[225732] = List(), -- Strike Down
+		[199168] = List(), -- Itchy!
+		[225963] = List(), -- Bloodthirsty Leap
+		[214002] = List(), -- Raven's Dive
+		[197974] = List(), -- Bonecrushing Strike I
+		[200261] = List(), -- Bonecrushing Strike II
+		[204896] = List(), -- Drain Life
+		[199097] = List(), -- Cloud of Hypnosis
 	-- Waycrest Manor
 	-- Atal'Dazar
 		[250585] = List(), -- Toxic Pool
@@ -1335,6 +1359,18 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
 	-- Black Rook Hold
+		[227913] = List(), -- Felfrenzy
+		[200099] = List(), -- Sacrifice Soul I
+		[200105] = List(), -- Sacrifice Soul II
+		[200345] = List(), -- Arrow Barrage
+		[201139] = List(), -- Brutal Assault
+		[8599]   = List(), -- Enrage
+		[197394] = List(), -- Gaining Energy
+		[200248] = List(), -- Arcane Blitz
+		[204896] = List(), -- Drain Life
+		[199193] = List(), -- Dreadlord's Guile
+		[200291] = List(), -- Knife Dance
+		[200784] = List(), -- "Drink" Ancient Potion
 	-- Waycrest Manor
 	-- Atal'Dazar
 		[255824] = List(), -- Fanatic's Rage
