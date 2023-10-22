@@ -907,6 +907,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Dawn of the Infinites: Galakrond's Fall
 	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
+		[198408] = List(), -- Nightfall
+		[196376] = List(), -- Grievous Tear
+		[200182] = List(), -- Festering Rip
+		[200238] = List(), -- Feed on the Weak
+		[200289] = List(), -- Growing Paranoia
+		[204667] = List(), -- Nightmare Breath
+		[204611] = List(), -- Crushing Grip
+		[199460] = List(), -- Falling Rocks
+		[200329] = List(), -- Overwhelming Terror
+		[191326] = List(), -- Breath of Corruption
+		[204243] = List(), -- Tormenting Eye
+		[225484] = List(), -- Grievous Rip
+		[200642] = List(), -- Despair
+		[199063] = List(), -- Strangling Roots
+		[198477] = List(), -- Fixate
+		[204246] = List(), -- Tormenting Fear
+		[198904] = List(), -- Poison Spear
+		[200684] = List(), -- Nightmare Toxin
+		[200243] = List(), -- Waking Nightmare
+		[200580] = List(), -- Maddening Roar
+		[200771] = List(), -- Propelling Charge
+		[200273] = List(), -- Cowardice
+		[201365] = List(), -- Darksoul Drain
+		[201839] = List(), -- Curse of Isolation
+		[201902] = List(), -- Scorching Shot
 	-- Black Rook Hold
 		[202019] = List(), -- Shadow Bolt Volley
 		[197521] = List(), -- Blazing Trail
@@ -1358,6 +1383,16 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Dawn of the Infinites: Galakrond's Fall
 	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
+		[221315] = List(), -- Apocalyptic Empowerment I
+		[200050] = List(), -- Apocalyptic Empowerment II
+		[220519] = List(), -- Submerged
+		[225497] = List(), -- Corrupted Infusion
+		[199063] = List(), -- Strangling Roots
+		[199345] = List(), -- Down Draft
+		[200768] = List(), -- Propelling Charge
+		[201226] = List(), -- Blood Assault
+		[218755] = List(), -- Spew Corruption
+		[198379] = List(), -- Primal Rampage
 	-- Black Rook Hold
 		[227913] = List(), -- Felfrenzy
 		[200099] = List(), -- Sacrifice Soul I
