@@ -995,6 +995,27 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[169839] = List(), -- Pyroblast
 		[164965] = List(), -- Choking Vines
 	-- Throne of the Tides
+		[429048] = List(), -- Flame Shock
+		[427668] = List(), -- Festering Shockwave
+		[427670] = List(), -- Crushing Claw
+		[76363]  = List(), -- Wave of Corruption
+		[426660] = List(), -- Razor Jaws
+		[426727] = List(), -- Acid Barrage
+		[428404] = List(), -- Blotting Darkness
+		[428403] = List(), -- Grimy
+		[426663] = List(), -- Ravenous Pursuit
+		[426783] = List(), -- Mind Flay
+		[75992]  = List(), -- Lightning Surge
+		[428868] = List(), -- Putrid Roar
+		[428407] = List(), -- Blotting Barrage
+		[427559] = List(), -- Bubbling Ooze
+		[76516]  = List(), -- Poisoned Spear
+		[428542] = List(), -- Crushing Depths
+		[426741] = List(), -- Shellbreaker
+		[76820]  = List(), -- Hex
+		[426608] = List(), -- Null Blast
+		[426688] = List(), -- Volatile Acid
+		[428103] = List(), -- Frostbolt
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
@@ -1446,6 +1467,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[428177] = List(), -- Growing Infestation
 		[427509] = List(), -- Terrestrial Fury
 	-- Throne of the Tides
+		[426618] = List(), -- Slithering Assault I
+		[428291] = List(), -- Slithering Assault II
+		[428531] = List(), -- Grimy
+		[426659] = List(), -- Razor Jaws
+		[76634]  = List(), -- Swell
+		[427451] = List(), -- Congealed Ooze
+		[428374] = List(), -- Focused Tempest
+		[429037] = List(), -- Stormflurry Totem
+		[428329] = List(), -- Icy Veins
+		[428293] = List(), -- Trident Flurry
+		[75683]  = List(), -- High Tide
+		[429051] = List(), -- Earthfury
+		[429046] = List(), -- Raining Darkness
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 2) -----------------
 	----------------------------------------------------------
