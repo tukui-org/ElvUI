@@ -910,6 +910,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Black Rook Hold
 	-- Waycrest Manor
 	-- Atal'Dazar
+		[250585] = List(), -- Toxic Pool
+		[258723] = List(), -- Grotesque Pool
+		[260668] = List(), -- Transfusion I
+		[260666] = List(), -- Transfusion II
+		[255558] = List(), -- Tainted Blood
+		[250036] = List(), -- Shadowy Remains
+		[257483] = List(), -- Pile of Bones
+		[253562] = List(), -- Wildfire
+		[254959] = List(), -- Soulburn
+		[255814] = List(), -- Rending Maul
+		[255582] = List(), -- Molten Gold
+		[252687] = List(), -- Venomfang Strike
+		[255041] = List(), -- Terrifying Screech
+		[255567] = List(), -- Frenzied Charge
+		[255836] = List(), -- Transfusion Boss I
+		[255835] = List(), -- Transfusion Boss II
+		[250372] = List(), -- Lingering Nausea
+		[257407] = List(), -- Pursuit
+		[255434] = List(), -- Serrated Teeth
+		[255371] = List(), -- Terrifying Visage
 	-- Everbloom
 	-- Throne of the Tides
 	----------------------------------------------------------
@@ -1317,6 +1337,16 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Black Rook Hold
 	-- Waycrest Manor
 	-- Atal'Dazar
+		[255824] = List(), -- Fanatic's Rage
+		[254974] = List(), -- Gathered Souls
+		[259572] = List(), -- Noxious Stench
+		[253721] = List(), -- Bulwark of Juju
+		[253583] = List(), -- Fiery Enchant
+		[254958] = List(), -- Soulforged Construct
+		[250192] = List(), -- Bad Voodoo
+		[255577] = List(), -- Transfusion
+		[255579] = List(), -- Gilded Claws
+		[250241] = List(), -- Rapid Decay
 	-- Everbloom
 	-- Throne of the Tides
 	----------------------------------------------------------
