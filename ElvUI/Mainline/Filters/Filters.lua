@@ -904,8 +904,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 3) -----------------
 	----------------------------------------------------------
-	-- Dawn of the Infinites: Galakrond's Fall
-	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
 		[198408] = List(), -- Nightfall
 		[196376] = List(), -- Grievous Tear
@@ -1380,8 +1378,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- Dragonflight (Season 3) -----------------
 	----------------------------------------------------------
-	-- Dawn of the Infinites: Galakrond's Fall
-	-- Dawn of the Infinites: Murozond's Rise
 	-- Darkheart Thicket
 		[221315] = List(), -- Apocalyptic Empowerment I
 		[200050] = List(), -- Apocalyptic Empowerment II
