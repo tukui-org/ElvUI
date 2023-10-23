@@ -343,7 +343,7 @@ do -- Import and Export
 
 			local offset = count * 2
 			local textKey = 'text'..count
-			local input = ACH:Input('', nil, 50 + offset, 5, 'full', get, set, nil, hidden)
+			local input = ACH:Input('', nil, 51 + offset, 5, 'full', get, set, nil, hidden)
 			input.disableButton = true
 			input.focusSelect = true
 			config.args[textKey] = input
@@ -356,7 +356,7 @@ do -- Import and Export
 				end
 			end
 
-			local label = ACH:Description('', 51 + offset)
+			local label = ACH:Description('', 50 + offset)
 			config.args['label'..count] = label
 		end
 	end
