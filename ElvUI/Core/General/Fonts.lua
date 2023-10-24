@@ -169,9 +169,10 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, 20)										-- Garrison Mission XP
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, 18, outline)							-- 20  Garrison Mission Chance
 		E:SetFont(_G.SystemFont_Huge2,						NORMAL, 22)										-- 22  Mythic+ Score
-		E:SetFont(_G.SystemFont_Large,						NORMAL, stock and 16 or 15)
-		E:SetFont(_G.SystemFont_Med1,						NORMAL, size)									-- 12
-		E:SetFont(_G.SystemFont_Med3,						NORMAL, medium)									-- 14
+		E:SetFont(_G.SystemFont_Large,						NORMAL, stock and large or 16)					-- 16
+		E:SetFont(_G.SystemFont_Med1,						NORMAL, stock and size or 12)					-- 12
+		E:SetFont(_G.SystemFont_Med2,						NORMAL, stock and medium or 13)					-- 13
+		E:SetFont(_G.SystemFont_Med3,						NORMAL, stock and medium or 14)					-- 14
 		E:SetFont(_G.SystemFont_Outline,					NORMAL, stock and size or 13, outline)			-- 13  WorldMap, Pet level
 		E:SetFont(_G.SystemFont_Outline_Small,				NUMBER, stock and small or size, 'OUTLINE')		-- 10
 		E:SetFont(_G.SystemFont_OutlineThick_Huge2,			NORMAL, stock and huge or 20, thick)			-- 22
