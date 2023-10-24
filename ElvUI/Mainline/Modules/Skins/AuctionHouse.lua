@@ -389,7 +389,7 @@ local function LoadSkin()
 	local TokenFrame = Frame.WoWTokenResults
 	TokenFrame:StripTextures()
 	S:HandleButton(TokenFrame.Buyout)
-	S:HandleScrollBar(TokenFrame.DummyScrollBar) --MONITOR THIS
+	S:HandleTrimScrollBar(TokenFrame.DummyScrollBar)
 
 	local Token = TokenFrame.TokenDisplay
 	Token:StripTextures()

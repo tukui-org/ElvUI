@@ -451,7 +451,7 @@ local function SkinHeirloomFrame()
 		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
 			local header = HeirloomsJournal.heirloomHeaderFrames[i]
 			header:StripTextures()
-			header.text:FontTemplate(nil, 15, 'NONE')
+			header.text:FontTemplate(nil, 15, 'SHADOW')
 			header.text:SetTextColor(0.9, 0.9, 0.9)
 		end
 	end)
