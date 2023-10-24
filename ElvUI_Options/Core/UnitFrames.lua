@@ -466,26 +466,26 @@ local individual = {
 	pettarget = true
 }
 
+local function UpdateCustomTextFrame(frame)
+	if frame and frame.customTexts then
+		UF:Configure_CustomTexts(frame)
+		frame:UpdateTags()
+	end
+end
+
 local function UpdateCustomTextGroup(unit)
 	if unit == 'party' or unit:find('raid') then
 		for _, child in next, { UF[unit]:GetChildren() } do
-
 			for _, subchild in next, { child:GetChildren() } do
-				UF:Configure_CustomTexts(subchild)
-				subchild:UpdateTags()
+				UpdateCustomTextFrame(subchild)
 			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
 		for i = 1, 10 do
-			local unitframe = UF[unit..i]
-			if unitframe then
-				UF:Configure_CustomTexts(unitframe)
-				unitframe:UpdateTags()
-			end
+			UpdateCustomTextFrame(UF[unit..i])
 		end
 	else
-		UF:Configure_CustomTexts(UF[unit])
-		UF[unit]:UpdateTags()
+		UpdateCustomTextFrame(UF[unit])
 	end
 end
 
