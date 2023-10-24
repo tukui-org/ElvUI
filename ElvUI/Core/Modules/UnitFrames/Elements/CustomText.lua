@@ -23,6 +23,7 @@ function UF:Configure_CustomTexts(frame)
 		local object = customTexts[name]
 		if not object then
 			object = frame:CreateFontString(nil, 'OVERLAY')
+			customTexts[name] = object -- reference it
 		end
 
 		local tagFont
@@ -58,10 +59,6 @@ function UF:Configure_CustomTexts(frame)
 		end
 
 		object:SetShown(db.enable)
-
-		if not customTexts[name] then
-			customTexts[name] = object
-		end
 	end
 end
 
@@ -73,6 +70,9 @@ function UF:ToggleVisibility_CustomTexts(frame, show)
 	if not frameDB then return end
 
 	for name, db in pairs(frameDB) do
-		customTexts[name]:SetShown(show and db.enable)
+		local object = customTexts[name]
+		if object then
+			object:SetShown(show and db.enable)
+		end
 	end
 end
