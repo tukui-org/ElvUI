@@ -46,7 +46,7 @@ local function ReskinSpellWidget(spell)
 		spell.Border:SetAlpha(0)
 	end
 
-	if spell.Text then
+	if spell.Text and E.private.skins.parchmentRemoverEnable then
 		spell.Text:SetTextColor(1, .8, 0)
 	end
 end
@@ -87,8 +87,8 @@ function S:PlayerChoice_SetupOptions()
 			local contents = header and header.Contents
 
 			if parchmentRemover then
-				if contents and contents.Text then contents.Text:SetTextColor(1, .8, 0) end -- Normal Header Text
-				if header and header.Text then header.Text:SetTextColor(1, .8, 0) end -- Torghast Header Text
+				if contents and contents.Text then contents.Text:SetTextColor(1, 0.8, 0) end -- Normal Header Text
+				if header and header.Text then header.Text:SetTextColor(1, 0.8, 0) end -- Torghast Header Text
 				if option.OptionText then option.OptionText:SetTextColor(1, 1, 1) end -- description text
 			end
 
