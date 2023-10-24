@@ -32,10 +32,11 @@ function UF:Configure_CustomTexts(frame)
 		end
 
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTextTo, db.attachTextTo == 'Power')
-		object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
-		object:SetJustifyH(db.justifyH or 'CENTER')
 		object:ClearAllPoints()
 		object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
+		object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
+		object:SetJustifyH(db.justifyH or 'CENTER')
+		object:SetShown(db.enable)
 
 		if db.attachTextTo == 'Power' and frame.Power then
 			object:SetParent(frame.Power.RaisedElementParent)
@@ -57,8 +58,6 @@ function UF:Configure_CustomTexts(frame)
 		else
 			frame:Untag(object)
 		end
-
-		object:SetShown(db.enable)
 	end
 end
 
