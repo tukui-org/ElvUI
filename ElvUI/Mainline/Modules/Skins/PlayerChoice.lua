@@ -47,7 +47,7 @@ local function ReskinSpellWidget(spell)
 	end
 
 	if spell.Text and E.private.skins.parchmentRemoverEnable then
-		spell.Text:SetTextColor(1, .8, 0)
+		spell.Text:SetTextColor(1, 0.8, 0)
 	end
 end
 
@@ -64,7 +64,7 @@ function S:PlayerChoice_SetupOptions()
 		self.NineSlice:SetAlpha(0)
 
 		self.Title:DisableDrawLayer('BACKGROUND')
-		self.Title.Text:SetTextColor(1, .8, 0)
+		self.Title.Text:SetTextColor(1, 0.8, 0)
 
 		S:HandleCloseButton(self.CloseButton)
 
