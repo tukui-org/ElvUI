@@ -114,8 +114,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game72Font,							NORMAL, 72)
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, 32, 'SHADOW')							-- Used at the install steps
 		E:SetFont(_G.GameFontHighlightMedium,				NORMAL, stock and medium or 15, 'SHADOW')		-- 14  Fix QuestLog Title mouseover
-		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, stock and small or size)				-- 11  Skill or Recipe description on TradeSkill frame
-		E:SetFont(_G.GameFontNormalHuge2,					NORMAL, stock and huge or 24)					-- 24  Mythic weekly best dungeon name
+		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, stock and small or size, 'SHADOW')		-- 11  Skill or Recipe description on TradeSkill frame
+		E:SetFont(_G.GameFontHighlightHuge2,				NORMAL, stock and huge or 24, 'SHADOW')
+		E:SetFont(_G.GameFontNormalHuge2,					NORMAL, stock and huge or 24, 'SHADOW')			-- 24  Mythic weekly best dungeon name
 		E:SetFont(_G.GameFontNormalLarge,					NORMAL, stock and large or 16, 'SHADOW')		-- 16
 		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, stock and large or 15, 'SHADOW')		-- 18  Garrison Follower Names
 		E:SetFont(_G.GameFontNormalMed1,					NORMAL, stock and medium or 14, 'SHADOW')		-- 13  WoW Token Info
