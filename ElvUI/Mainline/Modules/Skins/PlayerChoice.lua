@@ -46,8 +46,8 @@ local function ReskinSpellWidget(spell)
 		spell.Border:SetAlpha(0)
 	end
 
-	if spell.Text then
-		spell.Text:SetTextColor(1, .8, 0)
+	if spell.Text and E.private.skins.parchmentRemoverEnable then
+		spell.Text:SetTextColor(1, 0.8, 0)
 	end
 end
 
@@ -64,7 +64,7 @@ function S:PlayerChoice_SetupOptions()
 		self.NineSlice:SetAlpha(0)
 
 		self.Title:DisableDrawLayer('BACKGROUND')
-		self.Title.Text:SetTextColor(1, .8, 0)
+		self.Title.Text:SetTextColor(1, 0.8, 0)
 
 		S:HandleCloseButton(self.CloseButton)
 
@@ -87,8 +87,8 @@ function S:PlayerChoice_SetupOptions()
 			local contents = header and header.Contents
 
 			if parchmentRemover then
-				if contents and contents.Text then contents.Text:SetTextColor(1, .8, 0) end -- Normal Header Text
-				if header and header.Text then header.Text:SetTextColor(1, .8, 0) end -- Torghast Header Text
+				if contents and contents.Text then contents.Text:SetTextColor(1, 0.8, 0) end -- Normal Header Text
+				if header and header.Text then header.Text:SetTextColor(1, 0.8, 0) end -- Torghast Header Text
 				if option.OptionText then option.OptionText:SetTextColor(1, 1, 1) end -- description text
 			end
 

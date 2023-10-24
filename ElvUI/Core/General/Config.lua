@@ -18,6 +18,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
+local GetMouseFocus = GetMouseFocus
 local LoadAddOn = LoadAddOn
 local UIParent = UIParent
 
@@ -194,13 +195,13 @@ function E:Grid_Create()
 	end
 end
 
-local function ConfigMode_OnClick(self)
+function E:ConfigMode_OnClick()
 	E:ToggleMoveMode(self.value)
 end
 
-local function ConfigMode_Initialize()
+function E:ConfigMode_Initialize()
 	local info = _G.UIDropDownMenu_CreateInfo()
-	info.func = ConfigMode_OnClick
+	info.func = E.ConfigMode_OnClick
 
 	for _, configMode in ipairs(E.ConfigModeLayouts) do
 		info.text = E.ConfigModeLocalizedStrings[configMode]
@@ -384,7 +385,7 @@ function E:CreateMoverPopup()
 	dropDown.text:FontTemplate(nil, 12, 'SHADOW')
 	f.dropDown = dropDown
 
-	_G.UIDropDownMenu_Initialize(dropDown, ConfigMode_Initialize)
+	_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata('DIALOG')
@@ -561,6 +562,13 @@ function E:Config_GetSize()
 	return E.global.general.AceGUI.width, E.global.general.AceGUI.height
 end
 
+function E:Config_GetStatus(frame)
+	local status = frame and frame.obj and frame.obj.status
+	local selected = status and status.groups and status.groups.selected
+
+	return status, selected
+end
+
 function E:Config_UpdateSize(reset)
 	local frame = E:Config_GetWindow()
 	if not frame then return end
@@ -575,7 +583,7 @@ function E:Config_UpdateSize(reset)
 
 	self.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 
-	local status = frame.obj and frame.obj.status
+	local status = E:Config_GetStatus(frame)
 	if status then
 		if reset then
 			E:Config_ResetSettings()
@@ -606,55 +614,63 @@ end
 
 function E:Config_StopMoving()
 	local frame = self and self.GetParent and self:GetParent()
-	if frame and frame.obj and frame.obj.status then
+	local status = E:Config_GetStatus(frame)
+	if status then
 		E.configSavedPositionTop, E.configSavedPositionLeft = E:Round(frame:GetTop(), 2), E:Round(frame:GetLeft(), 2)
 		E.global.general.AceGUI.width, E.global.general.AceGUI.height = E:Round(frame:GetWidth(), 2), E:Round(frame:GetHeight(), 2)
 		E:Config_UpdateLeftScroller(frame)
 	end
 end
 
-local function Config_ButtonOnEnter(button)
-	if ConfigTooltip:IsForbidden() or not button.desc then return end
+function E:Config_ButtonOnEnter()
+	if ConfigTooltip:IsForbidden() or not self.desc then return end
 
-	ConfigTooltip:SetOwner(button, 'ANCHOR_TOPRIGHT', 0, 2)
-	ConfigTooltip:AddLine(button.desc, 1, 1, 1, true)
+	ConfigTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 2)
+	ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
 	ConfigTooltip:Show()
 end
 
-local function Config_ButtonOnLeave()
+function E:Config_ButtonOnLeave()
 	if ConfigTooltip:IsForbidden() then return end
 
 	ConfigTooltip:Hide()
 end
 
-local function Reposition_ButtonOnEnter(button)
-	if button.highlight then
-		button.highlight:Show()
+function E:Config_RepositionOnEnter()
+	if self.highlight then
+		self.highlight:Show()
 	else
 		local r, g, b = unpack(E.media.rgbvaluecolor)
-		button.texture:SetVertexColor(r, g, b, 1)
+		self.texture:SetVertexColor(r, g, b, 1)
 	end
 
-	Config_ButtonOnEnter(button)
+	E.Config_ButtonOnEnter(self)
 end
 
-local function Reposition_ButtonOnLeave(button)
-	if button.highlight then
-		button.highlight:Hide()
+function E:Config_RepositionOnLeave()
+	if self.highlight then
+		self.highlight:Hide()
 	else
-		button.texture:SetVertexColor(1, 1, 1, 0.8)
+		self.texture:SetVertexColor(1, 1, 1, 0.8)
 	end
 
-	Config_ButtonOnLeave()
+	E.Config_ButtonOnLeave()
 end
 
-local function Config_SearchUpdate(editbox, userInput)
+function E:Config_PreviousLocation(editbox)
+	local _, selected = E:Config_GetStatus(editbox.frame)
+	if selected ~= 'search' then
+		editbox.selected = selected or nil
+	end
+end
+
+function E:Config_SearchUpdate(userInput)
 	if not userInput then return end
 
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local text = editbox:GetText()
+	local text = self:GetText()
 	if strmatch(text, '%S+') then
 		C.SearchText = strtrim(strlower(text))
 
@@ -665,59 +681,54 @@ local function Config_SearchUpdate(editbox, userInput)
 	end
 end
 
-local function Config_SearchClear(editbox, which)
-	if not editbox.ClearFocus then
-		editbox = editbox:GetParent()
+function E:Config_SearchClear()
+	if not self.ClearFocus then
+		self = self:GetParent()
 	end
 
 	local C = E.Config[1]
 	C:Search_ClearResults()
 
-	local frame = editbox.frame
-	local status = frame and frame.obj and frame.obj.status
-	local selected = status and status.groups and status.groups.selected
-	local whatsNew = which == 'whatsNew' and 'search'
-	if whatsNew or (selected == 'search') then
-		ACD:SelectGroup('ElvUI', whatsNew or 'general') -- swap back to general
+	local _, selected = E:Config_GetStatus(self.frame)
+	if selected == 'search' then
+		ACD:SelectGroup('ElvUI', self.selected or 'general') -- try to stay or swap back to general if it cant
 	end
 
-	editbox:SetText('')
-	editbox:ClearFocus()
+	self:SetText('')
+	EditBox_ClearFocus(self)
 end
 
-local function Config_StripNameColor(name)
-	if type(name) == 'function' then name = name() end
-	return E:StripString(name)
+function E:Config_SearchFocusGained()
+	EditBox_HighlightText(self)
+	E:Config_PreviousLocation(self)
 end
 
-local function Config_SortButtons(a,b)
-	local A1, B1 = a[1], b[1]
-	if A1 and B1 then
-		if A1 == B1 then
-			local A3, B3 = a[3], b[3]
-			if A3 and B3 and (A3.name and B3.name) then
-				return Config_StripNameColor(A3.name) < Config_StripNameColor(B3.name)
-			end
-		end
-		return A1 < B1
+function E:Config_SearchFocusLost()
+	EditBox_ClearFocus(self)
+end
+
+function E:Config_SearchOnEvent()
+	local frame = self:HasFocus() and GetMouseFocus()
+	if frame and (frame ~= self and frame ~= self.clearButton) then
+		EditBox_ClearFocus(self)
 	end
 end
 
-local function ConfigSliderOnMouseWheel(frame, offset)
-	local _, maxValue = frame:GetMinMaxValues()
+function E:Config_SliderOnMouseWheel(offset)
+	local _, maxValue = self:GetMinMaxValues()
 	if maxValue == 0 then return end
 
-	local newValue = frame:GetValue() - offset
+	local newValue = self:GetValue() - offset
 	if newValue < 0 then newValue = 0 end
 	if newValue > maxValue then return end
 
-	frame:SetValue(newValue)
-	frame.buttons:Point('TOPLEFT', 0, newValue * 36)
+	self:SetValue(newValue)
+	self.buttons:Point('TOPLEFT', 0, newValue * 36)
 end
 
-local function ConfigSliderOnValueChanged(frame, value)
-	frame:SetValue(value)
-	frame.buttons:Point('TOPLEFT', 0, value * 36)
+function E:Config_SliderOnValueChanged(value)
+	self:SetValue(value)
+	self.buttons:Point('TOPLEFT', 0, value * 36)
 end
 
 function E:Config_SetButtonText(btn, noColor)
@@ -738,6 +749,7 @@ function E:Config_CreateSeparatorLine(frame, lastButton)
 	line:Size(179, 2)
 	line:Point('TOP', lastButton, 'BOTTOM', 0, -6)
 	line.separator = true
+
 	return line
 end
 
@@ -771,7 +783,7 @@ end
 function E:Config_UpdateSliderPosition(btn)
 	local left = btn and btn.frame and btn.frame.leftHolder
 	if left and left.slider then
-		ConfigSliderOnValueChanged(left.slider, btn.sliderValue or 0)
+		E.Config_SliderOnValueChanged(left.slider, btn.sliderValue or 0)
 	end
 end
 
@@ -791,8 +803,8 @@ function E:Config_CreateFrame(info, frame, unskinned, frameType, ...)
 		if element.Text then
 			E:Config_SetButtonText(element)
 			E:Config_SetButtonColor(element, element.info.key == 'general')
-			element:HookScript('OnEnter', Config_ButtonOnEnter)
-			element:HookScript('OnLeave', Config_ButtonOnLeave)
+			element:HookScript('OnEnter', E.Config_ButtonOnEnter)
+			element:HookScript('OnLeave', E.Config_ButtonOnLeave)
 			element:Width(element:GetTextWidth() + 40)
 		end
 	elseif frameType == 'EditBox' then
@@ -800,9 +812,10 @@ function E:Config_CreateFrame(info, frame, unskinned, frameType, ...)
 			E.Skins:HandleEditBox(element)
 		end
 
-		element:SetScript('OnEditFocusGained', EditBox_HighlightText)
 		element:HookScript('OnTextChanged', info.update)
 		element:SetScript('OnEscapePressed', info.clear)
+		element:SetScript('OnEditFocusLost', info.focusLost)
+		element:SetScript('OnEditFocusGained', info.focusGained)
 		element.clearButton:HookScript('OnClick', info.clear)
 
 		element:Size(220, 22)
@@ -824,8 +837,7 @@ function E:Config_UpdateLeftButtons()
 	local frame = E:Config_GetWindow()
 	if not (frame and frame.leftHolder) then return end
 
-	local status = frame.obj.status
-	local selected = status and status.groups.selected
+	local _, selected = E:Config_GetStatus(frame)
 	for _, btn in ipairs(frame.leftHolder.buttons) do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
 			local enabled = btn.info.key == selected
@@ -848,7 +860,7 @@ function E:Config_UpdateLeftScroller(frame)
 	btns:Point('TOPLEFT', 0, 0)
 
 	local max = 0
-	for _, btn in ipairs(btns) do
+	for _, btn in next, btns do
 		local button = type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button')
 		if button then
 			btn.sliderValue = nil
@@ -906,6 +918,28 @@ function E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 	buttons[index] = btn
 
 	return btn
+end
+
+function E:Config_StripNameColor(name)
+	if type(name) == 'function' then
+		name = name()
+	end
+
+	return E:StripString(name)
+end
+
+local function Config_SortButtons(a, b)
+	local A1, B1 = a[1], b[1]
+	if A1 and B1 then
+		if A1 == B1 then
+			local A3, B3 = a[3], b[3]
+			if A3 and B3 and (A3.name and B3.name) then
+				return E:Config_StripNameColor(A3.name) < E:Config_StripNameColor(B3.name)
+			end
+		end
+
+		return A1 < B1
+	end
 end
 
 function E:Config_CreateLeftButtons(frame, unskinned, options)
@@ -1079,8 +1113,11 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		},
 		{
 			editbox = 'SearchBoxTemplate',
-			clear = Config_SearchClear,
-			update = Config_SearchUpdate,
+			clear = E.Config_SearchClear,
+			update = E.Config_SearchUpdate,
+			focusLost = E.Config_SearchFocusLost,
+			focusGained = E.Config_SearchFocusGained,
+			event = E.Config_SearchOnEvent,
 			var = 'Search',
 			name = L["Search"]
 		},
@@ -1092,14 +1129,14 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end,
 			func = function()
 				if search then
-					Config_SearchClear(search, 'whatsNew')
-				else
-					C:Search_ClearResults()
-					ACD:SelectGroup('ElvUI', 'search') -- trigger update
+					E:Config_PreviousLocation(search)
 				end
 
+				C:Search_ClearResults()
 				C:Search_Config(nil, nil, nil, true)
 				C:Search_AddResults()
+
+				ACD:SelectGroup('ElvUI', 'search') -- trigger update
 			end
 		},
 		{
@@ -1131,8 +1168,8 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				texture:SetVertexColor(1, 1, 1, 0.8)
 			end
 
-			element:HookScript('OnEnter', Reposition_ButtonOnEnter)
-			element:HookScript('OnLeave', Reposition_ButtonOnLeave)
+			element:HookScript('OnEnter', E.Config_RepositionOnEnter)
+			element:HookScript('OnLeave', E.Config_RepositionOnLeave)
 		elseif info.editbox then
 			element = E:Config_CreateFrame(info, frame, unskinned, 'EditBox', nil, frame.bottomHolder, info.editbox)
 		else
@@ -1141,6 +1178,11 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 
 		if not search and (info.var == 'Search') then
 			search = element
+
+			if not E.Retail then
+				search:RegisterEvent('GLOBAL_MOUSE_DOWN')
+				search:SetScript('OnEvent', info.event)
+			end
 		end
 
 		local offset = unskinned and 14 or 8
@@ -1360,8 +1402,8 @@ function E:ToggleOptions(msg)
 
 			local slider = CreateFrame('Slider', nil, frame)
 			slider:SetThumbTexture(E.Media.Textures.White8x8)
-			slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
-			slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
+			slider:SetScript('OnMouseWheel', E.Config_SliderOnMouseWheel)
+			slider:SetScript('OnValueChanged', E.Config_SliderOnValueChanged)
 			slider:SetOrientation('VERTICAL')
 			slider:SetObeyStepOnDrag(true)
 			slider:SetValueStep(1)

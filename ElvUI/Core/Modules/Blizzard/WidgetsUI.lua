@@ -32,11 +32,11 @@ function B:UIWidgetTemplateStatusBar()
 		end
 
 		if self.Label then -- title
-			self.Label:FontTemplate(nil, nil, 'NONE')
+			self.Label:FontTemplate(nil, nil, 'SHADOW')
 		end
 
 		if bar.Label then -- percent text
-			bar.Label:FontTemplate(nil, nil, 'NONE')
+			bar.Label:FontTemplate(nil, nil, 'SHADOW')
 		end
 
 		bar.BGLeft:SetAlpha(0)
