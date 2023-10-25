@@ -11,8 +11,9 @@ local Update = function(frame, event, unit)
 
 	if(element.PreUpdate) then element:PreUpdate(event, instanceType) end
 
+	local arenaIndex = frame.unit and frame.unit:match('arena(%d)')
 	if instanceType == 'arena' then
-		local unitID = tonumber(frame.unit:match('arena(%d)') or frame:GetID() or 0)
+		local unitID = tonumber(arenaIndex or frame:GetID() or 0)
 		local specID = unitID and GetArenaOpponentSpec(unitID)
 		if specID and specID > 0 then
 			local _, _, _, icon = GetSpecializationInfoByID(specID);
@@ -21,7 +22,7 @@ local Update = function(frame, event, unit)
 			element.Icon:SetTexture([[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 		end
 	else
-		local unitFactionGroup = UnitFactionGroup(frame.unit)
+		local unitFactionGroup = arenaIndex and UnitFactionGroup(arenaIndex)
 		if unitFactionGroup == 'Horde' then
 			element.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_01]])
 		elseif unitFactionGroup == 'Alliance' then
