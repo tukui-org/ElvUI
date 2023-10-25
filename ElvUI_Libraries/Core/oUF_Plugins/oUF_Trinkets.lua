@@ -2,15 +2,14 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
+local factions = {
+	Horde = [[Interface\Icons\INV_Jewelry_Necklace_38]],
+	Alliance = [[Interface\Icons\INV_Jewelry_Necklace_37]]
+}
+
 local function GetTrinketIconByFaction(unit)
-	local unitFactionGroup = unit and UnitFactionGroup(unit)
-	if unitFactionGroup == 'Horde' then
-		return [[Interface\Icons\INV_Jewelry_Necklace_38]]
-	elseif unitFactionGroup == 'Alliance' then
-		return [[Interface\Icons\INV_Jewelry_Necklace_37]]
-	else
-		return [[Interface\Icons\INV_MISC_QUESTIONMARK]]
-	end
+	local faction = unit and UnitFactionGroup(unit)
+	return factions[faction] or [[Interface\Icons\INV_MISC_QUESTIONMARK]]
 end
 
 local function UpdateSpell(element, id)

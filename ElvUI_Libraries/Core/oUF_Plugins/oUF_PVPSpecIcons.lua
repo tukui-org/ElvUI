@@ -2,15 +2,14 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
+local factions = {
+	Horde = [[Interface\Icons\INV_BannerPVP_01]],
+	Alliance = [[Interface\Icons\INV_BannerPVP_02]],
+}
+
 local function GetSpecIconByFaction(unit)
-	local unitFactionGroup = unit and UnitFactionGroup(unit)
-	if unitFactionGroup == 'Horde' then
-		return [[Interface\Icons\INV_BannerPVP_01]]
-	elseif unitFactionGroup == 'Alliance' then
-		return [[Interface\Icons\INV_BannerPVP_02]]
-	else
-		return [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
-	end
+	local faction = unit and UnitFactionGroup(unit)
+	return factions[faction] or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
 end
 
 local Update = function(frame, event, unit)
