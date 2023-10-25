@@ -48,16 +48,16 @@ local Enable = function(frame)
 		element.ForceUpdate = ForceUpdate
 
 		if not element.Icon then
-			element.Icon = element:CreateTexture(nil, "OVERLAY")
+			element.Icon = element:CreateTexture(nil, 'OVERLAY')
 			element.Icon:SetAllPoints(element)
 			element.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 		end
 
-		frame:RegisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		frame:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
+		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update)
+		frame:RegisterEvent('PLAYER_ENTERING_WORLD', Update, true)
 
 		if oUF.isRetail then
-			frame:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update, true)
+			frame:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', Update, true)
 		end
 
 		return true
@@ -67,11 +67,11 @@ end
 local Disable = function(frame)
 	local element = frame.PVPSpecIcon
 	if element then
-		frame:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		frame:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
+		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
+		frame:UnregisterEvent('PLAYER_ENTERING_WORLD', Update)
 
 		if oUF.isRetail then
-			frame:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
+			frame:UnregisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', Update)
 		end
 
 		element:Hide()

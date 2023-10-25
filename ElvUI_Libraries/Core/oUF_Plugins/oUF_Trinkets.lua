@@ -2,15 +2,11 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
-local function GetTrinketIconBySpellID(spellID)
-	local _, _, spellTexture = GetSpellInfo(spellID)
-	return spellTexture
-end
-
 local function GetTrinketIconByFaction(unit)
-	if UnitFactionGroup(unit) == "Horde" then
+	local unitFactionGroup = UnitFactionGroup(unit)
+	if unitFactionGroup == 'Horde' then
 		return [[Interface\Icons\INV_Jewelry_Necklace_38]]
-	elseif UnitFactionGroup(unit) == "Alliance" then
+	elseif unitFactionGroup == 'Alliance' then
 		return [[Interface\Icons\INV_Jewelry_Necklace_37]]
 	else
 		return [[Interface\Icons\INV_MISC_QUESTIONMARK]]
@@ -20,7 +16,9 @@ end
 local function UpdateSpell(element, id)
 	if id and id ~= 0 and element.spellID ~= id then
 		element.spellID = id
-		element.icon:SetTexture(GetTrinketIconBySpellID(id))
+
+		local _, _, spellTexture = GetSpellInfo(id)
+		element.icon:SetTexture(spellTexture)
 	end
 
 end
@@ -52,24 +50,24 @@ local function Update(frame, event, unit, ...)
 
 	local element = frame.Trinket
 	if frame.isForced then
-		element.icon:SetTexture(GetTrinketIconByFaction("player"))
+		element.icon:SetTexture(GetTrinketIconByFaction('player'))
 		element:Show()
 
-		return;
+		return
 	end
 
 	if (element.PreUpdate) then
 		element:PreUpdate(event, unit)
 	end
 
-	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
+	if (event == 'ARENA_OPPONENT_UPDATE' or event == 'OnShow') then
 		local unitEvent = ...
-		if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+		if (unitEvent ~= 'seen' and event ~= 'OnShow') then return end
 
 		C_PvP.RequestCrowdControlSpell(unit)
-	elseif event == "ARENA_COOLDOWNS_UPDATE" then
+	elseif event == 'ARENA_COOLDOWNS_UPDATE' then
 		UpdateTrinket(frame, unit)
-	elseif event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
+	elseif event == 'ARENA_CROWD_CONTROL_SPELL_UPDATE' then
 		local spellID = ...
 		UpdateSpell(element, spellID)
 	end
@@ -91,12 +89,12 @@ local function Enable(frame)
 		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
 
-		frame:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
-		frame:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
-		frame:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
+		frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
+		frame:RegisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update, true)
+		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update, true)
 
 		if oUF.isRetail then
-			frame:RegisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns, true)
+			frame:RegisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns, true)
 		end
 
 		return true
@@ -106,12 +104,12 @@ end
 local function Disable(frame)
 	local element = frame.Trinket
 	if element then
-		frame:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
-		frame:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
-		frame:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
+		frame:UnregisterEvent('ARENA_COOLDOWNS_UPDATE', Update)
+		frame:UnregisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update)
+		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
 
 		if oUF.isRetail then
-			frame:UnregisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns)
+			frame:UnregisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns)
 		end
 
 		element:Hide()
