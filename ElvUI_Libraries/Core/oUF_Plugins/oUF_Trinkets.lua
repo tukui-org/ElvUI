@@ -17,14 +17,19 @@ local function GetTrinketIconByFaction(unit)
 	end
 end
 
+local function UpdateSpell(element, id)
+	if id and id ~= 0 and element.spellID ~= id then
+		element.spellID = id
+		element.icon:SetTexture(GetTrinketIconBySpellID(id))
+	end
+
+end
+
 local function UpdateTrinket(self, unit)
 	local element = self.Trinket
 
 	local spellID, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit or self.unit)
-	if spellID and spellID ~= 0 and element.spellID ~= spellID then
-		element.spellID = spellID
-		element.icon:SetTexture(GetTrinketIconBySpellID(spellID))
-	end
+	UpdateSpell(element, spellID)
 
 	if startTime and duration > 0 then
 		element.cd:SetCooldown(startTime / 1000, duration / 1000, 1)
@@ -43,13 +48,13 @@ local function ClearCooldowns(self)
 end
 
 local function Update(self, event, unit, ...)
-	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end
+	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and self.unit ~= unit) then return end
 
 	local element = self.Trinket
-
 	if self.isForced then
 		element.icon:SetTexture(GetTrinketIconByFaction("player"))
 		element:Show()
+
 		return;
 	end
 
@@ -66,10 +71,7 @@ local function Update(self, event, unit, ...)
 		UpdateTrinket(self, unit)
 	elseif event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
 		local spellID = ...
-		if spellID ~= 0 then
-			element.spellID = spellID
-			element.icon:SetTexture(GetTrinketIconBySpellID(spellID))
-		end
+		UpdateSpell(element, spellID)
 	end
 
 	element:SetShown(element.spellID and element.spellID ~= 0)
@@ -79,10 +81,15 @@ local function Update(self, event, unit, ...)
 	end
 end
 
+local function ForceUpdate(element)
+	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
+end
+
 local function Enable(self)
 	local element = self.Trinket
 	if element then
 		element.__owner = self
+		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
 		self:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
@@ -99,7 +106,6 @@ end
 local function Disable(self)
 	local element = self.Trinket
 	if element then
-
 		self:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
 		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)

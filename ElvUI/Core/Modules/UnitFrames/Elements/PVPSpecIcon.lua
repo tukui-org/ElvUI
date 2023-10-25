@@ -5,6 +5,7 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame('Frame', nil, frame)
+
 	specIcon.bg = CreateFrame('Frame', nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, nil, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
@@ -17,6 +18,7 @@ function UF:Configure_PVPSpecIcon(frame)
 	local specIcon = frame.PVPSpecIcon
 
 	specIcon.bg:ClearAllPoints()
+
 	if frame.ORIENTATION == 'LEFT' then
 		specIcon.bg:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.SPACING, -UF.SPACING)
 		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
@@ -32,9 +34,11 @@ function UF:Configure_PVPSpecIcon(frame)
 			specIcon.bg:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
 		end
 	end
-	if frame.db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
+
+	local enabled = frame:IsElementEnabled('PVPSpecIcon')
+	if frame.db.pvpSpecIcon and not enabled then
 		frame:EnableElement('PVPSpecIcon')
-	elseif not frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
+	elseif not frame.db.pvpSpecIcon and enabled then
 		frame:DisableElement('PVPSpecIcon')
 	end
 end
