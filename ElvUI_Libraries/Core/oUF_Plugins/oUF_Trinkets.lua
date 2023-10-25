@@ -4,12 +4,13 @@ assert(oUF, 'oUF not loaded')
 
 local factions = {
 	Horde = [[Interface\Icons\INV_Jewelry_Necklace_38]],
-	Alliance = [[Interface\Icons\INV_Jewelry_Necklace_37]]
+	Alliance = [[Interface\Icons\INV_Jewelry_Necklace_37]],
+	Unknown = [[Interface\Icons\INV_MISC_QUESTIONMARK]]
 }
 
 local function GetTrinketIconByFaction(unit)
 	local faction = unit and UnitFactionGroup(unit)
-	return factions[faction] or [[Interface\Icons\INV_MISC_QUESTIONMARK]]
+	return factions[faction] or factions.Unknown
 end
 
 local function UpdateSpell(element, id)
@@ -17,7 +18,7 @@ local function UpdateSpell(element, id)
 		element.spellID = id
 
 		local _, _, spellTexture = GetSpellInfo(id)
-		element.icon:SetTexture(spellTexture or [[Interface\Icons\INV_MISC_QUESTIONMARK]])
+		element.icon:SetTexture(spellTexture or factions.Unknown)
 	end
 
 end
@@ -87,6 +88,7 @@ local function Enable(frame)
 	if element then
 		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
+		element.Factions = factions
 
 		frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
 		frame:RegisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update, true)

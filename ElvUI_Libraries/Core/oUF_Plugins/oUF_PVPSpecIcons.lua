@@ -5,11 +5,12 @@ assert(oUF, 'oUF not loaded')
 local factions = {
 	Horde = [[Interface\Icons\INV_BannerPVP_01]],
 	Alliance = [[Interface\Icons\INV_BannerPVP_02]],
+	Unknown = [[Interface\Icons\INV_MISC_QUESTIONMARK]]
 }
 
 local function GetSpecIconByFaction(unit)
 	local faction = unit and UnitFactionGroup(unit)
-	return factions[faction] or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
+	return factions[faction] or factions.Unknown
 end
 
 local Update = function(frame, event, unit)
@@ -29,7 +30,7 @@ local Update = function(frame, event, unit)
 			_, _, _, icon = GetSpecializationInfoByID(specID)
 		end
 
-		element.Icon:SetTexture(icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		element.Icon:SetTexture(icon or factions.Unknown)
 	else
 		element.Icon:SetTexture(GetSpecIconByFaction(arenaIndex or (frame.isForced and 'player')))
 	end
@@ -48,6 +49,7 @@ local Enable = function(frame)
 	if element then
 		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
+		element.Factions = factions
 
 		if not element.Icon then
 			element.Icon = element:CreateTexture(nil, 'OVERLAY')
