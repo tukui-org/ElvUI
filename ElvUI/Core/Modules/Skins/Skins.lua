@@ -437,6 +437,47 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
+function S:SkinReadyDialog(dialog, bottom)
+	local background = dialog.background
+	if background then
+		background:ClearAllPoints()
+		background:Point('TOPLEFT', E.Border, -E.Border)
+		background:Point('BOTTOMRIGHT', -E.Border, bottom or 50)
+
+		dialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
+		dialog.backdrop:SetOutside(background)
+		dialog.backdrop.Center:Hide()
+	end
+
+	if dialog.bottomArt then
+		dialog.bottomArt:SetAlpha(0)
+	end
+
+	if dialog.Border then -- use backdrop cause we need it a level behind
+		dialog.Border:StripTextures()
+		dialog.Border:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+	end
+
+	local instance = dialog.instanceInfo
+	if instance and instance.underline then
+		instance.underline:SetAlpha(0)
+	end
+
+	if dialog.enterButton then
+		S:HandleButton(dialog.enterButton)
+
+		dialog.enterButton:ClearAllPoints()
+		dialog.enterButton:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -10, 15)
+	end
+
+	if dialog.leaveButton then
+		S:HandleButton(dialog.leaveButton)
+
+		dialog.leaveButton:ClearAllPoints()
+		dialog.leaveButton:Point('BOTTOMLEFT', dialog, 'BOTTOM', 10, 15)
+	end
+end
+
 do
 	local quality = Enum.ItemQuality
 	local iconColors = {
