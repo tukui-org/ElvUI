@@ -149,7 +149,7 @@ function S:LookingForGroupFrames()
 		_G.LFGDungeonReadyDialogBackground:Point('TOPLEFT', E.Border, -E.Border)
 		_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
-		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
+		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
 		_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
 		_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
 	end
@@ -158,9 +158,9 @@ function S:LookingForGroupFrames()
 		_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	end
 
-	if _G.LFGDungeonReadyDialog.Border then
+	if _G.LFGDungeonReadyDialog.Border then -- use backdrop cause we need it a level behind
 		_G.LFGDungeonReadyDialog.Border:StripTextures()
-		_G.LFGDungeonReadyDialog.Border:SetTemplate('Transparent')
+		_G.LFGDungeonReadyDialog.Border:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 	end
 
 	-- Brawl & Solo Shuffle
