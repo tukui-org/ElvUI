@@ -238,27 +238,48 @@ end
 function S:PVPReadyDialog()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
-	--PVP QUEUE FRAME
-	_G.PVPReadyDialog:StripTextures()
-	_G.PVPReadyDialog:SetTemplate('Transparent')
+	local background = _G.PVPReadyDialog.background
+	if background then
+		background:ClearAllPoints()
+		background:Point('TOPLEFT', E.Border, -E.Border)
+		background:Point('BOTTOMRIGHT', -E.Border, 54)
+
+		_G.PVPReadyDialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
+		_G.PVPReadyDialog.backdrop:SetOutside(background)
+		_G.PVPReadyDialog.backdrop.Center:Hide()
+	end
+
+	local bottomArt = _G.PVPReadyDialog.bottomArt
+	if bottomArt then
+		bottomArt:SetAlpha(0)
+	end
+
+	local border = _G.PVPReadyDialog.Border
+	if border then -- use backdrop cause we need it a level behind
+		border:StripTextures()
+		border:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+	end
+
+	local instanceInfo = _G.PVPReadyDialog.instanceInfo
+	if instanceInfo and instanceInfo.underline then
+		instanceInfo.underline:SetAlpha(0)
+	end
+
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
 
-	hooksecurefunc('PVPReadyDialog_Display', function(s, _, _, _, queueType, _, role)
-		if role == 'DAMAGER' then
-			_G.PVPReadyDialogRoleIcon.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-		elseif role == 'TANK' then
-			_G.PVPReadyDialogRoleIcon.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-		elseif role == 'HEALER' then
-			_G.PVPReadyDialogRoleIcon.texture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
+	hooksecurefunc('PVPReadyDialog_Display', function(dialog, _, _, isRated, queueType)
+		if dialog.leaveButton:IsShown() then
+			dialog.enterButton:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -7, 16)
+			dialog.leaveButton:Point('BOTTOMLEFT', dialog, 'BOTTOM', 7, 16)
+		else
+			dialog.enterButton:Point('BOTTOM', 0, 16)
 		end
 
-		if queueType == 'ARENA' then
-			s:Height(100)
+		if queueType == 'BATTLEGROUND' and not isRated then
+			dialog.background:SetTexCoord(0, 1, 0.01, 1)
 		end
-
-		s.background:Hide()
 	end)
 end
 
