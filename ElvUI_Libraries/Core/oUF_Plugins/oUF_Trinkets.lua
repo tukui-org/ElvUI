@@ -18,7 +18,7 @@ local function UpdateSpell(element, id)
 		element.spellID = id
 
 		local _, _, spellTexture = GetSpellInfo(id)
-		element.icon:SetTexture(spellTexture)
+		element.icon:SetTexture(spellTexture or [[Interface\Icons\INV_MISC_QUESTIONMARK]])
 	end
 
 end
