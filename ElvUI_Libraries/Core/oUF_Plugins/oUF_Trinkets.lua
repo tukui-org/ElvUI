@@ -3,7 +3,7 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local function GetTrinketIconByFaction(unit)
-	local unitFactionGroup = UnitFactionGroup(unit)
+	local unitFactionGroup = unit and UnitFactionGroup(unit)
 	if unitFactionGroup == 'Horde' then
 		return [[Interface\Icons\INV_Jewelry_Necklace_38]]
 	elseif unitFactionGroup == 'Alliance' then

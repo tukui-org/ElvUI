@@ -2,6 +2,17 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
+local function GetSpecIconByFaction(unit)
+	local unitFactionGroup = unit and UnitFactionGroup(unit)
+	if unitFactionGroup == 'Horde' then
+		return [[Interface\Icons\INV_BannerPVP_01]]
+	elseif unitFactionGroup == 'Alliance' then
+		return [[Interface\Icons\INV_BannerPVP_02]]
+	else
+		return [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]]
+	end
+end
+
 local Update = function(frame, event, unit)
 	if (frame.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and unit ~= frame.unit) then return end
 
@@ -14,22 +25,14 @@ local Update = function(frame, event, unit)
 	local arenaIndex = frame.unit and frame.unit:match('arena(%d)')
 	if instanceType == 'arena' then
 		local unitID = tonumber(arenaIndex or frame:GetID() or 0)
-		local specID = unitID and GetArenaOpponentSpec(unitID)
+		local specID, icon, _ = unitID and GetArenaOpponentSpec(unitID)
 		if specID and specID > 0 then
-			local _, _, _, icon = GetSpecializationInfoByID(specID);
-			element.Icon:SetTexture(icon)
-		else
-			element.Icon:SetTexture([[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+			_, _, _, icon = GetSpecializationInfoByID(specID)
 		end
+
+		element.Icon:SetTexture(icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 	else
-		local unitFactionGroup = arenaIndex and UnitFactionGroup(arenaIndex)
-		if unitFactionGroup == 'Horde' then
-			element.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_01]])
-		elseif unitFactionGroup == 'Alliance' then
-			element.Icon:SetTexture([[Interface\Icons\INV_BannerPVP_02]])
-		else
-			element.Icon:SetTexture([[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-		end
+		element.Icon:SetTexture(GetSpecIconByFaction(arenaIndex and UnitFactionGroup(arenaIndex)))
 	end
 
 	element:Show()
