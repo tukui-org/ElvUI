@@ -9,7 +9,6 @@ local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = GetItemInfo
-local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
@@ -160,17 +159,6 @@ function S:LookingForGroupFrames()
 			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
 			_G.LFGDungeonReadyDialog.bottomArt:Hide()
 			_G.LFGDungeonReadyDialog.Border:Hide()
-		end
-
-		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
-			local _, _, _, _, _, _, role = GetLFGProposal()
-			if role == 'DAMAGER' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-			elseif role == 'TANK' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-			elseif role == 'HEALER' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-			end
 		end
 	end)
 
