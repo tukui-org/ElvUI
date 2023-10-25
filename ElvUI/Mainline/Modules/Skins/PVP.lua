@@ -260,7 +260,7 @@ function S:PVPReadyDialog()
 		background:Point('TOPLEFT', E.Border, -E.Border)
 		background:Point('BOTTOMRIGHT', -E.Border, 54)
 
-		_G.PVPReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+		_G.PVPReadyDialog:CreateBackdrop('Transparent')
 		_G.PVPReadyDialog.backdrop:SetOutside(background)
 		_G.PVPReadyDialog.backdrop.Center:Hide()
 	end
