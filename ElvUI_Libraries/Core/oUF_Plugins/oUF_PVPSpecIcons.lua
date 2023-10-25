@@ -3,7 +3,7 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local Update = function(self, event, unit)
-	if event == 'ARENA_OPPONENT_UPDATE' and unit ~= self.unit then return; end
+	if event == 'ARENA_OPPONENT_UPDATE' and unit ~= self.unit then return end
 	local specIcon = self.PVPSpecIcon
 
 	local _, instanceType = IsInInstance();
@@ -43,7 +43,7 @@ local Enable = function(self)
 			self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update, true)
 		end
 
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
+		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
 
 		if not specIcon.Icon then
