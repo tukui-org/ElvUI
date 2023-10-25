@@ -149,7 +149,7 @@ function S:LookingForGroupFrames()
 		_G.LFGDungeonReadyDialogBackground:Point('TOPLEFT', E.Border, -E.Border)
 		_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
-		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
+		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 		_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
 		_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
 	end
