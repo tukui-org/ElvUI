@@ -32,7 +32,7 @@ local Update = function(frame, event, unit)
 
 		element.Icon:SetTexture(icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
 	else
-		element.Icon:SetTexture(GetSpecIconByFaction(arenaIndex and UnitFactionGroup(arenaIndex)))
+		element.Icon:SetTexture(GetSpecIconByFaction(arenaIndex or (frame.isForced and 'player')))
 	end
 
 	element:Show()
