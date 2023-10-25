@@ -108,9 +108,9 @@ function S:LookingForGroupFrames()
 		_G.LFGDungeonReadyDialogBackground:Point('TOPLEFT', E.Border, -E.Border)
 		_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
-		_G.LFGDungeonReadyDialogBackground:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
-		_G.LFGDungeonReadyDialogBackground.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
-		_G.LFGDungeonReadyDialogBackground.backdrop.Center:Hide()
+		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
+		_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
+		_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
 	end
 
 	if _G.LFGDungeonReadyDialog.bottomArt then
