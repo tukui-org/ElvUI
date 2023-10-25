@@ -25,10 +25,10 @@ local function UpdateSpell(element, id)
 
 end
 
-local function UpdateTrinket(self, unit)
-	local element = self.Trinket
+local function UpdateTrinket(frame, unit)
+	local element = frame.Trinket
 
-	local spellID, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit or self.unit)
+	local spellID, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit or frame.unit)
 	UpdateSpell(element, spellID)
 
 	if startTime and duration > 0 then
@@ -40,18 +40,18 @@ local function UpdateTrinket(self, unit)
 	end
 end
 
-local function ClearCooldowns(self)
-	local element = self.Trinket
+local function ClearCooldowns(frame)
+	local element = frame.Trinket
 
 	element.spellID = 0
 	element.cd:Clear()
 end
 
-local function Update(self, event, unit, ...)
-	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and self.unit ~= unit) then return end
+local function Update(frame, event, unit, ...)
+	if (frame.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and frame.unit ~= unit) then return end
 
-	local element = self.Trinket
-	if self.isForced then
+	local element = frame.Trinket
+	if frame.isForced then
 		element.icon:SetTexture(GetTrinketIconByFaction("player"))
 		element:Show()
 
@@ -68,7 +68,7 @@ local function Update(self, event, unit, ...)
 
 		C_PvP.RequestCrowdControlSpell(unit)
 	elseif event == "ARENA_COOLDOWNS_UPDATE" then
-		UpdateTrinket(self, unit)
+		UpdateTrinket(frame, unit)
 	elseif event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
 		local spellID = ...
 		UpdateSpell(element, spellID)
@@ -85,33 +85,33 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function Enable(self)
-	local element = self.Trinket
+local function Enable(frame)
+	local element = frame.Trinket
 	if element then
-		element.__owner = self
+		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
-		self:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
+		frame:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
+		frame:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
+		frame:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 
 		if oUF.isRetail then
-			self:RegisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns, true)
+			frame:RegisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns, true)
 		end
 
 		return true
 	end
 end
 
-local function Disable(self)
-	local element = self.Trinket
+local function Disable(frame)
+	local element = frame.Trinket
 	if element then
-		self:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
-		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
+		frame:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
+		frame:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
+		frame:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 
 		if oUF.isRetail then
-			self:UnregisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns)
+			frame:UnregisterEvent("PVP_MATCH_INACTIVE", ClearCooldowns)
 		end
 
 		element:Hide()

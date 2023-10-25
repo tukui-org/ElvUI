@@ -41,10 +41,10 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local Enable = function(self)
-	local element = self.PVPSpecIcon
+local Enable = function(frame)
+	local element = frame.PVPSpecIcon
 	if element then
-		element.__owner = self
+		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
 
 		if not element.Icon then
@@ -53,25 +53,25 @@ local Enable = function(self)
 			element.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 		end
 
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
+		frame:RegisterEvent("ARENA_OPPONENT_UPDATE", Update)
+		frame:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
 
 		if oUF.isRetail then
-			self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update, true)
+			frame:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update, true)
 		end
 
 		return true
 	end
 end
 
-local Disable = function(self)
-	local element = self.PVPSpecIcon
+local Disable = function(frame)
+	local element = frame.PVPSpecIcon
 	if element then
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
+		frame:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
+		frame:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
 
 		if oUF.isRetail then
-			self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
+			frame:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
 		end
 
 		element:Hide()
