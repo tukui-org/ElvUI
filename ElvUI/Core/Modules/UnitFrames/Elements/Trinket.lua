@@ -36,9 +36,10 @@ function UF:Configure_Trinket(frame)
 		trinket:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 	end
 
-	if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then
+	local enabled = frame:IsElementEnabled('Trinket')
+	if db.pvpTrinket.enable and not enabled then
 		frame:EnableElement('Trinket')
-	elseif not db.pvpTrinket.enable and frame:IsElementEnabled('Trinket') then
+	elseif not db.pvpTrinket.enable and enabled then
 		frame:DisableElement('Trinket')
 	end
 end
