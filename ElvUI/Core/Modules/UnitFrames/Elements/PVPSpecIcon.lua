@@ -5,7 +5,7 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame('Frame', '$parent_PVPSpecIcon', frame)
-	specIcon:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+	specIcon:SetFrameLevel(frame.RaisedElementParent.PVPSpecLevel)
 
 	specIcon.bg = CreateFrame('Frame', nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, nil, true)
