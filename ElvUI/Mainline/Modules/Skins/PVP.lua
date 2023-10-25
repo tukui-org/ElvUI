@@ -239,9 +239,9 @@ function S:PVPReadyDialog()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	local border = _G.PVPReadyDialog.Border
-	if border then
+	if border then -- use backdrop cause we need it a level behind
 		border:StripTextures()
-		border:SetTemplate('Transparent')
+		border:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 	end
 
 	local bottomArt = _G.PVPReadyDialog.bottomArt
@@ -260,7 +260,7 @@ function S:PVPReadyDialog()
 		background:Point('TOPLEFT', E.Border, -E.Border)
 		background:Point('BOTTOMRIGHT', -E.Border, 54)
 
-		_G.PVPReadyDialog:CreateBackdrop('Transparent')
+		_G.PVPReadyDialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
 		_G.PVPReadyDialog.backdrop:SetOutside(background)
 		_G.PVPReadyDialog.backdrop.Center:Hide()
 	end
