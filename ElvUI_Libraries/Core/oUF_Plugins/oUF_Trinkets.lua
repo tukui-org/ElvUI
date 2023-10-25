@@ -45,7 +45,7 @@ local function ClearCooldowns(frame)
 	element.cd:Clear()
 end
 
-local function Update(frame, event, unit, ...)
+local function Update(frame, event, unit, arg2)
 	if (frame.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and frame.unit ~= unit) then return end
 
 	local element = frame.Trinket
@@ -60,16 +60,12 @@ local function Update(frame, event, unit, ...)
 		element:PreUpdate(event, unit)
 	end
 
-	if (event == 'ARENA_OPPONENT_UPDATE' or event == 'OnShow') then
-		local unitEvent = ...
-		if (unitEvent ~= 'seen' and event ~= 'OnShow') then return end
-
+	if event == 'OnShow' or (event == 'ARENA_OPPONENT_UPDATE' and arg2 == 'seen') then -- arg2: updateReason
 		C_PvP.RequestCrowdControlSpell(unit)
 	elseif event == 'ARENA_COOLDOWNS_UPDATE' then
 		UpdateTrinket(frame, unit)
 	elseif event == 'ARENA_CROWD_CONTROL_SPELL_UPDATE' then
-		local spellID = ...
-		UpdateSpell(element, spellID)
+		UpdateSpell(element, arg2) -- arg2: spellID
 	end
 
 	element:SetShown(element.spellID and element.spellID ~= 0)
@@ -90,9 +86,9 @@ local function Enable(frame)
 		element.ForceUpdate = ForceUpdate
 		element.Factions = factions
 
+		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update)
 		frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
 		frame:RegisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update, true)
-		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update, true)
 
 		if oUF.isRetail then
 			frame:RegisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns, true)
@@ -105,9 +101,9 @@ end
 local function Disable(frame)
 	local element = frame.Trinket
 	if element then
+		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
 		frame:UnregisterEvent('ARENA_COOLDOWNS_UPDATE', Update)
 		frame:UnregisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update)
-		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
 
 		if oUF.isRetail then
 			frame:UnregisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns)
