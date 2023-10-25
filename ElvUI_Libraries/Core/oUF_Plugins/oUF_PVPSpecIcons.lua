@@ -16,7 +16,7 @@ local Update = function(specIcon, event, unit)
 	if(specIcon.PreUpdate) then specIcon:PreUpdate(event, instanceType) end
 
 	if instanceType == 'arena' then
-		local unitID = tonumber(frame.unit:match('arena(%d)') or frame:GetID()) or 0
+		local unitID = tonumber(frame.unit:match('arena(%d)') or frame:GetID() or 0)
 		local specID = unitID and GetArenaOpponentSpec(unitID)
 		if specID and specID > 0 then
 			local _, _, _, icon = GetSpecializationInfoByID(specID);
