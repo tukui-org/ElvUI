@@ -39,6 +39,10 @@ end
 local Enable = function(self)
 	local specIcon = self.PVPSpecIcon
 	if specIcon then
+		if oUF.isRetail then
+			self:RegisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update, true)
+		end
+
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
 
@@ -58,6 +62,7 @@ local Disable = function(self)
 		if oUF.isRetail then
 			self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
 		end
+
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
 
