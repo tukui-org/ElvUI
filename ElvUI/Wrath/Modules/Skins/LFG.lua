@@ -91,6 +91,9 @@ function S:LookingForGroupFrames()
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface/icons/inv_helmet_06.blp
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
+	_G.LFGDungeonReadyStatus:StripTextures()
+	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
+
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
@@ -98,23 +101,26 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialogEnterDungeonButton:Point('BOTTOMRIGHT', _G.LFGDungeonReadyDialog, 'BOTTOM', -10, 15)
 	_G.LFGDungeonReadyDialogLeaveQueueButton:ClearAllPoints()
 	_G.LFGDungeonReadyDialogLeaveQueueButton:Point('BOTTOMLEFT', _G.LFGDungeonReadyDialog, 'BOTTOM', 10, 15)
-	_G.LFGDungeonReadyStatus:StripTextures()
-	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
-	_G.LFGDungeonReadyDialogBackground:SetInside()
-	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
 	-- Artwork background (1)
-	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
-	_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
-	_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
+	if _G.LFGDungeonReadyDialogBackground then
+		_G.LFGDungeonReadyDialogBackground:ClearAllPoints()
+		_G.LFGDungeonReadyDialogBackground:Point('TOPLEFT', E.Border, -E.Border)
+		_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
-	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
-		if _G.LFGDungeonReadyDialog:IsShown() then
-			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
-			_G.LFGDungeonReadyDialog.bottomArt:Hide()
-			_G.LFGDungeonReadyDialog.Border:Hide()
-		end
-	end)
+		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
+		_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
+		_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
+	end
+
+	if _G.LFGDungeonReadyDialog.bottomArt then
+		_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
+	end
+
+	if _G.LFGDungeonReadyDialog.Border then
+		_G.LFGDungeonReadyDialog.Border:StripTextures()
+		_G.LFGDungeonReadyDialog.Border:SetTemplate('Transparent')
+	end
 
 	_G.LFDQueueFrame:StripTextures(true)
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
