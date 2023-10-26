@@ -74,7 +74,7 @@ function UF:Update_PetFrame(frame, db)
 	frame.Health:SetColorHappiness(not E.Retail and E.myclass == 'HUNTER' and db.health.colorHappiness or nil)
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame.mover:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
