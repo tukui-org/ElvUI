@@ -466,26 +466,26 @@ local individual = {
 	pettarget = true
 }
 
+local function UpdateCustomTextFrame(frame)
+	if frame and frame.customTexts then
+		UF:Configure_CustomTexts(frame)
+		frame:UpdateTags()
+	end
+end
+
 local function UpdateCustomTextGroup(unit)
 	if unit == 'party' or unit:find('raid') then
 		for _, child in next, { UF[unit]:GetChildren() } do
-
 			for _, subchild in next, { child:GetChildren() } do
-				UF:Configure_CustomTexts(subchild)
-				subchild:UpdateTags()
+				UpdateCustomTextFrame(subchild)
 			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
 		for i = 1, 10 do
-			local unitframe = UF[unit..i]
-			if unitframe then
-				UF:Configure_CustomTexts(unitframe)
-				unitframe:UpdateTags()
-			end
+			UpdateCustomTextFrame(UF[unit..i])
 		end
 	else
-		UF:Configure_CustomTexts(UF[unit])
-		UF[unit]:UpdateTags()
+		UpdateCustomTextFrame(UF[unit])
 	end
 end
 
@@ -953,7 +953,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if groupName == 'arena' then
-		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 5)
+		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 5, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
 	else
 		config.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
 	end

@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
+L["Reset"] = "Reset"
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffis a complete User Interface replacement addon for World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
@@ -119,7 +121,7 @@ L["ElvUI Installation"] = true
 L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."] = true
 L["ElvUI is out of date. You can download the newest version from tukui.org."] = true
 L["ElvUI Plugin Installation"] = true
-L["ElvUI Status"] = true
+L["Status"] = true
 L["ElvUI Version:"] = true
 L["Error resetting UnitFrame."] = true
 L["EventToastWidget"] = true
@@ -289,7 +291,6 @@ L["Rare"] = true
 L["Reagent Bank"] = true
 L["Remaining:"] = true
 L["Remove Bar %d Action Page"] = true
-L["Reposition Window"] = true
 L["Reputation Bar"] = true
 L["Request was denied by user."] = true
 L["Reset Character Data: Hold Shift + Right Click"] = true

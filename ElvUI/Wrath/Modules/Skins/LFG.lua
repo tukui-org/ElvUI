@@ -7,9 +7,7 @@ local min, next = min, next
 local unpack, pairs = unpack, pairs
 local hooksecurefunc = hooksecurefunc
 
-local GetLFGProposal = GetLFGProposal
 local UnitIsGroupLeader = UnitIsGroupLeader
-
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 
@@ -93,41 +91,11 @@ function S:LookingForGroupFrames()
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface/icons/inv_helmet_06.blp
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
-	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
-	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
-	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialogEnterDungeonButton:ClearAllPoints()
-	_G.LFGDungeonReadyDialogEnterDungeonButton:Point('BOTTOMRIGHT', _G.LFGDungeonReadyDialog, 'BOTTOM', -10, 15)
-	_G.LFGDungeonReadyDialogLeaveQueueButton:ClearAllPoints()
-	_G.LFGDungeonReadyDialogLeaveQueueButton:Point('BOTTOMLEFT', _G.LFGDungeonReadyDialog, 'BOTTOM', 10, 15)
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
-	_G.LFGDungeonReadyDialogBackground:SetInside()
-	_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
 
-	-- Artwork background (1)
-	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
-	_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
-	_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
-
-	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
-		if _G.LFGDungeonReadyDialog:IsShown() then
-			_G.LFGDungeonReadyDialog:SetTemplate('Transparent') -- Frame background (2)
-			_G.LFGDungeonReadyDialog.bottomArt:Hide()
-			_G.LFGDungeonReadyDialog.Border:Hide()
-		end
-
-		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
-			local _, _, _, _, _, _, role = GetLFGProposal()
-			if role == 'DAMAGER' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
-			elseif role == 'TANK' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
-			elseif role == 'HEALER' then
-				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
-			end
-		end
-	end)
+	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
+	S:SkinReadyDialog(_G.LFGDungeonReadyDialog)
 
 	_G.LFDQueueFrame:StripTextures(true)
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
@@ -143,6 +111,11 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonDPS.shortageBorder:Kill()
 	_G.LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
 	S:HandleCloseButton(_G.LFGDungeonReadyStatusCloseButton)
+
+	-- Role check popup
+	S:HandleFrame(_G.RolePollPopup)
+	S:HandleButton(_G.RolePollPopupAcceptButton)
+	S:HandleCloseButton(_G.RolePollPopupCloseButton)
 
 	for _, roleButton in pairs({
 		_G.LFDQueueFrameRoleButtonHealer,

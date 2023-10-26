@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
 
+L["Reset"] = "Restablecer"
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffes un addon que reemplaza la interfaz completa de World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Parece que hay un problema con tu instalación. Por favor reinstala ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "El marco de %s tiene un punto de anclaje en conflicto. Obligar a los Buffs a unirse a la unidad principal."
@@ -119,7 +121,7 @@ L["ElvUI Installation"] = "Instalación de ElvUI"
 L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."] = "ElvUI está cinco o mas revisiones desactualizado. Puedes descargar la versión más nueva de tukui.org."
 L["ElvUI is out of date. You can download the newest version from tukui.org."] = "ElvUI está desactualizado. Puedes descargar la versión más nueva de tukui.org."
 L["ElvUI Plugin Installation"] = "Instalación del plugin de ElvUI"
-L["ElvUI Status"] = "Estatus"
+L["Status"] = "Estatus"
 L["ElvUI Version:"] = true
 L["Error resetting UnitFrame."] = "Error al restablecer UnitFrame."
 L["EventToastWidget"] = true
@@ -287,7 +289,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banco de Componentes"
 L["Remaining:"] = "Restante"
 L["Remove Bar %d Action Page"] = "Quitar Barra %d de la paginación"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Barra de Reputación"
 L["Request was denied by user."] = "Petición denegada por el jugador."
 L["Reset Character Data: Hold Shift + Right Click"] = "Restablecer los datos de los personajes: Mantener Shift + Click derecho"

@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
@@ -1378,7 +1379,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = "Eylem cagrisini Sifirla"
 L["Reset all frames to their original positions."] = true
-L["Reset Anchors"] = true
 L["Reset Aura Filters"] = "Aura Filtrelerini Sifirla"
 L["Reset Chat Position"] = "Sohbet Konumunu Sifirla"
 L["Reset CVars"] = "Cvars'i Sifirla"
@@ -1926,7 +1926,6 @@ L["BAGS_DESC"] = "ElvUI icin canta ayarlarini yapin."
 L["CHAT_DESC"] = "ElvUI icin sohbet ayarlarini duzenleyin."
 L["COOLDOWN_DESC"] = "Soguma Suresi Ayarlarini Yapin."
 L["DATATEXT_DESC"] = "Bilgi metinlerinin ekran goruntusunu ayarlayin."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r, World of Warcraft icin eksiksiz bir Kullanici Arayuzu degistirme eklentisidir."
 L["NAMEPLATE_DESC"] = "Isim Levhasi ayarlarini degistirin."
 L["SKINS_DESC"] = "Dis Gorunum ayarlarini yapin."
 L["TOGGLESKIN_DESC"] = "Bu dis gorunumu Etkinlestir/Devre Disi Birak."

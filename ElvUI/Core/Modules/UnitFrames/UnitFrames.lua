@@ -256,6 +256,7 @@ function UF:CreateRaisedElement(frame, bar)
 
 	-- layer levels (level +1 is icons)
 	raised.AuraLevel = level
+	raised.PVPSpecLevel = level + 5
 	raised.AuraBarLevel = level + 10
 	raised.RaidDebuffLevel = level + 15
 	raised.AuraWatchLevel = level + 20

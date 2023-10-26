@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = true
 L["On Pet"] = true
@@ -1377,7 +1378,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = "重置動作翻頁"
 L["Reset all frames to their original positions."] = true
-L["Reset Anchors"] = true
 L["Reset Aura Filters"] = "重置光環過濾器"
 L["Reset Chat Position"] = "重置聊天窗口位置"
 L["Reset CVars"] = "重置CVar"
@@ -1925,7 +1925,6 @@ L["BAGS_DESC"] = "調整 ElvUI 背包設定."
 L["CHAT_DESC"] = "對話框架設定."
 L["COOLDOWN_DESC"] = "調整冷卻設定."
 L["DATATEXT_DESC"] = "螢幕資訊文字顯示設定."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r 為一套功能完整, 可用來替換 WoW 原始介面的 UI 套件."
 L["NAMEPLATE_DESC"] = "修改血條設定."
 L["SKINS_DESC"] = "調整外觀設定."
 L["TOGGLESKIN_DESC"] = "啟用/停用此外觀."

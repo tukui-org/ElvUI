@@ -1104,7 +1104,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 
 	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
 	t:Point('CENTER', 0, 1)
-	t:FontTemplate(nil, nil, 'NONE')
+	t:FontTemplate(nil, nil, 'SHADOW')
 	t:SetJustifyH('CENTER')
 	t:SetText(text)
 	btn.text = t
@@ -1175,7 +1175,7 @@ function E:Contruct_StaticPopups()
 		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
-		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, 'NONE')
+		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, 'SHADOW')
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)
 		Skins:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])

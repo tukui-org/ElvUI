@@ -16,6 +16,7 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = true
 L["On Me"] = "Em Mim"
 L["On Pet"] = "Em Pet"
@@ -1378,7 +1379,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = true
 L["Reset all frames to their original positions."] = true
-L["Reset Anchors"] = true
 L["Reset Aura Filters"] = "Restaurar Filtros de Auras"
 L["Reset Chat Position"] = true
 L["Reset CVars"] = "Resetar CVars"
@@ -1926,7 +1926,6 @@ L["BAGS_DESC"] = "Ajustar definições das bolsas para a ElvUI."
 L["CHAT_DESC"] = "Ajustar definições do bate-papo para o ElvUI."
 L["COOLDOWN_DESC"] = "Ajustar configurações de Tempo de Recarga"
 L["DATATEXT_DESC"] = "Configurar a exibição no ecrã (monitor) dos textos de informação."
-L["ELVUI_DESC"] = "O |cffff8000ElvUI|r é um Addon completo de substituição da interface original do World of Warcraft."
 L["NAMEPLATE_DESC"] = "Modificar as definições das Placas de Identificação."
 L["SKINS_DESC"] = "Ajustar definições de Aparências."
 L["TOGGLESKIN_DESC"] = "Ativa/Desativa a aparência deste quadro."

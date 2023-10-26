@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
+L["Reset"] = "重置"
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffff為一套功能完整, 可用來替換 WoW 原始介面的 UI 套件.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架存在一個衝突錨點, 將強制將Buff附加到主單位框架之上。"
@@ -119,7 +121,7 @@ L["ElvUI Installation"] = "安裝 ElvUI"
 L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."] = "ElvUI 已過期超過5個版本. 你可以在 tukui.org 下載到最新的版本."
 L["ElvUI is out of date. You can download the newest version from tukui.org."] = "ElvUI 已過期. 你可以在 tukui.org 下載到最新的版本."
 L["ElvUI Plugin Installation"] = "ElvUI 插件安裝"
-L["ElvUI Status"] = "ElvUI 訊息"
+L["Status"] = "訊息"
 L["ElvUI Version:"] = "ElvUI 版本:"
 L["Error resetting UnitFrame."] = "重置單位框架錯誤"
 L["EventToastWidget"] = "事件通知"
@@ -287,7 +289,6 @@ L["Rare"] = "稀有"
 L["Reagent Bank"] = "材料銀行"
 L["Remaining:"] = "剩餘:"
 L["Remove Bar %d Action Page"] = "移除第 %d 快捷列"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "聲望條"
 L["Request was denied by user."] = "請求被對方拒絕."
 L["Reset Character Data: Hold Shift + Right Click"] = "重置角色數據: 按住 Shift + 右鍵點擊"

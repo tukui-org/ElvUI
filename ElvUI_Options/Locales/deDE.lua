@@ -16,6 +16,7 @@ L["LEFT"] = "Links"
 L["RIGHT"] = "Rechts"
 L["TOP"] = "Oben"
 
+L["DEBUG_DESC"] = "Disable all addons (including Plugins) except ElvUI. During the same session, this can be clicked to reenable them."
 L["Library Dropdown"] = "Bibliotheks Dropdown"
 L["On Me"] = "Auf Mir"
 L["On Pet"] = "Auf Begleiter"
@@ -1370,7 +1371,6 @@ L["Replaces the default Blizzard fonts on various panels and frames with the fon
 L["Replaces the font on Blizzard Nameplates."] = true
 L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = "Ersetzt die Statusleisten Textureinstellung auf Einheitsfenstern und Namensplaketten durch die primäre Textur."
 L["Reposition Window"] = "Fenster zurücksetzen"
--- L["Reposition Window"] = "Fenster neu positionieren" --from core
 L["Reputation Alpha"] = "Ruf Transparenz"
 L["Reputation"] = "Ruf"
 L["Require All"] = "Benötigt alle"
@@ -1378,7 +1378,6 @@ L["Require holding the Alt key down to move cursor or cycle through messages in 
 L["Require Target"] = true
 L["Reset Action Paging"] = "Setze Seitenwechsel der Aktionsleisten zurück"
 L["Reset all frames to their original positions."] = "Setze alle Fenster auf ihre ursprüngliche Position zurück."
-L["Reset Anchors"] = "Anker zurücksetzen"
 L["Reset Aura Filters"] = "Setze Aurafilter zurück"
 L["Reset Chat Position"] = "Setze Chat Position zurück"
 L["Reset CVars"] = "CVars zurücksetzen"
@@ -1928,7 +1927,6 @@ L["BAGS_DESC"] = "Konfiguriere die Einstellungen für die Taschen."
 L["CHAT_DESC"] = "Anpassen der Chateinstellungen für ElvUI."
 L["COOLDOWN_DESC"] = "Passe Abklinkgzeiten Einstellungen an."
 L["DATATEXT_DESC"] = "Bearbeite die Anzeige der Infotexte."
-L["ELVUI_DESC"] = "|cffff8000ElvUI|r ist ein komplettes Benutzerinterface für World of Warcraft."
 L["NAMEPLATE_DESC"] = "Konfiguriere die Einstellungen für die Namensplaketten."
 L["SKINS_DESC"] = "Passe die Einstellungen für externe Addon Skins/Optionen an."
 L["TOGGLESKIN_DESC"] = "Aktiviere/Deaktiviere diesen Skin."

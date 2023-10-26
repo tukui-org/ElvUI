@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["Reset"] = "Réinitialiser"
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffest une interface de remplacement complète pour World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = "|cff00ff00lié à |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Le cadre %s a un point d'ancrage en conflit. Les améliorations seront forcées à s'attacher à la frame principale de l'unité."
@@ -119,7 +121,7 @@ L["ElvUI Installation"] = "Installation d'ElvUI"
 L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."] = "ElvUI a cinq révisions ou plus de retard. Vous pouvez télécharger la dernière version sur tukui.org."
 L["ElvUI is out of date. You can download the newest version from tukui.org."] = "ElvUI n'est pas à jour. Vous pouvez télécharger la dernière version sur tukui.org."
 L["ElvUI Plugin Installation"] = "Installation de l'extension ElvUI"
-L["ElvUI Status"] = "Statut d'ElvUI"
+L["Status"] = "Statut"
 L["ElvUI Version:"] = "Version d'ElvUI :"
 L["Error resetting UnitFrame."] = "Erreur lors de la réinitialisation du cadre d'unité."
 L["EventToastWidget"] = "Widget de message d'événement"
@@ -289,7 +291,6 @@ L["Rare"] = true
 L["Reagent Bank"] = "Banque de composants"
 L["Remaining:"] = "Restant :"
 L["Remove Bar %d Action Page"] = "Supprimer la barre %d de la page d'action"
-L["Reposition Window"] = "Repositionner la fenêtre"
 L["Reputation Bar"] = "Barre de réputation"
 L["Request was denied by user."] = "La demande a été refusée par l'utilisateur."
 L["Reset Character Data: Hold Shift + Right Click"] = "Réinitialiser les données du personnage : Maintenez Maj + Clic droit"

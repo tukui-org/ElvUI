@@ -336,20 +336,17 @@ do --this can save some main file locals
 		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
 		z['Player-4373-032FFEE2']		= itsSimpy -- Shaman:		Kalline
 		z['Player-4373-03351BC7']		= itsSimpy -- [Horde] DK:	Imsojelly
-		-- Luckyone (4440: Everlook, 4476: Gehennas, 4811: Giantstalker)
-		z['Player-4476-03BF41C9']		= ElvBlue -- [Horde] Hunter: Luckyone
-		z['Player-4476-049F4831']		= ElvBlue -- [Horde] DK: Luckygrip
-		z['Player-4440-037C7E29']		= ElvBlue -- [Alliance] DK: Luckydk
-		z['Player-4440-03ADE2DF']		= ElvBlue -- [Alliance] Shaman: Luckykek
-		z['Player-4811-038DA128']		= ElvBlue -- [Alliance] Paladin: Luckyone
-		z['Luckyone-Everlook']			= ElvBlue -- [Alliance] Druid
-		z['Luckypriest-Everlook']		= ElvBlue -- [Alliance] Priest
-		z['Luckyrogue-Everlook']		= ElvBlue -- [Alliance] Rogue
-		z['Luckyhunter-Everlook']		= ElvBlue -- [Alliance] Hunter
-		z['Luckydruid-Earthshaker']		= ElvBlue -- [Alliance] Druid
-		z['Luckypriest-Earthshaker']	= ElvBlue -- [Alliance] Priest
+		-- Luckyone (4476: Gehennas, 4440: Everlook)
 		z['Luckydruid-Firemaw']			= ElvBlue -- [Alliance] Druid
 		z['Unluckyone-Firemaw']			= ElvBlue -- [Alliance] Priest
+		z['Luckygrip-Firemaw']			= ElvBlue -- [Alliance] DK
+		z['Luckywl-Firemaw']			= ElvBlue -- [Alliance] Warlock
+		z['Luckym-Firemaw']				= ElvBlue -- [Alliance] Mage
+		z['Luckyw-Firemaw']				= ElvBlue -- [Alliance] Warrior
+		z['Luckyp-Firemaw']				= ElvBlue -- [Alliance] Paladin
+		z['Player-4476-03BF41C9']		= ElvBlue -- [Horde] Hunter: Luckyone
+		z['Player-4440-03AD654A']		= ElvBlue -- [Alliance] Rogue: Luckyrogue
+		z['Player-4440-03ADE2DF']		= ElvBlue -- [Alliance] Shaman: Luckykek
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -768,11 +765,11 @@ function CH:UpdateEditboxFont(chatFrame)
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
-	editbox:FontTemplate(font, fontSize, 'NONE')
-	editbox.header:FontTemplate(font, fontSize, 'NONE')
+	editbox:FontTemplate(font, fontSize, 'SHADOW')
+	editbox.header:FontTemplate(font, fontSize, 'SHADOW')
 
 	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
+		editbox.characterCount:FontTemplate(font, fontSize, 'SHADOW')
 	end
 
 	-- the header and text will not update the placement without focus

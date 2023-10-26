@@ -2,6 +2,8 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
+L["Reset"] = "sıfırla"
+L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffWorld of Warcraft icin eksiksiz bir Kullanici Arayuzu degistirme eklentisidir.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = true
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s cercevesinin cakisan bir baglanti noktasi var. Guclendirmeler'i Ana cerceveye baglamaya zorluyor.'"
@@ -119,7 +121,7 @@ L["ElvUI Installation"] = "ElvUI Kurulumu"
 L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."] = "ElvUI bes veya daha fazla revizyon guncel degil. En yeni surumu tukui.org adresinden indirebilirsiniz."
 L["ElvUI is out of date. You can download the newest version from tukui.org."] = true
 L["ElvUI Plugin Installation"] = "ElvUI Eklenti Kurulumu"
-L["ElvUI Status"] = "ElvUI Durumu"
+L["Status"] = "Durumu"
 L["ElvUI Version:"] = "ElvUI Surumu:"
 L["Error resetting UnitFrame."] = "Birim cercevesi sifirlanirken hata olustu."
 L["EventToastWidget"] = "OlayikazBileseni"
@@ -289,7 +291,6 @@ L["Rare"] = "Nadir"
 L["Reagent Bank"] = "Sarf Malzeme Bankasi"
 L["Remaining:"] = "Geriye Kalan:"
 L["Remove Bar %d Action Page"] = "Cubugu Kaldir %d Eylem Sayfasi"
-L["Reposition Window"] = true
 L["Reputation Bar"] = "Ýtibar Cubugu"
 L["Request was denied by user."] = "Talep kullanici tarafindan reddedildi."
 L["Reset Character Data: Hold Shift + Right Click"] = "Karakter Verilerini Sifirla: Shift tusunu basili tutun + Sag Tiklayin"

@@ -196,7 +196,7 @@ function C:StyleFilterSetConfig(filter)
 end
 
 local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or E.global.nameplates.filters[value]) end
-local function validateString(_, value) return not strmatch(value, '^[%s%p]-$') end
+local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 
 StyleFilters.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
 StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
@@ -791,10 +791,11 @@ end
 
 do
 	local importText = ''
-	local label = ACH:Description('', 1)
+	local label = ACH:Description('', -9)
 	local function Import_Set() end
 	local function Import_Get() return importText end
 	local function Import_TextChanged(text) if text ~= importText then importText = text end end
+	local function Import_Clear() label.name = '' importText = '' end
 	local function Import_Decode() importText = DecodeLabel(label, importText) end
 	local function Import_Button()
 		if not validateString(nil, importText) then return end
@@ -802,25 +803,27 @@ do
 	end
 
 	StyleFilters.import = ACH:Group(L["Import"], nil, 15)
+	StyleFilters.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button, nil, nil, 120)
+	StyleFilters.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode, nil, nil, 120)
+	StyleFilters.import.args.importClear = ACH:Execute(L["Clear"], nil, 4, Import_Clear, nil, nil, 120)
 	StyleFilters.import.args.label = label
-	StyleFilters.import.args.text = ACH:Input('', nil, 1, 10, 'full', Import_Get, Import_Set)
+
+	StyleFilters.import.args.text = ACH:Input('', nil, -10, 10, 'full', Import_Get, Import_Set)
 	StyleFilters.import.args.text.disableButton = true
+	StyleFilters.import.args.text.focusSelect = true
 	StyleFilters.import.args.text.textChanged = Import_TextChanged
-	StyleFilters.import.args.importButton = ACH:Execute(L["Import"], nil, 2, Import_Button)
-	StyleFilters.import.args.importDecode = ACH:Execute(L["Decode"], nil, 3, Import_Decode)
 end
 
 do
 	local exportText = ''
-	local exportPrefix = '!E1!'
-	local label = ACH:Description('', 5)
+	local EXPORT_PREFIX = '!E1!'
+	local label = ACH:Description('', 10)
 	local function Filters_Empty() if not next(exportList) then StyleFilters.export.args.text.hidden = true return true end end
 	local function Filters_Get(_, key) Filters_Empty() return exportList[key] end
 	local function Filters_Set(_, key, value) exportList[key] = value or nil end
 	local function Export_Get() label.name = '' return exportText end
 	local function Export_Set() end
-	local function Export_Decode() exportText = DecodeLabel(label, exportText) end
-	local function Export_Button()
+	local function Export(which)
 		local data = {nameplates = {filters = {}}}
 
 		if Filters_Empty() then return end
@@ -832,21 +835,36 @@ do
 		NP:StyleFilterClearDefaults(data.nameplates.filters)
 		data = E:RemoveTableDuplicates(data, G, D.GeneratedKeys.global)
 
-		local serialData = D:Serialize(data)
-		local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
-		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
-		local printableString = LibDeflate:EncodeForPrint(compressedData)
+		local printableString
+		if which == 'text' then
+			local serialData = D:Serialize(data)
+			local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
+			local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
+			local printable = LibDeflate:EncodeForPrint(compressedData)
+			if printable then
+				printableString = format('%s%s', EXPORT_PREFIX, printable)
+			end
+		elseif which == 'luaTable' then
+			local exportString = E:TableToLuaString(data)
+			printableString = D:CreateProfileExport(exportString, 'styleFilters', 'styleFilters')
+		elseif which == 'luaPlugin' then
+			printableString = E:ProfileTableToPluginFormat(data, 'styleFilters')
+		end
 
-		exportText = printableString and format('%s%s', exportPrefix, printableString) or nil
+		exportText = printableString or nil
 		StyleFilters.export.args.text.hidden = not exportText
 	end
 
 	StyleFilters.export = ACH:Group(L["Export"], nil, 20)
 	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
 	StyleFilters.export.args.filters.sortByValue = true
-	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, Export_Button)
-	StyleFilters.export.args.exportDecode = ACH:Execute(L["Decode"], nil, 4, Export_Decode)
+
+	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, function() Export('text') end, nil, nil, 120)
+	StyleFilters.export.args.exportDecode = ACH:Execute(L["Table"], nil, 4, function() Export('luaTable') end, nil, nil, 120)
+	StyleFilters.export.args.exportPlugin = ACH:Execute(L["Plugin"], nil, 5, function() Export('luaPlugin') end, nil, nil, 120)
 	StyleFilters.export.args.label = label
-	StyleFilters.export.args.text = ACH:Input('', nil, -1, 10, 'full', Export_Get, Export_Set, nil, true)
+
+	StyleFilters.export.args.text = ACH:Input('', nil, -10, 10, 'full', Export_Get, Export_Set, nil, true)
 	StyleFilters.export.args.text.disableButton = true
+	StyleFilters.export.args.text.focusSelect = true
 end

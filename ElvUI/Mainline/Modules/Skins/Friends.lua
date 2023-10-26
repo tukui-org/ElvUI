@@ -79,38 +79,61 @@ local function HandleInviteTex(self, atlas)
 end
 
 local function ReskinFriendButton(button)
-	if not button.IsSkinned then
-		local gameIcon = button.gameIcon
-		gameIcon:SetSize(22, 22)
-		gameIcon:SetTexCoord(.17, .83, .17, .83)
-		button.background:Hide()
-		button:SetHighlightTexture(E.media.normTex)
-		button:GetHighlightTexture():SetVertexColor(.24, .56, 1, .2)
-		gameIcon:CreateBackdrop('Transparent')
-		button.bg = gameIcon.backdrop
+	if button.IsSkinned then return end
+	button.IsSkinned = true
 
-		local travelPass = button.travelPassButton
-		travelPass:SetSize(22, 22)
-		travelPass:Point('TOPRIGHT', -3, -6)
-		travelPass:CreateBackdrop()
-		travelPass.NormalTexture:SetAlpha(0)
-		travelPass.PushedTexture:SetAlpha(0)
-		travelPass.DisabledTexture:SetAlpha(0)
-		travelPass.HighlightTexture:SetColorTexture(1, 1, 1, .25)
-		travelPass.HighlightTexture:SetAllPoints()
-		gameIcon:Point('TOPRIGHT', travelPass, 'TOPLEFT', -4, 0)
+	local summon = button.summonButton
+	if summon then
+		summon:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+		summon:Size(24)
 
-		local icon = travelPass:CreateTexture(nil, 'ARTWORK')
-		icon:SetTexCoord(.1, .9, .1, .9)
-		icon:SetAllPoints()
-		button.newIcon = icon
-		travelPass.NormalTexture.ownerIcon = icon
-		hooksecurefunc(travelPass.NormalTexture, 'SetAtlas', HandleInviteTex)
+		summon.highlightTexture = summon:GetHighlightTexture() -- the other one is different (HighlightTexture)
+		summon.highlightTexture:SetTexture(136222)
+		summon.PushedTexture:SetTexture(136222)
+		summon.NormalTexture:SetTexture(136222)
+		summon.PushedTexture:SetBlendMode('ADD')
+		summon.PushedTexture:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
-		button.IsSkinned = true
+		summon.highlightTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+		summon.PushedTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+		summon.NormalTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+
+		summon.highlightTexture:SetInside(summon.backdrop)
+		summon.PushedTexture:SetInside(summon.backdrop)
+		summon.NormalTexture:SetInside(summon.backdrop)
+
+		summon.SlotBackground:SetAlpha(0)
+		summon.SlotArt:SetAlpha(0)
 	end
 
-	button.bg:SetShown(button.gameIcon:IsShown())
+	local invite = button.travelPassButton
+	invite:Size(24)
+	invite:Point('TOPRIGHT', -4, -5)
+	invite:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	invite.NormalTexture:SetAlpha(0)
+	invite.PushedTexture:SetAlpha(0)
+	invite.DisabledTexture:SetAlpha(0)
+	invite.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+	invite.HighlightTexture:SetAllPoints()
+
+	local gameIcon = button.gameIcon
+	if gameIcon then
+		gameIcon:Size(26)
+		gameIcon:SetTexCoord(0, 1, 0, 1)
+		gameIcon:ClearAllPoints()
+		gameIcon:Point('RIGHT', invite, 'LEFT', -6, 0)
+	end
+
+	local icon = invite:CreateTexture(nil, 'ARTWORK')
+	icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	icon:SetAllPoints()
+
+	button.newIcon = icon
+	button:SetHighlightTexture(E.media.normTex)
+	button:GetHighlightTexture():SetVertexColor(.24, .56, 1, .2)
+
+	invite.NormalTexture.ownerIcon = icon
+	hooksecurefunc(invite.NormalTexture, 'SetAtlas', HandleInviteTex)
 end
 
 local function HandleTabs()
