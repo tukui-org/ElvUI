@@ -110,6 +110,21 @@ function S:BlizzardMiscFrames()
 	-- Emotes NineSlice
 	_G.ChatMenu.NineSlice:SetTemplate()
 
+	--LFD Role Picker frame
+	_G.LFDRoleCheckPopup:StripTextures()
+	_G.LFDRoleCheckPopup:SetTemplate('Transparent')
+	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
+	S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
+
+	for _, roleButton in next, {
+		_G.LFDRoleCheckPopupRoleButtonTank,
+		_G.LFDRoleCheckPopupRoleButtonDPS,
+		_G.LFDRoleCheckPopupRoleButtonHealer
+	} do
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, nil, nil, true)
+		roleButton:DisableDrawLayer('OVERLAY')
+	end
+
 	-- Reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]

@@ -135,33 +135,8 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
 
-	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
-	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialogEnterDungeonButton:ClearAllPoints()
-	_G.LFGDungeonReadyDialogEnterDungeonButton:Point('BOTTOMRIGHT', _G.LFGDungeonReadyDialog, 'BOTTOM', -10, 15)
-	_G.LFGDungeonReadyDialogLeaveQueueButton:ClearAllPoints()
-	_G.LFGDungeonReadyDialogLeaveQueueButton:Point('BOTTOMLEFT', _G.LFGDungeonReadyDialog, 'BOTTOM', 10, 15)
-
-	-- Artwork background (1)
-	if _G.LFGDungeonReadyDialogBackground then
-		_G.LFGDungeonReadyDialogBackground:ClearAllPoints()
-		_G.LFGDungeonReadyDialogBackground:Point('TOPLEFT', E.Border, -E.Border)
-		_G.LFGDungeonReadyDialogBackground:Point('BOTTOMRIGHT', -E.Border, 50)
-
-		_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent', nil, nil, true) -- just for art so pixel mode it
-		_G.LFGDungeonReadyDialog.backdrop:SetOutside(_G.LFGDungeonReadyDialogBackground)
-		_G.LFGDungeonReadyDialog.backdrop.Center:Hide()
-	end
-
-	if _G.LFGDungeonReadyDialog.bottomArt then
-		_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
-	end
-
-	if _G.LFGDungeonReadyDialog.Border then -- use backdrop cause we need it a level behind
-		_G.LFGDungeonReadyDialog.Border:StripTextures()
-		_G.LFGDungeonReadyDialog.Border:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
-	end
+	S:SkinReadyDialog(_G.LFGDungeonReadyDialog)
 
 	-- Brawl & Solo Shuffle
 	_G.ReadyStatus:StripTextures()

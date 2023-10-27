@@ -4,7 +4,8 @@ local UF = E:GetModule('UnitFrames')
 local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
-	local specIcon = CreateFrame('Frame', nil, frame)
+	local specIcon = CreateFrame('Frame', '$parent_PVPSpecIcon', frame)
+	specIcon:SetFrameLevel(frame.RaisedElementParent.PVPSpecLevel)
 
 	specIcon.bg = CreateFrame('Frame', nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, nil, true)
@@ -16,23 +17,16 @@ end
 
 function UF:Configure_PVPSpecIcon(frame)
 	local specIcon = frame.PVPSpecIcon
+	local health = not frame.USE_POWERBAR or (frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR)
 
 	specIcon.bg:ClearAllPoints()
 
 	if frame.ORIENTATION == 'LEFT' then
 		specIcon.bg:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.SPACING, -UF.SPACING)
-		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
-			specIcon.bg:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', (-UF.BORDER + UF.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
-		else
-			specIcon.bg:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', (-UF.BORDER + UF.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
-		end
+		specIcon.bg:Point('BOTTOMLEFT', (health and frame.Health.backdrop) or frame.Power.backdrop, 'BOTTOMRIGHT', (-UF.BORDER + UF.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
 	else
 		specIcon.bg:Point('TOPLEFT', frame, 'TOPLEFT', UF.SPACING, -UF.SPACING)
-		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
-			specIcon.bg:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
-		else
-			specIcon.bg:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
-		end
+		specIcon.bg:Point('BOTTOMRIGHT', (health and frame.Health.backdrop) or frame.Power.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
 	end
 
 	local enabled = frame:IsElementEnabled('PVPSpecIcon')

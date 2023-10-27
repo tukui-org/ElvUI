@@ -77,7 +77,7 @@ function UF:Update_TargetFrame(frame, db)
 	end
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame.mover:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
@@ -106,7 +106,7 @@ function UF:Update_TargetFrame(frame, db)
 
 	UF:HandleRegisterClicks(frame)
 
-	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
+	E:SetMoverSnapOffset(frame.mover.name, -(12 + db.castbar.height))
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 

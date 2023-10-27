@@ -187,6 +187,7 @@ function TT:RemoveTrashLines(tt)
 			break
 		elseif linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
 			tiptext:SetText('')
+			tiptext:Hide()
 		end
 	end
 end
@@ -330,6 +331,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local classText = creatureType and classLine and classLine:GetText()
 			if creatureType == classText then -- we dont want to show creatureType two times
 				classLine:SetText('') -- so just hide this one, we put it on the level line
+				classLine:Hide()
 			end
 		end
 

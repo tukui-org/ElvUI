@@ -1,3 +1,24 @@
+## Version 13.46 \[ October 26th 2023 \]
+*   Guild Bank timeout error fixed.
+*   Lowered Graveyard button to prevent overlap.
+*   Friends game icon uncropped and Recruit summon icon skinned.
+*   Assist and Tank would error when setting up Custom Texts.
+*   Player Choice Font Color restored with parchment active.
+*   Widget's Font Shadows on some frames were restored.
+*   PVP Spec Icon and Trinket elements were updated.
+*   Voice Chat sliders in dropdown menu reskinned.
+*   Ready Dialog for Dungeons and PVP updated.
+*   Skinned Select your role frame (Wrath).
+*   Pet Target Marker Icons fixed.
+*   **Updated Options**
+    *   Search bar at the top (type to search).
+    *   Toggle Anchors renamed to Movers and moved to top.
+    *   Reposition Window now an icon by the close button.
+    *   Reset Anchors moved to the mover frame (in Movers).
+    *   Debug button added to information section, which easily calls the /edebug command.
+    *   Import and Export pages updated (Profiles > Import / Export). Thanks Eltreum for the idea!
+    *   Module Copy moved to Profiles section (Profiles > Module Copy) and now has Select and Clear All buttons.
+
 ## Version 13.45 \[ October 13th 2023 \]
 *   Character tabs fixed for pet classes without pets.
 *   Collections added to Minimap middle-click dropdown on Wrath.
