@@ -628,19 +628,20 @@ G.unitframe.aurafilters.Blacklist = {
 		[206150]	= List(), -- Challenger's Burden SL
 		[206151]	= List(), -- Challenger's Burden BfA
 		[206662]	= List(), -- Experience Eliminated (in range)
+		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
 		[287825]	= List(), -- Lethargy debuff (fight or flight)
 		[306600]	= List(), -- Experience Eliminated (oor - 5m)
 		[313015]	= List(), -- Recently Failed (Mechagnome racial)
 		[322695]	= List(), -- Drained
 		[328891]	= List(), -- A Gilded Perspective
 		[348443]	= List(), -- Experience Eliminated
-		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
-		[392960]	= List(), -- Waygate Travel
-		[390106]	= List(), -- Riding Along
+		[374037]	= List(), -- Overwhelming Rage
 		[383600]	= List(), -- Surrounding Storm (Strunraan)
+		[390106]	= List(), -- Riding Along
+		[392960]	= List(), -- Waygate Travel
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
-		[374037]	= List(), -- Overwhelming Rage
+		[418990]	= List(), -- Wicker Men's Curse
 	},
 }
 
