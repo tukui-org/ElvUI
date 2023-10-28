@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 local UF = E:GetModule('UnitFrames')
-local Misc = E:GetModule('Misc')
-local Bags = E:GetModule('Bags')
-local Skins = E:GetModule('Skins')
+local M = E:GetModule('Misc')
+local B = E:GetModule('Bags')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
@@ -274,14 +274,14 @@ E.PopupDialogs.DELETE_GRAYS = {
 	button1 = YES,
 	button2 = NO,
 	OnAccept = function()
-		Bags:VendorGrays(true)
+		B:VendorGrays(true)
 
-		for _, info in ipairs(Bags.SellFrame.Info.itemList) do
+		for _, info in ipairs(B.SellFrame.Info.itemList) do
 			PickupContainerItem(info[1], info[2])
 			DeleteCursorItem()
 		end
 
-		wipe(Bags.SellFrame.Info.itemList)
+		wipe(B.SellFrame.Info.itemList)
 	end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs.DELETE_GRAYS.Money)
@@ -330,7 +330,7 @@ E.PopupDialogs.DISBAND_RAID = {
 	text = L["Are you sure you want to disband the group?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function() Misc:DisbandRaidGroup() end,
+	OnAccept = function() M:DisbandRaidGroup() end,
 	whileDead = 1,
 }
 
@@ -1100,7 +1100,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 	btn:Size(button:GetSize())
 	btn:HookScript('OnEnter', SecureOnEnter)
 	btn:HookScript('OnLeave', SecureOnLeave)
-	Skins:HandleButton(btn)
+	S:HandleButton(btn)
 
 	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
 	t:Point('CENTER', 0, 1)
@@ -1171,20 +1171,20 @@ function E:Contruct_StaticPopups()
 				E.StaticPopup_OnClick(btn:GetParent(), btn:GetID())
 			end)
 
-			Skins:HandleButton(button)
+			S:HandleButton(button)
 		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, 'SHADOW')
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)
-		Skins:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
+		S:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
 
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetFrameLevel(_G['ElvUI_StaticPopup'..index..'EditBox']:GetFrameLevel()+1)
-		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'EditBox'])
-		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameGold'])
-		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameSilver'])
-		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameCopper'])
+		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'EditBox'])
+		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameGold'])
+		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameSilver'])
+		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameCopper'])
 		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
 		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
 		_G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']:Kill()

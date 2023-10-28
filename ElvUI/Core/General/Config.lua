@@ -27,8 +27,6 @@ local EditBox_ClearFocus = EditBox_ClearFocus
 local RESET = RESET
 -- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
-
 local grid
 E.ConfigModeLayouts = {
 	'ALL',
@@ -623,17 +621,17 @@ function E:Config_StopMoving()
 end
 
 function E:Config_ButtonOnEnter()
-	if ConfigTooltip:IsForbidden() or not self.desc then return end
+	if E.ConfigTooltip:IsForbidden() or not self.desc then return end
 
-	ConfigTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 2)
-	ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
-	ConfigTooltip:Show()
+	E.ConfigTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 2)
+	E.ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
+	E.ConfigTooltip:Show()
 end
 
 function E:Config_ButtonOnLeave()
-	if ConfigTooltip:IsForbidden() then return end
+	if E.ConfigTooltip:IsForbidden() then return end
 
-	ConfigTooltip:Hide()
+	E.ConfigTooltip:Hide()
 end
 
 function E:Config_RepositionOnEnter()
@@ -985,16 +983,16 @@ end
 function E:Config_CloseWindow()
 	ACD:Close('ElvUI')
 
-	if not ConfigTooltip:IsForbidden() then
-		ConfigTooltip:Hide()
+	if not E.ConfigTooltip:IsForbidden() then
+		E.ConfigTooltip:Hide()
 	end
 end
 
 function E:Config_OpenWindow()
 	ACD:Open('ElvUI')
 
-	if not ConfigTooltip:IsForbidden() then
-		ConfigTooltip:Hide()
+	if not E.ConfigTooltip:IsForbidden() then
+		E.ConfigTooltip:Hide()
 	end
 end
 

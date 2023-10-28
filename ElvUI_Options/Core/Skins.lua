@@ -1,6 +1,6 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
 
 local pairs = pairs
@@ -136,7 +136,7 @@ Skins.args.general.sortByValue = true
 Skins.args.general.customWidth = 140
 
 Skins.args.talkingHead = ACH:Group(L["Talking Head"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not E.Retail)
-Skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end)
+Skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; BL:ScaleTalkingHeadFrame() end)
 Skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E.ShowPopup = true end)
 Skins.args.talkingHead.inline = true
 

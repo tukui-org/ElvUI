@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local tonumber = tonumber
@@ -405,8 +405,8 @@ function AB:LoadKeyBinder()
 	Popup.save:Point('BOTTOMRIGHT', -14, 10)
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
-	Skins:HandleCheckBox(Popup.perCharCheck)
-	Skins:HandleButton(Popup.discard)
-	Skins:HandleButton(Popup.header)
-	Skins:HandleButton(Popup.save)
+	S:HandleCheckBox(Popup.perCharCheck)
+	S:HandleButton(Popup.discard)
+	S:HandleButton(Popup.header)
+	S:HandleButton(Popup.save)
 end

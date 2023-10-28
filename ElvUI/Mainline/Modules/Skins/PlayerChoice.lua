@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local pairs = pairs
@@ -128,7 +128,7 @@ function S:TorghastButton_StartEffect(effectID)
 end
 
 local function SetupTorghastMover()
-	B:BuildWidgetHolder('TorghastChoiceToggleHolder', 'TorghastChoiceToggle', 'CENTER', L["Torghast Choice Toggle"], _G.TorghastPlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
+	BL:BuildWidgetHolder('TorghastChoiceToggleHolder', 'TorghastChoiceToggle', 'CENTER', L["Torghast Choice Toggle"], _G.TorghastPlayerChoiceToggleButton, 'CENTER', E.UIParent, 'CENTER', 0, -200, 300, 40, 'ALL,GENERAL')
 
 	-- whole area is clickable which is pretty big; keep an eye on this
 	_G.TorghastPlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)

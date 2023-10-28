@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local CreateFrame = CreateFrame
@@ -79,28 +79,28 @@ function E:SpawnTutorialFrame()
 	f.disableButton = CreateFrame('CheckButton', f:GetName()..'DisableButton', f, 'UICheckButtonTemplate')
 	_G[f.disableButton:GetName() .. 'Text']:SetText(DISABLE)
 	f.disableButton:Point('BOTTOMLEFT')
-	Skins:HandleCheckBox(f.disableButton)
+	S:HandleCheckBox(f.disableButton)
 	f.disableButton:SetScript('OnShow', function(btn) btn:SetChecked(E.db.hideTutorial) end)
 
 	f.disableButton:SetScript('OnClick', function(btn) E.db.hideTutorial = btn:GetChecked() end)
 
 	f.hideButton = CreateFrame('Button', f:GetName()..'HideButton', f, 'UIPanelButtonTemplate')
 	f.hideButton:Point('BOTTOMRIGHT', -5, 5)
-	Skins:HandleButton(f.hideButton)
+	S:HandleButton(f.hideButton)
 	_G[f.hideButton:GetName() .. 'Text']:SetText(HIDE)
 	f.hideButton:SetScript('OnClick', function(btn) E:StaticPopupSpecial_Hide(btn:GetParent()) end)
 
 	f.nextButton = CreateFrame('Button', f:GetName()..'NextButton', f, 'UIPanelButtonTemplate')
 	f.nextButton:Point('RIGHT', f.hideButton, 'LEFT', -4, 0)
 	f.nextButton:Width(20)
-	Skins:HandleButton(f.nextButton)
+	S:HandleButton(f.nextButton)
 	_G[f.nextButton:GetName() .. 'Text']:SetText('>')
 	f.nextButton:SetScript('OnClick', function() E:SetNextTutorial() end)
 
 	f.prevButton = CreateFrame('Button', f:GetName()..'PrevButton', f, 'UIPanelButtonTemplate')
 	f.prevButton:Point('RIGHT', f.nextButton, 'LEFT', -4, 0)
 	f.prevButton:Width(20)
-	Skins:HandleButton(f.prevButton)
+	S:HandleButton(f.prevButton)
 	_G[f.prevButton:GetName() .. 'Text']:SetText('<')
 	f.prevButton:SetScript('OnClick', function() E:SetPrevTutorial() end)
 
