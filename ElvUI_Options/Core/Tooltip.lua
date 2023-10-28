@@ -1,7 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local TT = E:GetModule('Tooltip')
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 local ACH = E.Libs.ACH
 
 local tonumber = tonumber
@@ -30,7 +30,7 @@ General.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users a
 General.itemQuality = ACH:Toggle(L["Item Quality"], L["Color tooltip border based on Item Quality."], 9)
 General.inspectDataEnable = ACH:Toggle(L["Inspect Data"], L["Display the item level and current specialization of the unit on modifier press."], 10, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.fadeOut = ACH:Toggle(L["Fade Out"], L["Fade out the tooltip when it disappers, instant otherwise. Cursor anchored tooltips are unaffected."], 11, nil, nil, nil, nil, nil, nil, not E.Retail)
-General.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; Skins:StyleTooltips() end)
+General.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; S:StyleTooltips() end)
 
 General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -2)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues)

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
@@ -12,7 +12,7 @@ local ignoreWidgets = {
 	[283] = true -- Cosmic Energy
 }
 
-function B:UIWidgetTemplateStatusBar()
+function BL:UIWidgetTemplateStatusBar()
 	local forbidden = self:IsForbidden()
 	local bar = self.Bar
 
@@ -80,7 +80,7 @@ local captureBarSkins = {
 	[252] = EmberCourtCaptureBar
 }
 
-function B:UIWidgetTemplateCaptureBar(_, widget)
+function BL:UIWidgetTemplateCaptureBar(_, widget)
 	if self:IsForbidden() or not widget then return end
 
 	local skinFunc = captureBarSkins[widget.widgetSetID]
@@ -95,7 +95,7 @@ local function UpdatePosition(frame, _, anchor)
 	end
 end
 
-function B:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, container, point, relativeTo, relativePoint, x, y, width, height, config)
+function BL:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, container, point, relativeTo, relativePoint, x, y, width, height, config)
 	local holder = (holderName and CreateFrame('Frame', holderName, E.UIParent)) or container
 	if width and height then holder:Size(width, height) end
 
@@ -109,35 +109,35 @@ function B:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, cont
 	hooksecurefunc(container, 'SetPoint', UpdatePosition)
 end
 
-function B:UpdateDurabilityScale()
+function BL:UpdateDurabilityScale()
 	_G.DurabilityFrame:SetScale(E.db.general.durabilityScale or 1)
 end
 
-function B:HandleWidgets()
-	B:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', 'CENTER', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,WIDGETS')
-	B:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
+function BL:HandleWidgets()
+	BL:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', 'CENTER', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,WIDGETS')
+	BL:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
 
-	B:BuildWidgetHolder(nil, 'GMMover', 'TOP', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
+	BL:BuildWidgetHolder(nil, 'GMMover', 'TOP', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
 
 	if E.Retail then
-		B:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', 'CENTER', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,WIDGETS')
-		B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
-		B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')
+		BL:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', 'CENTER', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,WIDGETS')
+		BL:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
+		BL:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')
 
 		-- handle power bar widgets after reload as Setup will have fired before this
 		for _, widget in pairs(_G.UIWidgetPowerBarContainerFrame.widgetFrames) do
-			B.UIWidgetTemplateStatusBar(widget)
+			BL.UIWidgetTemplateStatusBar(widget)
 		end
 	end
 
 	if not E.Retail then
 		_G.DurabilityFrame:SetFrameStrata('HIGH')
 		local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
-		B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
-		B:UpdateDurabilityScale()
+		BL:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', 'CENTER', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
+		BL:UpdateDurabilityScale()
 	end
 
 	-- Credits ShestakUI
-	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)
-	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', B.UIWidgetTemplateCaptureBar)
+	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', BL.UIWidgetTemplateStatusBar)
+	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', BL.UIWidgetTemplateCaptureBar)
 end

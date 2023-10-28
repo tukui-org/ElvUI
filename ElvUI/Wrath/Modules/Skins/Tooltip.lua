@@ -21,8 +21,8 @@ function S:StyleTooltips()
 		_G.ShoppingTooltip2,
 		_G.QuickKeybindTooltip,
 		-- ours
-		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip,
+		E.ConfigTooltip,
+		E.SpellBookTooltip,
 		-- libs
 		_G.LibDBIconTooltip,
 		_G.SettingsTooltip,

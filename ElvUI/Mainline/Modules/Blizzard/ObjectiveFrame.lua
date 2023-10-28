@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local GetInstanceInfo = GetInstanceInfo
@@ -63,7 +63,7 @@ local function ObjectiveTracker_Expand()
 end
 -- end clone
 
-function B:ObjectiveTracker_AutoHideOnHide()
+function BL:ObjectiveTracker_AutoHideOnHide()
 	if Tracker.collapsed then return end
 
 	if E.db.general.objectiveFrameAutoHideInKeystone then
@@ -76,14 +76,14 @@ function B:ObjectiveTracker_AutoHideOnHide()
 	end
 end
 
-function B:ObjectiveTracker_AutoHideOnShow()
+function BL:ObjectiveTracker_AutoHideOnShow()
 	if Tracker.collapsed then
 		ObjectiveTracker_Expand()
 	end
 end
 
-function B:ObjectiveTracker_Setup()
+function BL:ObjectiveTracker_Setup()
 	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)
 
-	B:ObjectiveTracker_AutoHide()
+	BL:ObjectiveTracker_AutoHide()
 end

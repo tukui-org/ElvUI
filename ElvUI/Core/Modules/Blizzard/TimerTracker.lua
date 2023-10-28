@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local next = next
@@ -31,7 +31,7 @@ local function SkinIt(bar)
 	end
 end
 
-function B:START_TIMER()
+function BL:START_TIMER()
 	for _, b in pairs(_G.TimerTracker.timerList) do
 		if b.bar and not b.bar.skinned then
 			SkinIt(b.bar)
@@ -40,7 +40,7 @@ function B:START_TIMER()
 	end
 end
 
-function B:SkinBlizzTimers()
-	B:RegisterEvent('START_TIMER')
-	B:START_TIMER()
+function BL:SkinBlizzTimers()
+	BL:RegisterEvent('START_TIMER')
+	BL:START_TIMER()
 end

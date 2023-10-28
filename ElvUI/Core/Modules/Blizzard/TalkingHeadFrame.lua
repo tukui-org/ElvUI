@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local ipairs, tremove = ipairs, tremove
 
-function B:ScaleTalkingHeadFrame()
+function BL:ScaleTalkingHeadFrame()
 	local frame = _G.TalkingHeadFrame
 	frame:SetScale(E.db.general.talkingHeadFrameScale or 1)
 
@@ -22,7 +22,7 @@ function B:ScaleTalkingHeadFrame()
 	-- frame:UnregisterEvent('LOADING_SCREEN_ENABLED')
 end
 
-function B:HandleTalkingHead()
+function BL:HandleTalkingHead()
 	-- Prevent WoW from moving the frame around
 	if not E.Retail then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
@@ -37,5 +37,5 @@ function B:HandleTalkingHead()
 	end
 
 	-- Now scale it
-	B:ScaleTalkingHeadFrame()
+	BL:ScaleTalkingHeadFrame()
 end

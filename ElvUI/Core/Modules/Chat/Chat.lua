@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local CH = E:GetModule('Chat')
 local LO = E:GetModule('Layout')
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -2374,7 +2374,7 @@ do
 	function CH:StyleOverflowButton()
 		local btn = _G.GeneralDockManagerOverflowButton
 		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
-		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
+		S:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
 		if not wasSkinned then
@@ -2387,7 +2387,7 @@ do
 
 		local hl = btn:GetHighlightTexture()
 		hl:SetVertexColor(unpack(E.media.rgbvaluecolor))
-		hl:SetRotation(Skins.ArrowRotation.down)
+		hl:SetRotation(S.ArrowRotation.down)
 
 		btn.list:SetTemplate('Transparent')
 	end
@@ -3118,7 +3118,7 @@ function CH:HandleChatVoiceIcons()
 		end
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
-			Skins:HandleButton(button, nil, nil, true)
+			S:HandleButton(button, nil, nil, true)
 			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 			button:ClearAllPoints()
 
@@ -3176,7 +3176,7 @@ function CH:CreateChatVoicePanel()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
 
 	for _, button in ipairs(channelButtons) do
-		Skins:HandleButton(button, nil, nil, true)
+		S:HandleButton(button, nil, nil, true)
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
@@ -3276,7 +3276,7 @@ function CH:BuildCopyChatFrame()
 	local scrollArea = CreateFrame('ScrollFrame', 'CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
 	scrollArea:Point('TOPLEFT', frame, 'TOPLEFT', 8, -30)
 	scrollArea:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
-	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
+	S:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript('OnSizeChanged', function(scroll)
 		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
@@ -3307,7 +3307,7 @@ function CH:BuildCopyChatFrame()
 	close:Point('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-	Skins:HandleCloseButton(close)
+	S:HandleCloseButton(close)
 end
 
 CH.TabStyles = {

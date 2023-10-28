@@ -1103,11 +1103,13 @@ do
 		E.ScanTooltip:Show()
 
 		-- similar to TT.GetLevelLine
-		local ttLine = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]
-		local ttText = ttLine and ttLine:GetText()
-		local ttLower = ttText and strlower(ttText)
-		if ttLower and not strfind(ttLower, LEVEL) then
-			return custom and format(custom, ttText) or ttText
+		local info = E.ScanTooltip:GetTooltipData()
+		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
+		local text = line and line.leftText
+
+		local lower = text and strlower(text)
+		if lower and not strfind(lower, LEVEL) then
+			return custom and format(custom, text) or text
 		end
 	end
 	E.TagFunctions.GetTitleNPC = GetTitleNPC
@@ -1130,9 +1132,12 @@ do
 		E.ScanTooltip:Show()
 
 		local notMyQuest, activeID
-		for i = 3, E.ScanTooltip:NumLines() do
-			local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local text = str and str:GetText()
+
+		local info = E.ScanTooltip:GetTooltipData()
+		if not (info and info.lines[3]) then return end
+
+		for _, line in next, info.lines, 3 do
+			local text = line and line.leftText
 			if not text or text == '' then return end
 
 			if UnitIsPlayer(text) then

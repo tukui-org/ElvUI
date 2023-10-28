@@ -5,7 +5,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max, next = wipe, max, next
+local wipe, max, next, tinsert = wipe, max, next, tinsert
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local hooksecurefunc = hooksecurefunc
@@ -651,6 +651,30 @@ function E:IsDragonRiding() -- currently unused, was used to help actionbars fad
 	end
 end
 
+function E:CompatibleTooltip(tt) -- knock off compatibility
+	if tt.GetTooltipData then return end -- real support exists
+
+	local info = { name = tt:GetName(), lines = {} }
+	info.leftTextName = info.name .. 'TextLeft'
+	info.rightTextName = info.name .. 'TextRight'
+
+	tt.GetTooltipData = function()
+		wipe(info.lines)
+
+		for i = 1, tt:NumLines() do
+			local left = _G[info.leftTextName..i]
+			local leftText = left and left:GetText() or nil
+
+			local right = _G[info.rightTextName..i]
+			local rightText = right and right:GetText() or nil
+
+			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
+		end
+
+		return info
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -676,6 +700,11 @@ function E:LoadAPI()
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
+	else
+		E:CompatibleTooltip(E.ScanTooltip)
+		E:CompatibleTooltip(E.ConfigTooltip)
+		E:CompatibleTooltip(E.SpellBookTooltip)
+		E:CompatibleTooltip(_G.GameTooltip)
 	end
 
 	if E.Retail or E.Wrath then
