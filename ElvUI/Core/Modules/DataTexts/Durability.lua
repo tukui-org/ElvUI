@@ -8,7 +8,6 @@ local ToggleCharacter = ToggleCharacter
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
-local GetMoneyString = GetMoneyString
 
 local DURABILITY = DURABILITY
 local REPAIR_COST = REPAIR_COST
@@ -89,7 +88,7 @@ local function OnEnter()
 
 	if totalRepairCost > 0 then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine(REPAIR_COST, GetMoneyString(totalRepairCost), .6, .8, 1, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(REPAIR_COST, E:FormatMoney(totalRepairCost, db.goldFormat or 'BLIZZARD', not db.goldCoins), .6, .8, 1, 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
