@@ -556,12 +556,16 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 		E.ScanTooltip:Show()
 
 		local isQuestItem, isStarterItem
-		for i = BIND_START, BIND_END do
-			local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
+		local info = E.ScanTooltip:GetTooltipData()
+		if info then
+			for i = BIND_START, BIND_END do
+				local line = info.lines[i]
+				local text = line and line.leftText
 
-			if not line or line == '' then break end
-			if not isQuestItem and line == _G.ITEM_BIND_QUEST then isQuestItem = true end
-			if not isStarterItem and line == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+				if not text or text == '' then break end
+				if not isQuestItem and text == _G.ITEM_BIND_QUEST then isQuestItem = true end
+				if not isStarterItem and text == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+			end
 		end
 
 		E.ScanTooltip:Hide()

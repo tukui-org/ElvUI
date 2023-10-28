@@ -24,8 +24,8 @@ function S:StyleTooltips()
 		_G.QuestScrollFrame.StoryTooltip,
 		_G.QuestScrollFrame.CampaignTooltip,
 		-- ours
-		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip,
+		E.ConfigTooltip,
+		E.SpellBookTooltip,
 		-- libs
 		_G.LibDBIconTooltip,
 		_G.SettingsTooltip,

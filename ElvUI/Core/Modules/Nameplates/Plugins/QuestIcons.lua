@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
-local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
+local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local IsInInstance = IsInInstance
@@ -105,66 +104,69 @@ local function GetQuests(unitID)
 	E.ScanTooltip:Show()
 
 	local QuestList, notMyQuest, activeID
-	for i = 3, E.ScanTooltip:NumLines() do
-		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
-		local text = str and str:GetText()
-		if not text or text == '' then return end
+	local info = E.ScanTooltip:GetTooltipData()
+	if info and info.lines[3] then
+		for _, line in next, info.lines, 3 do
+			local text = line and line.leftText
+			if not text or text == '' then return end
 
-		if UnitIsPlayer(text) then
-			notMyQuest = text ~= E.myname
-		elseif text and not notMyQuest then
-			local count, percent = CheckTextForQuest(text)
+			if UnitIsPlayer(text) then
+				notMyQuest = text ~= E.myname
+			elseif text and not notMyQuest then
+				local count, percent = CheckTextForQuest(text)
 
-			-- this line comes from one line up in the tooltip
-			local activeQuest = questIcons.activeQuests[text]
-			if activeQuest then activeID = activeQuest end
+				-- this line comes from one line up in the tooltip
+				local activeQuest = questIcons.activeQuests[text]
+				if activeQuest then activeID = activeQuest end
 
-			if count then
-				local type, index, texture, _
-				if activeID then
-					index = questIcons.indexByID[activeID]
-					_, texture = GetQuestLogSpecialItemInfo(index)
-				end
-
-				if texture then
-					type = 'QUEST_ITEM'
-				else
-					local lowerText = strlower(text)
-
-					-- check kill type first
-					for _, listText in ipairs(questTypes.KILL) do
-						if strfind(lowerText, listText, nil, true) then
-							type = 'KILL'
-							break
-						end
+				if count then
+					local type, index, texture, _
+					if activeID then
+						index = questIcons.indexByID[activeID]
+						_, texture = GetQuestLogSpecialItemInfo(index)
 					end
 
-					-- check chat type if kill type doesn't exist
-					if not type then
-						for _, listText in ipairs(questTypes.CHAT) do
+					if texture then
+						type = 'QUEST_ITEM'
+					else
+						local lowerText = strlower(text)
+
+						-- check kill type first
+						for _, listText in ipairs(questTypes.KILL) do
 							if strfind(lowerText, listText, nil, true) then
-								type = 'CHAT'
+								type = 'KILL'
 								break
 							end
 						end
-					end
-				end
 
-				if not QuestList then QuestList = {} end
-				QuestList[#QuestList + 1] = {
-					isPercent = percent,
-					itemTexture = texture,
-					objectiveCount = count,
-					questType = type or 'DEFAULT',
-					-- below keys are currently unused
-					questLogIndex = index,
-					questID = activeID
-				}
+						-- check chat type if kill type doesn't exist
+						if not type then
+							for _, listText in ipairs(questTypes.CHAT) do
+								if strfind(lowerText, listText, nil, true) then
+									type = 'CHAT'
+									break
+								end
+							end
+						end
+					end
+
+					if not QuestList then QuestList = {} end
+					QuestList[#QuestList + 1] = {
+						isPercent = percent,
+						itemTexture = texture,
+						objectiveCount = count,
+						questType = type or 'DEFAULT',
+						-- below keys are currently unused
+						questLogIndex = index,
+						questID = activeID
+					}
+				end
 			end
 		end
 	end
 
 	E.ScanTooltip:Hide()
+
 	return QuestList
 end
 
