@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local CreateFrame = CreateFrame
@@ -10,8 +10,8 @@ local QuestLog_SetSelection = QuestLog_SetSelection
 local QuestLog_Update = QuestLog_Update
 local ShowUIPanel = ShowUIPanel
 
-B.QuestWatch_ClickFrames = {}
-function B:QuestWatch_MoveFrames()
+BL.QuestWatch_ClickFrames = {}
+function BL:QuestWatch_MoveFrames()
 	local QuestWatchFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	QuestWatchFrameHolder:Size(130, 22)
 	QuestWatchFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
@@ -33,31 +33,31 @@ function B:QuestWatch_MoveFrames()
 	QuestTimerFrame:SetAllPoints(QuestTimerFrameHolder)
 end
 
-function B:QuestWatch_OnClick()
+function BL:QuestWatch_OnClick()
 	ShowUIPanel(_G.QuestLogFrame)
 	QuestLog_SetSelection(self.Quest)
 	QuestLog_Update()
 end
 
-function B:QuestWatch_SetClickFrames(index, quest, text)
-	if not B.QuestWatch_ClickFrames[index] then
-		B.QuestWatch_ClickFrames[index] = CreateFrame('Frame')
+function BL:QuestWatch_SetClickFrames(index, quest, text)
+	if not BL.QuestWatch_ClickFrames[index] then
+		BL.QuestWatch_ClickFrames[index] = CreateFrame('Frame')
 	end
 
-	local frame = B.QuestWatch_ClickFrames[index]
-	frame:SetScript('OnMouseUp', B.QuestWatch_OnClick)
+	local frame = BL.QuestWatch_ClickFrames[index]
+	frame:SetScript('OnMouseUp', BL.QuestWatch_OnClick)
 	frame:SetAllPoints(text)
 	frame.Quest = quest
 end
 
-function B:QuestWatch_AddQuestClick()
+function BL:QuestWatch_AddQuestClick()
 	local clickIndex = 1
-	local clickFrame = B.QuestWatch_ClickFrames[clickIndex]
+	local clickFrame = BL.QuestWatch_ClickFrames[clickIndex]
 	while clickFrame do
 		clickFrame:SetScript('OnMouseUp', nil)
 
 		clickIndex = clickIndex + 1
-		clickFrame = B.QuestWatch_ClickFrames[clickIndex]
+		clickFrame = BL.QuestWatch_ClickFrames[clickIndex]
 	end
 
 	if not E.db.general.objectiveTracker then return end
@@ -72,7 +72,7 @@ function B:QuestWatch_AddQuestClick()
 
 				lineIndex = numQuests + lineIndex + 1 -- Bump index
 
-				B:QuestWatch_SetClickFrames(i, questIndex, text)
+				BL:QuestWatch_SetClickFrames(i, questIndex, text)
 			end
 		end
 	end

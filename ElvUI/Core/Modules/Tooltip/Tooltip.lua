@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 
@@ -757,7 +757,7 @@ function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
 	if not (tt and questID and tt.progressBar) or tt:IsForbidden() then return end
 
 	local _, max = tt.progressBar:GetMinMaxValues()
-	Skins:StatusBarColorGradient(tt.progressBar, tt.progressBar:GetValue(), max)
+	S:StatusBarColorGradient(tt.progressBar, tt.progressBar:GetValue(), max)
 end
 
 function TT:GameTooltip_ClearProgressBars(tt)

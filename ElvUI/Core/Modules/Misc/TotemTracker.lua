@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local T = E:GetModule('TotemTracker')
+local TM = E:GetModule('TotemTracker')
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
@@ -13,7 +13,7 @@ local MAX_TOTEMS = MAX_TOTEMS
 local priority = E.myclass == 'SHAMAN' and { [1]=1, [2]=2, [3]=4, [4]=3 } or STANDARD_TOTEM_PRIORITIES
 priority.classic = { [1]=2, [2]=1, [3]=4, [4]=3 } -- we need to swap 1/2 and 3/4 on classic era
 
-function T:UpdateButton(button, totem)
+function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
 	local haveTotem, _, startTime, duration, icon = GetTotemInfo(E.Classic and totem or totem.slot)
@@ -31,85 +31,85 @@ function T:UpdateButton(button, totem)
 	end
 end
 
-function T:Update()
+function TM:Update()
 	if E.Retail then
-		for _, button in ipairs(T.bar) do
+		for _, button in ipairs(TM.bar) do
 			if button:IsShown() then
 				button:SetShown(false)
 			end
 		end
 		for totem in _G.TotemFrame.totemPool:EnumerateActive() do
-			T:UpdateButton(T.bar[priority[totem.layoutIndex]], totem)
+			TM:UpdateButton(TM.bar[priority[totem.layoutIndex]], totem)
 		end
 	else
 		for i = 1, MAX_TOTEMS do
-			T:UpdateButton(T.bar[priority[i]], _G['TotemFrameTotem'..i] or priority.classic[i])
+			TM:UpdateButton(TM.bar[priority[i]], _G['TotemFrameTotem'..i] or priority.classic[i])
 		end
 	end
 end
 
-function T:PositionAndSize()
+function TM:PositionAndSize()
 	if not E.private.general.totemTracker then return end
 
 	for i = 1, MAX_TOTEMS do
-		local button = T.bar[i]
-		local prevButton = T.bar[i-1]
-		local width = T.db.size
-		local height = T.db.keepSizeRatio and T.db.size or T.db.height
+		local button = TM.bar[i]
+		local prevButton = TM.bar[i-1]
+		local width = TM.db.size
+		local height = TM.db.keepSizeRatio and TM.db.size or TM.db.height
 
 		button:Size(width, height)
 		button:ClearAllPoints()
 
 		AB:TrimIcon(button)
 
-		if T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'ASCENDING' then
+		if TM.db.growthDirection == 'HORIZONTAL' and TM.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', T.bar, 'LEFT', T.db.spacing, 0)
+				button:Point('LEFT', TM.bar, 'LEFT', TM.db.spacing, 0)
 			elseif prevButton then
-				button:Point('LEFT', prevButton, 'RIGHT', T.db.spacing, 0)
+				button:Point('LEFT', prevButton, 'RIGHT', TM.db.spacing, 0)
 			end
-		elseif T.db.growthDirection == 'VERTICAL' and T.db.sortDirection == 'ASCENDING' then
+		elseif TM.db.growthDirection == 'VERTICAL' and TM.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', T.bar, 'TOP', 0, -T.db.spacing)
+				button:Point('TOP', TM.bar, 'TOP', 0, -TM.db.spacing)
 			elseif prevButton then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -T.db.spacing)
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -TM.db.spacing)
 			end
-		elseif T.db.growthDirection == 'HORIZONTAL' and T.db.sortDirection == 'DESCENDING' then
+		elseif TM.db.growthDirection == 'HORIZONTAL' and TM.db.sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', T.bar, 'RIGHT', -T.db.spacing, 0)
+				button:Point('RIGHT', TM.bar, 'RIGHT', -TM.db.spacing, 0)
 			elseif prevButton then
-				button:Point('RIGHT', prevButton, 'LEFT', -T.db.spacing, 0)
+				button:Point('RIGHT', prevButton, 'LEFT', -TM.db.spacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', T.bar, 'BOTTOM', 0, T.db.spacing)
+				button:Point('BOTTOM', TM.bar, 'BOTTOM', 0, TM.db.spacing)
 			elseif prevButton then
-				button:Point('BOTTOM', prevButton, 'TOP', 0, T.db.spacing)
+				button:Point('BOTTOM', prevButton, 'TOP', 0, TM.db.spacing)
 			end
 		end
 	end
 
-	if T.db.growthDirection == 'HORIZONTAL' then
-		T.bar:Width(T.db.size * MAX_TOTEMS + T.db.spacing * MAX_TOTEMS + T.db.spacing)
-		T.bar:Height(T.db.size + T.db.spacing * 2)
+	if TM.db.growthDirection == 'HORIZONTAL' then
+		TM.bar:Width(TM.db.size * MAX_TOTEMS + TM.db.spacing * MAX_TOTEMS + TM.db.spacing)
+		TM.bar:Height(TM.db.size + TM.db.spacing * 2)
 	else
-		T.bar:Height(T.db.size * MAX_TOTEMS + T.db.spacing * MAX_TOTEMS + T.db.spacing)
-		T.bar:Width(T.db.size + T.db.spacing * 2)
+		TM.bar:Height(TM.db.size * MAX_TOTEMS + TM.db.spacing * MAX_TOTEMS + TM.db.spacing)
+		TM.bar:Width(TM.db.size + TM.db.spacing * 2)
 	end
 
-	T:Update()
+	TM:Update()
 end
 
-function T:Initialize()
-	T.Initialized = true
+function TM:Initialize()
+	TM.Initialized = true
 
 	if not E.private.general.totemTracker then return end
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemTracker', E.UIParent)
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 
-	T.bar = bar
-	T.db = E.db.general.totems
+	TM.bar = bar
+	TM.db = E.db.general.totems
 
 	for i = 1, MAX_TOTEMS do
 		local button = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
@@ -118,7 +118,7 @@ function T:Initialize()
 		button:StyleButton()
 		button:Hide()
 
-		button.db = T.db
+		button.db = TM.db
 
 		button.holder = CreateFrame('Frame', nil, button)
 		button.holder:SetAlpha(0)
@@ -133,21 +133,21 @@ function T:Initialize()
 
 		E:RegisterCooldown(button.cooldown)
 
-		T.bar[i] = button
+		TM.bar[i] = button
 	end
 
-	T:PositionAndSize()
+	TM:PositionAndSize()
 
-	T:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
-	T:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
+	TM:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
+	TM:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
 
 	if E.Retail then
-		T:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'Update')
+		TM:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'Update')
 	else
-		T:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'Update')
+		TM:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'Update')
 	end
 
 	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,totems')
 end
 
-E:RegisterModule(T:GetName())
+E:RegisterModule(TM:GetName())

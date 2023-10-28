@@ -3,7 +3,7 @@
 -- Modified and optimized by Simpy.
 ------------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -157,7 +157,7 @@ local function onValueChanged(_, value)
 	end
 end
 
-function B:EnhanceColorPicker()
+function BL:EnhanceColorPicker()
 	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
 	local Picker = _G.ColorPickerFrame

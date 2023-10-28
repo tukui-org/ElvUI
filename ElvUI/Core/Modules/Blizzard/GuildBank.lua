@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
-local Bags = E:GetModule('Bags')
+local BL = E:GetModule('Blizzard')
+local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -14,7 +14,7 @@ local GetItemInfo = GetItemInfo
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
 local NUM_GUILDBANK_COLUMNS = 7
 
-function B:GuildBank_ItemLevel(button)
+function BL:GuildBank_ItemLevel(button)
 	local db = E.db.general.guildBank
 	if not db then return end
 
@@ -44,7 +44,7 @@ function B:GuildBank_ItemLevel(button)
 			end
 		end
 
-		local canShowItemLevel = Bags:IsItemEligibleForItemLevelDisplay(classID, subclassID, itemEquipLoc, rarity)
+		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(classID, subclassID, itemEquipLoc, rarity)
 		if canShowItemLevel then
 			local color = db.itemLevelCustomColorEnable and db.itemLevelCustomColor
 			if color then
@@ -63,7 +63,7 @@ function B:GuildBank_ItemLevel(button)
 	button.itemLevel:SetTextColor(r or 1, g or 1, b or 1)
 end
 
-function B:GuildBank_CountText(button)
+function BL:GuildBank_CountText(button)
 	local db = E.db.general.guildBank
 	if not db then return end
 
@@ -73,7 +73,7 @@ function B:GuildBank_CountText(button)
 	button.Count:SetTextColor(db.countFontColor.r, db.countFontColor.g, db.countFontColor.b)
 end
 
-function B:GuildBank_Update()
+function BL:GuildBank_Update()
 	local frame = _G.GuildBankFrame
 	if not frame or not frame:IsShown() then return end
 
@@ -83,13 +83,13 @@ function B:GuildBank_Update()
 		for x = 1, NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = column['Button'..x]
 
-			B:GuildBank_ItemLevel(button)
-			B:GuildBank_CountText(button)
+			BL:GuildBank_ItemLevel(button)
+			BL:GuildBank_CountText(button)
 		end
 	end
 end
 
-function B:ImproveGuildBank()
+function BL:ImproveGuildBank()
 	hooksecurefunc(_G.GuildBankFrame, 'Update', B.GuildBank_Update)
 
 	-- blizzard bug fix when trying to search after having the guild bank open
