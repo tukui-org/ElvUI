@@ -90,7 +90,7 @@ function BL:GuildBank_Update()
 end
 
 function BL:ImproveGuildBank()
-	hooksecurefunc(_G.GuildBankFrame, 'Update', B.GuildBank_Update)
+	hooksecurefunc(_G.GuildBankFrame, 'Update', BL.GuildBank_Update)
 
 	-- blizzard bug fix when trying to search after having the guild bank open
 	if not E.Retail then -- they copy pasted too much
