@@ -585,7 +585,8 @@ G.unitframe.aurafilters.Blacklist = {
 	spells = {
 	-- General
 		[186403] = List(), -- Sign of Battle
-		[377749] = List(), -- Joyous Journeys (50% exp buff)
+		[377749] = List(), -- Joyous Journeys
+		[24755]  = List(), -- Tricked or Treated
 	},
 }
 
