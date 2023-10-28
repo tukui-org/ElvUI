@@ -81,10 +81,10 @@ end
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
 	tt:SetOwner(UIParent, 'ANCHOR_NONE')
-	tt:SetInventoryItem(unit, slot)
+	local hasItem = tt:SetInventoryItem(unit, slot)
 	tt:Show()
 
-	local info = tt:GetTooltipData()
+	local info = hasItem and tt:GetTooltipData()
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
 	local slotInfo = tt.slotInfo
 
