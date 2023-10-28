@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local select, wipe = select, wipe
-local format, pairs = format, pairs
+local format, pairs, wipe = format, pairs, wipe
+
 local ToggleCharacter = ToggleCharacter
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemTexture = GetInventoryItemTexture
