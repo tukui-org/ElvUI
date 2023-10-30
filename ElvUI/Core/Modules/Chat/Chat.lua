@@ -92,6 +92,7 @@ CH.Keywords = {}
 CH.PluginMessageFilters = {}
 CH.Smileys = {}
 CH.TalkingList = {}
+CH.FontHeights = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 }
 CH.RoleIcons = {
 	TANK = E:TextureString(E.Media.Textures.Tank, ':15:15:0:0:64:64:2:56:2:56'),
 	HEALER = E:TextureString(E.Media.Textures.Healer, ':15:15:0:0:64:64:2:56:2:56'),
@@ -3613,6 +3614,7 @@ function CH:Initialize()
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not CH.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
+	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
 	_G.ChatFrameMenuButton:Kill()
 
 	CH:SetupChat()

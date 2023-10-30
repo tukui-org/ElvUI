@@ -1303,6 +1303,18 @@ function B:UpdateTokens()
 		button.currencyID = info.currencyTypesID
 		button:Show()
 
+		if button.currencyID and E.Wrath then
+			local tokens = _G.TokenFrameContainer.buttons
+			if tokens then
+				for _, token in next, tokens do
+					if token.itemID == button.currencyID then
+						button.index = token.index
+						break
+					end
+				end
+			end
+		end
+
 		local icon = button.icon or button.Icon
 		icon:SetTexture(info.iconFileID)
 
