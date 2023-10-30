@@ -93,6 +93,10 @@ function E:UpdateBlizzardFonts()
 		local prefix = strmatch(style, '(SHADOW)') or strmatch(style, '(MONOCHROME)') or ''
 		local thick, outline = prefix..'THICKOUTLINE', prefix..'OUTLINE'
 
+		-- Raid Warnings look blurry when animated, even without addons. This is due to a mismatch between Font Size and SetTextHeight.
+		-- RaidBossEmoteFramePrivate: The size of this cant be changed without looking blurry. We have no access to its RAID_NOTICE_MIN_HEIGHT and RAID_NOTICE_MAX_HEIGHT.
+		E:SetFont(_G.GameFontNormalHuge,					NORMAL, 20, outline) -- RaidWarning and RaidBossEmote Text
+
 		-- number fonts
 		E:SetFont(_G.SystemFont_Outline_Small,				NUMBER, blizz and 10 or small, 'OUTLINE')
 		E:SetFont(_G.Number11Font,							NUMBER, blizz and 11 or small)
@@ -210,9 +214,5 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game60Font,							NORMAL, blizz and 60 or colossal)
 		E:SetFont(_G.Game72Font,							NORMAL, blizz and 72 or monstrous)
 		E:SetFont(_G.Game120Font,							NORMAL, blizz and 120 or titanic)
-
-		-- Raid Warnings look blurry when animated, even without addons. This is due to a mismatch between Font Size and SetTextHeight.
-		-- RaidBossEmoteFramePrivate: The size of this cant be changed without looking blurry. We have no access to its RAID_NOTICE_MIN_HEIGHT and RAID_NOTICE_MAX_HEIGHT.
-		E:SetFont(_G.GameFontNormalHuge,					NORMAL, 20, outline) -- RaidWarning and RaidBossEmote Text
 	end
 end
