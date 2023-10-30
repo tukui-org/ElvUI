@@ -102,7 +102,7 @@ local function UpdateCurrencySkins()
 	local TokenFrameContainer = _G.TokenFrameContainer
 	if not TokenFrameContainer.buttons then return end
 
-	for _, button in TokenFrameContainer.buttons do
+	for _, button in next, TokenFrameContainer.buttons do
 		if button.highlight then button.highlight:Kill() end
 		if button.categoryLeft then button.categoryLeft:Kill() end
 		if button.categoryRight then button.categoryRight:Kill() end
