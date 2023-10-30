@@ -211,21 +211,21 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game120Font,							NORMAL, blizz and 120 or titanic)
 
 		do -- special stuff for raid warnings because they animate
-			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or huge, outline)	-- Raid Warning, Boss emote frame too
+			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or mega, outline)	-- Raid Warning, Boss emote frame too
 
 			-- fix the blurr on the frames
 			local warn = _G.RaidWarningFrame
 			local warnTimings = warn and warn.timings
 			if warnTimings then
-				warnTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or huge
-				warnTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or enormous
+				warnTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or mega
+				warnTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or gigantic
 			end
 
 			local boss = _G.RaidBossEmoteFrame
 			local bossTimings = boss and boss.timings
 			if bossTimings then
-				bossTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or huge
-				bossTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or enormous
+				bossTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or mega
+				bossTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or gigantic
 			end
 		end
 	end
