@@ -184,7 +184,7 @@ function AB:SetupExtraButton()
 	ExtraAbilityContainer:KillEditMode()
 	ExtraAbilityContainer:SetScript('OnShow', nil)
 	ExtraAbilityContainer:SetScript('OnUpdate', nil)
-	ExtraAbilityContainer.OnUpdate = nil --  remove BaseLayoutMixin.OnUpdate
+	ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
 	ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
