@@ -68,24 +68,24 @@ function E:UpdateBlizzardFonts()
 		lastFont.style = style
 		lastFont.blizz = blizz
 
-		-->  large fonts (over x2)
-		local yourmom   = size * 4.5 -- 54
-		local titanic   = size * 4.0 -- 48
-		local monstrous = size * 3.5 -- 42
-		local colossal  = size * 3.0 -- 36
-		local massive   = size * 2.5 -- 30
-		local gigantic  = size * 2.0 -- 24
+		--> large fonts (over x2)
+		local yourmom	= size * 4.5 -- 54
+		local titanic	= size * 4.0 -- 48
+		local monstrous	= size * 3.5 -- 42
+		local colossal	= size * 3.0 -- 36
+		local massive	= size * 2.5 -- 30
+		local gigantic	= size * 2.0 -- 24
 
-		-->  normal fonts
+		--> normal fonts
 		local enormous	= size * 1.9 -- 22.8
 		local mega		= size * 1.7 -- 20.4
 		local huge		= size * 1.5 -- 18
 		local large		= size * 1.3 -- 15.6
-		local big       = size * 1.2 -- 14.4
+		local big		= size * 1.2 -- 14.4
 		local medium	= size * 1.1 -- 13.2
-		----- size      = size * 1.0 -- 12
+		----- size		= size * 1.0 -- 12
 
-		-->  small fonts (under x1)
+		--> small fonts (under x1)
 		local small		= size * 0.9 -- 10.8
 		local tiny		= size * 0.8 -- 9.6
 
@@ -176,6 +176,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Shadow_Large2,				NORMAL, blizz and 18 or big, 'SHADOW')		-- Auction House ItemDisplay
 		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, blizz and 20 or large)				-- Garrison Mission XP
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, blizz and 20 or large, outline)		-- Garrison Mission Chance
+		E:SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, blizz and 20 or large, outline)
 		E:SetFont(_G.Fancy22Font,							NORMAL, blizz and 22 or large)				-- Talking frame Title font
 		E:SetFont(_G.PVPArenaTextString,					NORMAL, blizz and 22 or large, outline)
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, blizz and 22 or large, outline)
@@ -197,7 +198,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.CoreAbilityFont,						NORMAL, blizz and 32 or enormous)			-- Core abilities, title
 		E:SetFont(_G.DestinyFontHuge,						NORMAL, blizz and 32 or enormous)			-- Garrison Mission Report
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, blizz and 32 or enormous, 'SHADOW')	-- Used at the install steps
-		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, blizz and 32 or enormous, outline)	--  WorldMap
+		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, blizz and 32 or enormous, outline)	-- WorldMap
 
 		-- big fonts
 		E:SetFont(_G.QuestFont_39,							NORMAL, blizz and 39 or gigantic)			-- Wrath
@@ -211,23 +212,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game120Font,							NORMAL, blizz and 120 or titanic)
 
 		-- Raid Warnings look blurry when animated, even without addons. This is due to a mismatch between Font Size and SetTextHeight.
-		-- Adjusting the scale variables on the frames (RAID_NOTICE_SCALE_UP_TIME = 0.2 and RAID_NOTICE_SCALE_DOWN_TIME = 0.4) does not seem to fix the issue.
-		do
-			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or mega, outline)	-- RaidWarning and RaidBossEmote Text
-
-			local warn = _G.RaidWarningFrame
-			local warnTimings = warn and warn.timings
-			if warnTimings then
-				warnTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or mega
-				warnTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or gigantic
-			end
-
-			local boss = _G.RaidBossEmoteFrame
-			local bossTimings = boss and boss.timings
-			if bossTimings then
-				bossTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or mega
-				bossTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or gigantic
-			end
-		end
+		-- RaidBossEmoteFramePrivate: The size of this cant be changed without looking blurry. We have no access to its RAID_NOTICE_MIN_HEIGHT and RAID_NOTICE_MAX_HEIGHT.
+		E:SetFont(_G.GameFontNormalHuge,					NORMAL, 20, outline) -- RaidWarning and RaidBossEmote Text
 	end
 end
