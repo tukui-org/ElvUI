@@ -117,7 +117,7 @@ local function OnEvent(self, event, loadoutID)
 			tinsert(builds, STARTER_ID)
 		end
 
-		if event == 'TRAIT_CONFIG_DELETED'  then
+		if event == 'TRAIT_CONFIG_DELETED' then
 			for index = #loadoutList, 2, -1 do -- reverse loop to remove the deleted config from the loadout list
 				local loadout = loadoutList[index]
 				if loadout and loadout.arg1 == loadoutID then
