@@ -278,13 +278,14 @@ end
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
 	local config = ACH:Group(L["Aura Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 1)
-	config.args.spacer1 = ACH:Spacer(5, 'full')
-	config.args.size = ACH:Range(L["Size"], nil, 6, { min = 6, max = 48, step = 1 })
-	config.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 7, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') C:SetToFilterConfig(configString) end)
 
-	config.args.spacer2 = ACH:Spacer(10, 'full')
-	config.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
+	config.args.generalGroup = ACH:Group(' ', nil, 2)
+	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 1)
+	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
+	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 3, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') C:SetToFilterConfig(configString) end)
+	config.args.generalGroup.inline = true
+
+	config.args.countGroup = ACH:Group(E.NewSign..L["Count Text"], nil, 15)
 	config.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 24, step = 1 })
 	config.args.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
