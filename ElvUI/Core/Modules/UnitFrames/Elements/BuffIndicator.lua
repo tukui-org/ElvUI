@@ -83,25 +83,25 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 		end
 
 		if not E.db.cooldown.enable then -- cooldown module is off, handle blizzards cooldowns
+			button.cd.blizzText:ClearAllPoints()
+			button.cd.blizzText:Point(settings.cooldownAnchor or 'CENTER', settings.cooldownX or 1, settings.cooldownY or 1)
+
 			if onlyText then
 				button.cd:SetHideCountdownNumbers(false)
-
-				if button.cd.blizzText then
-					button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
-				end
+				button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			else
 				button.cd:SetHideCountdownNumbers(not settings.displayText)
-
-				if button.cd.blizzText then
-					button.cd.blizzText:SetTextColor(1, 1, 1)
-				end
+				button.cd.blizzText:SetTextColor(1, 1, 1)
 			end
 		elseif button.cd.timer then
 			button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
 			button.cd.hideText = (not onlyText and not settings.displayText) or nil
 			button.cd.timer.skipTextColor = onlyText or nil
 
-			if onlyText and button.cd.timer.text then
+			button.cd.timer.text:ClearAllPoints()
+			button.cd.timer.text:Point(settings.cooldownAnchor or 'CENTER', settings.cooldownX or 1, settings.cooldownY or 1)
+
+			if onlyText then
 				button.cd.timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			end
 		end
