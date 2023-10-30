@@ -210,12 +210,10 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game72Font,							NORMAL, blizz and 72 or monstrous)
 		E:SetFont(_G.Game120Font,							NORMAL, blizz and 120 or titanic)
 
-		do -- special stuff for raid warnings because they animate
-			-- NOTE it the blur on text when FontSize doesnt match SetTextHeight
-			-- these also exist: RAID_NOTICE_SCALE_UP_TIME (0.2) and RAID_NOTICE_SCALE_DOWN_TIME (0.4)
-			-- however even with no addons, during the animation they look blurry.
-
-			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or mega, outline)	-- Raid Warning, Boss emote frame too
+		-- Raid Warnings look blurry when animated, even without addons. This is due to a mismatch between Font Size and SetTextHeight.
+		-- Adjusting the scale variables on the frames (RAID_NOTICE_SCALE_UP_TIME = 0.2 and RAID_NOTICE_SCALE_DOWN_TIME = 0.4) does not seem to fix the issue.
+		do
+			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or mega, outline)	-- RaidWarning and RaidBossEmote Text
 
 			local warn = _G.RaidWarningFrame
 			local warnTimings = warn and warn.timings
