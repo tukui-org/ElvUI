@@ -218,7 +218,7 @@ function E:UpdateBlizzardFonts()
 			local warnTimings = warn and warn.timings
 			if warnTimings then
 				-- NOTE these also exist: RAID_NOTICE_SCALE_UP_TIME (0.2) and RAID_NOTICE_SCALE_DOWN_TIME (0.4)
-				-- however, even on Default UI during the animation they look blurry.
+				-- however even no addons, during the animation they look blurry.
 				warnTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or mega
 				warnTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or gigantic
 			end
