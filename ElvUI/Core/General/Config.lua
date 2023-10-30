@@ -836,7 +836,7 @@ function E:Config_UpdateLeftButtons()
 	if not (frame and frame.leftHolder) then return end
 
 	local _, selected = E:Config_GetStatus(frame)
-	for _, btn in ipairs(frame.leftHolder.buttons) do
+	for _, btn in next, frame.leftHolder.buttons do
 		if type(btn) == 'table' and btn.IsObjectType and btn:IsObjectType('Button') then
 			local enabled = btn.info.key == selected
 			E:Config_SetButtonColor(btn, enabled)
