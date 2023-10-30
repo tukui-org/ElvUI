@@ -27,7 +27,6 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 end
 
 local lastFont = {}
-local chatFontHeights = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 function E:UpdateBlizzardFonts()
 	local db			= E.private.general
 	local NORMAL		= E.media.normFont
@@ -36,8 +35,6 @@ function E:UpdateBlizzardFonts()
 
 	-- set an invisible font for xp, honor kill, etc
 	local COMBAT		= (E.eyefinity or E.ultrawide) and E.Media.Fonts.Invisible or LSM:Fetch('font', db.dmgfont)
-
-	_G.CHAT_FONT_HEIGHTS = chatFontHeights
 
 	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
