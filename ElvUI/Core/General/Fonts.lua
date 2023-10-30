@@ -176,7 +176,6 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Shadow_Large2,				NORMAL, blizz and 18 or big, 'SHADOW')		-- Auction House ItemDisplay
 		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, blizz and 20 or large)				-- Garrison Mission XP
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, blizz and 20 or large, outline)		-- Garrison Mission Chance
-		E:SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, blizz and 20 or large, outline)		-- Raid Warning, Boss emote frame too
 		E:SetFont(_G.Fancy22Font,							NORMAL, blizz and 22 or large)				-- Talking frame Title font
 		E:SetFont(_G.PVPArenaTextString,					NORMAL, blizz and 22 or large, outline)
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, blizz and 22 or large, outline)
@@ -210,5 +209,24 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game60Font,							NORMAL, blizz and 60 or colossal)
 		E:SetFont(_G.Game72Font,							NORMAL, blizz and 72 or monstrous)
 		E:SetFont(_G.Game120Font,							NORMAL, blizz and 120 or titanic)
+
+		do -- special stuff for raid warnings because they animate
+			E:SetFont(_G.SystemFont_Shadow_Huge1,			NORMAL, blizz and 20 or huge, outline)	-- Raid Warning, Boss emote frame too
+
+			-- fix the blurr on the frames
+			local warn = _G.RaidWarningFrame
+			local warnTimings = warn and warn.timings
+			if warnTimings then
+				warnTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or huge
+				warnTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or enormous
+			end
+
+			local boss = _G.RaidBossEmoteFrame
+			local bossTimings = boss and boss.timings
+			if bossTimings then
+				bossTimings.RAID_NOTICE_MIN_HEIGHT = blizz and 20 or huge
+				bossTimings.RAID_NOTICE_MAX_HEIGHT = blizz and 30 or enormous
+			end
+		end
 	end
 end
