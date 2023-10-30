@@ -24,7 +24,6 @@ local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
-local RESET = RESET
 -- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
 
 local grid
@@ -503,7 +502,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.yOffset = yOffset
 
 	local resetButton = CreateFrame('Button', nudgeFrame:GetName()..'ResetButton', nudgeFrame, 'UIPanelButtonTemplate')
-	resetButton:SetText(RESET)
+	resetButton:SetText(L["Reset"])
 	resetButton:Point('TOP', nudgeFrame, 'CENTER', 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript('OnClick', function()
@@ -971,7 +970,6 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 			last = E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
 		end
 	end
-
 end
 
 function E:Config_CloseClicked()
