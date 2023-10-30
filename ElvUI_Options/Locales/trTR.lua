@@ -1691,7 +1691,6 @@ L["This section will allow you to copy settings to a select module from or to a 
 L["This section will help reset specfic settings back to default."] = "Bu bolum, belirli ayarlari varsayilana dondurmeye yardimci olacaktir."
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "Bu, ElvUI mesajlarinin ciktisi olarak kullanilacak Sohbet cercevesini secer."
 L["This setting controls the size of text in item comparison tooltips."] = "Bu ayar, oge karsilastirma sırasında ipucu penceresini metninin boyutunu kontrol eder."
-L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."] = "Bu ayar, daha statik bir birlesik yazi tipi boyutuyla, Blizzard Yazi Tiplerini Degistir'in eski stilini taklit ediyor."
 L["This setting will be updated upon changing stances."] = "Bu ayar, duruslar degistirildiginde guncellenecektir."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Bu doku, sohbet pencereleri ve acilir menuler gibi nesnelerde kullanilacak."
 L["This uses the IsPlayerSpell API which is only required sometimes."] = true
@@ -1763,7 +1762,6 @@ L["Under Health Threshold"] = "Saglik Esigi Altinda"
 L["Under Power Threshold"] = "Guc Esigi Altinda"
 L["Unfriendly"] = "Dusmanca"
 L["Unhappy"] = true
-L["Unified Font Sizes"] = "Birlesik Yazi Tipi Boyutlari"
 L["Unit Class Color"] = true
 L["Unit Conditions"] = "Birim Kosullari"
 L["Unit Faction"] = "Birim Fraksiyonu"
