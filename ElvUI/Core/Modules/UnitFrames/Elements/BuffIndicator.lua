@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local unpack = unpack
 local CreateFrame = CreateFrame
@@ -24,7 +25,9 @@ function UF:Configure_AuraWatch(frame, isPet)
 		end
 
 		frame.AuraWatch.size = db.size
+		frame.AuraWatch.countFont = LSM:Fetch('font', db.countFont)
 		frame.AuraWatch.countFontSize = db.countFontSize
+		frame.AuraWatch.countFontOutline = db.countFontOutline
 
 		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.aurawatch.PET)
@@ -116,7 +119,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 
 		button.count:ClearAllPoints()
 		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
-		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
+		button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)
