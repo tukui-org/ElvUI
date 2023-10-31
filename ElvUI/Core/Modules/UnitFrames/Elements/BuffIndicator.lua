@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local unpack = unpack
 local CreateFrame = CreateFrame
@@ -24,7 +25,9 @@ function UF:Configure_AuraWatch(frame, isPet)
 		end
 
 		frame.AuraWatch.size = db.size
+		frame.AuraWatch.countFont = LSM:Fetch('font', db.countFont)
 		frame.AuraWatch.countFontSize = db.countFontSize
+		frame.AuraWatch.countFontOutline = db.countFontOutline
 
 		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.aurawatch.PET)
@@ -83,25 +86,25 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 		end
 
 		if not E.db.cooldown.enable then -- cooldown module is off, handle blizzards cooldowns
+			button.cd.blizzText:ClearAllPoints()
+			button.cd.blizzText:Point(settings.cooldownAnchor or 'CENTER', settings.cooldownX or 1, settings.cooldownY or 1)
+
 			if onlyText then
 				button.cd:SetHideCountdownNumbers(false)
-
-				if button.cd.blizzText then
-					button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
-				end
+				button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			else
 				button.cd:SetHideCountdownNumbers(not settings.displayText)
-
-				if button.cd.blizzText then
-					button.cd.blizzText:SetTextColor(1, 1, 1)
-				end
+				button.cd.blizzText:SetTextColor(1, 1, 1)
 			end
 		elseif button.cd.timer then
 			button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
 			button.cd.hideText = (not onlyText and not settings.displayText) or nil
 			button.cd.timer.skipTextColor = onlyText or nil
 
-			if onlyText and button.cd.timer.text then
+			button.cd.timer.text:ClearAllPoints()
+			button.cd.timer.text:Point(settings.cooldownAnchor or 'CENTER', settings.cooldownX or 1, settings.cooldownY or 1)
+
+			if onlyText then
 				button.cd.timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			end
 		end
@@ -116,7 +119,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 
 		button.count:ClearAllPoints()
 		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
-		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
+		button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)

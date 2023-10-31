@@ -1330,8 +1330,10 @@ local UF_AuraBars = {
 local UF_AuraWatch = {
 	enable = false,
 	profileSpecific = false,
-	size = 8,
+	countFont = 'PT Sans Narrow',
+	countFontOutline = 'OUTLINE',
 	countFontSize = 12,
+	size = 8
 }
 
 local UF_Castbar = {

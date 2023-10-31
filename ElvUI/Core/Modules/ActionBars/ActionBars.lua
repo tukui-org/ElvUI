@@ -683,9 +683,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if flash then
 		if AB.db.flashAnimation then
+			local flashOffset = E.PixelMode and 2 or 4
+
 			flash:SetColorTexture(1.0, 0.2, 0.2, 0.45)
 			flash:ClearAllPoints()
-			flash:SetOutside(icon, 2, 2)
+			flash:SetOutside(icon, flashOffset, flashOffset)
 			flash:SetDrawLayer('BACKGROUND', -1)
 		else
 			flash:SetTexture()
