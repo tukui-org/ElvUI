@@ -656,7 +656,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local hotkey = button.HotKey or _G[name..'HotKey']
 	local shine = button.AutoCastShine or _G[name..'Shine']
 	local flash = button.Flash or _G[name..'Flash']
-	local flashOffset = E.PixelMode and 2 or 4
 	local border = button.Border or _G[name..'Border']
 	local normal = button.NormalTexture or _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
@@ -684,6 +683,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if flash then
 		if AB.db.flashAnimation then
+			local flashOffset = E.PixelMode and 2 or 4
+
 			flash:SetColorTexture(1.0, 0.2, 0.2, 0.45)
 			flash:ClearAllPoints()
 			flash:SetOutside(icon, flashOffset, flashOffset)
