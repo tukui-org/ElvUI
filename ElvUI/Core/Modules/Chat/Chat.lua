@@ -57,9 +57,9 @@ local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityC
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
-
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
+local PanelTemplates_TabResize = PanelTemplates_TabResize
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -794,6 +794,10 @@ function CH:StyleChat(frame)
 
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
+	if not frame.isDocked then
+		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
+	end
+
 	if frame.styled then return end
 
 	frame:SetFrameLevel(4)
@@ -841,14 +845,11 @@ function CH:StyleChat(frame)
 		if right then right:SetTexture() end
 	end
 
+	tab.Text:ClearAllPoints()
+	tab.Text:Point('CENTER', tab, 0, -1)
+
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.Left then
-		tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left
-	end
-
-	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
