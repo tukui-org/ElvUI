@@ -104,6 +104,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number12Font_o1,						NUMBER, blizz and 12 or size, 'OUTLINE')
 		E:SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, blizz and 12 or size, 'OUTLINE')
 		E:SetFont(_G.NumberFont_Shadow_Small,				NUMBER, blizz and 12 or size, 'SHADOW')
+		E:SetFont(_G.NumberFont_Small,						NUMBER, blizz and 12 or size)
 		E:SetFont(_G.NumberFontNormalSmall,					NUMBER, blizz and 12 or size, 'OUTLINE')	-- Calendar, EncounterJournal
 		E:SetFont(_G.Number13Font,							NUMBER, blizz and 13 or medium)
 		E:SetFont(_G.Number13FontGray,						NUMBER, blizz and 13 or medium, 'SHADOW')
