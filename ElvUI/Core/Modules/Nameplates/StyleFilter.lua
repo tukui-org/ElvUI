@@ -52,7 +52,6 @@ local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
-local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local BleedList = E.Libs.Dispel:GetBleedList()
@@ -794,9 +793,8 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		local below, above = trigger.amountBelow or 0, trigger.amountAbove or 0
 		local hasBelow, hasAbove = below > 0, above > 0
 		if hasBelow or hasAbove then
-			local amount = #C_NamePlate_GetNamePlates()
-			local isBelow = hasBelow and amount < below
-			local isAbove = hasAbove and amount > above
+			local isBelow = hasBelow and NP.numPlates < below
+			local isAbove = hasAbove and NP.numPlates > above
 			if hasBelow and hasAbove then
 				if isBelow and isAbove then passed = true else return end
 			elseif isBelow or isAbove then passed = true else
@@ -1438,7 +1436,6 @@ function NP:StyleFilterConfigure()
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
 				events.PLAYER_TARGET_CHANGED = 1
-				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
 				events.ForceUpdate = -1
 				events.PoolerUpdate = -1
@@ -1476,6 +1473,9 @@ function NP:StyleFilterConfigure()
 
 				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
 					events.NAME_PLATE_UNIT_REMOVED = 1
+					events.NAME_PLATE_UNIT_ADDED = 1
+				elseif not events.NAME_PLATE_UNIT_ADDED then
+					events.NAME_PLATE_UNIT_ADDED = 2
 				end
 
 				if t.unitInVehicle then
@@ -1663,7 +1663,10 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 
 		-- Trigger Event and (auraEvent or unitless or verifiedUnit); auraEvent is already unit verified by ShouldSkipAuraUpdate
-		if NP.StyleFilterTriggerEvents[event] and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
+		local trigger = NP.StyleFilterTriggerEvents[event]
+		if trigger == 2 and (frame.unit ~= arg1) then
+			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
+		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
 			pooler.frames[frame] = true
 		end
 	end
