@@ -778,40 +778,6 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Health
-	if trigger.healthThreshold then
-		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
-		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
-		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
-
-		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
-		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
-
-		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
-		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
-
-		if underHealth and overHealth then
-			if underThreshold and overThreshold then passed = true else return end
-		elseif underThreshold or overThreshold then passed = true else return end
-	end
-
-	-- Power
-	if trigger.powerThreshold then
-		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
-		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
-		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
-
-		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
-		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
-
-		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
-		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
-
-		if underPower and overPower then
-			if underThreshold and overThreshold then passed = true else return end
-		elseif underThreshold or overThreshold then passed = true else return end
-	end
-
 	-- Level
 	if trigger.level then
 		local myLevel = E.mylevel
@@ -1087,6 +1053,40 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
 			end
 		end
+	end
+
+	-- Health
+	if trigger.healthThreshold then
+		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
+		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
+		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
+
+		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
+		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
+
+		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
+		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
+
+		if underHealth and overHealth then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
+	end
+
+	-- Power
+	if trigger.powerThreshold then
+		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
+		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
+		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
+
+		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
+		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
+
+		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
+		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
+
+		if underPower and overPower then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Key Modifier
