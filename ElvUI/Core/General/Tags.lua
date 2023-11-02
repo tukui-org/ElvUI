@@ -422,6 +422,17 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		end
 	end)
 
+	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if targetName and strfind(targetName, '%s') then
+			targetName = Abbrev(targetName)
+		end
+
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
+	end)
+
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
 		if targetName then
@@ -450,6 +461,24 @@ E:AddTag('target', 'UNIT_TARGET', function(unit)
 	if targetName then
 		return targetName
 	end
+end)
+
+E:AddTag('target:abbrev', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = Abbrev(targetName)
+	end
+
+	return targetName
+end)
+
+E:AddTag('target:last', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = strmatch(targetName, '([%S]+)$')
+	end
+
+	return targetName
 end)
 
 E:AddTag('target:translit', 'UNIT_TARGET', function(unit)
@@ -1600,6 +1629,11 @@ E.TagInfo = {
 		['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	-- Target
 		['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
+		['target:abbrev:long'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 20 letters)" },
+		['target:abbrev:medium'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 15 letters)" },
+		['target:abbrev:short'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 10 letters)" },
+		['target:abbrev:veryshort'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 5 letters)" },
+		['target:abbrev'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
 		['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 		['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
 		['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
@@ -1609,6 +1643,7 @@ E.TagInfo = {
 		['target:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters" },
 		['target:veryshort:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
+		['target:last'] = { category = 'Target', description = "Displays the last word of the unit's target's name" },
 		['target'] = { category = 'Target', description = "Displays the current target of the unit" },
 	-- Threat
 		['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
