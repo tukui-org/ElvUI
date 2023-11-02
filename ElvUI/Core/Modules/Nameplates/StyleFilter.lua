@@ -778,51 +778,6 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Health
-	if trigger.healthThreshold then
-		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
-		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
-		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
-
-		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
-		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
-
-		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
-		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
-
-		if underHealth and overHealth then
-			if underThreshold and overThreshold then passed = true else return end
-		elseif underThreshold or overThreshold then passed = true else return end
-	end
-
-	-- Power
-	if trigger.powerThreshold then
-		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
-		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
-		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
-
-		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
-		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
-
-		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
-		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
-
-		if underPower and overPower then
-			if underThreshold and overThreshold then passed = true else return end
-		elseif underThreshold or overThreshold then passed = true else return end
-	end
-
-	-- Level
-	if trigger.level then
-		local myLevel = E.mylevel
-		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
-		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
-		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
-		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
-		local matchMyLevel = trigger.mylevel and (level == myLevel)
-		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
-	end
-
 	-- Quest Boss
 	if E.Retail and trigger.questBoss then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
@@ -833,6 +788,18 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		local resting = IsResting()
 		if (trigger.isResting and resting) or (trigger.notResting and not resting) then passed = true else return end
 	end
+
+	do -- Nameplate Amount Displaying
+		local below, above = trigger.amountBelow or 0, trigger.amountAbove or 0
+		local hasBelow, hasAbove = below > 0, above > 0
+		if hasBelow or hasAbove then
+			local isBelow = hasBelow and NP.numPlates < below
+			local isAbove = hasAbove and NP.numPlates > above
+			if hasBelow and hasAbove then
+				if isBelow and isAbove then passed = true else return end
+			elseif isBelow or isAbove then passed = true else
+				return
+	end end end
 
 	-- Target Existence
 	if trigger.requireTarget or trigger.noTarget then
@@ -991,6 +958,23 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
 	end
 
+	-- Unit Role
+	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
+		local role = UnitGroupRolesAssigned(frame.unit)
+		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
+	end
+
+	-- Level
+	if trigger.level then
+		local myLevel = E.mylevel
+		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
+		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
+		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
+		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
+		local matchMyLevel = trigger.mylevel and (level == myLevel)
+		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
+	end
+
 	-- NPC Title
 	if trigger.hasTitleNPC or trigger.noTitleNPC then
 		local npcTitle = E.TagFunctions.GetTitleNPC(frame.unit)
@@ -1010,12 +994,6 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	-- My Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[NP.TriggerConditions.roles[E.myrole]] then passed = true else return end
-	end
-
-	-- Unit Role
-	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
-		local role = UnitGroupRolesAssigned(frame.unit)
-		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
 	end
 
 	-- Unit Type
@@ -1087,6 +1065,40 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
 			end
 		end
+	end
+
+	-- Health
+	if trigger.healthThreshold then
+		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
+		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
+		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
+
+		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
+		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
+
+		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
+		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
+
+		if underHealth and overHealth then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
+	end
+
+	-- Power
+	if trigger.powerThreshold then
+		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
+		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
+		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
+
+		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
+		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
+
+		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
+		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
+
+		if underPower and overPower then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Key Modifier
@@ -1360,6 +1372,8 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
+	NAME_PLATE_UNIT_ADDED = true,
+	NAME_PLATE_UNIT_REMOVED = true,
 	GROUP_ROSTER_UPDATE = true,
 	INCOMING_RESURRECT_CHANGED = false,
 	MODIFIER_STATE_CHANGED = true,
@@ -1422,7 +1436,6 @@ function NP:StyleFilterConfigure()
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
 				events.PLAYER_TARGET_CHANGED = 1
-				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
 				events.ForceUpdate = -1
 				events.PoolerUpdate = -1
@@ -1456,6 +1469,13 @@ function NP:StyleFilterConfigure()
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
+				end
+
+				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
+					events.NAME_PLATE_UNIT_REMOVED = 1
+					events.NAME_PLATE_UNIT_ADDED = 1
+				elseif not events.NAME_PLATE_UNIT_ADDED then
+					events.NAME_PLATE_UNIT_ADDED = 2
 				end
 
 				if t.unitInVehicle then
@@ -1643,7 +1663,10 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 
 		-- Trigger Event and (auraEvent or unitless or verifiedUnit); auraEvent is already unit verified by ShouldSkipAuraUpdate
-		if NP.StyleFilterTriggerEvents[event] and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
+		local trigger = NP.StyleFilterTriggerEvents[event]
+		if trigger == 2 and (frame.unit ~= arg1) then
+			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
+		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
 			pooler.frames[frame] = true
 		end
 	end
