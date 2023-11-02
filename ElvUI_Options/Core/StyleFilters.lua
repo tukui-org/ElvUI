@@ -264,7 +264,10 @@ StyleFilters.triggers.args.known.args.spells.inline = true
 
 StyleFilters.triggers.args.combat = ACH:Group(L["Unit Conditions"], nil, 10, nil, function(info) local triggers = GetFilter(true) return triggers[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
 
-StyleFilters.triggers.args.combat.args.playerGroup = ACH:Group(L["Player"], nil, 1)
+StyleFilters.triggers.args.combat.args.amountBelow = ACH:Range(L["Amount Below"], nil, 1, { min = 0, max = 40, step = 1 })
+StyleFilters.triggers.args.combat.args.amountAbove = ACH:Range(L["Amount Above"], nil, 2, { min = 0, max = 40, step = 1 })
+
+StyleFilters.triggers.args.combat.args.playerGroup = ACH:Group(L["Player"], nil, 10)
 StyleFilters.triggers.args.combat.args.playerGroup.inline = true
 StyleFilters.triggers.args.combat.args.playerGroup.args.inCombat = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when you are in combat."], 1)
 StyleFilters.triggers.args.combat.args.playerGroup.args.outOfCombat = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when you are out of combat."], 2)
@@ -277,7 +280,7 @@ StyleFilters.triggers.args.combat.args.playerGroup.args.playerCanNotAttack = ACH
 StyleFilters.triggers.args.combat.args.playerGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 9, nil, nil, nil, nil, nil, nil, not E.Retail)
 StyleFilters.triggers.args.combat.args.playerGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 10, nil, nil, nil, nil, nil, nil, not E.Retail)
 
-StyleFilters.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 2)
+StyleFilters.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 20)
 StyleFilters.triggers.args.combat.args.unitGroup.inline = true
 StyleFilters.triggers.args.combat.args.unitGroup.args.inCombatUnit = ACH:Toggle(L["In Combat"], L["If enabled then the filter will only activate when the unit is in combat."], 1)
 StyleFilters.triggers.args.combat.args.unitGroup.args.outOfCombatUnit = ACH:Toggle(L["Out of Combat"], L["If enabled then the filter will only activate when the unit is out of combat."], 2)

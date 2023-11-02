@@ -52,6 +52,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
+local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local BleedList = E.Libs.Dispel:GetBleedList()
@@ -789,6 +790,19 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.isResting and resting) or (trigger.notResting and not resting) then passed = true else return end
 	end
 
+	do -- Nameplate Amount Displaying
+		local below, above = trigger.amountBelow or 0, trigger.amountAbove or 0
+		local hasBelow, hasAbove = below > 0, above > 0
+		if hasBelow or hasAbove then
+			local amount = #C_NamePlate_GetNamePlates()
+			local isBelow = hasBelow and amount < below
+			local isAbove = hasAbove and amount > above
+			if hasBelow and hasAbove then
+				if isBelow and isAbove then passed = true else return end
+			elseif isBelow or isAbove then passed = true else
+				return
+	end end end
+
 	-- Target Existence
 	if trigger.requireTarget or trigger.noTarget then
 		local target = UnitExists('target')
@@ -1360,6 +1374,8 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
+	NAME_PLATE_UNIT_ADDED = true,
+	NAME_PLATE_UNIT_REMOVED = true,
 	GROUP_ROSTER_UPDATE = true,
 	INCOMING_RESURRECT_CHANGED = false,
 	MODIFIER_STATE_CHANGED = true,
@@ -1456,6 +1472,10 @@ function NP:StyleFilterConfigure()
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
+				end
+
+				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
+					events.NAME_PLATE_UNIT_REMOVED = 1
 				end
 
 				if t.unitInVehicle then
