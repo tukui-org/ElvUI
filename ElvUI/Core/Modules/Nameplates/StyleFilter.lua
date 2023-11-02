@@ -778,17 +778,6 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Level
-	if trigger.level then
-		local myLevel = E.mylevel
-		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
-		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
-		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
-		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
-		local matchMyLevel = trigger.mylevel and (level == myLevel)
-		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
-	end
-
 	-- Quest Boss
 	if E.Retail and trigger.questBoss then
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
@@ -957,6 +946,23 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
 	end
 
+	-- Unit Role
+	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
+		local role = UnitGroupRolesAssigned(frame.unit)
+		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
+	end
+
+	-- Level
+	if trigger.level then
+		local myLevel = E.mylevel
+		local level = (frame.unit == 'player' and myLevel) or UnitLevel(frame.unit)
+		local curLevel = (trigger.curlevel and trigger.curlevel ~= 0 and (trigger.curlevel == level))
+		local minLevel = (trigger.minlevel and trigger.minlevel ~= 0 and (trigger.minlevel <= level))
+		local maxLevel = (trigger.maxlevel and trigger.maxlevel ~= 0 and (trigger.maxlevel >= level))
+		local matchMyLevel = trigger.mylevel and (level == myLevel)
+		if curLevel or minLevel or maxLevel or matchMyLevel then passed = true else return end
+	end
+
 	-- NPC Title
 	if trigger.hasTitleNPC or trigger.noTitleNPC then
 		local npcTitle = E.TagFunctions.GetTitleNPC(frame.unit)
@@ -976,12 +982,6 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	-- My Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[NP.TriggerConditions.roles[E.myrole]] then passed = true else return end
-	end
-
-	-- Unit Role
-	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
-		local role = UnitGroupRolesAssigned(frame.unit)
-		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
 	end
 
 	-- Unit Type
