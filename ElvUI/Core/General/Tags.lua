@@ -658,6 +658,15 @@ E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail a
 	return Hex(r, g, b)
 end, E.Classic)
 
+E:AddTag('permana', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+	local m = UnitPowerMax(unit)
+	if m == 0 then
+		return 0
+	else
+		return floor(UnitPower(unit, POWERTYPE_MANA) / m * 100 + .5)
+	end
+end)
+
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local color = ElvUF.colors.power.MANA
 	return Hex(color.r, color.g, color.b)
@@ -1470,7 +1479,8 @@ E.TagInfo = {
 		['additionalmana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:current:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:deficit:shortvalue'] = { category = 'Mana', description = "" },
-		['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
+		['permana'] = { category = 'Mana', description = "Displays the unit's mana percentage without decimals" },
+		['curmana'] = { category = 'Mana', description = "Displays the unit's current mana" },
 		['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
 		['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
 		['mana:current-percent'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full" },
@@ -1520,7 +1530,7 @@ E.TagInfo = {
 		['curpp'] = { category = 'Power', description = "Displays the unit's current power without decimals" },
 		['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
 		['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
-		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
+		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals" },
 		['power:current-max-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max-percent'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash" },
