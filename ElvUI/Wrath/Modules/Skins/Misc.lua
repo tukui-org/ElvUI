@@ -44,6 +44,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Width(300)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)

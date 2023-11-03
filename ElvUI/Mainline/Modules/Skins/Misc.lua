@@ -15,6 +15,12 @@ local function ClearSetTexture(texture, tex)
 	end
 end
 
+local function FixReadyCheckFrame(frame)
+	if frame.initiator and UnitIsUnit('player', frame.initiator) then
+		frame:Hide() -- bug fix, don't show it if player is initiator
+	end
+end
+
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
@@ -43,6 +49,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -30)
+	_G.ReadyCheckFrameText:Width(300)
 
 	local ListenerFrame = _G.ReadyCheckListenerFrame
 	S:HandleFrame(ListenerFrame)
@@ -52,12 +59,7 @@ function S:BlizzardMiscFrames()
 	TitleContainer:Point('TOPLEFT', 1, -1)
 	TitleContainer:Point('TOPRIGHT', -1, 0)
 
-	-- Bug fix, don't show it if player is initiator
-	ReadyCheckFrame:HookScript('OnShow', function(frame)
-		if frame.initiator and UnitIsUnit('player', frame.initiator) then
-			frame:Hide()
-		end
-	end)
+	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
