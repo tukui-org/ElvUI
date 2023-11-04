@@ -45,6 +45,7 @@ local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFri
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local hooksecurefunc = hooksecurefunc
 
 do	-- credit: oUF/private.lua
@@ -653,6 +654,11 @@ function NP:UnitNPCID(unit) -- also used by Bags.lua
 	return guid and select(6, strsplit('-', guid)), guid
 end
 
+function NP:UpdateNumPlates()
+	-- wish there was another way to get just the amount
+	NP.numPlates = #C_NamePlate_GetNamePlates()
+end
+
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
 end
@@ -759,6 +765,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
 		end
 
+		NP:UpdateNumPlates()
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 
@@ -816,6 +823,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate)
 		end
+
+		NP:UpdateNumPlates()
 
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
@@ -902,6 +911,7 @@ function NP:Initialize()
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
 	NP.multiplier = 0.35
+	NP.numPlates = 0
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then

@@ -98,22 +98,28 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.GameFontNormalHuge,					NORMAL, 20, outline) -- RaidWarning and RaidBossEmote Text
 
 		-- number fonts
-		E:SetFont(_G.SystemFont_Outline_Small,				NUMBER, blizz and 10 or small, 'OUTLINE')
 		E:SetFont(_G.Number11Font,							NUMBER, blizz and 11 or small)
+		E:SetFont(_G.Number11Font,							NUMBER, blizz and 11 or small)
+		E:SetFont(_G.Number12Font,							NUMBER, blizz and 12 or size)
 		E:SetFont(_G.Number12Font_o1,						NUMBER, blizz and 12 or size, 'OUTLINE')
 		E:SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, blizz and 12 or size, 'OUTLINE')
+		E:SetFont(_G.NumberFont_Shadow_Small,				NUMBER, blizz and 12 or size, 'SHADOW')
+		E:SetFont(_G.NumberFont_Small,						NUMBER, blizz and 12 or size)
+		E:SetFont(_G.NumberFontNormalSmall,					NUMBER, blizz and 12 or size, 'OUTLINE')	-- Calendar, EncounterJournal
 		E:SetFont(_G.Number13Font,							NUMBER, blizz and 13 or medium)
 		E:SetFont(_G.Number13FontGray,						NUMBER, blizz and 13 or medium, 'SHADOW')
 		E:SetFont(_G.Number13FontWhite,						NUMBER, blizz and 13 or medium, 'SHADOW')
 		E:SetFont(_G.Number13FontYellow,					NUMBER, blizz and 13 or medium, 'SHADOW')
-		E:SetFont(_G.NumberFont_Outline_Med,				NUMBER, blizz and 14 or medium, 'OUTLINE')
 		E:SetFont(_G.Number14FontGray,						NUMBER, blizz and 14 or medium, 'SHADOW')
 		E:SetFont(_G.Number14FontWhite,						NUMBER, blizz and 14 or medium, 'SHADOW')
+		E:SetFont(_G.NumberFont_Outline_Med,				NUMBER, blizz and 14 or medium, 'OUTLINE')
+		E:SetFont(_G.NumberFont_Shadow_Med,					NUMBER, blizz and 14 or medium, 'SHADOW')	-- Chat EditBox
+		E:SetFont(_G.NumberFontNormal,						NUMBER, blizz and 14 or medium, 'OUTLINE')
+		E:SetFont(_G.Number15Font,							NUMBER, blizz and 15 or medium)
 		E:SetFont(_G.NumberFont_Outline_Large,				NUMBER, blizz and 16 or big, outline)
-		E:SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, blizz and 16 or big, 'SHADOWOUTLINE')
-		E:SetFont(_G.Number18Font,							NUMBER, blizz and 18 or large)
-		E:SetFont(_G.Number18FontWhite,						NUMBER, blizz and 18 or large, 'SHADOW')
-		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, blizz and 30 or mega, thick)
+		E:SetFont(_G.Number18Font,							NUMBER, blizz and 18 or big)
+		E:SetFont(_G.Number18FontWhite,						NUMBER, blizz and 18 or big, 'SHADOW')
+		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, blizz and 30 or enormous, thick)
 
 		-- quest fonts (shadow variants)
 		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, blizz and 14 or medium, 'SHADOW', 0.49, 0.35, 0.05, 1)
@@ -130,6 +136,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.ReputationDetailFont,					NORMAL, blizz and 10 or small, 'SHADOW')	-- Rep Desc when clicking a rep
 		E:SetFont(_G.SpellFont_Small,						NORMAL, blizz and 10 or small)
 		E:SetFont(_G.SubSpellFont,							NORMAL, blizz and 10 or small)				-- Spellbook Sub Names
+		E:SetFont(_G.SystemFont_Outline_Small,				NORMAL, blizz and 10 or small, 'OUTLINE')
 		E:SetFont(_G.SystemFont_Shadow_Small,				NORMAL, blizz and 10 or small, 'SHADOW')
 		E:SetFont(_G.SystemFont_Small,						NORMAL, blizz and 10 or small)
 		E:SetFont(_G.Tooltip_Small,							NORMAL, blizz and 10 or small)
@@ -137,19 +144,15 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.FriendsFont_UserText,					NORMAL, blizz and 11 or small, 'SHADOW')
 		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, blizz and 11 or small, 'SHADOW')	-- Skill or Recipe description on TradeSkill frame
 		E:SetFont(_G.GameFontNormalSmall2,					NORMAL, blizz and 11 or small, 'SHADOW')	-- MissionUI Followers names
-		E:SetFont(_G.Number11Font,							NORMAL, blizz and 11 or small)
 		E:SetFont(_G.Fancy12Font,							NORMAL, blizz and 12 or size)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.FriendsFont_Normal,					NORMAL, blizz and 12 or size, 'SHADOW')
 		E:SetFont(_G.Game12Font,							NORMAL, blizz and 12 or size)				-- PVP Stuff
 		E:SetFont(_G.InvoiceFont_Med,						NORMAL, blizz and 12 or size)				-- Mail
-		E:SetFont(_G.Number12Font,							NORMAL, blizz and 12 or size)
-		E:SetFont(_G.NumberFont_Shadow_Small,				NORMAL, blizz and 12 or size, 'SHADOW')
 		E:SetFont(_G.SystemFont_Med1,						NORMAL, blizz and 12 or size)
 		E:SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, blizz and 12 or size, 'SHADOW')
 		E:SetFont(_G.Tooltip_Med,							NORMAL, blizz and 12 or size)
 		E:SetFont(_G.Game13FontShadow,						NORMAL, blizz and 13 or medium, 'SHADOW')	-- InspectPvpFrame
 		E:SetFont(_G.GameFontNormalMed1,					NORMAL, blizz and 13 or medium, 'SHADOW')	-- WoW Token Info
-		E:SetFont(_G.NumberFontNormalSmall,					NORMAL, blizz and 13 or medium, 'OUTLINE')	-- Calendar, EncounterJournal
 		E:SetFont(_G.QuestFont,								NORMAL, blizz and 13 or medium)
 		E:SetFont(_G.SystemFont_Med2,						NORMAL, blizz and 13 or medium)
 		E:SetFont(_G.SystemFont_Outline,					NORMAL, blizz and 13 or medium, outline)	-- WorldMap, Pet level
@@ -160,20 +163,19 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.GameFontNormalMed2,					NORMAL, blizz and 14 or medium, 'SHADOW')	-- Quest tracker
 		E:SetFont(_G.GameFontNormalMed3,					NORMAL, blizz and 14 or medium, 'SHADOW')
 		E:SetFont(_G.GameTooltipHeader,						NORMAL, blizz and 14 or medium)
-		E:SetFont(_G.NumberFont_Shadow_Med,					NORMAL, blizz and 14 or medium, 'SHADOW')	-- Chat EditBox
 		E:SetFont(_G.PriceFont,								NORMAL, blizz and 14 or medium)
 		E:SetFont(_G.SystemFont_Med3,						NORMAL, blizz and 14 or medium)
 		E:SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, blizz and 14 or medium, 'SHADOW')	-- Shows Order resourses on OrderHallTalentFrame
 		E:SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, blizz and 14 or medium, 'SHADOW')
 		E:SetFont(_G.Game15Font_o1,							NORMAL, blizz and 15 or medium)				-- CharacterStatsPane, ItemLevelFrame
 		E:SetFont(_G.MailFont_Large,						NORMAL, blizz and 15 or medium)				-- Mail
-		E:SetFont(_G.Number15Font,							NORMAL, blizz and 15 or medium)
 		E:SetFont(_G.QuestFont_Large,						NORMAL, blizz and 15 or medium)
 		E:SetFont(_G.Game16Font,							NORMAL, blizz and 16 or big)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.GameFontNormalLarge,					NORMAL, blizz and 16 or big, 'SHADOW')
 		E:SetFont(_G.QuestFont_Larger,						NORMAL, blizz and 16 or big)				-- Wrath
 		E:SetFont(_G.SystemFont_Large,						NORMAL, blizz and 16 or big)
 		E:SetFont(_G.SystemFont_Shadow_Large,				NORMAL, blizz and 16 or big, 'SHADOW')
+		E:SetFont(_G.SystemFont_Shadow_Large_Outline,		NORMAL, blizz and 16 or big, 'SHADOWOUTLINE')
 		E:SetFont(_G.Game18Font,							NORMAL, blizz and 18 or big)				-- MissionUI Bonus Chance
 		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, blizz and 18 or big, 'SHADOW')		-- Garrison Follower Names
 		E:SetFont(_G.QuestFont_Huge,						NORMAL, blizz and 18 or big)				-- Quest rewards title, Rewards

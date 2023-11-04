@@ -422,6 +422,17 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		end
 	end)
 
+	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if targetName and strfind(targetName, '%s') then
+			targetName = Abbrev(targetName)
+		end
+
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
+	end)
+
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
 		if targetName then
@@ -450,6 +461,24 @@ E:AddTag('target', 'UNIT_TARGET', function(unit)
 	if targetName then
 		return targetName
 	end
+end)
+
+E:AddTag('target:abbrev', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = Abbrev(targetName)
+	end
+
+	return targetName
+end)
+
+E:AddTag('target:last', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = strmatch(targetName, '([%S]+)$')
+	end
+
+	return targetName
 end)
 
 E:AddTag('target:translit', 'UNIT_TARGET', function(unit)
@@ -657,6 +686,15 @@ E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail a
 	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end, E.Classic)
+
+E:AddTag('permana', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+	local m = UnitPowerMax(unit)
+	if m == 0 then
+		return 0
+	else
+		return floor(UnitPower(unit, POWERTYPE_MANA) / m * 100 + .5)
+	end
+end)
 
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local color = ElvUF.colors.power.MANA
@@ -1470,7 +1508,8 @@ E.TagInfo = {
 		['additionalmana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:current:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:deficit:shortvalue'] = { category = 'Mana', description = "" },
-		['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
+		['permana'] = { category = 'Mana', description = "Displays the unit's mana percentage without decimals" },
+		['curmana'] = { category = 'Mana', description = "Displays the unit's current mana" },
 		['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
 		['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
 		['mana:current-percent'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full" },
@@ -1520,7 +1559,7 @@ E.TagInfo = {
 		['curpp'] = { category = 'Power', description = "Displays the unit's current power without decimals" },
 		['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
 		['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
-		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
+		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals" },
 		['power:current-max-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max-percent'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash" },
@@ -1590,6 +1629,11 @@ E.TagInfo = {
 		['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	-- Target
 		['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
+		['target:abbrev:long'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 20 letters)" },
+		['target:abbrev:medium'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 15 letters)" },
+		['target:abbrev:short'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 10 letters)" },
+		['target:abbrev:veryshort'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 5 letters)" },
+		['target:abbrev'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
 		['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 		['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
 		['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
@@ -1599,6 +1643,7 @@ E.TagInfo = {
 		['target:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters" },
 		['target:veryshort:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
+		['target:last'] = { category = 'Target', description = "Displays the last word of the unit's target's name" },
 		['target'] = { category = 'Target', description = "Displays the current target of the unit" },
 	-- Threat
 		['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
