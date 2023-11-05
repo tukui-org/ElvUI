@@ -185,23 +185,18 @@ local function hideIcons(element)
 	end
 end
 
-local guidCache = {}
-local function Update(self, event, arg1)
+local function Update(self, event)
 	local element = self.QuestIcons
 	if not element then return end
 
 	local unit = self.unit
 	if not unit then return end
 
-	if event == 'NAME_PLATE_UNIT_ADDED' or event == 'UNIT_NAME_UPDATE' then
-		local guid = UnitGUID(arg1)
-		if not guid then return end
-
-		if guidCache[unit] == guid then
-			return -- dont update the same one again on these events
-		else
-			guidCache[unit] = guid
-		end
+	local guid = UnitGUID(unit)
+	if element.guid ~= guid then
+		element.guid = guid
+	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+		return
 	end
 
 	if element.PreUpdate then
@@ -291,7 +286,6 @@ local function Enable(self)
 
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', Path, true)
 
 		return true
 	end
@@ -305,7 +299,6 @@ local function Disable(self)
 
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
 

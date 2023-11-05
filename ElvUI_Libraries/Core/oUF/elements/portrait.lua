@@ -62,12 +62,18 @@ local function Update(self, event, unit)
 
 	local guid = UnitGUID(unit)
 	local newGUID = element.guid ~= guid
+
+	if newGUID then
+		element.guid = guid
+	elseif event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+		return
+	end
+
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	local hasStateChanged = (event ~= 'NAME_PLATE_UNIT_ADDED' and event ~= 'OnUpdate' and newGUID) or (element.state ~= isAvailable)
+	local hasStateChanged = newGUID or element.state ~= isAvailable
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
-		element.guid = guid
 
 		if element.playerModel then
 			if not isAvailable then
