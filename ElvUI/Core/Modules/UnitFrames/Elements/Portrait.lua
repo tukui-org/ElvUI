@@ -2,12 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local rad = rad
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
@@ -153,7 +151,6 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetPaused(db.paused)
 	elseif db.style == 'Class' then
 		local _, className = UnitClass(unit)
-		local crop = CLASS_ICON_TCOORDS[className]
-		if crop then self:SetTexCoord(unpack(crop)) end
+		self:SetTexCoord(E:GetClassCoords(className))
 	end
 end

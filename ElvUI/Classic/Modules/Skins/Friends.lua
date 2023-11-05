@@ -254,7 +254,7 @@ function S:FriendsFrame()
 			if info.filename then
 				classTextColor = E:ClassColor(info.filename)
 				button.icon:Show()
-				button.icon:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[info.filename]))
+				button.icon:SetTexCoord(E:GetClassCoords(info.filename))
 			else
 				classTextColor = _G.HIGHLIGHT_FONT_COLOR
 				button.icon:Hide()
@@ -348,7 +348,7 @@ function S:FriendsFrame()
 						end
 					end
 
-					button.icon:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[classFileName]))
+					button.icon:SetTexCoord(E:GetClassCoords(classFileName))
 				end
 			end
 		else

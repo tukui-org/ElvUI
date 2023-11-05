@@ -194,7 +194,7 @@ function TT:RemoveTrashLines(tt)
 	end
 end
 
-function TT:GetLevelLine(tt, offset)
+function TT:GetLevelLine(tt, offset, raw)
 	if tt:IsForbidden() then return end
 
 	local info = tt:GetTooltipData()
@@ -206,7 +206,11 @@ function TT:GetLevelLine(tt, offset)
 
 		local lower = strlower(text)
 		if lower and (strfind(lower, LEVEL1) or strfind(lower, LEVEL2)) then
-			return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1] or nil
+			if raw then
+				return line, info.lines[i+1]
+			else
+				return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1]
+			end
 		end
 	end
 end

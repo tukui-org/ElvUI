@@ -23,8 +23,7 @@ local function UpdateNames(button)
 	if memberInfo and memberInfo.classID then
 		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
 		if classInfo then
-			local tcoords = _G.CLASS_ICON_TCOORDS[classInfo.classFile]
-			button.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			button.Class:SetTexCoord(E:GetClassCoords(classInfo.classFile, true))
 		end
 	end
 end

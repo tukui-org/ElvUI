@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -11,10 +10,29 @@ function NP:Portrait_PostUpdate()
 	local sf = NP:StyleFilterChanges(nameplate)
 
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
-		if db.portrait.classicon and nameplate.isPlayer then
-			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[nameplate.classFile]))
-			self.backdrop:Hide()
+		if nameplate.isPlayer then
+			local specIcon = db.portrait.specicon and nameplate.specIcon
+			if specIcon then
+				self:SetTexture(specIcon)
+				self.backdrop:Show()
+
+				if db.portrait.keepSizeRatio then
+					self:SetTexCoord(unpack(E.TexCoords))
+				else
+					self:SetTexCoord(E:CropRatio(self))
+				end
+			elseif db.portrait.classicon then
+				self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+				self.backdrop:Hide()
+
+				local classFile = nameplate.classFile
+				local coords = (not db.portrait.keepSizeRatio and classFile) and E:GetClassCoords(classFile, nil, true)
+				if coords then
+					self:SetTexCoord(E:CropRatio(self, coords))
+				else
+					self:SetTexCoord(E:GetClassCoords(classFile))
+				end
+			end
 		else
 			self:SetTexCoord(.18, .82, .18, .82)
 			self.backdrop:Show()
@@ -32,8 +50,9 @@ end
 
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nameplate:GetName() .. 'Portrait', 'OVERLAY', nil, 2)
-	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
+	Portrait:SetTexCoord(.18, .82, .18, .82)
+	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate

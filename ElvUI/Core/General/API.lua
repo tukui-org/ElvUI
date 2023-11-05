@@ -2,6 +2,7 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
+local TT = E:GetModule('Tooltip')
 local LCS = E.Libs.LCS
 
 local _G = _G
@@ -13,8 +14,10 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
+local GetClassInfo = GetClassInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -64,6 +67,96 @@ E.MountIDs = {}
 E.MountText = {}
 E.MountDragons = {}
 
+E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
+E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
+
+E.SpecByClass = {
+	DEATHKNIGHT	= { 250, 251, 252 },
+	DEMONHUNTER	= { 577, 581 },
+	DRUID		= { 102, 103, 104, 105 },
+	EVOKER		= { 1467, 1468, 1473},
+	HUNTER		= { 253, 254, 255 },
+	MAGE		= { 62, 63, 64 },
+	MONK		= { 268, 270, 269 },
+	PALADIN		= { 65, 66, 70 },
+	PRIEST		= { 256, 257, 258 },
+	ROGUE		= { 259, 260, 261 },
+	SHAMAN		= { 262, 263, 264 },
+	WARLOCK		= { 265, 266, 267 },
+	WARRIOR		= { 71, 72, 73 },
+}
+
+E.ClassName = { -- english locale
+	DEATHKNIGHT	= 'Death Knight',
+	DEMONHUNTER	= 'Demon Hunter',
+	DRUID		= 'Druid',
+	EVOKER		= 'Evoker',
+	HUNTER		= 'Hunter',
+	MAGE		= 'Mage',
+	MONK		= 'Monk',
+	PALADIN		= 'Paladin',
+	PRIEST		= 'Priest',
+	ROGUE		= 'Rogue',
+	SHAMAN		= 'Shaman',
+	WARLOCK		= 'Warlock',
+	WARRIOR		= 'Warrior',
+}
+
+E.SpecName = { -- english locale
+	-- Death Knight
+	[250]	= 'Blood',
+	[251]	= 'Frost',
+	[252]	= 'Unholy',
+	-- Demon Hunter
+	[577]	= 'Havoc',
+	[581]	= 'Vengeance',
+	-- Druids
+	[102]	= 'Balance',
+	[103]	= 'Feral',
+	[104]	= 'Guardian',
+	[105]	= 'Restoration',
+	-- Evoker
+	[1467]	= 'Devastation',
+	[1468]	= 'Preservation',
+	[1473]	= 'Augmentation',
+	-- Hunter
+	[253]	= 'Beast Mastery',
+	[254]	= 'Marksmanship',
+	[255]	= 'Survival',
+	-- Mage
+	[62]	= 'Arcane',
+	[63]	= 'Fire',
+	[64]	= 'Frost',
+	-- Monk
+	[268]	= 'Brewmaster',
+	[270]	= 'Mistweaver',
+	[269]	= 'Windwalker',
+	-- Paladin
+	[65]	= 'Holy',
+	[66]	= 'Protection',
+	[70]	= 'Retribution',
+	-- Priest
+	[256]	= 'Discipline',
+	[257]	= 'Holy',
+	[258]	= 'Shadow',
+	-- Rogue
+	[259]	= 'Assasination',
+	[260]	= 'Combat',
+	[261]	= 'Sublety',
+	-- Shaman
+	[262]	= 'Elemental',
+	[263]	= 'Enhancement',
+	[264]	= 'Restoration',
+	-- Walock
+	[265]	= 'Affliction',
+	[266]	= 'Demonology',
+	[267]	= 'Destruction',
+	-- Warrior
+	[71]	= 'Arms',
+	[72]	= 'Fury',
+	[73]	= 'Protection',
+}
+
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
@@ -101,7 +194,7 @@ do -- other non-english locales require this
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= '') and E.UnlocalizedClasses[className]
+		return E.UnlocalizedClasses[className]
 	end
 end
 
@@ -197,7 +290,7 @@ function E:GetPlayerRole()
 end
 
 function E:CheckRole()
-	E.myspec = E.Retail and GetSpecialization()
+	E.myspec = GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 end
 
@@ -675,6 +768,51 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 	end
 end
 
+function E:GetUnitSpecInfo(unit)
+	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
+	local specText = specLine and specLine.leftText
+	if specText then
+		return E.SpecInfoBySpecClass[specText]
+	end
+end
+
+function E:GetClassCoords(classFile, crop, get)
+	local t = _G.CLASS_ICON_TCOORDS[classFile]
+	if not t then return 0, 1, 0, 1 end
+
+	if get then
+		return t
+	elseif type(crop) == 'number' then
+		return t[1] + crop, t[2] - crop, t[3] + crop, t[4] - crop
+	elseif crop then
+		return t[1] + 0.022, t[2] - 0.025, t[3] + 0.022, t[4] - 0.025
+	else
+		return t[1], t[2], t[3], t[4]
+	end
+end
+
+function E:CropRatio(frame, coords)
+	local left, right, top, bottom = unpack(coords or E.TexCoords)
+
+	local width, height = frame:GetSize()
+	local ratio = width / height
+	if ratio > 1 then
+		local trimAmount = (1 - (1 / ratio)) * 0.5
+		top = top + trimAmount
+		bottom = bottom - trimAmount
+	else
+		local trimAmount = (1 - ratio) * 0.5
+		left = left + trimAmount
+		right = right - trimAmount
+	end
+
+	return left, right, top, bottom
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -693,6 +831,56 @@ function E:LoadAPI()
 
 			if isForDragonriding then
 				E.MountDragons[spellID] = mountID
+			end
+		end
+
+		do -- fill the spec info tables
+			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
+			local i = 1
+			local className, classFile, classID = GetClassInfo(i)
+			local male, female = MALE[classFile], FEMALE[classFile]
+			while classID do
+				for index, id in next, E.SpecByClass[classFile] do
+					local info = {
+						id = id,
+						index = index,
+						classFile = classFile,
+						className = className,
+						englishName = E.SpecName[id]
+					}
+
+					E.SpecInfoBySpecID[id] = info
+
+					for x = 3, 1, -1 do
+						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+
+						if x == 1 then -- SpecInfoBySpecID
+							info.name = name
+							info.desc = desc
+							info.icon = icon
+							info.role = role
+
+							E.SpecInfoBySpecClass[name..' '..className] = info
+						else
+							local copy = E:CopyTable({}, info)
+							copy.name = name
+							copy.desc = desc
+							copy.icon = icon
+							copy.role = role
+
+							local localized = (x == 3 and female) or male
+							copy.className = localized
+
+							E.SpecInfoBySpecClass[name..' '..localized] = copy
+						end
+					end
+				end
+
+				i = i + 1
+				className, classFile, classID = GetClassInfo(i)
+				male, female = MALE[classFile], FEMALE[classFile]
 			end
 		end
 

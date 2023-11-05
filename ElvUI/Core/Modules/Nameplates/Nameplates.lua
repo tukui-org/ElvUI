@@ -757,9 +757,18 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID, nameplate.unitGUID = NP:UnitNPCID(unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
+
+		local specID, specIcon
+		local spec = E.Retail and E:GetUnitSpecInfo(unit)
+		if spec then
+			specID, specIcon = spec.id, spec.icon
+		end
+
+		nameplate.specID = specID
+		nameplate.specIcon = specIcon
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
