@@ -7,8 +7,9 @@ local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfin
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local IsInInstance = IsInInstance
-local UIParent = UIParent
 local UnitIsPlayer = UnitIsPlayer
+local UIParent = UIParent
+local UnitGUID = UnitGUID
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
@@ -97,7 +98,7 @@ end
 NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
-	if IsInInstance() then return end
+	if IsInInstance() or UnitIsPlayer(unitID) then return end
 
 	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unitID)
@@ -181,22 +182,34 @@ local function hideIcons(element)
 	end
 end
 
+local guidCache = {}
 local function Update(self, event, arg1)
 	local element = self.QuestIcons
 	if not element then return end
 
-	local unit = (event == 'UNIT_NAME_UPDATE' and arg1) or self.unit
-	if unit ~= self.unit then return end
+	local unit = self.unit
+	if not unit then return end
+
+	if event == 'NAME_PLATE_UNIT_ADDED' or event == 'UNIT_NAME_UPDATE' then
+		local guid = UnitGUID(arg1)
+		if not guid then return end
+
+		if guidCache[unit] == guid then
+			return -- dont update the same one again on these events
+		else
+			guidCache[unit] = guid
+		end
+	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	hideIcons(element)
-
 	local QuestList = GetQuests(unit)
 	if QuestList then
 		element:Show()
+
+		hideIcons(element)
 	else
 		element:Hide()
 		return

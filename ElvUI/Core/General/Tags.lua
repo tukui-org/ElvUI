@@ -1160,7 +1160,7 @@ end
 
 do
 	local function GetQuestData(unit, which, Hex)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
+		if IsInInstance() or UnitIsPlayer(unit) then return end
 
 		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
