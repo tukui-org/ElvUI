@@ -171,14 +171,17 @@ local function GetQuests(unitID)
 	return QuestList
 end
 
+local function hideIcon(icon)
+	icon:Hide()
+
+	if icon.Text then
+		icon.Text:SetText('')
+	end
+end
+
 local function hideIcons(element)
 	for _, object in pairs(questIcons.iconTypes) do
-		local icon = element[object]
-		icon:Hide()
-
-		if icon.Text then
-			icon.Text:SetText('')
-		end
+		hideIcon(element[object])
 	end
 end
 
