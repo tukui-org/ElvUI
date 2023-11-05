@@ -28,7 +28,7 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local SetCVar = SetCVar
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
@@ -835,35 +835,52 @@ function E:LoadAPI()
 		end
 
 		do -- fill the spec info tables
-			local i = 1
-			local _, classFile, classID = GetClassInfo(i)
-			while classID do
-				for index, spec in next, E.SpecByClass[classFile] do
-					local id, name, desc, icon, role, specFile, specClass = GetSpecializationInfoByID(spec)
+			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
 
+			local i = 1
+			local className, classFile, classID = GetClassInfo(i)
+			local male, female = MALE[classFile], FEMALE[classFile]
+			while classID do
+				for index, id in next, E.SpecByClass[classFile] do
 					local info = {
 						id = id,
-						name = name,
-						desc = desc,
-						icon = icon,
-						role = role,
 						index = index,
-						classFile = specFile,
-						className = specClass,
+						classFile = classFile,
+						className = className,
 						englishName = E.SpecName[id]
 					}
 
-					local femaleClass = _G.LOCALIZED_CLASS_NAMES_FEMALE[specFile]
-					if specClass ~= femaleClass then
-						E.SpecInfoBySpecClass[name..' '..femaleClass] = info
-					end
-
-					E.SpecInfoBySpecClass[name..' '..specClass] = info
 					E.SpecInfoBySpecID[id] = info
+
+					for x = 3, 1, -1 do
+						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+
+						local copy = E:CopyTable({}, info)
+						copy.name = name
+						copy.desc = desc
+						copy.icon = icon
+						copy.role = role
+
+						if x == 1 then -- SpecInfoBySpecID
+							info.name = name
+							info.desc = desc
+							info.icon = icon
+							info.role = role
+
+							E.SpecInfoBySpecClass[name..' '..className] = copy
+						else
+							local localized = (x == 3 and female) or male
+							copy.className = localized
+
+							E.SpecInfoBySpecClass[name..' '..localized] = copy
+						end
+					end
 				end
 
 				i = i + 1
-				_, classFile, classID = GetClassInfo(i)
+				className, classFile, classID = GetClassInfo(i)
+				male, female = MALE[classFile], FEMALE[classFile]
 			end
 		end
 
