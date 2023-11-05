@@ -11,11 +11,10 @@ function NP:Portrait_PostUpdate()
 
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
 		if nameplate.isPlayer then
-			self.backdrop:Hide()
-
 			local specIcon = db.portrait.specicon and nameplate.specIcon
 			if specIcon then
 				self:SetTexture(specIcon)
+				self.backdrop:Show()
 
 				if db.portrait.keepSizeRatio then
 					self:SetTexCoord(unpack(E.TexCoords))
@@ -24,6 +23,7 @@ function NP:Portrait_PostUpdate()
 				end
 			elseif db.portrait.classicon then
 				self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+				self.backdrop:Hide()
 
 				local coords = not db.portrait.keepSizeRatio and E:GetClassCoords(nameplate.classFile, nil, true)
 				if coords then
@@ -32,7 +32,6 @@ function NP:Portrait_PostUpdate()
 					self:SetTexCoord(E:GetClassCoords(nameplate.classFile))
 				end
 			end
-
 		else
 			self:SetTexCoord(.18, .82, .18, .82)
 			self.backdrop:Show()
