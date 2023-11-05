@@ -856,20 +856,20 @@ function E:LoadAPI()
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
 
-						local copy = E:CopyTable({}, info)
-						copy.name = name
-						copy.desc = desc
-						copy.icon = icon
-						copy.role = role
-
 						if x == 1 then -- SpecInfoBySpecID
 							info.name = name
 							info.desc = desc
 							info.icon = icon
 							info.role = role
 
-							E.SpecInfoBySpecClass[name..' '..className] = copy
+							E.SpecInfoBySpecClass[name..' '..className] = info
 						else
+							local copy = E:CopyTable({}, info)
+							copy.name = name
+							copy.desc = desc
+							copy.icon = icon
+							copy.role = role
+
 							local localized = (x == 3 and female) or male
 							copy.className = localized
 
