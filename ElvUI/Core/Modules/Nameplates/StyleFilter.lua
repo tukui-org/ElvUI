@@ -1047,8 +1047,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		-- Location
 		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
 			if activeID and next(trigger.location.instanceIDs) then
-				local instanceID = NP.InstanceID
-				local instanceName = NP.InstanceName
+				local instanceID, instanceName = NP.InstanceID, NP.InstanceName
 				if (instanceID and trigger.location.instanceIDs[tostring(instanceID)]) or trigger.location.instanceIDs[instanceName] then passed = true else return end
 			end
 			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
