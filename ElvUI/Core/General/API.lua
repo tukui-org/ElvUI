@@ -782,11 +782,8 @@ end
 
 function E:GetClassCoords(classFile, crop, get)
 	local t = _G.CLASS_ICON_TCOORDS[classFile]
-	if get then
-		return t
-	elseif not t then
-		return 0, 1, 0, 1
-	end
+	if get and t then return t end
+	if not t then return 0, 1, 0, 1 end
 
 	if type(crop) == 'number' then
 		return t[1] + crop, t[2] - crop, t[3] + crop, t[4] - crop

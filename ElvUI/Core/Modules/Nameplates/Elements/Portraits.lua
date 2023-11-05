@@ -66,12 +66,12 @@ function NP:Update_Portrait(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
 
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
+		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
+
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 			nameplate.Portrait:ForceUpdate()
 		end
-
-		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 
 		-- These values are forced in name only mode inside of DisablePlate
 		if not (db.nameOnly or sf.NameOnly) then
