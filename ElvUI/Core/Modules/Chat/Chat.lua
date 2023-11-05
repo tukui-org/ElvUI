@@ -602,12 +602,6 @@ function CH:CopyButtonOnLeave()
 	self:SetAlpha(tabText:IsShown() and 0.35 or 0)
 end
 
-function CH:ChatFrameTab_SetAlpha(_, skip)
-	if skip then return end
-	local chat = CH:GetOwner(self)
-	self:SetAlpha((not chat.isDocked or self.selected) and 1 or 0.6, true)
-end
-
 do
 	local charCount
 	function CH:CountLinkCharacters()
@@ -848,7 +842,14 @@ function CH:StyleChat(frame)
 	tab.Text:ClearAllPoints()
 	tab.Text:Point('CENTER', tab, 0, -1)
 
-	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
+	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
+		local chat = CH:GetOwner(t)
+		if alpha ~= 1 and (not chat.isDocked or _G.GeneralDockManager.selected:GetID() == t:GetID()) then
+			t:SetAlpha(1)
+		elseif alpha < 0.6 then
+			t:SetAlpha(0.6)
+		end
+	end)
 
 	tab:Height(22)
 
