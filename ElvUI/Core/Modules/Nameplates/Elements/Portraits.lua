@@ -50,8 +50,9 @@ end
 
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate:CreateTexture(nameplate:GetName() .. 'Portrait', 'OVERLAY', nil, 2)
-	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
+	Portrait:SetTexCoord(.18, .82, .18, .82)
+	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
@@ -66,12 +67,12 @@ function NP:Update_Portrait(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
 
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
-		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
-
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 			nameplate.Portrait:ForceUpdate()
 		end
+
+		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 
 		-- These values are forced in name only mode inside of DisablePlate
 		if not (db.nameOnly or sf.NameOnly) then
