@@ -15,7 +15,6 @@ function NP:Update_TagText(nameplate, element, db, hide)
 	if db.enable and not hide then
 		nameplate:Tag(element, db.format or '')
 		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-		element:UpdateTag()
 
 		element:ClearAllPoints()
 		element:Point(E.InversePoints[db.position], db.parent == 'Nameplate' and nameplate or nameplate[db.parent], db.position, db.xOffset, db.yOffset)

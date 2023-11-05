@@ -40,12 +40,11 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- ElvUI block
-local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
+local UnitIsUnit = UnitIsUnit
 local UnitIsConnected = UnitIsConnected
 local UnitIsVisible = UnitIsVisible
 local UnitClassBase = UnitClassBase
-local SetPortraitTexture = SetPortraitTexture
 -- end block
 
 local function Update(self, event, unit)
@@ -62,8 +61,9 @@ local function Update(self, event, unit)
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local guid = UnitGUID(unit)
+	local newGUID = element.guid ~= guid
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	local hasStateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
+	local hasStateChanged = (event ~= 'NAME_PLATE_UNIT_ADDED' and event ~= 'OnUpdate' and newGUID) or (element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
@@ -74,21 +74,17 @@ local function Update(self, event, unit)
 				element:SetCamDistanceScale(0.25)
 				element:SetPortraitZoom(0)
 				element:SetPosition(0, 0, 0.25)
-				element:ClearModel()
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
-			else
+			elseif newGUID then
 				element:SetCamDistanceScale(1)
 				element:SetPortraitZoom(1)
 				element:SetPosition(0, 0, 0)
-				element:ClearModel()
 				element:SetUnit(unit)
 			end
-		elseif not element.customTexture then -- ElvUI changed
-			local class = element.showClass and UnitClassBase(unit)
-			if class then
-				element:SetAtlas('classicon-' .. class)
-			else
-				SetPortraitTexture(element, unit)
+		elseif element.useClassBase then
+			local classBase = UnitClassBase(unit)
+			if classBase then
+				element:SetAtlas('classicon-' .. classBase)
 			end
 		end
 	end
