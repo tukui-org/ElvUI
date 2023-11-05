@@ -13,9 +13,9 @@ function NP:Portrait_PostUpdate()
 		if nameplate.isPlayer then
 			self.backdrop:Hide()
 
-			local spec = E.Retail and db.portrait.specicon and nameplate.unit and E:GetUnitSpecInfo(nameplate.unit)
-			if spec and spec.icon then
-				self:SetTexture(spec.icon)
+			local specIcon = db.portrait.specicon and nameplate.specIcon
+			if specIcon then
+				self:SetTexture(specIcon)
 
 				if db.portrait.keepSizeRatio then
 					self:SetTexCoord(unpack(E.TexCoords))
