@@ -28,7 +28,7 @@ function NP:Portrait_PostUpdate()
 				local classFile = nameplate.classFile
 				local coords = (not db.portrait.keepSizeRatio and classFile) and E:GetClassCoords(classFile, nil, true)
 				if coords then
-					self:SetTexCoord(E:CropRatio(self, coords))
+					self:SetTexCoord(E:CropRatio(self, coords, 0.1))
 				else
 					self:SetTexCoord(E:GetClassCoords(classFile))
 				end
