@@ -25,11 +25,12 @@ function NP:Portrait_PostUpdate()
 				self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 				self.backdrop:Hide()
 
-				local coords = not db.portrait.keepSizeRatio and E:GetClassCoords(nameplate.classFile, nil, true)
+				local classFile = nameplate.classFile
+				local coords = (not db.portrait.keepSizeRatio and classFile) and E:GetClassCoords(classFile, nil, true)
 				if coords then
 					self:SetTexCoord(E:CropRatio(self, coords))
 				else
-					self:SetTexCoord(E:GetClassCoords(nameplate.classFile))
+					self:SetTexCoord(E:GetClassCoords(classFile))
 				end
 			end
 		else
