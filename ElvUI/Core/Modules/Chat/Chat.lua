@@ -605,7 +605,8 @@ end
 function CH:ChatFrameTab_SetAlpha(_, skip)
 	if skip then return end
 	local chat = CH:GetOwner(self)
-	self:SetAlpha((not chat.isDocked or self.selected) and 1 or 0.6, true)
+	local selected = _G.GeneralDockManager.selected
+	self:SetAlpha((not chat.isDocked or chat == selected) and 1 or 0.6, true)
 end
 
 do

@@ -718,7 +718,6 @@ function NP:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, Hea
 	end
 	if Portrait then
 		NP:Update_Portrait(frame)
-		frame.Portrait:ForceUpdate()
 	end
 
 	-- bar stuff

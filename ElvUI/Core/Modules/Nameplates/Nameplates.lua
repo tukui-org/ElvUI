@@ -356,7 +356,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 			nameplate.Castbar:SetAlpha(0)
 			nameplate.ClassPower:SetAlpha(0)
 		end
-	elseif updateBase then
+	elseif updateBase and db.enable then
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -378,7 +378,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
-	else
+	elseif db.enable then
 		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
 end

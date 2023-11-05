@@ -7,8 +7,9 @@ local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfin
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local IsInInstance = IsInInstance
-local UIParent = UIParent
 local UnitIsPlayer = UnitIsPlayer
+local UIParent = UIParent
+local UnitGUID = UnitGUID
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
@@ -97,7 +98,7 @@ end
 NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
-	if IsInInstance() then return end
+	if IsInInstance() or UnitIsPlayer(unitID) then return end
 
 	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unitID)
@@ -170,33 +171,43 @@ local function GetQuests(unitID)
 	return QuestList
 end
 
-local function hideIcons(element)
-	for _, object in pairs(questIcons.iconTypes) do
-		local icon = element[object]
-		icon:Hide()
+local function hideIcon(icon)
+	icon:Hide()
 
-		if icon.Text then
-			icon.Text:SetText('')
-		end
+	if icon.Text then
+		icon.Text:SetText('')
 	end
 end
 
-local function Update(self, event, arg1)
+local function hideIcons(element)
+	for _, object in pairs(questIcons.iconTypes) do
+		hideIcon(element[object])
+	end
+end
+
+local function Update(self, event)
 	local element = self.QuestIcons
 	if not element then return end
 
-	local unit = (event == 'UNIT_NAME_UPDATE' and arg1) or self.unit
-	if unit ~= self.unit then return end
+	local unit = self.unit
+	if not unit then return end
+
+	local guid = UnitGUID(unit)
+	if element.guid ~= guid then
+		element.guid = guid
+	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+		return
+	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	hideIcons(element)
-
 	local QuestList = GetQuests(unit)
 	if QuestList then
 		element:Show()
+
+		hideIcons(element)
 	else
 		element:Hide()
 		return
@@ -275,7 +286,6 @@ local function Enable(self)
 
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', Path, true)
 
 		return true
 	end
@@ -289,7 +299,6 @@ local function Disable(self)
 
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
 

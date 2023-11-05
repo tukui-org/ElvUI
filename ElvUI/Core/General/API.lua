@@ -798,17 +798,18 @@ function E:GetClassCoords(classFile, crop, get)
 	end
 end
 
-function E:CropRatio(frame, coords)
+function E:CropRatio(frame, coords, mult)
 	local left, right, top, bottom = unpack(coords or E.TexCoords)
+	if not mult then mult = 0.5 end
 
 	local width, height = frame:GetSize()
 	local ratio = width / height
 	if ratio > 1 then
-		local trimAmount = (1 - (1 / ratio)) * 0.5
+		local trimAmount = (1 - (1 / ratio)) * mult
 		top = top + trimAmount
 		bottom = bottom - trimAmount
 	else
-		local trimAmount = (1 - ratio) * 0.5
+		local trimAmount = (1 - ratio) * mult
 		left = left + trimAmount
 		right = right - trimAmount
 	end

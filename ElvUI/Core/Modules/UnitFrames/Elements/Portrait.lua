@@ -3,11 +3,7 @@ local UF = E:GetModule('UnitFrames')
 
 local rad = rad
 local hooksecurefunc = hooksecurefunc
-
-local UnitClass = UnitClass
 local CreateFrame = CreateFrame
-
-local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
 function UF:ModelAlphaFix(value)
 	local portrait = self.Portrait3D
@@ -29,6 +25,7 @@ function UF:Construct_Portrait(frame, which)
 		backdrop:SetFrameLevel(frame:GetFrameLevel())
 		backdrop:SetTemplate(nil, nil, nil, nil, true)
 		portrait.backdrop = backdrop
+		portrait.useClassBase = true
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
 		portrait:CreateBackdrop(nil, nil, nil, nil, true)
@@ -63,14 +60,6 @@ function UF:Configure_Portrait(frame)
 	portrait.backdrop:SetShown(frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY)
 	portrait:SetAlpha(frame.USE_PORTRAIT_OVERLAY and portrait.db.overlayAlpha or 1)
 	portrait:SetShown(frame.USE_PORTRAIT)
-
-	if portrait.db.style == 'Class' then
-		portrait:SetTexture(classIcon)
-		portrait.customTexture = classIcon
-	elseif portrait.db.style == '2D' then
-		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
-		portrait.customTexture = nil
-	end
 
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
@@ -150,7 +139,6 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetDesaturation(db.desaturation)
 		self:SetPaused(db.paused)
 	elseif db.style == 'Class' then
-		local _, className = UnitClass(unit)
-		self:SetTexCoord(E:GetClassCoords(className))
+		self:SetTexCoord(unpack(E.TexCoords))
 	end
 end
