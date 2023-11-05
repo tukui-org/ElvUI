@@ -39,6 +39,7 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
@@ -769,6 +770,8 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 end
 
 function E:GetUnitSpecInfo(unit)
+	if not UnitIsPlayer(unit) then return end
+
 	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
