@@ -194,7 +194,7 @@ do -- other non-english locales require this
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= '') and E.UnlocalizedClasses[className]
+		return E.UnlocalizedClasses[className]
 	end
 end
 
@@ -838,29 +838,34 @@ function E:LoadAPI()
 
 		do -- fill the spec info tables
 			local i = 1
-			local className, classFile, classID = GetClassInfo(i)
+			local _, classFile, classID = GetClassInfo(i)
 			while classID do
 				for index, spec in next, E.SpecByClass[classFile] do
 					local id, name, desc, icon, role, specFile, specClass = GetSpecializationInfoByID(spec)
 
 					local info = {
 						id = id,
-						index = index,
 						name = name,
 						desc = desc,
 						icon = icon,
 						role = role,
+						index = index,
 						classFile = specFile,
 						className = specClass,
 						englishName = E.SpecName[id]
 					}
 
+					local femaleClass = _G.LOCALIZED_CLASS_NAMES_FEMALE[specFile]
+					if specClass ~= femaleClass then
+						E.SpecInfoBySpecClass[name..' '..femaleClass] = info
+					end
+
+					E.SpecInfoBySpecClass[name..' '..specClass] = info
 					E.SpecInfoBySpecID[id] = info
-					E.SpecInfoBySpecClass[name..' '..className] = info
 				end
 
 				i = i + 1
-				className, classFile, classID = GetClassInfo(i)
+				_, classFile, classID = GetClassInfo(i)
 			end
 		end
 
