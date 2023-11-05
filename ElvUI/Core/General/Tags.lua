@@ -689,7 +689,7 @@ E:AddTag('pvptimer', 1, function(unit)
 	end
 end)
 
-E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and (E.myclass == 'DEATHKNIGHT' or E.myclass == 'MONK') and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
+E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
 	local _, _, r, g, b = GetClassPower(unit)
 	return Hex(r, g, b)
 end, E.Classic)
@@ -1298,7 +1298,7 @@ do
 	end, not E.Retail)
 end
 
-E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+E:AddTag('spec', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
 
 	-- try to get spec from tooltip
@@ -1313,6 +1313,10 @@ E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(uni
 		return name
 	end
 end, not E.Retail)
+
+E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+	return _TAGS.spec(unit)
+end)
 
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()
@@ -1421,7 +1425,8 @@ E.TagInfo = {
 		['class'] = { category = 'Class', description = "Displays the class of the unit, if that unit is a player" },
 		['class:icon'] = { category = 'Class', description = "Displays the class icon of the unit, if that unit is a player" },
 		['smartclass'] = { category = 'Class', description = "Displays the player's class or creature's type" },
-		['specialization'] = { hidden = not E.Retail, category = 'Class', description = "Displays your current specialization as text" },
+		['spec'] = { hidden = not E.Retail, category = 'Class', description = "Displays the specialization icon of the unit as text" },
+		['spec:icon'] = { hidden = not E.Retail, category = 'Class', description = "Displays the specialization icon of the unit, if that unit is a player" },
 	-- Classification
 		['affix'] = { category = 'Classification', description = "Displays low level critter mobs" },
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
