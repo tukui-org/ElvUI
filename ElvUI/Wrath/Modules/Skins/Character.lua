@@ -10,7 +10,6 @@ local HasPetUI = HasPetUI
 local hooksecurefunc = hooksecurefunc
 local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
-local UnitFactionGroup = UnitFactionGroup
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
