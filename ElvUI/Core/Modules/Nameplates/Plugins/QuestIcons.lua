@@ -98,8 +98,6 @@ end
 NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
-	if IsInInstance() or UnitIsPlayer(unitID) then return end
-
 	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
@@ -192,11 +190,22 @@ local function Update(self, event)
 	local unit = self.unit
 	if not unit then return end
 
+	-- this only runs on npc units anyways
+	if NP.InstanceType ~= 'none' then
+		return
+	end
+
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
 		element.guid = guid
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
-		return
+		return -- new guid was the same
+	end
+
+	if element.lastLookup and element.guid == UnitGUID(element.lastLookup) then
+		return -- last guid was the same
+	else
+		element.lastLookup = unit
 	end
 
 	if element.PreUpdate then

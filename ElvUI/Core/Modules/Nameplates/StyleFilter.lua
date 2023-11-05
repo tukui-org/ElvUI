@@ -9,7 +9,6 @@ local ipairs, next, pairs = ipairs, next, pairs
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
-local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
@@ -1028,19 +1027,15 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	do
 		local activeID = trigger.location.instanceIDEnabled
 		local activeType = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
-		local instanceName, instanceType, difficultyID, instanceID, _
 
-		-- Instance Type
-		if activeType or activeID then
-			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
-		end
-
+		local instanceType = NP.InstanceType
 		if activeType then
 			if trigger.instanceType[instanceType] then
 				passed = true
 
 				-- Instance Difficulty
 				if instanceType == 'raid' or instanceType == 'party' then
+					local difficultyID = NP.InstanceDifficultyID
 					local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
 					for _, value in pairs(D) do
 						if value and not D[NP.TriggerConditions.difficulties[difficultyID]] then return end
@@ -1052,6 +1047,8 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		-- Location
 		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
 			if activeID and next(trigger.location.instanceIDs) then
+				local instanceID = NP.InstanceID
+				local instanceName = NP.InstanceName
 				if (instanceID and trigger.location.instanceIDs[tostring(instanceID)]) or trigger.location.instanceIDs[instanceName] then passed = true else return end
 			end
 			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
