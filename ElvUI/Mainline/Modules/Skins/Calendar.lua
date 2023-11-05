@@ -5,7 +5,6 @@ local _G = _G
 local next, unpack = next, unpack
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local hooksecurefunc = hooksecurefunc
 
 local function SkinContainer(frame, container)
@@ -17,9 +16,8 @@ local function SkinContainer(frame, container)
 	end
 end
 
-local function StripClassTextures(button, class)
-	local tcoords = CLASS_ICON_TCOORDS[class]
-	button:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+local function StripClassTextures(button, classFile)
+	button:SetTexCoord(E:GetClassCoords(classFile, true))
 end
 
 local function HandleEventIcon(icon)

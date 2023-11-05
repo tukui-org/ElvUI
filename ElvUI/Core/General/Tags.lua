@@ -3,7 +3,6 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
-local LCS = E.Libs.LCS
 local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
@@ -27,7 +26,6 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetRuneCooldown = GetRuneCooldown
-local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetTime = GetTime
 local GetTitleName = GetTitleName
@@ -191,65 +189,74 @@ local ClassPowers = {
 	WARLOCK		= Enum.PowerType.SoulShards
 }
 
-local function GetClassPower(Class)
-	local spec = GetSpecialization()
-	local min, max, r, g, b
+local function GetClassPower(unit)
+	local spec, unitClass, Min, Max, r, g, b
+	if unit == 'player' then
+		spec = E.myspec
+		unitClass = E.myclass
+	elseif E.Retail then
+		local info = E:GetUnitSpecInfo(unit)
+		if info then
+			spec = info.index
+			unitClass = info.classFile
+		end
+	end
 
 	-- try stagger
-	local monk = Class == 'MONK'
+	local monk = unitClass == 'MONK'
 	if monk and spec == SPEC_MONK_BREWMASTER then
-		min = UnitStagger('player') or 0
-		max = UnitHealthMax('player')
+		Min = UnitStagger(unit) or 0
+		Max = UnitHealthMax(unit)
 
-		local staggerRatio = min / max
+		local staggerRatio = Min / Max
 		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
 		local color = ElvUF.colors.power.STAGGER[staggerIndex]
 		r, g, b = color.r, color.g, color.b
 	end
 
 	-- try special powers or combo points
-	local barType = not r and ClassPowers[Class]
+	local barType = not r and ClassPowers[unitClass]
 	if barType then
-		local dk = Class == 'DEATHKNIGHT'
-		min = (dk and 0) or UnitPower('player', barType)
-		max = (dk and 6) or UnitPowerMax('player', barType)
+		local dk = unitClass == 'DEATHKNIGHT'
+		Min = (dk and 0) or UnitPower(unit, barType)
+		Max = (dk and 6) or UnitPowerMax(unit, barType)
 
-		if dk then
-			for i = 1, max do
+		if dk and unit == 'player' then
+			for i = 1, Max do
 				local _, _, runeReady = GetRuneCooldown(i)
 				if runeReady then
-					min = min + 1
+					Min = Min + 1
 				end
 			end
 		end
 
-		if min > 0 then
-			local power = ElvUF.colors.ClassBars[Class]
-			local color = (monk and power[min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+		if Min > 0 then
+			local power = ElvUF.colors.ClassBars[unitClass]
+			local color = (monk and power[Min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 			r, g, b = color.r, color.g, color.b
 		end
 	elseif not r then
-		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
-		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
+		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
+		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
 
-		if min > 0 then
+		if Min > 0 then
 			local combo = ElvUF.colors.ComboPoints
 			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = ElvUF:ColorGradient(min, max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
+			r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 		end
 	end
 
 	-- try additional mana
-	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[Class]
-	if altIndex and altIndex[UnitPowerType('player')] then
-		min = UnitPower('player', POWERTYPE_MANA)
-		max = UnitPowerMax('player', POWERTYPE_MANA)
+	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+	if altIndex and altIndex[UnitPowerType(unit)] then
+		Min = UnitPower(unit, POWERTYPE_MANA)
+		Max = UnitPowerMax(unit, POWERTYPE_MANA)
 
 		local mana = ElvUF.colors.power.MANA
 		r, g, b = mana.r, mana.g, mana.b
 	end
 
-	return min or 0, max or 0, r or 1, g or 1, b or 1
+	return Min or 0, Max or 0, r or 1, g or 1, b or 1
 end
 E.TagFunctions.GetClassPower = GetClassPower
 
@@ -315,8 +322,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-		local min, max = GetClassPower(E.myclass)
+	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+		local min, max = GetClassPower(unit)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
@@ -366,8 +373,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end, not E.Retail)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-			local min, max = GetClassPower(E.myclass)
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+			local min, max = GetClassPower(unit)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
@@ -682,8 +689,8 @@ E:AddTag('pvptimer', 1, function(unit)
 	end
 end)
 
-E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and (E.myclass == 'DEATHKNIGHT' or E.myclass == 'MONK') and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function()
-	local _, _, r, g, b = GetClassPower(E.myclass)
+E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and (E.myclass == 'DEATHKNIGHT' or E.myclass == 'MONK') and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
+	local _, _, r, g, b = GetClassPower(unit)
 	return Hex(r, g, b)
 end, E.Classic)
 
@@ -818,13 +825,19 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 	end
 end)
 
-E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
-	local currentSpec = UnitIsPlayer(unit) and GetSpecialization()
-	if currentSpec then
-		local _, currentSpecName = GetSpecializationInfo(currentSpec)
-		if currentSpecName then
-			return currentSpecName
-		end
+E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+	if not UnitIsPlayer(unit) then return end
+
+	-- try to get spec from tooltip
+	local info = E.Retail and E:GetUnitSpecInfo(unit)
+	if info then
+		return info.name
+	end
+
+	-- fallback, player only
+	if unit == 'player' and E.myspec then
+		local _, name = GetSpecializationInfo(E.myspec)
+		return name
 	end
 end, not E.Retail)
 

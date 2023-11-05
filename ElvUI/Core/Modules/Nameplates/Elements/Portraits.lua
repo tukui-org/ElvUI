@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -11,10 +10,18 @@ function NP:Portrait_PostUpdate()
 	local sf = NP:StyleFilterChanges(nameplate)
 
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
-		if db.portrait.classicon and nameplate.isPlayer then
-			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-			self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[nameplate.classFile]))
+		if nameplate.isPlayer then
 			self.backdrop:Hide()
+
+			local info = db.portrait.specicon and nameplate.unit and E:GetUnitSpecInfo(nameplate.unit)
+			if info and info.icon then
+				self:SetTexture(info.icon)
+				self:SetTexCoord(unpack(E.TexCoords))
+			elseif db.portrait.classicon then
+				self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+				self:SetTexCoord(E:GetClassCoords(nameplate.classFile))
+			end
+
 		else
 			self:SetTexCoord(.18, .82, .18, .82)
 			self.backdrop:Show()
