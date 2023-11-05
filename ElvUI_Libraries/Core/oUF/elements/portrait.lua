@@ -41,24 +41,17 @@ local oUF = ns.oUF
 
 -- ElvUI block
 local UnitGUID = UnitGUID
-local UnitIsUnit = UnitIsUnit
 local UnitIsConnected = UnitIsConnected
 local UnitIsVisible = UnitIsVisible
 local UnitClassBase = UnitClassBase
 -- end block
 
-local function Update(self, event, unit)
-	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
-
+local function Update(self, event)
 	local element = self.Portrait
+	if not element then return end
 
-	--[[ Callback: Portrait:PreUpdate(unit)
-	Called before the element has been updated.
-
-	* self - the Portrait element
-	* unit - the unit for which the update has been triggered (string)
-	--]]
-	if(element.PreUpdate) then element:PreUpdate(unit) end
+	local unit = self.unit
+	if not unit then return end
 
 	local guid = UnitGUID(unit)
 	local newGUID = element.guid ~= guid
@@ -68,6 +61,14 @@ local function Update(self, event, unit)
 	elseif event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
 		return
 	end
+
+	--[[ Callback: Portrait:PreUpdate(unit)
+	Called before the element has been updated.
+
+	* self - the Portrait element
+	* unit - the unit for which the update has been triggered (string)
+	--]]
+	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
 	local hasStateChanged = newGUID or element.state ~= isAvailable
