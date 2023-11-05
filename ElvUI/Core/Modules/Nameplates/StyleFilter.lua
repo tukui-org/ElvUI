@@ -617,6 +617,7 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 	if Portrait then
 		c.Portrait = true
 		NP:Update_Portrait(frame)
+		frame.Portrait:ForceUpdate()
 	end
 
 	if NameOnly then

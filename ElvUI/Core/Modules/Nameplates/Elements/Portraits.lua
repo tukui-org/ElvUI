@@ -7,7 +7,9 @@ local hooksecurefunc = hooksecurefunc
 function NP:Portrait_PreUpdate()
 	local nameplate = self.__owner
 
-	self.backdrop:Hide()
+	if self.backdrop then
+		self.backdrop:Hide()
+	end
 
 	local db = NP:PlateDB(nameplate)
 	local specIcon = db.portrait and db.portrait.specicon and nameplate.specIcon
