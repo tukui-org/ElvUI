@@ -16,10 +16,21 @@ function NP:Portrait_PostUpdate()
 			local info = db.portrait.specicon and nameplate.unit and E:GetUnitSpecInfo(nameplate.unit)
 			if info and info.icon then
 				self:SetTexture(info.icon)
-				self:SetTexCoord(unpack(E.TexCoords))
+
+				if db.portrait.keepSizeRatio then
+					self:SetTexCoord(unpack(E.TexCoords))
+				else
+					self:SetTexCoord(E:CropRatio(self))
+				end
 			elseif db.portrait.classicon then
 				self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-				self:SetTexCoord(E:GetClassCoords(nameplate.classFile))
+
+				local coords = not db.portrait.keepSizeRatio and E:GetClassCoords(nameplate.classFile, nil, true)
+				if coords then
+					self:SetTexCoord(E:CropRatio(self, coords))
+				else
+					self:SetTexCoord(E:GetClassCoords(nameplate.classFile))
+				end
 			end
 
 		else

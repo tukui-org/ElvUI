@@ -579,6 +579,7 @@ local NP_Portrait = {
 	position = 'RIGHT',
 	classicon = true,
 	specicon = E.Retail,
+	keepSizeRatio = true,
 	height = 28,
 	width = 28,
 	xOffset = 3,

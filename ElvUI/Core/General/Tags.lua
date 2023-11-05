@@ -825,22 +825,6 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 	end
 end)
 
-E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
-	if not UnitIsPlayer(unit) then return end
-
-	-- try to get spec from tooltip
-	local info = E.Retail and E:GetUnitSpecInfo(unit)
-	if info then
-		return info.name
-	end
-
-	-- fallback, player only
-	if unit == 'player' and E.myspec then
-		local _, name = GetSpecializationInfo(E.myspec)
-		return name
-	end
-end, not E.Retail)
-
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
 end)
@@ -1293,15 +1277,42 @@ do
 	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
-		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			local icon = classIcons[class]
-			if icon then
-				return format(classIcon, icon)
-			end
+		if not UnitIsPlayer(unit) then return end
+
+		local _, class = UnitClass(unit)
+		local icon = classIcons[class]
+		if icon then
+			return format(classIcon, icon)
 		end
 	end)
+
+	local specIcon = [[|T%s:16:16:0:0:64:64:4:60:4:60|t]]
+	E:AddTag('spec:icon', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+		if not UnitIsPlayer(unit) then return end
+
+		-- try to get spec from tooltip
+		local info = E.Retail and E:GetUnitSpecInfo(unit)
+		if info then
+			return info.icon and format(specIcon, info.icon)
+		end
+	end, not E.Retail)
 end
+
+E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+	if not UnitIsPlayer(unit) then return end
+
+	-- try to get spec from tooltip
+	local info = E.Retail and E:GetUnitSpecInfo(unit)
+	if info then
+		return info.name
+	end
+
+	-- fallback, player only
+	if unit == 'player' and E.myspec then
+		local _, name = GetSpecializationInfo(E.myspec)
+		return name
+	end
+end, not E.Retail)
 
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()

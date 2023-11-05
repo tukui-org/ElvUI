@@ -780,9 +780,11 @@ function E:GetUnitSpecInfo(unit)
 	end
 end
 
-function E:GetClassCoords(classFile, crop)
+function E:GetClassCoords(classFile, crop, get)
 	local t = _G.CLASS_ICON_TCOORDS[classFile]
-	if not t then
+	if get then
+		return t
+	elseif not t then
 		return 0, 1, 0, 1
 	end
 
@@ -793,6 +795,24 @@ function E:GetClassCoords(classFile, crop)
 	else
 		return t[1], t[2], t[3], t[4]
 	end
+end
+
+function E:CropRatio(frame, coords)
+	local left, right, top, bottom = unpack(coords or E.TexCoords)
+
+	local width, height = frame:GetSize()
+	local ratio = width / height
+	if ratio > 1 then
+		local trimAmount = (1 - (1 / ratio)) * 0.5
+		top = top + trimAmount
+		bottom = bottom - trimAmount
+	else
+		local trimAmount = (1 - ratio) * 0.5
+		left = left + trimAmount
+		right = right - trimAmount
+	end
+
+	return left, right, top, bottom
 end
 
 function E:LoadAPI()

@@ -201,26 +201,10 @@ function AB:TrimIcon(button, masque)
 	local icon = button.icon or button.Icon
 	if not icon then return end
 
-	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
-	local changeRatio = button.db and not button.db.keepSizeRatio
-
-	if changeRatio then
-		local width, height = button:GetSize()
-		local ratio = width / height
-		if ratio > 1 then
-			local trimAmount = (1 - (1 / ratio)) * 0.5
-			top = top + trimAmount
-			bottom = bottom - trimAmount
-		else
-			local trimAmount = (1 - ratio) * 0.5
-			left = left + trimAmount
-			right = right - trimAmount
-		end
-	end
-
-	-- always when masque is off, otherwise only when keepSizeRatio is off
-	if not masque or changeRatio then
-		icon:SetTexCoord(left, right, top, bottom)
+	if not masque and button.db and not button.db.keepSizeRatio then
+		icon:SetTexCoord(E:CropRatio(button, button.db.customCoords))
+	else
+		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 end
 
