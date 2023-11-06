@@ -36,7 +36,6 @@ local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
 local UIParent = UIParent
-local UnitAffectingCombat = UnitAffectingCombat
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -1131,7 +1130,7 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
+		if UnitIsPlayer(unit) then return end
 
 		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
