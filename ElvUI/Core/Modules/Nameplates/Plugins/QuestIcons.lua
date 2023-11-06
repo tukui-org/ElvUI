@@ -2,18 +2,24 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
+local ipairs, ceil, floor, tonumber = ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
-local GetTime = GetTime
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
+
+local questElements = {
+	DEFAULT = 'Default',
+	KILL = 'Skull',
+	CHAT = 'Chat',
+	QUEST_ITEM = 'Item'
+}
 
 local questIcons = {
 	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
@@ -179,7 +185,7 @@ local function hideIcon(icon)
 end
 
 local function hideIcons(element)
-	for _, object in pairs(questIcons.iconTypes) do
+	for _, object in next, questIcons.iconTypes do
 		hideIcon(element[object])
 	end
 end
@@ -192,64 +198,41 @@ local function Update(self, event)
 	if not unit then return end
 
 	-- this only runs on npc units anyways
-	if NP.InstanceType ~= 'none' then
-		return
-	end
+	if NP.InstanceType ~= 'none' then return end
 
+	local list -- quests
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
-		element.guid = guid
+		element.guid = guid -- if its the same guid on these events reuse the quest data
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
-		return -- new guid was the same
-	end
-
-	local now = GetTime()
-	if (element.lastTime + 0.5) < now or event ~= 'NAME_PLATE_UNIT_ADDED' then
-		element.lastTime = now
-	else
-		return -- same half second
+		list = element.lastQuests
 	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	local QuestList = GetQuests(unit)
-	if QuestList then
-		element:Show()
-
-		hideIcons(element)
-	else
-		element:Hide()
-		return
+	if not list then
+		list = GetQuests(unit)
+		element.lastQuests = list
 	end
 
-	local shownCount
-	for i = 1, #QuestList do
-		local quest = QuestList[i]
-		local objectiveCount = quest.objectiveCount
-		local questType = quest.questType
-		local isPercent = quest.isPercent
+	element:SetShown(list)
 
-		if isPercent or objectiveCount > 0 then
-			local icon
-			if questType == 'DEFAULT' then
-				icon = element.Default
-			elseif questType == 'KILL' then
-				icon = element.Skull
-			elseif questType == 'CHAT' then
-				icon = element.Chat
-			elseif questType == 'QUEST_ITEM' then
-				icon = element.Item
-			end
+	if list then
+		local shown = -1
+		for _, quest in next, list do
+			local objectiveCount = quest.objectiveCount
+			local questType = quest.questType
+			local isPercent = quest.isPercent
 
+			local icon = (isPercent or objectiveCount > 0) and element[questElements[questType]]
 			if icon and not icon:IsShown() then
-				shownCount = (shownCount and shownCount + 1) or 0
+				shown = shown + 1
 
-				local size = icon.size or 25
 				local setPosition = icon.position or 'TOPLEFT'
 				local newPosition = E.InversePoints[setPosition]
-				local offset = shownCount * (5 + size)
+				local offset = shown * (5 + (icon.size or 25))
 
 				icon:Show()
 				icon:ClearAllPoints()
@@ -308,6 +291,8 @@ local function Disable(self)
 	if element then
 		element:Hide()
 		hideIcons(element)
+
+		element.lastQuests = nil
 
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
