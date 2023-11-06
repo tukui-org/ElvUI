@@ -18,7 +18,6 @@ local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 
 local iconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
-local updateQuests = {}
 local activeQuests = {} --[questTitle] = quest data
 local activeTitles = {} --[questID] = questTitle1
 local questElements = {
@@ -30,7 +29,6 @@ local questElements = {
 
 NP.QuestIcons = {
 	iconTypes = iconTypes,
-	updateQuests = updateQuests,
 	activeQuests = activeQuests,
 	activeTitles = activeTitles,
 }
