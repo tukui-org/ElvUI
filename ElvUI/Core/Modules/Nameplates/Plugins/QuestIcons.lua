@@ -269,7 +269,6 @@ local function Enable(self)
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		element.lastTime = 0
 
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
 			element.Default:SetAtlas('SmallQuestBang')
