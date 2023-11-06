@@ -11,7 +11,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
 
 local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
-local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
@@ -303,19 +302,24 @@ local function Disable(self)
 	end
 end
 
-local function UpdateQuest(index, id)
-	local title = C_QuestLog_GetTitleForLogIndex(index)
+local function UpdateQuest(id, index)
+	local title = C_QuestLog_GetTitleForQuestID(id)
 	if not title then return end
+
+	if not index then -- get the index now
+		index = C_QuestLog_GetLogIndexForQuestID(id)
+	end
 
 	local _, texture = GetQuestLogSpecialItemInfo(index)
 	local level = C_QuestLog_GetQuestDifficultyLevel(id)
+
 	activeTitles[id] = title
 	activeQuests[title] = {
 		id = id,
 		index = index,
 		texture = texture,
 		difficulty = level,
-		title = C_QuestLog_GetTitleForQuestID(id),
+		title = title,
 		color = GetQuestDifficultyColor(level),
 		objectives = GetQuestObjectives(id, texture)
 	}
@@ -337,18 +341,12 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			activeTitles[questID] = nil
 		end
 	elseif event == 'QUEST_ACCEPTED' then
-		local index = C_QuestLog_GetLogIndexForQuestID(questID)
-		if index then
-			UpdateQuest(index, questID)
-		end
+		UpdateQuest(questID)
 	elseif event == 'QUEST_WATCH_UPDATE' then
 		updateQuests[questID] = true
 	elseif event == 'QUEST_LOG_UPDATE' then
 		for id in next, updateQuests do
-			local index = C_QuestLog_GetLogIndexForQuestID(id)
-			if index then
-				UpdateQuest(index, id)
-			end
+			UpdateQuest(id)
 
 			updateQuests[id] = nil
 		end
@@ -361,7 +359,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		for index = 1, C_QuestLog_GetNumQuestLogEntries() do
 			local id = C_QuestLog_GetQuestIDForLogIndex(index)
 			if id and id > 0 then
-				UpdateQuest(index, id)
+				UpdateQuest(id, index)
 			end
 		end
 	end
