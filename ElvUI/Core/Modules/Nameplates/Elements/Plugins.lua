@@ -42,19 +42,19 @@ function NP:Update_QuestIcons(nameplate)
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 
+		local font = LSM:Fetch('font', db.font)
 		for _, object in ipairs(NP.QuestIcons.iconTypes) do
 			local icon = nameplate.QuestIcons[object]
-			icon:Size(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)
+			icon:Size(db.size)
 
-			local xoffset = strfind(db.textPosition, 'LEFT') and -2 or 2
-			local yoffset = strfind(db.textPosition, 'BOTTOM') and 2 or -2
 			icon.Text:ClearAllPoints()
-			icon.Text:Point('CENTER', icon, db.textPosition, xoffset, yoffset)
-			icon.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			icon.Text:Point('CENTER', icon, db.textPosition, db.textXOffset, db.textYOffset)
+			icon.Text:FontTemplate(font, db.fontSize, db.fontOutline)
 			icon.Text:SetJustifyH('CENTER')
 
-			icon.size, icon.position = db.size, db.position
+			-- settings to send to the plugin
+			icon.size, icon.position, icon.spacing = db.size, db.position, db.spacing
 		end
 	elseif nameplate:IsElementEnabled('QuestIcons') then
 		nameplate:DisableElement('QuestIcons')

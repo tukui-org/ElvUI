@@ -234,7 +234,7 @@ local function Update(self, event)
 
 				local setPosition = icon.position or 'TOPLEFT'
 				local newPosition = E.InversePoints[setPosition]
-				local offset = shown * (5 + (icon.size or 25))
+				local offset = shown * ((icon.spacing or 5) + (icon.size or 25))
 
 				icon:Show()
 				icon:ClearAllPoints()
