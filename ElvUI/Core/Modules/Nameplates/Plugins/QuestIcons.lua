@@ -333,12 +333,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			questIcons.activeQuests[title] = nil
 			questIcons.activeTitles[questID] = nil
 		end
-	elseif event == 'QUEST_ACCEPTED' then
-		local index = C_QuestLog_GetLogIndexForQuestID(questID)
-		if index then
-			UpdateQuest(index, questID)
-		end
-	elseif event == 'QUEST_LOG_CRITERIA_UPDATE' then
+	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
 		local index = C_QuestLog_GetLogIndexForQuestID(questID)
 		if index then
 			UpdateQuest(index, questID)
