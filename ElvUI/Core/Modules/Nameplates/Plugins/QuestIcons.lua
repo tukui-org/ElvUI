@@ -198,7 +198,7 @@ local function Update(self, event)
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
 		element.guid = guid
-	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
 		return -- new guid was the same
 	end
 

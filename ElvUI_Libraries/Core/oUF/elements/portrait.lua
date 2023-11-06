@@ -56,10 +56,10 @@ local function Update(self, event)
 	local guid = UnitGUID(unit)
 	local newGUID = element.guid ~= guid
 
-	local spamEvents = event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate'
+	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
 		element.guid = guid
-	elseif spamEvents then
+	elseif nameplate then
 		return
 	end
 
@@ -72,7 +72,7 @@ local function Update(self, event)
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	local hasStateChanged = newGUID or (not spamEvents or element.state ~= isAvailable)
+	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
