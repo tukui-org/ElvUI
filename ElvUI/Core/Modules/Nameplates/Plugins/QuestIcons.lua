@@ -333,14 +333,14 @@ frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event, questID)
 	if not E.Retail then return end
 
-	if event == 'QUEST_REMOVED' then
+	if event == 'QUEST_ACCEPTED' then
+		UpdateQuest(questID)
+	elseif event == 'QUEST_REMOVED' then
 		local title = activeTitles[questID]
 		if title then
 			activeQuests[title] = nil
 			activeTitles[questID] = nil
 		end
-	elseif event == 'QUEST_ACCEPTED' then
-		UpdateQuest(questID)
 	else -- QUEST_LOG_UPDATE and the first PLAYER_ENTERING_WORLD
 		wipe(activeQuests)
 		wipe(activeTitles)
