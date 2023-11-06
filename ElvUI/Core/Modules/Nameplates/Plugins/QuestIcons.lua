@@ -109,8 +109,8 @@ NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 local function GetQuests(unitID)
 	local QuestList, notMyQuest, activeID
 	local info = E.ScanTooltip:GetUnitInfo(unitID)
-	if info and info.lines[3] then
-		for _, line in next, info.lines, 3 do
+	if info and info.lines[2] then
+		for _, line in next, info.lines, 2 do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
@@ -122,8 +122,8 @@ local function GetQuests(unitID)
 
 				-- this line comes from one line up in the tooltip
 				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
-				local activeTitle = tryTitle and questIcons.activeQuests[text]
-				if activeTitle then activeID = activeTitle end
+				local lastTitle = tryTitle and questIcons.activeQuests[text]
+				if lastTitle then activeID = lastTitle end
 
 				if count then
 					local type, index, texture, _
@@ -220,6 +220,8 @@ local function Update(self, event)
 	element:SetShown(list)
 
 	if list then
+		hideIcons(element)
+
 		local shown = -1
 		for _, quest in next, list do
 			local objectiveCount = quest.objectiveCount
@@ -302,6 +304,7 @@ end
 local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_REMOVED')
+frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event)
 	wipe(questIcons.indexByID)

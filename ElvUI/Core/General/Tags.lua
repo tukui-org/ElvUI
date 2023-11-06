@@ -1158,9 +1158,9 @@ do
 
 		local notMyQuest, activeID
 		local info = E.ScanTooltip:GetUnitInfo(unit)
-		if not (info and info.lines[3]) then return end
+		if not (info and info.lines[2]) then return end
 
-		for _, line in next, info.lines, 3 do
+		for _, line in next, info.lines, 2 do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
@@ -1172,8 +1172,8 @@ do
 
 				-- this line comes from one line up in the tooltip
 				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
-				local activeTitle = tryTitle and NP.QuestIcons.activeQuests[text]
-				if activeTitle then activeID = activeTitle end
+				local lastTitle = tryTitle and NP.QuestIcons.activeQuests[text]
+				if lastTitle then activeID = lastTitle end
 
 				if count then
 					if not which then
