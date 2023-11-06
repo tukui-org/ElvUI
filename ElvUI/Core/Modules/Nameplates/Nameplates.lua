@@ -356,7 +356,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 			nameplate.Castbar:SetAlpha(0)
 			nameplate.ClassPower:SetAlpha(0)
 		end
-	elseif updateBase then
+	elseif updateBase and db.enable then
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -378,7 +378,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
-	else
+	elseif db.enable then
 		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
 end
@@ -548,7 +548,7 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	NP.InstanceType = select(2, GetInstanceInfo())
+	NP.InstanceName, NP.InstanceType, NP.InstanceDifficultyID, _, _, _, _, NP.InstanceID = GetInstanceInfo()
 
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
@@ -757,9 +757,18 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID, nameplate.unitGUID = NP:UnitNPCID(unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
+
+		local specID, specIcon
+		local spec = E.Retail and E:GetUnitSpecInfo(unit)
+		if spec then
+			specID, specIcon = spec.id, spec.icon
+		end
+
+		nameplate.specID = specID
+		nameplate.specIcon = specIcon
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)

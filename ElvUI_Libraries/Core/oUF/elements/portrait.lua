@@ -40,18 +40,28 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- ElvUI block
-local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
 local UnitIsConnected = UnitIsConnected
 local UnitIsVisible = UnitIsVisible
 local UnitClassBase = UnitClassBase
-local SetPortraitTexture = SetPortraitTexture
 -- end block
 
-local function Update(self, event, unit)
-	if(not unit or not UnitIsUnit(self.unit, unit)) then return end
-
+local function Update(self, event)
 	local element = self.Portrait
+	if not element then return end
+
+	local unit = self.unit
+	if not unit then return end
+
+	local guid = UnitGUID(unit)
+	local newGUID = element.guid ~= guid
+
+	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
+	if newGUID then
+		element.guid = guid
+	elseif nameplate then
+		return
+	end
 
 	--[[ Callback: Portrait:PreUpdate(unit)
 	Called before the element has been updated.
@@ -61,34 +71,28 @@ local function Update(self, event, unit)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local guid = UnitGUID(unit)
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	local hasStateChanged = event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable
+	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
-		element.guid = guid
 
 		if element.playerModel then
 			if not isAvailable then
 				element:SetCamDistanceScale(0.25)
 				element:SetPortraitZoom(0)
 				element:SetPosition(0, 0, 0.25)
-				element:ClearModel()
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			else
 				element:SetCamDistanceScale(1)
 				element:SetPortraitZoom(1)
 				element:SetPosition(0, 0, 0)
-				element:ClearModel()
 				element:SetUnit(unit)
 			end
-		elseif not element.customTexture then -- ElvUI changed
-			local class = element.showClass and UnitClassBase(unit)
-			if class then
-				element:SetAtlas('classicon-' .. class)
-			else
-				SetPortraitTexture(element, unit)
+		elseif element.useClassBase then
+			local classBase = UnitClassBase(unit)
+			if classBase then
+				element:SetAtlas('classicon-' .. classBase)
 			end
 		end
 	end

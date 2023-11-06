@@ -14,9 +14,10 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
-local GetInstanceInfo = GetInstanceInfo
 local GetClassInfo = GetClassInfo
+local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -28,7 +29,6 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local GetSpecializationInfoByID = GetSpecializationInfoByID
 local SetCVar = SetCVar
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
@@ -39,11 +39,15 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole
 
+local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
+local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
+local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
@@ -194,7 +198,7 @@ do -- other non-english locales require this
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= '') and E.UnlocalizedClasses[className]
+		return E.UnlocalizedClasses[className]
 	end
 end
 
@@ -769,6 +773,8 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 end
 
 function E:GetUnitSpecInfo(unit)
+	if not UnitIsPlayer(unit) then return end
+
 	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
@@ -782,13 +788,11 @@ end
 
 function E:GetClassCoords(classFile, crop, get)
 	local t = _G.CLASS_ICON_TCOORDS[classFile]
+	if not t then return 0, 1, 0, 1 end
+
 	if get then
 		return t
-	elseif not t then
-		return 0, 1, 0, 1
-	end
-
-	if type(crop) == 'number' then
+	elseif type(crop) == 'number' then
 		return t[1] + crop, t[2] - crop, t[3] + crop, t[4] - crop
 	elseif crop then
 		return t[1] + 0.022, t[2] - 0.025, t[3] + 0.022, t[4] - 0.025
@@ -797,22 +801,59 @@ function E:GetClassCoords(classFile, crop, get)
 	end
 end
 
-function E:CropRatio(frame, coords)
+function E:CropRatio(frame, coords, mult)
 	local left, right, top, bottom = unpack(coords or E.TexCoords)
+	if not mult then mult = 0.5 end
 
 	local width, height = frame:GetSize()
 	local ratio = width / height
 	if ratio > 1 then
-		local trimAmount = (1 - (1 / ratio)) * 0.5
+		local trimAmount = (1 - (1 / ratio)) * mult
 		top = top + trimAmount
 		bottom = bottom - trimAmount
 	else
-		local trimAmount = (1 - ratio) * 0.5
+		local trimAmount = (1 - ratio) * mult
 		left = left + trimAmount
 		right = right - trimAmount
 	end
 
 	return left, right, top, bottom
+end
+
+function E:ScanTooltip_UnitInfo(unit)
+	if C_TooltipInfo_GetUnit then
+		return C_TooltipInfo_GetUnit(unit)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_InventoryInfo(unit, slot)
+	if C_TooltipInfo_GetInventoryItem then
+		return C_TooltipInfo_GetInventoryItem(unit, slot)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetInventoryItem(unit, slot)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_HyperlinkInfo(link)
+	if C_TooltipInfo_GetHyperlink then
+		return C_TooltipInfo_GetHyperlink(link)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetHyperlink(link)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
 end
 
 function E:LoadAPI()
@@ -837,30 +878,52 @@ function E:LoadAPI()
 		end
 
 		do -- fill the spec info tables
+			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
 			local i = 1
 			local className, classFile, classID = GetClassInfo(i)
+			local male, female = MALE[classFile], FEMALE[classFile]
 			while classID do
-				for index, spec in next, E.SpecByClass[classFile] do
-					local id, name, desc, icon, role, specFile, specClass = GetSpecializationInfoByID(spec)
-
+				for index, id in next, E.SpecByClass[classFile] do
 					local info = {
 						id = id,
 						index = index,
-						name = name,
-						desc = desc,
-						icon = icon,
-						role = role,
-						classFile = specFile,
-						className = specClass,
+						classFile = classFile,
+						className = className,
 						englishName = E.SpecName[id]
 					}
 
 					E.SpecInfoBySpecID[id] = info
-					E.SpecInfoBySpecClass[name..' '..className] = info
+
+					for x = 3, 1, -1 do
+						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+
+						if x == 1 then -- SpecInfoBySpecID
+							info.name = name
+							info.desc = desc
+							info.icon = icon
+							info.role = role
+
+							E.SpecInfoBySpecClass[name..' '..className] = info
+						else
+							local copy = E:CopyTable({}, info)
+							copy.name = name
+							copy.desc = desc
+							copy.icon = icon
+							copy.role = role
+
+							local localized = (x == 3 and female) or male
+							copy.className = localized
+
+							E.SpecInfoBySpecClass[name..' '..localized] = copy
+						end
+					end
 				end
 
 				i = i + 1
 				className, classFile, classID = GetClassInfo(i)
+				male, female = MALE[classFile], FEMALE[classFile]
 			end
 		end
 
@@ -874,6 +937,10 @@ function E:LoadAPI()
 		E:CompatibleTooltip(E.SpellBookTooltip)
 		E:CompatibleTooltip(_G.GameTooltip)
 	end
+
+	E.ScanTooltip.GetUnitInfo = E.ScanTooltip_UnitInfo
+	E.ScanTooltip.GetHyperlinkInfo = E.ScanTooltip_HyperlinkInfo
+	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
 	if E.Retail or E.Wrath then
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')

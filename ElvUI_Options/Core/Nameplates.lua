@@ -379,7 +379,6 @@ local function GetUnitSettings(unit, name)
 	if unit == 'PLAYER' or unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
 		group.args.healthGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 10)
 
-		group.args.portraitGroup.args.classicon = ACH:Toggle(L["Class Icon"], nil, 20)
 		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21, nil, nil, nil, nil, nil, nil, not E.Retail)
 		group.args.portraitGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 22, nil, nil, nil, nil, nil, nil, not E.Retail)
 

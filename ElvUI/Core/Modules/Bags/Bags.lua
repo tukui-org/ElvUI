@@ -46,7 +46,6 @@ local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local UIParent = UIParent
 local UnitAffectingCombat = UnitAffectingCombat
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
@@ -381,6 +380,12 @@ function B:UpdateItemDisplay()
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
+				if B.db.itemLevel then
+					B:UpdateItemLevel(slot)
+				else
+					slot.itemLevel:SetText('')
+				end
+
 				slot.itemLevel:ClearAllPoints()
 				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
@@ -551,12 +556,8 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
 		return true, true
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetHyperlink(itemLink)
-		E.ScanTooltip:Show()
-
 		local isQuestItem, isStarterItem
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetHyperlinkInfo(itemLink)
 		if info then
 			for i = BIND_START, BIND_END do
 				local line = info.lines[i]

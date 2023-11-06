@@ -35,8 +35,6 @@ local IsInGroup = IsInGroup
 local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UIParent = UIParent
-local UnitAffectingCombat = UnitAffectingCombat
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -1131,14 +1129,10 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
-
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
+		if UnitIsPlayer(unit) then return end
 
 		-- similar to TT.GetLevelLine
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetUnitInfo(unit)
 		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
 		local text = line and line.leftText
 
@@ -1160,29 +1154,25 @@ end
 
 do
 	local function GetQuestData(unit, which, Hex)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
-
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
+		if IsInInstance() or UnitIsPlayer(unit) then return end
 
 		local notMyQuest, activeID
+		local info = E.ScanTooltip:GetUnitInfo(unit)
+		if not (info and info.lines[2]) then return end
 
-		local info = E.ScanTooltip:GetTooltipData()
-		if not (info and info.lines[3]) then return end
-
-		for _, line in next, info.lines, 3 do
+		for _, line in next, info.lines, 2 do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			if UnitIsPlayer(text) then
+			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = NP.QuestIcons.CheckTextForQuest(text)
+				local count, percent = NP.QuestIcons.CheckTextForQuest(text, line.type)
 
 				-- this line comes from one line up in the tooltip
-				local activeQuest = NP.QuestIcons.activeQuests[text]
-				if activeQuest then activeID = activeQuest end
+				local tryTitle = line.type == 17 or not E.Retail -- 17 is QuestTitle
+				local lastTitle = tryTitle and NP.QuestIcons.activeQuests[text]
+				if lastTitle then activeID = lastTitle end
 
 				if count then
 					if not which then

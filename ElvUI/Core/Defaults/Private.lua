@@ -29,6 +29,7 @@ V.general = {
 	replaceNameplateFont = true,
 	replaceBlizzFonts = true,
 	blizzardFontSize = false,
+	noFontScale = false,
 	totemTracker = true,
 	queueStatus = true,
 	minimap = {
