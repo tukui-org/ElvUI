@@ -1132,12 +1132,8 @@ do
 	local function GetTitleNPC(unit, custom)
 		if UnitIsPlayer(unit) then return end
 
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
-
 		-- similar to TT.GetLevelLine
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetUnitInfo(unit)
 		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
 		local text = line and line.leftText
 
@@ -1161,13 +1157,8 @@ do
 	local function GetQuestData(unit, which, Hex)
 		if IsInInstance() or UnitIsPlayer(unit) then return end
 
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
-
 		local notMyQuest, activeID
-
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetUnitInfo(unit)
 		if not (info and info.lines[3]) then return end
 
 		for _, line in next, info.lines, 3 do

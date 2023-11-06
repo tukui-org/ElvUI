@@ -97,12 +97,8 @@ end
 NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unitID)
-	E.ScanTooltip:Show()
-
 	local QuestList, notMyQuest, activeID
-	local info = E.ScanTooltip:GetTooltipData()
+	local info = E.ScanTooltip:GetUnitInfo(unitID)
 	if info and info.lines[3] then
 		for _, line in next, info.lines, 3 do
 			local text = line and line.leftText

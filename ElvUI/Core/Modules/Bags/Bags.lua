@@ -557,12 +557,8 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
 		return true, true
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetHyperlink(itemLink)
-		E.ScanTooltip:Show()
-
 		local isQuestItem, isStarterItem
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetHyperlinkInfo(itemLink)
 		if info then
 			for i = BIND_START, BIND_END do
 				local line = info.lines[i]
