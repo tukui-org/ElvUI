@@ -326,7 +326,6 @@ frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('QUEST_WATCH_UPDATE')
-frame:RegisterEvent('QUEST_LOG_CRITERIA_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event, questID)
 	if not E.Retail then return end
@@ -336,6 +335,11 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		if title then
 			activeQuests[title] = nil
 			activeTitles[questID] = nil
+		end
+	elseif event == 'QUEST_ACCEPTED' then
+		local index = C_QuestLog_GetLogIndexForQuestID(questID)
+		if index then
+			UpdateQuest(index, questID)
 		end
 	elseif event == 'QUEST_WATCH_UPDATE' then
 		updateQuests[questID] = true
@@ -347,11 +351,6 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			end
 
 			updateQuests[id] = nil
-		end
-	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
-		local index = C_QuestLog_GetLogIndexForQuestID(questID)
-		if index then
-			UpdateQuest(index, questID)
 		end
 	else -- the first PLAYER_ENTERING_WORLD
 		self:UnregisterEvent(event) -- only need one
