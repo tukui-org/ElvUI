@@ -381,6 +381,12 @@ function B:UpdateItemDisplay()
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
+				if B.db.itemLevel then
+					B:UpdateItemLevel(slot)
+				else
+					slot.itemLevel:SetText('')
+				end
+
 				slot.itemLevel:ClearAllPoints()
 				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
