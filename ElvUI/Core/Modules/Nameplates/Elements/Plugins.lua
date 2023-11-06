@@ -32,7 +32,7 @@ end
 
 function NP:Update_QuestIcons(nameplate)
 	local plateDB = NP:PlateDB(nameplate)
-	local db = plateDB.questIcon
+	local db = E.Retail and plateDB.questIcon
 
 	if db and db.enable and not nameplate.isBattlePet and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		if not nameplate:IsElementEnabled('QuestIcons') then
