@@ -2,12 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local time, pairs, ipairs, ceil, floor, tonumber = time, pairs, ipairs, ceil, floor, tonumber
+local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
+local GetTime = GetTime
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
@@ -202,11 +203,11 @@ local function Update(self, event)
 		return -- new guid was the same
 	end
 
-	local now = time()
-	if element.lastTime ~= now or event ~= 'NAME_PLATE_UNIT_ADDED' then
+	local now = GetTime()
+	if (element.lastTime + 0.5) < now or event ~= 'NAME_PLATE_UNIT_ADDED' then
 		element.lastTime = now
 	else
-		return -- same second
+		return -- same half second
 	end
 
 	if element.PreUpdate then
@@ -283,6 +284,7 @@ local function Enable(self)
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.lastTime = 0
 
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
 			element.Default:SetAtlas('SmallQuestBang')
