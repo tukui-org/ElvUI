@@ -18,6 +18,9 @@ local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 
+local iconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
+local activeQuests = {} --[questTitle] = quest data
+local activeTitles = {} --[questID] = questTitle1
 local questElements = {
 	DEFAULT = 'Default',
 	KILL = 'Skull',
@@ -25,13 +28,11 @@ local questElements = {
 	QUEST_ITEM = 'Item'
 }
 
-local questIcons = {
-	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
-	activeQuests = {}, --[questTitle] = quest data
-	activeTitles = {}, --[questID] = questTitle
+NP.QuestIcons = {
+	iconTypes = iconTypes,
+	activeQuests = activeQuests,
+	activeTitles = activeTitles,
 }
-
-NP.QuestIcons = questIcons
 
 local typesLocalized = {
 	enUS = {
@@ -151,7 +152,7 @@ local function GetQuests(unitID)
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
 				if line.type == 17 or not E.Retail then
-					lastTitle = questIcons.activeQuests[text]
+					lastTitle = activeQuests[text]
 				end -- this line comes from one line up in the tooltip
 
 				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
@@ -185,7 +186,7 @@ local function hideIcon(icon)
 end
 
 local function hideIcons(element)
-	for _, object in next, questIcons.iconTypes do
+	for _, object in next, iconTypes do
 		hideIcon(element[object])
 	end
 end
@@ -306,8 +307,8 @@ local function UpdateQuest(index, id)
 
 	local _, texture = GetQuestLogSpecialItemInfo(index)
 	local level = C_QuestLog_GetQuestDifficultyLevel(id)
-	questIcons.activeTitles[id] = title
-	questIcons.activeQuests[title] = {
+	activeTitles[id] = title
+	activeQuests[title] = {
 		id = id,
 		index = index,
 		texture = texture,
@@ -328,10 +329,10 @@ frame:SetScript('OnEvent', function(self, event, questID)
 	if not E.Retail then return end
 
 	if event == 'QUEST_REMOVED' then
-		local title = questIcons.activeTitles[questID]
+		local title = activeTitles[questID]
 		if title then
-			questIcons.activeQuests[title] = nil
-			questIcons.activeTitles[questID] = nil
+			activeQuests[title] = nil
+			activeTitles[questID] = nil
 		end
 	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_WATCH_UPDATE' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
 		local index = C_QuestLog_GetLogIndexForQuestID(questID)
@@ -341,8 +342,8 @@ frame:SetScript('OnEvent', function(self, event, questID)
 	else -- the first PLAYER_ENTERING_WORLD
 		self:UnregisterEvent(event) -- only need one
 
-		wipe(questIcons.activeQuests)
-		wipe(questIcons.activeTitles)
+		wipe(activeQuests)
+		wipe(activeTitles)
 
 		for index = 1, C_QuestLog_GetNumQuestLogEntries() do
 			local id = C_QuestLog_GetQuestIDForLogIndex(index)
