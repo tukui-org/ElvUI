@@ -1164,14 +1164,13 @@ do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			local lineType = line.type
-			if lineType == 18 or UnitIsPlayer(text) then -- 18 is QuestPlayer
+			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = NP.QuestIcons.CheckTextForQuest(text, lineType)
+				local count, percent = NP.QuestIcons.CheckTextForQuest(text, line.type)
 
 				-- this line comes from one line up in the tooltip
-				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
+				local tryTitle = line.type == 17 or not E.Retail -- 17 is QuestTitle
 				local lastTitle = tryTitle and NP.QuestIcons.activeQuests[text]
 				if lastTitle then activeID = lastTitle end
 

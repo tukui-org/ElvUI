@@ -87,20 +87,18 @@ local typesLocalized = {
 local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
 local function CheckTextForQuest(text, lineType)
-	if lineType and lineType ~= 8 then
-		return -- 8 is QuestObjective
-	end
-
-	local x, y = strmatch(text, '(%d+)/(%d+)')
-	if x and y then
-		local diff = floor(y - x)
-		if diff > 0 then
-			return diff
-		end
-	elseif not strmatch(text, ThreatTooltip) then
-		local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
-		if progress and progress <= 100 then
-			return ceil(100 - progress), true
+	if lineType == 8 or not E.Retail then
+		local x, y = strmatch(text, '(%d+)/(%d+)')
+		if x and y then
+			local diff = floor(y - x)
+			if diff > 0 then
+				return diff
+			end
+		elseif not strmatch(text, ThreatTooltip) then
+			local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
+			if progress and progress <= 100 then
+				return ceil(100 - progress), true
+			end
 		end
 	end
 end
@@ -114,14 +112,13 @@ local function GetQuests(unitID)
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			local lineType = line.type
-			if lineType == 18 or UnitIsPlayer(text) then -- 18 is QuestPlayer
+			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = CheckTextForQuest(text, lineType)
+				local count, percent = CheckTextForQuest(text, line.type)
 
 				-- this line comes from one line up in the tooltip
-				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
+				local tryTitle = line.type == 17 or not E.Retail -- 17 is QuestTitle
 				local lastTitle = tryTitle and questIcons.activeQuests[text]
 				if lastTitle then activeID = lastTitle end
 
