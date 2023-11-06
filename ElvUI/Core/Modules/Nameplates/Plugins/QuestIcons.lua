@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
+local time, pairs, ipairs, ceil, floor, tonumber = time, pairs, ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local UIParent = UIParent
 local UnitGUID = UnitGUID
@@ -202,10 +201,11 @@ local function Update(self, event)
 		return -- new guid was the same
 	end
 
-	if element.lastLookup and element.guid == UnitGUID(element.lastLookup) then
-		return -- last guid was the same
+	local now = time()
+	if element.lastTime == now and event == 'NAME_PLATE_UNIT_ADDED' then
+		return -- same second
 	else
-		element.lastLookup = unit
+		element.lastTime = now
 	end
 
 	if element.PreUpdate then
