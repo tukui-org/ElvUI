@@ -3,7 +3,6 @@ local NP = E:GetModule('NamePlates')
 local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 
-local strfind = strfind
 local ipairs, unpack = ipairs, unpack
 local CreateFrame = CreateFrame
 
