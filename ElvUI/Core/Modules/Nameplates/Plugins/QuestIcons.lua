@@ -325,6 +325,8 @@ frame:RegisterEvent('QUEST_LOG_CRITERIA_UPDATE')
 frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event, questID)
+	if not E.Retail then return end
+
 	if event == 'QUEST_REMOVED' then
 		local title = questIcons.activeTitles[questID]
 		if title then
@@ -345,12 +347,10 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		wipe(questIcons.activeQuests)
 		wipe(questIcons.activeTitles)
 
-		if E.Retail then
-			for index = 1, C_QuestLog_GetNumQuestLogEntries() do
-				local id = C_QuestLog_GetQuestIDForLogIndex(index)
-				if id and id > 0 then
-					UpdateQuest(index, id)
-				end
+		for index = 1, C_QuestLog_GetNumQuestLogEntries() do
+			local id = C_QuestLog_GetQuestIDForLogIndex(index)
+			if id and id > 0 then
+				UpdateQuest(index, id)
 			end
 		end
 
