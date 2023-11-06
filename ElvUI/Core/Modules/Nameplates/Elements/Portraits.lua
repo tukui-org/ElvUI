@@ -13,7 +13,7 @@ function NP:Portrait_PreUpdate()
 
 	local db = NP:PlateDB(nameplate)
 	local specIcon = db.portrait and db.portrait.specicon and nameplate.specIcon
-	self.useClassBase = not specIcon and db.portrait.classicon
+	self.useClassBase = not specIcon
 end
 
 function NP:Portrait_PostUpdate()
