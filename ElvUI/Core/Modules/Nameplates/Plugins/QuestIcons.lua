@@ -321,8 +321,8 @@ end
 local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('QUEST_ACCEPTED')
+frame:RegisterEvent('QUEST_WATCH_UPDATE')
 frame:RegisterEvent('QUEST_LOG_CRITERIA_UPDATE')
-frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event, questID)
 	if not E.Retail then return end
@@ -333,12 +333,14 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			questIcons.activeQuests[title] = nil
 			questIcons.activeTitles[questID] = nil
 		end
-	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
+	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_WATCH_UPDATE' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
 		local index = C_QuestLog_GetLogIndexForQuestID(questID)
 		if index then
 			UpdateQuest(index, questID)
 		end
-	else -- QUEST_LOG_UPDATE and the first PLAYER_ENTERING_WORLD
+	else -- the first PLAYER_ENTERING_WORLD
+		self:UnregisterEvent(event) -- only need one
+
 		wipe(questIcons.activeQuests)
 		wipe(questIcons.activeTitles)
 
@@ -347,10 +349,6 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			if id and id > 0 then
 				UpdateQuest(index, id)
 			end
-		end
-
-		if event == 'PLAYER_ENTERING_WORLD' then
-			self:UnregisterEvent(event)
 		end
 	end
 end)
