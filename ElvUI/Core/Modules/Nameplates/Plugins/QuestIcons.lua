@@ -329,7 +329,6 @@ local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_LOG_UPDATE')
-frame:RegisterEvent('QUEST_WATCH_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 frame:SetScript('OnEvent', function(self, event, questID)
 	if not E.Retail then return end
@@ -342,17 +341,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		end
 	elseif event == 'QUEST_ACCEPTED' then
 		UpdateQuest(questID)
-	elseif event == 'QUEST_WATCH_UPDATE' then
-		updateQuests[questID] = true
-	elseif event == 'QUEST_LOG_UPDATE' then
-		for id in next, updateQuests do
-			UpdateQuest(id)
-
-			updateQuests[id] = nil
-		end
-	else -- the first PLAYER_ENTERING_WORLD
-		self:UnregisterEvent(event) -- only need one
-
+	else -- QUEST_LOG_UPDATE and the first PLAYER_ENTERING_WORLD
 		wipe(activeQuests)
 		wipe(activeTitles)
 
@@ -361,6 +350,10 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			if id and id > 0 then
 				UpdateQuest(id, index)
 			end
+		end
+
+		if event == 'PLAYER_ENTERING_WORLD' then
+			self:UnregisterEvent(event) -- only need one
 		end
 	end
 end)
