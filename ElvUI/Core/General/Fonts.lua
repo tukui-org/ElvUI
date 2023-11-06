@@ -106,7 +106,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, (blizz and 12) or unscale or size, 'OUTLINE')
 		E:SetFont(_G.NumberFont_Shadow_Small,				NUMBER, (blizz and 12) or unscale or size, 'SHADOW')
 		E:SetFont(_G.NumberFont_Small,						NUMBER, (blizz and 12) or unscale or size)
-		E:SetFont(_G.NumberFontNormalSmall,					NUMBER, (blizz and 12) or unscale or size, 'OUTLINE')	-- Calendar, EncounterJournal
+		E:SetFont(_G.NumberFontNormalSmall,					NUMBER, (blizz and 12) or unscale or size, 'OUTLINE')		-- Calendar, EncounterJournal
 		E:SetFont(_G.Number13Font,							NUMBER, (blizz and 13) or unscale or medium)
 		E:SetFont(_G.Number13FontGray,						NUMBER, (blizz and 13) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.Number13FontWhite,						NUMBER, (blizz and 13) or unscale or medium, 'SHADOW')
@@ -114,7 +114,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number14FontGray,						NUMBER, (blizz and 14) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.Number14FontWhite,						NUMBER, (blizz and 14) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.NumberFont_Outline_Med,				NUMBER, (blizz and 14) or unscale or medium, 'OUTLINE')
-		E:SetFont(_G.NumberFont_Shadow_Med,					NUMBER, (blizz and 14) or unscale or medium, 'SHADOW')	-- Chat EditBox
+		E:SetFont(_G.NumberFont_Shadow_Med,					NUMBER, (blizz and 14) or unscale or medium, 'SHADOW')		-- Chat EditBox
 		E:SetFont(_G.NumberFontNormal,						NUMBER, (blizz and 14) or unscale or medium, 'OUTLINE')
 		E:SetFont(_G.Number15Font,							NUMBER, (blizz and 15) or unscale or medium)
 		E:SetFont(_G.NumberFont_Outline_Large,				NUMBER, (blizz and 16) or unscale or big, outline)
@@ -130,88 +130,88 @@ function E:UpdateBlizzardFonts()
 
 		-- game fonts
 		E:SetFont(_G.SystemFont_Tiny,						NORMAL, (blizz and 9) or unscale or tiny)
-		E:SetFont(_G.AchievementFont_Small,					NORMAL, (blizz and 10) or unscale or small)				-- Achiev dates
+		E:SetFont(_G.AchievementFont_Small,					NORMAL, (blizz and 10) or unscale or small)					-- Achiev dates
 		E:SetFont(_G.FriendsFont_Small,						NORMAL, (blizz and 10) or unscale or small, 'SHADOW')
 		E:SetFont(_G.Game10Font_o1,							NORMAL, (blizz and 10) or unscale or small, 'OUTLINE')
-		E:SetFont(_G.InvoiceFont_Small,						NORMAL, (blizz and 10) or unscale or small)				-- Mail
-		E:SetFont(_G.ReputationDetailFont,					NORMAL, (blizz and 10) or unscale or small, 'SHADOW')	-- Rep Desc when clicking a rep
+		E:SetFont(_G.InvoiceFont_Small,						NORMAL, (blizz and 10) or unscale or small)					-- Mail
+		E:SetFont(_G.ReputationDetailFont,					NORMAL, (blizz and 10) or unscale or small, 'SHADOW')		-- Rep Desc when clicking a rep
 		E:SetFont(_G.SpellFont_Small,						NORMAL, (blizz and 10) or unscale or small)
-		E:SetFont(_G.SubSpellFont,							NORMAL, (blizz and 10) or unscale or small)				-- Spellbook Sub Names
+		E:SetFont(_G.SubSpellFont,							NORMAL, (blizz and 10) or unscale or small)					-- Spellbook Sub Names
 		E:SetFont(_G.SystemFont_Outline_Small,				NORMAL, (blizz and 10) or unscale or small, 'OUTLINE')
 		E:SetFont(_G.SystemFont_Shadow_Small,				NORMAL, (blizz and 10) or unscale or small, 'SHADOW')
 		E:SetFont(_G.SystemFont_Small,						NORMAL, (blizz and 10) or unscale or small)
 		E:SetFont(_G.Tooltip_Small,							NORMAL, (blizz and 10) or unscale or small)
 		E:SetFont(_G.FriendsFont_11,						NORMAL, (blizz and 11) or unscale or small, 'SHADOW')
 		E:SetFont(_G.FriendsFont_UserText,					NORMAL, (blizz and 11) or unscale or small, 'SHADOW')
-		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, (blizz and 11) or unscale or small, 'SHADOW')	-- Skill or Recipe description on TradeSkill frame
-		E:SetFont(_G.GameFontNormalSmall2,					NORMAL, (blizz and 11) or unscale or small, 'SHADOW')	-- MissionUI Followers names
-		E:SetFont(_G.Fancy12Font,							NORMAL, (blizz and 12) or unscale or size)				-- Added in 7.3.5 used for ?
+		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, (blizz and 11) or unscale or small, 'SHADOW')		-- Skill or Recipe description on TradeSkill frame
+		E:SetFont(_G.GameFontNormalSmall2,					NORMAL, (blizz and 11) or unscale or small, 'SHADOW')		-- MissionUI Followers names
+		E:SetFont(_G.Fancy12Font,							NORMAL, (blizz and 12) or unscale or size)					-- Added in 7.3.5 used for ?
 		E:SetFont(_G.FriendsFont_Normal,					NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
-		E:SetFont(_G.Game12Font,							NORMAL, (blizz and 12) or unscale or size)				-- PVP Stuff
-		E:SetFont(_G.InvoiceFont_Med,						NORMAL, (blizz and 12) or unscale or size)				-- Mail
+		E:SetFont(_G.Game12Font,							NORMAL, (blizz and 12) or unscale or size)					-- PVP Stuff
+		E:SetFont(_G.InvoiceFont_Med,						NORMAL, (blizz and 12) or unscale or size)					-- Mail
 		E:SetFont(_G.SystemFont_Med1,						NORMAL, (blizz and 12) or unscale or size)
 		E:SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
 		E:SetFont(_G.Tooltip_Med,							NORMAL, (blizz and 12) or unscale or size)
-		E:SetFont(_G.Game13FontShadow,						NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')	-- InspectPvpFrame
-		E:SetFont(_G.GameFontNormalMed1,					NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')	-- WoW Token Info
+		E:SetFont(_G.Game13FontShadow,						NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')		-- InspectPvpFrame
+		E:SetFont(_G.GameFontNormalMed1,					NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')		-- WoW Token Info
 		E:SetFont(_G.QuestFont,								NORMAL, (blizz and 13) or unscale or medium)
 		E:SetFont(_G.SystemFont_Med2,						NORMAL, (blizz and 13) or unscale or medium)
-		E:SetFont(_G.SystemFont_Outline,					NORMAL, (blizz and 13) or unscale or medium, outline)	-- WorldMap, Pet level
+		E:SetFont(_G.SystemFont_Outline,					NORMAL, (blizz and 13) or unscale or medium, outline)		-- WorldMap, Pet level
 		E:SetFont(_G.DestinyFontMed,						NORMAL, (blizz and 14) or unscale or medium)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.Fancy14Font,							NORMAL, (blizz and 14) or unscale or medium)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.FriendsFont_Large,						NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')
-		E:SetFont(_G.GameFontHighlightMedium,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')	-- Fix QuestLog Title mouseover
-		E:SetFont(_G.GameFontNormalMed2,					NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')	-- Quest tracker
+		E:SetFont(_G.GameFontHighlightMedium,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')		-- Fix QuestLog Title mouseover
+		E:SetFont(_G.GameFontNormalMed2,					NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')		-- Quest tracker
 		E:SetFont(_G.GameFontNormalMed3,					NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.GameTooltipHeader,						NORMAL, (blizz and 14) or unscale or medium)
 		E:SetFont(_G.PriceFont,								NORMAL, (blizz and 14) or unscale or medium)
 		E:SetFont(_G.SystemFont_Med3,						NORMAL, (blizz and 14) or unscale or medium)
-		E:SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')	-- Shows Order resourses on OrderHallTalentFrame
+		E:SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')		-- Shows Order resourses on OrderHallTalentFrame
 		E:SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.Game15Font_o1,							NORMAL, (blizz and 15) or unscale or medium)				-- CharacterStatsPane, ItemLevelFrame
 		E:SetFont(_G.MailFont_Large,						NORMAL, (blizz and 15) or unscale or medium)				-- Mail
 		E:SetFont(_G.QuestFont_Large,						NORMAL, (blizz and 15) or unscale or medium)
-		E:SetFont(_G.Game16Font,							NORMAL, (blizz and 16) or unscale or big)				-- Added in 7.3.5 used for ?
+		E:SetFont(_G.Game16Font,							NORMAL, (blizz and 16) or unscale or big)					-- Added in 7.3.5 used for ?
 		E:SetFont(_G.GameFontNormalLarge,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:SetFont(_G.QuestFont_Larger,						NORMAL, (blizz and 16) or unscale or big)				-- Wrath
+		E:SetFont(_G.QuestFont_Larger,						NORMAL, (blizz and 16) or unscale or big)					-- Wrath
 		E:SetFont(_G.SystemFont_Large,						NORMAL, (blizz and 16) or unscale or big)
 		E:SetFont(_G.SystemFont_Shadow_Large,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 		E:SetFont(_G.SystemFont_Shadow_Large_Outline,		NORMAL, (blizz and 16) or unscale or big, 'SHADOWOUTLINE')
-		E:SetFont(_G.Game18Font,							NORMAL, (blizz and 18) or unscale or big)				-- MissionUI Bonus Chance
-		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, (blizz and 18) or unscale or big, 'SHADOW')		-- Garrison Follower Names
-		E:SetFont(_G.QuestFont_Huge,						NORMAL, (blizz and 18) or unscale or big)				-- Quest rewards title, Rewards
-		E:SetFont(_G.SystemFont_Shadow_Large2,				NORMAL, (blizz and 18) or unscale or big, 'SHADOW')		-- Auction House ItemDisplay
-		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, (blizz and 20) or unscale or large)				-- Garrison Mission XP
+		E:SetFont(_G.Game18Font,							NORMAL, (blizz and 18) or unscale or big)					-- MissionUI Bonus Chance
+		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, (blizz and 18) or unscale or big, 'SHADOW')			-- Garrison Follower Names
+		E:SetFont(_G.QuestFont_Huge,						NORMAL, (blizz and 18) or unscale or big)					-- Quest rewards title, Rewards
+		E:SetFont(_G.SystemFont_Shadow_Large2,				NORMAL, (blizz and 18) or unscale or big, 'SHADOW')			-- Auction House ItemDisplay
+		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, (blizz and 20) or unscale or large)					-- Garrison Mission XP
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, (blizz and 20) or unscale or large, outline)		-- Garrison Mission Chance
 		E:SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, (blizz and 20) or unscale or large, outline)
-		E:SetFont(_G.Fancy22Font,							NORMAL, (blizz and 22) or unscale or large)				-- Talking frame Title font
+		E:SetFont(_G.Fancy22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Talking frame Title font
 		E:SetFont(_G.PVPArenaTextString,					NORMAL, (blizz and 22) or unscale or large, outline)
 		E:SetFont(_G.PVPInfoTextString,						NORMAL, (blizz and 22) or unscale or large, outline)
 		E:SetFont(_G.SystemFont_OutlineThick_Huge2,			NORMAL, (blizz and 22) or unscale or large, thick)
-		E:SetFont(_G.Fancy24Font,							NORMAL, (blizz and 24) or unscale or huge)				-- Artifact frame - weapon name
-		E:SetFont(_G.Game24Font,							NORMAL, (blizz and 24) or unscale or huge)				-- Garrison Mission level, in detail frame
+		E:SetFont(_G.Fancy24Font,							NORMAL, (blizz and 24) or unscale or huge)					-- Artifact frame - weapon name
+		E:SetFont(_G.Game24Font,							NORMAL, (blizz and 24) or unscale or huge)					-- Garrison Mission level, in detail frame
 		E:SetFont(_G.GameFontHighlightHuge2,				NORMAL, (blizz and 24) or unscale or huge, 'SHADOW')
 		E:SetFont(_G.GameFontNormalHuge2,					NORMAL, (blizz and 24) or unscale or huge, 'SHADOW')		-- Mythic weekly best dungeon name
 		E:SetFont(_G.QuestFont_Super_Huge,					NORMAL, (blizz and 24) or unscale or huge)
 		E:SetFont(_G.SubZoneTextString,						NORMAL, (blizz and 24) or unscale or huge, outline)
-		E:SetFont(_G.SystemFont_Huge2,						NORMAL, (blizz and 24) or unscale or huge)				-- Mythic+ Score
+		E:SetFont(_G.SystemFont_Huge2,						NORMAL, (blizz and 24) or unscale or huge)					-- Mythic+ Score
 		E:SetFont(_G.BossEmoteNormalHuge,					NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- Talent Title
 		E:SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- FlightMap
 		E:SetFont(_G.ZoneTextString,						NORMAL, (blizz and 25) or unscale or mega, outline)
-		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or mega, outline)		-- WorldMap, SubZone
+		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or mega, outline)			-- WorldMap, SubZone
 		E:SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, (blizz and 27) or unscale or mega, 'SHADOW')
-		E:SetFont(_G.Game30Font,							NORMAL, (blizz and 30) or unscale or enormous)			-- Mission Level
-		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, (blizz and 30) or unscale or enormous)			-- Garrison Titles
-		E:SetFont(_G.CoreAbilityFont,						NORMAL, (blizz and 32) or unscale or enormous)			-- Core abilities, title
-		E:SetFont(_G.DestinyFontHuge,						NORMAL, (blizz and 32) or unscale or enormous)			-- Garrison Mission Report
+		E:SetFont(_G.Game30Font,							NORMAL, (blizz and 30) or unscale or enormous)				-- Mission Level
+		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, (blizz and 30) or unscale or enormous)				-- Garrison Titles
+		E:SetFont(_G.CoreAbilityFont,						NORMAL, (blizz and 32) or unscale or enormous)				-- Core abilities, title
+		E:SetFont(_G.DestinyFontHuge,						NORMAL, (blizz and 32) or unscale or enormous)				-- Garrison Mission Report
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, (blizz and 32) or unscale or enormous, 'SHADOW')	-- Used at the install steps
-		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)	-- WorldMap
+		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)		-- WorldMap
 
 		-- big fonts
-		E:SetFont(_G.QuestFont_39,							NORMAL, (blizz and 39) or unscale or gigantic)			-- Wrath
+		E:SetFont(_G.QuestFont_39,							NORMAL, (blizz and 39) or unscale or gigantic)				-- Wrath
 		E:SetFont(_G.Game40Font,							NORMAL, (blizz and 40) or unscale or gigantic)
-		E:SetFont(_G.Game42Font,							NORMAL, (blizz and 42) or unscale or gigantic)			-- PVP Stuff
-		E:SetFont(_G.Game46Font,							NORMAL, (blizz and 46) or unscale or massive)			-- Added in 7.3.5 used for ?
+		E:SetFont(_G.Game42Font,							NORMAL, (blizz and 42) or unscale or gigantic)				-- PVP Stuff
+		E:SetFont(_G.Game46Font,							NORMAL, (blizz and 46) or unscale or massive)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.Game48Font,							NORMAL, (blizz and 48) or unscale or massive)
 		E:SetFont(_G.Game48FontShadow,						NORMAL, (blizz and 48) or unscale or massive, 'SHADOW')
 		E:SetFont(_G.Game60Font,							NORMAL, (blizz and 60) or unscale or colossal)
