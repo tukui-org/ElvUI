@@ -19,7 +19,6 @@ local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 
 local iconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
-local updateQuests = {}
 local activeQuests = {} --[questTitle] = quest data
 local activeTitles = {} --[questID] = questTitle1
 local questElements = {
@@ -31,7 +30,6 @@ local questElements = {
 
 NP.QuestIcons = {
 	iconTypes = iconTypes,
-	updateQuests = updateQuests,
 	activeQuests = activeQuests,
 	activeTitles = activeTitles,
 }
@@ -324,7 +322,6 @@ end
 local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('QUEST_ACCEPTED')
-frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('QUEST_WATCH_UPDATE')
 frame:RegisterEvent('QUEST_LOG_CRITERIA_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -337,18 +334,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 			activeQuests[title] = nil
 			activeTitles[questID] = nil
 		end
-	elseif event == 'QUEST_WATCH_UPDATE' then
-		updateQuests[questID] = true
-	elseif event == 'QUEST_LOG_UPDATE' then
-		for id in next, updateQuests do
-			local index = C_QuestLog_GetLogIndexForQuestID(id)
-			if index then
-				UpdateQuest(index, id)
-			end
-
-			updateQuests[id] = nil
-		end
-	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
+	elseif event == 'QUEST_ACCEPTED' or event == 'QUEST_WATCH_UPDATE' or event == 'QUEST_LOG_CRITERIA_UPDATE' then
 		local index = C_QuestLog_GetLogIndexForQuestID(questID)
 		if index then
 			UpdateQuest(index, questID)
