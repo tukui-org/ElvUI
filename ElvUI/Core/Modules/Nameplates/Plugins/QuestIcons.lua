@@ -202,10 +202,10 @@ local function Update(self, event)
 	end
 
 	local now = time()
-	if element.lastTime == now and event == 'NAME_PLATE_UNIT_ADDED' then
-		return -- same second
-	else
+	if element.lastTime ~= now or event ~= 'NAME_PLATE_UNIT_ADDED' then
 		element.lastTime = now
+	else
+		return -- same second
 	end
 
 	if element.PreUpdate then
