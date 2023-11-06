@@ -196,71 +196,71 @@ local function Update(self, event)
 		return
 	end
 
+	local QuestList
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
-		element.guid = guid
+		element.guid = guid -- if its the same guid on these events reuse the quest data
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
-		return -- new guid was the same
+		QuestList = element.lastQuests
 	end
 
 	local now = GetTime()
 	if (element.lastTime + 0.5) < now or event ~= 'NAME_PLATE_UNIT_ADDED' then
 		element.lastTime = now
 	else
-		return -- same half second
+		QuestList = element.lastQuests
 	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	local QuestList = GetQuests(unit)
-	if QuestList then
-		element:Show()
-
-		hideIcons(element)
-	else
-		element:Hide()
-		return
+	if not QuestList then
+		QuestList = GetQuests(unit)
+		element.lastQuests = QuestList
 	end
 
-	local shownCount
-	for i = 1, #QuestList do
-		local quest = QuestList[i]
-		local objectiveCount = quest.objectiveCount
-		local questType = quest.questType
-		local isPercent = quest.isPercent
+	element:SetShown(QuestList)
 
-		if isPercent or objectiveCount > 0 then
-			local icon
-			if questType == 'DEFAULT' then
-				icon = element.Default
-			elseif questType == 'KILL' then
-				icon = element.Skull
-			elseif questType == 'CHAT' then
-				icon = element.Chat
-			elseif questType == 'QUEST_ITEM' then
-				icon = element.Item
-			end
+	if QuestList then
+		local shownCount
+		for i = 1, #QuestList do
+			local quest = QuestList[i]
+			local objectiveCount = quest.objectiveCount
+			local questType = quest.questType
+			local isPercent = quest.isPercent
 
-			if icon and not icon:IsShown() then
-				shownCount = (shownCount and shownCount + 1) or 0
-
-				local size = icon.size or 25
-				local setPosition = icon.position or 'TOPLEFT'
-				local newPosition = E.InversePoints[setPosition]
-				local offset = shownCount * (5 + size)
-
-				icon:Show()
-				icon:ClearAllPoints()
-				icon:Point(newPosition, element, newPosition, (strmatch(setPosition, 'LEFT') and -offset) or offset, 0)
-
-				if questType ~= 'CHAT' and icon.Text and (isPercent or objectiveCount > 1) then
-					icon.Text:SetText((isPercent and objectiveCount..'%') or objectiveCount)
+			if isPercent or objectiveCount > 0 then
+				local icon
+				if questType == 'DEFAULT' then
+					icon = element.Default
+				elseif questType == 'KILL' then
+					icon = element.Skull
+				elseif questType == 'CHAT' then
+					icon = element.Chat
+				elseif questType == 'QUEST_ITEM' then
+					icon = element.Item
 				end
 
-				if questType == 'QUEST_ITEM' then
-					element.Item:SetTexture(quest.itemTexture)
+				if icon and not icon:IsShown() then
+					shownCount = (shownCount and shownCount + 1) or 0
+
+					local size = icon.size or 25
+					local setPosition = icon.position or 'TOPLEFT'
+					local newPosition = E.InversePoints[setPosition]
+					local offset = shownCount * (5 + size)
+
+					icon:Show()
+					icon:ClearAllPoints()
+					icon:Point(newPosition, element, newPosition, (strmatch(setPosition, 'LEFT') and -offset) or offset, 0)
+
+					if questType ~= 'CHAT' and icon.Text and (isPercent or objectiveCount > 1) then
+						icon.Text:SetText((isPercent and objectiveCount..'%') or objectiveCount)
+					end
+
+					if questType == 'QUEST_ITEM' then
+						element.Item:SetTexture(quest.itemTexture)
+					end
 				end
 			end
 		end
@@ -308,6 +308,8 @@ local function Disable(self)
 	if element then
 		element:Hide()
 		hideIcons(element)
+
+		element.lastQuests = nil
 
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
