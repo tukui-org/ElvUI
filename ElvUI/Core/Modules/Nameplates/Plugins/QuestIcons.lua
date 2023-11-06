@@ -7,7 +7,6 @@ local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfin
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local UnitIsPlayer = UnitIsPlayer
-local UIParent = UIParent
 local UnitGUID = UnitGUID
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
@@ -80,7 +79,11 @@ local typesLocalized = {
 
 local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
-local function CheckTextForQuest(text)
+local function CheckTextForQuest(text, lineType)
+	if lineType and lineType ~= 8 then
+		return -- 8 is QuestObjective
+	end
+
 	local x, y = strmatch(text, '(%d+)/(%d+)')
 	if x and y then
 		local diff = floor(y - x)
@@ -104,14 +107,16 @@ local function GetQuests(unitID)
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			if UnitIsPlayer(text) then
+			local lineType = line.type
+			if lineType == 18 or UnitIsPlayer(text) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = CheckTextForQuest(text)
+				local count, percent = CheckTextForQuest(text, lineType)
 
 				-- this line comes from one line up in the tooltip
-				local activeQuest = questIcons.activeQuests[text]
-				if activeQuest then activeID = activeQuest end
+				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
+				local activeTitle = tryTitle and questIcons.activeQuests[text]
+				if activeTitle then activeID = activeTitle end
 
 				if count then
 					local type, index, texture, _
