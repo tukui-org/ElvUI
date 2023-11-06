@@ -10,6 +10,7 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
 
+local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -27,6 +28,7 @@ local questElements = {
 local questIcons = {
 	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
 	activeQuests = {}, --[questTitle] = quest data
+	activeTitles = {}, --[questID] = questTitle
 }
 
 NP.QuestIcons = questIcons
@@ -298,37 +300,63 @@ local function Disable(self)
 	end
 end
 
+local function UpdateQuest(index, id)
+	local title = C_QuestLog_GetTitleForLogIndex(index)
+	if not title then return end
+
+	local _, texture = GetQuestLogSpecialItemInfo(index)
+	local level = C_QuestLog_GetQuestDifficultyLevel(id)
+	questIcons.activeTitles[id] = title
+	questIcons.activeQuests[title] = {
+		id = id,
+		index = index,
+		texture = texture,
+		difficulty = level,
+		title = C_QuestLog_GetTitleForQuestID(id),
+		color = GetQuestDifficultyColor(level),
+		objectives = GetQuestObjectives(id, texture)
+	}
+end
+
 local frame = CreateFrame('Frame')
-frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_REMOVED')
+frame:RegisterEvent('QUEST_ACCEPTED')
+frame:RegisterEvent('QUEST_LOG_CRITERIA_UPDATE')
 frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-frame:SetScript('OnEvent', function(self, event)
-	wipe(questIcons.activeQuests)
+frame:SetScript('OnEvent', function(self, event, questID)
+	if event == 'QUEST_REMOVED' then
+		local title = questIcons.activeTitles[questID]
+		if title then
+			questIcons.activeQuests[title] = nil
+			questIcons.activeTitles[questID] = nil
+		end
+	elseif event == 'QUEST_ACCEPTED' then
+		local index = C_QuestLog_GetLogIndexForQuestID(questID)
+		if index then
+			UpdateQuest(index, questID)
+		end
+	elseif event == 'QUEST_LOG_CRITERIA_UPDATE' then
+		local index = C_QuestLog_GetLogIndexForQuestID(questID)
+		if index then
+			UpdateQuest(index, questID)
+		end
+	else -- QUEST_LOG_UPDATE and the first PLAYER_ENTERING_WORLD
+		wipe(questIcons.activeQuests)
+		wipe(questIcons.activeTitles)
 
-	if E.Retail then
-		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local id = C_QuestLog_GetQuestIDForLogIndex(i)
-			if id and id > 0 then
-				local title = C_QuestLog_GetTitleForLogIndex(i)
-				if title then
-					local _, texture = GetQuestLogSpecialItemInfo(i)
-					local level = C_QuestLog_GetQuestDifficultyLevel(id)
-					questIcons.activeQuests[title] = {
-						id = id,
-						texture = texture,
-						difficulty = level,
-						title = C_QuestLog_GetTitleForQuestID(id),
-						color = GetQuestDifficultyColor(level),
-						objectives = GetQuestObjectives(id, texture)
-					}
+		if E.Retail then
+			for index = 1, C_QuestLog_GetNumQuestLogEntries() do
+				local id = C_QuestLog_GetQuestIDForLogIndex(index)
+				if id and id > 0 then
+					UpdateQuest(index, id)
 				end
 			end
 		end
-	end
 
-	if event == 'PLAYER_ENTERING_WORLD' then
-		self:UnregisterEvent(event)
+		if event == 'PLAYER_ENTERING_WORLD' then
+			self:UnregisterEvent(event)
+		end
 	end
 end)
 
