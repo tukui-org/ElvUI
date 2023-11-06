@@ -577,7 +577,6 @@ local NP_PvPClassificationIndicator = {
 local NP_Portrait = {
 	enable = false,
 	position = 'RIGHT',
-	classicon = true,
 	specicon = E.Retail,
 	keepSizeRatio = true,
 	height = 28,
