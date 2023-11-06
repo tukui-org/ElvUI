@@ -281,7 +281,7 @@ local function Enable(self)
 			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 		end
 
-		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
+		self:RegisterEvent('QUEST_WATCH_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
 
 		return true
@@ -296,7 +296,7 @@ local function Disable(self)
 
 		element.lastQuests = nil
 
-		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
+		self:UnregisterEvent('QUEST_WATCH_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
 	end
 end
