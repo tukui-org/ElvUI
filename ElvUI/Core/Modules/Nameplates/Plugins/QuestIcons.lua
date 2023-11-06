@@ -14,6 +14,13 @@ local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
+local questElements = {
+	DEFAULT = 'Default',
+	KILL = 'Skull',
+	CHAT = 'Chat',
+	QUEST_ITEM = 'Item'
+}
+
 local questIcons = {
 	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
 	indexByID = {}, --[questID] = questIndex
@@ -191,67 +198,52 @@ local function Update(self, event)
 	if not unit then return end
 
 	-- this only runs on npc units anyways
-	if NP.InstanceType ~= 'none' then
-		return
-	end
+	if NP.InstanceType ~= 'none' then return end
 
-	local QuestList
+	local list -- quests
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
 		element.guid = guid -- if its the same guid on these events reuse the quest data
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
-		QuestList = element.lastQuests
+		list = element.lastQuests
 	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	if not QuestList then
-		QuestList = GetQuests(unit)
-		element.lastQuests = QuestList
+	if not list then
+		list = GetQuests(unit)
+		element.lastQuests = list
 	end
 
-	element:SetShown(QuestList)
+	element:SetShown(list)
 
-	if QuestList then
-		local shownCount = 0
-		for _, quest in next, QuestList do
+	if list then
+		local shown = 0
+		for _, quest in next, list do
 			local objectiveCount = quest.objectiveCount
 			local questType = quest.questType
 			local isPercent = quest.isPercent
 
-			if isPercent or objectiveCount > 0 then
-				local icon
-				if questType == 'DEFAULT' then
-					icon = element.Default
-				elseif questType == 'KILL' then
-					icon = element.Skull
-				elseif questType == 'CHAT' then
-					icon = element.Chat
-				elseif questType == 'QUEST_ITEM' then
-					icon = element.Item
+			local icon = (isPercent or objectiveCount > 0) and element[questElements[questType]]
+			if icon and not icon:IsShown() then
+				shown = shown + 1
+
+				local setPosition = icon.position or 'TOPLEFT'
+				local newPosition = E.InversePoints[setPosition]
+				local offset = shown * (5 + (icon.size or 25))
+
+				icon:Show()
+				icon:ClearAllPoints()
+				icon:Point(newPosition, element, newPosition, (strmatch(setPosition, 'LEFT') and -offset) or offset, 0)
+
+				if questType ~= 'CHAT' and icon.Text and (isPercent or objectiveCount > 1) then
+					icon.Text:SetText((isPercent and objectiveCount..'%') or objectiveCount)
 				end
 
-				if icon and not icon:IsShown() then
-					shownCount = shownCount + 1
-
-					local size = icon.size or 25
-					local setPosition = icon.position or 'TOPLEFT'
-					local newPosition = E.InversePoints[setPosition]
-					local offset = shownCount * (5 + size)
-
-					icon:Show()
-					icon:ClearAllPoints()
-					icon:Point(newPosition, element, newPosition, (strmatch(setPosition, 'LEFT') and -offset) or offset, 0)
-
-					if questType ~= 'CHAT' and icon.Text and (isPercent or objectiveCount > 1) then
-						icon.Text:SetText((isPercent and objectiveCount..'%') or objectiveCount)
-					end
-
-					if questType == 'QUEST_ITEM' then
-						element.Item:SetTexture(quest.itemTexture)
-					end
+				if questType == 'QUEST_ITEM' then
+					element.Item:SetTexture(quest.itemTexture)
 				end
 			end
 		end
