@@ -220,7 +220,7 @@ local function Update(self, event)
 	element:SetShown(list)
 
 	if list then
-		local shown = 0
+		local shown = -1
 		for _, quest in next, list do
 			local objectiveCount = quest.objectiveCount
 			local questType = quest.questType
