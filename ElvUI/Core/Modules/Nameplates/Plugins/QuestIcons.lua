@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
+local ipairs, ceil, floor, tonumber = ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -178,7 +178,7 @@ local function hideIcon(icon)
 end
 
 local function hideIcons(element)
-	for _, object in pairs(questIcons.iconTypes) do
+	for _, object in next, questIcons.iconTypes do
 		hideIcon(element[object])
 	end
 end
@@ -215,9 +215,8 @@ local function Update(self, event)
 	element:SetShown(QuestList)
 
 	if QuestList then
-		local shownCount
-		for i = 1, #QuestList do
-			local quest = QuestList[i]
+		local shownCount = 0
+		for _, quest in next, QuestList do
 			local objectiveCount = quest.objectiveCount
 			local questType = quest.questType
 			local isPercent = quest.isPercent
@@ -235,7 +234,7 @@ local function Update(self, event)
 				end
 
 				if icon and not icon:IsShown() then
-					shownCount = (shownCount and shownCount + 1) or 0
+					shownCount = shownCount + 1
 
 					local size = icon.size or 25
 					local setPosition = icon.position or 'TOPLEFT'
