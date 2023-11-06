@@ -8,7 +8,6 @@ local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfin
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local UnitIsPlayer = UnitIsPlayer
 local UnitGUID = UnitGUID
-local GetTime = GetTime
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
@@ -201,13 +200,6 @@ local function Update(self, event)
 	if element.guid ~= guid then
 		element.guid = guid -- if its the same guid on these events reuse the quest data
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
-		QuestList = element.lastQuests
-	end
-
-	local now = GetTime()
-	if (element.lastTime + 0.5) < now or event ~= 'NAME_PLATE_UNIT_ADDED' then
-		element.lastTime = now
-	else
 		QuestList = element.lastQuests
 	end
 
