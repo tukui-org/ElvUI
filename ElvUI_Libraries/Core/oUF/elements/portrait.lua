@@ -56,9 +56,10 @@ local function Update(self, event)
 	local guid = UnitGUID(unit)
 	local newGUID = element.guid ~= guid
 
+	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
 		element.guid = guid
-	elseif event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+	elseif nameplate then
 		return
 	end
 
@@ -71,7 +72,7 @@ local function Update(self, event)
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
 	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	local hasStateChanged = newGUID or element.state ~= isAvailable
+	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
 		element.state = isAvailable
@@ -82,7 +83,7 @@ local function Update(self, event)
 				element:SetPortraitZoom(0)
 				element:SetPosition(0, 0, 0.25)
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
-			elseif newGUID then
+			else
 				element:SetCamDistanceScale(1)
 				element:SetPortraitZoom(1)
 				element:SetPosition(0, 0, 0)

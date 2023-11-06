@@ -6,10 +6,9 @@ local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumbe
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
-local UIParent = UIParent
 local UnitGUID = UnitGUID
+local GetTime = GetTime
 
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
@@ -81,7 +80,11 @@ local typesLocalized = {
 
 local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
-local function CheckTextForQuest(text)
+local function CheckTextForQuest(text, lineType)
+	if lineType and lineType ~= 8 then
+		return -- 8 is QuestObjective
+	end
+
 	local x, y = strmatch(text, '(%d+)/(%d+)')
 	if x and y then
 		local diff = floor(y - x)
@@ -98,25 +101,23 @@ end
 NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unitID)
-	E.ScanTooltip:Show()
-
 	local QuestList, notMyQuest, activeID
-	local info = E.ScanTooltip:GetTooltipData()
+	local info = E.ScanTooltip:GetUnitInfo(unitID)
 	if info and info.lines[3] then
 		for _, line in next, info.lines, 3 do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			if UnitIsPlayer(text) then
+			local lineType = line.type
+			if lineType == 18 or UnitIsPlayer(text) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = CheckTextForQuest(text)
+				local count, percent = CheckTextForQuest(text, lineType)
 
 				-- this line comes from one line up in the tooltip
-				local activeQuest = questIcons.activeQuests[text]
-				if activeQuest then activeID = activeQuest end
+				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
+				local activeTitle = tryTitle and questIcons.activeQuests[text]
+				if activeTitle then activeID = activeTitle end
 
 				if count then
 					local type, index, texture, _
@@ -198,14 +199,15 @@ local function Update(self, event)
 	local guid = UnitGUID(unit)
 	if element.guid ~= guid then
 		element.guid = guid
-	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' or event == 'ForceUpdate' then
+	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
 		return -- new guid was the same
 	end
 
-	if element.lastLookup and element.guid == UnitGUID(element.lastLookup) then
-		return -- last guid was the same
+	local now = GetTime()
+	if (element.lastTime + 0.5) < now or event ~= 'NAME_PLATE_UNIT_ADDED' then
+		element.lastTime = now
 	else
-		element.lastLookup = unit
+		return -- same half second
 	end
 
 	if element.PreUpdate then
@@ -282,6 +284,7 @@ local function Enable(self)
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+		element.lastTime = 0
 
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
 			element.Default:SetAtlas('SmallQuestBang')

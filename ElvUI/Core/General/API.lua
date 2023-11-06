@@ -45,6 +45,9 @@ local UnitIsUnit = UnitIsUnit
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole
 
+local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
+local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
+local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
@@ -817,6 +820,42 @@ function E:CropRatio(frame, coords, mult)
 	return left, right, top, bottom
 end
 
+function E:ScanTooltip_UnitInfo(unit)
+	if C_TooltipInfo_GetUnit then
+		return C_TooltipInfo_GetUnit(unit)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_InventoryInfo(unit, slot)
+	if C_TooltipInfo_GetInventoryItem then
+		return C_TooltipInfo_GetInventoryItem(unit, slot)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetInventoryItem(unit, slot)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_HyperlinkInfo(link)
+	if C_TooltipInfo_GetHyperlink then
+		return C_TooltipInfo_GetHyperlink(link)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetHyperlink(link)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -898,6 +937,10 @@ function E:LoadAPI()
 		E:CompatibleTooltip(E.SpellBookTooltip)
 		E:CompatibleTooltip(_G.GameTooltip)
 	end
+
+	E.ScanTooltip.GetUnitInfo = E.ScanTooltip_UnitInfo
+	E.ScanTooltip.GetHyperlinkInfo = E.ScanTooltip_HyperlinkInfo
+	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
 	if E.Retail or E.Wrath then
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')

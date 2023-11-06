@@ -1,19 +1,29 @@
 local E, L, V, P, G = unpack(ElvUI)
 local oUF = E.oUF
 
+local textures = {}
+local atlases = {
+	elite = 'nameplates-icon-elite-gold',
+	worldboss = 'nameplates-icon-elite-gold',
+	rareelite = 'nameplates-icon-elite-silver',
+	rare = 'nameplates-icon-elite-silver'
+}
+
 local function Update(self)
 	local element = self.ClassificationIndicator
+	local classification = self.classification
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	local classification = self.classification
-	if classification == 'elite' or classification == 'worldboss' then
-		element:SetAtlas('nameplates-icon-elite-gold')
+	local atlas = atlases[classification]
+	local texture = textures[classification]
+	if atlas then
+		element:SetAtlas(atlas)
 		element:Show()
-	elseif classification == 'rareelite' or classification == 'rare' then
-		element:SetAtlas('nameplates-icon-elite-silver')
+	elseif texture then
+		element:SetTexture(texture)
 		element:Show()
 	else
 		element:Hide()
@@ -37,6 +47,14 @@ local function Enable(self)
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
+
+		if not element.ListTexture then
+			element.ListTexture = textures
+		end
+
+		if not element.ListAtlas then
+			element.ListAtlas = atlases
+		end
 
 		if element:IsObjectType('Texture') and not element:GetTexture() then
 			element:SetTexture([[Interface\TARGETINGFRAME\Nameplates]])

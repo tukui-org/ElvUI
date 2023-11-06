@@ -1132,12 +1132,8 @@ do
 	local function GetTitleNPC(unit, custom)
 		if UnitIsPlayer(unit) then return end
 
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
-
 		-- similar to TT.GetLevelLine
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetUnitInfo(unit)
 		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
 		local text = line and line.leftText
 
@@ -1161,27 +1157,24 @@ do
 	local function GetQuestData(unit, which, Hex)
 		if IsInInstance() or UnitIsPlayer(unit) then return end
 
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
-
 		local notMyQuest, activeID
-
-		local info = E.ScanTooltip:GetTooltipData()
+		local info = E.ScanTooltip:GetUnitInfo(unit)
 		if not (info and info.lines[3]) then return end
 
 		for _, line in next, info.lines, 3 do
 			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			if UnitIsPlayer(text) then
+			local lineType = line.type
+			if lineType == 18 or UnitIsPlayer(text) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = NP.QuestIcons.CheckTextForQuest(text)
+				local count, percent = NP.QuestIcons.CheckTextForQuest(text, lineType)
 
 				-- this line comes from one line up in the tooltip
-				local activeQuest = NP.QuestIcons.activeQuests[text]
-				if activeQuest then activeID = activeQuest end
+				local tryTitle = not lineType or lineType == 17 -- 17 is QuestTitle
+				local activeTitle = tryTitle and NP.QuestIcons.activeQuests[text]
+				if activeTitle then activeID = activeTitle end
 
 				if count then
 					if not which then
