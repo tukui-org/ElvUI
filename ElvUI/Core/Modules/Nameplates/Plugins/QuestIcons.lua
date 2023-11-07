@@ -218,6 +218,7 @@ local function Update(self, event)
 	end
 
 	element:SetShown(list)
+	element.backdrop:Hide()
 
 	if list then
 		hideIcons(element)
@@ -246,6 +247,7 @@ local function Update(self, event)
 
 				if questType == 'QUEST_ITEM' then
 					element.Item:SetTexture(quest.itemTexture)
+					element.backdrop:Show()
 				end
 			end
 		end
