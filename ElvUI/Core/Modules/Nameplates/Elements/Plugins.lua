@@ -12,12 +12,18 @@ function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetName() .. 'QuestIcons', nameplate)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
+	QuestIcons:CreateBackdrop()
+	QuestIcons.backdrop:Hide()
 
-	for _, object in ipairs(NP.QuestIcons.iconTypes) do
+	for name, object in ipairs(NP.QuestIcons.iconTypes) do
 		local icon = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
 		icon.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 		icon.Text:FontTemplate()
 		icon:Hide()
+
+		if name == 'Item' then
+			QuestIcons.backdrop:SetOutside(icon)
+		end
 
 		QuestIcons[object] = icon
 	end
