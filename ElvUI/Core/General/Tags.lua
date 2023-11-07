@@ -22,7 +22,6 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetPetLoyalty = GetPetLoyalty
 local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetRuneCooldown = GetRuneCooldown
@@ -70,8 +69,6 @@ local UnitSex = UnitSex
 local UnitStagger = UnitStagger
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
-local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
-local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
 local LEVEL = strlower(LEVEL)
@@ -1156,7 +1153,7 @@ do
 	local function GetQuestData(unit, which, Hex)
 		if IsInInstance() or UnitIsPlayer(unit) then return end
 
-		local notMyQuest, activeID
+		local notMyQuest, lastTitle
 		local info = E.ScanTooltip:GetUnitInfo(unit)
 		if not (info and info.lines[2]) then return end
 
@@ -1167,39 +1164,38 @@ do
 			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = NP.QuestIcons.CheckTextForQuest(text, line.type)
+				if line.type == 17 or not E.Retail then
+					lastTitle = NP.QuestIcons.activeQuests[text]
+				end -- this line comes from one line up in the tooltip
 
-				-- this line comes from one line up in the tooltip
-				local tryTitle = line.type == 17 or not E.Retail -- 17 is QuestTitle
-				local lastTitle = tryTitle and NP.QuestIcons.activeQuests[text]
-				if lastTitle then activeID = lastTitle end
+				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+				if objectives then
+					local quest = objectives[text]
+					if quest then
+						if not which then
+							return text
+						elseif which == 'count' then
+							return quest.isPercent and format('%s%%', quest.value) or quest.value
+						elseif which == 'title' then
+							local colors = lastTitle.color
+							if colors then
+								return format('%s%s|r', Hex(colors.r, colors.g, colors.b), lastTitle.title)
+							end
 
-				if count then
-					if not which then
-						return text
-					elseif which == 'count' then
-						return percent and format('%s%%', count) or count
-					elseif which == 'title' and activeID then
-						local title = C_QuestLog_GetTitleForQuestID(activeID)
-						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-						if level then
-							local colors = GetQuestDifficultyColor(level)
-							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-						end
+							return lastTitle.title
+						elseif (which == 'info' or which == 'full') then
+							local title = lastTitle.title
 
-						return title
-					elseif (which == 'info' or which == 'full') and activeID then
-						local title = C_QuestLog_GetTitleForQuestID(activeID)
-						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-						if level then
-							local colors = GetQuestDifficultyColor(level)
-							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-						end
+							local colors = lastTitle.color
+							if colors then
+								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+							end
 
-						if which == 'full' then
-							return format('%s: %s', title, text)
-						else
-							return format(percent and '%s: %s%%' or '%s: %s', title, count)
+							if which == 'full' then
+								return format('%s: %s', title, text)
+							else
+								return format(quest.isPercent and '%s: %s%%' or '%s: %s', title, quest.value)
+							end
 						end
 					end
 				end
@@ -1210,23 +1206,23 @@ do
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, nil, Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'full', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'info', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'title', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'count', Hex)
-	end)
+	end, not E.Retail)
 end
 
 do

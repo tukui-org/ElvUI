@@ -670,12 +670,15 @@ local NP_QuestIcon = {
 	enable = true,
 	hideIcon = false,
 	position = 'RIGHT',
-	textPosition = 'BOTTOMRIGHT',
 	size = 20,
 	xOffset = 0,
 	yOffset = 0,
+	spacing = 5,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
+	textPosition = 'BOTTOMRIGHT',
+	textXOffset = 2,
+	textYOffset = 2,
 	fontSize = 12
 }
 
