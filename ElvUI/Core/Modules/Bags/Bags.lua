@@ -2838,7 +2838,7 @@ function B:Initialize()
 	local BagFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	BagFrameHolder:Width(200)
 	BagFrameHolder:Height(22)
-	BagFrameHolder:SetFrameLevel(40)
+	BagFrameHolder:SetFrameLevel(400)
 
 	if not E.private.bags.enable then
 		-- Set a different default anchor
@@ -2862,7 +2862,7 @@ function B:Initialize()
 	BankFrameHolder:Width(200)
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 0, 22 + E.Border*4 - E.Spacing*2)
-	BankFrameHolder:SetFrameLevel(40)
+	BankFrameHolder:SetFrameLevel(400)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Set some variables on movers
