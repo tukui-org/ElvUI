@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local CH = E:GetModule('Chat')
 local LO = E:GetModule('Layout')
-local Skins = E:GetModule('Skins')
+local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -57,9 +57,9 @@ local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityC
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
-
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
+local PanelTemplates_TabResize = PanelTemplates_TabResize
 
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -92,6 +92,7 @@ CH.Keywords = {}
 CH.PluginMessageFilters = {}
 CH.Smileys = {}
 CH.TalkingList = {}
+CH.FontHeights = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 }
 CH.RoleIcons = {
 	TANK = E:TextureString(E.Media.Textures.Tank, ':15:15:0:0:64:64:2:56:2:56'),
 	HEALER = E:TextureString(E.Media.Textures.Healer, ':15:15:0:0:64:64:2:56:2:56'),
@@ -604,7 +605,8 @@ end
 function CH:ChatFrameTab_SetAlpha(_, skip)
 	if skip then return end
 	local chat = CH:GetOwner(self)
-	self:SetAlpha((not chat.isDocked or self.selected) and 1 or 0.6, true)
+	local selected = _G.GeneralDockManager.selected
+	self:SetAlpha((not chat.isDocked or chat == selected) and 1 or 0.6, true)
 end
 
 do
@@ -793,6 +795,10 @@ function CH:StyleChat(frame)
 
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
+	if not frame.isDocked then
+		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
+	end
+
 	if frame.styled then return end
 
 	frame:SetFrameLevel(4)
@@ -840,14 +846,11 @@ function CH:StyleChat(frame)
 		if right then right:SetTexture() end
 	end
 
+	tab.Text:ClearAllPoints()
+	tab.Text:Point('CENTER', tab, 0, -1)
+
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.Left then
-		tab.Left = _G[name..'TabLeft'] or _G[name..'Tab'].Left
-	end
-
-	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.Left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
@@ -2374,7 +2377,7 @@ do
 	function CH:StyleOverflowButton()
 		local btn = _G.GeneralDockManagerOverflowButton
 		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
-		Skins:HandleNextPrevButton(btn, 'down', overflowColor, true)
+		S:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
 		if not wasSkinned then
@@ -2387,7 +2390,7 @@ do
 
 		local hl = btn:GetHighlightTexture()
 		hl:SetVertexColor(unpack(E.media.rgbvaluecolor))
-		hl:SetRotation(Skins.ArrowRotation.down)
+		hl:SetRotation(S.ArrowRotation.down)
 
 		btn.list:SetTemplate('Transparent')
 	end
@@ -3118,7 +3121,7 @@ function CH:HandleChatVoiceIcons()
 		end
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
-			Skins:HandleButton(button, nil, nil, true)
+			S:HandleButton(button, nil, nil, true)
 			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 			button:ClearAllPoints()
 
@@ -3176,7 +3179,7 @@ function CH:CreateChatVoicePanel()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
 
 	for _, button in ipairs(channelButtons) do
-		Skins:HandleButton(button, nil, nil, true)
+		S:HandleButton(button, nil, nil, true)
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
@@ -3276,7 +3279,7 @@ function CH:BuildCopyChatFrame()
 	local scrollArea = CreateFrame('ScrollFrame', 'CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
 	scrollArea:Point('TOPLEFT', frame, 'TOPLEFT', 8, -30)
 	scrollArea:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
-	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
+	S:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript('OnSizeChanged', function(scroll)
 		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
@@ -3307,7 +3310,7 @@ function CH:BuildCopyChatFrame()
 	close:Point('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
-	Skins:HandleCloseButton(close)
+	S:HandleCloseButton(close)
 end
 
 CH.TabStyles = {
@@ -3613,6 +3616,7 @@ function CH:Initialize()
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not CH.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
+	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
 	_G.ChatFrameMenuButton:Kill()
 
 	CH:SetupChat()

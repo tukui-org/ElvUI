@@ -3,7 +3,6 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
-local LCS = E.Libs.LCS
 local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
@@ -23,11 +22,9 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetPetLoyalty = GetPetLoyalty
 local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetRuneCooldown = GetRuneCooldown
-local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetTime = GetTime
 local GetTitleName = GetTitleName
@@ -37,8 +34,6 @@ local IsInGroup = IsInGroup
 local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UIParent = UIParent
-local UnitAffectingCombat = UnitAffectingCombat
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -74,8 +69,6 @@ local UnitSex = UnitSex
 local UnitStagger = UnitStagger
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
-local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
-local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
 local LEVEL = strlower(LEVEL)
@@ -191,65 +184,74 @@ local ClassPowers = {
 	WARLOCK		= Enum.PowerType.SoulShards
 }
 
-local function GetClassPower(Class)
-	local spec = GetSpecialization()
-	local min, max, r, g, b
+local function GetClassPower(unit)
+	local spec, unitClass, Min, Max, r, g, b
+	if unit == 'player' then
+		spec = E.myspec
+		unitClass = E.myclass
+	elseif E.Retail then
+		local info = E:GetUnitSpecInfo(unit)
+		if info then
+			spec = info.index
+			unitClass = info.classFile
+		end
+	end
 
 	-- try stagger
-	local monk = Class == 'MONK'
+	local monk = unitClass == 'MONK'
 	if monk and spec == SPEC_MONK_BREWMASTER then
-		min = UnitStagger('player') or 0
-		max = UnitHealthMax('player')
+		Min = UnitStagger(unit) or 0
+		Max = UnitHealthMax(unit)
 
-		local staggerRatio = min / max
+		local staggerRatio = Min / Max
 		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
 		local color = ElvUF.colors.power.STAGGER[staggerIndex]
 		r, g, b = color.r, color.g, color.b
 	end
 
 	-- try special powers or combo points
-	local barType = not r and ClassPowers[Class]
+	local barType = not r and ClassPowers[unitClass]
 	if barType then
-		local dk = Class == 'DEATHKNIGHT'
-		min = (dk and 0) or UnitPower('player', barType)
-		max = (dk and 6) or UnitPowerMax('player', barType)
+		local dk = unitClass == 'DEATHKNIGHT'
+		Min = (dk and 0) or UnitPower(unit, barType)
+		Max = (dk and 6) or UnitPowerMax(unit, barType)
 
-		if dk then
-			for i = 1, max do
+		if dk and unit == 'player' then
+			for i = 1, Max do
 				local _, _, runeReady = GetRuneCooldown(i)
 				if runeReady then
-					min = min + 1
+					Min = Min + 1
 				end
 			end
 		end
 
-		if min > 0 then
-			local power = ElvUF.colors.ClassBars[Class]
-			local color = (monk and power[min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+		if Min > 0 then
+			local power = ElvUF.colors.ClassBars[unitClass]
+			local color = (monk and power[Min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 			r, g, b = color.r, color.g, color.b
 		end
 	elseif not r then
-		min = UnitPower('player', POWERTYPE_COMBOPOINTS)
-		max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
+		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
+		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
 
-		if min > 0 then
+		if Min > 0 then
 			local combo = ElvUF.colors.ComboPoints
 			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = ElvUF:ColorGradient(min, max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
+			r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 		end
 	end
 
 	-- try additional mana
-	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[Class]
-	if altIndex and altIndex[UnitPowerType('player')] then
-		min = UnitPower('player', POWERTYPE_MANA)
-		max = UnitPowerMax('player', POWERTYPE_MANA)
+	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+	if altIndex and altIndex[UnitPowerType(unit)] then
+		Min = UnitPower(unit, POWERTYPE_MANA)
+		Max = UnitPowerMax(unit, POWERTYPE_MANA)
 
 		local mana = ElvUF.colors.power.MANA
 		r, g, b = mana.r, mana.g, mana.b
 	end
 
-	return min or 0, max or 0, r or 1, g or 1, b or 1
+	return Min or 0, Max or 0, r or 1, g or 1, b or 1
 end
 E.TagFunctions.GetClassPower = GetClassPower
 
@@ -315,8 +317,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-		local min, max = GetClassPower(E.myclass)
+	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+		local min, max = GetClassPower(unit)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
@@ -366,8 +368,8 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end, not E.Retail)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-			local min, max = GetClassPower(E.myclass)
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+			local min, max = GetClassPower(unit)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
@@ -422,6 +424,17 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		end
 	end)
 
+	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if targetName and strfind(targetName, '%s') then
+			targetName = Abbrev(targetName)
+		end
+
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
+	end)
+
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
 		if targetName then
@@ -450,6 +463,24 @@ E:AddTag('target', 'UNIT_TARGET', function(unit)
 	if targetName then
 		return targetName
 	end
+end)
+
+E:AddTag('target:abbrev', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = Abbrev(targetName)
+	end
+
+	return targetName
+end)
+
+E:AddTag('target:last', 'UNIT_TARGET', function(unit)
+	local targetName = UnitName(unit..'target')
+	if targetName and strfind(targetName, '%s') then
+		targetName = strmatch(targetName, '([%S]+)$')
+	end
+
+	return targetName
 end)
 
 E:AddTag('target:translit', 'UNIT_TARGET', function(unit)
@@ -653,10 +684,19 @@ E:AddTag('pvptimer', 1, function(unit)
 	end
 end)
 
-E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and (E.myclass == 'DEATHKNIGHT' or E.myclass == 'MONK') and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function()
-	local _, _, r, g, b = GetClassPower(E.myclass)
+E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
+	local _, _, r, g, b = GetClassPower(unit)
 	return Hex(r, g, b)
 end, E.Classic)
+
+E:AddTag('permana', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+	local m = UnitPowerMax(unit)
+	if m == 0 then
+		return 0
+	else
+		return floor(UnitPower(unit, POWERTYPE_MANA) / m * 100 + .5)
+	end
+end)
 
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local color = ElvUF.colors.power.MANA
@@ -779,16 +819,6 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 		return _G.LOCALIZED_CLASS_NAMES_MALE[classToken]
 	end
 end)
-
-E:AddTag('specialization', 'PLAYER_TALENT_UPDATE', function(unit)
-	local currentSpec = UnitIsPlayer(unit) and GetSpecialization()
-	if currentSpec then
-		local _, currentSpecName = GetSpecializationInfo(currentSpec)
-		if currentSpecName then
-			return currentSpecName
-		end
-	end
-end, not E.Retail)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
@@ -1096,18 +1126,16 @@ end
 
 do
 	local function GetTitleNPC(unit, custom)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
-
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
+		if UnitIsPlayer(unit) then return end
 
 		-- similar to TT.GetLevelLine
-		local ttLine = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]
-		local ttText = ttLine and ttLine:GetText()
-		local ttLower = ttText and strlower(ttText)
-		if ttLower and not strfind(ttLower, LEVEL) then
-			return custom and format(custom, ttText) or ttText
+		local info = E.ScanTooltip:GetUnitInfo(unit)
+		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
+		local text = line and line.leftText
+
+		local lower = text and strlower(text)
+		if lower and not strfind(lower, LEVEL) then
+			return custom and format(custom, text) or text
 		end
 	end
 	E.TagFunctions.GetTitleNPC = GetTitleNPC
@@ -1123,53 +1151,51 @@ end
 
 do
 	local function GetQuestData(unit, which, Hex)
-		if UnitIsPlayer(unit) or (E.Wrath and UnitAffectingCombat('player') and IsInInstance()) then return end
+		if IsInInstance() or UnitIsPlayer(unit) then return end
 
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
+		local notMyQuest, lastTitle
+		local info = E.ScanTooltip:GetUnitInfo(unit)
+		if not (info and info.lines[2]) then return end
 
-		local notMyQuest, activeID
-		for i = 3, E.ScanTooltip:NumLines() do
-			local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local text = str and str:GetText()
+		for _, line in next, info.lines, 2 do
+			local text = line and line.leftText
 			if not text or text == '' then return end
 
-			if UnitIsPlayer(text) then
+			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				local count, percent = NP.QuestIcons.CheckTextForQuest(text)
+				if line.type == 17 or not E.Retail then
+					lastTitle = NP.QuestIcons.activeQuests[text]
+				end -- this line comes from one line up in the tooltip
 
-				-- this line comes from one line up in the tooltip
-				local activeQuest = NP.QuestIcons.activeQuests[text]
-				if activeQuest then activeID = activeQuest end
+				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+				if objectives then
+					local quest = objectives[text]
+					if quest then
+						if not which then
+							return text
+						elseif which == 'count' then
+							return quest.isPercent and format('%s%%', quest.value) or quest.value
+						elseif which == 'title' then
+							local colors = lastTitle.color
+							if colors then
+								return format('%s%s|r', Hex(colors.r, colors.g, colors.b), lastTitle.title)
+							end
 
-				if count then
-					if not which then
-						return text
-					elseif which == 'count' then
-						return percent and format('%s%%', count) or count
-					elseif which == 'title' and activeID then
-						local title = C_QuestLog_GetTitleForQuestID(activeID)
-						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-						if level then
-							local colors = GetQuestDifficultyColor(level)
-							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-						end
+							return lastTitle.title
+						elseif (which == 'info' or which == 'full') then
+							local title = lastTitle.title
 
-						return title
-					elseif (which == 'info' or which == 'full') and activeID then
-						local title = C_QuestLog_GetTitleForQuestID(activeID)
-						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-						if level then
-							local colors = GetQuestDifficultyColor(level)
-							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-						end
+							local colors = lastTitle.color
+							if colors then
+								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+							end
 
-						if which == 'full' then
-							return format('%s: %s', title, text)
-						else
-							return format(percent and '%s: %s%%' or '%s: %s', title, count)
+							if which == 'full' then
+								return format('%s: %s', title, text)
+							else
+								return format(quest.isPercent and '%s: %s%%' or '%s: %s', title, quest.value)
+							end
 						end
 					end
 				end
@@ -1180,23 +1206,23 @@ do
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, nil, Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'full', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'info', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'title', Hex)
-	end)
+	end, not E.Retail)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'count', Hex)
-	end)
+	end, not E.Retail)
 end
 
 do
@@ -1237,15 +1263,46 @@ do
 	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
-		if UnitIsPlayer(unit) then
-			local _, class = UnitClass(unit)
-			local icon = classIcons[class]
-			if icon then
-				return format(classIcon, icon)
-			end
+		if not UnitIsPlayer(unit) then return end
+
+		local _, class = UnitClass(unit)
+		local icon = classIcons[class]
+		if icon then
+			return format(classIcon, icon)
 		end
 	end)
+
+	local specIcon = [[|T%s:16:16:0:0:64:64:4:60:4:60|t]]
+	E:AddTag('spec:icon', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+		if not UnitIsPlayer(unit) then return end
+
+		-- try to get spec from tooltip
+		local info = E.Retail and E:GetUnitSpecInfo(unit)
+		if info then
+			return info.icon and format(specIcon, info.icon)
+		end
+	end, not E.Retail)
 end
+
+E:AddTag('spec', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+	if not UnitIsPlayer(unit) then return end
+
+	-- try to get spec from tooltip
+	local info = E.Retail and E:GetUnitSpecInfo(unit)
+	if info then
+		return info.name
+	end
+
+	-- fallback, player only
+	if unit == 'player' and E.myspec then
+		local _, name = GetSpecializationInfo(E.myspec)
+		return name
+	end
+end, not E.Retail)
+
+E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
+	return _TAGS.spec(unit)
+end)
 
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()
@@ -1354,7 +1411,8 @@ E.TagInfo = {
 		['class'] = { category = 'Class', description = "Displays the class of the unit, if that unit is a player" },
 		['class:icon'] = { category = 'Class', description = "Displays the class icon of the unit, if that unit is a player" },
 		['smartclass'] = { category = 'Class', description = "Displays the player's class or creature's type" },
-		['specialization'] = { hidden = not E.Retail, category = 'Class', description = "Displays your current specialization as text" },
+		['spec'] = { hidden = not E.Retail, category = 'Class', description = "Displays the specialization icon of the unit as text" },
+		['spec:icon'] = { hidden = not E.Retail, category = 'Class', description = "Displays the specialization icon of the unit, if that unit is a player" },
 	-- Classification
 		['affix'] = { category = 'Classification', description = "Displays low level critter mobs" },
 		['classification:icon'] = { category = 'Classification', description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" },
@@ -1465,7 +1523,8 @@ E.TagInfo = {
 		['additionalmana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:current:shortvalue'] = { category = 'Mana', description = "" },
 		['additionalmana:deficit:shortvalue'] = { category = 'Mana', description = "" },
-		['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
+		['permana'] = { category = 'Mana', description = "Displays the unit's mana percentage without decimals" },
+		['curmana'] = { category = 'Mana', description = "Displays the unit's current mana" },
 		['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
 		['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
 		['mana:current-percent'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full" },
@@ -1515,7 +1574,7 @@ E.TagInfo = {
 		['curpp'] = { category = 'Power', description = "Displays the unit's current power without decimals" },
 		['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
 		['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
-		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
+		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals" },
 		['power:current-max-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max-percent'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power)" },
 		['power:current-max:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash" },
@@ -1585,6 +1644,11 @@ E.TagInfo = {
 		['statustimer'] = { category = 'Status', description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" },
 	-- Target
 		['classcolor:target'] = { category = 'Target', description = "[classcolor] but for the current target of the unit" },
+		['target:abbrev:long'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 20 letters)" },
+		['target:abbrev:medium'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 15 letters)" },
+		['target:abbrev:short'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 10 letters)" },
+		['target:abbrev:veryshort'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (limited to 5 letters)" },
+		['target:abbrev'] = { category = 'Target', description = "Displays the name of the unit's target with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
 		['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 		['target:long'] = { category = 'Target', description = "Displays the current target of the unit (limited to 20 letters)" },
 		['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
@@ -1594,6 +1658,7 @@ E.TagInfo = {
 		['target:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters" },
 		['target:veryshort:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" },
 		['target:veryshort'] = { category = 'Target', description = "Displays the current target of the unit (limited to 5 letters)" },
+		['target:last'] = { category = 'Target', description = "Displays the last word of the unit's target's name" },
 		['target'] = { category = 'Target', description = "Displays the current target of the unit" },
 	-- Threat
 		['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },

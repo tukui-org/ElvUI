@@ -577,7 +577,8 @@ local NP_PvPClassificationIndicator = {
 local NP_Portrait = {
 	enable = false,
 	position = 'RIGHT',
-	classicon = true,
+	specicon = E.Retail,
+	keepSizeRatio = true,
 	height = 28,
 	width = 28,
 	xOffset = 3,
@@ -669,12 +670,15 @@ local NP_QuestIcon = {
 	enable = true,
 	hideIcon = false,
 	position = 'RIGHT',
-	textPosition = 'BOTTOMRIGHT',
 	size = 20,
 	xOffset = 0,
 	yOffset = 0,
+	spacing = 5,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
+	textPosition = 'BOTTOMRIGHT',
+	textXOffset = 2,
+	textYOffset = 2,
 	fontSize = 12
 }
 
@@ -1330,8 +1334,10 @@ local UF_AuraBars = {
 local UF_AuraWatch = {
 	enable = false,
 	profileSpecific = false,
-	size = 8,
+	countFont = 'PT Sans Narrow',
+	countFontOutline = 'OUTLINE',
 	countFontSize = 12,
+	size = 8
 }
 
 local UF_Castbar = {

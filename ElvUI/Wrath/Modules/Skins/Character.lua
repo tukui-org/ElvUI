@@ -10,7 +10,6 @@ local HasPetUI = HasPetUI
 local hooksecurefunc = hooksecurefunc
 local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
-local UnitFactionGroup = UnitFactionGroup
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
@@ -102,74 +101,67 @@ local function UpdateCurrencySkins()
 	local TokenFrameContainer = _G.TokenFrameContainer
 	if not TokenFrameContainer.buttons then return end
 
-	local buttons = TokenFrameContainer.buttons
-	local numButtons = #buttons
+	for _, button in next, TokenFrameContainer.buttons do
+		if button.highlight then button.highlight:Kill() end
+		if button.categoryLeft then button.categoryLeft:Kill() end
+		if button.categoryRight then button.categoryRight:Kill() end
+		if button.categoryMiddle then button.categoryMiddle:Kill() end
 
-	for i = 1, numButtons do
-		local button = buttons[i]
+		if not button.backdrop then
+			button:CreateBackdrop(nil, nil, nil, true)
+		end
 
-		if button then
-			if button.highlight then button.highlight:Kill() end
-			if button.categoryLeft then button.categoryLeft:Kill() end
-			if button.categoryRight then button.categoryRight:Kill() end
-			if button.categoryMiddle then button.categoryMiddle:Kill() end
-
-			if not button.backdrop then
-				button:CreateBackdrop(nil, nil, nil, true)
-			end
-
-			if button.icon then
-				if button.itemID == HONOR_CURRENCY and UnitFactionGroup('player') then
-					button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
-				else
-					button.icon:SetTexCoord(unpack(E.TexCoords))
-				end
-
-				button.icon:Size(17)
-
-				button.backdrop:SetOutside(button.icon, 1, 1)
-				button.backdrop:Show()
+		if button.icon then
+			if button.itemID == HONOR_CURRENCY and E.myfaction then
+				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 			else
-				button.backdrop:Hide()
+				button.icon:SetTexCoord(unpack(E.TexCoords))
 			end
 
-			if button.expandIcon then
-				if not button.highlightTexture then
-					button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
-					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
-					button.highlightTexture:SetBlendMode('ADD')
-					button.highlightTexture:SetInside(button.expandIcon)
+			button.icon:Size(17)
 
-					-- these two only need to be called once
-					-- adding them here will prevent additional calls
-					button.expandIcon:ClearAllPoints()
-					button.expandIcon:Point('LEFT', 4, 0)
-					button.expandIcon:Size(15)
+			button.backdrop:SetOutside(button.icon, 1, 1)
+			button.backdrop:Show()
+		else
+			button.backdrop:Hide()
+		end
+
+		if button.expandIcon then
+			if not button.highlightTexture then
+				button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
+				button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
+				button.highlightTexture:SetBlendMode('ADD')
+				button.highlightTexture:SetInside(button.expandIcon)
+
+				-- these two only need to be called once
+				-- adding them here will prevent additional calls
+				button.expandIcon:ClearAllPoints()
+				button.expandIcon:Point('LEFT', 4, 0)
+				button.expandIcon:Size(15)
+			end
+
+			if button.isHeader then
+				button.backdrop:Hide()
+
+				-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
+				for _, region in next, { button:GetRegions() } do
+					if region:IsObjectType('FontString') and region:GetText() then
+						region:ClearAllPoints()
+						region:Point('LEFT', 25, 0)
+					end
 				end
 
-				if button.isHeader then
-					button.backdrop:Hide()
-
-					-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
-					for _, region in next, { button:GetRegions() } do
-						if region:IsObjectType('FontString') and region:GetText() then
-							region:ClearAllPoints()
-							region:Point('LEFT', 25, 0)
-						end
-					end
-
-					if button.isExpanded then
-						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					else
-						button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
-						button.expandIcon:SetTexCoord(0,1,0,1)
-					end
-
-					button.highlightTexture:Show()
+				if button.isExpanded then
+					button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
 				else
-					button.highlightTexture:Hide()
+					button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
 				end
+
+				button.highlightTexture:Show()
+			else
+				button.highlightTexture:Hide()
 			end
 		end
 	end

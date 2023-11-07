@@ -400,6 +400,11 @@ Filters.mainOptions.args.auraIndicator.args.countGroup.args.countAnchor = ACH:Se
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
 
+Filters.mainOptions.args.auraIndicator.args.cooldownGroup = ACH:Group(L["Cooldown Text"], nil, 25)
+Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
+Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
+Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
+
 Filters.mainOptions.args.spellGroup = ACH:Group(function() return GetSpellNameRank(GetSelectedSpell()) end, nil, -15, nil, FilterSettings, FilterSettings, nil, function() return not selectedSpell or (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
 Filters.mainOptions.args.spellGroup.inline = true
 Filters.mainOptions.args.spellGroup.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, function() return (selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)

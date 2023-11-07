@@ -81,9 +81,10 @@ end
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
 	tt:SetOwner(UIParent, 'ANCHOR_NONE')
-	tt:SetInventoryItem(unit, slot)
+	local hasItem = tt:SetInventoryItem(unit, slot)
 	tt:Show()
 
+	local info = hasItem and tt:GetTooltipData()
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
 	local slotInfo = tt.slotInfo
 
@@ -95,30 +96,30 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		slotInfo.enchantColors = tt.enchantColors
 		slotInfo.itemLevelColors = tt.itemLevelColors
 
-		for x = 1, tt:NumLines() do
-			local line = _G['ElvUI_ScanTooltipTextLeft'..x]
-			if line then
-				local lineText = line:GetText()
-				if x == 1 and lineText == RETRIEVING_ITEM_INFO then
+		if info then
+			for i, line in next, info.lines do
+				local text = line and line.leftText
+				if i == 1 and text == RETRIEVING_ITEM_INFO then
 					return 'tooSoon'
 				else
-					E:InspectGearSlot(line, lineText, slotInfo)
-					E:CollectEssenceInfo(x, lineText, slotInfo)
+					E:InspectGearSlot(_G['ElvUI_ScanTooltipTextLeft'..i], text, slotInfo)
+					E:CollectEssenceInfo(i, text, slotInfo)
 				end
 			end
 		end
-	else
-		local firstLine = _G.ElvUI_ScanTooltipTextLeft1:GetText()
-		if firstLine == RETRIEVING_ITEM_INFO then
+	elseif info then
+		local firstLine = info.lines[1]
+		local firstText = firstLine and firstLine.leftText
+		if firstText == RETRIEVING_ITEM_INFO then
 			return 'tooSoon'
 		end
 
 		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
 		for x = 2, colorblind do
-			local line = _G['ElvUI_ScanTooltipTextLeft'..x]
+			local line = info.lines[x]
 			if line then
-				local lineText = line:GetText()
-				local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
+				local text = line.leftText
+				local itemLevel = (text and text ~= '') and (strmatch(text, MATCH_ITEM_LEVEL_ALT) or strmatch(text, MATCH_ITEM_LEVEL))
 				if itemLevel then
 					slotInfo.iLvl = tonumber(itemLevel)
 				end

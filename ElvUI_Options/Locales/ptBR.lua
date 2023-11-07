@@ -1691,7 +1691,6 @@ L["This section will allow you to copy settings to a select module from or to a 
 L["This section will help reset specfic settings back to default."] = "Esta seção irá ajudá-lo a resetar configurações específicas para o padrão."
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "Isto seleciona o Quadro de Bate-papo para usar como saída para mensagens do ElvUI."
 L["This setting controls the size of text in item comparison tooltips."] = "Esta opção controla o tamanho do texto na comparação no tooltip."
-L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."] = true
 L["This setting will be updated upon changing stances."] = "Essa configuração atualizará ao trocar posturas."
 L["This texture will get used on objects like chat windows and dropdown menus."] = "Esta textura será usada em objetos como janelas de bate-papo e menus de suspensão."
 L["This uses the IsPlayerSpell API which is only required sometimes."] = true
@@ -1763,7 +1762,6 @@ L["Under Health Threshold"] = "Abaixo do limiar da Vida"
 L["Under Power Threshold"] = "Abaixo do limiar do Poder"
 L["Unfriendly"] = "Não-Amigável"
 L["Unhappy"] = true
-L["Unified Font Sizes"] = true
 L["Unit Class Color"] = true
 L["Unit Conditions"] = "Condições da Unidade"
 L["Unit Faction"] = true

@@ -201,26 +201,10 @@ function AB:TrimIcon(button, masque)
 	local icon = button.icon or button.Icon
 	if not icon then return end
 
-	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
-	local changeRatio = button.db and not button.db.keepSizeRatio
-
-	if changeRatio then
-		local width, height = button:GetSize()
-		local ratio = width / height
-		if ratio > 1 then
-			local trimAmount = (1 - (1 / ratio)) * 0.5
-			top = top + trimAmount
-			bottom = bottom - trimAmount
-		else
-			local trimAmount = (1 - ratio) * 0.5
-			left = left + trimAmount
-			right = right - trimAmount
-		end
-	end
-
-	-- always when masque is off, otherwise only when keepSizeRatio is off
-	if not masque or changeRatio then
-		icon:SetTexCoord(left, right, top, bottom)
+	if not masque and button.db and not button.db.keepSizeRatio then
+		icon:SetTexCoord(E:CropRatio(button, button.db.customCoords))
+	else
+		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 end
 
@@ -683,9 +667,11 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if flash then
 		if AB.db.flashAnimation then
+			local flashOffset = E.PixelMode and 2 or 4
+
 			flash:SetColorTexture(1.0, 0.2, 0.2, 0.45)
 			flash:ClearAllPoints()
-			flash:SetOutside(icon, 2, 2)
+			flash:SetOutside(icon, flashOffset, flashOffset)
 			flash:SetDrawLayer('BACKGROUND', -1)
 		else
 			flash:SetTexture()
@@ -927,7 +913,6 @@ do
 	end
 end
 
-local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end
@@ -939,7 +924,7 @@ end
 
 function AB:SpellButtonOnEnter(_, tt)
 	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
-	if not tt then tt = SpellBookTooltip end
+	if not tt then tt = E.SpellBookTooltip end
 
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
@@ -977,7 +962,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
 	end
 
-	if tt == SpellBookTooltip then
+	if tt == E.SpellBookTooltip then
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
@@ -990,7 +975,7 @@ end
 
 function AB:UpdateSpellBookTooltip(event)
 	-- only need to check the shown state when its not called from TT:MODIFIER_STATE_CHANGED which already checks the shown state
-	local button = (not event or SpellBookTooltip:IsShown()) and SpellBookTooltip:GetOwner()
+	local button = (not event or E.SpellBookTooltip:IsShown()) and E.SpellBookTooltip:GetOwner()
 	if button then AB.SpellButtonOnEnter(button) end
 end
 
@@ -1002,8 +987,8 @@ function AB:SpellButtonOnLeave()
 		ActionBarController_UpdateAllSpellHighlights()
 	end
 
-	SpellBookTooltip:Hide()
-	SpellBookTooltip:SetScript('OnUpdate', nil)
+	E.SpellBookTooltip:Hide()
+	E.SpellBookTooltip:SetScript('OnUpdate', nil)
 end
 
 function AB:ButtonEventsRegisterFrame(added)

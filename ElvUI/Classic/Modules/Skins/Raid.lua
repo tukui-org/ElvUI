@@ -81,6 +81,7 @@ function S:Blizzard_RaidUI()
 			end
 
 			count:FontTemplate(nil, 12, 'OUTLINE')
+			count:SetTextHeight(12) -- fixes blur
 		end
 	end
 

@@ -2,27 +2,36 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
-local _G = _G
-local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
-local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
+local ipairs, ceil, floor, tonumber = ipairs, ceil, floor, tonumber
+local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local IsInInstance = IsInInstance
-local UIParent = UIParent
+local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitIsPlayer = UnitIsPlayer
+local UnitGUID = UnitGUID
 
-local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
+local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
+local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
+local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
+local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 
-local questIcons = {
-	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
-	indexByID = {}, --[questID] = questIndex
-	activeQuests = {} --[questTitle] = questID
+local iconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
+local activeQuests = {} --[questTitle] = quest data
+local activeTitles = {} --[questID] = questTitle1
+local questElements = {
+	DEFAULT = 'Default',
+	KILL = 'Skull',
+	CHAT = 'Chat',
+	QUEST_ITEM = 'Item'
 }
 
-NP.QuestIcons = questIcons
+NP.QuestIcons = {
+	iconTypes = iconTypes,
+	activeQuests = activeQuests,
+	activeTitles = activeTitles,
+}
 
 local typesLocalized = {
 	enUS = {
@@ -81,151 +90,152 @@ local typesLocalized = {
 
 local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
-local function CheckTextForQuest(text)
-	local x, y = strmatch(text, '(%d+)/(%d+)')
-	if x and y then
-		local diff = floor(y - x)
-		if diff > 0 then
-			return diff
+local function GetObjectiveType(text, texture)
+	if texture then
+		return 'QUEST_ITEM'
+	end
+
+	local lowerText = strlower(text)
+
+	-- check kill type first
+	for _, listText in ipairs(questTypes.KILL) do
+		if strfind(lowerText, listText, nil, true) then
+			return 'KILL'
 		end
-	elseif not strmatch(text, ThreatTooltip) then
-		local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
-		if progress and progress <= 100 then
-			return ceil(100 - progress), true
+	end
+
+	-- check chat type if kill type doesn't exist
+	for _, listText in ipairs(questTypes.CHAT) do
+		if strfind(lowerText, listText, nil, true) then
+			return 'CHAT'
 		end
 	end
 end
-NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
+
+local function GetQuestObjectives(id, texture)
+	local list = {}
+
+	for _, objective in next, C_QuestLog_GetQuestObjectives(id) do
+		local text = not objective.finished and objective.text
+		if text then
+			if objective.type == 'progressbar' then
+				local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
+				if progress and progress <= 100 then
+					list[text] = { value = ceil(100 - progress), type = GetObjectiveType(text, texture), isPercent = true }
+				end
+			else
+				local need = objective.numRequired
+				local have = objective.numFulfilled
+				if need and have then
+					local diff = floor(need - have)
+					if diff > 0 then
+						list[text] = { value = diff, type = GetObjectiveType(text, texture), isPercent = false }
+					end
+				end
+			end
+		end
+	end
+
+	return next(list) and list
+end
 
 local function GetQuests(unitID)
-	if IsInInstance() then return end
+	local QuestList, notMyQuest, lastTitle
+	local info = E.ScanTooltip:GetUnitInfo(unitID)
+	if info and info.lines[2] then
+		for _, line in next, info.lines, 2 do
+			local text = line and line.leftText
+			if not text or text == '' then return end
 
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unitID)
-	E.ScanTooltip:Show()
+			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+				notMyQuest = text ~= E.myname
+			elseif text and not notMyQuest then
+				if line.type == 17 or not E.Retail then
+					lastTitle = activeQuests[text]
+				end -- this line comes from one line up in the tooltip
 
-	local QuestList, notMyQuest, activeID
-	for i = 3, E.ScanTooltip:NumLines() do
-		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
-		local text = str and str:GetText()
-		if not text or text == '' then return end
-
-		if UnitIsPlayer(text) then
-			notMyQuest = text ~= E.myname
-		elseif text and not notMyQuest then
-			local count, percent = CheckTextForQuest(text)
-
-			-- this line comes from one line up in the tooltip
-			local activeQuest = questIcons.activeQuests[text]
-			if activeQuest then activeID = activeQuest end
-
-			if count then
-				local type, index, texture, _
-				if activeID then
-					index = questIcons.indexByID[activeID]
-					_, texture = GetQuestLogSpecialItemInfo(index)
-				end
-
-				if texture then
-					type = 'QUEST_ITEM'
-				else
-					local lowerText = strlower(text)
-
-					-- check kill type first
-					for _, listText in ipairs(questTypes.KILL) do
-						if strfind(lowerText, listText, nil, true) then
-							type = 'KILL'
-							break
-						end
-					end
-
-					-- check chat type if kill type doesn't exist
-					if not type then
-						for _, listText in ipairs(questTypes.CHAT) do
-							if strfind(lowerText, listText, nil, true) then
-								type = 'CHAT'
-								break
-							end
-						end
+				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+				if objectives then
+					local quest = objectives[text]
+					if quest then
+						if not QuestList then QuestList = {} end
+						QuestList[#QuestList + 1] = {
+							itemTexture = lastTitle.texture,
+							isPercent = quest.isPercent,
+							objectiveCount = quest.value,
+							questType = quest.type or 'DEFAULT',
+						}
 					end
 				end
-
-				if not QuestList then QuestList = {} end
-				QuestList[#QuestList + 1] = {
-					isPercent = percent,
-					itemTexture = texture,
-					objectiveCount = count,
-					questType = type or 'DEFAULT',
-					-- below keys are currently unused
-					questLogIndex = index,
-					questID = activeID
-				}
 			end
 		end
 	end
 
 	E.ScanTooltip:Hide()
+
 	return QuestList
 end
 
-local function hideIcons(element)
-	for _, object in pairs(questIcons.iconTypes) do
-		local icon = element[object]
-		icon:Hide()
+local function hideIcon(icon)
+	icon:Hide()
 
-		if icon.Text then
-			icon.Text:SetText('')
-		end
+	if icon.Text then
+		icon.Text:SetText('')
 	end
 end
 
-local function Update(self, event, arg1)
+local function hideIcons(element)
+	for _, object in next, iconTypes do
+		hideIcon(element[object])
+	end
+end
+
+local function Update(self, event)
 	local element = self.QuestIcons
 	if not element then return end
 
-	local unit = (event == 'UNIT_NAME_UPDATE' and arg1) or self.unit
-	if unit ~= self.unit then return end
+	local unit = self.unit
+	if not unit then return end
+
+	-- this only runs on npc units anyways
+	if NP.InstanceType ~= 'none' then return end
+
+	local list -- quests
+	local guid = UnitGUID(unit)
+	if element.guid ~= guid then
+		element.guid = guid -- if its the same guid on these events reuse the quest data
+	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
+		list = element.lastQuests
+	end
 
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
-	hideIcons(element)
-
-	local QuestList = GetQuests(unit)
-	if QuestList then
-		element:Show()
-	else
-		element:Hide()
-		return
+	if not list then
+		list = GetQuests(unit)
+		element.lastQuests = list
 	end
 
-	local shownCount
-	for i = 1, #QuestList do
-		local quest = QuestList[i]
-		local objectiveCount = quest.objectiveCount
-		local questType = quest.questType
-		local isPercent = quest.isPercent
+	element:SetShown(list)
+	element.backdrop:Hide()
 
-		if isPercent or objectiveCount > 0 then
-			local icon
-			if questType == 'DEFAULT' then
-				icon = element.Default
-			elseif questType == 'KILL' then
-				icon = element.Skull
-			elseif questType == 'CHAT' then
-				icon = element.Chat
-			elseif questType == 'QUEST_ITEM' then
-				icon = element.Item
-			end
+	if list then
+		hideIcons(element)
 
+		local shown = -1
+		for _, quest in next, list do
+			local objectiveCount = quest.objectiveCount
+			local questType = quest.questType
+			local isPercent = quest.isPercent
+
+			local icon = (isPercent or objectiveCount > 0) and element[questElements[questType]]
 			if icon and not icon:IsShown() then
-				shownCount = (shownCount and shownCount + 1) or 0
+				shown = shown + 1
 
-				local size = icon.size or 25
 				local setPosition = icon.position or 'TOPLEFT'
 				local newPosition = E.InversePoints[setPosition]
-				local offset = shownCount * (5 + size)
+				local offset = shown * ((icon.spacing or 5) + (icon.size or 25))
 
 				icon:Show()
 				icon:ClearAllPoints()
@@ -237,6 +247,7 @@ local function Update(self, event, arg1)
 
 				if questType == 'QUEST_ITEM' then
 					element.Item:SetTexture(quest.itemTexture)
+					element.backdrop:Show()
 				end
 			end
 		end
@@ -273,7 +284,6 @@ local function Enable(self)
 
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', Path, true)
 
 		return true
 	end
@@ -285,34 +295,67 @@ local function Disable(self)
 		element:Hide()
 		hideIcons(element)
 
+		element.lastQuests = nil
+
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
 
-local frame = CreateFrame('Frame')
-frame:RegisterEvent('QUEST_ACCEPTED')
-frame:RegisterEvent('QUEST_REMOVED')
-frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-frame:SetScript('OnEvent', function(self, event)
-	wipe(questIcons.indexByID)
-	wipe(questIcons.activeQuests)
+local function UpdateQuest(id, index)
+	local title = C_QuestLog_GetTitleForQuestID(id)
+	if not title then return end
 
-	if E.Retail then
-		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local id = C_QuestLog_GetQuestIDForLogIndex(i)
-			if id and id > 0 then
-				questIcons.indexByID[id] = i
-
-				local title = C_QuestLog_GetTitleForLogIndex(i)
-				if title then questIcons.activeQuests[title] = id end
-			end
-		end
+	if not index then -- get the index now
+		index = C_QuestLog_GetLogIndexForQuestID(id)
 	end
 
-	if event == 'PLAYER_ENTERING_WORLD' then
-		self:UnregisterEvent(event)
+	if not index then return end
+	local _, texture = GetQuestLogSpecialItemInfo(index)
+	local level = C_QuestLog_GetQuestDifficultyLevel(id)
+
+	activeTitles[id] = title
+	activeQuests[title] = {
+		id = id,
+		index = index,
+		texture = texture,
+		difficulty = level,
+		title = title,
+		color = GetQuestDifficultyColor(level),
+		objectives = GetQuestObjectives(id, texture)
+	}
+end
+
+local frame = CreateFrame('Frame')
+frame:RegisterEvent('QUEST_REMOVED')
+frame:RegisterEvent('QUEST_ACCEPTED')
+frame:RegisterEvent('QUEST_LOG_UPDATE')
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+frame:SetScript('OnEvent', function(self, event, questID)
+	if not E.Retail then return end
+
+	if event == 'QUEST_ACCEPTED' then
+		UpdateQuest(questID)
+	elseif event == 'QUEST_REMOVED' then
+		local title = activeTitles[questID]
+		if title then
+			activeQuests[title] = nil
+			activeTitles[questID] = nil
+		end
+	else -- QUEST_LOG_UPDATE and the first PLAYER_ENTERING_WORLD
+		wipe(activeQuests)
+		wipe(activeTitles)
+
+		for index = 1, C_QuestLog_GetNumQuestLogEntries() do
+			local id = C_QuestLog_GetQuestIDForLogIndex(index)
+			if id and id > 0 then
+				UpdateQuest(id, index)
+			end
+		end
+
+		if event == 'PLAYER_ENTERING_WORLD' then
+			self:UnregisterEvent(event) -- only need one
+		end
 	end
 end)
 

@@ -44,7 +44,7 @@ AddCommand('DEVCON', '/devcon', function()
 	end
 end)
 
--- /rl, /reloadui, /reload  NOTE: /reload is from SLASH_RELOAD
+-- /rl, /reloadui, /reload NOTE: /reload is from SLASH_RELOAD
 AddCommand('RELOADUI', {'/rl','/reloadui'}, _G.ReloadUI)
 
 AddCommand('GETPOINT', '/getpoint', function(arg)

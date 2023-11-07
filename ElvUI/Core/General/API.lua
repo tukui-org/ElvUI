@@ -2,10 +2,11 @@
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
+local TT = E:GetModule('Tooltip')
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max, next = wipe, max, next
+local wipe, max, next, tinsert = wipe, max, next, tinsert
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local hooksecurefunc = hooksecurefunc
@@ -13,8 +14,10 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
+local GetClassInfo = GetClassInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
@@ -36,11 +39,15 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationRole = (E.Classic or E.Wrath) and LCS.GetSpecializationRole or GetSpecializationRole
 
+local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
+local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
+local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
 local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
@@ -63,6 +70,96 @@ local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 E.MountIDs = {}
 E.MountText = {}
 E.MountDragons = {}
+
+E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
+E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
+
+E.SpecByClass = {
+	DEATHKNIGHT	= { 250, 251, 252 },
+	DEMONHUNTER	= { 577, 581 },
+	DRUID		= { 102, 103, 104, 105 },
+	EVOKER		= { 1467, 1468, 1473},
+	HUNTER		= { 253, 254, 255 },
+	MAGE		= { 62, 63, 64 },
+	MONK		= { 268, 270, 269 },
+	PALADIN		= { 65, 66, 70 },
+	PRIEST		= { 256, 257, 258 },
+	ROGUE		= { 259, 260, 261 },
+	SHAMAN		= { 262, 263, 264 },
+	WARLOCK		= { 265, 266, 267 },
+	WARRIOR		= { 71, 72, 73 },
+}
+
+E.ClassName = { -- english locale
+	DEATHKNIGHT	= 'Death Knight',
+	DEMONHUNTER	= 'Demon Hunter',
+	DRUID		= 'Druid',
+	EVOKER		= 'Evoker',
+	HUNTER		= 'Hunter',
+	MAGE		= 'Mage',
+	MONK		= 'Monk',
+	PALADIN		= 'Paladin',
+	PRIEST		= 'Priest',
+	ROGUE		= 'Rogue',
+	SHAMAN		= 'Shaman',
+	WARLOCK		= 'Warlock',
+	WARRIOR		= 'Warrior',
+}
+
+E.SpecName = { -- english locale
+	-- Death Knight
+	[250]	= 'Blood',
+	[251]	= 'Frost',
+	[252]	= 'Unholy',
+	-- Demon Hunter
+	[577]	= 'Havoc',
+	[581]	= 'Vengeance',
+	-- Druids
+	[102]	= 'Balance',
+	[103]	= 'Feral',
+	[104]	= 'Guardian',
+	[105]	= 'Restoration',
+	-- Evoker
+	[1467]	= 'Devastation',
+	[1468]	= 'Preservation',
+	[1473]	= 'Augmentation',
+	-- Hunter
+	[253]	= 'Beast Mastery',
+	[254]	= 'Marksmanship',
+	[255]	= 'Survival',
+	-- Mage
+	[62]	= 'Arcane',
+	[63]	= 'Fire',
+	[64]	= 'Frost',
+	-- Monk
+	[268]	= 'Brewmaster',
+	[270]	= 'Mistweaver',
+	[269]	= 'Windwalker',
+	-- Paladin
+	[65]	= 'Holy',
+	[66]	= 'Protection',
+	[70]	= 'Retribution',
+	-- Priest
+	[256]	= 'Discipline',
+	[257]	= 'Holy',
+	[258]	= 'Shadow',
+	-- Rogue
+	[259]	= 'Assasination',
+	[260]	= 'Combat',
+	[261]	= 'Sublety',
+	-- Shaman
+	[262]	= 'Elemental',
+	[263]	= 'Enhancement',
+	[264]	= 'Restoration',
+	-- Walock
+	[265]	= 'Affliction',
+	[266]	= 'Demonology',
+	[267]	= 'Destruction',
+	-- Warrior
+	[71]	= 'Arms',
+	[72]	= 'Fury',
+	[73]	= 'Protection',
+}
 
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
@@ -101,7 +198,7 @@ do -- other non-english locales require this
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
-		return (className and className ~= '') and E.UnlocalizedClasses[className]
+		return E.UnlocalizedClasses[className]
 	end
 end
 
@@ -197,7 +294,7 @@ function E:GetPlayerRole()
 end
 
 function E:CheckRole()
-	E.myspec = E.Retail and GetSpecialization()
+	E.myspec = GetSpecialization()
 	E.myrole = E:GetPlayerRole()
 end
 
@@ -651,6 +748,114 @@ function E:IsDragonRiding() -- currently unused, was used to help actionbars fad
 	end
 end
 
+function E:CompatibleTooltip(tt) -- knock off compatibility
+	if tt.GetTooltipData then return end -- real support exists
+
+	local info = { name = tt:GetName(), lines = {} }
+	info.leftTextName = info.name .. 'TextLeft'
+	info.rightTextName = info.name .. 'TextRight'
+
+	tt.GetTooltipData = function()
+		wipe(info.lines)
+
+		for i = 1, tt:NumLines() do
+			local left = _G[info.leftTextName..i]
+			local leftText = left and left:GetText() or nil
+
+			local right = _G[info.rightTextName..i]
+			local rightText = right and right:GetText() or nil
+
+			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
+		end
+
+		return info
+	end
+end
+
+function E:GetUnitSpecInfo(unit)
+	if not UnitIsPlayer(unit) then return end
+
+	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
+	local specText = specLine and specLine.leftText
+	if specText then
+		return E.SpecInfoBySpecClass[specText]
+	end
+end
+
+function E:GetClassCoords(classFile, crop, get)
+	local t = _G.CLASS_ICON_TCOORDS[classFile]
+	if not t then return 0, 1, 0, 1 end
+
+	if get then
+		return t
+	elseif type(crop) == 'number' then
+		return t[1] + crop, t[2] - crop, t[3] + crop, t[4] - crop
+	elseif crop then
+		return t[1] + 0.022, t[2] - 0.025, t[3] + 0.022, t[4] - 0.025
+	else
+		return t[1], t[2], t[3], t[4]
+	end
+end
+
+function E:CropRatio(frame, coords, mult)
+	local left, right, top, bottom = unpack(coords or E.TexCoords)
+	if not mult then mult = 0.5 end
+
+	local width, height = frame:GetSize()
+	local ratio = width / height
+	if ratio > 1 then
+		local trimAmount = (1 - (1 / ratio)) * mult
+		top = top + trimAmount
+		bottom = bottom - trimAmount
+	else
+		local trimAmount = (1 - ratio) * mult
+		left = left + trimAmount
+		right = right - trimAmount
+	end
+
+	return left, right, top, bottom
+end
+
+function E:ScanTooltip_UnitInfo(unit)
+	if C_TooltipInfo_GetUnit then
+		return C_TooltipInfo_GetUnit(unit)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_InventoryInfo(unit, slot)
+	if C_TooltipInfo_GetInventoryItem then
+		return C_TooltipInfo_GetInventoryItem(unit, slot)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetInventoryItem(unit, slot)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+function E:ScanTooltip_HyperlinkInfo(link)
+	if C_TooltipInfo_GetHyperlink then
+		return C_TooltipInfo_GetHyperlink(link)
+	else
+		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetHyperlink(link)
+		E.ScanTooltip:Show()
+
+		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -672,11 +877,70 @@ function E:LoadAPI()
 			end
 		end
 
+		do -- fill the spec info tables
+			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
+			local i = 1
+			local className, classFile, classID = GetClassInfo(i)
+			local male, female = MALE[classFile], FEMALE[classFile]
+			while classID do
+				for index, id in next, E.SpecByClass[classFile] do
+					local info = {
+						id = id,
+						index = index,
+						classFile = classFile,
+						className = className,
+						englishName = E.SpecName[id]
+					}
+
+					E.SpecInfoBySpecID[id] = info
+
+					for x = 3, 1, -1 do
+						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+
+						if x == 1 then -- SpecInfoBySpecID
+							info.name = name
+							info.desc = desc
+							info.icon = icon
+							info.role = role
+
+							E.SpecInfoBySpecClass[name..' '..className] = info
+						else
+							local copy = E:CopyTable({}, info)
+							copy.name = name
+							copy.desc = desc
+							copy.icon = icon
+							copy.role = role
+
+							local localized = (x == 3 and female) or male
+							copy.className = localized
+
+							E.SpecInfoBySpecClass[name..' '..localized] = copy
+						end
+					end
+				end
+
+				i = i + 1
+				className, classFile, classID = GetClassInfo(i)
+				male, female = MALE[classFile], FEMALE[classFile]
+			end
+		end
+
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
+	else
+		E:CompatibleTooltip(E.ScanTooltip)
+		E:CompatibleTooltip(E.ConfigTooltip)
+		E:CompatibleTooltip(E.SpellBookTooltip)
+		E:CompatibleTooltip(_G.GameTooltip)
 	end
+
+	E.ScanTooltip.GetUnitInfo = E.ScanTooltip_UnitInfo
+	E.ScanTooltip.GetHyperlinkInfo = E.ScanTooltip_HyperlinkInfo
+	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
 	if E.Retail or E.Wrath then
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')

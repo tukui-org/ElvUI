@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-function B:CaptureBarUpdate()
+function BL:CaptureBarUpdate()
 	local numFrames = _G.NUM_EXTENDED_UI_FRAMES
 	if not numFrames then return end
 
@@ -22,6 +22,6 @@ function B:CaptureBarUpdate()
 	end
 end
 
-function B:PositionCaptureBar()
-	hooksecurefunc('UIParent_ManageFramePositions', B.CaptureBarUpdate)
+function BL:PositionCaptureBar()
+	hooksecurefunc('UIParent_ManageFramePositions', BL.CaptureBarUpdate)
 end

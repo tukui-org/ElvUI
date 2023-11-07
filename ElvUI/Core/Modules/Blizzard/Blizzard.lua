@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -35,14 +35,14 @@ local function PostMove(mover)
 	mover.parent:Point(point, mover)
 end
 
-function B:RepositionFrame(frame, _, anchor)
+function BL:RepositionFrame(frame, _, anchor)
 	if anchor ~= frame.mover then
 		frame:ClearAllPoints()
 		frame:Point(frame.mover.anchorPoint or 'TOPLEFT', frame.mover, frame.mover.anchorPoint or 'TOPLEFT')
 	end
 end
 
-function B:QuestXPPercent()
+function BL:QuestXPPercent()
 	if not E.db.general.questXPPercent then return end
 
 	local unitXP, unitXPMax = UnitXP('player'), UnitXPMax('player')
@@ -64,7 +64,7 @@ function B:QuestXPPercent()
 	end
 end
 
-function B:HandleAddonCompartment()
+function BL:HandleAddonCompartment()
 	local compartment = _G.AddonCompartmentFrame
 	if compartment then
 		if not compartment.mover then
@@ -90,19 +90,19 @@ function B:HandleAddonCompartment()
 	end
 end
 
-function B:ObjectiveTracker_HasQuestTracker()
+function BL:ObjectiveTracker_HasQuestTracker()
 	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
 end
 
-function B:ObjectiveTracker_AutoHide()
+function BL:ObjectiveTracker_AutoHide()
 	local tracker = (E.Wrath and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if not tracker then return end
 
 	if not tracker.AutoHider then
 		tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 		tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		tracker.AutoHider:SetScript('OnHide', B.ObjectiveTracker_AutoHideOnHide)
-		tracker.AutoHider:SetScript('OnShow', B.ObjectiveTracker_AutoHideOnShow)
+		tracker.AutoHider:SetScript('OnHide', BL.ObjectiveTracker_AutoHideOnHide)
+		tracker.AutoHider:SetScript('OnShow', BL.ObjectiveTracker_AutoHideOnShow)
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
@@ -112,55 +112,55 @@ function B:ObjectiveTracker_AutoHide()
 	end
 end
 
-function B:ADDON_LOADED(_, addon)
+function BL:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_GuildBankUI' then
-		B:ImproveGuildBank()
-	elseif B.TryDisableTutorials then
-		B:ShutdownTutorials()
+		BL:ImproveGuildBank()
+	elseif BL.TryDisableTutorials then
+		BL:ShutdownTutorials()
 	end
 end
 
-function B:Initialize()
-	B.Initialized = true
+function BL:Initialize()
+	BL.Initialized = true
 
-	B:EnhanceColorPicker()
-	B:AlertMovers()
-	B:HandleWidgets()
-	B:PositionCaptureBar()
+	BL:EnhanceColorPicker()
+	BL:AlertMovers()
+	BL:HandleWidgets()
+	BL:PositionCaptureBar()
 
-	B:RegisterEvent('ADDON_LOADED')
+	BL:RegisterEvent('ADDON_LOADED')
 
 	if not E.Retail then
-		B:KillBlizzard()
+		BL:KillBlizzard()
 	else
-		B:DisableHelpTip()
-		B:DisableTutorials()
-		B:SkinBlizzTimers()
-		B:HandleTalkingHead()
-		B:HandleAddonCompartment()
+		BL:DisableHelpTip()
+		BL:DisableTutorials()
+		BL:SkinBlizzTimers()
+		BL:HandleTalkingHead()
+		BL:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 		--Add (+X%) to quest rewards experience text
-		B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
+		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
 
 		if not E:IsAddOnEnabled('SimplePowerBar') then
-			B:PositionAltPowerBar()
-			B:SkinAltPowerBar()
+			BL:PositionAltPowerBar()
+			BL:SkinAltPowerBar()
 		end
 	end
 
 	if E.Wrath then
-		B:PositionVehicleFrame()
+		BL:PositionVehicleFrame()
 	end
 
 	if E.Classic then
 		if E.db.general.objectiveTracker then
-			B:QuestWatch_MoveFrames()
-			hooksecurefunc('QuestWatch_Update', B.QuestWatch_AddQuestClick)
+			BL:QuestWatch_MoveFrames()
+			hooksecurefunc('QuestWatch_Update', BL.QuestWatch_AddQuestClick)
 		end
-	elseif not B:ObjectiveTracker_HasQuestTracker() then
-		B:ObjectiveTracker_Setup()
+	elseif not BL:ObjectiveTracker_HasQuestTracker() then
+		BL:ObjectiveTracker_Setup()
 	end
 
 	local MinimapAnchor = _G.ElvUI_MinimapHolder or _G.Minimap
@@ -169,15 +169,15 @@ function B:Initialize()
 		_G.BNToastFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -10)
 		E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostMove)
 		_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
-		B:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
+		BL:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionFrame')
 	end
 
 	if GetCurrentRegion() == 2 then -- TimeAlertFrame Frame
 		_G.TimeAlertFrame:Point('TOPRIGHT', MinimapAnchor, 'BOTTOMRIGHT', 0, -80)
 		E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 		_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
-		B:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
+		BL:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
 	end
 end
 
-E:RegisterModule(B:GetName())
+E:RegisterModule(BL:GetName())

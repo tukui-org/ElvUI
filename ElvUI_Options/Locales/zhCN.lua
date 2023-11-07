@@ -1691,7 +1691,6 @@ L["This section will allow you to copy settings to a select module from or to a 
 L["This section will help reset specfic settings back to default."] = "这部分将帮助你重置特定设置为默认."
 L["This selects the Chat Frame to use as the output of ElvUI messages."] = "选择ElvUI信息的聊天输出"
 L["This setting controls the size of text in item comparison tooltips."] = "设置对比框中的文字大小"
-L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."] = "此设置模仿旧样式的替换暴雪字体，具有更静态的统一字体大小。"
 L["This setting will be updated upon changing stances."] = "这个设置会在改变姿态时更新"
 L["This texture will get used on objects like chat windows and dropdown menus."] = "主要用于聊天窗口及下拉选单等物件的材质"
 L["This uses the IsPlayerSpell API which is only required sometimes."] = true
@@ -1763,7 +1762,6 @@ L["Under Health Threshold"] = "低于血量阈值"
 L["Under Power Threshold"] = "低于能量阈值"
 L["Unfriendly"] = "非友好"
 L["Unhappy"] = true
-L["Unified Font Sizes"] = "统一字体大小"
 L["Unit Class Color"] = true
 L["Unit Conditions"] = "单位状态"
 L["Unit Faction"] = "单位阵营"

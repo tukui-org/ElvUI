@@ -45,6 +45,7 @@ local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFri
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
 local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
+local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local hooksecurefunc = hooksecurefunc
 
 do	-- credit: oUF/private.lua
@@ -355,7 +356,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 			nameplate.Castbar:SetAlpha(0)
 			nameplate.ClassPower:SetAlpha(0)
 		end
-	elseif updateBase then
+	elseif updateBase and db.enable then
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -377,7 +378,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
-	else
+	elseif db.enable then
 		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
 end
@@ -547,7 +548,7 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	NP.InstanceType = select(2, GetInstanceInfo())
+	NP.InstanceName, NP.InstanceType, NP.InstanceDifficultyID, _, _, _, _, NP.InstanceID = GetInstanceInfo()
 
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
@@ -653,6 +654,11 @@ function NP:UnitNPCID(unit) -- also used by Bags.lua
 	return guid and select(6, strsplit('-', guid)), guid
 end
 
+function NP:UpdateNumPlates()
+	-- wish there was another way to get just the amount
+	NP.numPlates = #C_NamePlate_GetNamePlates()
+end
+
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
 end
@@ -751,14 +757,24 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID, nameplate.unitGUID = NP:UnitNPCID(unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
+
+		local specID, specIcon
+		local spec = E.Retail and E:GetUnitSpecInfo(unit)
+		if spec then
+			specID, specIcon = spec.id, spec.icon
+		end
+
+		nameplate.specID = specID
+		nameplate.specIcon = specIcon
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
 		end
 
+		NP:UpdateNumPlates()
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 
@@ -816,6 +832,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate)
 		end
+
+		NP:UpdateNumPlates()
 
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
@@ -902,6 +920,7 @@ function NP:Initialize()
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
 	NP.multiplier = 0.35
+	NP.numPlates = 0
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
 	if BlizzPlateManaBar then

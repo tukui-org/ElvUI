@@ -49,7 +49,7 @@ G.datatexts = {
 		CombatIndicator = { OutOfCombat = '', InCombat = '', OutOfCombatColor = {r = 0, g = 0.8, b = 0}, InCombatColor = {r = 0.8, g = 0, b = 0} },
 		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {}, idEnable = {}, headers = true, maxCurrency = false },
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
-		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
+		Durability = { Label = '', NoLabel = false, percThreshold = 30, goldFormat = 'BLIZZARD', goldCoins = true },
 		DualSpecialization = { NoLabel = false },
 		ElvUI = { Label = '' },
 		['Equipment Sets'] = { Label = '', NoLabel = false, NoIcon = false },

@@ -1,11 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local wipe, next = wipe, next
 local hooksecurefunc = hooksecurefunc
 
-function B:KillBlizzard() -- current not E.Retail
+function BL:KillBlizzard() -- current not E.Retail
 	_G.Advanced_UIScaleSlider:Kill()
 	_G.Advanced_UseUIScale:Kill()
 end
@@ -16,7 +16,7 @@ local function AcknowledgeTips()
 	end
 end
 
-function B:DisableHelpTip() -- auto complete helptips
+function BL:DisableHelpTip() -- auto complete helptips
 	if not E.global.general.disableTutorialButtons then return end
 
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
@@ -105,15 +105,15 @@ local function ShutdownTD() -- Blizzard_TutorialDispatcher
 	return TD
 end
 
-function B:ShutdownTutorials()
+function BL:ShutdownTutorials()
 	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
 	if NPE and GT and TM and TD then -- they exist unregister this
-		B.TryDisableTutorials = nil
+		BL.TryDisableTutorials = nil
 	end
 end
 
 -- disable new player experience stuff
-function B:DisableTutorials()
+function BL:DisableTutorials()
 	local NPE, GT, TM, TD = ShutdownNPE(), ShutdownGT(), ShutdownTM(), ShutdownTD()
-	B.TryDisableTutorials = not NPE or not GT or not TM or not TD or nil -- wait for them to exist
+	BL.TryDisableTutorials = not NPE or not GT or not TM or not TD or nil -- wait for them to exist
 end

@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
+local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
-local Skins = E:GetModule('Skins')
 local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
@@ -46,7 +46,6 @@ local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local UIParent = UIParent
 local UnitAffectingCombat = UnitAffectingCombat
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
@@ -381,6 +380,12 @@ function B:UpdateItemDisplay()
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
+				if B.db.itemLevel then
+					B:UpdateItemLevel(slot)
+				else
+					slot.itemLevel:SetText('')
+				end
+
 				slot.itemLevel:ClearAllPoints()
 				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
@@ -551,17 +556,17 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 	if bindType == 4 or itemClassID == LE_ITEM_CLASS_QUESTITEM then
 		return true, true
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-		E.ScanTooltip:SetHyperlink(itemLink)
-		E.ScanTooltip:Show()
-
 		local isQuestItem, isStarterItem
-		for i = BIND_START, BIND_END do
-			local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
+		local info = E.ScanTooltip:GetHyperlinkInfo(itemLink)
+		if info then
+			for i = BIND_START, BIND_END do
+				local line = info.lines[i]
+				local text = line and line.leftText
 
-			if not line or line == '' then break end
-			if not isQuestItem and line == _G.ITEM_BIND_QUEST then isQuestItem = true end
-			if not isStarterItem and line == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+				if not text or text == '' then break end
+				if not isQuestItem and text == _G.ITEM_BIND_QUEST then isQuestItem = true end
+				if not isStarterItem and text == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+			end
 		end
 
 		E.ScanTooltip:Hide()
@@ -1299,6 +1304,18 @@ function B:UpdateTokens()
 		button.currencyID = info.currencyTypesID
 		button:Show()
 
+		if button.currencyID and E.Wrath then
+			local tokens = _G.TokenFrameContainer.buttons
+			if tokens then
+				for _, token in next, tokens do
+					if token.itemID == button.currencyID then
+						button.index = token.index
+						break
+					end
+				end
+			end
+		end
+
 		local icon = button.icon or button.Icon
 		icon:SetTexture(info.iconFileID)
 
@@ -1565,7 +1582,7 @@ function B:ConstructContainerFrame(name, isBank)
 		GameTooltip:Show()
 	end)
 
-	Skins:HandleCloseButton(f.closeButton)
+	S:HandleCloseButton(f.closeButton)
 
 	f.holderFrame = CreateFrame('Frame', nil, f)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
@@ -1766,7 +1783,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame.cover.purchaseButton:Height(20)
 			f.reagentFrame.cover.purchaseButton:Width(150)
 			f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-			Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
+			S:HandleButton(f.reagentFrame.cover.purchaseButton)
 			f.reagentFrame.cover.purchaseButton:SetFrameLevel(16)
 			f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
 			f.reagentFrame.cover.purchaseButton.text:FontTemplate()
@@ -2821,7 +2838,7 @@ function B:Initialize()
 	local BagFrameHolder = CreateFrame('Frame', nil, E.UIParent)
 	BagFrameHolder:Width(200)
 	BagFrameHolder:Height(22)
-	BagFrameHolder:SetFrameLevel(40)
+	BagFrameHolder:SetFrameLevel(355)
 
 	if not E.private.bags.enable then
 		-- Set a different default anchor
@@ -2845,7 +2862,7 @@ function B:Initialize()
 	BankFrameHolder:Width(200)
 	BankFrameHolder:Height(22)
 	BankFrameHolder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 0, 22 + E.Border*4 - E.Spacing*2)
-	BankFrameHolder:SetFrameLevel(40)
+	BankFrameHolder:SetFrameLevel(350)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Set some variables on movers

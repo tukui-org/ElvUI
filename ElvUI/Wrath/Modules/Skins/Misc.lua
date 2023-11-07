@@ -44,6 +44,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Width(300)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
@@ -109,6 +110,21 @@ function S:BlizzardMiscFrames()
 
 	-- Emotes NineSlice
 	_G.ChatMenu.NineSlice:SetTemplate()
+
+	--LFD Role Picker frame
+	_G.LFDRoleCheckPopup:StripTextures()
+	_G.LFDRoleCheckPopup:SetTemplate('Transparent')
+	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
+	S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
+
+	for _, roleButton in next, {
+		_G.LFDRoleCheckPopupRoleButtonTank,
+		_G.LFDRoleCheckPopupRoleButtonDPS,
+		_G.LFDRoleCheckPopupRoleButtonHealer
+	} do
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, nil, nil, true)
+		roleButton:DisableDrawLayer('OVERLAY')
+	end
 
 	-- Reskin popup buttons
 	for i = 1, 4 do

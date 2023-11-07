@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local B = E:GetModule('Blizzard')
+local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -33,7 +33,7 @@ local function onLeave()
 	_G.GameTooltip:Hide()
 end
 
-function B:SetAltPowerBarText(text, name, value, max, percent)
+function BL:SetAltPowerBarText(text, name, value, max, percent)
 	local textFormat = E.db.general.altPowerBar.textFormat
 	if textFormat == 'NONE' or not textFormat then
 		text:SetText('')
@@ -54,12 +54,12 @@ function B:SetAltPowerBarText(text, name, value, max, percent)
 	end
 end
 
-function B:PositionAltPowerBar()
+function BL:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -40)
 	holder:Size(128, 50)
 
-	B.AltPowerBarHolder = holder
+	BL.AltPowerBarHolder = holder
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
 	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
@@ -71,8 +71,8 @@ function B:PositionAltPowerBar()
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
 
-function B:UpdateAltPowerBarColors()
-	local bar = B.AltPowerBar
+function BL:UpdateAltPowerBarColors()
+	local bar = BL.AltPowerBar
 	if not bar then return end
 
 	if E.db.general.altPowerBar.statusBarColorGradient then
@@ -91,22 +91,22 @@ function B:UpdateAltPowerBarColors()
 	end
 end
 
-function B:UpdateAltPowerBarSettings()
-	local bar = B.AltPowerBar
+function BL:UpdateAltPowerBarSettings()
+	local bar = BL.AltPowerBar
 	if not bar then return end
 
 	local db = E.db.general.altPowerBar
 	bar:Size(db.width or 250, db.height or 20)
 	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.statusBar))
 	bar.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
-	B.AltPowerBarHolder:Size(bar.backdrop:GetSize())
+	BL.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	E:SetSmoothing(bar, db.smoothbars)
 
-	B:SetAltPowerBarText(bar.text, bar.powerName or '', bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
+	BL:SetAltPowerBarText(bar.text, bar.powerName or '', bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
 end
 
-function B:UpdateAltPowerBar()
+function BL:UpdateAltPowerBar()
 	_G.PlayerPowerBarAlt:UnregisterAllEvents()
 	_G.PlayerPowerBarAlt:Hide()
 
@@ -138,7 +138,7 @@ function B:UpdateAltPowerBar()
 			end
 		end
 
-		B:SetAltPowerBarText(self.text, powerName or '', power, maxPower, perc)
+		BL:SetAltPowerBarText(self.text, powerName or '', power, maxPower, perc)
 	else
 		self.powerMaxValue = nil
 		self.powerName = nil
@@ -150,29 +150,29 @@ function B:UpdateAltPowerBar()
 	end
 end
 
-function B:SkinAltPowerBar()
+function BL:SkinAltPowerBar()
 	if not E.db.general.altPowerBar.enable then return end
 
 	local bar = CreateFrame('StatusBar', 'ElvUI_AltPowerBar', E.UIParent)
 	bar:CreateBackdrop(nil, true)
 	bar:SetMinMaxValues(0, 200)
-	bar:Point('CENTER', B.AltPowerBarHolder)
+	bar:Point('CENTER', BL.AltPowerBarHolder)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', onLeave)
 	bar:Hide()
 
-	B.AltPowerBar = bar
+	BL.AltPowerBar = bar
 
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:Point('CENTER', bar, 'CENTER')
 	bar.text:SetJustifyH('CENTER')
 
-	B:UpdateAltPowerBarSettings()
-	B:UpdateAltPowerBarColors()
+	BL:UpdateAltPowerBarSettings()
+	BL:UpdateAltPowerBarColors()
 
 	bar:RegisterEvent('UNIT_POWER_UPDATE')
 	bar:RegisterEvent('UNIT_POWER_BAR_SHOW')
 	bar:RegisterEvent('UNIT_POWER_BAR_HIDE')
 	bar:RegisterEvent('PLAYER_ENTERING_WORLD')
-	bar:SetScript('OnEvent', B.UpdateAltPowerBar)
+	bar:SetScript('OnEvent', BL.UpdateAltPowerBar)
 end

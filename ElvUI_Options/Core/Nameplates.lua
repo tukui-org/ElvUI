@@ -363,23 +363,29 @@ local function GetUnitSettings(unit, name)
 		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 70, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
 		group.args.questIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.questIcon.args.hideIcon = ACH:Toggle(L["Hide Icon"], nil, 2)
-		group.args.questIcon.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
-		group.args.questIcon.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPositions)
-		group.args.questIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
-		group.args.questIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+		group.args.questIcon.args.position = ACH:Select(L["Position"], nil, 3, C.Values.AllPositions)
+		group.args.questIcon.args.spacer1 = ACH:Spacer(5, 'full')
+		group.args.questIcon.args.size = ACH:Range(L["Size"], nil, 6, { min = 12, max = 64, step = 1 })
+		group.args.questIcon.args.spacing = ACH:Range(L["Spacing"], nil, 7, { min = -20, max = 20, step = 1 })
+		group.args.questIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -80, max = 80, step = 1 })
+		group.args.questIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -80, max = 80, step = 1 })
 
-		group.args.questIcon.args.fontGroup = ACH:Group('', nil, 7)
+		group.args.questIcon.args.fontGroup = ACH:Group('', nil, 20)
 		group.args.questIcon.args.fontGroup.inline = true
 		group.args.questIcon.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 		group.args.questIcon.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
 		group.args.questIcon.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-		group.args.questIcon.args.fontGroup.args.textPosition = ACH:Select(L["Text Position"], nil, 4, C.Values.AllPoints)
+		group.args.questIcon.args.fontGroup.args.spacer1 = ACH:Spacer(5, 'full')
+		group.args.questIcon.args.fontGroup.args.textPosition = ACH:Select(L["Text Position"], nil, 6, C.Values.AllPoints)
+		group.args.questIcon.args.fontGroup.args.textXOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -20, max = 20, step = 1 })
+		group.args.questIcon.args.fontGroup.args.textYOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -20, max = 20, step = 1 })
 	end
 
 	if unit == 'PLAYER' or unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
 		group.args.healthGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 10)
 
-		group.args.portraitGroup.args.classicon = ACH:Toggle(L["Class Icon"], nil, 2)
+		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21, nil, nil, nil, nil, nil, nil, not E.Retail)
+		group.args.portraitGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 22, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 		group.args.pvpclassificationindicator = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 70, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end)
 		group.args.pvpclassificationindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)

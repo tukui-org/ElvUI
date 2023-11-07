@@ -6,7 +6,6 @@ local next, pairs, select = next, pairs, select
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
@@ -21,8 +20,7 @@ local function UpdateNames(button)
 	if memberInfo and memberInfo.classID then
 		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
 		if classInfo then
-			local tcoords = _G.CLASS_ICON_TCOORDS[classInfo.classFile]
-			button.Class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+			button.Class:SetTexCoord(E:GetClassCoords(classInfo.classFile, true))
 		end
 	end
 end
@@ -33,8 +31,7 @@ local function ColorMemberName(button, info)
 	local class = button.Class
 	local _, classTag = GetClassInfo(info.classID)
 	if classTag then
-		local tcoords = CLASS_ICON_TCOORDS[classTag]
-		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
+		class:SetTexCoord(E:GetClassCoords(classTag, true))
 	end
 end
 ---- TODO: need to reimplement this ^
