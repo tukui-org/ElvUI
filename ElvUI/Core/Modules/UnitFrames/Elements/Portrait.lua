@@ -121,10 +121,12 @@ function UF:Configure_Portrait(frame)
 end
 
 function UF:PortraitUpdate(unit, hasStateChanged)
-	local db = hasStateChanged and self.db
-	if not db then return end
+	if not hasStateChanged then return end
 
 	if self.playerModel then
+		local db = self.db
+		if not db then return end
+
 		if self.state then
 			self:SetCamDistanceScale(db.camDistanceScale)
 			self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
@@ -139,7 +141,7 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation)
 		self:SetPaused(db.paused)
-	elseif db.style == 'Class' then
+	elseif self.useClassBase then
 		self:SetTexCoord(unpack(E.TexCoords))
 	end
 end

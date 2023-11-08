@@ -137,25 +137,25 @@ local function Update(self, event, unit)
 	end
 
 	if(element.myBar) then
-		element.myBar:SetMinMaxValues(-1, maxHealth)
+		element.myBar:SetMinMaxValues(0, maxHealth)
 		element.myBar:SetValue(myIncomingHeal)
 		element.myBar:Show()
 	end
 
 	if(element.otherBar) then
-		element.otherBar:SetMinMaxValues(-1, maxHealth)
+		element.otherBar:SetMinMaxValues(0, maxHealth)
 		element.otherBar:SetValue(otherIncomingHeal)
 		element.otherBar:Show()
 	end
 
 	if(element.absorbBar) then
-		element.absorbBar:SetMinMaxValues(-1, maxHealth)
+		element.absorbBar:SetMinMaxValues(0, maxHealth)
 		element.absorbBar:SetValue(absorb)
 		element.absorbBar:Show()
 	end
 
 	if(element.healAbsorbBar) then
-		element.healAbsorbBar:SetMinMaxValues(-1, maxHealth)
+		element.healAbsorbBar:SetMinMaxValues(0, maxHealth)
 		element.healAbsorbBar:SetValue(healAbsorb)
 		element.healAbsorbBar:Show()
 	end
