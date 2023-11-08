@@ -3,85 +3,68 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local next = next
-local format, floor = format, floor
+local format = format
+local strsub = strsub
 
-local GetItemCount = GetItemCount
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
-local FRAGMENTS_EARNED = gsub(_G.ITEM_UPGRADE_FRAGMENTS_TOTAL, '%s*|c.+$', '')
+local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 
 local crests = {
 	{ -- Flightstones
 		id = 2245,
-		fragment = false,
 		color = _G.HEIRLOOM_BLUE_COLOR
 	},
-	{ -- Whelpling's Shadowflame Crest
-		id = 204193,
-		fragment = 204075,
-		fragmentCap = 2409,
+	{ -- Whelpling's Dreaming Crest
+		id = 2706,
 		color = _G.UNCOMMON_GREEN_COLOR
 	},
-	{ -- Drake's Shadowflame Crest
-		id = 204195,
-		fragment = 204076,
-		fragmentCap = 2410,
+	{ -- Drake's Dreaming Crest
+		id = 2707,
 		color = _G.RARE_BLUE_COLOR
 	},
-	{ -- Wyrm's Shadowflame Crest
-		id = 204196,
-		fragment = 204077,
-		fragmentCap = 2411,
+	{ -- Wyrm's Dreaming Crest
+		id = 2708,
 		color = _G.EPIC_PURPLE_COLOR
 	},
-	{ -- Aspect's Shadowflame Crest
-		id = 204194,
-		fragment = 204078,
-		fragmentCap = 2412,
+	{ -- Aspect's Dreaming Crest
+		id = 2709,
 		color = _G.LEGENDARY_ORANGE_COLOR
 	}
 }
 
-local crestText = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s / %s'
-local fragmentText, fragmentSplit, fragmentAdd = '%s | %s', '%s / 15', '%s+%s'
+local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local crestText = '%s / %s'
 
-local function GetFragmentText(text, crest, count, fragments)
-	return format(fragmentText, text, crest.color:WrapTextInColorCode((fragments and fragments > 0) and format(fragmentAdd, count, fragments) or count))
+local function GetCrestIcon(crest, info)
+	return crest.color:WrapTextInColorCode(format(crestIcon, info.iconFileID))
 end
 
 local function GetCrestText(crest, info)
-	return crest.color:WrapTextInColorCode(format(crestText, info.iconFileID, info.quantity, info.maxQuantity))
+	return crest.color:WrapTextInColorCode(format(crestText, info.quantity, info.maxQuantity))
 end
 
 local function OnEvent(self)
 	local text = ''
 	for _, crest in next, crests do
-		if crest.fragment then
-			text = GetFragmentText(text, crest, GetItemCount(crest.id) or 0, floor((GetItemCount(crest.fragment) or 0) / 15))
-		else
-			local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
-			if currency then
-				text = crest.color:WrapTextInColorCode(currency.quantity)
-			end
+		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
+		if currency then
+			text = format('%s | %s', text, crest.color:WrapTextInColorCode(currency.quantity))
 		end
 	end
 
-	self.text:SetFormattedText(text)
+	self.text:SetFormattedText(strsub(text, 4, -1))
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddLine(FRAGMENTS_EARNED)
+	DT.tooltip:AddLine(CRESTS_EARNED)
 
 	for _, crest in next, crests do
-		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.fragment and crest.fragmentCap or crest.id)
+		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
 		if currency then
-			if crest.fragment then
-				if currency.maxQuantity > 0 then
-					DT.tooltip:AddDoubleLine(GetCrestText(crest, currency), format(fragmentSplit, GetItemCount(crest.fragment) or 0))
-				end
-			else
-				DT.tooltip:AddLine(GetCrestText(crest, currency))
+			if currency.maxQuantity > 0 then
+				DT.tooltip:AddDoubleLine(GetCrestIcon(crest, currency), GetCrestText(crest, currency))
 			end
 		end
 	end
@@ -89,4 +72,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext(format('%s %s', _G.EXPANSION_NAME9, _G.ARCHAEOLOGY_RUNE_STONES), _G.CURRENCY, {'BAG_UPDATE', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext(format('%s %s', _G.EXPANSION_NAME9, _G.ARCHAEOLOGY_RUNE_STONES), _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
