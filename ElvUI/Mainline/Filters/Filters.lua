@@ -1727,6 +1727,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[366309] = List(), -- Meltdown (Destabilized Core)
 		[365596] = List(), -- Overload (Destabilized Core)
 		[360750] = List(), -- Aurelid Lure
+	-- Emerald Dream
+		[420009] = List(), -- Corrupting Sparks (Splinterlimb)
 	},
 }
 
