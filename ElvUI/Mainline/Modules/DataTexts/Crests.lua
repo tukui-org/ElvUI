@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local next = next
 local format = format
-local strsub = strsub
 
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
@@ -13,35 +12,35 @@ local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 local crests = {
 	{ -- Flightstones
 		id = 2245,
-		color = _G.HEIRLOOM_BLUE_COLOR
+		color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor()
 	},
 	{ -- Whelpling's Dreaming Crest
 		id = 2706,
-		color = _G.UNCOMMON_GREEN_COLOR
+		color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor()
 	},
 	{ -- Drake's Dreaming Crest
 		id = 2707,
-		color = _G.RARE_BLUE_COLOR
+		color = _G.RARE_BLUE_COLOR:GenerateHexColor()
 	},
 	{ -- Wyrm's Dreaming Crest
 		id = 2708,
-		color = _G.EPIC_PURPLE_COLOR
+		color = _G.EPIC_PURPLE_COLOR:GenerateHexColor()
 	},
 	{ -- Aspect's Dreaming Crest
 		id = 2709,
-		color = _G.LEGENDARY_ORANGE_COLOR
+		color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor()
 	}
 }
 
 local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
-local crestText = '%s / %s'
+local crestText = '|c%s%s / %s|r'
 
-local function GetCrestIcon(crest, info)
-	return crest.color:WrapTextInColorCode(format(crestIcon, info.iconFileID))
+local function GetCrestIcon(info)
+	return format(crestIcon, info.iconFileID)
 end
 
 local function GetCrestText(crest, info)
-	return crest.color:WrapTextInColorCode(format(crestText, info.quantity, info.maxQuantity))
+	return format(crestText, crest.color, info.quantity, info.maxQuantity)
 end
 
 local function OnEvent(self)
@@ -49,11 +48,11 @@ local function OnEvent(self)
 	for _, crest in next, crests do
 		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
 		if currency then
-			text = format('%s | %s', text, crest.color:WrapTextInColorCode(currency.quantity))
+			text = format((text == '' and '%s|c%s%s|r') or '%s | |c%s%s|r', text, crest.color, currency.quantity)
 		end
 	end
 
-	self.text:SetFormattedText(strsub(text, 4, -1))
+	self.text:SetFormattedText(text)
 end
 
 local function OnEnter()
@@ -64,7 +63,7 @@ local function OnEnter()
 		local currency = C_CurrencyInfo_GetCurrencyInfo(crest.id)
 		if currency then
 			if currency.maxQuantity > 0 then
-				DT.tooltip:AddDoubleLine(GetCrestIcon(crest, currency), GetCrestText(crest, currency))
+				DT.tooltip:AddDoubleLine(GetCrestIcon(currency), GetCrestText(crest, currency))
 			end
 		end
 	end
