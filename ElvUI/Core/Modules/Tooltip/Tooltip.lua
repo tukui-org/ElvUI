@@ -1019,6 +1019,7 @@ function TT:Initialize()
 	local statusBar = GameTooltipStatusBar
 	statusBar:Height(TT.db.healthBar.height)
 	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
+	statusBar:SetMinMaxValues(-0.00001, 1)
 	GameTooltip.StatusBar = statusBar
 
 	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
