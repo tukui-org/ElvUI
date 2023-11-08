@@ -53,6 +53,9 @@ end
 local function FixStatusBarMinCurPlease(frame, value)
 	local MIN = frame:GetMinMaxValues()
 	if MIN and (value <= MIN) then -- gg blizz, idk how you manage this one lol
+		local style = frame:GetFillStyle()
+		if style ~= 'STANDARD' and style ~= 'REVERSE' then return end
+
 		local width, height = frame:GetSize()
 		if not width or not height then return end
 
