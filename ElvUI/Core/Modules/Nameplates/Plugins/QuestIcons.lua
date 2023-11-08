@@ -310,6 +310,7 @@ local function UpdateQuest(id, index)
 		index = C_QuestLog_GetLogIndexForQuestID(id)
 	end
 
+	if not index then return end
 	local _, texture = GetQuestLogSpecialItemInfo(index)
 	local level = C_QuestLog_GetQuestDifficultyLevel(id)
 

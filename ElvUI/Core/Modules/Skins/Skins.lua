@@ -574,6 +574,52 @@ do
 	end
 end
 
+do
+	local keys = {
+		'zoomInButton',
+		'zoomOutButton',
+		'rotateLeftButton',
+		'rotateRightButton',
+		'resetButton',
+	}
+
+	local function UpdateLayout(frame)
+		local last
+		for _, name in next, keys do
+			local button = frame[name]
+			if button then
+				if not button.isSkinned then
+					S:HandleButton(button)
+					button:Size(22)
+
+					if button.Icon then
+						button.Icon:SetInside(nil, 2, 2)
+					end
+				end
+
+				if button:IsShown() then
+					button:ClearAllPoints()
+
+					if last then
+						button:Point('LEFT', last, 'RIGHT', 1, 0)
+					else
+						button:Point('LEFT', 6, 0)
+					end
+
+					last = button
+				end
+			end
+		end
+	end
+
+	function S:HandleModelSceneControlButtons(frame)
+		if not frame.isSkinned then
+			frame.isSkinned = true
+			hooksecurefunc(frame, 'UpdateLayout', UpdateLayout)
+		end
+	end
+end
+
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesn\'t exist!')
 

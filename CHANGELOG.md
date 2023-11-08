@@ -1,3 +1,25 @@
+## Version 13.47 \[ November 7th 2023 \]
+*   Skinned role check frame (Wrath).
+*   Left buttons for Plugins now highlight again.
+*   Blacklisted auras "Tricked or Treated" and "Wicker Men's Curse".
+*   Aura Indicators now have Cooldown Text position settings (Filters > Aura Indicator).
+*   Aura Indicators now have Count Font and Outline settings (UnitFrame > Units > Frame > Aura Indicator).
+*   More fonts follow the Font Size setting. Unified Fonts was removed and Blizzard Font Size added which has different functionality, also an option to not Font Scale (General > Media > Fonts).
+*   Mage's Ice Cold and Alter Time added to Player Buffs and Turtle Buffs.
+*   Style Filter triggers "Amount Below" and "Amount Above" under Unit Conditions which reacts off the amount of visible Nameplates.
+*   Nameplate Portrait now has an option to prefer Specialization Icon instead of Class Icon.
+*   Nameplate Portrait Spec and Class Icon not have Keep Size Ratio option.
+*   Chat Tab text should be displayed fully when detached from the dock.
+*   Chat Tab not being selected after reloading. (Thanks Daenarys)
+*   2D Portrait option removed, this was causing performance issues on Nameplates.
+*   Quest Icons code was optimized to further reduce strain on Nameplates.
+*   Quest Icons now have spacing and text offset options.
+*   **Tags**
+    *   [permana] for mana added, like health and power tags.
+    *   [target:last] and [target:abbrev] with variants for the unit's target.
+    *   [spec:icon] and [spec] added which support other units and [specialization] is now the same as [spec].
+    *   [classpowercolor] and [classpower] supports other units, limited by Blizzard's API which means, it only works for Stagger.
+
 ## Version 13.46 \[ October 26th 2023 \]
 *   Guild Bank timeout error fixed.
 *   Lowered Graveyard button to prevent overlap.
