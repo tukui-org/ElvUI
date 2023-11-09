@@ -290,16 +290,18 @@ end
 
 function E:GetPlayerRole()
 	local role = (E.Retail or E.Wrath) and UnitGroupRolesAssigned('player') or 'NONE'
-	return (role ~= 'NONE' and role) or E.myspecRole
+	return (role ~= 'NONE' and role) or E.myspecRole or 'NONE'
 end
 
 function E:CheckRole()
 	E.myspec = GetSpecialization()
 
-	if E.Retail then
-		E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
-	else -- they add background
-		E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecBackground, E.myspecRole = GetSpecializationInfo(E.myspec)
+	if E.myspec then
+		if E.Retail then
+			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
+		else -- they add background
+			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecBackground, E.myspecRole = GetSpecializationInfo(E.myspec)
+		end
 	end
 
 	E.myrole = E:GetPlayerRole()
