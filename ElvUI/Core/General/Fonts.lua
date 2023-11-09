@@ -15,11 +15,11 @@ local FontMap = {
 	mailbody		= { object = _G.MailTextFontNormal },
 	questtitle		= { object = _G.QuestTitleFont },
 	questtext		= { object = _G.QuestFont },
-	questsmall		= { object = _G.QuestFontNormalSmall },
-	objective		= { object = _G.ObjectiveFont }
+	questsmall		= { object = _G.QuestFontNormalSmall }
 }
 
 if E.Retail then
+	FontMap.objective		= { object = _G.ObjectiveFont }
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
 end
@@ -119,7 +119,6 @@ function E:UpdateBlizzardFonts()
 	-- advanced fonts
 	local replaceFonts = db.replaceBlizzFonts
 	if replaceFonts then
-		E:MapFont(FontMap.objective,				NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
 		E:MapFont(FontMap.questsmall,				NORMAL, (blizz and 12) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtext,				NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, outline)
@@ -131,6 +130,7 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
 
 		if E.Retail then
+			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
 			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
 		end

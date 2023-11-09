@@ -125,7 +125,7 @@ do
 		worldsubzone = { name = L["World Sub Zone"], order = 53 },
 		pvpzone = { name = L["PVP Zone Text"], order = 54 },
 		pvpsubzone = { name = L["PVP Sub Zone"], order = 55 },
-		objective = { name = L["Objective Text"], order = 56 },
+		objective = { name = L["Objective Text"], order = 56, hidden = not E.Retail },
 		mailbody = { name = L["Mail Text"], order = 57 },
 		questtitle = { name = L["Quest Title"], order = 58 },
 		questtext = { name = L["Quest Text"], order = 59 },
