@@ -69,7 +69,9 @@ P.general = {
 		mailbody = { enable = false, font = 'Expressway', size = 14, outline = 'SHADOW' },
 		questtitle = { enable = false, font = 'Expressway', size = 18, outline = 'NONE' },
 		questtext = { enable = false, font = 'Expressway', size = 14, outline = 'NONE' },
-		questsmall = { enable = false, font = 'Expressway', size = 13, outline = 'NONE' }
+		questsmall = { enable = false, font = 'Expressway', size = 13, outline = 'NONE' },
+		talkingtitle = { enable = false, font = 'Expressway', size = 20, outline = 'OUTLINE' },
+		talkingtext = { enable = false, font = 'Expressway', size = 18, outline = 'SHADOW' }
 	},
 	debuffColors = { -- handle colors of LibDispel
 		none = { r = 0.8, g = 0, b = 0 },

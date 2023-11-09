@@ -16,9 +16,13 @@ local FontMap = {
 	questtitle		= { object = _G.QuestTitleFont },
 	questtext		= { object = _G.QuestFont },
 	questsmall		= { object = _G.QuestFontNormalSmall },
-	-- questtext	= { object = { _G.QuestFont, _G.QuestFontNormalSmall } }, -- this is also supported
 	objective		= { object = _G.ObjectiveFont }
 }
+
+if E.Retail then
+	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
+	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
+end
 
 function E:SetFontMap(object, opt, data, replace)
 	if opt and opt.enable then
@@ -125,18 +129,16 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
 		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
+
+		if E.Retail then
+			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
+		end
 	end
 
 	-- custom font settings
 	for name, data in next, FontMap do
-		local opt = E.db.general.fonts[name]
-		if data.object and (#data.object > 0) then
-			for _, object in next, data.object do
-				E:SetFontMap(object, opt, data, replaceFonts)
-			end
-		else
-			E:SetFontMap(data.object, opt, data, replaceFonts)
-		end
+		E:SetFontMap(data.object, E.db.general.fonts[name], data, replaceFonts)
 	end
 
 	-- handle replace blizzard, when needed

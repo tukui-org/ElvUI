@@ -130,11 +130,13 @@ do
 		questtitle = { name = L["Quest Title"], order = 58 },
 		questtext = { name = L["Quest Text"], order = 59 },
 		questsmall = { name = L["Quest Small"], order = 60 },
+		talkingtitle = { name = L["Talkinghead Name"], order = 61, hidden = not E.Retail },
+		talkingtext = { name = L["Talkinghead Text"], order = 62, hidden = not E.Retail },
 	}
 
 	for name in next, P.general.fonts do
 		local data = map[name]
-		local group = ACH:Group(data.name, nil, data.order, nil, function(info) return E.db.general.fonts[name][info[#info]] end, function(info, value) E.db.general.fonts[name][info[#info]] = value E:UpdateBlizzardFonts() end)
+		local group = ACH:Group(data.name, nil, data.order, nil, function(info) return E.db.general.fonts[name][info[#info]] end, function(info, value) E.db.general.fonts[name][info[#info]] = value E:UpdateBlizzardFonts() end, nil, data.hidden)
 		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.spacer1 = ACH:Spacer(5, 'full')
 		group.args.font = ACH:SharedMediaFont(L["Font"], nil, 6)
