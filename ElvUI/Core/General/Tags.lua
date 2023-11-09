@@ -184,8 +184,10 @@ local ClassPowers = {
 }
 
 local function GetClassPower(unit)
+	local isme = UnitIsUnit(unit, 'player')
+
 	local spec, unitClass, Min, Max, r, g, b
-	if unit == 'player' then
+	if isme then
 		spec = E.myspec
 		unitClass = E.myclass
 	elseif E.Retail then
@@ -215,7 +217,7 @@ local function GetClassPower(unit)
 		Min = (dk and 0) or UnitPower(unit, barType)
 		Max = (dk and 6) or UnitPowerMax(unit, barType)
 
-		if dk and unit == 'player' then
+		if dk and isme then
 			for i = 1, Max do
 				local _, _, runeReady = GetRuneCooldown(i)
 				if runeReady then
