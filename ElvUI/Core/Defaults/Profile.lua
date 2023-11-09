@@ -71,7 +71,7 @@ P.general = {
 		questtitle = { enable = false, font = 'Expressway', size = 18, outline = 'NONE' },
 		questtext = { enable = false, font = 'Expressway', size = 14, outline = 'NONE' },
 		questsmall = { enable = false, font = 'Expressway', size = 13, outline = 'NONE' },
-		talkingtitle = { enable = false, font = 'Expressway', size = 20, outline = 'OUTLINE' },
+		talkingtitle = { enable = false, font = 'Expressway', size = 20, outline = 'SHADOW' },
 		talkingtext = { enable = false, font = 'Expressway', size = 18, outline = 'SHADOW' }
 	},
 	debuffColors = { -- handle colors of LibDispel

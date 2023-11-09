@@ -131,8 +131,8 @@ do
 		questtitle = { name = L["Quest Title"], order = 59 },
 		questtext = { name = L["Quest Text"], order = 60 },
 		questsmall = { name = L["Quest Small"], order = 61 },
-		talkingtitle = { name = L["Talkinghead Name"], order = 62, hidden = not E.Retail },
-		talkingtext = { name = L["Talkinghead Text"], order = 63, hidden = not E.Retail },
+		talkingtitle = { name = L["Talking Head Name"], order = 62, hidden = not E.Retail },
+		talkingtext = { name = L["Talking Head Text"], order = 63, hidden = not E.Retail },
 	}
 
 	for name in next, P.general.fonts do
