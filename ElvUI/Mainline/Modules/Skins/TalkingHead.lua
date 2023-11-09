@@ -80,8 +80,8 @@ function TestTalkingHead()
 		end
 
 		if isNewTalkingHead then
-			TalkingHeadFrame_Reset(frame, textFormatted, name)
-			TalkingHeadFrame_FadeinFrames()
+			TalkingHeadFrame:Reset(textFormatted, name)
+			TalkingHeadFrame:FadeinFrames()
 		else
 			if name ~= frame.NameFrame.Name:GetText() then
 				-- Fade out the old name and fade in the new name

@@ -10,7 +10,6 @@ local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarDefault = GetCVarDefault
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetPartyAssignment = GetPartyAssignment
@@ -548,8 +547,6 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	NP.InstanceName, NP.InstanceType, NP.InstanceDifficultyID, _, _, _, _, NP.InstanceID = GetInstanceInfo()
-
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
 	end

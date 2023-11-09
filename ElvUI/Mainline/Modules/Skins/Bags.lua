@@ -178,13 +178,12 @@ local function UpdateContainerButton(frame)
 
 	local portrait = frame.PortraitButton
 	local combined = GetCVarBool('combinedBags')
+	portrait:Size(frame == _G.ContainerFrameCombinedBags and 50 or 35)
+
 	if combined then
-		portrait:Size(50)
 		portrait:ClearAllPoints()
 		portrait:Point('TOPLEFT', 5, -5)
 	else
-		portrait:Size(35)
-
 		_G.BagItemAutoSortButton:ClearAllPoints()
 		_G.BagItemAutoSortButton:Point('LEFT', _G.BagItemSearchBox, 'RIGHT', 5, 3)
 	end

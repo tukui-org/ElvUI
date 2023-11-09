@@ -1,3 +1,12 @@
+## Version 13.48 \[ November 9th 2023 \]
+*   Unitframe backdrops, Heal prediction, and Absorbs are now working properly.
+*   Actionbar Macro Procs and Macro Target Auras are now working.
+*   Bags now allow you to track more currencies again and can now be excluded from sell junk.
+*   The Fonts menu (General > Fonts) now includes options for adjusting important font settings in the UI, such as the fonts used in Mail, Objective Text, and Blizzard Cooldown text.
+*   Instance triggers for Style Filters are now working correctly.
+*   The tooltip error for BattlePets has been fixed.
+*   Crest Datatext updated for currency change.
+
 ## Version 13.47 \[ November 7th 2023 \]
 *   Skinned role check frame (Wrath).
 *   Left buttons for Plugins now highlight again.

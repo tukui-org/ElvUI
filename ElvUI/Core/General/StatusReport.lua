@@ -9,7 +9,6 @@ local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
 local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
-local GetSpecializationInfo = GetSpecializationInfo
 local UNKNOWN = UNKNOWN
 
 function E:AreOtherAddOnsEnabled()
@@ -30,8 +29,7 @@ function E:GetDisplayMode()
 end
 
 local function GetSpecName()
-	local info = E.myspec and E.SpecName[GetSpecializationInfo(E.myspec)]
-	return info and info.englishName
+	return E.SpecName[E.myspecID]
 end
 
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
