@@ -1,4 +1,4 @@
---[[
+--[[ 
 	~AddOn Engine~
 	To load the AddOn engine inside another addon add this to the top of your file:
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
