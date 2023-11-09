@@ -17,6 +17,7 @@ local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetClassInfo = GetClassInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
@@ -290,11 +291,12 @@ end
 
 function E:GetPlayerRole()
 	local role = (E.Retail or E.Wrath) and UnitGroupRolesAssigned('player') or 'NONE'
-	return (role == 'NONE' and E.myspec and GetSpecializationRole(E.myspec)) or role
+	return (role ~= 'NONE' and role) or E.myspecRole
 end
 
 function E:CheckRole()
 	E.myspec = GetSpecialization()
+	E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
 	E.myrole = E:GetPlayerRole()
 end
 

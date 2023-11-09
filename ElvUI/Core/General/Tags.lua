@@ -1294,9 +1294,8 @@ E:AddTag('spec', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	end
 
 	-- fallback, player only
-	if unit == 'player' and E.myspec then
-		local _, name = GetSpecializationInfo(E.myspec)
-		return name
+	if unit == 'player' then
+		return E.myspecName
 	end
 end, not E.Retail)
 
