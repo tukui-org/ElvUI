@@ -52,6 +52,7 @@ local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 
+local TokenFrame_Update = TokenFrame_Update
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -66,6 +67,7 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
 
+local SetCurrencyBackpack = SetCurrencyBackpack or (C_CurrencyInfo and C_CurrencyInfo.SetCurrencyBackpack)
 local SortBags = SortBags or (C_Container and C_Container.SortBags)
 local SortBankBags = SortBankBags or (C_Container and C_Container.SortBankBags)
 local SortReagentBankBags = SortReagentBankBags or (C_Container and C_Container.SortReagentBankBags)
@@ -2733,6 +2735,13 @@ function B:UpdateBindLines(_, cvar)
 	end
 end
 
+function B:TokenFrame_SetTokenWatched(id, watched)
+	SetCurrencyBackpack(id, watched)
+	TokenFrame_Update()
+
+	_G.BackpackTokenFrame:Update()
+end
+
 function B:Initialize()
 	B.db = E.db.bags
 
@@ -2880,9 +2889,9 @@ function B:Initialize()
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
+		B:RawHook('TokenFrame_SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
+
 		B:SecureHook(_G.BackpackTokenFrame, 'Update', 'UpdateTokensIfVisible')
-		B:SecureHook(_G.BackpackTokenFrame, 'UpdateIfVisible', 'UpdateTokensIfVisible')
-		B:SecureHook(_G.TokenFramePopup.BackpackCheckBox, 'OnClick', 'UpdateTokensIfVisible')
 	end
 
 	if E.Retail then
