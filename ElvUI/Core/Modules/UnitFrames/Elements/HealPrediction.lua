@@ -36,10 +36,10 @@ function UF:Construct_HealComm(frame)
 	local parent = health.ClipFrame
 
 	local prediction = {
-		myBar = CreateFrame('StatusBar', nil, parent),
-		otherBar = CreateFrame('StatusBar', nil, parent),
-		absorbBar = CreateFrame('StatusBar', nil, parent),
-		healAbsorbBar = CreateFrame('StatusBar', nil, parent),
+		myBar = CreateFrame('StatusBar', '$parent_MyBar', parent),
+		otherBar = CreateFrame('StatusBar', '$parent_OtherBar', parent),
+		absorbBar = CreateFrame('StatusBar', '$parent_AbsorbBar', parent),
+		healAbsorbBar = CreateFrame('StatusBar', '$parent_HealAbsorbBar', parent),
 		PostUpdate = UF.UpdateHealComm,
 		maxOverflow = 1,
 		health = health,

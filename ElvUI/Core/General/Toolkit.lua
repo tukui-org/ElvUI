@@ -50,6 +50,60 @@ local function DisablePixelSnap(frame)
 	end
 end
 
+local function FixStatusBarMinCurPlease(frame, value)
+	local MIN = frame:GetMinMaxValues()
+	if MIN and (value <= MIN) then -- gg blizz, idk how you manage this one lol
+		local style = frame:GetFillStyle()
+		if style ~= 'STANDARD' and style ~= 'REVERSE' then return end
+
+		local width, height = frame:GetSize()
+		if not width or not height then return end
+
+		local texture = frame:GetStatusBarTexture()
+		if not texture then return end
+
+		texture:ClearAllPoints()
+
+		local reverse = frame:GetReverseFill()
+		local orientation = frame:GetOrientation()
+		if orientation == 'VERTICAL' then
+			if reverse then
+				texture:SetPoint('TOPLEFT', 0, 0)
+				texture:SetPoint('TOPRIGHT', 0, 0)
+				texture:SetPoint('BOTTOMLEFT', 0, height)
+				texture:SetPoint('BOTTOMRIGHT', 0, height)
+			else
+				texture:SetPoint('TOPLEFT', 0, -height)
+				texture:SetPoint('TOPRIGHT', 0, -height)
+				texture:SetPoint('BOTTOMLEFT', 0, 0)
+				texture:SetPoint('BOTTOMRIGHT', 0, 0)
+			end
+		else -- horizontal
+			if reverse then
+				texture:SetPoint('TOPLEFT', width, 0)
+				texture:SetPoint('TOPRIGHT', 0, 0)
+				texture:SetPoint('BOTTOMLEFT', width, 0)
+				texture:SetPoint('BOTTOMRIGHT', 0, 0)
+			else
+				texture:SetPoint('TOPLEFT', 0, 0)
+				texture:SetPoint('TOPRIGHT', -width, 0)
+				texture:SetPoint('BOTTOMLEFT', 0, 0)
+				texture:SetPoint('BOTTOMRIGHT', -width, 0)
+			end
+		end
+	end
+end
+
+local function FixMinCurDuringValue(frame, value)
+	FixStatusBarMinCurPlease(frame, value)
+end
+
+local function FixMinCurDuringTexture(frame)
+	DisablePixelSnap(frame)
+
+	FixStatusBarMinCurPlease(frame, frame:GetValue())
+end
+
 local function BackdropFrameLevel(frame, level)
 	frame:SetFrameLevel(level)
 
@@ -475,13 +529,24 @@ local function addapi(object)
 
 	if not object.DisabledPixelSnap and (mk.SetSnapToPixelGrid or mk.SetStatusBarTexture or mk.SetColorTexture or mk.SetVertexColor or mk.CreateTexture or mk.SetTexCoord or mk.SetTexture) then
 		if mk.SetSnapToPixelGrid then hooksecurefunc(mk, 'SetSnapToPixelGrid', WatchPixelSnap) end
-		if mk.SetStatusBarTexture then hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap) end
 		if mk.SetColorTexture then hooksecurefunc(mk, 'SetColorTexture', DisablePixelSnap) end
 		if mk.SetVertexColor then hooksecurefunc(mk, 'SetVertexColor', DisablePixelSnap) end
 		if mk.CreateTexture then hooksecurefunc(mk, 'CreateTexture', DisablePixelSnap) end
 		if mk.SetTexCoord then hooksecurefunc(mk, 'SetTexCoord', DisablePixelSnap) end
 		if mk.SetTexture then hooksecurefunc(mk, 'SetTexture', DisablePixelSnap) end
+
+		if not E.Retail and mk.SetStatusBarTexture then
+			hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap)
+		end
+
 		mk.DisabledPixelSnap = true
+	end
+
+	if E.Retail and not object.fixTheStatusBarsPlease and mk.SetStatusBarTexture then
+		hooksecurefunc(mk, 'SetValue', FixMinCurDuringValue)
+		hooksecurefunc(mk, 'SetStatusBarTexture', FixMinCurDuringTexture)
+
+		object.fixTheStatusBarsPlease = true
 	end
 end
 
