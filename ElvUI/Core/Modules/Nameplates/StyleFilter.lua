@@ -9,6 +9,7 @@ local ipairs, next, pairs = ipairs, next, pairs
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
+local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpellCharges = GetSpellCharges
@@ -1024,15 +1025,21 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	do
+		local instanceName, instanceType, difficultyID, instanceID, _
 		local activeType = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
+		local activeID = trigger.location.instanceIDEnabled
+
+		-- Instance Type
+		if activeType or activeID then
+			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
+		end
+
 		if activeType then
-			local instanceType = NP.InstanceType
 			if trigger.instanceType[instanceType] then
 				passed = true
 
 				-- Instance Difficulty
 				if instanceType == 'raid' or instanceType == 'party' then
-					local difficultyID = NP.InstanceDifficultyID
 					local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
 					for _, value in pairs(D) do
 						if value and not D[NP.TriggerConditions.difficulties[difficultyID]] then return end
@@ -1042,10 +1049,8 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Location
-		local activeID = trigger.location.instanceIDEnabled
 		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
 			if activeID and next(trigger.location.instanceIDs) then
-				local instanceID, instanceName = NP.InstanceID, NP.InstanceName
 				if (instanceID and trigger.location.instanceIDs[tostring(instanceID)]) or trigger.location.instanceIDs[instanceName] then passed = true else return end
 			end
 			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
