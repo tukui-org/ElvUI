@@ -28,7 +28,9 @@ local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
+
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = (E.Classic or E.Wrath) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
@@ -65,7 +67,7 @@ E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
-E.myspec = E.Retail and GetSpecialization()
+E.myspec = GetSpecialization()
 E.wowbuild = tonumber(E.wowbuild)
 E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
