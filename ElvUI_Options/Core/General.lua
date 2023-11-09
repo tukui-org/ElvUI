@@ -126,12 +126,13 @@ do
 		pvpzone = { name = L["PVP Zone Text"], order = 54 },
 		pvpsubzone = { name = L["PVP Sub Zone"], order = 55 },
 		objective = { name = L["Objective Text"], order = 56, hidden = not E.Retail },
-		mailbody = { name = L["Mail Text"], order = 57 },
-		questtitle = { name = L["Quest Title"], order = 58 },
-		questtext = { name = L["Quest Text"], order = 59 },
-		questsmall = { name = L["Quest Small"], order = 60 },
-		talkingtitle = { name = L["Talkinghead Name"], order = 61, hidden = not E.Retail },
-		talkingtext = { name = L["Talkinghead Text"], order = 62, hidden = not E.Retail },
+		errortext = { name = L["Error Text"], order = 57 },
+		mailbody = { name = L["Mail Text"], order = 58 },
+		questtitle = { name = L["Quest Title"], order = 59 },
+		questtext = { name = L["Quest Text"], order = 60 },
+		questsmall = { name = L["Quest Small"], order = 61 },
+		talkingtitle = { name = L["Talkinghead Name"], order = 62, hidden = not E.Retail },
+		talkingtext = { name = L["Talkinghead Text"], order = 63, hidden = not E.Retail },
 	}
 
 	for name in next, P.general.fonts do

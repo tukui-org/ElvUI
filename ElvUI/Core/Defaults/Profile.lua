@@ -61,6 +61,7 @@ P.general = {
 	},
 	fonts = {
 		cooldown = { enable = true, font = 'Expressway', size = 20, outline = 'SHADOWOUTLINE' },
+		errortext = { enable = true, font = 'Expressway', size = 18, outline = 'SHADOW' },
 		worldzone = { enable = false, font = 'Expressway', size = 26, outline = 'OUTLINE' },
 		worldsubzone = { enable = false, font = 'Expressway', size = 24, outline = 'OUTLINE' },
 		pvpzone = { enable = false, font = 'Expressway', size = 26, outline = 'OUTLINE' },

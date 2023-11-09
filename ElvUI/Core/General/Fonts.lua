@@ -15,7 +15,16 @@ local FontMap = {
 	mailbody		= { object = _G.MailTextFontNormal },
 	questtitle		= { object = _G.QuestTitleFont },
 	questtext		= { object = _G.QuestFont },
-	questsmall		= { object = _G.QuestFontNormalSmall }
+	questsmall		= { object = _G.QuestFontNormalSmall },
+	errortext		= { object = _G.ErrorFont, func = function(data, opt)
+		local x, y, w = 512, 60, 16 -- default sizes we scale from
+		local diff = (opt.size - w) / w -- calculate the difference
+		if opt and opt.enable and diff > 0 then
+			_G.UIErrorsFrame:Size(x * ((diff * 1) + 1), y * ((diff * 1.75) + 1))
+		else
+			_G.UIErrorsFrame:Size(x, y)
+		end
+	end }
 }
 
 if E.Retail then
@@ -29,6 +38,10 @@ function E:SetFontMap(object, opt, data, replace)
 		E:SetFont(object, LSM:Fetch('font', opt.font), opt.size, opt.outline)
 	elseif replace then
 		E:SetFont(object, data.font, data.size, data.outline)
+	end
+
+	if data.func then
+		data:func(opt)
 	end
 end
 
@@ -123,6 +136,7 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.questtext,				NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, outline)
 		E:MapFont(FontMap.cooldown,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:MapFont(FontMap.errortext,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 		E:MapFont(FontMap.questtitle,				NORMAL, (blizz and 18) or unscale or big, 'NONE')
 		E:MapFont(FontMap.pvpsubzone,				NORMAL, (blizz and 22) or unscale or large, outline)
 		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
