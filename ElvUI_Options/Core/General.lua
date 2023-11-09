@@ -107,8 +107,8 @@ Fonts.names.args.namefont = ACH:SharedMediaFont(L["Name Font"], L["The font that
 Fonts.names.args.replaceNameFont = ACH:Toggle(L["Enable"], nil, 2)
 Fonts.names.inline = true
 
-Fonts.nameplates = ACH:Group(L["Blizzard Nameplate"], nil, 50, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, function() return not E.private.general.replaceNameplateFont end)
-Fonts.nameplates.args.replaceNameplateFont = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, E.noop)
+Fonts.nameplates = ACH:Group(L["Blizzard Nameplate"], nil, 50, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
+Fonts.nameplates.args.replaceNameplateFont = ACH:Toggle(L["Enable"], nil, 1)
 Fonts.nameplates.args.spacer1 = ACH:Spacer(10, 'full')
 Fonts.nameplates.args.nameplateFont = ACH:SharedMediaFont(L["Normal Font"], L["Replaces the font on Blizzard Nameplates."], 11)
 Fonts.nameplates.args.nameplateFontSize = ACH:Range(L["Normal Size"], nil, 12, C.Values.FontSize)
