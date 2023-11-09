@@ -11,7 +11,6 @@ local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort,
 
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellInfo = GetSpellInfo

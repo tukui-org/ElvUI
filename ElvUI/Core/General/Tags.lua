@@ -25,7 +25,6 @@ local GetPVPTimer = GetPVPTimer
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetRuneCooldown = GetRuneCooldown
-local GetSpecializationInfo = GetSpecializationInfo
 local GetTime = GetTime
 local GetTitleName = GetTitleName
 local GetUnitSpeed = GetUnitSpeed

@@ -9,7 +9,6 @@ local GetAddOnInfo = GetAddOnInfo
 local GetCVarBool = GetCVarBool
 local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
-local GetSpecializationInfo = GetSpecializationInfo
 local UNKNOWN = UNKNOWN
 
 function E:AreOtherAddOnsEnabled()
