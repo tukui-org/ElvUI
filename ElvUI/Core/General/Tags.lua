@@ -1286,15 +1286,15 @@ end
 E:AddTag('spec', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
 
+	-- handle player
+	if UnitIsUnit(unit, 'player') then
+		return E.myspecName
+	end
+
 	-- try to get spec from tooltip
 	local info = E.Retail and E:GetUnitSpecInfo(unit)
 	if info then
 		return info.name
-	end
-
-	-- fallback, player only
-	if unit == 'player' then
-		return E.myspecName
 	end
 end, not E.Retail)
 
