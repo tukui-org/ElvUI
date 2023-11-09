@@ -107,6 +107,7 @@ local REAGENT_CONTAINER = E.Retail and 5 or math.huge -- impossible id to preven
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
 local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
+local SELL_ALL_JUNK_ITEMS = SELL_ALL_JUNK_ITEMS_EXCLUDE_FLAG
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = (BagSlotFlags and BagSlotFlags.PriorityTradeGoods) or LE_BAG_FILTER_FLAG_TRADE_GOODS
@@ -115,6 +116,7 @@ local FILTER_FLAG_EQUIPMENT = (BagSlotFlags and BagSlotFlags.PriorityEquipment) 
 local FILTER_FLAG_IGNORE = (BagSlotFlags and BagSlotFlags.DisableAutoSort) or LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.PriorityJunk) or LE_BAG_FILTER_FLAG_JUNK
 local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
+local FILTER_FLAG_JUNKSELL = (BagSlotFlags and BagSlotFlags.ExcludeJunkSell) or 64 -- didnt exist
 
 local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
 local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
@@ -136,6 +138,7 @@ B.GearFilters = {
 }
 
 if not E.Classic then
+	tinsert(B.GearFilters, FILTER_FLAG_JUNKSELL)
 	tinsert(B.GearFilters, FILTER_FLAG_QUEST)
 end
 
@@ -889,7 +892,7 @@ end
 function B:GetBagAssignedInfo(holder, isBank)
 	local active, icon, color = B:GetFilterFlagInfo(holder.BagID, isBank)
 
-	if holder.filterIcon then
+	if holder.filterIcon and icon then
 		holder.filterIcon:SetTexture(icon)
 		holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 	end
@@ -2742,6 +2745,26 @@ function B:TokenFrame_SetTokenWatched(id, watched)
 	B:UpdateTokensIfVisible()
 end
 
+function B:GetBagFlagMenu(flag, text)
+	local menu = { text = text }
+
+	menu.checked = function()
+		local holder = B.AssignBagDropdown.holder
+		if holder then
+			return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == flag
+		end
+	end
+
+	menu.func = function(_, _, _, value)
+		local holder = B.AssignBagDropdown.holder
+		if holder then
+			return B:SetFilterFlag(holder.BagID, flag, not value)
+		end
+	end
+
+	return menu
+end
+
 function B:Initialize()
 	B.db = E.db.bags
 
@@ -2765,8 +2788,8 @@ function B:Initialize()
 	}
 
 	local FILTER_ASSIGN = { text = BAG_FILTER_ASSIGN_TO, isTitle = true, notCheckable = true }
-	local FILTER_CLEANUP = { text = BAG_FILTER_CLEANUP, isTitle = true, notCheckable = true }
-	local FILTER_IGNORE = { text = BAG_FILTER_IGNORE,
+	local FILTER_CLEANUP = { text = BAG_FILTER_IGNORE, isTitle = true, notCheckable = true }
+	local FILTER_IGNORE = { text = BAG_FILTER_CLEANUP,
 		checked = function()
 			local holder = B.AssignBagDropdown.holder
 			if holder then
@@ -2789,26 +2812,14 @@ function B:Initialize()
 		end
 	}
 
-	B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORE }
-	B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORE }
+	local FILTER_JUNKSELL = E.Retail and B:GetBagFlagMenu(FILTER_FLAG_JUNKSELL, SELL_ALL_JUNK_ITEMS)
+
+	B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORE, FILTER_JUNKSELL or nil }
+	B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORE, FILTER_JUNKSELL or nil }
 
 	for i, flag in next, B.GearFilters do
-		if i ~= FILTER_FLAG_IGNORE then
-			tinsert(B.AssignMenu, i, {
-				text = BAG_FILTER_LABELS[flag],
-				checked = function()
-					local holder = B.AssignBagDropdown.holder
-					if holder then
-						return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == flag
-					end
-				end,
-				func = function(_, _, _, value)
-					local holder = B.AssignBagDropdown.holder
-					if holder then
-						return B:SetFilterFlag(holder.BagID, flag, not value)
-					end
-				end
-			})
+		if i ~= FILTER_FLAG_IGNORE and i ~= FILTER_FLAG_JUNKSELL then
+			tinsert(B.AssignMenu, i, B:GetBagFlagMenu(flag, BAG_FILTER_LABELS[flag]))
 		end
 	end
 
