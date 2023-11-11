@@ -64,7 +64,7 @@ function ACH:Execute(name, desc, order, func, image, confirm, width, get, set, d
 end
 
 function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
-	return { type = 'group', childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, hidden = hidden, disabled = disabled, func = func, args = {} }
+	return { type = 'group', childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, disabled = disabled, hidden = hidden, func = func, args = {} }
 end
 
 function ACH:Header(name, order, get, set, hidden)
