@@ -7,8 +7,8 @@ local strsub = strsub
 local strmatch = strmatch
 
 local FontMap = {
-	worldzone		= { object = _G.ZoneTextString },
-	worldsubzone	= { object = _G.SubZoneTextString },
+	worldzone		= { object = _G.ZoneTextFont },
+	worldsubzone	= { object = _G.SubZoneTextFont },
 	pvpzone			= { object = _G.PVPArenaTextString },
 	pvpsubzone		= { object = _G.PVPInfoTextString },
 	cooldown		= { object = _G.SystemFont_Shadow_Large_Outline },
