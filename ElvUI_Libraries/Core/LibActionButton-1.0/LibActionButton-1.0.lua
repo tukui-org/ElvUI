@@ -1526,7 +1526,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "STOP_AUTOREPEAT_SPELL" then
 		for button in next, ActiveButtons do
-			if button.flashing == 1 and not button:IsAttack() then
+			if button.flashing and not button:IsAttack() then
 				StopFlash(button)
 			end
 		end
@@ -1593,30 +1593,16 @@ function Generic:OnUpdate(elapsed)
 	self.flashTime = (self.flashTime or 0) - elapsed
 	self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
-	-- Run the loop only when there is something to update
-	local rangeReady = not WoWRetail and self.rangeTimer <= 0
-	local flashReady = self.flashTime <= 0
+	if self.flashing and self.flashTime <= 0 then
+		self.Flash:SetShown(not self.Flash:IsShown())
 
-	if rangeReady or flashReady then
-		if flashReady and self.flashing == 1 then
-			if self.Flash:IsShown() then
-				self.Flash:Hide()
-			else
-				self.Flash:Show()
-			end
-		end
+		self.flashTime = self.flashTime + ATTACK_BUTTON_FLASH_TIME
+	end
 
-		if rangeReady then
-			UpdateRange(self) -- Sezz
-		end
+	if not WoWRetail and self.rangeTimer <= 0 then
+		UpdateRange(self) -- Sezz
 
-		if flashReady then
-			self.flashTime = self.flashTime + ATTACK_BUTTON_FLASH_TIME
-		end
-
-		if rangeReady then
-			self.rangeTimer = TOOLTIP_UPDATE_TIME
-		end
+		self.rangeTimer = TOOLTIP_UPDATE_TIME
 	end
 end
 
@@ -2192,7 +2178,7 @@ end
 function StartFlash(self)
 	local prevFlash = self.flashing
 
-	self.flashing = 1
+	self.flashing = true
 	self.flashTime = 0
 
 	if prevFlash ~= self.flashing then
@@ -2203,7 +2189,7 @@ end
 function StopFlash(self)
 	local prevFlash = self.flashing
 
-	self.flashing = 0
+	self.flashing = false
 
 	if self.Flash:IsShown() then
 		self.Flash:Hide()
