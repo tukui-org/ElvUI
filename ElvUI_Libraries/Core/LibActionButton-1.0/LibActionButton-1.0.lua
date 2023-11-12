@@ -148,6 +148,7 @@ local function GameTooltip_GetOwnerForbidden()
 	if GameTooltip:IsForbidden() then
 		return nil
 	end
+
 	return GameTooltip:GetOwner()
 end
 
@@ -577,6 +578,29 @@ function Generic:OnButtonEvent(event, key, down)
 			UpdateRegisterClicks(self, action == 'SHIFT' and IsShiftKeyDown() or action == 'ALT' and IsAltKeyDown() or action == 'CTRL' and IsControlKeyDown())
 		elseif event == 'OnLeave' then
 			UpdateRegisterClicks(self)
+		end
+	end
+end
+
+local function SetupRange(button, hasTexture) -- retail range event api ~Simpy
+	if hasTexture and button._state_type == 'action' then
+		local action = button._state_action
+		if action and not lib.buttonBySlot[action] then -- dont readd actions already added
+			lib.buttonBySlot[action] = button
+			lib.slotByButton[button] = action
+
+			if WoWRetail then -- activate the event for slot
+				C_ActionBar.EnableActionRangeCheck(action, true)
+			end
+		end
+	else
+		local slot = lib.slotByButton[button]
+		if slot then
+			lib.buttonBySlot[slot] = nil
+
+			if WoWRetail then -- deactivate event for slot (unused)
+				C_ActionBar.EnableActionRangeCheck(slot, false)
+			end
 		end
 	end
 end
@@ -1334,6 +1358,7 @@ function InitializeEventHandler()
 
 	if WoWRetail then
 		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
 	else
 		lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 		-- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
@@ -1417,6 +1442,7 @@ function OnEvent(frame, event, arg1, ...)
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
 		end
+
 		UpdateRangeTimer()
 	elseif event == "UNIT_AURA" then
 		if AURA_COOLDOWNS_ENABLED then
@@ -1425,6 +1451,11 @@ function OnEvent(frame, event, arg1, ...)
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true)
+	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
+		local button = lib.buttonBySlot[arg1]
+		if button then
+			UpdateRange(button, nil, ...) -- inRange, checksRange
+		end
 	elseif event == "ACTION_USABLE_CHANGED" then
 		for _, change in ipairs(arg1) do
 			local button = lib.buttonBySlot[change.slot]
@@ -1562,11 +1593,14 @@ local rangeTimer = -1
 function OnUpdate(_, elapsed)
 	flashTime = flashTime - elapsed
 	rangeTimer = rangeTimer - elapsed
+
 	-- Run the loop only when there is something to update
-	if rangeTimer <= 0 or flashTime <= 0 then
+	local rangeReady = not WoWRetail and rangeTimer <= 0
+	local flashReady = flashTime <= 0
+
+	if rangeReady or flashReady then
 		for button in next, ActiveButtons do
-			-- Flashing
-			if button.flashing == 1 and flashTime <= 0 then
+			if flashReady and button.flashing == 1 then
 				if button.Flash:IsShown() then
 					button.Flash:Hide()
 				else
@@ -1574,17 +1608,16 @@ function OnUpdate(_, elapsed)
 				end
 			end
 
-			-- Range
-			if rangeTimer <= 0 then
+			if rangeReady then
 				UpdateRange(button) -- Sezz
 			end
 		end
 
-		-- Update values
-		if flashTime <= 0 then
+		if flashReady then
 			flashTime = flashTime + ATTACK_BUTTON_FLASH_TIME
 		end
-		if rangeTimer <= 0 then
+
+		if rangeReady then
 			rangeTimer = TOOLTIP_UPDATE_TIME
 		end
 	end
@@ -1623,9 +1656,9 @@ function UpdateGrid(self)
 	end
 end
 
-function UpdateRange(button, force) -- Sezz: moved from OnUpdate
+function UpdateRange(button, force, inRange, checksRange) -- Sezz: moved from OnUpdate
 	local oldRange = button.outOfRange
-	button.outOfRange = button:IsInRange() == false
+	button.outOfRange = ((inRange == nil or checksRange == nil) and button:IsInRange() == false) or (checksRange and not inRange)
 
 	if force or (oldRange ~= button.outOfRange) then
 		if button.config.outOfRangeColoring == "button" then
@@ -1633,6 +1666,7 @@ function UpdateRange(button, force) -- Sezz: moved from OnUpdate
 		elseif button.config.outOfRangeColoring == "hotkey" and not button.config.hideElements.hotkey then
 			UpdateTextElement(button, button.HotKey, button.config.text.hotkey, NumberFontNormalSmallGray:GetFont(), true)
 		end
+
 		lib.callbacks:Fire("OnUpdateRange", button)
 	end
 end
@@ -1764,15 +1798,6 @@ function Generic:UpdateAction(force)
 
 		self._state_action = action
 
-		if action then
-			lib.buttonBySlot[action] = self
-		else
-			local slot = lib.slotByButton[self]
-			if slot then
-				lib.buttonBySlot[slot] = nil
-			end
-		end
-
 		Update(self)
 	end
 end
@@ -1844,37 +1869,12 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	local isTypeAction = self._state_type == 'action'
-	if isTypeAction then
-		local actionType, actionID, subType = GetActionInfo(self._state_action)
-		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
-		local macroSpell = actionMacro and ((WoWRetail and subType == 'spell' and actionID) or (not WoWRetail and GetMacroSpell(actionID))) or nil
-		local spellID = (actionSpell and actionID) or macroSpell
-		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		self.isFlyoutButton = actionFlyout
-		self.abilityName = spellName
-		AuraButtons.buttons[self] = spellName
-
-		if spellName then
-			if not AuraButtons.auras[spellName] then
-				AuraButtons.auras[spellName] = {}
-			end
-
-			tinsert(AuraButtons.auras[spellName], self)
-		end
-	else
-		self.isFlyoutButton = nil
-		self.abilityName = nil
-	end
-
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
-
 	if texture then
 		self.icon:SetTexture(texture)
 		self.icon:Show()
-		self.rangeTimer = - 1
+
 		if WoWRetail then
 			if not self.MasqueSkinned then
 				self.SlotBackground:Hide()
@@ -1908,7 +1908,7 @@ function Update(self, fromUpdateConfig)
 	else
 		self.icon:Hide()
 		self.cooldown:Hide()
-		self.rangeTimer = nil
+
 		if WoWRetail then
 			if not self.MasqueSkinned then
 				self.SlotBackground:Show()
@@ -1926,9 +1926,37 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
+	local isTypeAction = self._state_type == 'action'
+	if isTypeAction then
+		local actionType, actionID, subType = GetActionInfo(self._state_action)
+		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
+		local macroSpell = actionMacro and ((WoWRetail and subType == 'spell' and actionID) or (not WoWRetail and GetMacroSpell(actionID))) or nil
+		local spellID = (actionSpell and actionID) or macroSpell
+		local spellName = spellID and GetSpellInfo(spellID) or nil
+
+		self.isFlyoutButton = actionFlyout
+		self.abilityName = spellName
+		AuraButtons.buttons[self] = spellName
+
+		if spellName then
+			if not AuraButtons.auras[spellName] then
+				AuraButtons.auras[spellName] = {}
+			end
+
+			tinsert(AuraButtons.auras[spellName], self)
+		end
+	else
+		self.isFlyoutButton = nil
+		self.abilityName = nil
+	end
+
 	self:UpdateLocal()
 
-	UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
+	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
+
+	if not WoWRetail then
+		UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
+	end
 
 	UpdateCount(self)
 
@@ -2157,15 +2185,21 @@ function UpdateCooldown(self)
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
 end
 
+function UpdateRangeTimer()
+	rangeTimer = -1
+end
+
 function StartFlash(self)
 	self.flashing = 1
 	flashTime = 0
+
 	UpdateButtonState(self)
 end
 
 function StopFlash(self)
 	self.flashing = 0
 	self.Flash:Hide()
+
 	UpdateButtonState(self)
 end
 
@@ -2433,10 +2467,6 @@ else
 	end
 end
 Generic.UpdateFlyout = UpdateFlyout
-
-function UpdateRangeTimer()
-	rangeTimer = -1
-end
 
 -----------------------------------------------------------
 --- WoW API mapping
