@@ -1379,9 +1379,6 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
 	end
 
-	lib.eventFrame:Show()
-	lib.eventFrame:SetScript("OnUpdate", OnUpdate)
-
 	if UseCustomFlyout and IsLoggedIn() then
 		DiscoverFlyoutSpells()
 	end
@@ -1443,7 +1440,11 @@ function OnEvent(frame, event, arg1, ...)
 			UpdateAuraCooldowns()
 		end
 
-		UpdateRangeTimer()
+		if not WoWRetail then
+			for button in next, ActiveButtons do
+				UpdateRangeTimer(button)
+			end
+		end
 	elseif event == "UNIT_AURA" then
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
@@ -1588,37 +1589,33 @@ function OnEvent(frame, event, arg1, ...)
 	end
 end
 
-local flashTime = 0
-local rangeTimer = -1
-function OnUpdate(_, elapsed)
-	flashTime = flashTime - elapsed
-	rangeTimer = rangeTimer - elapsed
+function Generic:OnUpdate(elapsed)
+	self.flashTime = (self.flashTime or 0) - elapsed
+	self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
 	-- Run the loop only when there is something to update
-	local rangeReady = not WoWRetail and rangeTimer <= 0
-	local flashReady = flashTime <= 0
+	local rangeReady = not WoWRetail and self.rangeTimer <= 0
+	local flashReady = self.flashTime <= 0
 
 	if rangeReady or flashReady then
-		for button in next, ActiveButtons do
-			if flashReady and button.flashing == 1 then
-				if button.Flash:IsShown() then
-					button.Flash:Hide()
-				else
-					button.Flash:Show()
-				end
+		if flashReady and self.flashing == 1 then
+			if self.Flash:IsShown() then
+				self.Flash:Hide()
+			else
+				self.Flash:Show()
 			end
-
-			if rangeReady then
-				UpdateRange(button) -- Sezz
-			end
-		end
-
-		if flashReady then
-			flashTime = flashTime + ATTACK_BUTTON_FLASH_TIME
 		end
 
 		if rangeReady then
-			rangeTimer = TOOLTIP_UPDATE_TIME
+			UpdateRange(self) -- Sezz
+		end
+
+		if flashReady then
+			self.flashTime = self.flashTime + ATTACK_BUTTON_FLASH_TIME
+		end
+
+		if rangeReady then
+			self.rangeTimer = TOOLTIP_UPDATE_TIME
 		end
 	end
 end
@@ -1872,6 +1869,7 @@ function Update(self, fromUpdateConfig)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
+		self:SetScript("OnUpdate", Generic.OnUpdate)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
@@ -1906,6 +1904,7 @@ function Update(self, fromUpdateConfig)
 			end
 		end
 	else
+		self:SetScript("OnUpdate", nil)
 		self.icon:Hide()
 		self.cooldown:Hide()
 
@@ -1999,6 +1998,7 @@ function UpdateButtonState(self)
 	else
 		self:SetChecked(false)
 	end
+
 	lib.callbacks:Fire("OnButtonState", self)
 end
 
@@ -2185,22 +2185,33 @@ function UpdateCooldown(self)
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
 end
 
-function UpdateRangeTimer()
-	rangeTimer = -1
+function UpdateRangeTimer(self)
+	self.rangeTimer = -1
 end
 
 function StartFlash(self)
-	self.flashing = 1
-	flashTime = 0
+	local prevFlash = self.flashing
 
-	UpdateButtonState(self)
+	self.flashing = 1
+	self.flashTime = 0
+
+	if prevFlash ~= self.flashing then
+		UpdateButtonState(self)
+	end
 end
 
 function StopFlash(self)
-	self.flashing = 0
-	self.Flash:Hide()
+	local prevFlash = self.flashing
 
-	UpdateButtonState(self)
+	self.flashing = 0
+
+	if self.Flash:IsShown() then
+		self.Flash:Hide()
+	end
+
+	if prevFlash ~= self.flashing then
+		UpdateButtonState(self)
+	end
 end
 
 function UpdateFlash(self)
