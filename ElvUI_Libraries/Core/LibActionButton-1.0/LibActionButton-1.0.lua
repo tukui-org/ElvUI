@@ -51,6 +51,10 @@ lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
 
+-- usable state for retail using slot
+lib.slotByButton = lib.slotByButton or {}
+lib.buttonBySlot = lib.buttonBySlot or {}
+
 local AuraButtons = lib.AuraButtons or { auras = {}, buttons = {} }
 lib.AuraButtons = AuraButtons
 
@@ -1295,7 +1299,6 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
-	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
 	lib.eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
@@ -1329,8 +1332,11 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
-	if not WoWRetail then
-		 -- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
+	if WoWRetail then
+		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+	else
+		lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
+		-- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
 		lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
 	end
 
@@ -1419,6 +1425,13 @@ function OnEvent(frame, event, arg1, ...)
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true)
+	elseif event == "ACTION_USABLE_CHANGED" then
+		for _, change in ipairs(arg1) do
+			local button = lib.buttonBySlot[change.slot]
+			if button then
+				UpdateUsable(button, change.usable, change.noMana)
+			end
+		end
 	elseif event == "ACTIONBAR_UPDATE_USABLE" then
 		for button in next, ActionButtons do
 			UpdateUsable(button)
@@ -1748,7 +1761,18 @@ function Generic:UpdateAction(force)
 			setmetatable(self, meta)
 			self._state_type = actionType
 		end
+
 		self._state_action = action
+
+		if action then
+			lib.buttonBySlot[action] = self
+		else
+			local slot = lib.slotByButton[self]
+			if slot then
+				lib.buttonBySlot[slot] = nil
+			end
+		end
+
 		Update(self)
 	end
 end
@@ -1950,13 +1974,16 @@ function UpdateButtonState(self)
 	lib.callbacks:Fire("OnButtonState", self)
 end
 
-function UpdateUsable(self)
+function UpdateUsable(self, isUsable, notEnoughMana)
 	-- TODO: make the colors configurable
 	-- TODO: allow disabling of the whole recoloring
 	if self.config.outOfRangeColoring == "button" and self.outOfRange then
 		self.icon:SetVertexColor(unpack(self.config.colors.range))
 	else
-		local isUsable, notEnoughMana = self:IsUsable()
+		if isUsable == nil or notEnoughMana == nil then
+			isUsable, notEnoughMana = self:IsUsable()
+		end
+
 		if isUsable then
 			self.icon:SetVertexColor(unpack(self.config.colors.usable))
 		elseif notEnoughMana then
