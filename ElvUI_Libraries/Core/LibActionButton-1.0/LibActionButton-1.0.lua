@@ -1420,7 +1420,6 @@ function InitializeEventHandler()
 	else
 		lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 		lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID") -- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
-		lib.eventFrame:RegisterEvent("UNIT_MODEL_CHANGED") -- Retail will use SPELLS_CHANGED
 	end
 
 	-- With those two, do we still need the ACTIONBAR equivalents of them?
@@ -1431,8 +1430,10 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	if UseCustomFlyout or WoWRetail then
+	if WoWRetail then
 		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
+	else
+		lib.eventFrame:RegisterEvent("UNIT_MODEL_CHANGED")
 	end
 
 	if UseCustomFlyout then
@@ -1451,17 +1452,15 @@ function OnEvent(frame, event, arg1, ...)
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "SPELLS_CHANGED" then
-		if WoWRetail then
-			for button in next, ActiveButtons do
-				local texture = button:GetTexture()
-				if texture then
-					button.icon:SetTexture(texture)
-				end
+		for button in next, ActiveButtons do
+			local texture = button:GetTexture()
+			if texture then
+				button.icon:SetTexture(texture)
 			end
+		end
 
-			if AURA_COOLDOWNS_ENABLED then
-				UpdateAuraCooldowns()
-			end
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
 		end
 
 		if UseCustomFlyout then
