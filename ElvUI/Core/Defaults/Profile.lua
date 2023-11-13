@@ -1474,6 +1474,7 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+	dynamicflight = false,
 	instanceDifficulties = {
 		none = false,
 		dungeonNormal = false,
