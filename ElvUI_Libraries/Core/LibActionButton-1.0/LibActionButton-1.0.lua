@@ -585,7 +585,7 @@ end
 local function SetupRange(button, hasTexture) -- retail range event api ~Simpy
 	if hasTexture and button._state_type == 'action' then
 		local action = button._state_action
-		if action and not lib.buttonBySlot[action] then -- dont readd actions already added
+		if action then
 			lib.buttonBySlot[action] = button
 			lib.slotByButton[button] = action
 
