@@ -2220,7 +2220,6 @@ function StartFlash(self)
 	local prevFlash = self.flashing
 
 	self.flashing = true
-	self.flashTime = 0
 
 	if prevFlash ~= self.flashing then
 		UpdateButtonState(self)
@@ -2231,6 +2230,7 @@ function StopFlash(self)
 	local prevFlash = self.flashing
 
 	self.flashing = false
+	self.flashTime = nil
 
 	if self.Flash:IsShown() then
 		self.Flash:Hide()
