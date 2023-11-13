@@ -270,7 +270,7 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
-	local pages = enabled and { strsplit(';', gsub(page, '%[.-]', '')) }
+	local pages = enabled and { strsplit(';', (gsub(page, '%[.-]', ''))) }
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
