@@ -23,6 +23,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
 ---- Fader.HoverHooked, Fader.TargetHooked
@@ -59,6 +60,13 @@ end
 local function updateInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
 	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
+end
+
+local function CanGlide()
+	if not C_PlayerInfo_GetGlidingInfo then return end
+
+	local _, canGlide = C_PlayerInfo_GetGlidingInfo()
+	return canGlide
 end
 
 local function Update(self, _, unit)
@@ -106,6 +114,7 @@ local function Update(self, _, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath) and UnitHasVehicleUI(unit)) or
+		(element.DynamicFlight and oUF.isRetail and not CanGlide()) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
@@ -301,6 +310,13 @@ local options = {
 if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_START')
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
+	options.DynamicFlight = {
+		enable = function(self)
+			self:RegisterEvent('PLAYER_GAINS_VEHICLE_DATA', Update, true)
+			self:RegisterEvent('PLAYER_LOSES_VEHICLE_DATA', Update, true)
+		end,
+		events = {'PLAYER_GAINS_VEHICLE_DATA','PLAYER_LOSES_VEHICLE_DATA'}
+	}
 end
 
 if not oUF.isClassic then

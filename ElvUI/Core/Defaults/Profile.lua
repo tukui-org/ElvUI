@@ -2196,6 +2196,7 @@ P.unitframe.units.player.fader.playertarget = true
 P.unitframe.units.player.fader.power = true
 P.unitframe.units.player.fader.range = nil
 P.unitframe.units.player.fader.vehicle = true
+P.unitframe.units.player.fader.dynamicflight = true
 P.unitframe.units.player.healPrediction.enable = true
 P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent:shortvalue]'
