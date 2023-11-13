@@ -229,6 +229,19 @@ function AB:MoverMagic(bar) -- ~Simpy
 	end
 end
 
+function AB:ActivePages(page)
+	local pages = {}
+
+	for _, index in next, { strsplit(';', (gsub(page, '%[.-]', ''))) } do
+		local num = tonumber(index)
+		if num then
+			pages[num] = true
+		end
+	end
+
+	return pages
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
@@ -270,7 +283,7 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
-	local pages = enabled and { strsplit(';', (gsub(page, '%[.-]', ''))) }
+	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -328,9 +341,12 @@ function AB:HandleButtonState(button, index, vehicleIndex, pages)
 	if pages then
 		button:SetState(0, 'action', index)
 
-		for _, page in next, pages do
-			local num = tonumber(page)
-			button:SetState(num, 'action', (num - 1) * 12 + index)
+		for k = 1, 18 do
+			if pages[k] then
+				button:SetState(k, 'action', (k - 1) * 12 + index)
+			else
+				button:SetState(k, 'empty')
+			end
 		end
 
 		if vehicleIndex and index == 12 then
