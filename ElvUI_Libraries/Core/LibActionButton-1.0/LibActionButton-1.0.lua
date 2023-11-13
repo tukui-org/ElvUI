@@ -155,7 +155,9 @@ end
 local DefaultConfig = {
 	outOfRangeColoring = "button",
 	tooltip = "enabled",
+	enabled = true,
 	showGrid = false,
+	targetReticle = true,
 	useColoring = true,
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
@@ -565,8 +567,17 @@ local function UpdateRegisterClicks(self, down)
 end
 
 -- prevent pickup calling spells ~Simpy
-function Generic:OnButtonEvent(event, key, down)
-	if event == "GLOBAL_MOUSE_UP" then
+function Generic:OnButtonEvent(event, key, down, spellID)
+	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
+		if (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
+			self.TargetReticleAnimFrame.HighlightAnim:Play()
+			self.TargetReticleAnimFrame:Show()
+		end
+	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" or event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_FAILED" then
+		if self.TargetReticleAnimFrame:IsShown() then
+			self.TargetReticleAnimFrame:Hide()
+		end
+	elseif event == "GLOBAL_MOUSE_UP" then
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
@@ -1328,6 +1339,22 @@ function Generic:UpdateConfig(config)
 		self.Name:Show()
 	end
 
+	if WoWRetail then
+		if self.config.enabled and self.config.targetReticle then
+			self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
+			self:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
+			self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', 'player')
+			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_TARGET', 'player')
+			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_CLEAR', 'player')
+		else
+			self:UnregisterEvent('UNIT_SPELLCAST_STOP')
+			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED')
+			self:UnregisterEvent('UNIT_SPELLCAST_FAILED')
+			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_TARGET')
+			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_CLEAR')
+		end
+	end
+
 	self:SetAttribute("flyoutDirection", self.config.flyoutDirection)
 
 	UpdateTextElements(self)
@@ -1966,6 +1993,8 @@ function Update(self, which)
 
 		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName
+		self.abilityID = spellID
+
 		AuraButtons.buttons[self] = spellName
 
 		if spellName then
@@ -1978,6 +2007,7 @@ function Update(self, which)
 	else
 		self.isFlyoutButton = nil
 		self.abilityName = nil
+		self.abilityID = nil
 	end
 
 	self:UpdateLocal()

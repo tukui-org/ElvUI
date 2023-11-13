@@ -2721,6 +2721,7 @@ local AB_Bar = {
 	alpha = 1,
 	inheritGlobalFade = false,
 	showGrid = true,
+	targetReticle = true,
 	flyoutDirection = 'AUTOMATIC',
 	paging = {},
 	countColor = { r = 1, g = 1, b = 1 },
