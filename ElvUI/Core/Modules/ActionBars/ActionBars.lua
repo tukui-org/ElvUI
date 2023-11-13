@@ -264,6 +264,13 @@ function AB:PositionAndSizeBar(barName)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
 
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
+
+	local pages = enabled and { strsplit(';', gsub(page, '%[.-]', '')) }
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -283,7 +290,7 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
-		AB:HandleButtonState(button, i, vehicleIndex, enabled)
+		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
@@ -294,12 +301,6 @@ function AB:PositionAndSizeBar(barName)
 	if Masque and E.private.actionbar.masque.actionbars then
 		AB:UpdateMasque(bar)
 	end
-
-	-- paging needs to be updated even if the bar is disabled
-	local defaults = AB.barDefaults[barName]
-	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
-	RegisterStateDriver(bar, 'page', page)
-	bar:SetAttribute('page', page)
 
 	if enabled then
 		E:EnableMover(bar.mover.name)
@@ -317,12 +318,13 @@ function AB:PositionAndSizeBar(barName)
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
 end
 
-function AB:HandleButtonState(button, index, vehicleIndex, enabled)
-	if enabled then
+function AB:HandleButtonState(button, index, vehicleIndex, pages)
+	if pages then
 		button:SetState(0, 'action', index)
 
-		for k = 1, 18 do
-			button:SetState(k, 'action', (k - 1) * 12 + index)
+		for _, page in next, pages do
+			local num = tonumber(page)
+			button:SetState(num, 'action', (num - 1) * 12 + index)
 		end
 
 		if vehicleIndex and index == 12 then
@@ -594,7 +596,7 @@ function AB:UpdateButtonSettings(specific)
 	for barName, bar in pairs(AB.handledBars) do
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
-			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
