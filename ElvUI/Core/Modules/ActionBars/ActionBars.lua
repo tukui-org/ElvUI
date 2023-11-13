@@ -231,8 +231,9 @@ end
 
 function AB:ActivePages(page)
 	local pages = {}
+	local clean = gsub(page, '%[.-]', '')
 
-	for _, index in next, { strsplit(';', (gsub(page, '%[.-]', ''))) } do
+	for _, index in next, { strsplit(';', clean) } do
 		local num = tonumber(index)
 		if num then
 			pages[num] = true
