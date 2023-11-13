@@ -1795,7 +1795,9 @@ function Update(self, fromUpdateConfig)
 			ActionButtons[self] = nil
 			NonActionButtons[self] = true
 		end
+
 		self:SetAlpha(1.0)
+
 		UpdateButtonState(self)
 		UpdateUsable(self)
 		UpdateCooldown(self)
@@ -1804,9 +1806,11 @@ function Update(self, fromUpdateConfig)
 		ActiveButtons[self] = nil
 		ActionButtons[self] = nil
 		NonActionButtons[self] = nil
+
 		if gridCounter == 0 and not self.config.showGrid then
 			self:SetAlpha(0.0)
 		end
+
 		self.cooldown:Hide()
 		self:SetChecked(false)
 
@@ -1939,9 +1943,7 @@ function Update(self, fromUpdateConfig)
 
 	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
 
-	if not WoWRetail then
-		UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
-	end
+	UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
 
 	UpdateCount(self)
 
