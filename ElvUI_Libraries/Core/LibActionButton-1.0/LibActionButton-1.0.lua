@@ -1390,7 +1390,6 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
 
 	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
-	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
