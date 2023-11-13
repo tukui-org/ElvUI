@@ -244,22 +244,16 @@ function AB:ActivePages(page)
 end
 
 function AB:HandleButtonState(button, index, vehicleIndex, pages)
-	if pages then
-		for k = 1, 18 do
-			if pages[k] then
-				button:SetState(k, 'action', (k - 1) * 12 + index)
-			else
-				button:SetState(k, 'empty')
-			end
-		end
-
-		if vehicleIndex and index == 12 then
-			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
-		end
-	else
-		for k = 1, 18 do
+	for k = 1, 18 do
+		if pages and pages[k] then
+			button:SetState(k, 'action', (k - 1) * 12 + index)
+		else
 			button:SetState(k, 'empty')
 		end
+	end
+
+	if pages and vehicleIndex and index == 12 then
+		button:SetState(vehicleIndex, 'custom', AB.customExitButton)
 	end
 end
 
