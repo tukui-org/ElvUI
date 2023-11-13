@@ -334,6 +334,10 @@ local function CreateBarOptions(num)
 	bar.args.generalOptions.values.showGrid = L["Show Empty Buttons"]
 	bar.args.generalOptions.values.keepSizeRatio = L["Keep Size Ratio"]
 
+	if E.Retail then
+		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
+	end
+
 	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar[barNumber][info[#info]] = value AB:UpdateButtonSettings(barNumber) end)
 	bar.args.barGroup.args.visibility.set = function(_, value) E.db.actionbar[barNumber].visibility = value AB:UpdateButtonSettings(barNumber) end
 	bar.args.barGroup.args.paging = ACH:Input(L["Action Paging"], L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 7, 4, 'full', function() return E.db.actionbar[barNumber].paging[E.myclass] end, function(_, value) E.db.actionbar[barNumber].paging[E.myclass] = value AB:UpdateButtonSettings(barNumber) end)

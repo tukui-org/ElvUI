@@ -371,6 +371,17 @@ function AB:CreateBar(id)
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
 		end
 
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			targetReticle:SetAllPoints()
+
+			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetInside()
+
+			targetReticle.Highlight:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Highlight:SetInside()
+		end
+
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
 
 		if Masque and E.private.actionbar.masque.actionbars then
@@ -1302,7 +1313,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not db.hotkeytext
 
+	bar.buttonConfig.enabled = db.enabled -- only used to keep events off for targetReticle
 	bar.buttonConfig.showGrid = db.showGrid
+	bar.buttonConfig.targetReticle = db.targetReticle
 	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
