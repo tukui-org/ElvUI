@@ -1383,6 +1383,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+	lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
 	lib.eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_SHOW")
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
@@ -1434,7 +1435,6 @@ function InitializeEventHandler()
 
 	if UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
-		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
 	end
 
@@ -1443,13 +1443,27 @@ function InitializeEventHandler()
 	end
 end
 
-local _lastFormUpdate = GetTime()
 function OnEvent(frame, event, arg1, ...)
 	if event == "PLAYER_LOGIN" then
 		if UseCustomFlyout then
 			DiscoverFlyoutSpells()
 		end
-	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
+	elseif event == "SPELLS_CHANGED" then
+		for button in next, ActiveButtons do
+			local texture = button:GetTexture()
+			if texture then
+				button.icon:SetTexture(texture)
+			end
+		end
+
+		if AURA_COOLDOWNS_ENABLED then
+			UpdateAuraCooldowns()
+		end
+
+		if UseCustomFlyout then
+			UpdateFlyoutSpells()
+		end
+	elseif event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
@@ -1471,23 +1485,6 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
-	elseif event == "UNIT_MODEL_CHANGED" then
-		local _time = GetTime() -- we can't use UPDATE_SHAPESHIFT_FORM cause of issues, this one has less issues
-		if (_time - _lastFormUpdate) < 1 then return end -- but even this event fires multiple times on retail
-		_lastFormUpdate = _time
-
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
-		end
-
-		-- the attack icon can change when shapeshift form changes, so need to do a quick update here
-		-- for performance reasons don't run full updates here, though
-		for button in next, ActiveButtons do
-			local texture = button:GetTexture()
-			if texture then
-				button.icon:SetTexture(texture)
-			end
-		end
 	elseif event == "ACTIONBAR_SHOWGRID" then
 		ShowGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
