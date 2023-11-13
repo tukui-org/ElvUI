@@ -2052,7 +2052,7 @@ function Generic:UpdateLocal()
 end
 
 function UpdateButtonState(self)
-	if self:IsCurrentlyActive() or self:IsAutoRepeat() then
+	if (self:IsCurrentlyActive() or self:IsAutoRepeat()) and (not WoWRetail or not self.TargetReticleAnimFrame:IsShown()) then
 		self:SetChecked(true)
 	else
 		self:SetChecked(false)

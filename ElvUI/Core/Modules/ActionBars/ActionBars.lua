@@ -290,6 +290,12 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			local base = AB.db.targetReticleColor
+			targetReticle.Base:SetVertexColor(base.r, base.g, base.b)
+		end
+
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
@@ -376,6 +382,7 @@ function AB:CreateBar(id)
 			targetReticle:SetAllPoints()
 
 			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
 			targetReticle.Base:SetInside()
 
 			targetReticle.Highlight:SetInside()

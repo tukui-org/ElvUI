@@ -2577,6 +2577,7 @@ P.actionbar = {
 	desaturateOnCooldown = false,
 	equippedItem = false,
 	equippedItemColor = { r = 0.4, g = 1.0, b = 0.4 },
+	targetReticleColor = { r = 0.2, g = 1.0, b = 0.2 },
 	flashAnimation = false,
 	flyoutSize = 32, -- match buttonsize default, blizz default is 28
 	font = 'Homespun',

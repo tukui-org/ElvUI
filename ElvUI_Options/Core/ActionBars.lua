@@ -161,6 +161,7 @@ general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Colo
 general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
 general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, not E.Retail)
 general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
+general.args.colorGroup.args.targetReticleColor = ACH:Color(L["Target Reticle Color"], nil, 8)
 
 general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 35, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value, info[#info - 1] == 'fontGroup') end)
 general.args.applyGroup.args.fontGroup = ACH:Group(L["Font Group"], nil, 1)

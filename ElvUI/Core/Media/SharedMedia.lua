@@ -169,6 +169,7 @@ AddMedia('texture','Smooth')
 AddMedia('texture','Spark')
 AddMedia('texture','Tank')
 AddMedia('texture','TukuiLogo')
+AddMedia('texture','TargetReticle')
 
 AddMedia('emoji','Angry')
 AddMedia('emoji','Blush')
