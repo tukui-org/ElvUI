@@ -135,7 +135,7 @@ general.args.generalGroup.args.chargeCooldown = ACH:Toggle(L["Charge Cooldown Te
 general.args.generalGroup.args.desaturateOnCooldown = ACH:Toggle(L["Desaturate Cooldowns"], nil, 11, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:ToggleCooldownOptions() end)
 general.args.generalGroup.args.transparent = ACH:Toggle(L["Transparent"], nil, 12, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E.ShowPopup = true end)
 general.args.generalGroup.args.flashAnimation = ACH:Toggle(L["Button Flash"], L["Use a more visible flash animation for Auto Attacks."], 13, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E.ShowPopup = true end)
-general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equipped Item Color"], nil, 14)
+general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equipped Item"], nil, 14)
 general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind Text"], L["Color Keybind Text when Out of Range, instead of the button."], 15)
 general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 16)
 
@@ -160,8 +160,8 @@ general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of th
 general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
 general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
 general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, not E.Retail)
-general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
-general.args.colorGroup.args.targetReticleColor = ACH:Color(L["Target Reticle Color"], nil, 8)
+general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item"], nil, 7)
+general.args.colorGroup.args.targetReticleColor = ACH:Color(E.NewSign..L["Target Reticle"], nil, 8)
 
 general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 35, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value, info[#info - 1] == 'fontGroup') end)
 general.args.applyGroup.args.fontGroup = ACH:Group(L["Font Group"], nil, 1)
@@ -336,7 +336,7 @@ local function CreateBarOptions(num)
 	bar.args.generalOptions.values.keepSizeRatio = L["Keep Size Ratio"]
 
 	if E.Retail then
-		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
+		bar.args.generalOptions.values.targetReticle = E.NewSign..L["Target Reticle"]
 	end
 
 	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar[barNumber][info[#info]] = value AB:UpdateButtonSettings(barNumber) end)

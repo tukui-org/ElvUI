@@ -285,7 +285,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 3, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.inline = true
 
-	config.args.countGroup = ACH:Group(E.NewSign..L["Count Text"], nil, 15)
+	config.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
 	config.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 24, step = 1 })
 	config.args.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
