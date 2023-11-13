@@ -1483,8 +1483,6 @@ function OnEvent(frame, event, arg1, ...)
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
-		-- print('checked', arg1)
-
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
 			for button in next, buttons do
@@ -1493,7 +1491,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
 		for _, change in ipairs(arg1) do
-			local buttons = lib.buttonsBySlot[change.slot]
+			local buttons = change.slot and lib.buttonsBySlot[change.slot]
 			if buttons then
 				for button in next, buttons do
 					UpdateUsable(button, change.usable, change.noMana)
