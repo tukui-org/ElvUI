@@ -10,8 +10,8 @@ if not lib then return end
 
 -- Lua functions
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
-local setmetatable, wipe, unpack, pairs, next, strsub = setmetatable, wipe, unpack, pairs, next, strsub
-local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
+local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
+local str_match, format, tinsert, tremove, strsub = string.match, format, tinsert, tremove, strsub
 
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
@@ -53,7 +53,7 @@ lib.nonActionButtons = lib.nonActionButtons or {}
 
 -- usable state for retail using slot
 lib.slotByButton = lib.slotByButton or {}
-lib.buttonBySlot = lib.buttonBySlot or {}
+lib.buttonsBySlot = lib.buttonsBySlot or {}
 
 local AuraButtons = lib.AuraButtons or { auras = {}, buttons = {} }
 lib.AuraButtons = AuraButtons
@@ -582,25 +582,49 @@ function Generic:OnButtonEvent(event, key, down)
 	end
 end
 
+local function WatchRange(button, slot)
+	if not lib.buttonsBySlot[slot] then
+		lib.buttonsBySlot[slot] = {}
+	end
+
+	lib.buttonsBySlot[slot][button] = true
+	lib.slotByButton[button] = slot
+
+	if WoWRetail then -- activate the event for slot
+		C_ActionBar.EnableActionRangeCheck(slot, true)
+	end
+end
+
+local function ClearRange(button, slot)
+	local buttons = lib.buttonsBySlot[slot]
+	if buttons then
+		buttons[button] = nil
+
+		if WoWRetail and not next(buttons) then -- deactivate event for slot (unused)
+			C_ActionBar.EnableActionRangeCheck(slot, false)
+			lib.buttonsBySlot[slot] = nil
+		end
+	end
+end
+
 local function SetupRange(button, hasTexture) -- retail range event api ~Simpy
 	if hasTexture and button._state_type == 'action' then
 		local action = button._state_action
 		if action then
-			lib.buttonBySlot[action] = button
-			lib.slotByButton[button] = action
-
-			if WoWRetail then -- activate the event for slot
-				C_ActionBar.EnableActionRangeCheck(action, true)
+			local slot = lib.slotByButton[button]
+			if not slot then -- new action
+				WatchRange(button, action)
+			elseif slot ~= action then -- changed action
+				WatchRange(button, action) -- add new action
+				ClearRange(button, slot) -- clear previous action
 			end
 		end
-	else
+	else -- remove old action
 		local slot = lib.slotByButton[button]
 		if slot then
-			lib.buttonBySlot[slot] = nil
+			lib.slotByButton[button] = nil
 
-			if WoWRetail then -- deactivate event for slot (unused)
-				C_ActionBar.EnableActionRangeCheck(slot, false)
-			end
+			ClearRange(button, slot)
 		end
 	end
 end
@@ -1032,7 +1056,7 @@ if UseCustomFlyout then
 
 				-- link the button to the header
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
-				table.insert(lib.FlyoutButtons, button)
+				tinsert(lib.FlyoutButtons, button)
 
 				lib.callbacks:Fire("OnFlyoutButtonCreated", button)
 			end
@@ -1301,7 +1325,7 @@ function Generic:UpdateConfig(config)
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
-	Update(self, true)
+	Update(self, 'UpdateConfig')
 end
 
 -----------------------------------------------------------
@@ -1403,7 +1427,7 @@ function OnEvent(frame, event, arg1, ...)
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
 				ClearNewActionHighlight(button._state_action, true, false)
-				Update(button)
+				Update(button, event)
 			end
 		end
 
@@ -1453,15 +1477,21 @@ function OnEvent(frame, event, arg1, ...)
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true)
 	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
-		local button = lib.buttonBySlot[arg1]
-		if button then
-			UpdateRange(button, nil, ...) -- inRange, checksRange
+		-- print('checked', arg1)
+
+		local buttons = lib.buttonsBySlot[arg1]
+		if buttons then
+			for button in next, buttons do
+				UpdateRange(button, nil, ...) -- inRange, checksRange
+			end
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
 		for _, change in ipairs(arg1) do
-			local button = lib.buttonBySlot[change.slot]
-			if button then
-				UpdateUsable(button, change.usable, change.noMana)
+			local buttons = lib.buttonsBySlot[change.slot]
+			if buttons then
+				for button in next, buttons do
+					UpdateUsable(button, change.usable, change.noMana)
+				end
 			end
 		end
 	elseif event == "ACTIONBAR_UPDATE_USABLE" then
@@ -1567,7 +1597,7 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "PLAYER_EQUIPMENT_CHANGED" then
 		for button in next, ActiveButtons do
 			if button._state_type == "item" then
-				Update(button)
+				Update(button, event)
 			end
 		end
 	elseif event == "SPELL_UPDATE_CHARGES" then
@@ -1781,11 +1811,11 @@ function Generic:UpdateAction(force)
 
 		self._state_action = action
 
-		Update(self)
+		Update(self, 'UpdateAction')
 	end
 end
 
-function Update(self, fromUpdateConfig)
+function Update(self, which)
 	if self:HasAction() then
 		ActiveButtons[self] = true
 		if self._state_type == "action" then
@@ -1943,7 +1973,7 @@ function Update(self, fromUpdateConfig)
 
 	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
 
-	UpdateRange(self, fromUpdateConfig) -- Sezz: update range check on state change
+	UpdateRange(self, which == 'UpdateConfig') -- Sezz: update range check on state change
 
 	UpdateCount(self)
 
@@ -1973,7 +2003,7 @@ function Update(self, fromUpdateConfig)
 		end
 	end
 
-	lib.callbacks:Fire("OnButtonUpdate", self)
+	lib.callbacks:Fire("OnButtonUpdate", self, which)
 end
 
 function Generic:UpdateLocal()
