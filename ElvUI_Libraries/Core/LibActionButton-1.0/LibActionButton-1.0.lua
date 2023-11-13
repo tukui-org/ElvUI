@@ -582,6 +582,9 @@ function Generic:OnButtonEvent(event, key, down)
 	end
 end
 
+-----------------------------------------------------------
+--- retail range event api ~Simpy
+
 local function WatchRange(button, slot)
 	if not lib.buttonsBySlot[slot] then
 		lib.buttonsBySlot[slot] = {}
@@ -610,7 +613,7 @@ local function ClearRange(button, slot)
 	end
 end
 
-local function SetupRange(button, hasTexture) -- retail range event api ~Simpy
+local function SetupRange(button, hasTexture)
 	if hasTexture and button._state_type == 'action' then
 		local action = button._state_action
 		if action then
