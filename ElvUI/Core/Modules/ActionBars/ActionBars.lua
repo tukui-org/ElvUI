@@ -596,7 +596,7 @@ function AB:UpdateButtonSettings(specific)
 	for barName, bar in pairs(AB.handledBars) do
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
-			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
