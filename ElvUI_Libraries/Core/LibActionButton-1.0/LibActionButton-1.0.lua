@@ -1624,19 +1624,24 @@ function OnEvent(frame, event, arg1, ...)
 end
 
 function Generic:OnUpdate(elapsed)
-	self.flashTime = (self.flashTime or 0) - elapsed
-	self.rangeTimer = (self.rangeTimer or 0) - elapsed
+	if self.flashing then
+		self.flashTime = (self.flashTime or 0) - elapsed
 
-	if self.flashing and self.flashTime <= 0 then
-		self.Flash:SetShown(not self.Flash:IsShown())
+		if self.flashTime <= 0 then
+			self.Flash:SetShown(not self.Flash:IsShown())
 
-		self.flashTime = self.flashTime + ATTACK_BUTTON_FLASH_TIME
+			self.flashTime = self.flashTime + ATTACK_BUTTON_FLASH_TIME
+		end
 	end
 
-	if not WoWRetail and self.rangeTimer <= 0 then
-		UpdateRange(self) -- Sezz
+	if not WoWRetail then
+		self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
-		self.rangeTimer = TOOLTIP_UPDATE_TIME
+		if self.rangeTimer <= 0 then
+			UpdateRange(self) -- Sezz
+
+			self.rangeTimer = TOOLTIP_UPDATE_TIME
+		end
 	end
 end
 
