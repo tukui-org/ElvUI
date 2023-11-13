@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 46 -- the real minor version is 107
+local MINOR_VERSION = 46 -- the real minor version is 108
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -334,8 +334,10 @@ function SetupSecureSnippets(button)
 		if IsPressHoldReleaseSpell then
 			local spellID
 			if type == 'action' then
-				local actionType, id = GetActionInfo(action)
+				local actionType, id, subType = GetActionInfo(action)
 				if actionType == 'spell' then
+					spellID = id
+				elseif actionType == 'macro' and subType == 'spell' then
 					spellID = id
 				end
 			elseif type == 'spell' then
@@ -1958,7 +1960,7 @@ function Update(self, which)
 	if isTypeAction then
 		local actionType, actionID, subType = GetActionInfo(self._state_action)
 		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
-		local macroSpell = actionMacro and ((WoWRetail and subType == 'spell' and actionID) or (not WoWRetail and GetMacroSpell(actionID))) or nil
+		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
 		local spellName = spellID and GetSpellInfo(spellID) or nil
 
@@ -2559,8 +2561,8 @@ Action.GetSpellId              = function(self)
 		if actionType == "spell" then
 			return id
 		elseif actionType == "macro" then
-			if WoWRetail then
-				return (subType == "spell" and id) or nil
+			if subType == "spell" then
+				return id
 			else
 				return (GetMacroSpell(id))
 			end
