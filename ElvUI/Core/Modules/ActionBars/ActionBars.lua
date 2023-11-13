@@ -233,6 +233,7 @@ function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
 
+	local enabled = db.enabled
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
@@ -261,6 +262,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
+	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
 
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
@@ -281,6 +283,7 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
+		AB:HandleButtonState(button, i, vehicleIndex, enabled)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
@@ -298,7 +301,7 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
-	if db.enabled then
+	if enabled then
 		E:EnableMover(bar.mover.name)
 		bar:Show()
 
@@ -312,6 +315,24 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
+end
+
+function AB:HandleButtonState(button, index, vehicleIndex, enabled)
+	if enabled then
+		button:SetState(0, 'action', index)
+
+		for k = 1, 18 do
+			button:SetState(k, 'action', (k - 1) * 12 + index)
+		end
+
+		if vehicleIndex and index == 12 then
+			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
+		end
+	else
+		for k = 0, 18 do
+			button:SetState(k, 'empty')
+		end
+	end
 end
 
 function AB:CreateBar(id)
@@ -338,22 +359,11 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
-	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
-
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
-		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
 		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
-
-		for k = 1, 18 do
-			button:SetState(k, 'action', (k - 1) * 12 + i)
-		end
-
-		if vehicleIndex and i == 12 then
-			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
-		end
 
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
