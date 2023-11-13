@@ -298,6 +298,7 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
+	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
 	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
@@ -320,8 +321,7 @@ function AB:PositionAndSizeBar(barName)
 
 		local targetReticle = button.TargetReticleAnimFrame
 		if targetReticle then
-			local base = AB.db.targetReticleColor
-			targetReticle.Base:SetVertexColor(base.r, base.g, base.b)
+			targetReticle.Base:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
 		end
 
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
