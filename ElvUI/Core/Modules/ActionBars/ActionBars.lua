@@ -243,6 +243,28 @@ function AB:ActivePages(page)
 	return pages
 end
 
+function AB:HandleButtonState(button, index, vehicleIndex, pages)
+	if pages then
+		button:SetState(0, 'action', index)
+
+		for k = 1, 18 do
+			if pages[k] then
+				button:SetState(k, 'action', (k - 1) * 12 + index)
+			else
+				button:SetState(k, 'empty')
+			end
+		end
+
+		if vehicleIndex and index == 12 then
+			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
+		end
+	else
+		for k = 0, 18 do
+			button:SetState(k, 'empty')
+		end
+	end
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
@@ -336,28 +358,6 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing * 0.5)
-end
-
-function AB:HandleButtonState(button, index, vehicleIndex, pages)
-	if pages then
-		button:SetState(0, 'action', index)
-
-		for k = 1, 18 do
-			if pages[k] then
-				button:SetState(k, 'action', (k - 1) * 12 + index)
-			else
-				button:SetState(k, 'empty')
-			end
-		end
-
-		if vehicleIndex and index == 12 then
-			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
-		end
-	else
-		for k = 0, 18 do
-			button:SetState(k, 'empty')
-		end
-	end
 end
 
 function AB:CreateBar(id)
