@@ -598,7 +598,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.health = ACH:Toggle(L["Health"], nil, 8, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.power = ACH:Toggle(L["Power"], nil, 9, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 10, nil, nil, nil, nil, nil, disabledOrRanged)
-	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 11, nil, nil, nil, nil, nil, disabled, groupName ~= 'player')
+	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 11, nil, nil, nil, nil, nil, disabled)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 12, nil, nil, nil, nil, nil, disabledOrRanged)
 
 	config.args.spacer1 = ACH:Spacer(13, 'full')

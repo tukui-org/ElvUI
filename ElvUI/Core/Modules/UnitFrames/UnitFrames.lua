@@ -597,10 +597,7 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 			fader:SetOption('Casting', db.casting)
 			fader:SetOption('MinAlpha', db.minAlpha)
 			fader:SetOption('MaxAlpha', db.maxAlpha)
-
-			if frame == _G.ElvUF_Player then
-				fader:SetOption('DynamicFlight', db.dynamicflight)
-			end
+			fader:SetOption('DynamicFlight', db.dynamicflight)
 
 			if frame ~= _G.ElvUF_Player then
 				fader:SetOption('Range', db.range)
