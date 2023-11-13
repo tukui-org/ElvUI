@@ -600,8 +600,11 @@ local function ClearRange(button, slot)
 	if buttons then
 		buttons[button] = nil
 
-		if WoWRetail and not next(buttons) then -- deactivate event for slot (unused)
-			C_ActionBar.EnableActionRangeCheck(slot, false)
+		if not next(buttons) then -- deactivate event for slot (unused)
+			if WoWRetail then
+				C_ActionBar.EnableActionRangeCheck(slot, false)
+			end
+
 			lib.buttonsBySlot[slot] = nil
 		end
 	end
