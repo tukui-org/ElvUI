@@ -229,10 +229,39 @@ function AB:MoverMagic(bar) -- ~Simpy
 	end
 end
 
+function AB:ActivePages(page)
+	local pages = {}
+	local clean = gsub(page, '%[.-]', '')
+
+	for _, index in next, { strsplit(';', clean) } do
+		local num = tonumber(index)
+		if num then
+			pages[num] = true
+		end
+	end
+
+	return pages
+end
+
+function AB:HandleButtonState(button, index, vehicleIndex, pages)
+	for k = 1, 18 do
+		if pages and pages[k] then
+			button:SetState(k, 'action', (k - 1) * 12 + index)
+		else
+			button:SetState(k, 'empty')
+		end
+	end
+
+	if pages and vehicleIndex and index == 12 then
+		button:SetState(vehicleIndex, 'custom', AB.customExitButton)
+	end
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
 
+	local enabled = db.enabled
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
@@ -261,7 +290,15 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
+	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
 
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
+
+	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -281,6 +318,13 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			local base = AB.db.targetReticleColor
+			targetReticle.Base:SetVertexColor(base.r, base.g, base.b)
+		end
+
+		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
@@ -292,13 +336,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:UpdateMasque(bar)
 	end
 
-	-- paging needs to be updated even if the bar is disabled
-	local defaults = AB.barDefaults[barName]
-	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
-	RegisterStateDriver(bar, 'page', page)
-	bar:SetAttribute('page', page)
-
-	if db.enabled then
+	if enabled then
 		E:EnableMover(bar.mover.name)
 		bar:Show()
 
@@ -338,25 +376,25 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
-	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
-
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
-		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
 		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
-		for k = 1, 18 do
-			button:SetState(k, 'action', (k - 1) * 12 + i)
-		end
-
-		if vehicleIndex and i == 12 then
-			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
-		end
-
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
+		end
+
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			targetReticle:SetAllPoints()
+
+			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
+			targetReticle.Base:SetInside()
+
+			targetReticle.Highlight:SetInside()
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -584,7 +622,7 @@ function AB:UpdateButtonSettings(specific)
 	for barName, bar in pairs(AB.handledBars) do
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
-			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
@@ -1290,7 +1328,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not db.hotkeytext
 
+	bar.buttonConfig.enabled = db.enabled -- only used to keep events off for targetReticle
 	bar.buttonConfig.showGrid = db.showGrid
+	bar.buttonConfig.targetReticle = db.targetReticle
 	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
