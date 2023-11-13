@@ -601,7 +601,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.power = ACH:Toggle(L["Power"], nil, 16, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 17, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 18, nil, nil, nil, nil, nil, disabledOrRanged)
-	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.dynamicflight = ACH:Toggle(E.NewSign..L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabledOrRanged)
 
 	config.args.spacer2 = ACH:Spacer(30, 'full')
 	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 31, { min = 0, max = 3, step = 0.01 }, nil, nil, nil, disabledOrRanged)
