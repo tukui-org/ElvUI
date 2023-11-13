@@ -378,7 +378,6 @@ function AB:CreateBar(id)
 			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
 			targetReticle.Base:SetInside()
 
-			targetReticle.Highlight:SetTexCoord(unpack(E.TexCoords))
 			targetReticle.Highlight:SetInside()
 		end
 
