@@ -238,9 +238,9 @@ local function SortList(a, b)
 	return E:StripString(a) < E:StripString(b)
 end
 
-sort(DONATORS, SortList)
 sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
+sort(DONATORS, SortList)
 
 local DEVELOPER_STRING = tconcat(DEVELOPERS, '|n')
 local TESTER_STRING = tconcat(TESTERS, '|n')
