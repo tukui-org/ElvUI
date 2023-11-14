@@ -4,15 +4,11 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, unpack, select, pairs = type, unpack, select, pairs
+local type, unpack, pairs = type, unpack, pairs
 local min, random, format = min, random, format
 
-local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitName = UnitName
-local UnitClass = UnitClass
 local InCombatLockdown = InCombatLockdown
 local UnregisterUnitWatch = UnregisterUnitWatch
 local RegisterUnitWatch = RegisterUnitWatch
@@ -34,57 +30,61 @@ local attributeBlacklist = {
 
 local function createConfigEnv()
 	if configEnv then return end
+
 	configEnv = setmetatable({
-		UnitPower = function (unit, displayType)
+		UnitPower = function(unit, displayType)
 			if unit:find('target') or unit:find('focus') then
-				return UnitPower(unit, displayType)
+				return _G.UnitPower(unit, displayType)
 			end
 
 			return random(1, UnitPowerMax(unit, displayType) or 1)
 		end,
 		UnitHealth = function(unit)
 			if unit:find('target') or unit:find('focus') then
-				return UnitHealth(unit)
+				return _G.UnitHealth(unit)
 			end
 
 			return random(1, UnitHealthMax(unit))
 		end,
 		UnitName = function(unit)
 			if unit:find('target') or unit:find('focus') then
-				return UnitName(unit)
+				return _G.UnitName(unit)
 			end
+
 			if E.CreditsList then
 				local max = #E.CreditsList
 				return E.CreditsList[random(1, max)]
 			end
+
 			return 'Test Name'
 		end,
 		UnitClass = function(unit)
 			if unit:find('target') or unit:find('focus') then
-				return UnitClass(unit)
+				return _G.UnitClass(unit)
 			end
 
 			local classToken = CLASS_SORT_ORDER[random(1, #(CLASS_SORT_ORDER))]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
 		end,
-		Hex = function(r, g, b)
-			if type(r) == 'table' then
-				if r.r then r, g, b = r.r, r.g, r.b else r, g, b = unpack(r) end
-			end
-			return format('|cff%02x%02x%02x', r*255, g*255, b*255)
-		end,
 		ColorGradient = ElvUF.ColorGradient,
+		Hex = ElvUF.Tags.Env.Hex,
+		_VARS = ElvUF.Tags.Vars,
+		_TAGS = ElvUF.Tags.Env._TAGS,
 		_COLORS = ElvUF.colors
 	}, {
 		__index = _G,
-		__newindex = function(_, key, value) _G[key] = value end,
+		__newindex = function(_, key, value)
+			_G[key] = value
+		end,
 	})
 
 	overrideFuncs['classcolor'] = ElvUF.Tags.Methods['classcolor']
+	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
 	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
 	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
 	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
 	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
+	overrideFuncs['name'] = ElvUF.Tags.Methods['name']
 
 	overrideFuncs['healthcolor'] = ElvUF.Tags.Methods['healthcolor']
 	overrideFuncs['health:current'] = ElvUF.Tags.Methods['health:current']
@@ -261,6 +261,7 @@ function UF:HeaderConfig(header, configMode)
 	if InCombatLockdown() then return end
 
 	createConfigEnv()
+
 	header.forceShow = configMode
 	header.forceShowAuras = configMode
 	header.isForced = configMode

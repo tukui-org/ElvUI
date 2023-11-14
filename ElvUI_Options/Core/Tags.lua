@@ -1,18 +1,14 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local ACH = E.Libs.ACH
+local ElvUF = E.oUF
 
-local _G = _G
 local format = format
 
 local TagGroup = ACH:Group(L["Available Tags"], nil, 3)
-TagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, 310, function() return 'https://github.com/tukui-org/ElvUI/wiki/custom-texts' end)
-TagGroup.args.GuideLink.focusSelect = true
-TagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, 290, function() return 'https://github.com/tukui-org/ElvUI/wiki' end)
-TagGroup.args.WikiLink.focusSelect = true
-TagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end, nil, nil, 120)
+TagGroup.args.guide = ACH:Input(L["Guide:"], nil, 1, nil, 400, function() return 'https://github.com/tukui-org/ElvUI/wiki/custom-texts' end)
+TagGroup.args.guide.focusSelect = true
 TagGroup.args.description = ACH:Description(L["|cffFF3333This is for information. This will not change the tags in the UI.|r"], 4, 'large')
-TagGroup.args.spacer = ACH:Spacer(5)
 
 TagGroup.args.Colors = ACH:Group(L["Colors"])
 TagGroup.args.Colors.args.customTagColorInfo = ACH:Input('Color your tag or text by replacing the XXXXXX with a hex color code. (Name tag as red text. Ex: ||cffFF0000[name]||r)', nil, 1, nil, 'full', function() return '||cffXXXXXX [tag] or text here ||r' end)
@@ -28,7 +24,7 @@ local getTag = function(info) return format('[%s]', info[#info]) end
 local groups = {}
 
 for _, which in pairs({'Events','OnUpdateThrottle'}) do
-	for Tag in next, E.oUF.Tags[which] do
+	for Tag in next, ElvUF.Tags[which] do
 		local info = E.TagInfo[Tag] or E:AddTagInfo(Tag, 'Miscellaneous')
 
 		local group = TagGroup.args[info.category]

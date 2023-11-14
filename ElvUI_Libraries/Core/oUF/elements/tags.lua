@@ -937,6 +937,7 @@ local function strip(tag)
 end
 
 oUF.Tags = {
+	Env = _ENV,
 	Methods = tagFuncs,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,

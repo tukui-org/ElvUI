@@ -21,7 +21,7 @@ E.Config[1] = C
 E.Config[2] = L
 
 local _G = _G
-local next, sort, strmatch, strsplit = next, sort, strmatch, strsplit
+local next, sort, strmatch, strsplit, strsub = next, sort, strmatch, strsplit, strsub
 local tconcat, tinsert, tremove, wipe = table.concat, tinsert, tremove, wipe
 local format, gsub, ipairs, pairs, type = format, gsub, ipairs, pairs, type
 
@@ -188,7 +188,7 @@ local DEVELOPERS = {
 	'Nightcracker',
 	'Omega1970',
 	'Blazeflack',
-	'Crum',
+	'|cFFAAD372Crum|r',
 	'|cffFFC44DHydra|r',
 	'|cff0070DEAzilroka|r',
 	'|cff9482c9Darth Predator|r',
@@ -200,19 +200,22 @@ local DEVELOPERS = {
 }
 
 local TESTERS = {
-	'Tukui Community',
 	'Affinity',
 	'Modarch',
 	'Tirain',
 	'Phima',
 	'Veiled',
 	'Alex',
+	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
+	'|cFFAAD372Tsxy|r',
+	'|cFFff75ddFlamanis|r',
+	'|cFFb8bb26Thurin|r',
 	'Nidra',
 	'Kurhyus',
 	'Shrom',
 	'BuG',
 	'Kringel',
-	'Botanica',
+	'|cFF08E8DEBotanica|r',
 	'Yachanay',
 	'Catok',
 	'Caedis',
@@ -232,43 +235,57 @@ sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
 
 for _, name in pairs(DONATORS) do
-	tinsert(E.CreditsList, name)
+	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
 end
 local DONATOR_STRING = table.concat(DONATORS, '|n')
 for _, name in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, name)
+	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
 end
 local DEVELOPER_STRING = table.concat(DEVELOPERS, '|n')
 for _, name in pairs(TESTERS) do
-	tinsert(E.CreditsList, name)
+	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
 end
 local TESTER_STRING = table.concat(TESTERS, '|n')
 
-E.Options.args.info = ACH:Group(L["Information"], nil, 4)
-E.Options.args.info.args.main = ACH:Group(L["ELVUI_DESC"], nil, 4)
-E.Options.args.info.args.main.inline = true
-E.Options.args.info.args.main.args.discord = ACH:Execute(L["Discord"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org') end, nil, nil, 120)
-E.Options.args.info.args.main.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 120)
-E.Options.args.info.args.main.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md') end, nil, nil, 120)
-E.Options.args.info.args.main.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 6, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 120)
-E.Options.args.info.args.main.args.ptr = ACH:Execute(L["PTR Version"], L["Link to the latest PTR version."], 7, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip') end, nil, nil, 120)
-E.Options.args.info.args.main.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 8, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 120)
+E.Options.args.info = ACH:Group(L["Information"], nil, 4, 'tab')
 
-E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 5)
+E.Options.args.info.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 1, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 120)
+E.Options.args.info.args.colors = ACH:Execute(L["Color Picker"], nil, 2, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end, nil, nil, 120)
+
+E.Options.args.info.args.main = ACH:Group(L["ELVUI_DESC"], nil, 5)
+E.Options.args.info.args.main.inline = true
+
+for index, data in next, {
+	{ key = 'discord',		name = L["Discord"],				url = 'https://discord.tukui.org' },
+	{ key = 'issues',		name = L["Ticket Tracker"],			url = 'https://github.com/tukui-org/ElvUI/issues' },
+	{ key = 'wiki',			name = L["Wiki"],					url = 'https://github.com/tukui-org/ElvUI/wiki' },
+	{ key = 'dev',			name = L["Development Version"],	url = 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip' },
+	{ key = 'ptr',			name = L["PTR Version"],			url = 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip' },
+	{ key = 'changelog',	name = L["Changelog"],				url = 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md' },
+	{ key = 'customTexts',	name = L["Custom Texts"],			url = 'https://github.com/tukui-org/ElvUI/wiki/custom-texts' },
+	{ key = 'paging',		name = L["Action Paging"],			url = 'https://github.com/tukui-org/ElvUI/wiki/paging' },
+	{ key = 'performance',	name = L["Performance"],			url = 'https://github.com/tukui-org/ElvUI/wiki/performance-optimization' },
+} do
+	E.Options.args.info.args.main.args[data.key] = ACH:Input(data.name, nil, index, nil, 255, function() return data.url end)
+	E.Options.args.info.args.main.args[data.key].focusSelect = true
+end
+
+local credits = ('*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r'):gsub('*', E.InfoColor)
+E.Options.args.info.args.credits = ACH:Group(format(credits, L["Credits"]), nil, 10)
 E.Options.args.info.args.credits.inline = true
 E.Options.args.info.args.credits.args.string = ACH:Description(L["ELVUI_CREDITS"], 1, 'medium')
 
-E.Options.args.info.args.coding = ACH:Group(L["Coding:"], nil, 6)
-E.Options.args.info.args.coding.inline = true
-E.Options.args.info.args.coding.args.string = ACH:Description(DEVELOPER_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.coding = ACH:Group(L["Coding:"], nil, 6)
+E.Options.args.info.args.credits.args.coding.inline = true
+E.Options.args.info.args.credits.args.coding.args.string = ACH:Description(DEVELOPER_STRING, 1, 'medium')
 
-E.Options.args.info.args.testers = ACH:Group(L["Testing:"], nil, 7)
-E.Options.args.info.args.testers.inline = true
-E.Options.args.info.args.testers.args.string = ACH:Description(TESTER_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.testers = ACH:Group(L["Testing:"], nil, 7)
+E.Options.args.info.args.credits.args.testers.inline = true
+E.Options.args.info.args.credits.args.testers.args.string = ACH:Description(TESTER_STRING, 1, 'medium')
 
-E.Options.args.info.args.donators = ACH:Group(L["Donations:"], nil, 8)
-E.Options.args.info.args.donators.inline = true
-E.Options.args.info.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.donators = ACH:Group(L["Donations:"], nil, 8)
+E.Options.args.info.args.credits.args.donators.inline = true
+E.Options.args.info.args.credits.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
 
 --Create Profiles Table
 E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 4, 'tab')

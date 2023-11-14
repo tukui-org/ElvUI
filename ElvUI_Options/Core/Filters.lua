@@ -420,10 +420,6 @@ Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Playe
 
 Filters.help = ACH:Group(L["Help"], nil, 2)
 
-local COLOR = E:ClassColor(E.myclass, true)
-local COLOR1 = format('|c%s', COLOR.colorStr)
-local COLOR2 = '|cFFFFFFFF'
-
 local FilterHelp = {
 	L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"],
 	L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"],
@@ -452,7 +448,7 @@ local FilterHelp = {
 }
 
 for i, text in ipairs(FilterHelp) do
-	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', COLOR1):gsub('%^', COLOR2), i, 'medium')
+	Filters.help.args['help'..i] = ACH:Description(text:gsub('*', E.InfoColor):gsub('%^', '|cFFffffff'), i, 'medium')
 end
 
 function C:SetToFilterConfig(filter)

@@ -34,7 +34,6 @@ local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
-local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists
@@ -42,7 +41,6 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGUID = UnitGUID
-local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
@@ -58,7 +56,6 @@ local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitLevel = UnitLevel
-local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
@@ -81,7 +78,9 @@ local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local UNKNOWN = UNKNOWN
 local PVP = PVP
 
--- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
+-- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
+-- GLOBALS: UnitName, UnitPower, UnitHealth, UnitClass -- override during testing groups
+-- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
 local RefreshNewTags -- will turn true at EOF
 function E:AddTag(tagName, eventsOrSeconds, func, block)
@@ -112,9 +111,6 @@ function E:TagUpdateRate(second)
 	Tags:SetEventUpdateTimer(second)
 end
 
---Expose local functions for plugins onto this table
-E.TagFunctions = {}
-
 ------------------------------------------------------------------------
 --	Tag Extra Events
 ------------------------------------------------------------------------
@@ -128,16 +124,15 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 --	Tag Functions
 ------------------------------------------------------------------------
 
-local function UnitEffectiveLevel(unit)
-	if E.Retail then
+Tags.Env.UnitEffectiveLevel = function(unit)
+	if E.Retail or E.Wrath then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
 	end
 end
-E.TagFunctions.UnitEffectiveLevel = UnitEffectiveLevel
 
-local function UnitName(unit)
+Tags.Env.UnitName = function(unit)
 	local name, realm = _G.UnitName(unit)
 
 	if name == UNKNOWN and E.myclass == 'MONK' and UnitIsUnit(unit, 'pet') then
@@ -150,9 +145,8 @@ local function UnitName(unit)
 		return name
 	end
 end
-E.TagFunctions.UnitName = UnitName
 
-local function Abbrev(name)
+Tags.Env.Abbrev = function(name)
 	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
 	if lastWord then
 		for word in gmatch(name, '.-%s') do
@@ -165,7 +159,6 @@ local function Abbrev(name)
 	end
 	return name
 end
-E.TagFunctions.Abbrev = Abbrev
 
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION or 0.3
@@ -183,7 +176,7 @@ local ClassPowers = {
 	WARLOCK		= Enum.PowerType.SoulShards
 }
 
-local function GetClassPower(unit)
+Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
 
 	local spec, unitClass, Min, Max, r, g, b
@@ -254,7 +247,6 @@ local function GetClassPower(unit)
 
 	return Min or 0, Max or 0, r or 1, g or 1, b or 1
 end
-E.TagFunctions.GetClassPower = GetClassPower
 
 ------------------------------------------------------------------------
 --	Looping
@@ -944,7 +936,7 @@ do
 end
 
 do
-	local function NameHealthColor(tags,hex,unit,default)
+	Tags.Env.NameHealthColor = function(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
 			return tags.classcolor(unit) or default
 		elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
@@ -953,7 +945,6 @@ do
 
 		return default
 	end
-	E.TagFunctions.NameHealthColor = NameHealthColor
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	E:AddTag('name:health', 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH', function(unit, _, args)
@@ -1126,7 +1117,7 @@ do
 end
 
 do
-	local function GetTitleNPC(unit, custom)
+	Tags.Env.GetTitleNPC = function(unit, custom)
 		if UnitIsPlayer(unit) then return end
 
 		-- similar to TT.GetLevelLine
@@ -1139,7 +1130,6 @@ do
 			return custom and format(custom, text) or text
 		end
 	end
-	E.TagFunctions.GetTitleNPC = GetTitleNPC
 
 	E:AddTag('npctitle', 'UNIT_NAME_UPDATE', function(unit)
 		return GetTitleNPC(unit)
@@ -1151,7 +1141,7 @@ do
 end
 
 do
-	local function GetQuestData(unit, which, Hex)
+	Tags.Env.GetQuestData = function(unit, which, Hex)
 		if IsInInstance() or UnitIsPlayer(unit) then return end
 
 		local notMyQuest, lastTitle
@@ -1203,7 +1193,6 @@ do
 			end
 		end
 	end
-	E.TagFunctions.GetQuestData = GetQuestData
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, nil, Hex)
@@ -1394,6 +1383,17 @@ if not E.Retail then
 		end
 	end)
 end
+
+--Expose local functions for plugins onto this table
+E.TagFunctions = {
+	UnitEffectiveLevel = Tags.Env.UnitEffectiveLevel,
+	UnitName = Tags.Env.UnitName,
+	Abbrev = Tags.Env.Abbrev,
+	NameHealthColor = Tags.Env.NameHealthColor,
+	GetClassPower = Tags.Env.GetClassPower,
+	GetTitleNPC = Tags.Env.GetTitleNPC,
+	GetQuestData = Tags.Env.GetQuestData
+}
 
 ------------------------------------------------------------------------
 --	Available Tags
