@@ -11,8 +11,8 @@ local next = next
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local IsPlayerSpell = IsPlayerSpell
 
-local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local GetCVar = C_CVar.GetCVar
+local SetCVar = C_CVar.SetCVar
 
 local DebuffColors = CopyTable(DebuffTypeColor)
 lib.DebuffTypeColor = DebuffColors

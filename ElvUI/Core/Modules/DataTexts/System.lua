@@ -22,9 +22,10 @@ local ResetCPUUsage = ResetCPUUsage
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
 
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
-local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local SetCVar = C_CVar.SetCVar
+local GetCVar = C_CVar.GetCVar
+local GetCVarBool = C_CVar.GetCVarBool
+
 local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
 local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded

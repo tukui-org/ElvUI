@@ -51,8 +51,9 @@ local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+
+local GetCVarBool = C_CVar.GetCVarBool
+local SetCVar = C_CVar.SetCVar
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM

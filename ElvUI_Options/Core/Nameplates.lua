@@ -10,8 +10,8 @@ local pairs, type, strsplit = pairs, type, strsplit
 local next, tonumber, format = next, tonumber, format
 
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local GetCVarBool = C_CVar.GetCVarBool
+local SetCVar = C_CVar.SetCVar
 
 local function GetAddOnStatus(index, locale, name)
 	local status = IsAddOnLoaded(name) and format('|cff33ff33%s|r', L["Enabled"]) or format('|cffff3333%s|r', L["Disabled"])

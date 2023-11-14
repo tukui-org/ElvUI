@@ -32,7 +32,7 @@ local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEdit
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local SetCVar = C_CVar.SetCVar
 
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE

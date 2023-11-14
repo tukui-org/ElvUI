@@ -31,7 +31,7 @@ local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or Ge
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local GetCVarBool = C_CVar.GetCVarBool
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE

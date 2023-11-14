@@ -36,6 +36,7 @@ local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
+
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
@@ -44,9 +45,9 @@ local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfCli
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 
-local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
-local GetCVarDefault = (C_CVar and C_CVar.GetCVarDefault) or GetCVarDefault
+local GetCVarDefault = C_CVar.GetCVarDefault
+local GetCVar = C_CVar.GetCVar
+local SetCVar = C_CVar.SetCVar
 
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}

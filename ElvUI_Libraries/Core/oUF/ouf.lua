@@ -43,7 +43,7 @@ local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 local PingableType_UnitFrameMixin = PingableType_UnitFrameMixin
 
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local SetCVar = C_CVar.SetCVar
 -- end
 
 local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')

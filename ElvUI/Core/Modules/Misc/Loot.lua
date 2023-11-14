@@ -49,7 +49,7 @@ local UnitName = UnitName
 
 local StaticPopup_Hide = StaticPopup_Hide
 
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local GetCVarBool = C_CVar.GetCVarBool
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG

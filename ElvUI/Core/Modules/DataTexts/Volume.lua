@@ -12,9 +12,9 @@ local IsShiftKeyDown = IsShiftKeyDown
 local ShowOptionsPanel = ShowOptionsPanel
 local SOUND = SOUND
 
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
-local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local SetCVar = C_CVar.SetCVar
+local GetCVar = C_CVar.GetCVar
+local GetCVarBool = C_CVar.GetCVarBool
 
 local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDriverNameByIndex
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers

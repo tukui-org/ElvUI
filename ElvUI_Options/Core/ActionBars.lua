@@ -15,8 +15,8 @@ local SetModifiedClick = SetModifiedClick
 local GetCurrentBindingSet = GetCurrentBindingSet
 local SaveBindings = SaveBindings
 
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local SetCVar = C_CVar.SetCVar
+local GetCVarBool = C_CVar.GetCVarBool
 
 local NUM_MICRO_BUTTONS = 12
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10

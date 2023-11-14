@@ -30,7 +30,7 @@ local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local SetCVar = C_CVar.SetCVar
 
 local CinematicFrame = _G.CinematicFrame
 local MovieFrame = _G.MovieFrame

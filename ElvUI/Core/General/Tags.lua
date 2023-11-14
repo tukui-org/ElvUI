@@ -65,7 +65,7 @@ local UnitStagger = UnitStagger
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
-local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local GetCVarBool = C_CVar.GetCVarBool
 
 local LEVEL = strlower(LEVEL)
 

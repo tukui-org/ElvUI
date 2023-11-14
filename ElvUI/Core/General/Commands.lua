@@ -11,7 +11,7 @@ local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
 local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
 local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local SetCVar = C_CVar.SetCVar
 -- GLOBALS: ElvUIGrid, ElvDB
 
 function E:Grid(msg)

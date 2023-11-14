@@ -10,7 +10,7 @@ local IsPlayerMoving = IsPlayerMoving
 local SetUIPanelAttribute = SetUIPanelAttribute
 local PlayerMovementFrameFader = PlayerMovementFrameFader
 
-local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
+local GetCVar = C_CVar.GetCVar
 
 local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 local PLAYER = PLAYER

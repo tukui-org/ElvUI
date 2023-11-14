@@ -44,7 +44,7 @@ local GetSpecializationInfo = (E.Classic or E.Wrath) and LCS.GetSpecializationIn
 
 local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local SetCVar = C_CVar.SetCVar
 
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
