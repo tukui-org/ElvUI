@@ -846,7 +846,7 @@ local function Tag(self, fs, ts, ...)
 		fs.__HookedAlphaFix = true
 	end
 
-	ts = ts:gsub('||([TCRAtcra])', escapeSequence)
+	ts = ts:gsub('||([TCRAtncra])', escapeSequence)
 
 	local customArgs = ts:match('{(.-)}%]')
 	if customArgs then
