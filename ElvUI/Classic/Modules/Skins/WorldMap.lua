@@ -9,11 +9,18 @@ function S:WorldMapFrame()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
 
-	WorldMapFrame.BorderFrame:SetTemplate('Transparent')
+	WorldMapFrame.BorderFrame:StripTextures()
+	WorldMapFrame.BorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.BorderFrame.backdrop:Point('TOPLEFT', 0, -0.5)
+
+	WorldMapFrame.MiniBorderFrame:StripTextures()
+	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -25)
 
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropDown)
 	S:HandleDropDownBox(_G.WorldMapContinentDropDown)
 	S:HandleDropDownBox(_G.WorldMapZoneDropDown)
+	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
 	_G.WorldMapContinentDropDown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
 	_G.WorldMapContinentDropDown:Width(205)
