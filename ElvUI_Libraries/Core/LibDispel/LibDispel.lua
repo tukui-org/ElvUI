@@ -7,9 +7,12 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local GetCVar, SetCVar = GetCVar, SetCVar
+
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local IsPlayerSpell = IsPlayerSpell
+
+local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
+local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
 
 local DebuffColors = CopyTable(DebuffTypeColor)
 lib.DebuffTypeColor = DebuffColors

@@ -1,5 +1,5 @@
 local parent, ns = ...
-local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = '@project-version@'
 if(_VERSION:find('project%-version')) then
@@ -29,11 +29,6 @@ local select, pairs, ipairs = select, pairs, ipairs
 local strupper, strsplit = strupper, strsplit
 local hooksecurefunc = hooksecurefunc
 
-local SecureButton_GetUnit = SecureButton_GetUnit
-local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
-local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-
-local PingableType_UnitFrameMixin = PingableType_UnitFrameMixin
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterAttributeDriver = RegisterAttributeDriver
 local UnregisterUnitWatch = UnregisterUnitWatch
@@ -41,8 +36,14 @@ local RegisterUnitWatch = RegisterUnitWatch
 local CreateFrame = CreateFrame
 local IsLoggedIn = IsLoggedIn
 local UnitGUID = UnitGUID
-local SetCVar = SetCVar
 local Mixin = Mixin
+
+local SecureButton_GetUnit = SecureButton_GetUnit
+local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
+local PingableType_UnitFrameMixin = PingableType_UnitFrameMixin
+
+local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
 -- end
 
 local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')

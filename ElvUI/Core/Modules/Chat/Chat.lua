@@ -23,7 +23,6 @@ local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
 local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
-local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
 local GetMouseFocus = GetMouseFocus
@@ -68,6 +67,8 @@ local UNKNOWN = UNKNOWN
 local GetGroupMembers = E.Retail and C_SocialQueue.GetGroupMembers
 local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 
+local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
+local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
 local IsChatLineCensored = C_ChatInfo and C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = E.Retail and C_ChatInfo.GetChannelRuleset
 local GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChannelRulesetForChannelID

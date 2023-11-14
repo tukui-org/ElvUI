@@ -17,6 +17,8 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
+local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+
 local displayString, db = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec
 
@@ -74,8 +76,9 @@ end
 local function OnClick(_, button)
 	if button == 'LeftButton' then
 		if not _G.PlayerTalentFrame then
-			_G.LoadAddOn('Blizzard_TalentUI')
+			LoadAddOn('Blizzard_TalentUI')
 		end
+
 		if IsShiftKeyDown() then
 			if not _G.PlayerTalentFrame:IsShown() then
 				ShowUIPanel(_G.PlayerTalentFrame)

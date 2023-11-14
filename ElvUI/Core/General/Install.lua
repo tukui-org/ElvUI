@@ -11,7 +11,6 @@ local format = format
 local strsub = strsub
 local tinsert = tinsert
 
-local SetCVar = SetCVar
 local ReloadUI = ReloadUI
 local PlaySound = PlaySound
 local CreateFrame = CreateFrame
@@ -33,9 +32,12 @@ local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEdit
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
+local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
+
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0

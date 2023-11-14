@@ -3,10 +3,12 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-local GetAddOnInfo = GetAddOnInfo
-local GetAddOnEnableState = GetAddOnEnableState
-local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 local hooksecurefunc = hooksecurefunc
+
+local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
+
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 
 local function HandleButton(entry, addonIndex)
 	if not entry.isSkinned then

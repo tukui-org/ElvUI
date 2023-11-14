@@ -8,18 +8,19 @@ local _G, next, strfind = _G, next, strfind
 local gsub, tinsert, type = gsub, tinsert, type
 
 local CreateFrame = CreateFrame
-local DisableAddOn = DisableAddOn
-local GetAddOnEnableState = GetAddOnEnableState
 local GetBuildInfo = GetBuildInfo
 local GetLocale = GetLocale
 local GetTime = GetTime
-local IsAddOnLoaded = IsAddOnLoaded
 local ReloadUI = ReloadUI
 local UIParent = UIParent
 
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
+
+local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
+local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
+local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
-local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 

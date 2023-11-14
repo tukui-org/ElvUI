@@ -3,12 +3,15 @@ local M = E:GetModule('WorldMap')
 
 local _G = _G
 local strfind = strfind
-local GetCVar = GetCVar
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
 local SetUIPanelAttribute = SetUIPanelAttribute
 local PlayerMovementFrameFader = PlayerMovementFrameFader
+
+local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
+
 local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 local PLAYER = PLAYER
 

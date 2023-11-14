@@ -12,7 +12,6 @@ local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetClassInfo = GetClassInfo
 local GetInstanceInfo = GetInstanceInfo
@@ -20,7 +19,6 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsRestrictedAccount = IsRestrictedAccount
@@ -29,7 +27,6 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local SetCVar = SetCVar
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitAura = UnitAura
@@ -44,6 +41,10 @@ local UnitIsUnit = UnitIsUnit
 
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (E.Classic or E.Wrath) and LCS.GetSpecializationInfo or GetSpecializationInfo
+
+local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
 
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink

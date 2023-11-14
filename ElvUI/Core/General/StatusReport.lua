@@ -5,10 +5,12 @@ local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
 
 local CreateFrame = CreateFrame
-local GetAddOnInfo = GetAddOnInfo
-local GetCVarBool = GetCVarBool
-local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
+
+local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+
 local UNKNOWN = UNKNOWN
 
 function E:AreOtherAddOnsEnabled()

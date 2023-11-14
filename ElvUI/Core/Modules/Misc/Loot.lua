@@ -24,6 +24,7 @@ local LCG = E.Libs.CustomGlow
 local _G = _G
 local unpack = unpack
 local tinsert = tinsert
+local hooksecurefunc = hooksecurefunc
 local next = next
 local max = max
 
@@ -33,7 +34,6 @@ local CursorOnUpdate = CursorOnUpdate
 local CursorUpdate = CursorUpdate
 local GameTooltip = GameTooltip
 local GetCursorPosition = GetCursorPosition
-local GetCVarBool = GetCVarBool
 local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
@@ -49,7 +49,8 @@ local UnitName = UnitName
 
 local StaticPopup_Hide = StaticPopup_Hide
 
-local hooksecurefunc = hooksecurefunc
+local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT

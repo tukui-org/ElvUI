@@ -8,12 +8,13 @@ local ipairs = ipairs
 local tinsert = tinsert
 
 local EasyMenu = EasyMenu
-local SetCVar = SetCVar
-local GetCVar = GetCVar
-local GetCVarBool = GetCVarBool
 local IsShiftKeyDown = IsShiftKeyDown
 local ShowOptionsPanel = ShowOptionsPanel
 local SOUND = SOUND
+
+local SetCVar = (C_CVar and C_CVar.SetCVar) or SetCVar
+local GetCVar = (C_CVar and C_CVar.GetCVar) or GetCVar
+local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
 
 local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDriverNameByIndex
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers

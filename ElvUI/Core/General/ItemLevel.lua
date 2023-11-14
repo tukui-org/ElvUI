@@ -11,7 +11,6 @@ local GetAverageItemLevel = GetAverageItemLevel
 local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
-local GetCVarBool = GetCVarBool
 local GetItemInfo = GetItemInfo
 local UIParent = UIParent
 local UnitIsUnit = UnitIsUnit
@@ -19,6 +18,8 @@ local UnitIsUnit = UnitIsUnit
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
+
+local GetCVarBool = (C_CVar and C_CVar.GetCVarBool) or GetCVarBool
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
