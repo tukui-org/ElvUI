@@ -2185,7 +2185,9 @@ function B:ToggleSortButtonState(isBank)
 end
 
 function B:ContainerOnShow()
-	B:SetListeners(self)
+	if not self.sortingSlots then
+		B:SetListeners(self)
+	end
 end
 
 function B:ContainerOnHide()
