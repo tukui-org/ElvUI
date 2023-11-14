@@ -21,7 +21,7 @@ E.Config[1] = C
 E.Config[2] = L
 
 local _G = _G
-local next, sort, strmatch, strsplit, strsub = next, sort, strmatch, strsplit, strsub
+local next, sort, strmatch, strsplit = next, sort, strmatch, strsplit
 local tconcat, tinsert, tremove, wipe = table.concat, tinsert, tremove, wipe
 local format, gsub, ipairs, pairs, type = format, gsub, ipairs, pairs, type
 
@@ -250,7 +250,7 @@ for _, names in next, { DEVELOPERS, TESTERS, DONATORS } do
 	for _, name in next, names do
 		local full = E:StripString(name)
 		local override = CREDITS_OVERRIDE[full]
-		tinsert(E.CreditsList, strsub(override or full, 0, 25))
+		tinsert(E.CreditsList, override or full)
 	end
 end
 
