@@ -89,10 +89,18 @@ function S:AddonList()
 				local checktex = checkbox:GetCheckedTexture()
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
+					checktex:SetDesaturated(true)
+					checktex:Show()
+				elseif not checkstate or checkstate == 0 then
+					checktex:Hide()
+				elseif checkstate == 1 or reason == 'DEP_DISABLED' then
+					checktex:SetVertexColor(0.6, 0.6, 0.6)
+					checktex:SetDesaturated(true)
+					checktex:Show()
+				elseif checkstate == 2 then
+					checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 					checktex:SetDesaturated(false)
 					checktex:Show()
-				elseif checkstate == 0 then
-					checktex:Hide()
 				end
 			end
 		end
