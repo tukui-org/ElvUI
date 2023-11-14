@@ -875,8 +875,10 @@ local function Tag(self, fs, ts, ...)
 	local containsOnUpdate
 	for tag in ts:gmatch(_PATTERN) do
 		tag = getTagName(tag)
-		if not tagEvents[tag] then
-			containsOnUpdate = onUpdateDelay[tag] or 0.15;
+
+		local delay = not tagEvents[tag] and onUpdateDelay[tag]
+		if delay then
+			containsOnUpdate = delay
 		end
 	end
 	-- end block
