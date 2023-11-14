@@ -22,8 +22,6 @@ local ResetCPUUsage = ResetCPUUsage
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
 
-local SetCVar = C_CVar.SetCVar
-local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
 local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
@@ -46,7 +44,7 @@ local homeLatencyString = '%d ms'
 local kiloByteString = '%d kb'
 local megaByteString = '%.2f mb'
 local profilingString = '%s%s|r |cffffffff/|r %s%s|r'
-local cpuProfiling = GetCVar('scriptProfile') == '1'
+local cpuProfiling = GetCVarBool('scriptProfile')
 
 local CombineAddOns = {
 	['DBM-Core'] = '^<DBM>',
@@ -86,7 +84,7 @@ end
 local function OnClick()
 	local shiftDown, ctrlDown = IsShiftKeyDown(), IsControlKeyDown()
 	if shiftDown and ctrlDown then
-		SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+		E:SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
 		ReloadUI()
 	elseif shiftDown and not ctrlDown then
 		collectgarbage('collect')

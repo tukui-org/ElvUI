@@ -30,7 +30,6 @@ local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local SetCVar = C_CVar.SetCVar
 
 local CinematicFrame = _G.CinematicFrame
 local MovieFrame = _G.MovieFrame
@@ -235,7 +234,7 @@ function AFK:Toggle()
 		AFK:RegisterEvent('LFG_PROPOSAL_SHOW', 'OnEvent')
 		AFK:RegisterEvent('UPDATE_BATTLEFIELD_STATUS', 'OnEvent')
 
-		SetCVar('autoClearAFK', '1')
+		E:SetCVar('autoClearAFK', 1)
 	else
 		AFK:UnregisterEvent('PLAYER_FLAGS_CHANGED')
 		AFK:UnregisterEvent('PLAYER_REGEN_DISABLED')

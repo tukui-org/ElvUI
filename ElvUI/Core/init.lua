@@ -4,8 +4,9 @@
 		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
-local _G, next, strfind = _G, next, strfind
-local gsub, tinsert, type = gsub, tinsert, type
+local _G = _G
+local gsub, tinsert, next = gsub, tinsert, next
+local tostring, strfind, type = tostring, strfind, type
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -23,6 +24,9 @@ local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
+
+local GetCVar = C_CVar.GetCVar
+local SetCVar = C_CVar.SetCVar
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
@@ -245,6 +249,13 @@ do
 
 	for _, addon in next, alwaysDisable do
 		DisableAddOn(addon)
+	end
+end
+
+function E:SetCVar(cvar, value, ...)
+	local valstr = ((type(value) == 'boolean') and (value and "1" or "0")) or tostring(value)
+	if GetCVar(cvar) ~= valstr then
+		SetCVar(cvar, valstr, ...)
 	end
 end
 

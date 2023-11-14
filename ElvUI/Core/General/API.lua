@@ -43,7 +43,6 @@ local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or Ge
 local GetSpecializationInfo = (E.Classic or E.Wrath) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local SetCVar = C_CVar.SetCVar
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
@@ -601,7 +600,7 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
 	if not E.Retail and E.db.general.lockCameraDistanceMax then
-		SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+		E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
 	end
 
 	local _, instanceType = GetInstanceInfo()
