@@ -17,7 +17,7 @@
 	<Script file="widgets\AceGUIWidget-ColorPicker.lua"/>
 	<Script file="widgets\AceGUIWidget-DropDown.lua"/>
 	<Script file="widgets\AceGUIWidget-DropDown-Items.lua"/>
-	<Script file="widgets\AceGUIWidget-EditBox.lua"/>
+	<Script file="widgets\AceGUIWidget-EditBox-ElvUI.lua"/>
 	<Script file="widgets\AceGUIWidget-Heading.lua"/>
 	<Script file="widgets\AceGUIWidget-Icon.lua"/>
 	<Script file="widgets\AceGUIWidget-InteractiveLabel.lua"/>
