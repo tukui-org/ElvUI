@@ -1,3 +1,6 @@
+### Version 13.50 [ November 14th 2023 ]
+*   GetAddOnEnableState was erroring
+
 ### Version 13.49 [ November 14th 2023 ]
 *   Macro procs were not displaying on Wrath
 *   Unitframe Fader option for Dynamic Flight

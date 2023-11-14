@@ -29,9 +29,11 @@ local UnitGUID = UnitGUID
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local GetCVarBool = C_CVar.GetCVarBool
+
+local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
+local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
@@ -513,7 +515,11 @@ do
 end
 
 function E:IsAddOnEnabled(addon)
-	return GetAddOnEnableState(E.myname, addon) == 2
+	if C_AddOns_GetAddOnEnableState then
+		return C_AddOns_GetAddOnEnableState(addon, E.myname) == 2
+	else
+		return GetAddOnEnableState(E.myname, addon) == 2
+	end
 end
 
 function E:IsIncompatible(module, addons)

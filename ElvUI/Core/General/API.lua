@@ -42,9 +42,11 @@ local UnitIsUnit = UnitIsUnit
 local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (E.Classic or E.Wrath) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
-local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local SetCVar = C_CVar.SetCVar
+
+local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
+local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
@@ -409,7 +411,12 @@ do
 end
 
 function E:Dump(object, inspect)
-	if GetAddOnEnableState(E.myname, 'Blizzard_DebugTools') == 0 then
+	if C_AddOns_GetAddOnEnableState then
+		if C_AddOns_GetAddOnEnableState('Blizzard_DebugTools', E.myname) == 0 then
+			E:Print('Blizzard_DebugTools is disabled.')
+			return
+		end
+	elseif GetAddOnEnableState(E.myname, 'Blizzard_DebugTools') == 0 then
 		E:Print('Blizzard_DebugTools is disabled.')
 		return
 	end
