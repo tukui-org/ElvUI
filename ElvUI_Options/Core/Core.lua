@@ -140,48 +140,6 @@ E.Libs.AceConfig:RegisterOptionsTable('ElvUI', E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 E.Options.name = format('%s: |cff99ff33%.2f|r', L["Version"], E.version)
 
-local DONATORS = {
-	'Dandruff',
-	'Tobur/Tarilya',
-	'Netu',
-	'Alluren',
-	'Thorgnir',
-	'Emalal',
-	'Bendmeova',
-	'Curl',
-	'Zarac',
-	'Emmo',
-	'Oz',
-	'Hawké',
-	'Aynya',
-	'Tahira',
-	'Karsten Lumbye Thomsen',
-	'Thomas B. aka Pitschiqüü',
-	'Sea Garnet',
-	'Paul Storry',
-	'Azagar',
-	'Archury',
-	'Donhorn',
-	'Woodson Harmon',
-	'Phoenyx',
-	'Feat',
-	'Konungr',
-	'Leyrin',
-	'Dragonsys',
-	'Tkalec',
-	'Paavi',
-	'Giorgio',
-	'Bearscantank',
-	'Eidolic',
-	'Cosmo',
-	'Adorno',
-	'Domoaligato',
-	'Smorg',
-	'Pyrokee',
-	'Portable',
-	'Ithilyn'
-}
-
 local DEVELOPERS = {
 	'Tukz',
 	'Haste',
@@ -226,6 +184,56 @@ local TESTERS = {
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
 }
 
+local DONATORS = {
+	'Dandruff',
+	'Tobur/Tarilya',
+	'Netu',
+	'Alluren',
+	'Thorgnir',
+	'Emalal',
+	'Bendmeova',
+	'Curl',
+	'Zarac',
+	'Emmo',
+	'Oz',
+	'Hawké',
+	'Aynya',
+	'Tahira',
+	'Karsten Lumbye Thomsen',
+	'Thomas B. aka Pitschiqüü',
+	'Sea Garnet',
+	'Paul Storry',
+	'Azagar',
+	'Archury',
+	'Donhorn',
+	'Woodson Harmon',
+	'Phoenyx',
+	'Feat',
+	'Konungr',
+	'Leyrin',
+	'Dragonsys',
+	'Tkalec',
+	'Paavi',
+	'Giorgio',
+	'Bearscantank',
+	'Eidolic',
+	'Cosmo',
+	'Adorno',
+	'Domoaligato',
+	'Smorg',
+	'Pyrokee',
+	'Portable',
+	'Ithilyn'
+}
+
+local CREDITS_OVERRIDE = {
+	['Simpy but my name needs to be longer.'] = 'Simpy',
+	['Bladesdruid - AKA SUPERBEAR'] = 'Bladesdruid',
+	['Loon - For being right'] = 'Loon',
+	['Thomas B. aka Pitschiqüü'] = 'Pitschiqüü',
+	['Karsten Lumbye Thomsen'] = 'Karsten'
+}
+
 local function SortList(a, b)
 	return E:StripString(a) < E:StripString(b)
 end
@@ -234,18 +242,17 @@ sort(DONATORS, SortList)
 sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
 
-for _, name in pairs(DONATORS) do
-	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
+local DEVELOPER_STRING = tconcat(DEVELOPERS, '|n')
+local TESTER_STRING = tconcat(TESTERS, '|n')
+local DONATOR_STRING = tconcat(DONATORS, '|n')
+
+for _, names in next, { DEVELOPERS, TESTERS, DONATORS } do
+	for _, name in next, names do
+		local full = E:StripString(name)
+		local override = CREDITS_OVERRIDE[full]
+		tinsert(E.CreditsList, strsub(override or full, 0, 25))
+	end
 end
-local DONATOR_STRING = table.concat(DONATORS, '|n')
-for _, name in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
-end
-local DEVELOPER_STRING = table.concat(DEVELOPERS, '|n')
-for _, name in pairs(TESTERS) do
-	tinsert(E.CreditsList, strsub(E:StripString(name), 0, 25))
-end
-local TESTER_STRING = table.concat(TESTERS, '|n')
 
 E.Options.args.info = ACH:Group(L["Information"], nil, 4, 'tab')
 
