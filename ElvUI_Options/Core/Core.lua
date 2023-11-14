@@ -229,9 +229,9 @@ local DONATORS = {
 local CREDITS_OVERRIDE = {
 	['Simpy but my name needs to be longer.'] = 'Simpy',
 	['Bladesdruid - AKA SUPERBEAR'] = 'Bladesdruid',
-	['Loon - For being right'] = 'Loon',
 	['Thomas B. aka Pitschiqüü'] = 'Pitschiqüü',
-	['Karsten Lumbye Thomsen'] = 'Karsten'
+	['Karsten Lumbye Thomsen'] = 'Karsten',
+	['Loon - For being right'] = 'Loon'
 }
 
 local function SortList(a, b)
