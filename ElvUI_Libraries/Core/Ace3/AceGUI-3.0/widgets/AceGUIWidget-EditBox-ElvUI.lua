@@ -5,13 +5,14 @@ local Type, Version = "EditBox-ElvUI", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
--- Lua APIs
 local tostring, pairs = tostring, pairs
 
--- WoW APIs
 local PlaySound = PlaySound
+local GetMacroInfo = GetMacroInfo
 local GetCursorInfo, ClearCursor, GetSpellInfo = GetCursorInfo, ClearCursor, GetSpellInfo
 local CreateFrame, UIParent = CreateFrame, UIParent
+
+local OKAY = OKAY
 local _G = _G
 
 --[[-----------------------------------------------------------------------------
@@ -221,7 +222,7 @@ local function Constructor()
 
 	local editbox = CreateFrame("EditBox", "AceGUI-3.0EditBox"..num, frame, "InputBoxTemplate")
 	editbox:SetAutoFocus(false)
-	editbox:SetFontObject(ChatFontNormal)
+	editbox:SetFontObject(_G.ChatFontNormal)
 	editbox:SetScript("OnEnter", Control_OnEnter)
 	editbox:SetScript("OnLeave", Control_OnLeave)
 	editbox:SetScript("OnEscapePressed", EditBox_OnEscapePressed)
