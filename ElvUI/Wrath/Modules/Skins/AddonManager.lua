@@ -6,9 +6,9 @@ local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
+local GetNumAddOns = GetNumAddOns
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 
 function S:AddonList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
