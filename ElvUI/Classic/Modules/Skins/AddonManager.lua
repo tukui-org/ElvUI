@@ -2,12 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
+
+local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
+local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns and C_AddOns.GetNumAddOns
 
 function S:AddonList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
@@ -50,10 +52,10 @@ function S:AddonList()
 				if character == true then
 					character = nil
 				else
-					checkall = GetAddOnEnableState(nil, index)
+					checkall = GetAddOnEnableState(index)
 				end
 
-				local checkstate = GetAddOnEnableState(character, index)
+				local checkstate = GetAddOnEnableState(index, character)
 				local enabled = checkstate > 0
 
 				entryTitle:SetFontObject('ElvUIFontNormal')
@@ -88,10 +90,18 @@ function S:AddonList()
 				local checktex = checkbox:GetCheckedTexture()
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
+					checktex:SetDesaturated(true)
+					checktex:Show()
+				elseif not checkstate or checkstate == 0 then
+					checktex:Hide()
+				elseif checkstate == 1 or reason == 'DEP_DISABLED' then
+					checktex:SetVertexColor(0.6, 0.6, 0.6)
+					checktex:SetDesaturated(true)
+					checktex:Show()
+				elseif checkstate == 2 then
+					checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 					checktex:SetDesaturated(false)
 					checktex:Show()
-				elseif checkstate == 0 then
-					checktex:Hide()
 				end
 			end
 		end

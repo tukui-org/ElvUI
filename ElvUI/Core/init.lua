@@ -17,10 +17,12 @@ local UIParent = UIParent
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+
+local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
+local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
@@ -326,7 +328,11 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
+	if C_AddOns_GetAddOnEnableState then
+		if C_AddOns_GetAddOnEnableState('Tukui', E.myname) == 2 then
+			E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
+		end
+	elseif GetAddOnEnableState(E.myname, 'Tukui') == 2 then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 end
