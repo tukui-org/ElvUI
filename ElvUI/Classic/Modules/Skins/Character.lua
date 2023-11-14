@@ -106,7 +106,7 @@ function S:CharacterFrame()
 	HandleResistanceFrame('MagicResFrame')
 
 	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
-		if slot:IsObjectType('Button') and slot.IconBorder then
+		if slot:IsObjectType('Button') and slot.Count then
 			local name = slot:GetName()
 			local icon = _G[name..'IconTexture']
 			local cooldown = _G[name..'Cooldown']
