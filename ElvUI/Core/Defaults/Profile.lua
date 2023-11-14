@@ -1474,6 +1474,7 @@ local UF_Fader = {
 	smooth = 0.33,
 	unittarget = false,
 	vehicle = false,
+	dynamicflight = false,
 	instanceDifficulties = {
 		none = false,
 		dungeonNormal = false,
@@ -2576,6 +2577,7 @@ P.actionbar = {
 	desaturateOnCooldown = false,
 	equippedItem = false,
 	equippedItemColor = { r = 0.4, g = 1.0, b = 0.4 },
+	targetReticleColor = { r = 0.2, g = 1.0, b = 0.2 },
 	flashAnimation = false,
 	flyoutSize = 32, -- match buttonsize default, blizz default is 28
 	font = 'Homespun',
@@ -2720,6 +2722,7 @@ local AB_Bar = {
 	alpha = 1,
 	inheritGlobalFade = false,
 	showGrid = true,
+	targetReticle = true,
 	flyoutDirection = 'AUTOMATIC',
 	paging = {},
 	countColor = { r = 1, g = 1, b = 1 },
@@ -2813,7 +2816,7 @@ P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Wrath and ' [bonusbar:2] 8
 P.actionbar.bar1.paging.WARLOCK = E.Wrath and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.PRIEST = '[bonusbar:1] 7;'..(E.Classic and ' [possessbar] 16;' or '')
 P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 
 P.actionbar.bar3.enabled = true

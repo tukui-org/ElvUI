@@ -6,11 +6,12 @@ local format = format
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetCVarBool = GetCVarBool
 local InCombatLockdown = InCombatLockdown
 local UIParent = UIParent
 
 local StaticPopup_Hide = StaticPopup_Hide
+
+local GetCVarBool = C_CVar.GetCVarBool
 
 local BUTTON_WIDTH = 75
 local BUTTON_HEIGHT = 23

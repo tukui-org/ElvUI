@@ -6,8 +6,9 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local pairs = pairs
-local SetCVar = SetCVar
-local GetCVarBool = GetCVarBool
+
+local SetCVar = C_CVar.SetCVar
+local GetCVarBool = C_CVar.GetCVarBool
 
 local buttonPositions = {
 	LEFT = L["Left"],

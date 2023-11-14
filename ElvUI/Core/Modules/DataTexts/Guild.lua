@@ -17,7 +17,6 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
-local LoadAddOn = LoadAddOn
 local SetItemRef = SetItemRef
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleFriendsFrame = ToggleFriendsFrame
@@ -27,6 +26,7 @@ local IsAltKeyDown = IsAltKeyDown
 
 local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
+local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
 
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local REMOTE_CHAT = REMOTE_CHAT

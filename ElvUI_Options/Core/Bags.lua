@@ -145,7 +145,7 @@ if E.Retail then
 	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = L["Soul Binds"]
 end
 
-Bags.args.general.args.spinnerGroup = ACH:Group(E.NewSign..L["Sort Spinner"], nil, 12, nil, function(info) return E.db.bags.spinner[info[#info]] end, function(info, value) E.db.bags.spinner[info[#info]] = value end)
+Bags.args.general.args.spinnerGroup = ACH:Group(L["Sort Spinner"], nil, 12, nil, function(info) return E.db.bags.spinner[info[#info]] end, function(info, value) E.db.bags.spinner[info[#info]] = value end)
 Bags.args.general.args.spinnerGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Bags.args.general.args.spinnerGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 20, max = 80, step = 1 })
 Bags.args.general.args.spinnerGroup.args.color = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.bags.spinner[info[#info]] local d = P.bags.spinner[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags.spinner[info[#info]] t.r, t.g, t.b = r, g, b end)
@@ -213,11 +213,11 @@ Bags.args.vendorGrays.args.progressBar = ACH:Toggle(L["Progress Bar"], nil, 4)
 
 Bags.args.bagSortingGroup = ACH:Group(L["Sorting"], nil, 5, nil, nil, nil, function() return (not E.Bags.Initialized) or E.db.bags.useBlizzardCleanup end)
 Bags.args.bagSortingGroup.args.sortInverted = ACH:Toggle(L["Sort Inverted"], L["Direction the bag sorting will use to allocate the items."], 1)
-Bags.args.bagSortingGroup.args.description = ACH:Description(L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."], 3)
-Bags.args.bagSortingGroup.args.addEntryGroup = ACH:Group(L["Add Item or Search Syntax"], nil, 3)
+Bags.args.bagSortingGroup.args.description = ACH:Description(L["Here you can add items that you want to be excluded from sorting. To remove an item just click on its name in the list."], 3)
+Bags.args.bagSortingGroup.args.addEntryGroup = ACH:Group(L["Add Item"], nil, 3)
 Bags.args.bagSortingGroup.args.addEntryGroup.inline = true
-Bags.args.bagSortingGroup.args.addEntryGroup.args.addEntryProfile = ACH:Input(L["Profile"], L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."], 1, nil, nil, C.Blank, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end local itemID = strmatch(value, 'item:(%d+)') E.db.bags.ignoredItems[(itemID or value)] = value end)
-Bags.args.bagSortingGroup.args.addEntryGroup.args.addEntryGlobal = ACH:Input(L["Global"], L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."], 2, nil, nil, C.Blank, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end local itemID = strmatch(value, 'item:(%d+)') E.global.bags.ignoredItems[(itemID or value)] = value if E.db.bags.ignoredItems[(itemID or value)] then E.db.bags.ignoredItems[(itemID or value)] = nil end end)
+Bags.args.bagSortingGroup.args.addEntryGroup.args.addEntryProfile = ACH:Input(L["Profile"], L["Add an Item by dragging it, shift-clicking, or entering the Item ID onto this field."], 1, nil, nil, C.Blank, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end local itemID = strmatch(value, 'item:(%d+)') E.db.bags.ignoredItems[(itemID or value)] = value end)
+Bags.args.bagSortingGroup.args.addEntryGroup.args.addEntryGlobal = ACH:Input(L["Global"], L["Add an Item by dragging it, shift-clicking, or entering the Item ID onto this field."], 2, nil, nil, C.Blank, function(_, value) if value == '' or gsub(value, '%s+', '') == '' then return end local itemID = strmatch(value, 'item:(%d+)') E.global.bags.ignoredItems[(itemID or value)] = value if E.db.bags.ignoredItems[(itemID or value)] then E.db.bags.ignoredItems[(itemID or value)] = nil end end)
 
 local function getIgnoreList(list)
 	local data = {}
@@ -232,5 +232,5 @@ local function getIgnoreList(list)
 	return data
 end
 
-Bags.args.bagSortingGroup.args.ignoredEntriesProfile = ACH:MultiSelect(L["Ignored Items and Search Syntax (Profile)"], nil, 4, function() return getIgnoreList(E.db.bags.ignoredItems) end, nil, nil, function(_, value) return E.db.bags.ignoredItems[value] end, function(_, value) E.db.bags.ignoredItems[value] = nil GameTooltip:Hide() end, nil, function() return not next(E.db.bags.ignoredItems) end)
-Bags.args.bagSortingGroup.args.ignoredEntriesGlobal = ACH:MultiSelect(L["Ignored Items and Search Syntax (Global)"], nil, 5, function() return getIgnoreList(E.global.bags.ignoredItems) end, nil, nil, function(_, value) return E.global.bags.ignoredItems[value] end, function(_, value) E.global.bags.ignoredItems[value] = nil GameTooltip:Hide() end, nil, function() return not next(E.global.bags.ignoredItems) end)
+Bags.args.bagSortingGroup.args.ignoredEntriesProfile = ACH:MultiSelect(L["Ignored Items (Profile)"], nil, 4, function() return getIgnoreList(E.db.bags.ignoredItems) end, nil, nil, function(_, value) return E.db.bags.ignoredItems[value] end, function(_, value) E.db.bags.ignoredItems[value] = nil GameTooltip:Hide() end, nil, function() return not next(E.db.bags.ignoredItems) end)
+Bags.args.bagSortingGroup.args.ignoredEntriesGlobal = ACH:MultiSelect(L["Ignored Items (Global)"], nil, 5, function() return getIgnoreList(E.global.bags.ignoredItems) end, nil, nil, function(_, value) return E.global.bags.ignoredItems[value] end, function(_, value) E.global.bags.ignoredItems[value] = nil GameTooltip:Hide() end, nil, function() return not next(E.global.bags.ignoredItems) end)

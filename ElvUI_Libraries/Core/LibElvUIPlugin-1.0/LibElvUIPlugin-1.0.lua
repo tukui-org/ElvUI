@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 42
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 43
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -36,13 +36,19 @@ local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmat
 
 local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
-local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 local GetNumGroupMembers = GetNumGroupMembers
-local GetLocale, IsInGuild = GetLocale, IsInGuild
-local CreateFrame, IsAddOnLoaded = CreateFrame, IsAddOnLoaded
-local IsInRaid, IsInGroup = IsInRaid, IsInGroup
+local CreateFrame = CreateFrame
+local GetLocale = GetLocale
+local IsInGroup = IsInGroup
+local IsInGuild = IsInGuild
+local IsInRaid = IsInRaid
+
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
+
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local UNKNOWN = UNKNOWN

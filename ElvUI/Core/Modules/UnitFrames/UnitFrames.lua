@@ -5,30 +5,30 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
+local CreateFrame = CreateFrame
+local PlaySound = PlaySound
+local UIParent = UIParent
+local UnitExists = UnitExists
+local UnitGUID = UnitGUID
+local UnitIsEnemy = UnitIsEnemy
+local UnitIsFriend = UnitIsFriend
+local GetInstanceInfo = GetInstanceInfo
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
+
+local UnitFrame_OnEnter = UnitFrame_OnEnter
+local UnitFrame_OnLeave = UnitFrame_OnLeave
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 
-local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
-local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
-local PlaySound = PlaySound
-local RegisterStateDriver = RegisterStateDriver
-local UIParent = UIParent
-local UnitExists = UnitExists
-local UnitFrame_OnEnter = UnitFrame_OnEnter
-local UnitFrame_OnLeave = UnitFrame_OnLeave
-local UnitGUID = UnitGUID
-local UnitIsEnemy = UnitIsEnemy
-local UnitIsFriend = UnitIsFriend
-local UnregisterStateDriver = UnregisterStateDriver
-
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
@@ -597,6 +597,7 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 			fader:SetOption('Casting', db.casting)
 			fader:SetOption('MinAlpha', db.minAlpha)
 			fader:SetOption('MaxAlpha', db.maxAlpha)
+			fader:SetOption('DynamicFlight', db.dynamicflight)
 
 			if frame ~= _G.ElvUF_Player then
 				fader:SetOption('Range', db.range)

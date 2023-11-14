@@ -846,7 +846,7 @@ local function Tag(self, fs, ts, ...)
 		fs.__HookedAlphaFix = true
 	end
 
-	ts = ts:gsub('||([TCRAtcra])', escapeSequence)
+	ts = ts:gsub('||([TCRAtncra])', escapeSequence)
 
 	local customArgs = ts:match('{(.-)}%]')
 	if customArgs then
@@ -875,8 +875,10 @@ local function Tag(self, fs, ts, ...)
 	local containsOnUpdate
 	for tag in ts:gmatch(_PATTERN) do
 		tag = getTagName(tag)
-		if not tagEvents[tag] then
-			containsOnUpdate = onUpdateDelay[tag] or 0.15;
+
+		local delay = not tagEvents[tag] and onUpdateDelay[tag]
+		if delay then
+			containsOnUpdate = delay
 		end
 	end
 	-- end block
@@ -937,6 +939,7 @@ local function strip(tag)
 end
 
 oUF.Tags = {
+	Env = _ENV,
 	Methods = tagFuncs,
 	Events = tagEvents,
 	SharedEvents = unitlessEvents,

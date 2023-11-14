@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
-local oUF = E.oUF
+local ElvUF = E.oUF
 
 local ipairs, ceil, floor, tonumber = ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
@@ -360,4 +360,4 @@ frame:SetScript('OnEvent', function(self, event, questID)
 	end
 end)
 
-oUF:AddElement('QuestIcons', Path, Enable, Disable)
+ElvUF:AddElement('QuestIcons', Path, Enable, Disable)

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local oUF = E.oUF
+local ElvUF = E.oUF
 
 local wipe = wipe
 local format = format
@@ -155,4 +155,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('PVPRole', Path, Enable, Disable)
+ElvUF:AddElement('PVPRole', Path, Enable, Disable)

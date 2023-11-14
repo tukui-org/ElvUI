@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibDispel-1.0", 4
+local MAJOR, MINOR = "LibDispel-1.0", 5
 assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -7,9 +7,12 @@ local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local next = next
-local GetCVar, SetCVar = GetCVar, SetCVar
+
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local IsPlayerSpell = IsPlayerSpell
+
+local GetCVar = C_CVar.GetCVar
+local SetCVar = C_CVar.SetCVar
 
 local DebuffColors = CopyTable(DebuffTypeColor)
 lib.DebuffTypeColor = DebuffColors

@@ -9,7 +9,6 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
-local GetCVarBool = GetCVarBool
 local GetOverrideBarIndex = GetOverrideBarIndex
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
@@ -25,7 +24,6 @@ local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
-local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UIParent = UIParent
@@ -53,6 +51,9 @@ local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
+
+local GetCVarBool = C_CVar.GetCVarBool
+local SetCVar = C_CVar.SetCVar
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -91,7 +92,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Wrath) and format('[vehicleui][possessbar] %d; [overridebar] %d;', GetVehicleBarIndex(), GetOverrideBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -201,9 +202,9 @@ function AB:TrimIcon(button, masque)
 	local icon = button.icon or button.Icon
 	if not icon then return end
 
-	if not masque and button.db and not button.db.keepSizeRatio then
+	if button.db and not button.db.keepSizeRatio then
 		icon:SetTexCoord(E:CropRatio(button, button.db.customCoords))
-	else
+	elseif not masque then
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
 end
@@ -229,10 +230,39 @@ function AB:MoverMagic(bar) -- ~Simpy
 	end
 end
 
+function AB:ActivePages(page)
+	local pages = {}
+	local clean = gsub(page, '%[.-]', '')
+
+	for _, index in next, { strsplit(';', clean) } do
+		local num = tonumber(index)
+		if num then
+			pages[num] = true
+		end
+	end
+
+	return pages
+end
+
+function AB:HandleButtonState(button, index, vehicleIndex, pages)
+	for k = 1, 18 do
+		if pages and pages[k] then
+			button:SetState(k, 'action', (k - 1) * 12 + index)
+		else
+			button:SetState(k, 'empty')
+		end
+	end
+
+	if pages and vehicleIndex and index == 12 then
+		button:SetState(vehicleIndex, 'custom', AB.customExitButton)
+	end
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
 
+	local enabled = db.enabled
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
@@ -261,7 +291,16 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
+	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
 
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
+
+	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
+	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -281,6 +320,12 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			targetReticle.Base:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
+		end
+
+		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
@@ -292,13 +337,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:UpdateMasque(bar)
 	end
 
-	-- paging needs to be updated even if the bar is disabled
-	local defaults = AB.barDefaults[barName]
-	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
-	RegisterStateDriver(bar, 'page', page)
-	bar:SetAttribute('page', page)
-
-	if db.enabled then
+	if enabled then
 		E:EnableMover(bar.mover.name)
 		bar:Show()
 
@@ -338,25 +377,25 @@ function AB:CreateBar(id)
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
-	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
-
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
-		button:SetState(0, 'action', i)
 
 		button.AuraCooldown.targetAura = true
 		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
-		for k = 1, 18 do
-			button:SetState(k, 'action', (k - 1) * 12 + i)
-		end
-
-		if vehicleIndex and i == 12 then
-			button:SetState(vehicleIndex, 'custom', AB.customExitButton)
-		end
-
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
+		end
+
+		local targetReticle = button.TargetReticleAnimFrame
+		if targetReticle then
+			targetReticle:SetAllPoints()
+
+			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
+			targetReticle.Base:SetInside()
+
+			targetReticle.Highlight:SetInside()
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -584,7 +623,7 @@ function AB:UpdateButtonSettings(specific)
 	for barName, bar in pairs(AB.handledBars) do
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
-			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in ipairs(bar.buttons) do
 				AB:StyleFlyout(button)
@@ -1290,7 +1329,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	bar.buttonConfig.hideElements.macro = not db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not db.hotkeytext
 
+	bar.buttonConfig.enabled = db.enabled -- only used to keep events off for targetReticle
 	bar.buttonConfig.showGrid = db.showGrid
+	bar.buttonConfig.targetReticle = db.targetReticle
 	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)

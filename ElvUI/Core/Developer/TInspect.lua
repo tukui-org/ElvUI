@@ -2,8 +2,10 @@ local _G = _G
 local next = next
 
 local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
+
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+
 -- GLOBALS: ElvUI
 
 local function OnMouseDown(self, button)

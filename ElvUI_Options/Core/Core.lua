@@ -4,7 +4,7 @@ local MC = E:GetModule('ModuleCopy')
 local D = E:GetModule('Distributor')
 local S = E:GetModule('Skins')
 
-local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 -- GLOBALS: ElvDB
 
 local ACH = E.Libs.ACH
@@ -140,6 +140,50 @@ E.Libs.AceConfig:RegisterOptionsTable('ElvUI', E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 E.Options.name = format('%s: |cff99ff33%.2f|r', L["Version"], E.version)
 
+local DEVELOPERS = {
+	'Tukz',
+	'Haste',
+	'Nightcracker',
+	'Omega1970',
+	'Blazeflack',
+	'|cFFAAD372Crum|r',
+	'|cffFFC44DHydra|r',
+	'|cff0070DEAzilroka|r',
+	'|cff9482c9Darth Predator|r',
+	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
+	'|cffff2020Nihilistzsche|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
+	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t |cff4beb2cLuckyone|r',
+	E:TextGradient('Simpy but my name needs to be longer.', 0.18,1.00,0.49, 0.32,0.85,1.00, 0.55,0.38,0.85, 1.00,0.55,0.71, 1.00,0.68,0.32)
+}
+
+local TESTERS = {
+	'Affinity',
+	'Modarch',
+	'Tirain',
+	'Phima',
+	'Veiled',
+	'Alex',
+	E:TextGradient('Eltreum', 0.50, 0.70, 1, 0.67, 0.95, 1),
+	'|cFFAAD372Tsxy|r',
+	'|cFFff75ddFlamanis|r',
+	'|cFFb8bb26Thurin|r',
+	'Nidra',
+	'Kurhyus',
+	'Shrom',
+	'BuG',
+	'Kringel',
+	'|cFF08E8DEBotanica|r',
+	'Yachanay',
+	'Catok',
+	'Caedis',
+	'|cff00c0faBenik|r',
+	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r',
+	'AcidWeb |TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
+	'|T135167:15:15:0:0:64:64:5:59:5:59|t Loon - For being right',
+	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
+}
+
 local DONATORS = {
 	'Dandruff',
 	'Tobur/Tarilya',
@@ -182,93 +226,73 @@ local DONATORS = {
 	'Ithilyn'
 }
 
-local DEVELOPERS = {
-	'Tukz',
-	'Haste',
-	'Nightcracker',
-	'Omega1970',
-	'Blazeflack',
-	'Crum',
-	'|cffFFC44DHydra|r',
-	'|cff0070DEAzilroka|r',
-	'|cff9482c9Darth Predator|r',
-	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
-	'|cffff2020Nihilistzsche|r',
-	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
-	'|TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t |cff4beb2cLuckyone|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.18,1.00,0.49, 0.32,0.85,1.00, 0.55,0.38,0.85, 1.00,0.55,0.71, 1.00,0.68,0.32)
-}
-
-local TESTERS = {
-	'Tukui Community',
-	'Affinity',
-	'Modarch',
-	'Tirain',
-	'Phima',
-	'Veiled',
-	'Alex',
-	'Nidra',
-	'Kurhyus',
-	'Shrom',
-	'BuG',
-	'Kringel',
-	'Botanica',
-	'Yachanay',
-	'Catok',
-	'Caedis',
-	'|cff00c0faBenik|r',
-	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r',
-	'AcidWeb |TInterface/AddOns/ElvUI/Core/Media/ChatLogos/Gem:15:15:-1:2:64:64:6:60:8:60|t',
-	'|T135167:15:15:0:0:64:64:5:59:5:59|t Loon - For being right',
-	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
+local CREDITS_OVERRIDE = {
+	['Simpy but my name needs to be longer.'] = 'Simpy',
+	['Bladesdruid - AKA SUPERBEAR'] = 'Bladesdruid',
+	['Thomas B. aka Pitschiqüü'] = 'Pitschiqüü',
+	['Karsten Lumbye Thomsen'] = 'Karsten',
+	['Loon - For being right'] = 'Loon'
 }
 
 local function SortList(a, b)
 	return E:StripString(a) < E:StripString(b)
 end
 
-sort(DONATORS, SortList)
 sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
+sort(DONATORS, SortList)
 
-for _, name in pairs(DONATORS) do
-	tinsert(E.CreditsList, name)
-end
-local DONATOR_STRING = table.concat(DONATORS, '|n')
-for _, name in pairs(DEVELOPERS) do
-	tinsert(E.CreditsList, name)
-end
-local DEVELOPER_STRING = table.concat(DEVELOPERS, '|n')
-for _, name in pairs(TESTERS) do
-	tinsert(E.CreditsList, name)
-end
-local TESTER_STRING = table.concat(TESTERS, '|n')
+local DEVELOPER_STRING = tconcat(DEVELOPERS, '|n')
+local TESTER_STRING = tconcat(TESTERS, '|n')
+local DONATOR_STRING = tconcat(DONATORS, '|n')
 
-E.Options.args.info = ACH:Group(L["Information"], nil, 4)
-E.Options.args.info.args.main = ACH:Group(L["ELVUI_DESC"], nil, 4)
+for _, names in next, { DEVELOPERS, TESTERS, DONATORS } do
+	for _, name in next, names do
+		local full = E:StripString(name)
+		local override = CREDITS_OVERRIDE[full]
+		tinsert(E.CreditsList, override or full)
+	end
+end
+
+E.Options.args.info = ACH:Group(L["Information"], nil, 4, 'tab')
+
+E.Options.args.info.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 1, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 120)
+E.Options.args.info.args.colors = ACH:Execute(L["Color Picker"], nil, 2, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end, nil, nil, 120)
+
+E.Options.args.info.args.main = ACH:Group(L["ELVUI_DESC"], nil, 5)
 E.Options.args.info.args.main.inline = true
-E.Options.args.info.args.main.args.discord = ACH:Execute(L["Discord"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://discord.tukui.org') end, nil, nil, 120)
-E.Options.args.info.args.main.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/issues') end, nil, nil, 120)
-E.Options.args.info.args.main.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md') end, nil, nil, 120)
-E.Options.args.info.args.main.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 6, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip') end, nil, nil, 120)
-E.Options.args.info.args.main.args.ptr = ACH:Execute(L["PTR Version"], L["Link to the latest PTR version."], 7, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip') end, nil, nil, 120)
-E.Options.args.info.args.main.args.debug = ACH:Execute(L["Debug"], L["DEBUG_DESC"], 8, function() local state = next(ElvDB.DisabledAddOns) E:LuaError(state and 'off' or 'on') end, nil, nil, 120)
 
-E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 5)
+for index, data in next, {
+	{ key = 'discord',		name = L["Discord"],				url = 'https://discord.tukui.org' },
+	{ key = 'issues',		name = L["Ticket Tracker"],			url = 'https://github.com/tukui-org/ElvUI/issues' },
+	{ key = 'wiki',			name = L["Wiki"],					url = 'https://github.com/tukui-org/ElvUI/wiki' },
+	{ key = 'dev',			name = L["Development Version"],	url = 'https://github.com/tukui-org/ElvUI/archive/refs/heads/development.zip' },
+	{ key = 'ptr',			name = L["PTR Version"],			url = 'https://github.com/tukui-org/ElvUI/archive/refs/heads/ptr.zip' },
+	{ key = 'changelog',	name = L["Changelog"],				url = 'https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md' },
+	{ key = 'customTexts',	name = L["Custom Texts"],			url = 'https://github.com/tukui-org/ElvUI/wiki/custom-texts' },
+	{ key = 'paging',		name = L["Action Paging"],			url = 'https://github.com/tukui-org/ElvUI/wiki/paging' },
+	{ key = 'performance',	name = L["Performance"],			url = 'https://github.com/tukui-org/ElvUI/wiki/performance-optimization' },
+} do
+	E.Options.args.info.args.main.args[data.key] = ACH:Input(data.name, nil, index, nil, 255, function() return data.url end)
+	E.Options.args.info.args.main.args[data.key].focusSelect = true
+end
+
+local credits = ('*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r'):gsub('*', E.InfoColor)
+E.Options.args.info.args.credits = ACH:Group(format(credits, L["Credits"]), nil, 10)
 E.Options.args.info.args.credits.inline = true
 E.Options.args.info.args.credits.args.string = ACH:Description(L["ELVUI_CREDITS"], 1, 'medium')
 
-E.Options.args.info.args.coding = ACH:Group(L["Coding:"], nil, 6)
-E.Options.args.info.args.coding.inline = true
-E.Options.args.info.args.coding.args.string = ACH:Description(DEVELOPER_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.coding = ACH:Group(L["Coding:"], nil, 6)
+E.Options.args.info.args.credits.args.coding.inline = true
+E.Options.args.info.args.credits.args.coding.args.string = ACH:Description(DEVELOPER_STRING, 1, 'medium')
 
-E.Options.args.info.args.testers = ACH:Group(L["Testing:"], nil, 7)
-E.Options.args.info.args.testers.inline = true
-E.Options.args.info.args.testers.args.string = ACH:Description(TESTER_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.testers = ACH:Group(L["Testing:"], nil, 7)
+E.Options.args.info.args.credits.args.testers.inline = true
+E.Options.args.info.args.credits.args.testers.args.string = ACH:Description(TESTER_STRING, 1, 'medium')
 
-E.Options.args.info.args.donators = ACH:Group(L["Donations:"], nil, 8)
-E.Options.args.info.args.donators.inline = true
-E.Options.args.info.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
+E.Options.args.info.args.credits.args.donators = ACH:Group(L["Donations:"], nil, 8)
+E.Options.args.info.args.credits.args.donators.inline = true
+E.Options.args.info.args.credits.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
 
 --Create Profiles Table
 E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 4, 'tab')

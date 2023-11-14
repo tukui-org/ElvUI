@@ -2,11 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local GetNumAddOns = GetNumAddOns
-local GetAddOnInfo = GetAddOnInfo
-local GetAddOnEnableState = GetAddOnEnableState
-local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 local hooksecurefunc = hooksecurefunc
+
+local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
+
+local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local GetAddOnEnableState = (C_AddOns and C_AddOns.GetAddOnEnableState) or GetAddOnEnableState
 
 function S:AddonList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end

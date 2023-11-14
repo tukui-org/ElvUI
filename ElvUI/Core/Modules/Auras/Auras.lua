@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local _G = _G
 local tonumber = tonumber
@@ -100,7 +101,7 @@ function A:UpdateButton(button)
 	if button.statusBar and button.statusBar:IsShown() then
 		local r, g, b
 		if db.barColorGradient then
-			r, g, b = E.oUF:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+			r, g, b = ElvUF:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		else
 			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
 		end
