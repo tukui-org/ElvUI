@@ -44,7 +44,6 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:Width(220)
 		self.editBox:SetText(DOWNLOAD_URL)
-		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow()
 	end,
 	OnHide = function(self)
@@ -67,7 +66,7 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		end
 
 		self:HighlightText()
-		self:ClearFocus()
+
 		ChatEdit_FocusActiveWindow()
 	end,
 	OnEditFocusGained = function(self)
@@ -87,7 +86,6 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 		self.editBox:AddHistoryLine('text')
 		self.editBox.temptxt = data
 		self.editBox:SetText(data)
-		self.editBox:HighlightText()
 		self.editBox:SetJustifyH('CENTER')
 	end,
 	OnHide = function(self)
@@ -105,8 +103,8 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 		if self:GetText() ~= self.temptxt then
 			self:SetText(self.temptxt)
 		end
+
 		self:HighlightText()
-		self:ClearFocus()
 	end,
 	whileDead = 1,
 	preferredIndex = 3,

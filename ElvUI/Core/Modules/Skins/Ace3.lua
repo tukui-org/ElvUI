@@ -269,7 +269,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
 		button:HookScript('OnClick', S.Ace3_SkinDropdown)
-	elseif TYPE == 'EditBox' then
+	elseif TYPE == 'EditBox' or TYPE == 'EditBox-ElvUI' then
 		S:Ace3_SkinEditBox(widget.editbox, widget.button)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		S:Ace3_SkinButton(widget.frame)

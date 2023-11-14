@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local oUF = E.oUF
+local ElvUF = E.oUF
 
 local textures = {}
 local atlases = {
@@ -75,4 +75,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('ClassificationIndicator', Path, Enable, Disable)
+ElvUF:AddElement('ClassificationIndicator', Path, Enable, Disable)

@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-local oUF = E.oUF
+local ElvUF = E.oUF
 
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
@@ -74,4 +74,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('Highlight', Path, Enable, Disable)
+ElvUF:AddElement('Highlight', Path, Enable, Disable)
