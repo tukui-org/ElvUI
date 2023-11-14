@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+
+local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 
 local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
