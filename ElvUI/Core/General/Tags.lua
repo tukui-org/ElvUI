@@ -74,12 +74,10 @@ local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
-local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
-local UNKNOWN = UNKNOWN
 local PVP = PVP
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
--- GLOBALS: UnitName, UnitPower, UnitHealth, UnitClass -- override during testing groups
+-- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass -- override during testing groups
 -- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
 local RefreshNewTags -- will turn true at EOF
@@ -129,20 +127,6 @@ Tags.Env.UnitEffectiveLevel = function(unit)
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
-	end
-end
-
-Tags.Env.UnitName = function(unit)
-	local name, realm = _G.UnitName(unit)
-
-	if name == UNKNOWN and E.myclass == 'MONK' and UnitIsUnit(unit, 'pet') then
-		name = format(UNITNAME_SUMMON_TITLE17, _G.UnitName('player'))
-	end
-
-	if realm and realm ~= '' then
-		return name, realm
-	else
-		return name
 	end
 end
 

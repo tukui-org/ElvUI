@@ -4,8 +4,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, unpack, pairs = type, unpack, pairs
-local min, random, format = min, random, format
+local type, pairs, min, random = type, pairs, min, random
 
 local UnitPowerMax = UnitPowerMax
 local UnitHealthMax = UnitHealthMax
