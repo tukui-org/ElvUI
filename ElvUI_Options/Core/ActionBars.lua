@@ -7,18 +7,21 @@ local _G = _G
 local pairs = pairs
 local ipairs = ipairs
 local format = format
-local SetCVar = SetCVar
+
 local CopyTable = CopyTable
 local GameTooltip = GameTooltip
-local GetCVarBool = GetCVarBool
 local GetModifiedClick = GetModifiedClick
 local SetModifiedClick = SetModifiedClick
 local GetCurrentBindingSet = GetCurrentBindingSet
 local SaveBindings = SaveBindings
 
+local SetCVar = C_CVar.SetCVar
+local GetCVarBool = C_CVar.GetCVarBool
+
 local NUM_MICRO_BUTTONS = 12
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
+
 -- GLOBALS: LOCK_ACTIONBAR
 
 local SharedBarOptions = {

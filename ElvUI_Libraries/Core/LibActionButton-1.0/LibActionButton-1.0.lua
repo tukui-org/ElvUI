@@ -26,6 +26,10 @@ local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
 local Masque = LibStub("Masque", true)
 
+local SetCVar = C_CVar.SetCVar
+local GetCVar = C_CVar.GetCVar
+local GetCVarBool = C_CVar.GetCVarBool
+
 local C_ActionBar = C_ActionBar
 local C_UnitAuras = C_UnitAuras
 local C_LevelLink = C_LevelLink

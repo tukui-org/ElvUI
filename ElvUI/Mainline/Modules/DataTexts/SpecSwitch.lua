@@ -13,11 +13,11 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
-local LoadAddOn = LoadAddOn
 local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ToggleTalentFrame = ToggleTalentFrame
 
+local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 

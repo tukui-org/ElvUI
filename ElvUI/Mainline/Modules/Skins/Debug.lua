@@ -5,6 +5,8 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+
 local FrameTexs = {
 	'TopLeft',
 	'TopRight',
@@ -118,7 +120,7 @@ end
 S:AddCallback('ScriptErrorsFrame')
 
 -- FrameStack, TableInspect Skins
-if _G.IsAddOnLoaded('Blizzard_DebugTools') then
+if IsAddOnLoaded('Blizzard_DebugTools') then
 	S:AddCallback('Blizzard_DebugTools')
 else
 	S:AddCallbackForAddon('Blizzard_DebugTools')

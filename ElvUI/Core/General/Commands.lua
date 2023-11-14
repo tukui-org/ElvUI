@@ -5,12 +5,13 @@ local AB = E:GetModule('ActionBars')
 local type, pairs, select, tonumber = type, pairs, select, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 
-local EnableAddOn = EnableAddOn
-local GetAddOnInfo = GetAddOnInfo
-local GetNumAddOns = GetNumAddOns
-local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
-local SetCVar = SetCVar
+
+local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
+local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local SetCVar = C_CVar.SetCVar
 -- GLOBALS: ElvUIGrid, ElvDB
 
 function E:Grid(msg)

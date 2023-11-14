@@ -9,7 +9,6 @@ local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
-local GetCVarBool = GetCVarBool
 local GetOverrideBarIndex = GetOverrideBarIndex
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
@@ -25,7 +24,6 @@ local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
-local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UIParent = UIParent
@@ -53,6 +51,9 @@ local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
+
+local GetCVarBool = C_CVar.GetCVarBool
+local SetCVar = C_CVar.SetCVar
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM

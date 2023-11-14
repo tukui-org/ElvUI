@@ -309,7 +309,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			if isPetCompanion or (E.Retail and UnitIsWildBattlePet(unit)) then
 				level = UnitBattlePetLevel(unit)
 
-				local petType = UnitBattlePetType(unit) + 1
+				local petType = UnitBattlePetType(unit)
 				local petClass = _G['BATTLE_PET_NAME_'..petType]
 				if creatureType then
 					creatureType = format('%s %s', creatureType, petClass)

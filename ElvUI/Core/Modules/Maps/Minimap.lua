@@ -17,7 +17,6 @@ local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
@@ -28,6 +27,8 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
+
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster

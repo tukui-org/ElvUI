@@ -15,7 +15,6 @@ local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf
 
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
-local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -66,6 +65,7 @@ local UnitStagger = UnitStagger
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
+local GetCVarBool = C_CVar.GetCVarBool
 
 local LEVEL = strlower(LEVEL)
 

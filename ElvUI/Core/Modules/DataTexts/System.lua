@@ -6,27 +6,29 @@ local tremove, tinsert, sort, wipe, type = tremove, tinsert, sort, wipe, type
 local ipairs, pairs, floor, format, strmatch = ipairs, pairs, floor, format, strmatch
 
 local GetAddOnCPUUsage = GetAddOnCPUUsage
-local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAvailableBandwidth = GetAvailableBandwidth
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
-local GetCVar = GetCVar
-local GetCVarBool = GetCVarBool
 local GetDownloadedPercentage = GetDownloadedPercentage
 local GetFileStreamingStatus = GetFileStreamingStatus
 local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
 local GetNetStats = GetNetStats
-local GetNumAddOns = GetNumAddOns
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local ReloadUI = ReloadUI
 local ResetCPUUsage = ResetCPUUsage
-local SetCVar = SetCVar
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
+
+local SetCVar = C_CVar.SetCVar
+local GetCVar = C_CVar.GetCVar
+local GetCVarBool = C_CVar.GetCVarBool
+
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 
 local UNKNOWN = UNKNOWN
 

@@ -156,7 +156,7 @@ function AB:PositionAndSizeBarPet()
 	AB:MoverMagic(bar)
 
 	local anchorRowButton, lastShownButton
-	local horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local useMasque = MasqueGroup and E.private.actionbar.masque.petBar
 
 	for i, button in ipairs(bar.buttons) do

@@ -9,10 +9,10 @@ local wipe = wipe
 local select = select
 local format = format
 local strmatch = strmatch
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local AcceptGroup = AcceptGroup
-local C_FriendList_IsFriend = C_FriendList.IsFriend
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
@@ -26,7 +26,6 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRepairAllCost = GetRepairAllCost
 local InCombatLockdown = InCombatLockdown
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
-local IsAddOnLoaded = IsAddOnLoaded
 local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
 local IsInGroup = IsInGroup
@@ -51,10 +50,12 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
-local hooksecurefunc = hooksecurefunc
-
-local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
+local IsFriend = C_FriendList.IsFriend
+
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
@@ -253,7 +254,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		local queueButton = M:GetQueueStatusButton() -- don't auto accept during a queue
 		if queueButton and queueButton:IsShown() then return end
 
-		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or C_FriendList_IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
+		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end

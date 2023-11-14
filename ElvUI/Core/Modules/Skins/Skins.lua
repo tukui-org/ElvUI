@@ -3,12 +3,13 @@ local S = E:GetModule('Skins')
 local LibStub = _G.LibStub
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
 local unpack, assert, type, strfind = unpack, assert, type, strfind
 
-local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
+
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 

@@ -12,18 +12,20 @@ local pairs, tinsert, tContains = pairs, tinsert, tContains
 local strmatch, strtrim, strlower = strmatch, strtrim, strlower
 
 local CreateFrame = CreateFrame
-local EnableAddOn = EnableAddOn
-local GetAddOnInfo = GetAddOnInfo
 local InCombatLockdown = InCombatLockdown
-local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local GetMouseFocus = GetMouseFocus
-local LoadAddOn = LoadAddOn
 local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
+
+local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
+local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+
 -- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
 
 local grid
