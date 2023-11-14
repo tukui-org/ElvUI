@@ -253,7 +253,7 @@ do
 end
 
 function E:SetCVar(cvar, value, ...)
-	local valstr = ((type(value) == 'boolean') and (value and "1" or "0")) or tostring(value)
+	local valstr = ((type(value) == 'boolean') and (value and '1' or '0')) or tostring(value)
 	if GetCVar(cvar) ~= valstr then
 		SetCVar(cvar, valstr, ...)
 	end
