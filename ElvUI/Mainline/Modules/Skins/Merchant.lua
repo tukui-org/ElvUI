@@ -115,6 +115,9 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
+	_G.MerchantBuyBackItemItemButton.Count:Point('BOTTOMRIGHT', 0, 1)
+	_G.MerchantBuyBackItemItemButton.Count:SetScale(1)
+
 	local UndoFrame = _G.UndoFrame
 	if UndoFrame then -- Since we move the MerchantBuyBackItemItemButton we also have to move this thingi
 		UndoFrame.Arrow:Point('CENTER', _G.MerchantBuyBackItemItemButton)
