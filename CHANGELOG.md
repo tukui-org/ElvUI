@@ -11,13 +11,14 @@
 *   Zone Description not following Zone Text settings
 *   Bags stay in Sort mode if closed and reopened during Sorting
 *   Display Frames for Party and Raid are a little more fancy (as they once were)
-*   Mind Control paging fixed for Priests on Classic Era, it requires [possessbar] 16;
+*   Mind Control paging fixed for Priests on Classic Era, it requires "[possessbar] 16;"
+*   Actionbars which were disabled but used for keybinds, now need to be enabled and visibility state changed to "hide" to work like before
 *   Actionbars to use events to determine the range and usable state of abilities and optimized button flashing
 *   Actionbars now have a Target Reticle that shows up when you are holding a spell (same as Default UI)
 *   Actionbars conditions adjusted to work with old content
-*   Actionbar icons cropping correctly again with Masque
+*   Actionbars icon cropping correctly again with Masque
 *   Pet Bar erroring on backdrop width multiplier
-*   Tags now support new line by using |n
+*   Tags now support new line by using "|n"
 
 ### Version 13.48 [ November 9th 2023 ]
 *   Unitframe backdrops, Heal prediction, and Absorbs are now working properly.
