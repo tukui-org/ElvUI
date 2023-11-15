@@ -314,6 +314,7 @@ function S:BlizzardMiscFrames()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	SideDressUpFrame.ResetButton:SetFrameLevel(SideDressUpFrame.ResetButton:GetFrameLevel()+1)
+	S:HandleModelSceneControlButtons(SideDressUpFrame.ModelScene.ControlFrame)
 
 	local StackSplitFrame = _G.StackSplitFrame
 	StackSplitFrame:StripTextures()
