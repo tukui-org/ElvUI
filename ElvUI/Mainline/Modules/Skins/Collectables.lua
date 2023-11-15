@@ -652,6 +652,7 @@ local function SkinTransmogFrames()
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
+	S:HandleModelSceneControlButtons(WardrobeTransmogFrame.ModelScene.ControlFrame)
 
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
