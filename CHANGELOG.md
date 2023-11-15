@@ -1,3 +1,7 @@
+### Version 13.51 [ November 14th 2023 ]
+*   SetCVar was erroring on keydown in some cases
+*   Bleeds list updated for Evokers
+
 ### Version 13.50 [ November 14th 2023 ]
 *   GetAddOnEnableState was erroring
 
