@@ -53,7 +53,6 @@ local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBa
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local GetCVarBool = C_CVar.GetCVarBool
-local SetCVar = C_CVar.SetCVar
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -1799,7 +1798,7 @@ function AB:Initialize()
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
-	SetCVar('lockActionBars', (AB.db.lockActionBars and 1 or 0))
+	E:SetCVar('lockActionBars', AB.db.lockActionBars and 1 or 0)
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
 	if E.Retail then

@@ -68,7 +68,7 @@ function S:Blizzard_TalentUI()
 		end
 	end
 
-	-- Talent preview section / SetCVar('previewTalents', 1)
+	-- Talent preview section / E:SetCVar('previewTalents', 1)
 	_G.PlayerTalentFramePreviewBar:StripTextures()
 	_G.PlayerTalentFramePreviewBarFiller:StripTextures()
 

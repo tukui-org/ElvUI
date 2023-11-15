@@ -27,7 +27,6 @@ local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local PickupContainerItem = (C_Container and C_Container.PickupContainerItem) or PickupContainerItem
-local SetCVar = C_CVar.SetCVar
 
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
@@ -387,7 +386,7 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 	button1 = L["Disable"],
 	button2 = L["Continue"],
 	OnAccept = function()
-		SetCVar('scriptProfile', 0)
+		E:SetCVar('scriptProfile', 0)
 		ReloadUI()
 	end,
 	showAlert = 1,

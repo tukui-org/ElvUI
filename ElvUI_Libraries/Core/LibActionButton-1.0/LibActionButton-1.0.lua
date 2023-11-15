@@ -550,10 +550,10 @@ do
 		-- this is bugged: some talent spells will always cast on down
 		-- even when this code does not execute and keydown is disabled.
 		if pre and GetCVarBool("ActionButtonUseKeyDown") then
-			SetCVar("ActionButtonUseKeyDown", false)
+			SetCVar("ActionButtonUseKeyDown", "0")
 			reset = true
 		elseif reset then
-			SetCVar("ActionButtonUseKeyDown", true)
+			SetCVar("ActionButtonUseKeyDown", "1")
 			reset = nil
 		end
 	end

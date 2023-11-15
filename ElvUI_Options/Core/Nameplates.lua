@@ -11,7 +11,6 @@ local next, tonumber, format = next, tonumber, format
 
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local GetCVarBool = C_CVar.GetCVarBool
-local SetCVar = C_CVar.SetCVar
 
 local function GetAddOnStatus(index, locale, name)
 	local status = IsAddOnLoaded(name) and format('|cff33ff33%s|r', L["Enabled"]) or format('|cffff3333%s|r', L["Disabled"])
@@ -426,7 +425,7 @@ NamePlates.generalGroup.args.spacer2 = ACH:Spacer(15, 'full')
 NamePlates.generalGroup.args.plateVisibility = ACH:Group(L["Visibility"], nil, 50)
 NamePlates.generalGroup.args.plateVisibility.args.showAll = ACH:Toggle(L["UNIT_NAMEPLATES_AUTOMODE"], L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."], 0, nil, nil, 250, function(info) return E.db.nameplates.visibility[info[#info]] end, function(info, value) E.db.nameplates.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end)
 NamePlates.generalGroup.args.plateVisibility.args.showAlways = ACH:Toggle(L["Always Show Player"], nil, 1, nil, nil, nil, function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end, function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end)
-NamePlates.generalGroup.args.plateVisibility.args.cvars = ACH:MultiSelect(L["Blizzard CVars"], nil, 3, { nameplateOtherAtBase = L["Nameplate At Base"], nameplateShowOnlyNames = L["Show Only Names"] }, nil, nil, function(_, key) return E.db.nameplates.visibility[key] or GetCVarBool(key) end, function(_, key, value) SetCVar(key, value and (key == 'nameplateOtherAtBase' and '2' or '1') or '0') if key == 'nameplateShowOnlyNames' then E.db.nameplates.visibility[key] = value end end)
+NamePlates.generalGroup.args.plateVisibility.args.cvars = ACH:MultiSelect(L["Blizzard CVars"], nil, 3, { nameplateOtherAtBase = L["Nameplate At Base"], nameplateShowOnlyNames = L["Show Only Names"] }, nil, nil, function(_, key) return E.db.nameplates.visibility[key] or GetCVarBool(key) end, function(_, key, value) E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0) if key == 'nameplateShowOnlyNames' then E.db.nameplates.visibility[key] = value end end)
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility = ACH:Group(L["Player"], nil, 5, nil, function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end, function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end)
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.inline = true
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.showInCombat = ACH:Toggle(L["Show In Combat"], nil, 1, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end)

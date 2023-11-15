@@ -50,7 +50,7 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- slow
 
-	-- Bleed spells updated September 27th 2023 by Simpy for Patch 10.1.7
+	-- Bleed spells updated November 14th 2023 by Simpy for Patch 10.2
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
 	----> Apply Aura
 	-----> Mechanic Bleeding: https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
@@ -448,6 +448,7 @@ if Retail then
 	BleedList[196497] = "Ravenous Leap"
 	BleedList[197359] = "Shred"
 	BleedList[197381] = "Exposed Wounds"
+	BleedList[197546] = "Brutal Glaive"
 	BleedList[199108] = "Frantic Gore"
 	BleedList[199146] = "Bucking Charge"
 	BleedList[199337] = "Bear Trap"
@@ -550,6 +551,7 @@ if Retail then
 	BleedList[254575] = "Rend"
 	BleedList[254901] = "Blood Frenzy"
 	BleedList[255299] = "Bloodletting"
+	BleedList[255434] = "Serrated Teeth"
 	BleedList[255595] = "Chomp"
 	BleedList[255814] = "Rending Maul"
 	BleedList[256077] = "Gore"
@@ -973,10 +975,12 @@ if Retail then
 	BleedList[411437] = "Brutal Lacerations"
 	BleedList[411700] = "Slobbering Bite"
 	BleedList[411924] = "Drilljaws"
+	BleedList[412172] = "Ceaseless Nibbling"
 	BleedList[412285] = "Stonebolt"
 	BleedList[412505] = "Rending Cleave"
 	BleedList[413131] = "Whirling Dagger"
 	BleedList[413136] = "Whirling Dagger"
+	BleedList[414340] = "Drenched Blades"
 	BleedList[414466] = "Jagged Gills"
 	BleedList[414506] = "Lacerate"
 	BleedList[414552] = "Stonecrack"
@@ -984,7 +988,16 @@ if Retail then
 	BleedList[418009] = "Serrated Arrows"
 	BleedList[418160] = "Sawblade-Storm"
 	BleedList[418624] = "Rending Slash"
+	BleedList[422466] = "Shadow Spines"
+	BleedList[422683] = "Thrash"
 	BleedList[423431] = "Crushing Blow"
+	BleedList[424065] = "Umbral Destruction"
+	BleedList[424493] = "Shadow Rupture"
+	BleedList[426284] = "Finishing Wound"
+	BleedList[426587] = "Bramble Burst"
+	BleedList[426660] = "Razor Jaws"
+	BleedList[427182] = "Bloody Pounce"
+	BleedList[429233] = "Rezan's Fury"
 end
 
 function lib:GetDebuffTypeColor()
@@ -1047,7 +1060,7 @@ do
 		end
 
 		-- this will fix a problem where spells dont show as existing because they are 'hidden'
-		local undoRanks = (not Retail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', 1)
+		local undoRanks = (not Retail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
 
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
@@ -1098,7 +1111,7 @@ do
 		end
 
 		if undoRanks then
-			SetCVar('ShowAllSpellRanks', 0)
+			SetCVar('ShowAllSpellRanks', '0')
 		end
 	end
 

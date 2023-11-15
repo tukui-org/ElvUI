@@ -32,8 +32,6 @@ local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEdit
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
-local SetCVar = C_CVar.SetCVar
-
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -147,7 +145,7 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	if ELV_TOONS[PLAYER_NAME] then
-		SetCVar('scriptErrors', 1)
+		E:SetCVar('scriptErrors', 1)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
@@ -157,21 +155,21 @@ function E:SetupChat(noDisplayMsg)
 end
 
 function E:SetupCVars(noDisplayMsg)
-	SetCVar('statusTextDisplay', 'BOTH')
-	SetCVar('screenshotQuality', 10)
-	SetCVar('showTutorials', 0)
-	SetCVar('showNPETutorials', 0)
-	SetCVar('UberTooltips', 1)
-	SetCVar('threatWarning', 3)
-	SetCVar('alwaysShowActionBars', 1)
-	SetCVar('lockActionBars', 1)
-	SetCVar('ActionButtonUseKeyDown', 1)
-	SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
+	E:SetCVar('statusTextDisplay', 'BOTH')
+	E:SetCVar('screenshotQuality', 10)
+	E:SetCVar('showTutorials', 0)
+	E:SetCVar('showNPETutorials', 0)
+	E:SetCVar('UberTooltips', 1)
+	E:SetCVar('threatWarning', 3)
+	E:SetCVar('alwaysShowActionBars', 1)
+	E:SetCVar('lockActionBars', 1)
+	E:SetCVar('ActionButtonUseKeyDown', 1)
+	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
 	if E.Retail then
-		SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
+		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
-		SetCVar('chatClassColorOverride', 0)
+		E:SetCVar('chatClassColorOverride', 0)
 	end
 
 	local ActionButtonPickUp = _G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
@@ -185,10 +183,10 @@ function E:SetupCVars(noDisplayMsg)
 	end
 
 	if E.private.chat.enable then
-		SetCVar('chatMouseScroll', 1)
-		SetCVar('chatStyle', 'classic')
-		SetCVar('whisperMode', 'inline')
-		SetCVar('wholeChatWindowClickable', 0)
+		E:SetCVar('chatMouseScroll', 1)
+		E:SetCVar('chatStyle', 'classic')
+		E:SetCVar('whisperMode', 'inline')
+		E:SetCVar('wholeChatWindowClickable', 0)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then
