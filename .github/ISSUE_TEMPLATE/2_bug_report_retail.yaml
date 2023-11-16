@@ -30,11 +30,8 @@ body:
   - type: textarea
     id: suggested-solution
     attributes:
-      label: Suggested Solution/Workaround
+      label: Suggested Solution
       description: If you have any idea how we could solve it let us know.
-      placeholder: "Make sure type the command: /edebug on then test."
-    validations:
-      required: false
   - type: textarea
     id: errors
     attributes:
@@ -45,16 +42,15 @@ body:
     id: terms
     attributes:
       label: ElvUI Changelog & Troubleshooting
-      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
+      description: I will the troubleshooting steps and included the requested screenshot and understand if not, the ticket will be closed. 
       options:
         - label: I have confirmed that I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
           required: true
-        - label: I have verified ElvUI is up to date by checking /estatus.
+        - label: I have verified my issue doesn't exist in the Default UI or ElvUI Issue Tracker.
           required: true
-        - label: I have verified my issue doesn't exist in the ElvUI Issue Tracker.
-          required: true
-        - label: I have not read any of these steps, please close my issue when you see it.
-        - label: I have verified my issue doesn't exist in the default UI.
-          required: true
-        - label: I have disabled all addons except the three called 'ElvUI', 'ElvUI Libraries', and 'ElvUI Options' by using `/edebug on`? This is important in order to rule out that any of your other addons are causing the issue. If you manage to pinpoint a conflict between ElvUI and another addon, make sure you include that information.
-          required: true
+        - label: What is the issue you are having?
+          placeholder: Please go through the troubleshooting steps and provide the requested information and a description of the issue.
+          description: 1. Type in chat in game `/edebug on`
+                       2. Test.  Do you still have the issue?
+                       3. If so, type in chat in game `/estatus` and verify ElvUI is up to date
+                       4. upload a FULL UI screenshot (no cropping) showing both the issue and the status panel. 
