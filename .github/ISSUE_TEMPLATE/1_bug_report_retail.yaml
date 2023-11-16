@@ -6,7 +6,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What is the issue you are having?
+      label: Troubleshooting Steps
       description: |
         1. Type in game: `/edebug on`  (or `/ec`, on left **[Information]**, on top **[Debug]**)
         2. Test. Still have the issue?
@@ -14,7 +14,7 @@ body:
            - **YES** Type in game: `/estatus`  (or `/ec`, on top **[Status]**)
         3. Upload a **full, uncropped screenshot** showing the issue **and** the status panel.
         4. Finished with debugging? Repeat the first step.
-      placeholder: Give us an explaination of what was going on when the issue appeared.
+      placeholder: Please go through the steps above and provide the requested information and a description of the issue.
     validations:
       required: true
   - type: textarea
@@ -43,10 +43,8 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Changelog & Troubleshooting
-      description: |
-        By submitting this issue, you agree to follow our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
-        This is important in order to rule out that any of your other addons are causing the issue.
+      label: Verify Issue Steps
+      description: This is important in order to rule out any other addons causing the issue.
       options:
         - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
           required: true
@@ -55,5 +53,5 @@ body:
         - label: I have verified my issue doesn't exist in the Default UI or the [Issue Tracker](https://github.com/tukui-org/ElvUI/issues).
           required: true
         - label: I have not read any of these steps, please close my issue when you see it.
-        - label: I have tested with **/edebug on** and will supply a screenshot of **/estatus** including the issue or any relevant error messages.
+        - label: I have completed the Troubleshooting Steps and included the requested screenshots, which show the issue, status panel, and any relevant error messages.
           required: true
