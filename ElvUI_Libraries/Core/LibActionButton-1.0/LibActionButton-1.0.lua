@@ -338,24 +338,7 @@ function SetupSecureSnippets(button)
 		end
 
 		if IsPressHoldReleaseSpell then
-			local spellID
-			if type == 'action' then
-				local actionType, id, subType = GetActionInfo(action)
-				if actionType == 'spell' then
-					spellID = id
-				elseif actionType == 'macro' and subType == 'spell' then
-					spellID = id
-				end
-			elseif type == 'spell' then
-				spellID = action
-			end
-
-			if spellID and IsPressHoldReleaseSpell(spellID) then
-				self:SetAttribute('pressAndHoldAction', true)
-				self:SetAttribute('typerelease', 'actionrelease')
-			elseif self:GetAttribute('typerelease') then
-				self:SetAttribute('typerelease', nil)
-			end
+			self:CallMethod("UpdateReleaseCasting", type, action)
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
@@ -1370,10 +1353,10 @@ end
 -----------------------------------------------------------
 --- event handler
 
-function ForAllButtons(method, onlyWithAction)
+function ForAllButtons(method, onlyWithAction, event)
 	assert(type(method) == "function")
 	for button in next, (onlyWithAction and ActiveButtons or ButtonRegistry) do
-		method(button)
+		method(button, event)
 	end
 end
 
@@ -1502,13 +1485,13 @@ function OnEvent(frame, event, arg1, ...)
 			UpdateAuraCooldowns()
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
-		ForAllButtons(Update)
+		ForAllButtons(Update, nil, event)
 	elseif event == "ACTIONBAR_SHOWGRID" then
 		ShowGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
 		HideGrid()
 	elseif event == "UPDATE_BINDINGS" then
-		ForAllButtons(UpdateHotkeys)
+		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
@@ -1525,7 +1508,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
-		ForAllButtons(UpdateButtonState, true)
+		ForAllButtons(UpdateButtonState, true, event)
 	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
@@ -1609,7 +1592,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "PET_STABLE_UPDATE" or event == "PET_STABLE_SHOW" then
-		ForAllButtons(Update)
+		ForAllButtons(Update, nil, event)
 
 		if event == "PET_STABLE_UPDATE" and UseCustomFlyout then
 			UpdateFlyoutSpells()
@@ -1649,7 +1632,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "SPELL_UPDATE_CHARGES" then
-		ForAllButtons(UpdateCount, true)
+		ForAllButtons(UpdateCount, true, event)
 	elseif event == "UPDATE_SUMMONPETS_ACTION" then
 		for button in next, ActiveButtons do
 			if button._state_type == "action" then
@@ -1663,7 +1646,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "SPELL_UPDATE_ICON" then
-		ForAllButtons(Update, true)
+		ForAllButtons(Update, true, event)
 	end
 end
 
@@ -1851,6 +1834,27 @@ end
 
 -----------------------------------------------------------
 --- button management
+
+function Generic:UpdateReleaseCasting(stateType, action)
+	local spellID
+	if stateType == 'action' then
+		local actionType, id, subType = GetActionInfo(action)
+		if actionType == 'spell' then
+			spellID = id
+		elseif actionType == 'macro' and subType == 'spell' then
+			spellID = id
+		end
+	elseif stateType == 'spell' then
+		spellID = action
+	end
+
+	if spellID and IsPressHoldReleaseSpell(spellID) then
+		self:SetAttribute('pressAndHoldAction', true)
+		self:SetAttribute('typerelease', 'actionrelease')
+	elseif self:GetAttribute('typerelease') then
+		self:SetAttribute('typerelease', nil)
+	end
+end
 
 function Generic:UpdateAction(force)
 	local actionType, action = self:GetAction()
@@ -2049,6 +2053,10 @@ function Update(self, which)
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
 	if isTypeAction and not InCombatLockdown() then
+		if which == 'PLAYER_ENTERING_WORLD' then -- zone in dragon mount on Evokers can bug
+			self:UpdateReleaseCasting(self._state_type, self._state_action)
+		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
