@@ -7,7 +7,13 @@ body:
     id: what-happened
     attributes:
       label: What is the issue you are having?
-      description: Please follow the [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot), include both the screenshot, and a description of the issue.
+      description: |
+        1. Type in game: `/edebug on`  (or `/ec`, on left **[Information]**, on top **[Debug]**)
+        2. Test. Still have the issue?
+           - **NO** Issue is probably another addon or plugin. Skip to the last step.
+           - **YES** Type in game: `/estatus`  (or `/ec`, on top **[Status]**)
+        3. Upload a **full, uncropped screenshot** showing the issue **and** the status panel.
+        4. Finished with debugging? Repeat the first step.
       placeholder: Give us an explaination of what was going on when the issue appeared.
     validations:
       required: true
