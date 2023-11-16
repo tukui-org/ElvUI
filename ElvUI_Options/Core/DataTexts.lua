@@ -189,7 +189,9 @@ local function CreateDTOptions(name, data)
 			end
 		end
 
-		if name == 'Combat' then
+		if name == 'Bags' then
+			optionTable.args.includeReagents = ACH:Toggle(E.NewSign..L["Include Reagents"], nil, 5)
+		elseif name == 'Combat' then
 			optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
 		elseif name == 'CombatIndicator' then
 			optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
