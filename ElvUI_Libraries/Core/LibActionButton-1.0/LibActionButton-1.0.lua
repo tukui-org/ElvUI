@@ -324,6 +324,31 @@ end
 function SetupSecureSnippets(button)
 	button:SetAttribute("_custom", Custom.RunCustom)
 	-- secure UpdateState(self, state)
+
+	-- button state for push casting
+	button:SetAttribute("UpdateReleaseCasting", [[
+		local type, action = ...
+
+		local spellID
+		if type == 'action' then
+			local actionType, id, subType = GetActionInfo(action)
+			if actionType == 'spell' then
+				spellID = id
+			elseif actionType == 'macro' and subType == 'spell' then
+				spellID = id
+			end
+		elseif type == 'spell' then
+			spellID = action
+		end
+
+		if spellID and IsPressHoldReleaseSpell(spellID) then
+			self:SetAttribute('pressAndHoldAction', true)
+			self:SetAttribute('typerelease', 'actionrelease')
+		elseif self:GetAttribute('typerelease') then
+			self:SetAttribute('typerelease', nil)
+		end
+	]])
+
 	-- update the type and action of the button based on the state
 	button:SetAttribute("UpdateState", [[
 		local state = ...
@@ -338,7 +363,7 @@ function SetupSecureSnippets(button)
 		end
 
 		if IsPressHoldReleaseSpell then
-			self:CallMethod("UpdateReleaseCasting", type, action)
+			self:RunAttribute("UpdateReleaseCasting", type, action)
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
@@ -1835,27 +1860,6 @@ end
 -----------------------------------------------------------
 --- button management
 
-function Generic:UpdateReleaseCasting(stateType, action)
-	local spellID
-	if stateType == 'action' then
-		local actionType, id, subType = GetActionInfo(action)
-		if actionType == 'spell' then
-			spellID = id
-		elseif actionType == 'macro' and subType == 'spell' then
-			spellID = id
-		end
-	elseif stateType == 'spell' then
-		spellID = action
-	end
-
-	if spellID and IsPressHoldReleaseSpell(spellID) then
-		self:SetAttribute('pressAndHoldAction', true)
-		self:SetAttribute('typerelease', 'actionrelease')
-	elseif self:GetAttribute('typerelease') then
-		self:SetAttribute('typerelease', nil)
-	end
-end
-
 function Generic:UpdateAction(force)
 	local actionType, action = self:GetAction()
 	if force or actionType ~= self._state_type or action ~= self._state_action then
@@ -2053,8 +2057,13 @@ function Update(self, which)
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
 	if isTypeAction and not InCombatLockdown() then
-		if which == 'PLAYER_ENTERING_WORLD' then -- zone in dragon mount on Evokers can bug
-			self:UpdateReleaseCasting(self._state_type, self._state_action)
+		local updateReleaseCasting = (IsPressHoldReleaseSpell and which == 'PLAYER_ENTERING_WORLD') and self:GetAttribute("UpdateReleaseCasting")
+		if updateReleaseCasting then -- zone in dragon mount on Evokers can bug
+			self.header:SetFrameRef("updateButton", self)
+			self.header:Execute(([[
+				local frame = self:GetFrameRef("updateButton")
+				control:RunFor(frame, frame:GetAttribute("UpdateReleaseCasting"), %s, %s)
+			]]):format(formatHelper(self._state_type), formatHelper(self._state_action)))
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
