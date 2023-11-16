@@ -1132,7 +1132,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[427299] = List(), -- Flash Fire
 		[428901] = List(), -- Ashen Devastation
 	-- Nymue, Weaver of the Cycle
-		[423195] = List(), -- Inflorescence
 		[427137] = List(), -- Threads of Life I
 		[427138] = List(), -- Threads of Life II
 		[426520] = List(), -- Weaver's Burden
