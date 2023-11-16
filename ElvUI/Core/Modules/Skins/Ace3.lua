@@ -396,6 +396,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
 			frame:StripTextures()
+
 			for _, child in next, { frame:GetChildren() } do
 				if child:IsObjectType('Button') and child:GetText() then
 					S:HandleButton(child)
@@ -405,6 +406,7 @@ function S:Ace3_RegisterAsContainer(widget)
 			end
 		elseif TYPE == 'Window' then
 			frame:StripTextures()
+
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
 
@@ -435,10 +437,6 @@ function S:Ace3_RegisterAsContainer(widget)
 		if widget.scrollbar then
 			S:HandleScrollBar(widget.scrollbar)
 		end
-	elseif TYPE == 'SimpleGroup' then
-		widget.content:ClearAllPoints()
-		widget.content:SetPoint('TOPLEFT', 6, 2)
-		widget.content:SetPoint('BOTTOMRIGHT', -6, 2)
 	end
 
 	if widget.sizer_se then
