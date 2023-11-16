@@ -7,7 +7,7 @@ body:
     id: what-happened
     attributes:
       label: What is the issue you are having?
-      description: Describe the issue and what was going on when it happened?
+      description: Please follow the [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot), include both the screenshot, and a description of the issue.
       placeholder: Give us an explaination of what was going on when the issue appeared.
     validations:
       required: true
@@ -24,7 +24,7 @@ body:
     attributes:
       label: Reproducing the issue.
       description: List steps in order to reproduce this issue.
-      placeholder: "Please make sure to use the debug command first: **/edebug on**"
+      placeholder: Please make sure to use the debug command first. /edebug on
     validations:
       required: false
   - type: textarea
@@ -39,7 +39,7 @@ body:
     attributes:
       label: Changelog & Troubleshooting
       description: |
-        Please follow and include the screenshot as requested in [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
+        By submitting this issue, you agree to follow our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
         This is important in order to rule out that any of your other addons are causing the issue.
       options:
         - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
