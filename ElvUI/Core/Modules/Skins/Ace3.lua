@@ -436,16 +436,9 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleScrollBar(widget.scrollbar)
 		end
 	elseif TYPE == 'SimpleGroup' then
-		local content = widget.content
-
-		local frame = content:GetParent()
-		frame:SetTemplate('Transparent')
-		frame.callbackBackdropColor = S.Ace3_BackdropColor
-		S.Ace3_BackdropColor(frame)
-
-		content:ClearAllPoints()
-		content:SetPoint('TOPLEFT', 6, 2)
-		content:SetPoint('BOTTOMRIGHT', -6, 2)
+		widget.content:ClearAllPoints()
+		widget.content:SetPoint('TOPLEFT', 6, 2)
+		widget.content:SetPoint('BOTTOMRIGHT', -6, 2)
 	end
 
 	if widget.sizer_se then
