@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 46 -- the real minor version is 108
+local MINOR_VERSION = 47 -- the real minor version is 108
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2574,6 +2574,7 @@ Generic.IsInRange               = function(self)
 	if unit == "player" then
 		unit = nil
 	end
+
 	local val = self:IsUnitInRange(unit)
 	-- map 1/0 to true false, since the return values are inconsistent between actions and spells
 	if val == 1 then val = true elseif val == 0 then val = false end
@@ -2692,7 +2693,7 @@ Item.IsCurrentlyActive       = function(self) return IsCurrentItem(self._state_a
 Item.IsAutoRepeat            = function(self) return nil end
 Item.IsUsable                = function(self) return IsUsableItem(self._state_action) end
 Item.IsConsumableOrStackable = function(self) return IsConsumableItem(self._state_action) end
-Item.IsUnitInRange           = function(self, unit) return IsItemInRange(self._state_action, unit) end
+Item.IsUnitInRange           = function(self, unit) return InCombatLockdown() or IsItemInRange(self._state_action, unit) end
 Item.SetTooltip              = function(self) return GameTooltip:SetHyperlink(self._state_action) end
 Item.GetSpellId              = function(self) return nil end
 Item.GetPassiveCooldownSpellID = function(self) return nil end
