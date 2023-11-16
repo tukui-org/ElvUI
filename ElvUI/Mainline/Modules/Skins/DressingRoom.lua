@@ -55,6 +55,7 @@ function S:DressUpFrame()
 	S:HandleButton(_G.DressUpFrameResetButton)
 	S:HandleButton(_G.DressUpFrameCancelButton)
 	S:HandleButton(DressUpFrame.LinkButton)
+	S:HandleModelSceneControlButtons(DressUpFrame.ModelScene.ControlFrame)
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
 
