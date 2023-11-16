@@ -1,5 +1,5 @@
 name: "Bug Report: Retail"
-description: Report a bug in ElvUI for Retail
+description: Report a bug for Retail
 title: "Title here"
 labels: ['🐛 Needs Investigation ❓', '🧬 Retail 🐲']
 body:
@@ -14,47 +14,37 @@ body:
   - type: textarea
     id: expected-behavior
     attributes:
-      label: What is the expected behavior?
-      description: What do you think the expected behavior should have happened?
-      placeholder: Try to explain what you expected the outcome to be.
-    validations:
-      required: true
-  - type: textarea
-    id: actual-behavior
-    attributes:
-      label: What actually happened?
+      label: What is the expected behavior and what actually happened?
       description: Please try to be as descriptive as possible.
-      placeholder: Try to explain what happened.
+      placeholder: Try to explain what happened and what you expected the outcome to be.
     validations:
       required: true
   - type: textarea
-    id: suggested-solution
+    id: repoduce-steps
     attributes:
-      label: Suggested Solution/Workaround
-      description: If you have any idea how we could solve it let us know.
-      placeholder: "Make sure type the command: /edebug on then test."
+      label: Reproducing the issue.
+      description: List steps in order to reproduce this issue.
+      placeholder: "Please make sure to use the debug command first: /edebug on"
     validations:
       required: false
   - type: textarea
     id: errors
     attributes:
-      label: Errors
-      description: If you have any errors, please put them here.
+      label: Lua Errors
+      description: If you have any Lua errors, please put them here. The first error is most important.
       render: shell
   - type: checkboxes
     id: terms
     attributes:
-      label: ElvUI Changelog & Troubleshooting
-      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
+      label: Changelog & Troubleshooting
+      description: By submitting this issue, you agree you followed our [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot)
       options:
-        - label: I have confirmed that I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
+        - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md)
           required: true
-        - label: I have verified ElvUI is up to date by checking /estatus.
+        - label: I have verified [ElvUI](https://tukui.org/elvui) is up to date by checking `/estatus`
           required: true
-        - label: I have verified my issue doesn't exist in the ElvUI Issue Tracker.
+        - label: I have verified my issue doesn't exist in the Default UI or the [Issue Tracker](https://github.com/tukui-org/ElvUI/issues)
           required: true
         - label: I have not read any of these steps, please close my issue when you see it.
-        - label: I have verified my issue doesn't exist in the default UI.
-          required: true
-        - label: I have disabled all addons except the three called 'ElvUI', 'ElvUI Libraries', and 'ElvUI Options' by using `/edebug on`? This is important in order to rule out that any of your other addons are causing the issue. If you manage to pinpoint a conflict between ElvUI and another addon, make sure you include that information.
+        - label: I have tested with `/edebug on` **This is important in order to rule out that any of your other addons are causing the issue.**
           required: true
