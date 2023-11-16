@@ -14,7 +14,7 @@ body:
   - type: textarea
     id: expected-behavior
     attributes:
-      label: What is the expected behavior and what actually happened?
+      label: Describe the expected behavior and what actually happened?
       description: Please try to be as descriptive as possible.
       placeholder: Try to explain what happened and what you expected the outcome to be.
     validations:
@@ -31,13 +31,16 @@ body:
     id: errors
     attributes:
       label: Lua Errors
-      description: If you have any Lua errors, please put them here. The first error is most important.
+      description: If you have any Lua errors, please put them here.
+      placeholder: "The first error is most relevant error. (ex: 1 of 10)"
       render: shell
   - type: checkboxes
     id: terms
     attributes:
       label: Changelog & Troubleshooting
-      description: By submitting this issue, you agree to follow the [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot). This is important in order to rule out that any of your other addons are causing the issue.
+      description: |
+        Please follow and include the screenshot as requested in [Troubleshooting Steps](https://github.com/tukui-org/ElvUI/wiki/troubleshoot).
+        This is important in order to rule out that any of your other addons are causing the issue.
       options:
         - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md).
           required: true
