@@ -4,7 +4,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, pairs, min, random, next = type, pairs, min, random, next
+local type, pairs, min, random, strfind, next = type, pairs, min, random, strfind, next
 
 local UnitName = UnitName
 local UnitPower = UnitPower
@@ -12,6 +12,7 @@ local UnitClass = UnitClass
 local UnitHealth = UnitHealth
 local UnitPowerMax = UnitPowerMax
 local UnitHealthMax = UnitHealthMax
+local UnitPowerType = UnitPowerType
 local InCombatLockdown = InCombatLockdown
 local UnregisterUnitWatch = UnregisterUnitWatch
 local RegisterUnitWatch = RegisterUnitWatch
@@ -32,6 +33,26 @@ local attributeBlacklist = {
 	showParty = true,
 	showSolo = true
 }
+
+local PowerType = Enum.PowerType
+local classPowers = {
+	[0] = PowerType.Mana,
+	[1] = PowerType.Rage,
+	[2] = PowerType.Focus,
+	[3] = PowerType.Energy
+}
+
+if E.Wrath then -- also handled in Elements/Power
+	classPowers[4] = PowerType.RunicPower
+elseif E.Retail then
+	classPowers[4] = PowerType.RunicPower
+	classPowers[5] = PowerType.PAIN
+	classPowers[6] = PowerType.FURY
+	classPowers[7] = PowerType.LunarPower
+	classPowers[8] = PowerType.Insanity
+	classPowers[9] = PowerType.Maelstrom
+	classPowers[10] = PowerType.Alternate or 10
+end
 
 local function envUnit(arg1)
 	local frame = configEnv._FRAME -- yoink
@@ -58,6 +79,14 @@ local function createConfigEnv()
 
 			local maxPower = UnitPowerMax(unit, displayType) or 0
 			return random(1, (maxPower > 0 and maxPower) or 100)
+		end,
+		UnitPowerType = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitPowerType(unit)
+			end
+
+			return classPowers[random(0, #classPowers)]
 		end,
 		UnitHealth = function(arg1)
 			local unit, real = envUnit(arg1)
@@ -109,31 +138,17 @@ local function createConfigEnv()
 		end,
 	})
 
+
 	overrideFuncs['classcolor'] = ElvUF.Tags.Methods['classcolor']
 	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
-	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
-	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
-	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
-	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
-	overrideFuncs['name'] = ElvUF.Tags.Methods['name']
-
 	overrideFuncs['healthcolor'] = ElvUF.Tags.Methods['healthcolor']
-	overrideFuncs['health:current'] = ElvUF.Tags.Methods['health:current']
-	overrideFuncs['health:deficit'] = ElvUF.Tags.Methods['health:deficit']
-	overrideFuncs['health:current-percent'] = ElvUF.Tags.Methods['health:current-percent']
-	overrideFuncs['health:current-max'] = ElvUF.Tags.Methods['health:current-max']
-	overrideFuncs['health:current-max-percent'] = ElvUF.Tags.Methods['health:current-max-percent']
-	overrideFuncs['health:max'] = ElvUF.Tags.Methods['health:max']
-	overrideFuncs['health:percent'] = ElvUF.Tags.Methods['health:percent']
-
 	overrideFuncs['powercolor'] = ElvUF.Tags.Methods['powercolor']
-	overrideFuncs['power:current'] = ElvUF.Tags.Methods['power:current']
-	overrideFuncs['power:deficit'] = ElvUF.Tags.Methods['power:deficit']
-	overrideFuncs['power:current-percent'] = ElvUF.Tags.Methods['power:current-percent']
-	overrideFuncs['power:current-max'] = ElvUF.Tags.Methods['power:current-max']
-	overrideFuncs['power:current-max-percent'] = ElvUF.Tags.Methods['power:current-max-percent']
-	overrideFuncs['power:max'] = ElvUF.Tags.Methods['power:max']
-	overrideFuncs['power:percent'] = ElvUF.Tags.Methods['power:percent']
+
+	for tag, func in next, ElvUF.Tags.Methods do
+		if strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:') then
+			overrideFuncs[tag] = func
+		end
+	end
 end
 
 local function WhoIsAwesome(awesome)
