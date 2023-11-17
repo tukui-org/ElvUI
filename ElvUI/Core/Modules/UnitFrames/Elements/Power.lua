@@ -234,9 +234,21 @@ function UF:GetDisplayPower()
 end
 
 do
-	local tokens = {[0]='MANA','RAGE','FOCUS','ENERGY','RUNIC_POWER'}
+	local classPowers = { [0] = 'MANA', 'RAGE', 'FOCUS', 'ENERGY' }
+
+	if E.Wrath then -- also handled in ConfigEnviroment
+		classPowers[4] = 'RUNIC_POWER'
+	elseif E.Retail then
+		classPowers[4] = 'RUNIC_POWER'
+		classPowers[5] = 'PAIN'
+		classPowers[6] = 'FURY'
+		classPowers[7] = 'LUNAR_POWER'
+		classPowers[8] = 'INSANITY'
+		classPowers[9] = 'MAELSTROM'
+	end
+
 	local function GetRandomPowerColor()
-		local color = ElvUF.colors.power[tokens[random(0,4)]]
+		local color = ElvUF.colors.power[classPowers[random(0, #classPowers)]]
 		return color.r, color.g, color.b
 	end
 

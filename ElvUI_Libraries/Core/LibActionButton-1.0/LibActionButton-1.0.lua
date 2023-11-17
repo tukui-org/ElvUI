@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 46 -- the real minor version is 108
+local MINOR_VERSION = 47 -- the real minor version is 108
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -324,20 +324,12 @@ end
 function SetupSecureSnippets(button)
 	button:SetAttribute("_custom", Custom.RunCustom)
 	-- secure UpdateState(self, state)
-	-- update the type and action of the button based on the state
-	button:SetAttribute("UpdateState", [[
-		local state = ...
-		self:SetAttribute("state", state)
-		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
 
-		self:SetAttribute("type", type)
-		if type ~= "empty" and type ~= "custom" then
-			local action_field = (type == "pet") and "action" or type
-			self:SetAttribute(action_field, action)
-			self:SetAttribute("action_field", action_field)
-		end
+	-- button state for push casting
+	if IsPressHoldReleaseSpell then -- retail only
+		button:SetAttribute("UpdateReleaseCasting", [[
+			local type, action = ...
 
-		if IsPressHoldReleaseSpell then
 			local spellID
 			if type == 'action' then
 				local actionType, id, subType = GetActionInfo(action)
@@ -356,6 +348,25 @@ function SetupSecureSnippets(button)
 			elseif self:GetAttribute('typerelease') then
 				self:SetAttribute('typerelease', nil)
 			end
+		]])
+	end
+
+	-- update the type and action of the button based on the state
+	button:SetAttribute("UpdateState", [[
+		local state = ...
+		self:SetAttribute("state", state)
+		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
+
+		self:SetAttribute("type", type)
+		if type ~= "empty" and type ~= "custom" then
+			local action_field = (type == "pet") and "action" or type
+			self:SetAttribute(action_field, action)
+			self:SetAttribute("action_field", action_field)
+		end
+
+		local updateReleaseCasting = self:GetAttribute("UpdateReleaseCasting")
+		if updateReleaseCasting then
+			self:RunAttribute("UpdateReleaseCasting", type, action)
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
@@ -1370,10 +1381,10 @@ end
 -----------------------------------------------------------
 --- event handler
 
-function ForAllButtons(method, onlyWithAction)
+function ForAllButtons(method, onlyWithAction, event)
 	assert(type(method) == "function")
 	for button in next, (onlyWithAction and ActiveButtons or ButtonRegistry) do
-		method(button)
+		method(button, event)
 	end
 end
 
@@ -1502,13 +1513,13 @@ function OnEvent(frame, event, arg1, ...)
 			UpdateAuraCooldowns()
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
-		ForAllButtons(Update)
+		ForAllButtons(Update, nil, event)
 	elseif event == "ACTIONBAR_SHOWGRID" then
 		ShowGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
 		HideGrid()
 	elseif event == "UPDATE_BINDINGS" then
-		ForAllButtons(UpdateHotkeys)
+		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns()
@@ -1525,7 +1536,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
-		ForAllButtons(UpdateButtonState, true)
+		ForAllButtons(UpdateButtonState, true, event)
 	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
@@ -1609,7 +1620,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "PET_STABLE_UPDATE" or event == "PET_STABLE_SHOW" then
-		ForAllButtons(Update)
+		ForAllButtons(Update, nil, event)
 
 		if event == "PET_STABLE_UPDATE" and UseCustomFlyout then
 			UpdateFlyoutSpells()
@@ -1649,7 +1660,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "SPELL_UPDATE_CHARGES" then
-		ForAllButtons(UpdateCount, true)
+		ForAllButtons(UpdateCount, true, event)
 	elseif event == "UPDATE_SUMMONPETS_ACTION" then
 		for button in next, ActiveButtons do
 			if button._state_type == "action" then
@@ -1663,7 +1674,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 	elseif event == "SPELL_UPDATE_ICON" then
-		ForAllButtons(Update, true)
+		ForAllButtons(Update, true, event)
 	end
 end
 
@@ -2049,6 +2060,15 @@ function Update(self, which)
 
 	-- this could've been a spec change, need to call OnStateChanged for action buttons, if present
 	if isTypeAction and not InCombatLockdown() then
+		local updateReleaseCasting = which == "PLAYER_ENTERING_WORLD" and self:GetAttribute("UpdateReleaseCasting")
+		if updateReleaseCasting then -- zone in dragon mount on Evokers can bug
+			self.header:SetFrameRef("updateButton", self)
+			self.header:Execute(([[
+				local frame = self:GetFrameRef("updateButton")
+				control:RunFor(frame, frame:GetAttribute("UpdateReleaseCasting"), %s, %s)
+			]]):format(formatHelper(self._state_type), formatHelper(self._state_action)))
+		end
+
 		local onStateChanged = self:GetAttribute("OnStateChanged")
 		if onStateChanged then
 			self.header:SetFrameRef("updateButton", self)
@@ -2574,6 +2594,7 @@ Generic.IsInRange               = function(self)
 	if unit == "player" then
 		unit = nil
 	end
+
 	local val = self:IsUnitInRange(unit)
 	-- map 1/0 to true false, since the return values are inconsistent between actions and spells
 	if val == 1 then val = true elseif val == 0 then val = false end
@@ -2692,7 +2713,7 @@ Item.IsCurrentlyActive       = function(self) return IsCurrentItem(self._state_a
 Item.IsAutoRepeat            = function(self) return nil end
 Item.IsUsable                = function(self) return IsUsableItem(self._state_action) end
 Item.IsConsumableOrStackable = function(self) return IsConsumableItem(self._state_action) end
-Item.IsUnitInRange           = function(self, unit) return IsItemInRange(self._state_action, unit) end
+Item.IsUnitInRange           = function(self, unit) return InCombatLockdown() or IsItemInRange(self._state_action, unit) end
 Item.SetTooltip              = function(self) return GameTooltip:SetHyperlink(self._state_action) end
 Item.GetSpellId              = function(self) return nil end
 Item.GetPassiveCooldownSpellID = function(self) return nil end

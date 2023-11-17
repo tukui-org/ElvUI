@@ -4,16 +4,22 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, pairs, min, random = type, pairs, min, random
+local type, pairs, min, random, strfind, next = type, pairs, min, random, strfind, next
 
+local UnitName = UnitName
+local UnitPower = UnitPower
+local UnitClass = UnitClass
+local UnitHealth = UnitHealth
 local UnitPowerMax = UnitPowerMax
 local UnitHealthMax = UnitHealthMax
+local UnitPowerType = UnitPowerType
 local InCombatLockdown = InCombatLockdown
 local UnregisterUnitWatch = UnregisterUnitWatch
 local RegisterUnitWatch = RegisterUnitWatch
 local RegisterStateDriver = RegisterStateDriver
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
@@ -21,100 +27,168 @@ local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
 
+local forceShown = {}
 local attributeBlacklist = {
 	showRaid = true,
 	showParty = true,
 	showSolo = true
 }
 
+local colorTags = {
+	healthcolor = true,
+	powercolor = true,
+	classcolor = true,
+	namecolor = true
+}
+
+local PowerType = Enum.PowerType
+local classPowers = {
+	[0] = PowerType.Mana,
+	[1] = PowerType.Rage,
+	[2] = PowerType.Focus,
+	[3] = PowerType.Energy
+}
+
+if E.Wrath then -- also handled in Elements/Power
+	classPowers[4] = PowerType.RunicPower
+elseif E.Retail then
+	classPowers[4] = PowerType.RunicPower
+	classPowers[5] = PowerType.PAIN
+	classPowers[6] = PowerType.FURY
+	classPowers[7] = PowerType.LunarPower
+	classPowers[8] = PowerType.Insanity
+	classPowers[9] = PowerType.Maelstrom
+	classPowers[10] = PowerType.Alternate or 10
+end
+
+local function envUnit(arg1)
+	local frame = configEnv._FRAME -- yoink
+	if not frame then return arg1, true end
+
+	local cool = frame.oldUnit
+	local unit = frame.unit or arg1
+	if cool then -- everyone who is cool <3
+		return cool or unit
+	else -- someone that's okay, i guess
+		return unit, true
+	end
+end
+
 local function createConfigEnv()
 	if configEnv then return end
 
 	configEnv = setmetatable({
-		UnitPower = function(unit, displayType)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitPower(unit, displayType)
+		UnitPower = function(arg1, displayType)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitPower(unit, displayType)
 			end
 
-			return random(1, UnitPowerMax(unit, displayType) or 1)
+			local maxPower = UnitPowerMax(unit, displayType) or 0
+			return random(1, (maxPower > 0 and maxPower) or 100)
 		end,
-		UnitHealth = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitHealth(unit)
+		UnitPowerType = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitPowerType(unit)
 			end
 
-			return random(1, UnitHealthMax(unit))
+			return classPowers[random(0, #classPowers)]
 		end,
-		UnitName = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitName(unit)
+		UnitHealth = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitHealth(unit)
 			end
 
-			if E.CreditsList then
-				local max = #E.CreditsList
-				return E.CreditsList[random(1, max)]
-			end
-
-			return 'Test Name'
+			local maxHealth = UnitHealthMax(unit) or 0
+			return random(1, (maxHealth > 0 and maxHealth) or 100)
 		end,
-		UnitClass = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitClass(unit)
+		UnitName = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitName(unit)
 			end
 
-			local classToken = CLASS_SORT_ORDER[random(1, #(CLASS_SORT_ORDER))]
+			local cool = E.CreditsList
+			local people = cool and #cool
+			if people > 0 then
+				return cool[random(1, people)]
+			else
+				return UnitName(unit)
+			end
+		end,
+		UnitClass = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitClass(unit)
+			end
+
+			local classToken = CLASS_SORT_ORDER[random(1, NUM_CLASS_ORDER)]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
 		end,
-		ColorGradient = ElvUF.ColorGradient,
-		Hex = ElvUF.Tags.Env.Hex,
+		Env = ElvUF.Tags.Env,
 		_VARS = ElvUF.Tags.Vars,
-		_TAGS = ElvUF.Tags.Env._TAGS,
-		_COLORS = ElvUF.colors
+		_COLORS = ElvUF.colors,
+		ColorGradient = ElvUF.ColorGradient,
 	}, {
-		__index = _G,
+		__index = function(obj, key)
+			local envValue = ElvUF.Tags.Env[key]
+			if envValue ~= nil then
+				return envValue
+			end
+
+			return obj[key]
+		end,
 		__newindex = function(_, key, value)
 			_G[key] = value
 		end,
 	})
 
-	overrideFuncs['classcolor'] = ElvUF.Tags.Methods['classcolor']
-	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
-	overrideFuncs['name:veryshort'] = ElvUF.Tags.Methods['name:veryshort']
-	overrideFuncs['name:short'] = ElvUF.Tags.Methods['name:short']
-	overrideFuncs['name:medium'] = ElvUF.Tags.Methods['name:medium']
-	overrideFuncs['name:long'] = ElvUF.Tags.Methods['name:long']
-	overrideFuncs['name'] = ElvUF.Tags.Methods['name']
+	for tag, func in next, ElvUF.Tags.Methods do
+		if colorTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
+			overrideFuncs[tag] = func
+		end
+	end
+end
 
-	overrideFuncs['healthcolor'] = ElvUF.Tags.Methods['healthcolor']
-	overrideFuncs['health:current'] = ElvUF.Tags.Methods['health:current']
-	overrideFuncs['health:deficit'] = ElvUF.Tags.Methods['health:deficit']
-	overrideFuncs['health:current-percent'] = ElvUF.Tags.Methods['health:current-percent']
-	overrideFuncs['health:current-max'] = ElvUF.Tags.Methods['health:current-max']
-	overrideFuncs['health:current-max-percent'] = ElvUF.Tags.Methods['health:current-max-percent']
-	overrideFuncs['health:max'] = ElvUF.Tags.Methods['health:max']
-	overrideFuncs['health:percent'] = ElvUF.Tags.Methods['health:percent']
+local function WhoIsAwesome(awesome)
+	if not configEnv then
+		createConfigEnv()
+	end
 
-	overrideFuncs['powercolor'] = ElvUF.Tags.Methods['powercolor']
-	overrideFuncs['power:current'] = ElvUF.Tags.Methods['power:current']
-	overrideFuncs['power:deficit'] = ElvUF.Tags.Methods['power:deficit']
-	overrideFuncs['power:current-percent'] = ElvUF.Tags.Methods['power:current-percent']
-	overrideFuncs['power:current-max'] = ElvUF.Tags.Methods['power:current-max']
-	overrideFuncs['power:current-max-percent'] = ElvUF.Tags.Methods['power:current-max-percent']
-	overrideFuncs['power:max'] = ElvUF.Tags.Methods['power:max']
-	overrideFuncs['power:percent'] = ElvUF.Tags.Methods['power:percent']
+	if awesome then
+		for _, func in pairs(overrideFuncs) do
+			if type(func) == 'function' then
+				if not originalEnvs[func] then
+					originalEnvs[func] = getfenv(func)
+					setfenv(func, configEnv)
+				end
+			end
+		end
+	else
+		for func, env in pairs(originalEnvs) do
+			setfenv(func, env)
+			originalEnvs[func] = nil
+		end
+	end
 end
 
 function UF:ForceShow(frame)
 	if InCombatLockdown() then return end
 	if not frame.isForced then
-		frame.oldUnit = frame.unit
-		frame.unit = 'player'
 		frame.isForced = true
-		frame.oldOnUpdate = frame:GetScript('OnUpdate')
+		frame.forceShowAuras = true
+
+		frame.unit = 'player'
+		frame.oldUnit = frame.unit
 	end
 
-	frame.forceShowAuras = true
-	frame:SetScript('OnUpdate', nil)
+	if not next(forceShown) then
+		WhoIsAwesome(true)
+	end
+	forceShown[frame] = true
+
 	frame:EnableMouse(false)
 	frame:Show()
 
@@ -138,20 +212,24 @@ function UF:UnforceShow(frame)
 	if InCombatLockdown() then return end
 	if not frame.isForced then return end
 
-	frame.unit = frame.oldUnit or frame.unit
-	frame.oldUnit = nil
+	forceShown[frame] = nil
+	if not next(forceShown) then
+		WhoIsAwesome(false)
+	end
+
 	frame.isForced = nil
 	frame.forceShowAuras = nil
+
+	if frame.oldUnit ~= nil then
+		frame.unit = frame.oldUnit
+		frame.oldUnit = nil
+	end
+
 	frame:EnableMouse(true)
 
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
-
-	if frame.oldOnUpdate then
-		frame:SetScript('OnUpdate', frame.oldOnUpdate)
-		frame.oldOnUpdate = nil
-	end
 
 	if _G[frame:GetName()..'Target'] then
 		self:UnforceShow(_G[frame:GetName()..'Target'])
@@ -259,29 +337,13 @@ end
 function UF:HeaderConfig(header, configMode)
 	if InCombatLockdown() then return end
 
-	createConfigEnv()
-
 	header.forceShow = configMode
 	header.forceShowAuras = configMode
 	header.isForced = configMode
 
 	if configMode then
-		for _, func in pairs(overrideFuncs) do
-			if type(func) == 'function' then
-				if not originalEnvs[func] then
-					originalEnvs[func] = getfenv(func)
-					setfenv(func, configEnv)
-				end
-			end
-		end
-
 		RegisterStateDriver(header, 'visibility', 'show')
 	else
-		for func, env in pairs(originalEnvs) do
-			setfenv(func, env)
-			originalEnvs[func] = nil
-		end
-
 		RegisterStateDriver(header, 'visibility', header.db.visibility)
 
 		local onEvent = header:GetScript('OnEvent')
