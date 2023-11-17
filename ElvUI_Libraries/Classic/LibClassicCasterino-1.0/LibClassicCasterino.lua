@@ -568,8 +568,19 @@ classCasts = {
 
     [11605] = 1.5, -- Slam
 
-    [20904] = 3, -- Aimed Shot
-    [25294] = 0.5, -- Multi-Shot
+    [19434] = 3, -- Aimed Shot [rank 1]
+    [20900] = 3, -- Aimed Shot [rank 2]
+    [20901] = 3, -- Aimed Shot [rank 3]
+    [20902] = 3, -- Aimed Shot [rank 4]
+    [20903] = 3, -- Aimed Shot [rank 5]
+    [20904] = 3, -- Aimed Shot [rank 6]
+
+    [2643] = 0.5, -- Multi-Shot [rank 1]
+    [14288] = 0.5, -- Multi-Shot [rank 2]
+    [14289] = 0.5, -- Multi-Shot [rank 3]
+    [14290] = 0.5, -- Multi-Shot [rank 4]
+    [25294] = 0.5, -- Multi-Shot [rank 5]
+
     [1002] = 2, -- Eyes of the Beast
     [2641] = 5, -- Dismiss pet
     [982] = 10, -- Revive Pet
