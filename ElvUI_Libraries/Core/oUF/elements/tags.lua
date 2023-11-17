@@ -585,8 +585,10 @@ eventFrame:SetScript('OnEvent', function(_, event, unit)
 	local strings = eventFontStrings[event]
 	if(strings) then
 		for fs in next, strings do
-			if(not stringsToUpdate[fs] and fs:IsVisible() and (unitlessEvents[event] or fs.parent.unit == unit or (fs.extraUnits and fs.extraUnits[unit]))) then
-				stringsToUpdate[fs] = true
+			if not fs.parent.isForced then -- ElvUI needs this to prevent spam
+				if(not stringsToUpdate[fs] and fs:IsVisible() and (unitlessEvents[event] or fs.parent.unit == unit or (fs.extraUnits and fs.extraUnits[unit]))) then
+					stringsToUpdate[fs] = true
+				end
 			end
 		end
 	end
