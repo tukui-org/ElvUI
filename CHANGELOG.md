@@ -1,3 +1,14 @@
+### Version 13.52 [ November 17th 2023 ]
+*   Skinned Model Control buttons on various frames
+*   Bags Datatext now has an option to Include Reagents
+*   Merchant Buyback Item count text was smaller than intended
+*   Evokers' release casting issue when entering an Instance with Dynamic Flying should be resolved
+*   Opening Bank with Shift down (to open to Reagent Bank) then placing an item, will go into Reagent Bank
+*   Unitframes Range is fixed but less accurate due to Blizzard blocking certain range APIs during combat
+*   Display Frames for Unitframes is now a bit more randomized and handled better on fake units
+*   Classic Era Unitframe backdrops, Heal prediction, and Absorbs are now working properly
+*   Classic Era Aimed Shot and Multi-Shot Castbars work again
+
 ### Version 13.51 [ November 14th 2023 ]
 *   SetCVar was erroring on keydown in some cases
 *   Bleeds list updated for Evokers
