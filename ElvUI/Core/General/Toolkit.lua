@@ -535,14 +535,14 @@ local function addapi(object)
 		if mk.SetTexCoord then hooksecurefunc(mk, 'SetTexCoord', DisablePixelSnap) end
 		if mk.SetTexture then hooksecurefunc(mk, 'SetTexture', DisablePixelSnap) end
 
-		if not E.Retail and mk.SetStatusBarTexture then
+		if E.Wrath and mk.SetStatusBarTexture then
 			hooksecurefunc(mk, 'SetStatusBarTexture', DisablePixelSnap)
 		end
 
 		mk.DisabledPixelSnap = true
 	end
 
-	if E.Retail and not object.fixTheStatusBarsPlease and mk.SetStatusBarTexture then
+	if not E.Wrath and not object.fixTheStatusBarsPlease and mk.SetStatusBarTexture then
 		hooksecurefunc(mk, 'SetValue', FixMinCurDuringValue)
 		hooksecurefunc(mk, 'SetStatusBarTexture', FixMinCurDuringTexture)
 

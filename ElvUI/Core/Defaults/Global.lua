@@ -43,7 +43,7 @@ G.datatexts = {
 		Agility = { Label = '', NoLabel = false },
 		Armor = { Label = '', NoLabel = false },
 		Avoidance = { Label = '', NoLabel = false, decimalLength = 1 },
-		Bags = { textFormat = 'USED_TOTAL', Label = '', NoLabel = false },
+		Bags = { textFormat = 'USED_TOTAL', Label = '', NoLabel = false, includeReagents = false },
 		CallToArms = { Label = '', NoLabel = false },
 		Combat = { TimeFull = true, NoLabel = false },
 		CombatIndicator = { OutOfCombat = '', InCombat = '', OutOfCombatColor = {r = 0, g = 0.8, b = 0}, InCombatColor = {r = 0.8, g = 0, b = 0} },

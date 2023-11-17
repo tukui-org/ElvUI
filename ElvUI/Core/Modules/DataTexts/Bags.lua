@@ -15,7 +15,7 @@ local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Containe
 local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
 
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local CURRENCY = CURRENCY
 
 local displayString, db = ''
@@ -28,7 +28,7 @@ local BAG_TYPES = {
 
 local function OnEvent(self)
 	local free, total = 0, 0
-	for i = 0, NUM_BAG_SLOTS do
+	for i = 0, NUM_BAG_SLOTS + (E.Retail and db.includeReagents and 1 or 0) do
 		local freeSlots, bagType = GetContainerNumFreeSlots(i)
 		if not bagType or bagType == 0 then
 			free, total = free + freeSlots, total + GetContainerNumSlots(i)
@@ -54,7 +54,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	for i = 0, NUM_BAG_SLOTS do
+	for i = 0, NUM_BAG_SLOTS + (E.Retail and 1 or 0) do
 		local bagName = GetBagName(i)
 		if bagName then
 			local numSlots = GetContainerNumSlots(i)
@@ -63,9 +63,9 @@ local function OnEnter()
 			local r, g, b, r2, g2, b2, icon
 
 			if BAG_TYPES[bagType] then -- reverse for ammo bags
-				r2, g2, b2 = E:ColorGradient(usedSlots/numSlots, 1,.1,.1, 1,1,.1, .1,1,.1) -- red, yellow, green
+				r2, g2, b2 = E:ColorGradient(usedSlots / numSlots, 1,.1,.1, 1,1,.1, .1,1,.1) -- red, yellow, green
 			else
-				r2, g2, b2 = E:ColorGradient(usedSlots/numSlots, .1,1,.1, 1,1,.1, 1,.1,.1) -- green, yellow, red
+				r2, g2, b2 = E:ColorGradient(usedSlots / numSlots, .1,1,.1, 1,1,.1, 1,.1,.1) -- green, yellow, red
 			end
 
 			if i > 0 then
