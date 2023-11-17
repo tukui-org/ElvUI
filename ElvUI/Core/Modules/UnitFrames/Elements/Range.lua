@@ -11,7 +11,7 @@ local UnitInPhase = UnitInPhase
 local UnitPhaseReason = UnitPhaseReason
 
 local function getMaxRange(unit)
-	local _, maxRange = RangeCheck:GetRange(unit, true)
+	local _, maxRange = RangeCheck:GetRange(unit, true, true)
 	return maxRange
 end
 

@@ -2,13 +2,13 @@
 Name: LibRangeCheck-3.0
 Author(s): mitch0, WoWUIDev Community
 Website: https://www.curseforge.com/wow/addons/librangecheck-3-0
-Description: A range checking library based on spell ranges
+Description: A range checking library based on interact distances and spell ranges
 Dependencies: LibStub
 License: MIT
 ]]
 
 --- LibRangeCheck-3.0 provides an easy way to check for ranges and get suitable range checking functions for specific ranges.\\
--- The checkers use spell and item range checks for special units where those two cannot be used.\\
+-- The checkers use spell and item range checks, or interact based checks for special units where those two cannot be used.\\
 -- The lib handles the refreshing of checker lists in case talents / spells change and in some special cases when equipment changes (for example some of the mage pvp gloves change the range of the Fire Blast spell), and also handles the caching of items used for item-based range checks.\\
 -- A callback is provided for those interested in checker changes.
 -- @usage
@@ -39,8 +39,8 @@ License: MIT
 --
 -- @class file
 -- @name LibRangeCheck-3.0
-local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 2
+local MAJOR_VERSION = "LibRangeCheck-3.0"
+local MINOR_VERSION = 1
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
@@ -49,35 +49,68 @@ local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 -- GLOBALS: LibStub, CreateFrame
+local next = next
 local type = type
 local wipe = wipe
-local floor = floor
+local print = print
 local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
+local tremove = tremove
 local tostring = tostring
-
 local setmetatable = setmetatable
 local GetSpellInfo = GetSpellInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
 local GetSpellTabInfo = GetSpellTabInfo
+local GetItemInfo = GetItemInfo
 local UnitCanAttack = UnitCanAttack
 local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
+local UnitGUID = UnitGUID
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local CheckInteractDistance = CheckInteractDistance
 local IsSpellInRange = IsSpellInRange
+local IsItemInRange = IsItemInRange
 local UnitClass = UnitClass
+local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
+local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
+local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
 
+local C_Timer_NewTicker = C_Timer.NewTicker
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 
 -- << STATIC CONFIG
 
 local UpdateDelay = .5
+local ItemRequestTimeout = 10.0
+
+-- interact distance based checks. ranges are based on my own measurements (thanks for all the folks who helped me with this)
+local DefaultInteractList = {
+--  [1] = 28, -- Compare Achievements
+--  [2] = 9,  -- Trade
+	[3] = 8,  -- Duel
+	[4] = 28, -- Follow
+--  [5] = 7,  -- unknown
+}
+
+-- interact list overrides for races
+local InteractLists = {
+	Tauren = {
+	--  [2] = 7,
+		[3] = 6,
+		[4] = 25,
+	},
+	Scourge = {
+	--  [2] = 8,
+		[3] = 7,
+		[4] = 27,
+	},
+}
 
 local MeleeRange = 2
 local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
@@ -270,6 +303,208 @@ tinsert(ResSpells.WARLOCK, 20707)   -- Soulstone (40 yards)
 
 tinsert(PetSpells.WARLOCK, 755)     -- Health Funnel (45 yards)
 
+-- Items [Special thanks to Maldivia for the nice list]
+
+local FriendItems = {
+	[2] = {
+		37727, -- Ruby Acorn
+	},
+	[3] = {
+		42732, -- Everfrost Razor
+	},
+	[5] = {
+		8149, -- Voodoo Charm
+		136605, -- Solendra's Compassion
+		63427, -- Worgsaw
+	},
+	[8] = {
+		34368, -- Attuned Crystal Cores
+		33278, -- Burning Torch
+	},
+	[10] = {
+		32321, -- Sparrowhawk Net
+		17626, -- Frostwolf Muzzle
+	},
+	[15] = {
+		1251, -- Linen Bandage
+		2581, -- Heavy Linen Bandage
+		3530, -- Wool Bandage
+		3531, -- Heavy Wool Bandage
+		6450, -- Silk Bandage
+		6451, -- Heavy Silk Bandage
+		8544, -- Mageweave Bandage
+		8545, -- Heavy Mageweave Bandage
+		14529, -- Runecloth Bandage
+		14530, -- Heavy Runecloth Bandage
+		21990, -- Netherweave Bandage
+		21991, -- Heavy Netherweave Bandage
+		34721, -- Frostweave Bandage
+		34722, -- Heavy Frostweave Bandage
+		--38643, -- Thick Frostweave Bandage (uncomment for Wotlk)
+		--38640, -- Dense Frostweave Bandage (uncomment for Wotlk)
+	},
+	[20] = {
+		21519, -- Mistletoe
+	},
+	[25] = {
+		31463, -- Zezzak's Shard
+		13289, -- Egan's Blaster
+	},
+	[30] = {
+		1180, -- Scroll of Stamina
+		1478, -- Scroll of Protection II
+		3012, -- Scroll of Agility
+		1712, -- Scroll of Spirit II
+		2290, -- Scroll of Intellect II
+		1711, -- Scroll of Stamina II
+		34191, -- Handful of Snowflakes
+	},
+	[35] = {
+		18904, -- Zorbin's Ultra-Shrinker
+	},
+	[40] = {
+		34471, -- Vial of the Sunwell
+	},
+	[45] = {
+		32698, -- Wrangling Rope
+	},
+	[60] = {
+		32825, -- Soul Cannon
+		37887, -- Seeds of Nature's Wrath
+	},
+	[70] = {
+		41265, -- Eyesore Blaster
+	},
+	[80] = {
+		35278, -- Reinforced Net
+	},
+	[100] = {
+		41058, -- Hyldnir Harpoon
+	},
+	[150] = {
+		46954, -- Flaming Spears
+	},
+}
+
+if isRetail then
+	FriendItems[1] = {
+		90175, -- Gin-Ji Knife Set -- doesn't seem to work for pets (always returns nil)
+	}
+	FriendItems[4] = {
+		129055, -- Shoe Shine Kit
+	}
+	FriendItems[7] = {
+		61323, -- Ruby Seeds
+	}
+	FriendItems[38] = {
+		140786, -- Ley Spider Eggs
+	}
+	FriendItems[55] = {
+		74637, -- Kiryn's Poison Vial
+	}
+	FriendItems[50] = {
+		116139, -- Haunting Memento
+	}
+	FriendItems[90] = {
+		133925, -- Fel Lash
+	}
+	FriendItems[200] = {
+		75208, -- Rancher's Lariat
+	}
+end
+
+local HarmItems = {
+	[1] = {
+	},
+	[2] = {
+		37727, -- Ruby Acorn
+	},
+	[3] = {
+		42732, -- Everfrost Razor
+	},
+	[5] = {
+		8149, -- Voodoo Charm
+		136605, -- Solendra's Compassion
+		63427, -- Worgsaw
+	},
+	[8] = {
+		34368, -- Attuned Crystal Cores
+		33278, -- Burning Torch
+	},
+	[10] = {
+		32321, -- Sparrowhawk Net
+		17626, -- Frostwolf Muzzle
+	},
+	[15] = {
+		33069, -- Sturdy Rope
+	},
+	[20] = {
+		10645, -- Gnomish Death Ray
+	},
+	[25] = {
+		24268, -- Netherweave Net
+		41509, -- Frostweave Net
+		31463, -- Zezzak's Shard
+		13289, -- Egan's Blaster
+	},
+	[30] = {
+		835, -- Large Rope Net
+		7734, -- Six Demon Bag
+		34191, -- Handful of Snowflakes
+	},
+	[35] = {
+		24269, -- Heavy Netherweave Net
+		18904, -- Zorbin's Ultra-Shrinker
+	},
+	[40] = {
+		28767, -- The Decapitator
+	},
+	[45] = {
+		--32698, -- Wrangling Rope
+		23836, -- Goblin Rocket Launcher
+	},
+	[60] = {
+		32825, -- Soul Cannon
+		37887, -- Seeds of Nature's Wrath
+	},
+	[70] = {
+		41265, -- Eyesore Blaster
+	},
+	[80] = {
+		35278, -- Reinforced Net
+	},
+	[100] = {
+		33119, -- Malister's Frost Wand
+	},
+	[150] = {
+		46954, -- Flaming Spears
+	},
+}
+
+if isRetail then
+	HarmItems[4] = {
+		129055, -- Shoe Shine Kit
+	}
+	HarmItems[7] = {
+		61323, -- Ruby Seeds
+	}
+	HarmItems[38] = {
+		140786, -- Ley Spider Eggs
+	}
+	HarmItems[50] = {
+		116139, -- Haunting Memento
+	}
+	HarmItems[55] = {
+		74637, -- Kiryn's Poison Vial
+	}
+	HarmItems[90] = {
+		133925, -- Fel Lash
+	}
+	HarmItems[200] = {
+		75208, -- Rancher's Lariat
+	}
+end
+
 -- This could've been done by checking player race as well and creating tables for those, but it's easier like this
 for _, v in pairs(FriendSpells) do
 	tinsert(v, 28880) -- Gift of the Naaru (40 yards)
@@ -279,7 +514,17 @@ end
 
 -- temporary stuff
 
+local pendingItemRequest
+local itemRequestTimeoutAt
+local foundNewItems
+local cacheAllItems
+local friendItemRequests
+local harmItemRequests
 local lastUpdate = 0
+
+-- minRangeCheck is a function to check if spells with minimum range are really out of range, or fail due to range < minRange. See :init() for its setup
+local minRangeCheck = function(unit) return CheckInteractDistance(unit, 2) end
+
 local checkers_Spell = setmetatable({}, {
 	__index = function(t, spellIdx)
 		local func = function(unit)
@@ -296,9 +541,31 @@ local checkers_SpellWithMin = setmetatable({}, {
 		local func = function(unit)
 			if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
 				return true
+			elseif minRangeCheck(unit) then
+				return true, true
 			end
 		end
 		t[spellIdx] = func
+		return func
+	end
+})
+local checkers_Item = setmetatable({}, {
+	__index = function(t, item)
+		local func = function(unit)
+			return IsItemInRange(item, unit)
+		end
+		t[item] = func
+		return func
+	end
+})
+local checkers_Interact = setmetatable({}, {
+	__index = function(t, index)
+		local func = function(unit)
+			if CheckInteractDistance(unit, index) then
+				return true
+			end
+		end
+		t[index] = func
 		return func
 	end
 })
@@ -315,6 +582,13 @@ local function copyTable(src, dst)
 		end
 	end
 	return dst
+end
+
+local function initItemRequests(cacheAll)
+	friendItemRequests = copyTable(FriendItems)
+	harmItemRequests = copyTable(HarmItems)
+	cacheAllItems = cacheAll
+	foundNewItems = nil
 end
 
 local function getNumSpells()
@@ -350,16 +624,28 @@ local function addChecker(t, range, minRange, checker, info)
 	tinsert(t, rc)
 end
 
-local function createCheckerList(spellList)
+local function createCheckerList(spellList, itemList, interactList)
 	local res = {}
+	if itemList then
+		for range, items in pairs(itemList) do
+			for i = 1, #items do
+				local item = items[i]
+				if GetItemInfo(item) then
+					addChecker(res, range, nil, checkers_Item[item], "item:" .. item)
+					break
+				end
+			end
+		end
+	end
+
 	if spellList then
 		for i = 1, #spellList do
 			local sid = spellList[i]
 			local name, _, _, _, minRange, range = GetSpellInfo(sid)
 			local spellIdx = findSpellIdx(name)
 			if spellIdx and range then
-				minRange = floor(minRange + 0.5)
-				range = floor(range + 0.5)
+				minRange = math_floor(minRange + 0.5)
+				range = math_floor(range + 0.5)
 
 				-- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
 
@@ -380,15 +666,36 @@ local function createCheckerList(spellList)
 		end
 	end
 
+	if interactList and not next(res) then
+		for index, range in pairs(interactList) do
+			addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
+		end
+	end
+
 	return res
 end
 
--- returns minRange, maxRange, or nil
+local rangeCache = {}
+
+local function resetRangeCache()
+	wipe(rangeCache)
+end
+
+local function invalidateRangeCache(maxAge)
+	local currentTime = GetTime()
+	for k, v in pairs(rangeCache) do
+		-- if the entry is older than maxAge, clear this data from the cache
+		if v.updateTime + maxAge < currentTime then
+			rangeCache[k] = nil
+		end
+	end
+end
+
+-- returns minRange, maxRange  or nil
 local function getRangeWithCheckerList(unit, checkerList)
-	local num = #checkerList
-	local lo, hi = 1, num
+	local lo, hi = 1, #checkerList
 	while lo <= hi do
-		local mid = floor((lo + hi) / 2)
+		local mid = math_floor((lo + hi) / 2)
 		local rc = checkerList[mid]
 		if rc.checker(unit) then
 			lo = mid + 1
@@ -396,11 +703,8 @@ local function getRangeWithCheckerList(unit, checkerList)
 			hi = mid - 1
 		end
 	end
-
-	if num == 0 then
-		return 0, 0 -- probably MiscRC with no data
-	elseif lo > num then
-		return 0, checkerList[num].range
+	if lo > #checkerList then
+		return 0, checkerList[#checkerList].range
 	elseif lo <= 1 then
 		return checkerList[1].range, nil
 	else
@@ -408,7 +712,7 @@ local function getRangeWithCheckerList(unit, checkerList)
 	end
 end
 
-local function getRange(unit)
+local function getRange(unit, noItems)
 	local canAssist = UnitCanAssist("player", unit)
 	if UnitIsDeadOrGhost(unit) then
 		if canAssist then
@@ -419,19 +723,44 @@ local function getRange(unit)
 	end
 
 	if UnitCanAttack("player", unit) then
-		return getRangeWithCheckerList(unit, lib.harmRC)
+		return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRC or lib.harmRC)
 	elseif UnitIsUnit("pet", unit) then
-		local minRange, maxRange = getRangeWithCheckerList(unit, lib.friendRC)
+		local minRange, maxRange = getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
 		if minRange or maxRange then
 			return minRange, maxRange
 		else
 			return getRangeWithCheckerList(unit, lib.petRC)
 		end
 	elseif canAssist then
-		return getRangeWithCheckerList(unit, lib.friendRC)
+		return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
 	else
 		return getRangeWithCheckerList(unit, lib.miscRC)
 	end
+end
+
+local function getCachedRange(unit, noItems, maxCacheAge)
+	-- maxCacheAge has a default of 0.1 and a maximum of 1 second
+	maxCacheAge = maxCacheAge or 0.1
+	maxCacheAge = maxCacheAge > 1 and 1 or maxCacheAge
+
+	-- compose cache key out of unit guid and noItems
+	local guid = UnitGUID(unit)
+	local cacheKey = guid .. (noItems and "-1" or "-0")
+	local cacheItem = rangeCache[cacheKey]
+
+	local currentTime = GetTime()
+
+	-- if then cache item is valid return it
+	if cacheItem and cacheItem.updateTime + maxCacheAge > currentTime then
+		return cacheItem.minRange, cacheItem.maxRange
+	end
+
+	-- otherwise create a new or update the existing cache item
+	local result = cacheItem or {}
+	result.minRange, result.maxRange = getRange(unit, noItems)
+	result.updateTime = currentTime
+	rangeCache[cacheKey] = result
+	return result.minRange, result.maxRange
 end
 
 local function updateCheckers(origList, newList)
@@ -514,17 +843,31 @@ local function createSmartChecker(friendChecker, harmChecker, miscChecker)
 	end
 end
 
+local minItemChecker = function(item)
+	if GetItemInfo(item) then
+		return function(unit)
+			return IsItemInRange(item, unit)
+		end
+	end
+end
+
 -- OK, here comes the actual lib
 
 -- pre-initialize the checkerLists here so that we can return some meaningful result even if
 -- someone manages to call us before we're properly initialized. miscRC should be independent of
 -- race/class/talents, so it's safe to initialize it here
 -- friendRC and harmRC will be properly initialized later when we have all the necessary data for them
-lib.miscRC = createCheckerList()
-lib.friendRC = createCheckerList()
-lib.harmRC = createCheckerList()
-lib.resRC = createCheckerList()
-lib.petRC = createCheckerList()
+lib.checkerCache_Spell = lib.checkerCache_Spell or {}
+lib.checkerCache_Item = lib.checkerCache_Item or {}
+lib.miscRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.friendRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.harmRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.resRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.petRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.friendNoItemsRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.harmNoItemsRC = createCheckerList(nil, nil, DefaultInteractList)
+
+lib.failedItemRequests = {}
 
 -- << Public API
 
@@ -562,19 +905,54 @@ function lib:init(forced)
 	end
 	self.initialized = true
 	local _, playerClass = UnitClass("player")
+	local _, playerRace = UnitRace("player")
 
+	minRangeCheck = nil
+
+	-- first try to find a nice item we can use for minRangeCheck
+	local harmItems = HarmItems[15]
+	if harmItems then
+		for i = 1, #harmItems do
+			local minCheck = minItemChecker(harmItems[i])
+			if minCheck then
+				minRangeCheck = minCheck
+				break
+			end
+		end
+	end
+
+	if not minRangeCheck then -- fall back to interact distance checks
+		if playerClass == "HUNTER" or playerRace == "Tauren" then
+			-- for Hunters: use interact4 as it's safer
+			-- for Taurens: interact4 is actually closer than 25yd and interact3 is closer than 8yd, so we can't use that
+			minRangeCheck = checkers_Interact[4]
+		else
+			minRangeCheck = checkers_Interact[3]
+		end
+	end
+
+	local interactList = InteractLists[playerRace] or DefaultInteractList
 	self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
 	local changed = false
-	if updateCheckers(self.friendRC, createCheckerList(FriendSpells[playerClass])) then
+	if updateCheckers(self.friendRC, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
 		changed = true
 	end
-	if updateCheckers(self.harmRC, createCheckerList(HarmSpells[playerClass])) then
+	if updateCheckers(self.harmRC, createCheckerList(HarmSpells[playerClass], HarmItems, interactList)) then
 		changed = true
 	end
-	if updateCheckers(self.resRC, createCheckerList(ResSpells[playerClass])) then
+	if updateCheckers(self.friendNoItemsRC, createCheckerList(FriendSpells[playerClass], nil, interactList)) then
 		changed = true
 	end
-	if updateCheckers(self.petRC, createCheckerList(PetSpells[playerClass])) then
+	if updateCheckers(self.harmNoItemsRC, createCheckerList(HarmSpells[playerClass], nil, interactList)) then
+		changed = true
+	end
+	if updateCheckers(self.miscRC, createCheckerList(nil, nil, interactList)) then
+		changed = true
+	end
+	if updateCheckers(self.resRC, createCheckerList(ResSpells[playerClass], nil, interactList)) then
+		changed = true
+	end
+	if updateCheckers(self.petRC, createCheckerList(PetSpells[playerClass], nil, interactList)) then
 		changed = true
 	end
 	if changed and self.callbacks then
@@ -694,13 +1072,15 @@ end
 --- Get a range estimate as **minRange**, **maxRange**.
 -- @param unit the target unit to check range to.
 -- @param checkVisible if set to true, then a UnitIsVisible check is made, and **nil** is returned if the unit is not visible
+-- @param noItems if set to true, no items and only spells are being used for the range check
+-- @param maxCacheAge the timespan a cached range value is considered valid (default 0.1 seconds, maximum 1 second)
 -- @return **minRange**, **maxRange** pair if a range estimate could be determined, **nil** otherwise. **maxRange** is **nil** if **unit** is further away than the highest possible range we can check.
 -- Includes checks for unit validity and friendly/enemy status.
 -- @usage
 -- local rc = LibStub("LibRangeCheck-3.0")
 -- local minRange, maxRange = rc:GetRange('target')
 -- local minRangeIfVisible, maxRangeIfVisible = rc:GetRange('target', true)
-function lib:GetRange(unit, checkVisible)
+function lib:GetRange(unit, checkVisible, noItems, maxCacheAge)
 	if not UnitExists(unit) then
 		return nil
 	end
@@ -709,7 +1089,7 @@ function lib:GetRange(unit, checkVisible)
 		return nil
 	end
 
-	return getRange(unit)
+	return getCachedRange(unit, noItems, maxCacheAge)
 end
 
 -- keep this for compatibility
@@ -751,9 +1131,88 @@ function lib:UNIT_AURA(_, unit)
 	end
 end
 
+function lib:GET_ITEM_INFO_RECEIVED(_, item, success)
+	-- print("### GET_ITEM_INFO_RECEIVED: " .. tostring(item) .. ", " .. tostring(success))
+	if item == pendingItemRequest then
+		pendingItemRequest = nil
+		if not success then
+			self.failedItemRequests[item] = true
+		end
+		lastUpdate = UpdateDelay
+	end
+end
+
+function lib:processItemRequests(itemRequests)
+	while true do
+		local range, items = next(itemRequests)
+		if not range then return end
+		while true do
+			local i, item = next(items)
+			if not i then
+				itemRequests[range] = nil
+				break
+			elseif self.failedItemRequests[item] then
+				-- print("### processItemRequests: failed: " .. tostring(item))
+				tremove(items, i)
+			elseif item == pendingItemRequest and GetTime() < itemRequestTimeoutAt then
+				return true -- still waiting for server response
+			elseif GetItemInfo(item) then
+				-- print("### processItemRequests: found: " .. tostring(item))
+				if itemRequestTimeoutAt then
+					-- print("### processItemRequests: new: " .. tostring(item))
+					foundNewItems = true
+					itemRequestTimeoutAt = nil
+					pendingItemRequest = nil
+				end
+				if not cacheAllItems then
+					itemRequests[range] = nil
+					break
+				end
+				tremove(items, i)
+			elseif not itemRequestTimeoutAt then
+				-- print("### processItemRequests: waiting: " .. tostring(item))
+				itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
+				pendingItemRequest = item
+				if not self.frame:IsEventRegistered("GET_ITEM_INFO_RECEIVED") then
+					self.frame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+				end
+				return true
+			elseif GetTime() >= itemRequestTimeoutAt then
+				-- print("### processItemRequests: timeout: " .. tostring(item))
+				if cacheAllItems then
+					print(MAJOR_VERSION .. ": timeout for item: " .. tostring(item))
+				end
+				self.failedItemRequests[item] = true
+				itemRequestTimeoutAt = nil
+				pendingItemRequest = nil
+				tremove(items, i)
+			else
+				return true -- still waiting for server response
+			end
+		end
+	end
+end
+
 function lib:initialOnUpdate()
 	self:init()
+	if friendItemRequests then
+		if self:processItemRequests(friendItemRequests) then return end
+		friendItemRequests = nil
+	end
+	if harmItemRequests then
+		if self:processItemRequests(harmItemRequests) then return end
+		harmItemRequests = nil
+	end
+	if foundNewItems then
+		self:init(true)
+		foundNewItems = nil
+	end
+	if cacheAllItems then
+		print(MAJOR_VERSION .. ": finished cache")
+		cacheAllItems = nil
+	end
 	self.frame:Hide()
+	self.frame:UnregisterEvent("GET_ITEM_INFO_RECEIVED")
 end
 
 function lib:scheduleInit()
@@ -768,6 +1227,10 @@ function lib:scheduleAuraCheck()
 end
 
 -- << load-time initialization
+
+local function invalidateRangeFive()
+	invalidateRangeCache(5)
+end
 
 function lib:activate()
 	if not self.frame then
@@ -789,13 +1252,18 @@ function lib:activate()
 		end
 	end
 
+	if not self.cacheResetTimer then
+		self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
+	end
+
+	initItemRequests()
+
 	self.frame:SetScript("OnEvent", function(_, ...) self:OnEvent(...) end)
 	self.frame:SetScript("OnUpdate", function(_, elapsed)
 		lastUpdate = lastUpdate + elapsed
 		if lastUpdate < UpdateDelay then
 			return
 		end
-
 		lastUpdate = 0
 		self:initialOnUpdate()
 	end)
