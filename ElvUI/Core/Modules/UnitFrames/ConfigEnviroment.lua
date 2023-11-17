@@ -4,8 +4,12 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, pairs, min, random = type, pairs, min, random
+local type, pairs, min, random, strfind = type, pairs, min, random, strfind
 
+local UnitName = UnitName
+local UnitPower = UnitPower
+local UnitClass = UnitClass
+local UnitHealth = UnitHealth
 local UnitPowerMax = UnitPowerMax
 local UnitHealthMax = UnitHealthMax
 local InCombatLockdown = InCombatLockdown
@@ -14,6 +18,7 @@ local RegisterUnitWatch = RegisterUnitWatch
 local RegisterStateDriver = RegisterStateDriver
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 
@@ -27,51 +32,77 @@ local attributeBlacklist = {
 	showSolo = true
 }
 
+local function envUnit(arg1)
+	local frame = configEnv._FRAME -- yoink
+	if not frame then return arg1, true end
+
+	local old = frame.oldUnit
+	local unit = frame.unit or arg1
+	if not old or (strfind(old, 'target') or strfind(old, 'focus')) then
+		return unit, true -- treat these as real
+	else
+		return old or unit -- everyone who is cool <3
+	end
+end
+
 local function createConfigEnv()
 	if configEnv then return end
 
 	configEnv = setmetatable({
-		UnitPower = function(unit, displayType)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitPower(unit, displayType)
+		UnitPower = function(arg1, displayType)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitPower(unit, displayType)
 			end
 
-			return random(1, UnitPowerMax(unit, displayType) or 1)
+			local maxPower = UnitPowerMax(unit, displayType) or 0
+			return random(1, (maxPower > 0 and maxPower) or 100)
 		end,
-		UnitHealth = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitHealth(unit)
+		UnitHealth = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitHealth(unit)
 			end
 
-			return random(1, UnitHealthMax(unit))
+			local maxHealth = UnitHealthMax(unit) or 0
+			return random(1, (maxHealth > 0 and maxHealth) or 100)
 		end,
-		UnitName = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitName(unit)
+		UnitName = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitName(unit)
 			end
 
-			if E.CreditsList then
-				local max = #E.CreditsList
-				return E.CreditsList[random(1, max)]
+			local cool = E.CreditsList
+			local people = cool and #cool
+			if people > 0 then
+				return cool[random(1, people)]
+			else
+				return UnitName(unit)
 			end
-
-			return 'Test Name'
 		end,
-		UnitClass = function(unit)
-			if unit:find('target') or unit:find('focus') then
-				return _G.UnitClass(unit)
+		UnitClass = function(arg1)
+			local unit, real = envUnit(arg1)
+			if real then
+				return UnitClass(unit)
 			end
 
-			local classToken = CLASS_SORT_ORDER[random(1, #(CLASS_SORT_ORDER))]
+			local classToken = CLASS_SORT_ORDER[random(1, NUM_CLASS_ORDER)]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
 		end,
-		ColorGradient = ElvUF.ColorGradient,
-		Hex = ElvUF.Tags.Env.Hex,
+		Env = ElvUF.Tags.Env,
 		_VARS = ElvUF.Tags.Vars,
-		_TAGS = ElvUF.Tags.Env._TAGS,
-		_COLORS = ElvUF.colors
+		_COLORS = ElvUF.colors,
+		ColorGradient = ElvUF.ColorGradient,
 	}, {
-		__index = _G,
+		__index = function(obj, key)
+			local envValue = ElvUF.Tags.Env[key]
+			if envValue ~= nil then
+				return envValue
+			end
+
+			return obj[key]
+		end,
 		__newindex = function(_, key, value)
 			_G[key] = value
 		end,
