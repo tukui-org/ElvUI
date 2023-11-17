@@ -1184,7 +1184,7 @@ end
 
 do
 	local function EventlessUpdate(frame, elapsed)
-		if not frame.unit or not UnitExists(frame.unit) then
+		if not frame.unit or not UnitExists(frame.unit) or not frame.__eventless then
 			return
 		else
 			local frequency = frame.elapsed or 0

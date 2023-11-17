@@ -4,7 +4,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
-local type, pairs, min, random, strfind = type, pairs, min, random, strfind
+local type, pairs, min, random, next = type, pairs, min, random, next
 
 local UnitName = UnitName
 local UnitPower = UnitPower
@@ -26,6 +26,7 @@ local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
 
+local forceShown = {}
 local attributeBlacklist = {
 	showRaid = true,
 	showParty = true,
@@ -36,12 +37,12 @@ local function envUnit(arg1)
 	local frame = configEnv._FRAME -- yoink
 	if not frame then return arg1, true end
 
-	local old = frame.oldUnit
+	local cool = frame.oldUnit
 	local unit = frame.unit or arg1
-	if not old or (strfind(old, 'target') or strfind(old, 'focus')) then
-		return unit, true -- treat these as real
-	else
-		return old or unit -- everyone who is cool <3
+	if cool then -- everyone who is cool <3
+		return cool or unit
+	else -- someone that's okay, i guess
+		return unit, true
 	end
 end
 
@@ -135,17 +136,43 @@ local function createConfigEnv()
 	overrideFuncs['power:percent'] = ElvUF.Tags.Methods['power:percent']
 end
 
+local function WhoIsAwesome(awesome)
+	if not configEnv then
+		createConfigEnv()
+	end
+
+	if awesome then
+		for _, func in pairs(overrideFuncs) do
+			if type(func) == 'function' then
+				if not originalEnvs[func] then
+					originalEnvs[func] = getfenv(func)
+					setfenv(func, configEnv)
+				end
+			end
+		end
+	else
+		for func, env in pairs(originalEnvs) do
+			setfenv(func, env)
+			originalEnvs[func] = nil
+		end
+	end
+end
+
 function UF:ForceShow(frame)
 	if InCombatLockdown() then return end
 	if not frame.isForced then
-		frame.oldUnit = frame.unit
-		frame.unit = 'player'
 		frame.isForced = true
-		frame.oldOnUpdate = frame:GetScript('OnUpdate')
+		frame.forceShowAuras = true
+
+		frame.unit = 'player'
+		frame.oldUnit = frame.unit
 	end
 
-	frame.forceShowAuras = true
-	frame:SetScript('OnUpdate', nil)
+	if not next(forceShown) then
+		WhoIsAwesome(true)
+	end
+	forceShown[frame] = true
+
 	frame:EnableMouse(false)
 	frame:Show()
 
@@ -169,20 +196,24 @@ function UF:UnforceShow(frame)
 	if InCombatLockdown() then return end
 	if not frame.isForced then return end
 
-	frame.unit = frame.oldUnit or frame.unit
-	frame.oldUnit = nil
+	forceShown[frame] = nil
+	if not next(forceShown) then
+		WhoIsAwesome(false)
+	end
+
 	frame.isForced = nil
 	frame.forceShowAuras = nil
+
+	if frame.oldUnit ~= nil then
+		frame.unit = frame.oldUnit
+		frame.oldUnit = nil
+	end
+
 	frame:EnableMouse(true)
 
 	-- Ask the SecureStateDriver to show/hide the frame for us
 	UnregisterUnitWatch(frame)
 	RegisterUnitWatch(frame)
-
-	if frame.oldOnUpdate then
-		frame:SetScript('OnUpdate', frame.oldOnUpdate)
-		frame.oldOnUpdate = nil
-	end
 
 	if _G[frame:GetName()..'Target'] then
 		self:UnforceShow(_G[frame:GetName()..'Target'])
@@ -290,29 +321,13 @@ end
 function UF:HeaderConfig(header, configMode)
 	if InCombatLockdown() then return end
 
-	createConfigEnv()
-
 	header.forceShow = configMode
 	header.forceShowAuras = configMode
 	header.isForced = configMode
 
 	if configMode then
-		for _, func in pairs(overrideFuncs) do
-			if type(func) == 'function' then
-				if not originalEnvs[func] then
-					originalEnvs[func] = getfenv(func)
-					setfenv(func, configEnv)
-				end
-			end
-		end
-
 		RegisterStateDriver(header, 'visibility', 'show')
 	else
-		for func, env in pairs(originalEnvs) do
-			setfenv(func, env)
-			originalEnvs[func] = nil
-		end
-
 		RegisterStateDriver(header, 'visibility', header.db.visibility)
 
 		local onEvent = header:GetScript('OnEvent')

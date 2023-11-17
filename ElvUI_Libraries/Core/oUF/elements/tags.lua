@@ -623,8 +623,10 @@ local function enableTimer(timer)
 		frame:SetScript('OnUpdate', function(_, elapsed)
 			if total >= timer then
 				for fs in next, strings do
-					if fs.parent:IsShown() and unitExists(fs.parent.unit) then
-						fs:UpdateTag()
+					if not fs.parent.isForced then -- ElvUI needs this to prevent spam
+						if fs.parent:IsShown() and unitExists(fs.parent.unit) then
+							fs:UpdateTag()
+						end
 					end
 				end
 
