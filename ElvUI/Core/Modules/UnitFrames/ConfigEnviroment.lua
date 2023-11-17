@@ -34,6 +34,13 @@ local attributeBlacklist = {
 	showSolo = true
 }
 
+local colorTags = {
+	healthcolor = true,
+	powercolor = true,
+	classcolor = true,
+	namecolor = true
+}
+
 local PowerType = Enum.PowerType
 local classPowers = {
 	[0] = PowerType.Mana,
@@ -138,14 +145,8 @@ local function createConfigEnv()
 		end,
 	})
 
-
-	overrideFuncs['classcolor'] = ElvUF.Tags.Methods['classcolor']
-	overrideFuncs['namecolor'] = ElvUF.Tags.Methods['namecolor']
-	overrideFuncs['healthcolor'] = ElvUF.Tags.Methods['healthcolor']
-	overrideFuncs['powercolor'] = ElvUF.Tags.Methods['powercolor']
-
 	for tag, func in next, ElvUF.Tags.Methods do
-		if strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:') then
+		if colorTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
 			overrideFuncs[tag] = func
 		end
 	end
