@@ -189,9 +189,7 @@ local function CreateDTOptions(name, data)
 			end
 		end
 
-		if name == 'Bags' then
-			optionTable.args.includeReagents = ACH:Toggle(E.NewSign..L["Include Reagents"], nil, 5)
-		elseif name == 'Combat' then
+		if name == 'Combat' then
 			optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
 		elseif name == 'CombatIndicator' then
 			optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
@@ -242,7 +240,11 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Reputation' or name == 'Experience' then
 			optionTable.args.textFormat.values = { PERCENT = L["Percent"], CUR = L["Current"], REM = L["Remaining"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }
 		elseif name == 'Bags' then
-			optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
+			if E.Retail then
+				optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], FREE_REAGENT = L["Free/Reagent"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], FREE_REAGENT_TOTAL = L["Free/Reagent/Total"], USED_TOTAL = L["Used/Total"] }
+			else
+				optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
+			end
 		elseif name == 'Talent/Loot Specialization' then
 			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] })
 			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)

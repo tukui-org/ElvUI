@@ -15,7 +15,7 @@ local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Containe
 local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
 
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local CURRENCY = CURRENCY
 
 local displayString, db = ''
@@ -27,11 +27,18 @@ local BAG_TYPES = {
 }
 
 local function OnEvent(self)
-	local free, total = 0, 0
-	for i = 0, NUM_BAG_SLOTS + (E.Retail and db.includeReagents and 1 or 0) do
+	local free, freeWithoutReagent, reagentFree, total = 0, 0, 0, 0
+	for i = 0, NUM_BAG_SLOTS do
 		local freeSlots, bagType = GetContainerNumFreeSlots(i)
 		if not bagType or bagType == 0 then
-			free, total = free + freeSlots, total + GetContainerNumSlots(i)
+			total = total + GetContainerNumSlots(i)
+			if E.Retail and i == Enum.BagIndex.ReagentBag then
+				reagentFree = reagentFree + freeSlots
+			else
+				freeWithoutReagent = freeWithoutReagent + freeSlots
+			end
+			
+			free = free + freeSlots
 		end
 	end
 
@@ -42,6 +49,10 @@ local function OnEvent(self)
 		self.text:SetFormattedText(displayString, total - free)
 	elseif textFormat == 'FREE_TOTAL' then
 		self.text:SetFormattedText(displayString, free, total)
+	elseif textFormat == 'FREE_REAGENT_TOTAL' then
+		self.text:SetFormattedText(displayString, freeWithoutReagent, reagentFree, total)
+	elseif textFormat == 'FREE_REAGENT' then
+		self.text:SetFormattedText(displayString, freeWithoutReagent, reagentFree)
 	else
 		self.text:SetFormattedText(displayString, total - free, total)
 	end
@@ -54,7 +65,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	for i = 0, NUM_BAG_SLOTS + (E.Retail and 1 or 0) do
+	for i = 0, NUM_BAG_SLOTS do
 		local bagName = GetBagName(i)
 		if bagName then
 			local numSlots = GetContainerNumSlots(i)
@@ -103,7 +114,17 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', db.NoLabel and '' or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': '), hex, (db.textFormat == 'FREE' or db.textFormat == 'USED') and '%d|r' or '%d/%d|r')
+	local name = db.NoLabel and '' or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': ')
+	
+	local form = (db.textFormat == 'FREE' or db.textFormat == 'USED') and '%d|r' or '%d/%d|r'
+	
+	if db.textFormat == 'FREE_REAGENT_TOTAL' then
+		form = '%d/%d/%d|r'
+	elseif db.textFormat == 'FREE_REAGENT' then
+		form = '%d/%d|r'
+	end
+
+	displayString = strjoin('', name, hex, form)
 end
 
 DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ApplySettings)
