@@ -742,6 +742,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
+		nameplate.isGameObject = UnitIsGameObject(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.isBattlePet = E.Retail and UnitIsBattlePet(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -786,7 +787,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.widgetContainer:SetPoint(E.InversePoints[point], nameplate, point, db.xOffset, db.yOffset)
 		end
 
-		if nameplate.widgetsOnly then
+		if nameplate.widgetsOnly or nameplate.isGameObject then
 			NP:DisablePlate(nameplate)
 
 			if nameplate.RaisedElement:IsShown() then
