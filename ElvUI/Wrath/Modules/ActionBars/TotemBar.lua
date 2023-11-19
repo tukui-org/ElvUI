@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, pairs, gsub = ipairs, pairs, gsub
+local ipairs, next, gsub = ipairs, next, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -92,8 +92,6 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	if button.cooldown then
 		AB:ColorSwipeTexture(button.cooldown)
-		button.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
-
 		E:RegisterCooldown(button.cooldown, 'actionbar')
 	end
 
@@ -238,7 +236,6 @@ function AB:PositionAndSizeTotemBar()
 
 	local fadeAlpha = bar.mouseover and 0 or AB.db.totemBar.alpha
 	bar:SetAlpha(fadeAlpha)
-	AB:FadeTotemBlings(bar, fadeAlpha)
 
 	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
@@ -259,6 +256,11 @@ function AB:PositionAndSizeTotemBar()
 		actionButton:SetSize(button:GetSize()) -- these need to match for icon trim setting
 		AB:TrimIcon(actionButton, useMasque)
 
+		if actionButton.cooldown then
+			actionButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+			AB:FadeBlingTexture(actionButton.cooldown, fadeAlpha)
+		end
+
 		if i == 1 then
 			button:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
 		else
@@ -266,11 +268,22 @@ function AB:PositionAndSizeTotemBar()
 		end
 	end
 
-	_G.MultiCastRecallSpellButton:Size(buttonWidth, buttonHeight)
+	local recallButton = _G.MultiCastRecallSpellButton
+	recallButton:Size(buttonWidth, buttonHeight)
 	AB:MultiCastRecallSpellButton_Update()
 
+	if summonButton.cooldown then
+		summonButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+		AB:FadeBlingTexture(summonButton.cooldown, fadeAlpha)
+	end
+
+	if recallButton.cooldown then
+		recallButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+		AB:FadeBlingTexture(recallButton.cooldown, fadeAlpha)
+	end
+
 	AB:TrimIcon(summonButton, useMasque)
-	AB:TrimIcon(_G.MultiCastRecallSpellButton, useMasque)
+	AB:TrimIcon(recallButton, useMasque)
 
 	_G.MultiCastFlyoutFrameCloseButton:Width(buttonWidth)
 	_G.MultiCastFlyoutFrameOpenButton:Width(buttonWidth)
@@ -378,7 +391,7 @@ function AB:CreateTotemBar()
 	AB:SkinMultiCastButton(spellButton)
 	spellButton.commandName = spellButton.buttonType..'1' -- hotkey support
 
-	for button in pairs(bar.buttons) do
+	for button in next, bar.buttons do
 		button:HookScript('OnEnter', AB.TotemButton_OnEnter)
 		button:HookScript('OnLeave', AB.TotemButton_OnLeave)
 	end
