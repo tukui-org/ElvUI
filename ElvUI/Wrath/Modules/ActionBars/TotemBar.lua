@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, pairs, gsub = ipairs, pairs, gsub
+local ipairs, next, gsub = ipairs, next, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
@@ -95,7 +95,9 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 		E:RegisterCooldown(button.cooldown, 'actionbar')
 	end
 
+	button.parent = bar
 	button.parentName = 'ElvUI_TotemBar'
+
 	AB.handledbuttons[button] = true
 	bar.buttons[button] = true
 	button.isSkinned = true
@@ -166,6 +168,14 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	frame:Height(totalHeight + closeButton:GetHeight())
 end
 
+function AB:FadeTotemBlings(totemBar, alpha)
+	if AB.db.hideCooldownBling then return end
+
+	for button in next, totemBar.buttons do
+		AB:FadeBlingTexture(button.cooldown, alpha)
+	end
+end
+
 function AB:TotemButton_OnEnter()
 	-- totem keybind support from actionbar module
 	if E.private.actionbar.enable then
@@ -180,11 +190,18 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), AB.db.totemBar.alpha)
+	if bar.mouseover then
+		local alpha = AB.db.totemBar.alpha
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), alpha)
+		AB:FadeTotemBlings(bar, alpha)
+	end
 end
 
 function AB:TotemBar_OnLeave()
-	return bar.mouseover and E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	if bar.mouseover then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeTotemBlings(bar, 0)
+	end
 end
 
 function AB:PositionAndSizeTotemBar()
@@ -216,7 +233,9 @@ function AB:PositionAndSizeTotemBar()
 	end -- this is Simpy voodoo, dont change it
 
 	bar.mouseover = AB.db.totemBar.mouseover
-	bar:SetAlpha(bar.mouseover and 0 or AB.db.totemBar.alpha)
+
+	local fadeAlpha = bar.mouseover and 0 or AB.db.totemBar.alpha
+	bar:SetAlpha(fadeAlpha)
 
 	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
@@ -237,6 +256,11 @@ function AB:PositionAndSizeTotemBar()
 		actionButton:SetSize(button:GetSize()) -- these need to match for icon trim setting
 		AB:TrimIcon(actionButton, useMasque)
 
+		if actionButton.cooldown then
+			actionButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+			AB:FadeBlingTexture(actionButton.cooldown, fadeAlpha)
+		end
+
 		if i == 1 then
 			button:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
 		else
@@ -244,11 +268,22 @@ function AB:PositionAndSizeTotemBar()
 		end
 	end
 
-	_G.MultiCastRecallSpellButton:Size(buttonWidth, buttonHeight)
+	local recallButton = _G.MultiCastRecallSpellButton
+	recallButton:Size(buttonWidth, buttonHeight)
 	AB:MultiCastRecallSpellButton_Update()
 
+	if summonButton.cooldown then
+		summonButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+		AB:FadeBlingTexture(summonButton.cooldown, fadeAlpha)
+	end
+
+	if recallButton.cooldown then
+		recallButton.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+		AB:FadeBlingTexture(recallButton.cooldown, fadeAlpha)
+	end
+
 	AB:TrimIcon(summonButton, useMasque)
-	AB:TrimIcon(_G.MultiCastRecallSpellButton, useMasque)
+	AB:TrimIcon(recallButton, useMasque)
 
 	_G.MultiCastFlyoutFrameCloseButton:Width(buttonWidth)
 	_G.MultiCastFlyoutFrameOpenButton:Width(buttonWidth)
@@ -293,12 +328,16 @@ end
 function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button:SetTemplate()
 	button:StyleButton()
+
 	button.normalTexture:ClearAllPoints()
 	button.normalTexture:SetPoint('CENTER')
 	button.normalTexture:SetSize(16, 16)
 	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	button.normalTexture:SetTexCoord(0, 1, 0, 1)
 	button.normalTexture.SetTexCoord = E.noop
+
+	button:HookScript('OnEnter', AB.TotemBar_OnEnter)
+	button:HookScript('OnLeave', AB.TotemBar_OnLeave)
 
 	if rotate then
 		button.normalTexture:SetRotation(3.14)
@@ -352,7 +391,7 @@ function AB:CreateTotemBar()
 	AB:SkinMultiCastButton(spellButton)
 	spellButton.commandName = spellButton.buttonType..'1' -- hotkey support
 
-	for button in pairs(bar.buttons) do
+	for button in next, bar.buttons do
 		button:HookScript('OnEnter', AB.TotemButton_OnEnter)
 		button:HookScript('OnLeave', AB.TotemButton_OnLeave)
 	end

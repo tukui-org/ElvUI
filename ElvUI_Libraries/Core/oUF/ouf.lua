@@ -821,7 +821,9 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
+	eventHandler:RegisterEvent('UNIT_MAXHEALTH')
 	eventHandler:RegisterEvent('UNIT_FACTION')
+	eventHandler:RegisterEvent('UNIT_HEALTH')
 
 	if(IsLoggedIn()) then
 		if(nameplateCVars) then
@@ -853,7 +855,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if unitFrame and unitFrame.UpdateAllElements then
 				nameplate.unitFrame:UpdateAllElements(event)
 			end
-		elseif(event == 'UNIT_FACTION' and unit) then
+		elseif((event == 'UNIT_FACTION' or event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH') and unit) then
 			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 

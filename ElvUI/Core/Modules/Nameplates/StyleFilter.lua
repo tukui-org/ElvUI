@@ -566,9 +566,9 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 	local db = NP:PlateDB(frame)
 
 	if Visibility or NameOnly then
-		c.NameOnly, c.Visibility = NameOnly, Visibility
+		c.Visibility, c.NameOnly = Visibility, NameOnly
 
-		NP:DisablePlate(frame, NameOnly, NameOnly)
+		NP:DisablePlate(frame, NameOnly and 1 or nil)
 
 		if Visibility then
 			frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise

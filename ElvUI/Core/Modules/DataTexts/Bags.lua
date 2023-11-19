@@ -14,9 +14,11 @@ local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_
 local GetContainerNumSlots = GetContainerNumSlots or (C_Container and C_Container.GetContainerNumSlots)
 local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
 
-local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local CURRENCY = CURRENCY
+local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0)
+
+local REAGENT_CONTAINER = Enum.BagIndex.ReagentBag
 
 local displayString, db = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
@@ -27,23 +29,30 @@ local BAG_TYPES = {
 }
 
 local function OnEvent(self)
-	local free, total = 0, 0
-	for i = 0, NUM_BAG_SLOTS + (E.Retail and db.includeReagents and 1 or 0) do
+	local freeNormal, totalNormal, freeReagent, totalReagent = 0, 0, 0, 0
+	for i = 0, NUM_BAG_SLOTS do
 		local freeSlots, bagType = GetContainerNumFreeSlots(i)
 		if not bagType or bagType == 0 then
-			free, total = free + freeSlots, total + GetContainerNumSlots(i)
+			local totalSlots = GetContainerNumSlots(i)
+			if i == REAGENT_CONTAINER then
+				totalReagent = totalReagent + totalSlots
+				freeReagent = freeReagent + freeSlots
+			else
+				totalNormal = totalNormal + totalSlots
+				freeNormal = freeNormal + freeSlots
+			end
 		end
 	end
 
-	local textFormat = db.textFormat
+	local textFormat, reagents = db.textFormat, db.includeReagents
 	if textFormat == 'FREE' then
-		self.text:SetFormattedText(displayString, free)
+		self.text:SetFormattedText(displayString, freeNormal, reagents and freeReagent or '')
 	elseif textFormat == 'USED' then
-		self.text:SetFormattedText(displayString, total - free)
-	elseif textFormat == 'FREE_TOTAL' then
-		self.text:SetFormattedText(displayString, free, total)
-	else
-		self.text:SetFormattedText(displayString, total - free, total)
+		self.text:SetFormattedText(displayString, totalNormal - freeNormal, reagents and (totalReagent - freeReagent) or '')
+	elseif textFormat == 'USED_TOTAL' then
+		self.text:SetFormattedText(displayString, totalNormal - freeNormal, totalNormal, reagents and (totalReagent - freeReagent) or '', reagents and totalReagent or '')
+	else -- FREE_TOTAL
+		self.text:SetFormattedText(displayString, freeNormal, totalNormal, reagents and freeReagent or '', reagents and totalReagent or '')
 	end
 end
 
@@ -54,7 +63,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	for i = 0, NUM_BAG_SLOTS + (E.Retail and 1 or 0) do
+	for i = 0, NUM_BAG_SLOTS do
 		local bagName = GetBagName(i)
 		if bagName then
 			local numSlots = GetContainerNumSlots(i)
@@ -103,7 +112,12 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', db.NoLabel and '' or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': '), hex, (db.textFormat == 'FREE' or db.textFormat == 'USED') and '%d|r' or '%d/%d|r')
+	local name = (db.NoLabel and '') or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': ')
+	if db.textFormat == 'FREE' or db.textFormat == 'USED' then
+		displayString = strjoin('', name, hex, (db.includeReagents and '%d (%d)|r') or '%d|r')
+	else
+		displayString = strjoin('', name, hex, (db.includeReagents and '%d/%d (%d/%d)|r') or '%d/%d|r')
+	end
 end
 
 DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ApplySettings)

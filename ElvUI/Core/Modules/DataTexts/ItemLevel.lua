@@ -29,7 +29,7 @@ local function OnEvent(self)
 
 		local hex = db.rarityColor and E:RGBToHex(r, g, b) or '|cFFFFFFFF'
 
-		self.text:SetFormattedText(avg == avgEquipped and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
+		self.text:SetFormattedText((db.onlyEquipped or avg == avgEquipped) and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
 	else
 		self.text:SetText(NOT_APPLICABLE)
 	end
