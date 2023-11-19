@@ -92,10 +92,14 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	if button.cooldown then
 		AB:ColorSwipeTexture(button.cooldown)
+		button.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
+
 		E:RegisterCooldown(button.cooldown, 'actionbar')
 	end
 
+	button.parent = bar
 	button.parentName = 'ElvUI_TotemBar'
+
 	AB.handledbuttons[button] = true
 	bar.buttons[button] = true
 	button.isSkinned = true
@@ -166,6 +170,14 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	frame:Height(totalHeight + closeButton:GetHeight())
 end
 
+function AB:FadeTotemBlings(totemBar, alpha)
+	if AB.db.hideCooldownBling then return end
+
+	for button in next, totemBar.buttons do
+		AB:FadeBlingTexture(button.cooldown, alpha)
+	end
+end
+
 function AB:TotemButton_OnEnter()
 	-- totem keybind support from actionbar module
 	if E.private.actionbar.enable then
@@ -180,11 +192,18 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	return bar.mouseover and E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), AB.db.totemBar.alpha)
+	if bar.mouseover then
+		local alpha = AB.db.totemBar.alpha
+		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), alpha)
+		AB:FadeTotemBlings(bar, alpha)
+	end
 end
 
 function AB:TotemBar_OnLeave()
-	return bar.mouseover and E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	if bar.mouseover then
+		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeTotemBlings(bar, 0)
+	end
 end
 
 function AB:PositionAndSizeTotemBar()
@@ -216,7 +235,10 @@ function AB:PositionAndSizeTotemBar()
 	end -- this is Simpy voodoo, dont change it
 
 	bar.mouseover = AB.db.totemBar.mouseover
-	bar:SetAlpha(bar.mouseover and 0 or AB.db.totemBar.alpha)
+
+	local fadeAlpha = bar.mouseover and 0 or AB.db.totemBar.alpha
+	bar:SetAlpha(fadeAlpha)
+	AB:FadeTotemBlings(bar, fadeAlpha)
 
 	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
@@ -293,12 +315,16 @@ end
 function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button:SetTemplate()
 	button:StyleButton()
+
 	button.normalTexture:ClearAllPoints()
 	button.normalTexture:SetPoint('CENTER')
 	button.normalTexture:SetSize(16, 16)
 	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	button.normalTexture:SetTexCoord(0, 1, 0, 1)
 	button.normalTexture.SetTexCoord = E.noop
+
+	button:HookScript('OnEnter', AB.TotemBar_OnEnter)
+	button:HookScript('OnLeave', AB.TotemBar_OnLeave)
 
 	if rotate then
 		button.normalTexture:SetRotation(3.14)
