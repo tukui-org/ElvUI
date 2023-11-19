@@ -14,7 +14,7 @@ local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = GetItemInfo
 
-local BANK_CONTAINER = BANK_CONTAINER
+local BANK_CONTAINER = Enum.BagIndex.Bank
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
 local bagIconCache = {
