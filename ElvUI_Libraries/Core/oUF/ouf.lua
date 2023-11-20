@@ -316,15 +316,8 @@ local function initObject(unit, style, styleFunc, header, ...)
 		-- Expose the frame through oUF.objects.
 		tinsert(objects, object)
 
-		--[[ frame.IsPingable
-		This boolean can be set to false to disable the frame from being pingable. Enabled by default.
-		--]]
-		--[[ Override: frame:GetContextualPingType()
-		Used to define which contextual ping is used for the frame.
-		By default this wraps `C_Ping.GetContextualPingTypeForUnit(UnitGUID(frame.unit))`.
-		--]]
+		-- add the mixin for pings
 		if PingableType_UnitFrameMixin then
-			object:SetAttribute('ping-receiver', true)
 			Mixin(object, PingableType_UnitFrameMixin)
 		end
 
@@ -354,6 +347,17 @@ local function initObject(unit, style, styleFunc, header, ...)
 			object:SetAttribute('*type1', 'target')
 			object:SetAttribute('*type2', 'togglemenu')
 			object:SetAttribute('toggleForVehicle', true)
+
+			--[[ frame.IsPingable
+			This boolean can be set to false to disable the frame from being pingable. Enabled by default.
+			--]]
+			--[[ Override: frame:GetContextualPingType()
+			Used to define which contextual ping is used for the frame.
+			By default this wraps `C_Ping.GetContextualPingTypeForUnit(UnitGUID(frame.unit))`.
+			--]]
+			if PingableType_UnitFrameMixin then
+				object:SetAttribute('ping-receiver', true)
+			end
 
 			if(isEventlessUnit(objectUnit)) then
 				oUF:HandleEventlessUnit(object)
@@ -645,6 +649,10 @@ do
 				frame:SetAttribute('*type1', 'target')
 				frame:SetAttribute('*type2', 'togglemenu')
 				frame:SetAttribute('oUF-guessUnit', unit)
+
+				if PingableType_UnitFrameMixin then
+					object:SetAttribute('ping-receiver', true)
+				end
 			end
 
 			local body = header:GetAttribute('oUF-initialConfigFunction')
