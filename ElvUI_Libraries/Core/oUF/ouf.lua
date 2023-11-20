@@ -651,7 +651,7 @@ do
 				frame:SetAttribute('oUF-guessUnit', unit)
 
 				if PingableType_UnitFrameMixin then
-					object:SetAttribute('ping-receiver', true)
+					frame:SetAttribute('ping-receiver', true)
 				end
 			end
 
