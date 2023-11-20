@@ -712,10 +712,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		if nameplate then
 			nameplate.isDead = UnitIsDead(nameplate.unit)
+
+			local sf = NP:StyleFilterChanges(nameplate)
+			NP:SetupTarget(nameplate, sf.NameOnly or nameplate.isDead)
+		else -- pass it, even as nil here
+			NP:SetupTarget(nameplate)
 		end
 
-		local sf = nameplate and NP:StyleFilterChanges(nameplate)
-		NP:SetupTarget(nameplate, (sf and sf.NameOnly) or (nameplate and nameplate.isDead)) -- pass it, even as nil here
 		return -- don't proceed
 	elseif not nameplate or not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
