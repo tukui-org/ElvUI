@@ -56,16 +56,21 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
-	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
+	if db.seconds then
+		europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d', hex, ':|r%02d')
+		ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ':|r%02d', hex, ' %s|r')
+	else
+		europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
+		ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
+	end
 
 	OnUpdate(self, 20000)
 end
 
-local function ConvertTime(h, m)
+local function ConvertTime(h, m, s)
 	local AmPm
 	if db.time24 == true then
-		return h, m, -1
+		return h, m, s, -1
 	else
 		if h >= 12 then
 			if h > 12 then h = h - 12 end
@@ -76,16 +81,17 @@ local function ConvertTime(h, m)
 		end
 	end
 
-	return h, m, AmPm
+	return h, m, s, AmPm
 end
 
 local function CalculateTimeValues(tooltip)
 	if (tooltip and db.localTime) or (not tooltip and not db.localTime) then
 		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
-		return ConvertTime(dateTable.hour, dateTable.minute)
+		local Sec = date('*t').sec
+		return ConvertTime(dateTable.hour, dateTable.minute, Sec)
 	else
 		local dateTable = date('*t')
-		return ConvertTime(dateTable.hour, dateTable.min)
+		return ConvertTime(dateTable.hour, dateTable.min, dateTable.sec)
 	end
 end
 
@@ -293,7 +299,7 @@ local function OnEnter()
 		end
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues(true)
+	local Hr, Min, Sec, AmPm = CalculateTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
 		DT.tooltip:AddLine(' ')
 	end
@@ -325,14 +331,19 @@ local function OnEvent(self, event)
 	end
 end
 
+local function SetInterval()
+	if db.seconds then return 1 end
+	return 5
+end
+
 function OnUpdate(self, t)
-	self.timeElapsed = (self.timeElapsed or 5) - t
+	self.timeElapsed = (self.timeElapsed or SetInterval()) - t
 	if self.timeElapsed > 0 then return end
-	self.timeElapsed = 5
+	self.timeElapsed = SetInterval()
 
 	if E.Retail then
 		if db.flashInvite and _G.GameTimeFrame.flashInvite then
-			E:Flash(self, 0.53, true)
+			E:Flash(self, 0.50, true)
 		else
 			E:StopFlash(self)
 		end
@@ -342,12 +353,20 @@ function OnUpdate(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues()
+	local Hr, Min, Sec, AmPm = CalculateTimeValues()
 
 	if AmPm == -1 then
-		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
+		if db.seconds then
+			self.text:SetFormattedText(europeDisplayFormat, Hr, Min, Sec)
+		else
+			self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
+		end
 	else
-		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
+		if db.seconds then
+			self.text:SetFormattedText(ukDisplayFormat, Hr, Min, Sec, APM[AmPm])
+		else
+			self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
+		end
 	end
 end
 
