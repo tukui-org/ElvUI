@@ -5,7 +5,7 @@ local _G = _G
 local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local wipe, sort, tinsert = wipe, sort, tinsert
-local date, utf8sub = date, string.utf8sub
+local utf8sub = string.utf8sub
 
 local ToggleFrame = ToggleFrame
 local EJ_GetCurrentTier = EJ_GetCurrentTier
@@ -31,19 +31,23 @@ local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 local WEEKLY_RESET = format('%s %s', WEEKLY, RESET)
 
 local C_Map_GetAreaInfo = C_Map.GetAreaInfo
-local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_DateAndTime_GetSecondsUntilDailyReset = C_DateAndTime.GetSecondsUntilDailyReset
 local C_DateAndTime_GetSecondsUntilWeeklyReset = C_DateAndTime.GetSecondsUntilWeeklyReset
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
-local ukDisplayFormat, europeDisplayFormat = '', ''
-local europeDisplayFormat_nocolor = strjoin('', '%02d', ':|r%02d')
-local ukDisplayFormat_nocolor = strjoin('', '', '%d', ':|r%02d', ' %s|r')
+local lockoutColorExtended = { r = 0.3, g = 1, b = 0.3 }
+local lockoutColorNormal = { r = .8, g = .8, b = .8 }
 local lockoutInfoFormat = '%s%s %s |cffaaaaaa(%s, %s/%s)'
 local lockoutInfoFormatNoEnc = '%s%s %s |cffaaaaaa(%s)'
 local formatBattleGroundInfo = '%s: '
-local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local enteredFrame = false
+local updateTime = 5
+local displayFormats = {
+	uk_nocolor = '',
+	eu_nocolor = '',
+	uk_color = '',
+	eu_color = ''
+}
 
 local OnUpdate, db
 
@@ -56,37 +60,33 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
-	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
+	updateTime = db.seconds and 1 or 5
+
+	local sec = db.seconds and ':|r%02d' or '|r%s'
+	displayFormats.eu_nocolor = strjoin('', '%02d', ':|r%02d', sec)
+	displayFormats.uk_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
+	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
+	displayFormats.uk_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
 
 	OnUpdate(self, 20000)
 end
 
-local function ConvertTime(h, m)
-	local AmPm
-	if db.time24 == true then
-		return h, m, -1
+local function ConvertTime(h, m, s)
+	local secs = db.seconds and s or ''
+	if db.time24 then
+		return h, m, secs, -1
+	elseif h >= 12 then
+		if h > 12 then h = h - 12 end
+		return h, m, secs, 1
 	else
-		if h >= 12 then
-			if h > 12 then h = h - 12 end
-			AmPm = 1
-		else
-			if h == 0 then h = 12 end
-			AmPm = 2
-		end
+		if h == 0 then h = 12 end
+		return h, m, secs, 2
 	end
-
-	return h, m, AmPm
 end
 
 local function CalculateTimeValues(tooltip)
-	if (tooltip and db.localTime) or (not tooltip and not db.localTime) then
-		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
-		return ConvertTime(dateTable.hour, dateTable.minute)
-	else
-		local dateTable = date('*t')
-		return ConvertTime(dateTable.hour, dateTable.min)
-	end
+	local dateTable = E:GetDateTime((tooltip and db.localTime) or (not tooltip and not db.localTime))
+	return ConvertTime(dateTable.hour, dateTable.min, dateTable.sec)
 end
 
 local function OnClick(_, btn)
@@ -293,7 +293,7 @@ local function OnEnter()
 		end
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues(true)
+	local Hr, Min, Sec, AmPm = CalculateTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
 		DT.tooltip:AddLine(' ')
 	end
@@ -309,9 +309,9 @@ local function OnEnter()
 	end
 
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats.eu_nocolor, Hr, Min, Sec), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats.uk_nocolor, Hr, Min, Sec, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	DT.tooltip:Show()
@@ -326,13 +326,13 @@ local function OnEvent(self, event)
 end
 
 function OnUpdate(self, t)
-	self.timeElapsed = (self.timeElapsed or 5) - t
+	self.timeElapsed = (self.timeElapsed or updateTime) - t
 	if self.timeElapsed > 0 then return end
-	self.timeElapsed = 5
+	self.timeElapsed = updateTime
 
 	if E.Retail then
 		if db.flashInvite and _G.GameTimeFrame.flashInvite then
-			E:Flash(self, 0.53, true)
+			E:Flash(self, 0.5, true)
 		else
 			E:StopFlash(self)
 		end
@@ -342,12 +342,11 @@ function OnUpdate(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues()
-
+	local Hr, Min, Sec, AmPm = CalculateTimeValues()
 	if AmPm == -1 then
-		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
+		self.text:SetFormattedText(displayFormats.eu_color, Hr, Min, Sec)
 	else
-		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
+		self.text:SetFormattedText(displayFormats.uk_color, Hr, Min, Sec, APM[AmPm])
 	end
 end
 
