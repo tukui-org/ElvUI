@@ -85,7 +85,7 @@ local function ConvertTime(h, m, s)
 end
 
 local function GetTimeValues(tooltip)
-	local dateTable = E:GetDateTime((tooltip and db.localTime) or (not tooltip and not db.localTime))
+	local dateTable = E:GetDateTime((tooltip and not db.localTime) or (not tooltip and db.localTime))
 	return ConvertTime(dateTable.hour, dateTable.min, dateTable.sec)
 end
 
