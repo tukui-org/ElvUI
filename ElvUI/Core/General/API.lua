@@ -6,16 +6,18 @@ local TT = E:GetModule('Tooltip')
 local LCS = E.Libs.LCS
 
 local _G = _G
-local wipe, max, next, tinsert = wipe, max, next, tinsert
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetClassInfo = GetClassInfo
+local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetServerTime = GetServerTime
 local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
@@ -162,6 +164,23 @@ E.SpecName = { -- english locale
 	[72]	= 'Fury',
 	[73]	= 'Protection',
 }
+
+function E:GetDateTime(localTime, unix)
+	if not localTime then -- try to properly handle realm time
+		local dateTable = date('*t', GetServerTime())
+		dateTable.hour = GetGameTime() -- realm time since it doesnt match ServerTimeLocal
+
+		if unix then
+			return time(dateTable)
+		else
+			return dateTable
+		end
+	elseif unix then
+		return GetServerTime()
+	else
+		return date('*t', GetServerTime())
+	end
+end
 
 function E:ClassColor(class, usePriestColor)
 	if not class then return end

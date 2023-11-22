@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 3
+local MINOR_VERSION = 4
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -542,25 +542,7 @@ local checkers_Spell = setmetatable({}, {
     return func
   end,
 })
-local function createCheckers_SpellWithMin(fallbackSpell)
-  local checkers_SpellWithMin = setmetatable({}, {
-    __index = function(t, spellIdx)
-      local func = function(unit)
-        if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-          return true
-        elseif fallbackSpell and IsSpellInRange(fallbackSpell, BOOKTYPE_SPELL, unit) == 1 then
-          return true, true
-        else
-          return false
-        end
-      end
-      t[spellIdx] = func
-      return func
-    end,
-  })
-  return checkers_SpellWithMin
-end
-
+local checkers_SpellWithMin = {} -- see getCheckerForSpellWithMinRange()
 local checkers_Item = setmetatable({}, {
   __index = function(t, item)
     local func = function(unit)
@@ -630,6 +612,46 @@ local function findSpellIdx(spellName)
   return nil
 end
 
+local function fixRange(range)
+  if range then
+    return math_floor(range + 0.5)
+  end
+end
+
+local function getSpellData(sid)
+  local name, _, _, _, minRange, range = GetSpellInfo(sid)
+  return name, fixRange(minRange), fixRange(range), findSpellIdx(name)
+end
+
+local function findMinRangeChecker(origMinRange, origRange, spellList)
+  for i = 1, #spellList do
+    local sid = spellList[i]
+    local name, minRange, range, spellIdx = getSpellData(sid)
+    if range and spellIdx and origMinRange <= range and range <= origRange and minRange == 0 then
+      return checkers_Spell[findSpellIdx]
+    end
+  end
+end
+
+local function getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
+  local checker = checkers_SpellWithMin[spellIdx]
+  if checker then
+    return checker
+  end
+  local minRangeChecker = findMinRangeChecker(minRange, range, spellList)
+  if minRangeChecker then
+    checker = function(unit)
+      if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
+        return true
+      elseif minRangeChecker(unit) then
+        return true, true
+      end
+    end
+    checkers_SpellWithMin[spellIdx] = checker
+    return checker
+  end
+end
+
 -- minRange should be nil if there's no minRange, not 0
 local function addChecker(t, range, minRange, checker, info)
   local rc = { ["range"] = range, ["minRange"] = minRange, ["checker"] = checker, ["info"] = info }
@@ -661,33 +683,10 @@ local function createCheckerList(spellList, itemList, interactList)
   end
 
   if spellList then
-    local spellIdWithOutMinRange
-    -- Some spells have a minimum range, IsSpellInRange returns false for both being
-    -- too near and too far. To distinguish between those two cases, we determine a spell
-    -- without a min range and use that as a fallback
     for i = 1, #spellList do
       local sid = spellList[i]
-      local name, _, _, _, minRange, range = GetSpellInfo(sid)
-      local spellIdx = findSpellIdx(name)
+      local name, minRange, range, spellIdx = getSpellData(sid)
       if spellIdx and range then
-        minRange = math_floor(minRange + 0.5)
-        if minRange == 0 then
-          spellIdWithOutMinRange = spellIdx
-          break;
-        end
-      end
-    end
-
-    local checkers_SpellWithMin = createCheckers_SpellWithMin(spellIdWithOutMinRange)
-
-    for i = 1, #spellList do
-      local sid = spellList[i]
-      local name, _, _, _, minRange, range = GetSpellInfo(sid)
-      local spellIdx = findSpellIdx(name)
-      if spellIdx and range then
-        minRange = math_floor(minRange + 0.5)
-        range = math_floor(range + 0.5)
-
         -- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
 
         if minRange == 0 then -- getRange() expects minRange to be nil in this case
@@ -699,8 +698,11 @@ local function createCheckerList(spellList, itemList, interactList)
         end
 
         if minRange then
-          addChecker(res, range, minRange, checkers_SpellWithMin[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
-          addChecker(resInCombat, range, minRange, checkers_SpellWithMin[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
+          local checker = getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
+          if checker then
+            addChecker(res, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
+            addChecker(resInCombat, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
+          end
         else
           addChecker(res, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
           addChecker(resInCombat, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
@@ -1333,7 +1335,7 @@ end
 -- << load-time initialization
 
 local function invalidateRangeFive()
-	invalidateRangeCache(5)
+    invalidateRangeCache(5)
 end
 
 function lib:activate()
