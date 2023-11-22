@@ -53,7 +53,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
-local C_DateAndTime_GetServerTimeLocal = C_DateAndTime.GetServerTimeLocal
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
