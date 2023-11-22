@@ -84,7 +84,7 @@ local function ConvertTime(h, m, s)
 	end
 end
 
-local function CalculateTimeValues(tooltip)
+local function GetTimeValues(tooltip)
 	local dateTable = E:GetDateTime((tooltip and db.localTime) or (not tooltip and not db.localTime))
 	return ConvertTime(dateTable.hour, dateTable.min, dateTable.sec)
 end
@@ -293,7 +293,7 @@ local function OnEnter()
 		end
 	end
 
-	local Hr, Min, Sec, AmPm = CalculateTimeValues(true)
+	local Hr, Min, Sec, AmPm = GetTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
 		DT.tooltip:AddLine(' ')
 	end
@@ -342,7 +342,7 @@ function OnUpdate(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, Sec, AmPm = CalculateTimeValues()
+	local Hr, Min, Sec, AmPm = GetTimeValues()
 	if AmPm == -1 then
 		self.text:SetFormattedText(displayFormats.eu_color, Hr, Min, Sec)
 	else
