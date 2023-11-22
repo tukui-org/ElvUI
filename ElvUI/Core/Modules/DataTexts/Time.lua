@@ -43,9 +43,9 @@ local formatBattleGroundInfo = '%s: '
 local enteredFrame = false
 local updateTime = 5
 local displayFormats = {
-	uk_nocolor = '',
+	na_nocolor = '',
 	eu_nocolor = '',
-	uk_color = '',
+	na_color = '',
 	eu_color = ''
 }
 
@@ -64,9 +64,9 @@ local function ApplySettings(self, hex)
 
 	local sec = db.seconds and ':|r%02d' or '|r%s'
 	displayFormats.eu_nocolor = strjoin('', '%02d', ':|r%02d', sec)
-	displayFormats.uk_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
+	displayFormats.na_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
 	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
-	displayFormats.uk_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
+	displayFormats.na_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
 
 	OnUpdate(self, 20000)
 end
@@ -308,7 +308,7 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(WEEKLY_RESET, ToTime(weeklyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
-	DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats[AmPm == -1 and 'eu_nocolor' or 'uk_nocolor'], Hr, Min, Sec, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+	DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats[AmPm == -1 and 'eu_nocolor' or 'na_nocolor'], Hr, Min, Sec, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	DT.tooltip:Show()
 end
 
@@ -338,7 +338,7 @@ function OnUpdate(self, t)
 	end
 
 	local Hr, Min, Sec, AmPm = GetTimeValues()
-	self.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'uk_color'], Hr, Min, Sec, APM[AmPm])
+	self.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'na_color'], Hr, Min, Sec, APM[AmPm])
 end
 
 DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
