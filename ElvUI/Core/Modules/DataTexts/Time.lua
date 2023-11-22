@@ -308,12 +308,7 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(WEEKLY_RESET, ToTime(weeklyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
-	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats.eu_nocolor, Hr, Min, Sec), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
-	else
-		DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats.uk_nocolor, Hr, Min, Sec, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
-	end
-
+	DT.tooltip:AddDoubleLine(db.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(displayFormats[AmPm == -1 and 'eu_nocolor' or 'uk_nocolor'], Hr, Min, Sec, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	DT.tooltip:Show()
 end
 
@@ -343,11 +338,7 @@ function OnUpdate(self, t)
 	end
 
 	local Hr, Min, Sec, AmPm = GetTimeValues()
-	if AmPm == -1 then
-		self.text:SetFormattedText(displayFormats.eu_color, Hr, Min, Sec)
-	else
-		self.text:SetFormattedText(displayFormats.uk_color, Hr, Min, Sec, APM[AmPm])
-	end
+	self.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'uk_color'], Hr, Min, Sec, APM[AmPm])
 end
 
 DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
