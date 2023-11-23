@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 4
+local MINOR_VERSION = 5
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -248,9 +248,11 @@ tinsert(ResSpells.PRIEST, 2006) -- Resurrection (40 yards, level 10)
 if isRetail then
   tinsert(FriendSpells.ROGUE, 36554) -- Shadowstep (Assassination, Subtlety) (25 yards, level 18) -- works on friendly in retail
   tinsert(FriendSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly as well for retail but on classic this is melee range and will return min 0 range 0
+else
+  tinsert(HarmSpells.ROGUE, 2764) -- Throw (30 yards)
 end
 
-tinsert(HarmSpells.ROGUE, 2764) -- Throw (30 yards)
+tinsert(HarmSpells.ROGUE, 185565) -- Poisoned Knife (Assassination) (30 yards, level 29)
 tinsert(HarmSpells.ROGUE, 36554) -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
 tinsert(HarmSpells.ROGUE, 185763) -- Pistol Shot (Outlaw) (20 yards)
 tinsert(HarmSpells.ROGUE, 2094) -- Blind (15 yards)
