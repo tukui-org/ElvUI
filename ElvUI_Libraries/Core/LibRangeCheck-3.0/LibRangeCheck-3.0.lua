@@ -40,10 +40,11 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 5
+local MINOR_VERSION = 7
 
 -- GLOBALS: LibStub, CreateFrame
 
+---@class lib
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then
   return
@@ -88,7 +89,7 @@ local UnitClass = UnitClass
 local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
-local HandSlotId = GetInventorySlotInfo("HandsSlot")
+local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
 
@@ -630,7 +631,7 @@ local function findMinRangeChecker(origMinRange, origRange, spellList)
     local sid = spellList[i]
     local name, minRange, range, spellIdx = getSpellData(sid)
     if range and spellIdx and origMinRange <= range and range <= origRange and minRange == 0 then
-      return checkers_Spell[findSpellIdx]
+      return checkers_Spell[findSpellIdx(name)]
     end
   end
 end
