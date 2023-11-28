@@ -403,8 +403,8 @@ function S:SkinLibDropDownMenu(prefix)
   local function setBackdropTemplate(frame)
     if frame and not frame.template then
       frame:SetTemplate('Transparent')
-      if frame.NineSlice then
-        frame.NineSlice:Kill()
+      if frame.TextureBase then
+        frame.TextureBase:ClearTextureSlice()
       end
     end
   end
