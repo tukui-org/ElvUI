@@ -48,6 +48,19 @@ local function UpdateMerchantInfo()
 	end
 end
 
+local function SetItemButtonScale(button, scale)
+	if button.Count and scale ~= 1 then
+		button.Count:SetScale(1)
+	end
+end
+
+local function SetItemButtonAnchorPoint(button, point, x, y)
+	if button.Count and (point ~= 'BOTTOMRIGHT' or x ~= 0 or y ~= 1) then
+		button.Count:ClearAllPoints()
+		button.Count:Point('BOTTOMRIGHT', 0, 1)
+	end
+end
+
 function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
@@ -115,9 +128,6 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
-	_G.MerchantBuyBackItemItemButton.Count:Point('BOTTOMRIGHT', 0, 1)
-	_G.MerchantBuyBackItemItemButton.Count:SetScale(1)
-
 	local UndoFrame = _G.UndoFrame
 	if UndoFrame then -- Since we move the MerchantBuyBackItemItemButton we also have to move this thingi
 		UndoFrame.Arrow:Point('CENTER', _G.MerchantBuyBackItemItemButton)
@@ -148,6 +158,14 @@ function S:MerchantFrame()
 	-- setup some hooks to fix placement
 	hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', UpdateMerchantInfo)
+
+	-- handle buyback count by the item button hooks
+	_G.MerchantBuyBackItemItemButton.Count:SetScale(1)
+	_G.MerchantBuyBackItemItemButton.Count:ClearAllPoints()
+	_G.MerchantBuyBackItemItemButton.Count:Point('BOTTOMRIGHT', 0, 1)
+
+	hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonScale', SetItemButtonScale)
+	hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonAnchorPoint', SetItemButtonAnchorPoint)
 end
 
 S:AddCallback('MerchantFrame')
