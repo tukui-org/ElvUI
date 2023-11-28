@@ -396,27 +396,50 @@ end
 
 -- DropDownMenu library support
 function S:SkinLibDropDownMenu(prefix)
-	if S[prefix..'_UIDropDownMenuSkinned'] then return end
+  if S[prefix..'_UIDropDownMenuSkinned'] then return end
 
-	local key = (prefix == 'L4' or prefix == 'L3') and 'L' or prefix
+  local key = (prefix == 'L4' or prefix == 'L3') and 'L' or prefix
 
-	local bd = _G[key..'_DropDownList1Backdrop']
-	local mbd = _G[key..'_DropDownList1MenuBackdrop']
-	if bd and not bd.template then bd:SetTemplate('Transparent') end
-	if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
+  local function setBackdropTemplate(frame)
+    if frame and not frame.template then
+      frame:SetTemplate('Transparent')
+      if frame.NineSlice then
+        frame.NineSlice:Kill()
+      end
+    end
+  end
 
-	S[prefix..'_UIDropDownMenuSkinned'] = true
+  local function traverseFrames(frames)
+    for _, frame in pairs(frames) do
+      setBackdropTemplate(frame)
+      if frame:GetNumChildren() > 0 then
+        traverseFrames({frame:GetChildren()})
+      end
+    end
+  end
 
-	local lib = prefix == 'L4' and LibStub.libs['LibUIDropDownMenu-4.0']
-	if (lib and lib.UIDropDownMenu_CreateFrames) or _G[key..'_UIDropDownMenu_CreateFrames'] then
-		hooksecurefunc(lib or _G, (lib and '' or key..'_') .. 'UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS']
-			local ddbd = lvls and _G[key..'_DropDownList'..lvls..'Backdrop']
-			local ddmbd = lvls and _G[key..'_DropDownList'..lvls..'MenuBackdrop']
-			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
-			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
-		end)
-	end
+  local topLevelFrames = {
+    _G[key..'_DropDownList1Backdrop'],
+    _G[key..'_DropDownList1MenuBackdrop']
+  }
+
+  traverseFrames(topLevelFrames)
+
+  local lib = prefix == 'L4' and LibStub.libs['LibUIDropDownMenu-4.0']
+  local createFramesFunc = lib and lib.UIDropDownMenu_CreateFrames or _G[key..'_UIDropDownMenu_CreateFrames']
+  if createFramesFunc then
+    hooksecurefunc(lib or _G, (lib and '' or key..'_') .. 'UIDropDownMenu_CreateFrames', function()
+      local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS']
+      local nestedFrames = {}
+      for i = 1, lvls do
+        table.insert(nestedFrames, _G[key..'_DropDownList'..i..'Backdrop'])
+        table.insert(nestedFrames, _G[key..'_DropDownList'..i..'MenuBackdrop'])
+      end
+      traverseFrames(nestedFrames)
+    end)
+  end
+
+  S[prefix..'_UIDropDownMenuSkinned'] = true
 end
 
 function S:SkinTalentListButtons(frame)
