@@ -57,7 +57,7 @@ end
 local function SetItemButtonAnchorPoint(button, point, x, y)
 	if button.Count and (point ~= 'BOTTOMRIGHT' or x ~= 0 or y ~= 1) then
 		button.Count:ClearAllPoints()
-		button.Count:SetPoint('BOTTOMRIGHT', 0, 1)
+		button.Count:Point('BOTTOMRIGHT', 0, 1)
 	end
 end
 
