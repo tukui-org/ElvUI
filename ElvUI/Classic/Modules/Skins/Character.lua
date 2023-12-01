@@ -92,6 +92,12 @@ function S:CharacterFrame()
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 
+	-- Seasonal
+	if C_Engraving.IsEngravingEnabled then
+		-- TODO
+		-- _G.RuneFrameControlButton
+	end
+
 	-- Reposition Tabs
 	hooksecurefunc('PetTab_Update', HandleTabs)
 	HandleTabs()
