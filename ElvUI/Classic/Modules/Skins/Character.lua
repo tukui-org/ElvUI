@@ -93,9 +93,12 @@ function S:CharacterFrame()
 	end
 
 	-- Seasonal
-	if C_Engraving.IsEngravingEnabled then
-		-- TODO
-		-- _G.RuneFrameControlButton
+	if C_Engraving and C_Engraving.IsEngravingEnabled then
+		S:HandleButton(_G.RuneFrameControlButton, true)
+		_G.RuneFrameControlButton.Icon = _G.RuneFrameControlButton:CreateTexture(nil, 'ARTWORK')
+		_G.RuneFrameControlButton.Icon:SetTexture('Interface\\Icons\\INV_Misc_Rune_06')
+		_G.RuneFrameControlButton.Icon:SetTexCoord(unpack(E.TexCoords))
+		_G.RuneFrameControlButton.Icon:SetInside(_G.RuneFrameControlButton)
 	end
 
 	-- Reposition Tabs
