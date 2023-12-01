@@ -5,6 +5,7 @@ if not C_Engraving.IsEngravingEnabled then
 	return
 end
 
+local _G = _G
 local C_Engraving_GetRuneCategories = C_Engraving.GetRuneCategories
 
 function S:SkinEngravings()
