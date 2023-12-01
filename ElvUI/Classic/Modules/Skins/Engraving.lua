@@ -30,7 +30,9 @@ function S:SkinEngravings()
 				_G['EngravingFrameHeader'..i].isSkinned = true
 			end
 		end
-		for i = 1, 13 do
+		local buttons = EngravingFrame.scrollFrame.buttons
+		numButtons = #buttons
+		for i = 1, numButtons do
 			if not _G['EngravingFrameScrollFrameButton'..i].isSkinned then
 				S:HandleButton(_G['EngravingFrameScrollFrameButton'..i])
 				_G['EngravingFrameScrollFrameButton'..i].isSkinned = true
