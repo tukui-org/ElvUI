@@ -13,6 +13,7 @@
 	<Script file='Craft.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
+	<Script file='Engraving.lua'/>
 	<Script file='EventTrace.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='GMChat.lua'/>
