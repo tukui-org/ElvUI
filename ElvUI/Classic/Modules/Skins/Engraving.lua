@@ -9,7 +9,7 @@ local C_Engraving_GetRuneCategories = C_Engraving.GetRuneCategories
 
 local function UpdateRuneList()
 	local categories = C_Engraving_GetRuneCategories(true, true)
-	for i = 1, categories and #categories or 0 do
+	for i = 1, (categories and #categories or 0) do
 		local header = _G['EngravingFrameHeader'..i]
 		if header and not header.template then
 			header:StripTextures()
