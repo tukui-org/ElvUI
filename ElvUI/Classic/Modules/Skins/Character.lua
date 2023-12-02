@@ -93,12 +93,16 @@ function S:CharacterFrame()
 	end
 
 	-- Seasonal
-	if C_Engraving and C_Engraving.IsEngravingEnabled then
-		S:HandleButton(_G.RuneFrameControlButton, true)
-		_G.RuneFrameControlButton.Icon = _G.RuneFrameControlButton:CreateTexture(nil, 'ARTWORK')
-		_G.RuneFrameControlButton.Icon:SetTexture('Interface\\Icons\\INV_Misc_Rune_06')
-		_G.RuneFrameControlButton.Icon:SetTexCoord(unpack(E.TexCoords))
-		_G.RuneFrameControlButton.Icon:SetInside(_G.RuneFrameControlButton)
+	local runeButton = E.ClassicSOD and _G.RuneFrameControlButton
+	if runeButton then
+		S:HandleButton(runeButton, true)
+
+		if not runeButton.runeIcon then -- make then icon
+			runeButton.runeIcon = runeButton:CreateTexture(nil, 'ARTWORK')
+			runeButton.runeIcon:SetTexture(134419) -- Interface\Icons\INV_Misc_Rune_06
+			runeButton.runeIcon:SetTexCoord(unpack(E.TexCoords))
+			runeButton.runeIcon:SetInside(runeButton)
+		end
 	end
 
 	-- Reposition Tabs

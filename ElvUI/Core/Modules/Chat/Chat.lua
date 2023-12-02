@@ -325,7 +325,7 @@ do --this can save some main file locals
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
 		-- Luckyone Seasonal
-		z["Player-5826-0202765F"]	= ElvBlue -- [Alliance] Hunter
+		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter

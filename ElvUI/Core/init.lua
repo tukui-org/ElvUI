@@ -21,6 +21,7 @@ local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 
 local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
@@ -81,11 +82,13 @@ E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 -- Expansions
-E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-E.ClassicHC = E.Classic and IsHardcoreActive()
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
+E.ClassicHC = IsHardcoreActive and IsHardcoreActive()
+E.ClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
