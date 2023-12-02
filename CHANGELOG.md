@@ -1,3 +1,12 @@
+### Version 13.53 [ December 2nd 2023 ]
+*   Updated LibRangeCheck
+*   Mail Font defaulting to outline was changed
+*   Bag Datatext Include Reagents display updated
+*   Item Level Datatext has Only Equipped option now
+*   Nameplates no longer showing on Game Objects and Dead NPCs when using interact
+*   Totembar cooldown blings on Wrath not following mouseover and hide settings
+*   Seconds option for Time Datatext
+
 ### Version 13.52 [ November 17th 2023 ]
 *   Skinned Model Control buttons on various frames
 *   Bags Datatext now has an option to Include Reagents
