@@ -9,6 +9,7 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local unpack = unpack
+
 local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 
@@ -295,7 +296,7 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point('BOTTOMLEFT', 6, 6)
 	else
 		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, 'ARTWORK')
-		frame.ItemLevelText:Point('BOTTOM', _G.CharacterStatsPane.ItemLevelFrame.Value, 'BOTTOM', 0, 0)
+		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
 	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 

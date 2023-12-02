@@ -7,7 +7,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
-local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
+local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tostring, tinsert, tremove, tconcat = tostring, tinsert, tremove, table.concat
@@ -53,7 +53,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
-local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
@@ -325,6 +324,9 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
+		-- Luckyone Seasonal (5826: Lone Wolf EU)
+		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter: Luckyone
+		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin: Unluckyone
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
@@ -912,26 +914,13 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
-function CH:GetChatTime()
-	local unix = time()
-	local realm = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
-	if realm then -- blizzard is weird
-		realm.day = realm.monthDay
-		realm.min = realm.minute
-		realm.sec = date('%S', unix) -- no seconds from CalendarTime
-		realm = time(realm)
-	end
-
-	return realm or unix
-end
-
 function CH:AddMessageEdits(frame, msg, isHistory, historyTime)
 	if not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
 		local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
 		if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 		if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-			local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
+			local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or E:GetDateTime(CH.db.timeStampLocalTime, true))
 			timeStamp = gsub(timeStamp, ' ', '')
 			timeStamp = gsub(timeStamp, 'AM', ' AM')
 			timeStamp = gsub(timeStamp, 'PM', ' PM')
@@ -2764,7 +2753,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if #tempHistory > 0 and not CH:MessageIsProtected(tempHistory[1]) then
 		tempHistory[50] = event
-		tempHistory[51] = CH:GetChatTime()
+		tempHistory[51] = E:GetDateTime(CH.db.timeStampLocalTime, true)
 
 		local coloredName, battleTag
 		if tempHistory[13] and tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end

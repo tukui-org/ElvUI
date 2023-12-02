@@ -113,6 +113,7 @@ V.skins = {
 		debug = true,
 		dressingroom = true,
 		encounterjournal = true,
+		engraving = true,
 		eventLog = true,
 		friends = true,
 		garrison = true,

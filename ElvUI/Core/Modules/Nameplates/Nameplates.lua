@@ -13,7 +13,8 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetPartyAssignment = GetPartyAssignment
 local InCombatLockdown = InCombatLockdown
-local IsInGroup, IsInRaid = IsInGroup, IsInRaid
+local IsInGroup = IsInGroup
+local IsInRaid = IsInRaid
 local UIParent = UIParent
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -23,8 +24,10 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitIsBattlePet = UnitIsBattlePet
+local UnitIsDead = UnitIsDead
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
+local UnitIsGameObject = UnitIsGameObject
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsUnit = UnitIsUnit
@@ -340,11 +343,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
-		NP:DisablePlate(nameplate, db.enable and db.nameOnly)
-
-		if not db.enable and nameplate.RaisedElement:IsShown() then
-			nameplate.RaisedElement:Hide()
-		end
+		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable)
 
 		if nameplate == _G.ElvNP_Test then
 			nameplate.Castbar:SetAlpha(0)
@@ -404,18 +403,23 @@ elseif E.myclass == 'MONK' then
 	tinsert(NP.DisableElements, 'Stagger')
 end
 
-function NP:DisablePlate(nameplate, nameOnly, nameOnlySF)
+function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	for _, element in ipairs(NP.DisableElements) do
 		if nameplate:IsElementEnabled(element) then
 			nameplate:DisableElement(element)
 		end
 	end
 
+	if hideRaised and nameplate.RaisedElement:IsShown() then
+		nameplate.RaisedElement:Hide()
+	end
+
 	NP:Update_PrivateAuras(nameplate, true)
 
 	if nameOnly then
-		NP:Update_Tags(nameplate, nameOnlySF)
-		NP:Update_Highlight(nameplate, nameOnlySF)
+		local styleFilter = nameOnly == 1
+		NP:Update_Tags(nameplate, styleFilter)
+		NP:Update_Highlight(nameplate, styleFilter)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
@@ -706,13 +710,31 @@ end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
-		NP:SetupTarget(nameplate) -- pass it, even as nil here
+		if nameplate then
+			nameplate.isDead = UnitIsDead(nameplate.unit)
+
+			local sf = NP:StyleFilterChanges(nameplate)
+			NP:SetupTarget(nameplate, sf.NameOnly or nameplate.isDead)
+		else -- pass it, even as nil here
+			NP:SetupTarget(nameplate)
+		end
+
 		return -- don't proceed
 	elseif not nameplate or not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
 	end
 
-	if event == 'UNIT_FACTION' then
+	if event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
+		if nameplate.widgetsOnly then return end
+
+		nameplate.isDead = UnitIsDead(unit)
+
+		if nameplate.isDead and not nameplate.isPlayer then
+			NP:DisablePlate(nameplate, nil, true)
+
+			nameplate.previousType = nil -- dont get the plate stuck for next unit
+		end
+	elseif event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
 
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -742,6 +764,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
+		nameplate.isDead = UnitIsDead(unit)
+		nameplate.isGameObject = UnitIsGameObject(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.isBattlePet = E.Retail and UnitIsBattlePet(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -786,12 +810,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.widgetContainer:SetPoint(E.InversePoints[point], nameplate, point, db.xOffset, db.yOffset)
 		end
 
-		if nameplate.widgetsOnly then
-			NP:DisablePlate(nameplate)
-
-			if nameplate.RaisedElement:IsShown() then
-				nameplate.RaisedElement:Hide()
-			end
+		if nameplate.widgetsOnly or nameplate.isGameObject or (nameplate.isDead and not nameplate.isPlayer) then
+			NP:DisablePlate(nameplate, nil, true)
 
 			nameplate.previousType = nil -- dont get the plate stuck for next unit
 		else
