@@ -112,6 +112,7 @@ elseif E.Wrath then
 	toggles.arena = L["Arena"]
 	toggles.arenaRegistrar = L["Arena Registrar"]
 elseif E.Classic then
+	toggles.engraving = L["Engraving"]
 	toggles.battlefield = L["Battlefield"]
 	toggles.craft = L["Craft"]
 end
