@@ -7,7 +7,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
-local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
+local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tostring, tinsert, tremove, tconcat = tostring, tinsert, tremove, table.concat
@@ -324,8 +324,9 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		-- Luckyone Seasonal
-		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
+		-- Luckyone Seasonal (5826: Lone Wolf EU)
+		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter: Luckyone
+		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin: Unluckyone
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
