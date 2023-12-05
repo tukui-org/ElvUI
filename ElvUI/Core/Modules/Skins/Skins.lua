@@ -427,6 +427,20 @@ end
 
 do -- WIM replaces Blizzard globals we need to rehook
 	local hooked = {}
+
+	local function SkinMenu(name)
+		local backdrop = _G[name]
+		if not backdrop then return end
+
+		if backdrop.NineSlice then
+			backdrop = backdrop.NineSlice
+		end
+
+		if not backdrop.template then
+			backdrop:SetTemplate('Transparent')
+		end
+	end
+
 	function S:SkinDropDownMenu(prefix)
 		if hooked[prefix] then return end
 
@@ -445,22 +459,8 @@ do -- WIM replaces Blizzard globals we need to rehook
 				end
 			end
 
-			local Backdrop = _G[listFrameName..'Backdrop']
-			if Backdrop and not Backdrop.template then
-				Backdrop:StripTextures()
-				Backdrop:SetTemplate('Transparent')
-			end
-
-			local menuBackdrop = _G[listFrameName..'MenuBackdrop']
-			if menuBackdrop then
-				if menuBackdrop.NineSlice then
-					menuBackdrop = menuBackdrop.NineSlice
-				end
-
-				if menuBackdrop and not menuBackdrop.template then
-					menuBackdrop:SetTemplate('Transparent')
-				end
-			end
+			SkinMenu(listFrameName..'Backdrop')
+			SkinMenu(listFrameName..'MenuBackdrop')
 		end)
 
 		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
