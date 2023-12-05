@@ -597,7 +597,7 @@ do -- Early Skin Loading
 				if early then
 					tinsert(S.EarlyDropdowns, 'LibDropDownMenu_List')
 				elseif E.private.skins.libDropdown then
-					S:SkinDropDownMenu('LibDropDownMenu_List')
+					S:SkinDropDownMenu('LibDropDownMenu_List', 15)
 				end
 			else
 				local prefix = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (major == 'LibUIDropDownMenu-4.0' and 'L4' or major == 'LibUIDropDownMenu-3.0' and 'L3')

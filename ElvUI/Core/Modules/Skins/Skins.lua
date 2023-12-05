@@ -441,7 +441,7 @@ do -- WIM replaces Blizzard globals we need to rehook
 		end
 	end
 
-	function S:SkinDropDownMenu(prefix)
+	function S:SkinDropDownMenu(prefix, textX, textY)
 		if hooked[prefix] then return end
 
 		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
@@ -499,7 +499,7 @@ do -- WIM replaces Blizzard globals we need to rehook
 				if not button.notCheckable then
 					local text = _G[name..'NormalText']
 					if text then
-						S:HandlePointXY(text, 5)
+						S:HandlePointXY(text, textX or 5, textY)
 					end
 
 					local uncheck = _G[name..'UnCheck']
@@ -2164,7 +2164,7 @@ function S:Initialize()
 	if E.private.skins.libDropdown and S.EarlyDropdowns then
 		for _, n in next, S.EarlyDropdowns do
 			if n == 'LibDropDownMenu_List' then
-				S:SkinDropDownMenu(n)
+				S:SkinDropDownMenu(n, 15)
 			else
 				S:SkinLibDropDownMenu(n)
 			end
