@@ -29,7 +29,6 @@ local PlaySound = PlaySound
 
 local SetRestrictPings = C_PartyInfo.SetRestrictPings
 local GetRestrictPings = C_PartyInfo.GetRestrictPings
-local DoCountdown = C_PartyInfo.DoCountdown
 
 local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
@@ -37,6 +36,8 @@ local NUM_RAID_GROUPS = NUM_RAID_GROUPS
 local PANEL_HEIGHT = E.Retail and 180 or 130
 local PANEL_WIDTH = 230
 local BUTTON_HEIGHT = 20
+
+-- GLOBALS: C_PartyInfo
 
 local roles = { 'TANK', 'HEALER', 'DAMAGER' }
 local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate')
@@ -237,7 +238,7 @@ end
 
 function RU:OnClick_RaidCountdownButton()
 	if RU:CheckRaidStatus() then
-		DoCountdown(10)
+		C_PartyInfo.DoCountdown(10)
 	end
 end
 
@@ -465,7 +466,7 @@ function RU:Initialize()
 	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and RoleCheckButton) or ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
 	RaidControlButton:SetScript('OnMouseUp', RU.OnClick_RaidControlButton)
 
-	if DoCountdown then
+	if C_PartyInfo.DoCountdown then
 		local RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, _G.PLAYER_COUNTDOWN_BUTTON)
 		RaidCountdownButton:SetScript('OnMouseUp', RU.OnClick_RaidCountdownButton)
 	end

@@ -564,6 +564,7 @@ do -- Early Skin Loading
 		['AceGUI'] = true,
 		['AceConfigDialog'] = true,
 		['AceConfigDialog-3.0-ElvUI'] = true,
+		['LibDropDownMenu'] = true,
 		['LibUIDropDownMenu'] = true,
 		['LibUIDropDownMenuQuestie'] = true,
 		['NoTaint_UIDropDownMenu'] = true,
@@ -591,6 +592,12 @@ do -- Early Skin Loading
 					tinsert(S.EarlyAceTooltips, major)
 				else
 					S:Ace3_SkinTooltip(LibStub.libs[major], LibStub.minors[major])
+				end
+			elseif n == 'LibDropDownMenu' then
+				if early then
+					tinsert(S.EarlyDropdowns, 'LibDropDownMenu_List')
+				elseif E.private.skins.libDropdown then
+					S:SkinDropDownMenu('LibDropDownMenu_List', 15)
 				end
 			else
 				local prefix = (n == 'NoTaint_UIDropDownMenu' and 'Lib') or (n == 'LibUIDropDownMenuQuestie' and 'LQuestie') or (major == 'LibUIDropDownMenu-4.0' and 'L4' or major == 'LibUIDropDownMenu-3.0' and 'L3')
