@@ -14,7 +14,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GetTexCoordsForRole = GetTexCoordsForRole
+local GetTexCoordsByGrid = GetTexCoordsByGrid
 local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -419,18 +419,33 @@ function RU:Initialize()
 		RoleIcons:SetScript('OnEvent', RU.OnEvent_RoleIcons)
 		RoleIcons.icons = {}
 
+		local textureHeight, textureWidth = 256, 256
+		local roleHeight, roleWidth = 67, 67
+
 		for i, role in next, roles do
-			local frame = CreateFrame('Frame', '$parent_'..role, RoleIcons)
+			local frame = CreateFrame('Frame', '$parent_' .. role, RoleIcons)
 			if i == 1 then
 				frame:Point('TOP', 0, -5)
 			else
-				frame:Point('TOP', _G['RaidUtilityRoleIcons_'..roles[i-1]], 'BOTTOM', 0, -8)
+				frame:Point('TOP', _G['RaidUtilityRoleIcons_' .. roles[i - 1]], 'BOTTOM', 0, -8)
 			end
 
 			local texture = frame:CreateTexture(nil, 'OVERLAY')
 			texture:SetTexture(E.Media.Textures.RoleIcons) -- 337499
 
-			local texA, texB, texC, texD = GetTexCoordsForRole(role)
+			local texA, texB, texC, texD
+			if (role == "GUIDE") then
+				texA, texB, texC, texD = GetTexCoordsByGrid(1, 1, textureWidth, textureHeight, roleWidth, roleHeight)
+			elseif (role == "TANK") then
+				texA, texB, texC, texD = GetTexCoordsByGrid(1, 2, textureWidth, textureHeight, roleWidth, roleHeight)
+			elseif (role == "HEALER") then
+				texA, texB, texC, texD = GetTexCoordsByGrid(2, 1, textureWidth, textureHeight, roleWidth, roleHeight)
+			elseif (role == "DAMAGER") then
+				texA, texB, texC, texD = GetTexCoordsByGrid(2, 2, textureWidth, textureHeight, roleWidth, roleHeight)
+			else
+				error("Unknown role: " .. tostring(role))
+			end
+
 			texture:SetTexCoord(texA, texB, texC, texD)
 			texture:Point('TOPLEFT', frame, 'TOPLEFT', -2, 2)
 			texture:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 2, -2)
