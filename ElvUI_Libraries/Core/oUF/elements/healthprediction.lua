@@ -163,6 +163,7 @@ local function Update(self, event, unit)
 	if(element.overAbsorb) then
 		if(hasOverAbsorb) then
 			element.overAbsorb:Show()
+			element.overAbsorbBar:SetMinMaxValues(0, maxHealth)
 			element.overAbsorbBar:Show()
 		else
 			element.overAbsorb:Hide()
@@ -173,6 +174,7 @@ local function Update(self, event, unit)
 	if(element.overHealAbsorb) then
 		if(hasOverHealAbsorb) then
 			element.overHealAbsorb:Show()
+			element.overHealAbsorbBar:SetMinMaxValues(0, maxHealth)
 			element.overHealAbsorbBar:Show()
 		else
 			element.overHealAbsorb:Hide()
