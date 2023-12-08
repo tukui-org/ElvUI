@@ -163,16 +163,20 @@ local function Update(self, event, unit)
 	if(element.overAbsorb) then
 		if(hasOverAbsorb) then
 			element.overAbsorb:Show()
+			element.overAbsorbBar:Show()
 		else
 			element.overAbsorb:Hide()
+			element.overAbsorbBar:Hide()
 		end
 	end
 
 	if(element.overHealAbsorb) then
 		if(hasOverHealAbsorb) then
 			element.overHealAbsorb:Show()
+			element.overHealAbsorbBar:Show()
 		else
 			element.overHealAbsorb:Hide()
+			element.overHealAbsorbBar:Hide()
 		end
 	end
 
@@ -314,6 +318,18 @@ local function Enable(self)
 			end
 		end
 
+		if(element.overHealAbsorbBar) then
+			if(element.overHealAbsorbBar:IsObjectType('StatusBar') and not element.overHealAbsorbBar:GetStatusBarTexture()) then
+				element.overHealAbsorbBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			end
+		end
+
+		if(element.overAbsorbBar) then
+			if(element.overAbsorbBar:IsObjectType('StatusBar') and not element.overAbsorbBar:GetStatusBarTexture()) then
+				element.overAbsorbBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			end
+		end
+
 		return true
 	end
 end
@@ -343,6 +359,14 @@ local function Disable(self)
 
 		if(element.overHealAbsorb) then
 			element.overHealAbsorb:Hide()
+		end
+
+		if(element.overHealAbsorbBar) then
+			element.overHealAbsorbBar:Hide()
+		end
+
+		if(element.overAbsorbBar) then
+			element.overAbsorbBar:Hide()
 		end
 
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
