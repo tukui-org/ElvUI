@@ -636,25 +636,14 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if LCC then
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_START')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_DELAYED')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_STOP')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_FAILED')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_INTERRUPTED')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_START')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_UPDATE')
-			LCC.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_STOP')
-		else
-			self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
-			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
-		end
+		self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
+		self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
+		self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
+		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
