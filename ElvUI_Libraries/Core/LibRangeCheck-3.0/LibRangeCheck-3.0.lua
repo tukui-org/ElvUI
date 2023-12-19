@@ -40,9 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 7
-
--- GLOBALS: LibStub, CreateFrame
+local MINOR_VERSION = 9
 
 ---@class lib
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -55,12 +53,14 @@ local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local InCombatLockdownRestriction
 if isRetail then
-  InCombatLockdownRestriction = InCombatLockdown
+  InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
 else
   InCombatLockdownRestriction = function() return false end
 end
 
+local _G = _G
 local next = next
+local sort = sort
 local type = type
 local wipe = wipe
 local print = print
@@ -92,8 +92,6 @@ local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
-
-local C_Timer_NewTicker = C_Timer.NewTicker
 
 -- << STATIC CONFIG
 
@@ -291,26 +289,26 @@ if not isRetail then
 end
 
 -- Warlocks
+tinsert(FriendSpells.WARLOCK, 132) -- Detect Invisibility (30 yards, level 26)
 tinsert(FriendSpells.WARLOCK, 5697) -- Unending Breath (30 yards)
 tinsert(FriendSpells.WARLOCK, 20707) -- Soulstone (40 yards) ~ this can be precasted so leave it in friendly as well as res
 
 if isRetail then
-  tinsert(FriendSpells.WARLOCK, 132) -- Detect Invisibility (30 yards, level 26)
+  tinsert(HarmSpells.WARLOCK, 234153) -- Drain Life (40 yards, level 9)
+  tinsert(HarmSpells.WARLOCK, 198590) -- Drain Soul (40 yards, level 15)
+  tinsert(HarmSpells.WARLOCK, 232670) -- Shadow Bolt (40 yards)
+else
+  tinsert(HarmSpells.WARLOCK, 172) -- Corruption (30/33/36 yards, level 4, rank 1)
+  tinsert(HarmSpells.WARLOCK, 348) -- Immolate (30/33/36 yards, level 1, rank 1)
+  tinsert(HarmSpells.WARLOCK, 17877) -- Shadowburn (Destruction) (20/22/24 yards, rank 1)
+  tinsert(HarmSpells.WARLOCK, 18223) -- Curse of Exhaustion (Affliction) (30/33/36/35/38/42 yards)
+  tinsert(HarmSpells.WARLOCK, 689) -- Drain Life (Affliction) (20/22/24 yards, level 14, rank 1)
+  tinsert(HarmSpells.WARLOCK, 403677) -- Master Channeler (Affliction) (20/22/24 yards, level 14, rank 1)
 end
 
 tinsert(HarmSpells.WARLOCK, 5019) -- Shoot (30 yards)
-tinsert(HarmSpells.WARLOCK, 234153) -- Drain Life (40 yards, level 9)
-tinsert(HarmSpells.WARLOCK, 198590) -- Drain Soul (40 yards, level 15)
 tinsert(HarmSpells.WARLOCK, 686) -- Shadow Bolt (Demonology, Affliction) (40 yards)
-tinsert(HarmSpells.WARLOCK, 232670) -- Shadow Bolt (40 yards)
 tinsert(HarmSpells.WARLOCK, 5782) -- Fear (30 yards)
-
-if not isRetail then
-  tinsert(HarmSpells.WARLOCK, 172) -- Corruption (30 yards, level 4, rank 1)
-  tinsert(HarmSpells.WARLOCK, 348) -- Immolate (30 yards, level 1, rank 1)
-  tinsert(HarmSpells.WARLOCK, 17877) -- Shadowburn (Destruction) (20 yards)
-  tinsert(HarmSpells.WARLOCK, 18223) -- Curse of Exhaustion (Affliction) (30/33/36/35/38/42 yards)
-end
 
 tinsert(ResSpells.WARLOCK, 20707) -- Soulstone (40 yards)
 
@@ -548,8 +546,8 @@ local checkers_Spell = setmetatable({}, {
 local checkers_SpellWithMin = {} -- see getCheckerForSpellWithMinRange()
 local checkers_Item = setmetatable({}, {
   __index = function(t, item)
-    local func = function(unit)
-      if InCombatLockdownRestriction() then
+    local func = function(unit, skipInCombatCheck)
+      if not skipInCombatCheck and InCombatLockdownRestriction(unit) then
         return nil
       else
         return IsItemInRange(item, unit) or nil
@@ -561,8 +559,8 @@ local checkers_Item = setmetatable({}, {
 })
 local checkers_Interact = setmetatable({}, {
   __index = function(t, index)
-    local func = function(unit)
-      if InCombatLockdownRestriction() then
+    local func = function(unit, skipInCombatCheck)
+      if not skipInCombatCheck and InCombatLockdownRestriction(unit) then
         return nil
       else
         return CheckInteractDistance(unit, index) and true or false
@@ -745,7 +743,7 @@ local function getRangeWithCheckerList(unit, checkerList)
   while lo <= hi do
     local mid = math_floor((lo + hi) / 2)
     local rc = checkerList[mid]
-    if rc.checker(unit) then
+    if rc.checker(unit, true) then
       lo = mid + 1
     else
       hi = mid - 1
@@ -766,20 +764,16 @@ local function getRange(unit, noItems)
   local canAssist = UnitCanAssist("player", unit)
   if UnitIsDeadOrGhost(unit) then
     if canAssist then
-      return getRangeWithCheckerList(unit, InCombatLockdownRestriction() and lib.resRCInCombat or lib.resRC)
+      return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.resRCInCombat or lib.resRC)
     else
-      return getRangeWithCheckerList(unit, InCombatLockdownRestriction() and lib.miscRCInCombat or lib.miscRC)
+      return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.miscRCInCombat or lib.miscRC)
     end
   end
 
   if UnitCanAttack("player", unit) then
-    if InCombatLockdownRestriction() then
-      return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRCInCombat or lib.harmRCInCombat)
-    else
-      return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRC or lib.harmRC)
-    end
+    return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRC or lib.harmRC)
   elseif UnitIsUnit("pet", unit) then
-    if InCombatLockdownRestriction() then
+    if InCombatLockdownRestriction(unit) then
       local minRange, maxRange = getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat)
       if minRange or maxRange then
         return minRange, maxRange
@@ -795,13 +789,13 @@ local function getRange(unit, noItems)
       end
     end
   elseif canAssist then
-    if InCombatLockdownRestriction() then
+    if InCombatLockdownRestriction(unit) then
       return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat)
     else
       return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
     end
   else
-    return getRangeWithCheckerList(unit, InCombatLockdownRestriction() and lib.miscRC or lib.miscRCInCombat)
+    return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.miscRCInCombat or lib.miscRC)
   end
 end
 
@@ -1335,11 +1329,8 @@ function lib:scheduleAuraCheck()
   self.frame:Show()
 end
 
--- << load-time initialization
 
-local function invalidateRangeFive()
-    invalidateRangeCache(5)
-end
+-- << load-time initialization
 
 function lib:activate()
   if not self.frame then
@@ -1362,7 +1353,9 @@ function lib:activate()
   end
 
   if not self.cacheResetTimer then
-    self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
+    self.cacheResetTimer = C_Timer.NewTicker(5, function()
+      invalidateRangeCache(5)
+    end)
   end
 
   initItemRequests()
