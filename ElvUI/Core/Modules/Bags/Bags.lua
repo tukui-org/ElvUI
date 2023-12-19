@@ -102,7 +102,7 @@ local BANK_CONTAINER = Enum.BagIndex.Bank
 local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
 local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
-local REAGENT_CONTAINER = Enum.BagIndex.ReagentBag
+local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -417,13 +417,12 @@ end
 
 function B:UpdateAllSlots(frame, first)
 	for _, bagID in next, frame.BagIDs do
-		B:UpdateBagSlots(frame, bagID)
-
-		-- updates the slot icons on first open
 		local holder = first and frame.isBank and (bagID and bagID ~= BANK_CONTAINER) and frame.ContainerHolderByBagID[bagID]
-		if holder then
-			B:UpdateBankBagIcon(holder)
+		if holder then -- updates the slot icons on first open
+			B:SetBagAssignments(holder)
 		end
+
+		B:UpdateBagSlots(frame, bagID)
 	end
 end
 
@@ -898,7 +897,7 @@ end
 function B:GetBagAssignedInfo(holder, isBank)
 	local active, icon, color = B:GetFilterFlagInfo(holder.BagID, isBank)
 
-	if holder.filterIcon and icon then
+	if holder.filterIcon then
 		holder.filterIcon:SetTexture(icon)
 		holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 	end

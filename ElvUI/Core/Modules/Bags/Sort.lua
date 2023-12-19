@@ -23,7 +23,7 @@ local SplitGuildBankItem = SplitGuildBankItem
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local REAGENT_CONTAINER = Enum.BagIndex.ReagentBag
+local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods
