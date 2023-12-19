@@ -355,9 +355,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 			Used to define which contextual ping is used for the frame.
 			By default this wraps `C_Ping.GetContextualPingTypeForUnit(UnitGUID(frame.unit))`.
 			--]]
-			if PingableType_UnitFrameMixin then
-				object:SetAttribute('ping-receiver', true)
-			end
+			object:SetAttribute('ping-receiver', true)
 
 			if(isEventlessUnit(objectUnit)) then
 				oUF:HandleEventlessUnit(object)
@@ -650,9 +648,7 @@ do
 				frame:SetAttribute('*type2', 'togglemenu')
 				frame:SetAttribute('oUF-guessUnit', unit)
 
-				if PingableType_UnitFrameMixin then
-					frame:SetAttribute('ping-receiver', true)
-				end
+				frame:SetAttribute('ping-receiver', true)
 			end
 
 			local body = header:GetAttribute('oUF-initialConfigFunction')
