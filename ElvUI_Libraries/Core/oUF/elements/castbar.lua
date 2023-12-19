@@ -568,37 +568,20 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local LCC, EventFunctions = oUF.isClassic and LibStub('LibClassicCasterino', true), {}
-
 local function Enable(self, unit)
 	local element = self.Castbar
 	if(element and unit and not unit:match('%wtarget$')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if LCC then
-			local CastbarEventHandler = function(event, ...)
-				return EventFunctions[event](self, event, ...)
-			end
-
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_START', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_DELAYED', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_STOP', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_FAILED', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_INTERRUPTED', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_START', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_UPDATE', CastbarEventHandler)
-			LCC.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_STOP', CastbarEventHandler)
-		else
-			self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
-			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
-			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
-			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
-		end
+		self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
+		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
+		self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
+		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
+		self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
+		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
+		self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 
 		if oUF.isRetail then
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
@@ -683,25 +666,6 @@ local function Disable(self)
 
 		element:SetScript('OnUpdate', nil)
 	end
-end
-
-if LCC then
-	UnitCastingInfo = function(unit)
-		return LCC:UnitCastingInfo(unit)
-	end
-
-	UnitChannelInfo = function(unit)
-		return LCC:UnitChannelInfo(unit)
-	end
-
-	EventFunctions.UNIT_SPELLCAST_START = CastStart
-	EventFunctions.UNIT_SPELLCAST_FAILED = CastFail
-	EventFunctions.UNIT_SPELLCAST_INTERRUPTED = CastFail
-	EventFunctions.UNIT_SPELLCAST_DELAYED = CastUpdate
-	EventFunctions.UNIT_SPELLCAST_STOP = CastStop
-	EventFunctions.UNIT_SPELLCAST_CHANNEL_START = CastStart
-	EventFunctions.UNIT_SPELLCAST_CHANNEL_UPDATE = CastUpdate
-	EventFunctions.UNIT_SPELLCAST_CHANNEL_STOP = CastStop
 end
 
 if oUF.isRetail then -- ElvUI

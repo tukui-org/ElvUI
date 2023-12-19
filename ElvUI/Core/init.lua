@@ -156,15 +156,6 @@ do
 
 	if not E.Retail then
 		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
-
-		if E.Classic then
-			E:AddLib('LCD', 'LibClassicDurations')
-			E:AddLib('LCC', 'LibClassicCasterino')
-
-			if E.Libs.LCD then
-				E.Libs.LCD:Register('ElvUI')
-			end
-		end
 	end
 
 	-- backwards compatible for plugins
