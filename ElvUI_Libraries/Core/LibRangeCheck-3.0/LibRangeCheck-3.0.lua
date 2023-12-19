@@ -42,6 +42,8 @@ License: MIT
 local MAJOR_VERSION = "LibRangeCheck-3.0"
 local MINOR_VERSION = 9
 
+-- GLOBALS: LibStub, CreateFrame
+
 ---@class lib
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then
@@ -58,9 +60,7 @@ else
   InCombatLockdownRestriction = function() return false end
 end
 
-local _G = _G
 local next = next
-local sort = sort
 local type = type
 local wipe = wipe
 local print = print
@@ -92,6 +92,8 @@ local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
+
+local C_Timer_NewTicker = C_Timer.NewTicker
 
 -- << STATIC CONFIG
 
@@ -1329,8 +1331,11 @@ function lib:scheduleAuraCheck()
   self.frame:Show()
 end
 
-
 -- << load-time initialization
+
+local function invalidateRangeFive()
+    invalidateRangeCache(5)
+end
 
 function lib:activate()
   if not self.frame then
@@ -1353,9 +1358,7 @@ function lib:activate()
   end
 
   if not self.cacheResetTimer then
-    self.cacheResetTimer = C_Timer.NewTicker(5, function()
-      invalidateRangeCache(5)
-    end)
+    self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
   end
 
   initItemRequests()
