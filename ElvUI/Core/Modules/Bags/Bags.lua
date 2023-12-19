@@ -415,9 +415,15 @@ function B:UpdateItemDisplay()
 	end
 end
 
-function B:UpdateAllSlots(frame)
+function B:UpdateAllSlots(frame, first)
 	for _, bagID in next, frame.BagIDs do
 		B:UpdateBagSlots(frame, bagID)
+
+		-- updates the slot icons on first open
+		local holder = first and frame.isBank and (bagID and bagID ~= BANK_CONTAINER) and frame.ContainerHolderByBagID[bagID]
+		if holder then
+			B:UpdateBankBagIcon(holder)
+		end
 	end
 end
 
@@ -1160,6 +1166,16 @@ function B:UpdateLayout(frame)
 	end
 end
 
+function B:UpdateBankBagIcon(holder)
+	if not holder then return end
+
+	BankFrameItemButton_Update(holder)
+
+	local numSlots = GetNumBankSlots()
+	local color = ((holder.index - 1) <= numSlots) and 1 or 0.1
+	holder.icon:SetVertexColor(1, color, color)
+end
+
 function B:SetBagAssignments(holder, skip)
 	if not holder then return true end
 
@@ -1181,7 +1197,7 @@ function B:SetBagAssignments(holder, skip)
 
 	if frame.isBank and frame:IsShown() then
 		if holder.BagID ~= BANK_CONTAINER then
-			BankFrameItemButton_Update(holder)
+			B:UpdateBankBagIcon(holder)
 		end
 
 		local containerID = holder.index - 1
@@ -1634,6 +1650,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface/ICONS/INV_Misc_Key_03
 		holder.icon:SetInside()
+
 		holder.IconBorder:SetAlpha(0)
 
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
@@ -2339,7 +2356,7 @@ function B:OpenBank()
 	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown())
 
 	if B.BankFrame.firstOpen then
-		B:UpdateAllSlots(B.BankFrame)
+		B:UpdateAllSlots(B.BankFrame, true)
 
 		if E.Retail then
 			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
