@@ -50,11 +50,25 @@ function AB:MultiCastActionButton_Update(button)
 	else
 		button:ClearAllPoints()
 		button:SetAllPoints(button.slotButton)
+
+		if button and not button.useMasque then
+			AB:TrimIcon(button)
+		end
 	end
+end
+
+function AB:MultiCastSummonSpellButton_Update(summonButton)
+	local buttonSpacing = AB.db.totemBar.spacing
+
+	-- reposition the first slot to the summon button
+	local slot1 = _G.MultiCastSlotButton1
+	slot1:ClearAllPoints()
+	slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
 end
 
 function AB:StyleTotemSlotButton(button, slot)
 	if button.useMasque then return end
+
 	local color = SLOT_BORDER_COLORS[slot]
 	if color then
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -410,6 +424,7 @@ function AB:CreateTotemBar()
 
 	AB:RawHook('MultiCastRecallSpellButton_Update', 'MultiCastRecallSpellButton_Update', true)
 
+	AB:SecureHook('MultiCastSummonSpellButton_Update')
 	AB:SecureHook('MultiCastFlyoutFrameOpenButton_Show')
 	AB:SecureHook('MultiCastActionButton_Update')
 	AB:SecureHook('MultiCastFlyoutFrame_ToggleFlyout')
