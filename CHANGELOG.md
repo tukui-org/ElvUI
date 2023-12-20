@@ -6,6 +6,7 @@
 *   Updated LibRangeCheck for the new combat check
 *   Raid and Party pings should work again
 *   Quest Log items tooltip causing an error on Classic and Wrath
+*   Totem Bar buttons not positioning correctly when changing Call Totems
 *   Bank Bag icons and assignments should show properly again on first open
 *   Bank sorting fixed on Classic and Wrath
 
