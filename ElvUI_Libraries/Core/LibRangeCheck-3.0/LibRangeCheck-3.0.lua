@@ -53,13 +53,6 @@ end
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
-local InCombatLockdownRestriction
-if isRetail then
-  InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
-else
-  InCombatLockdownRestriction = function() return false end
-end
-
 local next = next
 local type = type
 local wipe = wipe
@@ -81,6 +74,7 @@ local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitGUID = UnitGUID
+local InCombatLockdown = InCombatLockdown
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
 local IsSpellInRange = IsSpellInRange
@@ -94,6 +88,13 @@ local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
 
 local C_Timer_NewTicker = C_Timer.NewTicker
+
+local InCombatLockdownRestriction
+if isRetail then
+  InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
+else
+  InCombatLockdownRestriction = function() return false end
+end
 
 -- << STATIC CONFIG
 
