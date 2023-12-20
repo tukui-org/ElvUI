@@ -51,8 +51,8 @@ function AB:MultiCastActionButton_Update(button)
 		button:ClearAllPoints()
 		button:SetAllPoints(button.slotButton)
 
-		if button and not button.useMasque then
-			AB:TrimIcon(button)
+		if button then
+			AB:TrimIcon(button, button.useMasque)
 		end
 	end
 end
