@@ -1,3 +1,14 @@
+### Version 13.54 [ December 19th 2023 ]
+*   Raid Utility Countdown button works with other addons
+*   Dropdown for WIM skinned
+*   Missing text from Tags in the Health section for MainTank / MainAssist
+*   Removed LibClassicCasterino and LibClassicDurations
+*   Updated LibRangeCheck for the new combat check
+*   Raid and Party pings should work again
+*   Quest Log items tooltip causing an error on Classic and Wrath
+*   Bank Bag icons and assignments should show properly again on first open
+*   Bank sorting fixed on Classic and Wrath
+
 ### Version 13.53 [ December 2nd 2023 ]
 *   Updated LibRangeCheck
 *   Mail Font defaulting to outline was changed
