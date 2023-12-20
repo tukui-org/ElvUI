@@ -11,7 +11,7 @@ function UF:Construct_TankFrames()
 	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 
 	self.RaisedElementParent = UF:CreateRaisedElement(self)
-	self.Health = UF:Construct_HealthBar(self, true)
+	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)

@@ -168,7 +168,10 @@ E.SpecName = { -- english locale
 function E:GetDateTime(localTime, unix)
 	if not localTime then -- try to properly handle realm time
 		local dateTable = date('*t', GetServerTime())
-		dateTable.hour = GetGameTime() -- realm time since it doesnt match ServerTimeLocal
+
+		local hours, minutes = GetGameTime() -- realm time since it doesnt match ServerTimeLocal
+		dateTable.hour = hours
+		dateTable.min = minutes
 
 		if unix then
 			return time(dateTable)

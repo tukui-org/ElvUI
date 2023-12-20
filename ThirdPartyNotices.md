@@ -1044,26 +1044,6 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-## LibClassicCasterino-1.0
-
-**Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicCasterino-1.0](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicCasterino-1.0)
-
-### License
-
-```
-All rights reserved to the owner.
-```
-
-## LibClassicDurations
-
-**Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicDurations](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicDurations)
-
-### License
-
-```
-All rights reserved to the owner.
-```
-
 ## LibClassicSpecs
 
 **Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicSpecs](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Classic/LibClassicSpecs)

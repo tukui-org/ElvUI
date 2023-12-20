@@ -425,6 +425,119 @@ do -- DropDownMenu library support
 	end
 end
 
+do -- WIM replaces Blizzard globals we need to rehook
+	local hooked = {}
+
+	local function SkinMenu(name)
+		local backdrop = _G[name]
+		if not backdrop then return end
+
+		if backdrop.NineSlice then
+			backdrop = backdrop.NineSlice
+		end
+
+		if not backdrop.template then
+			backdrop:SetTemplate('Transparent')
+		end
+	end
+
+	function S:SkinDropDownMenu(prefix, textX, textY)
+		if hooked[prefix] then return end
+
+		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
+			local listFrame = _G[prefix..level]
+			local listFrameName = listFrame:GetName()
+			local expandArrow = _G[listFrameName..'Button'..index..'ExpandArrow']
+			if expandArrow then
+				expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
+				expandArrow:Size(12)
+
+				local normTex = expandArrow:GetNormalTexture()
+				if normTex then
+					normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+					normTex:SetRotation(S.ArrowRotation.right)
+				end
+			end
+
+			SkinMenu(listFrameName..'Backdrop')
+			SkinMenu(listFrameName..'MenuBackdrop')
+		end)
+
+		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
+			if texture:find('Divider') then
+				local r, g, b = unpack(E.media.rgbvaluecolor)
+				icon:SetColorTexture(r, g, b, 0.45)
+				icon:Height(1)
+			end
+		end)
+
+		hooksecurefunc('ToggleDropDownMenu', function(level)
+			if not level then level = 1 end
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+
+			for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
+				local name = prefix..level..'Button'..i
+				local button = _G[name]
+				if not button then -- fallback to blizzards
+					name = 'DropDownList'..level..'Button'..i
+					button = _G[name]
+				end
+
+				local highlight = _G[name..'Highlight']
+				if highlight then
+					highlight:SetTexture(E.Media.Textures.Highlight)
+					highlight:SetBlendMode('BLEND')
+					highlight:SetDrawLayer('BACKGROUND')
+					highlight:SetVertexColor(r, g, b)
+				end
+
+				if not button.backdrop then
+					button:CreateBackdrop()
+				end
+
+				local check = _G[name..'Check']
+				if not button.notCheckable then
+					local text = _G[name..'NormalText']
+					if text then
+						S:HandlePointXY(text, textX or 5, textY)
+					end
+
+					local uncheck = _G[name..'UnCheck']
+					if uncheck then
+						uncheck:SetTexture()
+					end
+
+					if check then
+						if E.private.skins.checkBoxSkin then
+							check:SetTexture(E.media.normTex)
+							check:SetVertexColor(r, g, b, 1)
+							check:Size(10)
+							check:SetDesaturated(false)
+							button.backdrop:SetOutside(check)
+						else
+							check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
+							check:SetVertexColor(r, g, b, 1)
+							check:Size(20)
+							check:SetDesaturated(true)
+							button.backdrop:SetInside(check, 4, 4)
+						end
+
+						check:SetTexCoord(0, 1, 0, 1)
+					end
+
+					button.backdrop:Show()
+				else
+					if check then
+						check:Size(16)
+					end
+
+					button.backdrop:Hide()
+				end
+			end
+		end)
+	end
+end
+
 function S:SkinTalentListButtons(frame)
 	local name = frame and frame:GetName()
 	if name then
@@ -2050,7 +2163,11 @@ function S:Initialize()
 
 	if E.private.skins.libDropdown and S.EarlyDropdowns then
 		for _, n in next, S.EarlyDropdowns do
-			S:SkinLibDropDownMenu(n)
+			if n == 'LibDropDownMenu_List' then
+				S:SkinDropDownMenu(n, 15)
+			else
+				S:SkinLibDropDownMenu(n)
+			end
 		end
 	end
 

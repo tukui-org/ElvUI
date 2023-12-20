@@ -327,6 +327,7 @@ do --this can save some main file locals
 		-- Luckyone Seasonal (5826: Lone Wolf EU)
 		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter: Luckyone
 		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin: Unluckyone
+		z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock: Luckywl
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter

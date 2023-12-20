@@ -10,6 +10,7 @@ local GetXPExhaustion = GetXPExhaustion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local SelectQuestLogEntry = SelectQuestLogEntry
 local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetQuestLogSelection = GetQuestLogSelection
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
@@ -39,8 +40,14 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 			if isHeader then
 				currentZoneCheck = bar.db.questCurrentZoneOnly and currentZone == name or not bar.db.questCurrentZoneOnly
 			elseif currentZoneCheck and (not completedOnly or isComplete == 1) then
+				local previousQuest = GetQuestLogSelection() -- save previous quest
+
 				SelectQuestLogEntry(i)
 				QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
+
+				if previousQuest then -- restore previous quest
+					SelectQuestLogEntry(previousQuest)
+				end
 			end
 		end
 	end

@@ -20,8 +20,6 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
 
-local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
-
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
@@ -146,22 +144,7 @@ local function updateBar(element, bar)
 end
 
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3
-
-	if LCD and not UnitIsUnit('player', unit) then
-		local durationNew, expirationTimeNew
-		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
-
-		if spellID then
-			durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
-		end
-
-		if durationNew and durationNew > 0 then
-			duration, expiration = durationNew, expirationTimeNew
-		end
-	else
-		name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
-	end
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	if not name then return end
 

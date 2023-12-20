@@ -1,3 +1,24 @@
+### Version 13.54 [ December 19th 2023 ]
+*   Raid Utility Countdown button works with other addons
+*   Dropdown for WIM skinned
+*   Missing text from Tags in the Health section for MainTank / MainAssist
+*   Removed LibClassicCasterino and LibClassicDurations
+*   Updated LibRangeCheck for the new combat check
+*   Raid and Party pings should work again
+*   Quest Log items tooltip causing an error on Classic and Wrath
+*   Totem Bar buttons not positioning correctly when changing Call Totems
+*   Bank Bag icons and assignments should show properly again on first open
+*   Bank sorting fixed on Classic and Wrath
+
+### Version 13.53 [ December 2nd 2023 ]
+*   Updated LibRangeCheck
+*   Mail Font defaulting to outline was changed
+*   Bag Datatext Include Reagents display updated
+*   Item Level Datatext has Only Equipped option now
+*   Nameplates no longer showing on Game Objects and Dead NPCs when using interact
+*   Totembar cooldown blings on Wrath not following mouseover and hide settings
+*   Seconds option for Time Datatext
+
 ### Version 13.52 [ November 17th 2023 ]
 *   Skinned Model Control buttons on various frames
 *   Bags Datatext now has an option to Include Reagents

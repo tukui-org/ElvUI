@@ -3,7 +3,6 @@
 
 local _, ns = ...
 local oUF = ns.oUF
-local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -199,13 +198,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	button.isPlayer = source == 'player'
 
 	button:SetID(index)
-
-	if LCD and spellID and not UnitIsUnit('player', unit) then
-		local durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
-		if durationNew and durationNew > 0 then
-			duration, expiration = durationNew, expirationTimeNew
-		end
-	end
 
 	local show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,

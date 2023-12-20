@@ -87,7 +87,6 @@ local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
-local LCD = oUF.isClassic and LibStub('LibClassicDurations', true)
 -- end block
 
 -- ElvUI adds IsForbidden checks
@@ -168,22 +167,7 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3
-
-	if LCD and not UnitIsUnit('player', unit) then
-		local durationNew, expirationTimeNew
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = LCD:UnitAura(unit, index, filter)
-
-		if spellID then
-			durationNew, expirationTimeNew = LCD:GetAuraDurationByUnit(unit, spellID, source, name)
-		end
-
-		if durationNew and durationNew > 0 then
-			duration, expiration = durationNew, expirationTimeNew
-		end
-	else
-		name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
-	end
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
