@@ -102,7 +102,7 @@ local BANK_CONTAINER = Enum.BagIndex.Bank
 local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
 local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
-local REAGENT_CONTAINER = Enum.BagIndex.ReagentBag
+local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -415,8 +415,13 @@ function B:UpdateItemDisplay()
 	end
 end
 
-function B:UpdateAllSlots(frame)
+function B:UpdateAllSlots(frame, first)
 	for _, bagID in next, frame.BagIDs do
+		local holder = first and frame.isBank and (bagID and bagID ~= BANK_CONTAINER) and frame.ContainerHolderByBagID[bagID]
+		if holder then -- updates the slot icons on first open
+			B:SetBagAssignments(holder)
+		end
+
 		B:UpdateBagSlots(frame, bagID)
 	end
 end
@@ -892,7 +897,7 @@ end
 function B:GetBagAssignedInfo(holder, isBank)
 	local active, icon, color = B:GetFilterFlagInfo(holder.BagID, isBank)
 
-	if holder.filterIcon and icon then
+	if holder.filterIcon then
 		holder.filterIcon:SetTexture(icon)
 		holder.filterIcon:SetShown(active and B.db.showAssignedIcon)
 	end
@@ -1160,6 +1165,16 @@ function B:UpdateLayout(frame)
 	end
 end
 
+function B:UpdateBankBagIcon(holder)
+	if not holder then return end
+
+	BankFrameItemButton_Update(holder)
+
+	local numSlots = GetNumBankSlots()
+	local color = ((holder.index - 1) <= numSlots) and 1 or 0.1
+	holder.icon:SetVertexColor(1, color, color)
+end
+
 function B:SetBagAssignments(holder, skip)
 	if not holder then return true end
 
@@ -1181,7 +1196,7 @@ function B:SetBagAssignments(holder, skip)
 
 	if frame.isBank and frame:IsShown() then
 		if holder.BagID ~= BANK_CONTAINER then
-			BankFrameItemButton_Update(holder)
+			B:UpdateBankBagIcon(holder)
 		end
 
 		local containerID = holder.index - 1
@@ -1634,6 +1649,7 @@ function B:ConstructContainerFrame(name, isBank)
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
 		holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface/ICONS/INV_Misc_Key_03
 		holder.icon:SetInside()
+
 		holder.IconBorder:SetAlpha(0)
 
 		holder.shownIcon = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
@@ -2339,7 +2355,7 @@ function B:OpenBank()
 	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown())
 
 	if B.BankFrame.firstOpen then
-		B:UpdateAllSlots(B.BankFrame)
+		B:UpdateAllSlots(B.BankFrame, true)
 
 		if E.Retail then
 			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)

@@ -12,6 +12,7 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local SelectQuestLogEntry = SelectQuestLogEntry
 local GetQuestLogRewardMoney = GetQuestLogRewardMoney
+local GetQuestLogSelection = GetQuestLogSelection
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
@@ -46,6 +47,8 @@ local function OnEnter()
 	DT.tooltip:AddLine(TRACKER_HEADER_QUESTS)
 	DT.tooltip:AddLine(' ')
 
+	local previousQuest = not E.Retail and GetQuestLogSelection() -- save previous quest
+
 	for questIndex = 1, numEntries do
 		local info = GetQuestInfo(questIndex)
 		if info and not info.isHidden and not info.isHeader then
@@ -59,6 +62,10 @@ local function OnEnter()
 
 			DT.tooltip:AddDoubleLine(info.title, isShiftDown and format('%s (%.2f%%)', BreakUpLargeNumbers(xp), (xp / xpToLevel) * 100) or (isComplete and COMPLETE or INCOMPLETE), 1, 1, 1, isComplete and .2 or 1, isComplete and 1 or .2, .2)
 		end
+	end
+
+	if previousQuest then -- restore previous quest
+		SelectQuestLogEntry(previousQuest)
 	end
 
 	if completedXP > 0 then
