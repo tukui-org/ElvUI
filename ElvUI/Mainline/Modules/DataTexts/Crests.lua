@@ -40,6 +40,9 @@ local function GetCrestIcon(info)
 end
 
 local function GetCrestText(crest, info)
+	if crest.id == 2245 then
+		return format(crestText, crest.color, info.quantity, info.maxQuantity)
+	end
 	return format(crestText, crest.color, info.totalEarned, info.maxQuantity)
 end
 
