@@ -74,7 +74,7 @@ Maps.args.minimap.args.timeTextGroup.args.timeFontOutline = ACH:FontFlags(L["Fon
 Maps.args.minimap.args.timeTextGroup.inline = true
 
 Maps.args.minimap.args.icons = ACH:Group(L["Minimap Buttons"], nil, 50, nil, function(info) return E.db.general.minimap.icons[info[#info - 1]][info[#info]] end, function(info, value) E.db.general.minimap.icons[info[#info - 1]][info[#info]] = value; MM:UpdateSettings() end)
-Maps.args.minimap.args.icons.args.classHall = ACH:Group(L["GARRISON_LANDING_PAGE_TITLE"], nil, 1, nil, nil, nil, nil, not E.Retail)
+Maps.args.minimap.args.icons.args.classHall = ACH:Group(L["Expansion Button"], nil, 1, nil, nil, nil, nil, not E.Retail)
 Maps.args.minimap.args.icons.args.classHall.args.hideClassHallReport = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end, function(_, value) E.private.general.minimap.hideClassHallReport = value; MM:UpdateSettings() end)
 Maps.args.minimap.args.icons.args.classHall.args.spacer = ACH:Spacer(2, 'full')
 Maps.args.minimap.args.icons.args.classHall.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
