@@ -464,7 +464,7 @@ function DT:ForceUpdate_DataText(name) -- This is suppose to fire separately.
 	end
 end
 
-function DT:UpdateHexColors(hex, r, g, b) -- This will fire both together.
+function DT:UpdateHexColors(_, hex, r, g, b) -- This will fire both together.
 	for dtSlot, dtInfo in pairs(DT.AssignedDatatexts) do
 		if dtInfo.applySettings then
 			dtInfo.applySettings(dtSlot, hex, r, g, b)
