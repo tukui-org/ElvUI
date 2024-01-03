@@ -39,40 +39,97 @@ local IndicatorLayout
 -- GLOBALS: GetMinimapShape
 
 --Create the minimap micro menu
-local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
+local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
-	{ text = _G.CHARACTER_BUTTON, func = function() _G.ToggleCharacter('PaperDollFrame') end },
-	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, func = function() ToggleFrame(_G.SpellBookFrame) end },
-	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
-	{ text = _G.CHAT_CHANNELS, func = _G.ToggleChannelFrame },
-	{ text = _G.SOCIAL_BUTTON, func = _G.ToggleFriendsFrame },
-	{ text = _G.TALENTS_BUTTON, func = _G.ToggleTalentFrame },
-	{ text = _G.GUILD, func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
+	{
+		notCheckable = 1,
+		text = _G.CHARACTER_BUTTON,
+		icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Backpack]],
+		func = function()
+			_G.ToggleCharacter(
+				'PaperDollFrame')
+		end
+	},
+	{
+		notCheckable = 1,
+		icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Planks]],
+		text = _G.SPELLBOOK_ABILITIES_BUTTON,
+		func = function()
+			ToggleFrame(_G.SpellBookFrame)
+		end
+	},
+	{
+		notCheckable = 1,
+		text = _G.TIMEMANAGER_TITLE,
+		func = function()
+			ToggleFrame(_G
+				.TimeManagerFrame)
+		end
+	},
+	{ notCheckable = 1, text = _G.CHAT_CHANNELS,  func = _G.ToggleChannelFrame },
+	{ notCheckable = 1, text = _G.SOCIAL_BUTTON,  func = _G.ToggleFriendsFrame },
+	{ notCheckable = 1, text = _G.TALENTS_BUTTON, func = _G.ToggleTalentFrame, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Scroll]], },
+	{
+		notCheckable = 1,
+		text = _G.GUILD,
+		func = function()
+			if E.Retail then
+				_G.ToggleGuildFrame()
+			else
+				_G.ToggleFriendsFrame(3)
+			end
+		end
+	},
 }
 
 if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
-	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = _G.TogglePVPFrame })
+	tinsert(menuList, { notCheckable = 1, text = _G.PLAYER_V_PLAYER, func = _G.TogglePVPFrame })
 end
 
 if E.Retail or E.Wrath then
-	tinsert(menuList, { text = _G.COLLECTIONS, func = _G.ToggleCollectionsJournal })
-	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
-	tinsert(menuList, { text = _G.LFG_TITLE, func = E.Retail and _G.ToggleLFDParentFrame or _G.PVEFrame_ToggleFrame })
-	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
+	tinsert(menuList,
+		{
+			notCheckable = 1,
+			text = _G.COLLECTIONS,
+			func = _G.ToggleCollectionsJournal,
+			icon =
+			[[Interface\AddOns\ElvUI\Core\Media\Textures\GoldCoins]]
+		})
+	tinsert(menuList, { notCheckable = 1, text = _G.ACHIEVEMENT_BUTTON, func = _G.ToggleAchievementFrame })
+	tinsert(menuList,
+		{ notCheckable = 1, text = _G.LFG_TITLE, func = E.Retail and _G.ToggleLFDParentFrame or _G.PVEFrame_ToggleFrame })
+	tinsert(menuList, { notCheckable = 1, text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
 end
 
 if E.Retail then
-	tinsert(menuList, { text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end})
-	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
+	tinsert(menuList, { notCheckable = 1, text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
+	tinsert(menuList,
+		{
+			notCheckable = 1,
+			text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE,
+			func = function()
+				_G
+					.ExpansionLandingPageMinimapButton:ToggleLandingPage()
+			end
+		})
+	tinsert(menuList,
+		{
+			notCheckable = 1,
+			text = _G.ENCOUNTER_JOURNAL,
+			func = function()
+				if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end
+				ToggleFrame(_G.EncounterJournal)
+			end
+		})
 else
-	tinsert(menuList, { text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end})
+	tinsert(menuList, { notCheckable = 1, text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end })
 end
 
 sort(menuList, function(a, b) if a and b and a.text and b.text then return a.text < b.text end end)
 
 -- want these two on the bottom
-tinsert(menuList, { text = _G.MAINMENU_BUTTON,
+tinsert(menuList, {
+	text = _G.MAINMENU_BUTTON,
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
 			if not E.Retail then
@@ -133,7 +190,8 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or
+		_G.MiniMapTracking
 	if not tracking then return end
 
 	if E.private.general.minimap.hideTracking then
@@ -224,7 +282,12 @@ function M:Minimap_OnMouseDown(btn)
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
 		if not E:AlertCombat() then
-			E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+			if position:match("LEFT") then
+				EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+			else
+				EasyMenu(menuList, menuFrame, "cursor", -160, 0, "MENU", 2)
+			end
+			-- E:DropDown(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
@@ -324,7 +387,8 @@ function M:GetIconSettings(button)
 	local defaults = P.general.minimap.icons[button]
 	local profile = E.db.general.minimap.icons[button]
 
-	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
+	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset,
+		profile.yOffset or defaults.yOffset
 end
 
 function M:UpdateSettings()
@@ -367,7 +431,7 @@ function M:UpdateSettings()
 	local mmOffset = E.PixelMode and 1 or 3
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
-	Minimap:Point('TOPRIGHT', holder, -mmOffset/mmScale, -mmOffset/mmScale)
+	Minimap:Point('TOPRIGHT', holder, -mmOffset / mmScale, -mmOffset / mmScale)
 	Minimap:Size(E.MinimapSize)
 
 	local mWidth, mHeight = Minimap:GetSize()
@@ -376,7 +440,8 @@ function M:UpdateSettings()
 	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
 	holder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
-	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline
+	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', E.db.general.minimap.locationFont),
+		E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)
@@ -398,7 +463,8 @@ function M:UpdateSettings()
 		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
 
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
+		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont),
+			E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
 
 		if noCluster then
 			MinimapCluster.ZoneTextButton:Kill()
@@ -603,8 +669,18 @@ function M:Initialize()
 	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	Minimap:SetScript('OnMouseUp', E.noop)
 
-	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)
-	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
+	Minimap:HookScript('OnEnter',
+		function(mm)
+			if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then
+				mm.location:Show()
+			end
+		end)
+	Minimap:HookScript('OnLeave',
+		function(mm)
+			if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then
+				mm.location:Hide()
+			end
+		end)
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 0, -2)
