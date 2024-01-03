@@ -1832,7 +1832,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local showLink = 1
-	local isMonster = strsub(chatType, 1, 7) == 'MONSTER'
+	local isRaidBoss = chatType == 'RAID_BOSS_EMOTE' or chatType == 'RAID_BOSS_WHISPER'
+	local isMonster = strsub(chatType, 1, 7) == 'MONSTER' or isRaidBoss
 	if isMonster or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 		showLink = nil
 
