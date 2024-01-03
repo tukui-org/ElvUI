@@ -1832,9 +1832,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local showLink = 1
-	local isRaidBoss = chatType == 'RAID_BOSS_EMOTE' or chatType == 'RAID_BOSS_WHISPER'
-	local isMonster = strsub(chatType, 1, 7) == 'MONSTER' or isRaidBoss
-	if isMonster or strsub(chatType, 1, 9) == 'RAID_BOSS' then
+	local bossMonster = strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS'
+	if bossMonster then
 		showLink = nil
 
 		-- fix blizzard formatting errors from localization strings
@@ -1905,7 +1904,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Player Flags
 	local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-	if not isMonster then
+	if not bossMonster then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
