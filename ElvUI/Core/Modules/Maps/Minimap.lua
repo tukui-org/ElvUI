@@ -246,7 +246,7 @@ function M:MapCanvas_OnMouseDown(btn)
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
 		if not E:AlertCombat() then
-			EasyMenu(menuList, menuFrame, 155, nil, nil, position:match('LEFT') and 0 or -160, 0)
+			EasyMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
