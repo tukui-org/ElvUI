@@ -42,12 +42,12 @@ local IndicatorLayout
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
-	{ notCheckable = 1, text = _G.CHARACTER_BUTTON, func = function() _G.ToggleCharacter('PaperDollFrame') end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Backpack]] },
-	{ notCheckable = 1, text = _G.SPELLBOOK_ABILITIES_BUTTON, func = function() ToggleFrame(_G.SpellBookFrame) end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Planks]] },
+	{ notCheckable = 1, text = _G.CHARACTER_BUTTON, func = function() _G.ToggleCharacter('PaperDollFrame') end, icon = E.Media.Textures.Backpack },
+	{ notCheckable = 1, text = _G.SPELLBOOK_ABILITIES_BUTTON, func = function() ToggleFrame(_G.SpellBookFrame) end, icon = E.Media.Textures.Planks },
 	{ notCheckable = 1, text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
 	{ notCheckable = 1, text = _G.CHAT_CHANNELS,  func = function() _G.ToggleChannelFrame() end },
 	{ notCheckable = 1, text = _G.SOCIAL_BUTTON,  func =  function() _G.ToggleFriendsFrame() end },
-	{ notCheckable = 1, text = _G.TALENTS_BUTTON, func =  function() _G.ToggleTalentFrame() end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\Scroll]], },
+	{ notCheckable = 1, text = _G.TALENTS_BUTTON, func =  function() _G.ToggleTalentFrame() end, icon = E.Media.Textures.Scroll },
 	{ notCheckable = 1, text = _G.GUILD, func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
