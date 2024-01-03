@@ -1832,7 +1832,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local showLink = 1
-	local bossMonster = strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS'
+	local bossMonster = strsub(chatType, 1, 9) == 'RAID_BOSS' or strsub(chatType, 1, 7) == 'MONSTER'
 	if bossMonster then
 		showLink = nil
 
