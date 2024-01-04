@@ -343,9 +343,9 @@ do --this can save some main file locals
 		z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
 	elseif E.Wrath then
 		-- Simpy (4373: Myzrael)
-		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
-		z['Player-4373-032FFEE2']		= itsSimpy -- Shaman:		Kalline
-		z['Player-4373-03351BC7']		= itsSimpy -- [Horde] DK:	Imsojelly
+		z['Player-4373-011657A7']	= itsSimpy -- Paladin:		Cutepally
+		z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
+		z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
 		-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
 		z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
 		z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
