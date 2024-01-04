@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Minimap')
+local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -42,38 +43,40 @@ local IndicatorLayout
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
-	{ notCheckable = 1, text = _G.CHARACTER_BUTTON, func = function() _G.ToggleCharacter('PaperDollFrame') end, icon = [[Interface\ICONS\Achievement_Character_Human_Male]] },
-	{ notCheckable = 1, text = _G.SPELLBOOK_ABILITIES_BUTTON, func = function() ToggleFrame(_G.SpellBookFrame) end, icon = [[Interface\SPELLBOOK\Spellbook-Icon]] },
-	{ notCheckable = 1, text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
-	{ notCheckable = 1, text = _G.CHAT_CHANNELS,  func = function() _G.ToggleChannelFrame() end, icon = [[Interface\ICONS\UI_Chat]] },
-	{ notCheckable = 1, text = _G.SOCIAL_BUTTON,  func =  function() _G.ToggleFriendsFrame() end },
-	{ notCheckable = 1, text = _G.TALENTS_BUTTON, func =  function() _G.ToggleTalentFrame() end, icon = E.Media.Textures.Scroll },
-	{ notCheckable = 1, text = _G.GUILD, func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
+	{ text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
+	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() ToggleFrame(_G.SpellBookFrame) end },
+	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
+	{ text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011 }, -- Interface\ICONS\UI_Chat
+	{ text = _G.SOCIAL_BUTTON, microOffset = 'SocialsMicroButton', func =  function() _G.ToggleFriendsFrame() end },
+	{ text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func =  function() _G.ToggleTalentFrame() end },
+	{ text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
 if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
-	tinsert(menuList, { notCheckable = 1, text = _G.PLAYER_V_PLAYER, func = function() _G.TogglePVPFrame() end })
+	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = function() _G.TogglePVPFrame() end })
 end
 
 if E.Retail or E.Wrath then
-	tinsert(menuList, { notCheckable = 1, text = _G.COLLECTIONS, func = function() _G.ToggleCollectionsJournal() end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\GoldCoins]] })
-	tinsert(menuList, { notCheckable = 1, text = _G.ACHIEVEMENT_BUTTON, func = function() _G.ToggleAchievementFrame() end })
-	tinsert(menuList, { notCheckable = 1, text = _G.LFG_TITLE, func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
-	tinsert(menuList, { notCheckable = 1, text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
+	tinsert(menuList, { text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\GoldCoins]] })
+	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
+	tinsert(menuList, { text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
+	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
 end
 
 if E.Retail then
-	tinsert(menuList, { notCheckable = 1, text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { notCheckable = 1, text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
-	tinsert(menuList, { notCheckable = 1, text = _G.ENCOUNTER_JOURNAL, func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
+	tinsert(menuList, { text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
+	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
+	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 else
-	tinsert(menuList, { notCheckable = 1, text = _G.QUEST_LOG, func = function() ToggleFrame(_G.QuestLogFrame) end })
+	tinsert(menuList, { text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
 end
 
 sort(menuList, function(a, b) if a and b and a.text and b.text then return a.text < b.text end end)
 
 -- want these two on the bottom
-tinsert(menuList, { text = _G.MAINMENU_BUTTON,
+tinsert(menuList, {
+	text = _G.MAINMENU_BUTTON,
+	microOffset = 'MainMenuMicroButton',
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
 			if not E.Retail then
@@ -104,10 +107,6 @@ tinsert(menuList, { text = _G.MAINMENU_BUTTON,
 })
 
 tinsert(menuList, { text = _G.HELP_BUTTON, bottom = true, func = function() _G.ToggleHelpFrame() end })
-
-for _, menu in ipairs(menuList) do
-	menu.notCheckable = true
-end
 
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
@@ -546,6 +545,17 @@ function M:Initialize()
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 
 		return
+	end
+
+	for _, menu in ipairs(menuList) do
+		menu.notCheckable = true
+
+		if menu.microOffset then
+			local left, right, top, bottom = AB:GetMicroCoords(menu.microOffset, true)
+			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, top, bottom
+			menu.icon = E.Media.Textures.MicroBar
+			menu.microOffset = nil
+		end
 	end
 
 	M.Initialized = true

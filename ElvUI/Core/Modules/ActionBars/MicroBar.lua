@@ -100,9 +100,8 @@ local function onLeave(button)
 	end
 end
 
-function AB:HandleMicroCoords(button, name)
+function AB:GetMicroCoords(name, icons)
 	local l, r, t, b = 0.17, 0.87, 0.5, 0.908
-	local icons = AB.db.microbar.useIcons
 
 	if name == 'PVPMicroButton' or (not E.Retail and name == 'CharacterMicroButton') then
 		l, r, t, b = 0, 1, 0, 1
@@ -113,6 +112,12 @@ function AB:HandleMicroCoords(button, name)
 			t, b = icons and 0.41 or 0.038, icons and 0.72 or 0.35
 		end
 	end
+
+	return l, r, t, b
+end
+
+function AB:HandleMicroCoords(button, name)
+	local l, r, t, b = AB:GetMicroCoords(name, AB.db.microbar.useIcons)
 
 	local normal = button.GetNormalTexture and button:GetNormalTexture()
 	if normal then
