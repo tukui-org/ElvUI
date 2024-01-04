@@ -325,15 +325,19 @@ do --this can save some main file locals
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
 		-- Luckyone Seasonal (5826: Lone Wolf EU)
-		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter: Luckyone
-		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin: Unluckyone
-		z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock: Luckywl
+		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
+		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin
+		z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock
+		z['Player-5826-0234253E']	= ElvBlue -- [Alliance] Mage
+		z['Player-5826-02342508']	= ElvBlue -- [Alliance] Priest
+		z['Player-5826-023424EF']	= ElvBlue -- [Alliance] Druid
+		z['Player-5826-02342520']	= ElvBlue -- [Alliance] Rogue
+		z['Player-5826-02342556']	= ElvBlue -- [Alliance] Warrior
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
 		z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
 		z["Gigachad-Nek'Rosh"] 		= ElvBlue -- [Horde] Druid
-		z['Luckyone-Stitches']		= ElvBlue -- [Horde] Hunter
 		-- Luckyone Classic Era (5233: Firemaw)
 		z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
 		z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
@@ -342,17 +346,17 @@ do --this can save some main file locals
 		z['Player-4373-011657A7']		= itsSimpy -- Paladin:		Cutepally
 		z['Player-4373-032FFEE2']		= itsSimpy -- Shaman:		Kalline
 		z['Player-4373-03351BC7']		= itsSimpy -- [Horde] DK:	Imsojelly
-		-- Luckyone (4476: Gehennas, 4440: Everlook)
-		z['Luckydruid-Firemaw']			= ElvBlue -- [Alliance] Druid
-		z['Unluckyone-Firemaw']			= ElvBlue -- [Alliance] Priest
-		z['Luckygrip-Firemaw']			= ElvBlue -- [Alliance] DK
-		z['Luckywl-Firemaw']			= ElvBlue -- [Alliance] Warlock
-		z['Luckym-Firemaw']				= ElvBlue -- [Alliance] Mage
-		z['Luckyw-Firemaw']				= ElvBlue -- [Alliance] Warrior
-		z['Luckyp-Firemaw']				= ElvBlue -- [Alliance] Paladin
-		z['Player-4476-03BF41C9']		= ElvBlue -- [Horde] Hunter: Luckyone
-		z['Player-4440-03AD654A']		= ElvBlue -- [Alliance] Rogue: Luckyrogue
-		z['Player-4440-03ADE2DF']		= ElvBlue -- [Alliance] Shaman: Luckykek
+		-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
+		z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
+		z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
+		z['Player-4467-04571AA2']	= ElvBlue -- [Alliance] Warlock
+		z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
+		z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
+		z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
+		z['Player-4467-04571911']	= ElvBlue -- [Alliance] Paladin
+		z['Player-4440-03AD654A']	= ElvBlue -- [Alliance] Rogue
+		z['Player-4440-03ADE2DF']	= ElvBlue -- [Alliance] Shaman
+		z['Player-4476-03BF41C9']	= ElvBlue -- [Horde] Hunter
 		-- Repooc
 		z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
 		z['Repooc-Mankrik']			= ElvBlue
@@ -387,20 +391,20 @@ do --this can save some main file locals
 		z['Player-1401-041C0AE2']	= ElvGreen	-- [Alliance] Hunter:	Róhal
 		z['Player-1401-05CEABFA']	= ElvRed	-- [Alliance] DK:		Jahzzy
 		-- Luckyone (1598: LaughingSkull)
-		z['Player-1598-0F5E4639']	= ElvBlue -- [Alliance] Druid: 	Luckyone
-		z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid:	Luckydruid
-		z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker: 	Luckyevoker
-		z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH: 		Luckydh
-		z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest: 	Luckypriest
-		z['Player-1598-0BEFA545']	= ElvBlue -- [Horde] Monk: 		Luckymonkas
-		z['Player-1598-0E1A06DE']	= ElvBlue -- [Horde] Rogue: 	Luckyrogue
-		z['Player-1598-0BF2E377']	= ElvBlue -- [Horde] Hunter: 	Luckyhunter
-		z['Player-1598-0BF18248']	= ElvBlue -- [Horde] DK: 		Luckydk
-		z['Player-1598-0BFABB95']	= ElvBlue -- [Horde] Mage: 		Luckymage
-		z['Player-1598-0E67511D']	= ElvBlue -- [Horde] Paladin: 	Luckypala
-		z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock: 	Luckywl
-		z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior: 	Notlucky
-		z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman: 	Unluckyone
+		z['Player-1598-0F5E4639']	= ElvBlue -- [Alliance] Druid: Luckyone
+		z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid: Luckydruid
+		z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker
+		z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH
+		z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest
+		z['Player-1598-0BEFA545']	= ElvBlue -- [Horde] Monk
+		z['Player-1598-0E1A06DE']	= ElvBlue -- [Horde] Rogue
+		z['Player-1598-0BF2E377']	= ElvBlue -- [Horde] Hunter
+		z['Player-1598-0BF18248']	= ElvBlue -- [Horde] DK
+		z['Player-1598-0BFABB95']	= ElvBlue -- [Horde] Mage
+		z['Player-1598-0E67511D']	= ElvBlue -- [Horde] Paladin
+		z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock
+		z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior
+		z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman
 		-- Repooc
 		z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
 		z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
