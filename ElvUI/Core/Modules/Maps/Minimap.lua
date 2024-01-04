@@ -53,7 +53,7 @@ local menuList = {
 }
 
 if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
-	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, func = function() _G.TogglePVPFrame() end })
+	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end })
 end
 
 if E.Retail or E.Wrath then
@@ -553,7 +553,7 @@ function M:Initialize()
 		if menu.microOffset then
 			local left, right, top, bottom = AB:GetMicroCoords(menu.microOffset, true)
 			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, top, bottom
-			menu.icon = E.Media.Textures.MicroBar
+			menu.icon = menu.microOffset == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance) or E.Media.Textures.MicroBar
 			menu.microOffset = nil
 		end
 	end
