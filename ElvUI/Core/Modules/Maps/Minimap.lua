@@ -45,7 +45,7 @@ local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UID
 local menuList = {
 	{ text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
 	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() ToggleFrame(_G.SpellBookFrame) end },
-	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end },
+	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = [[Interface\ICONS\INV_Misc_PocketWatch_01]] },
 	{ text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011 }, -- Interface\ICONS\UI_Chat
 	{ text = _G.SOCIAL_BUTTON, func =  function() _G.ToggleFriendsFrame() end },
 	{ text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func =  function() _G.ToggleTalentFrame() end },
@@ -60,7 +60,7 @@ if E.Retail or E.Wrath then
 	tinsert(menuList, { text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = [[Interface\AddOns\ElvUI\Core\Media\Textures\GoldCoins]] })
 	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
 	tinsert(menuList, { text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
-	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end })
+	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = [[Interface\Calendar\MeetingIcon]]})
 end
 
 if E.Retail then
