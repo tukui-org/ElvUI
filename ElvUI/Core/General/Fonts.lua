@@ -271,6 +271,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.DestinyFontHuge,						NORMAL, (blizz and 32) or unscale or enormous)				-- Garrison Mission Report
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, (blizz and 32) or unscale or enormous, 'SHADOW')	-- Used at the install steps
 		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)		-- WorldMap
+		E:SetFont(_G.SystemFont16_Shadow_ThickOutline,		NORMAL, (blizz and 10) or unscale or enormous, outline)		-- Talent/Profession SpendText
 
 		-- big fonts
 		E:SetFont(_G.QuestFont_39,							NORMAL, (blizz and 39) or unscale or gigantic)				-- Wrath
