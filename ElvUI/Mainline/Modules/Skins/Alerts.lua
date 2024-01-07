@@ -218,7 +218,7 @@ local function SkinInvasionAlert(frame)
 
 			-- Icon border
 			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == 236293 then -- interface/icons/ability_warlock_demonicpower
+				if icon:GetTexture() == 236293 then -- interface\icons\ability_warlock_demonicpower
 					icon.b = CreateFrame('Frame', nil, frame)
 					icon.b:SetTemplate()
 					icon.b:SetOutside(icon)

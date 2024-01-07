@@ -289,7 +289,7 @@ function S:PetBattleFrame()
 		infoBar:ClearAllPoints()
 		infoBar.healthBarWidth = 40
 
-		infoBar.BorderDead:SetTexture(629739) -- Interface/PetBattles/DeadPetIcon
+		infoBar.BorderDead:SetTexture(629739) -- Interface\PetBattles\DeadPetIcon
 		infoBar.BorderDead:SetTexCoord(0, 1, 0, 1)
 		infoBar.BorderDead:ClearAllPoints()
 		infoBar.BorderDead:Point('TOPLEFT', -3, 4)
