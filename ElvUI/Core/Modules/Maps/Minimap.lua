@@ -554,9 +554,7 @@ function M:Initialize()
 		if menu.cropIcon then
 			local left = 0.02 * menu.cropIcon
 			local right = 1 - left
-
 			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, left, right
-
 			menu.cropIcon = nil
 		end
 
