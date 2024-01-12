@@ -219,7 +219,7 @@ function S:ObjectiveTrackerFrame()
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures(nil, true)
 	minimize:Size(16)
-	minimize:SetHighlightTexture(130837, 'ADD') -- Interface/Buttons/UI-PlusButton-Hilight
+	minimize:SetHighlightTexture(130837, 'ADD') -- Interface\Buttons\UI-PlusButton-Hilight
 	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()

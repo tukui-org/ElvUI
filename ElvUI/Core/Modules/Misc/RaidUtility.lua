@@ -14,7 +14,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GetTexCoordsForRole = GetTexCoordsForRole
+local GetTexCoordsByGrid = GetTexCoordsByGrid
 local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -39,7 +39,20 @@ local BUTTON_HEIGHT = 20
 
 -- GLOBALS: C_PartyInfo
 
-local roles = { 'TANK', 'HEALER', 'DAMAGER' }
+local roles = {
+	{ role = 'TANK' },
+	{ role = 'HEALER' },
+	{ role = 'DAMAGER' }
+}
+
+local function SetGrabCoords(data, xOffset, yOffset)
+	data.texA, data.texB, data.texC, data.texD = GetTexCoordsByGrid(xOffset, yOffset, 256, 256, 67, 67)
+end
+
+SetGrabCoords(roles[1], 1, 2)
+SetGrabCoords(roles[2], 2, 1)
+SetGrabCoords(roles[3], 2, 2)
+
 local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate')
 ShowButton:SetMovable(true)
 ShowButton:SetClampedToScreen(true)
@@ -419,19 +432,21 @@ function RU:Initialize()
 		RoleIcons:SetScript('OnEvent', RU.OnEvent_RoleIcons)
 		RoleIcons.icons = {}
 
-		for i, role in next, roles do
-			local frame = CreateFrame('Frame', '$parent_'..role, RoleIcons)
+		for i, data in next, roles do
+			local frame = CreateFrame('Frame', '$parent_'..data.role, RoleIcons)
+
 			if i == 1 then
 				frame:Point('TOP', 0, -5)
 			else
-				frame:Point('TOP', _G['RaidUtilityRoleIcons_'..roles[i-1]], 'BOTTOM', 0, -8)
+				local previous = roles[i-1]
+				if previous and previous.role then
+					frame:Point('TOP', _G['RaidUtilityRoleIcons_'..previous.role], 'BOTTOM', 0, -8)
+				end
 			end
 
 			local texture = frame:CreateTexture(nil, 'OVERLAY')
 			texture:SetTexture(E.Media.Textures.RoleIcons) -- 337499
-
-			local texA, texB, texC, texD = GetTexCoordsForRole(role)
-			texture:SetTexCoord(texA, texB, texC, texD)
+			texture:SetTexCoord(data.texA, data.texB, data.texC, data.texD)
 			texture:Point('TOPLEFT', frame, 'TOPLEFT', -2, 2)
 			texture:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 2, -2)
 			frame.texture = texture
@@ -441,12 +456,12 @@ function RU:Initialize()
 			Count:SetText(0)
 			frame.count = Count
 
-			frame.role = role
+			frame.role = data.role
 			frame:SetScript('OnEnter', RU.OnEnter_Role)
 			frame:SetScript('OnLeave', GameTooltip_Hide)
 			frame:Size(28)
 
-			RoleIcons.icons[role] = frame
+			RoleIcons.icons[data.role] = frame
 		end
 	end
 
