@@ -62,6 +62,7 @@ local UnitPVPRank = UnitPVPRank
 local UnitReaction = UnitReaction
 local UnitSex = UnitSex
 local UnitStagger = UnitStagger
+local UnitInPartyIsAI = UnitInPartyIsAI
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
@@ -556,7 +557,7 @@ E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENG
 end)
 
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-	if UnitIsPlayer(unit) then
+	if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 		local _, unitClass = UnitClass(unit)
 		local cs = ElvUF.colors.class[unitClass]
 		return (cs and Hex(cs.r, cs.g, cs.b)) or '|cFFcccccc'
@@ -787,7 +788,7 @@ E:AddTag('arena:number', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
-	if not UnitIsPlayer(unit) then return end
+	if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 	local _, classToken = UnitClass(unit)
 	if UnitSex(unit) == 3 then
@@ -1237,7 +1238,7 @@ do
 	}
 
 	E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
-		if not UnitIsPlayer(unit) then return end
+		if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 		local _, class = UnitClass(unit)
 		local icon = classIcons[class]

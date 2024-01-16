@@ -13,6 +13,7 @@ local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsCharmed = UnitIsCharmed
 local UnitIsEnemy = UnitIsEnemy
+local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)
@@ -259,7 +260,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		elseif colors.classbackdrop then
 			local reaction, color = (UnitReaction(unit, 'player'))
 
-			if UnitIsPlayer(unit) then
+			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 				local _, Class = UnitClass(unit)
 				color = parent.colors.class[Class]
 			elseif reaction then
