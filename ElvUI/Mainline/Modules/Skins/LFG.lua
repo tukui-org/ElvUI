@@ -128,9 +128,9 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
 
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface/icons/inv_helmet_08.blp
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface/icons/inv_helmet_06.blp
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
+	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface\icons\inv_helmet_08.blp
+	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
+	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
 
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')

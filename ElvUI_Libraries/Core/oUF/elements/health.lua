@@ -87,6 +87,8 @@ local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
+
 	local r, g, b, color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		color = self.colors.disconnected
@@ -96,9 +98,8 @@ local function UpdateColor(self, event, unit)
 		color = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
-	elseif(element.colorClass and UnitIsPlayer(unit))
-		or (element.colorClassNPC and not UnitIsPlayer(unit))
-		or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)
+		or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not isPlayer) then
 		if element.colorPetByUnitClass then unit = unit == 'pet' and 'player' or gsub(unit, 'pet', '') end
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]

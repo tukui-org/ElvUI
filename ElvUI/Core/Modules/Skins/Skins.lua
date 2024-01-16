@@ -1875,9 +1875,9 @@ do -- Handle collapse
 		if skip or not texture then return end
 
 		if type(texture) == 'number' then
-			if texture == 130838 then -- Interface/Buttons/UI-PlusButton-UP
+			if texture == 130838 then -- Interface\Buttons\UI-PlusButton-UP
 				button:SetNormalTexture(E.Media.Textures.PlusButton, true)
-			elseif texture == 130821 then -- Interface/Buttons/UI-MinusButton-UP
+			elseif texture == 130821 then -- Interface\Buttons\UI-MinusButton-UP
 				button:SetNormalTexture(E.Media.Textures.MinusButton, true)
 			end
 		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then

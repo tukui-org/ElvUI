@@ -1,7 +1,7 @@
-Copyright (c) 2006-2022 Trond A Ekseth <troeks@gmail.com>
-Copyright (c) 2016-2022 Val Voronov <i.lightspark@gmail.com>
-Copyright (c) 2016-2022 Adrian L Lange <contact@p3lim.net>
-Copyright (c) 2016-2022 Rainrider <rainrider.wow@gmail.com>
+Copyright (c) 2006-2024 Trond A Ekseth <troeks@gmail.com>
+Copyright (c) 2016-2024 Val Voronov <i.lightspark@gmail.com>
+Copyright (c) 2016-2024 Adrian L Lange <contact@p3lim.net>
+Copyright (c) 2016-2024 Rainrider <rainrider.wow@gmail.com>
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

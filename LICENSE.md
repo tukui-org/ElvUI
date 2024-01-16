@@ -3,7 +3,7 @@
 **Source**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI](https://github.com/tukui-org/ElvUI/tree/development/ElvUI)
 
 ```
-Copyright © 2009-2023 The contents of this addon, excluding third-party resources, are
+Copyright © 2009-2024 The contents of this addon, excluding third-party resources, are
 copyrighted to their authors with all rights reserved.
 Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI/LICENSE.txt
 ```
@@ -13,7 +13,7 @@ Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI/LICENSE.txt
 **Source**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Options](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Options)
 
 ```
-Copyright © 2009-2023 The contents of this addon, excluding third-party resources, are
+Copyright © 2009-2024 The contents of this addon, excluding third-party resources, are
 copyrighted to their authors with all rights reserved.
 Reference: github.com/tukui-org/ElvUI/blob/development/ElvUI_Options/LICENSE.txt
 ```

@@ -1,7 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 
-local UnitAura = UnitAura
 local UnitCanAssist = UnitCanAssist
 
 local LibDispel = LibStub('LibDispel-1.0')
@@ -39,14 +38,14 @@ end
 
 local function Looper(unit, filter, check, list, func)
 	local index = 1
-	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
 	while name do
 		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 		if Icon then
 			return AuraType, Icon, filtered, style, color
 		else
 			index = index + 1
-			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnitAura(unit, index, filter)
+			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
 		end
 	end
 end

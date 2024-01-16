@@ -40,7 +40,7 @@ local function NotifyDialogShow(_, dialog)
 		minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 		minimize.tex:SetInside()
 
-		minimize:SetHighlightTexture(130837, 'ADD') -- Interface/Buttons/UI-PlusButton-Hilight
+		minimize:SetHighlightTexture(130837, 'ADD') -- Interface\Buttons\UI-PlusButton-Hilight
 	end
 
 	dialog.isSkinned = true
@@ -184,7 +184,7 @@ function S:WorldMapFrame()
 		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
 		Tracking:StripTextures()
-		Tracking.Icon:SetTexture(136460) -- Interface/Minimap/Tracking/None
+		Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
 		Tracking:SetHighlightTexture(136460, 'ADD')
 
 		local TrackingHighlight = Tracking:GetHighlightTexture()
@@ -194,7 +194,7 @@ function S:WorldMapFrame()
 		Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
 		Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
 		Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface/Waypoint/WaypoinMapPinUI
+		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
 
 		local PinHighlight = Pin:GetHighlightTexture()
 		PinHighlight:SetAllPoints(Pin.Icon)

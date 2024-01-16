@@ -1,3 +1,4 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='ObjectiveFrame.lua'/>
+	<Script file='..\..\..\Classic\Modules\Blizzard\ColorPicker.lua'/>
 </Ui>

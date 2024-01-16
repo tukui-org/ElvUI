@@ -13,6 +13,7 @@ local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitReaction = UnitReaction
+local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
@@ -185,7 +186,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	end
 
 	if option.class then
-		local isPlayer = unit and UnitIsPlayer(unit)
+		local isPlayer = unit and (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)))
 		local reaction = unit and UnitReaction(unit, 'player')
 
 		if isPlayer then

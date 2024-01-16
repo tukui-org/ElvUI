@@ -246,6 +246,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.QuestFont_Larger,						NORMAL, (blizz and 16) or unscale or big)					-- Wrath
 		E:SetFont(_G.SystemFont_Large,						NORMAL, (blizz and 16) or unscale or big)
 		E:SetFont(_G.SystemFont_Shadow_Large,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:SetFont(_G.SystemFont16_Shadow_ThickOutline,		NORMAL, (blizz and 16) or unscale or big, outline)			-- Talent & Profession SpendText
 		E:SetFont(_G.Game18Font,							NORMAL, (blizz and 18) or unscale or big)					-- MissionUI Bonus Chance
 		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, (blizz and 18) or unscale or big, 'SHADOW')			-- Garrison Follower Names
 		E:SetFont(_G.QuestFont_Huge,						NORMAL, (blizz and 18) or unscale or big)					-- Quest rewards title, Rewards

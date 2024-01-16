@@ -40,7 +40,7 @@ local function GetCrestIcon(info)
 end
 
 local function GetCrestText(crest, info)
-	return format(crestText, crest.color, info.totalEarned, info.maxQuantity)
+	return format(crestText, crest.color, (crest.id == 2245 and info.quantity) or info.totalEarned, info.maxQuantity)
 end
 
 local function OnEvent(self)
