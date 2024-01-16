@@ -114,7 +114,7 @@ local function ColorSwatch_OnClick(frame)
 			ColorPPDefault.colors.r, ColorPPDefault.colors.g, ColorPPDefault.colors.b, ColorPPDefault.colors.a = self.dR, self.dG, self.dB, alpha
 		end
 
-		if ColorPickerFrame.GetColorAlpha then
+		if not ColorPickerFrame.GetColorAlpha then
 			ColorPickerFrame.cancelFunc = function()
 				ColorCallback(self, r, g, b, a, true)
 			end
