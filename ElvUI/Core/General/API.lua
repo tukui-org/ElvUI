@@ -965,7 +965,9 @@ function E:LoadAPI()
 							local localized = (x == 3 and female) or male
 							copy.className = localized
 
-							E.SpecInfoBySpecClass[name..' '..localized] = copy
+							if localized then
+								E.SpecInfoBySpecClass[name..' '..localized] = copy
+							end
 						end
 					end
 				end
