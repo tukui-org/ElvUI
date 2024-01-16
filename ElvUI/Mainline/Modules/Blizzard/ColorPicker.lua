@@ -201,7 +201,7 @@ function BL:EnhanceColorPicker()
 
 	ColorPickerFrame:HookScript('OnHide', function(frame)
 		if frame.cancelFunc then
-			frame.cancelFunc()
+		--	frame.cancelFunc()
 		end
 	end)
 
