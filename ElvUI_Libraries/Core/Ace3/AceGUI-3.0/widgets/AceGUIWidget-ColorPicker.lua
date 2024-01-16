@@ -5,13 +5,13 @@ local Type, Version = "ColorPicker-ElvUI", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
--- Lua APIs
 local pairs = pairs
 
--- WoW APIs
 local CreateFrame, UIParent = CreateFrame, UIParent
 local OpacitySliderFrame = OpacitySliderFrame
 local ColorPickerFrame = ColorPickerFrame
+
+-- GLOBALS: ColorPPDefault
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -100,7 +100,7 @@ local function ColorSwatch_OnClick(frame)
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
 			if self.dA then
-				alpha = 1 - self.dA
+				alpha = (ColorPickerFrame.GetColorAlpha and self.dA) or (1 - self.dA)
 			end
 
 			if not ColorPPDefault.colors then
