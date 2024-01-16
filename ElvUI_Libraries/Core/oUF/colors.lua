@@ -150,7 +150,7 @@ for eclass, color in next, _G.FACTION_BAR_COLORS do
 	colors.reaction[eclass] = oUF:CreateColor(color.r, color.g, color.b)
 end
 
-local staggerIndex = {
+local staggerIndices = {
 	green = 1,
 	yellow = 2,
 	red = 3
