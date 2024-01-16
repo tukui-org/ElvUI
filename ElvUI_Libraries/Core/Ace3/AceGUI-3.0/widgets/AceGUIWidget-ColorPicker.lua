@@ -87,7 +87,11 @@ local function ColorSwatch_OnClick(frame)
 
 		local r, g, b, a = self.r, self.g, self.b, self.a
 		if self.HasAlpha then
-			ColorPickerFrame.opacity = 1 - (a or 0)
+			if ColorPickerFrame.GetColorAlpha then
+				ColorPickerFrame.opacity = a or 0
+			else
+				ColorPickerFrame.opacity = 1 - (a or 0)
+			end
 		end
 
 		if ColorPickerFrame.Content and ColorPickerFrame.Content.ColorPicker then
