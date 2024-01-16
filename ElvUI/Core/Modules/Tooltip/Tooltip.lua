@@ -38,7 +38,6 @@ local IsShiftKeyDown = IsShiftKeyDown
 local NotifyInspect = NotifyInspect
 local SetTooltipMoney = SetTooltipMoney
 local UIParent = UIParent
-local UnitAura = UnitAura
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
 local UnitClass = UnitClass
@@ -438,7 +437,7 @@ end
 
 function TT:AddMountInfo(tt, unit)
 	local index = 1
-	local name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
+	local name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
 	while name do
 		local mountID = E.MountIDs[spellID]
 		if mountID then
@@ -461,7 +460,7 @@ function TT:AddMountInfo(tt, unit)
 			break
 		else
 			index = index + 1
-			name, _, _, _, _, _, _, _, _, spellID = UnitAura(unit, index, 'HELPFUL')
+			name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
 		end
 	end
 end
@@ -826,7 +825,7 @@ end
 function TT:SetUnitAura(tt, unit, index, filter)
 	if not tt or tt:IsForbidden() then return end
 
-	local name, _, _, _, _, _, source, _, _, spellID = UnitAura(unit, index, filter)
+	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
 	if not name then return end
 
 	local mountID, mountText = E.MountIDs[spellID]

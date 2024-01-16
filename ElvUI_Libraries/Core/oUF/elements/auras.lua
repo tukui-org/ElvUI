@@ -81,7 +81,6 @@ local CREATED = 2
 local wipe = wipe
 local pcall = pcall
 local tinsert = tinsert
-local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -167,7 +166,7 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
 
 	if element.forceShow or element.forceCreate then
 		spellID = 5782

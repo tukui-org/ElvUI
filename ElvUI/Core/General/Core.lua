@@ -195,11 +195,22 @@ function E:GrabColorPickerValues(r, g, b)
 	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
 
 	-- set and define the new values
-	_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
+	if E.Retail then
+		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r or 1, g or 1, b or 1)
+	else
+		_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
+	end
+
 	r, g, b = _G.ColorPickerFrame:GetColorRGB()
 
 	-- swap back to the old values
-	if oldR then _G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB) end
+	if oldR then
+		if E.Retail then
+			_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(oldR, oldG, oldB)
+		else
+			_G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB)
+		end
+	end
 
 	-- free it up..
 	_G.ColorPickerFrame.noColorCallback = nil

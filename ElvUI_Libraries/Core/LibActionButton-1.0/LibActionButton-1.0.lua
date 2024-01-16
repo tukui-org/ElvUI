@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 47 -- the real minor version is 108
+local MINOR_VERSION = 48 -- the real minor version is 108
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -44,6 +44,10 @@ local RANGE_INDICATOR = RANGE_INDICATOR
 local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
 local NumberFontNormalSmallGray = NumberFontNormalSmallGray
 local NumberFontNormal = NumberFontNormal
+
+local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
+local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
+local UnitAura = UnitAura
 
 -- GLOBALS: _G, GameTooltip, UIParent
 
@@ -567,6 +571,14 @@ do
 			SetCVar("ActionButtonUseKeyDown", "1")
 			reset = nil
 		end
+	end
+end
+
+local function GetAuraData(unitToken, index, filter)
+	if WoWRetail then
+		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
+	else
+		return UnitAura(unitToken, index, filter)
 	end
 end
 
@@ -1759,7 +1771,7 @@ function UpdateAuraCooldowns(disable)
 	wipe(currentAuras)
 
 	local index = 1
-	local name, _, _, _, duration, expiration = UnitAura("target", index, filter)
+	local name, _, _, _, duration, expiration = GetAuraData("target", index, filter)
 	while name do
 		local buttons = AuraButtons.auras[name]
 		if buttons then
@@ -1775,7 +1787,7 @@ function UpdateAuraCooldowns(disable)
 		end
 
 		index = index + 1
-		name, _, _, _, duration, expiration = UnitAura("target", index, filter)
+		name, _, _, _, duration, expiration = GetAuraData("target", index, filter)
 	end
 
 	for button in next, previousAuras do

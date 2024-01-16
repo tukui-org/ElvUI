@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 26
+local Type, Version = "ColorPicker-ElvUI", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -10,6 +10,8 @@ local pairs = pairs
 
 -- WoW APIs
 local CreateFrame, UIParent = CreateFrame, UIParent
+local OpacitySliderFrame = OpacitySliderFrame
+local ColorPickerFrame = ColorPickerFrame
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -22,7 +24,9 @@ local function ColorCallback(self, r, g, b, a, isAlpha)
 	if not self.HasAlpha then
 		a = 1
 	end
+
 	self:SetColor(r, g, b, a)
+
 	if ColorPickerFrame:IsVisible() then
 		--colorpicker is still open
 		self:Fire("OnValueChanged", r, g, b, a)
@@ -55,15 +59,27 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetClampedToScreen(true)
 
 		ColorPickerFrame.func = function()
-			local r, g, b = ColorPickerFrame:GetColorRGB()
-			local a = 1 - OpacitySliderFrame:GetValue()
+			local a, r, g, b = 0, ColorPickerFrame:GetColorRGB()
+
+			if ColorPickerFrame.GetColorAlpha then
+				a = ColorPickerFrame:GetColorAlpha()
+			else
+				a = 1 - OpacitySliderFrame:GetValue()
+			end
+
 			ColorCallback(self, r, g, b, a)
 		end
 
 		ColorPickerFrame.hasOpacity = self.HasAlpha
 		ColorPickerFrame.opacityFunc = function()
-			local r, g, b = ColorPickerFrame:GetColorRGB()
-			local a = 1 - OpacitySliderFrame:GetValue()
+			local a, r, g, b = 0, ColorPickerFrame:GetColorRGB()
+
+			if ColorPickerFrame.GetColorAlpha then
+				a = ColorPickerFrame:GetColorAlpha()
+			else
+				a = 1 - OpacitySliderFrame:GetValue()
+			end
+
 			ColorCallback(self, r, g, b, a, true)
 		end
 
@@ -71,12 +87,24 @@ local function ColorSwatch_OnClick(frame)
 		if self.HasAlpha then
 			ColorPickerFrame.opacity = 1 - (a or 0)
 		end
-		ColorPickerFrame:SetColorRGB(r, g, b)
 
+		if ColorPickerFrame.Content and ColorPickerFrame.Content.ColorPicker then
+			ColorPickerFrame.Content.ColorPicker:SetColorRGB(r, g, b)
+		else
+			ColorPickerFrame:SetColorRGB(r, g, b)
+		end
+
+		-- ElvUI
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
-			if self.dA then alpha = 1 - self.dA end
-			if not ColorPPDefault.colors then ColorPPDefault.colors = {} end
+			if self.dA then
+				alpha = 1 - self.dA
+			end
+
+			if not ColorPPDefault.colors then
+				ColorPPDefault.colors = {}
+			end
+
 			ColorPPDefault.colors.r, ColorPPDefault.colors.g, ColorPPDefault.colors.b, ColorPPDefault.colors.a = self.dR, self.dG, self.dB, alpha
 		end
 

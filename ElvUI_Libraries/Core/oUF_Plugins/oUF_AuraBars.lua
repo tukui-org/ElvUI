@@ -11,11 +11,8 @@ local unpack = unpack
 local tinsert = tinsert
 local infinity = math.huge
 
-local _G = _G
 local GetTime = GetTime
-local UnitAura = UnitAura
 local CreateFrame = CreateFrame
-local UnitIsUnit = UnitIsUnit
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
@@ -144,7 +141,7 @@ local function updateBar(element, bar)
 end
 
 local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
 
 	if not name then return end
 

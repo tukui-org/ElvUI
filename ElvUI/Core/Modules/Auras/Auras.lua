@@ -18,7 +18,6 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local UIParent = UIParent
-local UnitAura = UnitAura
 local GetTime = GetTime
 
 local Masque = E.Masque
@@ -268,7 +267,7 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local name, icon, count, debuffType, duration, expiration, _, _, _, _, _, _, _, _, modRate = UnitAura(button.header:GetAttribute('unit'), index, button.filter)
+	local name, icon, count, debuffType, duration, expiration, _, _, _, _, _, _, _, _, modRate = E:GetAuraData(button.header:GetAttribute('unit'), index, button.filter)
 	if not name then return end
 
 	local db = A.db[button.auraType]
