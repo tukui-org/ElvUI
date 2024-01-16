@@ -59,28 +59,30 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetClampedToScreen(true)
 
 		ColorPickerFrame.func = function()
-			local a, r, g, b = 0, ColorPickerFrame:GetColorRGB()
+			local r, g, b = ColorPickerFrame:GetColorRGB()
+			local alpha
 
 			if ColorPickerFrame.GetColorAlpha then
-				a = ColorPickerFrame:GetColorAlpha()
+				alpha = ColorPickerFrame:GetColorAlpha()
 			else
-				a = 1 - OpacitySliderFrame:GetValue()
+				alpha = 1 - OpacitySliderFrame:GetValue()
 			end
 
-			ColorCallback(self, r, g, b, a)
+			ColorCallback(self, r, g, b, alpha)
 		end
 
 		ColorPickerFrame.hasOpacity = self.HasAlpha
 		ColorPickerFrame.opacityFunc = function()
-			local a, r, g, b = 0, ColorPickerFrame:GetColorRGB()
+			local r, g, b = ColorPickerFrame:GetColorRGB()
+			local alpha
 
 			if ColorPickerFrame.GetColorAlpha then
-				a = ColorPickerFrame:GetColorAlpha()
+				alpha = ColorPickerFrame:GetColorAlpha()
 			else
-				a = 1 - OpacitySliderFrame:GetValue()
+				alpha = 1 - OpacitySliderFrame:GetValue()
 			end
 
-			ColorCallback(self, r, g, b, a, true)
+			ColorCallback(self, r, g, b, alpha, true)
 		end
 
 		local r, g, b, a = self.r, self.g, self.b, self.a

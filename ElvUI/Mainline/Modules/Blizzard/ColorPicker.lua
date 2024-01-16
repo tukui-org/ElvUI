@@ -199,6 +199,12 @@ function BL:EnhanceColorPicker()
 	-- Keep the colors updated
 	ColorPickerFrame.Content.ColorPicker:SetScript('OnColorSelect', onColorSelect)
 
+	ColorPickerFrame:HookScript('OnHide', function(frame)
+		if frame.cancelFunc then
+			frame.cancelFunc()
+		end
+	end)
+
 	ColorPickerFrame:HookScript('OnShow', function(frame)
 		-- get color that will be replaced
 		local r, g, b = frame:GetColorRGB()
