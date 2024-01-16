@@ -164,7 +164,10 @@ local function onColorSelect(frame, r, g, b)
 		delayCall()
 	elseif not delayFunc then
 		delayFunc = ColorPickerFrame.func
-		E:Delay(delayWait, delayCall)
+
+		if delayFunc then
+			E:Delay(delayWait, delayCall)
+		end
 	end
 end
 
@@ -175,7 +178,7 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Border:Hide()
 	end
 
-	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN?
+	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
