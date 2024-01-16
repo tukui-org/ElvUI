@@ -279,10 +279,9 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Content.ColorPicker:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 		ColorPickerFrame.Content.ColorSwatchCurrent:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
 
-		if ColorPickerFrame.hasOpacity then
-			if colorBuffer.a then --color copied had an alpha value
-				ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colorBuffer.a)
-			end
+		if ColorPickerFrame.hasOpacity and colorBuffer.a then -- color copied had an alpha value
+			ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colorBuffer.a)
+			onAlphaValueChanged(nil, colorBuffer.a)
 		end
 	end)
 
@@ -301,10 +300,9 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Content.ColorPicker:SetColorRGB(colors.r, colors.g, colors.b)
 		ColorPickerFrame.Content.ColorSwatchCurrent:SetColorTexture(colors.r, colors.g, colors.b)
 
-		if ColorPickerFrame.hasOpacity then
-			if colors.a then
-				ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colors.a)
-			end
+		if ColorPickerFrame.hasOpacity and colors.a then
+			ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colors.a)
+			onAlphaValueChanged(nil, colorBuffer.a)
 		end
 	end)
 
