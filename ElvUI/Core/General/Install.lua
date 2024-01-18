@@ -84,7 +84,7 @@ function E:SetupChat(noDisplayMsg)
 		local frame = _G[name]
 
 		if E.private.chat.enable then
-			CH:FCFTab_UpdateColors(CH:GetTab(_G[name]))
+			CH:FCFTab_UpdateColors(CH:GetTab(frame))
 		end
 
 		if id == 1 then
