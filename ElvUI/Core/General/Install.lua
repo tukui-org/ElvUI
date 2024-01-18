@@ -16,10 +16,12 @@ local PlaySound = PlaySound
 local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
 local ChangeChatColor = ChangeChatColor
+local FCF_DockFrame = FCF_DockFrame
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
 local FCF_UnDockFrame = FCF_UnDockFrame
 local FCF_OpenNewWindow = FCF_OpenNewWindow
+local FCF_ResetChatWindow = FCF_ResetChatWindow
 local FCF_ResetChatWindows = FCF_ResetChatWindows
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
@@ -33,7 +35,7 @@ local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateV
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
-local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
+local VOICE, LOOT, GENERAL, TRADE = VOICE, LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 
 -- GLOBALS: ElvUIInstallFrame
@@ -67,12 +69,18 @@ local function ToggleChatColorNamesByClassGroup(checked, group)
 end
 
 function E:SetupChat(noDisplayMsg)
+	local chats = _G.CHAT_FRAMES
 	FCF_ResetChatWindows()
 
-	local rightChatFrame = FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(rightChatFrame)
+	-- force initialize the tts chat (it doesn't get shown unless you use it)
+	local voiceChat = _G[chats[3]]
+	FCF_ResetChatWindow(voiceChat, VOICE)
+	FCF_DockFrame(voiceChat, 3)
 
-	for _, name in next, _G.CHAT_FRAMES do
+	local rightChat = FCF_OpenNewWindow(LOOT)
+	FCF_UnDockFrame(rightChat)
+
+	for _, name in next, chats do
 		local frame = _G[name]
 		local id = frame:GetID()
 
@@ -109,14 +117,14 @@ function E:SetupChat(noDisplayMsg)
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { E.Retail and 'PING' or nil, 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	ChatFrame_RemoveAllMessageGroups(rightChatFrame)
+	ChatFrame_RemoveAllMessageGroups(rightChat)
 	for _, v in next, chatGroup do
-		ChatFrame_AddMessageGroup(rightChatFrame, v)
+		ChatFrame_AddMessageGroup(rightChat, v)
 	end
 
 	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(rightChatFrame, TRADE)
+	ChatFrame_AddChannel(rightChat, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
