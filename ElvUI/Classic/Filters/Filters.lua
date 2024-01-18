@@ -640,6 +640,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	},
 }
 
+if E.ClassicSOD then
+	----------------------------------------------------------
+	-------------------- Blackfathom Deeps -------------------
+	----------------------------------------------------------
+	-- Baron Aquanis
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[404373] = List(2) -- Bubble Beam I
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[413664] = List(2) -- Bubble Beam II
+	-- Ghamoo-ra
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[406970] = List(2) -- Aqua Shell
+	-- Twilight Lord Kelris
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[426489] = List(2) -- Manifesting Dreams
+end
+
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	DRUID = {
