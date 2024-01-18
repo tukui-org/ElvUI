@@ -80,9 +80,8 @@ function E:SetupChat(noDisplayMsg)
 	local rightChat = FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(rightChat)
 
-	for _, name in next, chats do
+	for id, name in next, chats do
 		local frame = _G[name]
-		local id = frame:GetID()
 
 		if E.private.chat.enable then
 			CH:FCFTab_UpdateColors(CH:GetTab(_G[name]))
