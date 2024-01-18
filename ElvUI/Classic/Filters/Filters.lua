@@ -593,6 +593,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
+if E.ClassicSOD then
+	----------------------------------------------------------
+	-------------------- Blackfathom Deeps -------------------
+	----------------------------------------------------------
+	-- Baron Aquanis
+	G.unitframe.aurafilters.RaidDebuffs.spells[404806] = List(2) -- Depth Charge
+	-- Ghamoo-ra
+	G.unitframe.aurafilters.RaidDebuffs.spells[407095] = List(2) -- Crunch Armor
+	-- Lady Saravess
+	G.unitframe.aurafilters.RaidDebuffs.spells[407644] = List(2) -- Forked Lightning
+	G.unitframe.aurafilters.RaidDebuffs.spells[407546] = List(2) -- Freezing Arrow
+	-- Gelihast
+	G.unitframe.aurafilters.RaidDebuffs.spells[411959] = List(2) -- Fear
+	-- Twilight Lord Kelris
+	G.unitframe.aurafilters.RaidDebuffs.spells[426495] = List(2) -- Shadowy Chains
+	-- Aku'mai
+	G.unitframe.aurafilters.RaidDebuffs.spells[427625] = List(2) -- Corrosion
+	G.unitframe.aurafilters.RaidDebuffs.spells[428482] = List(2) -- Shadow Seep
+end
+
 --[[
 	RAID BUFFS:
 	Buffs that are provided by NPCs in raid or other PvE content.
