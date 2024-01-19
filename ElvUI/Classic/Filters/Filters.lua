@@ -825,6 +825,11 @@ G.unitframe.ChannelTicks = {
 	[746]	= 6, -- Linen Bandage
 }
 
+if E.ClassicSOD then
+	G.unitframe.ChannelTicks[402261] = 3 -- Penance (DPS)
+	G.unitframe.ChannelTicks[402277] = 3 -- Penance (Healing)
+end
+
 -- Spells that chain, second step
 G.unitframe.ChainChannelTicks = {}
 
