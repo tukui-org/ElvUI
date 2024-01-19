@@ -50,7 +50,7 @@ if Retail then
 	BlockList[108220] = "Deep Corruption"
 	BlockList[116095] = "Disable" -- slow
 
-	-- Bleed spells updated November 14th 2023 by Simpy for Patch 10.2
+	-- Bleed spells updated January 19th 2023 by Simpy for Patch 10.2.5
 	--- Combined lists (without duplicates, filter requiring either main or effect bleed):
 	----> Apply Aura
 	-----> Mechanic Bleeding: https://www.wowhead.com/spells/mechanic:15?filter=109;6;0
