@@ -143,7 +143,7 @@ local function UpdateAlpha(tbox)
 	end
 
 	local value = num * 0.01
-	ColorPickerFrame.Content.ColorPicker:SetColorAlpha((1 - num) * 0.01)
+	ColorPickerFrame.Content.ColorPicker:SetColorAlpha(num * 0.01)
 	onAlphaValueChanged(nil, value)
 end
 
