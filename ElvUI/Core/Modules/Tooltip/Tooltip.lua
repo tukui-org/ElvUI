@@ -230,7 +230,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local nameColor = E:ClassColor(class) or PRIEST_COLOR
 
-		if TT.db.playerTitles and pvpName then
+		if TT.db.playerTitles and pvpName and pvpName ~= '' then
 			name = pvpName
 		end
 
