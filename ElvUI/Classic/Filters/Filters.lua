@@ -593,6 +593,26 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
+if E.ClassicSOD then
+	----------------------------------------------------------
+	-------------------- Blackfathom Deeps -------------------
+	----------------------------------------------------------
+	-- Baron Aquanis
+	G.unitframe.aurafilters.RaidDebuffs.spells[404806] = List(2) -- Depth Charge
+	-- Ghamoo-ra
+	G.unitframe.aurafilters.RaidDebuffs.spells[407095] = List(2) -- Crunch Armor
+	-- Lady Saravess
+	G.unitframe.aurafilters.RaidDebuffs.spells[407644] = List(2) -- Forked Lightning
+	G.unitframe.aurafilters.RaidDebuffs.spells[407546] = List(2) -- Freezing Arrow
+	-- Gelihast
+	G.unitframe.aurafilters.RaidDebuffs.spells[411959] = List(2) -- Fear
+	-- Twilight Lord Kelris
+	G.unitframe.aurafilters.RaidDebuffs.spells[426495] = List(2) -- Shadowy Chains
+	-- Aku'mai
+	G.unitframe.aurafilters.RaidDebuffs.spells[427625] = List(2) -- Corrosion
+	G.unitframe.aurafilters.RaidDebuffs.spells[428482] = List(2) -- Shadow Seep
+end
+
 --[[
 	RAID BUFFS:
 	Buffs that are provided by NPCs in raid or other PvE content.
@@ -619,6 +639,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	[23895] = List(), -- Renew
 	},
 }
+
+if E.ClassicSOD then
+	----------------------------------------------------------
+	-------------------- Blackfathom Deeps -------------------
+	----------------------------------------------------------
+	-- Baron Aquanis
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[404373] = List(2) -- Bubble Beam I
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[413664] = List(2) -- Bubble Beam II
+	-- Ghamoo-ra
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[406970] = List(2) -- Aqua Shell
+	-- Twilight Lord Kelris
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[426489] = List(2) -- Manifesting Dreams
+end
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
@@ -695,6 +728,14 @@ G.unitframe.aurawatch = {
 		[24604]	= Aura(24604, {24605,24603,24597}, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl
 	},
 }
+
+-- Season of Discovery Runes AuraWatch
+if E.ClassicSOD then
+	G.unitframe.aurawatch.DRUID[408120] = Aura(408120, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Wild Growth
+	G.unitframe.aurawatch.MAGE[401417] = Aura(401417, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Regeneration
+	G.unitframe.aurawatch.MAGE[412510] = Aura(412510, nil, 'BOTTOMRIGHT', {0.38, 0.19, 0.17}) -- Mass Regeneration
+	G.unitframe.aurawatch.PRIEST[401877] = Aura(401877, nil, 'RIGHT', {0.00, 0.00, 0.90}) -- Prayer of Mending
+end
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
@@ -783,6 +824,11 @@ G.unitframe.ChannelTicks = {
 	[1159]	= 6, -- Heavy Linen Bandage
 	[746]	= 6, -- Linen Bandage
 }
+
+if E.ClassicSOD then
+	G.unitframe.ChannelTicks[402261] = 3 -- Penance (DPS)
+	G.unitframe.ChannelTicks[402277] = 3 -- Penance (Healing)
+end
 
 -- Spells that chain, second step
 G.unitframe.ChainChannelTicks = {}

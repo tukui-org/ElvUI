@@ -1,3 +1,10 @@
+### Version 13.55 [ January 16th 2024 ]
+*   Darth finally got enough XP for lvl 36 (happy birthday)
+*   Datatext tooltip for Crest Fragments displays correctly
+*   Fists of Fury added to Castbar Ticks
+*   Minimap Menu updated with Icons
+*   Tank Icon setting works again
+
 ### Version 13.54 [ December 19th 2023 ]
 *   Raid Utility Countdown button works with other addons
 *   Dropdown for WIM skinned

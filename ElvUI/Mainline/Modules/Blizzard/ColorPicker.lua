@@ -81,7 +81,7 @@ local function UpdateColorTexts(r, g, b, box)
 	end
 
 	-- we want those /255 values
-	r, g, b = r*255, g*255, b*255
+	r, g, b = E:Round(r*255), E:Round(g*255), E:Round(b*255)
 
 	ColorPickerFrame.Content.HexBox:SetText(format('%.2x%.2x%.2x', r, g, b))
 	_G.ColorPPBoxR:SetText(r)
@@ -143,7 +143,7 @@ local function UpdateAlpha(tbox)
 	end
 
 	local value = num * 0.01
-	ColorPickerFrame.Content.ColorPicker:SetColorAlpha((1 - num) * 0.01)
+	ColorPickerFrame.Content.ColorPicker:SetColorAlpha(value)
 	onAlphaValueChanged(nil, value)
 end
 

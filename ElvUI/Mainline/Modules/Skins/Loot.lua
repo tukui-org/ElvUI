@@ -15,13 +15,17 @@ local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via th
 local function LootHistoryElements(button)
 	if button.IsSkinned then return end
 
+	if button.BackgroundArtFrame then
+		button.BackgroundArtFrame:StripTextures()
+		button.BackgroundArtFrame:CreateBackdrop('Transparent')
+	end
+
 	if button.NameFrame then
 		button.NameFrame:SetAlpha(0)
 	end
 
 	if button.BorderFrame then
 		button.BorderFrame:SetAlpha(0)
-		button.BorderFrame:CreateBackdrop('Transparent')
 	end
 
 	local item = button.Item
