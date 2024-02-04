@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
+local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
 local wipe = wipe
@@ -14,6 +15,13 @@ local UNKNOWN = UNKNOWN
 
 local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
+
+NP.PVPRole = {
+	Tanks = Tanks,
+	Healers = Healers,
+	HealerSpecs = HealerSpecs,
+	TankSpecs = TankSpecs
+}
 
 for i = 1, _G.MAX_CLASSES do
 	local _, _, classID = GetClassInfo(i)
