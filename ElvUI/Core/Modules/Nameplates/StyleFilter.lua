@@ -146,7 +146,9 @@ NP.TriggerConditions = {
 		[175] = 'legacy10normal',
 		[176] = 'legacy25normal',
 		[193] = 'legacy10heroic',
-		[194] = 'legacy25heroic'
+		[194] = 'legacy25heroic',
+		-- follower dungeon
+		[205] = 'follower'
 	}
 }
 

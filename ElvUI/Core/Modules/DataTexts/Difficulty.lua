@@ -64,6 +64,7 @@ local DiffIDLabel = { -- also has IDs maintained in Nameplate StyleFilters
 	['PvP'] = { 25, 29, 32, 34, 45 },
 	['WF'] = { 147 },
 	['WFH'] = { 149 },
+	['FD'] = { 205 },
 }
 
 local IDTexture = {
