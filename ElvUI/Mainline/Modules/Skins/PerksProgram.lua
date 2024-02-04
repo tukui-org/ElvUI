@@ -116,6 +116,7 @@ function S:Blizzard_PerksProgram()
 		if details then
 			details.Border:Hide()
 			details:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(details.SetDetailsScrollBoxContainer.ScrollBar)
 
 			local carousel = details.CarouselFrame
 			if carousel and carousel.IncrementButton then
