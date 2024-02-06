@@ -105,10 +105,10 @@ function S:BlizzardMiscFrames()
 	end)
 
 	local ChatMenus = {
-		_G.ChatMenu,
-		_G.EmoteMenu,
-		_G.LanguageMenu,
-		_G.VoiceMacroMenu,
+		_G.ChatMenu.NineSlice,
+		_G.EmoteMenu.NineSlice,
+		_G.LanguageMenu.NineSlice,
+		_G.VoiceMacroMenu.NineSlice,
 	}
 
 	for _, frame in ipairs(ChatMenus) do
@@ -118,10 +118,6 @@ function S:BlizzardMiscFrames()
 			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
-
-	-- Emotes NineSlice
-	_G.ChatMenu.NineSlice:SetTemplate('Transparent')
-	_G.EmoteMenu.NineSlice:SetTemplate('Transparent')
 
 	-- reskin popup buttons
 	for i = 1, 4 do
