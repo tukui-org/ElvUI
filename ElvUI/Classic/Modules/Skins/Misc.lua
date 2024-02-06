@@ -120,7 +120,8 @@ function S:BlizzardMiscFrames()
 	end
 
 	-- Emotes NineSlice
-	_G.ChatMenu.NineSlice:SetTemplate()
+	_G.ChatMenu.NineSlice:SetTemplate('Transparent')
+	_G.EmoteMenu.NineSlice:SetTemplate('Transparent')
 
 	-- reskin popup buttons
 	for i = 1, 4 do
