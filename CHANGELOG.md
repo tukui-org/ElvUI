@@ -1,3 +1,15 @@
+### Version 13.56 [ February 6th 2024 ]
+*   Style Filter error resolved
+*   Group Loot frame backdrop fixed
+*   Wrath: Warrior Charge to CCDebuffs
+*   Classic SoD: Auras added to Aurawatch and Penance to Castbar Ticks
+*   Chat Loot tab not being created during Install
+*   Color Picker Alpha input box behaves better
+*   Tooltip not showing player names sometimes
+*   Updated plugin for Show Healers & Tanks on Nameplates
+*   Timewalking instance type added to Unitframe Fader
+*   Difficulty IDs updated to include Follower Dungeons
+
 ### Version 13.55 [ January 16th 2024 ]
 *   Darth finally got enough XP for lvl 36 (happy birthday)
 *   Datatext tooltip for Crest Fragments displays correctly
