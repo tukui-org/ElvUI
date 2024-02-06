@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next, unpack = next, unpack
-local pairs, ipairs = pairs, ipairs
+local pairs = pairs
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
@@ -104,14 +104,7 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	local ChatMenus = {
-		_G.ChatMenu.NineSlice,
-		_G.EmoteMenu.NineSlice,
-		_G.LanguageMenu.NineSlice,
-		_G.VoiceMacroMenu.NineSlice,
-	}
-
-	for _, frame in ipairs(ChatMenus) do
+	for _, frame in next, { _G.ChatMenu.NineSlice, _G.EmoteMenu.NineSlice, _G.LanguageMenu.NineSlice, _G.VoiceMacroMenu.NineSlice } do
 		if frame == _G.ChatMenu then
 			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else

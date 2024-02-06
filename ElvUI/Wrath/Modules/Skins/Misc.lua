@@ -100,7 +100,7 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	for _, frame in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
+	for _, frame in next, { _G.ChatMenu.NineSlice, _G.EmoteMenu.NineSlice, _G.LanguageMenu.NineSlice, _G.VoiceMacroMenu.NineSlice } do
 		if frame == _G.ChatMenu then
 			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
@@ -108,10 +108,7 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	-- Emotes NineSlice
-	_G.ChatMenu.NineSlice:SetTemplate()
-
-	--LFD Role Picker frame
+	-- LFD Role Picker frame
 	_G.LFDRoleCheckPopup:StripTextures()
 	_G.LFDRoleCheckPopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
