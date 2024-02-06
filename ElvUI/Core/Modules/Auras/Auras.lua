@@ -548,6 +548,8 @@ function A:CreateAuraHeader(filter)
 end
 
 function A:Initialize()
+	if E.Classic then return end -- secure headers broken
+
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
 
