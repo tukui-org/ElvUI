@@ -266,6 +266,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[58373]	= List(2), -- Glyph of Hamstring
 		[676]	= List(2), -- Disarm
 		[12323]	= List(2), -- Piercing Howl
+		[105771] = List(2),-- Charge
 	-- Racial
 		[20549]	= List(2), -- War Stomp
 		[28730]	= List(2), -- Arcane Torrent (Mana)

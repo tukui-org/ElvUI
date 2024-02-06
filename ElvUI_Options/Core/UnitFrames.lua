@@ -618,6 +618,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.instanceDifficulties.args.raidHeroic = ACH:Toggle(L["Raid (heroic)"], nil, 6, nil, nil, nil, nil, nil, disabled)
 	config.args.instanceDifficulties.args.raidMythic = ACH:Toggle(L["Raid (mythic)"], nil, 7, nil, nil, nil, nil, nil, disabled)
 	config.args.instanceDifficulties.args.dungeonMythicKeystone = ACH:Toggle(L["Mythic Keystone"], nil, 8, nil, nil, nil, nil, nil, disabled)
+	config.args.instanceDifficulties.args.timewalking = ACH:Toggle(L["Timewalking"], nil, 9, nil, nil, nil, nil, nil, disabled)
 	config.args.instanceDifficulties.inline = true
 
 	return config

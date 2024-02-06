@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 48 -- the real minor version is 108
+local MINOR_VERSION = 49 -- the real minor version is 108
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -17,6 +17,12 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
+
+-- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+-- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
+
+-- local WoWClassicHC = IsHardcoreActive and IsHardcoreActive()
+-- local WoWClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 -- Enable custom flyouts for WoW Retail
 local UseCustomFlyout = WoWRetail
@@ -2652,7 +2658,7 @@ if C_UnitAuras then
 	Action.GetPassiveCooldownSpellID = function(self)
 		local _actionType, actionID = GetActionInfo(self._state_action)
 		local onEquipPassiveSpellID
-		if actionID then
+		if actionID and not WoWClassic then
 			onEquipPassiveSpellID = C_ActionBar.GetItemActionOnEquipSpellID(self._state_action)
 		end
 		if onEquipPassiveSpellID then

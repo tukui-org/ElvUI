@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
+local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
 local wipe = wipe
 local format = format
-local GetArenaOpponentSpec = GetArenaOpponentSpec
-local GetBattlefieldScore = GetBattlefieldScore
 local GetInstanceInfo = GetInstanceInfo
+local GetBattlefieldScore = GetBattlefieldScore
+local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -14,6 +15,13 @@ local UNKNOWN = UNKNOWN
 
 local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
+
+NP.PVPRole = {
+	Tanks = Tanks,
+	Healers = Healers,
+	HealerSpecs = HealerSpecs,
+	TankSpecs = TankSpecs
+}
 
 for i = 1, _G.MAX_CLASSES do
 	local _, _, classID = GetClassInfo(i)
@@ -29,12 +37,14 @@ for i = 1, _G.MAX_CLASSES do
 	end
 end
 
-local function WipeTable()
-	wipe(Healers)
-	wipe(Tanks)
-end
+local function Event(_, event)
+	if event == 'PLAYER_ENTERING_WORLD' then
+		wipe(Healers)
+		wipe(Tanks)
+	end
 
-local function Event()
+	if not E.private.nameplates.enable then return end
+
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
@@ -42,6 +52,7 @@ local function Event()
 			for i = 1, GetNumBattlefieldScores() do
 				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i)
 				name = name and name ~= UNKNOWN and E:StripMyRealm(name)
+
 				if name then
 					if HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
@@ -60,13 +71,13 @@ local function Event()
 				local name, realm = UnitName(format('arena%d', i))
 				if name and name ~= UNKNOWN then
 					realm = (realm and realm ~= '') and E:ShortenRealm(realm)
+
 					if realm then name = name..'-'..realm end
 
-					local s = GetArenaOpponentSpec(i)
 					local _, talentSpec = nil, UNKNOWN
-
-					if s and s > 0 then
-						_, talentSpec = GetSpecializationInfoByID(s)
+					local spec = GetArenaOpponentSpec(i)
+					if spec and spec > 0 then
+						_, talentSpec = GetSpecializationInfoByID(spec)
 					end
 
 					if talentSpec and talentSpec ~= UNKNOWN then
@@ -131,11 +142,8 @@ local function Enable(self)
 		if not element.TankTexture then element.TankTexture = E.Media.Textures.Tank end
 
 		self:RegisterEvent('UNIT_TARGET', Path)
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path)
-		self:RegisterEvent('ARENA_OPPONENT_UPDATE', Event, true)
-		self:RegisterEvent('UPDATE_BATTLEFIELD_SCORE', Event, true)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', WipeTable, true)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 
 		return true
 	end
@@ -146,13 +154,16 @@ local function Disable(self)
 	if element then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
-		self:UnregisterEvent('ARENA_OPPONENT_UPDATE', Event)
-		self:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE', Event)
 		self:UnregisterEvent('UNIT_TARGET', Path)
+		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('PLAYER_ENTERING_WORLD', WipeTable)
 	end
 end
+
+local frame = CreateFrame('Frame')
+frame:RegisterEvent('ARENA_OPPONENT_UPDATE')
+frame:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+frame:SetScript('OnEvent', Event)
 
 ElvUF:AddElement('PVPRole', Path, Enable, Disable)

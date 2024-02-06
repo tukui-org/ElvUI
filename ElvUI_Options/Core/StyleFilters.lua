@@ -588,6 +588,7 @@ if E.Retail then
 	StyleFilters.triggers.args.instanceType.args.dungeonDifficulty.values.mythic = GetDifficultyInfo(23)
 	StyleFilters.triggers.args.instanceType.args.dungeonDifficulty.values['mythic+'] = GetDifficultyInfo(8)
 	StyleFilters.triggers.args.instanceType.args.dungeonDifficulty.values.timewalking = GetDifficultyInfo(24)
+	StyleFilters.triggers.args.instanceType.args.dungeonDifficulty.values.follower = GetDifficultyInfo(205)
 end
 
 StyleFilters.triggers.args.instanceType.args.raidDifficulty = ACH:MultiSelect(L["Raid Difficulty"], L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."], 11, { legacy10normal = GetDifficultyInfo(3), legacy25normal = GetDifficultyInfo(4) }, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.instanceDifficulty.raid[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.instanceDifficulty.raid[key] = value NP:ConfigureAll() end, nil, function() local filter = GetFilter() return not filter.triggers.instanceType.raid end)

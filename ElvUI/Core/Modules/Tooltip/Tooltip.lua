@@ -230,7 +230,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local nameColor = E:ClassColor(class) or PRIEST_COLOR
 
-		if TT.db.playerTitles and pvpName then
+		if TT.db.playerTitles and pvpName and pvpName ~= '' then
 			name = pvpName
 		end
 
@@ -1018,10 +1018,6 @@ function TT:Initialize()
 	local statusBar = GameTooltipStatusBar
 	statusBar:Height(TT.db.healthBar.height)
 	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-
-	if E.Classic then
-		statusBar:SetMinMaxValues(-0.00001, 1)
-	end
 
 	GameTooltip.StatusBar = statusBar
 

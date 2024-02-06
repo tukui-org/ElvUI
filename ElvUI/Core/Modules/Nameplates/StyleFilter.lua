@@ -21,7 +21,6 @@ local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local UnitAffectingCombat = UnitAffectingCombat
-local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -147,7 +146,9 @@ NP.TriggerConditions = {
 		[175] = 'legacy10normal',
 		[176] = 'legacy25normal',
 		[193] = 'legacy10heroic',
-		[194] = 'legacy25heroic'
+		[194] = 'legacy25heroic',
+		-- follower dungeon
+		[205] = 'follower'
 	}
 }
 
@@ -1201,7 +1202,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Buffs_ and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
-			local isStealable = NP:StyleFilterDispelCheck(frame, filter)
+			local isStealable = NP:StyleFilterDispelCheck(frame, 'HELPFUL')
 			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
@@ -1218,7 +1219,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Debuffs_ and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
-			local canDispel = NP:StyleFilterDispelCheck(frame, filter)
+			local canDispel = NP:StyleFilterDispelCheck(frame, 'HARMFUL')
 			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
