@@ -1,3 +1,6 @@
+### Version 13.57 [ February 6th 2024 ]
+*   Classic: Blizzard fixed Top Auras
+
 ### Version 13.56 [ February 6th 2024 ]
 *   Style Filter error resolved
 *   Group Loot frame backdrop fixed
