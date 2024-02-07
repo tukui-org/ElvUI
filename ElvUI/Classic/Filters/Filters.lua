@@ -733,8 +733,7 @@ G.unitframe.aurawatch = {
 -- Season of Discovery Runes AuraWatch
 if E.ClassicSOD then
 	G.unitframe.aurawatch.DRUID[408120] = Aura(408120, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Wild Growth
-	G.unitframe.aurawatch.MAGE[401417] = Aura(401417, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Regeneration
-	G.unitframe.aurawatch.MAGE[412510] = Aura(412510, nil, 'BOTTOMRIGHT', {0.38, 0.19, 0.17}) -- Mass Regeneration
+	G.unitframe.aurawatch.MAGE[400735] = Aura(401417, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Temporal Beacon
 	G.unitframe.aurawatch.PRIEST[401877] = Aura(401877, nil, 'RIGHT', {0.00, 0.00, 0.90}) -- Prayer of Mending
 end
 
