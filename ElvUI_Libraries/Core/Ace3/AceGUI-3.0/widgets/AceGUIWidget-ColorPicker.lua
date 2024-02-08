@@ -5,6 +5,8 @@ local Type, Version = "ColorPicker-ElvUI", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
+local IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
 local pairs = pairs
 
 local CreateFrame, UIParent = CreateFrame, UIParent
@@ -62,7 +64,7 @@ local function ColorSwatch_OnClick(frame)
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
-			if ColorPickerFrame.GetColorAlpha then
+			if IsRetail then
 				alpha = ColorPickerFrame:GetColorAlpha()
 			else
 				alpha = 1 - OpacitySliderFrame:GetValue()
@@ -76,7 +78,7 @@ local function ColorSwatch_OnClick(frame)
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
-			if ColorPickerFrame.GetColorAlpha then
+			if IsRetail then
 				alpha = ColorPickerFrame:GetColorAlpha()
 			else
 				alpha = 1 - OpacitySliderFrame:GetValue()
@@ -87,7 +89,7 @@ local function ColorSwatch_OnClick(frame)
 
 		local r, g, b, a = self.r, self.g, self.b, self.a
 		if self.HasAlpha then
-			ColorPickerFrame.opacity = (ColorPickerFrame.GetColorAlpha and (a or 0)) or (1 - (a or 0))
+			ColorPickerFrame.opacity = (IsRetail and (a or 0)) or (1 - (a or 0))
 		end
 
 		if ColorPickerFrame.Content and ColorPickerFrame.Content.ColorPicker then
@@ -100,7 +102,7 @@ local function ColorSwatch_OnClick(frame)
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
 			if self.dA then
-				alpha = (ColorPickerFrame.GetColorAlpha and self.dA) or (1 - self.dA)
+				alpha = (IsRetail and self.dA) or (1 - self.dA)
 			end
 
 			if not ColorPPDefault.colors then
