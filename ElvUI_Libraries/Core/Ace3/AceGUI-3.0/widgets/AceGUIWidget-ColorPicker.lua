@@ -23,6 +23,12 @@ local function ColorCallback(self, r, g, b, a, isAlpha)
 	-- which is caused when we set values into the color picker again on `OnValueChanged`
 	if ColorPickerFrame.noColorCallback then return end
 
+	-- no change, skip update
+	if r == self.r and g == self.g and b == self.b and a == self.a then
+		return
+	end
+
+	-- no alpha option
 	if not self.HasAlpha then
 		a = 1
 	end
@@ -59,6 +65,7 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
+		ColorPickerFrame:EnableMouse(true) -- Make sure the background isn't click-through
 
 		ColorPickerFrame.func = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
