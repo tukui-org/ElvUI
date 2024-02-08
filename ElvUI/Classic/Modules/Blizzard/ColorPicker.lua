@@ -167,6 +167,8 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Border:Hide()
 	end
 
+	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
+
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
 	Header:ClearAllPoints()
