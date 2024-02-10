@@ -696,7 +696,8 @@ G.unitframe.aurawatch = {
 		[27683]	= Aura(27683, nil, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Prayer of Shadow Protection
 		[6346]	= Aura(6346, nil, 'LEFT', {0.89, 0.45, 0}), -- Fear Ward
 		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901}, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
-		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
+		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,425268,425269,425270,425271,425272,425273}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
+		[10060] = Aura(10060, nil, 'TOP', {0.17, 1.00, 0.45}) -- Power Infusion
 	},
 	ROGUE = {}, -- No buffs
 	SHAMAN = {
@@ -735,6 +736,7 @@ if E.ClassicSOD then
 	G.unitframe.aurawatch.DRUID[408120] = Aura(408120, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Wild Growth
 	G.unitframe.aurawatch.MAGE[400735] = Aura(401417, nil, 'RIGHT', {0.38, 0.19, 0.43}) -- Temporal Beacon
 	G.unitframe.aurawatch.PRIEST[401877] = Aura(401877, nil, 'RIGHT', {0.00, 0.00, 0.90}) -- Prayer of Mending
+	G.unitframe.aurawatch.PRIEST[402004] = Aura(402004, nil, 'TOP', {0.00, 0.00, 0.83}) -- Pain Suppression
 end
 
 -- List of spells to display ticks
