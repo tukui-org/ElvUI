@@ -670,11 +670,24 @@ if E.ClassicSOD then
 	------------------------ Gnomeregan ----------------------
 	----------------------------------------------------------
 	-- Grubbis
-	-- Viscous Fallout
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[3019] = List(2) -- Enrage
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[434941] = List(2) -- Toxic Vigor
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436074] = List(2) -- Trogg Rage
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436027] = List(2) -- Grubbis Mad!
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436059] = List(2) -- Radiation?
 	-- Electrocutioner 6000
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[10348] = List(2) -- Tune Up
 	-- Crowd Pummeler 9-60
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[432062] = List(2) -- The Claw!
 	-- Mechanical Menagerie
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436693] = List(2) -- Explosive Egg
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436739] = List(2) -- Cluck!
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436741] = List(2) -- Overheat
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436825] = List(2) -- Frayed Wiring
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436816] = List(2) -- Sprocketfire Breath
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436837] = List(2) -- Widget Fortress
 	-- Mekgineer Thermaplugg
+	G.unitframe.aurafilters.RaidBuffsElvUI.spells[438715] = List(2) -- Furnace Surge
 end
 
 G.unitframe.aurawatch = {
