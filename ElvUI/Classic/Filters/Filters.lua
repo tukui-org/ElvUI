@@ -622,11 +622,26 @@ if E.ClassicSOD then
 	------------------------ Gnomeregan ----------------------
 	----------------------------------------------------------
 	-- Grubbis
+	G.unitframe.aurafilters.RaidDebuffs.spells[434165] = List(2) -- Irradiated Cloud
+	G.unitframe.aurafilters.RaidDebuffs.spells[436069] = List(2) -- Radiation?
+	G.unitframe.aurafilters.RaidDebuffs.spells[436100] = List(2) -- Petrify
+	G.unitframe.aurafilters.RaidDebuffs.spells[434724] = List(2) -- Radiation Sickness
 	-- Viscous Fallout
+	G.unitframe.aurafilters.RaidDebuffs.spells[434433] = List(2) -- Sludge
+	G.unitframe.aurafilters.RaidDebuffs.spells[433546] = List(2) -- Radiation Burn
 	-- Electrocutioner 6000
+	G.unitframe.aurafilters.RaidDebuffs.spells[433251] = List(2) -- Static Arc
+	G.unitframe.aurafilters.RaidDebuffs.spells[433359] = List(2) -- Magnetic Pulse
 	-- Crowd Pummeler 9-60
+	G.unitframe.aurafilters.RaidDebuffs.spells[431839] = List(2) -- Off Balanced
+	G.unitframe.aurafilters.RaidDebuffs.spells[432308] = List(2) -- The Claw!
 	-- Mechanical Menagerie
+	G.unitframe.aurafilters.RaidDebuffs.spells[440014] = List(2) -- Sprocketfire
 	-- Mekgineer Thermaplugg
+	G.unitframe.aurafilters.RaidDebuffs.spells[438714] = List(2) -- Furnace Surge
+	G.unitframe.aurafilters.RaidDebuffs.spells[438727] = List(2) -- Radiation Sickness
+	G.unitframe.aurafilters.RaidDebuffs.spells[438732] = List(2) -- Toxic Ventilation
+	G.unitframe.aurafilters.RaidDebuffs.spells[438720] = List(2) -- Freezing
 end
 
 --[[
