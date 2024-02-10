@@ -163,7 +163,7 @@ local function onColorSelect(frame, r, g, b)
 	if not frame:IsVisible() then
 		delayCall()
 	elseif not delayFunc then
-		delayFunc = ColorPickerFrame.func
+		delayFunc = ColorPickerFrame.swatchFunc
 
 		if delayFunc then
 			E:Delay(delayWait, delayCall)

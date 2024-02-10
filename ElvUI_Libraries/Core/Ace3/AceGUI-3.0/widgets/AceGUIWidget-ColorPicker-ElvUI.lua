@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 27
+local Type, Version = "ColorPicker-ElvUI", 28
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -67,7 +67,7 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetClampedToScreen(true)
 		ColorPickerFrame:EnableMouse(true) -- Make sure the background isn't click-through
 
-		ColorPickerFrame.func = function()
+		ColorPickerFrame.swatchFunc = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
