@@ -441,6 +441,12 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
+if E.ClassicSOD then
+	-- Whitelist World Event Auras
+	G.unitframe.aurafilters.Whitelist.spells[433804] = List(6) -- Blood for the Blood Loa
+	G.unitframe.aurafilters.Whitelist.spells[441785] = List(6) -- Drained of Blood
+end
+
 -- RAID DEBUFFS: This should be pretty self explainitory
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
