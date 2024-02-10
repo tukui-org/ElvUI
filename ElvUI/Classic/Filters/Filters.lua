@@ -611,6 +611,15 @@ if E.ClassicSOD then
 	-- Aku'mai
 	G.unitframe.aurafilters.RaidDebuffs.spells[427625] = List(2) -- Corrosion
 	G.unitframe.aurafilters.RaidDebuffs.spells[428482] = List(2) -- Shadow Seep
+	----------------------------------------------------------
+	------------------------ Gnomeregan ----------------------
+	----------------------------------------------------------
+	-- Grubbis
+	-- Viscous Fallout
+	-- Electrocutioner 6000
+	-- Crowd Pummeler 9-60
+	-- Mechanical Menagerie
+	-- Mekgineer Thermaplugg
 end
 
 --[[
@@ -651,6 +660,15 @@ if E.ClassicSOD then
 	G.unitframe.aurafilters.RaidBuffsElvUI.spells[406970] = List(2) -- Aqua Shell
 	-- Twilight Lord Kelris
 	G.unitframe.aurafilters.RaidBuffsElvUI.spells[426489] = List(2) -- Manifesting Dreams
+	----------------------------------------------------------
+	------------------------ Gnomeregan ----------------------
+	----------------------------------------------------------
+	-- Grubbis
+	-- Viscous Fallout
+	-- Electrocutioner 6000
+	-- Crowd Pummeler 9-60
+	-- Mechanical Menagerie
+	-- Mekgineer Thermaplugg
 end
 
 G.unitframe.aurawatch = {
