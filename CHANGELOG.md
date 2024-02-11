@@ -1,3 +1,16 @@
+### Version 13.58 [ February 11th 2024 ]
+*   Updated LibRangeCheck which fixes the CheckInteractDistance error.
+*   Color Picker not saving properly on WeakAuras or other addons.
+*   The following Phase 2 auras have been added to AuraWatch & Whitelist:
+    *   Priest Renew
+    *   Priest Meditations
+    *   Druid Regrowth and Rejuvenation
+    *   Stranglethorn World Event Buff+Stacks
+    *   Stranglethorn Opt-Out PvP Buff
+    *   Dark Rider Rune discovery Buff
+    *   Cozy Sleeping Bag Buff+Stacks
+    *   Gnomeregan Raid Buffs+Debuffs
+
 ### Version 13.57 [ February 6th 2024 ]
 *   Classic: Blizzard fixed Top Auras
 
