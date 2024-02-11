@@ -7,7 +7,7 @@ local Aura = E.Filters.Aura
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
-	--Druid
+	-- Druid
 		[339]	= List(1), -- Entangling Roots (Rank 1)
 		[1062]	= List(1), -- Entangling Roots (Rank 2)
 		[5195]	= List(1), -- Entangling Roots (Rank 3)
@@ -31,7 +31,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[9005]	= List(2), -- Pounce (Rank 1)
 		[9823]	= List(2), -- Pounce (Rank 2)
 		[9827]	= List(2), -- Pounce (Rank 3)
-	--Hunter
+	-- Hunter
 		[3355]	= List(3), -- Freezing Trap Effect (Rank 1)
 		[14308]	= List(3), -- Freezing Trap Effect (Rank 2)
 		[14309]	= List(3), -- Freezing Trap Effect (Rank 3)
@@ -55,7 +55,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[19410]	= List(2), -- Improved Concussive Shot
 		[25999]	= List(2), -- Charge (Boar)
 		[19185]	= List(1), -- Entrapment
-	--Mage
+	-- Mage
 		[118]	= List(3), -- Polymorph (Rank 1)
 		[12824]	= List(3), -- Polymorph (Rank 2)
 		[12825]	= List(3), -- Polymorph (Rank 3)
@@ -87,7 +87,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[6136]	= List(2), -- Chilled (Frost Armor)
 		[7321]	= List(2), -- Chilled (Ice Armor)
 		[120]	= List(2), -- Cone of Cold
-	--Paladin
+	-- Paladin
 		[853]	= List(3), -- Hammer of Justice (Rank 1)
 		[5588]	= List(3), -- Hammer of Justice (Rank 2)
 		[5589]	= List(3), -- Hammer of Justice (Rank 3)
@@ -97,7 +97,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[2878]	= List(3), -- Turn Undead (Rank 1)
 		[5627]	= List(3), -- Turn Undead (Rank 2)
 		[10326]	= List(3), -- Turn Undead (Rank 3)
-	--Priest
+	-- Priest
 		[8122]	= List(3), -- Psychic Scream (Rank 1)
 		[8124]	= List(3), -- Psychic Scream (Rank 2)
 		[10888]	= List(3), -- Psychic Scream (Rank 3)
@@ -113,7 +113,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[17314]	= List(2), -- Mind Flay (Rank 5)
 		[18807]	= List(2), -- Mind Flay (Rank 6)
 		[15487]	= List(2), -- Silence
-	--Rogue
+	-- Rogue
 		[6770]	= List(4), -- Sap (Rank 1)
 		[2070]	= List(4), -- Sap (Rank 2)
 		[11297]	= List(4), -- Sap (Rank 3)
@@ -128,7 +128,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[11286]	= List(2), -- Gouge (Rank 5)
 		[18425]	= List(2), -- Kick - Silenced
 		[14251]	= List(2), -- Riposte
-	--Shaman
+	-- Shaman
 		[2484]	= List(1), -- Earthbind Totem
 		[8056]	= List(2), -- Frost Shock (Rank 1)
 		[8058]	= List(2), -- Frost Shock (Rank 2)
@@ -139,7 +139,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[10458]	= List(2), -- Frostbrand Attack (Rank 3)
 		[16352]	= List(2), -- Frostbrand Attack (Rank 4)
 		[16353]	= List(2), -- Frostbrand Attack (Rank 5)
-	--Warlock
+	-- Warlock
 		[5782]	= List(3), -- Fear (Rank 1)
 		[6213]	= List(3), -- Fear (Rank 2)
 		[6215]	= List(3), -- Fear (Rank 3)
@@ -159,7 +159,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[1098]	= List(5), -- Enslave Demon (Rank 1)
 		[11725]	= List(5), -- Enslave Demon (Rank 2)
 		[11726]	= List(5), -- Enslave Demon (Rank 3)
-	--Warrior
+	-- Warrior
 		[20511]	= List(4), -- Intimidating Shout (Cower)
 		[5246]	= List(4), -- Intimidating Shout (Fear)
 		[1715]	= List(2), -- Hamstring (Rank 1)
@@ -175,11 +175,11 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[23694]	= List(2), -- Improved Hamstring
 		[676]	= List(2), -- Disarm
 		[12323]	= List(2), -- Piercing Howl
-	--Mace Specialization
+	-- Mace Specialization
 		[5530]	= List(2), -- Mace Stun Effect
-	--Racial
+	-- Racial
 		[20549]	= List(2), -- War Stomp
-	--Sunder Armor, Faerie Fire, Faerie Fire (Feral)
+	-- Sunder Armor, Faerie Fire, Faerie Fire (Feral)
 		[7386]	= List(6), -- Sunder Armor (Rank 1)
 		[7405]	= List(6), -- Sunder Armor (Rank 2)
 		[8380]	= List(6), -- Sunder Armor (Rank 3)
@@ -193,7 +193,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[17390]	= List(5), -- Faerie Fire (Feral) (Rank 2)
 		[17391]	= List(5), -- Faerie Fire (Feral) (Rank 3)
 		[17392]	= List(5), -- Faerie Fire (Feral) (Rank 4)
-	--Winter's Chill Debuff
+	-- Winter's Chill Debuff
 		[12579]	= List(5), -- Winter's Chill
 	},
 }
@@ -206,9 +206,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[22812]	= List(2), -- Barkskin
 	-- Hunter
 		[19263]	= List(2), -- Deterrence
-	--Mage
+	-- Mage
 		[11958]	= List(2), -- Ice Block
-	--Paladin
+	-- Paladin
 		[498]	= List(2), -- Divine Protection (Rank 1)
 		[5573]	= List(2), -- Divine Protection (Rank 2)
 		[642]	= List(2), -- Divine Shield (Rank 1)
@@ -224,14 +224,14 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[12975]	= List(2), -- Last Stand
 		[871]	= List(2), -- Shield Wall
 		[20230]	= List(2), -- Retaliation
-	--Consumables
+	-- Consumables
 		[3169]	= List(2), -- Limited Invulnerability Potion
 		[6615]	= List(2), -- Free Action Potion
-	--Racial
+	-- Racial
 		[7744]	= List(2), -- Will of the Forsaken
 		[6346]	= List(2), -- Fear Ward
 		[20594]	= List(2), -- Stoneform
-	--All Classes
+	-- All Classes
 		[19753]	= List(2), -- Divine Intervention
 	},
 }
@@ -240,7 +240,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
-	--Druid
+	-- Druid
 		[29166]	= List(), -- Innervate
 		[22812]	= List(), -- Barkskin
 		[17116]	= List(), -- Nature's Swiftness
@@ -260,7 +260,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[1850]	= List(), -- Dash (Rank 1)
 		[9821]	= List(), -- Dash (Rank 2)
 		[33357]	= List(), -- Dash (Rank 3)
-	--Hunter
+	-- Hunter
 		[13161]	= List(), -- Aspect of the Beast
 		[5118]	= List(), -- Aspect of the Cheetah
 		[13163]	= List(), -- Aspect of the Monkey
@@ -277,7 +277,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[14322]	= List(), -- Aspect of the Hawk (Rank 6)
 		[25296]	= List(), -- Aspect of the Hawk (Rank 7)
 		[19574]	= List(), -- Bestial Wrath
-	--Mage
+	-- Mage
 		[11958]	= List(), -- Ice Block
 		[12043]	= List(), -- Presence of Mind
 		[28682]	= List(), -- Combustion
@@ -286,7 +286,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[13031]	= List(), -- Ice Barrier (Rank 2)
 		[13032]	= List(), -- Ice Barrier (Rank 3)
 		[13033]	= List(), -- Ice Barrier (Rank 4)
-	--Paladin
+	-- Paladin
 		[1044]	= List(), -- Blessing of Freedom
 		[465]	= List(), -- Devotion Aura (Rank 1)
 		[10290]	= List(), -- Devotion Aura (Rank 2)
@@ -320,7 +320,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[6940]	= List(), -- Blessing of Sacrifice (Rank 1)
 		[20729]	= List(), -- Blessing of Sacrifice (Rank 2)
 		[20216]	= List(), -- Divine Favor
-	--Priest
+	-- Priest
 		[15473]	= List(), -- Shadowform
 		[10060]	= List(), -- Power Infusion
 		[14751]	= List(), -- Inner Focus
@@ -331,7 +331,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[9592]	= List(), -- Fade (Rank 4)
 		[10941]	= List(), -- Fade (Rank 5)
 		[10942]	= List(), -- Fade (Rank 6)
-	--Rogue
+	-- Rogue
 		[14177]	= List(), -- Cold Blood
 		[13877]	= List(), -- Blade Flurry
 		[13750]	= List(), -- Adrenaline Rush
@@ -343,7 +343,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[5277]	= List(), -- Evasion
 		[1856]	= List(), -- Vanish (Rank 1)
 		[1857]	= List(), -- Vanish (Rank 2)
-	--Shaman
+	-- Shaman
 		[2645]	= List(), -- Ghost Wolf
 		[324]	= List(), -- Lightning Shield (Rank 1)
 		[325]	= List(), -- Lightning Shield (Rank 2)
@@ -358,7 +358,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[16191]	= List(), -- Mana Tide (Rank 1)
 		[17355]	= List(), -- Mana Tide (Rank 2)
 		[17360]	= List(), -- Mana Tide (Rank 3)
-	--Warlock
+	-- Warlock
 		[18789]	= List(), -- Demonic Sacrifice (Burning Wish)
 		[18790]	= List(), -- Demonic Sacrifice (Fel Stamina)
 		[18791]	= List(), -- Demonic Sacrifice (Touch of Shadow)
@@ -369,7 +369,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[11743]	= List(), -- Detect Greater Invisibility
 		[25228]	= List(), -- Soul Link
 		[18708]	= List(), -- Fel Domination
-	--Warrior
+	-- Warrior
 		[12975]	= List(), -- Last Stand
 		[871]	= List(), -- Shield Wall
 		[20230]	= List(), -- Retaliation
@@ -406,18 +406,18 @@ G.unitframe.aurafilters.PlayerBuffs = {
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	spells = {
-	--Seasonal
+	-- Seasonal
 		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
-	--Druid
-	--Hunter
-	--Mage
-	--Paladin
-	--Priest
-	--Rogue
-	--Shaman
-	--Warlock
-	--Warrior
-	--Racial
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
 	},
 }
 
@@ -428,32 +428,33 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-	--Druid
-	--Hunter
-	--Mage
-	--Paladin
-	--Priest
-	--Rogue
-	--Shaman
-	--Warlock
-	--Warrior
-	--Racial
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
 	},
 }
 
 if E.ClassicSOD then
+	local Whitelist = G.unitframe.aurafilters.Whitelist.spells
 	-- Whitelist World Event Auras
-	G.unitframe.aurafilters.Whitelist.spells[433804] = List(6) -- Blood for the Blood Loa
-	G.unitframe.aurafilters.Whitelist.spells[441785] = List(6) -- Drained of Blood
-	G.unitframe.aurafilters.Whitelist.spells[436351] = List(6) -- Zandalari Ward
-	G.unitframe.aurafilters.Whitelist.spells[429959] = List(2) -- Well-Rested
+	Whitelist[433804] = List(6) -- Blood for the Blood Loa
+	Whitelist[441785] = List(6) -- Drained of Blood
+	Whitelist[436351] = List(6) -- Zandalari Ward
+	Whitelist[429959] = List(2) -- Well-Rested
 	-- Priest Rune Meditations
-	G.unitframe.aurafilters.Whitelist.spells[419307] = List(2) -- Meditation of Elune
-	G.unitframe.aurafilters.Whitelist.spells[418459] = List(2) -- Meditation of Undeath
-	G.unitframe.aurafilters.Whitelist.spells[410935] = List(2) -- Meditation of the Light
-	G.unitframe.aurafilters.Whitelist.spells[417316] = List(2) -- Meditation of the Loa
+	Whitelist[419307] = List(2) -- Meditation of Elune
+	Whitelist[418459] = List(2) -- Meditation of Undeath
+	Whitelist[410935] = List(2) -- Meditation of the Light
+	Whitelist[417316] = List(2) -- Meditation of the Loa
 	-- Phase 2 Rune Auras
-	G.unitframe.aurafilters.Whitelist.spells[438288] = List(2) -- Dark Presence
+	Whitelist[438288] = List(2) -- Dark Presence
 end
 
 -- RAID DEBUFFS: This should be pretty self explainitory
@@ -467,7 +468,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	------------------------ Dungeons ------------------------
 	----------------------------------------------------------
-	--Multiple Dungeons
+	-- Multiple Dungeons
 		[744]	= List(2), -- Poison
 		[18267] = List(2), -- Curse of Weakness
 		[20800] = List(2), -- Immolate
@@ -503,7 +504,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[7068]	= List(2), -- Veil of Shadow
 		[7125]	= List(2), -- Toxic Saliva
 		[7621]	= List(2), -- Arugal's Curse
-	--Stratholme
+	-- Stratholme
 		[16798] = List(2), -- Enchanting Lullaby
 		[12734] = List(2), -- Ground Smash
 		[17293] = List(2), -- Burning Winds
@@ -609,47 +610,48 @@ G.unitframe.aurafilters.RaidDebuffs = {
 }
 
 if E.ClassicSOD then
+	local RaidDebuffs = G.unitframe.aurafilters.RaidDebuffs.spells
 	----------------------------------------------------------
 	-------------------- Blackfathom Deeps -------------------
 	----------------------------------------------------------
 	-- Baron Aquanis
-	G.unitframe.aurafilters.RaidDebuffs.spells[404806] = List(2) -- Depth Charge
+	RaidDebuffs[404806] = List(2) -- Depth Charge
 	-- Ghamoo-ra
-	G.unitframe.aurafilters.RaidDebuffs.spells[407095] = List(2) -- Crunch Armor
+	RaidDebuffs[407095] = List(2) -- Crunch Armor
 	-- Lady Saravess
-	G.unitframe.aurafilters.RaidDebuffs.spells[407644] = List(2) -- Forked Lightning
-	G.unitframe.aurafilters.RaidDebuffs.spells[407546] = List(2) -- Freezing Arrow
+	RaidDebuffs[407644] = List(2) -- Forked Lightning
+	RaidDebuffs[407546] = List(2) -- Freezing Arrow
 	-- Gelihast
-	G.unitframe.aurafilters.RaidDebuffs.spells[411959] = List(2) -- Fear
+	RaidDebuffs[411959] = List(2) -- Fear
 	-- Twilight Lord Kelris
-	G.unitframe.aurafilters.RaidDebuffs.spells[426495] = List(2) -- Shadowy Chains
+	RaidDebuffs[426495] = List(2) -- Shadowy Chains
 	-- Aku'mai
-	G.unitframe.aurafilters.RaidDebuffs.spells[427625] = List(2) -- Corrosion
-	G.unitframe.aurafilters.RaidDebuffs.spells[428482] = List(2) -- Shadow Seep
+	RaidDebuffs[427625] = List(2) -- Corrosion
+	RaidDebuffs[428482] = List(2) -- Shadow Seep
 	----------------------------------------------------------
 	------------------------ Gnomeregan ----------------------
 	----------------------------------------------------------
 	-- Grubbis
-	G.unitframe.aurafilters.RaidDebuffs.spells[434165] = List(2) -- Irradiated Cloud
-	G.unitframe.aurafilters.RaidDebuffs.spells[436069] = List(2) -- Radiation?
-	G.unitframe.aurafilters.RaidDebuffs.spells[436100] = List(2) -- Petrify
-	G.unitframe.aurafilters.RaidDebuffs.spells[434724] = List(2) -- Radiation Sickness
+	RaidDebuffs[434165] = List(2) -- Irradiated Cloud
+	RaidDebuffs[436069] = List(2) -- Radiation?
+	RaidDebuffs[436100] = List(2) -- Petrify
+	RaidDebuffs[434724] = List(2) -- Radiation Sickness
 	-- Viscous Fallout
-	G.unitframe.aurafilters.RaidDebuffs.spells[434433] = List(2) -- Sludge
-	G.unitframe.aurafilters.RaidDebuffs.spells[433546] = List(2) -- Radiation Burn
+	RaidDebuffs[434433] = List(2) -- Sludge
+	RaidDebuffs[433546] = List(2) -- Radiation Burn
 	-- Electrocutioner 6000
-	G.unitframe.aurafilters.RaidDebuffs.spells[433251] = List(2) -- Static Arc
-	G.unitframe.aurafilters.RaidDebuffs.spells[433359] = List(2) -- Magnetic Pulse
+	RaidDebuffs[433251] = List(2) -- Static Arc
+	RaidDebuffs[433359] = List(2) -- Magnetic Pulse
 	-- Crowd Pummeler 9-60
-	G.unitframe.aurafilters.RaidDebuffs.spells[431839] = List(2) -- Off Balanced
-	G.unitframe.aurafilters.RaidDebuffs.spells[432308] = List(2) -- The Claw!
+	RaidDebuffs[431839] = List(2) -- Off Balanced
+	RaidDebuffs[432308] = List(2) -- The Claw!
 	-- Mechanical Menagerie
-	G.unitframe.aurafilters.RaidDebuffs.spells[440014] = List(2) -- Sprocketfire
+	RaidDebuffs[440014] = List(2) -- Sprocketfire
 	-- Mekgineer Thermaplugg
-	G.unitframe.aurafilters.RaidDebuffs.spells[438714] = List(2) -- Furnace Surge
-	G.unitframe.aurafilters.RaidDebuffs.spells[438727] = List(2) -- Radiation Sickness
-	G.unitframe.aurafilters.RaidDebuffs.spells[438732] = List(2) -- Toxic Ventilation
-	G.unitframe.aurafilters.RaidDebuffs.spells[438720] = List(2) -- Freezing
+	RaidDebuffs[438714] = List(2) -- Furnace Surge
+	RaidDebuffs[438727] = List(2) -- Radiation Sickness
+	RaidDebuffs[438732] = List(2) -- Toxic Ventilation
+	RaidDebuffs[438720] = List(2) -- Freezing
 end
 
 --[[
@@ -680,38 +682,39 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 }
 
 if E.ClassicSOD then
+	local RaidBuffs = G.unitframe.aurafilters.RaidBuffsElvUI.spells
 	----------------------------------------------------------
 	-------------------- Blackfathom Deeps -------------------
 	----------------------------------------------------------
 	-- Baron Aquanis
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[404373] = List(2) -- Bubble Beam I
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[413664] = List(2) -- Bubble Beam II
+	RaidBuffs[404373] = List(2) -- Bubble Beam I
+	RaidBuffs[413664] = List(2) -- Bubble Beam II
 	-- Ghamoo-ra
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[406970] = List(2) -- Aqua Shell
+	RaidBuffs[406970] = List(2) -- Aqua Shell
 	-- Twilight Lord Kelris
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[426489] = List(2) -- Manifesting Dreams
+	RaidBuffs[426489] = List(2) -- Manifesting Dreams
 	----------------------------------------------------------
 	------------------------ Gnomeregan ----------------------
 	----------------------------------------------------------
 	-- Grubbis
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[3019] = List(2) -- Enrage
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[434941] = List(2) -- Toxic Vigor
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436074] = List(2) -- Trogg Rage
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436027] = List(2) -- Grubbis Mad!
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436059] = List(2) -- Radiation?
+	RaidBuffs[3019] = List(2) -- Enrage
+	RaidBuffs[434941] = List(2) -- Toxic Vigor
+	RaidBuffs[436074] = List(2) -- Trogg Rage
+	RaidBuffs[436027] = List(2) -- Grubbis Mad!
+	RaidBuffs[436059] = List(2) -- Radiation?
 	-- Electrocutioner 6000
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[10348] = List(2) -- Tune Up
+	RaidBuffs[10348] = List(2) -- Tune Up
 	-- Crowd Pummeler 9-60
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[432062] = List(2) -- The Claw!
+	RaidBuffs[432062] = List(2) -- The Claw!
 	-- Mechanical Menagerie
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436693] = List(2) -- Explosive Egg
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436739] = List(2) -- Cluck!
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436741] = List(2) -- Overheat
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436825] = List(2) -- Frayed Wiring
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436816] = List(2) -- Sprocketfire Breath
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[436837] = List(2) -- Widget Fortress
+	RaidBuffs[436693] = List(2) -- Explosive Egg
+	RaidBuffs[436739] = List(2) -- Cluck!
+	RaidBuffs[436741] = List(2) -- Overheat
+	RaidBuffs[436825] = List(2) -- Frayed Wiring
+	RaidBuffs[436816] = List(2) -- Sprocketfire Breath
+	RaidBuffs[436837] = List(2) -- Widget Fortress
 	-- Mekgineer Thermaplugg
-	G.unitframe.aurafilters.RaidBuffsElvUI.spells[438715] = List(2) -- Furnace Surge
+	RaidBuffs[438715] = List(2) -- Furnace Surge
 end
 
 G.unitframe.aurawatch = {
@@ -783,11 +786,11 @@ G.unitframe.aurawatch = {
 		[6673]	= Aura(6673, {5242,6192,11549,11550,11551,25289}, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout
 	},
 	PET = {
-	--Warlock Imp
+	-- Warlock Imp
 		[6307]	= Aura(6307, {7804,7805,11766,11767}, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact
-	--Warlock Felhunter
+	-- Warlock Felhunter
 		[19480]	= Aura(19480, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Paranoia
-	--Hunter Pets
+	-- Hunter Pets
 		[24604]	= Aura(24604, {24605,24603,24597}, 'TOPRIGHT', {0.08, 0.59, 0.41}), -- Furious Howl
 	},
 }
@@ -802,7 +805,7 @@ end
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
-	--Druid
+	-- Druid
 	[740]	= 5, -- Tranquility (Rank 1)
 	[8918]	= 5, -- Tranquility (Rank 2)
 	[9862]	= 5, -- Tranquility (Rank 3)
@@ -810,7 +813,7 @@ G.unitframe.ChannelTicks = {
 	[16914]	= 10, -- Hurricane (Rank 1)
 	[17401]	= 10, -- Hurricane (Rank 2)
 	[17402]	= 10, -- Hurricane (Rank 3)
-	--Hunter
+	-- Hunter
 	[1510]	= 6, -- Volley (Rank 1)
 	[14294]	= 6, -- Volley (Rank 2)
 	[14295]	= 6, -- Volley (Rank 3)
@@ -872,7 +875,7 @@ G.unitframe.ChannelTicks = {
 	[6226]	= 5, -- Drain Mana (Rank 2)
 	[11703]	= 5, -- Drain Mana (Rank 3)
 	[11704]	= 5, -- Drain Mana (Rank 4)
-	--First Aid
+	-- First Aid
 	[23567]	= 8, -- Warsong Gulch Runecloth Bandage
 	[23696]	= 8, -- Alterac Heavy Runecloth Bandage
 	[24414]	= 8, -- Arathi Basin Runecloth Bandage
@@ -914,5 +917,5 @@ G.unitframe.HastedChannelTicks = {
 G.unitframe.AuraBarColors = {}
 
 G.unitframe.AuraHighlightColors = {
-	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}},
+	[25771] = {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}}
 }
