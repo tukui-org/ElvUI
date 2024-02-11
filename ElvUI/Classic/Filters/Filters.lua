@@ -446,6 +446,11 @@ if E.ClassicSOD then
 	G.unitframe.aurafilters.Whitelist.spells[433804] = List(6) -- Blood for the Blood Loa
 	G.unitframe.aurafilters.Whitelist.spells[441785] = List(6) -- Drained of Blood
 	G.unitframe.aurafilters.Whitelist.spells[429959] = List(2) -- Well-Rested
+	-- Priest Rune Meditations
+	G.unitframe.aurafilters.Whitelist.spells[419307] = List(2) -- Meditation of Elune
+	G.unitframe.aurafilters.Whitelist.spells[418459] = List(2) -- Meditation of Undeath
+	G.unitframe.aurafilters.Whitelist.spells[410935] = List(2) -- Meditation of the Light
+	G.unitframe.aurafilters.Whitelist.spells[417316] = List(2) -- Meditation of the Loa
 end
 
 -- RAID DEBUFFS: This should be pretty self explainitory
