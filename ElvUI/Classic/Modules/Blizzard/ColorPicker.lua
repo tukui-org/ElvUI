@@ -31,16 +31,6 @@ local function UpdateAlphaText(alpha)
 	_G.ColorPPBoxA:SetText(alpha)
 end
 
-local function UpdateAlpha(tbox)
-	local num = tbox:GetNumber()
-	if num > 100 then
-		tbox:SetText(100)
-		num = 100
-	end
-
-	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
-end
-
 local function expandFromThree(r, g, b)
 	return strjoin('',r,r,g,g,b,b)
 end
@@ -117,26 +107,6 @@ local function delayCall()
 end
 
 local last = {r = 0, g = 0, b = 0, a = 0}
-local function onColorSelect(frame, r, g, b)
-	if frame.noColorCallback then
-		return -- prevent error from E:GrabColorPickerValues, better note in that function
-	elseif r ~= last.r or g ~= last.g or b ~= last.b then
-		last.r, last.g, last.b = r, g, b
-	else -- colors match so we don't need to update, most likely mouse is held down
-		return
-	end
-
-	_G.ColorSwatch:SetColorTexture(r, g, b)
-	UpdateColorTexts(r, g, b)
-
-	if not frame:IsVisible() then
-		delayCall()
-	elseif not delayFunc then
-		delayFunc = ColorPickerFrame.swatchFunc or ColorPickerFrame.func
-		E:Delay(delayWait, delayCall)
-	end
-end
-
 local function onValueChanged(_, value)
 	local alpha = alphaValue(value)
 	if last.a ~= alpha then
@@ -157,6 +127,36 @@ local function onValueChanged(_, value)
 			delayFunc = opacityFunc
 			E:Delay(delayWait, delayCall)
 		end
+	end
+end
+
+local function UpdateAlpha(tbox)
+	local num = tbox:GetNumber()
+	if num > 100 then
+		tbox:SetText(100)
+		num = 100
+	end
+
+	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
+end
+
+local function onColorSelect(frame, r, g, b)
+	if frame.noColorCallback then
+		return -- prevent error from E:GrabColorPickerValues, better note in that function
+	elseif r ~= last.r or g ~= last.g or b ~= last.b then
+		last.r, last.g, last.b = r, g, b
+	else -- colors match so we don't need to update, most likely mouse is held down
+		return
+	end
+
+	_G.ColorSwatch:SetColorTexture(r, g, b)
+	UpdateColorTexts(r, g, b)
+
+	if not frame:IsVisible() then
+		delayCall()
+	elseif not delayFunc then
+		delayFunc = ColorPickerFrame.swatchFunc or ColorPickerFrame.func
+		E:Delay(delayWait, delayCall)
 	end
 end
 
