@@ -452,6 +452,8 @@ if E.ClassicSOD then
 	G.unitframe.aurafilters.Whitelist.spells[418459] = List(2) -- Meditation of Undeath
 	G.unitframe.aurafilters.Whitelist.spells[410935] = List(2) -- Meditation of the Light
 	G.unitframe.aurafilters.Whitelist.spells[417316] = List(2) -- Meditation of the Loa
+	-- Phase 2 Rune Auras
+	G.unitframe.aurafilters.Whitelist.spells[438288] = List(2) -- Dark Presence
 end
 
 -- RAID DEBUFFS: This should be pretty self explainitory
