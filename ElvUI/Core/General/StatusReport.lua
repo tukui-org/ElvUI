@@ -252,7 +252,7 @@ function E:UpdateStatusFrame()
 	if E.Retail then
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	elseif E.Classic then
-		Section3.Content.Line6.Text:SetFormattedText('Hardcore: |cff4beb2c%s|r', E.ClassicHC and 'Yes' or 'No')
+		Section3.Content.Line6.Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', E.ClassicHC and 'Hardcore' or E.ClassicSOD and 'Seasonal' or 'Normal')
 	end
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))

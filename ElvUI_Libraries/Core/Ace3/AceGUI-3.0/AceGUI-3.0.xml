@@ -14,7 +14,7 @@
 	<!-- Widgets -->
 	<Script file="widgets\AceGUIWidget-Button-ElvUI.lua"/>
 	<Script file="widgets\AceGUIWidget-CheckBox.lua"/>
-	<Script file="widgets\AceGUIWidget-ColorPicker.lua"/>
+	<Script file="widgets\AceGUIWidget-ColorPicker-ElvUI.lua"/>
 	<Script file="widgets\AceGUIWidget-DropDown.lua"/>
 	<Script file="widgets\AceGUIWidget-DropDown-Items.lua"/>
 	<Script file="widgets\AceGUIWidget-EditBox-ElvUI.lua"/>
