@@ -107,7 +107,7 @@ local function delayCall()
 end
 
 local last = {r = 0, g = 0, b = 0, a = 0}
-local function onValueChanged(_, value)
+local function onAlphaValueChanged(_, value)
 	local alpha = alphaValue(value)
 	if last.a ~= alpha then
 		last.a = alpha
@@ -137,7 +137,9 @@ local function UpdateAlpha(tbox)
 		num = 100
 	end
 
-	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
+	local value = 1 - (num * 0.01)
+	_G.OpacitySliderFrame:SetValue(value)
+	-- onAlphaValueChanged(nil, value)
 end
 
 local function onColorSelect(frame, r, g, b)
@@ -151,6 +153,7 @@ local function onColorSelect(frame, r, g, b)
 
 	_G.ColorSwatch:SetColorTexture(r, g, b)
 	UpdateColorTexts(r, g, b)
+	-- UpdateAlphaText()
 
 	if not frame:IsVisible() then
 		delayCall()
@@ -188,7 +191,7 @@ function BL:EnhanceColorPicker()
 
 	-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 	-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
-	_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
+	_G.OpacitySliderFrame:SetScript('OnValueChanged', onAlphaValueChanged)
 
 	-- Keep the colors updated
 	ColorPickerFrame:SetScript('OnColorSelect', onColorSelect)
