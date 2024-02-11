@@ -120,7 +120,7 @@ local function ColorSwatch_OnClick(frame)
 		end
 
 		ColorPickerFrame.cancelFunc = function()
-			ColorPickerFrame.func = nil
+			ColorPickerFrame.swatchFunc = nil
 			ColorPickerFrame.opacityFunc = nil
 
 			ColorCallback(self, r, g, b, a, true)

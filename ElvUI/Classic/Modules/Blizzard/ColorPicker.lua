@@ -157,7 +157,7 @@ local function onColorSelect(frame, r, g, b)
 
 	if not frame:IsVisible() then
 		delayCall()
-	elseif not delayFunc then
+	elseif not delayFunc then -- ColorPickerFrame.func is from stock Ace3 widget not the ElvUI variant
 		delayFunc = ColorPickerFrame.swatchFunc or ColorPickerFrame.func
 		E:Delay(delayWait, delayCall)
 	end
@@ -170,9 +170,7 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Border:Hide()
 	end
 
-	if not E.Wrath then -- remove this line when wrath gets color picker stuff later
-		ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
-	end
+	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
