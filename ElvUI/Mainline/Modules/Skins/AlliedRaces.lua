@@ -10,7 +10,7 @@ function S:Blizzard_AlliedRacesUI()
 	local AlliedRacesFrame = _G.AlliedRacesFrame
 	if E.private.skins.parchmentRemoverEnable then
 		S:HandlePortraitFrame(AlliedRacesFrame)
-		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
+		select(2, AlliedRacesFrame.ModelScene:GetRegions()):Hide()
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
 		S:HandleTrimScrollBar(scrollFrame.ScrollBar)
@@ -25,7 +25,7 @@ function S:Blizzard_AlliedRacesUI()
 		AlliedRacesFrame.NineSlice:SetAlpha(0)
 		_G.AlliedRacesFramePortrait:SetAlpha(0)
 		_G.AlliedRacesFrameBg:SetAlpha(0)
-		AlliedRacesFrame.ModelFrame:StripTextures()
+		AlliedRacesFrame.ModelScene:StripTextures()
 		AlliedRacesFrame:SetTemplate('Transparent')
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
