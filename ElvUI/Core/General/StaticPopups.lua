@@ -381,18 +381,6 @@ E.PopupDialogs.MODULE_COPY_CONFIRM = {
 	hideOnEscape = false,
 }
 
-E.PopupDialogs.SHOW_ALL_SPELLS = {
-	text = L["You are not displaying all Spell Ranks in the Spellbook.\nThe Spell and Range API will not function properly."],
-	button1 = L["Show All Ranks"],
-	button2 = L["Cancel"],
-	OnAccept = function()
-		E:SetCVar('ShowAllSpellRanks', 1)
-	end,
-	showAlert = 1,
-	whileDead = 1,
-	hideOnEscape = false,
-}
-
 E.PopupDialogs.SCRIPT_PROFILE = {
 	text = L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"],
 	button1 = L["Disable"],
