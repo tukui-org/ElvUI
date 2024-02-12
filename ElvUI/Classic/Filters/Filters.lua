@@ -457,6 +457,11 @@ if E.ClassicSOD then
 	Whitelist[438288] = List(2) -- Dark Presence
 end
 
+if E.ClassicHC then
+	-- Whitelist Self-Found Auras
+	G.unitframe.aurafilters.Whitelist.spells[431567] = List(2) -- Self-Found Adventurer
+end
+
 -- RAID DEBUFFS: This should be pretty self explainitory
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
