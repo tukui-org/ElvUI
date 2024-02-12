@@ -2016,6 +2016,10 @@ function E:Initialize()
 		E:StaticPopup_Show('UPDATE_REQUEST')
 	end
 
+	if not E.Retail and not GetCVarBool('ShowAllSpellRanks') then
+		E:StaticPopup_Show('SHOW_ALL_SPELLS')
+	end
+
 	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
