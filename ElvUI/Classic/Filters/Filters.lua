@@ -656,6 +656,7 @@ if E.ClassicSOD then
 	RaidDebuffs[438714] = List(2) -- Furnace Surge
 	RaidDebuffs[438727] = List(2) -- Radiation Sickness
 	RaidDebuffs[438732] = List(2) -- Toxic Ventilation
+	RaidDebuffs[438735] = List(2) -- High Voltage!
 	RaidDebuffs[438720] = List(2) -- Freezing
 end
 
