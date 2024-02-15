@@ -428,6 +428,8 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+	[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
 	-- Druid
 	-- Hunter
 	-- Mage
