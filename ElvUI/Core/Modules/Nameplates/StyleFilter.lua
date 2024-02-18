@@ -101,7 +101,8 @@ NP.TriggerConditions = {
 		[8] = 'mythic+',
 		[23] = 'mythic',
 		[24] = 'timewalking',
-		[201] = 'normal', -- classic hardcore
+		[198] = 'normal', -- Classic: Season of Discovery
+		[201] = 'normal', -- Classic: Hardcore
 		-- raids
 		[7] = 'lfr',
 		[17] = 'lfr',
