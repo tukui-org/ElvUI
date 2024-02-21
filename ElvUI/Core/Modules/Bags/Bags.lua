@@ -322,7 +322,7 @@ do
 		frame:ClearAllPoints()
 		frame:Point('BOTTOM')
 
-		if container then
+		if container then -- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
 			frame:RegisterEvent('BAG_CONTAINER_UPDATE')
 		end
 	end
