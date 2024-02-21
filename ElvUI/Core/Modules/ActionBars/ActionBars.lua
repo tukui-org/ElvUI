@@ -1164,9 +1164,6 @@ do
 							child.CheckBox:SetEnabled(false)
 							child:DisplayEnabled(false)
 						end
-
-						child.CheckBox:SetScript('OnEnter', nil)
-						child.Tooltip:SetScript('OnEnter', nil)
 					end
 				end
 			end)
