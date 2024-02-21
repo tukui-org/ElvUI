@@ -3575,7 +3575,8 @@ end
 
 -- Same reason as CH.FCF_Close (see note) but in order to fix close by middle clicking
 function CH:FCF_Tab_OnClick(button)
-	local chat = CH:GetOwner(self)
+	local chat = self and CH:GetOwner(self)
+	if not chat then return end
 
 	if button == 'RightButton' then -- If Rightclick bring up the options menu
 		chat:StopMovingOrSizing()
@@ -3585,7 +3586,7 @@ function CH:FCF_Tab_OnClick(button)
 		local tabName = self:GetName()
 		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
 	elseif button == 'MiddleButton' then
-		if (chat and not _G.IsBuiltinChatWindow(chat)) and (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) then -- Dynamic between classic/wrath/retail ~Simpy
+		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then
 				CH.FCF_PopInWindow(self, chat)
 				return
