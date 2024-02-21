@@ -3575,11 +3575,11 @@ end
 
 -- Same reason as CH.FCF_Close (see note) but in order to fix close by middle clicking
 function CH:FCF_Tab_OnClick(button)
-	local chatFrame = CH:GetOwner(self)
+	local chat = CH:GetOwner(self)
 
 	-- If Rightclick bring up the options menu
 	if button == 'RightButton' then
-		chatFrame:StopMovingOrSizing()
+		chat:StopMovingOrSizing()
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 
@@ -3590,17 +3590,17 @@ function CH:FCF_Tab_OnClick(button)
 	end
 
 	if button == 'MiddleButton' then
-		if (chatFrame and not _G.IsBuiltinChatWindow(chatFrame)) and (E.Retail or (chatFrame ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chatFrame))) then -- dynamic between classic/wrath/retail ~Simpy
-			if not chatFrame.isTemporary then
-				CH.FCF_PopInWindow(self, chatFrame)
+		if (chat and not _G.IsBuiltinChatWindow(chat)) and (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) then -- dynamic between classic/wrath/retail ~Simpy
+			if not chat.isTemporary then
+				CH.FCF_PopInWindow(self, chat)
 				return
-			elseif chatFrame.chatType == 'WHISPER' or chatFrame.chatType == 'BN_WHISPER' then
-				CH.FCF_PopInWindow(self, chatFrame)
+			elseif chat.chatType == 'WHISPER' or chat.chatType == 'BN_WHISPER' then
+				CH.FCF_PopInWindow(self, chat)
 				return
-			elseif chatFrame.chatType == 'PET_BATTLE_COMBAT_LOG' then
-				CH.FCF_Close(chatFrame)
+			elseif chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
+				CH.FCF_Close(chat)
 			else
-				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chatFrame.chatType), tostring(chatFrame.chatTarget)))
+				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chat.chatType), tostring(chat.chatTarget)))
 			end
 		end
 
@@ -3611,19 +3611,19 @@ function CH:FCF_Tab_OnClick(button)
 	_G.CloseDropDownMenus()
 
 	-- If frame is docked assume that a click is to select a chat window, not drag it
-	_G.SELECTED_CHAT_FRAME = chatFrame
+	_G.SELECTED_CHAT_FRAME = chat
 
-	if chatFrame.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chatFrame then
-		_G.FCF_SelectDockFrame(chatFrame)
+	if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chat then
+		_G.FCF_SelectDockFrame(chat)
 	end
 
 	if GetCVar('chatStyle') ~= 'classic' then
-		_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
+		_G.ChatEdit_SetLastActiveWindow(chat.editBox)
 	end
 
-	chatFrame:ResetAllFadeTimes()
+	chat:ResetAllFadeTimes()
 
-	_G.FCF_FadeInChatFrame(chatFrame)
+	_G.FCF_FadeInChatFrame(chat)
 end
 
 function CH:Tab_OnClick(button)
