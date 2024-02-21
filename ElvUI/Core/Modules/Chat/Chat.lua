@@ -83,6 +83,9 @@ local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.S
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
 
+local SOUND_TUTORIAL_POPUP = SOUNDKIT.TUTORIAL_POPUP
+local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
+
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 -- GLOBALS: ElvCharacterDB
@@ -802,6 +805,7 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
+	tab:SetScript('OnClick', CH.Tab_OnClick)
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if not frame.isDocked then
@@ -2865,8 +2869,8 @@ function CH:SocialQueueMessage(guid, message)
 	if RecentSocialQueue(TIME, message) then return end
 	socialQueueCache[guid] = {TIME, message}
 
-	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
-	PlaySound(7355) --TUTORIAL_POPUP
+	-- UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
+	PlaySound(SOUND_TUTORIAL_POPUP)
 
 	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
@@ -3558,7 +3562,7 @@ function CH:FCF_Close(fallback)
 	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
 end
 
---Same reason as CH.FCF_Close
+--Same reason as CH.FCF_Close (see note)
 function CH:FCF_PopInWindow(fallback)
 	if fallback then self = fallback end
 	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
@@ -3567,6 +3571,61 @@ function CH:FCF_PopInWindow(fallback)
 	--Restore any chats this frame had to the DEFAULT_CHAT_FRAME
 	_G.FCF_RestoreChatsToFrame(_G.DEFAULT_CHAT_FRAME, self)
 	CH.FCF_Close(self) -- use ours to fix close chat bug
+end
+
+-- Same reason as CH.FCF_Close (see note) but in order to fix close by middle clicking
+function CH:FCF_Tab_OnClick(button)
+	local chatFrame = _G['ChatFrame'..self:GetID()]
+
+	-- If Rightclick bring up the options menu
+	if button == 'RightButton' then
+		chatFrame:StopMovingOrSizing()
+
+		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
+		_G.ToggleDropDownMenu(1, nil, _G[self:GetName()..'DropDown'], self:GetName(), 0, 0)
+
+		return
+	end
+
+	if button == 'MiddleButton' then
+		if chatFrame and not _G.IsBuiltinChatWindow(chatFrame) then
+			if not chatFrame.isTemporary then
+				CH.FCF_PopInWindow(self, chatFrame)
+				return
+			elseif chatFrame.isTemporary and (chatFrame.chatType == 'WHISPER' or chatFrame.chatType == 'BN_WHISPER') then
+				CH.FCF_PopInWindow(self, chatFrame)
+				return
+			elseif chatFrame.isTemporary and (chatFrame.chatType == 'PET_BATTLE_COMBAT_LOG') then
+				CH.FCF_Close(chatFrame)
+			else
+				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chatFrame.chatType), tostring(chatFrame.chatTarget)))
+			end
+		end
+		return
+	end
+
+	-- Close all dropdowns
+	_G.CloseDropDownMenus()
+
+	-- If frame is docked assume that a click is to select a chat window, not drag it
+	_G.SELECTED_CHAT_FRAME = chatFrame
+
+	if chatFrame.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chatFrame then
+		_G.FCF_SelectDockFrame(chatFrame)
+	end
+
+	if GetCVar('chatStyle') ~= 'classic' then
+		_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
+	end
+
+	chatFrame:ResetAllFadeTimes()
+
+	_G.FCF_FadeInChatFrame(chatFrame)
+end
+
+function CH:Tab_OnClick(button)
+	CH.FCF_Tab_OnClick(self, button)
+	PlaySound(SOUND_U_CHAT_SCROLL_BUTTON)
 end
 
 do
