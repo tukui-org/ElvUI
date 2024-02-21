@@ -898,7 +898,8 @@ end
 function TT:SetCurrencyToken(tt, index)
 	if tt:IsForbidden() then return end
 
-	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
+	local link = C_CurrencyInfo_GetCurrencyListLink(index)
+	local id = TT:IsModKeyDown() and link and tonumber(strmatch(link,'currency:(%d+)'))
 	if not id then return end
 
 	tt:AddLine(' ')
