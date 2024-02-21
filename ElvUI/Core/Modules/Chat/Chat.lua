@@ -3577,8 +3577,7 @@ end
 function CH:FCF_Tab_OnClick(button)
 	local chat = CH:GetOwner(self)
 
-	-- If Rightclick bring up the options menu
-	if button == 'RightButton' then
+	if button == 'RightButton' then -- If Rightclick bring up the options menu
 		chat:StopMovingOrSizing()
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
@@ -3586,7 +3585,7 @@ function CH:FCF_Tab_OnClick(button)
 		local tabName = self:GetName()
 		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
 	elseif button == 'MiddleButton' then
-		if (chat and not _G.IsBuiltinChatWindow(chat)) and (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) then -- dynamic between classic/wrath/retail ~Simpy
+		if (chat and not _G.IsBuiltinChatWindow(chat)) and (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then
 				CH.FCF_PopInWindow(self, chat)
 				return
@@ -3600,11 +3599,8 @@ function CH:FCF_Tab_OnClick(button)
 			end
 		end
 	else
-		-- Close all dropdowns
-		_G.CloseDropDownMenus()
-
-		-- If frame is docked assume that a click is to select a chat window, not drag it
-		_G.SELECTED_CHAT_FRAME = chat
+		_G.CloseDropDownMenus() -- Close all dropdowns
+		_G.SELECTED_CHAT_FRAME = chat -- If frame is docked assume that a click is to select a chat window, not drag it
 
 		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chat then
 			_G.FCF_SelectDockFrame(chat)
