@@ -108,7 +108,7 @@ local OnUnitSpellcastSucceeded = function(_, _, _, _, spellID)
 	local spellCost = false
 	local costTable = GetSpellPowerCost(spellID)
 	for _, costInfo in next, costTable do
-		if costInfo.cost > 0 then
+		if costInfo.cost and costInfo.cost > 0 then
 			spellCost = true
 		end
 	end
