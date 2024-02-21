@@ -3575,32 +3575,35 @@ end
 
 -- Same reason as CH.FCF_Close (see note) but in order to fix close by middle clicking
 function CH:FCF_Tab_OnClick(button)
-	local chatFrame = _G['ChatFrame'..self:GetID()]
+	local chatFrame = CH:GetOwner(self)
 
 	-- If Rightclick bring up the options menu
 	if button == 'RightButton' then
 		chatFrame:StopMovingOrSizing()
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
-		_G.ToggleDropDownMenu(1, nil, _G[self:GetName()..'DropDown'], self:GetName(), 0, 0)
+
+		local tabName = self:GetName()
+		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
 
 		return
 	end
 
 	if button == 'MiddleButton' then
-		if chatFrame and not _G.IsBuiltinChatWindow(chatFrame) then
+		if (chatFrame and not _G.IsBuiltinChatWindow(chatFrame)) and (E.Retail or (chatFrame ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chatFrame))) then -- dynamic between classic/wrath/retail ~Simpy
 			if not chatFrame.isTemporary then
 				CH.FCF_PopInWindow(self, chatFrame)
 				return
-			elseif chatFrame.isTemporary and (chatFrame.chatType == 'WHISPER' or chatFrame.chatType == 'BN_WHISPER') then
+			elseif chatFrame.chatType == 'WHISPER' or chatFrame.chatType == 'BN_WHISPER' then
 				CH.FCF_PopInWindow(self, chatFrame)
 				return
-			elseif chatFrame.isTemporary and (chatFrame.chatType == 'PET_BATTLE_COMBAT_LOG') then
+			elseif chatFrame.chatType == 'PET_BATTLE_COMBAT_LOG' then
 				CH.FCF_Close(chatFrame)
 			else
 				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chatFrame.chatType), tostring(chatFrame.chatTarget)))
 			end
 		end
+
 		return
 	end
 
