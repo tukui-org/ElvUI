@@ -20,6 +20,8 @@ local ColorPickerFrame = ColorPickerFrame
 local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT
 local CLASS, DEFAULT = CLASS, DEFAULT
 
+local colorFunc = E.Wrath and 'func' or 'swatchFunc' -- ColorPickerFrame.func is from stock Ace3 widget not the ElvUI variant
+
 local colorBuffer = {}
 local function alphaValue(num)
 	return num and floor(((1 - num) * 100) + .05) or 0
@@ -157,8 +159,8 @@ local function onColorSelect(frame, r, g, b)
 
 	if not frame:IsVisible() then
 		delayCall()
-	elseif not delayFunc then -- ColorPickerFrame.func is from stock Ace3 widget not the ElvUI variant
-		delayFunc = ColorPickerFrame.swatchFunc or ColorPickerFrame.func
+	elseif not delayFunc then
+		delayFunc = ColorPickerFrame[colorFunc]
 		E:Delay(delayWait, delayCall)
 	end
 end
@@ -170,9 +172,7 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Border:Hide()
 	end
 
-	if not E.Wrath then -- remove this line when wrath gets color picker stuff later
-		ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
-	end
+	ColorPickerFrame[colorFunc] = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
