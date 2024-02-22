@@ -20,7 +20,7 @@ local ColorPickerFrame = ColorPickerFrame
 local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT
 local CLASS, DEFAULT = CLASS, DEFAULT
 
-local colorFunc = E.Wrath and 'func' or 'swatchFunc' -- ColorPickerFrame.func is from stock Ace3 widget not the ElvUI variant
+local colorFunc = E.Wrath and 'func' or 'swatchFunc' -- can probably remove this later
 
 local colorBuffer = {}
 local function alphaValue(num)
