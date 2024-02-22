@@ -168,10 +168,6 @@ end
 function BL:EnhanceColorPicker()
 	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
-	if E.Retail then
-		ColorPickerFrame.Border:Hide()
-	end
-
 	ColorPickerFrame[colorFunc] = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
