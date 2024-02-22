@@ -68,7 +68,6 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
-		ColorPickerFrame:EnableMouse(true) -- Make sure the background isn't click-through
 
 		ColorPickerFrame[colorFunc] = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
