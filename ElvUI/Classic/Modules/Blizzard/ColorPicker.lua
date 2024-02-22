@@ -170,7 +170,9 @@ function BL:EnhanceColorPicker()
 		ColorPickerFrame.Border:Hide()
 	end
 
-	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
+	if not E.Wrath then -- remove this line when wrath gets color picker stuff later
+		ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
+	end
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
