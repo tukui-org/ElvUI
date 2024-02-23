@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 12
+local MINOR_VERSION = 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -1353,7 +1353,7 @@ function lib:activate()
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
     frame:RegisterEvent("SPELLS_CHANGED")
 
-    if not isRetail then
+    if isEra or isWrath then
       frame:RegisterEvent("CVAR_UPDATE")
     end
 
