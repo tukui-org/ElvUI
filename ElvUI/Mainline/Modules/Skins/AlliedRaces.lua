@@ -8,31 +8,30 @@ function S:Blizzard_AlliedRacesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alliedRaces) then return end
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
+	local AlliedScrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
+
 	if E.private.skins.parchmentRemoverEnable then
 		S:HandlePortraitFrame(AlliedRacesFrame)
-		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
+		select(2, AlliedRacesFrame.ModelScene:GetRegions()):Hide()
 
-		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
-		S:HandleTrimScrollBar(scrollFrame.ScrollBar)
-
-		scrollFrame.Child.ObjectivesFrame:StripTextures()
-		scrollFrame.Child.ObjectivesFrame:SetTemplate('Transparent')
+		AlliedScrollFrame.Child.ObjectivesFrame:StripTextures()
+		AlliedScrollFrame.Child.ObjectivesFrame:SetTemplate('Transparent')
 
 		AlliedRacesFrame.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(1, .8, 0)
-		scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
-		scrollFrame.Child.RacialTraitsLabel:SetTextColor(1, .8, 0)
+		AlliedScrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
+		AlliedScrollFrame.Child.RacialTraitsLabel:SetTextColor(1, .8, 0)
 	else
 		AlliedRacesFrame.NineSlice:SetAlpha(0)
 		_G.AlliedRacesFramePortrait:SetAlpha(0)
 		_G.AlliedRacesFrameBg:SetAlpha(0)
-		AlliedRacesFrame.ModelFrame:StripTextures()
+		AlliedRacesFrame.ModelScene:StripTextures()
 		AlliedRacesFrame:SetTemplate('Transparent')
-
-		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
-		S:HandleTrimScrollBar(scrollFrame.ScrollBar)
 
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 	end
+
+	S:HandleTrimScrollBar(AlliedScrollFrame.ScrollBar)
+	S:HandleModelSceneControlButtons(AlliedRacesFrame.ModelScene.ControlFrame)
 
 	AlliedRacesFrame:HookScript('OnShow', function(s)
 		for button in s.abilityPool:EnumerateActive() do

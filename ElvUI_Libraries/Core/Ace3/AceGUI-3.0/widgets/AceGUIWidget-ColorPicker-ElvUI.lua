@@ -1,17 +1,20 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 28
+local Type, Version = "ColorPicker-ElvUI", 29
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local IsWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local pairs = pairs
 
 local CreateFrame, UIParent = CreateFrame, UIParent
 local OpacitySliderFrame = OpacitySliderFrame
 local ColorPickerFrame = ColorPickerFrame
+
+local colorFunc = IsWrath and 'func' or 'swatchFunc'
 
 -- GLOBALS: ColorPPDefault
 
@@ -65,9 +68,8 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG")
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
-		ColorPickerFrame:EnableMouse(true) -- Make sure the background isn't click-through
 
-		ColorPickerFrame.swatchFunc = function()
+		ColorPickerFrame[colorFunc] = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
@@ -120,7 +122,7 @@ local function ColorSwatch_OnClick(frame)
 		end
 
 		ColorPickerFrame.cancelFunc = function()
-			ColorPickerFrame.swatchFunc = nil
+			ColorPickerFrame[colorFunc] = nil
 			ColorPickerFrame.opacityFunc = nil
 
 			ColorCallback(self, r, g, b, a, true)

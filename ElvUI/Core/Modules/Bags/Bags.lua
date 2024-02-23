@@ -312,7 +312,7 @@ function B:Tooltip_Show()
 end
 
 do
-	local function DisableFrame(frame)
+	local function DisableFrame(frame, container)
 		if not frame then return end
 
 		frame:UnregisterAllEvents()
@@ -321,11 +321,15 @@ do
 		frame:SetParent(E.HiddenFrame)
 		frame:ClearAllPoints()
 		frame:Point('BOTTOM')
+
+		if container then -- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
+			frame:RegisterEvent('BAG_CONTAINER_UPDATE')
+		end
 	end
 
 	function B:DisableBlizzard()
 		DisableFrame(_G.BankFrame)
-		DisableFrame(_G.ContainerFrameCombinedBags)
+		DisableFrame(_G.ContainerFrameCombinedBags, true)
 
 		for i = 1, NUM_CONTAINER_FRAMES do
 			_G['ContainerFrame'..i]:Kill()

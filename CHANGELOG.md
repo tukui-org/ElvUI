@@ -1,3 +1,31 @@
+### Version 13.59 [ February 23rd 2024 ]
+*   Gnomeregan filters updated.
+*   Whitelisted Suspended World Buffs.
+*   Toggling spell ranks trigger range display issue.
+*   Updated allied races model skin.
+*   Currency error when using Better Bags.
+*   Season of Discovery Instance IDs added for the Raid Lockouts on Time Datatext.
+*   Filter creation error resolved when a filter and spell was selected.
+*   Raid Utility button supports boss mod cooldown function. (Wrath/Classic)
+*   Closing whisper tab mid-combat no longer causes errors.
+*   Blizzard options tooltip issue after displaying the Action Bars section resolved.
+*   Bags "itemButton" error fixed when adding a new Bag then reopening.
+*   Wrath Fury of Stormrage regen bug fixed. (Thanks ToddSisson)
+*   WeakAuras color picker save issue fixed. (Wrath)
+
+### Version 13.58 [ February 11th 2024 ]
+*   Updated LibRangeCheck which fixes the CheckInteractDistance error.
+*   Color Picker not saving properly on WeakAuras or other addons.
+*   The following Phase 2 auras have been added to AuraWatch & Whitelist:
+    *   Priest Renew
+    *   Priest Meditations
+    *   Druid Regrowth and Rejuvenation
+    *   Stranglethorn World Event Buff+Stacks
+    *   Stranglethorn Opt-Out PvP Buff
+    *   Dark Rider Rune discovery Buff
+    *   Cozy Sleeping Bag Buff+Stacks
+    *   Gnomeregan Raid Buffs+Debuffs
+
 ### Version 13.57 [ February 6th 2024 ]
 *   Classic: Blizzard fixed Top Auras
 

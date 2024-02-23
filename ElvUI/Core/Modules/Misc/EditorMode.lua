@@ -133,7 +133,7 @@ function EM:Initialize()
 	-- account settings will be tainted
 	local mixin = _G.EditModeManagerFrame.AccountSettings
 	if CheckCastFrame() then mixin.RefreshCastBar = E.noop end
-	if CheckAuraFrame() then mixin.RefreshAuraFrame = E.noop end
+	if CheckAuraFrame() then mixin.RefreshBuffsAndDebuffs = E.noop end
 	if CheckBossFrame() then mixin.RefreshBossFrames = E.noop end
 	if CheckArenaFrame() then mixin.RefreshArenaFrames = E.noop end
 	if CheckRaidFrame() then mixin.RefreshRaidFrames = E.noop end

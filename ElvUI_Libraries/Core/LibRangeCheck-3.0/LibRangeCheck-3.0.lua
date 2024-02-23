@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 12
+local MINOR_VERSION = 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -1221,6 +1221,12 @@ function lib:SPELLS_CHANGED()
   self:scheduleInit()
 end
 
+function lib:CVAR_UPDATE(_, cvar)
+  if cvar == "ShowAllSpellRanks" then
+    self:scheduleInit()
+  end
+end
+
 function lib:UNIT_INVENTORY_CHANGED(event, unit)
   if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
     self:scheduleInit()
@@ -1346,6 +1352,10 @@ function lib:activate()
     frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
     frame:RegisterEvent("SPELLS_CHANGED")
+
+    if isEra or isWrath then
+      frame:RegisterEvent("CVAR_UPDATE")
+    end
 
     if isRetail or isWrath then
       frame:RegisterEvent("PLAYER_TALENT_UPDATE")

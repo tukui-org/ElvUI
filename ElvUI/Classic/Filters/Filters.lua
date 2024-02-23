@@ -428,6 +428,8 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+	[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
 	-- Druid
 	-- Hunter
 	-- Mage
@@ -455,6 +457,11 @@ if E.ClassicSOD then
 	Whitelist[417316] = List(2) -- Meditation of the Loa
 	-- Phase 2 Rune Auras
 	Whitelist[438288] = List(2) -- Dark Presence
+end
+
+if E.ClassicHC then
+	-- Whitelist Self-Found Auras
+	G.unitframe.aurafilters.Whitelist.spells[431567] = List(2) -- Self-Found Adventurer
 end
 
 -- RAID DEBUFFS: This should be pretty self explainitory
@@ -651,6 +658,7 @@ if E.ClassicSOD then
 	RaidDebuffs[438714] = List(2) -- Furnace Surge
 	RaidDebuffs[438727] = List(2) -- Radiation Sickness
 	RaidDebuffs[438732] = List(2) -- Toxic Ventilation
+	RaidDebuffs[438735] = List(2) -- High Voltage!
 	RaidDebuffs[438720] = List(2) -- Freezing
 end
 
