@@ -3177,7 +3177,7 @@ do -- securely lock the atlas texture; we need this cause its not shown on init 
 	function CH:HandleTextToSpeechButton(button)
 		button.highlightAtlas = nil -- hide the highlight
 
-		if not button.Icon.isHookedAtlas then
+		if button.Icon and not button.Icon.isHookedAtlas then
 			hooksecurefunc(button.Icon, 'SetAtlas', lockAtlas)
 			button.Icon.isHookedAtlas = true
 		end
