@@ -340,14 +340,13 @@ function S:PetBattleFrame()
 	turnTimer.SkipButton:SetParent(bar)
 	S:HandleButton(turnTimer.SkipButton)
 
-	local SkipOffset = E.PixelMode and -1 or 1
-	local XPOffset = E.PixelMode and -1 or 3
 	hooksecurefunc(turnTimer.SkipButton, 'SetPoint', function(btn, _, _, _, _, _, forced)
 		if forced == true then return end
 
 		btn:ClearAllPoints()
-		btn:Point('BOTTOMLEFT', bar, 'TOPLEFT', 0, SkipOffset, true)
-		btn:Point('BOTTOMRIGHT', bar, 'TOPRIGHT', 0, SkipOffset, true)
+		btn:SetFrameLevel(4) -- xpBar uses 3
+		btn:Point('BOTTOMLEFT', bar, 'TOPLEFT', 0, 1, true)
+		btn:Point('BOTTOMRIGHT', bar, 'TOPRIGHT', 0, 1, true)
 
 		turnTimer:SetSize(turnTimer.SkipButton:GetSize()) -- set after the skip button points
 	end)
@@ -356,6 +355,7 @@ function S:PetBattleFrame()
 	turnTimer:Point('TOP', E.UIParent, 'TOP', 0, -140)
 	turnTimer.TimerText:Point('CENTER')
 
+	local XPOffset = E.PixelMode and 2 or 3
 	E:RegisterStatusBar(bf.xpBar)
 	bf.xpBar:SetParent(bar)
 	bf.xpBar:CreateBackdrop()
