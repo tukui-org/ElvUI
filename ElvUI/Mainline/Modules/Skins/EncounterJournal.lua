@@ -248,13 +248,14 @@ function S:Blizzard_EncounterJournal()
 
 	EncounterInfo.encounterTitle:Kill()
 
+	EncounterInfo.leftShadow:SetAlpha(0) -- dont kill these
+	EncounterInfo.rightShadow:SetAlpha(0) -- it will taint
+
 	EncounterInfo.instanceButton.icon:Size(32)
 	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
 	EncounterInfo.instanceButton:SetNormalTexture(E.ClearTexture)
 	EncounterInfo.instanceButton:SetHighlightTexture(E.ClearTexture)
 
-	EncounterInfo.leftShadow:SetAlpha(0)
-	EncounterInfo.rightShadow:SetAlpha(0)
 	EncounterInfo.model.dungeonBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	_G.EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
