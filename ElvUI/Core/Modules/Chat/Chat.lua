@@ -3166,6 +3166,24 @@ function CH:UpdateVoiceChatIcons()
 	end
 end
 
+do -- securely lock the atlas texture; we need this cause its not shown on init login
+	local ttsAtlas = 'chatframe-button-icon-TTS'
+	local function lockAtlas(icon, atlas)
+		if atlas ~= ttsAtlas then
+			icon:SetAtlas(ttsAtlas)
+		end
+	end
+
+	function CH:HandleTextToSpeechButton(button)
+		button.highlightAtlas = nil -- hide the highlight
+
+		if not button.Icon.isHookedAtlas then
+			hooksecurefunc(button.Icon, 'SetAtlas', lockAtlas)
+			button.Icon.isHookedAtlas = true
+		end
+	end
+end
+
 function CH:HandleChatVoiceIcons()
 	if CH.db.hideVoiceButtons then
 		for _, button in ipairs(channelButtons) do
@@ -3173,10 +3191,10 @@ function CH:HandleChatVoiceIcons()
 		end
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
-			S:HandleButton(button, nil, nil, true)
-
 			if index == 1 then
-				button.highlightAtlas = nil
+				CH:HandleTextToSpeechButton(button)
+			else
+				S:HandleButton(button, nil, nil, true)
 			end
 
 			if button.Icon then
@@ -3227,10 +3245,10 @@ function CH:CreateChatVoicePanel()
 	CH.LeaveVoicePanel(Holder)
 
 	for index, button in ipairs(channelButtons) do
-		S:HandleButton(button, nil, nil, true)
-
 		if index == 1 then
-			button.highlightAtlas = nil
+			CH:HandleTextToSpeechButton(button)
+		else
+			S:HandleButton(button, nil, nil, true)
 		end
 
 		if button.Icon then
@@ -3751,8 +3769,8 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
-	CH:RegisterEvent('CVAR_UPDATE')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
+	CH:RegisterEvent('CVAR_UPDATE')
 
 	if E.Retail then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
