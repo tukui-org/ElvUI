@@ -132,9 +132,3 @@ Maps.args.minimap.args.icons.args.difficulty.args.position = ACH:Select(L["Posit
 Maps.args.minimap.args.icons.args.difficulty.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 Maps.args.minimap.args.icons.args.difficulty.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
 Maps.args.minimap.args.icons.args.difficulty.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
-
-Maps.args.minimap.args.icons.args.challengeMode = ACH:Group(L["CHALLENGE_MODE"], nil, 9, nil, nil, nil, function() return E.Retail and not E.db.general.minimap.clusterDisable end, not E.Retail)
-Maps.args.minimap.args.icons.args.challengeMode.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
-Maps.args.minimap.args.icons.args.challengeMode.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
-Maps.args.minimap.args.icons.args.challengeMode.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
-Maps.args.minimap.args.icons.args.challengeMode.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
