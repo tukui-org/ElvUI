@@ -633,7 +633,7 @@ local function findMinRangeChecker(origMinRange, origRange, spellList)
   for i = 1, #spellList do
     local sid = spellList[i]
     local name, minRange, range, spellIdx = getSpellData(sid)
-    if range and spellIdx and origMinRange <= range and range <= origRange and minRange == 0 then
+    if spellIdx and (minRange and minRange <= origMinRange) and (range and range <= origRange) then
       return checkers_Spell[findSpellIdx(name)]
     end
   end
