@@ -733,9 +733,9 @@ local function createCheckerList(spellList, itemList, interactList)
   if interactList and (minInteract or not next(res)) then
     for index, range in pairs(interactList) do
       if minInteract then
-        addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index, true)
+        addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index)
       else
-        addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index, true)
+        addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
       end
     end
   end
