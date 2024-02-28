@@ -773,8 +773,6 @@ local function getRangeWithCheckerList(unit, checkerList)
     end
   end
 
-  print(index, 'lo', lo, '(', checkerList[lo] and checkerList[lo].range, ')', 'hi', hi, '(', checkerList[hi] and checkerList[hi].range, ')')
-
   if index == 0 then
     return nil, nil
   elseif lo > index then
