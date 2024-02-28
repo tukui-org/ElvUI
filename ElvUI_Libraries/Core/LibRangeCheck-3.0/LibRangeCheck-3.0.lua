@@ -634,7 +634,7 @@ local function CreateChecker_SpellWithMin(spellIdx, interactList)
     local spellCheck = checkers_Spell[spellIdx]
     if spellCheck and spellCheck(unit, skipInCombatCheck) then
       return true
-    else -- fallback to try interact when a spell failed
+    else -- fallback to try interact when a spell failed, this will allow lower min range
       for index in pairs(interactList) do
         local interactCheck = checkers_Interact[index]
         if interactCheck(unit, skipInCombatCheck) then
