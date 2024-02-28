@@ -594,7 +594,7 @@ local checkers_SpellWithMin = setmetatable({}, {
           end
         else
           local spellCheck = checkers_Spell[id]
-          if spellCheck and spellCheck(unit, skipInCombatCheck) then
+          if spellCheck and spellCheck(unit) then
             return true
           elseif t.MinInteractList then -- fallback to try interact when a spell failed
             for index in pairs(t.MinInteractList) do
