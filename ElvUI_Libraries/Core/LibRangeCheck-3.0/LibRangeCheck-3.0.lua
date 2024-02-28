@@ -629,33 +629,28 @@ local function getSpellData(sid)
   return name, fixRange(minRange), fixRange(range), findSpellIdx(name)
 end
 
-local function findMinRangeChecker(origMinRange, origRange, spellList)
-  for i = 1, #spellList do
-    local sid = spellList[i]
-    local name, minRange, range, spellIdx = getSpellData(sid)
-    if spellIdx and (minRange and minRange <= origMinRange) and (range and range <= origRange) then
-      return checkers_Spell[findSpellIdx(name)]
-    end
-  end
-end
-
-local function getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
-  local checker = checkers_SpellWithMin[spellIdx]
-  if checker then
-    return checker
-  end
-  local minRangeChecker = findMinRangeChecker(minRange, range, spellList)
-  if minRangeChecker then
-    checker = function(unit)
-      if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-        return true
-      elseif minRangeChecker(unit) then
-        return true, true
+local function CreateChecker_SpellWithMin(spellIdx, interactList)
+  local checker = function(unit, skipInCombatCheck)
+    local spellCheck = checkers_Spell[spellIdx]
+    if spellCheck and spellCheck(unit, skipInCombatCheck) then
+      return true
+    else -- fallback to try interact when a spell failed
+      for index in pairs(interactList) do
+        local interactCheck = checkers_Interact[index]
+        if interactCheck(unit, skipInCombatCheck) then
+          return true, true
+        end
       end
     end
-    checkers_SpellWithMin[spellIdx] = checker
-    return checker
   end
+
+  checkers_SpellWithMin[spellIdx] = checker
+
+  return checker
+end
+
+local function getCheckerForSpellWithMinRange(spellIdx, interactList)
+  return checkers_SpellWithMin[spellIdx] or CreateChecker_SpellWithMin(spellIdx, interactList)
 end
 
 -- minRange should be nil if there's no minRange, not 0
@@ -704,7 +699,7 @@ local function createCheckerList(spellList, itemList, interactList)
         end
 
         if minRange then
-          local checker = getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
+          local checker = getCheckerForSpellWithMinRange(spellIdx, interactList)
           if checker then
             addChecker(res, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
             addChecker(resInCombat, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
