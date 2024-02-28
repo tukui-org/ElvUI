@@ -731,9 +731,12 @@ local function createCheckerList(spellList, itemList, interactList)
   end
 
   if interactList and (minInteract or not next(res)) then
+    local _, playerClass = UnitClass("player")
     for index, range in pairs(interactList) do
-      if minInteract then
-        addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index)
+      if minInteract then -- spells have min range, step to use interact as a fallback
+        if not (playerClass == "WARRIOR" and index == 4) then -- warrior: skip Follow 28, so it will use Charge 25
+          addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index)
+        end
       else
         addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
       end
