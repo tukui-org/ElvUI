@@ -590,7 +590,7 @@ local checkers_SpellWithMin = setmetatable({}, {
         if isInteract then
           local interactCheck = checkers_Interact[id]
           if interactCheck(unit, skipInCombatCheck) then
-            return true, true
+            return true
           end
         else
           local spellCheck = checkers_Spell[id]
@@ -600,7 +600,7 @@ local checkers_SpellWithMin = setmetatable({}, {
             for index in pairs(t.MinInteractList) do
               local interactCheck = checkers_Interact[index]
               if interactCheck(unit, skipInCombatCheck) then
-                return true, true
+                return true
               end
             end
           end
