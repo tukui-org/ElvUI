@@ -63,7 +63,6 @@ local ipairs = ipairs
 local tinsert = tinsert
 local tremove = tremove
 local tostring = tostring
-local strsplit = strsplit
 local setmetatable = setmetatable
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 local GetSpellInfo = GetSpellInfo
@@ -549,7 +548,7 @@ local checkers_Spell = setmetatable({}, {
     return func
   end,
 })
-
+local checkers_SpellWithMin = {} -- see getCheckerForSpellWithMinRange()
 local checkers_Item = setmetatable({}, {
   __index = function(t, item)
     local func = function(unit, skipInCombatCheck)
@@ -563,7 +562,6 @@ local checkers_Item = setmetatable({}, {
     return func
   end,
 })
-
 local checkers_Interact = setmetatable({}, {
   __index = function(t, index)
     local func = function(unit, skipInCombatCheck)
@@ -575,42 +573,6 @@ local checkers_Interact = setmetatable({}, {
     end
     t[index] = func
     return func
-  end,
-})
-
-local checkers_SpellWithMin = setmetatable({}, {
-  __index = function(t, key, value)
-    if key == 'MinInteractList' then
-      return value
-    else
-      local which, id = strsplit(':', key)
-      local isInteract = which == 'interact'
-
-      local func = function(unit, skipInCombatCheck)
-        if isInteract then
-          local interactCheck = checkers_Interact[id]
-          if interactCheck(unit, skipInCombatCheck) then
-            return true, true
-          end
-        else
-          local spellCheck = checkers_Spell[id]
-          if spellCheck and spellCheck(unit, skipInCombatCheck) then
-            return true
-          elseif t.MinInteractList then -- fallback to try interact when a spell failed
-            for index in pairs(t.MinInteractList) do
-              local interactCheck = checkers_Interact[index]
-              if interactCheck(unit, skipInCombatCheck) then
-                return true, true
-              end
-            end
-          end
-        end
-      end
-
-      t[id] = func
-
-      return func
-    end
   end,
 })
 
@@ -667,6 +629,35 @@ local function getSpellData(sid)
   return name, fixRange(minRange), fixRange(range), findSpellIdx(name)
 end
 
+local function findMinRangeChecker(origMinRange, origRange, spellList)
+  for i = 1, #spellList do
+    local sid = spellList[i]
+    local name, minRange, range, spellIdx = getSpellData(sid)
+    if spellIdx and (minRange and minRange <= origMinRange) and (range and range <= origRange) then
+      return checkers_Spell[findSpellIdx(name)]
+    end
+  end
+end
+
+local function getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
+  local checker = checkers_SpellWithMin[spellIdx]
+  if checker then
+    return checker
+  end
+  local minRangeChecker = findMinRangeChecker(minRange, range, spellList)
+  if minRangeChecker then
+    checker = function(unit)
+      if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
+        return true
+      elseif minRangeChecker(unit) then
+        return true, true
+      end
+    end
+    checkers_SpellWithMin[spellIdx] = checker
+    return checker
+  end
+end
+
 -- minRange should be nil if there's no minRange, not 0
 local function addChecker(t, range, minRange, checker, info)
   local rc = { ["range"] = range, ["minRange"] = minRange, ["checker"] = checker, ["info"] = info }
@@ -697,7 +688,6 @@ local function createCheckerList(spellList, itemList, interactList)
     end
   end
 
-  local minInteract
   if spellList then
     for i = 1, #spellList do
       local sid = spellList[i]
@@ -714,14 +704,11 @@ local function createCheckerList(spellList, itemList, interactList)
         end
 
         if minRange then
-          if not checkers_SpellWithMin.MinInteractList then
-            checkers_SpellWithMin.MinInteractList = interactList
+          local checker = getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
+          if checker then
+            addChecker(res, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
+            addChecker(resInCombat, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
           end
-
-          addChecker(res, range, minRange, checkers_SpellWithMin["spell:"..spellIdx], "spell:" .. sid .. ":" .. tostring(name))
-          addChecker(resInCombat, range, minRange, checkers_SpellWithMin["spell:"..spellIdx], "spell:" .. sid .. ":" .. tostring(name))
-
-          minInteract = true
         else
           addChecker(res, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
           addChecker(resInCombat, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
@@ -730,13 +717,9 @@ local function createCheckerList(spellList, itemList, interactList)
     end
   end
 
-  if interactList and (minInteract or not next(res)) then
+  if interactList and not next(res) then
     for index, range in pairs(interactList) do
-      if minInteract then
-        addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index, true)
-      else
-        addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index, true)
-      end
+      addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
     end
   end
 
@@ -761,8 +744,7 @@ end
 
 -- returns minRange, maxRange  or nil
 local function getRangeWithCheckerList(unit, checkerList)
-  local num = #checkerList
-  local lo, hi = 1, num
+  local lo, hi = 1, #checkerList
   while lo <= hi do
     local mid = math_floor((lo + hi) / 2)
     local rc = checkerList[mid]
@@ -772,11 +754,10 @@ local function getRangeWithCheckerList(unit, checkerList)
       hi = mid - 1
     end
   end
-
-  if num == 0 then
+  if #checkerList == 0 then
     return nil, nil
-  elseif lo > num then
-    return 0, checkerList[num].range
+  elseif lo > #checkerList then
+    return 0, checkerList[#checkerList].range
   elseif lo <= 1 then
     return checkerList[1].range, nil
   else
