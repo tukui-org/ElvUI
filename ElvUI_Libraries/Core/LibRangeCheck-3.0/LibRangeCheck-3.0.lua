@@ -761,8 +761,8 @@ end
 
 -- returns minRange, maxRange  or nil
 local function getRangeWithCheckerList(unit, checkerList)
-  local index = #checkerList
-  local lo, hi = 1, index
+  local num = #checkerList
+  local lo, hi = 1, num
   while lo <= hi do
     local mid = math_floor((lo + hi) / 2)
     local rc = checkerList[mid]
@@ -773,10 +773,10 @@ local function getRangeWithCheckerList(unit, checkerList)
     end
   end
 
-  if index == 0 then
+  if num == 0 then
     return nil, nil
-  elseif lo > index then
-    return 0, checkerList[index].range
+  elseif lo > num then
+    return 0, checkerList[num].range
   elseif lo <= 1 then
     return checkerList[1].range, nil
   else
