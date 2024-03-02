@@ -312,10 +312,9 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_GAINS_VEHICLE_DATA', Update, true)
-			self:RegisterEvent('PLAYER_LOSES_VEHICLE_DATA', Update, true)
+			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update, true)
 		end,
-		events = {'PLAYER_GAINS_VEHICLE_DATA','PLAYER_LOSES_VEHICLE_DATA'}
+		events = {'PLAYER_CAN_GLIDE_CHANGED'}
 	}
 end
 
