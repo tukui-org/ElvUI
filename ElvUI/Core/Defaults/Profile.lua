@@ -342,6 +342,8 @@ P.databars.experience.questTrackedOnly = false
 P.databars.experience.questCompletedOnly = false
 P.databars.experience.questCurrentZoneOnly = false
 
+P.databars.petExperience.hideAtMaxLevel = true
+
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
 P.databars.reputation.showReward = true
