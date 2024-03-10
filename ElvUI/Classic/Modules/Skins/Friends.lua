@@ -221,7 +221,7 @@ function S:FriendsFrame()
 		button.icon:Point('LEFT', 45, 0)
 		button.icon:Size(15)
 		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-		--button.icon:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, button.icon)
+		button.icon:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, button.icon)
 
 		S:HandleButtonHighlight(button)
 
@@ -303,7 +303,7 @@ function S:FriendsFrame()
 		button.icon:Point('LEFT', 48, 0)
 		button.icon:Size(15)
 		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-		--button.icon:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, button.icon)
+		button.icon:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, button.icon)
 
 		S:HandleButtonHighlight(button)
 		S:HandleButtonHighlight(statusButton)
