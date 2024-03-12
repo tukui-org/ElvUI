@@ -3123,11 +3123,11 @@ function CH:RepositionOverflowButton()
 	end
 
 	-- handle buttons placement on the voice panel
-	local button1 = channelButtons[1] -- text to speech
-	local button2 = channelButtons[2] -- main voice button
-	local ttsEnabled = GetCVarBool('textToSpeech')
-
 	if not CH.db.hideVoiceButtons then
+		local button1 = channelButtons[1] -- text to speech
+		local button2 = channelButtons[2] -- main voice button
+		local ttsEnabled = GetCVarBool('textToSpeech')
+
 		if CH.db.pinVoiceButtons then
 			button1:ClearAllPoints()
 			button2:ClearAllPoints()
