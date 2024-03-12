@@ -3156,7 +3156,7 @@ function CH:RepositionOverflowButton()
 	local ChatAlertFrame = _G.ChatAlertFrame
 	if ChatAlertFrame then
 		ChatAlertFrame:ClearAllPoints()
-		ChatAlertFrame:Point('BOTTOM', (ttsEnabled and button1) or button2, 'TOP', 1, 3)
+		ChatAlertFrame:Point('BOTTOMRIGHT', _G.GeneralDockManager, 'TOPRIGHT', 3, 3)
 	end
 end
 
