@@ -175,7 +175,7 @@ function S:MailFrame()
 
 	-- Open Mail Frame
 	local OpenMailFrame = _G.OpenMailFrame
-	OpenMailFrame:StripTextures(true) -- stupid portrait
+	OpenMailFrame:StripTextures(true)
 	S:HandleFrame(OpenMailFrame, true)
 	OpenMailFrame.backdrop:Point('TOPLEFT', -5, 0)
 	OpenMailFrame.backdrop:Point('BOTTOMRIGHT', -2, 0)
