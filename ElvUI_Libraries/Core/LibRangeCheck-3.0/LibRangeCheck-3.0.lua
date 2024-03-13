@@ -50,10 +50,6 @@ if not lib then
   return
 end
 
-local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
-local isEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-
 local next = next
 local type = type
 local wipe = wipe
@@ -65,7 +61,7 @@ local tremove = tremove
 local tostring = tostring
 local strsplit = strsplit
 local setmetatable = setmetatable
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+
 local GetSpellInfo = GetSpellInfo
 local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
@@ -85,11 +81,20 @@ local UnitClass = UnitClass
 local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
-local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
 local C_Timer = C_Timer
 local Item = Item
+
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
+
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local isEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
+local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
+local isEraSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 local InCombatLockdownRestriction
 if isRetail or isEra then
@@ -187,6 +192,11 @@ tinsert(FriendSpells.MAGE, 475) -- Remove Curse (40 yards, level 28)
 
 if not isRetail then
   tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
+end
+
+if isEraSOD then
+  tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
+  tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
 
 tinsert(HarmSpells.MAGE, 44614) -- Flurry (40 yards)
