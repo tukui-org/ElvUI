@@ -32,17 +32,6 @@ local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-local UnitlessEvents = {
-	'PLAYER_REGEN_ENABLED',
-	'PLAYER_REGEN_DISABLED',
-	'PLAYER_TARGET_CHANGED',
-	'PLAYER_FOCUS_CHANGED',
-	'ZONE_CHANGED',
-	'ZONE_CHANGED_INDOORS',
-	'ZONE_CHANGED_NEW_AREA',
-	'PLAYER_DIFFICULTY_CHANGED',
-	'PLAYER_CAN_GLIDE_CHANGED'
-}
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -80,7 +69,7 @@ local function CanGlide()
 	return canGlide
 end
 
-local function Update(self, event, unit)
+local function Update(self, _, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
 		self:SetAlpha(1)
@@ -93,7 +82,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if UnitlessEvents[event] or not unit then
+	if not unit then
 		unit = self.unit
 	end
 
@@ -227,8 +216,8 @@ local options = {
 	},
 	Combat = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update)
-			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update)
+			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
+			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
 			self:RegisterEvent('UNIT_FLAGS', Update)
 		end,
 		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED','UNIT_FLAGS'}
@@ -247,8 +236,8 @@ local options = {
 			end
 
 			self:RegisterEvent('UNIT_TARGET', Update)
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update)
-			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
+			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'UNIT_TARGET','PLAYER_TARGET_CHANGED','PLAYER_FOCUS_CHANGED'},
 		disable = function(self)
@@ -294,10 +283,10 @@ local options = {
 	},
 	InstanceDifficulty = {
 		enable = function(self)
-			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty)
-			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty)
-			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficulty)
-			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty)
+			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficulty, true)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty, true)
 		end,
 		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
 	},
@@ -323,7 +312,7 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update)
+			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update, true)
 		end,
 		events = {'PLAYER_CAN_GLIDE_CHANGED'}
 	}
@@ -332,7 +321,7 @@ end
 if not oUF.isClassic then
 	options.Focus = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update)
+			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'PLAYER_FOCUS_CHANGED'}
 	}
@@ -341,8 +330,8 @@ end
 if oUF.isRetail or oUF.isWrath then
 	options.Vehicle = {
 		enable = function(self)
-			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update)
-			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update)
+			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
+			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
 		end,
 		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
 	}
