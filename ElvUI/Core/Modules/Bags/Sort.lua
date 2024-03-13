@@ -609,7 +609,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 		return true -- target bag is normal
 	elseif bagType then
 		local itemFamily = GetItemFamily(item)
-		if itemFamily then
+		if itemFamily and classID ~= 11 then -- prevent quiverception
 			return band(itemFamily, bagType) > 0
 		end
 	end
