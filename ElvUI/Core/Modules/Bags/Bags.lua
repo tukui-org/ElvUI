@@ -1151,11 +1151,6 @@ function B:PLAYER_AVG_ITEM_LEVEL_UPDATE()
 	end
 end
 
-function B:PLAYER_ENTERING_WORLD(event)
-	B:UpdateLayout(B.BagFrame)
-	B:UnregisterEvent(event)
-end
-
 function B:UpdateLayouts()
 	B:Layout()
 	B:Layout(true)
@@ -2945,7 +2940,6 @@ function B:Initialize()
 	B:DisableBlizzard()
 	B:UpdateGoldText()
 
-	B:RegisterEvent('PLAYER_ENTERING_WORLD')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
