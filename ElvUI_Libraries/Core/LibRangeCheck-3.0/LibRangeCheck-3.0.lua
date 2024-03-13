@@ -53,36 +53,37 @@ end
 local next = next
 local type = type
 local wipe = wipe
-local print = print
+local floor = floor
 local pairs = pairs
+local print = print
 local ipairs = ipairs
 local tinsert = tinsert
 local tremove = tremove
-local tostring = tostring
 local strsplit = strsplit
+local tostring = tostring
 local setmetatable = setmetatable
 
-local GetSpellInfo = GetSpellInfo
-local GetSpellBookItemName = GetSpellBookItemName
-local GetNumSpellTabs = GetNumSpellTabs
-local GetSpellTabInfo = GetSpellTabInfo
-local GetItemInfo = GetItemInfo
-local UnitCanAttack = UnitCanAttack
-local UnitCanAssist = UnitCanAssist
-local UnitExists = UnitExists
-local UnitIsUnit = UnitIsUnit
-local UnitGUID = UnitGUID
-local InCombatLockdown = InCombatLockdown
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
-local IsSpellInRange = IsSpellInRange
-local IsItemInRange = IsItemInRange
-local UnitClass = UnitClass
-local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
+local GetItemInfo = GetItemInfo
+local GetNumSpellTabs = GetNumSpellTabs
+local GetSpellBookItemName = GetSpellBookItemName
+local GetSpellInfo = GetSpellInfo
+local GetSpellTabInfo = GetSpellTabInfo
 local GetTime = GetTime
-local math_floor = math.floor
+local InCombatLockdown = InCombatLockdown
+local IsItemInRange = IsItemInRange
+local IsSpellInRange = IsSpellInRange
+local UnitCanAssist = UnitCanAssist
+local UnitCanAttack = UnitCanAttack
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitGUID = UnitGUID
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
+local UnitRace = UnitRace
+
 local C_Timer = C_Timer
 local Item = Item
 
@@ -667,7 +668,7 @@ end
 
 local function fixRange(range)
   if range then
-    return math_floor(range + 0.5)
+    return floor(range + 0.5)
   end
 end
 
@@ -775,7 +776,7 @@ end
 local function getRangeWithCheckerList(unit, checkerList)
   local lo, hi = 1, #checkerList
   while lo <= hi do
-    local mid = math_floor((lo + hi) / 2)
+    local mid = floor((lo + hi) / 2)
     local rc = checkerList[mid]
     if rc.checker(unit, true) then
       lo = mid + 1
