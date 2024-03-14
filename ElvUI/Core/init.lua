@@ -83,7 +83,7 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 -- Expansions
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
-E.Cata = (E.wowtoc >= 40000 and E.wowtoc < 50000) -- TODO: Cata
+E.Cata = WOW_PROJECT_ID == 11 -- TODO: Cata
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC

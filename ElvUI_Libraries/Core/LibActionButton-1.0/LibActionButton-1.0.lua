@@ -17,6 +17,7 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
+local WoWCata = WOW_PROJECT_ID == 11
 
 -- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
@@ -1435,7 +1436,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
 	if not WoWClassic and not WoWBCC then
-		if not WoWWrath then
+		if not WoWCata then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
