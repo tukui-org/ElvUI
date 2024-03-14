@@ -159,35 +159,4 @@ function S:Blizzard_TalentUI()
 	end)
 end
 
-function S:Blizzard_GlyphUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
-
-	_G.GlyphFrame:StripTextures()
-
-	_G.GlyphFrameBackground:Size(334, 385)
-	_G.GlyphFrameBackground:Point('TOPLEFT', 15, -47)
-
-	_G.GlyphFrameBackground:SetTexture([[Interface\Spellbook\UI-GlyphFrame]])
-	_G.GlyphFrameGlow:SetTexture([[Interface\Spellbook\UI-GlyphFrame-Glow]])
-	_G.GlyphFrameGlow:SetAllPoints(_G.GlyphFrameBackground)
-
-	_G.GlyphFrameBackground:SetTexCoord(0.041015625, 0.65625, 0.140625, 0.8046875)
-	_G.GlyphFrameGlow:SetTexCoord(0.05859375, 0.673828125, 0.06640625, 0.73046875)
-
-	-- Otherwise TalenFrame texts/elements will overlap with Glyph texts/elements
-	_G.GlyphFrame:HookScript('OnShow', function()
-		_G.PlayerTalentFrameTitleText:Hide()
-		_G.PlayerTalentFramePointsBar:Hide()
-		_G.PlayerTalentFrameScrollFrame:Hide()
-		_G.PlayerTalentFrameStatusFrame:Hide()
-	end)
-
-	_G.GlyphFrame:HookScript('OnHide', function()
-		_G.PlayerTalentFrameTitleText:Show()
-		_G.PlayerTalentFramePointsBar:Show()
-		_G.PlayerTalentFrameScrollFrame:Show()
-	end)
-end
-
 S:AddCallbackForAddon('Blizzard_TalentUI')
-S:AddCallbackForAddon('Blizzard_GlyphUI')
