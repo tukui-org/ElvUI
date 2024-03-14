@@ -56,11 +56,11 @@ local menuList = {
 	{ text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
-if E.Wrath and E.mylevel >= _G.SHOW_PVP_LEVEL then
+if E.Cata and E.mylevel >= _G.SHOW_PVP_LEVEL then
 	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end })
 end
 
-if E.Retail or E.Wrath then
+if E.Retail or E.Cata then
 	tinsert(menuList, { text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
 	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
 	tinsert(menuList, { text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
@@ -786,7 +786,7 @@ function M:Initialize()
 	end
 
 	if _G.MiniMapLFGFrame then
-		(E.Wrath and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
+		(E.Cata and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
 	M:RegisterEvent('ADDON_LOADED')

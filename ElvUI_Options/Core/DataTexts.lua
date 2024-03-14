@@ -322,7 +322,7 @@ local function getCurrencyList()
 	return list
 end
 
-DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Wrath))
+DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Retail or E.Cata))
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
 DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, getCurrencyList, nil, 'double', nil, addCurrency)
 DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, addCurrency)

@@ -26,7 +26,7 @@ local function OnEvent(self)
 		self.icon:SetShown(currency.showIcon)
 		self.icon:SetTexture(info.iconFileID)
 
-		if E.Wrath and self.name == HONOR_CURRENCY then
+		if E.Cata and self.name == HONOR_CURRENCY then
 			self.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 		end
 	end

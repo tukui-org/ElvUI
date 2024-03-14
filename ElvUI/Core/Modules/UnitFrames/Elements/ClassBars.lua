@@ -404,7 +404,7 @@ end
 function UF:Runes_GetColor(rune, colors, classPower)
 	local value = rune:GetValue()
 
-	if E.Wrath then
+	if E.Cata then
 		local _, maxDuration = rune:GetMinMaxValues()
 		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
 

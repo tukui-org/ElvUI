@@ -563,7 +563,7 @@ function A:Initialize()
 			_G.TemporaryEnchantFrame:Kill()
 		end
 
-		if E.Wrath then
+		if E.Cata then
 			_G.ConsolidatedBuffs:Kill()
 		end
 	end

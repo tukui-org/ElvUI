@@ -39,7 +39,7 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 
 	for i = 1, GetNumBattlefieldScores() do
 		local name, _
-		if E.Classic or E.Wrath then
+		if E.Classic or E.Cata then
 			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
 		else
 			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)

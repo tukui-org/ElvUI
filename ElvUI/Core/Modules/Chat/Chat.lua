@@ -165,7 +165,7 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
-if not (E.Retail or E.Wrath) then
+if not (E.Retail or E.Cata) then
 	CH.BNGetFriendInfo = _G.BNGetFriendInfo
 	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
 	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
@@ -344,7 +344,7 @@ do --this can save some main file locals
 		-- Luckyone Classic Era (5233: Firemaw)
 		z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
 		z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
-	elseif E.Wrath then
+	elseif E.Cata then
 		-- Simpy (4373: Myzrael)
 		z['Player-4373-011657A7']	= itsSimpy -- Paladin:		Cutepally
 		z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline

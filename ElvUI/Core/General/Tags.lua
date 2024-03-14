@@ -124,7 +124,7 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
@@ -206,7 +206,7 @@ Tags.Env.GetClassPower = function(unit)
 
 		if Min > 0 then
 			local power = ElvUF.colors.ClassBars[unitClass]
-			local color = (monk and power[Min]) or (dk and (E.Wrath and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+			local color = (monk and power[Min]) or (dk and (E.Cata and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 			r, g, b = color.r, color.g, color.b
 		end
 	elseif not r then

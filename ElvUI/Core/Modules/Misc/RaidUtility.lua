@@ -326,7 +326,7 @@ function RU:OnEnter_Role()
 end
 
 function RU:PositionRoleIcons()
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		_G.RaidUtilityRoleIcons:ClearAllPoints()
 
 		local point = E:GetScreenQuadrant(ShowButton)
@@ -425,7 +425,7 @@ function RU:Initialize()
 	CloseButton:SetScript('OnMouseUp', RU.OnClick_CloseButton)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 		RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
 		RoleIcons:Size(36, PANEL_HEIGHT - countdownHeight)
@@ -479,7 +479,7 @@ function RU:Initialize()
 	ReadyCheckButton:SetScript('OnMouseUp', RU.OnClick_ReadyCheckButton)
 
 	local RoleCheckButton
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		RoleCheckButton = RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 3, 0, _G.ROLE_POLL)
 		RoleCheckButton:SetScript('OnMouseUp', RU.OnClick_RoleCheckButton)
 	end

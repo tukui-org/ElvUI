@@ -95,7 +95,7 @@ function BL:ObjectiveTracker_HasQuestTracker()
 end
 
 function BL:ObjectiveTracker_AutoHide()
-	local tracker = (E.Wrath and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if not tracker then return end
 
 	if not tracker.AutoHider then
@@ -150,7 +150,7 @@ function BL:Initialize()
 		end
 	end
 
-	if E.Wrath then
+	if E.Cata then
 		BL:PositionVehicleFrame()
 	end
 

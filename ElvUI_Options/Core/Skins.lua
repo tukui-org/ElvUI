@@ -51,7 +51,7 @@ local toggles = {
 	worldmap = L["WORLD_MAP"]
 }
 
-if E.Wrath or E.Retail then
+if E.Cata or E.Retail then
 	toggles.achievement = L["ACHIEVEMENTS"]
 	toggles.alertframes = L["Alert Frames"]
 	toggles.barber = L["BARBERSHOP"]
@@ -108,7 +108,7 @@ if E.Retail then
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 	toggles.voidstorage = L["VOID_STORAGE"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
-elseif E.Wrath then
+elseif E.Cata then
 	toggles.arena = L["Arena"]
 	toggles.arenaRegistrar = L["Arena Registrar"]
 elseif E.Classic then

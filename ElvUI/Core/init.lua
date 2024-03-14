@@ -83,7 +83,8 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 -- Expansions
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
-E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+E.Cata = (E.wowtoc >= 40000 and E.wowtoc < 50000) -- TODO: Cata
+E.Cata = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
@@ -150,7 +151,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 
