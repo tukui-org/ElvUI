@@ -345,6 +345,8 @@ do --this can save some main file locals
 		z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
 		z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
 	elseif E.Cata then
+		-- Temp
+		z['Player-4618-002BC7AB'] 	= ElvBlue -- Beta Testing
 		-- Simpy (4373: Myzrael)
 		z['Player-4373-011657A7']	= itsSimpy -- Paladin:		Cutepally
 		z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
