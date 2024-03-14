@@ -73,6 +73,7 @@ function S:BlizzardMiscFrames()
 	-- Since we cant hook 'CinematicFrame_OnShow' or 'CinematicFrame_OnEvent' directly
 	-- We can just hook onto this function so that we can get the correct `self`
 	-- This is called through 'CinematicFrame_OnShow' so the result would still happen where we want
+	--[[
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
@@ -86,6 +87,7 @@ function S:BlizzardMiscFrames()
 			if resumeButton then S:HandleButton(resumeButton) end
 		end
 	end)
+	]]
 
 	-- Same as above except 'MovieFrame_OnEvent' and 'MovieFrame_OnShow'
 	-- Cant be hooked directly so we can just use this

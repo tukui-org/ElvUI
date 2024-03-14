@@ -29,11 +29,11 @@ function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
-	S:HandleCheckBox(_G.ShowAllSpellRanksCheckBox)
-	_G.ShowAllSpellRanksCheckBox:Point('TOPLEFT', _G.SpellButton1, 'TOPLEFT', -11, 32)
+	--S:HandleCheckBox(_G.ShowAllSpellRanksCheckBox)
+	--_G.ShowAllSpellRanksCheckBox:Point('TOPLEFT', _G.SpellButton1, 'TOPLEFT', -11, 32)
 
-	_G.SpellBookTitleText:Point('TOP', -10, -17)
-	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
+	--_G.SpellBookTitleText:Point('TOP', -10, -17)
+	--_G.SpellBookTitleText:SetTextColor(1, 1, 1)
 
 	_G.SpellBookSpellIconsFrame:StripTextures(true)
 	_G.SpellBookSideTabsFrame:StripTextures(true)
@@ -50,8 +50,9 @@ function S:SpellBookFrame()
 	_G.SpellBookNextPageButton:Point('TOPLEFT', _G.SpellBookPrevPageButton, 'TOPLEFT', 30, 0)
 	_G.SpellBookNextPageButton:Size(24)
 
-	S:HandleCloseButton(_G.SpellBookCloseButton, _G.SpellBookFrame.backdrop)
+	--S:HandleCloseButton(_G.SpellBookCloseButton, _G.SpellBookFrame.backdrop)
 
+	--[[
 	for i = 1, 3 do
 		local tab = _G['SpellBookFrameTabButton'..i]
 
@@ -63,6 +64,7 @@ function S:SpellBookFrame()
 		tab.backdrop:Point('TOPLEFT', 14, -14)
 		tab.backdrop:Point('BOTTOMRIGHT', -14, 22)
 	end
+	]]
 
 	-- Reposition Tabs
 	_G.SpellBookFrameTabButton1:ClearAllPoints()
@@ -114,6 +116,7 @@ function S:SpellBookFrame()
 		S:HandlePointXY(_G['SpellButton'..i], 0, -20)
 	end
 
+	--[[
 	hooksecurefunc('SpellButton_UpdateButton', function(button)
 		local spellName = _G[button:GetName()..'SpellName']
 		local r = spellName:GetTextColor()
@@ -122,6 +125,7 @@ function S:SpellBookFrame()
 			spellName:SetTextColor(0.6, 0.6, 0.6)
 		end
 	end)
+	]]
 
 	for i = 1, _G.MAX_SKILLLINE_TABS do
 		local tab = _G['SpellBookSkillLineTab'..i]

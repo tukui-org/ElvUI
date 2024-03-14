@@ -110,8 +110,8 @@ function S:GossipFrame()
 	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
 
 	GossipFrame.backdrop:ClearAllPoints()
-	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
-	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, 40)
+	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -20, 60)
+	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 34, -24)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
