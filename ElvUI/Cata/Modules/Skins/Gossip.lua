@@ -96,7 +96,7 @@ function S:GossipFrame()
 	GreetingPanel:StripTextures()
 	GreetingPanel:CreateBackdrop('Transparent')
 	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
-	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 80)
+	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 4)
 
 	local ItemTextFrame = _G.ItemTextFrame
 	ItemTextFrame:StripTextures()
@@ -110,8 +110,8 @@ function S:GossipFrame()
 	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
 
 	GossipFrame.backdrop:ClearAllPoints()
-	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -20, 60)
-	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 34, -24)
+	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -8, 69)
+	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 32, -30)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
