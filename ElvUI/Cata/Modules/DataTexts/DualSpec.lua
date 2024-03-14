@@ -26,7 +26,7 @@ local function BuildTalentString(talentGroup)
 	local str = ''
 
 	for i = 1, MAX_TALENT_TABS do
-		local _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
+		local _, _, _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
 		if (str == '') then
 			str = pointsSpent
 		else
