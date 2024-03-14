@@ -148,7 +148,7 @@ function S:SpellBookFrame()
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
 
-	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and -1 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
 		local tab = _G['SpellBookSkillLineTab'..i]
