@@ -3,8 +3,8 @@ assert(LibStub, MAJOR.." requires LibStub")
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
-local Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local isCata = WOW_PROJECT_ID == 11
 
 local next = next
 
@@ -35,7 +35,7 @@ lib.BlockList = BlockList
 local BadList = {} -- Spells that backfire when dispelled
 lib.BadList = BadList
 
-if Retail then
+if isRetail then
 	-- Bad to dispel spells
 	BadList[34914] = "Vampiric Touch"		-- horrifies
 	BadList[233490] = "Unstable Affliction"	-- silences
@@ -1030,7 +1030,7 @@ do
 		[89808] = "Singe"
 	}
 
-	if Retail then
+	if isRetail then
 		WarlockPetSpells[132411] = "Singe Magic" -- Grimoire of Sacrifice
 	else
 		WarlockPetSpells[19505] = "Devour Magic Rank 1"
@@ -1060,16 +1060,16 @@ do
 		end
 
 		-- this will fix a problem where spells dont show as existing because they are 'hidden'
-		local undoRanks = (not Retail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
+		local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
 
 		if event == 'UNIT_PET' then
 			DispelList.Magic = CheckPetSpells()
 		elseif myClass == 'DRUID' then
-			local cure = Retail and CheckSpell(88423) -- Nature's Cure
-			local corruption = CheckSpell(2782) -- Remove Corruption (retail), Curse (classic)
+			local cure = isRetail and CheckSpell(88423) -- Nature's Cure
+			local corruption = CheckSpell(2782) -- Remove Corruption (Retail), Curse (Classic)
 			DispelList.Magic = cure
 			DispelList.Curse = cure or corruption
-			DispelList.Poison = cure or (Retail and corruption) or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
+			DispelList.Poison = cure or (isRetail and corruption) or CheckSpell(2893) or CheckSpell(8946) -- Abolish Poison / Cure Poison
 		elseif myClass == 'MAGE' then
 			DispelList.Curse = CheckSpell(475) -- Remove Curse
 		elseif myClass == 'MONK' then
@@ -1088,16 +1088,16 @@ do
 		elseif myClass == 'PRIEST' then
 			local dispel = CheckSpell(527) -- Dispel Magic
 			DispelList.Magic = dispel or CheckSpell(32375)
-			DispelList.Disease = Retail and (IsPlayerSpell(390632) or CheckSpell(213634)) or not Retail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
+			DispelList.Disease = isRetail and (IsPlayerSpell(390632) or CheckSpell(213634)) or not isRetail and (CheckSpell(552) or CheckSpell(528)) -- Purify Disease / Abolish Disease / Cure Disease
 		elseif myClass == 'SHAMAN' then
-			local purify = Retail and CheckSpell(77130) -- Purify Spirit
+			local purify = isRetail and CheckSpell(77130) -- Purify Spirit
 			local cleanse = purify or CheckSpell(51886) -- Cleanse Spirit
-			local toxins = Retail and CheckSpell(383013) or CheckSpell(526) -- Poison Cleansing Totem (Retail), Cure Toxins (TBC/Classic)
+			local toxins = isRetail and CheckSpell(383013) or CheckSpell(526) -- Poison Cleansing Totem (Retail), Cure Toxins (TBC/Classic)
 
 			DispelList.Magic = purify
 			DispelList.Curse = cleanse
-			DispelList.Poison = toxins or (not Retail and cleanse)
-			DispelList.Disease = not Retail and (cleanse or toxins)
+			DispelList.Poison = toxins or (not isRetail and cleanse)
+			DispelList.Disease = not isRetail and (cleanse or toxins)
 		elseif myClass == 'EVOKER' then
 			local naturalize = CheckSpell(360823) -- Naturalize (Preservation)
 			local expunge = CheckSpell(365585) -- Expunge (Devastation)
@@ -1124,9 +1124,9 @@ do
 		frame:RegisterUnitEvent('UNIT_PET', 'player')
 	end
 
-	if Wrath then
+	if isCata then
 		frame:RegisterEvent('PLAYER_TALENT_UPDATE')
-	elseif Retail then
+	elseif isRetail then
 		frame:RegisterEvent('LEARNED_SPELL_IN_TAB')
 		frame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 	end
