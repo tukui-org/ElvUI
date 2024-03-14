@@ -293,7 +293,7 @@ function S:Blizzard_AchievementUI()
 	end
 
 	-- Tabs
-	for i = 1, 2 do
+	for i = 1, 3 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
 		_G['AchievementFrameTab'..i]:SetFrameLevel(_G['AchievementFrameTab'..i]:GetFrameLevel() + 2)
 	end
