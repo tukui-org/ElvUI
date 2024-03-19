@@ -139,12 +139,13 @@ function M:HandleTrackingButton()
 	local tracking = (MinimapCluster.TrackingFrame and MinimapCluster.TrackingFrame.Button) or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
+	tracking:ClearAllPoints()
+
 	if E.private.general.minimap.hideTracking then
-		tracking:SetParent(E.HiddenFrame)
+		tracking:Point('CENTER', E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
-		tracking:ClearAllPoints()
 		tracking:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(tracking, scale)
 
