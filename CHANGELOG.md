@@ -1,3 +1,16 @@
+### Version 13.60 [ March 19th 2024 ]
+*   Difficulty Icon on Minimap improved, resolving an issue with the mouseover tooltip.
+*   Pet Battle XP bar overlapped Pass button.
+*   Encounter Journal error on open resolved.
+*   Text To Speech button added to Chat > Voice Chat.
+*   Reputation Databar being clickable during combat.
+*   Error when using /tts when Chat Voice buttons were disabled.
+*   Classic SoD: Mage runes added to improve Range Fader for lower levels (Regeneration and Mass Regeneration).
+*   Classic: Hunter/Rogue/Warrior Range Fader corrected.
+*   Classic: Send Mail text color corrected.
+*   Classic: Bags Quiver border missing on bags at first login.
+*   Classic: Bags Sorting breaking when Quivers tried to sort into other Quivers.
+
 ### Version 13.59 [ February 23rd 2024 ]
 *   Gnomeregan filters updated.
 *   Whitelisted Suspended World Buffs.
