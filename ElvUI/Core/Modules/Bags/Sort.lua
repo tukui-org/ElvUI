@@ -607,7 +607,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	local _, bagType = GetContainerNumFreeSlots(targetBag)
 	if bagType == 0 then
 		return true -- target bag is normal
-	elseif bagType then
+	elseif bagType and classID ~= 11 then -- prevent quiverception
 		local itemFamily = GetItemFamily(item)
 		if itemFamily then
 			return band(itemFamily, bagType) > 0

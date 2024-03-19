@@ -122,6 +122,7 @@ function S:ChatConfig()
 		_G.CombatConfigMessageSourcesDoneBy,
 		_G.CombatConfigColorsUnitColors,
 		_G.CombatConfigMessageSourcesDoneTo,
+		_G.ChatConfigTextToSpeechChannelSettingsLeft
 	}) do
 		frame:StripTextures()
 	end
@@ -239,8 +240,6 @@ function S:ChatConfig()
 
 	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
 	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
-
-	_G.ChatConfigTextToSpeechChannelSettingsLeft:StripTextures()
 end
 
 S:AddCallback('ChatConfig')

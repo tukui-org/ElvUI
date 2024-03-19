@@ -188,6 +188,8 @@ function DB:ReputationBar_OnEnter()
 end
 
 function DB:ReputationBar_OnClick()
+	if E:AlertCombat() then return end
+
 	ToggleCharacter('ReputationFrame')
 end
 

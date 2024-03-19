@@ -181,14 +181,8 @@ P.general = {
 			difficulty = {
 				scale = 1,
 				position = 'TOPLEFT',
-				xOffset = 0,
-				yOffset = 0,
-			},
-			challengeMode = {
-				scale = 1,
-				position = 'TOPLEFT',
-				xOffset = 8,
-				yOffset = -8,
+				xOffset = 10,
+				yOffset = 1,
 			}
 		}
 	},
@@ -347,6 +341,8 @@ P.databars.experience.showQuestXP = true
 P.databars.experience.questTrackedOnly = false
 P.databars.experience.questCompletedOnly = false
 P.databars.experience.questCurrentZoneOnly = false
+
+P.databars.petExperience.hideAtMaxLevel = true
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false

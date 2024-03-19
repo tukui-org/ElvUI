@@ -421,7 +421,7 @@ end
 
 function B:UpdateAllSlots(frame, first)
 	for _, bagID in next, frame.BagIDs do
-		local holder = first and frame.isBank and (bagID and bagID ~= BANK_CONTAINER) and frame.ContainerHolderByBagID[bagID]
+		local holder = first and frame.ContainerHolderByBagID[bagID]
 		if holder then -- updates the slot icons on first open
 			B:SetBagAssignments(holder)
 		end
@@ -1149,11 +1149,6 @@ function B:PLAYER_AVG_ITEM_LEVEL_UPDATE()
 	for slot in next, B.ItemLevelSlots do
 		B:UpdateItemLevel(slot)
 	end
-end
-
-function B:PLAYER_ENTERING_WORLD(event)
-	B:UpdateLayout(B.BagFrame)
-	B:UnregisterEvent(event)
 end
 
 function B:UpdateLayouts()
@@ -2249,7 +2244,7 @@ function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
 	if B.BagFrame.firstOpen then
-		B:UpdateAllSlots(B.BagFrame)
+		B:UpdateAllSlots(B.BagFrame, true)
 		B.BagFrame.firstOpen = nil
 	end
 
@@ -2945,7 +2940,6 @@ function B:Initialize()
 	B:DisableBlizzard()
 	B:UpdateGoldText()
 
-	B:RegisterEvent('PLAYER_ENTERING_WORLD')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')

@@ -41,6 +41,8 @@ local IndicatorLayout
 
 -- GLOBALS: GetMinimapShape
 
+local DifficultyIcons = { 'ChallengeMode', 'Guild', 'Instance' }
+
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
@@ -134,15 +136,16 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = (MinimapCluster.TrackingFrame and MinimapCluster.TrackingFrame.Button) or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
+	tracking:ClearAllPoints()
+
 	if E.private.general.minimap.hideTracking then
-		tracking:SetParent(E.HiddenFrame)
+		tracking:Point('CENTER', E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
-		tracking:ClearAllPoints()
 		tracking:Point(position, Minimap, xOffset, yOffset)
 		M:SetScale(tracking, scale)
 
@@ -417,25 +420,36 @@ function M:UpdateSettings()
 	end
 
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
-	local instance = difficulty and difficulty.Instance or _G.MiniMapInstanceDifficulty
-	local guild = difficulty and difficulty.Guild or _G.GuildInstanceDifficulty
-	local challenge = difficulty and difficulty.ChallengeMode or _G.MiniMapChallengeMode
+	if difficulty then
+		local r, g, b = unpack(E.media.backdropcolor)
+		local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
+		for _, name in next, DifficultyIcons do
+			local frame = difficulty[name]
+			if frame then
+				if frame.Border then
+					frame.Border:SetVertexColor(r, g, b)
+				end
+				if frame.Background then
+					frame.Background:SetVertexColor(r2, g2, b2, a2)
+				end
+			end
+		end
+	end
+
 	if not noCluster then
 		if M.ClusterHolder then
 			E:EnableMover(M.ClusterHolder.mover.name)
 		end
 
-		if challenge then challenge:SetParent(difficulty) end
-		if instance then instance:SetParent(difficulty) end
-		if guild then guild:SetParent(difficulty) end
+		if difficulty then
+			difficulty:ClearAllPoints()
+			difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
+			M:SetScale(difficulty, 1)
+		end
 	else
 		if M.ClusterHolder then
 			E:DisableMover(M.ClusterHolder.mover.name)
 		end
-
-		if challenge then challenge:SetParent(Minimap) end
-		if instance then instance:SetParent(Minimap) end
-		if guild then guild:SetParent(Minimap) end
 
 		M.HandleTrackingButton()
 		M.HandleExpansionButton()
@@ -484,25 +498,11 @@ function M:UpdateSettings()
 			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
 		end
 
-		if instance then
+		if difficulty then
 			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-			instance:ClearAllPoints()
-			instance:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(instance, scale)
-		end
-
-		if guild then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-			guild:ClearAllPoints()
-			guild:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(guild, scale)
-		end
-
-		if challenge then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('challengeMode')
-			challenge:ClearAllPoints()
-			challenge:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(challenge, scale)
+			difficulty:ClearAllPoints()
+			difficulty:Point(position, Minimap, xOffset, yOffset)
+			M:SetScale(difficulty, scale)
 		end
 	end
 end
@@ -655,7 +655,7 @@ function M:Initialize()
 		tinsert(killFrames, Minimap.ZoomOut)
 
 		MinimapCluster.BorderTop:StripTextures()
-		MinimapCluster.Tracking.Background:StripTextures()
+		MinimapCluster.TrackingFrame.Background:StripTextures()
 
 		M:RegisterEvent('MINIMAP_UPDATE_TRACKING', M.MinimapTracking_UpdateTracking)
 
