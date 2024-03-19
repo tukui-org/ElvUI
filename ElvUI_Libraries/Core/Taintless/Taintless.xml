@@ -1,6 +1,6 @@
 <Ui><Script><![CDATA[--[[
 
-TaintLess [23-09-09]
+TaintLess [24-02-20]
 https://www.townlong-yak.com/addons/taintless
 
 All rights reserved.
@@ -11,17 +11,17 @@ Permission is hereby granted to distribute unmodified copies of this file.
 local purgeKey do
 	local e = {}
 	function purgeKey(t, k)
-		e.textures = t
+		e.textures, t[k] = t, 0
 		TextureLoadingGroupMixin.RemoveTexture(e, k)
 	end
 end
 
-local patch do
+local patch, cbuild do
 	local skips = securecall(function()
-		local cb, r, _, an = select(4,GetBuildInfo()), {moon="haunted"}
-		r.moon, _, an = nil, issecurevariable(r, "moon")
+		local r, _, an = {moon="haunted"}
+		cbuild, r.moon, _, an = select(4,GetBuildInfo()), nil, issecurevariable(r, "moon")
 		for m, v, clo, chi in (C_AddOns.GetAddOnMetadata(an, "X-TaintLess-DisableMitigations") or ""):gmatch("([%a_]+)=(%d+):?(%d*):?(%d*)") do
-			if (clo == "" or cb >= clo+0) and (chi == "" or chi+0 >= cb) then
+			if (clo == "" or cbuild >= clo+0) and (chi == "" or chi+0 >= cbuild) then
 				r[m] = v + 0
 			end
 		end
@@ -122,4 +122,46 @@ patch("OBJTRACK_DELAYUPDATE_PATCH_VERSION", 5, function(V)
 	end)
 end)
 
+-- https://www.townlong-yak.com/addons/taintless/fixes/CUFProfilesSetSelectedValue
+patch("CUF_PROFILE_ACTIVATE_PATCH_VERSION", 1, function(V)
+	if not (type(SetActiveRaidProfile) == "function" and type(CompactUnitFrameProfiles) == "table" and
+	        type(ScriptErrorsFrameMixin) == "table" and type(ScriptErrorsFrameMixin.DisplayMessageInternal) == "function") then
+		return
+	end
+	local o, dd = {}, CreateFrame("Frame") do
+		local s, sk, sv = 1, {"seen", "order", "order", "count"}, {{}, {}, newproxy(true), _G}
+		getmetatable(sv[3]).__len = function()
+			return "UIDROPDOWNMENU_MENU_LEVEL"
+		end
+		setmetatable(o, {__index=function(_,k)
+			s, sv[2][1] = k == sk[s] and s+1 or 1
+			return sv[s-1]
+		end})
+		function dd.initialize() end
+		dd:Hide()
+	end
+	hooksecurefunc("SetActiveRaidProfile", function()
+		if CUF_PROFILE_ACTIVATE_PATCH_VERSION ~= V or
+		   (issecurevariable("UIDROPDOWNMENU_MENU_LEVEL") and issecurevariable(DropDownList1, "numButtons")) then
+			return
+		end
+		pcall(UIDropDownMenu_InitializeHelper, dd)
+		purgeKey(_G, "UIDROPDOWNMENU_OPEN_MENU")
+		purgeKey(_G, "UIDROPDOWNMENU_INIT_MENU")
+		pcall(ScriptErrorsFrameMixin.DisplayMessageInternal, o, "", 0, 0, 0, "")
+	end)
+end)
+
+-- https://www.townlong-yak.com/addons/taintless/fixes/EncounterJournalLoad
+patch("EJ_LOOTFILTER_PATCH_VERSION", 1, function(V)
+	if 10e4 > cbuild then return end
+	hooksecurefunc("UIDropDownMenu_SetInitializeFunction", function(_frame, initFunction)
+		if EJ_LOOTFILTER_PATCH_VERSION == V and initFunction
+		   and initFunction == EncounterJournal_InitLootFilter
+		   and (UIDROPDOWNMENU_MENU_VALUE == nil or not DropDownList1:IsShown())
+		   and not issecurevariable("UIDROPDOWNMENU_MENU_VALUE") then
+			purgeKey(_G, "UIDROPDOWNMENU_MENU_VALUE")
+		end
+	end)
+end)
 ]]></Script></Ui>
