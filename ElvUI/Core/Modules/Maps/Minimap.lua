@@ -136,7 +136,7 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.Tracking and MinimapCluster.Tracking.Button or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = (MinimapCluster.TrackingFrame and MinimapCluster.TrackingFrame.Button) or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	if E.private.general.minimap.hideTracking then
@@ -654,7 +654,7 @@ function M:Initialize()
 		tinsert(killFrames, Minimap.ZoomOut)
 
 		MinimapCluster.BorderTop:StripTextures()
-		MinimapCluster.Tracking.Background:StripTextures()
+		MinimapCluster.TrackingFrame.Background:StripTextures()
 
 		M:RegisterEvent('MINIMAP_UPDATE_TRACKING', M.MinimapTracking_UpdateTracking)
 
