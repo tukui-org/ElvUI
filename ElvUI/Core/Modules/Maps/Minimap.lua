@@ -123,34 +123,45 @@ function M:HandleExpansionButton()
 	local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
 	if not garrison then return end
 
-	local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
-	garrison:ClearAllPoints()
-	garrison:Point(position, Minimap, xOffset, yOffset)
-	M:SetScale(garrison, scale)
+	local hidden = not Minimap:IsShown()
+	if hidden then
+		garrison:Hide()
+	else
+		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
+		garrison:ClearAllPoints()
+		garrison:Point(position, Minimap, xOffset, yOffset)
+		garrison:Show()
 
-	local box = _G.GarrisonLandingPageTutorialBox
-	if box then
-		box:SetScale(1 / scale)
-		box:SetClampedToScreen(true)
+		M:SetScale(garrison, scale)
+
+		local box = _G.GarrisonLandingPageTutorialBox
+		if box then
+			box:SetScale(1 / scale)
+			box:SetClampedToScreen(true)
+		end
 	end
 end
 
 function M:HandleTrackingButton()
-	local tracking = (MinimapCluster.TrackingFrame and MinimapCluster.TrackingFrame.Button) or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	tracking:ClearAllPoints()
 
-	if E.private.general.minimap.hideTracking then
-		tracking:Point('CENTER', E.HiddenFrame)
+	local hidden = not Minimap:IsShown()
+	if hidden or E.private.general.minimap.hideTracking then
+		tracking:Hide()
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
 		tracking:Point(position, Minimap, xOffset, yOffset)
+		tracking:Show()
+
 		M:SetScale(tracking, scale)
 
-		if E.Retail and (tracking:GetScript('OnMouseDown') ~= M.TrackingButton_OnMouseDown) then
-			tracking:SetScript('OnMouseDown', M.TrackingButton_OnMouseDown)
+		local button = E.Retail and tracking.Button
+		if button and (button:GetScript('OnMouseDown') ~= M.TrackingButton_OnMouseDown) then
+			button:SetScript('OnMouseDown', M.TrackingButton_OnMouseDown)
 		end
 
 		if _G.MiniMapTrackingButtonBorder then
@@ -216,6 +227,14 @@ function M:MinimapTracking_UpdateTracking()
 	if _G.UIDROPDOWNMENU_OPEN_MENU == M.TrackingDropdown then
 		UIDropDownMenu_RefreshAll(M.TrackingDropdown)
 	end
+end
+
+function M:Minimap_OnShow()
+	M:UpdateIcons()
+end
+
+function M:Minimap_OnHide()
+	M:UpdateIcons()
 end
 
 function M:Minimap_OnMouseDown(btn)
@@ -331,6 +350,146 @@ function M:GetIconSettings(button)
 	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
 end
 
+function M:CraftingIconShow(icon)
+	local count = icon.countInfos and #icon.countInfos
+	icon:SetShown(count and count > 0)
+end
+
+function M:UpdateIcons()
+	local gameTime = _G.GameTimeFrame
+	local indicator = MinimapCluster.IndicatorFrame
+	local craftingFrame = indicator and indicator.CraftingOrderFrame
+	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
+	local battlefieldFrame = _G.MiniMapBattlefieldFrame
+	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
+
+	if difficulty then
+		local r, g, b = unpack(E.media.backdropcolor)
+		local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
+		for _, name in next, DifficultyIcons do
+			local frame = difficulty[name]
+			if frame then
+				if frame.Border then
+					frame.Border:SetVertexColor(r, g, b)
+				end
+				if frame.Background then
+					frame.Background:SetVertexColor(r2, g2, b2, a2)
+				end
+			end
+		end
+	end
+
+	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
+	if not noCluster then
+		if M.ClusterHolder then
+			E:EnableMover(M.ClusterHolder.mover.name)
+		end
+
+		if difficulty then
+			difficulty:ClearAllPoints()
+			difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
+			difficulty:Show()
+
+			M:SetScale(difficulty, 1)
+		end
+
+		if gameTime then
+			gameTime:Show()
+		end
+
+		if craftingFrame then
+			M:CraftingIconShow(craftingFrame)
+		end
+
+		if mailFrame then
+			mailFrame:Show()
+		end
+
+		if battlefieldFrame then
+			battlefieldFrame:Show()
+		end
+	else
+		if M.ClusterHolder then
+			E:DisableMover(M.ClusterHolder.mover.name)
+		end
+
+		M.HandleTrackingButton()
+		M.HandleExpansionButton()
+
+		local hidden = not Minimap:IsShown()
+		if gameTime then
+			if hidden or E.private.general.minimap.hideCalendar then
+				gameTime:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
+				gameTime:ClearAllPoints()
+				gameTime:Point(position, Minimap, xOffset, yOffset)
+				gameTime:SetParent(Minimap)
+				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
+				gameTime:Show()
+
+				M:SetScale(gameTime, scale)
+			end
+		end
+
+		if craftingFrame then
+			if hidden then
+				craftingFrame:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
+				craftingFrame:ClearAllPoints()
+				craftingFrame:Point(position, Minimap, xOffset, yOffset)
+				M:CraftingIconShow(craftingFrame)
+
+				M:SetScale(craftingFrame, scale)
+			end
+		end
+
+		if mailFrame then
+			if hidden then
+				mailFrame:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
+				mailFrame:ClearAllPoints()
+				mailFrame:Point(position, Minimap, xOffset, yOffset)
+				mailFrame:Show()
+
+				M:SetScale(mailFrame, scale)
+			end
+		end
+
+		if battlefieldFrame then
+			if hidden then
+				battlefieldFrame:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
+				battlefieldFrame:ClearAllPoints()
+				battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
+				battlefieldFrame:Show()
+
+				M:SetScale(battlefieldFrame, scale)
+			end
+
+			if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
+			if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
+			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
+		end
+
+		if difficulty then
+			if hidden then
+				difficulty:Hide()
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
+				difficulty:ClearAllPoints()
+				difficulty:Point(position, Minimap, xOffset, yOffset)
+				difficulty:Show()
+
+				M:SetScale(difficulty, scale)
+			end
+		end
+	end
+end
+
 function M:UpdateSettings()
 	if not M.Initialized then return end
 
@@ -355,6 +514,9 @@ function M:UpdateSettings()
 			end
 		end
 	end
+
+	-- handle the icons placed around the minimap (also the cluster)
+	M:UpdateIcons()
 
 	-- silly little hack to get the canvas to update
 	if E.MinimapSize ~= M.NeedsCanvasUpdate then
@@ -418,96 +580,9 @@ function M:UpdateSettings()
 			_G.TimeManagerClockButton:Show()
 		end
 	end
-
-	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
-	if difficulty then
-		local r, g, b = unpack(E.media.backdropcolor)
-		local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
-		for _, name in next, DifficultyIcons do
-			local frame = difficulty[name]
-			if frame then
-				if frame.Border then
-					frame.Border:SetVertexColor(r, g, b)
-				end
-				if frame.Background then
-					frame.Background:SetVertexColor(r2, g2, b2, a2)
-				end
-			end
-		end
-	end
-
-	if not noCluster then
-		if M.ClusterHolder then
-			E:EnableMover(M.ClusterHolder.mover.name)
-		end
-
-		if difficulty then
-			difficulty:ClearAllPoints()
-			difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
-			M:SetScale(difficulty, 1)
-		end
-	else
-		if M.ClusterHolder then
-			E:DisableMover(M.ClusterHolder.mover.name)
-		end
-
-		M.HandleTrackingButton()
-		M.HandleExpansionButton()
-
-		local gameTime = _G.GameTimeFrame
-		if gameTime then
-			if E.private.general.minimap.hideCalendar then
-				gameTime:Hide()
-			else
-				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
-				gameTime:ClearAllPoints()
-				gameTime:Point(position, Minimap, xOffset, yOffset)
-				gameTime:SetParent(Minimap)
-				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
-				gameTime:Show()
-
-				M:SetScale(gameTime, scale)
-			end
-		end
-
-		local craftingFrame = indicator and indicator.CraftingOrderFrame
-		if craftingFrame then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
-			craftingFrame:ClearAllPoints()
-			craftingFrame:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(craftingFrame, scale)
-		end
-
-		local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
-		if mailFrame then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
-			mailFrame:ClearAllPoints()
-			mailFrame:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(mailFrame, scale)
-		end
-
-		local battlefieldFrame = _G.MiniMapBattlefieldFrame
-		if battlefieldFrame then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
-			battlefieldFrame:ClearAllPoints()
-			battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(battlefieldFrame, scale)
-
-			if _G.BattlegroundShine then _G.BattlegroundShine:Hide() end
-			if _G.MiniMapBattlefieldBorder then _G.MiniMapBattlefieldBorder:Hide() end
-			if _G.MiniMapBattlefieldIcon then _G.MiniMapBattlefieldIcon:SetTexCoord(unpack(E.TexCoords)) end
-		end
-
-		if difficulty then
-			local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-			difficulty:ClearAllPoints()
-			difficulty:Point(position, Minimap, xOffset, yOffset)
-			M:SetScale(difficulty, scale)
-		end
-	end
 end
 
-local function MinimapPostDrag()
+function M:Minimap_PostDrag()
 	_G.MinimapBackdrop:ClearAllPoints()
 	_G.MinimapBackdrop:SetAllPoints(Minimap)
 end
@@ -573,7 +648,7 @@ function M:Initialize()
 	local mapHolder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
 	mapHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
 	mapHolder:Size(Minimap:GetSize())
-	E:CreateMover(mapHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
+	E:CreateMover(mapHolder, 'MinimapMover', L["Minimap"], nil, nil, M.Minimap_PostDrag, nil, nil, 'maps,minimap')
 	M.MapHolder = mapHolder
 	M:SetScale(mapHolder, 1)
 
@@ -621,6 +696,9 @@ function M:Initialize()
 	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	Minimap:SetScript('OnMouseUp', E.noop)
+
+	Minimap:HookScript('OnShow', M.Minimap_OnShow)
+	Minimap:HookScript('OnHide', M.Minimap_OnHide)
 
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
