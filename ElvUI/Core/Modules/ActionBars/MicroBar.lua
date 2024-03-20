@@ -8,6 +8,7 @@ local gsub = gsub
 local assert = assert
 local unpack = unpack
 local tinsert = tinsert
+local strfind = strfind
 local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
@@ -335,6 +336,7 @@ function AB:UpdateMicroButtons()
 
 	AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastButton, anchorRowButton)
 	AB:HandleBackdropMover(microBar, backdropSpacing)
+	AB:HandleTicketButton()
 
 	if microBar.mover then
 		if db.enabled then
@@ -363,6 +365,39 @@ end
 
 function AB:HandleCharacterPortrait()
 	self.Portrait:SetInside()
+end
+
+function AB:HasTicketButton()
+	local microMenu = _G.MicroMenu
+	if microMenu and microMenu.UpdateHelpTicketButtonAnchor then
+		return microMenu
+	end
+end
+
+function AB:HandleTicketButton()
+	if AB:HasTicketButton() then
+		AB:UpdateHelpTicketButtonAnchor()
+	end
+end
+
+function AB:UpdateHelpTicketButtonAnchor()
+	local ticket = _G.HelpOpenWebTicketButton
+	if not ticket then return end
+
+	local first = _G[AB.MICRO_BUTTONS[1]]
+	if first then
+		local db = AB.db.microbar
+		local point = E:GetScreenQuadrant(first)
+		local size = ((db.keepSizeRatio and db.buttonSize) or db.buttonHeight) or 20
+		local height = (size / 2) + 7
+
+		ticket:ClearAllPoints()
+		ticket:SetPoint('CENTER', first, 0, (point and strfind(point, 'BOTTOM')) and -height or height)
+	end
+end
+
+function AB:MicroBar_PostDrag()
+	AB:HandleTicketButton()
 end
 
 function AB:SetupMicroBar()
@@ -399,6 +434,11 @@ function AB:SetupMicroBar()
 
 	AB:SecureHook('UpdateMicroButtons')
 
+	local microMenu = AB:HasTicketButton()
+	if microMenu then
+		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
+	end
+
 	if _G.ResetMicroMenuPosition then
 		_G.ResetMicroMenuPosition()
 	else
@@ -418,5 +458,5 @@ function AB:SetupMicroBar()
 		_G.PVPMicroButtonTexture:SetAlpha(0)
 	end
 
-	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
+	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, AB.MicroBar_PostDrag, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end
