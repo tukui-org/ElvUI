@@ -237,6 +237,20 @@ function M:Minimap_OnHide()
 	M:UpdateIcons()
 end
 
+function M:Minimap_OnEnter()
+	M:Minimap_EnterLeave(self, true)
+end
+
+function M:Minimap_OnLeave()
+	M:Minimap_EnterLeave(self)
+end
+
+function M:Minimap_EnterLeave(minimap, show)
+	if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then
+		minimap.location:SetShown(show)
+	end
+end
+
 function M:Minimap_OnMouseDown(btn)
 	menuFrame:Hide()
 
@@ -700,8 +714,8 @@ function M:Initialize()
 	Minimap:HookScript('OnShow', M.Minimap_OnShow)
 	Minimap:HookScript('OnHide', M.Minimap_OnHide)
 
-	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Show() end end)
-	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then mm.location:Hide() end end)
+	Minimap:HookScript('OnEnter', M.Minimap_OnEnter)
+	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 0, -2)
