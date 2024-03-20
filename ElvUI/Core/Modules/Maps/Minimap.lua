@@ -42,6 +42,7 @@ local IndicatorLayout
 -- GLOBALS: GetMinimapShape
 
 local DifficultyIcons = { 'ChallengeMode', 'Guild', 'Instance' }
+local IconParents = {}
 
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
@@ -123,15 +124,16 @@ function M:HandleExpansionButton()
 	local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
 	if not garrison then return end
 
+	M:SaveIconParent(garrison)
+
 	local hidden = not Minimap:IsShown()
 	if hidden then
-		garrison:Hide()
+		garrison:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
 		garrison:ClearAllPoints()
 		garrison:Point(position, Minimap, xOffset, yOffset)
-		garrison:Show()
-
+		M:SetIconParent(garrison)
 		M:SetScale(garrison, scale)
 
 		local box = _G.GarrisonLandingPageTutorialBox
@@ -146,17 +148,18 @@ function M:HandleTrackingButton()
 	local tracking = MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
+	M:SaveIconParent(tracking)
+
 	tracking:ClearAllPoints()
 
 	local hidden = not Minimap:IsShown()
 	if hidden or E.private.general.minimap.hideTracking then
-		tracking:Hide()
+		tracking:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
 		tracking:Point(position, Minimap, xOffset, yOffset)
-		tracking:Show()
-
+		M:SetIconParent(tracking)
 		M:SetScale(tracking, scale)
 
 		local button = E.Retail and tracking.Button
@@ -364,9 +367,17 @@ function M:GetIconSettings(button)
 	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
 end
 
-function M:CraftingIconShow(icon)
-	local count = icon.countInfos and #icon.countInfos
-	icon:SetShown(count and count > 0)
+function M:SaveIconParent(frame)
+	if not IconParents[frame] then -- only want the first one
+		IconParents[frame] = frame:GetParent()
+	end
+end
+
+function M:SetIconParent(frame)
+	local parent = IconParents[frame]
+	if parent then -- this is unlikely
+		frame:SetParent(parent)
+	end
 end
 
 function M:UpdateIcons()
@@ -376,6 +387,15 @@ function M:UpdateIcons()
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
 	local battlefieldFrame = _G.MiniMapBattlefieldFrame
 	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
+
+	if not next(IconParents) then
+		if gameTime then M:SaveIconParent(gameTime) end
+		if indicator then M:SaveIconParent(indicator) end
+		if craftingFrame then M:SaveIconParent(craftingFrame) end
+		if mailFrame then M:SaveIconParent(mailFrame) end
+		if battlefieldFrame then M:SaveIconParent(battlefieldFrame) end
+		if difficulty then M:SaveIconParent(difficulty) end
+	end
 
 	if difficulty then
 		local r, g, b = unpack(E.media.backdropcolor)
@@ -402,26 +422,14 @@ function M:UpdateIcons()
 		if difficulty then
 			difficulty:ClearAllPoints()
 			difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
-			difficulty:Show()
-
+			M:SetIconParent(difficulty)
 			M:SetScale(difficulty, 1)
 		end
 
-		if gameTime then
-			gameTime:Show()
-		end
-
-		if craftingFrame then
-			M:CraftingIconShow(craftingFrame)
-		end
-
-		if mailFrame then
-			mailFrame:Show()
-		end
-
-		if battlefieldFrame then
-			battlefieldFrame:Show()
-		end
+		if gameTime then M:SetIconParent(gameTime) end
+		if craftingFrame then M:SetIconParent(craftingFrame) end
+		if mailFrame then M:SetIconParent(mailFrame) end
+		if battlefieldFrame then M:SetIconParent(battlefieldFrame) end
 	else
 		if M.ClusterHolder then
 			E:DisableMover(M.ClusterHolder.mover.name)
@@ -433,54 +441,50 @@ function M:UpdateIcons()
 		local hidden = not Minimap:IsShown()
 		if gameTime then
 			if hidden or E.private.general.minimap.hideCalendar then
-				gameTime:Hide()
+				gameTime:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('calendar')
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
 				gameTime:SetParent(Minimap)
 				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
-				gameTime:Show()
-
+				M:SetIconParent(gameTime)
 				M:SetScale(gameTime, scale)
 			end
 		end
 
 		if craftingFrame then
 			if hidden then
-				craftingFrame:Hide()
+				craftingFrame:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
 				craftingFrame:ClearAllPoints()
 				craftingFrame:Point(position, Minimap, xOffset, yOffset)
-				M:CraftingIconShow(craftingFrame)
-
+				M:SetIconParent(craftingFrame)
 				M:SetScale(craftingFrame, scale)
 			end
 		end
 
 		if mailFrame then
 			if hidden then
-				mailFrame:Hide()
+				mailFrame:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 				mailFrame:ClearAllPoints()
 				mailFrame:Point(position, Minimap, xOffset, yOffset)
-				mailFrame:Show()
-
+				M:SetIconParent(mailFrame)
 				M:SetScale(mailFrame, scale)
 			end
 		end
 
 		if battlefieldFrame then
 			if hidden then
-				battlefieldFrame:Hide()
+				battlefieldFrame:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
 				battlefieldFrame:ClearAllPoints()
 				battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
-				battlefieldFrame:Show()
-
+				M:SetIconParent(battlefieldFrame)
 				M:SetScale(battlefieldFrame, scale)
 			end
 
@@ -491,13 +495,12 @@ function M:UpdateIcons()
 
 		if difficulty then
 			if hidden then
-				difficulty:Hide()
+				difficulty:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 				difficulty:ClearAllPoints()
 				difficulty:Point(position, Minimap, xOffset, yOffset)
-				difficulty:Show()
-
+				M:SetIconParent(difficulty)
 				M:SetScale(difficulty, scale)
 			end
 		end
