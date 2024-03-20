@@ -707,16 +707,6 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
-	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
-	Minimap:SetScript('OnMouseUp', E.noop)
-
-	Minimap:HookScript('OnShow', M.Minimap_OnShow)
-	Minimap:HookScript('OnHide', M.Minimap_OnHide)
-
-	Minimap:HookScript('OnEnter', M.Minimap_OnEnter)
-	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
-
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
@@ -728,6 +718,16 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
+
+	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
+	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
+	Minimap:SetScript('OnMouseUp', E.noop)
+
+	Minimap:HookScript('OnShow', M.Minimap_OnShow)
+	Minimap:HookScript('OnHide', M.Minimap_OnHide)
+
+	Minimap:HookScript('OnEnter', M.Minimap_OnEnter)
+	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
 
 	local killFrames = {
 		_G.MinimapBorder,
