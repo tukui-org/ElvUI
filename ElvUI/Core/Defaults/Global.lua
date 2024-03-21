@@ -77,6 +77,7 @@ G.datatexts = {
 		Hit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Intellect = { Label = '', NoLabel = false},
 		['Item Level'] = { onlyEquipped = false, rarityColor = true },
+		Leech = { Label = '', NoLabel = false, decimalLength = 1 },
 		Location = { showZone = true, showSubZone = true, showContinent = false, color = 'REACTION', customColor = {r = 1, g = 1, b = 1} },
 		Mastery = { Label = '', NoLabel = false, decimalLength = 1 },
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
