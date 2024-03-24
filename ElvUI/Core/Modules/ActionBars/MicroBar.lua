@@ -387,12 +387,13 @@ function AB:UpdateHelpTicketButtonAnchor()
 	local first = _G[AB.MICRO_BUTTONS[1]]
 	if first then
 		local db = AB.db.microbar
-		local point = E:GetScreenQuadrant(first)
 		local size = ((db.keepSizeRatio and db.buttonSize) or db.buttonHeight) or 20
 		local height = (size / 2) + 7
+		local _, y = first:GetCenter()
+		local middle = E.screenHeight * 0.5
 
 		ticket:ClearAllPoints()
-		ticket:SetPoint('CENTER', first, 0, (point and strfind(point, 'BOTTOM')) and -height or height)
+		ticket:SetPoint('CENTER', first, 0, (y and y >= middle) and -height or height)
 	end
 end
 
