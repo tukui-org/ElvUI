@@ -385,8 +385,8 @@ function M:UpdateIcons()
 	local indicator = MinimapCluster.IndicatorFrame
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
+	local difficulty = MinimapCluster.InstanceDifficulty or _G.MiniMapInstanceDifficulty
 	local battlefieldFrame = _G.MiniMapBattlefieldFrame
-	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty or E.Wrath and _G.MiniMapInstanceDifficulty
 
 	if not next(IconParents) then
 		if gameTime then M:SaveIconParent(gameTime) end
@@ -397,7 +397,7 @@ function M:UpdateIcons()
 		if difficulty then M:SaveIconParent(difficulty) end
 	end
 
-	if difficulty then
+	if difficulty and E.Retail then
 		local r, g, b = unpack(E.media.backdropcolor)
 		local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 		for _, name in next, DifficultyIcons do
