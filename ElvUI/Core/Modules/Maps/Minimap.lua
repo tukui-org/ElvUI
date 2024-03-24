@@ -386,7 +386,7 @@ function M:UpdateIcons()
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
 	local battlefieldFrame = _G.MiniMapBattlefieldFrame
-	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty
+	local difficulty = E.Retail and MinimapCluster.InstanceDifficulty or E.Wrath and _G.MiniMapInstanceDifficulty
 
 	if not next(IconParents) then
 		if gameTime then M:SaveIconParent(gameTime) end
