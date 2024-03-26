@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 14 -- real minor version: 13
+local MINOR_VERSION = 15 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -67,7 +67,7 @@ local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemInfo = GetItemInfo
 local GetNumSpellTabs = GetNumSpellTabs
-local GetSpellBookItemName = GetSpellBookItemName
+local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetSpellInfo = GetSpellInfo
 local GetSpellTabInfo = GetSpellTabInfo
 local GetTime = GetTime
@@ -653,16 +653,19 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
-local function findSpellIdx(spellName)
+local allowSpellType = { SPELL = true, FUTURESPELL = true }
+local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
   end
+
   for i = 1, getNumSpells() do
-    local spell = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-    if spell == spellName then
+    local spellType, id = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
+    if sid == id and allowSpellType[spellType] then
       return i
     end
   end
+
   return nil
 end
 
@@ -674,7 +677,7 @@ end
 
 local function getSpellData(sid)
   local name, _, _, _, minRange, range = GetSpellInfo(sid)
-  return name, fixRange(minRange), fixRange(range), findSpellIdx(name)
+  return name, fixRange(minRange), fixRange(range), findSpellIdx(name, sid)
 end
 
 -- minRange should be nil if there's no minRange, not 0
@@ -989,10 +992,8 @@ lib.CHECKERS_CHANGED = "CHECKERS_CHANGED"
 lib.MeleeRange = MeleeRange
 
 function lib:findSpellIndex(spell)
-  if type(spell) == "number" then
-    spell = GetSpellInfo(spell)
-  end
-  return findSpellIdx(spell)
+  local name, _, _, _, _, _, sid = GetSpellInfo(spell)
+  return findSpellIdx(name, sid)
 end
 
 -- returns the range estimate as a string
