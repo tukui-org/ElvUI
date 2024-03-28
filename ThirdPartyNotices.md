@@ -1000,9 +1000,9 @@ OTHER DEALINGS IN THE SOFTWARE.
 All rights reserved to the owner.
 ```
 
-## Taintless
+## TaintLess
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Core/Taintless](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Core/Taintless)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Core/TaintLess](https://github.com/tukui-org/ElvUI/tree/development/ElvUI_Libraries/Core/TaintLess)
 
 ### License
 

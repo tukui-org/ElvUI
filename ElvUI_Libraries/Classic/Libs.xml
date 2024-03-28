@@ -19,10 +19,11 @@
 	<Script file='..\Core\LibDeflate\LibDeflate.lua'/>
 	<Script file='..\Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='..\Core\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
-	<Include file='..\Core\Taintless\Taintless.xml'/>
-	<Include file='..\Core\UTF8\UTF8.xml'/>
+	<Include file='..\Core\TaintLess\TaintLess.xml'/>
+	<Include file='..\Core\UTF8\lib.xml'/>
 
-	<Include file='..\Classic\LibQuestXP\LibQuestXP.xml'/>
+	<Script file='..\Classic\LibQuestXP\LibQuestXPDB.lua'/>
+	<Script file='..\Classic\LibQuestXP\LibQuestXP.lua'/>
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
 	<Script file='..\Core\LibRangeCheck-3.0\LibRangeCheck-3.0.lua'/>
