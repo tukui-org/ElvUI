@@ -62,7 +62,7 @@ local LSM = E.Libs.LSM
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
 E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
-E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
+E.version, E.versionString = E:ParseVersionString('ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
@@ -900,12 +900,14 @@ end
 do
 	local SendMessageWaiting -- only allow 1 delay at a time regardless of eventing
 	function E:SendMessage()
-		if IsInRaid() then
-			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
-		elseif IsInGroup() then
-			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
-		elseif IsInGuild() then
-			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
+		if E.version < 99999 then
+			if IsInRaid() then
+				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
+			elseif IsInGroup() then
+				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
+			elseif IsInGuild() then
+				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
+			end
 		end
 
 		SendMessageWaiting = nil
@@ -2021,7 +2023,7 @@ function E:Initialize()
 	end
 
 	if E.db.general.loginmessage then
-		local msg = format(L["LOGIN_MSG"], E.version)
+		local msg = format(L["LOGIN_MSG"], E.versionString)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
 		print(L["LOGIN_MSG_HELP"])
