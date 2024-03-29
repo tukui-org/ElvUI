@@ -5,7 +5,10 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local GetGlyphSocketInfo = GetGlyphSocketInfo
 local GetNumTalents = GetNumTalents
+
+local NUM_GLYPH_SLOTS = NUM_GLYPH_SLOTS
 
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
