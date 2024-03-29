@@ -346,7 +346,7 @@ do
 end
 
 do
-	local widgetType = "Dropdown"
+	local widgetType = "Dropdown-ElvUI"
 	local widgetVersion = 36
 
 	--[[ Static data ]]--
