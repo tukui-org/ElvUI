@@ -34,8 +34,8 @@ local function GlyphFrame_Update()
 	end
 end
 
-local function GlyphFrameGlyph_OnUpdate(glyph)
-	local frame = glyph.owner
+local function GlyphFrameGlyph_OnUpdate(updater)
+	local frame = updater.owner
 	if not frame then return end
 
 	local glyphTexture = frame.icon and frame.icon:GetTexture()
