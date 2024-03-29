@@ -281,11 +281,11 @@ function S:Blizzard_GlyphUI()
 		frame:StyleButton(nil, true)
 
 		if i == 1 or i == 4 or i == 6 then -- Major Glyphs
-			frame:Size(52)
+			frame:Size(42)
 		elseif i == 2 or i == 3 or i == 5 then -- Minor Glyphs
-			frame:Size(36)
+			frame:Size(28)
 		else -- Prime Glyphs
-			frame:Size(68)
+			frame:Size(62)
 		end
 
 		frame.highlight:SetTexture(nil)
