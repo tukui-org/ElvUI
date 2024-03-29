@@ -10,6 +10,7 @@ local GetShapeshiftFormID = GetShapeshiftFormID
 local GetPrimaryTalentTree = GetPrimaryTalentTree
 local GetEclipseDirection = GetEclipseDirection
 
+local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local MOONKIN_FORM = MOONKIN_FORM
 
 local function Update(self, event, unit, powerType)
@@ -18,8 +19,8 @@ local function Update(self, event, unit, powerType)
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local CUR = UnitPower('player', Enum.PowerType.Balance)
-	local MAX = UnitPowerMax('player', Enum.PowerType.Balance)
+	local CUR = UnitPower('player', POWERTYPE_BALANCE)
+	local MAX = UnitPowerMax('player', POWERTYPE_BALANCE)
 
 	if(element.LunarBar) then
 		element.LunarBar:SetMinMaxValues(-MAX, MAX)
