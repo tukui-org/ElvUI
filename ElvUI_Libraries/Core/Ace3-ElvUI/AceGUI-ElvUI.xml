@@ -1,0 +1,8 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	<Script file="AceGUIWidget-Button-ElvUI.lua"/>
+	<Script file="AceGUIWidget-ColorPicker-ElvUI.lua"/>
+	<Script file="AceGUIWidget-EditBox-ElvUI.lua"/>
+	<Script file="AceGUIWidget-MultiLineEditBox-ElvUI.lua"/>
+	<Script file="AceGUIWidget-Slider-ElvUI.lua"/>
+	<Script file="AceGUIWidget-DropDown-ElvUI.lua"/>
+</Ui>

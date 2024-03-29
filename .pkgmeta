@@ -1,0 +1,41 @@
+package-as: ElvUI
+
+externals:
+  ElvUI_Libraries/Classic/LibQuestXP: https://github.com/MrFox42/libquestxp
+  ElvUI_Libraries/Core/Ace3/AceAddon-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceAddon-3.0
+  ElvUI_Libraries/Core/Ace3/AceGUI-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceGUI-3.0
+  ElvUI_Libraries/Core/Ace3/AceComm-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceComm-3.0
+  ElvUI_Libraries/Core/Ace3/AceConsole-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceConsole-3.0
+  ElvUI_Libraries/Core/Ace3/AceDB-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDB-3.0
+  ElvUI_Libraries/Core/Ace3/AceDBOptions-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDBOptions-3.0
+  ElvUI_Libraries/Core/Ace3/AceEvent-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceEvent-3.0
+  ElvUI_Libraries/Core/Ace3/AceHook-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceHook-3.0
+  ElvUI_Libraries/Core/Ace3/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
+  ElvUI_Libraries/Core/Ace3/AceTimer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceTimer-3.0
+  ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets: https://repos.curseforge.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets
+  ElvUI_Libraries/Core/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  ElvUI_Libraries/Core/LibStub: https://repos.curseforge.com/wow/libstub/trunk
+  ElvUI_Libraries/Core/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
+  ElvUI_Libraries/Core/LibCustomGlow-1.0: https://github.com/Stanzilla/LibCustomGlow
+  ElvUI_Libraries/Core/LibDataBroker: https://github.com/tekkub/libdatabroker-1-1
+  ElvUI_Libraries/Core/LibTranslit-1.0: https://github.com/Vardex/LibTranslit
+  ElvUI_Libraries/Core/LibDualSpec-1.0: https://repos.curseforge.com/wow/libdualspec-1-0
+  ElvUI_Libraries/Core/UTF8: https://repos.curseforge.com/wow/utf8/trunk
+  ElvUI_Libraries/Core/TaintLess:
+    url: https://www.townlong-yak.com/addons.git/taintless
+    commit: default
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+ignore:
+  - README.md
+  - CHANGELOG.md
+  - LICENSE.md
+  - ThirdPartyNotices.md
+
+move-folders:
+  ElvUI/ElvUI: ElvUI
+  ElvUI/ElvUI_Libraries: ElvUI_Libraries
+  ElvUI/ElvUI_Options: ElvUI_Options

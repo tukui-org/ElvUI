@@ -1,13 +1,14 @@
-name: Release pipeline
+name: Development pipeline
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - "*"
+      - "!feature/"
 
 jobs:
   release:
-    name: Publish release to CDN
+    name: Publish development build to CDN
     runs-on: ubuntu-latest
     env:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
@@ -22,10 +23,10 @@ jobs:
       - name: Create Package
         uses: BigWigsMods/packager@v2
         with:
-          args: -n "{package-name}-{project-version}"
+          args: -n "{package-name}-$GITHUB_REF_NAME-{project-version}"
       - name: Get package name
-        run: | 
+        run: |
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
       - name: Publish package
         run: |
-          curl https://api.tukui.org/v1/upload/$PACKAGE --upload-file .release/$PACKAGE -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
+          curl https://api.tukui.org/v1/upload/dev/$PACKAGE --upload-file .release/$PACKAGE -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"

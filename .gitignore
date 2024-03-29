@@ -23,3 +23,24 @@ $RECYCLE.BIN/
 
 # Jetbrains local config
 .idea
+
+# Libraries
+ElvUI_Libraries/Classic/LibQuestXP
+ElvUI_Libraries/Core/*
+!ElvUI_Libraries/Core/Ace3/AceConfig-3.0
+!ElvUI_Libraries/Core/Ace3/AceLocale-3.0
+!ElvUI_Libraries/Core/Ace3/LICENSE.txt
+!ElvUI_Libraries/Core/Ace3-ElvUI
+!ElvUI_Libraries/Core/LibAceConfigHelper
+!ElvUI_Libraries/Core/LibActionButton-1.0
+!ElvUI_Libraries/Core/LibAnim
+!ElvUI_Libraries/Core/LibDispel
+!ElvUI_Libraries/Core/LibDeflate
+!ElvUI_Libraries/Core/LibElvUIPlugin-1.0
+!ElvUI_Libraries/Core/LibRangeCheck-3.0
+!ElvUI_Libraries/Core/LibSimpleSticky
+!ElvUI_Libraries/Core/oUF
+!ElvUI_Libraries/Core/oUF_Plugins
+
+# Pipelines
+.release

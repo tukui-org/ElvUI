@@ -3,6 +3,7 @@
 	<Script file='..\Core\CallbackHandler-1.0\CallbackHandler-1.0.lua'/>
 
 	<Include file='..\Core\Ace3\AceGUI-3.0\AceGUI-3.0.xml'/>
+	<Include file='..\Core\Ace3-ElvUI\AceGUI-ElvUI.xml'/>
 	<Include file='..\Core\Ace3\AceConfig-3.0\AceConfig-3.0.xml'/>
 	<Include file='..\Core\Ace3\AceDBOptions-3.0\AceDBOptions-3.0.xml'/>
 
@@ -19,8 +20,8 @@
 	<Script file='..\Core\LibDeflate\LibDeflate.lua'/>
 	<Script file='..\Core\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='..\Core\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
-	<Include file='..\Core\Taintless\Taintless.xml'/>
-	<Include file='..\Core\UTF8\UTF8.xml'/>
+	<Include file='..\Core\TaintLess\TaintLess.xml'/>
+	<Include file='..\Core\UTF8\lib.xml'/>
 
 	<Script file='..\Core\LibRangeCheck-3.0\LibRangeCheck-3.0.lua'/>
 	<Script file='..\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
