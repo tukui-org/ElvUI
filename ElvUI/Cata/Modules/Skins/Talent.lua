@@ -8,8 +8,6 @@ local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetNumTalents = GetNumTalents
-local MAX_NUM_TALENTS = MAX_NUM_TALENTS
-local NUM_GLYPH_SLOTS = NUM_GLYPH_SLOTS
 
 local function GlyphFrame_Update()
 	local talentFrame = _G.PlayerTalentFrame
@@ -19,7 +17,7 @@ local function GlyphFrame_Update()
 	glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
 	glyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
 
-	for i = 1, NUM_GLYPH_SLOTS do
+	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local glyph = _G['GlyphFrameGlyph'..i]
 		if glyph and glyph.icon then
 			local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentFrame.talentGroup)
@@ -149,7 +147,7 @@ function S:Blizzard_TalentUI()
 	end
 
 	for i = 1, 3 do
-		for j = 1, MAX_NUM_TALENTS do
+		for j = 1, _G.MAX_NUM_TALENTS do
 			local talent = _G['PlayerTalentFramePanel'..i..'Talent'..j]
 			if talent then
 				talent:StripTextures()
@@ -241,7 +239,7 @@ function S:Blizzard_GlyphUI()
 	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210)
 	_G.GlyphFrameFilterDropDown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
 
-	for i = 1, NUM_GLYPH_SLOTS do
+	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local frame = _G['GlyphFrameGlyph'..i]
 
 		frame:SetTemplate('Default', true)
