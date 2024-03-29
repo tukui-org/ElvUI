@@ -114,13 +114,13 @@ do -- this is different from E.locale because we need to convert for ace locale 
 end
 
 function E:ParseVersionString(addon)
-	local versionString = GetAddOnMetadata(addon, 'Version')
-	if not strfind(versionString, '-') then
-		return tonumber(strsub(versionString, 2)), versionString
-	elseif strfind(versionString, 'project%-version') then
+	local version = strsub(GetAddOnMetadata(addon, 'Version'), 2)
+	if not strfind(version, '%-') then
+		return tonumber(version), version
+	elseif strfind(version, 'project%-version') then
 		return 99999, 'Development'
 	else
-		return 99999, versionString
+		return 99999, version
 	end
 end
 
