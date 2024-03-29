@@ -163,16 +163,16 @@ function S:Blizzard_GlyphUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	-- Glyph Tab
-	GlyphFrame:StripTextures()
-	GlyphFrame:CreateBackdrop('Transparent')
+	_G.GlyphFrame:StripTextures()
+	_G.GlyphFrame:SetTemplate('Transparent')
 
-	GlyphFrame.sideInset:StripTextures()
+	_G.GlyphFrame.sideInset:StripTextures()
 
-	S:HandleEditBox(GlyphFrameSearchBox)
-	GlyphFrameSearchBox:Point('TOPLEFT', GlyphFrameSideInset, 5, 54)
+	S:HandleEditBox(_G.GlyphFrameSearchBox)
+	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
 
-	S:HandleDropDownBox(GlyphFrameFilterDropDown, 210)
-	GlyphFrameFilterDropDown:Point('TOPLEFT', GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
+	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210)
+	_G.GlyphFrameFilterDropDown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
 
 	for i = 1, NUM_GLYPH_SLOTS do
 		local frame = _G['GlyphFrameGlyph'..i]
@@ -222,14 +222,14 @@ function S:Blizzard_GlyphUI()
 	end
 
 	hooksecurefunc('GlyphFrame_Update', function(self)
-		local isActiveTalentGroup = PlayerTalentFrame and not PlayerTalentFrame.pet and PlayerTalentFrame.talentGroup == GetActiveTalentGroup(PlayerTalentFrame.pet)
+		local isActiveTalentGroup = _G.PlayerTalentFrame and not _G.PlayerTalentFrame.pet and _G.PlayerTalentFrame.talentGroup == GetActiveTalentGroup(_G.PlayerTalentFrame.pet)
 
-		GlyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
-		GlyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
+		_G.GlyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
+		_G.GlyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
 
 		for i = 1, NUM_GLYPH_SLOTS do
 			local glyph = _G['GlyphFrameGlyph'..i]
-			local _, _, _, _, iconFilename = GetGlyphSocketInfo(i, PlayerTalentFrame.talentGroup)
+			local _, _, _, _, iconFilename = GetGlyphSocketInfo(i, _G.PlayerTalentFrame.talentGroup)
 
 			if iconFilename then
 				glyph.icon:SetTexture(iconFilename)
@@ -243,21 +243,20 @@ function S:Blizzard_GlyphUI()
 	end)
 
 	-- Scroll Frame
-	GlyphFrameScrollFrameScrollChild:StripTextures()
+	_G.GlyphFrameScrollFrameScrollChild:StripTextures()
 
-	GlyphFrameScrollFrame:StripTextures()
-	GlyphFrameScrollFrame:CreateBackdrop('Transparent')
-	GlyphFrameScrollFrame.backdrop:Point('TOPLEFT', -1, 1)
-	GlyphFrameScrollFrame.backdrop:Point('BOTTOMRIGHT', -4, -2)
+	_G.GlyphFrameScrollFrame:StripTextures()
+	_G.GlyphFrameScrollFrame:CreateBackdrop('Transparent')
+	_G.GlyphFrameScrollFrame.backdrop:Point('TOPLEFT', -1, 1)
+	_G.GlyphFrameScrollFrame.backdrop:Point('BOTTOMRIGHT', -4, -2)
 
-	S:HandleScrollBar(GlyphFrameScrollFrameScrollBar)
-	GlyphFrameScrollFrameScrollBar:ClearAllPoints()
-	GlyphFrameScrollFrameScrollBar:Point('TOPRIGHT', GlyphFrameScrollFrame, 20, -15)
-	GlyphFrameScrollFrameScrollBar:Point('BOTTOMRIGHT', GlyphFrameScrollFrame, 0, 14)
+	S:HandleScrollBar(_G.GlyphFrameScrollFrameScrollBar)
+	_G.GlyphFrameScrollFrameScrollBar:ClearAllPoints()
+	_G.GlyphFrameScrollFrameScrollBar:Point('TOPRIGHT', _G.GlyphFrameScrollFrame, 20, -15)
+	_G.GlyphFrameScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.GlyphFrameScrollFrame, 0, 14)
 
 	for i = 1, 3 do
 		local header = _G['GlyphFrameHeader'..i]
-
 		header:StripTextures()
 		header:StyleButton()
 	end
@@ -265,7 +264,6 @@ function S:Blizzard_GlyphUI()
 	for i = 1, 10 do
 		local button = _G['GlyphFrameScrollFrameButton'..i]
 		local icon = _G['GlyphFrameScrollFrameButton'..i..'Icon']
-
 		if button and not button.isSkinned then
 			S:HandleButton(button)
 			S:HandleIcon(icon)
@@ -274,15 +272,15 @@ function S:Blizzard_GlyphUI()
 	end
 
 	-- Clear Info
-	GlyphFrame.clearInfo:CreateBackdrop()
-	GlyphFrame.clearInfo.backdrop:SetAllPoints()
-	GlyphFrame.clearInfo:StyleButton()
-	GlyphFrame.clearInfo:Size(28)
-	GlyphFrame.clearInfo:Point('BOTTOMLEFT', GlyphFrame, 'BOTTOMRIGHT', 8, -1)
+	_G.GlyphFrame.clearInfo:CreateBackdrop()
+	_G.GlyphFrame.clearInfo.backdrop:SetAllPoints()
+	_G.GlyphFrame.clearInfo:StyleButton()
+	_G.GlyphFrame.clearInfo:Size(28)
+	_G.GlyphFrame.clearInfo:Point('BOTTOMLEFT', _G.GlyphFrame, 'BOTTOMRIGHT', 8, -1)
 
-	GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
-	GlyphFrame.clearInfo.icon:ClearAllPoints()
-	GlyphFrame.clearInfo.icon:SetInside()
+	_G.GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
+	_G.GlyphFrame.clearInfo.icon:ClearAllPoints()
+	_G.GlyphFrame.clearInfo.icon:SetInside()
 end
 
 S:AddCallbackForAddon('Blizzard_TalentUI')
