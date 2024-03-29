@@ -22,14 +22,19 @@ local function Update(self, event, unit, powerType)
 	local CUR = UnitPower('player', POWERTYPE_BALANCE)
 	local MAX = UnitPowerMax('player', POWERTYPE_BALANCE)
 
-	if(element.LunarBar) then
-		element.LunarBar:SetMinMaxValues(-MAX, MAX)
-		element.LunarBar:SetValue(CUR)
-	end
+	if element.isStatusBar then
+		element:SetMinMaxValues(-MAX, MAX)
+		element:SetValue(CUR)
+	else
+		if(element.LunarBar) then
+			element.LunarBar:SetMinMaxValues(-MAX, MAX)
+			element.LunarBar:SetValue(CUR)
+		end
 
-	if(element.SolarBar) then
-		element.SolarBar:SetMinMaxValues(-MAX, MAX)
-		element.SolarBar:SetValue(CUR * -1)
+		if(element.SolarBar) then
+			element.SolarBar:SetMinMaxValues(-MAX, MAX)
+			element.SolarBar:SetValue(CUR * -1)
+		end
 	end
 
 	if(element.PostUpdate) then
@@ -121,6 +126,11 @@ local function Enable(self, unit)
 		self:RegisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
+
+		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
+			element.isStatusBar = true
+			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		end
 
 		if(element.LunarBar and element.LunarBar:IsObjectType('StatusBar') and not element.LunarBar:GetStatusBarTexture()) then
 			element.LunarBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])

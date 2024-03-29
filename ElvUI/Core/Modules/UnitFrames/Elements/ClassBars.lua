@@ -190,17 +190,19 @@ function UF:Configure_ClassBar(frame)
 
 		bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
 	elseif frame.ClassBar == 'EclipseBar' then
-		local lunarTex = bars.LunarBar:GetStatusBarTexture()
+		local barTex = bars:GetStatusBarTexture()
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
-		bars.LunarBar:SetMinMaxValues(0, 1)
+		bars.LunarBar:SetMinMaxValues(0, 2)
+		bars.LunarBar:SetValue(1)
 		bars.LunarBar:SetStatusBarColor(lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, UF.db.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
-		bars.SolarBar:SetMinMaxValues(0, 1)
+		bars.SolarBar:SetMinMaxValues(0, 2)
+		bars.SolarBar:SetValue(2)
 		bars.SolarBar:SetStatusBarColor(sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
@@ -209,7 +211,7 @@ function UF:Configure_ClassBar(frame)
 		E:SetSmoothing(bars.SolarBar, UF.db.smoothbars)
 
 		bars.Arrow:ClearAllPoints()
-		bars.Arrow:Point('CENTER', lunarTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
+		bars.Arrow:Point('CENTER', barTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
 	elseif frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
@@ -581,7 +583,8 @@ end
 -- Eclipse Bar (Cataclysm)
 -----------------------------------------------------------
 function UF:Construct_DruidEclipseBar(frame)
-	local eclipseBar = CreateFrame('Frame', '$parent_EclipsePowerBar', frame)
+	local eclipseBar = CreateFrame('StatusBar', '$parent_EclipsePowerBar', frame)
+	eclipseBar:SetStatusBarTexture(E.media.blankTex)
 	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
 
 	eclipseBar.LunarBar = CreateFrame('StatusBar', 'LunarBar', eclipseBar)
@@ -597,7 +600,7 @@ function UF:Construct_DruidEclipseBar(frame)
 	eclipseBar.RaisedElementParent:SetFrameLevel(eclipseBar:GetFrameLevel() + 100)
 	eclipseBar.RaisedElementParent:SetAllPoints()
 
-	eclipseBar.Arrow = eclipseBar.LunarBar:CreateTexture(nil, 'OVERLAY')
+	eclipseBar.Arrow = eclipseBar:CreateTexture(nil, 'OVERLAY')
 	eclipseBar.Arrow:SetTexture(E.Media.Textures.ArrowUp)
 	eclipseBar.Arrow:SetPoint('CENTER')
 
