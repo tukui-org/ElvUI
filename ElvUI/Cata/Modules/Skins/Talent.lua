@@ -11,7 +11,6 @@ local GetNumTalents = GetNumTalents
 
 local function GlyphFrame_Update()
 	local talentFrame = _G.PlayerTalentFrame
-	local isActiveTalentGroup = talentFrame and not talentFrame.pet and talentFrame.talentGroup == _G.GetActiveTalentGroup(talentFrame.pet)
 
 	local glyphFrame = _G.GlyphFrame
 	glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
@@ -28,8 +27,6 @@ local function GlyphFrame_Update()
 			end
 
 			_G.GlyphFrameGlyph_UpdateSlot(glyph)
-
-			glyph.icon:SetDesaturation(isActiveTalentGroup and 1 or 0)
 		end
 	end
 end
