@@ -1087,8 +1087,8 @@ do
 	}
 
 	local untaintButtons = {
-		MultiCastActionButton = (E.Wrath and E.myclass ~= 'SHAMAN') or nil,
-		OverrideActionBarButton = E.Wrath or nil
+		MultiCastActionButton = (E.Cata and E.myclass ~= 'SHAMAN') or nil,
+		OverrideActionBarButton = E.Cata or nil
 	}
 
 	if E.Cata then -- Wrath TotemBar needs to be handled by us
