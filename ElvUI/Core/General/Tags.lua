@@ -1421,9 +1421,9 @@ E.TagInfo = {
 		['classpower:current-percent:shortvalue'] = { hidden = E.Classic, category = 'Classpower', description = "" },
 		['classpower:current:shortvalue'] = { hidden = E.Classic, category = 'Classpower', description = "" },
 		['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = 'Classpower', description = "" },
-		['holypower'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the holy power (Paladin)" },
+		['holypower'] = { hidden = E.Classic, category = 'Classpower', description = "Displays the holy power (Paladin)" },
 		['runes'] = { hidden = E.Classic, category = 'Classpower', description = "Displays the runes (Death Knight)" },
-		['soulshards'] = { hidden = not E.Retail, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
+		['soulshards'] = { hidden = E.Classic, category = 'Classpower', description = "Displays the soulshards (Warlock)" },
 	-- Colors
 		['altpowercolor'] = { hidden = not E.Retail, category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" },
 		['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
