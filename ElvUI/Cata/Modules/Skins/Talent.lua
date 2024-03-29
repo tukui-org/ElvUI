@@ -34,7 +34,10 @@ local function GlyphFrame_Update()
 	end
 end
 
-local function GlyphFrameGlyph_OnUpdate(frame)
+local function GlyphFrameGlyph_OnUpdate(glyph)
+	local frame = glyph.owner
+	if not frame then return end
+
 	local glyphTexture = frame.icon and frame.icon:GetTexture()
 	local glyphIcon = glyphTexture and strfind(glyphTexture, [[Interface\Spellbook\UI%-Glyph%-Rune]])
 
@@ -269,6 +272,7 @@ function S:Blizzard_GlyphUI()
 		if not frame.onUpdate then
 			frame.onUpdate = CreateFrame('Frame', nil, frame)
 			frame.onUpdate:SetScript('OnUpdate', GlyphFrameGlyph_OnUpdate)
+			frame.onUpdate.owner = frame
 		end
 	end
 
