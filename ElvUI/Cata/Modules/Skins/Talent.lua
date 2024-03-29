@@ -10,23 +10,27 @@ local CreateFrame = CreateFrame
 local GetNumTalents = GetNumTalents
 
 local function GlyphFrame_Update()
-	local talentFrame = _G.PlayerTalentFrame
-
 	local glyphFrame = _G.GlyphFrame
-	glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
-	glyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
+	if glyphFrame then
+		glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
+		glyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
+	end
 
-	for i = 1, _G.NUM_GLYPH_SLOTS do
-		local glyph = _G['GlyphFrameGlyph'..i]
-		if glyph and glyph.icon then
-			local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentFrame.talentGroup)
-			if iconFilename then
-				glyph.icon:SetTexture(iconFilename)
-			else
-				glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
+	local talentFrame = _G.PlayerTalentFrame
+	local talentGroup = talentFrame and talentFrame.talentGroup
+	if talentGroup then
+		for i = 1, _G.NUM_GLYPH_SLOTS do
+			local glyph = _G['GlyphFrameGlyph'..i]
+			if glyph and glyph.icon then
+				local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
+				if iconFilename then
+					glyph.icon:SetTexture(iconFilename)
+				else
+					glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
+				end
+
+				_G.GlyphFrameGlyph_UpdateSlot(glyph)
 			end
-
-			_G.GlyphFrameGlyph_UpdateSlot(glyph)
 		end
 	end
 end
