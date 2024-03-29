@@ -3,11 +3,13 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local tinsert = tinsert
 local strfind = strfind
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetNumTalents = GetNumTalents
+local HasPetUI = HasPetUI
 
 local function GlyphFrame_Update()
 	local glyphFrame = _G.GlyphFrame
@@ -64,20 +66,21 @@ local function GlyphFrameGlyph_OnUpdate(updater)
 	end
 end
 
+local TalentTabs = {}
 local function HandleTabs()
-	_G.PlayerTalentFrameTab1:ClearAllPoints()
-
 	local lastTab
-	for index, tab in next, { _G.PlayerTalentFrameTab1, HasPetUI() and _G.PlayerTalentFrameTab2 or nil, _G.PlayerTalentFrameTab3 } do
-		tab:ClearAllPoints()
+	for index, tab in next, TalentTabs do
+		if index ~= 2 or HasPetUI() then
+			tab:ClearAllPoints()
 
-		if index == 1 then
-			tab:Point('TOPLEFT', PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			if index == 1 then
+				tab:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
+			else
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			end
+
+			lastTab = tab
 		end
-
-		lastTab = tab
 	end
 end
 
@@ -240,7 +243,9 @@ function S:Blizzard_TalentUI()
 
 	-- Tabs
 	for i = 1, 3 do
-		S:HandleTab(_G['PlayerTalentFrameTab'..i])
+		local tab = _G['PlayerTalentFrameTab'..i]
+		tinsert(TalentTabs, tab)
+		S:HandleTab(tab)
 	end
 
 	for i = 1, 2 do
@@ -254,7 +259,7 @@ function S:Blizzard_TalentUI()
 		normal:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function() HandleTabs() end)
+	hooksecurefunc('PlayerTalentFrame_UpdateTabs', HandleTabs)
 end
 
 function S:Blizzard_GlyphUI()
