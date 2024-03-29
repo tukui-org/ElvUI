@@ -152,6 +152,15 @@ function S:Blizzard_TalentUI()
 	end
 
 	for i = 1, 3 do
+		for j = 1, MAX_NUM_BRANCH_TEXTURES do
+			local branch = _G['PlayerTalentFramePanel'..i..'Branch'..j]
+			if branch then
+				branch:SetTexture(136962)
+			end
+		end
+	end
+
+	for i = 1, 3 do
 		for j = 1, _G.MAX_NUM_TALENTS do
 			local talent = _G['PlayerTalentFramePanel'..i..'Talent'..j]
 			if talent then
