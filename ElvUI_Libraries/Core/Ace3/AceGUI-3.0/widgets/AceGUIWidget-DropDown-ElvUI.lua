@@ -7,7 +7,6 @@ local select, pairs, ipairs, type, tostring = select, pairs, ipairs, type, tostr
 local tonumber, tsort, error = tonumber, table.sort, error
 
 -- WoW APIs
-local PlaySound = PlaySound
 local UIParent, CreateFrame = UIParent, CreateFrame
 local _G = _G
 
@@ -346,7 +345,7 @@ do
 end
 
 do
-	local widgetType = "Dropdown"
+	local widgetType = "Dropdown-ElvUI"
 	local widgetVersion = 36
 
 	--[[ Static data ]]--
@@ -573,7 +572,7 @@ do
 	local function AddCloseButton(self)
 		if not self.hasClose then
 			local close = AceGUI:Create("Dropdown-Item-Execute")
-			close:SetText(CLOSE)
+			close:SetText(_G.CLOSE)
 			self.pullout:AddItem(close)
 			self.hasClose = true
 		end

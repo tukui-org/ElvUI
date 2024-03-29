@@ -16,7 +16,7 @@ local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_LIFESTEAL = STAT_LIFESTEAL
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -31,11 +31,19 @@ end
 
 local function OnEvent(self)
 	local lifesteal = GetLifesteal()
-	self.text:SetFormattedText(displayString, STAT_LIFESTEAL, lifesteal)
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, lifesteal)
+	else
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_LIFESTEAL..': ', lifesteal)
+	end
 end
 
-local function ApplySettings(_, hex)
-	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
 DT:RegisterDatatext('Leech', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, STAT_LIFESTEAL, nil, ApplySettings)

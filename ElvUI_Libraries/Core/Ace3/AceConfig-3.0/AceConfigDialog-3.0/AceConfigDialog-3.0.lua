@@ -1332,7 +1332,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:ResumeLayout()
 						control:DoLayout()
 					else
-						control = CreateControl(v.dialogControl or v.control, "Dropdown")
+						control = CreateControl(v.dialogControl or v.control, "Dropdown-ElvUI")
 						local sortByValue = GetOptionsMemberValue("sortByValue",v,options,path,appName)
 
 						local itemType = v.itemControl

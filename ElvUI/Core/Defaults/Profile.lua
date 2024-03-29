@@ -2095,7 +2095,7 @@ P.unitframe = {
 			enable = true,
 			threatStyle = 'GLOW',
 			orientation = 'LEFT',
-			visibility = '[@raid6,exists][nogroup] hide;show',
+			visibility = '[@raid6,exists][@party1,noexists] hide;show',
 			growthDirection = 'UP_RIGHT',
 			horizontalSpacing = 0,
 			verticalSpacing = 3,
@@ -2476,7 +2476,7 @@ P.unitframe.units.raidpet.debuffs.priority = 'Blacklist,Personal,Boss,Whitelist,
 P.unitframe.units.raidpet.growthDirection = 'DOWN_RIGHT'
 P.unitframe.units.raidpet.height = 30
 P.unitframe.units.raidpet.numGroups = 8
-P.unitframe.units.raidpet.visibility = '[group:raid] show; hide'
+P.unitframe.units.raidpet.visibility = '[@raid1,exists] show; hide'
 
 P.unitframe.units.tank.buffs.numrows = 1
 P.unitframe.units.tank.buffs.perrow = 6
