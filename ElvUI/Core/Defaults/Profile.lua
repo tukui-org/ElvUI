@@ -181,14 +181,8 @@ P.general = {
 			difficulty = {
 				scale = 1,
 				position = 'TOPLEFT',
-				xOffset = 0,
-				yOffset = 0,
-			},
-			challengeMode = {
-				scale = 1,
-				position = 'TOPLEFT',
-				xOffset = 8,
-				yOffset = -8,
+				xOffset = 10,
+				yOffset = 1,
 			}
 		}
 	},
@@ -347,6 +341,8 @@ P.databars.experience.showQuestXP = true
 P.databars.experience.questTrackedOnly = false
 P.databars.experience.questCompletedOnly = false
 P.databars.experience.questCurrentZoneOnly = false
+
+P.databars.petExperience.hideAtMaxLevel = true
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
@@ -1477,6 +1473,7 @@ local UF_Fader = {
 	dynamicflight = false,
 	instanceDifficulties = {
 		none = false,
+		timewalking = false,
 		dungeonNormal = false,
 		dungeonHeroic = false,
 		dungeonMythic = false,
@@ -2098,7 +2095,7 @@ P.unitframe = {
 			enable = true,
 			threatStyle = 'GLOW',
 			orientation = 'LEFT',
-			visibility = '[@raid6,exists][nogroup] hide;show',
+			visibility = '[@raid6,exists][@party1,noexists] hide;show',
 			growthDirection = 'UP_RIGHT',
 			horizontalSpacing = 0,
 			verticalSpacing = 3,
@@ -2479,7 +2476,7 @@ P.unitframe.units.raidpet.debuffs.priority = 'Blacklist,Personal,Boss,Whitelist,
 P.unitframe.units.raidpet.growthDirection = 'DOWN_RIGHT'
 P.unitframe.units.raidpet.height = 30
 P.unitframe.units.raidpet.numGroups = 8
-P.unitframe.units.raidpet.visibility = '[group:raid] show; hide'
+P.unitframe.units.raidpet.visibility = '[@raid1,exists] show; hide'
 
 P.unitframe.units.tank.buffs.numrows = 1
 P.unitframe.units.tank.buffs.perrow = 6

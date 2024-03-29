@@ -213,7 +213,7 @@ local function OnEnter()
 		local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
 		local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
 		if name and (locked or extended) then
-			local isDungeon = difficulty == 2 or difficulty == 23 or difficulty == 174 or difficulty == 201
+			local isDungeon = difficulty == 2 or difficulty == 23 or difficulty == 174 or difficulty == 198 or difficulty == 201
 			if isRaid or isDungeon then
 				local isLFR = difficulty == 7 or difficulty == 17
 				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)

@@ -33,7 +33,7 @@ local GetRestrictPings = C_PartyInfo.GetRestrictPings
 local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_RAID_GROUPS = NUM_RAID_GROUPS
-local PANEL_HEIGHT = E.Retail and 180 or 130
+local PANEL_HEIGHT = E.Retail and 154 or 130
 local PANEL_WIDTH = 230
 local BUTTON_HEIGHT = 20
 
@@ -370,10 +370,13 @@ function RU:Initialize()
 	RU.Buttons = {}
 	RU.CheckBoxes = {}
 
+	local hasCountdown = C_PartyInfo.DoCountdown
+	local countdownHeight = hasCountdown and 0 or 25
+
 	local RaidUtilityPanel = CreateFrame('Frame', 'RaidUtilityPanel', E.UIParent, 'SecureHandlerBaseTemplate')
 	RaidUtilityPanel:SetScript('OnMouseUp', RU.OnClick_RaidUtilityPanel)
 	RaidUtilityPanel:SetTemplate('Transparent')
-	RaidUtilityPanel:Size(PANEL_WIDTH, PANEL_HEIGHT)
+	RaidUtilityPanel:Size(PANEL_WIDTH, PANEL_HEIGHT - countdownHeight)
 	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
@@ -425,7 +428,7 @@ function RU:Initialize()
 	if E.Retail or E.Wrath then
 		local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 		RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
-		RoleIcons:Size(36, PANEL_HEIGHT)
+		RoleIcons:Size(36, PANEL_HEIGHT - countdownHeight)
 		RoleIcons:SetTemplate('Transparent')
 		RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
 		RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
@@ -466,27 +469,22 @@ function RU:Initialize()
 	end
 
 	local BUTTON_WIDTH = PANEL_WIDTH - 20
-	local DisbandRaidButton = RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOP', RaidUtilityPanel, 'TOP', 0, -5, L["Disband Group"])
+	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidUtilityPanel, 'TOPLEFT', 10, -4, L["Raid Menu"])
+	RaidControlButton:SetScript('OnMouseUp', RU.OnClick_RaidControlButton)
+
+	local DisbandRaidButton = RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, L["Disband Group"])
 	DisbandRaidButton:SetScript('OnMouseUp', RU.OnClick_DisbandRaidButton)
 
-	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOPLEFT', DisbandRaidButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
+	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Classic and 1 or 0.49), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
 	ReadyCheckButton:SetScript('OnMouseUp', RU.OnClick_ReadyCheckButton)
 
 	local RoleCheckButton
 	if E.Retail or E.Wrath then
-		RoleCheckButton = RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Wrath and 0.49 or 0.78), BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.ROLE_POLL)
+		RoleCheckButton = RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 3, 0, _G.ROLE_POLL)
 		RoleCheckButton:SetScript('OnMouseUp', RU.OnClick_RoleCheckButton)
 	end
 
-	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * ((E.Retail or E.Wrath) and 0.49 or 1), BUTTON_HEIGHT, 'TOPLEFT', ((E.Retail or E.Wrath) and RoleCheckButton) or ReadyCheckButton, E.Wrath and 'TOPRIGHT' or 'BOTTOMLEFT', E.Wrath and 3 or 0, E.Wrath and 0 or -5, L["Raid Menu"])
-	RaidControlButton:SetScript('OnMouseUp', RU.OnClick_RaidControlButton)
-
-	if C_PartyInfo.DoCountdown then
-		local RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, _G.PLAYER_COUNTDOWN_BUTTON)
-		RaidCountdownButton:SetScript('OnMouseUp', RU.OnClick_RaidCountdownButton)
-	end
-
-	local MainTankButton = RU:CreateUtilButton('RaidUtility_MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', E.Wrath and RoleCheckButton or RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK)
+	local MainTankButton = RU:CreateUtilButton('RaidUtility_MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK)
 	MainTankButton:SetAttribute('type', 'maintank')
 	MainTankButton:SetAttribute('unit', 'target')
 	MainTankButton:SetAttribute('action', 'toggle')
@@ -496,7 +494,13 @@ function RU:Initialize()
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')
 
-	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
+	local RaidCountdownButton
+	if hasCountdown then
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Retail and 0.78 or 1), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"])
+		RaidCountdownButton:SetScript('OnMouseUp', RU.OnClick_RaidCountdownButton)
+	end
+
+	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
 
 	if SetRestrictPings then
 		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
@@ -508,7 +512,7 @@ function RU:Initialize()
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 			marker:SetParent(RaidUtilityPanel)
 			marker:ClearAllPoints()
-			marker:Point('TOPLEFT', RoleCheckButton, 'TOPRIGHT', 3, 0)
+			marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 3, 0)
 			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
 			marker:HookScript('OnEnter', RU.OnEnter_Button)
 			marker:HookScript('OnLeave', RU.OnLeave_Button)

@@ -551,7 +551,8 @@ do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
 	local diffs = {
 		keys = {
 			none = {0},
-			dungeonNormal = {1, 38, 173, 201},
+			timewalking = {24, 33, 151},
+			dungeonNormal = {1, 38, 173, 198, 201, 205}, -- 205 is follower
 			dungeonHeroic = {2, 39, 174},
 			dungeonMythic = {23, 40},
 			dungeonMythicKeystone = {8},

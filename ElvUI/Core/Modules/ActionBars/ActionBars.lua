@@ -1086,6 +1086,11 @@ do
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
+	local untaintButtons = {
+		MultiCastActionButton = (E.Wrath and E.myclass ~= 'SHAMAN') or nil,
+		OverrideActionBarButton = E.Wrath or nil
+	}
+
 	if E.Wrath then -- Wrath TotemBar needs to be handled by us
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
@@ -1164,9 +1169,6 @@ do
 							child.CheckBox:SetEnabled(false)
 							child:DisplayEnabled(false)
 						end
-
-						child.CheckBox:SetScript('OnEnter', nil)
-						child.Tooltip:SetScript('OnEnter', nil)
 					end
 				end
 			end)
@@ -1204,12 +1206,16 @@ do
 			AB:SecureHook('BlizzardOptionsPanel_OnEvent')
 		end
 
-		if E.Wrath and E.myclass ~= 'SHAMAN' then
-			for i = 1, 12 do
-				local button = _G['MultiCastActionButton'..i]
+		for name in next, untaintButtons do
+			local index = 1
+			local button = _G[name..index]
+			while button do
 				button:Hide()
 				button:UnregisterAllEvents()
 				button:SetAttribute('statehidden', true)
+
+				index = index + 1
+				button = _G[name..index]
 			end
 		end
 

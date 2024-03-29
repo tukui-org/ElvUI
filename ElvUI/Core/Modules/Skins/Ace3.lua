@@ -202,7 +202,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		widget.scrollFrame:Point('BOTTOMRIGHT', widget.scrollBG, 'BOTTOMRIGHT', -4, 8)
 	elseif TYPE == 'CheckBox' then
 		S:Ace3_SkinCheckBox(widget, widget.check, widget.checkbg, widget.highlight)
-	elseif TYPE == 'Dropdown' or TYPE == 'LQDropdown' then
+	elseif TYPE == 'Dropdown' or TYPE == 'Dropdown-ElvUI' or TYPE == 'LQDropdown' then
 		local frame = widget.dropdown
 		local button = widget.button
 		local text = widget.text

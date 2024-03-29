@@ -1,3 +1,59 @@
+### Version 13.60 [ March 19th 2024 ]
+*   Difficulty Icon on Minimap improved, resolving an issue with the mouseover tooltip.
+*   Pet Battle XP bar overlapped Pass button.
+*   Encounter Journal error on open resolved.
+*   Text To Speech button added to Chat > Voice Chat.
+*   Reputation Databar being clickable during combat.
+*   Error when using /tts when Chat Voice buttons were disabled.
+*   Classic SoD: Mage runes added to improve Range Fader for lower levels (Regeneration and Mass Regeneration).
+*   Classic: Hunter/Rogue/Warrior Range Fader corrected.
+*   Classic: Send Mail text color corrected.
+*   Classic: Bags Quiver border missing on bags at first login.
+*   Classic: Bags Sorting breaking when Quivers tried to sort into other Quivers.
+
+### Version 13.59 [ February 23rd 2024 ]
+*   Gnomeregan filters updated.
+*   Whitelisted Suspended World Buffs.
+*   Toggling spell ranks trigger range display issue.
+*   Updated allied races model skin.
+*   Currency error when using Better Bags.
+*   Season of Discovery Instance IDs added for the Raid Lockouts on Time Datatext.
+*   Filter creation error resolved when a filter and spell was selected.
+*   Raid Utility button supports boss mod cooldown function. (Wrath/Classic)
+*   Closing whisper tab mid-combat no longer causes errors.
+*   Blizzard options tooltip issue after displaying the Action Bars section resolved.
+*   Bags "itemButton" error fixed when adding a new Bag then reopening.
+*   Wrath Fury of Stormrage regen bug fixed. (Thanks ToddSisson)
+*   WeakAuras color picker save issue fixed. (Wrath)
+
+### Version 13.58 [ February 11th 2024 ]
+*   Updated LibRangeCheck which fixes the CheckInteractDistance error.
+*   Color Picker not saving properly on WeakAuras or other addons.
+*   The following Phase 2 auras have been added to AuraWatch & Whitelist:
+    *   Priest Renew
+    *   Priest Meditations
+    *   Druid Regrowth and Rejuvenation
+    *   Stranglethorn World Event Buff+Stacks
+    *   Stranglethorn Opt-Out PvP Buff
+    *   Dark Rider Rune discovery Buff
+    *   Cozy Sleeping Bag Buff+Stacks
+    *   Gnomeregan Raid Buffs+Debuffs
+
+### Version 13.57 [ February 6th 2024 ]
+*   Classic: Blizzard fixed Top Auras
+
+### Version 13.56 [ February 6th 2024 ]
+*   Style Filter error resolved
+*   Group Loot frame backdrop fixed
+*   Wrath: Warrior Charge to CCDebuffs
+*   Classic SoD: Auras added to Aurawatch and Penance to Castbar Ticks
+*   Chat Loot tab not being created during Install
+*   Color Picker Alpha input box behaves better
+*   Tooltip not showing player names sometimes
+*   Updated plugin for Show Healers & Tanks on Nameplates
+*   Timewalking instance type added to Unitframe Fader
+*   Difficulty IDs updated to include Follower Dungeons
+
 ### Version 13.55 [ January 16th 2024 ]
 *   Darth finally got enough XP for lvl 36 (happy birthday)
 *   Datatext tooltip for Crest Fragments displays correctly

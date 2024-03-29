@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["Countdown"] = "Отсчет"
 L["Reset"] = "Сброс"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffэто аддон для полной замены пользовательского интерфейса World of Warcraft.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Кажется, возникла проблема с установкой. Пожалуйста, переустановите ElvUI."
@@ -208,7 +209,7 @@ L["List of installations in queue:"] = "Очередь установки:"
 L["Loadouts"] = "Шаблоны"
 L["Location"] = "Локация"
 L["Lock"] = "Закрепить"
-L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%.2f|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://tukui.org или присоединяйтесь к серверу Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://tukui.org или присоединяйтесь к серверу Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова доступных команд *ElvUI|r."):gsub('*', E.InfoColor)
 L["LOGIN_PTR"] = ("|cffff3333You are currently not running the PTR version of *ElvUI|r which may cause issues.|r ^Please download the PTR version from the following link.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"

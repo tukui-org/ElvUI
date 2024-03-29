@@ -39,8 +39,8 @@ License: MIT
 --
 -- @class file
 -- @name LibRangeCheck-3.0
-local MAJOR_VERSION = "LibRangeCheck-3.0"
-local MINOR_VERSION = 9
+local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
+local MINOR_VERSION = 15 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -50,47 +50,55 @@ if not lib then
   return
 end
 
-local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
-
 local next = next
 local type = type
 local wipe = wipe
-local print = print
+local floor = floor
 local pairs = pairs
+local print = print
 local ipairs = ipairs
 local tinsert = tinsert
 local tremove = tremove
+local strsplit = strsplit
 local tostring = tostring
 local setmetatable = setmetatable
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
-local GetSpellInfo = GetSpellInfo
-local GetSpellBookItemName = GetSpellBookItemName
-local GetNumSpellTabs = GetNumSpellTabs
-local GetSpellTabInfo = GetSpellTabInfo
-local GetItemInfo = GetItemInfo
-local UnitCanAttack = UnitCanAttack
-local UnitCanAssist = UnitCanAssist
-local UnitExists = UnitExists
-local UnitIsUnit = UnitIsUnit
-local UnitGUID = UnitGUID
-local InCombatLockdown = InCombatLockdown
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local CheckInteractDistance = CheckInteractDistance
-local IsSpellInRange = IsSpellInRange
-local IsItemInRange = IsItemInRange
-local UnitClass = UnitClass
-local UnitRace = UnitRace
-local GetInventoryItemLink = GetInventoryItemLink
-local GetTime = GetTime
-local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
-local math_floor = math.floor
-local UnitIsVisible = UnitIsVisible
 
-local C_Timer_NewTicker = C_Timer.NewTicker
+local CheckInteractDistance = CheckInteractDistance
+local GetInventoryItemLink = GetInventoryItemLink
+local GetItemInfo = GetItemInfo
+local GetNumSpellTabs = GetNumSpellTabs
+local GetSpellBookItemInfo = GetSpellBookItemInfo
+local GetSpellInfo = GetSpellInfo
+local GetSpellTabInfo = GetSpellTabInfo
+local GetTime = GetTime
+local InCombatLockdown = InCombatLockdown
+local IsItemInRange = IsItemInRange
+local IsSpellInRange = IsSpellInRange
+local UnitCanAssist = UnitCanAssist
+local UnitCanAttack = UnitCanAttack
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitGUID = UnitGUID
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsUnit = UnitIsUnit
+local UnitIsVisible = UnitIsVisible
+local UnitRace = UnitRace
+
+local C_Timer = C_Timer
+local Item = Item
+
+local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
+
+local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local isEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
+local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
+local isEraSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 local InCombatLockdownRestriction
-if isRetail then
+if isRetail or isEra then
   InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
 else
   InCombatLockdownRestriction = function() return false end
@@ -185,6 +193,11 @@ tinsert(FriendSpells.MAGE, 475) -- Remove Curse (40 yards, level 28)
 
 if not isRetail then
   tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
+end
+
+if isEraSOD then
+  tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
+  tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
 
 tinsert(HarmSpells.MAGE, 44614) -- Flurry (40 yards)
@@ -527,8 +540,8 @@ end
 
 -- temporary stuff
 
-local pendingItemRequest
-local itemRequestTimeoutAt
+local pendingItemRequest = {}
+local itemRequestTimeoutAt = {}
 local foundNewItems
 local cacheAllItems
 local friendItemRequests
@@ -546,7 +559,7 @@ local checkers_Spell = setmetatable({}, {
     return func
   end,
 })
-local checkers_SpellWithMin = {} -- see getCheckerForSpellWithMinRange()
+
 local checkers_Item = setmetatable({}, {
   __index = function(t, item)
     local func = function(unit, skipInCombatCheck)
@@ -560,6 +573,7 @@ local checkers_Item = setmetatable({}, {
     return func
   end,
 })
+
 local checkers_Interact = setmetatable({}, {
   __index = function(t, index)
     local func = function(unit, skipInCombatCheck)
@@ -571,6 +585,42 @@ local checkers_Interact = setmetatable({}, {
     end
     t[index] = func
     return func
+  end,
+})
+
+local checkers_SpellWithMin = setmetatable({}, {
+  __index = function(t, key, value)
+    if key == 'MinInteractList' then
+      return value
+    else
+      local which, id = strsplit(':', key)
+      local isInteract = which == 'interact'
+
+      local func = function(unit, skipInCombatCheck)
+        if isInteract then
+          local interactCheck = checkers_Interact[id]
+          if interactCheck and interactCheck(unit, skipInCombatCheck) then
+            return true
+          end
+        else
+          local spellCheck = checkers_Spell[id]
+          if spellCheck and spellCheck(unit) then
+            return true
+          elseif t.MinInteractList then -- fallback to try interact when a spell failed
+            for index in pairs(t.MinInteractList) do
+              local interactCheck = checkers_Interact[index]
+              if interactCheck and interactCheck(unit, skipInCombatCheck) then
+                return true
+              end
+            end
+          end
+        end
+      end
+
+      t[id] = func
+
+      return func
+    end
   end,
 })
 
@@ -603,57 +653,31 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
-local function findSpellIdx(spellName)
+local allowSpellType = { SPELL = true, FUTURESPELL = true }
+local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
   end
+
   for i = 1, getNumSpells() do
-    local spell = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-    if spell == spellName then
+    local spellType, id = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
+    if sid == id and allowSpellType[spellType] then
       return i
     end
   end
+
   return nil
 end
 
 local function fixRange(range)
   if range then
-    return math_floor(range + 0.5)
+    return floor(range + 0.5)
   end
 end
 
 local function getSpellData(sid)
   local name, _, _, _, minRange, range = GetSpellInfo(sid)
-  return name, fixRange(minRange), fixRange(range), findSpellIdx(name)
-end
-
-local function findMinRangeChecker(origMinRange, origRange, spellList)
-  for i = 1, #spellList do
-    local sid = spellList[i]
-    local name, minRange, range, spellIdx = getSpellData(sid)
-    if range and spellIdx and origMinRange <= range and range <= origRange and minRange == 0 then
-      return checkers_Spell[findSpellIdx(name)]
-    end
-  end
-end
-
-local function getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
-  local checker = checkers_SpellWithMin[spellIdx]
-  if checker then
-    return checker
-  end
-  local minRangeChecker = findMinRangeChecker(minRange, range, spellList)
-  if minRangeChecker then
-    checker = function(unit)
-      if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-        return true
-      elseif minRangeChecker(unit) then
-        return true, true
-      end
-    end
-    checkers_SpellWithMin[spellIdx] = checker
-    return checker
-  end
+  return name, fixRange(minRange), fixRange(range), findSpellIdx(name, sid)
 end
 
 -- minRange should be nil if there's no minRange, not 0
@@ -678,7 +702,7 @@ local function createCheckerList(spellList, itemList, interactList)
     for range, items in pairs(itemList) do
       for i = 1, #items do
         local item = items[i]
-        if GetItemInfo(item) then
+        if Item:CreateFromItemID(item):IsItemDataCached() and GetItemInfo(item) then
           addChecker(res, range, nil, checkers_Item[item], "item:" .. item)
           break
         end
@@ -686,6 +710,7 @@ local function createCheckerList(spellList, itemList, interactList)
     end
   end
 
+  local minInteract
   if spellList then
     for i = 1, #spellList do
       local sid = spellList[i]
@@ -702,11 +727,14 @@ local function createCheckerList(spellList, itemList, interactList)
         end
 
         if minRange then
-          local checker = getCheckerForSpellWithMinRange(spellIdx, minRange, range, spellList)
-          if checker then
-            addChecker(res, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
-            addChecker(resInCombat, range, minRange, checker, "spell:" .. sid .. ":" .. tostring(name))
+          if not checkers_SpellWithMin.MinInteractList then
+            checkers_SpellWithMin.MinInteractList = interactList
           end
+
+          addChecker(res, range, minRange, checkers_SpellWithMin["spell:"..spellIdx], "spell:" .. sid .. ":" .. tostring(name))
+          addChecker(resInCombat, range, minRange, checkers_SpellWithMin["spell:"..spellIdx], "spell:" .. sid .. ":" .. tostring(name))
+
+          minInteract = true
         else
           addChecker(res, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
           addChecker(resInCombat, range, minRange, checkers_Spell[spellIdx], "spell:" .. sid .. ":" .. tostring(name))
@@ -715,9 +743,16 @@ local function createCheckerList(spellList, itemList, interactList)
     end
   end
 
-  if interactList and not next(res) then
+  if interactList and (minInteract or not next(res)) then
+    local _, playerClass = UnitClass("player")
     for index, range in pairs(interactList) do
-      addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
+      if minInteract then -- spells have min range, step to use interact as a fallback when close
+        if not (playerClass == "WARRIOR" and index == 4) then -- warrior: skip Follow 28, so it will use Charge 25
+          addChecker(res, range, nil, checkers_SpellWithMin["interact:"..index], "interact:" .. index)
+        end
+      else
+        addChecker(res, range, nil, checkers_Interact[index], "interact:" .. index)
+      end
     end
   end
 
@@ -744,7 +779,7 @@ end
 local function getRangeWithCheckerList(unit, checkerList)
   local lo, hi = 1, #checkerList
   while lo <= hi do
-    local mid = math_floor((lo + hi) / 2)
+    local mid = floor((lo + hi) / 2)
     local rc = checkerList[mid]
     if rc.checker(unit, true) then
       lo = mid + 1
@@ -957,10 +992,8 @@ lib.CHECKERS_CHANGED = "CHECKERS_CHANGED"
 lib.MeleeRange = MeleeRange
 
 function lib:findSpellIndex(spell)
-  if type(spell) == "number" then
-    spell = GetSpellInfo(spell)
-  end
-  return findSpellIdx(spell)
+  local name, _, _, _, _, _, sid = GetSpellInfo(spell)
+  return findSpellIdx(name, sid)
 end
 
 -- returns the range estimate as a string
@@ -1219,6 +1252,12 @@ function lib:SPELLS_CHANGED()
   self:scheduleInit()
 end
 
+function lib:CVAR_UPDATE(_, cvar)
+  if cvar == "ShowAllSpellRanks" then
+    self:scheduleInit()
+  end
+end
+
 function lib:UNIT_INVENTORY_CHANGED(event, unit)
   if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
     self:scheduleInit()
@@ -1233,8 +1272,9 @@ end
 
 function lib:GET_ITEM_INFO_RECEIVED(event, item, success)
   -- print("### GET_ITEM_INFO_RECEIVED: " .. tostring(item) .. ", " .. tostring(success))
-  if item == pendingItemRequest then
-    pendingItemRequest = nil
+  if pendingItemRequest[item] then
+    pendingItemRequest[item] = nil
+    itemRequestTimeoutAt[item] = nil
     if not success then
       self.failedItemRequests[item] = true
     end
@@ -1253,40 +1293,37 @@ function lib:processItemRequests(itemRequests)
       if not i then
         itemRequests[range] = nil
         break
-      elseif self.failedItemRequests[item] then
+      elseif Item:CreateFromItemID(item):IsItemEmpty() or self.failedItemRequests[item] then
         -- print("### processItemRequests: failed: " .. tostring(item))
         tremove(items, i)
-      elseif item == pendingItemRequest and GetTime() < itemRequestTimeoutAt then
+      elseif pendingItemRequest[item] and GetTime() < itemRequestTimeoutAt[item] then
         return true -- still waiting for server response
       elseif GetItemInfo(item) then
         -- print("### processItemRequests: found: " .. tostring(item))
-        if itemRequestTimeoutAt then
-          -- print("### processItemRequests: new: " .. tostring(item))
-          foundNewItems = true
-          itemRequestTimeoutAt = nil
-          pendingItemRequest = nil
-        end
+        foundNewItems = true
+        itemRequestTimeoutAt[item] = nil
+        pendingItemRequest[item] = nil
         if not cacheAllItems then
           itemRequests[range] = nil
           break
         end
         tremove(items, i)
-      elseif not itemRequestTimeoutAt then
+      elseif not itemRequestTimeoutAt[item] then
         -- print("### processItemRequests: waiting: " .. tostring(item))
-        itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
-        pendingItemRequest = item
+        itemRequestTimeoutAt[item] = GetTime() + ItemRequestTimeout
+        pendingItemRequest[item] = true
         if not self.frame:IsEventRegistered("GET_ITEM_INFO_RECEIVED") then
           self.frame:RegisterEvent("GET_ITEM_INFO_RECEIVED")
         end
         return true
-      elseif GetTime() >= itemRequestTimeoutAt then
+      elseif GetTime() >= itemRequestTimeoutAt[item] then
         -- print("### processItemRequests: timeout: " .. tostring(item))
         if cacheAllItems then
           print(MAJOR_VERSION .. ": timeout for item: " .. tostring(item))
         end
         self.failedItemRequests[item] = true
-        itemRequestTimeoutAt = nil
-        pendingItemRequest = nil
+        itemRequestTimeoutAt[item] = nil
+        pendingItemRequest[item] = nil
         tremove(items, i)
       else
         return true -- still waiting for server response
@@ -1335,7 +1372,7 @@ end
 -- << load-time initialization
 
 local function invalidateRangeFive()
-    invalidateRangeCache(5)
+  invalidateRangeCache(5)
 end
 
 function lib:activate()
@@ -1346,6 +1383,10 @@ function lib:activate()
     frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
     frame:RegisterEvent("SPELLS_CHANGED")
+
+    if isEra or isWrath then
+      frame:RegisterEvent("CVAR_UPDATE")
+    end
 
     if isRetail or isWrath then
       frame:RegisterEvent("PLAYER_TALENT_UPDATE")
@@ -1359,7 +1400,7 @@ function lib:activate()
   end
 
   if not self.cacheResetTimer then
-    self.cacheResetTimer = C_Timer_NewTicker(5, invalidateRangeFive)
+    self.cacheResetTimer = C_Timer.NewTicker(5, invalidateRangeFive)
   end
 
   initItemRequests()

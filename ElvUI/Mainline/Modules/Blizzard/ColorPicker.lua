@@ -163,7 +163,7 @@ local function onColorSelect(frame, r, g, b)
 	if not frame:IsVisible() then
 		delayCall()
 	elseif not delayFunc then
-		delayFunc = ColorPickerFrame.func
+		delayFunc = ColorPickerFrame.swatchFunc
 
 		if delayFunc then
 			E:Delay(delayWait, delayCall)
@@ -174,9 +174,7 @@ end
 function BL:EnhanceColorPicker()
 	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
-	if E.Retail then
-		ColorPickerFrame.Border:Hide()
-	end
+	ColorPickerFrame.Border:Hide()
 
 	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 

@@ -1,15 +1,20 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 27
+local Type, Version = "ColorPicker-ElvUI", 29
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
+
+local IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local IsWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 
 local pairs = pairs
 
 local CreateFrame, UIParent = CreateFrame, UIParent
 local OpacitySliderFrame = OpacitySliderFrame
 local ColorPickerFrame = ColorPickerFrame
+
+local colorFunc = IsWrath and 'func' or 'swatchFunc'
 
 -- GLOBALS: ColorPPDefault
 
@@ -21,6 +26,12 @@ local function ColorCallback(self, r, g, b, a, isAlpha)
 	-- which is caused when we set values into the color picker again on `OnValueChanged`
 	if ColorPickerFrame.noColorCallback then return end
 
+	-- no change, skip update
+	if r == self.r and g == self.g and b == self.b and a == self.a then
+		return
+	end
+
+	-- no alpha option
 	if not self.HasAlpha then
 		a = 1
 	end
@@ -58,11 +69,11 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
 
-		ColorPickerFrame.func = function()
+		ColorPickerFrame[colorFunc] = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
-			if ColorPickerFrame.GetColorAlpha then
+			if IsRetail then
 				alpha = ColorPickerFrame:GetColorAlpha()
 			else
 				alpha = 1 - OpacitySliderFrame:GetValue()
@@ -76,7 +87,7 @@ local function ColorSwatch_OnClick(frame)
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
-			if ColorPickerFrame.GetColorAlpha then
+			if IsRetail then
 				alpha = ColorPickerFrame:GetColorAlpha()
 			else
 				alpha = 1 - OpacitySliderFrame:GetValue()
@@ -87,7 +98,7 @@ local function ColorSwatch_OnClick(frame)
 
 		local r, g, b, a = self.r, self.g, self.b, self.a
 		if self.HasAlpha then
-			ColorPickerFrame.opacity = (ColorPickerFrame.GetColorAlpha and (a or 0)) or (1 - (a or 0))
+			ColorPickerFrame.opacity = (IsRetail and (a or 0)) or (1 - (a or 0))
 		end
 
 		if ColorPickerFrame.Content and ColorPickerFrame.Content.ColorPicker then
@@ -100,7 +111,7 @@ local function ColorSwatch_OnClick(frame)
 		if ColorPPDefault and self.dR and self.dG and self.dB then
 			local alpha = 1
 			if self.dA then
-				alpha = (ColorPickerFrame.GetColorAlpha and self.dA) or (1 - self.dA)
+				alpha = (IsRetail and self.dA) or (1 - self.dA)
 			end
 
 			if not ColorPPDefault.colors then
@@ -111,7 +122,7 @@ local function ColorSwatch_OnClick(frame)
 		end
 
 		ColorPickerFrame.cancelFunc = function()
-			ColorPickerFrame.func = nil
+			ColorPickerFrame[colorFunc] = nil
 			ColorPickerFrame.opacityFunc = nil
 
 			ColorCallback(self, r, g, b, a, true)

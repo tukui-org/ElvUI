@@ -101,7 +101,8 @@ NP.TriggerConditions = {
 		[8] = 'mythic+',
 		[23] = 'mythic',
 		[24] = 'timewalking',
-		[201] = 'normal', -- classic hardcore
+		[198] = 'normal', -- Classic: Season of Discovery
+		[201] = 'normal', -- Classic: Hardcore
 		-- raids
 		[7] = 'lfr',
 		[17] = 'lfr',
@@ -146,7 +147,9 @@ NP.TriggerConditions = {
 		[175] = 'legacy10normal',
 		[176] = 'legacy25normal',
 		[193] = 'legacy10heroic',
-		[194] = 'legacy25heroic'
+		[194] = 'legacy25heroic',
+		-- follower dungeon
+		[205] = 'follower'
 	}
 }
 

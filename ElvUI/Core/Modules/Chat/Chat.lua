@@ -83,6 +83,9 @@ local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.S
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
 
+local SOUND_TUTORIAL_POPUP = SOUNDKIT.TUTORIAL_POPUP
+local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
+
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 -- GLOBALS: ElvCharacterDB
@@ -802,6 +805,7 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
+	tab:SetScript('OnClick', CH.Tab_OnClick)
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if not frame.isDocked then
@@ -1130,9 +1134,18 @@ function CH:ChatEdit_DeactivateChat(editbox)
 	if style == 'im' then editbox:Hide() end
 end
 
-function CH:UpdateEditboxAnchors(event, cvar, value)
-	if event and cvar ~= 'chatStyle' then return
-	elseif not cvar then value = GetCVar('chatStyle') end
+function CH:CVAR_UPDATE(_, cvar, value)
+	if cvar == 'chatStyle' then
+		CH:UpdateEditboxAnchors(cvar, value)
+	elseif cvar == 'textToSpeech' then
+		CH:RepositionOverflowButton()
+	end
+end
+
+function CH:UpdateEditboxAnchors(cvar, value)
+	if not cvar then
+		value = GetCVar('chatStyle')
+	end
 
 	local classic = value == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
@@ -2422,8 +2435,6 @@ function CH:SetupChat()
 		end
 	end
 
-	CH:ToggleHyperlink(CH.db.hyperlinkHover)
-
 	local chat = _G.GeneralDockManager.primary
 	_G.GeneralDockManager:ClearAllPoints()
 	_G.GeneralDockManager:Point('BOTTOMLEFT', chat, 'TOPLEFT', 0, 3)
@@ -2432,12 +2443,18 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
+	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
+	_G.ChatFrameMenuButton:Kill()
+
+	CH:ToggleHyperlink(CH.db.hyperlinkHover)
+	CH:StyleOverflowButton()
+	CH:PositionChats()
+
+	_G.TextToSpeechButtonFrame:Hide()
+
 	if E.Retail then
 		_G.QuickJoinToastButton:Hide()
 	end
-
-	CH:StyleOverflowButton()
-	CH:PositionChats()
 
 	if not CH.HookSecured then
 		CH:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
@@ -2865,8 +2882,8 @@ function CH:SocialQueueMessage(guid, message)
 	if RecentSocialQueue(TIME, message) then return end
 	socialQueueCache[guid] = {TIME, message}
 
-	--UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
-	PlaySound(7355) --TUTORIAL_POPUP
+	-- UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
+	PlaySound(SOUND_TUTORIAL_POPUP)
 
 	E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
 end
@@ -3063,7 +3080,8 @@ function CH:DefaultSmileys()
 end
 
 local channelButtons = {
-	_G.ChatFrameChannelButton,
+	_G.TextToSpeechButton, -- text to speech
+	_G.ChatFrameChannelButton -- main voice button
 }
 
 if E.Retail then
@@ -3097,16 +3115,72 @@ function CH:RepositionOverflowButton()
 	_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 
+	-- handle the overflow placement
 	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Retail and channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Retail and channelButtons[4]:IsShown() and 4) or 2], 'LEFT', -4, 0)
 	else
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+	end
+
+	-- handle buttons placement on the voice panel
+	if not CH.db.hideVoiceButtons then
+		local button1 = channelButtons[1] -- text to speech
+		local button2 = channelButtons[2] -- main voice button
+		local ttsEnabled = GetCVarBool('textToSpeech')
+
+		if CH.db.pinVoiceButtons then
+			button1:ClearAllPoints()
+			button2:ClearAllPoints()
+
+			if ttsEnabled then
+				button1:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
+				button2:Point('RIGHT', button1, 'LEFT')
+			else
+				button2:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
+			end
+		else
+			button1:ClearAllPoints()
+			button1:Point('TOP', CH.VoicePanel, 0, -2)
+
+			button2:ClearAllPoints()
+			if ttsEnabled then
+				button2:Point('TOP', button1, 'BOTTOM', 0, -2)
+			else
+				button2:Point('TOP', CH.VoicePanel, 0, -2)
+			end
+
+			CH.VoicePanel:Size(30, ttsEnabled and 114 or 86)
+		end
+	end
+
+	local ChatAlertFrame = _G.ChatAlertFrame
+	if ChatAlertFrame then
+		ChatAlertFrame:ClearAllPoints()
+		ChatAlertFrame:Point('BOTTOMRIGHT', _G.GeneralDockManager, 'TOPRIGHT', 3, 3)
 	end
 end
 
 function CH:UpdateVoiceChatIcons()
 	for _, button in ipairs(channelButtons) do
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
+	end
+end
+
+do -- securely lock the atlas texture; we need this cause its not shown on init login
+	local ttsAtlas = 'chatframe-button-icon-TTS'
+	local function lockAtlas(icon, atlas)
+		if atlas ~= ttsAtlas then
+			icon:SetAtlas(ttsAtlas)
+		end
+	end
+
+	function CH:HandleTextToSpeechButton(button)
+		button.highlightAtlas = nil -- hide the highlight
+
+		if button.Icon and not button.Icon.isHookedAtlas then
+			hooksecurefunc(button.Icon, 'SetAtlas', lockAtlas)
+			button.Icon.isHookedAtlas = true
+		end
 	end
 end
 
@@ -3117,14 +3191,14 @@ function CH:HandleChatVoiceIcons()
 		end
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
-			S:HandleButton(button, nil, nil, true)
-			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
-			button:ClearAllPoints()
-
 			if index == 1 then
-				button:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
+				CH:HandleTextToSpeechButton(button)
 			else
-				button:Point('RIGHT', channelButtons[index-1], 'LEFT')
+				S:HandleButton(button, nil, nil, true)
+			end
+
+			if button.Icon then
+				button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 			end
 		end
 
@@ -3161,7 +3235,6 @@ function CH:CreateChatVoicePanel()
 	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent)
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
-	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, 'SocialMenuMover', _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
@@ -3171,15 +3244,19 @@ function CH:CreateChatVoicePanel()
 	Holder:SetScript('OnLeave', CH.LeaveVoicePanel)
 	CH.LeaveVoicePanel(Holder)
 
-	channelButtons[1]:ClearAllPoints()
-	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
+	for index, button in ipairs(channelButtons) do
+		if index == 1 then
+			CH:HandleTextToSpeechButton(button)
+		else
+			S:HandleButton(button, nil, nil, true)
+		end
 
-	for _, button in ipairs(channelButtons) do
-		S:HandleButton(button, nil, nil, true)
-		button.Icon:SetParent(button)
-		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
+		if button.Icon then
+			button.Icon:SetParent(button)
+			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
+		end
+
 		button:SetParent(Holder)
-
 		button:HookScript('OnEnter', CH.EnterVoicePanel)
 		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
@@ -3187,9 +3264,6 @@ function CH:CreateChatVoicePanel()
 	if E.Retail then
 		CH:SetupQuickJoin(Holder)
 	end
-
-	_G.ChatAlertFrame:ClearAllPoints()
-	_G.ChatAlertFrame:Point('BOTTOM', channelButtons[1], 'TOP', 1, 3)
 end
 
 function CH:SetupQuickJoin(holder)
@@ -3558,7 +3632,7 @@ function CH:FCF_Close(fallback)
 	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
 end
 
---Same reason as CH.FCF_Close
+--Same reason as CH.FCF_Close (see note)
 function CH:FCF_PopInWindow(fallback)
 	if fallback then self = fallback end
 	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
@@ -3567,6 +3641,55 @@ function CH:FCF_PopInWindow(fallback)
 	--Restore any chats this frame had to the DEFAULT_CHAT_FRAME
 	_G.FCF_RestoreChatsToFrame(_G.DEFAULT_CHAT_FRAME, self)
 	CH.FCF_Close(self) -- use ours to fix close chat bug
+end
+
+-- Same reason as CH.FCF_Close (see note) but in order to fix close by middle clicking
+function CH:FCF_Tab_OnClick(button)
+	local chat = self and CH:GetOwner(self)
+	if not chat then return end
+
+	if button == 'RightButton' then -- If Rightclick bring up the options menu
+		chat:StopMovingOrSizing()
+
+		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
+
+		local tabName = self:GetName()
+		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+	elseif button == 'MiddleButton' then
+		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
+			if not chat.isTemporary then
+				CH.FCF_PopInWindow(self, chat)
+				return
+			elseif chat.chatType == 'WHISPER' or chat.chatType == 'BN_WHISPER' then
+				CH.FCF_PopInWindow(self, chat)
+				return
+			elseif chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
+				CH.FCF_Close(chat)
+			else
+				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chat.chatType), tostring(chat.chatTarget)))
+			end
+		end
+	else
+		_G.CloseDropDownMenus() -- Close all dropdowns
+		_G.SELECTED_CHAT_FRAME = chat -- If frame is docked assume that a click is to select a chat window, not drag it
+
+		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chat then
+			_G.FCF_SelectDockFrame(chat)
+		end
+
+		if GetCVar('chatStyle') ~= 'classic' then
+			_G.ChatEdit_SetLastActiveWindow(chat.editBox)
+		end
+
+		chat:ResetAllFadeTimes()
+
+		_G.FCF_FadeInChatFrame(chat)
+	end
+end
+
+function CH:Tab_OnClick(button)
+	CH.FCF_Tab_OnClick(self, button)
+	PlaySound(SOUND_U_CHAT_SCROLL_BUTTON)
 end
 
 do
@@ -3612,9 +3735,6 @@ function CH:Initialize()
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not CH.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end
 
-	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
-	_G.ChatFrameMenuButton:Kill()
-
 	CH:SetupChat()
 	CH:DefaultSmileys()
 	CH:UpdateChatKeywords()
@@ -3649,8 +3769,8 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
 	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
-	CH:RegisterEvent('CVAR_UPDATE', 'UpdateEditboxAnchors')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
+	CH:RegisterEvent('CVAR_UPDATE')
 
 	if E.Retail then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')

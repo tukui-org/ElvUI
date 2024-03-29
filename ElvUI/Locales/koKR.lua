@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
+L["Countdown"] = "초읽기"
 L["Reset"] = "새로고침"
 L["ELVUI_DESC"] = ("*ElvUI|r|cFFffffff는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다.|r"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
@@ -208,7 +209,7 @@ L["List of installations in queue:"] = "설치 대기열 목록"
 L["Loadouts"] = "로드아웃"
 L["Location"] = "위치"
 L["Lock"] = "잠금"
-L["LOGIN_MSG"] = ("*ElvUI|r 버전 *%.2f|r이 설치되었습니다.\n메뉴 호출은*/ec|r.기술 지원은 https://tukui.org \n또는,*Discord :|r https://discord.tukui.org"):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("*ElvUI|r 버전 *%s|r이 설치되었습니다.\n메뉴 호출은*/ec|r.기술 지원은 https://tukui.org \n또는,*Discord :|r https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("*ElvUI|r 명령어 목록은 */ehelp|r를 입력하면 됩니다."):gsub('*', E.InfoColor)
 L["LOGIN_PTR"] = ("|cffff3333현재 *ElvUI|r의 PTR 버전을 실행하고 있지 않아 문제가 발생할 수 있습니다.|r ^다음 링크에서 PTR 버전을 다운로드하십시오.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Loot / Alert Frames"] = "획득/알림 창"

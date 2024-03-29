@@ -20,6 +20,8 @@ local ColorPickerFrame = ColorPickerFrame
 local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT
 local CLASS, DEFAULT = CLASS, DEFAULT
 
+local colorFunc = E.Wrath and 'func' or 'swatchFunc' -- can probably remove this later
+
 local colorBuffer = {}
 local function alphaValue(num)
 	return num and floor(((1 - num) * 100) + .05) or 0
@@ -29,16 +31,6 @@ local function UpdateAlphaText(alpha)
 	if not alpha then alpha = alphaValue(_G.OpacitySliderFrame:GetValue()) end
 
 	_G.ColorPPBoxA:SetText(alpha)
-end
-
-local function UpdateAlpha(tbox)
-	local num = tbox:GetNumber()
-	if num > 100 then
-		tbox:SetText(100)
-		num = 100
-	end
-
-	_G.OpacitySliderFrame:SetValue(1 - (num * 0.01))
 end
 
 local function expandFromThree(r, g, b)
@@ -117,27 +109,7 @@ local function delayCall()
 end
 
 local last = {r = 0, g = 0, b = 0, a = 0}
-local function onColorSelect(frame, r, g, b)
-	if frame.noColorCallback then
-		return -- prevent error from E:GrabColorPickerValues, better note in that function
-	elseif r ~= last.r or g ~= last.g or b ~= last.b then
-		last.r, last.g, last.b = r, g, b
-	else -- colors match so we don't need to update, most likely mouse is held down
-		return
-	end
-
-	_G.ColorSwatch:SetColorTexture(r, g, b)
-	UpdateColorTexts(r, g, b)
-
-	if not frame:IsVisible() then
-		delayCall()
-	elseif not delayFunc then
-		delayFunc = ColorPickerFrame.func
-		E:Delay(delayWait, delayCall)
-	end
-end
-
-local function onValueChanged(_, value)
+local function onAlphaValueChanged(_, value)
 	local alpha = alphaValue(value)
 	if last.a ~= alpha then
 		last.a = alpha
@@ -160,12 +132,43 @@ local function onValueChanged(_, value)
 	end
 end
 
+local function UpdateAlpha(tbox)
+	local num = tbox:GetNumber()
+	if num > 100 then
+		tbox:SetText(100)
+		num = 100
+	end
+
+	local value = 1 - (num * 0.01)
+	_G.OpacitySliderFrame:SetValue(value)
+	-- onAlphaValueChanged(nil, value)
+end
+
+local function onColorSelect(frame, r, g, b)
+	if frame.noColorCallback then
+		return -- prevent error from E:GrabColorPickerValues, better note in that function
+	elseif r ~= last.r or g ~= last.g or b ~= last.b then
+		last.r, last.g, last.b = r, g, b
+	else -- colors match so we don't need to update, most likely mouse is held down
+		return
+	end
+
+	_G.ColorSwatch:SetColorTexture(r, g, b)
+	UpdateColorTexts(r, g, b)
+	-- UpdateAlphaText()
+
+	if not frame:IsVisible() then
+		delayCall()
+	elseif not delayFunc then
+		delayFunc = ColorPickerFrame[colorFunc]
+		E:Delay(delayWait, delayCall)
+	end
+end
+
 function BL:EnhanceColorPicker()
 	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
-	if E.Retail then
-		ColorPickerFrame.Border:Hide()
-	end
+	ColorPickerFrame[colorFunc] = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 
 	local Header = ColorPickerFrame.Header or _G.ColorPickerFrameHeader
 	Header:StripTextures()
@@ -184,7 +187,7 @@ function BL:EnhanceColorPicker()
 
 	-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 	-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
-	_G.OpacitySliderFrame:SetScript('OnValueChanged', onValueChanged)
+	_G.OpacitySliderFrame:SetScript('OnValueChanged', onAlphaValueChanged)
 
 	-- Keep the colors updated
 	ColorPickerFrame:SetScript('OnColorSelect', onColorSelect)

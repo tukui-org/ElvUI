@@ -6,7 +6,7 @@
 
 local _G = _G
 local gsub, tinsert, next = gsub, tinsert, next
-local tostring, strfind, type = tostring, strfind, type
+local tostring, strfind, type, strsub = tostring, strfind, type, strsub
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -113,8 +113,19 @@ do -- this is different from E.locale because we need to convert for ace locale 
 	end
 end
 
+function E:ParseVersionString(addon)
+	local version = strsub(GetAddOnMetadata(addon, 'Version'), 2)
+	if not strfind(version, '%-') then
+		return tonumber(version), version
+	elseif strfind(version, 'project%-version') then
+		return 99999, 'Development'
+	else
+		return 99999, version
+	end
+end
+
 do
-	E.Libs = { version = tonumber(GetAddOnMetadata('ElvUI_Libraries', 'Version')) }
+	E.Libs = { version = E:ParseVersionString('ElvUI_Libraries') }
 	E.LibsMinor = {}
 	function E:AddLib(name, major, minor)
 		if not name then return end
@@ -136,7 +147,7 @@ do
 	E:AddLib('LAB', 'LibActionButton-1.0-ElvUI')
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	E:AddLib('RangeCheck', 'LibRangeCheck-3.0')
+	E:AddLib('RangeCheck', 'LibRangeCheck-3.0-ElvUI')
 	E:AddLib('CustomGlow', 'LibCustomGlow-1.0')
 	E:AddLib('Deflate', 'LibDeflate')
 	E:AddLib('Masque', 'Masque', true)

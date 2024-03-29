@@ -205,7 +205,7 @@ function E:UpdateStatusFrame()
 	local PluginSection = PluginFrame.SectionP
 	PluginSection.Header.Text:SetFormattedText('%sPlugins|r', valueColor)
 
-	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff%s%.2f|r', (E.recievedOutOfDateMessage and 'ff3333') or (E.updateRequestTriggered and 'ff9933') or '33ff33', E.version)
+	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff%s%s|r', (E.recievedOutOfDateMessage and 'ff3333') or (E.updateRequestTriggered and 'ff9933') or '33ff33', E.versionString)
 
 	local addons, plugins = E:AreOtherAddOnsEnabled()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
@@ -252,7 +252,7 @@ function E:UpdateStatusFrame()
 	if E.Retail then
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	elseif E.Classic then
-		Section3.Content.Line6.Text:SetFormattedText('Hardcore: |cff4beb2c%s|r', E.ClassicHC and 'Yes' or 'No')
+		Section3.Content.Line6.Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', E.ClassicHC and 'Hardcore' or E.ClassicSOD and 'Seasonal' or 'Normal')
 	end
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))

@@ -896,9 +896,10 @@ function TT:SetToyByItemID(tt, id)
 end
 
 function TT:SetCurrencyToken(tt, index)
-	if tt:IsForbidden() then return end
+	if tt:IsForbidden() or not TT:IsModKeyDown() then return end
 
-	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
+	local link = index and C_CurrencyInfo_GetCurrencyListLink(index)
+	local id = link and tonumber(strmatch(link, 'currency:(%d+)'))
 	if not id then return end
 
 	tt:AddLine(' ')
