@@ -35,7 +35,7 @@ local function GlyphFrame_Update()
 end
 
 local function GlyphFrameGlyph_OnUpdate(frame)
-	local glyphTexture = frame.icon:GetTexture()
+	local glyphTexture = frame.icon and frame.icon:GetTexture()
 	local glyphIcon = glyphTexture and strfind(glyphTexture, [[Interface\Spellbook\UI%-Glyph%-Rune]])
 
 	local alpha = frame.highlight:GetAlpha()
@@ -46,6 +46,7 @@ local function GlyphFrameGlyph_OnUpdate(frame)
 
 		if glyphIcon then
 			frame.icon:SetVertexColor(1, 1, 1, 1)
+			frame.icon:SetAlpha(1)
 		end
 	else
 		local r, g, b = unpack(E.media.rgbvaluecolor)
