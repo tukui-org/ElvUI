@@ -873,7 +873,11 @@ P.nameplates = {
 				{r = .19, g = .48, b = .60}, -- water
 				{r = .42, g = .18, b = .74}, -- air
 			},
-			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79},
+			DRUID = {
+				{r = 0.30, g = 0.52, b = 0.90}, -- negative/lunar
+				{r = 0.80, g = 0.82, b = 0.60}, -- positive/solar
+			},
 		},
 	},
 	visibility = {

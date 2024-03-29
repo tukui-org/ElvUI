@@ -49,6 +49,10 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.customTexts = {}
 
+	if E.Cata and E.myclass == 'DRUID' then
+		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
+	end
+
 	if not E.Retail and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end

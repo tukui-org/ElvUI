@@ -522,6 +522,11 @@ local function CreateCustomTextGroup(unit, objectName)
 
 	if unit == 'player' and UF.player.AdditionalPower then
 		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
+		if E.Cata then
+			if E.myclass == 'DRUID' and UF.player.EclipseBar then
+				config.args.attachTextTo.values.EclipseBar = L["Eclipse Power"]
+			end
+		end
 	end
 
 	E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = config
@@ -1252,7 +1257,7 @@ Colors.classResourceGroup.args.powerGroup.args.MAELSTROM = ACH:Color(L["MAELSTRO
 Colors.classResourceGroup.args.powerGroup.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11, nil, nil, nil, nil, nil, not E.Retail)
 
 do
-	local classPowers = { PALADIN = true, WARLOCK = true, MAGE = true }
+	local classPowers = { PALADIN = true, WARLOCK = true, MAGE = true, DRUID = true }
 	Colors.classResourceGroup.args.class = ACH:Group(L["Class Resources"], nil, 1, nil, nil, nil, nil, E.Classic or not classPowers[E.myclass])
 end
 
@@ -1287,6 +1292,17 @@ do
 	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
 		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, function() return (E.Cata and i < 1) or (not E.Cata and i == 4) or (E.Retail and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Retail and not E.db.unitframe.colors.runeBySpec and i > 0) end)
+	end
+end
+
+Colors.classResourceGroup.args.DRUID = ACH:Group(L["Eclipse Power"], nil, 3, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[i], P.unitframe.colors.classResources.DRUID[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Cata and E.myclass == 'DRUID'))
+Colors.classResourceGroup.args.DRUID.inline = true
+
+do
+	local name = { [1] = L["BALANCE_ENERGY_LUNAR"], [2] = L["BALANCE_ENERGY_SOLAR"] }
+	for i = 1, 2 do
+		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[i], P.unitframe.colors.classResources.DRUID[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[i], P.unitframe.colors.classResources.DRUID[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 	end
 end
 

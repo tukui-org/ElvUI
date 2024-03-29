@@ -97,6 +97,7 @@ do
 		if classPower then UF:ThreatBorderColor(classPower.backdrop, status, r, g, b) end
 		if parent.ClassPower then UF:ThreatBorderColor(parent.ClassPower.backdrop, status, r, g, b) end
 		if parent.AlternativePower then UF:ThreatBorderColor(parent.AlternativePower.backdrop, status, r, g, b) end
+		if parent.EclipseBar then UF:ThreatBorderColor(parent.EclipseBar.backdrop, status, r, g, b) end
 	end
 end
 

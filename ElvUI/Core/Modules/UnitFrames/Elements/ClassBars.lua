@@ -12,7 +12,7 @@ local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local AltManaTypes = { Rage = 1 }
-local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower' }
+local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
 
 if E.Retail then
 	AltManaTypes.LunarPower = 8
@@ -114,7 +114,7 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'EclipseBar' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR
@@ -188,6 +188,25 @@ function UF:Configure_ClassBar(frame)
 		end
 
 		bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
+	elseif frame.ClassBar == 'EclipseBar' then
+		local lunarTex = bars.LunarBar:GetStatusBarTexture()
+
+		bars.LunarBar:SetMinMaxValues(0, 0)
+		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.ClassBars.DRUID[1]))
+		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
+		bars.LunarBar:SetOrientation(vertical and 'VERTICAL' or 'HORIZONTAL')
+		E:SetSmoothing(bars.LunarBar, UF.db.smoothbars)
+
+		bars.SolarBar:SetMinMaxValues(0, 0)
+		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.ClassBars.DRUID[2]))
+		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
+		bars.SolarBar:SetOrientation(vertical and 'VERTICAL' or 'HORIZONTAL')
+		bars.SolarBar:ClearAllPoints()
+		bars.SolarBar:Point(vertical and 'BOTTOM' or 'LEFT', lunarTex, vertical and 'TOP' or 'RIGHT')
+		E:SetSmoothing(bars.SolarBar, UF.db.smoothbars)
+
+		bars.Arrow:ClearAllPoints()
+		bars.Arrow:Point('CENTER', lunarTex, vertical and 'TOP' or 'RIGHT', 0, vertical and -4 or 0)
 	elseif frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
@@ -553,6 +572,61 @@ function UF:PostVisibilityAdditionalPower(enabled)
 	frame.ClassBar = (enabled and 'AdditionalPower') or 'ClassPower'
 
 	UF:PostVisibility_ClassBars(frame)
+end
+
+-----------------------------------------------------------
+-- Eclipse Bar (Cataclysm)
+-----------------------------------------------------------
+function UF:Construct_DruidEclipseBar(frame)
+	local eclipseBar = CreateFrame('Frame', '$parent_EclipsePowerBar', frame)
+	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+
+	eclipseBar.LunarBar = CreateFrame('StatusBar', 'LunarBar', eclipseBar)
+	eclipseBar.LunarBar:Point('LEFT', eclipseBar)
+	eclipseBar.LunarBar:SetStatusBarTexture(E.media.blankTex)
+	UF.statusbars[eclipseBar.LunarBar] = true
+
+	eclipseBar.SolarBar = CreateFrame('StatusBar', 'SolarBar', eclipseBar)
+	eclipseBar.SolarBar:SetStatusBarTexture(E.media.blankTex)
+	UF.statusbars[eclipseBar.SolarBar] = true
+
+	eclipseBar.RaisedElementParent = CreateFrame('Frame', nil, eclipseBar)
+	eclipseBar.RaisedElementParent:SetFrameLevel(eclipseBar:GetFrameLevel() + 100)
+	eclipseBar.RaisedElementParent:SetAllPoints()
+
+	eclipseBar.Arrow = eclipseBar.LunarBar:CreateTexture(nil, 'OVERLAY')
+	eclipseBar.Arrow:SetTexture(E.Media.Textures.ArrowUp)
+	eclipseBar.Arrow:SetPoint('CENTER')
+
+	eclipseBar.PostDirectionChange = UF.EclipsePostDirectionChange
+	eclipseBar.PostUpdateVisibility = UF.EclipsePostUpdateVisibility
+
+	eclipseBar:SetScript('OnShow', ToggleResourceBar)
+	eclipseBar:SetScript('OnHide', ToggleResourceBar)
+
+	return eclipseBar
+end
+
+function UF:EclipsePostDirectionChange(direction)
+	local frame = self.origParent or self:GetParent()
+	local vertical = frame.CLASSBAR_DETACHED and frame.db.classbar.verticalOrientation
+
+	self.Arrow:SetRotation(direction == 'sun' and (vertical and 0 or -1.57) or (vertical and 3.14 or 1.57))
+	self.Arrow:SetVertexColor(unpack(ElvUF.colors.ClassBars[E.myclass][direction == 'sun' and 1 or 2]))
+
+	if direction == 'sun' or direction == 'moon' then
+		self.Arrow:Show()
+	else
+		self.Arrow:Hide()
+	end
+end
+
+function UF:EclipsePostUpdateVisibility(enabled, stateChanged)
+	local frame = self.origParent or self:GetParent()
+
+	frame.ClassBar = enabled and 'EclipseBar' or 'AdditionalPower'
+
+	UF:PostVisibility_ClassBars(frame, stateChanged)
 end
 
 -----------------------------------------------------------
