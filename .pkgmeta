@@ -3,6 +3,7 @@ package-as: ElvUI
 externals:
   ElvUI_Libraries/Classic/LibQuestXP: https://github.com/MrFox42/libquestxp
   ElvUI_Libraries/Core/Ace3/AceAddon-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceAddon-3.0
+  ElvUI_Libraries/Core/Ace3/AceGUI-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceGUI-3.0
   ElvUI_Libraries/Core/Ace3/AceComm-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceComm-3.0
   ElvUI_Libraries/Core/Ace3/AceConsole-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceConsole-3.0
   ElvUI_Libraries/Core/Ace3/AceDB-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDB-3.0
