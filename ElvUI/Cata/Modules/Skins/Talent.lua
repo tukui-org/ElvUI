@@ -64,6 +64,23 @@ local function GlyphFrameGlyph_OnUpdate(updater)
 	end
 end
 
+local function HandleTabs()
+	_G.PlayerTalentFrameTab1:ClearAllPoints()
+
+	local lastTab
+	for index, tab in next, { _G.PlayerTalentFrameTab1, HasPetUI() and _G.PlayerTalentFrameTab2 or nil, _G.PlayerTalentFrameTab3 } do
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+		end
+
+		lastTab = tab
+	end
+end
+
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -226,12 +243,18 @@ function S:Blizzard_TalentUI()
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 	end
 
-	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
-		_G.PlayerTalentFrameTab1:ClearAllPoints()
-		_G.PlayerTalentFrameTab1:Point('TOPLEFT', PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
-		_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
-		_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
-	end)
+	for i = 1, 2 do
+		local tab = _G['PlayerSpecTab'..i]
+		tab:GetRegions():Hide()
+		tab:SetTemplate()
+		tab:StyleButton(nil, true)
+
+		local normal = tab:GetNormalTexture()
+		normal:SetInside()
+		normal:SetTexCoord(unpack(E.TexCoords))
+	end
+
+	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function() HandleTabs() end)
 end
 
 function S:Blizzard_GlyphUI()
