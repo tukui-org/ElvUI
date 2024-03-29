@@ -91,7 +91,8 @@ function S:Blizzard_TalentUI()
 	end
 
 	for i = 1, 3 do
-		local panel = _G['PlayerTalentFramePanel'..i]
+		local panelName = 'PlayerTalentFramePanel'..i
+		local panel = _G[panelName]
 
 		panel:StripTextures()
 		panel:CreateBackdrop('Transparent')
@@ -122,12 +123,12 @@ function S:Blizzard_TalentUI()
 		panel.HeaderIcon.PointsSpent:FontTemplate(nil, 13, 'OUTLINE')
 		panel.HeaderIcon.PointsSpent:Point('BOTTOMRIGHT', 125, 11)
 
-		local arrow = _G['PlayerTalentFramePanel'..i..'Arrow']
+		local arrow = _G[panelName..'Arrow']
 		if arrow then
 			arrow:SetFrameLevel(arrow:GetFrameLevel() + 2)
 		end
 
-		local activeBonus = _G['PlayerTalentFramePanel'..i..'SummaryActiveBonus1']
+		local activeBonus = _G[panelName..'SummaryActiveBonus1']
 		if activeBonus then
 			activeBonus:StripTextures()
 			activeBonus:CreateBackdrop()
@@ -137,7 +138,7 @@ function S:Blizzard_TalentUI()
 		end
 
 		for j = 1, 5 do
-			local bonus = _G['PlayerTalentFramePanel'..i..'SummaryBonus'..j]
+			local bonus = _G[panelName..'SummaryBonus'..j]
 			if bonus then
 				bonus:StripTextures()
 				bonus:CreateBackdrop()
@@ -148,39 +149,35 @@ function S:Blizzard_TalentUI()
 			end
 		end
 
-		S:HandleButton(_G['PlayerTalentFramePanel'..i..'SelectTreeButton'])
-	end
-
-	for i = 1, 3 do
-		for j = 1, MAX_NUM_BRANCH_TEXTURES do
-			local branch = _G['PlayerTalentFramePanel'..i..'Branch'..j]
+		for j = 1, _G.MAX_NUM_BRANCH_TEXTURES do
+			local branch = _G[panelName..'Branch'..j]
 			if branch then
-				branch:SetTexture(136962)
+				branch:SetTexture(136962) -- Interface\\TalentFrame\\UI-TalentBranches
 			end
 		end
-	end
 
-	for i = 1, 3 do
 		for j = 1, _G.MAX_NUM_TALENTS do
-			local talent = _G['PlayerTalentFramePanel'..i..'Talent'..j]
+			local talent = _G[panelName..'Talent'..j]
 			if talent then
 				talent:StripTextures()
 				talent:SetTemplate()
 				talent:StyleButton()
 
-				local icon = _G['PlayerTalentFramePanel'..i..'Talent'..j..'IconTexture']
+				local icon = _G[panelName..'Talent'..j..'IconTexture']
 				if icon then
 					icon:SetInside()
 					icon:SetTexCoord(unpack(E.TexCoords))
 					icon:SetDrawLayer('ARTWORK')
 				end
 
-				local rank = _G['PlayerTalentFramePanel'..i..'Talent'..j..'Rank']
+				local rank = _G[panelName..'Talent'..j..'Rank']
 				if rank then
 					rank:FontTemplate(nil, 12, 'OUTLINE')
 				end
 			end
 		end
+
+		S:HandleButton(_G[panelName..'SelectTreeButton'])
 	end
 
 	-- Pet
