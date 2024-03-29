@@ -522,10 +522,9 @@ local function CreateCustomTextGroup(unit, objectName)
 
 	if unit == 'player' and UF.player.AdditionalPower then
 		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
-		if E.Cata then
-			if E.myclass == 'DRUID' and UF.player.EclipseBar then
-				config.args.attachTextTo.values.EclipseBar = L["Eclipse Power"]
-			end
+
+		if E.Cata and (E.myclass == 'DRUID' and UF.player.EclipseBar) then
+			config.args.attachTextTo.values.EclipseBar = L["Eclipse Power"]
 		end
 	end
 
@@ -1301,8 +1300,8 @@ Colors.classResourceGroup.args.DRUID.inline = true
 do
 	local name = { [1] = L["BALANCE_ENERGY_LUNAR"], [2] = L["BALANCE_ENERGY_SOLAR"] }
 	for i = 1, 2 do
-		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[i], P.unitframe.colors.classResources.DRUID[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
-		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[i], P.unitframe.colors.classResources.DRUID[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local x = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[x], P.unitframe.colors.classResources.DRUID[x] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local x = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[x], P.unitframe.colors.classResources.DRUID[x] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 	end
 end
 

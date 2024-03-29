@@ -3,6 +3,13 @@ if(select(2, UnitClass('player')) ~= 'DRUID') then return end
 local _, ns = ...
 local oUF = ns.oUF
 
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitHasVehicleUI = UnitHasVehicleUI
+local GetShapeshiftFormID = GetShapeshiftFormID
+local GetPrimaryTalentTree = GetPrimaryTalentTree
+local GetEclipseDirection = GetEclipseDirection
+
 local SPELL_POWER_ECLIPSE = SPELL_POWER_ECLIPSE
 local MOONKIN_FORM = MOONKIN_FORM
 
@@ -12,21 +19,21 @@ local function Update(self, event, unit, powerType)
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local cur = UnitPower('player', SPELL_POWER_ECLIPSE)
-	local max = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
+	local CUR = UnitPower('player', SPELL_POWER_ECLIPSE)
+	local MAX = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
 
 	if(element.LunarBar) then
-		element.LunarBar:SetMinMaxValues(-max, max)
-		element.LunarBar:SetValue(cur)
+		element.LunarBar:SetMinMaxValues(-MAX, MAX)
+		element.LunarBar:SetValue(CUR)
 	end
 
 	if(element.SolarBar) then
-		element.SolarBar:SetMinMaxValues(-max, max)
-		element.SolarBar:SetValue(cur * -1)
+		element.SolarBar:SetMinMaxValues(-MAX, MAX)
+		element.SolarBar:SetValue(CUR * -1)
 	end
 
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max, event)
+		return element:PostUpdate(unit, CUR, MAX, event)
 	end
 end
 

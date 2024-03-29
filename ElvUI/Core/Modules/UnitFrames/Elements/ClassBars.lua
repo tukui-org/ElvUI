@@ -7,6 +7,7 @@ local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
@@ -191,22 +192,24 @@ function UF:Configure_ClassBar(frame)
 	elseif frame.ClassBar == 'EclipseBar' then
 		local lunarTex = bars.LunarBar:GetStatusBarTexture()
 
+		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
 		bars.LunarBar:SetMinMaxValues(0, 0)
-		bars.LunarBar:SetStatusBarColor(unpack(ElvUF.colors.ClassBars.DRUID[1]))
+		bars.LunarBar:SetStatusBarColor(lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
-		bars.LunarBar:SetOrientation(vertical and 'VERTICAL' or 'HORIZONTAL')
+		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, UF.db.smoothbars)
 
+		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(0, 0)
-		bars.SolarBar:SetStatusBarColor(unpack(ElvUF.colors.ClassBars.DRUID[2]))
+		bars.SolarBar:SetStatusBarColor(sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH, frame.CLASSBAR_HEIGHT)
-		bars.SolarBar:SetOrientation(vertical and 'VERTICAL' or 'HORIZONTAL')
+		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
-		bars.SolarBar:Point(vertical and 'BOTTOM' or 'LEFT', lunarTex, vertical and 'TOP' or 'RIGHT')
+		bars.SolarBar:Point(isVertical and 'BOTTOM' or 'LEFT', lunarTex, isVertical and 'TOP' or 'RIGHT')
 		E:SetSmoothing(bars.SolarBar, UF.db.smoothbars)
 
 		bars.Arrow:ClearAllPoints()
-		bars.Arrow:Point('CENTER', lunarTex, vertical and 'TOP' or 'RIGHT', 0, vertical and -4 or 0)
+		bars.Arrow:Point('CENTER', lunarTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
 	elseif frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
@@ -610,9 +613,10 @@ end
 function UF:EclipsePostDirectionChange(direction)
 	local frame = self.origParent or self:GetParent()
 	local vertical = frame.CLASSBAR_DETACHED and frame.db.classbar.verticalOrientation
+	local r, g, b = unpack(ElvUF.colors.ClassBars.DRUID[direction == 'sun' and 1 or 2])
 
 	self.Arrow:SetRotation(direction == 'sun' and (vertical and 0 or -1.57) or (vertical and 3.14 or 1.57))
-	self.Arrow:SetVertexColor(unpack(ElvUF.colors.ClassBars[E.myclass][direction == 'sun' and 1 or 2]))
+	self.Arrow:SetVertexColor(r, g, b)
 
 	if direction == 'sun' or direction == 'moon' then
 		self.Arrow:Show()
