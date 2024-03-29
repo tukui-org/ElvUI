@@ -3,29 +3,81 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local strfind = strfind
 local hooksecurefunc = hooksecurefunc
 
-local GetGlyphSocketInfo = GetGlyphSocketInfo
+local CreateFrame = CreateFrame
 local GetNumTalents = GetNumTalents
-
+local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 local NUM_GLYPH_SLOTS = NUM_GLYPH_SLOTS
+
+local function GlyphFrame_Update()
+	local talentFrame = _G.PlayerTalentFrame
+	local isActiveTalentGroup = talentFrame and not talentFrame.pet and talentFrame.talentGroup == _G.GetActiveTalentGroup(talentFrame.pet)
+
+	local glyphFrame = _G.GlyphFrame
+	glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
+	glyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
+
+	for i = 1, NUM_GLYPH_SLOTS do
+		local glyph = _G['GlyphFrameGlyph'..i]
+		if glyph and glyph.icon then
+			local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentFrame.talentGroup)
+			if iconFilename then
+				glyph.icon:SetTexture(iconFilename)
+			else
+				glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
+			end
+
+			_G.GlyphFrameGlyph_UpdateSlot(glyph)
+
+			glyph.icon:SetDesaturation(isActiveTalentGroup and 1 or 0)
+		end
+	end
+end
+
+local function GlyphFrameGlyph_OnUpdate(frame)
+	local glyphTexture = frame.icon:GetTexture()
+	local glyphIcon = glyphTexture and strfind(glyphTexture, [[Interface\Spellbook\UI%-Glyph%-Rune]])
+
+	local alpha = frame.highlight:GetAlpha()
+	if alpha == 0 then
+		local r, g, b = unpack(E.media.bordercolor)
+		frame:SetBackdropBorderColor(r, g, b)
+		frame:SetAlpha(1)
+
+		if glyphIcon then
+			frame.icon:SetVertexColor(1, 1, 1, 1)
+		end
+	else
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		frame:SetBackdropBorderColor(r, g, b)
+		frame:SetAlpha(alpha)
+
+		if glyphIcon then
+			frame.icon:SetVertexColor(r, g, b)
+			frame.icon:SetAlpha(alpha)
+		end
+	end
+end
 
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
-	S:HandleFrame(_G.PlayerTalentFrame, true, nil, 0, 0, 0, 0)
-	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, _G.PlayerTalentFrame.backdrop)
+	local PlayerTalentFrame = _G.PlayerTalentFrame
+	S:HandleFrame(PlayerTalentFrame, true, nil, 0, 0, 0, 0)
+	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, PlayerTalentFrame.backdrop)
 
 	_G.PlayerTalentFrameHeaderFrame:StripTextures()
 	S:HandleButton(_G.PlayerTalentFrameToggleSummariesButton)
 
 	S:HandleButton(_G.PlayerTalentFrameLearnButton)
 	_G.PlayerTalentFrameLearnButton:ClearAllPoints()
-	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', 18, 4)
+	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMLEFT', 18, 4)
 
 	S:HandleButton(_G.PlayerTalentFrameResetButton)
 	_G.PlayerTalentFrameResetButton:ClearAllPoints()
-	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', _G.PlayerTalentFrame, 'BOTTOMRIGHT', -38, 4)
+	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 4)
 
 	if _G.PlayerTalentFrameActivateButton then
 		S:HandleButton(_G.PlayerTalentFrameActivateButton)
@@ -37,8 +89,6 @@ function S:Blizzard_TalentUI()
 
 	for i = 1, 3 do
 		local panel = _G['PlayerTalentFramePanel'..i]
-		local arrow = _G['PlayerTalentFramePanel'..i..'Arrow']
-		local activeBonus = _G['PlayerTalentFramePanel'..i..'SummaryActiveBonus1']
 
 		panel:StripTextures()
 		panel:CreateBackdrop('Transparent')
@@ -69,24 +119,30 @@ function S:Blizzard_TalentUI()
 		panel.HeaderIcon.PointsSpent:FontTemplate(nil, 13, 'OUTLINE')
 		panel.HeaderIcon.PointsSpent:Point('BOTTOMRIGHT', 125, 11)
 
-		arrow:SetFrameLevel(arrow:GetFrameLevel() + 2)
+		local arrow = _G['PlayerTalentFramePanel'..i..'Arrow']
+		if arrow then
+			arrow:SetFrameLevel(arrow:GetFrameLevel() + 2)
+		end
 
-		activeBonus:StripTextures()
-		activeBonus:CreateBackdrop()
-		activeBonus.backdrop:SetOutside(activeBonus.Icon)
-		activeBonus:SetFrameLevel(activeBonus:GetFrameLevel() + 1)
-
-		activeBonus.Icon:SetTexCoord(unpack(E.TexCoords))
+		local activeBonus = _G['PlayerTalentFramePanel'..i..'SummaryActiveBonus1']
+		if activeBonus then
+			activeBonus:StripTextures()
+			activeBonus:CreateBackdrop()
+			activeBonus.backdrop:SetOutside(activeBonus.Icon)
+			activeBonus:SetFrameLevel(activeBonus:GetFrameLevel() + 1)
+			activeBonus.Icon:SetTexCoord(unpack(E.TexCoords))
+		end
 
 		for j = 1, 5 do
 			local bonus = _G['PlayerTalentFramePanel'..i..'SummaryBonus'..j]
+			if bonus then
+				bonus:StripTextures()
+				bonus:CreateBackdrop()
+				bonus.backdrop:SetOutside(bonus.Icon)
+				bonus:SetFrameLevel(bonus:GetFrameLevel() + 1)
 
-			bonus:StripTextures()
-			bonus:CreateBackdrop()
-			bonus.backdrop:SetOutside(bonus.Icon)
-			bonus:SetFrameLevel(bonus:GetFrameLevel() + 1)
-
-			bonus.Icon:SetTexCoord(unpack(E.TexCoords))
+				bonus.Icon:SetTexCoord(unpack(E.TexCoords))
+			end
 		end
 
 		S:HandleButton(_G['PlayerTalentFramePanel'..i..'SelectTreeButton'])
@@ -95,18 +151,22 @@ function S:Blizzard_TalentUI()
 	for i = 1, 3 do
 		for j = 1, MAX_NUM_TALENTS do
 			local talent = _G['PlayerTalentFramePanel'..i..'Talent'..j]
-			local icon = _G['PlayerTalentFramePanel'..i..'Talent'..j..'IconTexture']
-			local rank = _G['PlayerTalentFramePanel'..i..'Talent'..j..'Rank']
 			if talent then
 				talent:StripTextures()
 				talent:SetTemplate()
 				talent:StyleButton()
-	
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetDrawLayer('ARTWORK')
-	
-				rank:FontTemplate(nil, 12, 'OUTLINE')
+
+				local icon = _G['PlayerTalentFramePanel'..i..'Talent'..j..'IconTexture']
+				if icon then
+					icon:SetInside()
+					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetDrawLayer('ARTWORK')
+				end
+
+				local rank = _G['PlayerTalentFramePanel'..i..'Talent'..j..'Rank']
+				if rank then
+					rank:FontTemplate(nil, 12, 'OUTLINE')
+				end
 			end
 		end
 	end
@@ -133,19 +193,22 @@ function S:Blizzard_TalentUI()
 
 	for i = 1, GetNumTalents(1, false, true) do
 		local talent = _G['PlayerTalentFramePetPanelTalent'..i]
-		local icon = _G['PlayerTalentFramePetPanelTalent'..i..'IconTexture']
-		local rank = _G['PlayerTalentFramePetPanelTalent'..i..'Rank']
-
 		if talent then
 			talent:StripTextures()
 			talent:SetTemplate()
 			talent:StyleButton()
 
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetDrawLayer('ARTWORK')
+			local icon = _G['PlayerTalentFramePetPanelTalent'..i..'IconTexture']
+			if icon then
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetDrawLayer('ARTWORK')
+			end
 
-			rank:FontTemplate(nil, 12, 'OUTLINE')
+			local rank = _G['PlayerTalentFramePetPanelTalent'..i..'Rank']
+			if rank then
+				rank:FontTemplate(nil, 12, 'OUTLINE')
+			end
 		end
 	end
 
@@ -156,7 +219,7 @@ function S:Blizzard_TalentUI()
 
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', function()
 		_G.PlayerTalentFrameTab1:ClearAllPoints()
-		_G.PlayerTalentFrameTab1:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
+		_G.PlayerTalentFrameTab1:Point('TOPLEFT', PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
 		_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
 		_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
 	end)
@@ -166,10 +229,11 @@ function S:Blizzard_GlyphUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	-- Glyph Tab
-	_G.GlyphFrame:StripTextures()
-	_G.GlyphFrame:SetTemplate('Transparent')
+	local GlyphFrame = _G.GlyphFrame
+	GlyphFrame:StripTextures()
+	GlyphFrame:SetTemplate('Transparent')
 
-	_G.GlyphFrame.sideInset:StripTextures()
+	GlyphFrame.sideInset:StripTextures()
 
 	S:HandleEditBox(_G.GlyphFrameSearchBox)
 	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
@@ -194,56 +258,22 @@ function S:Blizzard_GlyphUI()
 
 		frame.highlight:SetTexture(nil)
 		frame.ring:Hide()
-		hooksecurefunc(frame.glyph, 'Show', function(self) self:Hide() end)
 
-		frame.icon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.icon:SetInside()
-		frame.icon:SetTexCoord(unpack(E.TexCoords))
+		hooksecurefunc(frame.glyph, 'Show', frame.glyph.Hide)
 
-		frame.onUpdate = CreateFrame('Frame', nil, frame)
-		frame.onUpdate:SetScript('OnUpdate', function()
-			local alpha = frame.highlight:GetAlpha()
-			local glyphIcon = strfind(frame.icon:GetTexture(), 'Interface\\Spellbook\\UI%-Glyph%-Rune')
+		if not frame.icon then
+			frame.icon = frame:CreateTexture(nil, 'OVERLAY')
+			frame.icon:SetInside()
+			frame.icon:SetTexCoord(unpack(E.TexCoords))
+		end
 
-			if alpha == 0 then
-				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				frame:SetAlpha(1)
-
-				if glyphIcon then
-					frame.icon:SetVertexColor(1, 1, 1, 1)
-				end
-			else
-				frame:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-				frame:SetAlpha(alpha)
-
-				if glyphIcon then
-					frame.icon:SetVertexColor(unpack(E.media.rgbvaluecolor))
-					frame.icon:SetAlpha(alpha)
-				end
-			end
-		end)
+		if not frame.onUpdate then
+			frame.onUpdate = CreateFrame('Frame', nil, frame)
+			frame.onUpdate:SetScript('OnUpdate', GlyphFrameGlyph_OnUpdate)
+		end
 	end
 
-	hooksecurefunc('GlyphFrame_Update', function(self)
-		local isActiveTalentGroup = _G.PlayerTalentFrame and not _G.PlayerTalentFrame.pet and _G.PlayerTalentFrame.talentGroup == GetActiveTalentGroup(_G.PlayerTalentFrame.pet)
-
-		_G.GlyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
-		_G.GlyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
-
-		for i = 1, NUM_GLYPH_SLOTS do
-			local glyph = _G['GlyphFrameGlyph'..i]
-			local _, _, _, _, iconFilename = GetGlyphSocketInfo(i, _G.PlayerTalentFrame.talentGroup)
-
-			if iconFilename then
-				glyph.icon:SetTexture(iconFilename)
-			else
-				glyph.icon:SetTexture('Interface\\Spellbook\\UI-Glyph-Rune-'..i)
-			end
-
-			GlyphFrameGlyph_UpdateSlot(glyph)
-			SetDesaturation(glyph.icon, not isActiveTalentGroup)
-		end
-	end)
+	hooksecurefunc('GlyphFrame_Update', GlyphFrame_Update)
 
 	-- Scroll Frame
 	_G.GlyphFrameScrollFrameScrollChild:StripTextures()
@@ -260,30 +290,36 @@ function S:Blizzard_GlyphUI()
 
 	for i = 1, 3 do
 		local header = _G['GlyphFrameHeader'..i]
-		header:StripTextures()
-		header:StyleButton()
+		if header then
+			header:StripTextures()
+			header:StyleButton()
+		end
 	end
 
 	for i = 1, 10 do
 		local button = _G['GlyphFrameScrollFrameButton'..i]
-		local icon = _G['GlyphFrameScrollFrameButton'..i..'Icon']
 		if button and not button.isSkinned then
 			S:HandleButton(button)
-			S:HandleIcon(icon)
+
+			local icon = _G['GlyphFrameScrollFrameButton'..i..'Icon']
+			if icon then
+				S:HandleIcon(icon)
+			end
+
 			button.isSkinned = true
 		end
 	end
 
 	-- Clear Info
-	_G.GlyphFrame.clearInfo:CreateBackdrop()
-	_G.GlyphFrame.clearInfo.backdrop:SetAllPoints()
-	_G.GlyphFrame.clearInfo:StyleButton()
-	_G.GlyphFrame.clearInfo:Size(28)
-	_G.GlyphFrame.clearInfo:Point('BOTTOMLEFT', _G.GlyphFrame, 'BOTTOMRIGHT', 8, -1)
+	GlyphFrame.clearInfo:CreateBackdrop()
+	GlyphFrame.clearInfo.backdrop:SetAllPoints()
+	GlyphFrame.clearInfo:StyleButton()
+	GlyphFrame.clearInfo:Size(28)
+	GlyphFrame.clearInfo:Point('BOTTOMLEFT', GlyphFrame, 'BOTTOMRIGHT', 8, -1)
 
-	_G.GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
-	_G.GlyphFrame.clearInfo.icon:ClearAllPoints()
-	_G.GlyphFrame.clearInfo.icon:SetInside()
+	GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
+	GlyphFrame.clearInfo.icon:ClearAllPoints()
+	GlyphFrame.clearInfo.icon:SetInside()
 end
 
 S:AddCallbackForAddon('Blizzard_TalentUI')
