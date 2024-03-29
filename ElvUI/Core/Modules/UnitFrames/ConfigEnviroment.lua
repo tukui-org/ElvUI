@@ -51,6 +51,7 @@ local classPowers = {
 
 if E.Cata then -- also handled in Elements/Power
 	classPowers[4] = PowerType.RunicPower
+	classPowers[26] = PowerType.Balance
 elseif E.Retail then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[5] = PowerType.PAIN
