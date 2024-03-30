@@ -13,6 +13,7 @@ externals:
   ElvUI_Libraries/Core/Ace3/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
   ElvUI_Libraries/Core/Ace3/AceTimer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceTimer-3.0
   ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets: https://repos.curseforge.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets
+  ElvUI_Libraries/Core/LibDispel: https://github.com/tukui-org/LibDispel
   ElvUI_Libraries/Core/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
   ElvUI_Libraries/Core/LibStub: https://repos.curseforge.com/wow/libstub/trunk
   ElvUI_Libraries/Core/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
