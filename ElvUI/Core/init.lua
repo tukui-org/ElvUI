@@ -5,8 +5,8 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next = gsub, tinsert, next
-local tostring, strfind, type, strsub = tostring, strfind, type, strsub
+local gsub, tinsert, next, type = gsub, tinsert, next, type
+local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -114,13 +114,12 @@ do -- this is different from E.locale because we need to convert for ace locale 
 end
 
 function E:ParseVersionString(addon)
-	local version = strsub(GetAddOnMetadata(addon, 'Version'), 2)
-	if not strfind(version, '%-') then
-		return tonumber(version), version
-	elseif strfind(version, 'project%-version') then
-		return 99999, 'Development'
+	local version = GetAddOnMetadata(addon, 'Version')
+	if strfind(version, 'project%-version') then
+		return 99999, 'Development', nil, true
 	else
-		return 99999, version
+		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
+		return tonumber(release), release..extra, extra ~= ''
 	end
 end
 
