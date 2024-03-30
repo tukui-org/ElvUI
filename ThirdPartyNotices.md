@@ -81,7 +81,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## AceGUI-3.0-SharedMediaWidgets
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets)
+**Path**: ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets
 
 ### License
 
@@ -91,7 +91,7 @@ All rights reserved to the owner.
 
 ## CallbackHandler-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/CallbackHandler-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/CallbackHandler-1.0)
+**Path**: ElvUI_Libraries/Core/CallbackHandler-1.0
 
 ### License
 
@@ -179,7 +179,7 @@ All rights reserved to the owner.
 
 ## LibCustomGlow-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibCustomGlow-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibCustomGlow-1.0)
+**Path**: ElvUI_Libraries/Core/LibCustomGlow-1.0
 
 ### License
 
@@ -209,7 +209,7 @@ SOFTWARE.
 
 ## LibDataBroker
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDataBroker](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDataBroker)
+**Path**: ElvUI_Libraries/Core/LibDataBroker
 
 ### License
 
@@ -247,17 +247,37 @@ freely, subject to the following restrictions:
 
 ## LibDispel
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDispel](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDispel)
+**Path**: ElvUI_Libraries/Core/LibDispel
 
 ### License
 
 ```
-All rights reserved to the owner.
+MIT License
+
+Copyright (c) 2024 Tukui.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 ## LibDualSpec-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDualSpec-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDualSpec-1.0)
+**Path**: ElvUI_Libraries/Core/LibDualSpec-1.0
 
 ### License
 
@@ -335,7 +355,7 @@ SOFTWARE.
 
 ## LibSharedMedia-3.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibSharedMedia-3.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibSharedMedia-3.0)
+**Path**: ElvUI_Libraries/Core/LibSharedMedia-3.0
 
 ### License
 
@@ -812,7 +832,7 @@ All rights reserved to the owner.
 
 ## LibStub
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibStub](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibStub)
+**Path**: ElvUI_Libraries/Core/LibStub
 
 ### License
 
@@ -822,7 +842,7 @@ This work is dedicated to the public domain.
 
 ## LibTranslit-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibTranslit-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibTranslit-1.0)
+**Path**: ElvUI_Libraries/Core/LibTranslit-1.0
 
 ### License
 
@@ -1040,7 +1060,7 @@ All rights reserved to the owner.
 
 ## TaintLess
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/TaintLess](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/TaintLess)
+**Path**: ElvUI_Libraries/Core/TaintLess
 
 ### License
 
@@ -1050,7 +1070,7 @@ All rights reserved to the owner.
 
 ## UTF8
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/UTF8](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/UTF8)
+**Path**: ElvUI_Libraries/Core/UTF8
 
 ### License
 
@@ -1094,7 +1114,7 @@ All rights reserved to the owner.
 
 ## LibQuestXP
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibQuestXP](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibQuestXP)
+**Path**: ElvUI_Libraries/Classic/LibQuestXP
 
 ### License
 
