@@ -28,6 +28,7 @@ $RECYCLE.BIN/
 ElvUI_Libraries/Classic/LibQuestXP
 ElvUI_Libraries/Core/*
 !ElvUI_Libraries/Core/Ace3/AceConfig-3.0
+ElvUI_Libraries/Core/Ace3/AceConfig-3.0/AceConfigCmd-3.0
 !ElvUI_Libraries/Core/Ace3/AceLocale-3.0
 !ElvUI_Libraries/Core/Ace3/LICENSE.txt
 !ElvUI_Libraries/Core/Ace3-ElvUI

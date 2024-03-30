@@ -13,7 +13,7 @@ Very light wrapper library that combines all the AceConfig subcomponents into on
 ]]
 
 local cfgreg = LibStub("AceConfigRegistry-3.0-ElvUI")
-local cfgcmd = LibStub("AceConfigCmd-3.0-ElvUI")
+local cfgcmd = LibStub("AceConfigCmd-3.0")
 
 local MAJOR, MINOR = "AceConfig-3.0-ElvUI", 3
 local AceConfig = LibStub:NewLibrary(MAJOR, MINOR)
