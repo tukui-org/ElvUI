@@ -46,7 +46,7 @@ body:
       label: Verification Steps
       description: This is important in order to rule out any other addons causing the issue.
       options:
-        - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/development/CHANGELOG.md) and verified [ElvUI](https://tukui.org/elvui) is up to date by checking **/estatus**
+        - label: I have read the [Changelog](https://github.com/tukui-org/ElvUI/blob/main/CHANGELOG.md) and verified [ElvUI](https://tukui.org/elvui) is up to date by checking **/estatus**
           required: true
         - label: I have verified my issue doesn't exist in the Default UI or the [Issue Tracker](https://github.com/tukui-org/ElvUI/issues).
           required: true
