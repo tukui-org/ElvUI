@@ -116,7 +116,7 @@ end
 
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
-	if version == '@project-version@' then
+	if strfind(version, 'project%-version') then
 		return 13.60, '13.60-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
