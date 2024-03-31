@@ -1212,6 +1212,7 @@ do
 					if highestVersion < userVersion then
 						highestVersion = userVersion
 					end
+
 					return (userVersion < highestVersion) and '|cffFF3333E|r' or '|cff3366ffE|r'
 				end
 			end
