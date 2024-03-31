@@ -31,10 +31,32 @@ manual-changelog:
   markup-type: markdown
 
 ignore:
-  - README.md
-  - CHANGELOG.md
-  - LICENSE.md
-  - ThirdPartyNotices.md
+  - "*.md"
+  - "*.textile"
+  - ElvUI_Libraries/Core/LibStub/tests
+
+plain-copy:
+  - ElvUI/Classic
+  - ElvUI/Core
+  - ElvUI/Locales
+  - ElvUI/Mainline
+  - ElvUI/Wrath
+  - ElvUI_Libraries/Classic/LibClassicSpecs
+  - ElvUI_Libraries/Core/Ace3
+  - ElvUI_Libraries/Core/Ace3-ElvUI
+  - ElvUI_Libraries/Core/LibAceConfigHelper
+  - ElvUI_Libraries/Core/LibActionButton-1.0
+  - ElvUI_Libraries/Core/LibAnim
+  - ElvUI_Libraries/Core/LibDeflate
+  - ElvUI_Libraries/Core/LibElvUIPlugin-1.0
+  - ElvUI_Libraries/Core/LibRangeCheck-3.0
+  - ElvUI_Libraries/Core/LibSimpleSticky
+  - ElvUI_Libraries/Core/oUF
+  - ElvUI_Libraries/Core/oUF_Plugins
+  - ElvUI_Libraries/Mainline
+  - ElvUI_Libraries/Wrath
+  - ElvUI_Options/Core
+  - ElvUI_Options/Locales
 
 move-folders:
   ElvUI/ElvUI: ElvUI
