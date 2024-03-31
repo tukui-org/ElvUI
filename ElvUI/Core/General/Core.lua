@@ -900,14 +900,12 @@ end
 do
 	local SendMessageWaiting -- only allow 1 delay at a time regardless of eventing
 	function E:SendMessage()
-		if not E.versionGit then
-			if IsInRaid() then
-				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
-			elseif IsInGroup() then
-				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
-			elseif IsInGuild() then
-				C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
-			end
+		if IsInRaid() then
+			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
+		elseif IsInGroup() then
+			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
+		elseif IsInGuild() then
+			C_ChatInfo_SendAddonMessage('ELVUI_VERSIONCHK', E.version, 'GUILD')
 		end
 
 		SendMessageWaiting = nil
@@ -959,11 +957,8 @@ do
 	local f = CreateFrame('Frame')
 	f:SetScript('OnEvent', SendRecieve)
 	f:RegisterEvent('CHAT_MSG_ADDON')
-
-	if not E.versionGit then
-		f:RegisterEvent('GROUP_ROSTER_UPDATE')
-		f:RegisterEvent('PLAYER_ENTERING_WORLD')
-	end
+	f:RegisterEvent('GROUP_ROSTER_UPDATE')
+	f:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 function E:UpdateStart(skipCallback, skipUpdateDB)

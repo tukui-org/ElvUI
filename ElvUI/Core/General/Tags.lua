@@ -1201,7 +1201,7 @@ do
 end
 
 do
-	local highestVersion = E.versionGit and 0 or E.version
+	local highestVersion = E.version
 	E:AddTag('ElvUI-Users', 20, function(unit)
 		if E.UserList and next(E.UserList) then
 			local name, realm = UnitName(unit)
