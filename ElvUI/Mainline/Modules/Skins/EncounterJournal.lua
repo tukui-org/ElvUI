@@ -381,6 +381,7 @@ function S:Blizzard_EncounterJournal()
 
 	if E.private.skins.parchmentRemoverEnable then
 		EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
+		EJ.MonthlyActivitiesFrame.ThemeContainer:SetAlpha(0)
 		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
 
 		local suggestFrame = EJ.suggestFrame
