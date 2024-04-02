@@ -448,6 +448,7 @@ if E.ClassicSOD then
 	-- Whitelist World Event Auras
 	Whitelist[433804] = List(6) -- Blood for the Blood Loa
 	Whitelist[441785] = List(6) -- Drained of Blood
+	Whitelist[437751] = List(6) -- Bruised
 	Whitelist[436351] = List(6) -- Zandalari Ward
 	Whitelist[429959] = List(2) -- Well-Rested
 	-- Priest Rune Meditations
