@@ -383,7 +383,7 @@ do --this can save some main file locals
 		z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
 		z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
 		z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
-		z['Player-1401-041CD0A6']	= ElvYellow	-- [Alliance] Rogue:	Jústice
+		z['Player-1401-0A9B0131']	= ElvYellow	-- [Alliance] Rogue:	Anonia
 		z['Player-1401-041E4D64']	= ElvGreen	-- [Alliance] Monk:		Maithilis
 		z['Player-1401-0648F4AD']	= ElvPurple	-- [Alliance] DH:		Mattdemôn
 		z['Player-1401-0421F27B']	= ElvBlue	-- [Alliance] Mage:		Melisendra
