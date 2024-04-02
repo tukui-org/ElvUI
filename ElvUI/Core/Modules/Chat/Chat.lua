@@ -327,7 +327,7 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		-- Luckyone Seasonal (5826: Lone Wolf EU)
+		-- Luckyone Seasonal (5826: Lone Wolf EU, 5827: Living Flame EU)
 		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
 		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin
 		z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock
@@ -336,6 +336,7 @@ do --this can save some main file locals
 		z['Player-5826-023424EF']	= ElvBlue -- [Alliance] Druid
 		z['Player-5826-02342520']	= ElvBlue -- [Alliance] Rogue
 		z['Player-5826-02342556']	= ElvBlue -- [Alliance] Warrior
+		z['Player-5827-02331C4B']	= ElvBlue -- [Horde] Shaman
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
