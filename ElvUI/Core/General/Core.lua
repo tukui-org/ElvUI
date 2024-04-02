@@ -1993,7 +1993,7 @@ function E:Initialize()
 		E:Tutorials()
 	end
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Wrath or E.ClassicSOD then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 
