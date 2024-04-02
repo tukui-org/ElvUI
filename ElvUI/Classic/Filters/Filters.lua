@@ -903,6 +903,7 @@ G.unitframe.ChannelTicks = {
 if E.ClassicSOD then
 	G.unitframe.ChannelTicks[402261] = 3 -- Penance (DPS)
 	G.unitframe.ChannelTicks[402277] = 3 -- Penance (Healing)
+	G.unitframe.ChannelTicks[413259] = 5 -- Mind Sear (Rune)
 end
 
 -- Spells that chain, second step
