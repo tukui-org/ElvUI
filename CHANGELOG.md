@@ -1,4 +1,4 @@
-### Version 13.61 [ April 4th 2024 ]
+### Version 13.61 [ April 2nd 2024 ]
 *   Microbar Support Ticket button in middle of screen.
 *   Minimap Icons not hiding when using the keybind for Toggle Minimap.
 *   No Label, Decimal Length, Custom Label options for the Leech Datatext.
