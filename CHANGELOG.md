@@ -1,3 +1,14 @@
+### Version 13.61 [ April 4th 2024 ]
+*   Microbar Support Ticket button in middle of screen.
+*   Minimap Icons not hiding when using the keybind for Toggle Minimap.
+*   No Label, Decimal Length, Custom Label options for the Leech Datatext.
+*   Minimap Difficulty icon not respecting offsets on Wrath.
+*   Party and RaidPets not spawning until after combat.
+*   SoD Mage at low level having incorrect range on friendly NPCs.
+*   Wrath Nightelf Shadowmeld causing a taint during combat.
+*   LibDispel Bleed list updated again.
+*   Chat AFK and DND not displaying on Retail.
+
 ### Version 13.60 [ March 19th 2024 ]
 *   Difficulty Icon on Minimap improved, resolving an issue with the mouseover tooltip.
 *   Pet Battle XP bar overlapped Pass button.

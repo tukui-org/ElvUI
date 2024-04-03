@@ -8,7 +8,6 @@ local gsub = gsub
 local assert = assert
 local unpack = unpack
 local tinsert = tinsert
-local strfind = strfind
 local CreateFrame = CreateFrame
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver

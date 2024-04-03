@@ -4,7 +4,6 @@ local MC = E:GetModule('ModuleCopy')
 local D = E:GetModule('Distributor')
 local S = E:GetModule('Skins')
 
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 -- GLOBALS: ElvDB
 
 local ACH = E.Libs.ACH
