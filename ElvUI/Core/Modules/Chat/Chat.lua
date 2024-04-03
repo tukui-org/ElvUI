@@ -150,7 +150,6 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_BN_WHISPER_INFORM	= 'WHISPER',
 	CHAT_MSG_GUILD				= 'GUILD',
 	CHAT_MSG_GUILD_ACHIEVEMENT	= 'GUILD',
-	CHAT_MSG_GUILD_DEATHS 		= E.ClassicHC and 'GUILD' or nil,
 	CHAT_MSG_PARTY			= 'PARTY',
 	CHAT_MSG_PARTY_LEADER	= 'PARTY',
 	CHAT_MSG_RAID			= 'RAID',
@@ -1961,7 +1960,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		end
 	else
 		if not showLink or arg2 == '' then
-			if chatType == 'TEXT_EMOTE' or chatType == 'GUILD_DEATHS' then
+			if chatType == 'TEXT_EMOTE' then
 				body = message
 			else
 				body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..arg2, arg2)
@@ -2953,7 +2952,6 @@ local FindURL_Events = {
 	'CHAT_MSG_BN_WHISPER_INFORM',
 	'CHAT_MSG_BN_INLINE_TOAST_BROADCAST',
 	'CHAT_MSG_GUILD_ACHIEVEMENT',
-	E.ClassicHC and 'CHAT_MSG_GUILD_DEATHS' or nil,
 	'CHAT_MSG_GUILD',
 	'CHAT_MSG_PARTY',
 	'CHAT_MSG_PARTY_LEADER',
