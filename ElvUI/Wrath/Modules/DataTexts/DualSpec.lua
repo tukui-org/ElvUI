@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+if not (E.Wrath or E.ClassicSOD) then return end
+
 local _G = _G
 local format, strjoin = format, strjoin
 local HideUIPanel = HideUIPanel
