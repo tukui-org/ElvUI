@@ -972,7 +972,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 
 	config.args.positionsGroup = ACH:Group(L["Size and Positions"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.positionsGroup.inline = true
-	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 40, max = 1000, step = 1 })
+	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 	config.args.positionsGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 
 	if groupName == 'party' or strmatch(groupName, '^raid') then
