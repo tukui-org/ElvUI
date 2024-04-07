@@ -71,8 +71,6 @@ local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetSpellInfo = GetSpellInfo
 local GetSpellTabInfo = GetSpellTabInfo
 local GetTime = GetTime
-local GetCVar = GetCVar
-local SetCVar = SetCVar
 local InCombatLockdown = InCombatLockdown
 local IsItemInRange = IsItemInRange
 local IsSpellInRange = IsSpellInRange
@@ -1021,10 +1019,6 @@ function lib:init(forced)
   local _, playerClass = UnitClass("player")
   local _, playerRace = UnitRace("player")
 
-  -- this will fix a problem where spells dont show as existing because they are 'hidden' (fix from LibDispel)
-  lib.skipRanks = true -- ignore the cvar calling scheduleInit
-  local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
-
   local interactList = InteractLists[playerRace] or DefaultInteractList
   self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
   local changed = false
@@ -1049,12 +1043,6 @@ function lib:init(forced)
   if updateCheckers(self.petRC, self.petRCInCombat, createCheckerList(PetSpells[playerClass], nil, interactList)) then
     changed = true
   end
-
-  if undoRanks then -- fix from LibDispel
-    SetCVar('ShowAllSpellRanks', '0')
-  end
-  lib.skipRanks = false -- allow cvar again
-
   if changed and self.callbacks then
     self.callbacks:Fire(self.CHECKERS_CHANGED)
   end
@@ -1265,7 +1253,7 @@ function lib:SPELLS_CHANGED()
 end
 
 function lib:CVAR_UPDATE(_, cvar)
-  if cvar == "ShowAllSpellRanks" and not lib.skipRanks then
+  if cvar == "ShowAllSpellRanks" then
     self:scheduleInit()
   end
 end
