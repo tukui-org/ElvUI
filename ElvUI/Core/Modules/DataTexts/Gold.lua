@@ -26,7 +26,7 @@ local CURRENCY = CURRENCY
 
 local menuList, myGold = {}, {}
 local totalGold, totalHorde, totalAlliance = 0, 0, 0
-local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local iconStringName = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s'
 local db
 
 local function sortFunction(a, b)
@@ -218,7 +218,7 @@ local function OnEnter()
 			end
 
 			if info.quantity then
-				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(format(iconStringName, info.iconFileID, name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 
 			index = index + 1
