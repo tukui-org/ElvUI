@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 15 -- real minor version: 13
+local MINOR_VERSION = 16 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -197,7 +197,7 @@ if not isRetail then
 end
 
 if isEraSOD then
-  MatchSpellByID[401417] = true -- conflicts with Racial Passive on Trolls
+  MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
 
   tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
