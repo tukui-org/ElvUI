@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
+if not (E.Wrath or E.ClassicSOD) then return end
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
