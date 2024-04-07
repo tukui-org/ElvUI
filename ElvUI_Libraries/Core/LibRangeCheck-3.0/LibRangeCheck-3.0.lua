@@ -197,7 +197,7 @@ if not isRetail then
 end
 
 if isEraSOD then
-  MatchSpellByID[401417] = true
+  MatchSpellByID[401417] = true -- conflicts with Racial Passive on Trolls
 
   tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
