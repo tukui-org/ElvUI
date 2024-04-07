@@ -1,8 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-if not (E.Wrath or E.ClassicSOD) then return end
-
 local _G = _G
 local format, strjoin = format, strjoin
 local HideUIPanel = HideUIPanel
@@ -29,7 +27,7 @@ local function BuildTalentString(talentGroup)
 
 	for i = 1, MAX_TALENT_TABS do
 		local _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
-		if (str == '') then
+		if str == '' then
 			str = pointsSpent
 		else
 			str = strjoin('/', str, pointsSpent)
@@ -59,10 +57,12 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(PRIMARY, activeGroup == 1 and '0CD809' or 'FFFFFF'), primaryStr))
+	local primary = format('%s: %s', ColorText(PRIMARY, activeGroup == 1 and '0CD809' or 'FFFFFF'), primaryStr)
+	DT.tooltip:AddDoubleLine(primary)
 
 	if hasDualSpec then
-		DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(SECONDARY, activeGroup == 2 and '0CD809' or 'FFFFFF'), secondaryStr))
+		local secondary = format('%s: %s', ColorText(SECONDARY, activeGroup == 2 and '0CD809' or 'FFFFFF'), secondaryStr)
+		DT.tooltip:AddDoubleLine(secondary)
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -87,10 +87,8 @@ local function OnClick(_, button)
 			else
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
-		else
-			if hasDualSpec then
-				SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
-			end
+		elseif hasDualSpec then
+			SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
 		end
 	end
 end
