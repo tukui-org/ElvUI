@@ -337,10 +337,6 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	S:HandleButton(_G.InterfaceOptionsFrameTab2)
 
-	-- Features tab
-	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelEquipmentManager)
-	S:HandleCheckBox(_G.InterfaceOptionsFeaturesPanelPreviewTalentChanges)
-
 	-- Plus minus buttons in addons category
 	hooksecurefunc('InterfaceOptions_AddCategory', Skin_InterfaceOptions_Buttons)
 	Skin_InterfaceOptions_Buttons()
