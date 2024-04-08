@@ -297,6 +297,37 @@ function S:CharacterFrame()
 		S:HandleIconSelectionFrame(frame)
 	end)
 
+	-- Stats
+	for i = 1, 7 do
+		local frame = _G['CharacterStatsPaneCategory'..i]
+		local name = _G['CharacterStatsPaneCategory'..i..'NameText']
+		frame.Toolbar = _G['CharacterStatsPaneCategory'..i..'Toolbar']
+
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+
+		S:HandleButton(frame.Toolbar, nil, nil, true)
+
+		name:ClearAllPoints()
+		name:Point('CENTER', frame.Toolbar, 'CENTER')
+
+		_G['CharacterStatsPaneCategory'..i..'Stat1']:Point('TOPLEFT', frame, 'TOPLEFT', 16, -18)
+
+		--_G['CharacterStatsPaneCategory'..i..'ToolbarSortUpArrow']:Kill()
+		_G['CharacterStatsPaneCategory'..i..'ToolbarSortDownArrow']:Kill()
+	end
+
+	hooksecurefunc('PaperDollFrame_SetResistance', function(statFrame, unit, index)
+		local _, resistance = UnitResistance(unit, index)
+		local resistanceIcons = '|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon'..(index + 1)..':12:12:0:0:64:64:4:55:4:55|t'
+
+		_G[statFrame:GetName()..'Label']:SetText(resistanceIcons..' '..format(STAT_FORMAT, _G['SPELL_SCHOOL'..index..'_CAP']))
+		statFrame.tooltip = resistanceIcons..' '..HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, _G['RESISTANCE'..index..'_NAME'])..' '..resistance..FONT_COLOR_CODE_CLOSE
+	end)
+
+	-- Expand Button
+	-- TODO
+
 	-- Pet Frame
 	S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
 	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
