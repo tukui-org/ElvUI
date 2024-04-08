@@ -208,7 +208,7 @@ function M:ADDON_LOADED(_, addon)
 		_G.TimeManagerClockButton:Kill()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
-	elseif addon == 'Blizzard_EncounterJournal' then
+	elseif addon == 'Blizzard_EncounterJournal' and E.Retail then
 		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
 		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end

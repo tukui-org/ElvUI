@@ -19,6 +19,7 @@
 	<Script file='Communities.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
+	<Script file='EncounterJournal.lua'/>
 	<Script file='EventTrace.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Gossip.lua'/>
