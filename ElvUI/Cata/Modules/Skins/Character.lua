@@ -162,6 +162,21 @@ local function UpdateCurrencySkins()
 	end
 end
 
+local function HandleTabs()
+	local lastTab
+	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -10, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+		end
+
+		lastTab = tab
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -282,27 +297,6 @@ function S:CharacterFrame()
 		S:HandleIconSelectionFrame(frame)
 	end)
 
-	do -- Handle Tabs at bottom of character frame
-		local i = 1
-		local tab, prev = _G['CharacterFrameTab'..i]
-		while tab do
-			S:HandleTab(tab)
-
-			tab:ClearAllPoints()
-
-			if prev then -- Reposition Tabs
-				tab:Point('TOPLEFT', prev, 'TOPRIGHT', -19, 0)
-			else
-				tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -10, 0)
-			end
-
-			prev = tab
-
-			i = i + 1
-			tab = _G['CharacterFrameTab'..i]
-		end
-	end
-
 	-- Pet Frame
 	S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
 	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
@@ -363,6 +357,14 @@ function S:CharacterFrame()
 
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
+
+	-- Tabs
+	for i = 1, #CHARACTERFRAME_SUBFRAMES do
+		S:HandleTab(_G['CharacterFrameTab'..i])
+	end
+
+	-- Reposition Tabs
+	HandleTabs()
 
 	-- Buttons used to toggle between equipment manager, titles, and character stats
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
