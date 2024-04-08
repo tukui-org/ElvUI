@@ -364,6 +364,7 @@ function S:CharacterFrame()
 	end
 
 	-- Reposition Tabs
+	hooksecurefunc('PetPaperDollFrame_UpdateIsAvailable', HandleTabs)
 	HandleTabs()
 
 	-- Buttons used to toggle between equipment manager, titles, and character stats
