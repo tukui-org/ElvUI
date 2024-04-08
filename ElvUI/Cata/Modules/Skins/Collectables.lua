@@ -196,6 +196,9 @@ local function SkinMountFrame()
 
 	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
 
+	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
+	S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
+
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
@@ -311,19 +314,14 @@ local function SkinHeirloomFrame()
 			button.IsSkinned = true
 		end
 
-		button.levelBackground:SetTexture()
-
 		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
-		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(0.9, 0.9, 0.9)
-			button.level:SetTextColor(0.9, 0.9, 0.9)
 			button.special:SetTextColor(1, .82, 0)
 			button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
 		else
 			button.name:SetTextColor(0.4, 0.4, 0.4)
-			button.level:SetTextColor(0.4, 0.4, 0.4)
 			button.special:SetTextColor(0.4, 0.4, 0.4)
 			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
