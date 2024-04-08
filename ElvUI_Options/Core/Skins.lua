@@ -111,6 +111,7 @@ if E.Retail then
 elseif E.Cata then
 	toggles.arena = L["Arena"]
 	toggles.arenaRegistrar = L["Arena Registrar"]
+	toggles.reforge = L["Reforge"]
 elseif E.Classic then
 	toggles.engraving = L["Engraving"]
 	toggles.battlefield = L["Battlefield"]

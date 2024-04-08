@@ -1345,6 +1345,7 @@ L["Reaction"] = true
 L["Reactions"] = "声望"
 L["Ready Check Icon"] = "就位确认图标"
 L["Reagent"] = true
+L["Reforge"] = "重铸"
 L["Remaining / Max"] = "剩余值 / 最大值"
 L["Remaining"] = "剩余值"
 L["Remove a Item Name or ID from the list."] = "从列表中移除物品名称或ID"

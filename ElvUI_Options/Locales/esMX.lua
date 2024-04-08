@@ -1344,6 +1344,7 @@ L["Reaction"] = true
 L["Reactions"] = "Reacciones"
 L["Ready Check Icon"] = true
 L["Reagent"] = true
+L["Reforge"] = "Reforjar"
 L["Remaining / Max"] = true
 L["Remaining"] = "Restante"
 L["Remove a Item Name or ID from the list."] = true

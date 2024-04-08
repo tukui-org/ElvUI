@@ -1345,6 +1345,7 @@ L["Reaction"] = true
 L["Reactions"] = "Reaksiyonlar"
 L["Ready Check Icon"] = "Hazirlik Kontrol Ikonu"
 L["Reagent"] = true
+L["Reforge"] = true
 L["Remaining / Max"] = "Kalan / Maks"
 L["Remaining"] = "Geriye kalan"
 L["Remove a Item Name or ID from the list."] = "Listeden bir Oge Ismi veya Kimligi kaldirin."
