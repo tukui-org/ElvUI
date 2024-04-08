@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
+if not (E.Wrath or E.ClassicSOD) then return end
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
@@ -20,25 +21,17 @@ local GetTalentTabInfo = GetTalentTabInfo
 local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
 
 local displayString, db = ''
-local primaryStr, secondaryStr, activeGroup, hasDualSpec
+local primaryStr, secondaryStr, activeGroup, hasDualSpec = '', ''
 
 local function BuildTalentString(talentGroup)
 	local str = ''
 
 	for i = 1, MAX_TALENT_TABS do
-		local _, _, _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
-		if (str == '') then
-			str = pointsSpent
-		else
-			str = strjoin('/', str, pointsSpent)
-		end
+		local _, _, pointsSpent = GetTalentTabInfo(i, false, false, talentGroup)
+		str = (str == '' and pointsSpent) or strjoin('/', str, pointsSpent)
 	end
 
 	return str
-end
-
-local function ColorText(str, hex)
-	return format('|cff%s%s|r',hex,str)
 end
 
 local function OnEvent(self)
@@ -56,11 +49,10 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
-	DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(PRIMARY, activeGroup == 1 and '0CD809' or 'FFFFFF'), primaryStr))
+	DT.tooltip:AddLine(format('|cff%s%s:|r %s', activeGroup == 1 and '0CD809' or 'FFFFFF', PRIMARY, primaryStr), 1, 1, 1)
 
 	if hasDualSpec then
-		DT.tooltip:AddDoubleLine(format('%s: %s', ColorText(SECONDARY, activeGroup == 2 and '0CD809' or 'FFFFFF'), secondaryStr))
+		DT.tooltip:AddLine(format('|cff%s%s:|r %s', activeGroup == 2 and '0CD809' or 'FFFFFF', SECONDARY, secondaryStr), 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -85,10 +77,8 @@ local function OnClick(_, button)
 			else
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
-		else
-			if hasDualSpec then
-				SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
-			end
+		elseif hasDualSpec then
+			SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
 		end
 	end
 end
