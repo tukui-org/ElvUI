@@ -16,6 +16,8 @@ L["LEFT"] = "왼쪽"
 L["RIGHT"] = "오른쪽"
 L["TOP"] = "위쪽"
 
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s 이후 %s"
 L["24-Hour Time"] = "24시제로 표시"
 L["2D"] = "이미지"

@@ -16,6 +16,8 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Pet Specific"] = "Específico para Mascotas"
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = "Utilice el filtro específico del perfil Indicador de Aura (Mascota) en lugar del filtro global Indicador de Aura."
 L["%s and then %s"] = "%s y entonces %s"
 L["24-Hour Time"] = "Tiempo de 24 horas"
 L["2D"] = "2D"
@@ -1292,7 +1294,7 @@ L["PROFESSIONS_CRAFTING"] = "Fabricación"
 L["PROFESSIONS_FISHING"] = "Pesca"
 L["Profile imported successfully!"] = true
 L["Profile Name"] = true
-L["Profile Specific"] = true
+L["Profile Specific"] = "Perfil Específico"
 L["Profile"] = "Perfile"
 L["Profiles"] = "Perfiles"
 L["Progress Bar"] = true
@@ -1807,7 +1809,7 @@ L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Norm
 L["Use Static Position"] = true
 L["Use Subzone Names"] = true
 L["Use the custom backdrop color instead of a multiple of the main color."] = true
-L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."] = true
+L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."] = "Utilice el filtro específico del perfil Indicador de Aura (Perfil) en lugar del filtro global Indicador de Aura."
 L["Use thin borders on certain nameplate elements."] = true
 L["Use thin borders on certain unitframe elements."] = true
 L["Use this backdrop color for units that are dead or ghosts."] = true

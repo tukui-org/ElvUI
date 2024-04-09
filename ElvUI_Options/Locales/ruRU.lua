@@ -16,6 +16,8 @@ L["LEFT"] = "Слева"
 L["RIGHT"] = "Справа"
 L["TOP"] = "Вверху"
 
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
 L["2D"] = "2D" --Doesn't need translation

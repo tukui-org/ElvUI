@@ -16,6 +16,8 @@ L["LEFT"] = "Links"
 L["RIGHT"] = "Rechts"
 L["TOP"] = "Oben"
 
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s und dann %s"
 L["24-Hour Time"] = "24-Stunden Format"
 L["2D"] = "2D"

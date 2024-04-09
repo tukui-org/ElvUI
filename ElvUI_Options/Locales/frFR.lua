@@ -16,6 +16,8 @@ L["LEFT"] = "GAUCHE"
 L["RIGHT"] = "DROITE"
 L["TOP"] = "HAUT"
 
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s et alors %s"
 L["24-Hour Time"] = "Mode 24 Heures"
 L["2D"] = true
