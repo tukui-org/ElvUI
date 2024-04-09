@@ -1348,6 +1348,7 @@ local UF_AuraBars = {
 
 local UF_AuraWatch = {
 	enable = false,
+	petSpecific = E.Retail,
 	profileSpecific = false,
 	countFont = 'PT Sans Narrow',
 	countFontOutline = 'OUTLINE',
