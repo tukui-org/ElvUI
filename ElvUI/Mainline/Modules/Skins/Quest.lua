@@ -496,13 +496,6 @@ function S:BlizzardQuestFrames()
 		button.hover = hover
 	end
 
-	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
-		local mapFrame = _G.QuestMapFrame:GetParent()
-
-		_G.QuestModelScene:ClearAllPoints()
-		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
-	end)
-
 	_G.QuestModelScene:Height(247)
 	_G.QuestModelScene:StripTextures()
 	_G.QuestModelScene:CreateBackdrop('Transparent')
@@ -519,6 +512,13 @@ function S:BlizzardQuestFrames()
 	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
 
 	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
+
+	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
+		local mapFrame = _G.QuestMapFrame:GetParent()
+
+		_G.QuestModelScene:ClearAllPoints()
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
+	end)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)

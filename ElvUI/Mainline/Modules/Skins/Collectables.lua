@@ -120,17 +120,22 @@ local function JournalScrollButtons(frame)
 
 	for _, bu in next, { frame.ScrollTarget:GetChildren() } do
 		if not bu.IsSkinned then
+			local icon = bu.icon or bu.Icon
+			local savedIconTexture = icon:GetTexture()
+			icon:Size(40)
+			icon:Point('LEFT', -43, 0)
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:CreateBackdrop('Transparent', nil, nil, true)
+
+			local savedPetTypeTexture = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
+			local savedFactionAtlas = bu.factionIcon and bu.factionIcon:GetAtlas()
+
 			bu:StripTextures()
 			bu:CreateBackdrop('Transparent', nil, nil, true)
 			bu.backdrop:ClearAllPoints()
 			bu.backdrop:Point('TOPLEFT', bu, 0, -2)
 			bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
-
-			local icon = bu.icon or bu.Icon
-			icon:Size(40)
-			icon:Point('LEFT', -43, 0)
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:CreateBackdrop('Transparent', nil, nil, true)
+			icon:SetTexture(savedIconTexture) -- restore the texture
 
 			bu:HookScript('OnEnter', buttonOnEnter)
 			bu:HookScript('OnLeave', buttonOnLeave)
@@ -140,7 +145,8 @@ local function JournalScrollButtons(frame)
 				bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 			end
 
-			if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
+			local parent = frame:GetParent()
+			if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 				bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 				bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
@@ -150,8 +156,9 @@ local function JournalScrollButtons(frame)
 				hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
 				hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
 
-				if frame:GetParent() == _G.PetJournal then
+				if parent == _G.PetJournal then
 					bu.petList = true
+					bu.petTypeIcon:SetTexture(savedPetTypeTexture)
 					bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 					bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
 
@@ -160,8 +167,9 @@ local function JournalScrollButtons(frame)
 					bu.dragButton.levelBG:SetTexture()
 
 					S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
-				elseif frame:GetParent() == _G.MountJournal then
+				elseif parent == _G.MountJournal then
 					bu.mountList = true
+					bu.factionIcon:SetAtlas(savedFactionAtlas)
 					bu.factionIcon:SetDrawLayer('OVERLAY')
 					bu.factionIcon:Point('TOPRIGHT', -1, -1)
 					bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -180,6 +188,108 @@ local function JournalScrollButtons(frame)
 
 			bu.IsSkinned = true
 		end
+	end
+end
+
+local function ToySpellButtonUpdateButton(button)
+	if button.itemID and PlayerHasToy(button.itemID) then
+		local _, _, quality = GetItemInfo(button.itemID)
+		if quality then
+			local r, g, b = GetItemQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(r, g, b)
+		else
+			button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
+		end
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+local function HeirloomsJournalUpdateButton(_, button)
+	if not button.IsSkinned then
+		S:HandleItemButton(button, true)
+
+		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetInside(button)
+		button.iconTexture:SetDrawLayer('ARTWORK')
+		button.hover:SetAllPoints(button.iconTexture)
+		button.slotFrameCollected:SetAlpha(0)
+		button.slotFrameUncollected:SetAlpha(0)
+		button.special:SetJustifyH('RIGHT')
+		button.special:ClearAllPoints()
+
+		button.cooldown:SetAllPoints(button.iconTexture)
+		E:RegisterCooldown(button.cooldown)
+
+		button.IsSkinned = true
+	end
+
+	button.levelBackground:SetTexture()
+
+	button.name:Point('LEFT', button, 'RIGHT', 4, 8)
+	button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
+
+	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
+		button.name:SetTextColor(0.9, 0.9, 0.9)
+		button.level:SetTextColor(0.9, 0.9, 0.9)
+		button.special:SetTextColor(1, .82, 0)
+		button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
+	else
+		button.name:SetTextColor(0.4, 0.4, 0.4)
+		button.level:SetTextColor(0.4, 0.4, 0.4)
+		button.special:SetTextColor(0.4, 0.4, 0.4)
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function HeirloomsJournalLayoutCurrentPage()
+	local headers = _G.HeirloomsJournal.heirloomHeaderFrames
+	if headers and next(headers) then
+		for _, header in next, headers do
+			header:StripTextures()
+			header.text:FontTemplate(nil, 15, 'SHADOW')
+			header.text:SetTextColor(0.9, 0.9, 0.9)
+		end
+	end
+end
+
+local function SetsFrame_ScrollBoxUpdate(button)
+	for _, child in next, { button.ScrollTarget:GetChildren() } do
+		if not child.IsSkinned then
+			child.Background:Hide()
+			child.HighlightTexture:SetTexture(E.ClearTexture)
+			child.Icon:SetSize(42, 42)
+			S:HandleIcon(child.Icon)
+			child.IconCover:SetOutside(child.Icon)
+
+			child.SelectedTexture:SetDrawLayer('BACKGROUND')
+			child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
+			child.SelectedTexture:ClearAllPoints()
+			child.SelectedTexture:Point('TOPLEFT', 4, -2)
+			child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
+			child.SelectedTexture:CreateBackdrop('Transparent')
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function SetsFrame_SetItemFrameQuality(_, itemFrame)
+	local icon = itemFrame.Icon
+	if not icon.backdrop then
+		icon:CreateBackdrop()
+		icon:SetTexCoord(unpack(E.TexCoords))
+		itemFrame.IconBorder:Hide()
+	end
+
+	if itemFrame.collected then
+		local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
+		local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
+		icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -375,19 +485,7 @@ local function SkinToyFrame()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	hooksecurefunc('ToySpellButton_UpdateButton', function(button)
-		if button.itemID and PlayerHasToy(button.itemID) then
-			local _, _, quality = GetItemInfo(button.itemID)
-			if quality then
-				local r, g, b = GetItemQualityColor(quality)
-				button.backdrop:SetBackdropBorderColor(r, g, b)
-			else
-				button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
-			end
-		else
-			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
+	hooksecurefunc('ToySpellButton_UpdateButton', ToySpellButtonUpdateButton)
 end
 
 local function SkinHeirloomFrame()
@@ -410,51 +508,8 @@ local function SkinHeirloomFrame()
 	HeirloomsJournal.progressBar:CreateBackdrop()
 	E:RegisterStatusBar(HeirloomsJournal.progressBar)
 
-	hooksecurefunc(HeirloomsJournal, 'UpdateButton', function(_, button)
-		if not button.IsSkinned then
-			S:HandleItemButton(button, true)
-
-			button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
-			button.iconTextureUncollected:SetInside(button)
-			button.iconTexture:SetDrawLayer('ARTWORK')
-			button.hover:SetAllPoints(button.iconTexture)
-			button.slotFrameCollected:SetAlpha(0)
-			button.slotFrameUncollected:SetAlpha(0)
-			button.special:SetJustifyH('RIGHT')
-			button.special:ClearAllPoints()
-
-			button.cooldown:SetAllPoints(button.iconTexture)
-			E:RegisterCooldown(button.cooldown)
-
-			button.IsSkinned = true
-		end
-
-		button.levelBackground:SetTexture()
-
-		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
-		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
-
-		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
-			button.name:SetTextColor(0.9, 0.9, 0.9)
-			button.level:SetTextColor(0.9, 0.9, 0.9)
-			button.special:SetTextColor(1, .82, 0)
-			button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
-		else
-			button.name:SetTextColor(0.4, 0.4, 0.4)
-			button.level:SetTextColor(0.4, 0.4, 0.4)
-			button.special:SetTextColor(0.4, 0.4, 0.4)
-			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
-
-	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', function()
-		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
-			local header = HeirloomsJournal.heirloomHeaderFrames[i]
-			header:StripTextures()
-			header.text:FontTemplate(nil, 15, 'SHADOW')
-			header.text:SetTextColor(0.9, 0.9, 0.9)
-		end
-	end)
+	hooksecurefunc(HeirloomsJournal, 'UpdateButton', HeirloomsJournalUpdateButton)
+	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', HeirloomsJournalLayoutCurrentPage)
 end
 
 local function SkinTransmogFrames()
@@ -559,26 +614,7 @@ local function SkinTransmogFrames()
 	SetsCollectionFrame.LeftInset:StripTextures()
 	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
 
-	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', function(button)
-		for _, child in next, { button.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child.Background:Hide()
-				child.HighlightTexture:SetTexture(E.ClearTexture)
-				child.Icon:SetSize(42, 42)
-				S:HandleIcon(child.Icon)
-				child.IconCover:SetOutside(child.Icon)
-
-				child.SelectedTexture:SetDrawLayer('BACKGROUND')
-				child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
-				child.SelectedTexture:ClearAllPoints()
-				child.SelectedTexture:Point('TOPLEFT', 4, -2)
-				child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
-				child.SelectedTexture:CreateBackdrop('Transparent')
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)
 
 	local DetailsFrame = SetsCollectionFrame.DetailsFrame
 	DetailsFrame.ModelFadeTexture:Hide()
@@ -587,22 +623,7 @@ local function SkinTransmogFrames()
 	DetailsFrame.LongName:FontTemplate(nil, 16)
 	S:HandleButton(DetailsFrame.VariantSetsButton)
 
-	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', function(_, itemFrame)
-		local icon = itemFrame.Icon
-		if not icon.backdrop then
-			icon:CreateBackdrop()
-			icon:SetTexCoord(unpack(E.TexCoords))
-			itemFrame.IconBorder:Hide()
-		end
-
-		if itemFrame.collected then
-			local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
-			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-			icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
+	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
 
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation.down)
