@@ -118,17 +118,19 @@ local function JournalScrollButtons(frame)
 
 	for _, bu in next, { frame.ScrollTarget:GetChildren() } do
 		if not bu.IsSkinned then
+			local icon = bu.icon or bu.Icon
+			local texture = icon:GetTexture()
+			icon:Size(40)
+			icon:Point('LEFT', -43, 0)
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:CreateBackdrop('Transparent', nil, nil, true)
+
 			bu:StripTextures()
 			bu:CreateBackdrop('Transparent', nil, nil, true)
 			bu.backdrop:ClearAllPoints()
 			bu.backdrop:Point('TOPLEFT', bu, 0, -2)
 			bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
-
-			local icon = bu.icon or bu.Icon
-			icon:Size(40)
-			icon:Point('LEFT', -43, 0)
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:CreateBackdrop('Transparent', nil, nil, true)
+			icon:SetTexture(texture) -- restore the texture
 
 			bu:HookScript('OnEnter', buttonOnEnter)
 			bu:HookScript('OnLeave', buttonOnLeave)
