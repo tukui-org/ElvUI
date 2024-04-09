@@ -32,11 +32,15 @@ function UF:Configure_Threat(frame)
 	local threat = frame.ThreatIndicator
 	if not threat then return end
 
-	local threatStyle = frame.db and frame.db.threatStyle
+	local db = frame.db
+	local threatStyle = db and db.threatStyle
 	if threatStyle and threatStyle ~= 'NONE' then
 		if not frame:IsElementEnabled('ThreatIndicator') then
 			frame:EnableElement('ThreatIndicator')
 		end
+
+		local unit = frame.unitframeType
+		threat.feedbackUnit = db.threatPlayer and (unit == 'target' or unit == 'focus') and 'player' or nil
 
 		if threatStyle == 'GLOW' then
 			threat:SetFrameStrata('BACKGROUND')

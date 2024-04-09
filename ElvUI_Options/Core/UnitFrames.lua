@@ -976,6 +976,10 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
 	end
 
+	if groupName == 'target' or groupName == 'focus' then
+		config.args.threatPlayer = ACH:Toggle(L["Player Threat"], L["Threat similar to Blizzard, which displays your threat from the unit."], 8)
+	end
+
 	config.args.positionsGroup = ACH:Group(L["Size and Positions"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.positionsGroup.inline = true
 	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
