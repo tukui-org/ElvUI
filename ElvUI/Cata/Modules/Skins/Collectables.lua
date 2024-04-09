@@ -162,7 +162,6 @@ local function JournalScrollButtons(frame)
 
 					bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 					bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
-					bu.dragButton.levelBG:SetTexture()
 
 					S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 				elseif parent == _G.MountJournal then
