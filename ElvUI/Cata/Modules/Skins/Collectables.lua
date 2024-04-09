@@ -119,18 +119,21 @@ local function JournalScrollButtons(frame)
 	for _, bu in next, { frame.ScrollTarget:GetChildren() } do
 		if not bu.IsSkinned then
 			local icon = bu.icon or bu.Icon
-			local texture = icon:GetTexture()
+			local savedIconTexture = icon:GetTexture()
 			icon:Size(40)
 			icon:Point('LEFT', -43, 0)
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:CreateBackdrop('Transparent', nil, nil, true)
+
+			local savedPetTypeIcon = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
+			local savedFactionIcon = bu.factionIcon and bu.factionIcon:GetTexture()
 
 			bu:StripTextures()
 			bu:CreateBackdrop('Transparent', nil, nil, true)
 			bu.backdrop:ClearAllPoints()
 			bu.backdrop:Point('TOPLEFT', bu, 0, -2)
 			bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
-			icon:SetTexture(texture) -- restore the texture
+			icon:SetTexture(savedIconTexture) -- restore the texture
 
 			bu:HookScript('OnEnter', buttonOnEnter)
 			bu:HookScript('OnLeave', buttonOnLeave)
@@ -140,7 +143,8 @@ local function JournalScrollButtons(frame)
 				bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 			end
 
-			if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
+			local parent = frame:GetParent()
+			if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 				bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 				bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
@@ -150,17 +154,20 @@ local function JournalScrollButtons(frame)
 				hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
 				hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
 
-				if frame:GetParent() == _G.PetJournal then
+				if parent == _G.PetJournal then
 					bu.petList = true
+					bu.petTypeIcon:SetTexture(savedPetTypeIcon)
 					bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 					bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
 
 					bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 					bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+					bu.dragButton.levelBG:SetTexture()
 
 					S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
-				elseif frame:GetParent() == _G.MountJournal then
+				elseif parent == _G.MountJournal then
 					bu.mountList = true
+					bu.factionIcon:SetTexture(savedFactionIcon)
 					bu.factionIcon:SetDrawLayer('OVERLAY')
 					bu.factionIcon:Point('TOPRIGHT', -1, -1)
 					bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
