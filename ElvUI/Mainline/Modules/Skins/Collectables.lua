@@ -127,8 +127,8 @@ local function JournalScrollButtons(frame)
 			icon:SetTexCoord(unpack(E.TexCoords))
 			icon:CreateBackdrop('Transparent', nil, nil, true)
 
-			local savedPetTypeIcon = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
-			local savedFactionIcon = bu.factionIcon and bu.factionIcon:GetTexture()
+			local savedPetTypeTexture = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
+			local savedFactionAtlas = bu.factionIcon and bu.factionIcon:GetAtlas()
 
 			bu:StripTextures()
 			bu:CreateBackdrop('Transparent', nil, nil, true)
@@ -158,7 +158,7 @@ local function JournalScrollButtons(frame)
 
 				if parent == _G.PetJournal then
 					bu.petList = true
-					bu.petTypeIcon:SetTexture(savedPetTypeIcon)
+					bu.petTypeIcon:SetTexture(savedPetTypeTexture)
 					bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 					bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
 
@@ -169,7 +169,7 @@ local function JournalScrollButtons(frame)
 					S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 				elseif parent == _G.MountJournal then
 					bu.mountList = true
-					bu.factionIcon:SetTexture(savedFactionIcon)
+					bu.factionIcon:SetAtlas(savedFactionAtlas)
 					bu.factionIcon:SetDrawLayer('OVERLAY')
 					bu.factionIcon:Point('TOPRIGHT', -1, -1)
 					bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
