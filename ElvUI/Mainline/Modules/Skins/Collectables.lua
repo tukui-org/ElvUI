@@ -183,6 +183,69 @@ local function JournalScrollButtons(frame)
 	end
 end
 
+local function ToySpellButtonUpdateButton(button)
+	if button.itemID and PlayerHasToy(button.itemID) then
+		local _, _, quality = GetItemInfo(button.itemID)
+		if quality then
+			local r, g, b = GetItemQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(r, g, b)
+		else
+			button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
+		end
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+local function HeirloomsJournalUpdateButton(_, button)
+	if not button.IsSkinned then
+		S:HandleItemButton(button, true)
+
+		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetInside(button)
+		button.iconTexture:SetDrawLayer('ARTWORK')
+		button.hover:SetAllPoints(button.iconTexture)
+		button.slotFrameCollected:SetAlpha(0)
+		button.slotFrameUncollected:SetAlpha(0)
+		button.special:SetJustifyH('RIGHT')
+		button.special:ClearAllPoints()
+
+		button.cooldown:SetAllPoints(button.iconTexture)
+		E:RegisterCooldown(button.cooldown)
+
+		button.IsSkinned = true
+	end
+
+	button.levelBackground:SetTexture()
+
+	button.name:Point('LEFT', button, 'RIGHT', 4, 8)
+	button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
+
+	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
+		button.name:SetTextColor(0.9, 0.9, 0.9)
+		button.level:SetTextColor(0.9, 0.9, 0.9)
+		button.special:SetTextColor(1, .82, 0)
+		button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
+	else
+		button.name:SetTextColor(0.4, 0.4, 0.4)
+		button.level:SetTextColor(0.4, 0.4, 0.4)
+		button.special:SetTextColor(0.4, 0.4, 0.4)
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function HeirloomsJournalLayoutCurrentPage()
+	local headers = _G.HeirloomsJournal.heirloomHeaderFrames
+	if headers and next(headers) then
+		for _, header in next, headers do
+			header:StripTextures()
+			header.text:FontTemplate(nil, 15, 'SHADOW')
+			header.text:SetTextColor(0.9, 0.9, 0.9)
+		end
+	end
+end
+
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournalFilterButton)
@@ -375,19 +438,7 @@ local function SkinToyFrame()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	hooksecurefunc('ToySpellButton_UpdateButton', function(button)
-		if button.itemID and PlayerHasToy(button.itemID) then
-			local _, _, quality = GetItemInfo(button.itemID)
-			if quality then
-				local r, g, b = GetItemQualityColor(quality)
-				button.backdrop:SetBackdropBorderColor(r, g, b)
-			else
-				button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
-			end
-		else
-			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
+	hooksecurefunc('ToySpellButton_UpdateButton', ToySpellButtonUpdateButton)
 end
 
 local function SkinHeirloomFrame()
@@ -410,51 +461,8 @@ local function SkinHeirloomFrame()
 	HeirloomsJournal.progressBar:CreateBackdrop()
 	E:RegisterStatusBar(HeirloomsJournal.progressBar)
 
-	hooksecurefunc(HeirloomsJournal, 'UpdateButton', function(_, button)
-		if not button.IsSkinned then
-			S:HandleItemButton(button, true)
-
-			button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
-			button.iconTextureUncollected:SetInside(button)
-			button.iconTexture:SetDrawLayer('ARTWORK')
-			button.hover:SetAllPoints(button.iconTexture)
-			button.slotFrameCollected:SetAlpha(0)
-			button.slotFrameUncollected:SetAlpha(0)
-			button.special:SetJustifyH('RIGHT')
-			button.special:ClearAllPoints()
-
-			button.cooldown:SetAllPoints(button.iconTexture)
-			E:RegisterCooldown(button.cooldown)
-
-			button.IsSkinned = true
-		end
-
-		button.levelBackground:SetTexture()
-
-		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
-		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
-
-		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
-			button.name:SetTextColor(0.9, 0.9, 0.9)
-			button.level:SetTextColor(0.9, 0.9, 0.9)
-			button.special:SetTextColor(1, .82, 0)
-			button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
-		else
-			button.name:SetTextColor(0.4, 0.4, 0.4)
-			button.level:SetTextColor(0.4, 0.4, 0.4)
-			button.special:SetTextColor(0.4, 0.4, 0.4)
-			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
-
-	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', function()
-		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
-			local header = HeirloomsJournal.heirloomHeaderFrames[i]
-			header:StripTextures()
-			header.text:FontTemplate(nil, 15, 'SHADOW')
-			header.text:SetTextColor(0.9, 0.9, 0.9)
-		end
-	end)
+	hooksecurefunc(HeirloomsJournal, 'UpdateButton', HeirloomsJournalUpdateButton)
+	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', HeirloomsJournalLayoutCurrentPage)
 end
 
 local function SkinTransmogFrames()
