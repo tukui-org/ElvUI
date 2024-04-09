@@ -246,6 +246,45 @@ local function HeirloomsJournalLayoutCurrentPage()
 	end
 end
 
+local function SetsFrame_ScrollBoxUpdate(button)
+	for _, child in next, { button.ScrollTarget:GetChildren() } do
+		if not child.IsSkinned then
+			child.Background:Hide()
+			child.HighlightTexture:SetTexture(E.ClearTexture)
+			child.Icon:SetSize(42, 42)
+			S:HandleIcon(child.Icon)
+			child.IconCover:SetOutside(child.Icon)
+
+			child.SelectedTexture:SetDrawLayer('BACKGROUND')
+			child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
+			child.SelectedTexture:ClearAllPoints()
+			child.SelectedTexture:Point('TOPLEFT', 4, -2)
+			child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
+			child.SelectedTexture:CreateBackdrop('Transparent')
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function SetsFrame_SetItemFrameQuality(_, itemFrame)
+	local icon = itemFrame.Icon
+	if not icon.backdrop then
+		icon:CreateBackdrop()
+		icon:SetTexCoord(unpack(E.TexCoords))
+		itemFrame.IconBorder:Hide()
+	end
+
+	if itemFrame.collected then
+		local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
+		local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
+		icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournalFilterButton)
@@ -567,26 +606,7 @@ local function SkinTransmogFrames()
 	SetsCollectionFrame.LeftInset:StripTextures()
 	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
 
-	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', function(button)
-		for _, child in next, { button.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child.Background:Hide()
-				child.HighlightTexture:SetTexture(E.ClearTexture)
-				child.Icon:SetSize(42, 42)
-				S:HandleIcon(child.Icon)
-				child.IconCover:SetOutside(child.Icon)
-
-				child.SelectedTexture:SetDrawLayer('BACKGROUND')
-				child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
-				child.SelectedTexture:ClearAllPoints()
-				child.SelectedTexture:Point('TOPLEFT', 4, -2)
-				child.SelectedTexture:Point('BOTTOMRIGHT', -1, 2)
-				child.SelectedTexture:CreateBackdrop('Transparent')
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)
 
 	local DetailsFrame = SetsCollectionFrame.DetailsFrame
 	DetailsFrame.ModelFadeTexture:Hide()
@@ -595,22 +615,7 @@ local function SkinTransmogFrames()
 	DetailsFrame.LongName:FontTemplate(nil, 16)
 	S:HandleButton(DetailsFrame.VariantSetsButton)
 
-	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', function(_, itemFrame)
-		local icon = itemFrame.Icon
-		if not icon.backdrop then
-			icon:CreateBackdrop()
-			icon:SetTexCoord(unpack(E.TexCoords))
-			itemFrame.IconBorder:Hide()
-		end
-
-		if itemFrame.collected then
-			local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
-			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-			icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
+	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
 
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation.down)
