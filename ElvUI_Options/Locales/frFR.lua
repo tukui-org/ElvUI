@@ -16,6 +16,8 @@ L["LEFT"] = "GAUCHE"
 L["RIGHT"] = "DROITE"
 L["TOP"] = "HAUT"
 
+L["Primary Unit"] = true
+L["Requires the unit to be the primary target to display."] = true
 L["Pet Specific"] = true
 L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s et alors %s"
@@ -1700,7 +1702,7 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Cela réinitialisera le contenu de ce filtre aux valeurs par défaut. Tous les sorts que vous avez ajoutés à ce filtre seront supprimés."
 L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour faire défiler la barre d'action différemment.\n Exemple : '[combat] 2;'"
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Ceci fonctionne comme une macro, vous pouvez exécuter différentes situations pour faire afficher/masquer la barre d'action différemment.\n Exemple : '[combat] show;hide'"
-L["Threat Display Mode"] = "Affichage du Mode de Menace."
+L["Display Mode"] = "Mode d'affichage"
 L["Threat"] = "Menace"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Seuil (en minutes) avant que le texte s'affiche au format HH:MM. Mettez -1 pour ne jamais changer ce format."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Seuil (en secondes) avant que le texte s'affiche au format MM:SS. Mettez -1 pour ne jamais changer ce format."
