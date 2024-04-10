@@ -154,12 +154,13 @@ end
 
 function UF:UpdateThreat(unit, status, r, g, b)
 	local parent = self:GetParent()
-	local db = parent.db and parent.db.threatStyle
-	local badunit = not unit or parent.unit ~= unit
 
-	if not badunit and status and status > 1 then
-		UF:ThreatHandler(self, parent, db, status, r, g, b)
+	local db = parent.db
+	if not db then return end
+
+	if (unit and parent.unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
+		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
 	else
-		UF:ThreatHandler(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
+		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))
 	end
 end
