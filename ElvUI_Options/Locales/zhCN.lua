@@ -16,6 +16,10 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Primary Unit"] = true
+L["Requires the unit to be the primary target to display."] = true
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s 于 %s"
 L["24-Hour Time"] = "24小时制"
 L["2D"] = "2D"
@@ -1705,7 +1709,7 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "这会重置这个过滤器到初始状态. 你添加到这个过滤器的任何技能都会被移除."
 L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = true
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "这就像一个宏，你可以运行不同的情况来让动作条以不同的方式显示/隐藏。\n 示例：'[combat] show;hide'"
-L["Threat Display Mode"] = "仇恨显示模式"
+L["Display Mode"] = "显示模式"
 L["Threat"] = "仇恨"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "文字以时:分格式显示的阈值(单位:分). 设为-1以禁用此格式."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "文字以分:秒格式显示的阈值(单位:秒). 设为-1以禁用此格式."

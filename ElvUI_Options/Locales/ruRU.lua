@@ -16,6 +16,10 @@ L["LEFT"] = "Слева"
 L["RIGHT"] = "Справа"
 L["TOP"] = "Вверху"
 
+L["Primary Unit"] = true
+L["Requires the unit to be the primary target to display."] = true
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s, а затем %s"
 L["24-Hour Time"] = "24х часовой формат"
 L["2D"] = "2D" --Doesn't need translation
@@ -1715,7 +1719,7 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Это сбросит фильтр на значения по умолчанию. Любые заклинания, добавленные в этот фильтр, будут удалены."
 L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "Работает как макрос. Вы можете задать ситуации для показа нужной панели.\n Пример '[combat] 2;'"
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Работает как в макросах. Вы можете задать различные ситуации, при которых нужно показать/скрыть панель.\n Пример: '[combat] show;hide'"
-L["Threat Display Mode"] = "Режим отображения угрозы"
+L["Display Mode"] = "Режим отображения"
 L["Threat"] = "Угроза"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Значение (в минутах), после которого текст восстановления перейдет в формат ЧЧ:ММ. Установите на -1, чтобы никогда не использовать данный формат."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Значение (в секундах), после которого текст восстановления перейдет в формат ММ:СС. Установите на -1, чтобы никогда не использовать данный формат."

@@ -35,6 +35,7 @@ local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
@@ -624,6 +625,13 @@ E:AddTag('realm:dash:translit', 'UNIT_NAME_UPDATE', function(unit)
 		return format('-%s', realm)
 	elseif realm ~= '' then
 		return realm
+	end
+end)
+
+E:AddTag('threat:lead', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
+	local percent = UnitThreatPercentageOfLead('player', unit)
+	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
+		return format('%.0f%%', percent)
 	end
 end)
 
@@ -1649,6 +1657,7 @@ E.TagInfo = {
 	-- Threat
 		['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
 		['threat:percent'] = { category = 'Threat', description = "Displays the current threat as a percent" },
+		['threat:lead'] = { category = 'Threat', description = "Displays the current threat of lead as a percent" },
 		['threat'] = { category = 'Threat', description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" },
 }
 
