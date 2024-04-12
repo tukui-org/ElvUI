@@ -261,7 +261,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
@@ -284,6 +284,13 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
+
+	-- Szenario Tab [[New in 10.2.7]]
+	_G.ScenarioQueueFrameBackground:SetAlpha(0)
+	_G.ScenarioFinderFrameInset:StripTextures()
+	S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
+	S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar) -- Halp
+	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
