@@ -150,7 +150,6 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_BN_WHISPER_INFORM	= 'WHISPER',
 	CHAT_MSG_GUILD				= 'GUILD',
 	CHAT_MSG_GUILD_ACHIEVEMENT	= 'GUILD',
-	CHAT_MSG_GUILD_DEATHS 		= E.ClassicHC and 'GUILD' or nil,
 	CHAT_MSG_PARTY			= 'PARTY',
 	CHAT_MSG_PARTY_LEADER	= 'PARTY',
 	CHAT_MSG_RAID			= 'RAID',
@@ -327,7 +326,7 @@ do --this can save some main file locals
 	if E.Classic then
 		-- Simpy (5099: Myzrael)
 		z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		-- Luckyone Seasonal (5826: Lone Wolf EU)
+		-- Luckyone Seasonal (5826: Lone Wolf EU, 5827: Living Flame EU)
 		z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
 		z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin
 		z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock
@@ -336,6 +335,7 @@ do --this can save some main file locals
 		z['Player-5826-023424EF']	= ElvBlue -- [Alliance] Druid
 		z['Player-5826-02342520']	= ElvBlue -- [Alliance] Rogue
 		z['Player-5826-02342556']	= ElvBlue -- [Alliance] Warrior
+		z['Player-5827-02331C4B']	= ElvBlue -- [Horde] Shaman
 		-- Luckyone Hardcore
 		z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
 		z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
@@ -383,7 +383,7 @@ do --this can save some main file locals
 		z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
 		z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
 		z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
-		z['Player-1401-041CD0A6']	= ElvYellow	-- [Alliance] Rogue:	Jústice
+		z['Player-1401-0A9B0131']	= ElvYellow	-- [Alliance] Rogue:	Anonia
 		z['Player-1401-041E4D64']	= ElvGreen	-- [Alliance] Monk:		Maithilis
 		z['Player-1401-0648F4AD']	= ElvPurple	-- [Alliance] DH:		Mattdemôn
 		z['Player-1401-0421F27B']	= ElvBlue	-- [Alliance] Mage:		Melisendra
@@ -1763,25 +1763,18 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 end
 
 -- copied from ChatFrame.lua
-local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-	-- Renaming for clarity:
-	local specialFlag = arg6
-	local zoneChannelID = arg7
-	--local localChannelID = arg8
-
+local function GetPFlag(specialFlag, zoneChannelID, localChannelID)
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
 			-- Add Blizzard Icon if this was sent by a GM/DEV
 			return [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
-		elseif E.Retail then
-			if specialFlag == 'GUIDE' then
-				if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
-					return NPEV2_CHAT_USER_TAG_GUIDE
-				end
-			elseif specialFlag == 'NEWCOMER' then
-				if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
-					return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
-				end
+		elseif specialFlag == 'GUIDE' and E.Retail then
+			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
+				return NPEV2_CHAT_USER_TAG_GUIDE
+			end
+		elseif specialFlag == 'NEWCOMER' and E.Retail then
+			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
+				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
 			return _G['CHAT_FLAG_'..specialFlag]
@@ -1920,7 +1913,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	-- Player Flags
-	local pflag = GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+	local pflag = GetPFlag(arg6, arg7, arg8)
 	if not bossMonster then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
@@ -1967,7 +1960,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		end
 	else
 		if not showLink or arg2 == '' then
-			if chatType == 'TEXT_EMOTE' or chatType == 'GUILD_DEATHS' then
+			if chatType == 'TEXT_EMOTE' then
 				body = message
 			else
 				body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..arg2, arg2)
@@ -2959,7 +2952,6 @@ local FindURL_Events = {
 	'CHAT_MSG_BN_WHISPER_INFORM',
 	'CHAT_MSG_BN_INLINE_TOAST_BROADCAST',
 	'CHAT_MSG_GUILD_ACHIEVEMENT',
-	E.ClassicHC and 'CHAT_MSG_GUILD_DEATHS' or nil,
 	'CHAT_MSG_GUILD',
 	'CHAT_MSG_PARTY',
 	'CHAT_MSG_PARTY_LEADER',

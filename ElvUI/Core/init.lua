@@ -116,7 +116,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 13.60, '13.60-git', nil, true
+		return 13.61, '13.61-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -160,7 +160,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Wrath or E.ClassicSOD then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 

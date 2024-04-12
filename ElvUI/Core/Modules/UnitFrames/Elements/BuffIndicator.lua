@@ -29,18 +29,17 @@ function UF:Configure_AuraWatch(frame, isPet)
 		frame.AuraWatch.countFontSize = db.countFontSize
 		frame.AuraWatch.countFontOutline = db.countFontOutline
 
-		if frame.unit == 'pet' or isPet then
-			frame.AuraWatch:SetNewTable(E.global.unitframe.aurawatch.PET)
+		local auraTable
+		if (frame.unit == 'pet' or isPet) and db.petSpecific then
+			auraTable = E.global.unitframe.aurawatch.PET
+		elseif db.profileSpecific then
+			auraTable = E.db.unitframe.filters.aurawatch
 		else
-			local auraTable
-			if db.profileSpecific then
-				auraTable = E.db.unitframe.filters.aurawatch
-			else
-				auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass] or {})
-				E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
-			end
-			frame.AuraWatch:SetNewTable(auraTable)
+			auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass] or {})
+			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
+
+		frame.AuraWatch:SetNewTable(auraTable)
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
 	end

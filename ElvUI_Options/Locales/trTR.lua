@@ -16,6 +16,10 @@ L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
 
+L["Primary Unit"] = true
+L["Requires the unit to be the primary target to display."] = true
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s ve ardından %s"
 L["24-Hour Time"] = "24 Saatlik Zaman"
 L["2D"] = true
@@ -1702,7 +1706,7 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "Bu, bu filtrenin icerigini varsayilana sifirlayacaktir. Bu filtreye eklediginiz tum buyuler kaldirilacaktir."
 L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = true
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "Bu bir makro gibi calisir, eylem cubugunun farkli sekilde gosterilmesini/gizlenmesini saglamak icin farkli durumlar calistirabilirsiniz.\n ornek: '[catisma] goster;gizle'"
-L["Threat Display Mode"] = "Hiddet Goruntuleme Modu"
+L["Display Mode"] = "Ekran Modu"
 L["Threat"] = "Hiddet"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "Metnin SS:DD biciminde gosterilmesinden onceki esik (dakika cinsinden). Bu bicimi hicbir zaman degistirmemek icin -1'e ayarlayin."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "Metin MM:SS biciminde gosterilmeden onceki esik (saniye cinsinden). Bu bicimi hicbir zaman degistirmemek icin -1'e ayarlayin."

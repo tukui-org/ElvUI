@@ -15,6 +15,11 @@ local CopyTable = CopyTable
 local NUM_CLASSES = #CLASS_SORT_ORDER
 local MAX_BOSS_FRAMES = 8
 
+local petTypes = {
+	pet = true,
+	raidpet = true
+}
+
 local orientationValues = {
 	LEFT = L["Left"],
 	MIDDLE = L["Middle"],
@@ -266,10 +271,10 @@ local function doApplyToAll(db, info, value)
 end
 
 local function BuffIndicator_ApplyToAll(info, value, profile, pet)
-	if profile then
-		return doApplyToAll(E.db.unitframe.filters.aurawatch, info, value)
-	elseif pet then
+	if pet then
 		return doApplyToAll(E.global.unitframe.aurawatch.PET, info, value)
+	elseif profile then
+		return doApplyToAll(E.db.unitframe.filters.aurawatch, info, value)
 	else
 		return doApplyToAll(E.global.unitframe.aurawatch[E.myclass], info, value)
 	end
@@ -280,9 +285,10 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 
 	config.args.generalGroup = ACH:Group(' ', nil, 2)
-	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 1)
+	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local configString = format('Aura Indicator (%s)', (petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific and 'Pet') or (E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
-	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 3, function() local configString = format('Aura Indicator (%s)', groupName == 'pet' and 'Pet' or E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile' or 'Class') C:SetToFilterConfig(configString) end)
+	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 3)
+	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not petTypes[groupName] end)
 	config.args.generalGroup.inline = true
 
 	config.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
@@ -295,7 +301,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	else
-		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet') updateFunc(UF, groupName, numGroup) end)
+		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) updateFunc(UF, groupName, numGroup) end)
 		config.args.applyToAll.inline = true
 		config.args.applyToAll.args.header = ACH:Description(L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
 		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
@@ -665,7 +671,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		config.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the health bar moves when gaining/losing health."], 9, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 	end
 
-	if groupName == 'pet' or groupName == 'raidpet' then
+	if petTypes[groupName] then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 
 		if groupName == 'pet' and E.myclass == 'HUNTER' then
@@ -950,29 +956,35 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["General"], nil, 1)
+	local config = ACH:Group(L["General"], nil, 1, 'tab')
 	config.args.orientation = ACH:Select(L["Frame Orientation"], L["Set the orientation of the UnitFrame."], 1, orientationValues)
-	config.args.disableMouseoverGlow = ACH:Toggle(L["Block Mouseover Glow"], L["Forces Mouseover Glow to be disabled for these frames"], 2)
-	config.args.disableTargetGlow = ACH:Toggle(L["Block Target Glow"], L["Forces Target Glow to be disabled for these frames"], 3)
-	config.args.disableFocusGlow = ACH:Toggle(L["Block Focus Glow"], L["Forces Focus Glow to be disabled for these frames"], 4)
+	config.args.disableMouseoverGlow = ACH:Toggle(L["Block Mouseover Glow"], L["Forces Mouseover Glow to be disabled for these frames"], 3)
+	config.args.disableTargetGlow = ACH:Toggle(L["Block Target Glow"], L["Forces Target Glow to be disabled for these frames"], 4)
+	config.args.disableFocusGlow = ACH:Toggle(L["Block Focus Glow"], L["Forces Focus Glow to be disabled for these frames"], 5)
 
 	if groupName ~= 'tank' and groupName ~= 'assist' then
-		config.args.hideonnpc = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 5, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.hideonnpc end, function(_, value) E.db.unitframe.units[groupName].power.hideonnpc = value updateFunc(UF, groupName, numUnits) end)
+		config.args.hideonnpc = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.hideonnpc end, function(_, value) E.db.unitframe.units[groupName].power.hideonnpc = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	if groupName ~= 'party' and groupName ~= 'assist' and groupName ~= 'tank' and not strmatch(groupName, '^raid') then
-		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, C.Values.SmartAuraPositions)
+		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 2, C.Values.SmartAuraPositions)
 	end
 
 	if groupName == 'arena' then
-		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 5, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
+		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 6, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
 	else
-		config.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
+		config.args.threatGroup = ACH:Group(L["Threat"], nil, 50)
+		config.args.threatGroup.args.threatStyle = ACH:Select(L["Display Mode"], nil, 1, threatValues)
+		config.args.threatGroup.args.threatPrimary = ACH:Toggle(L["Primary Unit"], L["Requires the unit to be the primary target to display."], 2)
+		config.args.threatGroup.inline = true
+
+		if groupName == 'target' or groupName == 'focus' then
+			config.args.threatGroup.args.threatPlayer = ACH:Toggle(L["My Threat"], L["Threat similar to Blizzard, which displays your threat from the unit."], 3)
+		end
 	end
 
-	config.args.positionsGroup = ACH:Group(L["Size and Positions"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.positionsGroup.inline = true
-	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 40, max = 1000, step = 1 })
+	config.args.positionsGroup = ACH:Group(L["Size and Positions"], nil, 200, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 	config.args.positionsGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 
 	if groupName == 'party' or strmatch(groupName, '^raid') then
@@ -983,14 +995,12 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, spacingNormal)
 		config.args.positionsGroup.args.groupSpacing = ACH:Range(L["Group Spacing"], L["Additional spacing between each individual group."], 11, spacingNormal, nil, nil, nil, nil, groupName == 'party')
 
-		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 200, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-		config.args.visibilityGroup.inline = true
+		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 		config.args.visibilityGroup.args.showPlayer = ACH:Toggle(L["Display Player"], L["When true, the header includes the player when not in a raid."], 0)
 		config.args.visibilityGroup.args.defaults = ACH:Execute(L["Restore Defaults"], function() return P.unitframe.units[groupName].visibility end, 1, function() E.db.unitframe.units[groupName].visibility = P.unitframe.units[groupName].visibility updateFunc(UF, groupName, numUnits) end, nil, true)
 		config.args.visibilityGroup.args.visibility = ACH:Input(L["Visibility"], L["VISIBILITY_DESC"], 2, nil, 'full')
 
 		config.args.sortingGroup = ACH:Group(L["Grouping & Sorting"], nil, 300, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-		config.args.sortingGroup.inline = true
 		config.args.sortingGroup.args.raidWideSorting = ACH:Toggle(L["Raid-Wide Sorting"], L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."], 1, nil, nil, nil, nil, nil, nil, groupName == 'party')
 		config.args.sortingGroup.args.invertGroupingOrder = ACH:Toggle(L["Invert Grouping Order"], L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
 		config.args.sortingGroup.args.startFromCenter = ACH:Toggle(L["Start Near Center"], L["The initial group will start near the center and grow out."], 3, nil, nil, nil, nil, nil, nil, function() return groupName ~= 'party' and not E.db.unitframe.units[groupName].raidWideSorting end)
@@ -998,19 +1008,20 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.sortDir = ACH:Select(L["Sort Direction"], nil, 5, { ASC = L["Ascending"], DESC = L["Descending"] })
 		config.args.sortingGroup.args.sortMethod = ACH:Select(L["Sort Method"], nil, 6, { NAME = L["Name"], INDEX = L["Index"] }, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy == 'INDEX' or E.db.unitframe.units[groupName].groupBy == 'NAME' end)
 
-		config.args.sortingGroup.args.roleSetup = ACH:Group(L["Role Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'ROLE' end)
-		config.args.sortingGroup.args.roleSetup.inline = true
+		config.args.sortingGroup.args.roleSetup = ACH:Group(L["Role Order"], nil, 400, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'ROLE' end)
 		config.args.sortingGroup.args.roleSetup.args.ROLE1 = ACH:Select(' ', nil, 1, roles)
 		config.args.sortingGroup.args.roleSetup.args.ROLE2 = ACH:Select(' ', nil, 2, roles)
 		config.args.sortingGroup.args.roleSetup.args.ROLE3 = ACH:Select(' ', nil, 3, roles)
+		config.args.sortingGroup.args.roleSetup.inline = true
 
-		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
+		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 500, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
 		config.args.sortingGroup.args.classSetup.inline = true
 
 		for i = 1, NUM_CLASSES do
 			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, classTable)
 		end
 	else
+		config.args.positionsGroup.inline = true -- inline for others
 		config.args.positionsGroup.args.width.set = function(info, value) if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then E.db.unitframe.units[groupName].castbar.width = value end E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end
 
 		if groupName == 'boss' or groupName == 'arena' then
@@ -1408,7 +1419,10 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			group.args.anchorPoint = ACH:Select(L["Position"], nil, 5, C.Values.AllPoints)
 			group.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -500, max = 500, step = 1 })
 			group.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -500, max = 500, step = 1 })
-			group.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 8, threatValues)
+
+			group.args.threatGroup = ACH:Group(L["Threat"], nil, 20)
+			group.args.threatGroup.args.threatStyle = ACH:Select(L["Display Mode"], nil, 1, threatValues)
+			group.args.threatGroup.args.threatPrimary = ACH:Toggle(L["Primary Unit"], L["Requires the unit to be the primary target to display."], 2)
 
 			for subElement in pairs(defaults[element]) do
 				if subElement == 'colorPetByUnitClass' then

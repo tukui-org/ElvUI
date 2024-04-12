@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 15 -- real minor version: 13
+local MINOR_VERSION = 16 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -67,7 +67,7 @@ local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemInfo = GetItemInfo
 local GetNumSpellTabs = GetNumSpellTabs
-local GetSpellBookItemInfo = GetSpellBookItemInfo
+local GetSpellBookItemName = GetSpellBookItemName
 local GetSpellInfo = GetSpellInfo
 local GetSpellTabInfo = GetSpellTabInfo
 local GetTime = GetTime
@@ -133,6 +133,7 @@ local InteractLists = {
 }
 
 local MeleeRange = 2
+local MatchSpellByID = {} -- specific matching to avoid incorrect index
 local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
 for _, n in ipairs({ "EVOKER", "DEATHKNIGHT", "DEMONHUNTER", "DRUID", "HUNTER", "SHAMAN", "MAGE", "PALADIN", "PRIEST", "WARLOCK", "WARRIOR", "MONK", "ROGUE" }) do
@@ -196,6 +197,8 @@ if not isRetail then
 end
 
 if isEraSOD then
+  MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
+
   tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
@@ -653,15 +656,14 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
-local allowSpellType = { SPELL = true, FUTURESPELL = true }
 local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
   end
 
   for i = 1, getNumSpells() do
-    local spellType, id = GetSpellBookItemInfo(i, BOOKTYPE_SPELL)
-    if sid == id and allowSpellType[spellType] then
+    local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+    if sid == id or (spellName == name and not MatchSpellByID[id]) then
       return i
     end
   end

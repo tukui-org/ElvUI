@@ -32,11 +32,15 @@ function UF:Configure_Threat(frame)
 	local threat = frame.ThreatIndicator
 	if not threat then return end
 
-	local threatStyle = frame.db and frame.db.threatStyle
+	local db = frame.db
+	local threatStyle = db and db.threatStyle
 	if threatStyle and threatStyle ~= 'NONE' then
 		if not frame:IsElementEnabled('ThreatIndicator') then
 			frame:EnableElement('ThreatIndicator')
 		end
+
+		local unit = frame.unitframeType
+		threat.feedbackUnit = db.threatPlayer and (unit == 'target' or unit == 'focus') and 'player' or nil
 
 		if threatStyle == 'GLOW' then
 			threat:SetFrameStrata('BACKGROUND')
@@ -150,12 +154,13 @@ end
 
 function UF:UpdateThreat(unit, status, r, g, b)
 	local parent = self:GetParent()
-	local db = parent.db and parent.db.threatStyle
-	local badunit = not unit or parent.unit ~= unit
 
-	if not badunit and status and status > 1 then
-		UF:ThreatHandler(self, parent, db, status, r, g, b)
+	local db = parent.db
+	if not db then return end
+
+	if (unit and parent.unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
+		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
 	else
-		UF:ThreatHandler(self, parent, db, nil, unpack(E.media.unitframeBorderColor))
+		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))
 	end
 end

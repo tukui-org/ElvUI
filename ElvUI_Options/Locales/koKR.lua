@@ -16,6 +16,10 @@ L["LEFT"] = "왼쪽"
 L["RIGHT"] = "오른쪽"
 L["TOP"] = "위쪽"
 
+L["Primary Unit"] = true
+L["Requires the unit to be the primary target to display."] = true
+L["Pet Specific"] = true
+L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."] = true
 L["%s and then %s"] = "%s 이후 %s"
 L["24-Hour Time"] = "24시제로 표시"
 L["2D"] = "이미지"
@@ -1724,7 +1728,7 @@ L["This will pin the voice buttons to the chat's tab panel. Unchecking it will c
 L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."] = "필터의 내용이 기본값으로 재설정 됩니다. 이 필터에 추가한 모든 주문은 제거됩니다."
 L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"] = "이것은 매크로처럼 작동합니다. 다양한 상황을 실행하여 작업 표시줄을 다르게 페이지에 표시할 수 있습니다.\n 예: '[combat] 2;'"
 L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"] = "이것은 매크로처럼 작동하여 상황(일반/전투 등)에 따라 작업 표시줄을 다르게 표시하거나 숨길 수 있습니다.\n예: '[combat] show;hide'"
-L["Threat Display Mode"] = "어그로획득 표시방법"
+L["Display Mode"] = "표시방법"
 L["Threat"] = "위협(어그로)"
 L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."] = "시:분 형식으로 보이기 시작하는 시간값(분)입니다. 이 형식으로 변경하지 않으려면 -1로 설정하십시오."
 L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."] = "분:초 형식으로 보이기 시작하는 시간값(초)입니다. 이 형식으로 변경하지 않으려면 -1로 설정하십시오."

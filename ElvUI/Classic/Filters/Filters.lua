@@ -448,6 +448,7 @@ if E.ClassicSOD then
 	-- Whitelist World Event Auras
 	Whitelist[433804] = List(6) -- Blood for the Blood Loa
 	Whitelist[441785] = List(6) -- Drained of Blood
+	Whitelist[437751] = List(6) -- Bruised
 	Whitelist[436351] = List(6) -- Zandalari Ward
 	Whitelist[429959] = List(2) -- Well-Rested
 	-- Priest Rune Meditations
@@ -902,6 +903,7 @@ G.unitframe.ChannelTicks = {
 if E.ClassicSOD then
 	G.unitframe.ChannelTicks[402261] = 3 -- Penance (DPS)
 	G.unitframe.ChannelTicks[402277] = 3 -- Penance (Healing)
+	G.unitframe.ChannelTicks[413259] = 5 -- Mind Sear (Rune)
 end
 
 -- Spells that chain, second step

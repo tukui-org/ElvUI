@@ -102,6 +102,11 @@ function S:Blizzard_PerksProgram()
 
 	local frame = _G.PerksProgramFrame
 	local products = frame.ProductsFrame
+
+	if E.private.skins.parchmentRemoverEnable then
+		frame.ThemeContainer:SetAlpha(0)
+	end
+
 	if products then
 		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
 
