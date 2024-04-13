@@ -92,21 +92,21 @@ function RU:CleanButton(button)
 	button:SetDisabledTexture(E.ClearTexture)
 end
 
-function RU:InInstance()
+function RU:NotInPVP()
 	local _, instanceType = GetInstanceInfo()
 	return instanceType ~= 'pvp' and instanceType ~= 'arena'
 end
 
 function RU:IsLeader()
-	return UnitIsGroupLeader('player') and RU:InInstance()
+	return UnitIsGroupLeader('player') and RU:NotInPVP()
 end
 
 function RU:HasPermission()
-	return (UnitIsGroupLeader('player') or UnitIsGroupAssistant('player')) and RU:InInstance()
+	return (UnitIsGroupLeader('player') or UnitIsGroupAssistant('player')) and RU:NotInPVP()
 end
 
 function RU:InGroup()
-	return IsInGroup() and RU:InInstance()
+	return IsInGroup() and RU:NotInPVP()
 end
 
 -- Change border when mouse is inside the button
