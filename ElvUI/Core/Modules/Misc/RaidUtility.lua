@@ -98,7 +98,7 @@ function RU:InInstance()
 end
 
 function RU:IsLeader()
-	return (UnitIsGroupLeader('player') and RU:InInstance()) or false -- use false to handle coloring of ping restrict text
+	return UnitIsGroupLeader('player') and RU:InInstance()
 end
 
 function RU:HasPermission()
