@@ -26,6 +26,7 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local IsEveryoneAssistant = IsEveryoneAssistant
 local SetEveryoneIsAssistant = SetEveryoneIsAssistant
 local PlaySound = PlaySound
+local IsInGroup = IsInGroup
 
 local SetRestrictPings = C_PartyInfo.SetRestrictPings
 local GetRestrictPings = C_PartyInfo.GetRestrictPings
@@ -45,6 +46,11 @@ local roles = {
 	{ role = 'DAMAGER' }
 }
 
+local buttonEvents = {
+	'GROUP_ROSTER_UPDATE',
+	'PARTY_LEADER_CHANGED'
+}
+
 local function SetGrabCoords(data, xOffset, yOffset)
 	data.texA, data.texB, data.texC, data.texD = GetTexCoordsByGrid(xOffset, yOffset, 256, 256, 67, 67)
 end
@@ -53,11 +59,23 @@ SetGrabCoords(roles[1], 1, 2)
 SetGrabCoords(roles[2], 2, 1)
 SetGrabCoords(roles[3], 2, 2)
 
-local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate')
+local ShowButton = CreateFrame('Button', 'RaidUtility_ShowButton', E.UIParent, 'SecureHandlerClickTemplate')
 ShowButton:SetMovable(true)
 ShowButton:SetClampedToScreen(true)
 ShowButton:SetClampRectInsets(0, 0, -1, 1)
 ShowButton:Hide()
+
+function RU:SetEnabled(button, enabled, isLeader)
+	if button.SetChecked then
+		button:SetChecked(enabled)
+	else
+		button:SetEnabled(enabled)
+	end
+
+	if button.Text then -- show text grey when isLeader is false, nil and true should be white
+		button.Text:SetFormattedText('%s%s|r', ((isLeader ~= nil and isLeader) or (isLeader == nil and enabled)) and '|cFFffffff' or '|cFF888888', button.label)
+	end
+end
 
 function RU:CleanButton(button)
 	button.BottomLeft:SetAlpha(0)
@@ -74,12 +92,21 @@ function RU:CleanButton(button)
 	button:SetDisabledTexture(E.ClearTexture)
 end
 
--- Check if We are Raid Leader or Raid Officer
-function RU:CheckRaidStatus()
-	if UnitIsGroupLeader('player') or UnitIsGroupAssistant('player') then
-		local _, instanceType = GetInstanceInfo()
-		return instanceType ~= 'pvp' and instanceType ~= 'arena'
-	end
+function RU:NotInPVP()
+	local _, instanceType = GetInstanceInfo()
+	return instanceType ~= 'pvp' and instanceType ~= 'arena'
+end
+
+function RU:IsLeader()
+	return UnitIsGroupLeader('player') and RU:NotInPVP()
+end
+
+function RU:HasPermission()
+	return (UnitIsGroupLeader('player') or UnitIsGroupAssistant('player')) and RU:NotInPVP()
+end
+
+function RU:InGroup()
+	return IsInGroup() and RU:NotInPVP()
 end
 
 -- Change border when mouse is inside the button
@@ -94,10 +121,11 @@ function RU:OnLeave_Button()
 	self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
-function RU:CreateCheckBox(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, events, eventFunc, clickFunc)
+function RU:CreateCheckBox(name, parent, template, size, point, relativeto, point2, xOfs, yOfs, label, events, eventFunc, clickFunc)
 	local checkbox = type(name) == 'table' and name
-	local box = checkbox or CreateFrame('CheckButton', name, parent, template or 'UICheckButtonTemplate')
-	box:Size(height)
+	local box = checkbox or CreateFrame('CheckButton', name, parent, template)
+	box:Size(size)
+	box.label = label or ''
 
 	if events then
 		box:UnregisterAllEvents()
@@ -116,12 +144,15 @@ function RU:CreateCheckBox(name, parent, template, width, height, point, relativ
 
 	if box.Text then
 		box.Text:Point('LEFT', box, 'RIGHT', 2, 0)
-		box.Text:SetText(label or '')
-		box.Text:SetTextColor(1, 1, 1, 1)
+		box.Text:SetText(box.label)
 	end
 
 	if not box:GetPoint() then
 		box:Point(point, relativeto, point2, xOfs, yOfs)
+	end
+
+	if eventFunc then
+		eventFunc(box)
 	end
 
 	RU.CheckBoxes[name] = box
@@ -130,15 +161,25 @@ function RU:CreateCheckBox(name, parent, template, width, height, point, relativ
 end
 
 -- Function to create buttons in this module
-function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, texture)
+function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, label, texture, events, eventFunc, mouseFunc)
 	local button = type(name) == 'table' and name
 	local btn = button or CreateFrame('Button', name, parent, template)
 	btn:HookScript('OnEnter', RU.OnEnter_Button)
 	btn:HookScript('OnLeave', RU.OnLeave_Button)
 	btn:Size(width, height)
 	btn:SetTemplate(nil, true)
+	btn.label = label or ''
 
-	RU:CleanButton(btn)
+	if events then
+		btn:UnregisterAllEvents()
+
+		for _, event in next, events do
+			btn:RegisterEvent(event)
+		end
+	end
+
+	btn:SetScript('OnEvent', eventFunc)
+	btn:SetScript('OnMouseUp', mouseFunc)
 
 	if not btn:GetPoint() then
 		btn:Point(point, relativeto, point2, xOfs, yOfs)
@@ -149,9 +190,9 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 		text:FontTemplate()
 		text:Point('CENTER', btn, 'CENTER', 0, -1)
 		text:SetJustifyH('CENTER')
-		text:SetText(label)
+		text:SetText(btn.label)
 		btn:SetFontString(text)
-		btn.text = text
+		btn.Text = text
 	elseif texture then
 		local tex = btn:CreateTexture(nil, 'OVERLAY')
 		tex:SetTexture(texture)
@@ -161,6 +202,10 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 		btn.texture = tex
 	end
 
+	if eventFunc then
+		eventFunc(btn)
+	end
+
 	RU.Buttons[name] = btn
 
 	return btn
@@ -168,7 +213,7 @@ end
 
 function RU:UpdateMedia()
 	for _, btn in next, RU.Buttons do
-		if btn.text then btn.text:FontTemplate() end
+		if btn.Text then btn.Text:FontTemplate() end
 		if btn.texture then btn.texture:SetTexture(btn.texture.tex) end
 		btn:SetTemplate(nil, true)
 	end
@@ -185,7 +230,7 @@ function RU:ToggleRaidUtil(event)
 	end
 
 	local panel = _G.RaidUtilityPanel
-	local status = RU:CheckRaidStatus()
+	local status = RU:InGroup()
 	ShowButton:SetShown(status and not panel.toggled)
 	panel:SetShown(status and panel.toggled)
 
@@ -232,25 +277,33 @@ function RU:OnClick_CloseButton()
 end
 
 function RU:OnClick_DisbandRaidButton()
-	if RU:CheckRaidStatus() then
+	if RU:InGroup() then
 		E:StaticPopup_Show('DISBAND_RAID')
 	end
 end
 
+function RU:OnEvent_ReadyCheckButton()
+	RU:SetEnabled(self, RU:HasPermission())
+end
+
 function RU:OnClick_ReadyCheckButton()
-	if RU:CheckRaidStatus() then
+	if RU:InGroup() then
 		DoReadyCheck()
 	end
 end
 
+function RU:OnEvent_RoleCheckButton()
+	RU:SetEnabled(self, RU:HasPermission())
+end
+
 function RU:OnClick_RoleCheckButton()
-	if RU:CheckRaidStatus() then
+	if RU:InGroup() then
 		InitiateRolePoll()
 	end
 end
 
 function RU:OnClick_RaidCountdownButton()
-	if RU:CheckRaidStatus() then
+	if RU:InGroup() then
 		C_PartyInfo.DoCountdown(10)
 	end
 end
@@ -259,22 +312,38 @@ function RU:OnClick_RaidControlButton()
 	ToggleFriendsFrame(E.Retail and 3 or 4)
 end
 
+function RU:OnEvent_MainTankButton()
+	RU:SetEnabled(self, RU:HasPermission())
+end
+
+function RU:OnEvent_MainAssistButton()
+	RU:SetEnabled(self, RU:HasPermission())
+end
+
 function RU:OnClick_EveryoneAssist()
-	PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
-	SetEveryoneIsAssistant(self:GetChecked())
+	if RU:IsLeader() then
+		PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
+		SetEveryoneIsAssistant(self:GetChecked())
+	else
+		self:SetChecked(IsEveryoneAssistant())
+	end
 end
 
 function RU:OnEvent_EveryoneAssist()
-	self:SetChecked(IsEveryoneAssistant())
+	RU:SetEnabled(self, IsEveryoneAssistant(), RU:IsLeader())
 end
 
 function RU:OnClick_RestrictPings()
-	PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
-	SetRestrictPings(self:GetChecked())
+	if RU:HasPermission() then
+		PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
+		SetRestrictPings(self:GetChecked())
+	else
+		self:SetChecked(GetRestrictPings())
+	end
 end
 
 function RU:OnEvent_RestrictPings()
-	self:SetChecked(GetRestrictPings())
+	RU:SetEnabled(self, GetRestrictPings(), RU:HasPermission())
 end
 
 -- Credits oRA3 for the RoleIcons
@@ -383,7 +452,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameStrata('HIGH')
 	E.FrameLocks.RaidUtilityPanel = true
 
-	RU:CreateUtilButton(ShowButton, nil, nil, 136, 18, 'TOP', E.UIParent, 'TOP', -400, E.Border, _G.RAID_CONTROL)
+	RU:CreateUtilButton(ShowButton, nil, nil, 136, 18, 'TOP', E.UIParent, 'TOP', -400, E.Border, _G.RAID_CONTROL, nil, nil, nil, RU.OnClick_ShowButton)
 	SecureHandlerSetFrameRef(ShowButton, 'RaidUtilityPanel', RaidUtilityPanel)
 	ShowButton:RegisterForDrag('RightButton')
 	ShowButton:SetFrameStrata('HIGH')
@@ -414,15 +483,13 @@ function RU:Initialize()
 		raidUtil:SetPoint(raidUtilPoint, self, raidUtilPoint)
 		closeButton:SetPoint(raidUtilPoint, raidUtil, closeButtonPoint, 0, yOffset)
 	]=], -E.Border + E.Spacing*3))
-	ShowButton:SetScript('OnMouseUp', RU.OnClick_ShowButton)
 	ShowButton:SetScript('OnDragStart', RU.DragStart_ShowButton)
 	ShowButton:SetScript('OnDragStop', RU.DragStop_ShowButton)
 	E.FrameLocks.RaidUtility_ShowButton = true
 
-	local CloseButton = RU:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate', 136, 18, 'TOP', RaidUtilityPanel, 'BOTTOM', 0, -1, _G.CLOSE)
+	local CloseButton = RU:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'SecureHandlerClickTemplate', 136, 18, 'TOP', RaidUtilityPanel, 'BOTTOM', 0, -1, _G.CLOSE, nil, nil, nil, RU.OnClick_CloseButton)
 	SecureHandlerSetFrameRef(CloseButton, 'RaidUtility_ShowButton', ShowButton)
 	CloseButton:SetAttribute('_onclick', [=[self:GetParent():Hide(); self:GetFrameRef('RaidUtility_ShowButton'):Show()]=])
-	CloseButton:SetScript('OnMouseUp', RU.OnClick_CloseButton)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
 	if E.Retail or E.Wrath then
@@ -469,41 +536,34 @@ function RU:Initialize()
 	end
 
 	local BUTTON_WIDTH = PANEL_WIDTH - 20
-	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidUtilityPanel, 'TOPLEFT', 10, -4, L["Raid Menu"])
-	RaidControlButton:SetScript('OnMouseUp', RU.OnClick_RaidControlButton)
+	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidUtilityPanel, 'TOPLEFT', 10, -4, L["Raid Menu"], nil, nil, nil, RU.OnClick_RaidControlButton)
+	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * (E.Classic and 1 or 0.49), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK, nil, buttonEvents, RU.OnEvent_ReadyCheckButton, RU.OnClick_ReadyCheckButton)
+	RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, L["Disband Group"], nil, nil, nil, RU.OnClick_DisbandRaidButton)
 
-	local DisbandRaidButton = RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, L["Disband Group"])
-	DisbandRaidButton:SetScript('OnMouseUp', RU.OnClick_DisbandRaidButton)
-
-	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Classic and 1 or 0.49), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
-	ReadyCheckButton:SetScript('OnMouseUp', RU.OnClick_ReadyCheckButton)
-
-	local RoleCheckButton
 	if E.Retail or E.Wrath then
-		RoleCheckButton = RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 3, 0, _G.ROLE_POLL)
-		RoleCheckButton:SetScript('OnMouseUp', RU.OnClick_RoleCheckButton)
+		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 3, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
 	end
 
-	local MainTankButton = RU:CreateUtilButton('RaidUtility_MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK)
+	local MainTankButton = RU:CreateUtilButton('RaidUtility_MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK, nil, buttonEvents, RU.OnEvent_MainTankButton)
 	MainTankButton:SetAttribute('type', 'maintank')
 	MainTankButton:SetAttribute('unit', 'target')
 	MainTankButton:SetAttribute('action', 'toggle')
+	MainTankButton:RegisterForClicks('AnyDown', 'AnyUp')
 
-	local MainAssistButton = RU:CreateUtilButton('RaidUtility_MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'TOPRIGHT', 3, 0, _G.MAINASSIST)
+	local MainAssistButton = RU:CreateUtilButton('RaidUtility_MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'TOPRIGHT', 3, 0, _G.MAINASSIST, nil, buttonEvents, RU.OnEvent_MainAssistButton)
 	MainAssistButton:SetAttribute('type', 'mainassist')
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')
+	MainAssistButton:RegisterForClicks('AnyDown', 'AnyUp')
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * (E.Retail and 0.78 or 1), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"])
-		RaidCountdownButton:SetScript('OnMouseUp', RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, BUTTON_WIDTH * (E.Retail and 0.78 or 1), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
-	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
-
+	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, buttonEvents, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
 	if SetRestrictPings then
-		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, nil, BUTTON_WIDTH, BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, {'GROUP_ROSTER_UPDATE', 'PARTY_LEADER_CHANGED'}, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
+		RU:CreateCheckBox('RaidUtility_RestrictPings', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 0, 0, _G.RAID_MANAGER_RESTRICT_PINGS, buttonEvents, RU.OnEvent_RestrictPings, RU.OnClick_RestrictPings)
 	end
 
 	if E.Retail then
