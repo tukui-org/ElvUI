@@ -347,7 +347,7 @@ do
 
 		if #search > MIN_REPEAT_CHARACTERS then
 			local repeating = true
-			for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+			for i = 1, MIN_REPEAT_CHARACTERS do
 				local x, y = 0-i, -1-i
 				if strsub(search, x, x) ~= strsub(search, y, y) then
 					repeating = false

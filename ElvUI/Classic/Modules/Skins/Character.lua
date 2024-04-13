@@ -28,7 +28,7 @@ local function ReputationFrameUpdate()
 	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
 	local numFactions = GetNumFactions()
 
-	for i = 1, NUM_FACTIONS_DISPLAYED, 1 do
+	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionIndex = factionOffset + i
 		if factionIndex <= numFactions then
 			local factionHeader = _G['ReputationHeader'..i]

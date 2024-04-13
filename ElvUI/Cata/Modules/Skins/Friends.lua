@@ -356,7 +356,7 @@ function S:FriendsFrame()
 				end
 			end
 		else
-			for i = 1, _G.GUILDMEMBERS_TO_DISPLAY, 1 do
+			for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
 				local button = _G['GuildFrameGuildStatusButton'..i]
 				local _, _, _, _, class, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
 

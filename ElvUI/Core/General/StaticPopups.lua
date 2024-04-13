@@ -684,7 +684,7 @@ function E:StaticPopup_FindVisible(which, data)
 	if not info then
 		return nil
 	end
-	for index = 1, MAX_STATIC_POPUPS, 1 do
+	for index = 1, MAX_STATIC_POPUPS do
 		local frame = _G['ElvUI_StaticPopup'..index]
 		if frame and frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) then
 			return frame
@@ -781,7 +781,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	end
 
 	if info.cancels then
-		for index = 1, MAX_STATIC_POPUPS, 1 do
+		for index = 1, MAX_STATIC_POPUPS do
 			local frame = _G['ElvUI_StaticPopup'..index]
 			if frame:IsShown() and (frame.which == info.cancels) then
 				frame:Hide()
@@ -1066,7 +1066,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 end
 
 function E:StaticPopup_Hide(which, data)
-	for index = 1, MAX_STATIC_POPUPS, 1 do
+	for index = 1, MAX_STATIC_POPUPS do
 		local dialog = _G['ElvUI_StaticPopup'..index]
 		if dialog.which == which and (not data or (data == dialog.data)) then
 			dialog:Hide()

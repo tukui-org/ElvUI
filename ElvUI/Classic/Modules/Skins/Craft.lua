@@ -117,7 +117,7 @@ function S:SkinCraft()
 		end
 
 		local numReagents = GetCraftNumReagents(id)
-		for i = 1, numReagents, 1 do
+		for i = 1, numReagents do
 			local _, _, reagentCount, playerReagentCount = GetCraftReagentInfo(id, i)
 			local reagentLink = GetCraftReagentItemLink(id, i)
 			local icon = _G['CraftReagent'..i..'IconTexture']

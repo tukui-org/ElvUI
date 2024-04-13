@@ -638,7 +638,7 @@ do
 			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true
-				for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+				for i = 1, MIN_REPEAT_CHARACTERS do
 					local first = -1 - i
 					if strsub(text,-i,-i) ~= strsub(text,first,first) then
 						repeatChar = false
