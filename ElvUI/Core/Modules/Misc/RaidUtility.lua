@@ -321,7 +321,7 @@ function RU:OnEvent_MainAssistButton()
 end
 
 function RU:OnClick_EveryoneAssist()
-	if RU:IsLeader () then
+	if RU:IsLeader() then
 		PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
 		SetEveryoneIsAssistant(self:GetChecked())
 	else
