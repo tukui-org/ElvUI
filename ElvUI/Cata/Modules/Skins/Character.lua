@@ -320,7 +320,6 @@ function S:CharacterFrame()
 	local CharacterMainHandSlot = _G.CharacterMainHandSlot
 	CharacterMainHandSlot:ClearAllPoints()
 	CharacterMainHandSlot:Point('BOTTOMLEFT', _G.PaperDollItemsFrame, 'BOTTOMLEFT', 106, 10)
-	-- TODO add item quality borders for each slot
 
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
