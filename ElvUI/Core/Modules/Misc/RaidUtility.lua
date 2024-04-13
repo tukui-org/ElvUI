@@ -65,6 +65,14 @@ ShowButton:SetClampedToScreen(true)
 ShowButton:SetClampRectInsets(0, 0, -1, 1)
 ShowButton:Hide()
 
+function RU:FixSecureClicks(button)
+	if E.Retail then
+		button:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		button:RegisterForClicks('AnyUp')
+	end
+end
+
 function RU:SetEnabled(button, enabled, isLeader)
 	if button.SetChecked then
 		button:SetChecked(enabled)
@@ -548,13 +556,13 @@ function RU:Initialize()
 	MainTankButton:SetAttribute('type', 'maintank')
 	MainTankButton:SetAttribute('unit', 'target')
 	MainTankButton:SetAttribute('action', 'toggle')
-	MainTankButton:RegisterForClicks('AnyDown', 'AnyUp')
+	RU:FixSecureClicks(MainTankButton)
 
 	local MainAssistButton = RU:CreateUtilButton('RaidUtility_MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'TOPRIGHT', 3, 0, _G.MAINASSIST, nil, buttonEvents, RU.OnEvent_MainAssistButton)
 	MainAssistButton:SetAttribute('type', 'mainassist')
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')
-	MainAssistButton:RegisterForClicks('AnyDown', 'AnyUp')
+	RU:FixSecureClicks(MainAssistButton)
 
 	local RaidCountdownButton
 	if hasCountdown then
