@@ -18,6 +18,70 @@ local showInsetBackdrop = {
 	TokenFrame = true
 }
 
+local function TokenFrame_ScrollUpdate(frame)
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if child.Highlight and not child.IsSkinned then
+			child.CategoryLeft:SetAlpha(0)
+			child.CategoryRight:SetAlpha(0)
+			child.CategoryMiddle:SetAlpha(0)
+			child.Stripe:SetAlpha(0.75)
+
+			child.Highlight:SetInside()
+			child.Highlight:SetColorTexture(1, 1, 1, .25)
+
+			child.Highlight.SetPoint = E.noop
+			child.Highlight.SetTexture = E.noop
+
+			S:HandleIcon(child.Icon, true)
+			child.Icon.backdrop:SetFrameLevel(child:GetFrameLevel())
+
+			if child.ExpandIcon then
+				child.ExpandIcon:CreateBackdrop('Transparent')
+				child.ExpandIcon.backdrop:SetInside(3, 3)
+			end
+
+			child.IsSkinned = true
+		end
+
+		child.Icon.backdrop:SetShown(not child.isHeader)
+		child.ExpandIcon.backdrop:SetShown(child.isHeader)
+		child.Stripe:SetShown(not child.isHeader)
+	end
+end
+
+local function EquipmentManagerPane_Update(frame)
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if child.icon and not child.isSkinned then
+			child.BgTop:SetTexture(E.ClearTexture)
+			child.BgMiddle:SetTexture(E.ClearTexture)
+			child.BgBottom:SetTexture(E.ClearTexture)
+			S:HandleIcon(child.icon)
+			child.HighlightBar:SetColorTexture(1, 1, 1, .25)
+			child.HighlightBar:SetDrawLayer('BACKGROUND')
+			child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
+			child.SelectedBar:SetDrawLayer('BACKGROUND')
+
+			child.isSkinned = true
+		end
+	end
+end
+
+local function TitleManagerPane_Update(frame)
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if not child.isSkinned then
+			child:DisableDrawLayer('BACKGROUND')
+			child.isSkinned = true
+		end
+	end
+end
+
+local function PaperDollItemSlotButtonUpdate(slot)
+	local highlight = slot:GetHighlightTexture()
+	highlight:SetTexture(E.Media.Textures.White8x8)
+	highlight:SetVertexColor(1, 1, 1, .25)
+	highlight:SetInside()
+end
+
 local function UpdateCharacterInset(name)
 	_G.CharacterFrameInset.backdrop:SetShown(showInsetBackdrop[name])
 end
@@ -234,13 +298,6 @@ function S:CharacterFrame()
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', function(slot)
-		local highlight = slot:GetHighlightTexture()
-		highlight:SetTexture(E.Media.Textures.White8x8)
-		highlight:SetVertexColor(1, 1, 1, .25)
-		highlight:SetInside()
-	end)
-
 	--Give character frame model backdrop it's color back
 	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
 		local bg = _G['CharacterModelFrameBackground'..corner]
@@ -304,35 +361,12 @@ function S:CharacterFrame()
 	S:HandleModelSceneControlButtons(_G.CharacterModelScene.ControlFrame)
 
 	--Titles
-	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
-				child:DisableDrawLayer('BACKGROUND')
-				child.isSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
 
 	--Equipement Manager
+	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
 	S:HandleButton(_G.PaperDollFrameEquipSet)
 	S:HandleButton(_G.PaperDollFrameSaveSet)
-
-	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if child.icon and not child.isSkinned then
-				child.BgTop:SetTexture(E.ClearTexture)
-				child.BgMiddle:SetTexture(E.ClearTexture)
-				child.BgBottom:SetTexture(E.ClearTexture)
-				S:HandleIcon(child.icon)
-				child.HighlightBar:SetColorTexture(1, 1, 1, .25)
-				child.HighlightBar:SetDrawLayer('BACKGROUND')
-				child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
-				child.SelectedBar:SetDrawLayer('BACKGROUND')
-
-				child.isSkinned = true
-			end
-		end
-	end)
 
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
@@ -371,8 +405,6 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
 	S:HandleButton(_G.ReputationDetailViewRenownButton)
 
-	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
-
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
@@ -385,40 +417,10 @@ function S:CharacterFrame()
 		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
 	end
 
-	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if child.Highlight and not child.IsSkinned then
-				child.CategoryLeft:SetAlpha(0)
-				child.CategoryRight:SetAlpha(0)
-				child.CategoryMiddle:SetAlpha(0)
-				child.Stripe:SetAlpha(0.75)
-
-				child.Highlight:SetInside()
-				child.Highlight:SetColorTexture(1, 1, 1, .25)
-
-				child.Highlight.SetPoint = E.noop
-				child.Highlight.SetTexture = E.noop
-
-				S:HandleIcon(child.Icon, true)
-				child.Icon.backdrop:SetFrameLevel(child:GetFrameLevel())
-
-				if child.ExpandIcon then
-					child.ExpandIcon:CreateBackdrop('Transparent')
-					child.ExpandIcon.backdrop:SetInside(3, 3)
-				end
-
-				child.IsSkinned = true
-			end
-
-			child.Icon.backdrop:SetShown(not child.isHeader)
-			child.ExpandIcon.backdrop:SetShown(child.isHeader)
-			child.Stripe:SetShown(not child.isHeader)
-		end
-	end)
-
-	--Buttons used to toggle between equipment manager, titles, and character stats
+	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
+	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
-
+	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
 	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
 end
 
