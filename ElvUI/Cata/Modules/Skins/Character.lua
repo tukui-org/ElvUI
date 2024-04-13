@@ -184,34 +184,60 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandlePortraitFrame(CharacterFrame)
 
-	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
-			S:HandleIcon(Slot.icon)
-			Slot:StripTextures()
-			Slot:SetTemplate()
-			Slot:StyleButton(Slot)
-			Slot.icon:SetInside()
-			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
+	local slots = {
+		_G.CharacterHeadSlot,
+		_G.CharacterNeckSlot,
+		_G.CharacterShoulderSlot,
+		_G.CharacterShirtSlot,
+		_G.CharacterChestSlot,
+		_G.CharacterWaistSlot,
+		_G.CharacterLegsSlot,
+		_G.CharacterFeetSlot,
+		_G.CharacterWristSlot,
+		_G.CharacterHandsSlot,
+		_G.CharacterFinger0Slot,
+		_G.CharacterFinger1Slot,
+		_G.CharacterTrinket0Slot,
+		_G.CharacterTrinket1Slot,
+		_G.CharacterBackSlot,
+		_G.CharacterMainHandSlot,
+		_G.CharacterSecondaryHandSlot,
+		_G.CharacterRangedSlot,
+		_G.CharacterTabardSlot,
+		_G.CharacterAmmoSlot
+	}
 
-			S:HandleIconBorder(Slot.IconBorder)
+	for _, slot in pairs(slots) do
+		if slot:IsObjectType('Button') then
+			local icon = _G[slot:GetName()..'IconTexture']
+			local cooldown = _G[slot:GetName()..'Cooldown']
 
-			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
-			else
-				Slot.popoutButton:Point('LEFT', Slot, 'RIGHT', -2, 0)
+			slot:StripTextures()
+			slot:SetTemplate(nil, true, true)
+			slot:StyleButton()
+
+			slot.characterSlot = true -- for color function
+
+			S:HandleIcon(icon)
+			icon:SetInside()
+
+			if cooldown then
+				E:RegisterCooldown(cooldown)
 			end
-
-			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', function(slot)
-		local highlight = slot:GetHighlightTexture()
-		highlight:SetTexture(E.Media.Textures.White8x8)
-		highlight:SetVertexColor(1, 1, 1, .25)
-		highlight:SetInside()
+	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
+		if frame.characterSlot then
+			local rarity = GetInventoryItemQuality('player', frame:GetID())
+			if rarity and rarity > 1 then
+				local r, g, b = GetItemQualityColor(rarity)
+				frame:SetBackdropBorderColor(r, g, b)
+			else
+				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
+		end
 	end)
-
 	-- Give character frame model backdrop it's color back
 	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
 		local bg = _G['CharacterModelFrameBackground'..corner]
