@@ -61,7 +61,7 @@ end
 
 local function PaperDollFrameSetResistance(frame, unit, index)
 	local _, resistance = UnitResistance(unit, index)
-	local icon = format('%s%d:12:12:0:0:64:64:4:55:4:55|t', spellSchoolIcon, index + 1)
+	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', spellSchoolIcon, index + 1)
 	local name = frame:GetName()
 
 	_G[name..'Label']:SetFormattedText('%s '..STAT_FORMAT, icon, _G['SPELL_SCHOOL'..index..'_CAP'])
