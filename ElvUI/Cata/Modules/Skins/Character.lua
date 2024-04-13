@@ -47,7 +47,9 @@ local function TitleManagerPane_Update(frame)
 end
 
 local function PaperDollItemSlotButtonUpdate(frame)
-	local id = frame.characterSlot and frame:GetID()
+	if not frame.SetBackdropBorderColor then return end
+
+	local id = frame:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
 	if rarity and rarity > 1 then
 		local r, g, b = GetItemQualityColor(rarity)
@@ -244,8 +246,6 @@ function S:CharacterFrame()
 			slot:StripTextures()
 			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
-
-			slot.characterSlot = true -- for color function
 
 			S:HandleIcon(icon)
 			icon:SetInside()
