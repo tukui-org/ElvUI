@@ -233,7 +233,7 @@ function S:CharacterFrame()
 		'CharacterFrameInsetRight',
 		'PaperDollSidebarTabs',
 		'PetModelFrame',
-		'PetModelFrameShadowOverlay',
+		'PetModelFrameShadowOverlay'
 	}
 
 	-- Icon in upper right corner of character frame
@@ -290,6 +290,12 @@ function S:CharacterFrame()
 		end
 	end)
 
+	-- Item Quality Borders and Armor Slots
+	local CharacterMainHandSlot = _G.CharacterMainHandSlot
+	CharacterMainHandSlot:ClearAllPoints()
+	CharacterMainHandSlot:Point('BOTTOMLEFT', _G.PaperDollItemsFrame, 'BOTTOMLEFT', 106, 10)
+	-- TODO add item quality borders for each slot
+
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
@@ -326,7 +332,33 @@ function S:CharacterFrame()
 	end)
 
 	-- Expand Button
-	-- TODO
+	local CharacterFrameExpandButton = _G.CharacterFrameExpandButton
+	S:HandleNextPrevButton(CharacterFrameExpandButton, nil, nil, nil, nil, nil, 28) -- Default UI button size is 32
+
+	CharacterFrameExpandButton:SetNormalTexture(E.Media.Textures.ArrowUp)
+	CharacterFrameExpandButton.SetNormalTexture = E.noop
+	CharacterFrameExpandButton:SetPushedTexture(E.Media.Textures.ArrowUp)
+	CharacterFrameExpandButton.SetPushedTexture = E.noop
+	CharacterFrameExpandButton:SetDisabledTexture(E.Media.Textures.ArrowUp)
+	CharacterFrameExpandButton.SetDisabledTexture = E.noop
+
+	local expandButtonNormal, expandButtonPushed = CharacterFrameExpandButton:GetNormalTexture(), CharacterFrameExpandButton:GetPushedTexture()
+	local expandButtonCvar = GetCVar('characterFrameCollapsed') ~= '0'
+	expandButtonNormal:SetRotation(expandButtonCvar and -1.57 or 1.57)
+	expandButtonPushed:SetRotation(expandButtonCvar and -1.57 or 1.57)
+
+	-- Not sure if there is a better method to hook Mixin funcs
+	local function HookCollapseExpand(self)
+		hooksecurefunc(self, 'Collapse', function()
+			expandButtonNormal:SetRotation(-1.57)
+			expandButtonPushed:SetRotation(-1.57)
+		end)
+		hooksecurefunc(self, 'Expand', function()
+			expandButtonNormal:SetRotation(1.57)
+			expandButtonPushed:SetRotation(1.57)
+		end)
+	end
+	HookCollapseExpand(CharacterFrame)
 
 	-- Pet Frame
 	S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
