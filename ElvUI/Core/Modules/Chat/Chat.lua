@@ -514,6 +514,9 @@ do --this can save some main file locals
 			z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock
 			z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior
 			z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman
+			-- Sneaky Darth
+			z['Player-1925-05F494A6']	= ElvPurple
+			z['Player-1925-05F495A1']	= ElvPurple
 		end
 	end
 end
