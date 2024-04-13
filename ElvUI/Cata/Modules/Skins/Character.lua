@@ -358,7 +358,9 @@ function S:CharacterFrame()
 
 	-- Expand Button
 	local CharacterFrameExpandButton = _G.CharacterFrameExpandButton
-	S:HandleNextPrevButton(CharacterFrameExpandButton, nil, nil, nil, nil, nil, 28) -- Default UI button size is 32
+	S:HandleNextPrevButton(CharacterFrameExpandButton, nil, nil, nil, nil, nil, 26) -- Default UI button size is 32
+	CharacterFrameExpandButton:ClearAllPoints()
+	CharacterFrameExpandButton:Point('BOTTOMRIGHT', _G.CharacterFrameInset, 'BOTTOMRIGHT', -3, 2)
 
 	CharacterFrameExpandButton:SetNormalTexture(E.Media.Textures.ArrowUp)
 	CharacterFrameExpandButton.SetNormalTexture = E.noop
@@ -372,18 +374,14 @@ function S:CharacterFrame()
 	expandButtonNormal:SetRotation(expandButtonCvar and -1.57 or 1.57)
 	expandButtonPushed:SetRotation(expandButtonCvar and -1.57 or 1.57)
 
-	-- Not sure if there is a better method to hook Mixin funcs
-	local function HookCollapseExpand(self)
-		hooksecurefunc(self, 'Collapse', function()
-			expandButtonNormal:SetRotation(-1.57)
-			expandButtonPushed:SetRotation(-1.57)
-		end)
-		hooksecurefunc(self, 'Expand', function()
-			expandButtonNormal:SetRotation(1.57)
-			expandButtonPushed:SetRotation(1.57)
-		end)
-	end
-	HookCollapseExpand(CharacterFrame)
+	hooksecurefunc(CharacterFrame, 'Collapse', function()
+		expandButtonNormal:SetRotation(-1.57)
+		expandButtonPushed:SetRotation(-1.57)
+	end)
+	hooksecurefunc(CharacterFrame, 'Expand', function()
+		expandButtonNormal:SetRotation(1.57)
+		expandButtonPushed:SetRotation(1.57)
+	end)
 
 	-- Pet Frame
 	S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
