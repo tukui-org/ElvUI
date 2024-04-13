@@ -2,20 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, pairs, unpack = gsub, pairs, unpack
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
-
-local function UpdateSelection(frame)
-	if not frame.backdrop then return end
-
-	if frame.SelectedTexture:IsShown() then
-		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
-	else
-		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end
-end
 
 local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
 local function SkinRewardIcon(itemFrame)
@@ -26,6 +16,16 @@ local function SkinRewardIcon(itemFrame)
 		S:HandleIcon(itemFrame.Icon, true)
 		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 		itemFrame.IsSkinned = true
+	end
+end
+
+local function UpdateSelection(frame)
+	if not frame.backdrop then return end
+
+	if frame.SelectedTexture:IsShown() then
+		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
+	else
+		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
 	end
 end
 

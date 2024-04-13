@@ -5,10 +5,9 @@ local LibStub = _G.LibStub
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
-local unpack, assert, type, strfind = unpack, assert, type, strfind
+local unpack, assert, type, gsub, strfind = unpack, assert, type, gsub, strfind
 
 local CreateFrame = CreateFrame
-
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -1289,7 +1288,7 @@ do
 	end
 end
 
-function S.ReplaceIconString(self, text)
+function S:ReplaceIconString(text)
 	if not text then text = self:GetText() end
 	if not text or text == '' then return end
 

@@ -2,6 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
+
+local function AbilitiesList_Layout(list)
+	if not list.abilityPool then return end
+
+	for frame in list.abilityPool:EnumerateActive() do
+		if not frame.IsSkinned then
+			S:HandleIcon(frame.Icon)
+			frame.IsSkinned = true
+		end
+	end
+end
 
 function S:Blizzard_StableUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
@@ -29,16 +41,9 @@ function S:Blizzard_StableUI()
 			--S:HandleButton(PetInfo.NameBox.EditButton) -- ToDo: 10.2.7: Halp, Fix me
 		end
 
-		local StableList = StableModelScene.AbilitiesList
-		if StableList then
-			hooksecurefunc(StableList, 'Layout', function(self)
-				for frame in self.abilityPool:EnumerateActive() do
-					if not frame.IsSkinned then
-						S:HandleIcon(frame.Icon)
-						frame.IsSkinned = true
-					end
-				end
-			end)
+		local AbilitiesList = StableModelScene.AbilitiesList
+		if AbilitiesList then
+			hooksecurefunc(AbilitiesList, 'Layout', AbilitiesList_Layout)
 		end
 	end
 	S:HandleModelSceneControlButtons(StableModelScene.ControlFrame)

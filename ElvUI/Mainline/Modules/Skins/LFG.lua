@@ -20,6 +20,12 @@ local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
+local groupButtonIcons = {
+	133076, -- interface\icons\inv_helmet_08.blp
+	133074, -- interface\icons\inv_helmet_06.blp
+	464820 -- interface\icons\achievement_general_stayclassy.blp
+}
+
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LCG.ShowOverlayGlow(self:GetParent().checkButton)
 end
@@ -127,10 +133,6 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
-
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface\icons\inv_helmet_08.blp
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
 
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
@@ -261,18 +263,26 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 4 do
-		local bu = _G.GroupFinderFrame['groupButton'..i]
+	do
+		local index = 1
+		local button = _G.GroupFinderFrame['groupButton'..index]
+		while button do
+			button.ring:Hide()
+			button.bg:Kill()
+			S:HandleButton(button)
 
-		if bu then
-			bu.ring:Hide()
-			bu.bg:Kill()
-			S:HandleButton(bu)
+			local texture = groupButtonIcons[index]
+			if texture then
+				button.icon:SetTexture(texture)
+			end
 
-			bu.icon:Size(45)
-			bu.icon:ClearAllPoints()
-			bu.icon:Point('LEFT', 10, 0)
-			S:HandleIcon(bu.icon, true)
+			button.icon:Size(45)
+			button.icon:ClearAllPoints()
+			button.icon:Point('LEFT', 10, 0)
+			S:HandleIcon(button.icon, true)
+
+			index = index + 1
+			button = _G.GroupFinderFrame['groupButton'..index]
 		end
 	end
 
@@ -295,11 +305,12 @@ function S:LookingForGroupFrames()
 		_G.ScenarioFinderFrameInset:StripTextures()
 		_G.ScenarioQueueFrameBackground:SetAlpha(0)
 		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
-		if ScenarioQueueFrameRandomScrollFrameScrollBar then
-			ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
-		end
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+
+		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
+			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+		end
 	end
 
 	-- Raid finder
