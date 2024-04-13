@@ -49,14 +49,6 @@ local function SkinActivityFrame(frame, isObject)
 	end
 end
 
-local function ReplaceIconString(self, text)
-	if not text then text = self:GetText() end
-	if not text or text == '' then return end
-
-	local newText, count = gsub(text, '|T([^:]-):[%d+:]+|t', '|T%1:14:14:0:0:64:64:5:59:5:59|t')
-	if count > 0 then self:SetFormattedText('%s', newText) end
-end
-
 local function ReskinConfirmIcon(frame)
 	S:HandleIcon(frame.Icon, true)
 	S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
@@ -120,8 +112,8 @@ function S:Blizzard_WeeklyRewards()
 	end)
 
 	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
-	ReplaceIconString(rewardText)
-	hooksecurefunc(rewardText, 'SetText', ReplaceIconString)
+	S.ReplaceIconString(rewardText)
+	hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')
