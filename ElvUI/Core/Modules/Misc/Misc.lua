@@ -38,7 +38,6 @@ local SendChatMessage = SendChatMessage
 local StaticPopup_Hide = StaticPopup_Hide
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 local UninviteUnit = UninviteUnit
-local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitName = UnitName
@@ -46,6 +45,7 @@ local IsInGuild = IsInGuild
 local PlaySound = PlaySound
 local GetNumFactions = GetNumFactions
 local GetFactionInfo = GetFactionInfo
+local UnitIsGroupLeader = UnitIsGroupLeader
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
@@ -58,6 +58,7 @@ local IsFriend = C_FriendList.IsFriend
 
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local UNKNOWN = UNKNOWN
 
@@ -218,17 +219,24 @@ end
 function M:DisbandRaidGroup()
 	if InCombatLockdown() then return end -- Prevent user error in combat
 
-	if UnitInRaid('player') then
-		for i = 1, GetNumGroupMembers() do
-			local name, _, _, _, _, _, _, online = GetRaidRosterInfo(i)
-			if online and name ~= E.myname then
-				UninviteUnit(name)
+	local myIndex = UnitInRaid('player')
+	if myIndex then
+		local _, myRank = GetRaidRosterInfo(myIndex)
+		if myRank == 2 then -- real raid leader
+			for i = 1, GetNumGroupMembers() do
+				if i ~= myIndex then -- dont kick yourself
+					local name = GetRaidRosterInfo(i)
+					if name then
+						UninviteUnit(name)
+					end
+				end
 			end
 		end
-	else
+	elseif not myIndex and UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
 		for i = MAX_PARTY_MEMBERS, 1, -1 do
-			if UnitExists('party'..i) then
-				UninviteUnit(UnitName('party'..i))
+			local name = UnitName('party'..i)
+			if name then
+				UninviteUnit(name)
 			end
 		end
 	end

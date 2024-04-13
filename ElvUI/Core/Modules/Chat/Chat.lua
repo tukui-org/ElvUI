@@ -310,7 +310,7 @@ do --this can save some main file locals
 		--Thradex: summer without you
 		local ThradexColors = function(t) return specialText(t, 0.00,0.60,0.09, 0.22,0.65,0.90, 0.22,0.65,0.90, 1.00,0.74,0.27, 1.00,0.66,0.00, 1.00,0.50,0.20, 0.92,0.31,0.23) end
 		--Repooc: Something to change it up a little
-		local PoocsColors = function(t) return specialText(t, 0.90, 0.8, 0.50) end
+		local PoocsColors = function(t) return specialText(t, 0.9,0.8,0.5) end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
