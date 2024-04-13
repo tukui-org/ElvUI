@@ -263,14 +263,17 @@ function S:LookingForGroupFrames()
 
 	for i = 1, 4 do
 		local bu = _G.GroupFinderFrame['groupButton'..i]
-		bu.ring:Kill()
-		bu.bg:Kill()
-		S:HandleButton(bu)
 
-		bu.icon:Size(45)
-		bu.icon:ClearAllPoints()
-		bu.icon:Point('LEFT', 10, 0)
-		S:HandleIcon(bu.icon, true)
+		if bu then
+			bu.ring:Hide()
+			bu.bg:Kill()
+			S:HandleButton(bu)
+
+			bu.icon:Size(45)
+			bu.icon:ClearAllPoints()
+			bu.icon:Point('LEFT', 10, 0)
+			S:HandleIcon(bu.icon, true)
+		end
 	end
 
 	for i = 1, 3 do
@@ -286,11 +289,18 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
 	-- Szenario Tab [[New in 10.2.7]]
-	_G.ScenarioQueueFrameBackground:SetAlpha(0)
-	_G.ScenarioFinderFrameInset:StripTextures()
-	S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
-	S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar) -- Halp
-	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+	local ScenarioQueueFrame = _G.ScenarioQueueFrame
+	if ScenarioQueueFrame then
+		ScenarioQueueFrame:StripTextures()
+		_G.ScenarioFinderFrameInset:StripTextures()
+		_G.ScenarioQueueFrameBackground:SetAlpha(0)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
+		if ScenarioQueueFrameRandomScrollFrameScrollBar then
+			ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+		end
+		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
+		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+	end
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
