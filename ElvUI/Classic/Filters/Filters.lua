@@ -661,6 +661,30 @@ if E.ClassicSOD then
 	RaidDebuffs[438732] = List(2) -- Toxic Ventilation
 	RaidDebuffs[438735] = List(2) -- High Voltage!
 	RaidDebuffs[438720] = List(2) -- Freezing
+	----------------------------------------------------------
+	---------------------- Sunken Temple ---------------------
+	----------------------------------------------------------
+	-- Atal'alarion
+	RaidDebuffs[437617] = List(2) -- Demolishing Smash
+	-- Festering Rotslime
+	RaidDebuffs[438142] = List(3) -- Gunk
+	-- Atal'ai Defenders
+	RaidDebuffs[446354] = List(2) -- Shield Slam
+	RaidDebuffs[446373] = List(2) -- Corrupted Slam
+	-- Dreamscythe and Weaver
+	RaidDebuffs[442622] = List(2) -- Acid Breath
+	-- Jammal'an and Ogom
+	RaidDebuffs[437868] = List(3) -- Agonizing Weakness
+	RaidDebuffs[437847] = List(6) -- Mortal Lash
+	-- Morphaz and Hazzas
+	RaidDebuffs[445158] = List(2) -- Lucid Dreaming
+	RaidDebuffs[445555] = List(3) -- On Fire!!
+	-- Shade of Eranikus
+	RaidDebuffs[437390] = List(6) -- Lethargic Poison
+	RaidDebuffs[437324] = List(2) -- Deep Slumber
+	-- Avatar of Hakkar
+	RaidDebuffs[444255] = List(6) -- Corrupted Blood
+	RaidDebuffs[444165] = List(5) -- Skeletal
 end
 
 --[[
