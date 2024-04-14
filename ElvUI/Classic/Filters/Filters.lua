@@ -748,6 +748,19 @@ if E.ClassicSOD then
 	RaidBuffs[436837] = List(2) -- Widget Fortress
 	-- Mekgineer Thermaplugg
 	RaidBuffs[438715] = List(2) -- Furnace Surge
+	----------------------------------------------------------
+	---------------------- Sunken Temple ---------------------
+	----------------------------------------------------------
+	-- Atal'ai Defenders
+	RaidBuffs[446356] = List(2) -- Improved Blocking
+	-- Dreamscythe and Weaver
+	RaidBuffs[443302] = List(6) -- Emerald Ward
+	-- Jammal'an and Ogom
+	RaidBuffs[437791] = List(6) -- Ritual Leader
+	-- Shade of Eranikus
+	RaidBuffs[437410] = List(6) -- Deep Slumber
+	-- Avatar of Hakkar
+	RaidBuffs[443917] = List(2) -- Tides of Blood
 end
 
 G.unitframe.aurawatch = {
