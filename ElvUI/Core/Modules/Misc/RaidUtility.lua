@@ -77,7 +77,7 @@ function RU:SetEnabled(button, enabled, isLeader)
 	if button.SetChecked then
 		button:SetChecked(enabled)
 	else
-		button:SetEnabled(enabled)
+		button.enabled = enabled
 	end
 
 	if button.Text then -- show text grey when isLeader is false, nil and true should be white
@@ -295,7 +295,7 @@ function RU:OnEvent_ReadyCheckButton()
 end
 
 function RU:OnClick_ReadyCheckButton()
-	if RU:InGroup() then
+	if self.enabled and RU:InGroup() then
 		DoReadyCheck()
 	end
 end
@@ -305,7 +305,7 @@ function RU:OnEvent_RoleCheckButton()
 end
 
 function RU:OnClick_RoleCheckButton()
-	if RU:InGroup() then
+	if self.enabled and RU:InGroup() then
 		InitiateRolePoll()
 	end
 end
