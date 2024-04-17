@@ -143,6 +143,7 @@ NP.TriggerConditions = {
 		[174] = 'heroic',
 		[185] = 'legacy20normal',
 		[186] = 'legacy40normal',
+		[215] = 'normal', -- Classic: Sunken Temple
 		-- wotlk
 		[175] = 'legacy10normal',
 		[176] = 'legacy25normal',

@@ -49,6 +49,22 @@ local displayFormats = {
 	eu_color = ''
 }
 
+local allowID = { -- also has IDs maintained in Nameplate StyleFilters
+	[2] = true,		-- heroic
+	[23] = true,	-- mythic
+	[148] = true,	-- ZG/AQ40
+	[174] = true,	-- heroic (dungeon)
+	[185] = true,	-- normal (legacy)
+	[198] = true,	-- Classic: Season of Discovery
+	[201] = true,	-- Classic: Hardcore
+	[215] = true,	-- Classic: Sunken Temple
+}
+
+local lfrID = {
+	[7] = true,
+	[17] = true
+}
+
 local OnUpdate, db
 
 local function ToTime(start, seconds)
@@ -212,17 +228,14 @@ local function OnEnter()
 	for i = 1, GetNumSavedInstances() do
 		local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
 		local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
-		if name and (locked or extended) then
-			local isDungeon = difficulty == 2 or difficulty == 23 or difficulty == 174 or difficulty == 198 or difficulty == 201
-			if isRaid or isDungeon then
-				local isLFR = difficulty == 7 or difficulty == 17
-				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-				local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-				local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
-				local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
+		if name and (locked or extended) and (isRaid or allowID[difficulty]) then
+			local isLFR = lfrID[difficulty]
+			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+			local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
+			local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
 
-				tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
-			end
+			tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
 		end
 	end
 
