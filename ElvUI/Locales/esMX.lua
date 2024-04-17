@@ -11,7 +11,7 @@ L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to 
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s quiere compartir sus filtros contigo. ¿Aceptas la petición?"
 L["%s is attempting to share the profile %s with you. Would you like to accept the request?"] = "%s quiere compartir el perfil %s contigo. ¿Aceptas la petición?"
 L["%s: %s tried to call the protected function '%s'."] = "%s: %s intentó llamar a la función protegida '%s'."
-L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(Ctrl y Clic Shift) Alternar perfilado de CPU"
+L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(Ctrl y Clic Shift) Mostrar/Ocultar perfilado de CPU"
 L["(Hold Shift) Memory Usage"] = "(Mantén Shift) Uso de Memoria"
 L["(Shift Click) Collect Garbage"] = "(Clic Shift) Recolectar basura"
 L["A raid marker feature is available by pressing Escape -> Keybinds. Scroll to the bottom -> ElvUI -> Raid Marker."] = "La función de marcador de banda está disponible presionando Escape -> Keybinds. Desplázate a la parte inferior -> ElvUI -> Marcador de banda."
