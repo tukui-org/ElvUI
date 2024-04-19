@@ -93,7 +93,7 @@ local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 local isEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local isCata = WOW_PROJECT_ID == 11
+local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 local isEraSOD = IsEngravingEnabled and IsEngravingEnabled()

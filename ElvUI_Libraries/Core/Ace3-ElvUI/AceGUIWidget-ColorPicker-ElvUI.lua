@@ -6,7 +6,7 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-local isCata = WOW_PROJECT_ID == 11
+local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 local pairs = pairs
 

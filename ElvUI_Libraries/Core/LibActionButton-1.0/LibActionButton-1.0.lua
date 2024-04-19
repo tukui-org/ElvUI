@@ -17,7 +17,7 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-local WoWCata = WOW_PROJECT_ID == 11
+local WoWCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 -- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
