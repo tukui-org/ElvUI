@@ -119,8 +119,14 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		inRaid = false --IsInRaid() returns true for arenas and they should not be considered a raid
 	end
 
+	local name, msg = destName or UNKNOWN
+	if E.locale == 'msMX' or E.locale == 'esES' or E.locale == 'ptBR' then -- name goes after
+		msg = (E.Retail or E.Wrath) and format(INTERRUPT_MSG, spellID, spellName, name) or format(INTERRUPT_MSG, spellName, name)
+	else
+		msg = (E.Retail or E.Wrath) and format(INTERRUPT_MSG, name, spellID, spellName) or format(INTERRUPT_MSG, name, spellName)
+	end
+
 	local channel = E.db.general.interruptAnnounce
-	local msg = (E.Retail or E.Wrath) and format(INTERRUPT_MSG, destName or UNKNOWN, spellID, spellName) or format(INTERRUPT_MSG, destName or UNKNOWN, spellName)
 	if channel == 'PARTY' then
 		SendChatMessage(msg, inPartyLFG and 'INSTANCE_CHAT' or 'PARTY')
 	elseif channel == 'RAID' then
