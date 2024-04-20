@@ -9,7 +9,6 @@ local format, tinsert, next = format, tinsert, next
 local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
-local GetItemQualityColor = GetItemQualityColor
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -19,6 +18,8 @@ local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local UIParent = UIParent
 local GetTime = GetTime
+
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')

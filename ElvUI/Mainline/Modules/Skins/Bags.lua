@@ -9,14 +9,14 @@ local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
 local hooksecurefunc = hooksecurefunc
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetContainerItemCooldown = GetContainerItemCooldown or (C_Container and C_Container.GetContainerItemCooldown)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetContainerItemCooldown = (C_Container and C_Container.GetContainerItemCooldown) or GetContainerItemCooldown
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES

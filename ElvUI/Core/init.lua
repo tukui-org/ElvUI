@@ -263,6 +263,18 @@ function E:SetCVar(cvar, value, ...)
 	end
 end
 
+function E:GetAddOnEnableState(addon, character)
+	if C_AddOns_GetAddOnEnableState then
+		return C_AddOns_GetAddOnEnableState(addon, character)
+	else
+		return GetAddOnEnableState(character, addon)
+	end
+end
+
+function E:IsAddOnEnabled(addon)
+	return E:GetAddOnEnableState(addon, E.myname) == 2
+end
+
 function E:SetEasyMenuAnchor(menu, frame)
 	local point = E:GetScreenQuadrant(frame)
 	local bottom = point and strfind(point, 'BOTTOM')
@@ -343,11 +355,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
 	end
 
-	if C_AddOns_GetAddOnEnableState then
-		if C_AddOns_GetAddOnEnableState('Tukui', E.myname) == 2 then
-			E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
-		end
-	elseif GetAddOnEnableState(E.myname, 'Tukui') == 2 then
+	if E:IsAddOnEnabled('Tukui') then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 end

@@ -10,7 +10,6 @@ local tinsert, tremove, format = tinsert, tremove, format
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetItemInfo = GetItemInfo
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
@@ -21,6 +20,7 @@ local UIParent = UIParent
 
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 

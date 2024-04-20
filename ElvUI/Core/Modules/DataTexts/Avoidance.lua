@@ -8,11 +8,12 @@ local GetBonusBarOffset = GetBonusBarOffset
 local GetDodgeChance = GetDodgeChance
 local GetInventoryItemID = GetInventoryItemID
 local GetInventorySlotInfo = GetInventorySlotInfo
-local GetItemInfo = GetItemInfo
 local GetParryChance = GetParryChance
 local UnitDefense = UnitDefense
 local UnitExists = UnitExists
 local UnitLevel = UnitLevel
+
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 
 local BOSS = BOSS
 local MISS_CHANCE = MISS_CHANCE

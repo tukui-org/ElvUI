@@ -3,14 +3,15 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
 local GetInboxHeaderInfo = GetInboxHeaderInfo
 local GetInboxItemLink = GetInboxItemLink
 local GetInboxNumItems = GetInboxNumItems
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetSendMailItem = GetSendMailItem
-local hooksecurefunc = hooksecurefunc
+
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function MailFrameSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do

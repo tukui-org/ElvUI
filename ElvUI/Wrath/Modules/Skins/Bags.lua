@@ -6,13 +6,13 @@ local _G = _G
 local select, unpack = select, unpack
 local hooksecurefunc = hooksecurefunc
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
-local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
-local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Container.GetInventoryItemLink)
-local GetItemQualityColor = GetItemQualityColor
+local ContainerIDToInventoryID = (C_Container and C_Container.ContainerIDToInventoryID) or ContainerIDToInventoryID
+local GetContainerNumFreeSlots = (C_Container and C_Container.GetContainerNumFreeSlots) or GetContainerNumFreeSlots
+local GetContainerItemLink = (C_Container and C_Container.GetContainerItemLink) or GetContainerItemLink
+local GetInventoryItemLink = (C_Container and C_Container.GetInventoryItemLink) or GetInventoryItemLink
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM

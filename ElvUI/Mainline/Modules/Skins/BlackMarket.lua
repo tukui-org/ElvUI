@@ -3,10 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-
-local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
-local GetItemQualityColor = GetItemQualityColor
+
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)

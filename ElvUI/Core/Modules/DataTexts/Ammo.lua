@@ -6,15 +6,15 @@ local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
 local _G = _G
-local GetItemInfo = GetItemInfo
 local GetItemCount = GetItemCount
-local GetItemInfoInstant = GetItemInfoInstant
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemInfoInstant = (C_Item and C_Item.GetItemInfoInstant) or GetItemInfoInstant
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 local ContainerIDToInventoryID = (C_Container and C_Container.ContainerIDToInventoryID) or ContainerIDToInventoryID
 local GetContainerNumSlots = (C_Container and C_Container.GetContainerNumSlots) or GetContainerNumSlots
 local GetContainerNumFreeSlots = (C_Container and C_Container.GetContainerNumFreeSlots) or GetContainerNumFreeSlots
-local GetItemQualityColor = GetItemQualityColor
 
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
