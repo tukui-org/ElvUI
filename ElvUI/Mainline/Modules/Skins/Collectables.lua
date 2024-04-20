@@ -3,20 +3,21 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local strfind = strfind
 local next, unpack = next, unpack
 local ipairs, pairs = ipairs, pairs
+local hooksecurefunc = hooksecurefunc
+local strfind = strfind
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
-local hooksecurefunc = hooksecurefunc
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
-local GetItemQualityColor = GetItemQualityColor
+
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
+local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
 
 local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)

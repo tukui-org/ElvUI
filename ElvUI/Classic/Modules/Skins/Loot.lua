@@ -6,13 +6,14 @@ local _G = _G
 local next = next
 local unpack = unpack
 
-local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
 local hooksecurefunc = hooksecurefunc
 local IsFishingLoot = IsFishingLoot
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
+
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
 
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem

@@ -3,13 +3,14 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 local unpack, select = unpack, select
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local hooksecurefunc = hooksecurefunc
 
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then

@@ -9,9 +9,10 @@ local hooksecurefunc = hooksecurefunc
 local HasPetUI = HasPetUI
 local GetNumFactions = GetNumFactions
 local GetPetHappiness = GetPetHappiness
-local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES

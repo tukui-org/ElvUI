@@ -5,13 +5,13 @@ local _G = _G
 local next = next
 local unpack = unpack
 local ipairs, pairs = ipairs, pairs
+local hooksecurefunc = hooksecurefunc
 
 local HasPetUI = HasPetUI
-local hooksecurefunc = hooksecurefunc
 local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
+local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE

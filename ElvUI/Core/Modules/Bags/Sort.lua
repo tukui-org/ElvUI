@@ -12,8 +12,6 @@ local GetGuildBankItemInfo = GetGuildBankItemInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetInventoryItemLink = GetInventoryItemLink
-local GetItemFamily = GetItemFamily
-local GetItemInfo = GetItemInfo
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local PickupGuildBankItem = PickupGuildBankItem
@@ -35,7 +33,9 @@ local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
 
-local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemFamily = GetItemFamily or (C_Item and C_Item.GetItemFamily)
+local GetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
 local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
 local GetContainerItemID = GetContainerItemID or (C_Container and C_Container.GetContainerItemID)
 local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
@@ -280,8 +280,8 @@ local function DefaultSort(a, b)
 	if not aID or not bID then return aID end
 
 	if E.Retail and bagPetIDs[a] and bagPetIDs[b] then
-		local aName, _, aType = C_PetJournalGetPetInfoBySpeciesID(aID)
-		local bName, _, bType = C_PetJournalGetPetInfoBySpeciesID(bID)
+		local aName, _, aType = GetPetInfoBySpeciesID(aID)
+		local bName, _, bType = GetPetInfoBySpeciesID(bID)
 
 		if aType and bType and aType ~= bType then
 			return aType > bType

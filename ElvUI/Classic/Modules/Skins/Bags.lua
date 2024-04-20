@@ -10,9 +10,9 @@ local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
 local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
 local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Container.GetInventoryItemLink)
-local GetItemQualityColor = GetItemQualityColor
+local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
 local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM

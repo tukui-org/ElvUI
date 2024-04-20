@@ -3,11 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, unpack = ipairs, unpack
+local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemID = GetInventoryItemID
-local GetItemQualityColor = GetItemQualityColor
-local GetItemInfo = GetItemInfo
-local hooksecurefunc = hooksecurefunc
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit

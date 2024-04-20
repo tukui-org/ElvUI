@@ -3,11 +3,12 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
+local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local hooksecurefunc = hooksecurefunc
 
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
