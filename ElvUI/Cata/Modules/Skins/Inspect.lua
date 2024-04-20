@@ -3,11 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, unpack = ipairs, unpack
+local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemID = GetInventoryItemID
-local GetItemQualityColor = GetItemQualityColor
-local GetItemInfo = GetItemInfo
-local hooksecurefunc = hooksecurefunc
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 

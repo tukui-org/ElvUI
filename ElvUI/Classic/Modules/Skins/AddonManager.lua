@@ -7,7 +7,6 @@ local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 
-local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
 local GetNumAddOns = C_AddOns and C_AddOns.GetNumAddOns
 
@@ -52,10 +51,10 @@ function S:AddonList()
 				if character == true then
 					character = nil
 				else
-					checkall = GetAddOnEnableState(index)
+					checkall = E:GetAddOnEnableState(index)
 				end
 
-				local checkstate = GetAddOnEnableState(index, character)
+				local checkstate = E:GetAddOnEnableState(index, character)
 				local enabled = checkstate > 0
 
 				entryTitle:SetFontObject('ElvUIFontNormal')

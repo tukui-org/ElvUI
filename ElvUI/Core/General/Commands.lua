@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local type, pairs, select, tonumber = type, pairs, select, tonumber
+local type, pairs, tonumber = type, pairs, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 
 local ReloadUI = ReloadUI
@@ -74,7 +74,18 @@ function E:DisplayCommands()
 	print(L["EHELP_COMMANDS"])
 end
 
+local BLIZZARD_DEPRECATED = {
+	'Blizzard_Deprecated',
+	'Blizzard_DeprecatedCurrencyScript',
+	'Blizzard_DeprecatedGuildScript',
+	'Blizzard_DeprecatedItemScript',
+	'Blizzard_DeprecatedPvpScript',
+	'Blizzard_DeprecatedSoundScript',
+	'Blizzard_DeprecatedSpellScript',
+}
+
 local BLIZZARD_ADDONS = {
+	'Blizzard_AccountSaveUI',
 	'Blizzard_AchievementUI',
 	'Blizzard_AdventureMap',
 	'Blizzard_AlliedRacesUI',
@@ -100,6 +111,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_Channels',
 	'Blizzard_CharacterCreate',
 	'Blizzard_CharacterCustomize',
+	'Blizzard_ChatFrameUtil',
 	'Blizzard_ChromieTimeUI',
 	'Blizzard_ClassTalentUI',
 	'Blizzard_ClassTrial',
@@ -121,10 +133,11 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_CUFProfiles',
 	'Blizzard_DeathRecap',
 	'Blizzard_DebugTools',
-	'Blizzard_Deprecated',
+	'Blizzard_Dispatcher',
 	'Blizzard_EncounterJournal',
 	'Blizzard_EventTrace',
 	'Blizzard_ExpansionLandingPage',
+	'Blizzard_ExpansionTrial',
 	'Blizzard_FlightMap',
 	'Blizzard_FrameEffects',
 	'Blizzard_GarrisonTemplates',
@@ -133,7 +146,6 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_GMChatUI',
 	'Blizzard_GuildBankUI',
 	'Blizzard_GuildControlUI',
-	'Blizzard_GuildUI',
 	'Blizzard_HybridMinimap',
 	'Blizzard_InspectUI',
 	'Blizzard_IslandsPartyPoseUI',
@@ -146,6 +158,7 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_MacroUI',
 	'Blizzard_MajorFactions',
 	'Blizzard_MapCanvas',
+	'Blizzard_MatchCelebrationPartyPoseUI',
 	'Blizzard_MawBuffs',
 	'Blizzard_MoneyReceipt',
 	'Blizzard_MovePad',
@@ -156,10 +169,13 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_ObliterumUI',
 	'Blizzard_OrderHallUI',
 	'Blizzard_PartyPoseUI',
+	'Blizzard_PerksProgram',
 	'Blizzard_PetBattleUI',
+	'Blizzard_PingUI',
 	'Blizzard_PlayerChoice',
+	'Blizzard_PlunderstormBasics',
+	'Blizzard_PrivateAurasUI',
 	'Blizzard_Professions',
-	'Blizzard_ProfessionsCrafterOrders',
 	'Blizzard_ProfessionsCustomerOrders',
 	'Blizzard_ProfessionsTemplates',
 	'Blizzard_PTRFeedback',
@@ -171,12 +187,15 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_RuneforgeUI',
 	'Blizzard_ScrappingMachineUI',
 	'Blizzard_SecureTransferUI',
+	'Blizzard_SelectorUI',
+	'Blizzard_Settings',
 	'Blizzard_SharedMapDataProviders',
 	'Blizzard_SharedTalentUI',
-	'Blizzard_SocialUI',
+	'Blizzard_SharedWidgetFrames',
 	'Blizzard_Soulbinds',
 	'Blizzard_StoreUI',
 	'Blizzard_SubscriptionInterstitialUI',
+	'Blizzard_Subtitles',
 	'Blizzard_TalentUI',
 	'Blizzard_TimeManager',
 	'Blizzard_TokenUI',
@@ -189,16 +208,37 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_VoidStorageUI',
 	'Blizzard_WarfrontsPartyPoseUI',
 	'Blizzard_WeeklyRewards',
+	'Blizzard_WeeklyRewardsUtil',
 	'Blizzard_WorldMap',
-	'Blizzard_WowTokenUI'
+	'Blizzard_WowTokenUI',
 }
 
-function E:EnableBlizzardAddOns()
-	for _, addon in pairs(BLIZZARD_ADDONS) do
-		local reason = select(5, GetAddOnInfo(addon))
+function E:DisableBlizzardDeprecated()
+	for _, addon in pairs(BLIZZARD_DEPRECATED) do
+		local enabled = E:IsAddOnEnabled(addon)
+		if enabled then
+			DisableAddOn(addon)
+			E:Print('The following addon was disabled:', addon)
+		end
+	end
+end
+
+do
+	local function Enable(addon)
+		local _, _, _, _, reason = GetAddOnInfo(addon)
 		if reason == 'DISABLED' then
 			EnableAddOn(addon)
 			E:Print('The following addon was re-enabled:', addon)
+		end
+	end
+
+	function E:EnableBlizzardAddOns()
+		for _, addon in pairs(BLIZZARD_ADDONS) do
+			Enable(addon)
+		end
+
+		for _, addon in pairs(BLIZZARD_DEPRECATED) do
+			Enable(addon)
 		end
 	end
 end

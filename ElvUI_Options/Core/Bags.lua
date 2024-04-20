@@ -8,8 +8,8 @@ local format, strmatch = format, strmatch
 local tonumber = tonumber
 
 local GameTooltip = GameTooltip
-local GetItemInfo = GetItemInfo
-local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or (C_Container and C_Container.SetInsertItemsLeftToRight)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local SetInsertItemsLeftToRight = (C_Container and C_Container.SetInsertItemsLeftToRight) or SetInsertItemsLeftToRight
 
 local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
 E.Options.args.bags = Bags

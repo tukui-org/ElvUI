@@ -32,9 +32,6 @@ local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
 local GetCVarBool = C_CVar.GetCVarBool
 
-local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
-local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
-
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
@@ -522,14 +519,6 @@ do
 		popup.cancel = info.cancel or cancel
 
 		E:StaticPopup_Show('INCOMPATIBLE_ADDON', popup.button1, popup.button2)
-	end
-end
-
-function E:IsAddOnEnabled(addon)
-	if C_AddOns_GetAddOnEnableState then
-		return C_AddOns_GetAddOnEnableState(addon, E.myname) == 2
-	else
-		return GetAddOnEnableState(E.myname, addon) == 2
 	end
 end
 

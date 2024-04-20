@@ -8,8 +8,8 @@ local min, select = min, select
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = GetItemInfo
 local UnitIsGroupLeader = UnitIsGroupLeader
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities

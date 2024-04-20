@@ -6,9 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
-
 local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
-local GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
 
 local function HandleButton(entry, addonIndex)
 	if not entry.isSkinned then
@@ -23,7 +21,7 @@ local function HandleButton(entry, addonIndex)
 	if character == true then
 		character = nil
 	else
-		checkall = GetAddOnEnableState(addonIndex)
+		checkall = E:GetAddOnEnableState(addonIndex)
 	end
 
 	entry.Title:SetFontObject('ElvUIFontNormal')
@@ -32,7 +30,7 @@ local function HandleButton(entry, addonIndex)
 	entry.Reload:SetTextColor(1.0, 0.3, 0.3)
 	entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
 
-	local checkstate = GetAddOnEnableState(addonIndex, character)
+	local checkstate = E:GetAddOnEnableState(addonIndex, character)
 	local enabledForSome = not character and checkstate == 1
 	local enabled = checkstate > 0
 	local disabled = not enabled or enabledForSome

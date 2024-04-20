@@ -9,7 +9,6 @@ local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 
 local GetNumAddOns = GetNumAddOns
 local GetAddOnInfo = GetAddOnInfo
-local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
 
 function S:AddonList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
@@ -52,10 +51,10 @@ function S:AddonList()
 				if character == true then
 					character = nil
 				else
-					checkall = GetAddOnEnableState(nil, index)
+					checkall = E:GetAddOnEnableState(nil, index)
 				end
 
-				local checkstate = GetAddOnEnableState(character, index)
+				local checkstate = E:GetAddOnEnableState(character, index)
 				local enabled = checkstate > 0
 
 				entryTitle:SetFontObject('ElvUIFontNormal')
