@@ -81,7 +81,7 @@ local BLIZZARD_DEPRECATED = {
 	'Blizzard_DeprecatedItemScript',
 	'Blizzard_DeprecatedPvpScript',
 	'Blizzard_DeprecatedSoundScript',
-	'Blizzard_DeprecatedSpellScript'
+	'Blizzard_DeprecatedSpellScript',
 }
 
 local BLIZZARD_ADDONS = {
@@ -133,13 +133,6 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_CUFProfiles',
 	'Blizzard_DeathRecap',
 	'Blizzard_DebugTools',
-	'Blizzard_Deprecated',
-	'Blizzard_DeprecatedCurrencyScript',
-	'Blizzard_DeprecatedGuildScript',
-	'Blizzard_DeprecatedItemScript',
-	'Blizzard_DeprecatedPvpScript',
-	'Blizzard_DeprecatedSoundScript',
-	'Blizzard_DeprecatedSpellScript',
 	'Blizzard_Dispatcher',
 	'Blizzard_EncounterJournal',
 	'Blizzard_EventTrace',
@@ -230,12 +223,22 @@ function E:DisableBlizzardDeprecated()
 	end
 end
 
-function E:EnableBlizzardAddOns()
-	for _, addon in pairs(BLIZZARD_ADDONS) do
+do
+	local function Enable(addon)
 		local _, _, _, _, reason = GetAddOnInfo(addon)
 		if reason == 'DISABLED' then
 			EnableAddOn(addon)
 			E:Print('The following addon was re-enabled:', addon)
+		end
+	end
+
+	function E:EnableBlizzardAddOns()
+		for _, addon in pairs(BLIZZARD_ADDONS) do
+			Enable(addon)
+		end
+
+		for _, addon in pairs(BLIZZARD_DEPRECATED) do
+			Enable(addon)
 		end
 	end
 end
