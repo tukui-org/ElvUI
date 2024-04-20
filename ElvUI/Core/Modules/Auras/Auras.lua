@@ -19,7 +19,7 @@ local CreateFrame = CreateFrame
 local UIParent = UIParent
 local GetTime = GetTime
 
-local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')

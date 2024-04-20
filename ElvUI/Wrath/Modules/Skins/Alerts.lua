@@ -6,7 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 

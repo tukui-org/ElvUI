@@ -10,8 +10,8 @@ local GetMerchantNumItems = GetMerchantNumItems
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
-local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 

@@ -8,8 +8,8 @@ local hooksecurefunc = hooksecurefunc
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
-local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function merchantItemPoint()
 	S:HandlePointXY(_G.MerchantItem1, 6, -40)

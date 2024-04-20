@@ -51,7 +51,7 @@ local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local IsFriend = C_FriendList.IsFriend

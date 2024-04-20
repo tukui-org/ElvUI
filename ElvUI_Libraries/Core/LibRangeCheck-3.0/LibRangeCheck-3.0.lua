@@ -65,7 +65,7 @@ local setmetatable = setmetatable
 
 local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local GetNumSpellTabs = GetNumSpellTabs
 local GetSpellBookItemName = GetSpellBookItemName
 local GetSpellInfo = GetSpellInfo

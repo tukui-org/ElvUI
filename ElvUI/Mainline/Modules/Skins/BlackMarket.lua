@@ -5,8 +5,8 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
-local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)

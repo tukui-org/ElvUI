@@ -13,7 +13,7 @@ local UnitDefense = UnitDefense
 local UnitExists = UnitExists
 local UnitLevel = UnitLevel
 
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 
 local BOSS = BOSS
 local MISS_CHANCE = MISS_CHANCE

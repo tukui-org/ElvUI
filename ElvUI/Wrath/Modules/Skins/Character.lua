@@ -11,7 +11,7 @@ local HasPetUI = HasPetUI
 local GetPetHappiness = GetPetHappiness
 local GetSkillLineInfo = GetSkillLineInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
-local GetItemQualityColor = GetItemQualityColor or (C_Item and C_Item.GetItemQualityColor)
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE

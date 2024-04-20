@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 local unpack, select = unpack, select
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo or (C_Item and C_Item.GetItemInfo)
+local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
