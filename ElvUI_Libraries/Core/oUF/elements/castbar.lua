@@ -184,7 +184,9 @@ local function UpdatePips(element, numStages)
 			pip:Show()
 
 			if(isHoriz) then
-				pip:RotateTextures(0)
+				if(pip.RotateTextures) then
+					pip:RotateTextures(0)
+				end
 
 				if(element:GetReverseFill()) then
 					pip:SetPoint('TOP', element, 'TOPRIGHT', -offset, 0)
@@ -194,7 +196,9 @@ local function UpdatePips(element, numStages)
 					pip:SetPoint('BOTTOM', element, 'BOTTOMLEFT', offset, 0)
 				end
 			else
-				pip:RotateTextures(1.5708)
+				if(pip.RotateTextures) then
+					pip:RotateTextures(1.5708)
+				end
 
 				if(element:GetReverseFill()) then
 					pip:SetPoint('LEFT', element, 'TOPLEFT', 0, -offset)
