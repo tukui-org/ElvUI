@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local type, pairs, select, tonumber = type, pairs, select, tonumber
+local type, pairs, tonumber = type, pairs, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 
 local ReloadUI = ReloadUI
@@ -73,6 +73,16 @@ end
 function E:DisplayCommands()
 	print(L["EHELP_COMMANDS"])
 end
+
+local BLIZZARD_DEPRECATED = {
+	'Blizzard_Deprecated',
+	'Blizzard_DeprecatedCurrencyScript',
+	'Blizzard_DeprecatedGuildScript',
+	'Blizzard_DeprecatedItemScript',
+	'Blizzard_DeprecatedPvpScript',
+	'Blizzard_DeprecatedSoundScript',
+	'Blizzard_DeprecatedSpellScript'
+}
 
 local BLIZZARD_ADDONS = {
 	'Blizzard_AccountSaveUI',
@@ -210,9 +220,19 @@ local BLIZZARD_ADDONS = {
 	'Blizzard_WowTokenUI',
 }
 
+function E:DisableBlizzardDeprecated()
+	for _, addon in pairs(BLIZZARD_DEPRECATED) do
+		local enabled = E:IsAddOnEnabled(addon)
+		if enabled then
+			DisableAddOn(addon)
+			E:Print('The following addon was disabled:', addon)
+		end
+	end
+end
+
 function E:EnableBlizzardAddOns()
 	for _, addon in pairs(BLIZZARD_ADDONS) do
-		local reason = select(5, GetAddOnInfo(addon))
+		local _, _, _, _, reason = GetAddOnInfo(addon)
 		if reason == 'DISABLED' then
 			EnableAddOn(addon)
 			E:Print('The following addon was re-enabled:', addon)
