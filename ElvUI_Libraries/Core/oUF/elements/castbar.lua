@@ -216,11 +216,25 @@ local function UpdatePips(element, numStages)
 	end
 end
 
+--[[ Override: Castbar:ShouldShow(unit)
+Handles check for which unit the castbar should show for.
+Defaults to the object unit.
+* self - the Castbar widget
+* unit - the unit for which the update has been triggered (string)
+--]]
+local function ShouldShow(element, unit)
+	return element.__owner.unit == unit
+end
+
+
 local function CastStart(self, real, unit, castGUID)
-	if self.unit ~= unit then return end
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
+	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+		return
+	end
+
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
 	local numStages, _
@@ -332,9 +346,11 @@ local function CastStart(self, real, unit, castGUID)
 end
 
 local function CastUpdate(self, event, unit, castID, spellID)
-	if(self.unit ~= unit) then return end
-
 	local element = self.Castbar
+	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+		return
+	end
+
 	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
@@ -389,9 +405,11 @@ local function CastUpdate(self, event, unit, castID, spellID)
 end
 
 local function CastStop(self, event, unit, castID, spellID)
-	if(self.unit ~= unit) then return end
-
 	local element = self.Castbar
+	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+		return
+	end
+
 	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
@@ -419,9 +437,11 @@ local function CastStop(self, event, unit, castID, spellID)
 end
 
 local function CastFail(self, event, unit, castID, spellID)
-	if(self.unit ~= unit) then return end
-
 	local element = self.Castbar
+	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+		return
+	end
+
 	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
 		return
 	end
@@ -457,9 +477,11 @@ local function CastFail(self, event, unit, castID, spellID)
 end
 
 local function CastInterruptible(self, event, unit)
-	if(self.unit ~= unit) then return end
-
 	local element = self.Castbar
+	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+		return
+	end
+
 	if(not element:IsShown()) then return end
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
