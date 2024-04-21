@@ -108,8 +108,8 @@ local function Update(self, event, unit)
 	local otherIncomingHeal = 0
 	local hasOverHealAbsorb = false
 
-    -- Kludge to override value for heals not reported by WoW client (ref: https://github.com/Stanzilla/WoWUIBugs/issues/163)
-    -- There may be other bugs that this workaround does not catch, but this does fix Priest PoH
+	-- Kludge to override value for heals not reported by WoW client (ref: https://github.com/Stanzilla/WoWUIBugs/issues/163)
+	-- There may be other bugs that this workaround does not catch, but this does fix Priest PoH
 	if (HealComm and not oUF.isRetail) then
 		local healComm = HealComm:GetHealAmount(GUID, HealComm.CASTED_HEALS) or 0
 		if healComm > 0 then
