@@ -2,7 +2,6 @@
 	<Script file='Achievement.lua'/>
 	<Script file='AddonManager.lua'/>
 	<Script file='Alerts.lua'/>
-	<Script file='Arena.lua'/>
 	<Script file='ArenaRegistrar.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Bags.lua'/>

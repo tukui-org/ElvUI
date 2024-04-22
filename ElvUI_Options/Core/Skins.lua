@@ -109,7 +109,6 @@ if E.Retail then
 	toggles.voidstorage = L["VOID_STORAGE"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Cata then
-	toggles.arena = L["Arena"]
 	toggles.arenaRegistrar = L["Arena Registrar"]
 	toggles.reforge = L["Reforge"]
 elseif E.Classic then
