@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local CreateFrame = CreateFrame
-local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 
 function S:SkinPVPFrame()
 	-- Honor, Conquest, War Games Frame
