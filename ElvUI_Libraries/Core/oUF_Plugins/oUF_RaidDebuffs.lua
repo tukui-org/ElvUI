@@ -19,7 +19,7 @@ local type, pairs, wipe = type, pairs, wipe
 
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
-local GetSpellInfo = GetSpellInfo
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
 local GetTime = GetTime
 
 local debuff_data = {}

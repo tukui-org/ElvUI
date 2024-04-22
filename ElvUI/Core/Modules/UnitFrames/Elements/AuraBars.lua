@@ -8,7 +8,7 @@ local unpack = unpack
 local strfind = strfind
 
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
+local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 

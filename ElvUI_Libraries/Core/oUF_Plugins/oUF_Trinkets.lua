@@ -2,6 +2,8 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
+
 local factions = {
 	Horde = [[Interface\Icons\INV_Jewelry_Necklace_38]],
 	Alliance = [[Interface\Icons\INV_Jewelry_Necklace_37]],

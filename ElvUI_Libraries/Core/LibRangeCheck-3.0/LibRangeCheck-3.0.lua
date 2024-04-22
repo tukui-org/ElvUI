@@ -66,10 +66,10 @@ local setmetatable = setmetatable
 local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetNumSpellTabs = GetNumSpellTabs
-local GetSpellBookItemName = GetSpellBookItemName
-local GetSpellInfo = GetSpellInfo
-local GetSpellTabInfo = GetSpellTabInfo
+local GetNumSpellTabs = (C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines) or GetNumSpellTabs
+local GetSpellBookItemName = (C_SpellBook and C_SpellBook.GetSpellBookItemName) or GetSpellBookItemName
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
+local GetSpellTabInfo = (C_SpellBook and C_SpellBook.GetSpellBookSkillLineInfo) or GetSpellTabInfo
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local IsItemInRange = IsItemInRange
@@ -661,12 +661,13 @@ local function findSpellIdx(spellName, sid)
     return nil
   end
 
-  for i = 1, getNumSpells() do
-    local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-    if sid == id or (spellName == name and not MatchSpellByID[id]) then
-      return i
-    end
-  end
+    -- FIX ME 11.0
+  --for i = 1, getNumSpells() do
+    --local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+    --if sid == id or (spellName == name and not MatchSpellByID[id]) then
+      --return i
+    --end
+  --end
 
   return nil
 end

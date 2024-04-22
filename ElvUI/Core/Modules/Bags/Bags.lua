@@ -110,12 +110,12 @@ local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
 local SELL_ALL_JUNK_ITEMS = SELL_ALL_JUNK_ITEMS_EXCLUDE_FLAG
 
 local BagSlotFlags = Enum.BagSlotFlags
-local FILTER_FLAG_TRADE_GOODS = (BagSlotFlags and BagSlotFlags.PriorityTradeGoods) or LE_BAG_FILTER_FLAG_TRADE_GOODS
-local FILTER_FLAG_CONSUMABLES = (BagSlotFlags and BagSlotFlags.PriorityConsumables) or LE_BAG_FILTER_FLAG_CONSUMABLES
-local FILTER_FLAG_EQUIPMENT = (BagSlotFlags and BagSlotFlags.PriorityEquipment) or LE_BAG_FILTER_FLAG_EQUIPMENT
+local FILTER_FLAG_TRADE_GOODS = (BagSlotFlags and BagSlotFlags.ClassProfessionGoods) or LE_BAG_FILTER_FLAG_TRADE_GOODS
+local FILTER_FLAG_CONSUMABLES = (BagSlotFlags and BagSlotFlags.ClassConsumables) or LE_BAG_FILTER_FLAG_CONSUMABLES
+local FILTER_FLAG_EQUIPMENT = (BagSlotFlags and BagSlotFlags.ClassEquipment) or LE_BAG_FILTER_FLAG_EQUIPMENT
 local FILTER_FLAG_IGNORE = (BagSlotFlags and BagSlotFlags.DisableAutoSort) or LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
-local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.PriorityJunk) or LE_BAG_FILTER_FLAG_JUNK
-local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
+local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.ClassJunk) or LE_BAG_FILTER_FLAG_JUNK
+local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.ClassQuestItems) or 32 -- didnt exist
 local FILTER_FLAG_JUNKSELL = (BagSlotFlags and BagSlotFlags.ExcludeJunkSell) or 64 -- didnt exist
 
 local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]

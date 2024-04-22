@@ -7,16 +7,16 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 
 local headers = {
-	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
-	_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
-	_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,
-	_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
-	_G.ObjectiveTrackerBlocksFrame.ProfessionHeader,
-	_G.ObjectiveTrackerBlocksFrame.MonthlyActivitiesHeader,
-	_G.ObjectiveTrackerBlocksFrame.AdventureHeader,
-	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
-	_G.WORLD_QUEST_TRACKER_MODULE.Header,
-	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
+	--_G.ObjectiveTrackerBlocksFrame.QuestHeader,
+	--_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
+	--_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,
+	--_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
+	--_G.ObjectiveTrackerBlocksFrame.ProfessionHeader,
+	--_G.ObjectiveTrackerBlocksFrame.MonthlyActivitiesHeader,
+	--_G.ObjectiveTrackerBlocksFrame.AdventureHeader,
+	--_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
+	--_G.WORLD_QUEST_TRACKER_MODULE.Header,
+	--_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
 }
 
 local function SkinOjectiveTrackerHeaders(header)
@@ -213,7 +213,7 @@ local function UpdateMinimizeButton(button, collapsed)
 	end
 end
 
-function S:ObjectiveTrackerFrame()
+function S:Blizzard_OptjectiveTracker()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
@@ -260,4 +260,4 @@ function S:ObjectiveTrackerFrame()
 	end
 end
 
-S:AddCallback('ObjectiveTrackerFrame')
+S:AddCallbackForAddon('Blizzard_OptjectiveTracker')

@@ -904,7 +904,8 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	E:SetupGameMenu()
+	-- FIX ME 11.0
+	--E:SetupGameMenu()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do

@@ -7,7 +7,7 @@ local ipairs = ipairs
 local huge = math.huge
 
 local GameTooltip = GameTooltip
-local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetWatchedFactionInfo = C_Reputation and C_Reputation.GetWatchedFactionData or GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 
 local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
