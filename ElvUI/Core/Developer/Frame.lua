@@ -2,7 +2,7 @@ local print, strmatch, strlower = print, strmatch, strlower
 local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local SlashCmdList = SlashCmdList
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParentLoadAddOn = UIParentLoadAddOn
 
 local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo

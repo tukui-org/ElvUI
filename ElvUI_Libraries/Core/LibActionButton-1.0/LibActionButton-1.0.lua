@@ -13,6 +13,9 @@ local type, error, tostring, tonumber, assert, select = type, error, tostring, t
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local str_match, format, tinsert, tremove, strsub = string.match, format, tinsert, tremove, strsub
 
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
+
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)

@@ -329,9 +329,11 @@ function AB:LoadKeyBinder()
 	bind:SetScript('OnMouseUp', function(_, key) self:BindListener(key) end)
 	bind:SetScript('OnMouseWheel', function(_, delta) if delta>0 then self:BindListener('MOUSEWHEELUP') else self:BindListener('MOUSEWHEELDOWN') end end)
 
-	for i = 1, 12 do
-		local b = _G['SpellButton'..i]
-		b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL') end)
+	if not E.Retail then
+		for i = 1, 12 do
+			local b = _G['SpellButton'..i]
+			b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL') end)
+		end
 	end
 
 	local function buttonOnEnter(b) AB:BindUpdate(b) end

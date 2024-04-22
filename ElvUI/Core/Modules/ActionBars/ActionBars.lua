@@ -10,7 +10,7 @@ local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetOverrideBarIndex = GetOverrideBarIndex
-local GetSpellBookItemInfo = GetSpellBookItemInfo
+local GetSpellBookItemInfo = C_SpellBook and C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
@@ -1120,7 +1120,9 @@ do
 			end
 		end
 
-		AB:FixSpellBookTaint()
+		if not E.Retail then
+			AB:FixSpellBookTaint()
+		end
 
 		-- shut down some events for things we dont use
 		_G.ActionBarController:UnregisterAllEvents()

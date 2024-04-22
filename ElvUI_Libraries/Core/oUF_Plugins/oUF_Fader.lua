@@ -11,7 +11,7 @@ local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo

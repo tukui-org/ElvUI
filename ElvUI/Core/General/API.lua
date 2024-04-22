@@ -775,9 +775,10 @@ function E:SetupGameMenu()
 	GameMenuFrame.ElvUI = button
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+		button:Size(100, 30)
+		button:Point('TOPLEFT', GameMenuFrame, 'BOTTOMLEFT', 0, -1)
+		-- FIX ME 11.0
+		--hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 end
 

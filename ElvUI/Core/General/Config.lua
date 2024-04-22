@@ -15,7 +15,7 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText

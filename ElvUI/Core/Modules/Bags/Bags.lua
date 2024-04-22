@@ -2922,7 +2922,8 @@ function B:Initialize()
 	if E.Wrath then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
-		B:RawHook('TokenFrame_SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
+		-- Fix ME 11.0
+		--B:RawHook('TokenFrame_SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
 	end
 
 	if E.Retail then
