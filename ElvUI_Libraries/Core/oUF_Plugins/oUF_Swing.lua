@@ -45,7 +45,7 @@ local CreateFrame = CreateFrame
 local GetTime = GetTime
 
 local UnitGUID = UnitGUID
-local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
 local UnitCastingInfo = UnitCastingInfo
 local UnitRangedDamage = UnitRangedDamage
 local UnitAttackSpeed = UnitAttackSpeed
