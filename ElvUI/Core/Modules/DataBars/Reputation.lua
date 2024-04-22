@@ -7,7 +7,6 @@ local ipairs = ipairs
 local huge = math.huge
 
 local GameTooltip = GameTooltip
-local GetWatchedFactionInfo = C_Reputation and C_Reputation.GetWatchedFactionData or GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 
 local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
@@ -20,6 +19,7 @@ local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.Has
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestLogMajorFactionReputationRewards = C_QuestLog.GetQuestLogMajorFactionReputationRewards
+local GetWatchedFactionInfo = (C_Reputation and C_Reputation.GetWatchedFactionData) or GetWatchedFactionInfo
 
 local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL

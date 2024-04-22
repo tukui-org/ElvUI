@@ -46,7 +46,7 @@ local function ObjectiveTracker_UpdateBackground()
 	end
 end
 
--- Fix me for 11.0
+-- Fix ME 11.0
 local function ObjectiveTracker_Collapse()
 	if E.Retail then return end
 
@@ -57,7 +57,7 @@ local function ObjectiveTracker_Collapse()
 	ObjectiveTracker_UpdateBackground()
 end
 
--- Fix me for 11.0
+-- Fix ME 11.0
 local function ObjectiveTracker_Expand()
 	if E.Retail then return end
 
@@ -69,7 +69,7 @@ local function ObjectiveTracker_Expand()
 end
 -- end clone
 
--- Fix me for 11.0
+-- Fix ME 11.0
 function BL:ObjectiveTracker_AutoHideOnHide()
 	if E.Retail then return end
 	if Tracker.collapsed then return end
@@ -84,7 +84,7 @@ function BL:ObjectiveTracker_AutoHideOnHide()
 	end
 end
 
--- Fix me for 11.0
+-- Fix ME 11.0
 function BL:ObjectiveTracker_AutoHideOnShow()
 	if E.Retail then return end
 

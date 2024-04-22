@@ -6,7 +6,7 @@ local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 
-local headers = {
+local headers = { -- Fix ME 11.0
 	--_G.ObjectiveTrackerBlocksFrame.QuestHeader,
 	--_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
 	--_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,

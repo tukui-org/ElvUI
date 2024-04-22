@@ -21,7 +21,6 @@ local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
-local GetItemCount = C_Item and C_Item.GetItemCount or GetItemCount
 local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -71,6 +70,7 @@ local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
+local GetItemCount = (C_Item and C_Item.GetItemCount) or GetItemCount
 local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 

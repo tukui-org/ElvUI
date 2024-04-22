@@ -84,7 +84,7 @@ local tinsert = tinsert
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or GetSpellInfo
+local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
 local floor, min = math.floor, math.min
 -- end block
 
