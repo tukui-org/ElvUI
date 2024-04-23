@@ -755,10 +755,6 @@ do
 	E.GameMenuButtonsData = {} --Table for keeping game menu buttons frome ElvUI itself and plugins
 
 	function E:GameMenuFrame_PositionButtons()
-		if E.Retail then
-			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-		end
-
 		GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
 		local button = GameMenuFrame.ElvUI
@@ -768,6 +764,7 @@ do
 		if relTo ~= button then
 			button:ClearAllPoints()
 			button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+
 			GameMenuButtonLogout:ClearAllPoints()
 			GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 		end
@@ -809,6 +806,7 @@ do
 				local width, height = GameMenuButtonLogout:GetSize()
 				button:SetSize(width, height)
 				button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+
 				hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.GameMenuFrame_PositionButtons)
 			end
 		end
