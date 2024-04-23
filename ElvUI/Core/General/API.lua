@@ -769,16 +769,29 @@ function E:ClickGameMenu()
 	end
 end
 
+GameMenuFrame.ElvUIButtons = {} --Table for keeping game menu buttons frome ElvUI itself and plugins
 function E:SetupGameMenu()
-	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	button:SetScript('OnClick', E.ClickGameMenu)
-	GameMenuFrame.ElvUI = button
+	local dataTable = {
+		text = format('%sElvUI|r', E.media.hexvaluecolor),
+		callback = E.ClickGameMenu,
+		disabled = false --If set to true will make button disabled. Can be set as a fucn to return true/false dynamically if needed
+	}
+	tinsert(GameMenuFrame.ElvUIButtons, dataTable) --Add ElvUI's button so it will be first
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		button:Size(100, 30)
-		button:Point('TOPLEFT', GameMenuFrame, 'BOTTOMLEFT', 0, -1)
-		-- FIX ME 11.0
-		--hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+		--hooking to blizz button add function for game menu, since the list of those is reset every time menu is opened
+		hooksecurefunc(GameMenuFrame, "AddButton", 
+			function(self, text, callback, disabled)
+				if text == MACROS then --check for text "Macros". That button is the last before logout in default so we insert our stuff in between
+					GameMenuFrame:AddSection(); --spacer
+					
+					for i = 1, #GameMenuFrame.ElvUIButtons do --Go through buttons in the tabe and adding them based on data provided
+						local data = GameMenuFrame.ElvUIButtons[i]
+						if i == 1 then data.text = format('%sElvUI|r', E.media.hexvaluecolor) end --to account for ElvUI value color change
+						GameMenuFrame:AddButton(data.text, data.callback, data.disabled); 
+					end
+				end 
+			end)
 	end
 end
 
@@ -905,8 +918,7 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	-- FIX ME 11.0
-	--E:SetupGameMenu()
+	E:SetupGameMenu()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
