@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local unpack = unpack
+local pairs = pairs
 
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
@@ -65,11 +66,16 @@ function S:BlizzardMiscFrames()
 
 	-- reskin all esc/menu buttons
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
-			if Button.IsObjectType and Button:IsObjectType('Button') then
-				S:HandleButton(Button)
+		local skinnedButtons = {}
+		hooksecurefunc(GameMenuFrame, 'InitButtons', function(self)
+			local tableData = self.buttonPool.activeObjects
+			for obj in pairs(tableData) do 
+				if not skinnedButtons[obj] then
+					S:HandleButton(obj, nil, nil, nil, true)
+					skinnedButtons[obj] = true
+				end
 			end
-		end
+		end)
 
 		_G.GameMenuFrame:StripTextures()
 		_G.GameMenuFrame:SetTemplate('Transparent')
