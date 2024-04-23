@@ -22,7 +22,6 @@
 	<Script file='Character.lua'/>
 	<Script file='ChatConfig.lua'/>
 	<Script file='ChromieTime.lua'/>
-	<Script file='ClassTalents.lua'/>
 	<Script file='Collectables.lua'/>
 	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>
@@ -73,6 +72,7 @@
 	<Script file='PetBattle.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='PlayerChoice.lua'/>
+	<Script file='PlayerSpells.lua'/>
 	<Script file='Professions.lua'/>
 	<Script file='ProfessionsOrders.lua'/>
 	<Script file='PVP.lua'/>
