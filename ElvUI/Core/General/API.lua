@@ -789,7 +789,7 @@ do
 		end
 	end
 
-	function E:SetupGameMenu()
+	function E:GameMenuFrame_Setup()
 		if E.Retail then
 			tinsert(E.GameMenuButtonsData, { --Add ElvUI's button so it will be first
 				text = format('%sElvUI|r', E.media.hexvaluecolor),
@@ -938,7 +938,7 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	E:SetupGameMenu()
+	E:GameMenuFrame_Setup()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
