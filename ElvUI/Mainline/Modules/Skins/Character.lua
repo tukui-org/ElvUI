@@ -18,6 +18,7 @@ local showInsetBackdrop = {
 	TokenFrame = true
 }
 
+-- FIX ME 11.0 Mostly now in: TokenEntryMixin
 local function TokenFrame_ScrollUpdate(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		if child.Highlight and not child.IsSkinned then
@@ -219,6 +220,7 @@ local function FixSidebarTabCoords()
 	end
 end
 
+-- FIX ME 11.0 Mostly now in: ReputationEntryMixin
 local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		local container = child.Container
@@ -228,7 +230,7 @@ local function UpdateFactionSkins(frame)
 			container:StripTextures()
 
 			if container.ExpandOrCollapseButton then
-				S:HandleCollapseTexture(container.ExpandOrCollapseButton)
+				S:HandleCollapseTexture(container.ToggleCollapseButton)
 			end
 
 			if container.ReputationBar then
@@ -265,7 +267,7 @@ local function BackdropDesaturated(background, value)
 	end
 end
 
-function S:CharacterFrame()
+function S:Blizzard_UIPanels_Game()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
 	-- General
@@ -397,13 +399,17 @@ function S:CharacterFrame()
 	end
 
 	-- Reputation Frame
-	_G.ReputationDetailFrame:StripTextures()
-	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleButton(_G.ReputationDetailViewRenownButton)
+	local ReputationFrame = _G.ReputationFrame
+	ReputationFrame:StripTextures()
+	S:HandleDropDownBox(ReputationFrame.filterDropDown)
+
+	--_G.ReputationDetailFrame:StripTextures()
+	--_G.ReputationDetailFrame:SetTemplate('Transparent')
+	--S:HandleCloseButton(_G.ReputationDetailCloseButton)
+	--S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
+	--S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	--S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
+	--S:HandleButton(_G.ReputationDetailViewRenownButton)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()
@@ -413,15 +419,16 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
 
+	-- FIX ME 11.0
 	if _G.TokenFramePopup.CloseButton then
 		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
 	end
 
-	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
-	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
+	--hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
+	--hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
-	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
+	hooksecurefunc(CharacterFrameMixin, 'ShowSubFrame', UpdateCharacterInset)
 end
 
-S:AddCallback('CharacterFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game')
