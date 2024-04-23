@@ -26,6 +26,35 @@ local function HandleTalentFrameDialog(dialog)
 	dialog.NameControl.EditBox.backdrop:Point('BOTTOMRIGHT', 5, 10)
 end
 
+local function UpdateSpecFrame(frame)
+	if not frame.SpecContentFramePool then return end
+
+	for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
+		if not specContentFrame.isSkinned then
+			S:HandleButton(specContentFrame.ActivateButton)
+
+			if specContentFrame.SpellButtonPool then
+				for button in specContentFrame.SpellButtonPool:EnumerateActive() do
+					if button.Ring then
+						button.Ring:Hide()
+					end
+
+					if button.spellID then
+						local texture = GetSpellTexture(button.spellID)
+						if texture then
+							button.Icon:SetTexture(texture)
+						end
+					end
+
+					S:HandleIcon(button.Icon, true)
+				end
+			end
+
+			specContentFrame.isSkinned = true
+		end
+	end
+end
+
 function S:Blizzard_PlayerSpells()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -33,37 +62,10 @@ function S:Blizzard_PlayerSpells()
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
 	-- Specialisation
-	SpecFrame = PlayerSpellsFrame.SpecFrame
-
-	hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', function(frame)
-		for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
-			if not specContentFrame.isSkinned then
-				S:HandleButton(specContentFrame.ActivateButton)
-
-				if specContentFrame.SpellButtonPool then
-					for button in specContentFrame.SpellButtonPool:EnumerateActive() do
-						if button.Ring then
-							button.Ring:Hide()
-						end
-
-						if button.spellID then
-							local texture = GetSpellTexture(button.spellID)
-							if texture then
-								button.Icon:SetTexture(texture)
-							end
-						end
-
-						S:HandleIcon(button.Icon, true)
-					end
-				end
-
-				specContentFrame.isSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
 
 	-- TalentsFrame
-	TalentsFrame = PlayerSpellsFrame.TalentsFrame
+	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
 	TalentsFrame.BlackBG:SetAlpha(0)
 	TalentsFrame.BottomBar:SetAlpha(0)
 
@@ -129,7 +131,7 @@ function S:Blizzard_PlayerSpells()
 
 	-- FIX ME 11.0: MONITOR THIS
 	-- SpellBook
-	SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
+	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	SpellBookFrame:StripTextures()
 
 	if E.global.general.disableTutorialButtons then
@@ -142,10 +144,10 @@ function S:Blizzard_PlayerSpells()
 		S:HandleTab(tab)
 	end
 
-	PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
+	local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
 	PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
 
-	PagingControls = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame.PagingControls
+	local PagingControls = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame.PagingControls
 	S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 	S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 	PagingControls.PageText:SetTextColor(1, 1, 1)

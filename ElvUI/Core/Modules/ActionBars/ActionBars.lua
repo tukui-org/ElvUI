@@ -51,7 +51,7 @@ local ClearPetActionHighlightMarks = (PetActionBar and PetActionBar.ClearPetActi
 local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
-local C_SpellBook_FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell
+local FindSpellBookSlotForSpell = (C_SpellBook and C_SpellBook.FindSpellBookSlotForSpell) or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -977,7 +977,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		return
 	end
 
-	local slot = C_SpellBook_FindSpellBookSlotForSpell(self)
+	local slot = FindSpellBookSlotForSpell(self)
 	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
 	ClearOnBarHighlightMarks()
