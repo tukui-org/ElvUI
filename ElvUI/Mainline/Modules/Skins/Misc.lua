@@ -73,6 +73,9 @@ function S:BlizzardMiscFrames()
 				if not skinnedButtons[obj] then
 					S:HandleButton(obj, nil, nil, nil, true)
 					skinnedButtons[obj] = true
+				else
+					obj:HookScript('OnEnter', S.SetModifiedBackdrop)
+					obj:HookScript('OnLeave', S.SetOriginalBackdrop)
 				end
 			end
 		end)
