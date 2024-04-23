@@ -769,26 +769,27 @@ function E:ClickGameMenu()
 	end
 end
 
-GameMenuFrame.ElvUIButtons = {} --Table for keeping game menu buttons frome ElvUI itself and plugins
+E.GameMenuButtonsData = {} --Table for keeping game menu buttons frome ElvUI itself and plugins
 function E:SetupGameMenu()
 	local dataTable = {
 		text = format('%sElvUI|r', E.media.hexvaluecolor),
 		callback = E.ClickGameMenu,
-		disabled = false --If set to true will make button disabled. Can be set as a fucn to return true/false dynamically if needed
+		isDisabled = false, --If set to true will make button disabled. Can be set as a fucn to return true/false dynamically if needed
+		disabledText = "This button is somehow disabled. Probably someone was messing around with the code." --this text will show up in tooltip when the button is disabled
 	}
-	tinsert(GameMenuFrame.ElvUIButtons, dataTable) --Add ElvUI's button so it will be first
+	tinsert(E.GameMenuButtonsData, dataTable) --Add ElvUI's button so it will be first
 
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
 		--hooking to blizz button add function for game menu, since the list of those is reset every time menu is opened
 		hooksecurefunc(GameMenuFrame, "AddButton", 
-			function(self, text, callback, disabled)
+			function(self, text, callback, isDisabled)
 				if text == MACROS then --check for text "Macros". That button is the last before logout in default so we insert our stuff in between
 					GameMenuFrame:AddSection(); --spacer
 					
-					for i = 1, #GameMenuFrame.ElvUIButtons do --Go through buttons in the tabe and adding them based on data provided
-						local data = GameMenuFrame.ElvUIButtons[i]
+					for i = 1, #E.GameMenuButtonsData do --Go through buttons in the tabe and adding them based on data provided
+						local data = E.GameMenuButtonsData[i]
 						if i == 1 then data.text = format('%sElvUI|r', E.media.hexvaluecolor) end --to account for ElvUI value color change
-						GameMenuFrame:AddButton(data.text, data.callback, data.disabled); 
+						GameMenuFrame:AddButton(data.text, data.callback, data.isDisabled, data.disabledText); 
 					end
 				end 
 			end)
