@@ -48,11 +48,11 @@ local IconParents = {}
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
 	{ text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
-	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() ToggleFrame(_G.SpellBookFrame) end },
+	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() PlayerSpellsUtil.ToggleSpellBookFrame() end },
 	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
 	{ text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = 1 }, -- Interface\ICONS\UI_Chat
 	{ text = _G.SOCIAL_BUTTON, func =  function() _G.ToggleFriendsFrame() end, icon = 796351, cropIcon = 10 }, -- Interface\FriendsFrame\Battlenet-BattlenetIcon
-	{ text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func =  function() _G.ToggleTalentFrame() end },
+	{ text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func =  function() PlayerSpellsUtil.ToggleClassTalentFrame() end },
 	{ text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() if E.Retail then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
 }
 
