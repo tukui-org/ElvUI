@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
+local unpack = unpack
 local CreateFrame = CreateFrame
 
 function S:SkinPVPFrame()
@@ -20,26 +22,30 @@ function S:SkinPVPFrame()
 		'PVPBannerFrameAcceptButton'
 	}
 
-	for i = 1, #buttons do
-		local button = _G[buttons[i]]
-
-		button:StripTextures()
-		S:HandleButton(button)
+	for _, name in next, buttons do
+		local button = _G[name]
+		if button then
+			button:StripTextures()
+			S:HandleButton(button)
+		end
 	end
 
-	local Strip = {
+	local stripTextures = {
 		'PVPFrameInset',
 		'PVPHonorFrame',
 		'PVPFrameTopInset',
 		'PVPConquestFrame'
 	}
 
-	for _, strip in pairs(Strip) do
-		_G[strip]:StripTextures()
+	for _, name in next, stripTextures do
+		local button = _G[name]
+		if button then
+			button:StripTextures()
+		end
 	end
 
 	-- Tons of leftover texture crap
-	local KillTextures = {
+	local killTextures = {
 		'PVPHonorFrameBGTex',
 		'PVPHonorFrameInfoScrollFrameScrollBar',
 		'PVPConquestFrameInfoButtonInfoBG',
@@ -52,8 +58,11 @@ function S:SkinPVPFrame()
 		'PVPFrameConquestBarShadow'
 	}
 
-	for _, texture in pairs(KillTextures) do
-		_G[texture]:Kill()
+	for _, name in next, killTextures do
+		local button = _G[name]
+		if button then
+			button:Kill()
+		end
 	end
 
 	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(1, 1, 1)
@@ -95,6 +104,9 @@ function S:SkinPVPFrame()
 	PVPFrameLowLevelFrame.backdrop:Point('TOPLEFT', -2, -40)
 	PVPFrameLowLevelFrame.backdrop:Point('BOTTOMRIGHT', 5, 80)
 
+	local honorTexture = [[Interface\Icons\PVPCurrency-Honor-]]..E.myfaction
+	local conquestTexture = [[Interface\Icons\PVPCurrency-Conquest-]]..E.myfaction
+
 	-- PvP Icon
 	if _G.PVPFrameCurrency then
 		local PVPFrameCurrency = _G.PVPFrameCurrency
@@ -103,7 +115,7 @@ function S:SkinPVPFrame()
 		PVPFrameCurrency:Point('TOP', 0, -26)
 
 		local PVPFrameCurrencyIcon = _G.PVPFrameCurrencyIcon
-		PVPFrameCurrencyIcon:SetTexture('Interface\\Icons\\PVPCurrency-Honor-'..E.myfaction)
+		PVPFrameCurrencyIcon:SetTexture(honorTexture)
 		PVPFrameCurrencyIcon.SetTexture = E.noop
 		PVPFrameCurrencyIcon:SetTexCoord(unpack(E.TexCoords))
 		PVPFrameCurrencyIcon:SetInside(PVPFrameCurrency.backdrop)
@@ -113,28 +125,34 @@ function S:SkinPVPFrame()
 	end
 
 	-- Rewards
-	for _, frame in pairs({'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward', 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoLossReward', 'PVPConquestFrameWinReward'}) do
-		local background = _G[frame]:GetRegions()
+	for _, name in next, { 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward', 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoLossReward', 'PVPConquestFrameWinReward' } do
+		local frame = _G[name]
+
+		local background = frame:GetRegions()
 		background:SetTexture(E.Media.Textures.Highlight)
-		if _G[frame] == PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward or _G[frame] == PVPConquestFrameWinReward then
+		if frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward or frame == _G.PVPConquestFrameWinReward then
 			background:SetVertexColor(0, 0.439, 0, 0.5)
 		else
 			background:SetVertexColor(0.5608, 0, 0, 0.5)
 		end
 
-		if _G[frame] ~= PVPConquestFrameWinReward then
+		if frame ~= _G.PVPConquestFrameWinReward then
 			local honor = _G[frame..'HonorSymbol']
-			honor:SetTexture('Interface\\Icons\\PVPCurrency-Honor-'..E.myfaction)
-			honor.SetTexture = E.noop
-			honor:SetTexCoord(unpack(E.TexCoords))
-			honor:Size(30)
+			if honor then
+				honor:SetTexture(honorTexture)
+				honor.SetTexture = E.noop
+				honor:SetTexCoord(unpack(E.TexCoords))
+				honor:Size(30)
+			end
 		end
 
 		local conquest = _G[frame..'ArenaSymbol']
-		conquest:SetTexture('Interface\\Icons\\PVPCurrency-Conquest-'..E.myfaction)
-		conquest.SetTexture = E.noop
-		conquest:SetTexCoord(unpack(E.TexCoords))
-		conquest:Size(30)
+		if conquest then
+			conquest:SetTexture(conquestTexture)
+			conquest.SetTexture = E.noop
+			conquest:SetTexCoord(unpack(E.TexCoords))
+			conquest:Size(30)
+		end
 	end
 
 	-- War Games
@@ -159,6 +177,7 @@ function S:SkinPVPFrame()
 	PVPBannerFrameCustomization1.backdrop:Point('TOPLEFT', _G.PVPBannerFrameCustomization1LeftButton, 'TOPRIGHT', 2, 0)
 	PVPBannerFrameCustomization1.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameCustomization1RightButton, 'BOTTOMLEFT', -2, 0)
 
+	local PVPBannerFrameCustomization2 = _G.PVPBannerFrameCustomization2
 	PVPBannerFrameCustomization2:StripTextures()
 	PVPBannerFrameCustomization2:CreateBackdrop()
 	PVPBannerFrameCustomization2.backdrop:Point('TOPLEFT', _G.PVPBannerFrameCustomization2LeftButton, 'TOPRIGHT', 2, 0)
