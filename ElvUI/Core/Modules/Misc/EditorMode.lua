@@ -40,7 +40,8 @@ end
 function EM:PLAYER_REGEN(event)
 	local editMode = _G.EditModeManagerFrame
 	local combatLeave = event == 'PLAYER_REGEN_ENABLED'
-	_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
+	-- FIX ME 11.0
+	--_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
 
 	if combatLeave then
 		if next(hideFrames) then
