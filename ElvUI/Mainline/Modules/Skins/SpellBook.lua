@@ -4,6 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
+local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
+
 local function clearBackdrop(self)
 	self:SetBackdropColor(0, 0, 0, 1)
 end
@@ -95,6 +97,44 @@ function S:Blizzard_ProfessionsBook()
 			S:HandleIcon(button.iconTexture, true)
 		end
 	end
+
+	-- Some Texture Magic
+	hooksecurefunc('FormatProfession', function(frame, id)
+		if not (id and frame and frame.icon) then return end
+
+		local texture = select(2, GetProfessionInfo(id))
+		if texture then frame.icon:SetTexture(texture) end
+	end)
+
+	-- FIX ME 11.0
+	hooksecurefunc(_G.ProfessionSpellButtonMixin, 'UpdateButton', function(button)
+		local parent = button:GetParent()
+		if not parent or not parent.spellOffset then return end
+
+		local activeSpellBank = Enum.SpellBookSpellBank.Player
+		local spellIndex = button:GetID() + parent.spellOffset
+		local spellBookItemInfo = C_SpellBook_GetSpellBookItemInfo(spellIndex, activeSpellBank)
+		if spellBookItemInfo.isPassive then
+			button.highlightTexture:SetColorTexture(1, 1, 1, 0)
+		else
+			button.highlightTexture:SetColorTexture(1, 1, 1, .25)
+		end
+
+		if E.private.skins.parchmentRemoverEnable then
+			if button.spellString then
+				button.spellString:SetTextColor(1, 1, 1)
+			end
+			if button.subSpellString then
+				button.subSpellString:SetTextColor(1, 1, 1)
+			end
+			if button.SpellName then
+				button.SpellName:SetTextColor(1, 1, 1)
+			end
+			if button.SpellSubName then
+				button.SpellSubName:SetTextColor(1, 1, 1)
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_ProfessionsBook')
