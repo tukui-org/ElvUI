@@ -260,9 +260,8 @@ local function SetsFrame_ScrollBoxUpdate(button)
 		if not child.IsSkinned then
 			child.Background:Hide()
 			child.HighlightTexture:SetTexture(E.ClearTexture)
-			child.Icon:SetSize(42, 42)
-			S:HandleIcon(child.Icon)
-			child.IconCover:SetOutside(child.Icon)
+			child.IconFrame.Icon:SetSize(42, 42)
+			S:HandleIcon(child.IconFrame.Icon)
 
 			child.SelectedTexture:SetDrawLayer('BACKGROUND')
 			child.SelectedTexture:SetColorTexture(1, 1, 1, .25)
@@ -296,6 +295,7 @@ end
 
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
+	S:HandleItemButton(_G.MountJournalDynamicFlightModeButton)
 	S:HandleButton(_G.MountJournalFilterButton)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
@@ -530,6 +530,7 @@ local function SkinTransmogFrames()
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ClassDropDown, 145)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
