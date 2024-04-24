@@ -31,7 +31,10 @@ local InspectItems = {
 	'BackSlot',
 	'MainHandSlot',
 	'SecondaryHandSlot',
+	E.Cata and 'RangedSlot' or nil
 }
+
+local numInspectItems = #InspectItems
 
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
@@ -74,7 +77,7 @@ function M:ClearPageInfo(frame, which)
 	if not (frame and frame.ItemLevelText) then return end
 	frame.ItemLevelText:SetText('')
 
-	for i = 1, 17 do
+	for i = 1, numInspectItems do
 		if i ~= 4 then
 			local inspectItem = _G[which..InspectItems[i]]
 			inspectItem.enchantText:SetText('')
@@ -89,8 +92,6 @@ function M:ClearPageInfo(frame, which)
 end
 
 function M:ToggleItemLevelInfo(setupCharacterPage)
-	if not E.Retail then return end
-
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
@@ -101,7 +102,9 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 
-		_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+		if E.Retail then
+			_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+		end
 
 		if not _G.CharacterFrame.CharacterInfoHooked then
 			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
@@ -117,7 +120,9 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
 
-		_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+		if E.Retail then
+			_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+		end
 
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
@@ -211,14 +216,17 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 	if avgItemLevel then
 		if charPage then
 			frame.ItemLevelText:SetText(avgItemLevel)
-			frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
+
+			if E.Retail then
+				frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
+			end
 		else
-			frame.ItemLevelText:SetFormattedText(L["Item level: %.2f"], avgItemLevel)
+			frame.ItemLevelText:SetText(avgItemLevel)
 		end
 
 		-- we have to wait to do this on inspect so handle it in here
 		if not E.db.general.itemLevel.itemLevelRarity then
-			for i = 1, 17 do
+			for i = 1, numInspectItems do
 				if i ~= 4 then
 					local ilvl = iLevelDB[i]
 					if ilvl then
@@ -255,7 +263,7 @@ do
 		wipe(iLevelDB)
 
 		local waitForItems
-		for i = 1, 17 do
+		for i = 1, numInspectItems do
 			if i ~= 4 then
 				local inspectItem = _G[which..InspectItems[i]]
 				inspectItem.enchantText:SetText('')
@@ -293,12 +301,16 @@ function M:CreateSlotStrings(frame, which)
 
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
-		frame.ItemLevelText:Point('BOTTOMLEFT', 6, 6)
+		frame.ItemLevelText:Point('BOTTOMLEFT', E.Cata and 20 or 6, E.Cata and 84 or 6)
+	elseif E.Cata then
+		frame.ItemLevelText = _G.CharacterFrame:CreateFontString(nil, 'ARTWORK')
+		frame.ItemLevelText:Point('BOTTOMLEFT', _G.CharacterFrame, 6, 6)
 	else
 		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, 'ARTWORK')
 		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
-	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
+
+	frame.ItemLevelText:FontTemplate(nil, 18)
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
