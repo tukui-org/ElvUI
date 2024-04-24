@@ -344,25 +344,28 @@ function S:CharacterFrame()
 	end
 
 	do -- Expand Button
-		local CharacterFrameExpandButton = _G.CharacterFrameExpandButton
-		S:HandleNextPrevButton(CharacterFrameExpandButton, nil, nil, nil, nil, nil, 26) -- Default UI button size is 32
-		CharacterFrameExpandButton:ClearAllPoints()
-		CharacterFrameExpandButton:Point('BOTTOMRIGHT', _G.CharacterFrameInset, 'BOTTOMRIGHT', -3, 2)
+		local expandButton = _G.CharacterFrameExpandButton
+		S:HandleNextPrevButton(expandButton, nil, nil, nil, nil, nil, 26) -- Default UI button size is 32
 
-		CharacterFrameExpandButton:SetNormalTexture(E.Media.Textures.ArrowUp)
-		CharacterFrameExpandButton.SetNormalTexture = E.noop
-		CharacterFrameExpandButton:SetPushedTexture(E.Media.Textures.ArrowUp)
-		CharacterFrameExpandButton.SetPushedTexture = E.noop
-		CharacterFrameExpandButton:SetDisabledTexture(E.Media.Textures.ArrowUp)
-		CharacterFrameExpandButton.SetDisabledTexture = E.noop
+		expandButton:ClearAllPoints()
+		expandButton:Point('BOTTOMRIGHT', _G.CharacterFrameInset, 'BOTTOMRIGHT', -3, 2)
 
-		local expandButtonNormal, expandButtonPushed = CharacterFrameExpandButton:GetNormalTexture(), CharacterFrameExpandButton:GetPushedTexture()
-		local expandButtonCvar = GetCVar('characterFrameCollapsed') ~= '0'
-		expandButtonNormal:SetRotation(expandButtonCvar and -1.57 or 1.57)
-		expandButtonPushed:SetRotation(expandButtonCvar and -1.57 or 1.57)
+		local expandNormal = expandButton:GetNormalTexture()
+		local expandPushed = expandButton:GetPushedTexture()
 
-		hooksecurefunc(CharacterFrame, 'Collapse', function() expandButtonNormal:SetRotation(-1.57) expandButtonPushed:SetRotation(-1.57) end)
-		hooksecurefunc(CharacterFrame, 'Expand', function() expandButtonNormal:SetRotation(1.57) expandButtonPushed:SetRotation(1.57) end)
+		local function ExpandToggle()
+			expandButton:SetNormalTexture(E.Media.Textures.ArrowUp)
+			expandButton:SetPushedTexture(E.Media.Textures.ArrowUp)
+			expandButton:SetDisabledTexture(E.Media.Textures.ArrowUp)
+
+			local expanded = CharacterFrame.Expanded
+			expandNormal:SetRotation(expanded and 1.57 or -1.57)
+			expandPushed:SetRotation(expanded and 1.57 or -1.57)
+		end
+
+		ExpandToggle()
+		hooksecurefunc(CharacterFrame, 'Collapse', ExpandToggle)
+		hooksecurefunc(CharacterFrame, 'Expand', ExpandToggle)
 	end
 
 	-- Pet Frame
