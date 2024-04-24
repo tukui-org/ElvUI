@@ -137,7 +137,7 @@ function S:SkinPVPFrame()
 		end
 
 		if frame ~= _G.PVPConquestFrameWinReward then
-			local honor = _G[frame..'HonorSymbol']
+			local honor = _G[name..'HonorSymbol']
 			if honor then
 				honor:SetTexture(honorTexture)
 				honor.SetTexture = E.noop
@@ -146,7 +146,7 @@ function S:SkinPVPFrame()
 			end
 		end
 
-		local conquest = _G[frame..'ArenaSymbol']
+		local conquest = _G[name..'ArenaSymbol']
 		if conquest then
 			conquest:SetTexture(conquestTexture)
 			conquest.SetTexture = E.noop
