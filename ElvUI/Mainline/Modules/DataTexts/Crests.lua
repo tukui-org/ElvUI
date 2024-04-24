@@ -14,20 +14,20 @@ local crests = {
 		id = 2245,
 		color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor()
 	},
-	{ -- Whelpling's Dreaming Crest
-		id = 2706,
+	{ -- Whelpling's Awakened Crest
+		id = 2806,
 		color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor()
 	},
-	{ -- Drake's Dreaming Crest
-		id = 2707,
+	{ -- Drake's Awakened Crest
+		id = 2807,
 		color = _G.RARE_BLUE_COLOR:GenerateHexColor()
 	},
-	{ -- Wyrm's Dreaming Crest
-		id = 2708,
+	{ -- Wyrm's Awakened Crest
+		id = 2809,
 		color = _G.EPIC_PURPLE_COLOR:GenerateHexColor()
 	},
-	{ -- Aspect's Dreaming Crest
-		id = 2709,
+	{ -- Aspect's Awakened Crest
+		id = 2812,
 		color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor()
 	}
 }
