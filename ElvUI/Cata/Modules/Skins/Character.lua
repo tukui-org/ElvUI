@@ -10,7 +10,6 @@ local UnitResistance = UnitResistance
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local HasPetUI = HasPetUI
-local GetCVar = GetCVar
 
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
@@ -19,6 +18,12 @@ local STAT_FORMAT = STAT_FORMAT
 local HONOR_CURRENCY = HONOR_CURRENCY
 
 local spellSchoolIcon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+
+local FLYOUT_LOCATIONS = {
+	[0xFFFFFFFF] = 'PLACEINBAGS',
+	[0xFFFFFFFE] = 'IGNORESLOT',
+	[0xFFFFFFFD] = 'UNIGNORESLOT'
+}
 
 local function EquipmentManagerPane_Update(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
@@ -46,16 +51,16 @@ local function TitleManagerPane_Update(frame)
 	end
 end
 
-local function PaperDollItemSlotButtonUpdate(frame)
-	if not frame.SetBackdropBorderColor then return end
+local function HandleItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
 
-	local id = frame:GetID()
+	local id = button.id or button:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
 	if rarity and rarity > 1 then
 		local r, g, b = GetItemQualityColor(rarity)
-		frame:SetBackdropBorderColor(r, g, b)
+		button:SetBackdropBorderColor(r, g, b)
 	else
-		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 
@@ -206,6 +211,51 @@ local function HandleTabs()
 
 		lastTab = tab
 	end
+end
+
+local function EquipmentDisplayButton(button)
+	if not button.isHooked then
+		button:SetNormalTexture(E.ClearTexture)
+		button:SetPushedTexture(E.ClearTexture)
+		button:SetTemplate()
+		button:StyleButton()
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+
+		button.isHooked = true
+	end
+
+	if FLYOUT_LOCATIONS[button.location] then -- special slots
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function EquipmentUpdateItems()
+	local frame = _G.EquipmentFlyoutFrame.buttonFrame
+	if not frame.template then
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+	end
+
+	local width, height = frame:GetSize()
+	frame:Size(width+3, height)
+
+	for _, button in next, _G.EquipmentFlyoutFrame.buttons do
+		EquipmentDisplayButton(button)
+	end
+end
+
+local function EquipmentUpdateNavigation()
+	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
+	if not navi then return end
+
+	navi:ClearAllPoints()
+	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
+	navi:StripTextures()
+	navi:SetTemplate('Transparent')
 end
 
 function S:CharacterFrame()
@@ -430,7 +480,21 @@ function S:CharacterFrame()
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollFrame_SetResistance', PaperDollFrameSetResistance)
-	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
+	hooksecurefunc('PaperDollItemSlotButton_Update', HandleItemButtonQuality)
+
+	-- Equipment Flyout
+	_G.EquipmentFlyoutFrameHighlight:StripTextures()
+	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
+	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
+
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
+
+	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
+
+	hooksecurefunc('EquipmentFlyout_DisplayButton', HandleItemButtonQuality)
+	hooksecurefunc('EquipmentFlyout_DisplaySpecialButton', HandleItemButtonQuality)
 
 	-- Tabs
 	for i = 1, #_G.CHARACTERFRAME_SUBFRAMES do
