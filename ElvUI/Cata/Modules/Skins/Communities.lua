@@ -339,6 +339,7 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 
+	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBar)
 	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
 
 	if E.private.skins.parchmentRemoverEnable then
