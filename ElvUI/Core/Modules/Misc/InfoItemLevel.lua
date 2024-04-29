@@ -31,9 +31,9 @@ local InspectItems = {
 	'Trinket0Slot',
 	'Trinket1Slot',
 	'BackSlot',
-	'MainHandSlot',
-	'SecondaryHandSlot',
-	E.Cata and 'RangedSlot' or nil
+	'MainHandSlot', -- 16
+	'SecondaryHandSlot', -- 17
+	E.Cata and 'RangedSlot' or nil -- 18
 }
 
 local numInspectItems = #InspectItems
@@ -61,7 +61,7 @@ function M:GetInspectPoints(id)
 	elseif (id >= 6 and id <= 8) or (id >= 10 and id <= 14) then
 		return -40, 3, 18, 'BOTTOMRIGHT' -- Right side
 	else
-		return 0, 45, 60, 'BOTTOM'
+		return 0, 46, 60, 'BOTTOM'
 	end
 end
 
@@ -345,16 +345,20 @@ function M:CreateSlotStrings(frame, which)
 			slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
 			slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 
-			if i == 16 or i == 17 then
-				slot.enchantText:Point(i==16 and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, i==16 and -40 or 40, 3)
+			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or (E.Cata and i == 18)
+			if itemLeft or itemRight then
+				slot.enchantText:Point(itemLeft and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, itemLeft and -40 or 40, 3)
+			elseif E.Cata and i == 17 then -- cata secondary (not ranged)
+				slot.enchantText:Point('TOP', slot, 'BOTTOM', 0, 3)
 			else
 				slot.enchantText:Point(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)
 			end
 
+			local weapon = i == 16 or i == 17 or i == 18
 			for u = 1, 10 do
-				local offset = 8+(u*16)
-				local newX = ((justify == 'BOTTOMLEFT' or i == 17) and x+offset) or x-offset
-				slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
+				local offset = 8 + (u * 16)
+				local newX = (weapon and 0) or ((justify == 'BOTTOMLEFT' or itemRight) and x+offset) or x-offset
+				slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, (weapon and offset+40) or y)
 			end
 		end
 	end
