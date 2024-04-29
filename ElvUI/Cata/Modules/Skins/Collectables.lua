@@ -470,11 +470,7 @@ local function SkinTransmogFrames()
 		end
 	end
 
-	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
-	WardrobeTransmogFrame.SpecButton:Point('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
-	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
-	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
 
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
