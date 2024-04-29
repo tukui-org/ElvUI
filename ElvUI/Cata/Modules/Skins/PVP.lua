@@ -55,7 +55,8 @@ function S:SkinPVPFrame()
 		'PVPFrameConquestBarRight',
 		'PVPFrameConquestBarMiddle',
 		'PVPFrameConquestBarBG',
-		'PVPFrameConquestBarShadow'
+		'PVPFrameConquestBarShadow',
+		'WarGamesFrameInfoScrollFrameScrollBar'
 	}
 
 	for _, name in next, killTextures do
@@ -63,6 +64,22 @@ function S:SkinPVPFrame()
 		if button then
 			button:Kill()
 		end
+	end
+
+	S:HandleTrimScrollBar(_G.PVPHonorFrame.bgTypeScrollBar)
+	S:HandleTrimScrollBar(_G.WarGamesFrame.scrollBar)
+	S:HandleScrollBar(_G.PVPHonorFrameInfoScrollFrame.ScrollBar)
+	S:HandleScrollBar(_G.WarGamesFrameInfoScrollFrame.ScrollBar)
+
+	local checkButtons = {
+		_G.PVPFrame.TankIcon.checkButton,
+		_G.PVPFrame.HealerIcon.checkButton,
+		_G.PVPFrame.DPSIcon.checkButton
+	}
+	for _, checkButton in next, checkButtons do
+		S:HandleCheckBox(checkButton)
+		checkButton:Size(22)
+		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 2)
 	end
 
 	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(1, 1, 1)
@@ -209,6 +226,11 @@ function S:SkinPVPFrame()
 	PVPBannerFrameCancelButton.backdrop:SetFrameLevel(PVPBannerFrameCancelButton:GetFrameLevel() - 2)
 	PVPBannerFrameCancelButton.backdrop:Point('TOPLEFT', _G.PVPBannerFrameAcceptButton, 248, 0)
 	PVPBannerFrameCancelButton.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameAcceptButton, 248, 0)
+
+	-- Skin Tabs
+	S:HandleTab(_G.PVPFrameTab1)
+	S:HandleTab(_G.PVPFrameTab2)
+	S:HandleTab(_G.PVPFrameTab3)
 
 	-- Reposition Tabs
 	_G.PVPFrameTab1:ClearAllPoints()
