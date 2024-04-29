@@ -825,23 +825,6 @@ function CH:StyleChat(frame)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
 
-	_G[name..'ButtonFrame']:Kill()
-
-	local scroll = frame.ScrollBar
-	if scroll then
-		scroll:Kill()
-	end
-
-	local scrollToBottom = frame.ScrollToBottomButton
-	if scrollToBottom then
-		scrollToBottom:Kill()
-	end
-
-	local scrollTex = _G[name..'ThumbTexture']
-	if scrollTex then
-		scrollTex:Kill()
-	end
-
 	--Character count
 	local editbox = frame.editBox
 	local charCount = editbox:CreateFontString(nil, 'ARTWORK')
@@ -884,10 +867,32 @@ function CH:StyleChat(frame)
 		c:Kill()
 	end
 
-	_G[name..'EditBoxLeft']:Kill()
-	_G[name..'EditBoxMid']:Kill()
-	_G[name..'EditBoxRight']:Kill()
+	-- stuff to hide
+	local scrollBar = frame.ScrollBar
+	if scrollBar then scrollBar:Kill() end
 
+	local scrollToBottom = frame.ScrollToBottomButton
+	if scrollToBottom then scrollToBottom:Kill() end
+
+	local buttonFrame = _G[name..'ButtonFrame']
+	if buttonFrame then buttonFrame:Kill() end
+
+	local thumbTexture = _G[name..'ThumbTexture']
+	if thumbTexture then thumbTexture:Kill() end
+
+	local minimize = _G[name..'MinimizeButton']
+	if minimize then minimize:Kill() end
+
+	local editLeft = _G[name..'EditBoxLeft']
+	if editLeft then editLeft:Kill() end
+
+	local editMid = _G[name..'EditBoxMid']
+	if editMid then editMid:Kill() end
+
+	local editRight = _G[name..'EditBoxRight']
+	if editRight then editRight:Kill() end
+
+	-- editbox stuff
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
