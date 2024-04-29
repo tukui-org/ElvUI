@@ -2710,7 +2710,6 @@ B.QuestKeys = {
 }
 
 B.AutoToggleEvents = {
-	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
 	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
 	professions = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
 	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
@@ -2781,6 +2780,19 @@ function B:GetBagFlagMenu(flag, text)
 	end
 
 	return menu
+end
+
+function B:GuildBankShow()
+	local frame = _G.GuildBankFrame
+	if frame and frame:IsShown() and B.db.autoToggle.guildBank then
+		B:OpenBags()
+	end
+end
+
+function B:ADDON_LOADED(_, addon)
+	if addon == 'Blizzard_GuildBankUI' then
+		_G.GuildBankFrame:HookScript('OnShow', B.GuildBankShow)
+	end
 end
 
 function B:Initialize()
@@ -2936,6 +2948,7 @@ function B:Initialize()
 	B:DisableBlizzard()
 	B:UpdateGoldText()
 
+	B:RegisterEvent('ADDON_LOADED')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
