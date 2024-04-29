@@ -228,15 +228,18 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	_G.EncounterJournalMonthlyActivitiesTab:ClearAllPoints()
-	_G.EncounterJournalSuggestTab:ClearAllPoints()
-	_G.EncounterJournalDungeonTab:ClearAllPoints()
-	_G.EncounterJournalRaidTab:ClearAllPoints()
-	_G.EncounterJournalLootJournalTab:ClearAllPoints()
-
 	_G.EncounterJournalMonthlyActivitiesTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
+
+	_G.EncounterJournalSuggestTab:ClearAllPoints()
 	_G.EncounterJournalSuggestTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT', -5, 0)
+
+	_G.EncounterJournalDungeonTab:ClearAllPoints()
 	_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalSuggestTab, 'RIGHT', -5, 0)
+
+	_G.EncounterJournalRaidTab:ClearAllPoints()
 	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -5, 0)
+
+	_G.EncounterJournalLootJournalTab:ClearAllPoints()
 	_G.EncounterJournalLootJournalTab:Point('LEFT', _G.EncounterJournalRaidTab, 'RIGHT', -5, 0)
 
 	--Encounter Info Frame

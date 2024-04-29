@@ -217,15 +217,15 @@ function S:Blizzard_EncounterJournal()
 	for _, tab in next, {
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
-		_G.EncounterJournalLootJournalTab
 	} do
 		S:HandleTab(tab)
 	end
 
 	_G.EncounterJournalDungeonTab:ClearAllPoints()
-	_G.EncounterJournalRaidTab:ClearAllPoints()
+	_G.EncounterJournalDungeonTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -10, 0)
 
-	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -5, 0)
+	_G.EncounterJournalRaidTab:ClearAllPoints()
+	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -19, 0)
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
