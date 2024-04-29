@@ -2,16 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 local UF = E:GetModule('UnitFrames')
 local M = E:GetModule('Misc')
-local B = E:GetModule('Bags')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, type, unpack, assert = pairs, type, unpack, assert
-local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
-local format, error, ipairs, ceil = format, error, ipairs, ceil
+local pairs, type, unpack, assert, ceil = pairs, type, unpack, assert, ceil
+local tremove, tContains, tinsert, wipe, error = tremove, tContains, tinsert, wipe, error
 
 local CreateFrame = CreateFrame
-local DeleteCursorItem = DeleteCursorItem
 local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
@@ -26,7 +23,6 @@ local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local PickupContainerItem = (C_Container and C_Container.PickupContainerItem) or PickupContainerItem
 
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
@@ -267,29 +263,6 @@ E.PopupDialogs.RESET_NP_AF = {
 	end,
 	whileDead = 1,
 	hideOnEscape = false,
-}
-
-E.PopupDialogs.DELETE_GRAYS = {
-	text = format('|cffff0000%s|r', L["Delete gray items?"]),
-	button1 = YES,
-	button2 = NO,
-	OnAccept = function()
-		B:VendorGrays(true)
-
-		for _, info in ipairs(B.SellFrame.Info.itemList) do
-			PickupContainerItem(info[1], info[2])
-			DeleteCursorItem()
-		end
-
-		wipe(B.SellFrame.Info.itemList)
-	end,
-	OnShow = function(self)
-		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs.DELETE_GRAYS.Money)
-	end,
-	timeout = 4,
-	whileDead = 1,
-	hideOnEscape = false,
-	hasMoneyFrame = 1,
 }
 
 E.PopupDialogs.BUY_BANK_SLOT = {
