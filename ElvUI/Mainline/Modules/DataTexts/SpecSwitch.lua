@@ -50,9 +50,10 @@ local loadoutList = { { text = L["Loadouts"], isTitle = true, notCheckable = tru
 local DEFAULT_TEXT = E:RGBToHex(0.9, 0.9, 0.9, nil, _G.TALENT_FRAME_DROP_DOWN_DEFAULT)
 local STARTER_TEXT = E:RGBToHex(BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, nil, _G.TALENT_FRAME_DROP_DOWN_STARTER_BUILD)
 
-local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
+local mainSize = 16
+local mainIcon = '|T%s:%d:%d:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
-local specText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
+local listText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
 local function starter_checked()
 	return GetStarterBuildActive()
@@ -92,7 +93,7 @@ local function OnEvent(self, event, loadoutID)
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if id then
 				menuList[index + 2] = { arg1 = id, text = name, checked = menu_checked, func = menu_func }
-				specList[index + 1] = { arg1 = index, text = format(specText, icon, name), checked = spec_checked, func = spec_func }
+				specList[index + 1] = { arg1 = index, text = format(listText, icon, name), checked = spec_checked, func = spec_func }
 			end
 		end
 	end
@@ -147,7 +148,8 @@ local function OnEvent(self, event, loadoutID)
 	active = specIndex
 
 	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
-	local spec, text = format(mainIcon, info.icon)
+	local size = db.iconSize or mainSize
+	local spec, text = format(mainIcon, info.icon, size, size)
 	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
 		if specialization == 0 or ID == specialization then
 			if db.iconOnly then
@@ -156,11 +158,11 @@ local function OnEvent(self, event, loadoutID)
 				text = format('%s %s', spec, info.name)
 			end
 		else
-			info = DT.SPECIALIZATION_CACHE[specialization]
+			local cache = DT.SPECIALIZATION_CACHE[specialization]
 			if db.iconOnly then
-				text = format('%s %s', spec, format(mainIcon, info.icon))
+				text = format('%s %s', spec, format(mainIcon, cache.icon, size, size))
 			else
-				text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
+				text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, cache.icon, size, size))
 			end
 		end
 	end
