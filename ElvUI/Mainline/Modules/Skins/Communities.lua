@@ -495,11 +495,15 @@ function S:Blizzard_Communities()
 
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
-	S:HandleDropDownBox(NotificationSettings.CommunitiesListDropDownMenu)
+	NotificationSettings.Selector:StripTextures()
+	S:HandleFrame(NotificationSettings)
+	S:HandleDropDownBox(NotificationSettings.CommunitiesListDropDownMenu, 190)
 	S:HandleCheckBox(NotificationSettings.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.AllButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.NoneButton)
 	S:HandleScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
+	S:HandleButton(NotificationSettings.Selector.OkayButton)
+	S:HandleButton(NotificationSettings.Selector.CancelButton)
 
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
