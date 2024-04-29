@@ -54,6 +54,7 @@ local toggles = {
 if E.Cata or E.Retail then
 	toggles.achievement = L["ACHIEVEMENTS"]
 	toggles.alertframes = L["Alert Frames"]
+	toggles.archaeology = L["Archaeology Frame"]
 	toggles.barber = L["BARBERSHOP"]
 	toggles.calendar = L["Calendar Frame"]
 	toggles.collections = L["COLLECTIONS"]
@@ -67,7 +68,6 @@ if E.Retail then
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
 	toggles.animaDiversion = L["Anima Diversion"]
-	toggles.archaeology = L["Archaeology Frame"]
 	toggles.artifact = L["ITEM_QUALITY6_DESC"]
 	toggles.azerite = L["Azerite"]
 	toggles.azeriteEssence = L["Azerite Essence"]
