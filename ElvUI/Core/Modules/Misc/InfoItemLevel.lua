@@ -7,10 +7,12 @@ local rad = rad
 local gsub = gsub
 local wipe = wipe
 local next = next
+local time = time
 local pairs = pairs
 local unpack = unpack
 
 local UnitGUID = UnitGUID
+local UnitExists = UnitExists
 local CreateFrame = CreateFrame
 
 local InspectItems = {
@@ -63,8 +65,24 @@ function M:GetInspectPoints(id)
 	end
 end
 
-function M:UpdateInspectInfo(_, arg1)
-	M:UpdatePageInfo(_G.InspectFrame, 'Inspect', arg1)
+do
+	local inspect = { time = time() }
+	function M:UpdateInspectAgain()
+		local now = time() + 1
+		if (inspect.time < now) and UnitExists(inspect.unit) then
+			inspect.time = now
+
+			E:Delay(0.10, M.UpdatePageInfo, M, _G.InspectFrame, 'Inspect', inspect.guid)
+		end
+	end
+
+	function M:UpdateInspectInfo(_, arg1)
+		local frame = _G.InspectFrame
+		inspect.unit = frame.unit
+		inspect.guid = arg1
+
+		M:UpdatePageInfo(frame, 'Inspect', arg1)
+	end
 end
 
 function M:UpdateCharacterInfo(event)
@@ -131,8 +149,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.itemLevel.displayInspectInfo then
 		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
+		M:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateInspectAgain')
 	else
 		M:UnregisterEvent('INSPECT_READY')
+		M:UnregisterEvent('GET_ITEM_INFO_RECEIVED')
 		M:ClearPageInfo(_G.InspectFrame, 'Inspect')
 	end
 end
