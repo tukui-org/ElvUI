@@ -266,7 +266,11 @@ end
 
 function E:GetAddOnEnableState(addon, character)
 	if C_AddOns_GetAddOnEnableState then
-		return C_AddOns_GetAddOnEnableState(addon, character)
+		if E.Cata then -- backwards?
+			return C_AddOns_GetAddOnEnableState(character, addon)
+		else
+			return C_AddOns_GetAddOnEnableState(addon, character)
+		end
 	else
 		return GetAddOnEnableState(character, addon)
 	end
