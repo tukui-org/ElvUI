@@ -92,6 +92,8 @@ function M:ClearPageInfo(frame, which)
 end
 
 function M:ToggleItemLevelInfo(setupCharacterPage)
+	if E.Classic then return end
+
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
