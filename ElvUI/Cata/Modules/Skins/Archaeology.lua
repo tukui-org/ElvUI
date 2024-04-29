@@ -67,16 +67,6 @@ function S:Blizzard_ArchaeologyUI()
 
 	S:HandleStatusBar(ArchaeologyFrame.artifactPage.solveFrame.statusBar, {0.7, 0.2, 0})
 	S:HandleIcon(_G.ArchaeologyFrameArtifactPageIcon)
-
-	--[[
-	_G.ArcheologyDigsiteProgressBar:StripTextures()
-	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
-	_G.ArcheologyDigsiteProgressBar:Point('TOP', UIParent, 'TOP', 0, -400)
-	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
-	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
-
-	E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
-	]]
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
