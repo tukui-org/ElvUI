@@ -72,7 +72,10 @@ do
 		if (inspect.time < now) and UnitExists(inspect.unit) then
 			inspect.time = now
 
-			E:Delay(0.10, M.UpdatePageInfo, M, _G.InspectFrame, 'Inspect', inspect.guid)
+			local frame = _G.InspectFrame
+			if frame:IsShown() then
+				E:Delay(0.10, M.UpdatePageInfo, M, frame, 'Inspect', inspect.guid)
+			end
 		end
 	end
 
