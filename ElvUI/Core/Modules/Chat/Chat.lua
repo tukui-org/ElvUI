@@ -604,7 +604,17 @@ end
 function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
-		ToggleFrame(_G.ChatMenu)
+		local menu = _G.ChatMenu
+		menu:ClearAllPoints()
+
+		local point = E:GetScreenQuadrant(self)
+		if strfind(point, 'LEFT') then
+			menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+		else
+			menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+		end
+
+		ToggleFrame(menu)
 	else
 		CH:CopyChat(chat)
 	end
