@@ -67,7 +67,7 @@ end
 
 do
 	local inspect = { time = time() }
-	function M:UpdateInspectAgain()
+	function M:UpdateInspectAgain() -- this is needed when GetItemInfo is stun locked to fix gems/etc
 		local now = time() + 1
 		if (inspect.time < now) and UnitExists(inspect.unit) then
 			inspect.time = now
