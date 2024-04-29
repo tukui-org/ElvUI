@@ -116,8 +116,8 @@ function S:Blizzard_TalentUI()
 
 		panel:StripTextures()
 		panel:CreateBackdrop('Transparent')
-		panel.backdrop:Point('TOPLEFT', 4, -4)
-		panel.backdrop:Point('BOTTOMRIGHT', -4, 4)
+		panel.backdrop:Point('TOPLEFT', 5, -5)
+		panel.backdrop:Point('BOTTOMRIGHT', -5, 5)
 
 		panel.InactiveShadow:Kill()
 
@@ -197,7 +197,11 @@ function S:Blizzard_TalentUI()
 			end
 		end
 
-		S:HandleButton(_G[panelName..'SelectTreeButton'])
+		local selectTree = _G[panelName..'SelectTreeButton']
+		if selectTree then
+			S:HandleButton(selectTree)
+			selectTree:SetFrameLevel(selectTree:GetFrameLevel() + 2)
+		end
 	end
 
 	-- Pet
