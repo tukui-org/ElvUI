@@ -270,7 +270,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 end
 
 function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
-	E:Delay(0.1, function()
+	E:Delay(0.05, function()
 		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
