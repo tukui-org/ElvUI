@@ -190,7 +190,8 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		return
 	end
 
-	return E:Round(total / 16, 2)
+	local numItems = E.Cata and 17 or 16
+	return E:Round(total / numItems, 2)
 end
 
 function E:ColorizeItemLevel(num)
