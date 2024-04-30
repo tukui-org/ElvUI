@@ -74,7 +74,7 @@ do
 
 			local frame = _G.InspectFrame
 			if frame and frame:IsShown() then
-				E:Delay(0.10, M.UpdatePageInfo, M, frame, 'Inspect', inspect.guid)
+				E:Delay(0.1, M.UpdatePageInfo, M, frame, 'Inspect', inspect.guid)
 			end
 		end
 	end
@@ -270,7 +270,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 end
 
 function M:TryGearAgain(frame, which, i, deepScan, iLevelDB, inspectItem)
-	E:Delay(0.05, function()
+	E:Delay(0.1, function()
 		if which == 'Inspect' and (not frame or not frame.unit) then return end
 
 		local unit = (which == 'Character' and 'player') or frame.unit
@@ -312,7 +312,7 @@ do
 		end
 
 		if waitForItems then
-			E:Delay(0.10, M.UpdateAverageString, M, frame, which, iLevelDB)
+			E:Delay(0.1, M.UpdateAverageString, M, frame, which, iLevelDB)
 		else
 			M:UpdateAverageString(frame, which, iLevelDB)
 		end
