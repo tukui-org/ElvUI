@@ -5,18 +5,13 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
 local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function ReforgingFrameUpdate()
-	local _, itemID, _, quality = GetReforgeItemInfo()
-	local itemTexture = itemID and GetItemIconByID(itemID)
-	if itemTexture then
-		_G.ReforgingFrameItemButtonIconTexture:SetTexture(itemTexture)
-		_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	end
+	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
+	local _, _, _, quality = GetReforgeItemInfo()
 	if quality then
 		local r, g, b = GetItemQualityColor(quality)
 		_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
@@ -36,7 +31,6 @@ function S:Blizzard_ReforgingUI()
 	_G.ReforgingFrameFinishedGlow:Kill()
 	_G.ReforgingFrameButtonFrame:StripTextures()
 	_G.ReforgingFrameItemButtonIconTexture:SetInside()
-	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
 	S:HandleButton(_G.ReforgingFrameRestoreButton, true)
 	S:HandleButton(_G.ReforgingFrameReforgeButton, true)
