@@ -5,13 +5,16 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
 local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function ReforgingFrameUpdate()
+	local _, itemID, _, quality = GetReforgeItemInfo()
+	local texture = itemID and GetItemIconByID(itemID) or nil
+	_G.ReforgingFrameItemButtonIconTexture:SetTexture(texture)
 	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
-	local _, _, _, quality = GetReforgeItemInfo()
 	if quality then
 		local r, g, b = GetItemQualityColor(quality)
 		_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
