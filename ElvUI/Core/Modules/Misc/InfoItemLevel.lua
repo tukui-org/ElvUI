@@ -81,6 +81,8 @@ do
 
 	function M:UpdateInspectInfo(_, arg1)
 		local frame = _G.InspectFrame
+		if not frame then return end
+
 		inspect.unit = frame.unit
 		inspect.guid = arg1
 
