@@ -65,29 +65,15 @@ function M:GetInspectPoints(id)
 	end
 end
 
-do
-	local inspect = { time = time() }
-	function M:UpdateInspectAgain() -- this is needed when GetItemInfo is stun locked to fix gems/etc
-		local now = time() + 1
-		if (inspect.time < now) and UnitExists(inspect.unit) then
-			inspect.time = now
+function M:UpdateInspectInfo(_, arg1)
+	local frame = _G.InspectFrame
+	if not frame then return end
 
-			local frame = _G.InspectFrame
-			if frame and frame:IsShown() then
-				E:Delay(0.1, M.UpdatePageInfo, M, frame, 'Inspect', inspect.guid)
-			end
-		end
+	if M.InspectTimer then -- event can spam when it has to load items
+		E:CancelTimer(M.InspectTimer)
 	end
 
-	function M:UpdateInspectInfo(_, arg1)
-		local frame = _G.InspectFrame
-		if not (frame and frame:IsShown()) then return end
-
-		inspect.unit = frame.unit
-		inspect.guid = arg1
-
-		M:UpdatePageInfo(frame, 'Inspect', arg1)
-	end
+	M.InspectTimer = E:ScheduleTimer(M.UpdatePageInfo, 0.1, M, frame, 'Inspect', arg1)
 end
 
 function M:UpdateCharacterInfo(event)
@@ -154,10 +140,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.itemLevel.displayInspectInfo then
 		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
-		M:RegisterEvent('GET_ITEM_INFO_RECEIVED', 'UpdateInspectAgain')
 	else
 		M:UnregisterEvent('INSPECT_READY')
-		M:UnregisterEvent('GET_ITEM_INFO_RECEIVED')
 		M:ClearPageInfo(_G.InspectFrame, 'Inspect')
 	end
 end
@@ -284,6 +268,7 @@ end
 do
 	local iLevelDB = {}
 	function M:UpdatePageInfo(frame, which, guid, event)
+		if which == 'Inspect' then M.InspectTimer = nil end -- clear inspect timer
 		if not (which and frame and frame.ItemLevelText) then return end
 		if which == 'Inspect' and (not frame or not frame.unit or (guid and frame:IsShown() and UnitGUID(frame.unit) ~= guid)) then return end
 
