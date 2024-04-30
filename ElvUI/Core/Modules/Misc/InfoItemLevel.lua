@@ -73,7 +73,7 @@ do
 			inspect.time = now
 
 			local frame = _G.InspectFrame
-			if frame:IsShown() then
+			if frame and frame:IsShown() then
 				E:Delay(0.10, M.UpdatePageInfo, M, frame, 'Inspect', inspect.guid)
 			end
 		end
@@ -81,7 +81,7 @@ do
 
 	function M:UpdateInspectInfo(_, arg1)
 		local frame = _G.InspectFrame
-		if not frame then return end
+		if not (frame and frame:IsShown()) then return end
 
 		inspect.unit = frame.unit
 		inspect.guid = arg1
