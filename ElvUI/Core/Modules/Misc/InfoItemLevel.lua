@@ -73,7 +73,7 @@ function M:UpdateInspectInfo(_, arg1)
 		E:CancelTimer(M.InspectTimer)
 	end
 
-	M.InspectTimer = E:ScheduleTimer(M.UpdatePageInfo, 0.1, M, frame, 'Inspect', arg1)
+	M.InspectTimer = E:ScheduleTimer(M.UpdatePageInfo, 0.2, M, frame, 'Inspect', arg1)
 end
 
 function M:UpdateCharacterInfo(event)
