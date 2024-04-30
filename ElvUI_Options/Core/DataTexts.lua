@@ -242,6 +242,7 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Talent/Loot Specialization' then
 			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] })
 			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)
+			optionTable.args.iconSize = ACH:Range(L["Icon Size"], nil, 3, { min = 10, softMax = 24, step = 1})
 		elseif name == 'Time' then
 			optionTable.args.time24 = ACH:Toggle(L["24-Hour Time"], L["Toggle 24-hour mode for the time datatext."], 5)
 			optionTable.args.seconds = ACH:Toggle(L["Seconds"], L["Show seconds on the time display."], 6)
