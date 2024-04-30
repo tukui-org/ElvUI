@@ -52,7 +52,7 @@ function UF:Construct_PlayerFrame(frame)
 		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 	end
 
-	if not E.Retail and E.myclass ~= 'WARRIOR' then
+	if E.Classic and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 
@@ -135,7 +135,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 
-	if not E.Retail and E.myclass ~= 'WARRIOR' then
+	if E.Classic and E.myclass ~= 'WARRIOR' then
 		UF:Configure_EnergyManaRegen(frame)
 	end
 
