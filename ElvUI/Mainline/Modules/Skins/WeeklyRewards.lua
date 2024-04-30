@@ -2,20 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, pairs, unpack = gsub, pairs, unpack
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
-
-local function UpdateSelection(frame)
-	if not frame.backdrop then return end
-
-	if frame.SelectedTexture:IsShown() then
-		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
-	else
-		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end
-end
 
 local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
 local function SkinRewardIcon(itemFrame)
@@ -26,6 +16,16 @@ local function SkinRewardIcon(itemFrame)
 		S:HandleIcon(itemFrame.Icon, true)
 		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 		itemFrame.IsSkinned = true
+	end
+end
+
+local function UpdateSelection(frame)
+	if not frame.backdrop then return end
+
+	if frame.SelectedTexture:IsShown() then
+		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
+	else
+		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
 	end
 end
 
@@ -47,14 +47,6 @@ local function SkinActivityFrame(frame, isObject)
 	if frame.Background then
 		frame.Background:CreateBackdrop()
 	end
-end
-
-local function ReplaceIconString(self, text)
-	if not text then text = self:GetText() end
-	if not text or text == '' then return end
-
-	local newText, count = gsub(text, '24:24:0:%-2', '14:14:0:0:64:64:5:59:5:59')
-	if count > 0 then self:SetFormattedText('%s', newText) end
 end
 
 local function ReskinConfirmIcon(frame)
@@ -120,8 +112,8 @@ function S:Blizzard_WeeklyRewards()
 	end)
 
 	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
-	ReplaceIconString(rewardText)
-	hooksecurefunc(rewardText, 'SetText', ReplaceIconString)
+	S.ReplaceIconString(rewardText)
+	hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')
