@@ -36,6 +36,7 @@ function S:Blizzard_ReforgingUI()
 	_G.ReforgingFrameFinishedGlow:Kill()
 	_G.ReforgingFrameButtonFrame:StripTextures()
 	_G.ReforgingFrameItemButtonIconTexture:SetInside()
+	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
 	S:HandleButton(_G.ReforgingFrameRestoreButton, true)
 	S:HandleButton(_G.ReforgingFrameReforgeButton, true)
