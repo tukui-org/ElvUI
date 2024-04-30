@@ -1,9 +1,6 @@
 local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1001
 local LCS = LibStub:NewLibrary(MAJOR, MINOR)
-
-if not LCS then
-	return
-end
+if not LCS then return end
 
 local select = select
 

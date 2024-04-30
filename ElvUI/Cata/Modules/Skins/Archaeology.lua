@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, next = pairs, next
-local UIParent = UIParent
 
 function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end

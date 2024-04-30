@@ -4,14 +4,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local select = select
-local ipairs = ipairs
 local next = next
 local rad = rad
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
-local GetItemQualityColor = GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white

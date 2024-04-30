@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local strfind = strfind
