@@ -23,6 +23,7 @@
 	<Include file='..\Core\TaintLess\TaintLess.xml'/>
 	<Include file='..\Core\UTF8\lib.xml'/>
 
+	<!-- TODO: Cata -->
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
 	<Script file='..\Core\LibRangeCheck-3.0\LibRangeCheck-3.0.lua'/>

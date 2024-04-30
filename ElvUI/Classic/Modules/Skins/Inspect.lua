@@ -5,22 +5,16 @@ local _G = _G
 local ipairs, unpack = ipairs, unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
 local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetInventoryItemQuality = GetInventoryItemQuality
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
-	if not unit then return end
-
-	local itemID = GetInventoryItemID(unit, button:GetID())
-	if itemID then
-		local _, _, quality = GetItemInfo(itemID)
-		if quality and quality > 1 then
-			local r, g, b = GetItemQualityColor(quality)
-			button.backdrop:SetBackdropBorderColor(r, g, b)
-			return
-		end
+	local quality = unit and GetInventoryItemQuality(unit, button:GetID())
+	if quality and quality > 1 then
+		local r, g, b = GetItemQualityColor(quality)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+		return
 	end
 
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
