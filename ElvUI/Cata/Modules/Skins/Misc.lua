@@ -70,10 +70,10 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 
-	-- Since we cant hook 'CinematicFrame_OnShow' or 'CinematicFrame_OnEvent' directly
-	-- We can just hook onto this function so that we can get the correct `self`
-	-- This is called through 'CinematicFrame_OnShow' so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
+	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
+	-- we can just hook onto this function so that we can get the correct `self`
+	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:SetTemplate('Transparent')

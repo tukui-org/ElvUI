@@ -56,7 +56,7 @@ local GetRuneType = GetRuneType
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
-local runemap = oUF.isWrath and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
+local runemap = oUF.isCata and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 
 local function onUpdate(self, elapsed)
@@ -117,7 +117,7 @@ local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
 	local rune, specType
-	if oUF.isWrath then -- runeID, alt
+	if oUF.isCata then -- runeID, alt
 		if runeID and event == 'RUNE_TYPE_UPDATE' then
 			rune = UpdateRuneType(element[runemap[runeID]], runeID, alt)
 		end
@@ -134,7 +134,7 @@ local function UpdateColor(self, event, runeID, alt)
 	else
 		for i = 1, #element do
 			local bar = element[i]
-			if oUF.isWrath then
+			if oUF.isCata then
 				if not bar.runeType then
 					bar.runeType = GetRuneType(runemap[i])
 				end
@@ -177,7 +177,7 @@ end
 local function Update(self, event)
 	local element = self.Runes
 
-	if not oUF.isWrath then
+	if not oUF.isCata then
 		if element.sortOrder == 'asc' then
 			sort(runemap, ascSort)
 			hasSortOrder = true

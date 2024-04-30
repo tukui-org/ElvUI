@@ -194,6 +194,33 @@ function S:BlizzardQuestFrames()
 		end
 	end
 
+	_G.QuestModelScene:StripTextures()
+	_G.QuestModelScene:SetTemplate('Transparent')
+
+	_G.QuestNPCModelTextFrame:StripTextures()
+	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
+	_G.QuestNPCModelTextFrame:ClearAllPoints()
+	_G.QuestNPCModelTextFrame:Point('BOTTOM', _G.QuestModelScene, 0, -66)
+
+	_G.QuestNPCModelNameText:ClearAllPoints()
+	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:FontTemplate(nil, 12, 'OUTLINE')
+
+	_G.QuestNPCModelText:SetJustifyH('CENTER')
+	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
+	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestNPCModelTextFrame, 2, -2)
+	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestNPCModelTextFrame, -10, 6)
+	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
+
+	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
+
+	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
+		local mapFrame = _G.QuestMapFrame:GetParent()
+
+		_G.QuestModelScene:ClearAllPoints()
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
+	end)
+
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
 		if not button and button.template then return end

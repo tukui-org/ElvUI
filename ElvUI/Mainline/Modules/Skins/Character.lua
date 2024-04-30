@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, ipairs = pairs, ipairs
+local pairs = pairs
 local unpack, next = unpack, next
 local hooksecurefunc = hooksecurefunc
 local CreateColor = CreateColor
@@ -161,7 +161,7 @@ local function EquipmentUpdateItems()
 	local width, height = frame:GetSize()
 	frame:Size(width+3, height)
 
-	for _, button in ipairs(_G.EquipmentFlyoutFrame.buttons) do
+	for _, button in next, _G.EquipmentFlyoutFrame.buttons do
 		EquipmentDisplayButton(button)
 	end
 end

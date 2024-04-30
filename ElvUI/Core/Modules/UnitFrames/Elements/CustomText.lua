@@ -40,6 +40,8 @@ function UF:Configure_CustomTexts(frame)
 
 		if db.attachTextTo == 'Power' and frame.Power then
 			object:SetParent(frame.Power.RaisedElementParent)
+		elseif db.attachTextTo == 'EclipseBar' and frame.EclipseBar then
+			object:SetParent(frame.EclipseBar.RaisedElementParent)
 		elseif db.attachTextTo == 'AdditionalPower' and frame.AdditionalPower then
 			object:SetParent(frame.AdditionalPower.RaisedElementParent)
 		elseif db.attachTextTo == 'InfoPanel' and frame.InfoPanel then

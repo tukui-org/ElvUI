@@ -403,7 +403,7 @@ function RU:OnEnter_Role()
 end
 
 function RU:PositionRoleIcons()
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		_G.RaidUtilityRoleIcons:ClearAllPoints()
 
 		local point = E:GetScreenQuadrant(ShowButton)
@@ -500,7 +500,7 @@ function RU:Initialize()
 	CloseButton:SetAttribute('_onclick', [=[self:GetParent():Hide(); self:GetFrameRef('RaidUtility_ShowButton'):Show()]=])
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 		RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
 		RoleIcons:Size(36, PANEL_HEIGHT - countdownHeight)
@@ -548,7 +548,7 @@ function RU:Initialize()
 	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * (E.Classic and 1 or 0.49), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK, nil, buttonEvents, RU.OnEvent_ReadyCheckButton, RU.OnClick_ReadyCheckButton)
 	RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 3, 0, L["Disband Group"], nil, nil, nil, RU.OnClick_DisbandRaidButton)
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 3, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
 	end
 
