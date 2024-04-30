@@ -7,12 +7,10 @@ local rad = rad
 local gsub = gsub
 local wipe = wipe
 local next = next
-local time = time
 local pairs = pairs
 local unpack = unpack
 
 local UnitGUID = UnitGUID
-local UnitExists = UnitExists
 local CreateFrame = CreateFrame
 
 local InspectItems = {
