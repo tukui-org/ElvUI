@@ -174,11 +174,6 @@ function S:SkinPVPFrame()
 	_G.WarGamesFrame:StripTextures()
 	_G.WarGamesFrameDescription:SetTextColor(1, 1, 1)
 
-	local WarGameStartButton = _G.WarGameStartButton
-	S:HandleButton(WarGameStartButton, true)
-	WarGameStartButton:ClearAllPoints()
-	WarGameStartButton:Point('BOTTOMRIGHT', _G.PVPFrame, -3, 3)
-
 	-- Create Arena Team
 	local PVPBannerFrame = _G.PVPBannerFrame
 	PVPBannerFrame:StripTextures()
