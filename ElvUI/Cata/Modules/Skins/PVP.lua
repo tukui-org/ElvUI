@@ -15,7 +15,7 @@ local function PVPFrameTabClicked()
 	_G.PVPFrameCurrencyIcon:SetTexture(honorTexture)
 
 	for _, name in next, pvpRewards do
-		local honor = _G[name] ~= _G.PVPConquestFrameWinReward and _G[name..'HonorSymbol']
+		local honor = (_G[name] ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
 		if honor then
 			honor:SetTexture(honorTexture)
 		end
@@ -164,19 +164,17 @@ function S:SkinPVPFrame()
 		local background = frame:GetRegions()
 		background:SetTexture(E.Media.Textures.Highlight)
 
-		if frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward or frame == _G.PVPConquestFrameWinReward then
+		if (frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward) or (frame == _G.PVPConquestFrameWinReward) then
 			background:SetVertexColor(0, 0.439, 0, 0.5)
 		else
 			background:SetVertexColor(0.5608, 0, 0, 0.5)
 		end
 
-		if frame ~= _G.PVPConquestFrameWinReward then
-			local honor = _G[name..'HonorSymbol']
-			if honor then
-				honor:SetTexture(honorTexture)
-				honor:SetTexCoord(unpack(E.TexCoords))
-				honor:Size(30)
-			end
+		local honor = (frame ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
+		if honor then
+			honor:SetTexture(honorTexture)
+			honor:SetTexCoord(unpack(E.TexCoords))
+			honor:Size(30)
 		end
 
 		local conquest = _G[name..'ArenaSymbol']
