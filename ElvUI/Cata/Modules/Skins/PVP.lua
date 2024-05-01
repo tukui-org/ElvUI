@@ -14,8 +14,6 @@ function S:SkinPVPFrame()
 	PVPFrame:SetTemplate('Transparent')
 
 	local buttons = {
-		'PVPFrameLeftButton',
-		'PVPFrameRightButton',
 		'PVPColorPickerButton1',
 		'PVPColorPickerButton2',
 		'PVPColorPickerButton3',
@@ -179,7 +177,7 @@ function S:SkinPVPFrame()
 	local WarGameStartButton = _G.WarGameStartButton
 	S:HandleButton(WarGameStartButton, true)
 	WarGameStartButton:ClearAllPoints()
-	WarGameStartButton:Point('LEFT', _G.PVPFrameLeftButton, 'RIGHT', 2, 0)
+	WarGameStartButton:Point('BOTTOMRIGHT', _G.PVPFrame, -3, 3)
 
 	-- Create Arena Team
 	local PVPBannerFrame = _G.PVPBannerFrame
