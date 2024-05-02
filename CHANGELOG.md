@@ -1,3 +1,11 @@
+### Version 13.63 [ May 2nd 2024 ]
+*   Cataclysm Hotfixes
+    *   Color Picker
+    *   Battleground Queue
+    *   Skinned GhostFrame
+    *   Fixed Resilience and Item Level Datatext
+    *   Removed Ammo, Pet Happiness, and Primary Stat Datatext
+
 ### Version 13.62 [ April 30th 2024 ]
 *   Cataclysm Classic ready.
 *   DualSpec enabled for SoD.
