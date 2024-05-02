@@ -25,7 +25,12 @@ local db
 local function OnEvent(self)
 	if E.Retail or E.Cata then
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
-		r, g, b = E:ColorizeItemLevel(avg)
+
+		if E.Retail then
+			r, g, b = GetItemLevelColor()
+		else
+			r, g, b = E:ColorizeItemLevel(avg)
+		end
 
 		local hex = db.rarityColor and E:RGBToHex(r, g, b) or '|cFFFFFFFF'
 
