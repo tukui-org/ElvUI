@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local _G = _G
 local max = max
 local tinsert = tinsert
 
@@ -49,7 +48,11 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.customTexts = {}
 
-	if not E.Retail and E.myclass ~= 'WARRIOR' then
+	if E.Cata and E.myclass == 'DRUID' then
+		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
+	end
+
+	if E.Classic and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 
@@ -132,7 +135,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_Castbar(frame)
 	UF:Configure_Fader(frame)
 
-	if not E.Retail and E.myclass ~= 'WARRIOR' then
+	if E.Classic and E.myclass ~= 'WARRIOR' then
 		UF:Configure_EnergyManaRegen(frame)
 	end
 

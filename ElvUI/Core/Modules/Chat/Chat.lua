@@ -164,7 +164,7 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
-if not (E.Retail or E.Wrath) then
+if not (E.Retail or E.Cata) then
 	CH.BNGetFriendInfo = _G.BNGetFriendInfo
 	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
 	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
@@ -328,7 +328,7 @@ do --this can save some main file locals
 		if E.Classic then
 			-- Simpy (5099: Myzrael)
 			z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		elseif E.Wrath then
+		elseif E.Cata then
 			-- Simpy (4373: Myzrael)
 			z['Player-4373-011657A7']	= itsSimpy -- Paladin:		Cutepally
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
@@ -468,7 +468,7 @@ do --this can save some main file locals
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
-		elseif E.Wrath then
+		elseif E.Cata then
 			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
 			z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
 			z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
@@ -604,7 +604,17 @@ end
 function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
-		ToggleFrame(_G.ChatMenu)
+		local menu = _G.ChatMenu
+		menu:ClearAllPoints()
+
+		local point = E:GetScreenQuadrant(self)
+		if strfind(point, 'LEFT') then
+			menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+		else
+			menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+		end
+
+		ToggleFrame(menu)
 	else
 		CH:CopyChat(chat)
 	end
@@ -642,7 +652,7 @@ do
 			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true
-				for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+				for i = 1, MIN_REPEAT_CHARACTERS do
 					local first = -1 - i
 					if strsub(text,-i,-i) ~= strsub(text,first,first) then
 						repeatChar = false
@@ -825,23 +835,6 @@ function CH:StyleChat(frame)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
 
-	_G[name..'ButtonFrame']:Kill()
-
-	local scroll = frame.ScrollBar
-	if scroll then
-		scroll:Kill()
-	end
-
-	local scrollToBottom = frame.ScrollToBottomButton
-	if scrollToBottom then
-		scrollToBottom:Kill()
-	end
-
-	local scrollTex = _G[name..'ThumbTexture']
-	if scrollTex then
-		scrollTex:Kill()
-	end
-
 	--Character count
 	local editbox = frame.editBox
 	local charCount = editbox:CreateFontString(nil, 'ARTWORK')
@@ -884,10 +877,32 @@ function CH:StyleChat(frame)
 		c:Kill()
 	end
 
-	_G[name..'EditBoxLeft']:Kill()
-	_G[name..'EditBoxMid']:Kill()
-	_G[name..'EditBoxRight']:Kill()
+	-- stuff to hide
+	local scrollBar = frame.ScrollBar
+	if scrollBar then scrollBar:Kill() end
 
+	local scrollToBottom = frame.ScrollToBottomButton
+	if scrollToBottom then scrollToBottom:Kill() end
+
+	local buttonFrame = _G[name..'ButtonFrame']
+	if buttonFrame then buttonFrame:Kill() end
+
+	local thumbTexture = _G[name..'ThumbTexture']
+	if thumbTexture then thumbTexture:Kill() end
+
+	local minimize = _G[name..'MinimizeButton']
+	if minimize then minimize:Kill() end
+
+	local editLeft = _G[name..'EditBoxLeft']
+	if editLeft then editLeft:Kill() end
+
+	local editMid = _G[name..'EditBoxMid']
+	if editMid then editMid:Kill() end
+
+	local editRight = _G[name..'EditBoxRight']
+	if editRight then editRight:Kill() end
+
+	-- editbox stuff
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)

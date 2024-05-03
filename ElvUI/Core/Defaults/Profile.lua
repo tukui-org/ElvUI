@@ -206,7 +206,7 @@ P.general = {
 	},
 	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		sortDirection = (E.Wrath and 'DESCENDING') or 'ASCENDING',
+		sortDirection = (E.Cata and 'DESCENDING') or 'ASCENDING',
 		size = 40,
 		height = 40,
 		spacing = 4,
@@ -873,7 +873,11 @@ P.nameplates = {
 				{r = .19, g = .48, b = .60}, -- water
 				{r = .42, g = .18, b = .74}, -- air
 			},
-			WARLOCK = {r = 0.58, g = 0.51, b = 0.79}
+			WARLOCK = {r = 0.58, g = 0.51, b = 0.79},
+			DRUID = {
+				{r = 0.30, g = 0.52, b = 0.90}, -- negative/lunar
+				{r = 0.80, g = 0.82, b = 0.60}, -- positive/solar
+			},
 		},
 	},
 	visibility = {
@@ -2666,7 +2670,7 @@ P.actionbar = {
 		enabled = false,
 		mouseover = false,
 		useIcons = true,
-		buttonsPerRow = 11,
+		buttonsPerRow = 12,
 		buttonSize = 20,
 		keepSizeRatio = false,
 		point = 'TOPLEFT',
@@ -2705,7 +2709,7 @@ P.actionbar = {
 if E.Retail then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
-elseif E.Wrath then
+elseif E.Cata then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 else
@@ -2780,7 +2784,7 @@ for i = 1, 15 do
 
 		if E.Retail then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
-		elseif E.Wrath then
+		elseif E.Cata then
 			P.actionbar[barN].visibility = '[vehicleui][overridebar] hide; show'
 		else
 			P.actionbar[barN].visibility = '[overridebar] hide; show'
@@ -2821,8 +2825,8 @@ end
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
-P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Wrath and ' [bonusbar:2] 8;' or '')
-P.actionbar.bar1.paging.WARLOCK = E.Wrath and '[form:1] 7;' or nil
+P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Cata and ' [bonusbar:2] 8;' or '')
+P.actionbar.bar1.paging.WARLOCK = E.Cata and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.PRIEST = E.Classic and '[form:1] 7;' or '[bonusbar:1] 7;'

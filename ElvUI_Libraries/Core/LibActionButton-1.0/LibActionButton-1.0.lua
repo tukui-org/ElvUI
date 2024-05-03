@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 50 -- the real minor version is 110
+local MINOR_VERSION = 51 -- the real minor version is 110
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -20,6 +20,7 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
+local WoWCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 -- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
@@ -1438,7 +1439,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
 	if not WoWClassic and not WoWBCC then
-		if not WoWWrath then
+		if not WoWCata then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
@@ -2797,7 +2798,7 @@ Custom.RunCustom               = function(self, unit, button) return self._state
 Custom.GetPassiveCooldownSpellID = function(self) return nil end
 
 --- WoW Classic overrides
-if not WoWRetail then
+if not (WoWRetail or WoWCata) then
 	UpdateOverlayGlow = function() end
 end
 

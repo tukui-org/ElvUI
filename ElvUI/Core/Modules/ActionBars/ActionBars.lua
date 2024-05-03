@@ -93,7 +93,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Cata) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -292,7 +292,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Retail or E.Wrath) and GetVehicleBarIndex()
+	local vehicleIndex = (E.Retail or E.Cata) and GetVehicleBarIndex()
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -461,7 +461,7 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
-	if E.Wrath then
+	if E.Cata then
 		if AB.NeedsPositionAndSizeTotemBar then
 			AB:PositionAndSizeTotemBar()
 			AB.NeedsPositionAndSizeTotemBar = nil
@@ -542,7 +542,7 @@ function AB:ReassignBindings(event)
 			AB:UpdateExtraBindings()
 		end
 
-		if E.Wrath and E.myclass == 'SHAMAN' then
+		if E.Cata and E.myclass == 'SHAMAN' then
 			AB:UpdateTotemBindings()
 		end
 	end
@@ -661,7 +661,7 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		elseif (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 			AB:PositionAndSizeTotemBar()
 		end
 	end
@@ -1089,11 +1089,11 @@ do
 	}
 
 	local untaintButtons = {
-		MultiCastActionButton = (E.Wrath and E.myclass ~= 'SHAMAN') or nil,
-		OverrideActionBarButton = E.Wrath or nil
+		MultiCastActionButton = (E.Cata and E.myclass ~= 'SHAMAN') or nil,
+		OverrideActionBarButton = E.Cata or nil
 	}
 
-	if E.Wrath then -- Wrath TotemBar needs to be handled by us
+	if E.Cata then -- Wrath TotemBar needs to be handled by us
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
 	end
 
@@ -1223,7 +1223,7 @@ do
 			end
 		end
 
-		if E.Retail or E.Wrath then
+		if E.Retail or E.Cata then
 			if _G.PlayerTalentFrame then
 				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 			else
@@ -1700,7 +1700,7 @@ end
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
-	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
@@ -1754,7 +1754,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
-	if E.Retail or E.Wrath then
+	if E.Retail or E.Cata then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
@@ -1795,7 +1795,7 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
-	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
 	end
 

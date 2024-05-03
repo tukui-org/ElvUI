@@ -30,7 +30,7 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_RANGED = true,
 }, {
 	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
+}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Cata and 18 or nil}
 
 function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
@@ -135,44 +135,44 @@ end
 
 --Credit ls & Acidweb
 function E:CalculateAverageItemLevel(iLevelDB, unit)
-	local spec = GetInspectSpecialization(unit)
-	local isOK, total, link = true, 0
+	local spec = E.Retail and GetInspectSpecialization(unit) -- fix this later?
+	local total = 0
 
-	if not spec or spec == 0 then
-		isOK = false
+	if E.Retail and (not spec or spec == 0) then
+		return
 	end
 
 	-- Armor
 	for _, id in next, ARMOR_SLOTS do
-		link = GetInventoryItemLink(unit, id)
+		local link = GetInventoryItemLink(unit, id)
 		if link then
 			local cur = iLevelDB[id]
 			if cur and cur > 0 then
 				total = total + cur
 			end
 		elseif GetInventoryItemTexture(unit, id) then
-			isOK = false
+			return
 		end
 	end
 
 	-- Main hand
 	local mainItemLevel, mainQuality, mainEquipLoc, mainItemClass, mainItemSubClass, _ = 0
-	link = GetInventoryItemLink(unit, 16)
-	if link then
+	local mainLink = GetInventoryItemLink(unit, 16)
+	if mainLink then
 		mainItemLevel = iLevelDB[16]
-		_, _, mainQuality, _, _, _, _, _, mainEquipLoc, _, _, mainItemClass, mainItemSubClass = GetItemInfo(link)
+		_, _, mainQuality, _, _, _, _, _, mainEquipLoc, _, _, mainItemClass, mainItemSubClass = GetItemInfo(mainLink)
 	elseif GetInventoryItemTexture(unit, 16) then
-		isOK = false
+		return
 	end
 
 	-- Off hand
 	local offItemLevel, offEquipLoc = 0
-	link = GetInventoryItemLink(unit, 17)
-	if link then
+	local offLink = GetInventoryItemLink(unit, 17)
+	if offLink then
 		offItemLevel = iLevelDB[17]
-		_, _, _, _, _, _, _, _, offEquipLoc = GetItemInfo(link)
+		_, _, _, _, _, _, _, _, offEquipLoc = GetItemInfo(offLink)
 	elseif GetInventoryItemTexture(unit, 17) then
-		isOK = false
+		return
 	end
 
 	if mainItemLevel and offItemLevel then
@@ -187,10 +187,11 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 	-- at the beginning of an arena match no info might be available,
 	-- so despite having equipped gear a person may appear naked
 	if total == 0 then
-		isOK = false
+		return
 	end
 
-	return isOK and E:Round(total / 16, 2)
+	local numItems = E.Cata and 17 or 16
+	return E:Round(total / numItems, 2)
 end
 
 function E:ColorizeItemLevel(num)

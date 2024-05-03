@@ -244,12 +244,12 @@ B.IsEquipmentSlot = {
 	INVTYPE_RANGEDRIGHT = true,
 }
 
-if E.Wrath then
+if E.Cata then
 	B.IsEquipmentSlot.INVTYPE_RELIC = true
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, { -1 }
-local bankOffset, maxBankSlots = (E.Classic or E.Wrath) and 4 or 5, E.Classic and 10 or E.Wrath and 11 or 12
+local bankOffset, maxBankSlots = (E.Classic or E.Cata) and 4 or 5, E.Classic and 10 or E.Cata and 11 or 12
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -347,7 +347,7 @@ do
 
 		if #search > MIN_REPEAT_CHARACTERS then
 			local repeating = true
-			for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+			for i = 1, MIN_REPEAT_CHARACTERS do
 				local x, y = 0-i, -1-i
 				if strsub(search, x, x) ~= strsub(search, y, y) then
 					repeating = false
@@ -1323,7 +1323,7 @@ function B:UpdateTokens()
 		button.currencyID = info.currencyTypesID
 		button:Show()
 
-		if button.currencyID and E.Wrath then
+		if button.currencyID and E.Cata then
 			local tokens = _G.TokenFrameContainer.buttons
 			if tokens then
 				for _, token in next, tokens do
@@ -1465,12 +1465,8 @@ function B:VendorGrayCheck()
 	end
 
 	-- our sell grays
-	local value = B:GetGraysValue()
-	if value == 0 then
+	if B:GetGraysValue() == 0 then
 		E:Print(L["No gray items to delete."])
-	elseif not _G.MerchantFrame:IsShown() and E.Wrath then
-		E.PopupDialogs.DELETE_GRAYS.Money = value
-		E:StaticPopup_Show('DELETE_GRAYS')
 	else
 		B:VendorGrays()
 	end
@@ -1989,7 +1985,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
-		if E.Retail or E.Wrath then
+		if E.Retail or E.Cata then
 			--Currency
 			f.currencyButton = CreateFrame('Frame', nil, f)
 			f.currencyButton:Point('BOTTOM', 0, -6)
@@ -2714,7 +2710,6 @@ B.QuestKeys = {
 }
 
 B.AutoToggleEvents = {
-	guildBank = { GUILDBANKFRAME_OPENED = 'OpenBags', GUILDBANKFRAME_CLOSED = 'CloseBags' },
 	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
 	professions = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
 	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
@@ -2785,6 +2780,19 @@ function B:GetBagFlagMenu(flag, text)
 	end
 
 	return menu
+end
+
+function B:GuildBankShow()
+	local frame = _G.GuildBankFrame
+	if frame and frame:IsShown() and B.db.autoToggle.guildBank then
+		B:OpenBags()
+	end
+end
+
+function B:ADDON_LOADED(_, addon)
+	if addon == 'Blizzard_GuildBankUI' then
+		_G.GuildBankFrame:HookScript('OnShow', B.GuildBankShow)
+	end
 end
 
 function B:Initialize()
@@ -2919,7 +2927,7 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	if E.Wrath then
+	if E.Cata then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
 		-- Fix ME 11.0
@@ -2941,6 +2949,7 @@ function B:Initialize()
 	B:DisableBlizzard()
 	B:UpdateGoldText()
 
+	B:RegisterEvent('ADDON_LOADED')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')

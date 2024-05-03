@@ -2,8 +2,8 @@
 	<Script file='Achievement.lua'/>
 	<Script file='AddonManager.lua'/>
 	<Script file='Alerts.lua'/>
-	<Script file='Arena.lua'/>
 	<Script file='ArenaRegistrar.lua'/>
+	<Script file='Archaeology.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Barber.lua'/>
@@ -19,6 +19,7 @@
 	<Script file='Communities.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
+	<Script file='EncounterJournal.lua'/>
 	<Script file='EventTrace.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Gossip.lua'/>
@@ -37,6 +38,7 @@
 	<Script file='PVP.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='Raid.lua'/>
+	<Script file='Reforge.lua'/>
 	<Script file='SettingsPanel.lua'/>
 	<Script file='Socket.lua'/>
 	<Script file='SpellBook.lua'/>

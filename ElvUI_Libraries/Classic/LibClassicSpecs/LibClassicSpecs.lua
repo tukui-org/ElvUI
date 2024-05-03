@@ -1,9 +1,6 @@
-local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1001
+local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1002
 local LCS = LibStub:NewLibrary(MAJOR, MINOR)
-
-if not LCS then
-	return
-end
+if not LCS then return end
 
 local select = select
 
@@ -43,6 +40,7 @@ local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local isTBC = WOW_PROJECT_ID == (WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5)
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 local Stat = { Strength = 1, Agility = 2, Stamina = 3, Intellect = 4, Spirit = 5 }
 local Role = { Damager = 'DAMAGER', Tank = 'TANK', Healer = 'HEALER' }
@@ -410,7 +408,7 @@ function LCS.GetSpecialization(isInspect, isPet)
 	local specIndex, maxSpent = 0, 0
 
 	for tabIndex = 1, GetNumTalentTabs() do
-		local spent = select(3, GetTalentTabInfo(tabIndex))
+		local spent = select(isCata and 5 or 3, GetTalentTabInfo(tabIndex))
 		if (spent > maxSpent) then
 			specIndex, maxSpent = tabIndex, spent
 		end

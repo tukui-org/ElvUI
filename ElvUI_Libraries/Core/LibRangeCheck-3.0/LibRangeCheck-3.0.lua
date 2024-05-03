@@ -94,12 +94,13 @@ local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 local isEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 
 local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 local isEraSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 local InCombatLockdownRestriction
-if isRetail or isEra then
+if isRetail or isEra or isCata then
   InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
 else
   InCombatLockdownRestriction = function() return false end
@@ -1389,11 +1390,11 @@ function lib:activate()
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
     frame:RegisterEvent("SPELLS_CHANGED")
 
-    if isEra or isWrath then
+    if isEra or isCata then
       frame:RegisterEvent("CVAR_UPDATE")
     end
 
-    if isRetail or isWrath then
+    if isRetail or isCata then
       frame:RegisterEvent("PLAYER_TALENT_UPDATE")
     end
 

@@ -26,7 +26,7 @@ local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
 
-local GetSpecialization = (E.Classic or E.Wrath) and LCS.GetSpecialization or GetSpecialization
+local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
 
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
@@ -1473,7 +1473,7 @@ function E:UpdateActionBars(skipCallback)
 		ActionBars:UpdateExtraButtons()
 	end
 
-	if E.Wrath and E.myclass == 'SHAMAN' then
+	if E.Cata and E.myclass == 'SHAMAN' then
 		ActionBars:UpdateTotemBindings()
 	end
 
@@ -1553,7 +1553,7 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
-	elseif E.Wrath then
+	elseif E.Cata then
 		ActionBars:PositionAndSizeTotemBar()
 	end
 
@@ -1982,7 +1982,7 @@ function E:Initialize()
 		E:Tutorials()
 	end
 
-	if E.Retail or E.Wrath or E.ClassicSOD then
+	if E.Retail or E.Cata or E.ClassicSOD then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 

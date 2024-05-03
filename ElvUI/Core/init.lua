@@ -83,6 +83,7 @@ E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 -- Expansions
 E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
+E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
@@ -116,7 +117,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 13.61, '13.61-git', nil, true
+		return 13.63, '13.63-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -160,7 +161,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath or E.ClassicSOD then
+	if E.Retail or E.Cata or E.ClassicSOD then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 

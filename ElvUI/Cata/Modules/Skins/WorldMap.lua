@@ -22,6 +22,7 @@ function S:WorldMapFrame()
 	S:HandleCheckBox(_G.WorldMapTrackQuest)
 
 	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
+	S:HandleCheckBox(_G.WorldMapShowDigsites)
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropDown)
 	S:HandleDropDownBox(_G.WorldMapContinentDropDown)
 	S:HandleDropDownBox(_G.WorldMapZoneDropDown)
