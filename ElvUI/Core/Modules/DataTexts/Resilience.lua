@@ -17,10 +17,10 @@ local RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CH
 local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER
 
 local displayString = ''
-local bonus, maxBonus = 0, 0
+local resilience, bonus, maxBonus = 0, 0, 0
 
 local function OnEvent(self)
-	local resilience = GetCombatRating(RESILIENCE_CRIT_TAKEN)
+	resilience = GetCombatRating(RESILIENCE_CRIT_TAKEN)
 	bonus = GetCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 	maxBonus = GetMaxCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 
@@ -30,7 +30,11 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
+	if E.Cata then
+		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus))
+	else
+		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))
+	end
 
 	DT.tooltip:Show()
 end

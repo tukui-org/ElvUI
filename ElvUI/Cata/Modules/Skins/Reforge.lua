@@ -7,15 +7,14 @@ local hooksecurefunc = hooksecurefunc
 
 local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
+local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
 
 local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()
-	local itemTexture = itemID and GetItemIconByID(itemID)
-	if itemTexture then
-		_G.ReforgingFrameItemButtonIconTexture:SetTexture(itemTexture)
-	end
+	local texture = itemID and GetItemIconByID(itemID) or nil
+	_G.ReforgingFrameItemButtonIconTexture:SetTexture(texture)
+	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
-	--[[ Blizzard bug / commented out on their end / Blizzard_ReforgingUI.lua:101
 	if quality then
 		local r, g, b = GetItemQualityColor(quality)
 		_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
@@ -23,7 +22,6 @@ local function ReforgingFrameUpdate()
 		local r, g, b = unpack(E.media.bordercolor)
 		_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
 	end
-	]]
 end
 
 function S:Blizzard_ReforgingUI()
@@ -35,6 +33,7 @@ function S:Blizzard_ReforgingUI()
 
 	_G.ReforgingFrameFinishedGlow:Kill()
 	_G.ReforgingFrameButtonFrame:StripTextures()
+	_G.ReforgingFrameItemButtonIconTexture:SetInside()
 
 	S:HandleButton(_G.ReforgingFrameRestoreButton, true)
 	S:HandleButton(_G.ReforgingFrameReforgeButton, true)
@@ -44,14 +43,13 @@ function S:Blizzard_ReforgingUI()
 	_G.ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1)
 	_G.ReforgingFrameReforgeButton:Point('BOTTOMRIGHT', -3, 3)
 
-	_G.ReforgingFrameItemButtonIconTexture:SetInside()
-	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-
 	local ItemButton = _G.ReforgingFrameItemButton
-	ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
-	ItemButton:StripTextures()
-	ItemButton:SetTemplate('Default', true)
-	ItemButton:StyleButton()
+	if ItemButton then
+		ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
+		ItemButton:StripTextures()
+		ItemButton:SetTemplate('Default', true)
+		ItemButton:StyleButton()
+	end
 
 	hooksecurefunc('ReforgingFrame_Update', ReforgingFrameUpdate)
 end

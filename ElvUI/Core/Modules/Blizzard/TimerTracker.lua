@@ -4,6 +4,8 @@ local BL = E:GetModule('Blizzard')
 local _G = _G
 local next = next
 local unpack, pairs = unpack, pairs
+local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 
 local function SkinIt(bar)
@@ -16,6 +18,7 @@ local function SkinIt(bar)
 	end
 
 	bar:SetStatusBarTexture(E.media.normTex)
+
 	if E.PixelMode then
 		bar:SetStatusBarColor(.31, .31, .31)
 	else
@@ -41,6 +44,11 @@ function BL:START_TIMER()
 end
 
 function BL:SkinBlizzTimers()
-	BL:RegisterEvent('START_TIMER')
+	if E.Cata then
+		hooksecurefunc('TimerTracker_StartTimerOfType', BL.START_TIMER)
+	else
+		BL:RegisterEvent('START_TIMER')
+	end
+
 	BL:START_TIMER()
 end

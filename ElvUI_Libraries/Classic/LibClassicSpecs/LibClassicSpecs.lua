@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1001
+local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1002
 local LCS = LibStub:NewLibrary(MAJOR, MINOR)
 if not LCS then return end
 

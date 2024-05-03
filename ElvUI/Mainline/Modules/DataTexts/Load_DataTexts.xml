@@ -1,9 +1,11 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='..\..\..\Core\Modules\DataTexts\Speed.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\EquipmentSets.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\PrimaryStat.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Speed.lua'/>
 	<Script file='CallToArms.lua'/>
+	<Script file='Crests.lua'/>
 	<Script file='Leech.lua'/>
 	<Script file='Mastery.lua'/>
 	<Script file='Missions.lua'/>
@@ -11,5 +13,4 @@
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Versatility.lua'/>
 	<Script file='Warmode.lua'/>
-	<Script file='Crests.lua'/>
 </Ui>

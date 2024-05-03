@@ -130,12 +130,15 @@ function BL:Initialize()
 
 	BL:RegisterEvent('ADDON_LOADED')
 
+	if E.Retail or E.Cata then
+		BL:SkinBlizzTimers()
+	end
+
 	if not E.Retail then
 		BL:KillBlizzard()
 	else
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
-		BL:SkinBlizzTimers()
 		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()
 

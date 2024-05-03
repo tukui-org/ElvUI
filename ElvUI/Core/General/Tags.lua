@@ -1294,7 +1294,7 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	end
 end, not E.Classic)
 
-if not E.Retail then
+if E.Classic then
 	local GetPetHappiness = GetPetHappiness
 	local GetPetFoodTypes = GetPetFoodTypes
 
@@ -1344,7 +1344,9 @@ if not E.Retail then
 			return GetPetFoodTypes()
 		end
 	end)
+end
 
+if not E.Retail then
 	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then
 			local rank = UnitPVPRank(unit)

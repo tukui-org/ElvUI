@@ -1,3 +1,23 @@
+### Version 13.63 [ May 2nd 2024 ]
+*   Cataclysm Hotfixes
+    *   Color Picker
+    *   Battleground Queue
+    *   Skinned GhostFrame
+    *   Fixed Resilience and Item Level Datatext
+    *   Removed Ammo, Pet Happiness, and Primary Stat Datatext
+
+### Version 13.62 [ April 30th 2024 ]
+*   Cataclysm Classic ready.
+*   DualSpec enabled for SoD.
+*   Shadowform paging on Era.
+*   Guild Deaths event not existing on Era, causing an error.
+*   Range of Unitframes breaking when Spell Ranks unchecked.
+*   Aura Indicator option for Pet Frames to use Profile or Global instead (uncheck Pet Specific).
+*   Threat option added to allow high threat to be shown without being primary target, also another to display Player threat on Target or Focus frame.
+*   Tag [threat:lead] added to display percentage of threat lead.
+*   Raid Utility displayed while in a group, regardless of Leader or Assist, with limited functionality.
+*   Sunken Temple now on Time Datatext.
+
 ### Version 13.61 [ April 2nd 2024 ]
 *   Microbar Support Ticket button in middle of screen.
 *   Minimap Icons not hiding when using the keybind for Toggle Minimap.

@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 ColorPicker Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "ColorPicker-ElvUI", 29
+local Type, Version = "ColorPicker-ElvUI", 30
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -13,8 +13,6 @@ local pairs = pairs
 local CreateFrame, UIParent = CreateFrame, UIParent
 local OpacitySliderFrame = OpacitySliderFrame
 local ColorPickerFrame = ColorPickerFrame
-
-local colorFunc = isCata and 'func' or 'swatchFunc'
 
 -- GLOBALS: ColorPPDefault
 
@@ -69,7 +67,7 @@ local function ColorSwatch_OnClick(frame)
 		ColorPickerFrame:SetFrameLevel(frame:GetFrameLevel() + 10)
 		ColorPickerFrame:SetClampedToScreen(true)
 
-		ColorPickerFrame[colorFunc] = function()
+		ColorPickerFrame.swatchFunc = function()
 			local r, g, b = ColorPickerFrame:GetColorRGB()
 			local alpha
 
@@ -122,7 +120,7 @@ local function ColorSwatch_OnClick(frame)
 		end
 
 		ColorPickerFrame.cancelFunc = function()
-			ColorPickerFrame[colorFunc] = nil
+			ColorPickerFrame.swatchFunc = nil
 			ColorPickerFrame.opacityFunc = nil
 
 			ColorCallback(self, r, g, b, a, true)

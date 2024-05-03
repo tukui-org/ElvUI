@@ -4,7 +4,28 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+
+local pvpRewards = { 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward', 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoLossReward', 'PVPConquestFrameWinReward' }
+
+local honorTexture = [[Interface\Icons\PVPCurrency-Honor-]]..E.myfaction
+local conquestTexture = [[Interface\Icons\PVPCurrency-Conquest-]]..E.myfaction
+local function PVPFrameTabClicked()
+	_G.PVPFrameCurrencyIcon:SetTexture(honorTexture)
+
+	for _, name in next, pvpRewards do
+		local honor = (_G[name] ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
+		if honor then
+			honor:SetTexture(honorTexture)
+		end
+
+		local conquest = _G[name..'ArenaSymbol']
+		if conquest then
+			conquest:SetTexture(conquestTexture)
+		end
+	end
+end
 
 function S:SkinPVPFrame()
 	-- Honor, Conquest, War Games Frame
@@ -14,8 +35,6 @@ function S:SkinPVPFrame()
 	PVPFrame:SetTemplate('Transparent')
 
 	local buttons = {
-		'PVPFrameLeftButton',
-		'PVPFrameRightButton',
 		'PVPColorPickerButton1',
 		'PVPColorPickerButton2',
 		'PVPColorPickerButton3',
@@ -121,8 +140,6 @@ function S:SkinPVPFrame()
 	PVPFrameLowLevelFrame.backdrop:Point('TOPLEFT', -2, -40)
 	PVPFrameLowLevelFrame.backdrop:Point('BOTTOMRIGHT', 5, 80)
 
-	local honorTexture = [[Interface\Icons\PVPCurrency-Honor-]]..E.myfaction
-	local conquestTexture = [[Interface\Icons\PVPCurrency-Conquest-]]..E.myfaction
 
 	-- PvP Icon
 	if _G.PVPFrameCurrency then
@@ -133,7 +150,6 @@ function S:SkinPVPFrame()
 
 		local PVPFrameCurrencyIcon = _G.PVPFrameCurrencyIcon
 		PVPFrameCurrencyIcon:SetTexture(honorTexture)
-		PVPFrameCurrencyIcon.SetTexture = E.noop
 		PVPFrameCurrencyIcon:SetTexCoord(unpack(E.TexCoords))
 		PVPFrameCurrencyIcon:SetInside(PVPFrameCurrency.backdrop)
 
@@ -142,44 +158,38 @@ function S:SkinPVPFrame()
 	end
 
 	-- Rewards
-	for _, name in next, { 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward', 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoLossReward', 'PVPConquestFrameWinReward' } do
+	for _, name in next, pvpRewards do
 		local frame = _G[name]
 
 		local background = frame:GetRegions()
 		background:SetTexture(E.Media.Textures.Highlight)
-		if frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward or frame == _G.PVPConquestFrameWinReward then
+
+		if (frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward) or (frame == _G.PVPConquestFrameWinReward) then
 			background:SetVertexColor(0, 0.439, 0, 0.5)
 		else
 			background:SetVertexColor(0.5608, 0, 0, 0.5)
 		end
 
-		if frame ~= _G.PVPConquestFrameWinReward then
-			local honor = _G[name..'HonorSymbol']
-			if honor then
-				honor:SetTexture(honorTexture)
-				honor.SetTexture = E.noop
-				honor:SetTexCoord(unpack(E.TexCoords))
-				honor:Size(30)
-			end
+		local honor = (frame ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
+		if honor then
+			honor:SetTexture(honorTexture)
+			honor:SetTexCoord(unpack(E.TexCoords))
+			honor:Size(30)
 		end
 
 		local conquest = _G[name..'ArenaSymbol']
 		if conquest then
 			conquest:SetTexture(conquestTexture)
-			conquest.SetTexture = E.noop
 			conquest:SetTexCoord(unpack(E.TexCoords))
 			conquest:Size(30)
 		end
 	end
 
+	hooksecurefunc('PVPFrame_TabClicked', PVPFrameTabClicked)
+
 	-- War Games
 	_G.WarGamesFrame:StripTextures()
 	_G.WarGamesFrameDescription:SetTextColor(1, 1, 1)
-
-	local WarGameStartButton = _G.WarGameStartButton
-	S:HandleButton(WarGameStartButton, true)
-	WarGameStartButton:ClearAllPoints()
-	WarGameStartButton:Point('LEFT', _G.PVPFrameLeftButton, 'RIGHT', 2, 0)
 
 	-- Create Arena Team
 	local PVPBannerFrame = _G.PVPBannerFrame

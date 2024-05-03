@@ -67,7 +67,7 @@ local function ElementEnable(self)
 
 	self.EclipseBar.isEnabled = true
 
-	Path(self, 'ElementEnable', 'player', SPELL_POWER_ECLIPSE)
+	Path(self, 'ElementEnable', 'player', POWERTYPE_BALANCE)
 end
 
 local function ElementDisable(self)
@@ -81,7 +81,7 @@ local function ElementDisable(self)
 
 	self.EclipseBar.isEnabled = nil
 
-	Path(self, 'ElementDisable', 'player', SPELL_POWER_ECLIPSE)
+	Path(self, 'ElementDisable', 'player', POWERTYPE_BALANCE)
 end
 
 local function Visibility(self)
