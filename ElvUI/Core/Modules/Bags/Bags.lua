@@ -1466,7 +1466,7 @@ function B:VendorGrayCheck()
 
 	-- our sell grays
 	if B:GetGraysValue() == 0 then
-		E:Print(L["No gray items to delete."])
+		E:Print(L["No gray items to sell."])
 	else
 		B:VendorGrays()
 	end
@@ -1975,7 +1975,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.vendorGraysButton:Point('RIGHT', not E.Retail and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
-		f.vendorGraysButton.ttText = not E.Retail and L["Vendor / Delete Grays"] or L["Vendor Grays"]
+		f.vendorGraysButton.ttText = L["Vendor Grays"]
 		f.vendorGraysButton.ttValue = B.GetGraysValue
 		f.vendorGraysButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.vendorGraysButton:SetScript('OnLeave', GameTooltip_Hide)
