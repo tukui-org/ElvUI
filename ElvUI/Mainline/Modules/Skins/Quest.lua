@@ -503,7 +503,7 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestNPCModelNameText:ClearAllPoints()
 	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
-	_G.QuestNPCModelNameText:FontTemplate(nil, 19, 'OUTLINE')
+	_G.QuestNPCModelNameText:FontTemplate(nil, 13, 'OUTLINE')
 
 	_G.QuestNPCModelText:SetJustifyH('CENTER')
 	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
