@@ -308,13 +308,14 @@ function M:QUEST_COMPLETE()
 	local bestValue, bestItem = 0
 	for i = 1, numQuests do
 		local questLink = GetQuestItemLink('choice', i)
-		local _, _, amount = GetQuestItemInfo('choice', i)
-		local itemSellPrice = questLink and select(11, GetItemInfo(questLink))
-
-		local totalValue = (itemSellPrice and itemSellPrice * amount) or 0
-		if totalValue > bestValue then
-			bestValue = totalValue
-			bestItem = i
+		local sellPrice = questLink and select(11, GetItemInfo(questLink))
+		if sellPrice and sellPrice > 0 then
+			local _, _, amount = GetQuestItemInfo('choice', i)
+			local totalValue = (amount and amount > 0) and (sellPrice * amount) or 0
+			if totalValue > bestValue then
+				bestValue = totalValue
+				bestItem = i
+			end
 		end
 	end
 
