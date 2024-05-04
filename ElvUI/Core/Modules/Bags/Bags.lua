@@ -799,7 +799,7 @@ function B:Holder_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
-		if E.Retail or (not E.Classic and self.BagID ~= BANK_CONTAINER and self.BagID ~= BACKPACK_CONTAINER and self.BagID ~= KEYRING_CONTAINER) then
+		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
 		end
 
@@ -862,9 +862,9 @@ end
 
 -- Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
 function B:AssignBagFlagMenu()
-	local holder = B.AssignBagDropdown.holder
+	local holder = E.Retail and B.AssignBagDropdown.holder
 	local bagID = holder and holder.BagID
-	if bagID and bagID ~= BANK_CONTAINER and not E.Classic and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
 		EasyMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
