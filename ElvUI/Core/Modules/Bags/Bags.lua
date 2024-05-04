@@ -862,7 +862,7 @@ end
 
 -- Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
 function B:AssignBagFlagMenu()
-	local holder = E.Retail and B.AssignBagDropdown.holder
+	local holder = B.AssignBagDropdown.holder
 	local bagID = holder and holder.BagID
 	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
@@ -2801,7 +2801,9 @@ function B:Initialize()
 	B.AssignBagDropdown:SetID(1)
 	B.AssignBagDropdown:Hide()
 
-	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
+	if E.Retail then
+		_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
+	end
 
 	B.AssignmentColors = {
 		[0] = { r = .99, g = .23, b = .21 }, -- fallback
