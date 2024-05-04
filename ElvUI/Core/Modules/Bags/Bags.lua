@@ -1489,8 +1489,7 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	local allowed = holder.BagID and (E.Retail or (holder.BagID ~= BANK_CONTAINER and holder.BagID ~= BACKPACK_CONTAINER and holder.BagID ~= KEYRING_CONTAINER))
-	if allowed and button == 'RightButton' then
+	if (E.Retail and holder.BagID) and button == 'RightButton' then
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif CursorHasItem() then
