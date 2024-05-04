@@ -638,12 +638,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(slot.itemLink)
 		slot.name, slot.spellID, slot.isEquipment, slot.itemEquipLoc, slot.itemClassID, slot.itemSubClassID = name, spellID, B.IsEquipmentSlot[itemEquipLoc], itemEquipLoc, itemClassID, itemSubClassID
 
-		if E.Retail then
-			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
-			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
-		else
+		if E.Classic then
 			slot.isBound = C_Item_IsBound(slot.itemLocation)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
+		else
+			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
+			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
 		local BoE, BoU = bindType == 2, bindType == 3
