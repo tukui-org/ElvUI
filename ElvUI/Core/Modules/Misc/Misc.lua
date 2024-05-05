@@ -324,6 +324,7 @@ function M:QUEST_COMPLETE()
 		if btn and btn.type == 'choice' then
 			M.QuestRewardGoldIconFrame:ClearAllPoints()
 			M.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
+			M.QuestRewardGoldIconFrame:SetFrameStrata('HIGH')
 			M.QuestRewardGoldIconFrame:Show()
 		end
 	end
@@ -375,7 +376,6 @@ function M:Initialize()
 
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.QuestInfoRewardsFrame)
-		MostValue:SetFrameStrata('HIGH')
 		MostValue:Size(19)
 		MostValue:Hide()
 
