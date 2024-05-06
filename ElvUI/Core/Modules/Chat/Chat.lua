@@ -473,10 +473,12 @@ do --this can save some main file locals
 			z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
 			z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
 			z['Player-4467-04571AA2']	= ElvBlue -- [Alliance] Warlock
-			z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
-			z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
-			z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
 			z['Player-4467-04571911']	= ElvBlue -- [Alliance] Paladin
+			z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
+			z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
+			z['Player-4467-0489BE11']	= ElvBlue -- [Alliance] Shaman
+			z['Player-4467-0489BDFD'] 	= ElvBlue -- [Alliance] Rogue
+			z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
 			z['Player-4440-03AD654A']	= ElvBlue -- [Alliance] Rogue
 			z['Player-4440-03ADE2DF']	= ElvBlue -- [Alliance] Shaman
 			z['Player-4476-03BF41C9']	= ElvBlue -- [Horde] Hunter

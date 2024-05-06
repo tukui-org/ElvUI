@@ -69,6 +69,9 @@ function UF:Construct_PartyFrames()
 
 		if E.Retail then
 			self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
+		end
+
+		if not E.Classic then
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end
@@ -194,8 +197,11 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_CustomTexts(frame)
 		UF:Configure_CombatIndicator(frame)
 
-		if E.Retail then
+		if not E.Classic then
 			UF:Configure_AltPowerBar(frame)
+		end
+
+		if E.Retail then
 			UF:Configure_ResurrectionIcon(frame)
 			UF:Configure_SummonIcon(frame)
 			UF:Configure_PvPClassificationIndicator(frame)

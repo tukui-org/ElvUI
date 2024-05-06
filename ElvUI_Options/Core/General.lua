@@ -339,7 +339,7 @@ General.totems.args.size.name = function() return E.db.general.totems.keepSizeRa
 General.totems.args.size.desc = function() return E.db.general.totems.keepSizeRatio and L["The size of the Totem buttons."] or L["The width of the totem buttons."] end
 General.totems.args.height.hidden = function() return E.db.general.totems.keepSizeRatio end
 
-General.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 50, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value if BL.AltPowerBar then BL:UpdateAltPowerBarSettings() end end, nil, not E.Retail)
+General.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 50, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value if BL.AltPowerBar then BL:UpdateAltPowerBarSettings() end end, nil, E.Classic)
 General.alternativePowerGroup.args.enable = ACH:Toggle(L["Enable"], L["Replace Blizzard's Alternative Power Bar"], 1, nil, nil, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value E.ShowPopup = true end)
 General.alternativePowerGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 50, max = 1000, step = 1 })
 General.alternativePowerGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 5, max = 100, step = 1 })

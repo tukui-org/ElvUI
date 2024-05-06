@@ -308,13 +308,14 @@ function M:QUEST_COMPLETE()
 	local bestValue, bestItem = 0
 	for i = 1, numQuests do
 		local questLink = GetQuestItemLink('choice', i)
-		local _, _, amount = GetQuestItemInfo('choice', i)
-		local itemSellPrice = questLink and select(11, GetItemInfo(questLink))
-
-		local totalValue = (itemSellPrice and itemSellPrice * amount) or 0
-		if totalValue > bestValue then
-			bestValue = totalValue
-			bestItem = i
+		local sellPrice = questLink and select(11, GetItemInfo(questLink))
+		if sellPrice and sellPrice > 0 then
+			local _, _, amount = GetQuestItemInfo('choice', i)
+			local totalValue = (amount and amount > 0) and (sellPrice * amount) or 0
+			if totalValue > bestValue then
+				bestValue = totalValue
+				bestItem = i
+			end
 		end
 	end
 
@@ -323,6 +324,7 @@ function M:QUEST_COMPLETE()
 		if btn and btn.type == 'choice' then
 			M.QuestRewardGoldIconFrame:ClearAllPoints()
 			M.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
+			M.QuestRewardGoldIconFrame:SetFrameStrata('HIGH')
 			M.QuestRewardGoldIconFrame:Show()
 		end
 	end
@@ -374,7 +376,6 @@ function M:Initialize()
 
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.QuestInfoRewardsFrame)
-		MostValue:SetFrameStrata('HIGH')
 		MostValue:Size(19)
 		MostValue:Hide()
 
