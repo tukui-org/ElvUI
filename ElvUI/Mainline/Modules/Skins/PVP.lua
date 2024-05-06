@@ -6,8 +6,8 @@ local _G = _G
 local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo

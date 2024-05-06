@@ -8,11 +8,11 @@ local strjoin = strjoin
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 
-local GetBagName = (C_Container and C_Container.GetBagName) or GetBagName
-local GetContainerNumFreeSlots = (C_Container and C_Container.GetContainerNumFreeSlots) or GetContainerNumFreeSlots
-local GetContainerNumSlots = (C_Container and C_Container.GetContainerNumSlots) or GetContainerNumSlots
-local ContainerIDToInventoryID = (C_Container and C_Container.ContainerIDToInventoryID) or ContainerIDToInventoryID
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetBagName = C_Container.GetBagName or GetBagName
+local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots or GetContainerNumFreeSlots
+local GetContainerNumSlots = C_Container.GetContainerNumSlots or GetContainerNumSlots
+local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID or ContainerIDToInventoryID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3

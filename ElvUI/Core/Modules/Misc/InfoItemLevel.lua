@@ -317,7 +317,7 @@ end
 function M:CreateSlotStrings(frame, which)
 	if not (frame and which) then return end
 
-	local itemLevelFont = E.db.general.itemLevel.itemLevelFont
+	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 
@@ -332,18 +332,18 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
 
-	frame.ItemLevelText:FontTemplate(nil, 18)
+	frame.ItemLevelText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
 			local slot = _G[which..s]
 			local x, y, z, justify = M:GetInspectPoints(i)
 			slot.iLvlText = slot:CreateFontString(nil, 'OVERLAY')
-			slot.iLvlText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+			slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 			slot.iLvlText:Point('BOTTOM', slot, x, y)
 
 			slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
-			slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+			slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 
 			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or (E.Cata and i == 18)
 			if itemLeft or itemRight then
@@ -372,7 +372,7 @@ function M:SetupInspectPageInfo()
 end
 
 function M:UpdateInspectPageFonts(which)
-	local itemLevelFont = E.db.general.itemLevel.itemLevelFont
+	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 
@@ -380,8 +380,8 @@ function M:UpdateInspectPageFonts(which)
 		if i ~= 4 then
 			local slot = _G[which..s]
 			if slot then
-				slot.iLvlText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-				slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+				slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+				slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 			end
 		end
 	end

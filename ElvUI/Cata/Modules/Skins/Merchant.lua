@@ -8,8 +8,8 @@ local hooksecurefunc = hooksecurefunc
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 local function merchantItemPoint()
 	S:HandlePointXY(_G.MerchantItem1, 6, -40)
@@ -138,7 +138,7 @@ function S:MerchantFrame()
 				local name = _G['MerchantItem'..i..'Name']
 
 				if button.link then
-					local _, _, quality = GetItemInfo(button.link)
+					local quality = GetItemQualityByID(button.link)
 					if quality and quality > 1 then
 						local r, g, b = GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
@@ -155,7 +155,7 @@ function S:MerchantFrame()
 
 			local itemName = GetBuybackItemInfo(GetNumBuybackItems())
 			if itemName then
-				local _, _, quality = GetItemInfo(itemName)
+				local quality = GetItemQualityByID(itemName)
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
 					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
@@ -183,7 +183,7 @@ function S:MerchantFrame()
 				if itemName then
 					local button = _G['MerchantItem'..i..'ItemButton']
 					local name = _G['MerchantItem'..i..'Name']
-					local _, _, quality = GetItemInfo(itemName)
+					local quality = GetItemQualityByID(itemName)
 
 					if quality and quality > 1 then
 						local r, g, b = GetItemQualityColor(quality)

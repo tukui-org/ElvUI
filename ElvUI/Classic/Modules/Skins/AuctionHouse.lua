@@ -6,10 +6,9 @@ local next = next
 local pairs = pairs
 local unpack = unpack
 
-local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 local CreateFrame = CreateFrame
-
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetAuctionSellItemInfo = GetAuctionSellItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end

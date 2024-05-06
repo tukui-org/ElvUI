@@ -7,8 +7,8 @@ local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -447,7 +447,7 @@ function S:Blizzard_EncounterJournal()
 
 				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
-					local _, _, quality = GetItemInfo(rewardData.itemID)
+					local quality = GetItemQualityByID(rewardData.itemID)
 					if quality and quality > 1 then
 						r, g, b = GetItemQualityColor(quality)
 					end

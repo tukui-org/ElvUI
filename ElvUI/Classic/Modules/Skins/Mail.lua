@@ -10,8 +10,8 @@ local GetInboxItemLink = GetInboxItemLink
 local GetInboxNumItems = GetInboxNumItems
 local GetSendMailItem = GetSendMailItem
 
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 local function MailFrameSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
@@ -24,7 +24,7 @@ local function MailFrameSkin()
 
 		local name = GetSendMailItem(i)
 		if name then
-			local _, _, quality = GetItemInfo(name)
+			local quality = GetItemQualityByID(name)
 			if quality and quality > 1 then
 				local r, g, b = GetItemQualityColor(quality)
 				button:SetBackdropBorderColor(r, g, b)
@@ -90,7 +90,7 @@ function S:MailFrame()
 				if packageIcon and not isGM then
 					local itemlink = GetInboxItemLink(index, 1)
 					if itemlink then
-						local _, _, quality = GetItemInfo(itemlink)
+						local quality = GetItemQualityByID(itemlink)
 						if quality and quality > 1 then
 							local r, g, b = GetItemQualityColor(quality)
 							mail.backdrop:SetBackdropBorderColor(r, g, b)
@@ -207,7 +207,7 @@ function S:MailFrame()
 			local button = _G['OpenMailAttachmentButton'..i]
 
 			if itemLink then
-				local _, _, quality = GetItemInfo(itemLink)
+				local quality = GetItemQualityByID(itemLink)
 				if quality and quality > 1 then
 					local r, g, b = GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)

@@ -44,7 +44,7 @@ local unitExists = Private.unitExists
 
 local _G = _G
 local GetReadyCheckStatus = GetReadyCheckStatus
-local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
+local C_Texture_GetAtlasInfo = C_Texture.GetAtlasInfo
 
 -- fallback blizzard icons (incase a plugin fails to change icon properly)
 local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]

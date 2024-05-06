@@ -7,10 +7,10 @@ local next, unpack = next, unpack
 local ipairs, pairs = ipairs, pairs
 
 local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
 local GetItemQualityColor = GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 
 local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
@@ -189,7 +189,7 @@ end
 
 local function ToySpellButtonUpdateButton(button)
 	if button.itemID and PlayerHasToy(button.itemID) then
-		local _, _, quality = GetItemInfo(button.itemID)
+		local quality = GetItemQualityByID(button.itemID)
 		if quality then
 			local r, g, b = GetItemQualityColor(quality)
 			button.backdrop:SetBackdropBorderColor(r, g, b)
