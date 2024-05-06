@@ -2659,7 +2659,7 @@ if C_UnitAuras and C_UnitAuras.GetCooldownAuraBySpellID then
 	Action.GetPassiveCooldownSpellID = function(self)
 		local _actionType, actionID = GetActionInfo(self._state_action)
 		local onEquipPassiveSpellID
-		if actionID and C_ActionBar and C_ActionBar.GetItemActionOnEquipSpellID then
+		if actionID and C_ActionBar.GetItemActionOnEquipSpellID then
 			onEquipPassiveSpellID = C_ActionBar.GetItemActionOnEquipSpellID(self._state_action)
 		end
 		if onEquipPassiveSpellID then
