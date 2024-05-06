@@ -638,12 +638,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(slot.itemLink)
 		slot.name, slot.spellID, slot.isEquipment, slot.itemEquipLoc, slot.itemClassID, slot.itemSubClassID = name, spellID, B.IsEquipmentSlot[itemEquipLoc], itemEquipLoc, itemClassID, itemSubClassID
 
-		if E.Retail then
-			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
-			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
-		else
+		if E.Classic then
 			slot.isBound = C_Item_IsBound(slot.itemLocation)
 			isQuestItem, isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
+		else
+			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
+			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
 		local BoE, BoU = bindType == 2, bindType == 3
@@ -799,7 +799,7 @@ function B:Holder_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
-		if E.Retail or (not E.Classic and self.BagID ~= BANK_CONTAINER and self.BagID ~= BACKPACK_CONTAINER and self.BagID ~= KEYRING_CONTAINER) then
+		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
 		end
 
@@ -864,7 +864,7 @@ end
 function B:AssignBagFlagMenu()
 	local holder = B.AssignBagDropdown.holder
 	local bagID = holder and holder.BagID
-	if bagID and bagID ~= BANK_CONTAINER and not E.Classic and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 		E:SetEasyMenuAnchor(E.EasyMenu, holder)
 		EasyMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
@@ -1489,8 +1489,7 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	local allowed = holder.BagID and (E.Retail or (holder.BagID ~= BANK_CONTAINER and holder.BagID ~= BACKPACK_CONTAINER and holder.BagID ~= KEYRING_CONTAINER))
-	if allowed and button == 'RightButton' then
+	if (E.Retail and holder.BagID) and button == 'RightButton' then
 		B.AssignBagDropdown.holder = holder
 		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 	elseif CursorHasItem() then
@@ -2801,7 +2800,9 @@ function B:Initialize()
 	B.AssignBagDropdown:SetID(1)
 	B.AssignBagDropdown:Hide()
 
-	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
+	if E.Retail then
+		_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
+	end
 
 	B.AssignmentColors = {
 		[0] = { r = .99, g = .23, b = .21 }, -- fallback

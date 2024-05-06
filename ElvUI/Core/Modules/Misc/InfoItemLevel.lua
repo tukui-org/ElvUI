@@ -63,15 +63,25 @@ function M:GetInspectPoints(id)
 	end
 end
 
-function M:UpdateInspectInfo(_, arg1)
+function M:UpdateInspectInfo(event, arg1)
 	local frame = _G.InspectFrame
 	if not frame then return end
+
+	if event == 'UNIT_MODEL_CHANGED' then
+		if arg1 == 'target' and frame:IsShown() then
+			arg1 = UnitGUID(arg1)
+		else
+			return
+		end
+	end
 
 	if M.InspectTimer then -- event can spam when it has to load items
 		E:CancelTimer(M.InspectTimer)
 	end
 
-	M.InspectTimer = E:ScheduleTimer(M.UpdatePageInfo, 0.2, M, frame, 'Inspect', arg1)
+	if arg1 then -- model changed but no guid???
+		M.InspectTimer = E:ScheduleTimer(M.UpdatePageInfo, 0.2, M, frame, 'Inspect', arg1)
+	end
 end
 
 function M:UpdateCharacterInfo(event)
@@ -138,8 +148,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 
 	if E.db.general.itemLevel.displayInspectInfo then
 		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
+		M:RegisterEvent('UNIT_MODEL_CHANGED', 'UpdateInspectInfo')
 	else
 		M:UnregisterEvent('INSPECT_READY')
+		M:UnregisterEvent('UNIT_MODEL_CHANGED')
 		M:ClearPageInfo(_G.InspectFrame, 'Inspect')
 	end
 end

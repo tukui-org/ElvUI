@@ -130,8 +130,13 @@ function BL:Initialize()
 
 	BL:RegisterEvent('ADDON_LOADED')
 
-	if E.Retail or E.Cata then
+	if not E.Classic then
 		BL:SkinBlizzTimers()
+
+		if not E:IsAddOnEnabled('SimplePowerBar') then
+			BL:PositionAltPowerBar()
+			BL:SkinAltPowerBar()
+		end
 	end
 
 	if not E.Retail then
@@ -146,11 +151,6 @@ function BL:Initialize()
 
 		--Add (+X%) to quest rewards experience text
 		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
-
-		if not E:IsAddOnEnabled('SimplePowerBar') then
-			BL:PositionAltPowerBar()
-			BL:SkinAltPowerBar()
-		end
 	end
 
 	if E.Cata then
