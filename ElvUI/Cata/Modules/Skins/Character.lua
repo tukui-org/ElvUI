@@ -9,8 +9,11 @@ local hooksecurefunc = hooksecurefunc
 local UnitResistance = UnitResistance
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
+local GetItemQualityByID = C_Item.GetItemQualityByID
 local HasPetUI = HasPetUI
 
+local GetContainerItemID = C_Container.GetContainerItemID or GetContainerItemID
+local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
@@ -51,17 +54,39 @@ local function TitleManagerPane_Update(frame)
 	end
 end
 
-local function HandleItemButtonQuality(button)
-	if not button.SetBackdropBorderColor then return end
-
-	local id = button.id or button:GetID()
-	local rarity = id and GetInventoryItemQuality('player', id)
+local function HandleItemButtonQuality(button, rarity)
 	if rarity and rarity > 1 then
 		local r, g, b = GetItemQualityColor(rarity)
 		button:SetBackdropBorderColor(r, g, b)
 	else
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
+end
+
+local function PaperDollItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
+
+	local id = button.id or button:GetID()
+	local rarity = id and GetInventoryItemQuality('player', id)
+
+	HandleItemButtonQuality(button, rarity)
+end
+
+local function EquipmentItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
+
+	local location, rarity = button.location
+	if location then
+		local _, _, bags, slot, bag = EquipmentManager_UnpackLocation(location)
+		if bags then
+			local itemID = GetContainerItemID(bag, slot)
+			rarity = itemID and GetItemQualityByID(itemID)
+		else
+			rarity = GetInventoryItemQuality('player', slot)
+		end
+	end
+
+	HandleItemButtonQuality(button, rarity)
 end
 
 local function PaperDollFrameSetResistance(frame, unit, index)
@@ -480,7 +505,7 @@ function S:CharacterFrame()
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollFrame_SetResistance', PaperDollFrameSetResistance)
-	hooksecurefunc('PaperDollItemSlotButton_Update', HandleItemButtonQuality)
+	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemButtonQuality)
 
 	-- Equipment Flyout
 	_G.EquipmentFlyoutFrameHighlight:StripTextures()
@@ -492,9 +517,7 @@ function S:CharacterFrame()
 
 	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
 	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
-
-	hooksecurefunc('EquipmentFlyout_DisplayButton', HandleItemButtonQuality)
-	hooksecurefunc('EquipmentFlyout_DisplaySpecialButton', HandleItemButtonQuality)
+	hooksecurefunc('EquipmentFlyout_DisplayButton', EquipmentItemButtonQuality)
 
 	-- Tabs
 	for i = 1, #_G.CHARACTERFRAME_SUBFRAMES do
