@@ -6,7 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
@@ -188,7 +188,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.isSkinned = true
 	end
 
-	local _, _, itemRarity = GetItemInfo(itemLink)
+	local itemRarity = GetItemQualityByID(itemLink)
 	local color = itemRarity and ITEM_QUALITY_COLORS[itemRarity]
 	if color then
 		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)

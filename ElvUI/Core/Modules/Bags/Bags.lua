@@ -52,8 +52,8 @@ local TokenFrame_Update = TokenFrame_Update
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
-local SellAllJunkItems = C_MerchantFrame and C_MerchantFrame.SellAllJunkItems
-local C_Texture_GetAtlasInfo = C_Texture and C_Texture.GetAtlasInfo
+local SellAllJunkItems = C_MerchantFrame.SellAllJunkItems
+local C_Texture_GetAtlasInfo = C_Texture.GetAtlasInfo
 local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
@@ -64,26 +64,26 @@ local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemSpell = (C_Item and C_Item.GetItemSpell) or GetItemSpell
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
-local SetCurrencyBackpack = (C_CurrencyInfo and C_CurrencyInfo.SetCurrencyBackpack) or SetCurrencyBackpack
-local SortBags = (C_Container and C_Container.SortBags) or SortBags
-local SortBankBags = (C_Container and C_Container.SortBankBags) or SortBankBags
-local SortReagentBankBags = (C_Container and C_Container.SortReagentBankBags) or SortReagentBankBags
-local SplitContainerItem = (C_Container and C_Container.SplitContainerItem) or SplitContainerItem
-local SetItemSearch = (C_Container and C_Container.SetItemSearch) or SetItemSearch
-local GetBagSlotFlag = (C_Container and C_Container.GetBagSlotFlag) or GetBagSlotFlag
-local SetBagSlotFlag = (C_Container and C_Container.SetBagSlotFlag) or SetBagSlotFlag
-local ContainerIDToInventoryID = (C_Container and C_Container.ContainerIDToInventoryID) or ContainerIDToInventoryID
-local GetBackpackAutosortDisabled = (C_Container and C_Container.GetBackpackAutosortDisabled) or GetBackpackAutosortDisabled
-local GetBankAutosortDisabled = (C_Container and C_Container.GetBankAutosortDisabled) or GetBankAutosortDisabled
-local GetContainerItemCooldown = (C_Container and C_Container.GetContainerItemCooldown) or GetContainerItemCooldown
-local GetContainerNumFreeSlots = (C_Container and C_Container.GetContainerNumFreeSlots) or GetContainerNumFreeSlots
-local GetContainerNumSlots = (C_Container and C_Container.GetContainerNumSlots) or GetContainerNumSlots
-local SetBackpackAutosortDisabled = (C_Container and C_Container.SetBackpackAutosortDisabled) or SetBackpackAutosortDisabled
-local SetInsertItemsLeftToRight = (C_Container and C_Container.SetInsertItemsLeftToRight) or SetInsertItemsLeftToRight
-local UseContainerItem = (C_Container and C_Container.UseContainerItem) or UseContainerItem
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemSpell = C_Item.GetItemSpell or GetItemSpell
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local SetCurrencyBackpack = C_CurrencyInfo.SetCurrencyBackpack or SetCurrencyBackpack
+local SortBags = C_Container.SortBags or SortBags
+local SortBankBags = C_Container.SortBankBags or SortBankBags
+local SortReagentBankBags = C_Container.SortReagentBankBags or SortReagentBankBags
+local SplitContainerItem = C_Container.SplitContainerItem or SplitContainerItem
+local SetItemSearch = C_Container.SetItemSearch or SetItemSearch
+local GetBagSlotFlag = C_Container.GetBagSlotFlag or GetBagSlotFlag
+local SetBagSlotFlag = C_Container.SetBagSlotFlag or SetBagSlotFlag
+local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID or ContainerIDToInventoryID
+local GetBackpackAutosortDisabled = C_Container.GetBackpackAutosortDisabled or GetBackpackAutosortDisabled
+local GetBankAutosortDisabled = C_Container.GetBankAutosortDisabled or GetBankAutosortDisabled
+local GetContainerItemCooldown = C_Container.GetContainerItemCooldown or GetContainerItemCooldown
+local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots or GetContainerNumFreeSlots
+local GetContainerNumSlots = C_Container.GetContainerNumSlots or GetContainerNumSlots
+local SetBackpackAutosortDisabled = C_Container.SetBackpackAutosortDisabled or SetBackpackAutosortDisabled
+local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight or SetInsertItemsLeftToRight
+local UseContainerItem = C_Container.UseContainerItem or UseContainerItem
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -143,9 +143,9 @@ if not E.Classic then
 end
 
 do
-	local GetContainerItemInfo = GetContainerItemInfo or (C_Container and C_Container.GetContainerItemInfo)
-	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or (C_Container and C_Container.GetContainerItemQuestInfo)
-	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or (C_CurrencyInfo and C_CurrencyInfo.GetBackpackCurrencyInfo)
+	local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerItemInfo
+	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or C_Container.GetContainerItemQuestInfo
+	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 
 	function B:GetBackpackCurrencyInfo(index)
 		if _G.GetBackpackCurrencyInfo then

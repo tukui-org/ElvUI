@@ -13,7 +13,7 @@ local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
@@ -37,8 +37,7 @@ local function UpdateLoots()
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
 			if itemLink then
-				local _, _, itemRarity = GetItemInfo(itemLink)
-
+				local itemRarity = GetItemQualityByID(itemLink)
 				if itemRarity then
 					local color = ITEM_QUALITY_COLORS[itemRarity]
 

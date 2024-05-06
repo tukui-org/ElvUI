@@ -11,8 +11,8 @@ local GetTradeSkillItemLink = GetTradeSkillItemLink
 local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
@@ -123,7 +123,7 @@ function S:Blizzard_TradeSkillUI()
 
 		local skillLink = GetTradeSkillItemLink(id)
 		if skillLink then
-			local _, _, quality = GetItemInfo(skillLink)
+			local quality = GetItemQualityByID(skillLink)
 			if quality and quality > 1 then
 				local r, g, b = GetItemQualityColor(quality)
 
@@ -141,7 +141,7 @@ function S:Blizzard_TradeSkillUI()
 
 			if reagentLink then
 				local icon = _G['TradeSkillReagent'..i..'IconTexture']
-				local _, _, quality = GetItemInfo(reagentLink)
+				local quality = GetItemQualityByID(reagentLink)
 				if quality and quality > 1 then
 					local name = _G['TradeSkillReagent'..i..'Name']
 					local r, g, b = GetItemQualityColor(quality)

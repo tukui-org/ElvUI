@@ -5,7 +5,7 @@ local _G = _G
 local ipairs, unpack = ipairs, unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS

@@ -69,13 +69,13 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
-local IsChatLineCensored = C_ChatInfo and C_ChatInfo.IsChatLineCensored
-local GetChannelRuleset = E.Retail and C_ChatInfo.GetChannelRuleset
-local GetChannelRulesetForChannelID = E.Retail and C_ChatInfo.GetChannelRulesetForChannelID
-local GetChannelShortcutForChannelID = E.Retail and C_ChatInfo.GetChannelShortcutForChannelID
-local IsChannelRegionalForChannelID = E.Retail and C_ChatInfo.IsChannelRegionalForChannelID
+local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
+local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
+local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
+local GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
+local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 
-local GetTitleIconTexture = C_Texture and C_Texture.GetTitleIconTexture
+local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
 local RecruitLinkType = Enum.RafLinkType and Enum.RafLinkType.Recruit
