@@ -376,6 +376,11 @@ function M:UpdateInspectPageFonts(which)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 
+	local frame = (which == 'Character' and _G.CharacterFrame) or _G.InspectFrame
+	if frame and frame.ItemLevelText then
+		frame.ItemLevelText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+	end
+
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
 			local slot = _G[which..s]
