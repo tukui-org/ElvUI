@@ -46,11 +46,11 @@ local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
 local GetSpellBookItemInfo = (C_SpellBook and C_SpellBook.GetSpellBookItemInfo) or GetSpellBookItemInfo
-local ClearPetActionHighlightMarks = (PetActionBar and PetActionBar.ClearPetActionHighlightMarks) or ClearPetActionHighlightMarks
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 
-local C_ActionBar_GetProfessionQuality = C_ActionBar and C_ActionBar.GetProfessionQuality
-local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
+local GetProfessionQuality = C_ActionBar.GetProfessionQuality
+local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = (C_SpellBook and C_SpellBook.FindSpellBookSlotForSpell) or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
@@ -783,7 +783,7 @@ function AB:UpdateProfessionQuality(button)
 	local enable = db and db.enable
 	if enable then
 		local action = button._state_type == 'action' and button._state_action
-		local quality = action and IsItemAction(action) and C_ActionBar_GetProfessionQuality(action)
+		local quality = action and IsItemAction(action) and GetProfessionQuality(action)
 		atlas = quality and format('Professions-Icon-Quality-Tier%d', quality)
 
 		if atlas then
@@ -892,9 +892,9 @@ end
 
 do
 	local function CanGlide()
-		if not C_PlayerInfo_GetGlidingInfo then return end
+		if not GetGlidingInfo then return end
 
-		local _, canGlide = C_PlayerInfo_GetGlidingInfo()
+		local _, canGlide = GetGlidingInfo()
 		return canGlide
 	end
 
@@ -1803,7 +1803,7 @@ function AB:Initialize()
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if E.Retail and C_PetBattles_IsInBattle() then
+	if E.Retail and IsInBattle() then
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()

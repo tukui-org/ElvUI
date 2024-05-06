@@ -14,9 +14,9 @@ local GetInventorySlotInfo = GetInventorySlotInfo
 local hooksecurefunc = hooksecurefunc
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
-local GetContainerItemCooldown = (C_Container and C_Container.GetContainerItemCooldown) or GetContainerItemCooldown
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetContainerItemCooldown = C_Container.GetContainerItemCooldown or GetContainerItemCooldown
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES

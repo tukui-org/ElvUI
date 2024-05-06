@@ -13,8 +13,8 @@ local PlayerHasToy = PlayerHasToy
 
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
@@ -194,7 +194,7 @@ end
 
 local function ToySpellButtonUpdateButton(button)
 	if button.itemID and PlayerHasToy(button.itemID) then
-		local _, _, quality = GetItemInfo(button.itemID)
+		local quality = GetItemQualityByID(button.itemID)
 		if quality then
 			local r, g, b = GetItemQualityColor(quality)
 			button.backdrop:SetBackdropBorderColor(r, g, b)

@@ -70,9 +70,9 @@ local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
-local GetItemCount = (C_Item and C_Item.GetItemCount) or GetItemCount
-local GetItemInfo = (C_Item and C_Item.GetItemInfo) or GetItemInfo
-local GetItemQualityColor = (C_Item and C_Item.GetItemQualityColor) or GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemCount = C_Item.GetItemCount or GetItemCount
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -716,7 +716,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 		if not link then return end
 
 		if TT.db.itemQuality then
-			local _, _, quality = GetItemInfo(link)
+			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
 				local r, g, b = GetItemQualityColor(quality)
 				if self.NineSlice then
