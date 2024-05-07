@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 16 -- real minor version: 13
+local MINOR_VERSION = 17 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
