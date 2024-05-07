@@ -332,7 +332,10 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
 
-	frame.ItemLevelText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+	local totalLevelFont = LSM:Fetch('font', E.db.general.itemLevel.totalLevelFont)
+	local totalLevelFontSize = E.db.general.itemLevel.totalLevelFontSize or 12
+	local totalLevelFontOutline = E.db.general.itemLevel.totalLevelFontOutline or 'OUTLINE'
+	frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
 
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
@@ -372,15 +375,17 @@ function M:SetupInspectPageInfo()
 end
 
 function M:UpdateInspectPageFonts(which)
+	local totalLevelFont = LSM:Fetch('font', E.db.general.itemLevel.totalLevelFont)
+	local totalLevelFontSize = E.db.general.itemLevel.totalLevelFontSize or 12
+	local totalLevelFontOutline = E.db.general.itemLevel.totalLevelFontOutline or 'OUTLINE'
+	local frame = (which == 'Character' and _G.CharacterFrame) or _G.InspectFrame
+	if frame and frame.ItemLevelText then
+		frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
+	end
+
 	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
-
-	local frame = (which == 'Character' and _G.CharacterFrame) or _G.InspectFrame
-	if frame and frame.ItemLevelText then
-		frame.ItemLevelText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
-	end
-
 	for i, s in pairs(InspectItems) do
 		if i ~= 4 then
 			local slot = _G[which..s]
