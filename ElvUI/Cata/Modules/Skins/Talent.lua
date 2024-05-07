@@ -22,13 +22,14 @@ local function GlyphFrame_Update()
 	local talentFrame = _G.PlayerTalentFrame
 	local talentGroup = talentFrame and talentFrame.talentGroup
 	if talentGroup then
+		local l, r, t, b = unpack(E.TexCoords)
 		for i = 1, _G.NUM_GLYPH_SLOTS do
 			local glyph = _G['GlyphFrameGlyph'..i]
 			if glyph and glyph.icon then
 				local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
 				if iconFilename then
 					glyph.icon:SetTexture(iconFilename)
-					glyph.icon:SetTexCoord(unpack(E.TexCoords))
+					glyph.icon:SetTexCoord(l, r, t, b)
 				else
 					glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
 					glyph.icon:SetTexCoord(0, 1, 0, 1)
