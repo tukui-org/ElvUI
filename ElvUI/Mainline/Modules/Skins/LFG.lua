@@ -298,6 +298,21 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
+	-- Szenario Tab [[New in 10.2.7]]
+	local ScenarioQueueFrame = _G.ScenarioQueueFrame
+	if ScenarioQueueFrame then
+		ScenarioQueueFrame:StripTextures()
+		_G.ScenarioFinderFrameInset:StripTextures()
+		_G.ScenarioQueueFrameBackground:SetAlpha(0)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
+		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
+		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+
+		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
+			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+		end
+	end
+
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)

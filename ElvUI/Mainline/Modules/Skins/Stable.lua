@@ -2,73 +2,51 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
-local function PetButtons(btn, p)
-	local button = _G[btn]
-	local icon = _G[btn..'IconTexture']
-	local highlight = button:GetHighlightTexture()
-	button:StripTextures()
+local function AbilitiesList_Layout(list)
+	if not list.abilityPool then return end
 
-	if button.Checked then
-		button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
-		button.Checked:SetAllPoints(icon)
-		button.Checked:SetAlpha(0.3)
-	end
-
-	if highlight then
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetAllPoints(icon)
-	end
-
-	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', p, -p)
-		icon:Point('BOTTOMRIGHT', -p, p)
-
-		button:SetFrameLevel(button:GetFrameLevel() + 2)
-		button:SetTemplate(nil, true)
+	for frame in list.abilityPool:EnumerateActive() do
+		if not frame.IsSkinned then
+			S:HandleIcon(frame.Icon)
+			frame.IsSkinned = true
+		end
 	end
 end
 
-function S:PetStableFrame()
+function S:Blizzard_StableUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
 
-	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame)
+	local StableFrame = _G.StableFrame
+	S:HandlePortraitFrame(StableFrame)
+	StableFrame.MainHelpButton:Hide()
+	S:HandleButton(StableFrame.StableTogglePetButton)
+	S:HandleButton(StableFrame.ReleasePetButton)
 
-	_G.PetStableLeftInset:Hide()
-	_G.PetStableBottomInset:Hide()
-	_G.PetStableFrameModelBg:Hide()
-	_G.PetStableDietTexture:SetTexture(132165)
-	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
-	_G.PetStableFrameInset:SetTemplate('Transparent')
+	local StabledPetList = StableFrame.StabledPetList
+	StabledPetList:StripTextures()
+	StabledPetList.ListCounter:StripTextures()
+	StabledPetList.ListCounter:CreateBackdrop('Transparent')
+	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
+	S:HandleButton(StabledPetList.FilterBar.FilterButton)
+	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
 
-	S:HandleModelSceneControlButtons(_G.PetStableModelScene.ControlFrame)
-	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
-	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
+	local StableModelScene = StableFrame.PetModelScene
+	if StableModelScene then
+		local PetInfo = StableModelScene.PetInfo
+		if PetInfo then
+			hooksecurefunc(PetInfo.Type, 'SetText', S.ReplaceIconString)
 
-	local p = E.PixelMode and 1 or 2
-	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
-	if PetStableSelectedPetIcon then
-		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
+			--S:HandleButton(PetInfo.NameBox.EditButton) -- ToDo: 10.2.7: Halp, Fix me
+		end
 
-		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
-		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37)
-		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate()
+		local AbilitiesList = StableModelScene.AbilitiesList
+		if AbilitiesList then
+			hooksecurefunc(AbilitiesList, 'Layout', AbilitiesList_Layout)
+		end
 	end
-
-	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-		PetButtons('PetStableActivePet' .. i, p)
-	end
-	for i = 1, _G.NUM_PET_STABLE_SLOTS do
-		PetButtons('PetStableStabledPet' .. i, p)
-	end
+	S:HandleModelSceneControlButtons(StableModelScene.ControlFrame)
 end
 
-S:AddCallback('PetStableFrame')
+S:AddCallbackForAddon('Blizzard_StableUI')

@@ -306,6 +306,10 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
+	-- LFG -> Custom Groups -> Dungeons -> Filter Button - This sits on the DropDownListMenu 10.2.7
+	S:HandleEditBox(_G.MinRatingFrame.MinRating)
+	_G.MinRatingFrame.MinRating:Size(40, 16) -- Default is 40, 12
+
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(_G.SideDressUpFrameCloseButton)
 	S:HandleButton(SideDressUpFrame.ResetButton)
