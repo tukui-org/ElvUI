@@ -28,8 +28,10 @@ local function GlyphFrame_Update()
 				local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
 				if iconFilename then
 					glyph.icon:SetTexture(iconFilename)
+					glyph.icon:SetTexCoord(unpack(E.TexCoords))
 				else
 					glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
+					glyph.icon:SetTexCoord(0, 1, 0, 1)
 				end
 
 				_G.GlyphFrameGlyph_UpdateSlot(glyph)
