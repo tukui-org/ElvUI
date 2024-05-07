@@ -26,6 +26,7 @@ function S:Blizzard_StableUI()
 
 	local StabledPetList = StableFrame.StabledPetList
 	StabledPetList:StripTextures()
+	StabledPetList.ListName:FontTemplate(nil, 32)
 	StabledPetList.ListCounter:StripTextures()
 	StabledPetList.ListCounter:CreateBackdrop('Transparent')
 	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
@@ -36,9 +37,19 @@ function S:Blizzard_StableUI()
 	if StableModelScene then
 		local PetInfo = StableModelScene.PetInfo
 		if PetInfo then
-			hooksecurefunc(PetInfo.Type, 'SetText', S.ReplaceIconString)
+			if PetInfo.Type then
+				hooksecurefunc(PetInfo.Type, 'SetText', S.ReplaceIconString)
+			end
 
-			--S:HandleButton(PetInfo.NameBox.EditButton) -- ToDo: 10.2.7: Halp, Fix me
+			--[[ this sucks need something better; pushed also broke
+			local EditButton = PetInfo.NameBox.EditButton
+			if EditButton then
+				local icon = EditButton.Icon:GetAtlas()
+				S:HandleButton(EditButton)
+				EditButton.Icon:SetAtlas(icon)
+				EditButton.Icon:SetTexCoord(.22, .8, .22, .8)
+			end
+			]]
 		end
 
 		local AbilitiesList = StableModelScene.AbilitiesList
