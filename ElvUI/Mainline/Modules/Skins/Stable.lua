@@ -31,6 +31,7 @@ function S:Blizzard_StableUI()
 	StabledPetList.ListCounter:CreateBackdrop('Transparent')
 	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
 	S:HandleButton(StabledPetList.FilterBar.FilterButton)
+	S:HandleCloseButton(StabledPetList.FilterBar.FilterButton.ResetButton)
 	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
 
 	local StableModelScene = StableFrame.PetModelScene
