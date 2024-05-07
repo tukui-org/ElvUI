@@ -272,21 +272,32 @@ function S:Blizzard_GlyphUI()
 
 	-- Glyph Tab
 	local GlyphFrame = _G.GlyphFrame
-	GlyphFrame:StripTextures()
 	GlyphFrame:SetTemplate('Transparent')
-
 	GlyphFrame.sideInset:StripTextures()
+
+	if E.private.skins.parchmentRemoverEnable then
+		_G.GlyphFrameBackground:SetAlpha(0)
+		GlyphFrame.levelOverlay1:SetAlpha(0)
+		GlyphFrame.levelOverlay2:SetAlpha(0)
+	else
+		_G.GlyphFrameBackground:SetInside()
+		_G.GlyphFrameBackground:SetDrawLayer('ARTWORK')
+		GlyphFrame.levelOverlayText1:SetDrawLayer('OVERLAY', 2)
+		GlyphFrame.levelOverlayText2:SetDrawLayer('OVERLAY', 2)
+	end
+
+	GlyphFrame.levelOverlayText1:FontTemplate(nil, 18, 'SHADOW')
+	GlyphFrame.levelOverlayText2:FontTemplate(nil, 18, 'SHADOW')
 
 	S:HandleEditBox(_G.GlyphFrameSearchBox)
 	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
 
-	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210)
+	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210, nil, 'Transparent')
 	_G.GlyphFrameFilterDropDown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
 
 	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local frame = _G['GlyphFrameGlyph'..i]
-
-		frame:SetTemplate('Default', true)
+		frame:SetTemplate('Transparent')
 		frame:SetFrameLevel(frame:GetFrameLevel() + 5)
 		frame:StyleButton(nil, true)
 
@@ -306,7 +317,6 @@ function S:Blizzard_GlyphUI()
 		if not frame.icon then
 			frame.icon = frame:CreateTexture(nil, 'OVERLAY')
 			frame.icon:SetInside()
-			frame.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
 		if not frame.onUpdate then
@@ -323,8 +333,7 @@ function S:Blizzard_GlyphUI()
 
 	_G.GlyphFrameScrollFrame:StripTextures()
 	_G.GlyphFrameScrollFrame:CreateBackdrop('Transparent')
-	_G.GlyphFrameScrollFrame.backdrop:Point('TOPLEFT', -1, 1)
-	_G.GlyphFrameScrollFrame.backdrop:Point('BOTTOMRIGHT', -4, -2)
+	_G.GlyphFrameScrollFrame.backdrop:SetAllPoints(_G.GlyphFrameSideInset)
 
 	S:HandleScrollBar(_G.GlyphFrameScrollFrameScrollBar)
 	_G.GlyphFrameScrollFrameScrollBar:ClearAllPoints()
@@ -342,11 +351,20 @@ function S:Blizzard_GlyphUI()
 	for i = 1, 10 do
 		local button = _G['GlyphFrameScrollFrameButton'..i]
 		if button and not button.isSkinned then
-			S:HandleButton(button)
+			S:HandleButton(button, nil, nil, nil, true, 'Transparent')
+			button.backdrop:SetInside()
 
 			local icon = _G['GlyphFrameScrollFrameButton'..i..'Icon']
 			if icon then
 				S:HandleIcon(icon)
+				icon:ClearAllPoints()
+				icon:Point('LEFT', 2, 0)
+				icon:Size(37)
+			end
+
+			local disabledBG = button.disabledBG
+			if disabledBG then
+				disabledBG:SetAlpha(0)
 			end
 
 			button.isSkinned = true
