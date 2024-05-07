@@ -98,6 +98,9 @@ P.general = {
 		itemLevelFont = 'PT Sans Narrow',
 		itemLevelFontSize = 12,
 		itemLevelFontOutline = 'OUTLINE',
+		totalLevelFont = 'PT Sans Narrow',
+		totalLevelFontSize = E.Retail and 20 or 18,
+		totalLevelFontOutline = 'OUTLINE',
 	},
 	customGlow = {
 		style = 'Pixel Glow',
