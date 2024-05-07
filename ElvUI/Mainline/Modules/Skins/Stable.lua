@@ -29,36 +29,49 @@ function S:Blizzard_StableUI()
 	StabledPetList.ListName:FontTemplate(nil, 32)
 	StabledPetList.ListCounter:StripTextures()
 	StabledPetList.ListCounter:CreateBackdrop('Transparent')
+
 	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
 	S:HandleButton(StabledPetList.FilterBar.FilterButton)
 	S:HandleCloseButton(StabledPetList.FilterBar.FilterButton.ResetButton)
 	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
 
-	local StableModelScene = StableFrame.PetModelScene
-	if StableModelScene then
-		local PetInfo = StableModelScene.PetInfo
-		if PetInfo then
-			if PetInfo.Type then
-				hooksecurefunc(PetInfo.Type, 'SetText', S.ReplaceIconString)
+	local modelScene = StableFrame.PetModelScene
+	if modelScene then
+		local sceneShadow = modelScene.PetModelSceneShadow
+		if sceneShadow then
+			sceneShadow:SetInside()
+		end
+
+		local inset = modelScene.Inset
+		if inset then
+			inset.NineSlice:SetTemplate()
+			inset.Bg:Hide()
+		end
+
+		local abilitiesList = modelScene.AbilitiesList
+		if abilitiesList then
+			hooksecurefunc(abilitiesList, 'Layout', AbilitiesList_Layout)
+		end
+
+		local petInfo = modelScene.PetInfo
+		if petInfo then
+			if petInfo.Type then
+				hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
 			end
 
 			--[[ this sucks need something better; pushed also broke
-			local EditButton = PetInfo.NameBox.EditButton
-			if EditButton then
-				local icon = EditButton.Icon:GetAtlas()
-				S:HandleButton(EditButton)
-				EditButton.Icon:SetAtlas(icon)
-				EditButton.Icon:SetTexCoord(.22, .8, .22, .8)
+			local editButton = petInfo.NameBox.EditButton
+			if editButton then
+				local icon = editButton.Icon:GetAtlas()
+				S:HandleButton(editButton)
+				editButton.Icon:SetAtlas(icon)
+				editButton.Icon:SetTexCoord(.22, .8, .22, .8)
 			end
 			]]
 		end
-
-		local AbilitiesList = StableModelScene.AbilitiesList
-		if AbilitiesList then
-			hooksecurefunc(AbilitiesList, 'Layout', AbilitiesList_Layout)
-		end
 	end
-	S:HandleModelSceneControlButtons(StableModelScene.ControlFrame)
+
+	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
 end
 
 S:AddCallbackForAddon('Blizzard_StableUI')
