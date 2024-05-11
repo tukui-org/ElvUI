@@ -982,17 +982,15 @@ G.unitframe.aurawatch = {
 		[53601]	= Aura(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true), -- Sacred Shield
 	},
 	PRIEST = {
-		[1243]	= Aura(1243, {1244,1245,2791,10937,10938,25389,48161}, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude
-		[21562]	= Aura(21562, {21564,25392,48162}, 'TOPLEFT', {1, 1, 0.66}, true), -- Prayer of Fortitude
-		[14752]	= Aura(14752, {14818,14819,27841,25312,48073}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Divine Spirit
-		[27681]	= Aura(27681, {32999,48074}, 'TOPRIGHT', {0.2, 0.7, 0.2}, true), -- Prayer of Spirit
-		[976]	= Aura(976, {10957,10958,25433,48169}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection
-		[27683]	= Aura(27683, {39374,48170}, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Prayer of Shadow Protection
-		[17]	= Aura(17, {592,600,3747,6065,6066,10898,10899,10900,10901,25217,25218,48065,48066}, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
-		[139]	= Aura(139, {6074,6075,6076,6077,6078,10927,10928,10929,25315,25221,25222,48067,48068}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
+		[21562]	= Aura(21562, nil, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude
+		[27683]	= Aura(27683, nil, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection
+		[17]	= Aura(17, nil, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
+		[139]	= Aura(139, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
 		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
 		[41635]	= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
-		-- TODO: Abolish Poison / Abolish Disease / Guardian Spirit / Pain Suppression / Power Infusion
+		[10060] = Aura(10060, nil, 'TOP', {0.17, 1.00, 0.45}), -- Power Infusion
+		[47788] = Aura(47788, nil, 'TOP', {0.17, 1.00, 0.45}), -- Guardian Spirit
+		[33206] = Aura(33206, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Pain Suppression
 	},
 	ROGUE = {
 		-- TODO: Tricks of the Trade
