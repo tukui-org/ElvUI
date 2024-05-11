@@ -34,13 +34,14 @@ ignore:
   - "*.md"
   - "*.textile"
   - ElvUI_Libraries/Core/LibStub/tests
+  - Makefile
 
 plain-copy:
   - ElvUI/Classic
   - ElvUI/Core
   - ElvUI/Locales
   - ElvUI/Mainline
-  - ElvUI/Wrath
+  - ElvUI/Cata
   - ElvUI_Libraries/Classic/LibClassicSpecs
   - ElvUI_Libraries/Core/Ace3
   - ElvUI_Libraries/Core/Ace3-ElvUI
@@ -54,7 +55,7 @@ plain-copy:
   - ElvUI_Libraries/Core/oUF
   - ElvUI_Libraries/Core/oUF_Plugins
   - ElvUI_Libraries/Mainline
-  - ElvUI_Libraries/Wrath
+  - ElvUI_Libraries/Cata
   - ElvUI_Options/Core
   - ElvUI_Options/Locales
 
