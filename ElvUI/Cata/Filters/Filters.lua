@@ -946,14 +946,13 @@ G.unitframe.aurawatch = {
 		-- TODO: Hysteria / Unholy Frenzy
 	},
 	DRUID = {
-		[1126]	= Aura(1126, {5232,6756,5234,8907,9884,9885,26990,48469,21849,21850,26991,48470}, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark/Gift of the Wild
-		[467]	= Aura(467, {782,1075,8914,9756,9910,26992,53307}, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns
-		[774]	= Aura(774, {1058,1430,2090,2091,3627,8910,9839,9840,9841,25299,26981,26982,48440,48441}, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
-		[8936]	= Aura(8936, {8938,8939,8940,8941,9750,9856,9857,9858,26980,48442,48443}, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
+		[1126]	= Aura(1126, nil, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark/Gift of the Wild
+		[467]	= Aura(467, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns
+		[774]	= Aura(774, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
+		[8936]	= Aura(8936, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
 		[29166]	= Aura(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
-		[33763]	= Aura(33763, {48450,48451}, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
-		[48438]	= Aura(48438, {53248,53249,53251}, 'BOTTOMRIGHT', {0.8, 0.4, 0}), -- Wild Growth
-		-- TODO: Abolish Poison
+		[33763]	= Aura(33763, nil, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
+		[48438]	= Aura(48438, nil, 'BOTTOMRIGHT', {0.8, 0.4, 0}), -- Wild Growth
 	},
 	HUNTER = {
 		[19506]	= Aura(19506, nil, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura
