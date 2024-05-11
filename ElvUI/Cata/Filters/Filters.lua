@@ -680,7 +680,7 @@ G.unitframe.aurawatch = {
 		[57933] = Aura(57933, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
 	},
 	SHAMAN = {
-		[16236]	= Aura(16236, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
+		[16177]	= Aura(16177, {16236,16237}, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
 		[974]	= Aura(974, nil, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
 		[61295] = Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
 		[51945] = Aura(51945, nil, 'LEFT', {0.7, 0.3, 0.7}) -- Earthliving
