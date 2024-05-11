@@ -99,15 +99,30 @@ function S:WorldMapFrame()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
 	local DetailsFrame = QuestMapFrame.DetailsFrame
+	S:HandleButton(DetailsFrame.BackFrame.BackButton, true)
+	S:HandleButton(DetailsFrame.AbandonButton, true)
+	DetailsFrame.ShareButton:StripTextures() -- strip the Blizz Art around from it
+	S:HandleButton(DetailsFrame.ShareButton, true)
+	S:HandleButton(DetailsFrame.TrackButton, true)
+
+	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
+	DetailsFrame.AbandonButton:SetFrameLevel(5)
+	DetailsFrame.ShareButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:Width(95)
+
+	local RewardsFrameContainer = DetailsFrame.RewardsFrameContainer
 	if E.private.skins.parchmentRemoverEnable then
 		DetailsFrame:StripTextures(true)
+		DetailsFrame.BackFrame:StripTextures()
 		DetailsFrame:CreateBackdrop()
 		DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
 		DetailsFrame.backdrop:Point('BOTTOMRIGHT', DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
-		DetailsFrame.RewardsFrame:StripTextures()
-		DetailsFrame.RewardsFrame:CreateBackdrop()
-		DetailsFrame.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
-		DetailsFrame.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
+
+		RewardsFrameContainer.RewardsFrame:StripTextures()
+		RewardsFrameContainer.RewardsFrame:CreateBackdrop()
+		RewardsFrameContainer.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
+		RewardsFrameContainer.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
@@ -123,34 +138,10 @@ function S:WorldMapFrame()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 
-	local QuestDetailFrame = QuestScrollFrame.DetailFrame
-	QuestDetailFrame:StripTextures()
-	QuestDetailFrame.BottomDetail:Hide()
-	QuestDetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 1)
-
-	if QuestDetailFrame.backdrop then
-		QuestDetailFrame.backdrop:Point('TOPLEFT', QuestDetailFrame, 'TOPLEFT', 3, 1)
-		QuestDetailFrame.backdrop:Point('BOTTOMRIGHT', QuestDetailFrame, 'BOTTOMRIGHT', -2, -7)
-	end
-
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
 	QuestScrollBar:Point('TOPLEFT', QuestDetailFrame, 'TOPRIGHT', 4, -15)
 	QuestScrollBar:Point('BOTTOMLEFT', QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
-
-	S:HandleButton(DetailsFrame.CompleteQuestFrame.CompleteButton, true)
-	DetailsFrame.CompleteQuestFrame:StripTextures()
-
-	S:HandleButton(DetailsFrame.BackButton, true)
-	S:HandleButton(DetailsFrame.AbandonButton, true)
-	S:HandleButton(DetailsFrame.ShareButton, true)
-	S:HandleButton(DetailsFrame.TrackButton, true)
-
-	DetailsFrame.BackButton:SetFrameLevel(5)
-	DetailsFrame.AbandonButton:SetFrameLevel(5)
-	DetailsFrame.ShareButton:SetFrameLevel(5)
-	DetailsFrame.TrackButton:SetFrameLevel(5)
-	DetailsFrame.TrackButton:Width(95)
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)

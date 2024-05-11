@@ -589,10 +589,12 @@ function RU:Initialize()
 
 			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
 			local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-			readyCheck:ClearAllPoints()
-			readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-			readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-			RU.ReadyCheck = readyCheck
+			if readyCheck then -- Fix Me 11.0
+				readyCheck:ClearAllPoints()
+				readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
+				readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
+				RU.ReadyCheck = readyCheck
+			end
 		else
 			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
 		end

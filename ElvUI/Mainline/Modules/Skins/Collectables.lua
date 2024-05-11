@@ -295,7 +295,7 @@ end
 
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
-	S:HandleItemButton(_G.MountJournalDynamicFlightModeButton)
+	--S:HandleButton(_G.MountJournal.MountSpellButtons) -- Fix Me 11.0
 	S:HandleButton(_G.MountJournalFilterButton)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
