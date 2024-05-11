@@ -151,6 +151,14 @@ function S:Blizzard_PlayerSpells()
 	S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 	S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 	PagingControls.PageText:SetTextColor(1, 1, 1)
+
+	-- HERO TALENTS (Finish me) FIX ME 11.0
+	local TalentsSelect = _G.HeroTalentsSelectionDialog
+	TalentsSelect:StripTextures()
+	TalentsSelect:SetTemplate('Transparent')
+	S:HandleCloseButton(TalentsSelect.CloseButton)
+
+	local SpecOptions = TalentsSelect.SpecOptionsContainer
 end
 
 S:AddCallbackForAddon('Blizzard_PlayerSpells')
