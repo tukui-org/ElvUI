@@ -643,10 +643,9 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	DEATHKNIGHT = {
-		-- TODO: Hysteria / Unholy Frenzy
+		[49016] = Aura(49016, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Unholy Frenzy
 	},
 	DRUID = {
-		[1126]	= Aura(1126, nil, 'TOPLEFT', {0.2, 0.8, 0.8}, true), -- Mark/Gift of the Wild
 		[467]	= Aura(467, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns
 		[774]	= Aura(774, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
 		[8936]	= Aura(8936, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
@@ -655,32 +654,20 @@ G.unitframe.aurawatch = {
 		[48438]	= Aura(48438, nil, 'BOTTOMRIGHT', {0.8, 0.4, 0}) -- Wild Growth
 	},
 	HUNTER = {
-		[19506]	= Aura(19506, nil, 'TOPLEFT', {0.89, 0.09, 0.05}), -- Trueshot Aura
-		[13159]	= Aura(13159, nil, 'TOP', {0.00, 0.00, 0.85}, true), -- Aspect of the Pack
-		[20043]	= Aura(20043, nil, 'TOP', {0.33, 0.93, 0.79}) -- Aspect of the Wild
-		-- TODO: Misdirection
+		[34477] = Aura(34477, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Misdirection
 	},
 	MAGE = {
-		[79058]	= Aura(79058, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Arcane Brilliance
 		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
-		[54646] = Aura(54646, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Power Infusion
+		[54646] = Aura(54646, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Focus Magic
 	},
 	PALADIN = {
 		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}, true), -- Hand of Freedom
 		[1038]	= Aura(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true), -- Hand of Salvation
 		[6940]	= Aura(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
 		[1022]	= Aura(1022, nil, 'CENTER', {0.17, 1.00, 0.75}, true), -- Hand of Protection
-		[79102]	= Aura(79102, nil, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might
-		[79063]	= Aura(79063, nil, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Kings
-		[465]	= Aura(465, nil, 'BOTTOMLEFT', {0.58, 1.00, 0.50}), -- Devotion Aura
-		[19746]	= Aura(19746, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Concentration Aura
-		[32223]	= Aura(32223, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.07}), -- Crusader Aura
 		[53563]	= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true), -- Beacon of Light
-		[53601]	= Aura(53601, nil, 'BOTTOMRIGHT', {0.4, 0.7, 0.2}, true) -- Sacred Shield
 	},
 	PRIEST = {
-		[21562]	= Aura(21562, nil, 'TOPLEFT', {1, 1, 0.66}, true), -- Power Word: Fortitude
-		[27683]	= Aura(27683, nil, 'BOTTOMLEFT', {0.7, 0.7, 0.7}, true), -- Shadow Protection
 		[17]	= Aura(17, nil, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
 		[139]	= Aura(139, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
 		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
@@ -690,34 +677,25 @@ G.unitframe.aurawatch = {
 		[33206] = Aura(33206, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Pain Suppression
 	},
 	ROGUE = {
-		-- TODO: Tricks of the Trade
+		[57933] = Aura(57933, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
 	},
 	SHAMAN = {
-		[16177]	= Aura(16177, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
-		[5672]	= Aura(5672, nil, 'BOTTOM', {0.67, 1.00, 0.50}), -- Healing Stream Totem
-		[16191]	= Aura(16191, nil, 'BOTTOMLEFT', {0.67, 1.00, 0.80}), -- Mana Tide Totem
-		[5677]	= Aura(5677, nil, 'LEFT', {0.67, 1.00, 0.80}), -- Mana Spring Totem
-		[8072]	= Aura(8072, nil, 'BOTTOMRIGHT', {0.00, 0.00, 0.26}), -- Stoneskin Totem
+		[16236]	= Aura(16236, nil, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
 		[974]	= Aura(974, nil, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
 		[61295] = Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
 		[51945] = Aura(51945, nil, 'LEFT', {0.7, 0.3, 0.7}) -- Earthliving
 	},
 	WARLOCK = {
 		[5697]	= Aura(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
-		[6512]	= Aura(6512, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true) -- Detect Lesser Invisibility
-		-- TODO: Soulstone
+		[20707]	= Aura(20707, nil, 'TOP', {0.00, 0.00, 0.85}, true) -- Soulstone
 	},
 	WARRIOR = {
-		[6673]	= Aura(6673, nil, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Battle Shout
-		[469]	= Aura(469, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true) -- Commanding Shout
+		[3411]	= Aura(3411, nil, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Intervene
+		[50720]	= Aura(50720, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true) -- Vigilance
 	},
 	PET = {
-	-- Warlock Imp
-		[6307]	= Aura(6307, nil, 'BOTTOMLEFT', {0.89, 0.09, 0.05}), -- Blood Pact
-	-- Warlock Felhunter
-		[54424]	= Aura(54424, nil, 'BOTTOMLEFT', {0.2, 0.8, 0.2}), -- Fel Intelligence
 	-- Hunter Pets
-		[24604]	= Aura(24604, nil, 'TOPRIGHT', {0.08, 0.59, 0.41}) -- Furious Howl
+		[136]	= Aura(136, nil, 'TOPRIGHT', {0.08, 0.59, 0.41}) -- Mend Pet
 	},
 }
 
