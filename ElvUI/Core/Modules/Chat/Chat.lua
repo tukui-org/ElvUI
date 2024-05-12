@@ -1870,9 +1870,9 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		showLink = nil
 
 		-- fix blizzard formatting errors from localization strings
-		-- arg1 = gsub(arg1, '%%%d', '%%s') -- replace %1 to %s (russian client specific?) [broken since BFA?]
 		arg1 = gsub(arg1, '(%d%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 		arg1 = gsub(arg1, '(%d%%)$', '%1%%') -- escape percentages on the end
+		arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
 	else
 		arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
 	end
