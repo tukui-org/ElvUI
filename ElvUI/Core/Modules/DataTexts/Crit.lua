@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local format = format
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local strjoin = strjoin
 local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
@@ -14,17 +15,20 @@ local MELEE_CRIT_CHANCE = MELEE_CRIT_CHANCE
 local CR_CRIT_MELEE_TOOLTIP = CR_CRIT_MELEE_TOOLTIP
 local CR_CRIT_MELEE = CR_CRIT_MELEE
 local CR_CRIT_RANGED = CR_CRIT_RANGED
+local CR_CRIT_TOOLTIP = CR_CRIT_TOOLTIP
 
 local displayString, db = ''
 local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
+	if E.Classic then
+		DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
+	else
+		local critical = GetCombatRating(ratingIndex)
 
-	if not E.Classic then
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(format(CR_CRIT_MELEE_TOOLTIP, GetCombatRating(ratingIndex), GetCombatRatingBonus(ratingIndex)))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s|r %s%.2F%%|r', MELEE_CRIT_CHANCE, '|cffFFFFFF', meleeCrit))
+		DT.tooltip:AddDoubleLine(format(CR_CRIT_TOOLTIP, BreakUpLargeNumbers(critical) , GetCombatRatingBonus(ratingIndex)))
 	end
 
 	DT.tooltip:Show()
