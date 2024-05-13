@@ -2,12 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local format = format
-local BreakUpLargeNumbers = BreakUpLargeNumbers
 local strjoin = strjoin
-local GetCritChance = GetCritChance
-local GetRangedCritChance = GetRangedCritChance
+
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
+local GetCritChance = GetCritChance
+local GetRangedCritChance = GetRangedCritChance
+
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CRIT_ABBR = CRIT_ABBR
 
