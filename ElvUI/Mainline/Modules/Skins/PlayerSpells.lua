@@ -63,7 +63,7 @@ end
 
 local function HandleSubNameText(text, r, g, b)
 	if not (r == 0.7 and g == 0.7 and b == 0.7) then
-		text:SetTextColor(1, 1, 1)
+		text:SetTextColor(0.7, 0.7, 0.7)
 	end
 end
 
