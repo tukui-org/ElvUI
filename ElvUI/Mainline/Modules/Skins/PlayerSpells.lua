@@ -55,6 +55,28 @@ local function UpdateSpecFrame(frame)
 	end
 end
 
+-- FIX ME 11.0 take account for parchment/non parchment Remover
+local function UpdateSpellBookFrame(frame)
+	if not E.private.skins.parchmentRemoverEnable then return end
+
+	for _, button in frame.PagedSpellsFrame:EnumerateFrames() do
+		if button.Text then
+			button.Text:SetTextColor(1, 1, 1)
+		end
+		if button.Name then
+			button.Name:SetTextColor(1, 1, 1)
+		end
+		if button.SubName then
+			button.SubName:SetTextColor(.7, .7, .7)
+		end
+		if button.Backplate then
+			button.Backplate:SetAlpha(0)
+		end
+
+		-- Skin the button.Icon
+	end
+end
+
 function S:Blizzard_PlayerSpells()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -133,6 +155,7 @@ function S:Blizzard_PlayerSpells()
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	SpellBookFrame:StripTextures()
+	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 
 	if E.global.general.disableTutorialButtons then
 		SpellBookFrame.HelpPlateButton:Kill()
@@ -151,6 +174,8 @@ function S:Blizzard_PlayerSpells()
 	S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 	S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 	PagingControls.PageText:SetTextColor(1, 1, 1)
+
+	hooksecurefunc(SpellBookFrame, 'UpdateDisplayedSpells', UpdateSpellBookFrame)
 
 	-- HERO TALENTS (Finish me) FIX ME 11.0
 	local TalentsSelect = _G.HeroTalentsSelectionDialog

@@ -65,6 +65,17 @@ local function QuestLogQuests()
 	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
 		SkinHeaders(header)
 	end
+
+	-- FIX ME 11.0 (Skin the CheckBox)
+	--[[
+	for button in QuestScrollFrame.titleFramePool:EnumerateActive() do
+		if not button.IsSkinned then
+			if button.CheckBox then
+				S:HandleCheckBox(button.CheckBox)
+			end
+			button.IsSkinned = true
+		end
+	end]]
 end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
@@ -135,6 +146,8 @@ function S:WorldMapFrame()
 
 	local QuestScrollFrame = _G.QuestScrollFrame
 	QuestScrollFrame.Edge:SetAlpha(0)
+	QuestScrollFrame.BorderFrame:SetAlpha(0)
+	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 
