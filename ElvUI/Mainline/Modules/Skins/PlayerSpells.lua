@@ -55,25 +55,42 @@ local function UpdateSpecFrame(frame)
 	end
 end
 
+local function HandleNameText(text, r, g, b)
+	if not r == 1 and g == 1 and b == 1 then
+		text:SetTextColor(1, 1, 1)
+	end
+end
+
+local function HandleSubNameText(text, r, g, b)
+	if not r == 0.7 and g == 0.7 and b == 0.7 then
+		text:SetTextColor(1, 1, 1)
+	end
+end
+
 -- FIX ME 11.0 take account for parchment/non parchment Remover
 local function UpdateSpellBookFrame(frame)
 	if not E.private.skins.parchmentRemoverEnable then return end
 
 	for _, button in frame.PagedSpellsFrame:EnumerateFrames() do
-		if button.Text then
-			button.Text:SetTextColor(1, 1, 1)
-		end
-		if button.Name then
-			button.Name:SetTextColor(1, 1, 1)
-		end
-		if button.SubName then
-			button.SubName:SetTextColor(.7, .7, .7)
-		end
-		if button.Backplate then
-			button.Backplate:SetAlpha(0)
-		end
+		if not button.IsSkinned then
+			if button.Text then
+				button.Text:SetTextColor(1, 1, 1)
+			end
+			if button.Name then
+				button.Name:SetTextColor(1, 1, 1)
+				hooksecurefunc(button.Name, 'SetTextColor', HandleNameText)
+			end
+			if button.SubName then
+				button.SubName:SetTextColor(0.7, 0.7, 0.7)
+				hooksecurefunc(button.SubName, 'SetTextColor', HandleSubNameText)
+			end
+			if button.Backplate then
+				button.Backplate:SetAlpha(0)
+			end
 
-		-- Skin the button.Icon
+			-- Skin the button.Icon
+			button.IsSkinned = true
+		end
 	end
 end
 
