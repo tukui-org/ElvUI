@@ -23,12 +23,13 @@ local meleeCrit, rangedCrit, ratingIndex = 0, 0
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
+
 	if E.Classic then
-		DT.tooltip:AddLine(format('%s: %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %.2f%%', MELEE_CRIT_CHANCE, meleeCrit))
 	else
 		local critical = GetCombatRating(ratingIndex)
 
-		DT.tooltip:AddLine(format('|cffFFFFFF%s|r |cffFFFFFF%.2f%%|r', MELEE_CRIT_CHANCE, meleeCrit))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r |cffFFFFFF%.2f%%|r', MELEE_CRIT_CHANCE, meleeCrit))
 		DT.tooltip:AddDoubleLine(format(CR_CRIT_TOOLTIP, BreakUpLargeNumbers(critical) , GetCombatRatingBonus(ratingIndex)))
 	end
 
