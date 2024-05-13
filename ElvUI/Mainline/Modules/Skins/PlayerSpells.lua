@@ -56,18 +56,19 @@ local function UpdateSpecFrame(frame)
 end
 
 local function HandleNameText(text, r, g, b)
-	if not r == 1 and g == 1 and b == 1 then
+	if not (r == 1 and g == 1 and b == 1) then
 		text:SetTextColor(1, 1, 1)
 	end
 end
 
 local function HandleSubNameText(text, r, g, b)
-	if not r == 0.7 and g == 0.7 and b == 0.7 then
+	if not (r == 0.7 and g == 0.7 and b == 0.7) then
 		text:SetTextColor(1, 1, 1)
 	end
 end
 
 -- FIX ME 11.0 take account for parchment/non parchment Remover
+local hookedNames = {}
 local function UpdateSpellBookFrame(frame)
 	if not E.private.skins.parchmentRemoverEnable then return end
 
@@ -78,11 +79,19 @@ local function UpdateSpellBookFrame(frame)
 			end
 			if button.Name then
 				button.Name:SetTextColor(1, 1, 1)
-				hooksecurefunc(button.Name, 'SetTextColor', HandleNameText)
+
+				if not hookedNames[button.Name] then
+					hooksecurefunc(button.Name, 'SetTextColor', HandleNameText)
+					hookedNames[button.Name] = true
+				end
 			end
 			if button.SubName then
 				button.SubName:SetTextColor(0.7, 0.7, 0.7)
-				hooksecurefunc(button.SubName, 'SetTextColor', HandleSubNameText)
+
+				if not hookedNames[button.SubName] then
+					hooksecurefunc(button.SubName, 'SetTextColor', HandleSubNameText)
+					hookedNames[button.SubName] = true
+				end
 			end
 			if button.Backplate then
 				button.Backplate:SetAlpha(0)
