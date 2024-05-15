@@ -30,6 +30,7 @@ for i = 1, _G.MAX_CLASSES do
 			local _, name, _, _, role = GetSpecializationInfoForClassID(classID, specIndex)
 			if role == 'HEALER' then
 				HealerSpecs[name] = true
+				if name == 'Хранитель' then HealerSpecs['Хранительница'] = true end
 			elseif role == 'TANK' then
 				TankSpecs[name] = true
 			end
