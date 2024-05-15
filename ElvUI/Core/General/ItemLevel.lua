@@ -14,12 +14,13 @@ local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
 local UIParent = UIParent
 
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetCVarBool = C_CVar.GetCVarBool
+local GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription
+
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
-
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local GetCVarBool = C_CVar.GetCVarBool
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')

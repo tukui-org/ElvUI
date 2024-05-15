@@ -83,6 +83,7 @@ function AB:UpdatePet(event, unit)
 			end
 		end
 
+		--[[ FIX ME 11.0
 		if autoCastAllowed then
 			autoCast:Show()
 		else
@@ -93,7 +94,7 @@ function AB:UpdatePet(event, unit)
 			AutoCastShine_AutoCastStart(button.AutoCastShine)
 		else
 			AutoCastShine_AutoCastStop(button.AutoCastShine)
-		end
+		end]]
 
 		if not PetHasActionBar() and texture and name ~= 'PET_ACTION_FOLLOW' then
 			if PetActionButton_StopFlash then
@@ -181,7 +182,8 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = true -- keep over HandleButton
 		end
 
-		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		-- FIX ME 11.0
+		--autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, useMasque, true)
 	end
