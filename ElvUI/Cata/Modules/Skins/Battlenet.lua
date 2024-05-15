@@ -17,14 +17,15 @@ function S:BattleNetFrames()
 		skins[i]:SetTemplate('Transparent')
 	end
 
-	local PlayerReportFrame = _G.PlayerReportFrame
-	S:HandleFrame(PlayerReportFrame, true)
+	local ReportFrame = _G.ReportFrame
+	S:HandleFrame(ReportFrame, true)
 
-	PlayerReportFrame.Comment:StripTextures()
-	S:HandleEditBox(PlayerReportFrame.Comment)
+	ReportFrame.Comment:StripTextures()
+	S:HandleEditBox(ReportFrame.Comment)
+	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 
-	S:HandleButton(PlayerReportFrame.ReportButton)
-	S:HandleButton(PlayerReportFrame.CancelButton)
+	S:HandleButton(ReportFrame.ReportButton)
+	S:HandleButton(ReportFrame.CloseButton)
 
 	S:HandleFrame(_G.ReportCheatingDialog, true)
 

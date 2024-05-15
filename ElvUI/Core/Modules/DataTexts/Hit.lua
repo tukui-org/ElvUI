@@ -39,7 +39,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddLine(format('%s: %s', _G['COMBAT_RATING_NAME'..ratingIndex], hitValue))
+	DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', _G['COMBAT_RATING_NAME'..ratingIndex], hitValue))
 
 	local ratingTooltip = ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP
 	if E.Classic then
