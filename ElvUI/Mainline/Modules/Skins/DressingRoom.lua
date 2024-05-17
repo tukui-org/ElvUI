@@ -59,6 +59,11 @@ function S:DressUpFrame()
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
 
+	-- MOP Remix?
+	local SetSelection = DressUpFrame.SetSelectionPanel
+	SetSelection:StripTextures()
+	SetSelection:SetTemplate('Transparent')
+
 	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
 	DressUpFrame.LinkButton:Size(110, 22)
 	DressUpFrame.LinkButton:ClearAllPoints()
