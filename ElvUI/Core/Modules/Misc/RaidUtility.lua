@@ -486,8 +486,6 @@ function RU:RoleIcons_AddPartyUnit(unit, iconRole)
 	if unitRole == iconRole then
 		local _, unitClass = UnitClass(unit)
 		RU:RoleIcons_AddNames(roleRoster[0], name, unitClass)
-
-		return true
 	end
 end
 
