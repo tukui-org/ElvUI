@@ -296,7 +296,7 @@ function RU:CreateTargetIcons()
 		button:Size(TARGET_SIZE)
 
 		if i == 1 then
-			button:Point('TOPLEFT', TargetIcons, 2, -3)
+			button:Point('TOPLEFT', TargetIcons, 3, -3)
 		else
 			button:Point('LEFT', previous, 'RIGHT', 4, 0)
 		end
