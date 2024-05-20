@@ -26,8 +26,11 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local IsEveryoneAssistant = IsEveryoneAssistant
 local SetEveryoneIsAssistant = SetEveryoneIsAssistant
 local SetRaidTarget = SetRaidTarget
-local PlaySound = PlaySound
 local IsInGroup = IsInGroup
+local PlaySound = PlaySound
+local UnitClass = UnitClass
+local UnitExists = UnitExists
+local UnitName = UnitName
 
 local SetRestrictPings = C_PartyInfo.SetRestrictPings
 local GetRestrictPings = C_PartyInfo.GetRestrictPings
@@ -43,6 +46,7 @@ local TARGET_SIZE = 22
 -- GLOBALS: C_PartyInfo
 
 local roleRoster = {}
+local roleCount = {}
 local roles = {
 	{ role = 'TANK' },
 	{ role = 'HEALER' },
@@ -467,19 +471,51 @@ function RU:OnEvent_RestrictPings()
 	RU:SetEnabled(self, GetRestrictPings(), RU:HasPermission())
 end
 
--- Credits oRA3 for the RoleIcons
-local function sortColoredNames(a, b)
-	return strsub(a, 11) < strsub(b, 11)
+function RU:RoleIcons_SortNames(b) -- self is a
+	return strsub(self, 11) < strsub(b, 11)
 end
 
+function RU:RoleIcons_AddNames(tbl, name, unitClass)
+	local color = E:ClassColor(unitClass, true) or PRIEST_COLOR
+	tinsert(tbl, format('|cff%02x%02x%02x%s', color.r * 255, color.g * 255, color.b * 255, gsub(name, '%-.+', '*')))
+end
+
+function RU:RoleIcons_AddPartyUnit(unit, iconRole)
+	local name = UnitExists(unit) and UnitName(unit)
+	local unitRole = name and UnitGroupRolesAssigned(unit)
+	if unitRole == iconRole then
+		local _, unitClass = UnitClass(unit)
+		RU:RoleIcons_AddNames(roleRoster[0], name, unitClass)
+
+		return true
+	end
+end
+
+-- Credits oRA3 for the RoleIcons
 function RU:OnEnter_Role()
 	wipe(roleRoster)
 
-	for i = 1, NUM_RAID_GROUPS do
+	for i = 0, NUM_RAID_GROUPS do -- use 0 for party
 		roleRoster[i] = {}
 	end
 
-	local role = self.role
+	local iconRole = self.role
+	local isRaid = IsInRaid()
+	if IsInGroup() and not isRaid then
+		RU:RoleIcons_AddPartyUnit('player', iconRole)
+	end
+
+	for i = 1, GetNumGroupMembers() do
+		if isRaid then
+			local name, _, group, _, _, unitClass, _, _, _, _, _, unitRole = GetRaidRosterInfo(i)
+			if name and unitRole == iconRole then
+				RU:RoleIcons_AddNames(roleRoster[group], name, unitClass)
+			end
+		else
+			RU:RoleIcons_AddPartyUnit('party'..i, iconRole)
+		end
+	end
+
 	local point = E:GetScreenQuadrant(ShowButton)
 	local bottom = point and strfind(point, 'BOTTOM')
 	local left = point and strfind(point, 'LEFT')
@@ -491,21 +527,13 @@ function RU:OnEnter_Role()
 	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(E.UIParent, 'ANCHOR_NONE')
 	GameTooltip:Point(anchor1, self, anchor2, anchorX, 0)
-	GameTooltip:SetText(_G['INLINE_' .. role .. '_ICON'] .. _G[role])
-
-	for i = 1, GetNumGroupMembers() do
-		local name, _, group, _, _, class, _, _, _, _, _, groupRole = GetRaidRosterInfo(i)
-		if name and groupRole == role then
-			local color = E:ClassColor(class, true) or PRIEST_COLOR
-			tinsert(roleRoster[group], format('|cff%02x%02x%02x%s', color.r * 255, color.g * 255, color.b * 255, gsub(name, '%-.+', '*')))
-		end
-	end
+	GameTooltip:SetText(_G['INLINE_'..iconRole..'_ICON'] .. _G[iconRole])
 
 	for group, list in next, roleRoster do
-		sort(list, sortColoredNames)
+		sort(list, RU.RoleIcons_SortNames)
 
 		for _, name in next, list do
-			GameTooltip:AddLine(format('[%d] %s', group, name), 1, 1, 1)
+			GameTooltip:AddLine((group == 0 and name) or format('[%d] %s', group, name), 1, 1, 1)
 		end
 
 		roleRoster[group] = nil
@@ -534,26 +562,31 @@ function RU:PositionSections()
 	RU:ReanchorSection(_G.RaidUtilityRoleIcons, bottom, _G.RaidUtilityTargetIcons)
 end
 
-local count = {}
-function RU:OnEvent_RoleIcons()
-	local isInRaid = IsInRaid()
-	self:SetShown(isInRaid)
-
-	if not isInRaid then return end
-
+function RU:OnEvent_RoleIcons(event, initLogin, isReload)
 	RU:PositionSections()
 
-	wipe(count)
+	if event ~= 'PLAYER_ENTERING_WORLD' or (initLogin or isReload) then
+		wipe(roleCount)
 
-	for i = 1, GetNumGroupMembers() do
-		local role = UnitGroupRolesAssigned('raid'..i)
-		if role and role ~= 'NONE' then
-			count[role] = (count[role] or 0) + 1
+		local isRaid = IsInRaid()
+		local unit = isRaid and 'raid' or 'party'
+		for i = 1, GetNumGroupMembers() do
+			local role = UnitGroupRolesAssigned(unit..i)
+			if role and role ~= 'NONE' then
+				roleCount[role] = (roleCount[role] or 0) + 1
+			end
 		end
-	end
 
-	for Role, icon in next, _G.RaidUtilityRoleIcons.icons do
-		icon.count:SetText(count[Role] or 0)
+		if IsInGroup() and not isRaid then
+			local role = UnitGroupRolesAssigned('player')
+			if role and role ~= 'NONE' then
+				roleCount[role] = (roleCount[role] or 0) + 1
+			end
+		end
+
+		for role, icon in next, _G.RaidUtilityRoleIcons.icons do
+			icon.count:SetText(roleCount[role] or 0)
+		end
 	end
 end
 
