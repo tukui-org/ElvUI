@@ -94,10 +94,13 @@ local function UpdateColor(element, powerType)
 	end
 end
 
-local function Update(self, event, unit, powerType)
-	if(not (unit and (UnitIsUnit(unit, 'player') and (not powerType or powerType == ClassPowerType)
-		or unit == 'vehicle' and powerType == 'COMBO_POINTS'))) then
-		return
+local function Update(self, event, unit, powerType, spellID)
+	if not (unit and UnitIsUnit(unit, 'player')) then return end -- verify its player
+
+	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
+		if spellID ~= 73981 then return end -- cata redirect update
+	elseif not ((not powerType or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
+		return -- normal break conditions
 	end
 
 	local element = self.ClassPower
@@ -258,12 +261,14 @@ do
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
-		if not oUF.isRetail then
+		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
+			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		else
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
-			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		if oUF.isCata then
+			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 		end
 
 		self.ClassPower.__isEnabled = true
@@ -283,6 +288,10 @@ do
 			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		else
 			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
+		end
+
+		if oUF.isCata then
+			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 		end
 
 		local element = self.ClassPower
