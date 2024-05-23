@@ -95,12 +95,11 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if not (unit and UnitIsUnit(unit, 'player')) then return end -- verify its player
+	if not (powerType and unit and UnitIsUnit(unit, 'player')) then return end
 
-	local comboPoints = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
-	if not ((not powerType or comboPoints or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
-		return -- normal break conditions
-	end
+	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
+	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
+	if not (vehicle or classic or powerType == ClassPowerType) then return end
 
 	local element = self.ClassPower
 
@@ -115,7 +114,7 @@ local function Update(self, event, unit, powerType)
 
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
-		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
+		local powerID = (vehicle and SPELL_POWER_COMBO_POINTS) or ClassPowerID
 
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
