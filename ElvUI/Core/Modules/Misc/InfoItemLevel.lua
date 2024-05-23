@@ -111,39 +111,41 @@ end
 function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.Classic then return end
 
-	if setupCharacterPage then
-		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
-	end
-
-	if E.db.general.itemLevel.displayCharacterInfo then
-		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
-		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
-
-		if E.Retail then
-			_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+	if not E:IsAddOnEnabled('DejaCharacterStats') then
+		if setupCharacterPage then
+			M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 		end
 
-		if not _G.CharacterFrame.CharacterInfoHooked then
-			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
-			_G.CharacterFrame.CharacterInfoHooked = true
-		end
+		if E.db.general.itemLevel.displayCharacterInfo then
+			M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
+			M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+			M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
+			M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 
-		if not setupCharacterPage then
-			M:UpdateCharacterInfo()
-		end
-	else
-		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
-		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
-		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+			if E.Retail then
+				_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+			end
 
-		if E.Retail then
-			_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
-		end
+			if not _G.CharacterFrame.CharacterInfoHooked then
+				_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
+				_G.CharacterFrame.CharacterInfoHooked = true
+			end
 
-		M:ClearPageInfo(_G.CharacterFrame, 'Character')
+			if not setupCharacterPage then
+				M:UpdateCharacterInfo()
+			end
+		else
+			M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
+			M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+			M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+			M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+
+			if E.Retail then
+				_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+			end
+
+			M:ClearPageInfo(_G.CharacterFrame, 'Character')
+		end
 	end
 
 	if E.db.general.itemLevel.displayInspectInfo then
