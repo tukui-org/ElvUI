@@ -97,9 +97,9 @@ end
 local function Update(self, event, unit, powerType, spellID)
 	if not (unit and UnitIsUnit(unit, 'player')) then return end -- verify its player
 
-	if event == 'UNIT_SPELLCAST_SUCCEEDED' then
-		if spellID ~= 73981 then return end -- cata redirect update
-	elseif not ((not powerType or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
+	-- UNIT_POWER_UPDATE doesnt always fire COMBO_POINTS on the start of a fight (when it should)
+	-- we can use UNIT_SPELLCAST_SUCCEEDED to fix this; Blizzard updates using it UNIT_POWER_FREQUENT without type checking
+	if event ~= 'UNIT_SPELLCAST_SUCCEEDED' and not ((not powerType or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
 		return -- normal break conditions
 	end
 
@@ -267,7 +267,7 @@ do
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isCata then
+		if oUF.isCata and PlayerClass == 'ROGUE' then
 			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 		end
 
@@ -290,7 +290,7 @@ do
 			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
-		if oUF.isCata then
+		if oUF.isCata and PlayerClass == 'ROGUE' then
 			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 		end
 
