@@ -94,12 +94,11 @@ local function UpdateColor(element, powerType)
 	end
 end
 
-local function Update(self, event, unit, powerType, spellID)
+local function Update(self, event, unit, powerType)
 	if not (unit and UnitIsUnit(unit, 'player')) then return end -- verify its player
 
-	-- UNIT_POWER_UPDATE doesnt always fire COMBO_POINTS on the start of a fight (when it should)
-	-- we can use UNIT_SPELLCAST_SUCCEEDED to fix this; Blizzard updates using it UNIT_POWER_FREQUENT without type checking
-	if event ~= 'UNIT_SPELLCAST_SUCCEEDED' and not ((not powerType or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
+	local comboPoints = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
+	if not ((not powerType or comboPoints or powerType == ClassPowerType) or (unit == 'vehicle' and powerType == 'COMBO_POINTS')) then
 		return -- normal break conditions
 	end
 
@@ -130,7 +129,7 @@ local function Update(self, event, unit, powerType, spellID)
 		elseif oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			cur = UnitPower(unit, powerID, true) / mod
 		else
-			cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
+			cur = comboPoints and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		end
 
 		local numActive = cur + 0.9
@@ -267,10 +266,6 @@ do
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isCata and PlayerClass == 'ROGUE' then
-			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
-		end
-
 		self.ClassPower.__isEnabled = true
 
 		if (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI('player') then
@@ -288,10 +283,6 @@ do
 			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		else
 			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
-		end
-
-		if oUF.isCata and PlayerClass == 'ROGUE' then
-			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 		end
 
 		local element = self.ClassPower
