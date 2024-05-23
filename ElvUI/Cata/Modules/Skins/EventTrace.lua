@@ -87,6 +87,7 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(FilterBar.CheckAllButton)
 
 	-- Resize Button
+	EventTrace.ResizeButton:ClearAllPoints()
 	EventTrace.ResizeButton:Point('BOTTOMRIGHT', 1, -1)
 
 	ReskinEventTraceFrame(EventTrace.Log.Events)
