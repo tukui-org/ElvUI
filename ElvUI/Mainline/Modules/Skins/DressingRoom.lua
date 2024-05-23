@@ -59,10 +59,27 @@ function S:DressUpFrame()
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
 
-	-- MOP Remix?
+	local function HandleSetButtons(button)
+		if button.IsSkinned then return end
+
+		S:HandleIcon(button.Icon, true)
+		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		button.BackgroundTexture:SetAlpha(0)
+		button.SelectedTexture:SetColorTexture(1, .8, 0, .25)
+		button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+
+		button.IsSkinned = true
+	end
+
 	local SetSelection = DressUpFrame.SetSelectionPanel
-	SetSelection:StripTextures()
-	SetSelection:SetTemplate('Transparent')
+	if SetSelection then
+		SetSelection:StripTextures()
+		SetSelection:SetTemplate('Transparent')
+
+		hooksecurefunc(SetSelection.ScrollBox, "Update", function(self)
+			self:ForEachFrame(HandleSetButtons)
+		end)
+	end
 
 	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
 	DressUpFrame.LinkButton:Size(110, 22)
