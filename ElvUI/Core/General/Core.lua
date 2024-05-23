@@ -27,6 +27,7 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
 
 local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
+local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
 local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
@@ -1948,6 +1949,8 @@ function E:Initialize()
 	local _, serverID = strsplit('-', playerGUID)
 	E.serverID = tonumber(serverID)
 	E.myguid = playerGUID
+
+	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
 	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')

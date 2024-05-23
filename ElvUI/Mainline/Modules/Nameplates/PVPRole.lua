@@ -4,12 +4,17 @@ local ElvUF = E.oUF
 
 local wipe = wipe
 local format = format
+
+local GetClassInfo = GetClassInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetBattlefieldScore = GetBattlefieldScore
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 
@@ -27,11 +32,15 @@ for i = 1, _G.MAX_CLASSES do
 	local _, _, classID = GetClassInfo(i)
 	if classID then
 		for specIndex = 1, GetNumSpecializationsForClassID(classID) do
-			local _, name, _, _, role = GetSpecializationInfoForClassID(classID, specIndex)
+			local _, mName, _, _, role = GetSpecializationInfoForClassID(classID, specIndex, 2)
+			local _, fName = GetSpecializationInfoForClassID(classID, specIndex, 3)
+
 			if role == 'HEALER' then
-				HealerSpecs[name] = true
+				HealerSpecs[mName] = true
+				HealerSpecs[fName] = true
 			elseif role == 'TANK' then
-				TankSpecs[name] = true
+				TankSpecs[mName] = true
+				TankSpecs[fName] = true
 			end
 		end
 	end

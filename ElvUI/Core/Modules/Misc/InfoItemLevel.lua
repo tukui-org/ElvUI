@@ -90,19 +90,30 @@ function M:UpdateCharacterInfo(event)
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
 
+function M:UpdateSocketDisplay(item, hide)
+	local slots = item.SocketDisplay and item.SocketDisplay.Slots
+	if slots then
+		for _, slot in next, slots do
+			slot:SetAlpha(hide and 0 or 1)
+		end
+	end
+end
+
 function M:ClearPageInfo(frame, which)
 	if not (frame and frame.ItemLevelText) then return end
 	frame.ItemLevelText:SetText('')
 
 	for i = 1, numInspectItems do
 		if i ~= 4 then
-			local inspectItem = _G[which..InspectItems[i]]
-			inspectItem.enchantText:SetText('')
-			inspectItem.iLvlText:SetText('')
+			local slot = _G[which..InspectItems[i]]
+			slot.enchantText:SetText('')
+			slot.iLvlText:SetText('')
+
+			M:UpdateSocketDisplay(slot)
 
 			for y=1, 10 do
-				inspectItem['textureSlot'..y]:SetTexture()
-				inspectItem['textureSlotBackdrop'..y]:Hide()
+				slot['textureSlot'..y]:SetTexture()
+				slot['textureSlotBackdrop'..y]:Hide()
 			end
 		end
 	end
@@ -111,39 +122,41 @@ end
 function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.Classic then return end
 
-	if setupCharacterPage then
-		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
-	end
-
-	if E.db.general.itemLevel.displayCharacterInfo then
-		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
-		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
-		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
-
-		if E.Retail then
-			_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+	if not E:IsAddOnEnabled('DejaCharacterStats') then
+		if setupCharacterPage then
+			M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 		end
 
-		if not _G.CharacterFrame.CharacterInfoHooked then
-			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
-			_G.CharacterFrame.CharacterInfoHooked = true
-		end
+		if E.db.general.itemLevel.displayCharacterInfo then
+			M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
+			M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+			M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
+			M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
 
-		if not setupCharacterPage then
-			M:UpdateCharacterInfo()
-		end
-	else
-		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
-		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
-		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+			if E.Retail then
+				_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
+			end
 
-		if E.Retail then
-			_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
-		end
+			if not _G.CharacterFrame.CharacterInfoHooked then
+				_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
+				_G.CharacterFrame.CharacterInfoHooked = true
+			end
 
-		M:ClearPageInfo(_G.CharacterFrame, 'Character')
+			if not setupCharacterPage then
+				M:UpdateCharacterInfo()
+			end
+		else
+			M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
+			M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+			M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+			M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+
+			if E.Retail then
+				_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+			end
+
+			M:ClearPageInfo(_G.CharacterFrame, 'Character')
+		end
 	end
 
 	if E.db.general.itemLevel.displayInspectInfo then
@@ -156,24 +169,26 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	end
 end
 
-function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `which` is used by plugins
+function M:UpdatePageStrings(i, iLevelDB, slot, slotInfo, which) -- `which` is used by plugins
 	iLevelDB[i] = slotInfo.iLvl
 
-	inspectItem.enchantText:SetText(slotInfo.enchantTextShort)
+	slot.enchantText:SetText(slotInfo.enchantTextShort)
 	if slotInfo.enchantColors and next(slotInfo.enchantColors) then
-		inspectItem.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
+		slot.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
 	end
 
-	inspectItem.iLvlText:SetText(slotInfo.iLvl)
+	slot.iLvlText:SetText(slotInfo.iLvl)
 	if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
-		inspectItem.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
+		slot.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 	end
+
+	M:UpdateSocketDisplay(slot, true)
 
 	local gemStep, essenceStep = 1, 1
 	for x = 1, 10 do
-		local texture = inspectItem['textureSlot'..x]
-		local backdrop = inspectItem['textureSlotBackdrop'..x]
-		local essenceType = inspectItem['textureSlotEssenceType'..x]
+		local texture = slot['textureSlot'..x]
+		local backdrop = slot['textureSlotBackdrop'..x]
+		local essenceType = slot['textureSlotEssenceType'..x]
 		if essenceType then essenceType:Hide() end
 
 		local gem = slotInfo.gems and slotInfo.gems[gemStep]
@@ -194,11 +209,11 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 			end
 
 			if not essenceType then
-				essenceType = inspectItem:CreateTexture()
+				essenceType = slot:CreateTexture()
 				essenceType:SetTexture(2907423)
 				essenceType:SetRotation(rad(90))
 				essenceType:SetParent(backdrop)
-				inspectItem['textureSlotEssenceType'..x] = essenceType
+				slot['textureSlotEssenceType'..x] = essenceType
 			end
 
 			essenceType:Point('BOTTOM', texture, 'TOP', 0, -9)

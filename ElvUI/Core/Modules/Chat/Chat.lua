@@ -490,6 +490,7 @@ do --this can save some main file locals
 			z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
 			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
 			z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
+			z["Player-1401-0AB0E6D1"]	= ElvRed --	 . [Alliance] Paladin:	Damara/WoW Remix
 			z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
 			z['Player-1401-0A9B0131']	= ElvYellow	-- [Alliance] Rogue:	Anonia
 			z['Player-1401-041E4D64']	= ElvGreen	-- [Alliance] Monk:		Maithilis
@@ -516,6 +517,7 @@ do --this can save some main file locals
 			z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock
 			z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior
 			z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman
+			z['Player-1598-0F87B5AA']	= ElvBlue -- [Alliance] Priest
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
