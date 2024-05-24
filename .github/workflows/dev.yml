@@ -5,6 +5,8 @@ on:
     branches:
       - "*"
       - "!feature/"
+    tags-ignore:
+      - '**'
 
 jobs:
   release:
