@@ -25,7 +25,7 @@ local function OnEnter()
 	if not classTooltip then classTooltip = STAT_HASTE_TOOLTIP end
 
 	local haste = GetHaste()
-	DT.tooltip:AddLine(format('|cffFFFFFF%s|r %s%.2F%%|r', STAT_HASTE, (haste < 0 and not GetPVPGearStatRules()) and '|cffFF3333' or '|cffFFFFFF', haste))
+	DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s%.2f%%|r', STAT_HASTE, (haste < 0 and not GetPVPGearStatRules()) and '|cffFF3333' or '|cffFFFFFF', haste))
 	DT.tooltip:AddLine(classTooltip..format(STAT_HASTE_BASE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_HASTE_MELEE)), GetCombatRatingBonus(CR_HASTE_MELEE)))
 	DT.tooltip:Show()
 end

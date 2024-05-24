@@ -50,7 +50,7 @@ local function OnEnter()
 		local masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
 
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(format('%s: %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY) or 0), masteryBonus))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY) or 0), masteryBonus))
 
 		DT.tooltip:Show()
 	end

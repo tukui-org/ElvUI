@@ -380,12 +380,32 @@ function M:SetIconParent(frame)
 	end
 end
 
+function M:HandleDifficulty(difficulty, cluster, hidden)
+	if not difficulty then return end
+
+	if cluster then
+		difficulty:ClearAllPoints()
+		difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
+		M:SetIconParent(difficulty)
+		M:SetScale(difficulty, 1)
+	elseif hidden then
+		difficulty:SetParent(E.HiddenFrame)
+	else
+		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
+		difficulty:ClearAllPoints()
+		difficulty:Point(position, Minimap, xOffset, yOffset)
+		M:SetIconParent(difficulty)
+		M:SetScale(difficulty, scale)
+	end
+end
+
 function M:UpdateIcons()
 	local gameTime = _G.GameTimeFrame
 	local indicator = MinimapCluster.IndicatorFrame
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
 	local difficulty = MinimapCluster.InstanceDifficulty or _G.MiniMapInstanceDifficulty
+	local difficultyGuild = _G.GuildInstanceDifficulty
 	local battlefieldFrame = _G.MiniMapBattlefieldFrame
 
 	if not next(IconParents) then
@@ -394,6 +414,7 @@ function M:UpdateIcons()
 		if craftingFrame then M:SaveIconParent(craftingFrame) end
 		if mailFrame then M:SaveIconParent(mailFrame) end
 		if battlefieldFrame then M:SaveIconParent(battlefieldFrame) end
+		if difficultyGuild then M:SaveIconParent(difficultyGuild) end
 		if difficulty then M:SaveIconParent(difficulty) end
 	end
 
@@ -419,12 +440,8 @@ function M:UpdateIcons()
 			E:EnableMover(M.ClusterHolder.mover.name)
 		end
 
-		if difficulty then
-			difficulty:ClearAllPoints()
-			difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
-			M:SetIconParent(difficulty)
-			M:SetScale(difficulty, 1)
-		end
+		if difficulty then M:HandleDifficulty(difficulty, true) end
+		if difficultyGuild then M:HandleDifficulty(difficultyGuild, true) end
 
 		if gameTime then M:SetIconParent(gameTime) end
 		if craftingFrame then M:SetIconParent(craftingFrame) end
@@ -494,15 +511,11 @@ function M:UpdateIcons()
 		end
 
 		if difficulty then
-			if hidden then
-				difficulty:SetParent(E.HiddenFrame)
-			else
-				local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
-				difficulty:ClearAllPoints()
-				difficulty:Point(position, Minimap, xOffset, yOffset)
-				M:SetIconParent(difficulty)
-				M:SetScale(difficulty, scale)
-			end
+			M:HandleDifficulty(difficulty, false, hidden)
+		end
+
+		if difficultyGuild then
+			M:HandleDifficulty(difficultyGuild, false, hidden)
 		end
 	end
 end

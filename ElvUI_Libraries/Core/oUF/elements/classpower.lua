@@ -95,10 +95,11 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (unit and (UnitIsUnit(unit, 'player') and (not powerType or powerType == ClassPowerType)
-		or unit == 'vehicle' and powerType == 'COMBO_POINTS'))) then
-		return
-	end
+	if not (powerType and unit and UnitIsUnit(unit, 'player')) then return end
+
+	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
+	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
+	if not (vehicle or classic or powerType == ClassPowerType) then return end
 
 	local element = self.ClassPower
 
@@ -113,7 +114,7 @@ local function Update(self, event, unit, powerType)
 
 	local cur, max, mod, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
-		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
+		local powerID = (vehicle and SPELL_POWER_COMBO_POINTS) or ClassPowerID
 
 		max = UnitPowerMax(unit, powerID)
 		mod = UnitPowerDisplayMod(powerID)
@@ -127,7 +128,7 @@ local function Update(self, event, unit, powerType)
 		elseif oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			cur = UnitPower(unit, powerID, true) / mod
 		else
-			cur = not oUF.isRetail and powerType == 'COMBO_POINTS' and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
+			cur = comboPoints and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		end
 
 		local numActive = cur + 0.9
@@ -258,12 +259,10 @@ do
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
-		if not oUF.isRetail then
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
-		end
-
 		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
 			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		else
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
 		self.ClassPower.__isEnabled = true

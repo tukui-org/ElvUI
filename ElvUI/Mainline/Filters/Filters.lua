@@ -648,6 +648,9 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- WoW: Remix TEMPORARY STUFF
+		[440393]	= List(), -- Timerunner's Advantage
+		[424143] 	= List(), -- WoW Remix: Mists of Pandaria
 	-- Haste effects
 		[2825]		= List(), -- [Shaman] Bloodlust
 		[32182]		= List(), -- [Shaman] Heroism

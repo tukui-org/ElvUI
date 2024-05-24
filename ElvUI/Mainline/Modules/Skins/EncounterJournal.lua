@@ -183,7 +183,9 @@ local function ItemSetElements(set)
 end
 
 local function HandleItemSetsElements(scrollBox)
-	scrollBox:ForEachFrame(ItemSetElements)
+	if scrollBox then
+		scrollBox:ForEachFrame(ItemSetElements)
+	end
 end
 
 function S:Blizzard_EncounterJournal()

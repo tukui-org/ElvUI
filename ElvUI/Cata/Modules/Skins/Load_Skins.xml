@@ -24,6 +24,7 @@
 	<Script file='Friends.lua'/>
 	<Script file='Gossip.lua'/>
 	<Script file='GuildBank.lua'/>
+	<Script file='GuildControl.lua'/>
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
 	<Script file='Inspect.lua'/>

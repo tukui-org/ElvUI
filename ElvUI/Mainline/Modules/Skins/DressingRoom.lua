@@ -46,6 +46,24 @@ local function DressUpConfigureSize(frame, isMinimized)
 	frame.OutfitDropDown:Width(isMinimized and 140 or 190)
 end
 
+local function HandleSetButtons(button)
+	if button.IsSkinned then return end
+
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+	button.BackgroundTexture:SetAlpha(0)
+	button.SelectedTexture:SetColorTexture(1, .8, 0, .25)
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+
+	button.IsSkinned = true
+end
+
+local function SetSelection_Update(box)
+	if box then
+		box:ForEachFrame(HandleSetButtons)
+	end
+end
+
 function S:DressUpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then return end
 
@@ -58,6 +76,14 @@ function S:DressUpFrame()
 	S:HandleModelSceneControlButtons(DressUpFrame.ModelScene.ControlFrame)
 	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
 	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
+
+	local SetSelection = DressUpFrame.SetSelectionPanel
+	if SetSelection then
+		SetSelection:StripTextures()
+		SetSelection:SetTemplate('Transparent')
+
+		hooksecurefunc(SetSelection.ScrollBox, 'Update', SetSelection_Update)
+	end
 
 	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
 	DressUpFrame.LinkButton:Size(110, 22)

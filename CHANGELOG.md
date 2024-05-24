@@ -1,3 +1,12 @@
+### Version 13.64 [ May 7th 2024 ]
+*   Cataclysm Hotfixes
+    *   Shaman dispel conditions fixed. (Thanks Oppzippy)
+    *   Bag menu to assign removed as the API doesn't work anymore.
+    *   Bag Starter Quest icon not displaying.
+    *   Quest NPC Model text too large.
+    *   Equipment flyout border colors.
+    *   Pet Stable skin updated.
+
 ### Version 13.63 [ May 2nd 2024 ]
 *   Cataclysm Hotfixes
     *   Color Picker
