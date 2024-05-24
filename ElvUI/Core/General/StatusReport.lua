@@ -253,7 +253,7 @@ function E:UpdateStatusFrame()
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	end
 
-	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', (E.TimerunningID == 1 and 'Remix') or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or 'Normal')
+	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', (E.TimerunningID == 1 and 'Remix') or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Retail and 'Classic') or 'Normal')
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end
