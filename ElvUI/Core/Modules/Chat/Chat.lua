@@ -334,8 +334,7 @@ do --this can save some main file locals
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
 			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
 			-- Repooc
-			z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
-			z['Repooc-Mankrik']			= ElvBlue
+			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
 			-- Elv
 			z['Elv-Spirestone']			= itsElv
