@@ -350,6 +350,7 @@ do --this can save some main file locals
 			z['Whorlock-Spirestone']	= itsElv
 			-- Repooc
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
+			z['Depooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
 			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
 			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
