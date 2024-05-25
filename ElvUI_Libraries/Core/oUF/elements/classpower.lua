@@ -128,7 +128,7 @@ local function Update(self, event, unit, powerType)
 		elseif oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			cur = UnitPower(unit, powerID, true) / mod
 		else
-			cur = comboPoints and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
+			cur = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
 		end
 
 		local numActive = cur + 0.9
