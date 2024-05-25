@@ -293,10 +293,24 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 	end
 end
 
+local function HandleDynamicFlightButton(button, index)
+	if button.Border then button.Border:Hide() end
+
+	button:SetPushedTexture(0)
+	button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+	button:SetNormalTexture(0)
+	S:HandleIcon(select(index, button:GetRegions()))
+end
+
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
-	--S:HandleButton(_G.MountJournal.MountSpellButtons) -- Fix Me 11.0
 	S:HandleButton(_G.MountJournalFilterButton)
+
+	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
+	local Flyout = _G.MountJournal.DynamicFlightFlyout
+	Flyout.Background:Hide()
+	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
+	HandleDynamicFlightButton(Flyout.DynamicFlightModeButton, 4)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
 	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
