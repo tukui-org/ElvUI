@@ -94,7 +94,7 @@ local function UpdateSpellBookFrame(frame)
 				end
 			end
 			if button.Backplate then
-				button.Backplate:SetAlpha(0)
+				button.Backplate:Kill()
 			end
 
 			-- Skin the button.Icon
@@ -182,6 +182,8 @@ function S:Blizzard_PlayerSpells()
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	SpellBookFrame:StripTextures()
 	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
+	S:HandleEditBox(SpellBookFrame.SearchBox)
+	S:HandleCheckBox(SpellBookFrame.HidePassivesCheckButton.Button) -- Fix me 11.0 make the dropdown pretty
 
 	if E.global.general.disableTutorialButtons then
 		SpellBookFrame.HelpPlateButton:Kill()
