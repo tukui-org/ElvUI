@@ -372,10 +372,14 @@ function RU:OnClick_RaidUtilityPanel(...)
 end
 
 function RU:DragStart_ShowButton()
+	if InCombatLockdown() then return end
+
 	self:StartMoving()
 end
 
 function RU:DragStop_ShowButton()
+	if InCombatLockdown() then return end
+
 	self:StopMovingOrSizing()
 
 	local point = self:GetPoint()
