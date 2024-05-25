@@ -220,28 +220,60 @@ local function FixSidebarTabCoords()
 	end
 end
 
+-- FIX ME 11.0 NEEDS SIMPY MAGIC -- Credits NDUI
+local oldAtlas = {
+	['Options_ListExpand_Right'] = 1,
+	['Options_ListExpand_Right_Expanded'] = 1,
+}
+local function updateCollapse(texture, atlas)
+	if (not atlas) or oldAtlas[atlas] then
+		if not texture.__owner then
+			texture.__owner = texture:GetParent()
+		end
+		if texture.__owner:IsCollapsed() then
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
+		else
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Collapse')
+		end
+	end
+end
+
+local function updateToggleCollapse(button)
+	button:SetNormalTexture(0)
+	button.__texture:DoCollapse(button:GetHeader():IsCollapsed())
+end
+
 -- FIX ME 11.0 Mostly now in: ReputationEntryMixin
 local function UpdateFactionSkins(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		local container = child.Container
-		if container and not container.IsSkinned then
-			container.IsSkinned = true
-
-			container:StripTextures()
-
-			if container.ExpandOrCollapseButton then
-				S:HandleCollapseTexture(container.ToggleCollapseButton)
+	for i = 1, frame.ScrollTarget:GetNumChildren() do
+		local child = select(i, frame.ScrollTarget:GetChildren())
+		if child and not child.isSkinned then
+			if child.Right then
+				child:StripTextures()
+				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
+				updateCollapse(child.Right)
+				updateCollapse(child.HighlightRight)
+				child:CreateBackdrop()
+				child.backdrop:SetInside(child)
 			end
 
-			if container.ReputationBar then
-				container.ReputationBar:StripTextures()
-				container.ReputationBar:SetStatusBarTexture(E.media.normTex)
+			if child.ReputationBar then
+				child.ReputationBar:StripTextures()
+				child.ReputationBar:SetStatusBarTexture(E.media.normTex)
 
-				if not container.ReputationBar.backdrop then
-					container.ReputationBar:CreateBackdrop()
-					E:RegisterStatusBar(container.ReputationBar)
+				if not child.ReputationBar.backdrop then
+					child.ReputationBar:CreateBackdrop()
+					E:RegisterStatusBar(child.ReputationBar)
 				end
 			end
+
+			if child.ToggleCollapseButton then
+				-- TO DO 11.0 FIX ME
+				--S:HandleCollapseTexture(child.ToggleCollapseButton, true)
+			end
+
+			child.isSkinned = true
 		end
 	end
 end
@@ -424,7 +456,7 @@ function S:Blizzard_UIPanels_Game()
 		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
 	end
 
-	--hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
+	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	--hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)

@@ -46,36 +46,53 @@ local function NotifyDialogShow(_, dialog)
 	dialog.isSkinned = true
 end
 
-local function SkinHeaders(header)
+local function SkinHeaders(header, isCalling)
 	if header.IsSkinned then return end
 
-	if header.TopFiligree then
-		header.TopFiligree:Hide()
-	end
-
-	header:SetAlpha(.8)
+	if header.Background then header.Background:SetAlpha(.7) end
+	if header.TopFiligree then header.TopFiligree:Hide() end
+	if header.Divider then header.Divider:Hide() end
 
 	header.HighlightTexture:SetAllPoints(header.Background)
 	header.HighlightTexture:SetAlpha(0)
 
+	local collapseButton = isCalling and header or header.CollapseButton
+	if collapseButton then
+		collapseButton:GetPushedTexture():SetAlpha(0)
+		collapseButton:GetHighlightTexture():SetAlpha(0)
+		S:HandleCollapseTexture(collapseButton, true)
+	end
+
 	header.IsSkinned = true
 end
 
+-- FIX ME 11.0 look at me plx
 local function QuestLogQuests()
-	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
-		SkinHeaders(header)
+	for button in QuestScrollFrame.headerFramePool:EnumerateActive() do
+		if button.ButtonText then
+			if not button.isSkinned then
+				button:StripTextures()
+				button:SetTemplate('Transparent')
+				button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+
+				button.isSkinned = true
+			end
+		end
 	end
 
-	-- FIX ME 11.0 (Skin the CheckBox)
-	--[[
 	for button in QuestScrollFrame.titleFramePool:EnumerateActive() do
-		if not button.IsSkinned then
+		if not button.isSkinned then
 			if button.CheckBox then
-				S:HandleCheckBox(button.CheckBox)
+				button.CheckBox:DisableDrawLayer('BACKGROUND')
+				button.CheckBox:CreateBackdrop()
 			end
-			button.IsSkinned = true
+			--FIX ME 11.0; Use the actual ElvUI Check Skin thing
+			if button.Check then
+				button.Check:SetAtlas('checkmark-minimal')
+			end
+			button.isSkinned = true
 		end
-	end]]
+	end
 end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
@@ -116,6 +133,7 @@ function S:WorldMapFrame()
 	S:HandleButton(DetailsFrame.ShareButton, true)
 	S:HandleButton(DetailsFrame.TrackButton, true)
 
+	DetailsFrame.BackFrame:StripTextures()
 	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
 	DetailsFrame.AbandonButton:SetFrameLevel(5)
 	DetailsFrame.ShareButton:SetFrameLevel(5)
@@ -150,6 +168,7 @@ function S:WorldMapFrame()
 	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
+	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
