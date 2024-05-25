@@ -6,12 +6,10 @@ local pairs, unpack = pairs, unpack
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
-local GetGuildRosterInfo = GetGuildRosterInfo
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local hooksecurefunc = hooksecurefunc
 
-local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
 

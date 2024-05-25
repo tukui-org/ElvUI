@@ -334,8 +334,7 @@ do --this can save some main file locals
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
 			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
 			-- Repooc
-			z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
-			z['Repooc-Mankrik']			= ElvBlue
+			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
 			-- Elv
 			z['Elv-Spirestone']			= itsElv
@@ -350,6 +349,7 @@ do --this can save some main file locals
 			z['Whorlock-Spirestone']	= itsElv
 			-- Repooc
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
+			z['Depooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
 			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
 			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
@@ -361,6 +361,7 @@ do --this can save some main file locals
 			z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup
 			z['Player-1168-069A3A12']	= itsSimpy -- Paladin:	Cutepally
 			z['Player-1168-0A99F54B']	= itsSimpy -- Mage:		Cuddle
+			z['Player-1168-0ACDC528']	= itsSimpy -- Priest:	Snuggle
 			z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
 			z['Player-1168-06981C6F']	= itsSimpy -- Warrior:	Glice
 			z['Player-1168-0698066B']	= itsSimpy -- Shaman:	Kalline

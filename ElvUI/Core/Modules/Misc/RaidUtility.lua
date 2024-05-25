@@ -372,10 +372,14 @@ function RU:OnClick_RaidUtilityPanel(...)
 end
 
 function RU:DragStart_ShowButton()
+	if InCombatLockdown() then return end
+
 	self:StartMoving()
 end
 
 function RU:DragStop_ShowButton()
+	if InCombatLockdown() then return end
+
 	self:StopMovingOrSizing()
 
 	local point = self:GetPoint()
@@ -623,13 +627,12 @@ function RU:Initialize()
 		utility:ClearAllPoints()
 		close:ClearAllPoints()
 
-		local x, y = tonumber(%d), tonumber(%d)
-		local isClassic = %s == true
+		local x, y, classic = %d, %d, %d == 1
 		local point = self:GetPoint()
 		if point and strfind(point, 'BOTTOM') then
 			utility:SetPoint('BOTTOM', self)
 
-			if isClassic then
+			if classic then
 				close:SetPoint('BOTTOM', utility, 'TOP', x, y)
 			else
 				close:SetPoint('BOTTOMRIGHT', utility, 'TOPRIGHT', -x, y)
@@ -637,13 +640,13 @@ function RU:Initialize()
 		else
 			utility:SetPoint('TOP', self)
 
-			if isClassic then
+			if classic then
 				close:SetPoint('TOP', utility, 'BOTTOM', x, -y)
 			else
 				close:SetPoint('TOPRIGHT', utility, 'BOTTOMRIGHT', -x, -y)
 			end
 		end
-	]=], E.Classic and 0 or E:Scale(1), E:Scale(30), E.Classic and 'true' or 'false'))
+	]=], E.Classic and 0 or E:Scale(1), E:Scale(30), E.Classic and 1 or 0))
 	ShowButton:SetScript('OnDragStart', RU.DragStart_ShowButton)
 	ShowButton:SetScript('OnDragStop', RU.DragStop_ShowButton)
 	E.FrameLocks.RaidUtility_ShowButton = true
