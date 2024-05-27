@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
 local unpack, next = unpack, next
+local pairs, select = pairs, select
 local hooksecurefunc = hooksecurefunc
 local CreateColor = CreateColor
 
@@ -225,22 +225,16 @@ local oldAtlas = {
 	['Options_ListExpand_Right'] = 1,
 	['Options_ListExpand_Right_Expanded'] = 1,
 }
+
 local function updateCollapse(texture, atlas)
-	if (not atlas) or oldAtlas[atlas] then
-		if not texture.__owner then
-			texture.__owner = texture:GetParent()
-		end
-		if texture.__owner:IsCollapsed() then
+	if not atlas or oldAtlas[atlas] then
+		local parent = texture:GetParent()
+		if parent:IsCollapsed() then
 			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
 		else
 			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Collapse')
 		end
 	end
-end
-
-local function updateToggleCollapse(button)
-	button:SetNormalTexture(0)
-	button.__texture:DoCollapse(button:GetHeader():IsCollapsed())
 end
 
 -- FIX ME 11.0 Mostly now in: ReputationEntryMixin
@@ -250,12 +244,14 @@ local function UpdateFactionSkins(frame)
 		if child and not child.isSkinned then
 			if child.Right then
 				child:StripTextures()
-				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
-				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
-				updateCollapse(child.Right)
-				updateCollapse(child.HighlightRight)
 				child:CreateBackdrop()
 				child.backdrop:SetInside(child)
+
+				updateCollapse(child.Right)
+				updateCollapse(child.HighlightRight)
+
+				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
 			end
 
 			if child.ReputationBar then
@@ -460,7 +456,7 @@ function S:Blizzard_UIPanels_Game()
 	--hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
-	hooksecurefunc(CharacterFrameMixin, 'ShowSubFrame', UpdateCharacterInset)
+	hooksecurefunc(_G.CharacterFrameMixin, 'ShowSubFrame', UpdateCharacterInset)
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game')

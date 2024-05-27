@@ -299,18 +299,23 @@ local function HandleDynamicFlightButton(button, index)
 	button:SetPushedTexture(0)
 	button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 	button:SetNormalTexture(0)
-	S:HandleIcon(select(index, button:GetRegions()))
+
+	local icon = select(index, button:GetRegions())
+	if icon then
+		S:HandleIcon(icon)
+	end
 end
 
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournalFilterButton)
 
-	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
 	local Flyout = _G.MountJournal.DynamicFlightFlyout
 	Flyout.Background:Hide()
-	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
+
 	HandleDynamicFlightButton(Flyout.DynamicFlightModeButton, 4)
+	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
+	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
 	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
