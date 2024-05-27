@@ -25,7 +25,7 @@ local function ReforgingFrameUpdate()
 end
 
 function S:Blizzard_ReforgingUI()
-	if not (E.private.skins.blizzard.enable or not E.private.skins.blizzard.reforge) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.reforge) then return end
 
 	local ReforgingFrame = _G.ReforgingFrame
 	ReforgingFrame:StripTextures()
