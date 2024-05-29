@@ -262,7 +262,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		timerunningID = timerunningID	--20
 	}
 
-	if wowProjectID ~= retailID then
+	if wowProjectID and wowProjectID ~= retailID then
 		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
 	end
 
