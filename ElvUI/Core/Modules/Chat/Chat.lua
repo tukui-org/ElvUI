@@ -69,6 +69,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
 local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
@@ -88,6 +89,10 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
+
+local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
+local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+
 -- GLOBALS: ElvCharacterDB
 
 CH.GuidCache = {}
@@ -1788,26 +1793,31 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 	return message
 end
 
--- copied from ChatFrame.lua
-local function GetPFlag(specialFlag, zoneChannelID, localChannelID)
+function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
+	local flag = ''
+
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
 			-- Add Blizzard Icon if this was sent by a GM/DEV
-			return [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
-		elseif specialFlag == 'GUIDE' and E.Retail then
+			flag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
+		elseif E.Retail and CH.db.mentorshipIcon and specialFlag == 'GUIDE' then
 			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
-				return NPEV2_CHAT_USER_TAG_GUIDE
+				flag = NPEV2_CHAT_USER_TAG_GUIDE
 			end
-		elseif specialFlag == 'NEWCOMER' and E.Retail then
+		elseif E.Retail and CH.db.mentorshipIcon and specialFlag == 'NEWCOMER' then
 			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
-				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
+				flag = _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
-			return _G['CHAT_FLAG_'..specialFlag]
+			flag = _G['CHAT_FLAG_'..specialFlag]
 		end
 	end
 
-	return ''
+	if E.Retail and CH.db.timerunningIcon and unitGUID and IsTimerunningPlayer(unitGUID) then
+		flag = flag .. TIMERUNNING_SMALL
+	end
+
+	return flag
 end
 
 -- copied from ChatFrame.lua
@@ -1939,7 +1949,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	-- Player Flags
-	local pflag = GetPFlag(arg6, arg7, arg8)
+	local pflag = CH:GetPFlag(arg6, arg7, arg12)
 	if not bossMonster then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
