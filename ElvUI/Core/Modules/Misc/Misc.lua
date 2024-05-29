@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
-local CH = E:GetModule('Chat')
 
 local _G = _G
 local next = next
