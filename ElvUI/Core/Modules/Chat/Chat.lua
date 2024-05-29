@@ -85,7 +85,6 @@ local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
-local RecruitLinkType = Enum.RafLinkType and Enum.RafLinkType.Recruit
 local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.Small
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
