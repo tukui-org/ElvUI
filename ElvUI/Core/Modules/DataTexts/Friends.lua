@@ -126,8 +126,8 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString, db = ''
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'|Hplayer:%%s|h%[%%s%]|h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
+local retailID = _G.WOW_PROJECT_MAINLINE
 local wowString = _G.BNET_CLIENT_WOW
-local retailID, classicID, tbcID = _G.WOW_PROJECT_MAINLINE, _G.WOW_PROJECT_CLASSIC, _G.WOW_PROJECT_BURNING_CRUSADE_CLASSIC or 5
 local dataValid = false
 local statusTable = {
 	AFK = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r',
@@ -262,7 +262,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		timerunningID = timerunningID	--20
 	}
 
-	if wowProjectID == classicID or wowProjectID == tbcID then
+	if wowProjectID ~= retailID then
 		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
 	end
 
