@@ -35,6 +35,9 @@ local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
+local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
+local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
 	text = _G.BN_BROADCAST_TOOLTIP,
@@ -230,7 +233,7 @@ local function clientSort(a, b)
 	end
 end
 
-local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, className, zoneName, level, guid, gameText)
+local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, className, zoneName, level, guid, gameText)
 	className = E:UnlocalizedClassName(className) or ''
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ''
 
@@ -253,7 +256,8 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		zoneName = zoneName,			--16
 		level = level,					--17
 		guid = guid,					--18
-		gameText = gameText				--19
+		gameText = gameText,			--19
+		timerunningID = timerunningID	--20
 	}
 
 	if wowProjectID == classicID or wowProjectID == tbcID then
@@ -270,7 +274,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 	end
 end
 
-local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, class, zoneName, level, guid, gameText, hasFocus)
+local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, class, zoneName, level, guid, gameText, hasFocus)
 	-- `hasFocus` is not added to BNTable[i]; we only need this to keep our friends datatext in sync with the friends list
 	for i = 1, bnIndex do
 		local isAdded, bnInfo = 0, BNTable[i]
@@ -306,7 +310,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 					end
 				end
 			end
-			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, class, zoneName, level, guid, gameText)
+			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, class, zoneName, level, guid, gameText)
 		end
 		if isAdded ~= 0 then
 			return bnIndex
@@ -314,7 +318,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 	end
 
 	bnIndex = bnIndex + 1 --bump the index one for a new addition
-	AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, class, zoneName, level, guid, gameText)
+	AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, class, zoneName, level, guid, gameText)
 
 	return bnIndex
 end
@@ -327,16 +331,16 @@ local function BuildBNTable(total)
 	local bnIndex = 0
 
 	for i = 1, total do
-		local bnetAccountID, accountName, battleTag, _, characterName, gameAccountID, clientProgram, isOnline, _, isAFK, isDND, _, note, _, _, wowProjectID = CH.BNGetFriendInfo(i)
+		local bnetAccountID, accountName, battleTag, _, characterName, gameAccountID, clientProgram, isOnline, _, isAFK, isDND, _, note, _, _, wowProjectID, _, _, _, _, timerunningID = CH.BNGetFriendInfo(i)
 		if isOnline then
 			local numGameAccounts = CH.BNGetNumFriendGameAccounts(i)
 			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					local hasFocus, CharacterName, ClientProgram, realmName, _, factionName, raceName, className, _, areaName, characterLevel, richPresence, _, _, _, GameAccountID, _, isGameAFK, isGameBusy, playerGuid, WowProjectID = CH.BNGetFriendGameAccountInfo(i, y)
-					bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, CharacterName, GameAccountID, ClientProgram, isOnline, isAFK or isGameAFK, isDND or isGameBusy, note, WowProjectID, realmName, factionName, raceName, className, areaName, characterLevel, playerGuid, richPresence, hasFocus)
+					local hasFocus, CharacterName, ClientProgram, realmName, _, factionName, raceName, className, _, areaName, characterLevel, richPresence, _, _, _, GameAccountID, _, isGameAFK, isGameBusy, playerGuid, WowProjectID, _, TimerunningID = CH.BNGetFriendGameAccountInfo(i, y)
+					bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, CharacterName, GameAccountID, ClientProgram, isOnline, isAFK or isGameAFK, isDND or isGameBusy, note, WowProjectID, TimerunningID, realmName, factionName, raceName, className, areaName, characterLevel, playerGuid, richPresence, hasFocus)
 				end
 			else
-				bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, characterName, gameAccountID, clientProgram, isOnline, isAFK, isDND, note, wowProjectID)
+				bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, characterName, gameAccountID, clientProgram, isOnline, isAFK, isDND, note, wowProjectID, timerunningID)
 			end
 		end
 	end
@@ -526,7 +530,7 @@ local function OnEnter()
 								--Sometimes the friend list is fubar with level 0 unknown friends
 								if not classc then classc = PRIEST_COLOR end
 
-								TooltipAddXLine(true, header, format(levelNameString..'%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status),info.accountName,238,238,238,238,238,238)
+								TooltipAddXLine(true, header, format(levelNameString..'%s%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status,info.timerunningID and TIMERUNNING_SMALL or ''),info.accountName,238,238,238,238,238,238)
 								if shiftDown then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end
