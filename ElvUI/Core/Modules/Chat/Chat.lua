@@ -1617,9 +1617,9 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 
 	local Class
-	if info.gameAccountID then
-		local gameInfo = C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
-		Class = gameInfo.className and E:UnlocalizedClassName(gameInfo.className)
+	local gameInfo = info.gameAccountID and C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
+	if gameInfo and gameInfo.className then
+		Class = E:UnlocalizedClassName(gameInfo.className)
 	else
 		local firstToonClass = CH:GetBNFirstToonClassColor(id)
 		if firstToonClass then
