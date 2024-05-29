@@ -39,6 +39,7 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+local EXPANSION_NAME0 = EXPANSION_NAME0
 
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
@@ -264,6 +265,10 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 
 	if wowProjectID and wowProjectID ~= retailID then
 		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
+
+		if obj.classicText ~= EXPANSION_NAME0 then
+			obj.classicText = gsub(obj.classicText, '%s?'..EXPANSION_NAME0..'%s?', '')
+		end
 	end
 
 	BNTable[bnIndex] = obj
