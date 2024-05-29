@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
-local CH = E:GetModule('Chat')
 
 local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
@@ -26,6 +25,9 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
+local GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
+local GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
@@ -331,16 +333,17 @@ local function BuildBNTable(total)
 	local bnIndex = 0
 
 	for i = 1, total do
-		local bnetAccountID, accountName, battleTag, _, characterName, gameAccountID, clientProgram, isOnline, _, isAFK, isDND, _, note, _, _, wowProjectID, _, _, _, _, timerunningID = CH.BNGetFriendInfo(i)
-		if isOnline then
-			local numGameAccounts = CH.BNGetNumFriendGameAccounts(i)
+		local info = GetFriendAccountInfo(i)
+		local mainInfo = info.gameAccountInfo
+		if mainInfo.isOnline then
+			local numGameAccounts = GetFriendNumGameAccounts(i)
 			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					local hasFocus, CharacterName, ClientProgram, realmName, _, factionName, raceName, className, _, areaName, characterLevel, richPresence, _, _, _, GameAccountID, _, isGameAFK, isGameBusy, playerGuid, WowProjectID, _, TimerunningID = CH.BNGetFriendGameAccountInfo(i, y)
-					bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, CharacterName, GameAccountID, ClientProgram, isOnline, isAFK or isGameAFK, isDND or isGameBusy, note, WowProjectID, TimerunningID, realmName, factionName, raceName, className, areaName, characterLevel, playerGuid, richPresence, hasFocus)
+					local gameInfo = GetFriendGameAccountInfo(i, y)
+					bnIndex = PopulateBNTable(bnIndex, info.bnetAccountID, info.accountName, info.battleTag, gameInfo.characterName, gameInfo.gameAccountID, gameInfo.clientProgram, gameInfo.isOnline, info.isAFK or gameInfo.isGameAFK, info.isDND or gameInfo.isGameBusy, info.note, gameInfo.wowProjectID, gameInfo.timerunningSeasonID, gameInfo.realmName, gameInfo.factionName, gameInfo.raceName, gameInfo.className, gameInfo.areaName, gameInfo.characterLevel, gameInfo.playerGuid, gameInfo.richPresence, gameInfo.hasFocus)
 				end
 			else
-				bnIndex = PopulateBNTable(bnIndex, bnetAccountID, accountName, battleTag, characterName, gameAccountID, clientProgram, isOnline, isAFK, isDND, note, wowProjectID, timerunningID)
+				bnIndex = PopulateBNTable(bnIndex, info.bnetAccountID, info.accountName, info.battleTag, mainInfo.characterName, mainInfo.gameAccountID, mainInfo.clientProgram, mainInfo.isOnline, info.isAFK, info.isDND, info.note, mainInfo.wowProjectID, mainInfo.timerunningSeasonID)
 			end
 		end
 	end

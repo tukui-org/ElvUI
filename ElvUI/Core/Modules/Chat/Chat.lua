@@ -52,6 +52,12 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
+local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
+local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
+local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
+local C_BattleNet_GetGameAccountInfoByID = C_BattleNet.GetGameAccountInfoByID
+
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
@@ -168,86 +174,6 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_OFFICER		= 'OFFICER', -- only used for alerts, not in FindURL_Events as this is a protected channel
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
-
-if not (E.Retail or E.Cata) then
-	CH.BNGetFriendInfo = _G.BNGetFriendInfo
-	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
-	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
-	CH.BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
-	CH.BNGetNumFriendGameAccounts = _G.BNGetNumFriendGameAccounts
-
-	CH.BNGetGameAccountInfo = function(_, gameAccountID)
-		return _G.BNGetGameAccountInfo(gameAccountID)
-	end
-else -- cause it doesnt exist on tbc or classic
-	local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
-	local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
-	local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
-	local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
-	local C_BattleNet_GetGameAccountInfoByID = C_BattleNet.GetGameAccountInfoByID
-	local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
-	local C_BattleNet_GetAccountInfoByGUID = C_BattleNet.GetAccountInfoByGUID
-
-	local getDeprecatedAccountInfo = function(accountInfo)
-		if accountInfo then
-			local wowProjectID = accountInfo.gameAccountInfo.wowProjectID or 0
-			local clientProgram = accountInfo.gameAccountInfo.clientProgram ~= '' and accountInfo.gameAccountInfo.clientProgram or nil
-			return	accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, accountInfo.isBattleTagFriend,
-					accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.gameAccountID, clientProgram,
-					accountInfo.gameAccountInfo.isOnline, accountInfo.lastOnlineTime, accountInfo.isAFK, accountInfo.isDND, accountInfo.customMessage, accountInfo.note, accountInfo.isFriend,
-					accountInfo.customMessageTime, wowProjectID, accountInfo.rafLinkType == RecruitLinkType, accountInfo.gameAccountInfo.canSummon, accountInfo.isFavorite, accountInfo.gameAccountInfo.isWowMobile
-		end
-	end
-
-	local getDeprecatedGameAccountInfo = function(gameAccountInfo, accountInfo)
-		if gameAccountInfo and accountInfo then
-			local wowProjectID = gameAccountInfo.wowProjectID or 0
-			local characterName = gameAccountInfo.characterName or ''
-			local realmName = gameAccountInfo.realmName or ''
-			local realmID = gameAccountInfo.realmID or 0
-			local factionName = gameAccountInfo.factionName or ''
-			local raceName = gameAccountInfo.raceName or ''
-			local className = gameAccountInfo.className or ''
-			local areaName = gameAccountInfo.areaName or ''
-			local characterLevel = gameAccountInfo.characterLevel or ''
-			local richPresence = gameAccountInfo.richPresence or ''
-			local gameAccountID = gameAccountInfo.gameAccountID or 0
-			local playerGuid = gameAccountInfo.playerGuid or 0
-			return	gameAccountInfo.hasFocus, characterName, gameAccountInfo.clientProgram,
-					realmName, realmID, factionName, raceName, className, '', areaName, characterLevel,
-					richPresence, accountInfo.customMessage, accountInfo.customMessageTime,
-					gameAccountInfo.isOnline, gameAccountID, accountInfo.bnetAccountID, gameAccountInfo.isGameAFK, gameAccountInfo.isGameBusy,
-					playerGuid, wowProjectID, gameAccountInfo.isWowMobile
-		end
-	end
-
-	CH.BNGetFriendInfo = function(friendIndex)
-		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
-		return getDeprecatedAccountInfo(accountInfo)
-	end
-	CH.BNGetFriendInfoByID = function(id)
-		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
-		return getDeprecatedAccountInfo(accountInfo)
-	end
-	CH.BNGetFriendGameAccountInfo = function(friendIndex, accountIndex)
-		local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(friendIndex, accountIndex)
-		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetGameAccountInfo = function(id, gameAccountID)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(gameAccountID)
-		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetGameAccountInfoByGUID = function(guid)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByGUID(guid)
-		local accountInfo = C_BattleNet_GetAccountInfoByGUID(guid)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetNumFriendGameAccounts = function(friendIndex)
-		return C_BattleNet_GetFriendNumGameAccounts(friendIndex)
-	end
-end
 
 local canChangeMessage = function(arg1, id)
 	if id and arg1 == '' then return id end
@@ -1671,40 +1597,40 @@ end
 function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	for i = 1, BNGetNumFriends() do
-		local bnetIDAccount, _, _, _, _, _, _, isOnline = CH.BNGetFriendInfo(i)
-		if isOnline and bnetIDAccount == id then
-			for y = 1, CH.BNGetNumFriendGameAccounts(i) do
-				local _, _, clientProgram, _, _, _, _, className = CH.BNGetFriendGameAccountInfo(i, y)
-				if clientProgram == BNET_CLIENT_WOW and className and className ~= '' then
-					return className -- return the first toon's class
+		local info = C_BattleNet_GetFriendAccountInfo(i)
+		if info.bnetAccountID == id then
+			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+				if gameInfo.clientProgram == BNET_CLIENT_WOW and gameInfo.className and gameInfo.className ~= '' then
+					return gameInfo.className -- return the first toon's class
 				end
 			end
+
 			break
 		end
 	end
 end
 
 function CH:GetBNFriendColor(name, id, useBTag)
-	local _, _, battleTag, isBattleTagFriend, _, gameAccountID = CH.BNGetFriendInfoByID(id)
-
-	local BATTLE_TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local info = C_BattleNet_GetAccountInfoByID(id)
+	local BATTLE_TAG = info.battleTag and strmatch(info.battleTag,'([^#]+)')
 	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 
 	local Class
-	if gameAccountID then
-		local _, _, _, _, _, _, _, className = CH.BNGetGameAccountInfo(id, gameAccountID)
-		Class = className and E:UnlocalizedClassName(className)
+	if info.gameAccountID then
+		local gameInfo = C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
+		Class = gameInfo.className and E:UnlocalizedClassName(gameInfo.className)
 	else
 		local firstToonClass = CH:GetBNFirstToonClassColor(id)
 		if firstToonClass then
 			Class = E:UnlocalizedClassName(firstToonClass)
 		else
-			return TAG or name, isBattleTagFriend and BATTLE_TAG
+			return TAG or name, info.isBattleTagFriend and BATTLE_TAG
 		end
 	end
 
 	local Color = Class and E:ClassColor(Class)
-	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, isBattleTagFriend and BATTLE_TAG
+	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, info.isBattleTagFriend and BATTLE_TAG
 end
 
 local PluginIconsCalls = {}
@@ -2254,13 +2180,14 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
 				message = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
+				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				local gameInfo = accountInfo.gameAccountInfo
 
-				if clientProgram and clientProgram ~= '' then
+				if gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
 					if GetTitleIconTexture then
-						GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
+						GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
 							if success then
-								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
+								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
 								local linkDisplayText = format('[%s] (%s)', arg2, charName)
 								local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
@@ -2273,8 +2200,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 						return
 					else
-						local clientTexture = GetClientTexture(clientProgram, 14)
-						local charName = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
+						local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
+						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
 						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
 						local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 						message = format(globalstring, playerLink)
@@ -2866,18 +2793,18 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 	end
 
 	for i = 1, BNGetNumFriends() do
-		local _, accountName, _, _, _, _, _, isOnline = CH.BNGetFriendInfoByID(i)
-		if isOnline then
-			for y = 1, CH.BNGetNumFriendGameAccounts(i) do
-				local _, characterName, clientProgram, realmName = CH.BNGetFriendGameAccountInfo(i, y)
-				if clientProgram == BNET_CLIENT_WOW and accountName == playerName then
-					playerName = characterName
-					if realmName and realmName ~= E.myrealm then
-						playerName = format('%s-%s', playerName, E:ShortenRealm(realmName))
-					end
-					if leaderName == playerName then
-						return true
-					end
+		local info = C_BattleNet_GetAccountInfoByID(i)
+		for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+			local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+			if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
+				playerName = gameInfo.characterName
+
+				if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
+					playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
+				end
+
+				if leaderName == playerName then
+					return true
 				end
 			end
 		end

@@ -51,6 +51,7 @@ local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
+local GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
 local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
@@ -268,7 +269,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		local queueButton = M:GetQueueStatusButton() -- don't auto accept during a queue
 		if queueButton and queueButton:IsShown() then return end
 
-		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
+		if GetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end
