@@ -241,12 +241,14 @@ function S:SkinPVPFrame()
 	S:HandleTab(_G.PVPFrameTab1)
 	S:HandleTab(_G.PVPFrameTab2)
 	S:HandleTab(_G.PVPFrameTab3)
+	S:HandleTab(_G.PVPFrameTab4)
 
 	-- Reposition Tabs
 	_G.PVPFrameTab1:ClearAllPoints()
 	_G.PVPFrameTab1:Point('TOPLEFT', PVPFrame, 'BOTTOMLEFT', -10, 0)
 	_G.PVPFrameTab2:Point('TOPLEFT', _G.PVPFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.PVPFrameTab3:Point('TOPLEFT', _G.PVPFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.PVPFrameTab4:Point('TOPLEFT', _G.PVPFrameTab3, 'TOPRIGHT', -19, 0)
 end
 
 function S:SkinPVPReadyDialog()
