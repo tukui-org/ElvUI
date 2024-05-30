@@ -407,6 +407,7 @@ do --this can save some main file locals
 			z['Player-4467-04571911']	= ElvBlue -- [Alliance] Paladin
 			z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
 			z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
+			z['Player-4467-048C4EED']	= ElvBlue -- [Alliance] Hunter
 			z['Player-4467-0489BE11']	= ElvBlue -- [Alliance] Shaman
 			z['Player-4467-0489BDFD'] 	= ElvBlue -- [Alliance] Rogue
 			z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
