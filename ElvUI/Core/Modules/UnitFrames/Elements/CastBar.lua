@@ -117,7 +117,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
 	castbar.CreatePip = UF.BuildPip
-	castbar.TicksData = {}
+	castbar.TickLines = {}
 
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
@@ -332,7 +332,7 @@ function UF:Configure_Castbar(frame)
 		castbar.tickWidth = db.tickWidth
 		castbar.tickColor = db.tickColor
 
-		for _, tick in next, castbar.TicksData do
+		for _, tick in next, castbar.TickLines do
 			tick:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
 			tick:Width(castbar.tickWidth)
 		end
@@ -427,7 +427,7 @@ function UF:CustomTimeText(duration)
 end
 
 function UF:HideTicks(frame)
-	for _, tick in next, frame.TicksData do
+	for _, tick in next, frame.TickLines do
 		tick:Hide()
 	end
 end
@@ -440,12 +440,12 @@ function UF:SetCastTicks(frame, numTicks)
 	local offset = frame:GetWidth() / numTicks
 
 	for i = 1, numTicks - 1 do
-		local tick = frame.TicksData[i]
+		local tick = frame.TickLines[i]
 		if not tick then
 			tick = frame:CreateTexture(nil, 'OVERLAY')
 			tick:SetTexture(E.media.blankTex)
 			tick:Width(frame.tickWidth)
-			frame.TicksData[i] = tick
+			frame.TickLines[i] = tick
 		end
 
 		tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
