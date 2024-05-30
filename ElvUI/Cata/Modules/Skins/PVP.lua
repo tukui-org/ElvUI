@@ -65,17 +65,20 @@ function S:SkinPVPFrame()
 
 	-- Tons of leftover texture crap
 	local killTextures = {
-		'PVPHonorFrameBGTex',
-		'PVPHonorFrameInfoScrollFrameScrollBar',
+		'PVPBannerFramePortrait',
 		'PVPConquestFrameInfoButtonInfoBG',
 		'PVPConquestFrameInfoButtonInfoBGOff',
-		'PVPBannerFramePortrait',
-		'PVPFrameConquestBarLeft',
-		'PVPFrameConquestBarRight',
-		'PVPFrameConquestBarMiddle',
 		'PVPFrameConquestBarBG',
+		'PVPFrameConquestBarLeft',
+		'PVPFrameConquestBarMiddle',
+		'PVPFrameConquestBarRight',
 		'PVPFrameConquestBarShadow',
-		'WarGamesFrameInfoScrollFrameScrollBar'
+		'PVPFrameRightButton_LeftSeparator',
+		'PVPHonorFrameBGTex',
+		'PVPHonorFrameInfoScrollFrameScrollBar',
+		'PVPTeamManagementFrameBackground',
+		'WarGamesFrameInfoScrollFrameScrollBar',
+		'WarGameStartButton_RightSeparator'
 	}
 
 	for _, name in next, killTextures do
@@ -186,6 +189,22 @@ function S:SkinPVPFrame()
 	end
 
 	hooksecurefunc('PVPFrame_TabClicked', PVPFrameTabClicked)
+
+	-- Team Management
+	for i = 1, 3 do
+		local top = _G['PVPTeam'..i..'Top']
+		local bottom = _G['PVPTeam'..i..'Bottom']
+		local left = _G['PVPTeam'..i..'Left']
+		local right = _G['PVPTeam'..i..'Right']
+
+		top:StripTextures()
+		bottom:StripTextures()
+		left:StripTextures()
+		right:StripTextures()
+	end
+
+	_G.PVPTeamManagementFrameWeeklyDisplay:StripTextures()
+	_G.PVPTeamManagementFrameWeeklyDisplay:SetTemplate('Transparent')
 
 	-- War Games
 	_G.WarGamesFrame:StripTextures()
