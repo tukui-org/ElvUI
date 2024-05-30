@@ -509,7 +509,7 @@ function UF:PostCastStart(unit)
 		end
 	end
 
-	if self.channeling and db.castbar.ticks and unit == 'player' then
+	if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
 		local spellID, global = self.spellID, E.global.unitframe
 		local baseTicks = global.ChannelTicks[spellID]
 
