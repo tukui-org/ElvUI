@@ -1,3 +1,10 @@
+### Version 13.66 [ May 31st 2024 ]
+*   Classic: Combo points appearing on new targets.
+*   Cataclysm: Reforge skin toggle not working and PVP skin updated.
+*   Raid Utility: Removed the ability to move this in combat because of secure elements.
+*   Timerunning icon added for Chat, Guild Datatext, and Friends Datatext.
+*   Castbar ticks not working properly when castbars were enabled on group frames.
+
 ### Version 13.65 [ May 24th 2024 ]
 *   Cataclysm: Druid and Paladin dispel fix.
 *   Cataclysm: AuraWatch & Spell Filter updates.

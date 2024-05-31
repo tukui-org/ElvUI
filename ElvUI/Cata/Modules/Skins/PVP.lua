@@ -98,6 +98,7 @@ function S:SkinPVPFrame()
 		_G.PVPFrame.HealerIcon.checkButton,
 		_G.PVPFrame.DPSIcon.checkButton
 	}
+
 	for _, checkButton in next, checkButtons do
 		S:HandleCheckBox(checkButton)
 		checkButton:Size(22)
