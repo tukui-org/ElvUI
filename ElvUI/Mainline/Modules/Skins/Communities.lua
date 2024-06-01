@@ -341,6 +341,7 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
 
+	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBar)
 	S:HandleTrimScrollBar(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBar)
 
 	if E.private.skins.parchmentRemoverEnable then
@@ -364,10 +365,12 @@ function S:Blizzard_Communities()
 	StatusBar.Progress:Point('BOTTOMLEFT')
 	E:RegisterStatusBar(StatusBar)
 
-	local bg = CreateFrame('Frame', nil, StatusBar)
-	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:SetTemplate()
-	bg:SetOutside()
+	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
+	ProgressBarBG:SetFrameLevel(StatusBar:GetFrameLevel())
+	ProgressBarBG:SetTemplate()
+	ProgressBarBG:Point('TOPLEFT')
+	ProgressBarBG:Point('BOTTOMRIGHT', -3, 0)
+	StatusBar.background = ProgressBarBG
 
 	-- Info Tab
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame
