@@ -118,7 +118,7 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.BottomBar:SetAlpha(0)
 
 	S:HandleButton(TalentsFrame.ApplyButton)
-	S:HandleDropDownBox(TalentsFrame.LoadoutDropDown.DropDownControl.DropDownMenu)
+	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
 
 	S:HandleButton(TalentsFrame.InspectCopyButton)
 

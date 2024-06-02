@@ -687,22 +687,24 @@ function RU:Initialize()
 		if _G.CompactRaidFrameManager then
 			-- Reposition/Resize and Reuse the World Marker Button
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-			marker:SetParent(RaidUtilityPanel)
-			marker:ClearAllPoints()
-			marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 3, 0)
-			marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-			marker:HookScript('OnEnter', RU.OnEnter_Button)
-			marker:HookScript('OnLeave', RU.OnLeave_Button)
-			RU:CleanButton(marker)
-			RU.MarkerButton = marker
+			if marker then
+				marker:SetParent(RaidUtilityPanel)
+				marker:ClearAllPoints()
+				marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 3, 0)
+				marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
+				marker:HookScript('OnEnter', RU.OnEnter_Button)
+				marker:HookScript('OnLeave', RU.OnLeave_Button)
+				RU:CleanButton(marker)
+				RU.MarkerButton = marker
 
-			-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
-			local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-			if readyCheck then -- Fix Me 11.0
-				readyCheck:ClearAllPoints()
-				readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-				readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-				RU.ReadyCheck = readyCheck
+				-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
+				local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
+				if readyCheck then -- Fix Me 11.0
+					readyCheck:ClearAllPoints()
+					readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
+					readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
+					RU.ReadyCheck = readyCheck
+				end
 			end
 		else
 			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')

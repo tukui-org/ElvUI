@@ -318,7 +318,7 @@ function S:FriendsFrame()
 		end
 	end
 
-	S:HandleDropDownBox(_G.WhoFrameDropDown, 120)
+	S:HandleDropDownBox(_G.WhoFrameDropdown, 120)
 
 	-- Bottom Tabs
 	HandleTabs()

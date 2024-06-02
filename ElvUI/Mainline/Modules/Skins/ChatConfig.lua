@@ -238,8 +238,9 @@ function S:ChatConfig()
 		end
 	end)
 
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
+	-- FIX ME 11.0
+	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
+	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
 end
 
 S:AddCallback('ChatConfig')

@@ -1110,7 +1110,7 @@ function S:HandleDropDownBox(frame, width, pos, template)
 	assert(frame, 'doesn\'t exist!')
 
 	local frameName = frame.GetName and frame:GetName()
-	local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
+	--local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button']) -- FIX ME 11.0
 	local text = frameName and _G[frameName..'Text'] or frame.Text
 	local icon = frame.Icon
 
@@ -1125,6 +1125,7 @@ function S:HandleDropDownBox(frame, width, pos, template)
 	frame.backdrop:Point('TOPLEFT', 20, -2)
 	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
+	--[[
 	button:ClearAllPoints()
 
 	if pos then
@@ -1139,7 +1140,7 @@ function S:HandleDropDownBox(frame, width, pos, template)
 	if text then
 		text:ClearAllPoints()
 		text:Point('RIGHT', button, 'LEFT', -2, 0)
-	end
+	end]]
 
 	if icon then
 		icon:Point('LEFT', 23, 0)

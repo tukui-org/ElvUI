@@ -963,7 +963,7 @@ function M:Initialize()
 		tinsert(killFrames, Minimap.ZoomOut)
 
 		MinimapCluster.BorderTop:StripTextures()
-		MinimapCluster.TrackingFrame.Background:StripTextures()
+		MinimapCluster.Tracking.Background:StripTextures()
 
 		M:RegisterEvent("MINIMAP_UPDATE_TRACKING", M.MinimapTracking_UpdateTracking)
 

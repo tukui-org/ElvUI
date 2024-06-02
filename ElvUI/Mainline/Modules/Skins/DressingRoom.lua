@@ -95,14 +95,14 @@ function S:DressUpFrame()
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
 	local OutfitDropDown = DressUpFrame.OutfitDropDown
-	S:HandleDropDownBox(OutfitDropDown)
-	S:HandleButton(OutfitDropDown.SaveButton)
-	OutfitDropDown.SaveButton:Size(80, 22)
-	OutfitDropDown.SaveButton:Point('LEFT', OutfitDropDown, 'RIGHT', -7, 3)
-	OutfitDropDown.Text:ClearAllPoints()
-	OutfitDropDown.Text:Point('LEFT', OutfitDropDown.backdrop, 4, 0)
-	OutfitDropDown.Text:Point('RIGHT', OutfitDropDown.backdrop, -4, 0)
-	OutfitDropDown.backdrop:Point('TOPLEFT', 3, 3)
+	--S:HandleDropDownBox(OutfitDropDown)
+	--S:HandleButton(OutfitDropDown.SaveButton)
+	--OutfitDropDown.SaveButton:Size(80, 22)
+	--OutfitDropDown.SaveButton:Point('LEFT', OutfitDropDown, 'RIGHT', -7, 3)
+	--OutfitDropDown.Text:ClearAllPoints()
+	--OutfitDropDown.Text:Point('LEFT', OutfitDropDown.backdrop, 4, 0)
+	--OutfitDropDown.Text:Point('RIGHT', OutfitDropDown.backdrop, -4, 0)
+	--OutfitDropDown.backdrop:Point('TOPLEFT', 3, 3)
 
 	-- 9.1.5 Outfit DetailPanel | Dont use StripTextures on the DetailsPanel, plx
 	DressUpFrame.OutfitDetailsPanel:DisableDrawLayer('BACKGROUND')
@@ -113,8 +113,8 @@ function S:DressUpFrame()
 	hooksecurefunc(DressUpFrame, 'ConfigureSize', DressUpConfigureSize)
 
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
-	WardrobeOutfitFrame:StripTextures(true)
-	WardrobeOutfitFrame:SetTemplate('Transparent')
+	--WardrobeOutfitFrame:StripTextures(true)
+	--WardrobeOutfitFrame:SetTemplate('Transparent')
 
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)
