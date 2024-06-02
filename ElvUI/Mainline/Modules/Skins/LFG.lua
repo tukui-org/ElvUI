@@ -316,6 +316,7 @@ function S:LookingForGroupFrames()
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()

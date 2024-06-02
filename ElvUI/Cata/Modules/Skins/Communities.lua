@@ -356,15 +356,19 @@ function S:Blizzard_Communities()
 	StatusBar.Right:Hide()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
-	StatusBar.Shadow:Hide()
+	StatusBar.Shadow:SetAlpha(0)
 	StatusBar.Progress:SetTexture(E.media.normTex)
-	StatusBar.Progress:SetAllPoints()
+	StatusBar.Progress:ClearAllPoints()
+	StatusBar.Progress:Point('TOPLEFT')
+	StatusBar.Progress:Point('BOTTOMLEFT')
 	E:RegisterStatusBar(StatusBar)
 
-	local bg = CreateFrame('Frame', nil, StatusBar)
-	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:SetTemplate()
-	bg:SetOutside()
+	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
+	ProgressBarBG:SetFrameLevel(StatusBar:GetFrameLevel())
+	ProgressBarBG:SetTemplate()
+	ProgressBarBG:Point('TOPLEFT')
+	ProgressBarBG:Point('BOTTOMRIGHT', -3, 0)
+	StatusBar.background = ProgressBarBG
 
 	-- Info Tab
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame

@@ -81,6 +81,7 @@ function S:DressUpFrame()
 	if SetSelection then
 		SetSelection:StripTextures()
 		SetSelection:SetTemplate('Transparent')
+		S:HandleTrimScrollBar(SetSelection.ScrollBar)
 
 		hooksecurefunc(SetSelection.ScrollBox, 'Update', SetSelection_Update)
 	end
