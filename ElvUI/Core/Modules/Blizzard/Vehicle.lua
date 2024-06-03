@@ -39,6 +39,16 @@ function BL:UpdateVehicleFrame()
 	VehicleSetUp(_G.VehicleSeatIndicator.currSkin)
 end
 
+function BL:VehicleUnloadTextures() -- removes UIParent_ManageFramePositions()
+	self.BackgroundTexture:SetTexture()
+	self.currSkin = nil
+
+	self:HideButtons()
+	self:UpdateShownState()
+
+	_G.DurabilityFrame:SetAlerts()
+end
+
 function BL:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
 	if E.Cata then
@@ -55,15 +65,7 @@ function BL:PositionVehicleFrame()
 		end
 
 		BL:UpdateVehicleFrame()
-	elseif E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
-		indicator.UnloadTextures = function(frame) -- removes UIParent_ManageFramePositions()
-			frame.BackgroundTexture:SetTexture()
-			frame.currSkin = nil
-
-			frame:HideButtons()
-			frame:UpdateShownState()
-
-			_G.DurabilityFrame:SetAlerts()
-		end
+	elseif E.Retail and E.private.actionbar.enable then
+		indicator.UnloadTextures = BL.VehicleUnloadTextures -- fix a taint when actionbars in use
 	end
 end
