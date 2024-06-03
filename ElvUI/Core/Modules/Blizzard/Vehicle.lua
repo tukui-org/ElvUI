@@ -41,24 +41,21 @@ end
 
 function BL:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
-	if not indicator.PositionVehicleFrameHooked then
-		hooksecurefunc(indicator, 'SetPoint', SetPosition)
-
-		if E.Cata then
+	if E.Cata then
+		if not indicator.PositionVehicleFrameHooked then
+			hooksecurefunc(indicator, 'SetPoint', SetPosition)
 			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+
+			indicator:ClearAllPoints()
+			indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
+			indicator:Size(E.db.general.vehicleSeatIndicatorSize)
+
+			E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+			indicator.PositionVehicleFrameHooked = true
 		end
 
-		indicator:ClearAllPoints()
-		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
-		indicator:Size(E.db.general.vehicleSeatIndicatorSize)
-
-		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
-		indicator.PositionVehicleFrameHooked = true
-	end
-
-	BL:UpdateVehicleFrame()
-
-	if E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
+		BL:UpdateVehicleFrame()
+	elseif E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
 		indicator.UnloadTextures = function(frame) -- removes UIParent_ManageFramePositions()
 			frame.BackgroundTexture:SetTexture()
 			frame.currSkin = nil
