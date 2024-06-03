@@ -14,19 +14,19 @@ function BL:SetVehiclePosition(_, relativeTo)
 	end
 end
 
-function BL:SetUpVehicle(vehicleID)
+function BL:SetUpVehicle()
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
 
-	if not vehicleID then return end
+	if not self then return end -- this is vehicleID
 
-	local _, numIndicators = GetVehicleUIIndicator(vehicleID)
+	local _, numIndicators = GetVehicleUIIndicator(self)
 	if numIndicators then
 		local fourth = size * 0.25
 		for i = 1, numIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
 			if button then
-				local _, x, y = GetVehicleUIIndicatorSeat(vehicleID, i)
+				local _, x, y = GetVehicleUIIndicatorSeat(self, i)
 				button:ClearAllPoints()
 				button:Point('CENTER', button:GetParent(), 'TOPLEFT', x * size, -y * size)
 				button:Size(fourth)
