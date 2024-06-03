@@ -6,7 +6,7 @@ local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 
-local function SetPosition(_, _, relativeTo)
+function BL:SetVehiclePosition(_, relativeTo)
 	local mover = _G.VehicleSeatIndicator.mover
 	if mover and relativeTo ~= mover then
 		_G.VehicleSeatIndicator:ClearAllPoints()
@@ -14,7 +14,7 @@ local function SetPosition(_, _, relativeTo)
 	end
 end
 
-local function VehicleSetUp(vehicleID)
+function BL:SetUpVehicle(vehicleID)
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
 
@@ -35,11 +35,7 @@ local function VehicleSetUp(vehicleID)
 	end
 end
 
-function BL:UpdateVehicleFrame()
-	VehicleSetUp(_G.VehicleSeatIndicator.currSkin)
-end
-
-function BL:VehicleUnloadTextures() -- removes UIParent_ManageFramePositions()
+function BL:UnloadVehicleTextures() -- removes UIParent_ManageFramePositions()
 	self.BackgroundTexture:SetTexture()
 	self.currSkin = nil
 
@@ -49,12 +45,16 @@ function BL:VehicleUnloadTextures() -- removes UIParent_ManageFramePositions()
 	_G.DurabilityFrame:SetAlerts()
 end
 
+function BL:UpdateVehicleFrame()
+	BL.SetUpVehicle(_G.VehicleSeatIndicator.currSkin)
+end
+
 function BL:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
 	if E.Cata then
 		if not indicator.PositionVehicleFrameHooked then
-			hooksecurefunc(indicator, 'SetPoint', SetPosition)
-			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+			hooksecurefunc(indicator, 'SetPoint', BL.SetVehiclePosition)
+			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', BL.SetUpVehicle)
 
 			indicator:ClearAllPoints()
 			indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
@@ -66,6 +66,6 @@ function BL:PositionVehicleFrame()
 
 		BL:UpdateVehicleFrame()
 	elseif E.Retail and E.private.actionbar.enable then
-		indicator.UnloadTextures = BL.VehicleUnloadTextures -- fix a taint when actionbars in use
+		indicator.UnloadTextures = BL.UnloadVehicleTextures -- fix a taint when actionbars in use
 	end
 end
