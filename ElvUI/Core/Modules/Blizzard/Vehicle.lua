@@ -18,7 +18,7 @@ function BL:SetUpVehicle()
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
 
-	if not self then return end -- this is vehicleID
+	if not self then return end -- this is vehicleIndicatorID
 
 	local _, numIndicators = GetVehicleUIIndicator(self)
 	if numIndicators then
