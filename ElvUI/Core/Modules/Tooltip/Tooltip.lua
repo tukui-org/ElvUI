@@ -582,7 +582,11 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 			if TT.db.mythicDataEnable then
 				TT:AddMythicInfo(self, unit)
 			end
+		end
+	end
 
+	if E.Retail or E.Cata then
+		if not InCombatLockdown() then
 			if isShiftKeyDown and color and TT.db.inspectDataEnable and not self.ItemLevelShown then
 				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
 			end
