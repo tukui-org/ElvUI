@@ -404,6 +404,9 @@ end
 local lastGUID
 function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 	if tt.ItemLevelShown or (not unit) or (numTries > 3) or not UnitIsPlayer(unit) or not CanInspect(unit) then return end
+	if E.Cata then
+		if not CheckInteractDistance(unit, 4) then return end
+	end
 
 	local unitGUID = UnitGUID(unit)
 	if not unitGUID then return end
