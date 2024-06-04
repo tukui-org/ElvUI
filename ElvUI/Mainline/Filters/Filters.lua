@@ -1737,6 +1737,8 @@ G.unitframe.ChannelTicks = {
 	[48045]		= 6, -- Mind Sear
 	[47757]		= 3, -- Penance (heal)
 	[47758]		= 3, -- Penance (dps)
+	[373129]	= 3, -- Penance (Dark Reprimand, dps)
+	[400171]	= 3, -- Penance (Dark Reprimand, heal)
 	[64902]		= 5, -- Symbol of Hope (Mana Hymn)
 	-- Mage
 	[5143]		= 4, -- Arcane Missiles

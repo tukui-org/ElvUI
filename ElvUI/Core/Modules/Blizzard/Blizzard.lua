@@ -132,6 +132,7 @@ function BL:Initialize()
 
 	if not E.Classic then
 		BL:SkinBlizzTimers()
+		BL:PositionVehicleFrame()
 
 		if not E:IsAddOnEnabled('SimplePowerBar') then
 			BL:PositionAltPowerBar()
@@ -151,10 +152,6 @@ function BL:Initialize()
 
 		--Add (+X%) to quest rewards experience text
 		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
-	end
-
-	if E.Cata then
-		BL:PositionVehicleFrame()
 	end
 
 	if E.Classic then
