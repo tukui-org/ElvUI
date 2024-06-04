@@ -76,9 +76,11 @@ function S:Blizzard_GuildControlUI()
 	S:HandleTrimScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrame.ScrollBar)
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
+	--[[ FIX ME 11.0
 	_G.GuildControlUINavigationDropDownButton:Width(20)
 	_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
 	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
+	]]
 	_G.GuildControlUIRankBankFrame:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()

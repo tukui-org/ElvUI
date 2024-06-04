@@ -286,7 +286,7 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 
@@ -294,9 +294,11 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:ClearAllPoints()
 	_G.PVEFrameTab2:ClearAllPoints()
 	_G.PVEFrameTab3:ClearAllPoints()
+	_G.PVEFrameTab4:ClearAllPoints()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
 
 	-- Szenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
@@ -392,10 +394,6 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 
-	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
-
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
@@ -434,6 +432,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
+	S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
@@ -441,7 +440,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
-	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetToDefaults)
+	--S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetToDefaults) -- FIX ME 11.0
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
@@ -658,5 +657,14 @@ function S:Blizzard_ChallengesUI()
 	end)
 end
 
+function S:Blizzard_DelvesDashboardUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
+
+	local Dashboard = _G.DelvesDashboardFrame
+	Dashboard.DashboardBackground:SetAlpha(0)
+	S:HandleButton(Dashboard.ButtonPanelLayoutFrame.CompanionConfigButtonPanel.CompanionConfigButton)
+end
+
 S:AddCallback('LookingForGroupFrames')
 S:AddCallbackForAddon('Blizzard_ChallengesUI')
+S:AddCallbackForAddon('Blizzard_DelvesDashboardUI')

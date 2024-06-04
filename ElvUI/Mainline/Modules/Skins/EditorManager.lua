@@ -63,7 +63,7 @@ function S:EditorManagerFrame()
 	S:HandleCloseButton(editMode.CloseButton)
 	S:HandleButton(editMode.RevertAllChangesButton)
 	S:HandleButton(editMode.SaveChangesButton)
-	S:HandleDropDownBox(editMode.LayoutDropdown.DropDownMenu, 250)
+	S:HandleDropDownBox(editMode.LayoutDropdown, 250)
 
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)

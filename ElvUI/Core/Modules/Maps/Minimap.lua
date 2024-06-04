@@ -395,6 +395,10 @@ function M:Minimap_EnterLeave(minimap, show)
 end
 
 function M:Minimap_OnMouseDown(btn)
+	_G.MinimapCluster.Tracking.Button:OpenMenu()
+
+	-- FIX ME 11.0
+	--[[
 	menuFrame:Hide()
 
 	if M.TrackingDropdown then
@@ -412,7 +416,7 @@ function M:Minimap_OnMouseDown(btn)
 		Minimap.OnClick(self)
 	else
 		_G.Minimap_OnClick(self)
-	end
+	end]]
 end
 
 function M:MapCanvas_OnMouseDown(btn)
