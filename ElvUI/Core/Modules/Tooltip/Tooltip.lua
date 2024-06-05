@@ -20,6 +20,7 @@ local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
+local CheckInteractDistance = CheckInteractDistance
 local GetGuildInfo = GetGuildInfo
 local GetItemCount = GetItemCount
 local GetMouseFocus = GetMouseFocus
@@ -544,7 +545,6 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
 	local _, unit = self:GetUnit()
-	local isPlayerUnit = UnitIsPlayer(unit)
 	if self:GetOwner() ~= UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		self:Hide()
 		return
@@ -563,6 +563,8 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
+
+	local isPlayerUnit = UnitIsPlayer(unit)
 	local color = TT:SetUnitText(self, unit, isPlayerUnit)
 
 	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
@@ -585,15 +587,15 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		end
 	end
 
-	if E.Retail or E.Cata then
-		if not InCombatLockdown() then
-			if isShiftKeyDown and color and TT.db.inspectDataEnable and not self.ItemLevelShown then
-				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
-			end
+	if (E.Retail or E.Cata) and isShiftKeyDown and isPlayerUnit and not InCombatLockdown() and TT.db.inspectDataEnable and not self.ItemLevelShown then
+		if color then
+			TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
+		else
+			TT:AddInspectInfo(self, unit, 0, 0.9, 0.9, 0.9)
 		end
 	end
 
-	if unit and not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
+	if not isPlayerUnit and TT:IsModKeyDown() and not (E.Retail and C_PetBattles_IsInBattle()) then
 		local guid = (data and data.guid) or UnitGUID(unit) or ''
 		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then -- NPC ID's
