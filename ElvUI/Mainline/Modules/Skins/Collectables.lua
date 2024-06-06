@@ -308,7 +308,7 @@ end
 
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
-	S:HandleButton(_G.MountJournalFilterButton)
+	S:HandleButton(_G.MountJournal.FilterDropdown)
 
 	local Flyout = _G.MountJournal.DynamicFlightFlyout
 	Flyout.Background:Hide()
@@ -317,12 +317,12 @@ local function SkinMountFrame()
 	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
 	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
 
-	_G.MountJournalFilterButton:ClearAllPoints()
-	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
+	_G.MountJournal.FilterDropdown:ClearAllPoints()
+	_G.MountJournal.FilterDropdown:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
-	S:HandleCloseButton(_G.MountJournalFilterButton.ResetButton)
-	_G.MountJournalFilterButton.ResetButton:ClearAllPoints()
-	_G.MountJournalFilterButton.ResetButton:Point('CENTER', _G.MountJournalFilterButton, 'TOPRIGHT', 0, 0)
+	S:HandleCloseButton(_G.MountJournal.FilterDropdown.ResetButton)
+	_G.MountJournal.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.MountJournal.FilterDropdown.ResetButton:Point('CENTER', _G.MountJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
 
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
@@ -372,13 +372,15 @@ local function SkinPetFrame()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
-	S:HandleButton(_G.PetJournalFilterButton)
-	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
-	_G.PetJournalFilterButton:ClearAllPoints()
-	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
-	S:HandleCloseButton(_G.PetJournalFilterButton.ResetButton)
-	_G.PetJournalFilterButton.ResetButton:ClearAllPoints()
-	_G.PetJournalFilterButton.ResetButton:Point('CENTER', _G.PetJournalFilterButton, 'TOPRIGHT', 0, 0)
+
+	S:HandleButton(_G.PetJournal.FilterDropdown)
+	_G.PetJournal.FilterDropdown:Height(E.PixelMode and 22 or 24)
+	_G.PetJournal.FilterDropdown:ClearAllPoints()
+	_G.PetJournal.FilterDropdown:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
+	S:HandleCloseButton(_G._G.PetJournal.FilterDropdown.ResetButton)
+	_G.PetJournal.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.PetJournal.FilterDropdown.ResetButton:Point('CENTER', _G.PetJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
+
 	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
@@ -473,11 +475,12 @@ end
 local function SkinToyFrame()
 	local ToyBox = _G.ToyBox
 	S:HandleEditBox(ToyBox.searchBox)
-	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
-	S:HandleCloseButton(_G.ToyBoxFilterButton.ResetButton)
-	_G.ToyBoxFilterButton.ResetButton:ClearAllPoints()
-	_G.ToyBoxFilterButton.ResetButton:Point('CENTER', _G.ToyBoxFilterButton, 'TOPRIGHT', 0, 0)
+
+	S:HandleButton(_G.ToyBox.FilterDropdown)
+	_G.ToyBox.FilterDropdown:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
+	S:HandleCloseButton(_G.ToyBox.FilterDropdown.ResetButton)
+	_G.ToyBox.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.ToyBox.FilterDropdown.ResetButton:Point('CENTER', _G.ToyBox.FilterDropdown, 'TOPRIGHT', 0, 0)
 
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
@@ -515,12 +518,12 @@ local function SkinHeirloomFrame()
 
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
-	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
+	S:HandleDropDownBox(_G.HeirloomsJournal.ClassDropdown)
 
-	S:HandleButton(_G.HeirloomsJournal.FilterButton)
-	S:HandleCloseButton(_G.HeirloomsJournal.FilterButton.ResetButton)
-	_G.HeirloomsJournal.FilterButton.ResetButton:ClearAllPoints()
-	_G.HeirloomsJournal.FilterButton.ResetButton:Point('CENTER', _G.HeirloomsJournal.FilterButton, 'TOPRIGHT', 0, 0)
+	S:HandleButton(_G.HeirloomsJournal.FilterDropdown)
+	S:HandleCloseButton(_G.HeirloomsJournal.FilterDropdown.ResetButton)
+	_G.HeirloomsJournal.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.HeirloomsJournal.FilterDropdown.ResetButton:Point('CENTER', _G.HeirloomsJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
 
 	HeirloomsJournal.progressBar.border:Hide()
 	HeirloomsJournal.progressBar:DisableDrawLayer('BACKGROUND')
@@ -548,14 +551,14 @@ local function SkinTransmogFrames()
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ClassDropdown, 145)
 
-	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ClassDropDown, 145)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
 	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
 	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
-	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ItemsCollectionFrame.WeaponDropdown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
@@ -642,27 +645,29 @@ local function SkinTransmogFrames()
 	DetailsFrame.IconRowBackground:Hide()
 	DetailsFrame.Name:FontTemplate(nil, 16)
 	DetailsFrame.LongName:FontTemplate(nil, 16)
-	S:HandleButton(DetailsFrame.VariantSetsButton)
-
+	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
 	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
-
-	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
-	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation.down)
 
 	local WardrobeFrame = _G.WardrobeFrame
 	S:HandlePortraitFrame(WardrobeFrame)
 
-	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
-	WardrobeOutfitFrame:StripTextures()
-	WardrobeOutfitFrame:SetTemplate('Transparent')
-	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
-	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
-	_G.WardrobeOutfitDropDown:Height(34)
-	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
+	--local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
+	--WardrobeOutfitFrame:StripTextures()
+	--WardrobeOutfitFrame:SetTemplate('Transparent')
+
+	--S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
+	--S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
+	--_G.WardrobeOutfitDropDown:Height(34)
+	--_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
+	--_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
+	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 221)
+	WardrobeTransmogFrame.OutfitDropdown:Height(34)
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('TOPLEFT', WardrobeTransmogFrame.OutfitDropdown, 'TOPRIGHT', -2, -2)
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
@@ -688,9 +693,7 @@ local function SkinTransmogFrames()
 		end
 	end
 
-	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
-	WardrobeTransmogFrame.SpecButton:Point('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
-	S:HandleButton(WardrobeTransmogFrame.SpecButton)
+	--S:HandleDropDownBox(WardrobeTransmogFrame.SpecDropdown) -- FIX ME 11.0
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
