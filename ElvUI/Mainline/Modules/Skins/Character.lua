@@ -429,7 +429,7 @@ function S:Blizzard_UIPanels_Game()
 	-- Reputation Frame
 	local ReputationFrame = _G.ReputationFrame
 	ReputationFrame:StripTextures()
-	S:HandleDropDownBox(ReputationFrame.filterDropDown)
+	S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
 	--_G.ReputationDetailFrame:StripTextures()
 	--_G.ReputationDetailFrame:SetTemplate('Transparent')
@@ -444,8 +444,8 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
 
-	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
+	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckbox)
+	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
 
 	-- FIX ME 11.0
 	if _G.TokenFramePopup.CloseButton then

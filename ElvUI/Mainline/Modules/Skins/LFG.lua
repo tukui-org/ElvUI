@@ -306,7 +306,7 @@ function S:LookingForGroupFrames()
 		ScenarioQueueFrame:StripTextures()
 		_G.ScenarioFinderFrameInset:StripTextures()
 		_G.ScenarioQueueFrameBackground:SetAlpha(0)
-		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown)
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
 
@@ -339,12 +339,12 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
+	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown)
 
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
-	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropDown)
+	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown)
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
