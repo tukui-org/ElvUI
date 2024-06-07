@@ -758,7 +758,13 @@ G.unitframe.AuraChannelTicks = {}
 
 -- Spells Effected By Haste, value is Base Tick Size
 G.unitframe.HastedChannelTicks = {
-	-- [spellID] = 1, -- SpellName
+	-- Warlock
+	[1120]	= true, -- Drain Soul
+	[689]	= true, -- Drain Life
+	[5740]	= true, -- Rain of Fire
+	[755]	= true, -- Health Funnel
+	[79268]	= true, -- Soul Harvest
+	[1949]	= true, -- Hellfire
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
