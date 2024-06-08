@@ -12,13 +12,13 @@ local GetMasteryEffect = GetMasteryEffect
 local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
 local GetTalentTreeMasterySpells = GetTalentTreeMasterySpells
+local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 local GetPrimaryTalentTree = GetPrimaryTalentTree
 local IsSpellKnown = IsSpellKnown
 local GetMastery = GetMastery
 
 local STAT_MASTERY = STAT_MASTERY
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
-local CreateBaseTooltipInfo = CreateBaseTooltipInfo
 local CR_MASTERY = CR_MASTERY
 
 local displayString, db = ''
@@ -28,17 +28,19 @@ local function OnEnter()
 
 	local masteryBonus
 	if E.Cata then
-		local masteryKnown = IsSpellKnown(_G.CLASS_MASTERY_SPELLS[E.myclass])
-		local primaryTalentTree = GetPrimaryTalentTree()
 		masteryBonus = GetCombatRatingBonus(CR_MASTERY) or 0
 
-		if masteryKnown and primaryTalentTree then
+		local primaryTalentTree = IsSpellKnown(_G.CLASS_MASTERY_SPELLS[E.myclass]) and GetPrimaryTalentTree()
+		if primaryTalentTree then
 			local masterySpell = GetTalentTreeMasterySpells(primaryTalentTree)
 			if masterySpell then
 				DT.tooltip:AddSpellByID(masterySpell)
 			end
 		end
 	else
+		local _, bonusCoeff = GetMasteryEffect()
+		masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
+
 		local primaryTalentTree = GetSpecialization()
 		if primaryTalentTree then
 			local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
@@ -63,9 +65,6 @@ local function OnEnter()
 					DT.tooltip:AddSpellByID(masterySpell2)
 				end
 			end
-
-			local _, bonusCoeff = GetMasteryEffect()
-			masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
 		end
 	end
 
