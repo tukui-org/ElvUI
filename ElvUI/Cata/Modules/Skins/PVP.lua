@@ -35,6 +35,8 @@ function S:SkinPVPFrame()
 	PVPFrame:SetTemplate('Transparent')
 
 	local buttons = {
+		'PVPFrameLeftButton',
+		'PVPFrameRightButton',
 		'PVPColorPickerButton1',
 		'PVPColorPickerButton2',
 		'PVPColorPickerButton3',

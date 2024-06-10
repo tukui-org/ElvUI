@@ -12,6 +12,7 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\Expertise.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\HealPower.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Hit.lua'/>
+	<Script file='..\..\..\Core\Modules\DataTexts\Mastery.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Parry.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Resilience.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\SpellCrit.lua'/>
