@@ -65,7 +65,7 @@ function S:Blizzard_PVPUI()
 	HonorFrame:StripTextures()
 
 	S:HandleTrimScrollBar(_G.HonorFrame.SpecificScrollBar)
-	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 230)
+	S:HandleDropDownBox(_G.HonorFrameTypeDropdown, 230)
 	S:HandleButton(_G.HonorFrameQueueButton)
 
 	local BonusFrame = HonorFrame.BonusFrame
@@ -175,7 +175,9 @@ function S:Blizzard_PVPUI()
 		if rewardTexture then
 			local r, g, b = GetItemQualityColor(rewardQuaility)
 			rewardFrame.Icon:SetTexture(rewardTexture)
-			rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			if rewardFrame.Icon.backdrop then
+				rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end
 		end
 	end)
 

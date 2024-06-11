@@ -240,8 +240,9 @@ function S:Blizzard_Communities()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
-	--S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
+	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:ClearAllPoints() -- FIX ME 11.0 Is this DropDown trolling us?
+	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:Point('LEFT', ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown, 'RIGHT', 3, 0)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
 	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)

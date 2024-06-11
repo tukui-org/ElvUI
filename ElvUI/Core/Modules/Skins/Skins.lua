@@ -1106,44 +1106,42 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, pos, template)
-	assert(frame, 'doesn\'t exist!')
-
-	local frameName = frame.GetName and frame:GetName()
-	--local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button']) -- FIX ME 11.0
-	local text = frameName and _G[frameName..'Text'] or frame.Text
-	local icon = frame.Icon
-
-	if not width then
-		width = 155
+do
+	local function buttonOnEnter(btn)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		btn:SetVertexColor(r,g,b)
+	end
+	local function buttonOnLeave(btn)
+		btn:SetVertexColor(1, 1, 1)
 	end
 
-	frame:Width(width)
-	frame:StripTextures()
-	frame:CreateBackdrop(template)
-	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	frame.backdrop:Point('TOPLEFT', 20, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
+	function S:HandleDropDownBox(frame, width, template)
+		assert(frame, 'doesn\'t exist!')
 
-	--[[
-	button:ClearAllPoints()
+		local frameName = frame.GetName and frame:GetName()
 
-	if pos then
-		button:Point('TOPRIGHT', frame.Right, -20, -21)
-	else
-		button:Point('RIGHT', frame, 'RIGHT', -10, 3)
-	end
+		if frame.Arrow then frame.Arrow:SetAlpha(0) end
 
-	button.SetPoint = E.noop
-	S:HandleNextPrevButton(button, 'down')
+		if not width then
+			width = 155
+		end
 
-	if text then
-		text:ClearAllPoints()
-		text:Point('RIGHT', button, 'LEFT', -2, 0)
-	end]]
+		frame:Width(width)
+		frame:StripTextures()
+		frame:CreateBackdrop(template)
+		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+		frame.backdrop:Point('TOPLEFT', 0, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
-	if icon then
-		icon:Point('LEFT', 23, 0)
+		local tex = frame:CreateTexture(nil, 'ARTWORK')
+		tex:SetTexture(E.Media.Textures.ArrowUp)
+		tex:SetRotation(3.14)
+		tex:Point('RIGHT', frame.backdrop, -3, 0)
+		tex:Size(14)
+
+		-- FIX ME 11.0 to work with the dropdown
+		--tex:SetScript('OnEnter', buttonOnEnter)
+		--tex:SetScript('OnLeave', buttonOnLeave)
 	end
 end
 
