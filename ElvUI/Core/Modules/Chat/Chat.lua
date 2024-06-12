@@ -454,6 +454,10 @@ do --this can save some main file locals
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
 		end
+	elseif portal == 'test' then -- Beta
+		if E.Retail then
+			z['Player-970-00B4BF90']	= ElvBlue -- [Horde] Evoker
+		end
 	end
 end
 
