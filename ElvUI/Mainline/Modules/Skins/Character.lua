@@ -431,13 +431,15 @@ function S:Blizzard_UIPanels_Game()
 	ReputationFrame:StripTextures()
 	S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
-	--_G.ReputationDetailFrame:StripTextures()
-	--_G.ReputationDetailFrame:SetTemplate('Transparent')
-	--S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	--S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	--S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-	--S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	--S:HandleButton(_G.ReputationDetailViewRenownButton)
+	local DetailFrame = ReputationFrame.ReputationDetailFrame
+	DetailFrame:StripTextures()
+	DetailFrame:SetTemplate('Transparent')
+	DetailFrame.CloseButton:StripTextures()
+	S:HandleCloseButton(DetailFrame.CloseButton)
+	S:HandleCheckBox(DetailFrame.AtWarCheckbox)
+	S:HandleCheckBox(DetailFrame.MakeInactiveCheckbox)
+	S:HandleCheckBox(DetailFrame.WatchFactionCheckbox)
+	--S:HandleCheckBox(DetailFrame.ViewRenownButton)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()

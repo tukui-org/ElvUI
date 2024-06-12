@@ -1170,7 +1170,7 @@ do
 						if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
 							child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
 						else
-							child.CheckBox:SetEnabled(false)
+							child.Checkbox:SetEnabled(false)
 							child:DisplayEnabled(false)
 						end
 					end
