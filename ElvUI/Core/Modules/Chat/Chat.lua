@@ -1726,12 +1726,12 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
 			-- Add Blizzard Icon if this was sent by a GM/DEV
 			flag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
-		elseif E.Retail and CH.db.mentorshipIcon and specialFlag == 'GUIDE' then
-			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
+		elseif specialFlag == 'GUIDE' then
+			if CH.db.mentorshipIcon and _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
 				flag = NPEV2_CHAT_USER_TAG_GUIDE
 			end
-		elseif E.Retail and CH.db.mentorshipIcon and specialFlag == 'NEWCOMER' then
-			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
+		elseif specialFlag == 'NEWCOMER' then
+			if CH.db.mentorshipIcon and _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
 				flag = _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
