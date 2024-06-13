@@ -16,9 +16,10 @@ local str_match, format, tinsert, tremove, strsub = string.match, format, tinser
 local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
 local GetSpellLossOfControlCooldown = (C_Spell and C_Spell.GetSpellLossOfControlCooldown) or GetSpellLossOfControlCooldown
+local GetSpellTexture = (C_Spell and C_Spell.GetSpellTexture) or GetSpellTexture
 local IsAttackSpell = (C_Spell and C_Spell.IsAutoAttackSpell) or IsAttackSpell
-local IsPressHoldReleaseSpell = (C_Spell and C_Spell.IsPressHoldReleaseSpell) or IsPressHoldReleaseSpell
 local IsAutoRepeatSpell = (C_Spell and C_Spell.IsAutoRepeatSpell) or IsAutoRepeatSpell
+local IsPressHoldReleaseSpell = (C_Spell and C_Spell.IsPressHoldReleaseSpell) or IsPressHoldReleaseSpell
 
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)

@@ -16,7 +16,7 @@ local UIParent = UIParent
 
 local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
 local GetCVarBool = C_CVar.GetCVarBool
-local GetSpellDescription = C_Spell and C_Spell.GetSpellDescription or GetSpellDescription
+local GetSpellDescription = (C_Spell and C_Spell.GetSpellDescription) or GetSpellDescription
 
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
