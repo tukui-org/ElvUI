@@ -65,19 +65,18 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	-- reskin all esc/menu buttons
-	-- FIX ME 11.0
-	--[[
 	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
 		local skinnedButtons = {}
 		hooksecurefunc(GameMenuFrame, 'InitButtons', function(self)
-			local tableData = self.buttonPool.activeObjects
-			for obj in pairs(tableData) do
-				if not skinnedButtons[obj] then
-					S:HandleButton(obj, nil, nil, nil, true)
-					skinnedButtons[obj] = true
+			if not self.buttonPool then return end
+
+			for button in self.buttonPool:EnumerateActive() do
+				if not skinnedButtons[button] then
+					S:HandleButton(button, nil, nil, nil, true)
+					skinnedButtons[button] = true
 				else
-					obj:HookScript('OnEnter', S.SetModifiedBackdrop)
-					obj:HookScript('OnLeave', S.SetOriginalBackdrop)
+					button:HookScript('OnEnter', S.SetModifiedBackdrop)
+					button:HookScript('OnLeave', S.SetOriginalBackdrop)
 				end
 			end
 		end)
@@ -87,7 +86,7 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
 		_G.GameMenuFrame.Header:Point('TOP', _G.GameMenuFrame, 0, 7)
-	end]]
+	end
 
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`

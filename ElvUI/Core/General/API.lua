@@ -796,7 +796,7 @@ do
 			})
 
 			--hooking to blizz button add function for game menu, since the list of those is reset every time menu is opened
-			hooksecurefunc(GameMenuFrame, 'AddButton', E.GameMenuFrame_AddButton)
+			hooksecurefunc(GameMenuFrame, 'InitButtons', E.GameMenuFrame_AddButton)
 		else
 			local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 			button:SetScript('OnClick', E.ClickGameMenu)
@@ -937,7 +937,7 @@ function E:LoadAPI()
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
 	-- FIX ME 11.0 Fix this
-	--E:GameMenuFrame_Setup()
+	E:GameMenuFrame_Setup()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
