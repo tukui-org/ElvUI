@@ -8,7 +8,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
-local GetSpellTexture = C_Spell and C_Spell.GetSpellTexture or GetSpellTexture
+local GetSpellTexture = (C_Spell and C_Spell.GetSpellTexture) or GetSpellTexture
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 
