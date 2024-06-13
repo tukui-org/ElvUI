@@ -276,7 +276,7 @@ do
 		local db = parent.db and parent.db.power
 		if not db then return end
 
-		if individualUnits[unit] and db.autoHide and parent.POWERBAR_DETACHED then
+		if individualUnits[unit] and db.autoHide then
 			local _, powerType = UnitPowerType(unit)
 			if (powerTypesFull[powerType] and cur == max) or cur == min or (db.notInCombat and not InCombatLockdown()) then
 				self:Hide()
