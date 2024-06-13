@@ -17,7 +17,7 @@ local function HandleButton(entry, addonIndex)
 	end
 
 	local checkall -- Get the character from the current list (nil is all characters)
-	local character = UIDropDownMenu_GetSelectedValue(_G.AddonCharacterDropDown)
+	local character = UIDropDownMenu_GetSelectedValue(_G.AddonList.Dropdown)
 	if character == true then
 		character = nil
 	else
