@@ -254,13 +254,14 @@ local function UpdateFactionSkins(frame)
 				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
 			end
 
-			if child.ReputationBar then
-				child.ReputationBar:StripTextures()
-				child.ReputationBar:SetStatusBarTexture(E.media.normTex)
+			local ReputationBar = child.Content and child.Content.ReputationBar
+			if ReputationBar then
+				ReputationBar:StripTextures()
+				ReputationBar:SetStatusBarTexture(E.media.normTex)
 
-				if not child.ReputationBar.backdrop then
-					child.ReputationBar:CreateBackdrop()
-					E:RegisterStatusBar(child.ReputationBar)
+				if not ReputationBar.backdrop then
+					ReputationBar:CreateBackdrop()
+					E:RegisterStatusBar(ReputationBar)
 				end
 			end
 
