@@ -18,35 +18,51 @@ local showInsetBackdrop = {
 	TokenFrame = true
 }
 
--- FIX ME 11.0 Mostly now in: TokenEntryMixin
-local function TokenFrame_ScrollUpdate(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.Highlight and not child.IsSkinned then
-			child.CategoryLeft:SetAlpha(0)
-			child.CategoryRight:SetAlpha(0)
-			child.CategoryMiddle:SetAlpha(0)
-			child.Stripe:SetAlpha(0.75)
+-- FIX ME 11.0 NEEDS SIMPY MAGIC -- Credits NDUI
+local oldAtlas = {
+	['Options_ListExpand_Right'] = 1,
+	['Options_ListExpand_Right_Expanded'] = 1,
+}
 
-			child.Highlight:SetInside()
-			child.Highlight:SetColorTexture(1, 1, 1, .25)
+local function updateCollapse(texture, atlas)
+	if not atlas or oldAtlas[atlas] then
+		local parent = texture:GetParent()
+		if parent:IsCollapsed() then
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
+		else
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Collapse')
+		end
+	end
+end
 
-			child.Highlight.SetPoint = E.noop
-			child.Highlight.SetTexture = E.noop
+local function UpdateTokenSkins(frame)
+	for i = 1, frame.ScrollTarget:GetNumChildren() do
+		local child = select(i, self.ScrollTarget:GetChildren())
+		if child and not child.IsSkinned then
+			if child.Right then
+				child:StripTextures()
+				child:CreateBackdrop()
+				child.backdrop:SetInside(2, 2)
 
-			S:HandleIcon(child.Icon, true)
-			child.Icon.backdrop:SetFrameLevel(child:GetFrameLevel())
+				updateCollapse(child.Right)
+				updateCollapse(child.HighlightRight)
 
-			if child.ExpandIcon then
-				child.ExpandIcon:CreateBackdrop('Transparent')
-				child.ExpandIcon.backdrop:SetInside(3, 3)
+				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
+			end
+
+			local icon = child.Content and child.Content.CurrencyIcon
+			if icon then
+				S:HandleIcon(icon)
+			end
+
+			if child.ToggleCollapseButton then
+				-- TO DO 11.0 FIX ME
+				--S:HandleCollapseTexture(child.ToggleCollapseButton, true)
 			end
 
 			child.IsSkinned = true
 		end
-
-		child.Icon.backdrop:SetShown(not child.isHeader)
-		child.ExpandIcon.backdrop:SetShown(child.isHeader)
-		child.Stripe:SetShown(not child.isHeader)
 	end
 end
 
@@ -217,23 +233,6 @@ local function FixSidebarTabCoords()
 
 		index = index + 1
 		tab = _G['PaperDollSidebarTab'..index]
-	end
-end
-
--- FIX ME 11.0 NEEDS SIMPY MAGIC -- Credits NDUI
-local oldAtlas = {
-	['Options_ListExpand_Right'] = 1,
-	['Options_ListExpand_Right_Expanded'] = 1,
-}
-
-local function updateCollapse(texture, atlas)
-	if not atlas or oldAtlas[atlas] then
-		local parent = texture:GetParent()
-		if parent:IsCollapsed() then
-			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
-		else
-			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Collapse')
-		end
 	end
 end
 
@@ -456,7 +455,7 @@ function S:Blizzard_UIPanels_Game()
 	end
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
-	--hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
+	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
 	hooksecurefunc(_G.CharacterFrameMixin, 'ShowSubFrame', UpdateCharacterInset)
