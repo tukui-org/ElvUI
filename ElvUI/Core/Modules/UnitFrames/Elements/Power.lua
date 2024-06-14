@@ -23,6 +23,10 @@ function UF:PowerBar_Visibility()
 	if frame.POWERBAR_SHOWN ~= wasShown then
 		UF:Configure_Power(frame, true)
 		UF:Configure_InfoPanel(frame)
+
+		if frame.HealthPrediction then
+			UF:SetSize_HealComm(frame)
+		end
 	end
 end
 

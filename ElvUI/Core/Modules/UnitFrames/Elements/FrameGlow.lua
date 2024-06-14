@@ -141,6 +141,27 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	end
 end
 
+function UF:FrameGlow_OnEvent(event)
+	local frame = self:GetParent()
+	if not frame then return end
+
+	if event == 'UPDATE_MOUSEOVER_UNIT' then
+		UF:FrameGlow_CheckMouseover(frame)
+	elseif event == 'PLAYER_FOCUS_CHANGED' then
+		UF:FrameGlow_CheckFocus(frame)
+	elseif event == 'PLAYER_TARGET_CHANGED' then
+		UF:FrameGlow_CheckTarget(frame)
+	end
+end
+
+function UF:FrameGlow_PowerGlowHide(powerGlow)
+	powerGlow:SetAlpha(0)
+end
+
+function UF:FrameGlow_PowerGlowShow(powerGlow)
+	powerGlow:SetAlpha(1)
+end
+
 function UF:FrameGlow_CreateGlow(frame, which)
 	-- Main Glow to wrap the health frame to it's best ability
 	local mainGlow = frame:CreateShadow(4, true)
@@ -152,6 +173,8 @@ function UF:FrameGlow_CreateGlow(frame, which)
 	powerGlow:SetFrameStrata('BACKGROUND')
 	powerGlow:Hide()
 
+	mainGlow.powerGlow = powerGlow
+
 	local level = (which == 'mouse' and 5) or (which == 'target' and 4) or 3
 	mainGlow:SetFrameLevel(level)
 	powerGlow:SetFrameLevel(level)
@@ -159,19 +182,16 @@ function UF:FrameGlow_CreateGlow(frame, which)
 	-- Eventing Frame
 	if not frame.FrameGlow then
 		frame.FrameGlow = CreateFrame('Frame', nil, frame)
+		frame.FrameGlow:SetScript('OnEvent', UF.FrameGlow_OnEvent)
 		frame.FrameGlow:Hide()
-		frame.FrameGlow:SetScript('OnEvent', function(_, event)
-			if event == 'UPDATE_MOUSEOVER_UNIT' then
-				UF:FrameGlow_CheckMouseover(frame)
-			elseif event == 'PLAYER_FOCUS_CHANGED' then
-				UF:FrameGlow_CheckFocus(frame)
-			elseif event == 'PLAYER_TARGET_CHANGED' then
-				UF:FrameGlow_CheckTarget(frame)
-			end
-		end)
 	end
 
-	mainGlow.powerGlow = powerGlow
+	-- Auto Hide for Power
+	if frame.Power then
+		frame.Power:HookScript('OnHide', function() UF:FrameGlow_PowerGlowHide(powerGlow) end)
+		frame.Power:HookScript('OnShow', function() UF:FrameGlow_PowerGlowShow(powerGlow) end)
+	end
+
 	return mainGlow
 end
 
