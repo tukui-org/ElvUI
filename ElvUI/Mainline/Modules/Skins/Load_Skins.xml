@@ -31,6 +31,7 @@
 	<Script file='CovenantSanctum.lua'/>
 	<Script file='DeathRecap.lua'/>
 	<Script file='Debug.lua'/>
+	<Script file='Delves.lua'/>
 	<Script file='DressingRoom.lua'/>
 	<Script file='EditorManager.lua'/>
 	<Script file='EncounterJournal.lua'/>

@@ -657,14 +657,5 @@ function S:Blizzard_ChallengesUI()
 	end)
 end
 
-function S:Blizzard_DelvesDashboardUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
-	local Dashboard = _G.DelvesDashboardFrame
-	Dashboard.DashboardBackground:SetAlpha(0)
-	S:HandleButton(Dashboard.ButtonPanelLayoutFrame.CompanionConfigButtonPanel.CompanionConfigButton)
-end
-
 S:AddCallback('LookingForGroupFrames')
 S:AddCallbackForAddon('Blizzard_ChallengesUI')
-S:AddCallbackForAddon('Blizzard_DelvesDashboardUI')
