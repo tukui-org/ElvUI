@@ -233,7 +233,7 @@ function S:Blizzard_ObjectiveTracker()
 			SkinOjectiveTrackerHeaders(tracker.Header)
 
 			hooksecurefunc(tracker, 'AddBlock', HandleItemButton)
-			hooksecurefunc(tracker, 'GetProgressBar', ColorProgressBars)
+			hooksecurefunc(tracker, 'GetProgressBar', SkinProgressBars)
 			hooksecurefunc(tracker, 'GetTimerBar', SkinTimerBars)
 		end
 	end
