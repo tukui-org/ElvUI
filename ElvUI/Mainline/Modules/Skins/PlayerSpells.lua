@@ -55,49 +55,18 @@ local function UpdateSpecFrame(frame)
 	end
 end
 
-local function HandleNameText(text, r, g, b)
-	if not (r == 1 and g == 1 and b == 1) then
-		text:SetTextColor(1, 1, 1)
-	end
-end
-
-local function HandleSubNameText(text, r, g, b)
-	if not (r == 0.7 and g == 0.7 and b == 0.7) then
-		text:SetTextColor(0.7, 0.7, 0.7)
-	end
-end
-
--- FIX ME 11.0 take account for parchment/non parchment Remover
-local hookedNames = {}
-local function UpdateSpellBookFrame(frame)
-	if not E.private.skins.parchmentRemoverEnable then return end
-
-	for _, button in frame.PagedSpellsFrame:EnumerateFrames() do
+local function HandleTextColor(self)
+	for _, button in self:EnumerateFrames() do
 		if not button.IsSkinned then
 			if button.Text then
-				button.Text:SetTextColor(1, 1, 1)
+				button.Text:SetTextColor(1, .8, 0)
 			end
 			if button.Name then
 				button.Name:SetTextColor(1, 1, 1)
-
-				if not hookedNames[button.Name] then
-					hooksecurefunc(button.Name, 'SetTextColor', HandleNameText)
-					hookedNames[button.Name] = true
-				end
 			end
 			if button.SubName then
-				button.SubName:SetTextColor(0.7, 0.7, 0.7)
-
-				if not hookedNames[button.SubName] then
-					hooksecurefunc(button.SubName, 'SetTextColor', HandleSubNameText)
-					hookedNames[button.SubName] = true
-				end
+				button.SubName:SetTextColor(.7, .7, .7)
 			end
-			if button.Backplate then
-				button.Backplate:Kill()
-			end
-
-			-- Skin the button.Icon
 			button.IsSkinned = true
 		end
 	end
@@ -180,38 +149,48 @@ function S:Blizzard_PlayerSpells()
 	-- FIX ME 11.0: MONITOR THIS
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
-	SpellBookFrame:StripTextures()
-	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
-	S:HandleEditBox(SpellBookFrame.SearchBox)
-	S:HandleCheckBox(SpellBookFrame.HidePassivesCheckButton.Button) -- Fix me 11.0 make the dropdown pretty
+	if SpellBookFrame then
+		--SpellBookFrame:StripTextures()
+		SpellBookFrame.BookBGLeft:SetAlpha(0.3)
+		SpellBookFrame.BookBGRight:SetAlpha(0.3)
+		SpellBookFrame.BookBGHalved:SetAlpha(0.3)
+		SpellBookFrame.Bookmark:SetAlpha(0.3)
+		SpellBookFrame.TopBar:Hide()
+		SpellBookFrame.BookCornerFlipbook:Hide()
+		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
+		S:HandleEditBox(SpellBookFrame.SearchBox)
+		S:HandleCheckBox(SpellBookFrame.HidePassivesCheckButton.Button)
 
-	if E.global.general.disableTutorialButtons then
-		SpellBookFrame.HelpPlateButton:Kill()
-	else
-		SpellBookFrame.HelpPlateButton.Ring:Hide()
+		if E.global.general.disableTutorialButtons then
+			SpellBookFrame.HelpPlateButton:Kill()
+		else
+			SpellBookFrame.HelpPlateButton.Ring:Hide()
+		end
+
+		for _, tab in next, { SpellBookFrame.CategoryTabSystem:GetChildren() } do
+			S:HandleTab(tab)
+		end
+
+		local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
+		PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
+
+		local PagingControls = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame.PagingControls
+		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
+		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
+		PagingControls.PageText:SetTextColor(1, 1, 1)
+
+		hooksecurefunc(PagedSpellsFrame, 'DisplayViewsForCurrentPage', HandleTextColor)
+
+		-- HERO TALENTS (Finish me) FIX ME 11.0
+		local TalentsSelect = _G.HeroTalentsSelectionDialog
+		if TalentsSelect then
+			TalentsSelect:StripTextures()
+			TalentsSelect:SetTemplate('Transparent')
+			S:HandleCloseButton(TalentsSelect.CloseButton)
+
+			local SpecOptions = TalentsSelect.SpecOptionsContainer
+		end
 	end
-
-	for _, tab in next, { SpellBookFrame.CategoryTabSystem:GetChildren() } do
-		S:HandleTab(tab)
-	end
-
-	local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
-	PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
-
-	local PagingControls = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame.PagingControls
-	S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
-	S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
-	PagingControls.PageText:SetTextColor(1, 1, 1)
-
-	hooksecurefunc(SpellBookFrame, 'UpdateDisplayedSpells', UpdateSpellBookFrame)
-
-	-- HERO TALENTS (Finish me) FIX ME 11.0
-	local TalentsSelect = _G.HeroTalentsSelectionDialog
-	TalentsSelect:StripTextures()
-	TalentsSelect:SetTemplate('Transparent')
-	S:HandleCloseButton(TalentsSelect.CloseButton)
-
-	local SpecOptions = TalentsSelect.SpecOptionsContainer
 end
 
 S:AddCallbackForAddon('Blizzard_PlayerSpells')
