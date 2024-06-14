@@ -129,7 +129,7 @@ function UF:Configure_HealthBar(frame)
 	if frame.ORIENTATION == 'LEFT' then
 		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -PVPINFO_NOSPACING, -CLASSBAR_YNOSPACING)
 
-		if frame.USE_POWERBAR_OFFSET then
+		if frame.USE_POWERBAR_OFFSET and frame.POWERBAR_SHOWN then
 			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -BORDER_NOSPACING - POWERBAR_OFFSET, -CLASSBAR_YNOSPACING)
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', PORTRAIT_SPACING, POWERBAR_SPACING)
 
@@ -140,7 +140,7 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = WIDTH_PVPINFO - PORTRAIT_SPACING
 			health.HEIGHT = HEIGHT_YCLASSBAR - BOTTOM_SPACING
-		elseif frame.USE_MINI_POWERBAR then
+		elseif frame.USE_MINI_POWERBAR and frame.POWERBAR_SHOWN then
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', PORTRAIT_SPACING, POWERBAR_BORDER)
 
 			health.WIDTH = WIDTH_PVPINFO - PORTRAIT_SPACING
@@ -154,7 +154,7 @@ function UF:Configure_HealthBar(frame)
 	elseif frame.ORIENTATION == 'RIGHT' then
 		health:Point('TOPLEFT', frame, 'TOPLEFT', PVPINFO_SPACING, -CLASSBAR_YNOSPACING)
 
-		if frame.USE_POWERBAR_OFFSET then
+		if frame.USE_POWERBAR_OFFSET and frame.POWERBAR_SHOWN then
 			health:Point('TOPLEFT', frame, 'TOPLEFT', POWERBAR_SPACING, -CLASSBAR_YNOSPACING)
 			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -PORTRAIT_NOSPACING, POWERBAR_SPACING)
 
@@ -165,7 +165,7 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = WIDTH_PVPINFO - PORTRAIT_SPACING
 			health.HEIGHT = HEIGHT_YCLASSBAR - BOTTOM_SPACING
-		elseif frame.USE_MINI_POWERBAR then
+		elseif frame.USE_MINI_POWERBAR and frame.POWERBAR_SHOWN then
 			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -PORTRAIT_NOSPACING, POWERBAR_BORDER)
 
 			health.WIDTH = WIDTH_PVPINFO - PORTRAIT_SPACING
@@ -179,7 +179,7 @@ function UF:Configure_HealthBar(frame)
 	elseif frame.ORIENTATION == 'MIDDLE' then
 		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -PVPINFO_NOSPACING, -CLASSBAR_YNOSPACING)
 
-		if frame.USE_POWERBAR_OFFSET then
+		if frame.USE_POWERBAR_OFFSET and frame.POWERBAR_SHOWN then
 			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -BORDER_NOSPACING - POWERBAR_OFFSET, -CLASSBAR_YNOSPACING)
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', POWERBAR_SPACING, POWERBAR_SPACING)
 
@@ -190,7 +190,7 @@ function UF:Configure_HealthBar(frame)
 
 			health.WIDTH = WIDTH_PVPINFO - BORDER_SPACING
 			health.HEIGHT = HEIGHT_YCLASSBAR - BOTTOM_SPACING
-		elseif frame.USE_MINI_POWERBAR then
+		elseif frame.USE_MINI_POWERBAR and frame.POWERBAR_SHOWN then
 			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', BORDER_SPACING, POWERBAR_BORDER)
 
 			health.WIDTH = WIDTH_PVPINFO - BORDER_SPACING
@@ -225,7 +225,7 @@ function UF:GetHealthBottomOffset(frame)
 	local BORDER_NOSPACING = UF.BORDER - UF.SPACING
 	local bottomOffset = 0
 
-	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
+	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR and frame.POWERBAR_SHOWN then
 		bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - BORDER_NOSPACING
 	end
 

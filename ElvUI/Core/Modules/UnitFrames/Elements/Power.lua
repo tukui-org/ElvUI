@@ -11,26 +11,47 @@ local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local InCombatLockdown = InCombatLockdown
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
+function UF:PowerBar_Visibility()
+	local frame = self.origParent or self:GetParent()
+
+	local db = frame.db and frame.db.power
+	if not db then return end
+
+	local wasShown = frame.POWERBAR_SHOWN
+	frame.POWERBAR_SHOWN = self:IsShown()
+
+	if frame.POWERBAR_SHOWN ~= wasShown then
+		UF:Configure_Power(frame, true)
+		UF:Configure_InfoPanel(frame)
+	end
+end
+
+function UF:PowerBar_SetStatusBarColor(r, g, b)
+	local frame = self.origParent or self:GetParent()
+	if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
+		if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+			local color = UF.db.colors.powerPrediction.color
+			frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+		else
+			frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+		end
+	end
+end
+
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
 	UF.statusbars[power] = true
-
-	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)
-		if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
-			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
-				local color = UF.db.colors.powerPrediction.color
-				frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-			else
-				frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
-			end
-		end
-	end)
 
 	power.RaisedElementParent = UF:CreateRaisedElement(power, true)
 
 	power.PostUpdate = UF.PostUpdatePower
 	power.PostUpdateColor = UF.PostUpdatePowerColor
 	power.GetDisplayPower = UF.GetDisplayPower
+
+	power:SetScript('OnShow', UF.PowerBar_Visibility)
+	power:SetScript('OnHide', UF.PowerBar_Visibility)
+
+	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
 	if bg then
 		power.BG = power:CreateTexture(nil, 'BORDER')
@@ -46,6 +67,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
+
 	power:CreateBackdrop(nil, nil, nil, nil, true)
 	power.backdrop.callbackBackdropColor = UF.PowerBackdropColor
 
@@ -54,7 +76,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	return power
 end
 
-function UF:Configure_Power(frame)
+function UF:Configure_Power(frame, healthUpdate)
 	local db = frame.db
 	local power = frame.Power
 	power.origParent = frame
@@ -65,7 +87,7 @@ function UF:Configure_Power(frame)
 		end
 
 		--Show the power here so that attached texts can be displayed correctly.
-		power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
+		--power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
 
 		E:SetSmoothing(power, UF.db.smoothbars)
 
@@ -114,7 +136,8 @@ function UF:Configure_Power(frame)
 			db.power.height = 3
 			heightChanged = true
 		end
-		if heightChanged then
+
+		if heightChanged or healthUpdate then
 			--Update health size
 			frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 			UF:Configure_HealthBar(frame)
@@ -122,7 +145,7 @@ function UF:Configure_Power(frame)
 
 		--Position
 		power:ClearAllPoints()
-		local OFFSET = (UF.BORDER + UF.SPACING)*2
+		local OFFSET = (UF.BORDER + UF.SPACING) * 2
 
 		if frame.POWERBAR_DETACHED then
 			if power.Holder and power.Holder.mover then
@@ -276,7 +299,7 @@ do
 		local db = parent.db and parent.db.power
 		if not db then return end
 
-		if individualUnits[unit] and db.autoHide and parent.POWERBAR_DETACHED then
+		if individualUnits[unit] and db.autoHide then
 			local _, powerType = UnitPowerType(unit)
 			if (powerTypesFull[powerType] and cur == max) or cur == min or (db.notInCombat and not InCombatLockdown()) then
 				self:Hide()
