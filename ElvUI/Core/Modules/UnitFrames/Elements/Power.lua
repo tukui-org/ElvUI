@@ -11,26 +11,48 @@ local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local InCombatLockdown = InCombatLockdown
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
+function UF:PowerBar_Visibility()
+	local frame = self.origParent or self:GetParent()
+
+	local db = frame.db and frame.db.power
+	if not db then return end
+
+	local wasShown = frame.POWERBAR_SHOWN
+	frame.POWERBAR_SHOWN = self:IsShown()
+
+	if frame.POWERBAR_SHOWN ~= wasShown then
+		UF:Configure_Power(frame, true)
+		UF:Configure_InfoPanel(frame)
+	end
+end
+
+function UF:PowerBar_SetStatusBarColor(r, g, b)
+	local frame = self.origParent or self:GetParent()
+	if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
+		if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+			local color = UF.db.colors.powerPrediction.color
+			frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+		else
+			frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+		end
+	end
+end
+
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
+	frame.POWERBAR_SHOWN = true -- we need this for autoHide
 	UF.statusbars[power] = true
-
-	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)
-		if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
-			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
-				local color = UF.db.colors.powerPrediction.color
-				frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-			else
-				frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
-			end
-		end
-	end)
 
 	power.RaisedElementParent = UF:CreateRaisedElement(power, true)
 
 	power.PostUpdate = UF.PostUpdatePower
 	power.PostUpdateColor = UF.PostUpdatePowerColor
 	power.GetDisplayPower = UF.GetDisplayPower
+
+	power:SetScript('OnShow', UF.PowerBar_Visibility)
+	power:SetScript('OnHide', UF.PowerBar_Visibility)
+
+	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
 	if bg then
 		power.BG = power:CreateTexture(nil, 'BORDER')
@@ -46,6 +68,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
+
 	power:CreateBackdrop(nil, nil, nil, nil, true)
 	power.backdrop.callbackBackdropColor = UF.PowerBackdropColor
 
@@ -54,7 +77,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	return power
 end
 
-function UF:Configure_Power(frame)
+function UF:Configure_Power(frame, healthUpdate)
 	local db = frame.db
 	local power = frame.Power
 	power.origParent = frame
@@ -63,9 +86,6 @@ function UF:Configure_Power(frame)
 		if not frame:IsElementEnabled('Power') then
 			frame:EnableElement('Power')
 		end
-
-		--Show the power here so that attached texts can be displayed correctly.
-		power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
 
 		E:SetSmoothing(power, UF.db.smoothbars)
 
@@ -114,7 +134,8 @@ function UF:Configure_Power(frame)
 			db.power.height = 3
 			heightChanged = true
 		end
-		if heightChanged then
+
+		if heightChanged or healthUpdate then
 			--Update health size
 			frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 			UF:Configure_HealthBar(frame)
@@ -122,7 +143,14 @@ function UF:Configure_Power(frame)
 
 		--Position
 		power:ClearAllPoints()
-		local OFFSET = (UF.BORDER + UF.SPACING)*2
+
+		local POWERBAR_WIDTH = frame.POWERBAR_WIDTH or 0
+		local POWERBAR_HEIGHT = frame.POWERBAR_HEIGHT or 0
+		local POWERBAR_OFFSET = frame.POWERBAR_OFFSET or 0
+
+		local BORDER_SPACING = UF.BORDER + UF.SPACING
+		local DOUBLE_BORDER = UF.BORDER * 2
+		local DOUBLE_SPACING = BORDER_SPACING * 2
 
 		if frame.POWERBAR_DETACHED then
 			if power.Holder and power.Holder.mover then
@@ -137,46 +165,49 @@ function UF:Configure_Power(frame)
 				end
 			end
 
-			power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
-			power:Size(frame.POWERBAR_WIDTH - OFFSET, frame.POWERBAR_HEIGHT - OFFSET)
+			power.Holder:Size(POWERBAR_WIDTH, POWERBAR_HEIGHT)
+			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', BORDER_SPACING, BORDER_SPACING)
+			power:Size(POWERBAR_WIDTH - DOUBLE_SPACING, POWERBAR_HEIGHT - DOUBLE_SPACING)
 			power:SetFrameLevel(50) --RaisedElementParent uses 100, we want lower value to allow certain icons and texts to appear above power
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == 'LEFT' then
-				power:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', POWERBAR_OFFSET, -POWERBAR_OFFSET)
+				power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', POWERBAR_OFFSET, -POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == 'MIDDLE' then
-				power:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
+				power:Point('TOPLEFT', frame, 'TOPLEFT', BORDER_SPACING, -POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
 				power:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -UF.BORDER - UF.SPACING, UF.BORDER)
 			else
-				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -POWERBAR_OFFSET, -POWERBAR_OFFSET)
+				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 			end
 			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
-			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
-			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', UF.BORDER + (UF.BORDER*2), UF.BORDER + (UF.BORDER*2))
-			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(UF.BORDER + (UF.BORDER*2)), UF.BORDER + (UF.BORDER*2))
+			power:Height(POWERBAR_HEIGHT - DOUBLE_SPACING)
+			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', UF.BORDER + DOUBLE_BORDER, UF.BORDER + DOUBLE_BORDER)
+			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(UF.BORDER + DOUBLE_BORDER), UF.BORDER + DOUBLE_BORDER)
 			power:SetFrameLevel(50)
 		elseif frame.USE_MINI_POWERBAR then
-			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
+			power:Height(POWERBAR_HEIGHT - DOUBLE_SPACING)
+
+			local POWERHEIGHT_OFFSET = (POWERBAR_HEIGHT - UF.BORDER) * 0.5
+			local DOUBLE_FOUR = DOUBLE_BORDER + 4
 
 			if frame.ORIENTATION == 'LEFT' then
-				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
+				power:Width(POWERBAR_WIDTH - DOUBLE_BORDER)
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -DOUBLE_FOUR, POWERHEIGHT_OFFSET)
 			elseif frame.ORIENTATION == 'RIGHT' then
-				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
+				power:Width(POWERBAR_WIDTH - DOUBLE_BORDER)
+				power:Point('LEFT', frame, 'BOTTOMLEFT', DOUBLE_FOUR, POWERHEIGHT_OFFSET)
 			else
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-UF.BORDER)*0.5))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', DOUBLE_FOUR, POWERHEIGHT_OFFSET)
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(DOUBLE_FOUR + (frame.PVPINFO_WIDTH or 0)), POWERHEIGHT_OFFSET)
 			end
 
 			power:SetFrameLevel(50)
 		else
 			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER, -UF.SPACING*3)
 			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER, -UF.SPACING*3)
-			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
+			power:Height(POWERBAR_HEIGHT - DOUBLE_SPACING)
 
 			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		end
@@ -276,7 +307,7 @@ do
 		local db = parent.db and parent.db.power
 		if not db then return end
 
-		if individualUnits[unit] and db.autoHide and parent.POWERBAR_DETACHED then
+		if individualUnits[unit] and db.autoHide then
 			local _, powerType = UnitPowerType(unit)
 			if (powerTypesFull[powerType] and cur == max) or cur == min or (db.notInCombat and not InCombatLockdown()) then
 				self:Hide()
