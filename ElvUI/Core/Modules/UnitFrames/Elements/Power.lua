@@ -13,14 +13,14 @@ local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
-function UF:PowerBar_Visibility()
-	local frame = self.origParent or self:GetParent()
+function UF:PowerBar_Visibility(power, parent)
+	local frame = parent or power.origParent or power:GetParent()
 
 	local db = frame.db and frame.db.power
 	if not db then return end
 
 	local wasShown = frame.POWERBAR_SHOWN
-	frame.POWERBAR_SHOWN = self:IsShown()
+	frame.POWERBAR_SHOWN = power:IsShown()
 
 	if frame.POWERBAR_SHOWN ~= wasShown then
 		UF:Configure_Power(frame, true)
@@ -335,16 +335,16 @@ do
 			if shouldShow and not barShown then
 				self:Show()
 
-				UF.PowerBar_Visibility(self)
+				UF:PowerBar_Visibility(self, parent)
 			elseif not shouldShow and barShown then
 				self:Hide()
 
-				UF.PowerBar_Visibility(self)
+				UF:PowerBar_Visibility(self, parent)
 			end
 		elseif (pastVisibility ~= visibility) and not barShown then
 			self:Show()
 
-			UF.PowerBar_Visibility(self)
+			UF:PowerBar_Visibility(self, parent)
 		end
 	end
 end
