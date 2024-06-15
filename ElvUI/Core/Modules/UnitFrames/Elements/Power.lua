@@ -13,10 +13,10 @@ local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
-function UF:PowerBar_Visibility(power, parent)
-	local frame = parent or power.origParent or power:GetParent()
+function UF:PowerBar_Visibility(power, frame)
+	if not frame then frame = power.origParent or power:GetParent() end
 
-	local db = frame.db and frame.db.power
+	local db = frame and frame.db and frame.db.power
 	if not db then return end
 
 	local wasShown = frame.POWERBAR_SHOWN
