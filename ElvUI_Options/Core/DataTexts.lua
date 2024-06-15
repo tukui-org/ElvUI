@@ -190,7 +190,7 @@ local function CreateDTOptions(name, data)
 		end
 
 		if name == 'Bags' then
-			optionTable.args.includeReagents = ACH:Toggle(E.NewSign..L["Include Reagents"], nil, 5)
+			optionTable.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 5)
 			optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
 		elseif name == 'Combat' then
 			optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)

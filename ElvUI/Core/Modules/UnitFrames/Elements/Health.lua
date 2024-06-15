@@ -49,7 +49,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	return health
 end
 
-function UF:Configure_HealthBar(frame)
+function UF:Configure_HealthBar(frame, powerUpdate)
 	local db = frame.db
 	local health = frame.Health
 
@@ -99,7 +99,6 @@ function UF:Configure_HealthBar(frame)
 	health:SetColorSelection(colorSelection)
 
 	--Position
-	health:ClearAllPoints()
 	health.WIDTH = db.width
 	health.HEIGHT = db.height
 
@@ -127,6 +126,7 @@ function UF:Configure_HealthBar(frame)
 	local WIDTH_POWERBAR = health.WIDTH - POWERBAR_SPACING
 	local WIDTH_PVPINFO = health.WIDTH - PVPINFO_SPACING
 
+	health:ClearAllPoints()
 	if frame.ORIENTATION == 'LEFT' then
 		health:Point('TOPRIGHT', frame, 'TOPRIGHT', PVPINFO_LESSSPACING, CLASSBAR_LESSSPACING)
 
@@ -212,6 +212,8 @@ function UF:Configure_HealthBar(frame)
 
 		health:SetReverseFill(db.health.reverseFill)
 	end
+
+	if powerUpdate then return end -- we dont need to redo this stuff, power updated it
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, nil, db.health and db.health.reverseFill)
 
@@ -308,10 +310,14 @@ end
 function UF:PostUpdateHealth(_, cur)
 	local parent = self:GetParent()
 	if parent.isForced then
-		self.cur = random(1, 100)
-		self.max = 100
-		self:SetMinMaxValues(0, self.max)
-		self:SetValue(self.cur)
+		cur = random(1, 100)
+		local max = 100
+
+		self.cur = cur
+		self.max = max
+
+		self:SetMinMaxValues(0, max)
+		self:SetValue(cur)
 	elseif parent.ResurrectIndicator then
 		parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 	end
