@@ -290,6 +290,7 @@ do --this can save some main file locals
 			z['Player-1168-069A1283']	= itsSimpy -- Hunter:	Arieva
 			z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup
 			z['Player-1168-069A3A12']	= itsSimpy -- Paladin:	Cutepally
+			z['Player-1168-0AD0F035']	= itsSimpy -- DH:		Puddle
 			z['Player-1168-0A99F54B']	= itsSimpy -- Mage:		Cuddle
 			z['Player-1168-0ACDC528']	= itsSimpy -- Priest:	Snuggle
 			z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
