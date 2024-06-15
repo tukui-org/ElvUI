@@ -144,6 +144,7 @@ function S:Blizzard_PerksProgram()
 	local footer = frame.FooterFrame
 	if footer then
 		S:HandleCheckBox(footer.TogglePlayerPreview)
+		S:HandleCheckBox(footer.ToggleMountSpecial)
 		S:HandleCheckBox(footer.ToggleHideArmor)
 
 		local armorText = footer.ToggleHideArmor.Text
