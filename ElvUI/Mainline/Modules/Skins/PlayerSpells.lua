@@ -72,6 +72,25 @@ local function HandleTextColor(self)
 	end
 end
 
+local function HandleHeroTalents(frame)
+	if not frame then return end
+
+	for specFrame in frame.SpecContentFramePool:EnumerateActive() do
+		if specFrame and not specFrame.IsSkinned then
+			if specFrame.SpecName then specFrame.SpecName:FontTemplate(nil, 18) end
+			if specFrame.Description then specFrame.Description:FontTemplate(nil, 14) end
+			if specFrame.CurrencyFrame then
+				specFrame.CurrencyFrame.LabelText:FontTemplate()
+				specFrame.CurrencyFrame.AmountText:FontTemplate(nil, 18)
+			end
+			S:HandleButton(specFrame.ActivateButton)
+			S:HandleButton(specFrame.ApplyChangesButton)
+
+			specFrame.IsSkinned = true
+		end
+	end
+end
+
 function S:Blizzard_PlayerSpells()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -146,11 +165,23 @@ function S:Blizzard_PlayerSpells()
 		end
 	end
 
-	-- FIX ME 11.0: MONITOR THIS
+	-- Hero Talents
+	local HeroTalentContainer = TalentsFrame.HeroTalentsContainer
+	HeroTalentContainer.HeroSpecLabel:FontTemplate(nil, 16)
+
+	local TalentsSelect = _G.HeroTalentsSelectionDialog
+	if TalentsSelect then
+		TalentsSelect:StripTextures()
+		TalentsSelect:SetTemplate('Transparent')
+		S:HandleCloseButton(TalentsSelect.CloseButton)
+
+		hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
+	end
+
+	-- FIX ME 11.0: Discuss the look maybe >.<
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	if SpellBookFrame then
-		--SpellBookFrame:StripTextures()
 		SpellBookFrame.BookBGLeft:SetAlpha(0.3)
 		SpellBookFrame.BookBGRight:SetAlpha(0.3)
 		SpellBookFrame.BookBGHalved:SetAlpha(0.3)
@@ -180,16 +211,6 @@ function S:Blizzard_PlayerSpells()
 		PagingControls.PageText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc(PagedSpellsFrame, 'DisplayViewsForCurrentPage', HandleTextColor)
-
-		-- HERO TALENTS (Finish me) FIX ME 11.0
-		local TalentsSelect = _G.HeroTalentsSelectionDialog
-		if TalentsSelect then
-			TalentsSelect:StripTextures()
-			TalentsSelect:SetTemplate('Transparent')
-			S:HandleCloseButton(TalentsSelect.CloseButton)
-
-			local SpecOptions = TalentsSelect.SpecOptionsContainer
-		end
 	end
 end
 
