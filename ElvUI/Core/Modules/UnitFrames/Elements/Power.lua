@@ -4,12 +4,12 @@ local ElvUF = E.oUF
 
 local random = random
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
-local hooksecurefunc = hooksecurefunc
-local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local InCombatLockdown = InCombatLockdown
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
@@ -295,6 +295,7 @@ do
 end
 
 do
+	local ignorePets = { raidpet = true, pet = true }
 	local powerTypesFull = { MANA = true, FOCUS = true, ENERGY = true }
 	function UF:PostUpdatePower(unit, cur, min, max)
 		local parent = self.origParent or self:GetParent()
@@ -319,7 +320,7 @@ do
 		end
 
 		local pastVisibility = parent.powerVisibility
-		local visibility = db.autoHide or db.onlyHealer or db.notInCombat
+		local visibility = db.autoHide or db.notInCombat or (db.onlyHealer and not ignorePets[parent.unitframeType])
 		parent.powerVisibility = visibility -- so we can only call this when needed
 
 		local barShown = self:IsShown()

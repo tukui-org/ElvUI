@@ -611,7 +611,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.power = ACH:Toggle(L["Power"], nil, 16, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 17, nil, nil, nil, nil, nil, disabledOrRanged)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 18, nil, nil, nil, nil, nil, disabledOrRanged)
-	config.args.dynamicflight = ACH:Toggle(E.NewSign..L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabledOrRanged)
+	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabledOrRanged)
 
 	config.args.spacer2 = ACH:Spacer(30, 'full')
 	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 31, { min = 0, max = 3, step = 0.01 }, nil, nil, nil, disabledOrRanged)
@@ -755,7 +755,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 
 	config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 30)
 	config.args.visibilityGroup.inline = true
-	config.args.visibilityGroup.args.onlyHealer = ACH:Toggle(L["Only Healer"], nil, 1)
+	config.args.visibilityGroup.args.onlyHealer = ACH:Toggle(E.NewSign..L["Only Healer"], nil, 1, nil, nil, nil, nil, nil, nil, groupName == 'raidpet' or groupName == 'pet')
 	config.args.visibilityGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 2)
 	config.args.visibilityGroup.args.notInCombat = ACH:Toggle(L["Hide Out of Combat"], nil, 3)
 
