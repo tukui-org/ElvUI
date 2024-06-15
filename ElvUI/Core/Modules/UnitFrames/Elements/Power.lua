@@ -254,7 +254,7 @@ function UF:PowerBackdropColor()
 	local parent = self:GetParent()
 	if parent.isTransparent then
 		local r, g, b = parent:GetStatusBarColor()
-		UF.UpdateBackdropTextureColor(parent, r, g, b, E.media.backdropfadecolor[4])
+		UF.UpdateBackdropTextureColor(parent, r or 0, g or 0, b or 0, E.media.backdropfadecolor[4])
 	else
 		self:SetBackdropColor(unpack(E.media.backdropfadecolor))
 		self:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
