@@ -31,17 +31,18 @@ function UF:UpdateRoleIcon(event)
 		return
 	end
 
-	local role = (E.Retail or E.Cata) and UnitGroupRolesAssigned(self.unit)
-	if self.isForced and role == 'NONE' then
+	local role
+	if self.isForced then
 		local rnd = random(1, 3)
-		role = rnd == 1 and 'TANK' or (rnd == 2 and 'HEALER' or (rnd == 3 and 'DAMAGER'))
+		role = (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
+	else
+		role = (E.Retail or E.Cata) and UnitGroupRolesAssigned(self.unit)
 	end
-
-	local shouldHide = ((event == 'PLAYER_REGEN_DISABLED' and db.combatHide and true) or false)
 
 	if (self.isForced or UnitIsConnected(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
 		lfdrole:SetTexture(UF.RoleIconTextures[role])
-		if not shouldHide then
+
+		if not (event == 'PLAYER_REGEN_DISABLED' and db.combatHide) then
 			lfdrole:Show()
 		else
 			lfdrole:Hide()
@@ -73,6 +74,7 @@ function UF:Configure_RoleIcon(frame)
 	else
 		frame:DisableElement('GroupRoleIndicator')
 		role:Hide()
+
 		--Unregister combat hide events
 		E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)
 		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', frame, UF.UpdateRoleIcon)
