@@ -9,6 +9,8 @@ local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local InCombatLockdown = InCombatLockdown
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function UF:PowerBar_Visibility()
@@ -52,9 +54,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.PostUpdate = UF.PostUpdatePower
 	power.PostUpdateColor = UF.PostUpdatePowerColor
 	power.GetDisplayPower = UF.GetDisplayPower
-
-	power:SetScript('OnShow', UF.PowerBar_Visibility)
-	power:SetScript('OnHide', UF.PowerBar_Visibility)
 
 	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
@@ -142,7 +141,7 @@ function UF:Configure_Power(frame, healthUpdate)
 		if heightChanged or healthUpdate then
 			--Update health size
 			frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
-			UF:Configure_HealthBar(frame)
+			UF:Configure_HealthBar(frame, true)
 		end
 
 		--Position
@@ -241,7 +240,6 @@ function UF:Configure_Power(frame, healthUpdate)
 		end
 	elseif frame:IsElementEnabled('Power') then
 		frame:DisableElement('Power')
-		power:Hide()
 		frame:Tag(power.value, '')
 	end
 
@@ -297,33 +295,55 @@ do
 end
 
 do
-	local powerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-	local individualUnits = {player = true, target = true, targettarget = true, targettargettarget = true, focus = true, focustarget = true, pet = true, pettarget = true}
+	local powerTypesFull = { MANA = true, FOCUS = true, ENERGY = true }
 	function UF:PostUpdatePower(unit, cur, min, max)
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced then
-			self.cur = random(1, 100)
-			self.max = 100
-			self:SetMinMaxValues(0, self.max)
-			self:SetValue(self.cur)
+			cur = random(1, 100)
+			max = 100
+			min = 0
+
+			self.cur = cur
+			self.max = max
+			self.min = min
+
+			self:SetMinMaxValues(min, max)
+			self:SetValue(cur)
 		end
 
 		local db = parent.db and parent.db.power
 		if not db then return end
 
-		if individualUnits[unit] and db.autoHide then
-			local _, powerType = UnitPowerType(unit)
-			if (powerTypesFull[powerType] and cur == max) or cur == min or (db.notInCombat and not InCombatLockdown()) then
-				self:Hide()
-			else
-				self:Show()
-			end
-		elseif not self:IsShown() then
-			self:Show()
-		end
-
 		if db.hideonnpc then
 			UF:PostNamePosition(parent, unit)
+		end
+
+		local pastVisibility = parent.powerVisibility
+		local visibility = db.autoHide or db.onlyHealer or db.notInCombat
+		parent.powerVisibility = visibility -- so we can only call this when needed
+
+		local barShown = self:IsShown()
+		if visibility then
+			local _, powerType = UnitPowerType(unit)
+			local fullType = powerTypesFull[powerType]
+			local autoHide = not db.autoHide or ((fullType and cur ~= max) or (not fullType and cur ~= min))
+			local onlyHealer = not db.onlyHealer or (((parent.db.roleIcon and parent.db.roleIcon.enable and parent.role) or UF:GetRoleIcon(parent)) == 'HEALER')
+			local notInCombat = not db.notInCombat or InCombatLockdown()
+
+			local shouldShow = autoHide and onlyHealer and notInCombat
+			if shouldShow and not barShown then
+				self:Show()
+
+				UF.PowerBar_Visibility(self)
+			elseif not shouldShow and barShown then
+				self:Hide()
+
+				UF.PowerBar_Visibility(self)
+			end
+		elseif (pastVisibility ~= visibility) and not barShown then
+			self:Show()
+
+			UF.PowerBar_Visibility(self)
 		end
 	end
 end

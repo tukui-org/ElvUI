@@ -1536,6 +1536,7 @@ local UF_Portrait = {
 local UF_Power = {
 	attachTextTo = 'Health',
 	autoHide = false,
+	healerOnly = false,
 	notInCombat = false,
 	detachedWidth = 250,
 	detachFromFrame = false,

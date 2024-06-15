@@ -21,22 +21,26 @@ UF.RoleIconTextures = {
 	DAMAGER = E.Media.Textures.DPS
 }
 
+function UF:GetRoleIcon(frame)
+	if frame.isForced then
+		local rnd = random(1, 3)
+		return (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
+	else
+		return (E.Retail or E.Cata) and UnitGroupRolesAssigned(frame.unit)
+	end
+end
+
 function UF:UpdateRoleIcon(event)
 	local lfdrole = self.GroupRoleIndicator
 	if not self.db then return end
-	local db = self.db.roleIcon
 
+	local role = UF:GetRoleIcon(self)
+	self.role = role -- set this here for only healer power
+
+	local db = self.db.roleIcon
 	if not db or not db.enable then
 		lfdrole:Hide()
 		return
-	end
-
-	local role
-	if self.isForced then
-		local rnd = random(1, 3)
-		role = (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
-	else
-		role = (E.Retail or E.Cata) and UnitGroupRolesAssigned(self.unit)
 	end
 
 	if (self.isForced or UnitIsConnected(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
@@ -54,17 +58,17 @@ end
 
 function UF:Configure_RoleIcon(frame)
 	local role = frame.GroupRoleIndicator
-	local db = frame.db
+	local db = frame.db and frame.db.roleIcon
 
-	if db.roleIcon.enable then
+	if db.enable then
 		frame:EnableElement('GroupRoleIndicator')
-		local attachPoint = UF:GetObjectAnchorPoint(frame, db.roleIcon.attachTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTo)
 
 		role:ClearAllPoints()
-		role:Point(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)
-		role:Size(db.roleIcon.size)
+		role:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
+		role:Size(db.size)
 
-		if db.roleIcon.combatHide then
+		if db.combatHide then
 			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)
 			E:RegisterEventForObject('PLAYER_REGEN_DISABLED', frame, UF.UpdateRoleIcon)
 		else
