@@ -320,7 +320,7 @@ do
 		end
 
 		local pastVisibility = parent.powerVisibility
-		local visibility = db.autoHide or db.notInCombat or (db.onlyHealer and not ignorePets[parent.unitframeType])
+		local visibility = db.autoHide or db.notInCombat or (db.onlyHealer and not E.Classic and not ignorePets[parent.unitframeType])
 		parent.powerVisibility = visibility -- so we can only call this when needed
 
 		local barShown = self:IsShown()

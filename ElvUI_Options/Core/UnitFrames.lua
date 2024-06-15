@@ -755,7 +755,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 
 	config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 30)
 	config.args.visibilityGroup.inline = true
-	config.args.visibilityGroup.args.onlyHealer = ACH:Toggle(E.NewSign..L["Only Healer"], nil, 1, nil, nil, nil, nil, nil, nil, groupName == 'raidpet' or groupName == 'pet')
+	config.args.visibilityGroup.args.onlyHealer = ACH:Toggle(E.NewSign..L["Only Healer"], nil, 1, nil, nil, nil, nil, nil, nil, E.Classic or (groupName == 'raidpet' or groupName == 'pet'))
 	config.args.visibilityGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 2)
 	config.args.visibilityGroup.args.notInCombat = ACH:Toggle(L["Hide Out of Combat"], nil, 3)
 
