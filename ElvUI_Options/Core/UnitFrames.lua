@@ -77,8 +77,8 @@ end
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 local offsetShort = { softMin = -100, min = -1000, softMax = 100, max = 1000, step = 1 }
 local offsetLong = { softMin = -300, min = -1000, softMax = 300, max = 1000, step = 1 }
-local spacingNormal = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 50, max = 100, step = 1 }
-local spacingLong = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 100, max = 500, step = 1 }
+local spacingNormal = { min = -5, softMax = 50, max = 100, step = 1 }
+local spacingLong = { min = -5, softMax = 100, max = 500, step = 1 }
 
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
@@ -748,7 +748,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 2, attachToValues)
 	config.args.width = ACH:Select(L["Style"], nil, 6, { fill = L["Filled"], spaced = L["Spaced"], inset = L["Inset"], offset = L["Offset"] })
-	config.args.height = ACH:Range(L["Height"], nil, 7, { min = UF.thinBorders and 3 or 7, max = 50, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width == 'offset' end)
+	config.args.height = ACH:Range(L["Height"], nil, 7, { min = 2, max = 50, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width == 'offset' end)
 	config.args.offset = ACH:Range(L["Offset"], L["Offset of the powerbar to the healthbar, set to 0 to disable."], 8, { min = 0, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end)
 	config.args.powerPrediction = ACH:Toggle(L["Power Prediction"], nil, 9)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 10)
