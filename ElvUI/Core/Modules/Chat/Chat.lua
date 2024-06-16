@@ -422,7 +422,8 @@ do --this can save some main file locals
 			z['Chazii-Silvermoon']		= ElvBlue -- Shaman
 			-- Merathilis (1401: Shattrath/Garrosh)
 			z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
-			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
+			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brítt
+			z['Player-1401-0ABBE432']	= ElvBlue	-- [Alliance] Warrior:	Brìtt/WoW Remix
 			z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
 			z["Player-1401-0AB0E6D1"]	= ElvRed --	 . [Alliance] Paladin:	Damara/WoW Remix
 			z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
