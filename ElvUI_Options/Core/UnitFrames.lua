@@ -75,6 +75,8 @@ for i = 1, _G.MAX_CLASSES do
 end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
+local offsetsShort = { softMin = -100, min = -1000, softMax = 100, max = 1000, step = 1 }
+local offsetsLong = { softMin = -300, min = -1000, softMax = 300, max = 1000, step = 1 }
 local spacingNormal = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 50, max = 100, step = 1 }
 local spacingLong = { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), softMax = 100, max = 500, step = 1 }
 
@@ -98,14 +100,14 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.duration.args.enable.customWidth = 100
 	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetsShort)
+	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetsShort)
 	config.args.duration.inline = true
 
 	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetsShort)
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetsShort)
 	config.args.parent.inline = true
 
 	return config
@@ -203,8 +205,8 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.height = ACH:Range(L["Icon Height"], nil, 5, { min = 6, max = 80, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio end)
 	config.args.perrow = ACH:Range(L["Per Row"], nil, 6, { min = 1, max = 40, step = 1 })
 	config.args.numrows = ACH:Range(L["Num Rows"], nil, 7, { min = 1, max = 10, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, offsetsShort)
 	config.args.spacing = ACH:Range(L["Spacing"], nil, 10, spacingNormal)
 	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end)
 
@@ -698,8 +700,8 @@ end
 local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 	local config = ACH:Group(L["Name"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].name[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].name[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, offsetsShort)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 5, nil, 'full')
 
@@ -716,8 +718,8 @@ local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 
 	return config
 end
@@ -794,8 +796,8 @@ local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName,
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 
 	return config
 end
@@ -805,8 +807,8 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 
 	return config
 end
@@ -820,24 +822,24 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 	config.args.font = ACH:SharedMediaFont(L["Font"], nil, 5)
 	config.args.fontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize)
 	config.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 7)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, offsetsLong)
 
 	config.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 10, function() C:SetToFilterConfig('RaidDebuffs') end)
 
 	config.args.duration = ACH:Group(L["Duration Text"], nil, 12, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.duration.inline = true
 	config.args.duration.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
-	config.args.duration.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
-	config.args.duration.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
+	config.args.duration.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, offsetsShort)
+	config.args.duration.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, offsetsShort)
 	config.args.duration.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units[groupName].rdebuffs.duration.color, P.unitframe.units[groupName].rdebuffs.duration.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].rdebuffs.duration.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
 
 	config.args.stack = ACH:Group(L["Stack Counter"], nil, 13, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.stack.inline = true
 	config.args.stack.args.color = ACH:Color(L["COLOR"], nil, 4, true, nil, function() local c, d = E.db.unitframe.units[groupName].rdebuffs.stack.color, P.unitframe.units[groupName].rdebuffs.stack.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].rdebuffs.stack.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName) end)
 	config.args.stack.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
-	config.args.stack.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -100, max = 100, step = 1 })
-	config.args.stack.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
+	config.args.stack.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, offsetsShort)
+	config.args.stack.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, offsetsShort)
 
 	return config
 end
@@ -848,8 +850,8 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGrou
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].raidicon[info[#info]] end
@@ -866,8 +868,8 @@ local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	return config
 end
@@ -877,8 +879,8 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 	config.args.scale = ACH:Range(L["Scale"], nil, 1, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	return config
 end
@@ -889,8 +891,8 @@ local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	return config
 end
@@ -901,8 +903,8 @@ local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	return config
 end
@@ -913,8 +915,8 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetsLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetsLong)
 
 	return config
 end
@@ -1054,8 +1056,8 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 	config.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 6)
 	config.args.color = ACH:Color(L["COLOR"], nil, 7, true, nil, function() local c, d = E.db.unitframe.units[groupName].CombatIcon.color, P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end, nil, function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end)
 	config.args.texture = ACH:Select(L["Texture"], nil, 8, function() local table = { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] } for key, path in next, E.Media.CombatIcons do if key ~= 'DEFAULT' then table[key] = E:TextureString(path, ':14') end end return table end)
@@ -1483,8 +1485,8 @@ Player.RestIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Player.RestIcon.args.hideAtMaxLevel = ACH:Toggle(L["Hide At Max Level"], nil, 2)
 Player.RestIcon.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
 Player.RestIcon.args.anchorPoint = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
-Player.RestIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
-Player.RestIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+Player.RestIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, offsetsShort)
+Player.RestIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, offsetsShort)
 Player.RestIcon.args.defaultColor = ACH:Toggle(L["Default Color"], nil, 7)
 Player.RestIcon.args.color = ACH:Color(L["COLOR"], nil, 8, true, nil, function() local c, d = E.db.unitframe.units.player.RestIcon.color, P.unitframe.units.player.RestIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(_, r, g, b, a) local c = E.db.unitframe.units.player.RestIcon.color c.r, c.g, c.b, c.a = r, g, b, a UF:CreateAndUpdateUF('player') UF:TestingDisplay_RestingIndicator(UF.player) end, nil, function() return E.db.unitframe.units.player.RestIcon.defaultColor end)
 Player.RestIcon.args.texture = ACH:Select(L["Texture"], nil, 9, { CUSTOM = L["CUSTOM"], DEFAULT = L["DEFAULT"] })
@@ -1499,8 +1501,8 @@ Player.PartyIndicator = ACH:Group(L["Party Indicator"], nil, nil, nil, function(
 Player.PartyIndicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Player.PartyIndicator.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 Player.PartyIndicator.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
-Player.PartyIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-Player.PartyIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+Player.PartyIndicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+Player.PartyIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 
 Player.pvpText = ACH:Group(L["PvP Text"], nil, nil, nil, function(info) return E.db.unitframe.units.player.pvp[info[#info]] end, function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value UF:CreateAndUpdateUF('player') end)
 Player.pvpText.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
@@ -1595,8 +1597,8 @@ Arena.pvpTrinket = ACH:Group(L["PVP Trinket"], nil, nil, nil, function(info) ret
 Arena.pvpTrinket.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Arena.pvpTrinket.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 Arena.pvpTrinket.args.position = ACH:Select(L["Position"], nil, 3, C.Values.SidePositions)
-Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
-Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+Arena.pvpTrinket.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, offsetsShort)
+Arena.pvpTrinket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetsShort)
 
 --Party Frames
 GroupUnits.party = ACH:Group(L["Party"], nil, nil, nil, function(info) return E.db.unitframe.units.party[info[#info]] end, function(info, value) E.db.unitframe.units.party[info[#info]] = value UF:CreateAndUpdateHeaderGroup('party') end)
