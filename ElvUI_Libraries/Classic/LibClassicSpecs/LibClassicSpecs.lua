@@ -408,7 +408,7 @@ function LCS.GetSpecialization(isInspect, isPet)
 	local specIndex, maxSpent = 0, 0
 
 	for tabIndex = 1, GetNumTalentTabs() do
-		local spent = select((isCata or isClassic and 5) or 3, GetTalentTabInfo(tabIndex))
+		local spent = select(isCata and 5 or 3, GetTalentTabInfo(tabIndex))
 		if (spent > maxSpent) then
 			specIndex, maxSpent = tabIndex, spent
 		end
