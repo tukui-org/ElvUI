@@ -74,6 +74,23 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 
+	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
+	-- we can just hook onto this function so that we can get the correct `self`
+	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
+		if s and s.closeDialog and not s.closeDialog.template then
+			s.closeDialog:StripTextures()
+			s.closeDialog:SetTemplate('Transparent')
+			s:SetScale(E.uiscale)
+
+			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
+			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+			if closeButton then S:HandleButton(closeButton) end
+			if resumeButton then S:HandleButton(resumeButton) end
+		end
+	end)
+
 	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
 	-- cant be hooked directly so we can just use this
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
