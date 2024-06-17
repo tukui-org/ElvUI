@@ -139,7 +139,7 @@ function S:Blizzard_PVPUI()
 	HandleRoleButton(ConquestFrame.HealerIcon)
 	HandleRoleButton(ConquestFrame.DPSIcon)
 
-	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
+	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
