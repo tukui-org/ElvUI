@@ -739,7 +739,6 @@ do
 	end
 end
 
-
 local arrowDegree = {
 	['up'] = 0,
 	['down'] = 180,
