@@ -125,10 +125,9 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
 	-- FIX ME 11.0
-	_G.AchievementFrameFilterDropdown:StripTextures()
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropdown)
+	S:HandleButton(_G.AchievementFrameFilterDropdown)
 	_G.AchievementFrameFilterDropdown:ClearAllPoints()
-	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
+	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', -3, 0)
 
 	-- Bottom Tabs
 	for i = 1, 3 do
