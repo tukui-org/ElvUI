@@ -290,6 +290,7 @@ do --this can save some main file locals
 			z['Player-1168-069A1283']	= itsSimpy -- Hunter:	Arieva
 			z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup
 			z['Player-1168-069A3A12']	= itsSimpy -- Paladin:	Cutepally
+			z['Player-1168-0AD0F035']	= itsSimpy -- DH:		Puddle
 			z['Player-1168-0A99F54B']	= itsSimpy -- Mage:		Cuddle
 			z['Player-1168-0ACDC528']	= itsSimpy -- Priest:	Snuggle
 			z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
@@ -421,7 +422,8 @@ do --this can save some main file locals
 			z['Chazii-Silvermoon']		= ElvBlue -- Shaman
 			-- Merathilis (1401: Shattrath/Garrosh)
 			z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
-			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
+			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brítt
+			z['Player-1401-0ABBE432']	= ElvBlue	-- [Alliance] Warrior:	Brìtt/WoW Remix
 			z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
 			z["Player-1401-0AB0E6D1"]	= ElvRed --	 . [Alliance] Paladin:	Damara/WoW Remix
 			z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira

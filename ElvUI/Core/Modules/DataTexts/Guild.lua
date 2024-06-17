@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
+local ipairs, select, next, sort, unpack, wipe, ceil = ipairs, select, next, sort, unpack, wipe, ceil
 local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
 
 local EasyMenu = EasyMenu
@@ -24,7 +24,6 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local IsAltKeyDown = IsAltKeyDown
 
-local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
@@ -33,6 +32,10 @@ local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local REMOTE_CHAT = REMOTE_CHAT
 local GUILD_MOTD = GUILD_MOTD
 local GUILD = GUILD
+
+local GetAndSortMemberInfo = CommunitiesUtil.GetAndSortMemberInfo
+local GetSubscribedClubs = C_Club.GetSubscribedClubs
+local CLUBTYPE_GUILD = Enum.ClubType.Guild
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
@@ -51,7 +54,7 @@ local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFF
 local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
-local guildTable, guildMotD = {}, ''
+local clubTable, guildTable, guildMotD = {}, {}, ''
 
 local function sortByRank(a, b)
 	if a and b then
@@ -94,6 +97,25 @@ end
 
 local function BuildGuildTable()
 	wipe(guildTable)
+	wipe(clubTable)
+
+	local clubs = E.Retail and GetSubscribedClubs()
+	if clubs then -- use this to get the timerunning flag (and other info?)
+		local guildClubID
+		for _, data in next, clubs do
+			if data.clubType == CLUBTYPE_GUILD then
+				guildClubID = data.clubId
+				break
+			end
+		end
+
+		local members = guildClubID and GetAndSortMemberInfo(guildClubID)
+		if members then
+			for _, data in next, members do
+				clubTable[data.guid] = data
+			end
+		end
+	end
 
 	local totalMembers = GetNumGuildMembers()
 	for i = 1, totalMembers do
@@ -104,6 +126,8 @@ local function BuildGuildTable()
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
+			local clubMember = clubTable[guid]
+
 			guildTable[#guildTable + 1] = {
 				name = E:StripMyRealm(name),	--1
 				rank = rank,					--2
@@ -117,7 +141,7 @@ local function BuildGuildTable()
 				rankIndex = rankIndex,			--10
 				isMobile = isMobile,			--11
 				guid = guid,					--12
-				timerunningID = E.Retail and IsTimerunningPlayer(guid)
+				timerunningID = clubMember and clubMember.timerunningSeasonID
 			}
 		end
 	end
