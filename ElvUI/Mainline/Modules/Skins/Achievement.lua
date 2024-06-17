@@ -124,8 +124,7 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.SearchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
 	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
-	-- FIX ME 11.0
-	S:HandleButton(_G.AchievementFrameFilterDropdown)
+	S:HandleButton(_G.AchievementFrameFilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	_G.AchievementFrameFilterDropdown:ClearAllPoints()
 	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', -3, 0)
 

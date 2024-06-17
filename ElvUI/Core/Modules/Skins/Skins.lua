@@ -739,7 +739,22 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
+
+local arrowDegree = {
+	['up'] = 0,
+	['down'] = 180,
+	['left'] = 90,
+	['right'] = -90,
+}
+
+function S:SetupArrow(tex, direction)
+	if not tex then return end
+
+	tex:SetTexture(E.Media.Textures.ArrowUp)
+	tex:SetRotation(rad(arrowDegree[direction]))
+end
+
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
 	assert(button, 'doesn\'t exist!')
 
 	if button.isSkinned then return end
@@ -750,6 +765,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 	if strip then button:StripTextures() end
+	if button.Texture then button.Texture:SetAlpha(0) end
 
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
@@ -776,6 +792,14 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
 		button:HookScript('OnLeave', S.SetOriginalBackdrop)
 		button:HookScript('OnDisable', S.SetDisabledBackdrop)
+	end
+
+	if isFilterButton then
+		local arrow = button:CreateTexture(nil, 'ARTWORK')
+		arrow:Size(10)
+		arrow:ClearAllPoints()
+		arrow:Point('RIGHT', -1, 0)
+		S:SetupArrow(arrow, filterDirection)
 	end
 
 	button.isSkinned = true

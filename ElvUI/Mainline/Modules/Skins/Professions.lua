@@ -135,6 +135,16 @@ function S:Blizzard_Professions()
 	CraftingRankBar.Fill:CreateBackdrop()
 	CraftingRankBar.Rank.Text:FontTemplate()
 
+	if CraftingRankBar.ExpansionDropdownButton then
+		local arrow = CraftingRankBar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
+		arrow:SetTexture(E.Media.Textures.ArrowUp)
+		arrow:Size(11)
+		arrow:Point('CENTER')
+		S:SetupArrow(arrow, 'down')
+
+		S:HandleButton(CraftingRankBar.ExpansionDropdownButton)
+	end
+
 	local LinkButton = CraftingPage.LinkButton
 	LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 	LinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
@@ -179,8 +189,8 @@ function S:Blizzard_Professions()
 	CraftList:CreateBackdrop('Transparent')
 	CraftList.backdrop:SetInside()
 	S:HandleEditBox(CraftList.SearchBox)
-	S:HandleButton(CraftList.FilterButton)
-	S:HandleCloseButton(CraftList.FilterButton.ResetButton)
+	S:HandleButton(CraftList.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	S:HandleCloseButton(CraftList.FilterDropdown.ResetButton)
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
@@ -214,13 +224,13 @@ function S:Blizzard_Professions()
 		end
 	end)
 
-	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
+	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckbox
 	if TrackRecipeCheckBox then
 		S:HandleCheckBox(TrackRecipeCheckBox)
 		TrackRecipeCheckBox:Size(24)
 	end
 
-	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckBox
+	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckbox
 	if QualityCheckBox then
 		S:HandleCheckBox(QualityCheckBox)
 		QualityCheckBox:Size(24)
@@ -320,7 +330,7 @@ function S:Blizzard_Professions()
 	BrowseList:StripTextures()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar)
 	S:HandleEditBox(BrowseList.SearchBox)
-	S:HandleButton(BrowseList.FilterButton)
+	S:HandleButton(BrowseList.FilterDropdown)
 	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local OrderList = Orders.BrowseFrame.OrderList
@@ -357,7 +367,6 @@ function S:Blizzard_Professions()
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)
-	S:HandleNextPrevButton(OrderInfo.SocialDropdownButton)
 	S:HandleEditBox(OrderInfo.NoteBox)
 	if OrderInfo.NoteBox.backdrop then
 		OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
@@ -371,7 +380,7 @@ function S:Blizzard_Professions()
 	OrderDetails.Background:SetAlpha(.5)
 
 	local OrderSchematicForm = OrderDetails.SchematicForm
-	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckBox)
+	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckbox)
 
 	hooksecurefunc(OrderSchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
