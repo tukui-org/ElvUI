@@ -773,12 +773,9 @@ function E:SetupGameMenu()
 	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
 	GameMenuFrame.ElvUI = button
-
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
-	end
+	button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+	button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 end
 
 function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
