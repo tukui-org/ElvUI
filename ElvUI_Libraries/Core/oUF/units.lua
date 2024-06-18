@@ -210,7 +210,7 @@ local function createOnUpdate(timer)
 			self.elapsed = (self.elapsed or 0) + elapsed
 			if(self.elapsed > timer) then
 				for _, object in next, objects do
-					if(object.unit and unitExists(object.unit)) then
+					if(object:IsVisible() and object.unit and unitExists(object.unit)) then
 						object:UpdateAllElements('OnUpdate')
 					end
 				end
