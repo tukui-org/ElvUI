@@ -71,6 +71,26 @@ function S:BlizzardMiscFrames()
 			end
 		end
 
+		-- FIX ME 11.0 this now actually style the GameMenuButtons make me pwetty plx
+		hooksecurefunc(GameMenuFrame, 'InitButtons', function(self)
+			if not self.buttonPool then return end
+
+			for button in self.buttonPool:EnumerateActive() do
+				if not button.IsSkinned then
+					button:DisableDrawLayer('BACKGROUND')
+					button:CreateBackdrop()
+
+					local hl = button:GetHighlightTexture()
+					local r, g, b = unpack(E.media.rgbvaluecolor)
+					hl:SetColorTexture(r, g, b, 0.25)
+					hl:SetInside(button.backdrop)
+					button.backdrop:SetInside(3, 3)
+
+					button.IsSkinned = true
+				end
+			end
+		end)
+
 		_G.GameMenuFrame:StripTextures()
 		_G.GameMenuFrame:SetTemplate('Transparent')
 		_G.GameMenuFrame.Header:StripTextures()
