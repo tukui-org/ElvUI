@@ -339,12 +339,12 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown)
+	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown, 200)
 
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
-	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown)
+	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
