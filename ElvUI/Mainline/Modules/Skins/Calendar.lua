@@ -36,6 +36,7 @@ function S:Blizzard_Calendar()
 	CalendarFrame:DisableDrawLayer('BORDER')
 	CalendarFrame:CreateBackdrop('Transparent')
 
+	S:HandleButton(CalendarFrame.FilterButton)
 	S:HandleCloseButton(_G.CalendarCloseButton)
 	_G.CalendarCloseButton:Point('TOPRIGHT', CalendarFrame, 'TOPRIGHT', -4, -4)
 
