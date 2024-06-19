@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local unpack = unpack
-local pairs = pairs
 
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
@@ -65,21 +64,12 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	-- reskin all esc/menu buttons
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		local skinnedButtons = {}
-		hooksecurefunc(GameMenuFrame, 'InitButtons', function(self)
-			if not self.buttonPool then return end
-
-			for button in self.buttonPool:EnumerateActive() do
-				if not skinnedButtons[button] then
-					S:HandleButton(button, nil, nil, nil, true)
-					skinnedButtons[button] = true
-				else
-					button:HookScript('OnEnter', S.SetModifiedBackdrop)
-					button:HookScript('OnLeave', S.SetOriginalBackdrop)
-				end
+	if not E:IsAddOnEnabled('ConsolePort_Menu') then
+		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
+			if Button.IsObjectType and Button:IsObjectType('Button') then
+				S:HandleButton(Button)
 			end
-		end)
+		end
 
 		_G.GameMenuFrame:StripTextures()
 		_G.GameMenuFrame:SetTemplate('Transparent')
@@ -316,10 +306,9 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	-- FIX ME 11.0
 	-- LFG -> Custom Groups -> Dungeons -> Filter Button - This sits on the DropDownListMenu 10.2.7
-	--S:HandleEditBox(_G.MinRatingFrame.MinRating)
-	--_G.MinRatingFrame.MinRating:Size(40, 16) -- Default is 40, 12
+	S:HandleEditBox(_G.MinRatingFrame.MinRating)
+	_G.MinRatingFrame.MinRating:Size(40, 16) -- Default is 40, 12
 
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(_G.SideDressUpFrameCloseButton)
