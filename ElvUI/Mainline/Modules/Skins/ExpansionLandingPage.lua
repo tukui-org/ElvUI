@@ -50,10 +50,11 @@ function S:Blizzard_ExpansionLandingPage()
 				HandlePanel(child)
 			end
 		end
-	end
 
-	if overlay.WarWithinLandingOverlay.CloseButton then
-		S:HandleCloseButton(overlay.WarWithinLandingOverlay.CloseButton)
+		local WarWithinLandingOverlay = overlay.WarWithinLandingOverlay
+		if WarWithinLandingOverlay then
+			S:HandleCloseButton(WarWithinLandingOverlay.CloseButton)
+		end
 	end
 end
 
