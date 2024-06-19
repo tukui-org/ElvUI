@@ -439,7 +439,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCheckBox(DetailFrame.AtWarCheckbox)
 	S:HandleCheckBox(DetailFrame.MakeInactiveCheckbox)
 	S:HandleCheckBox(DetailFrame.WatchFactionCheckbox)
-	--S:HandleCheckBox(DetailFrame.ViewRenownButton)
+	S:HandleButton(DetailFrame.ViewRenownButton)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()
