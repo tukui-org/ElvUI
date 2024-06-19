@@ -51,6 +51,10 @@ function S:Blizzard_ExpansionLandingPage()
 			end
 		end
 	end
+
+	if overlay.WarWithinLandingOverlay.CloseButton then
+		S:HandleCloseButton(overlay.WarWithinLandingOverlay.CloseButton)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_ExpansionLandingPage')
