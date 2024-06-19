@@ -1161,10 +1161,6 @@ do
 		tex:SetRotation(3.14)
 		tex:Point('RIGHT', frame.backdrop, -3, 0)
 		tex:Size(14)
-
-		-- FIX ME 11.0 to work with the dropdown
-		--tex:SetScript('OnEnter', buttonOnEnter)
-		--tex:SetScript('OnLeave', buttonOnLeave)
 	end
 end
 
