@@ -82,7 +82,7 @@ function S:BlizzardMiscFrames()
 
 					local hl = button:GetHighlightTexture()
 					local r, g, b = unpack(E.media.rgbvaluecolor)
-					hl:SetColorTexture(r, g, b, 0.25)
+					hl:SetColorTexture(r, g, b, 0.5)
 					hl:SetInside(button.backdrop)
 					button.backdrop:SetInside(3, 3)
 
