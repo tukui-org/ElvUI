@@ -47,7 +47,7 @@ local _, playerClass = UnitClass('player')
 
 -- ElvUI block
 local next = next
-local GetSpellPowerCost = GetSpellPowerCost
+local GetSpellPowerCost = (C_Spell and C_Spell.GetSpellPowerCost) or GetSpellPowerCost
 local UnitCastingInfo = UnitCastingInfo
 local UnitPowerType = UnitPowerType
 local UnitPowerMax = UnitPowerMax
