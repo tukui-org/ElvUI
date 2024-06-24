@@ -15,6 +15,7 @@ local function HandleNextPrev(button)
 end
 
 local function SetSelectedCategory(list)
+	-- FIX ME 11.0: does not apply on first show
 	if list.selectionPopoutPool then
 		for frame in list.selectionPopoutPool:EnumerateActive() do
 			if not frame.IsSkinned then
@@ -50,6 +51,28 @@ local function SetSelectedCategory(list)
 				end
 
 				frame.IsSkinned = true
+			end
+		end
+	end
+
+	if list.dropdownPool then
+		for option in list.dropdownPool:EnumerateActive() do
+			if not option.IsSkinned then
+				S:HandleButton(option.Dropdown)
+				S:HandleButton(option.DecrementButton)
+				S:HandleButton(option.IncrementButton)
+
+				option.IsSkinned = true
+			end
+		end
+	end
+
+	if list.sliderPool then
+		for slider in list.sliderPool:EnumerateActive() do
+			if not slider.IsSkinned then
+				S:HandleSliderFrame(slider)
+
+				slider.IsSkinned = true
 			end
 		end
 	end
