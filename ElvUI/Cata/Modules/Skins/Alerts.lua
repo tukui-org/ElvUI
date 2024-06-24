@@ -160,7 +160,7 @@ local function SkinHonorAwardedAlert(frame)
 end
 
 local function SkinLegendaryItemAlert(frame, itemLink)
-	if not frame.isSkinned then
+	if not frame.IsSkinned then
 		frame.Background:Kill()
 		frame.Background2:Kill()
 		frame.Background3:Kill()
@@ -185,7 +185,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 
 	local itemRarity = GetItemQualityByID(itemLink)

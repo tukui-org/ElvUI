@@ -54,7 +54,7 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 
 	SkinOverviewInfo = function(frame, _, index)
 		local header = frame.overviews[index]
-		if not header.isSkinned then
+		if not header.IsSkinned then
 			for i = 4, 18 do
 				select(i, header.button:GetRegions()):SetTexture()
 			end
@@ -68,7 +68,7 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 			header.descriptionBGBottom:SetAlpha(0)
 			header.description:SetTextColor(1, 1, 1)
 
-			header.isSkinned = true
+			header.IsSkinned = true
 		end
 	end
 end
@@ -102,7 +102,7 @@ local function SkinAbilitiesInfo()
 	local index = 1
 	local header = _G['EncounterJournalInfoHeader'..index]
 	while header do
-		if not header.isSkinned then
+		if not header.IsSkinned then
 			header.flashAnim.Play = E.noop
 
 			header.descriptionBG:SetAlpha(0)
@@ -125,7 +125,7 @@ local function SkinAbilitiesInfo()
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
 			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
 
-			header.isSkinned = true
+			header.IsSkinned = true
 		end
 
 		if header.button.abilityIcon:IsShown() then
@@ -170,13 +170,13 @@ local function ItemSetElements(set)
 			end
 
 			local border = button.Border
-			if border and not border.isSkinned then
+			if border and not border.IsSkinned then
 				border:SetAlpha(0)
 
 				ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
 				hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
 
-				border.isSkinned = true
+				border.IsSkinned = true
 			end
 		end
 	end
@@ -486,7 +486,7 @@ function S:Blizzard_EncounterJournal()
 
 	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				child:SetNormalTexture(E.ClearTexture)
 				child:SetHighlightTexture(E.ClearTexture)
 				child:SetPushedTexture(E.ClearTexture)
@@ -498,7 +498,7 @@ function S:Blizzard_EncounterJournal()
 					bgImage.backdrop:Point('BOTTOMRIGHT', -4, 2)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -509,7 +509,7 @@ function S:Blizzard_EncounterJournal()
 
 		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					S:HandleButton(child)
 
 					local hl = child:GetHighlightTexture()
@@ -520,14 +520,14 @@ function S:Blizzard_EncounterJournal()
 					child.text.SetTextColor = E.noop
 					child.creature:Point('TOPLEFT', 0, -4)
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)
 
 		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					if child.bossTexture then child.bossTexture:SetAlpha(0) end
 					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
@@ -566,7 +566,7 @@ function S:Blizzard_EncounterJournal()
 						child.armorType:SetTextColor(1, 1, 1)
 					end
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)

@@ -353,7 +353,7 @@ function S:Blizzard_GlyphUI()
 
 	for i = 1, 10 do
 		local button = _G['GlyphFrameScrollFrameButton'..i]
-		if button and not button.isSkinned then
+		if button and not button.IsSkinned then
 			S:HandleButton(button, nil, nil, nil, true, 'Transparent')
 			button.backdrop:SetInside()
 
@@ -370,7 +370,7 @@ function S:Blizzard_GlyphUI()
 				disabledBG:SetAlpha(0)
 			end
 
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 

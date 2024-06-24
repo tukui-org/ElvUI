@@ -153,7 +153,7 @@ function RU:CreateCheckBox(name, parent, template, size, point, relativeto, poin
 	box:SetScript('OnEvent', eventFunc)
 	box:SetScript('OnClick', clickFunc)
 
-	if not box.isSkinned then
+	if not box.IsSkinned then
 		S:HandleCheckBox(box)
 	end
 

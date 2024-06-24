@@ -55,7 +55,7 @@ function S:Blizzard_ClassTalentUI()
 
 	hooksecurefunc(ClassTalentFrame.SpecTab, 'UpdateSpecFrame', function(frame)
 		for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
-			if not specContentFrame.isSkinned then
+			if not specContentFrame.IsSkinned then
 				S:HandleButton(specContentFrame.ActivateButton)
 
 				if specContentFrame.SpellButtonPool then
@@ -75,7 +75,7 @@ function S:Blizzard_ClassTalentUI()
 					end
 				end
 
-				specContentFrame.isSkinned = true
+				specContentFrame.IsSkinned = true
 			end
 		end
 	end)

@@ -41,18 +41,18 @@ local function ReskinSlotButton(button)
 	ps:SetBlendMode('ADD')
 	ps:SetOutside(button)
 
-	if not button.isSkinned then
+	if not button.IsSkinned then
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
 
-		button.isSkinned = true
+		button.IsSkinned = true
 	end
 end
 
 local function HandleOutputButtons(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.isSkinned then
+		if not child.IsSkinned then
 			local itemContainer = child.ItemContainer
 			if itemContainer then
 				local item = itemContainer.Item
@@ -80,7 +80,7 @@ local function HandleOutputButtons(frame)
 				S:HandleIcon(icon)
 			end
 
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 
 		local itemContainer = child.ItemContainer
@@ -278,9 +278,9 @@ function S:Blizzard_Professions()
 
 	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
 		for tab in frame.tabsPool:EnumerateActive() do
-			if not tab.isSkinned then
+			if not tab.IsSkinned then
 				S:HandleTab(tab)
-				tab.isSkinned = true
+				tab.IsSkinned = true
 			end
 		end
 	end)

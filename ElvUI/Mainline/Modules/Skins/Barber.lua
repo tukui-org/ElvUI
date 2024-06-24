@@ -57,7 +57,7 @@ local function SetSelectedCategory(list)
 	local pool = list.pools and list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
 	if pool then
 		for frame in pool:EnumerateActive() do
-			if not frame.isSkinned then
+			if not frame.IsSkinned then
 				if frame.Button then
 					S:HandleCheckBox(frame.Button)
 				end

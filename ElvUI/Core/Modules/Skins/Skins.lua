@@ -80,7 +80,7 @@ do
 	end
 
 	function S:HandleCategoriesButtons(button, strip)
-		if button.isSkinned then return end
+		if button.IsSkinned then return end
 
 		if button.SetNormalTexture then button:SetNormalTexture(E.ClearTexture) end
 		if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
@@ -101,7 +101,7 @@ do
 		button:HookScript('OnEnter', HighlightOnEnter)
 		button:HookScript('OnLeave', HighlightOnLeave)
 
-		button.isSkinned = true
+		button.IsSkinned = true
 	end
 end
 
@@ -130,7 +130,7 @@ do
 
 		local total = #self.navList
 		local button = self.navList[total]
-		if button and not button.isSkinned then
+		if button and not button.IsSkinned then
 			S:HandleButton(button, true)
 			button:GetFontString():SetTextColor(1, 1, 1)
 
@@ -152,7 +152,7 @@ do
 				hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
 			end
 
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 end
@@ -707,7 +707,7 @@ do
 		for _, name in next, keys do
 			local button = frame[name]
 			if button then
-				if not button.isSkinned then
+				if not button.IsSkinned then
 					S:HandleButton(button)
 					button:Size(22)
 
@@ -732,8 +732,8 @@ do
 	end
 
 	function S:HandleModelSceneControlButtons(frame)
-		if not frame.isSkinned then
-			frame.isSkinned = true
+		if not frame.IsSkinned then
+			frame.IsSkinned = true
 			hooksecurefunc(frame, 'UpdateLayout', UpdateLayout)
 		end
 	end
@@ -742,7 +742,7 @@ end
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesn\'t exist!')
 
-	if button.isSkinned then return end
+	if button.IsSkinned then return end
 
 	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.ClearTexture) end
 	if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
@@ -778,7 +778,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		button:HookScript('OnDisable', S.SetDisabledBackdrop)
 	end
 
-	button.isSkinned = true
+	button.IsSkinned = true
 end
 
 do
@@ -1009,7 +1009,7 @@ do --Tab Regions
 end
 
 function S:HandleRotateButton(btn)
-	if btn.isSkinned then return end
+	if btn.IsSkinned then return end
 
 	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
@@ -1027,7 +1027,7 @@ function S:HandleRotateButton(btn)
 	highlightTex:SetAllPoints(normTex)
 	highlightTex:SetColorTexture(1, 1, 1, 0.3)
 
-	btn.isSkinned = true
+	btn.IsSkinned = true
 end
 
 do
@@ -1046,7 +1046,7 @@ do
 	function S:HandleMaxMinFrame(frame)
 		assert(frame, 'doesn\'t exist.')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		frame:StripTextures(true)
 
@@ -1070,7 +1070,7 @@ do
 			end
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 
@@ -1174,7 +1174,7 @@ do
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
 		assert(frame, 'doesn\'t exist.')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		frame:StripTextures()
 
@@ -1226,7 +1226,7 @@ do
 			hooksecurefunc(frame, 'SetHighlightTexture', checkHighlightTexture)
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 
@@ -1239,7 +1239,7 @@ do
 	local function buttonHighlightTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetHighlightTexture(E.ClearTexture) end end
 
 	function S:HandleRadioButton(Button)
-		if Button.isSkinned then return end
+		if Button.IsSkinned then return end
 
 		local InsideMask = Button:CreateMaskTexture()
 		InsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
@@ -1284,7 +1284,7 @@ do
 		hooksecurefunc(Button, 'SetDisabledTexture', buttonDisabledTexture)
 		hooksecurefunc(Button, 'SetHighlightTexture', buttonHighlightTexture)
 
-		Button.isSkinned = true
+		Button.IsSkinned = true
 	end
 end
 
@@ -1305,7 +1305,7 @@ function S:HandleIcon(icon, backdrop)
 end
 
 function S:HandleItemButton(b, setInside)
-	if b.isSkinned then return end
+	if b.IsSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))
@@ -1331,7 +1331,7 @@ function S:HandleItemButton(b, setInside)
 		end
 	end
 
-	b.isSkinned = true
+	b.IsSkinned = true
 end
 
 do
@@ -1339,7 +1339,7 @@ do
 	local closeOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 	function S:HandleCloseButton(f, point, x, y)
-		if f.isSkinned then return end
+		if f.IsSkinned then return end
 
 		f:StripTextures()
 
@@ -1357,11 +1357,11 @@ do
 			f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
 		end
 
-		f.isSkinned = true
+		f.IsSkinned = true
 	end
 
 	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel, buttonSize)
-		if btn.isSkinned then return end
+		if btn.IsSkinned then return end
 
 		if not arrowDir then
 			arrowDir = 'down'
@@ -1434,7 +1434,7 @@ do
 			Normal:SetVertexColor(1, 1, 1)
 		end
 
-		btn.isSkinned = true
+		btn.IsSkinned = true
 	end
 end
 
@@ -1809,7 +1809,7 @@ do
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
 		assert(frame, 'doesn\'t exist!')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets
 			frame:HookScript('OnShow', selectionOffset)
@@ -1873,7 +1873,7 @@ do
 			end
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 

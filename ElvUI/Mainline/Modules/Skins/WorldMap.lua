@@ -23,7 +23,7 @@ local function UpdateExecuteCommandAtlases(frame, command)
 end
 
 local function NotifyDialogShow(_, dialog)
-	if dialog.isSkinned then return end
+	if dialog.IsSkinned then return end
 
 	dialog:StripTextures()
 	dialog:SetTemplate('Transparent')
@@ -43,7 +43,7 @@ local function NotifyDialogShow(_, dialog)
 		minimize:SetHighlightTexture(130837, 'ADD') -- Interface\Buttons\UI-PlusButton-Hilight
 	end
 
-	dialog.isSkinned = true
+	dialog.IsSkinned = true
 end
 
 local function SkinHeaders(header)

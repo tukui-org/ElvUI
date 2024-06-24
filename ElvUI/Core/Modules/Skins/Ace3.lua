@@ -122,7 +122,7 @@ function S:Ace3_ButtonSetPoint(point, anchor, point2, xOffset, yOffset, skip)
 end
 
 function S:Ace3_SkinButton(button)
-	if not button.isSkinned then
+	if not button.IsSkinned then
 		S:HandleButton(button, true)
 
 		hooksecurefunc(button, 'SetPoint', S.Ace3_ButtonSetPoint)

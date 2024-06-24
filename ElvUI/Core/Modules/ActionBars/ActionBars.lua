@@ -1051,7 +1051,7 @@ end
 function AB:IconIntroTracker_Skin()
 	local l, r, t, b = unpack(E.TexCoords)
 	for _, iconIntro in ipairs(self.iconList) do
-		if not iconIntro.isSkinned then
+		if not iconIntro.IsSkinned then
 			iconIntro.trail1.icon:SetTexCoord(l, r, t, b)
 			iconIntro.trail1.bg:SetTexCoord(l, r, t, b)
 
@@ -1064,7 +1064,7 @@ function AB:IconIntroTracker_Skin()
 			iconIntro.icon.icon:SetTexCoord(l, r, t, b)
 			iconIntro.icon.bg:SetTexCoord(l, r, t, b)
 
-			iconIntro.isSkinned = true
+			iconIntro.IsSkinned = true
 		end
 	end
 end

@@ -37,7 +37,7 @@ local function SkinBankTabs()
 		if not tab then break end
 
 		local buy = tab.buy
-		if buy and buy.button and not buy.button.isSkinned then
+		if buy and buy.button and not buy.button.IsSkinned then
 			S:HandleButton(buy.button)
 		end
 
@@ -48,10 +48,10 @@ local function SkinBankTabs()
 			if owned.editBox and not owned.editBox.backdrop then
 				S:HandleEditBox(owned.editBox)
 			end
-			if owned.viewCB and not owned.viewCB.isSkinned then
+			if owned.viewCB and not owned.viewCB.IsSkinned then
 				S:HandleCheckBox(owned.viewCB)
 			end
-			if owned.depositCB and not owned.depositCB.isSkinned then
+			if owned.depositCB and not owned.depositCB.IsSkinned then
 				S:HandleCheckBox(owned.depositCB)
 			end
 		end

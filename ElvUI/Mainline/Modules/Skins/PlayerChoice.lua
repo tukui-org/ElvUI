@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 function S:PlayerChoice_SetupButtons(buttons)
 	if buttons and buttons.buttonPool then
 		for button in buttons.buttonPool:EnumerateActive() do
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				S:HandleButton(button)
 			end
 		end
@@ -25,7 +25,7 @@ function S:PlayerChoice_SetupRewards(rewards)
 			end
 
 			local item = reward.itemButton
-			if item and not item.isSkinned then
+			if item and not item.IsSkinned then
 				S:HandleItemButton(item)
 				S:HandleIconBorder(item.IconBorder)
 			end
