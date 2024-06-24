@@ -9,11 +9,11 @@ local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, addonIndex)
-	if not entry.isSkinned then
+	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
 		S:HandleButton(entry.LoadAddonButton)
 
-		entry.isSkinned = true
+		entry.IsSkinned = true
 	end
 
 	local checkall -- Get the character from the current list (nil is all characters)

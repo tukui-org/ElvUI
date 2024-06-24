@@ -23,7 +23,7 @@ local function UpdateExecuteCommandAtlases(frame, command)
 end
 
 local function NotifyDialogShow(_, dialog)
-	if dialog.isSkinned then return end
+	if dialog.IsSkinned then return end
 
 	dialog:StripTextures()
 	dialog:SetTemplate('Transparent')
@@ -43,7 +43,7 @@ local function NotifyDialogShow(_, dialog)
 		minimize:SetHighlightTexture(130837, 'ADD') -- Interface\Buttons\UI-PlusButton-Hilight
 	end
 
-	dialog.isSkinned = true
+	dialog.IsSkinned = true
 end
 
 local function SkinHeaders(header, isCalling)
@@ -70,18 +70,18 @@ end
 local function QuestLogQuests()
 	for button in QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if button.ButtonText then
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				button:StripTextures()
 				button:SetTemplate('Transparent')
 				button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 		end
 	end
 
 	for button in QuestScrollFrame.titleFramePool:EnumerateActive() do
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			if button.CheckBox then
 				button.CheckBox:DisableDrawLayer('BACKGROUND')
 				button.CheckBox:CreateBackdrop()
@@ -90,7 +90,7 @@ local function QuestLogQuests()
 			if button.Check then
 				button.Check:SetAtlas('checkmark-minimal')
 			end
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 end

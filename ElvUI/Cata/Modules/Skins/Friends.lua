@@ -14,10 +14,10 @@ local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
 
 local function skinFriendRequest(frame)
-	if frame.isSkinned then return end
+	if frame.IsSkinned then return end
 	S:HandleButton(frame.DeclineButton, nil, true)
 	S:HandleButton(frame.AcceptButton)
-	frame.isSkinned = true
+	frame.IsSkinned = true
 end
 
 function S:FriendsFrame()

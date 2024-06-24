@@ -145,7 +145,7 @@ function S:LookingForGroupFrames()
 	end
 
 	hooksecurefunc('SetCheckButtonIsRadio', function(button)
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			S:HandleCheckBox(button)
 		end
 	end)
@@ -376,9 +376,9 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(panel)
 		for _, child in next, { LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren() } do
-			if not child.isSkinned and child:IsObjectType('Button') then
+			if not child.IsSkinned and child:IsObjectType('Button') then
 				S:HandleButton(child)
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 
@@ -462,7 +462,7 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
 		local button = btn.CategoryButtons[btnIndex]
 		if button then
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				button:SetTemplate()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -473,7 +473,7 @@ function S:LookingForGroupFrames()
 
 				--Fix issue with labels not following changes to GameFontNormal as they should
 				button.Label:SetFontObject('GameFontNormal')
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 
 			button.SelectedTexture:Hide()

@@ -238,7 +238,7 @@ local function UpdateBankItem(button)
 	end
 
 	local BankFrame = _G.BankFrame
-	if not BankFrame.isSkinned then
+	if not BankFrame.IsSkinned then
 		S:HandleButton(_G.BankFramePurchaseButton, true)
 		S:HandleCloseButton(_G.BankFrameCloseButton)
 
@@ -258,7 +258,7 @@ local function UpdateBankItem(button)
 		BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
 		BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
 
-		BankFrame.isSkinned = true
+		BankFrame.IsSkinned = true
 	end
 
 	local ReagentBankFrame = _G.ReagentBankFrame

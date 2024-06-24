@@ -30,7 +30,7 @@ local function UpdateSpecFrame(frame)
 	if not frame.SpecContentFramePool then return end
 
 	for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
-		if not specContentFrame.isSkinned then
+		if not specContentFrame.IsSkinned then
 			S:HandleButton(specContentFrame.ActivateButton)
 
 			if specContentFrame.SpellButtonPool then
@@ -50,7 +50,7 @@ local function UpdateSpecFrame(frame)
 				end
 			end
 
-			specContentFrame.isSkinned = true
+			specContentFrame.IsSkinned = true
 		end
 	end
 end

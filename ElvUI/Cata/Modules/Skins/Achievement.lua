@@ -19,7 +19,7 @@ local function blueBackdrop(frame)
 end
 
 local function skinAch(Achievement, BiggerIcon)
-	if Achievement.isSkinned then return end
+	if Achievement.IsSkinned then return end
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)
@@ -66,7 +66,7 @@ local function skinAch(Achievement, BiggerIcon)
 		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
 
-	Achievement.isSkinned = true
+	Achievement.IsSkinned = true
 end
 
 local function SkinStatusBar(bar)
@@ -106,14 +106,14 @@ local function playerSaturate(frame) -- frame is Achievement.player
 end
 
 local function skinAchievementButton(button)
-	if button.isSkinned then return end
+	if button.IsSkinned then return end
 
 	skinAch(button.player)
 	skinAch(button.friend)
 
 	hooksecurefunc(button.player, 'Saturate', playerSaturate)
 
-	button.isSkinned = true
+	button.IsSkinned = true
 end
 
 local function setAchievementColor(frame)
@@ -134,30 +134,30 @@ local function hookHybridScrollButtons()
 	hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
 		if template == 'AchievementCategoryTemplate' then
 			for _, category in pairs(frame.buttons) do
-				if not category.isSkinned then
+				if not category.IsSkinned then
 					category:StripTextures(true)
 					category:StyleButton()
 
-					category.isSkinned = true
+					category.IsSkinned = true
 				end
 			end
 		elseif template == 'StatTemplate' then
 			for _, stats in pairs(frame.buttons) do
-				if not stats.isSkinned then
+				if not stats.IsSkinned then
 					stats:StyleButton()
 
-					stats.isSkinned = true
+					stats.IsSkinned = true
 				end
 			end
 		elseif template == 'AchievementTemplate' then
 			for _, achievement in pairs(frame.buttons) do
-				if not achievement.isSkinned then
+				if not achievement.IsSkinned then
 					skinAch(achievement, true)
 				end
 			end
 		elseif template == 'ComparisonTemplate' then
 			for _, comparison in pairs(frame.buttons) do
-				if not comparison.isSkinned then
+				if not comparison.IsSkinned then
 					skinAchievementButton(comparison)
 				end
 			end
@@ -168,29 +168,29 @@ local function hookHybridScrollButtons()
 	-- however, it can also be too late to hook HybridScrollFrame_CreateButtons, so we need to skin them here, weird...
 	for i = 1, 20 do
 		local category = _G['AchievementFrameCategoriesContainerButton'..i]
-		if category and not category.isSkinned then
+		if category and not category.IsSkinned then
 			category:StripTextures(true)
 			category:StyleButton()
 
-			category.isSkinned = true
+			category.IsSkinned = true
 		end
 
 		local stats = _G['AchievementFrameStatsContainerButton'..i]
-		if stats and not stats.isSkinned then
+		if stats and not stats.IsSkinned then
 			stats:StyleButton()
 
-			stats.isSkinned = true
+			stats.IsSkinned = true
 		end
 
 		if i <= 10 then
 			local achievement = _G['AchievementFrameAchievementsContainerButton'..i]
-			if achievement and not achievement.isSkinned then
+			if achievement and not achievement.IsSkinned then
 				skinAch(achievement, true)
 
 			end
 
 			local comparison = _G['AchievementFrameComparisonContainerButton'..i]
-			if comparison and not comparison.isSkinned then
+			if comparison and not comparison.IsSkinned then
 				skinAchievementButton(comparison)
 			end
 		end
@@ -323,7 +323,7 @@ function S:Blizzard_AchievementUI()
 	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G['AchievementFrameSummaryAchievement'..i]
-			if not frame.isSkinned then
+			if not frame.IsSkinned then
 				skinAch(frame)
 			end
 

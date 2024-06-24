@@ -230,7 +230,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		end
 
 		for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
-			if not followerReward.isSkinned then
+			if not followerReward.IsSkinned then
 				followerReward:CreateBackdrop()
 				followerReward.backdrop:SetAllPoints(followerReward.BG)
 				followerReward.backdrop:Point('TOPLEFT', 40, -5)
@@ -256,7 +256,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 				squareBG:SetTemplate()
 				followerReward.PortraitFrame.squareBG = squareBG
 
-				followerReward.isSkinned = true
+				followerReward.IsSkinned = true
 			end
 
 			local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()

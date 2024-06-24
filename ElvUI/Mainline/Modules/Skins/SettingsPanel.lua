@@ -14,11 +14,11 @@ end
 local function UpdateKeybindButtons(self)
 	if not self.bindingsPool then return end
 	for panel in self.bindingsPool:EnumerateActive() do
-		if not panel.isSkinned then
+		if not panel.IsSkinned then
 			S:HandleButton(panel.Button1)
 			S:HandleButton(panel.Button2)
 			if panel.CustomButton then S:HandleButton(panel.CustomButton) end
-			panel.isSkinned = true
+			panel.IsSkinned = true
 		end
 	end
 end
@@ -93,7 +93,7 @@ function S:SettingsPanel()
 
 	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				if child.Background then
 					child.Background:SetAlpha(0)
 					child.Background:CreateBackdrop('Transparent')
@@ -106,7 +106,7 @@ function S:SettingsPanel()
 					toggle:GetPushedTexture():SetAlpha(0)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -118,7 +118,7 @@ function S:SettingsPanel()
 
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				if child.NineSlice then
 					child.NineSlice:SetAlpha(0)
 					child:CreateBackdrop('Transparent')
@@ -191,7 +191,7 @@ function S:SettingsPanel()
 					HandleControlGroup(child.RaidQualityControls)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)

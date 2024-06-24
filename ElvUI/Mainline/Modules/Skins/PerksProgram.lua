@@ -6,8 +6,8 @@ local hooksecurefunc = hooksecurefunc
 
 local function HandleRewardButton(box)
 	local container = box.ContentsContainer
-	if container and not container.isSkinned then
-		container.isSkinned = true
+	if container and not container.IsSkinned then
+		container.IsSkinned = true
 
 		S:HandleIcon(container.Icon)
 		S.ReplaceIconString(container.Price)

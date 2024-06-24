@@ -8,7 +8,7 @@ local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
 local NUM_GUILDBANK_COLUMNS = 7
 
 local function GuildBankOnShow(frame)
-	if not frame.isSkinned then
+	if not frame.IsSkinned then
 		S:HandleIconSelectionFrame(frame, nil, nil, 'GuildBankPopup')
 	end
 end

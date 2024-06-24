@@ -39,14 +39,14 @@ local function HandleListIcon(frame)
 		if row then
 			local cell = row.cells and row.cells[1]
 			if cell and cell.Icon then
-				if not cell.isSkinned then
+				if not cell.IsSkinned then
 					S:HandleIcon(cell.Icon, true)
 
 					if cell.IconBorder then
 						cell.IconBorder:Hide()
 					end
 
-					cell.isSkinned = true
+					cell.IsSkinned = true
 				end
 
 				cell.Icon.backdrop:SetShown(cell.Icon:IsShown())
@@ -59,7 +59,7 @@ local function HandleListHeader(headerContainer)
 	local maxHeaders = headerContainer:GetNumChildren()
 
 	for i, header in next, { headerContainer:GetChildren() } do
-		if not header.isSkinned then
+		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 			header:CreateBackdrop('Transparent')
 
@@ -67,7 +67,7 @@ local function HandleListHeader(headerContainer)
 			highlight:SetColorTexture(1, 1, 1, .1)
 			highlight:SetAllPoints(header.backdrop)
 
-			header.isSkinned = true
+			header.IsSkinned = true
 		end
 
 		if header.backdrop then
@@ -109,7 +109,7 @@ local function FormInit(form)
 			ps:SetBlendMode('ADD')
 			ps:SetOutside(button)
 
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				S:HandleIcon(icon, true)
 				S:HandleIconBorder(button.IconBorder, icon.backdrop)
 				icon:SetOutside(button)
@@ -118,14 +118,14 @@ local function FormInit(form)
 					S:HandleCheckBox(slot.Checkbox)
 				end
 
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 		end
 	end
 end
 
 local function HandleFlyouts(flyout)
-	if not flyout.isSkinned then
+	if not flyout.IsSkinned then
 		flyout:StripTextures()
 		flyout:SetTemplate('Transparent')
 
@@ -133,7 +133,7 @@ local function HandleFlyouts(flyout)
 
 		hooksecurefunc(flyout.ScrollBox, 'Update', RefreshFlyoutButtons)
 
-		flyout.isSkinned = true
+		flyout.IsSkinned = true
 	end
 end
 

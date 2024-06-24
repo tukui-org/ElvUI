@@ -63,7 +63,7 @@ function S:Blizzard_MacroUI()
 	-- handle the macro buttons
 	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', function()
 		for _, button in next, { MacroFrame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
-			if button.Icon and not button.isSkinned then
+			if button.Icon and not button.IsSkinned then
 				S:HandleItemButton(button, true)
 			end
 		end
@@ -71,7 +71,7 @@ function S:Blizzard_MacroUI()
 
 	-- New icon selection
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)
-		if not frame.isSkinned then -- set by HandleIconSelectionFrame
+		if not frame.IsSkinned then -- set by HandleIconSelectionFrame
 			S:HandleIconSelectionFrame(frame, nil, nil, 'MacroPopup')
 		end
 	end)

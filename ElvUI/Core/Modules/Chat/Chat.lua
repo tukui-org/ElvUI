@@ -2348,7 +2348,7 @@ do
 
 	function CH:StyleOverflowButton()
 		local btn = _G.GeneralDockManagerOverflowButton
-		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
+		local wasSkinned = btn.IsSkinned -- keep this before HandleNextPrev
 		S:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
