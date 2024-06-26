@@ -739,21 +739,7 @@ do
 	end
 end
 
-local arrowDegree = {
-	['up'] = 0,
-	['down'] = 180,
-	['left'] = 90,
-	['right'] = -90,
-}
-
-function S:SetupArrow(tex, direction)
-	if not tex then return end
-
-	tex:SetTexture(E.Media.Textures.ArrowUp)
-	tex:SetRotation(rad(arrowDegree[direction]))
-end
-
-function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
 	assert(button, 'doesn\'t exist!')
 
 	if button.IsSkinned then return end
@@ -764,7 +750,6 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 	if strip then button:StripTextures() end
-	if button.Texture then button.Texture:SetAlpha(0) end
 
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
@@ -791,14 +776,6 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
 		button:HookScript('OnLeave', S.SetOriginalBackdrop)
 		button:HookScript('OnDisable', S.SetDisabledBackdrop)
-	end
-
-	if isFilterButton then
-		local arrow = button:CreateTexture(nil, 'ARTWORK')
-		arrow:Size(10)
-		arrow:ClearAllPoints()
-		arrow:Point('RIGHT', -1, 0)
-		S:SetupArrow(arrow, filterDirection)
 	end
 
 	button.IsSkinned = true
@@ -1129,38 +1106,43 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-do
-	local function buttonOnEnter(btn)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		btn:SetVertexColor(r,g,b)
+function S:HandleDropDownBox(frame, width, pos, template)
+	assert(frame, 'doesn\'t exist!')
+
+	local frameName = frame.GetName and frame:GetName()
+	local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
+	local text = frameName and _G[frameName..'Text'] or frame.Text
+	local icon = frame.Icon
+
+	if not width then
+		width = 155
 	end
-	local function buttonOnLeave(btn)
-		btn:SetVertexColor(1, 1, 1)
+
+	frame:Width(width)
+	frame:StripTextures()
+	frame:CreateBackdrop(template)
+	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	frame.backdrop:Point('TOPLEFT', 20, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
+
+	button:ClearAllPoints()
+
+	if pos then
+		button:Point('TOPRIGHT', frame.Right, -20, -21)
+	else
+		button:Point('RIGHT', frame, 'RIGHT', -10, 3)
 	end
 
-	function S:HandleDropDownBox(frame, width, template)
-		assert(frame, 'doesn\'t exist!')
+	button.SetPoint = E.noop
+	S:HandleNextPrevButton(button, 'down')
 
-		local frameName = frame.GetName and frame:GetName()
+	if text then
+		text:ClearAllPoints()
+		text:Point('RIGHT', button, 'LEFT', -2, 0)
+	end
 
-		if frame.Arrow then frame.Arrow:SetAlpha(0) end
-
-		if not width then
-			width = 155
-		end
-
-		frame:Width(width)
-		frame:StripTextures()
-		frame:CreateBackdrop(template)
-		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
-
-		local tex = frame:CreateTexture(nil, 'ARTWORK')
-		tex:SetTexture(E.Media.Textures.ArrowUp)
-		tex:SetRotation(3.14)
-		tex:Point('RIGHT', frame.backdrop, -3, 0)
-		tex:Size(14)
+	if icon then
+		icon:Point('LEFT', 23, 0)
 	end
 end
 
