@@ -1,3 +1,13 @@
+### Version 13.67 [ June 26th 2024 ]
+*   Skinned LFG and Dressing Room scrollbar.
+*   Guild reputation progress bar fixed.
+*   Player Alt Power bar not staying connected to its mover.
+*   ObjectiveTracker leveling taint  (Retail & Panda Remix).
+*   Guild Datatext timer Timerunning icon shows correctly.
+*   Mastery & Haste Datatext added for Cataclysm (Thanks Tsxy).
+*   Healer only and Auto hide options for Unitframe power.
+*   Cataclysm tooltip can now show Item Level.
+
 ### Version 13.66 [ May 31st 2024 ]
 *   Classic: Combo points appearing on new targets.
 *   Cataclysm: Reforge skin toggle not working and PVP skin updated.
