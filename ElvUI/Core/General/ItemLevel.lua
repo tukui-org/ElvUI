@@ -33,18 +33,45 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 }, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Cata and 18 or nil}
 
 function E:InspectGearSlot(line, lineText, slotInfo)
-	local enchant = strmatch(lineText, MATCH_ENCHANT)
-	if enchant then
-		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
-		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
-		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
-		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
-		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
-
+	if E.Cata and lineText then
 		local r, g, b = line:GetTextColor()
-		slotInfo.enchantColors[1] = r
-		slotInfo.enchantColors[2] = g
-		slotInfo.enchantColors[3] = b
+		if r == 0 and g == 1 and b == 0 then
+			if not string.find(lineText, 'Reforged') and not string.find(lineText, 'Equip: ') and not string.find(lineText, '%(%d+ min%)') then
+				local startsWithPlus = string.find(lineText, '^%+')
+				local containsMastery = string.find(lineText, STAT_MASTERY)
+				local isActuallyMastery = string.find(lineText, 'Mastery Rating') --* couldnt find global string for this and may not be needed
+
+				local color1, color2 = strmatch(lineText, '(|cn.-:).-(|r)')
+				local text = gsub(gsub(lineText, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+
+				if startsWithPlus and (not containsMastery or isActuallyMastery) then
+					slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+					slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
+					slotInfo.enchantTextReal = lineText
+				elseif (slot == INVSLOT_MAINHAND or slot == INVSLOT_OFFHAND or slot == INVSLOT_BACK) and not containsMastery then
+					slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+					slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
+					slotInfo.enchantTextReal = lineText
+				end
+				slotInfo.enchantColors[1] = r
+				slotInfo.enchantColors[2] = g
+				slotInfo.enchantColors[3] = b
+			end
+		end
+	else
+		local enchant = strmatch(lineText, MATCH_ENCHANT)
+		if enchant then
+			local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
+			local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+			slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+			slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
+			slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
+
+			local r, g, b = line:GetTextColor()
+			slotInfo.enchantColors[1] = r
+			slotInfo.enchantColors[2] = g
+			slotInfo.enchantColors[3] = b
+		end
 	end
 
 	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
