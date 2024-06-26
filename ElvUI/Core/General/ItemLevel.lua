@@ -48,10 +48,6 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 					slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
 					slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
 					slotInfo.enchantTextReal = lineText
-				elseif (slot == INVSLOT_MAINHAND or slot == INVSLOT_OFFHAND or slot == INVSLOT_BACK) and not containsMastery then
-					slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
-					slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
-					slotInfo.enchantTextReal = lineText
 				end
 				slotInfo.enchantColors[1] = r
 				slotInfo.enchantColors[2] = g
