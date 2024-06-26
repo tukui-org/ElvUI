@@ -773,7 +773,8 @@ function E:SetupGameMenu()
 	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
 	GameMenuFrame.ElvUI = button
-	button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+
+	button:Size(GameMenuButtonLogout:GetSize())
 	button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 end
