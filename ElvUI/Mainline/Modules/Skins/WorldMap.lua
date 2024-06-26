@@ -239,6 +239,15 @@ function S:WorldMapFrame()
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', UpdateExecuteCommandAtlases)
 	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', NotifyDialogShow)
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
+
+	-- 11.0 Map Legend
+	local MapLegend = QuestMapFrame.MapLegend
+	S:HandleButton(MapLegend.BackButton)
+	MapLegend.TitleText:FontTemplate(nil, 16) -- 16 is okayish
+	MapLegend.BorderFrame:SetAlpha(0)
+	_G.MapLegendScrollFrame:StripTextures()
+	_G.MapLegendScrollFrame:SetTemplate()
+	S:HandleTrimScrollBar(_G.MapLegendScrollFrame.ScrollBar)
 end
 
 S:AddCallback('WorldMapFrame')
