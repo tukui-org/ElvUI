@@ -174,7 +174,6 @@ local function HandleTokenSellFrame(frame)
 
 	frame.DummyItemList:StripTextures()
 	frame.DummyItemList:SetTemplate('Transparent')
-	HandleAuctionButtons(frame.DummyRefreshButton)
 	S:HandleScrollBar(frame.DummyItemList.DummyScrollBar)
 end
 
