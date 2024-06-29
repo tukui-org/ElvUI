@@ -549,7 +549,7 @@ local NP_Health = {
 
 local NP_Power = {
 	enable = false,
-	classColor = false,
+	useClassColor = false,
 	hideWhenEmpty = false,
 	costPrediction = true,
 	width = 150,

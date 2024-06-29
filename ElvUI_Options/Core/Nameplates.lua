@@ -76,7 +76,7 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 7)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 8)
-	group.args.powerGroup.args.classColor = ACH:Toggle(L["Use Class Color"], nil, 9)
+	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 9)
 
 	group.args.powerGroup.args.textGroup = ACH:Group(L["Text"], nil, 200, nil, function(info) return E.db.nameplates.units[unit].power.text[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power.text[info[#info]] = value NP:ConfigureAll() end)
 	group.args.powerGroup.args.textGroup.inline = true
