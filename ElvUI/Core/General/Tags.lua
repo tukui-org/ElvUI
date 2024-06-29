@@ -422,9 +422,12 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 	end)
 
 	E:AddTag(format('target:%s:translit', textFormat), 'UNIT_TARGET', function(unit)
-		local targetName = Translit:Transliterate(UnitName(unit..'target'), translitMark)
-		if targetName then
-			return E:ShortenString(targetName, length)
+		local targetUnit = UnitName(unit..'target')
+		if targetUnit then
+			local targetName = Translit:Transliterate(targetUnit, translitMark)
+			if targetName then
+				return E:ShortenString(targetName, length)
+			end
 		end
 	end)
 end
