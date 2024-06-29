@@ -174,7 +174,6 @@ local function HandleTokenSellFrame(frame)
 
 	frame.DummyItemList:StripTextures()
 	frame.DummyItemList:SetTemplate('Transparent')
-	HandleAuctionButtons(frame.DummyRefreshButton)
 	S:HandleScrollBar(frame.DummyItemList.DummyScrollBar)
 end
 
@@ -313,7 +312,6 @@ local function LoadSkin()
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
 	ItemBuyFrame.BidFrame.BidButton:Point('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
-	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
