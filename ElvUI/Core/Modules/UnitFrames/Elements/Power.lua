@@ -220,11 +220,8 @@ function UF:Configure_Power(frame, healthUpdate)
 			E:DisableMover(power.Holder.mover.name)
 		end
 
-		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata then
-			power:SetFrameStrata(db.power.strataAndLevel.frameStrata)
-		else
-			power:SetFrameStrata('LOW')
-		end
+		power:SetFrameStrata(db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 		end

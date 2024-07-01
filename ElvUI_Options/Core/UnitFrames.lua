@@ -217,6 +217,8 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 	config.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
 
+	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, auraType)
+
 	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.stacks.inline = true
 	config.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
@@ -743,7 +745,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	return config
 end
 
-local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits, hasStrataLevel)
+local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Power"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].power[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].power[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 2, attachToValues)
@@ -776,9 +778,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -400, max = 400, step = 1 })
 	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
 
-	if hasStrataLevel then
-		config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'power')
-	end
+	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'power')
 
 	if groupName == 'party' or strmatch(groupName, '^raid(%d)') then
 		config.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 9)
@@ -1429,7 +1429,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		if element == 'health' then
 			config[element] = GetOptionsTable_Health(not isIndividual, updateFunc, unitType, numUnits)
 		elseif element == 'power' then
-			config[element] = GetOptionsTable_Power(isIndividual, updateFunc, unitType, numUnits, isIndividual)
+			config[element] = GetOptionsTable_Power(isIndividual, updateFunc, unitType, numUnits)
 		elseif element == 'buffs' or element == 'debuffs' then
 			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
 		elseif element == 'petsGroup' or element == 'targetsGroup' then

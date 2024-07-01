@@ -1328,6 +1328,7 @@ local UF_Auras = {
 	keepSizeRatio = true,
 	height = 30,
 	spacing = 1,
+	strataAndLevel = CopyTable(UF_StrataAndLevel),
 }
 
 local UF_AuraBars = {
@@ -2077,6 +2078,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
+			strataAndLevel = CopyTable(UF_StrataAndLevel),
 			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		arena = {
@@ -2113,6 +2115,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
+			strataAndLevel = CopyTable(UF_StrataAndLevel),
 			raidicon = CopyTable(UF_RaidIcon),
 		},
 		party = {
@@ -2164,6 +2167,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
+			strataAndLevel = CopyTable(UF_StrataAndLevel),
 			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 		tank = {
@@ -2191,6 +2195,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
 			targetsGroup = CopyTable(UF_SubGroup),
+			strataAndLevel = CopyTable(UF_StrataAndLevel),
 			privateAuras = CopyTable(UF_PrivateAuras)
 		},
 	},

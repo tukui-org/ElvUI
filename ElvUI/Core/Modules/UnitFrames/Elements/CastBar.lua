@@ -193,13 +193,8 @@ function UF:Configure_Castbar(frame)
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
 	if oSC then oSC(castbar.Holder) end
 
-	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
-		castbar:SetFrameStrata(db.strataAndLevel.frameStrata)
-	end
-
-	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
-		castbar:SetFrameLevel(db.strataAndLevel.frameLevel)
-	end
+	castbar:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	castbar:SetFrameLevel((db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.CastBarLevel) or 1)
 
 	--Empowered
 	castbar.pipColor = UF.db.colors.empoweredCast

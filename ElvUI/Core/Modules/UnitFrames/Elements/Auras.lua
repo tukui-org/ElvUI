@@ -392,6 +392,9 @@ function UF:Configure_Auras(frame, which)
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 
+	auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
+	auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.AuraLevel) or 1)
+
 	local index = 1
 	while auras[index] do
 		local button = auras[index]

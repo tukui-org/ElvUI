@@ -202,6 +202,9 @@ function UF:Update_PartyFrames(frame, db)
 		end
 	end
 
+	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
+
 	UF:UpdateNameSettings(frame)
 	UF:Configure_RaidIcon(frame)
 	UF:Configure_Threat(frame)
