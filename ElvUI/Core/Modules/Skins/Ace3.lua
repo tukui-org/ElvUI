@@ -456,7 +456,7 @@ end
 
 function S:Ace3_StylePopup()
 	if not self:IsForbidden() and E.private.skins.ace3Enable then
-		self:SetTemplate('Transparent', nil, true)
+		self:SetTemplate(nil, nil, true)
 		self:GetChildren():StripTextures()
 
 		S:HandleButton(self.accept, true)
