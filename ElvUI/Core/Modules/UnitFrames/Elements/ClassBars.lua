@@ -581,7 +581,7 @@ end
 -----------------------------------------------------------
 function UF:Construct_DruidEclipseBar(frame)
 	local eclipseBar = CreateFrame('Frame', '$parent_EclipsePowerBar', frame)
-	eclipseBar:CreateBackdrop('Default', nil, nil, self.thinBorders, true)
+	eclipseBar:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
 	eclipseBar.LunarBar = CreateFrame('StatusBar', 'LunarBar', eclipseBar)
 	eclipseBar.LunarBar:Point('LEFT', eclipseBar)

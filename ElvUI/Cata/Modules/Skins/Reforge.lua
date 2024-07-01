@@ -47,7 +47,7 @@ function S:Blizzard_ReforgingUI()
 	if ItemButton then
 		ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
 		ItemButton:StripTextures()
-		ItemButton:SetTemplate('Default', true)
+		ItemButton:SetTemplate(nil, true)
 		ItemButton:StyleButton()
 	end
 

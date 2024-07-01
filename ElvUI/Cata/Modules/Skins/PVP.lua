@@ -254,7 +254,7 @@ function S:SkinPVPFrame()
 	local PVPBannerFrameCancelButton = _G.PVPBannerFrameCancelButton
 	S:HandleButton(PVPBannerFrameCancelButton)
 	PVPBannerFrameCancelButton.backdrop = CreateFrame('Frame', nil, PVPBannerFrameCancelButton)
-	PVPBannerFrameCancelButton.backdrop:SetTemplate('Default', true)
+	PVPBannerFrameCancelButton.backdrop:SetTemplate(nil, true)
 	PVPBannerFrameCancelButton.backdrop:SetFrameLevel(PVPBannerFrameCancelButton:GetFrameLevel() - 2)
 	PVPBannerFrameCancelButton.backdrop:Point('TOPLEFT', _G.PVPBannerFrameAcceptButton, 248, 0)
 	PVPBannerFrameCancelButton.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameAcceptButton, 248, 0)
