@@ -95,11 +95,11 @@ local function GetUnitSettings(unit, name)
 
 	group.args.castGroup = ACH:Group(L["Cast Bar"], nil, 20, 'tab', function(info) return E.db.nameplates.units[unit].castbar[info[#info]] end, function(info, value) E.db.nameplates.units[unit].castbar[info[#info]] = value NP:ConfigureAll() end)
 	group.args.castGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.castGroup.args.sourceInterrupt = ACH:Toggle(L["Display Interrupt Source"], L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."], 2)
+	group.args.castGroup.args.sourceInterruptClassColor = ACH:Toggle(L["Class Color Source"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
 
-	group.args.castGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
-	group.args.castGroup.args.generalGroup.args.sourceInterrupt = ACH:Toggle(L["Display Interrupt Source"], L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."], 2)
-	group.args.castGroup.args.generalGroup.args.sourceInterruptClassColor = ACH:Toggle(L["Class Color Source"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
 	-- order 4 is player Display Target
+	group.args.castGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	group.args.castGroup.args.generalGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 5, { min = 0, max = 5, step = .1 })
 	group.args.castGroup.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = minWidth, max = MaxWidth(unit), step = 1 })
 	group.args.castGroup.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 7, { min = minHeight, max = MaxHeight(unit), step = 1 })
@@ -139,11 +139,11 @@ local function GetUnitSettings(unit, name)
 
 	group.args.buffsGroup = ACH:Group(L["Buffs"], nil, 25, 'tab', function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end, function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value NP:ConfigureAll() end)
 	group.args.buffsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.buffsGroup.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	group.args.buffsGroup.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
+	group.args.buffsGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
 
 	group.args.buffsGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
-	group.args.buffsGroup.args.generalGroup.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
-	group.args.buffsGroup.args.generalGroup.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
-	group.args.buffsGroup.args.generalGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
 	group.args.buffsGroup.args.generalGroup.args.size = ACH:Range(function() return E.db.nameplates.units[unit].buffs.keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 6, max = 60, step = 1 })
 	group.args.buffsGroup.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 6, { min = 6, max = 60, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.units[unit].buffs.keepSizeRatio end)
 	group.args.buffsGroup.args.generalGroup.args.numAuras = ACH:Range(L["Per Row"], nil, 7, { min = 1, max = 20, step = 1 })
@@ -195,11 +195,11 @@ local function GetUnitSettings(unit, name)
 
 	group.args.debuffsGroup = ACH:Group(L["Debuffs"], nil, 30, 'tab', function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end, function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value NP:ConfigureAll() end)
 	group.args.debuffsGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.debuffsGroup.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	group.args.debuffsGroup.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
+	group.args.debuffsGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
 
 	group.args.debuffsGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
-	group.args.debuffsGroup.args.generalGroup.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
-	group.args.debuffsGroup.args.generalGroup.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
-	group.args.debuffsGroup.args.generalGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
 	group.args.debuffsGroup.args.generalGroup.args.size = ACH:Range(function() return E.db.nameplates.units[unit].debuffs.keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 6, max = 60, step = 1 })
 	group.args.debuffsGroup.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 6, { min = 6, max = 60, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.units[unit].debuffs.keepSizeRatio end)
 	group.args.debuffsGroup.args.generalGroup.args.numAuras = ACH:Range(L["Per Row"], nil, 7, { min = 1, max = 20, step = 1 })
@@ -350,7 +350,7 @@ local function GetUnitSettings(unit, name)
 		group.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		group.args.castGroup.args.generalGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
+		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
@@ -364,7 +364,7 @@ local function GetUnitSettings(unit, name)
 		group.args.eliteIcon.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 		group.args.eliteIcon.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 
-		group.args.castGroup.args.generalGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
+		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 
 		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 70, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
 		group.args.questIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)

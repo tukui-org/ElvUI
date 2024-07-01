@@ -374,6 +374,9 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
+	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
+	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
+
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = 50, max = ceil(E.screenWidth), step = 1 })
 	config.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = 5, max = 85, step = 1 })
@@ -381,10 +384,6 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.generalGroup.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 11, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["None"] })
 	config.args.generalGroup.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 12, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
-
-	config.args.generalGroup.args.spacer1 = ACH:Spacer(13, 'full')
-	config.args.generalGroup.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
-	config.args.generalGroup.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
 
 	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.hidetext = ACH:Toggle(L["Hide Text"], L["Hide Castbar text. Useful if your power height is very low or if you use power offset."], 1)
@@ -436,8 +435,8 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.customColor.args.colorInterrupted = ACH:Color(L["Interrupted"], nil, 12, true, nil, nil, nil, nil, function() return not (E.Retail or E.Cata) or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 
 	if groupName == 'player' then
-		config.args.generalGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
-		config.args.generalGroup.args.latency = ACH:Toggle(L["Latency"], nil, 18)
+		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
+		config.args.latency = ACH:Toggle(L["Latency"], nil, 18)
 
 		config.args.generalGroup.args.ticks = ACH:Group(L["Ticks"], nil, 20)
 		config.args.generalGroup.args.ticks.args.ticks = ACH:Toggle(L["Ticks"], L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."], 1)
@@ -445,7 +444,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.ticks.args.tickWidth = ACH:Range(L["Width"], nil, 3, { min = 1, max = 20, step = 1 })
 		config.args.generalGroup.args.ticks.inline = true
 	elseif groupName == 'pet' or groupName == 'boss' then
-		config.args.generalGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
+		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
 	end
 
 	if groupName == 'party' or groupName == 'arena' then
