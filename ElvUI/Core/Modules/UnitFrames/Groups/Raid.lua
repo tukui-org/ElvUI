@@ -111,6 +111,8 @@ function UF:Update_RaidFrames(frame, db)
 	end
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
