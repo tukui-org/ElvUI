@@ -60,6 +60,7 @@ local function HandleTextColor(self)
 		if not button.IsSkinned then
 			if button.Text then
 				button.Text:SetTextColor(1, .8, 0)
+				button.Text:SetShadowOffset(1, -1) -- Looks better with a lite shadow
 			end
 			if button.Name then
 				button.Name:SetTextColor(1, 1, 1)
