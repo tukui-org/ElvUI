@@ -7,8 +7,8 @@ local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemQualityByID = C_Item and C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item and C_Item.GetItemQualityColor
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white

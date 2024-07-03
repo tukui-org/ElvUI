@@ -20,8 +20,8 @@ local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local ESSENCE_DESCRIPTION = C_Spell and C_Spell.GetSpellDescription(277253)
 
-local GetItemInfo = C_Item and C_Item.GetItemInfo or GetItemInfo
-local GetCVarBool = C_CVar and C_CVar.GetCVarBool
+local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetCVarBool = C_CVar.GetCVarBool
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
