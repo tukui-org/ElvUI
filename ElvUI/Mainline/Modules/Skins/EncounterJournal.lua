@@ -7,8 +7,8 @@ local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityByID = C_Item and C_Item.GetItemQualityByID
+local GetItemQualityColor = C_Item and C_Item.GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -215,7 +215,7 @@ function S:Blizzard_EncounterJournal()
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
 
-	S:HandleDropDownBox(InstanceSelect.tierDropDown)
+	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
@@ -268,19 +268,22 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
 
-	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 
 	-- Buttons
 	EncounterInfo.difficulty:ClearAllPoints()
 	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
-	HandleButton(EncounterInfo.reset)
-	HandleButton(EncounterInfo.difficulty)
+	S:HandleDropDownBox(EncounterInfo.difficulty, 120)
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
+
+	EncounterInfo.LootContainer.filter:ClearAllPoints()
+	EncounterInfo.LootContainer.filter:Point('RIGHT', EncounterInfo.difficulty, 'LEFT', -120, 0)
+	S:HandleDropDownBox(EncounterInfo.LootContainer.filter, 120)
+	S:HandleDropDownBox(EncounterInfo.LootContainer.slotFilter, 100)
 
 	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar)
 	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar)
@@ -471,13 +474,7 @@ function S:Blizzard_EncounterJournal()
 		item2.IconBorder:Kill()
 	end
 
-	-- Powers
 	local LJ = EJ.LootJournal
-	HandleButton(LJ.ClassDropDownButton, true)
-	LJ.ClassDropDownButton:SetFrameLevel(10)
-	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
-	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
-	S:HandleDropDownBox(EJ.LootJournalViewDropDown)
 	S:HandleTrimScrollBar(LJ.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
@@ -608,8 +605,8 @@ function S:Blizzard_EncounterJournal()
 
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
-		HandleButton(ItemSetsFrame.ClassButton, true)
 		S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar)
+		S:HandleDropDownBox(ItemSetsFrame.ClassDropdown)
 
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()
