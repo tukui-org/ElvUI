@@ -6,6 +6,7 @@ local IsFalling = IsFalling
 local IsFlying = IsFlying
 local IsSwimming = IsSwimming
 local GetUnitSpeed = GetUnitSpeed
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
@@ -16,11 +17,15 @@ local beforeFalling, wasFlying
 local delayed
 local function DelayUpdate(self)
 	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
+	local isGliding, _, forwardSpeed = C_PlayerInfo_GetGlidingInfo()
 	local speed
 
 	if IsSwimming() then
 		speed = swimSpeed
 		wasFlying = false
+	elseif isGliding then
+		speed = forwardSpeed
+		wasFlying = true
 	elseif IsFlying() then
 		speed = flightSpeed
 		wasFlying = true
