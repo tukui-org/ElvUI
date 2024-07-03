@@ -17,7 +17,7 @@ local beforeFalling, wasFlying
 local delayed
 local function DelayUpdate(self)
 	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
-	local speed, isGliding, forwardSpeed, _
+	local speed, isGliding, forwardSpeed
 
 	if E.Retail then
 		isGliding, _, forwardSpeed = C_PlayerInfo_GetGlidingInfo()
