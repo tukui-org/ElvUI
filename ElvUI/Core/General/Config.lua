@@ -677,6 +677,11 @@ function E:Config_SearchUpdate(userInput)
 		C:Search_AddResults()
 
 		ACD:SelectGroup('ElvUI', 'search') -- trigger update
+	else
+		local _, selected = E:Config_GetStatus(self.frame)
+		if selected == 'search' then
+			ACD:SelectGroup('ElvUI', self.selected or 'general') -- try to stay or swap back to general if it cant
+		end
 	end
 end
 
