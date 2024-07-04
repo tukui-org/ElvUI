@@ -293,7 +293,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point('TOP', 0, -85)
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -70)
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -78)
 
 	S:HandleTrimScrollBar(EncounterInfo.overviewScroll.ScrollBar)
 	S:HandleTrimScrollBar(EncounterInfo.detailsScroll.ScrollBar)
