@@ -28,6 +28,20 @@ local function HandleButton(btn, strip, ...)
 	end
 end
 
+local function ReskinHeader(header)
+	for i = 4, 18 do
+		select(i, header.button:GetRegions()):SetTexture()
+	end
+	HandleButton(header.button)
+
+	header.descriptionBG:SetAlpha(0)
+	header.descriptionBGBottom:SetAlpha(0)
+	header.description:SetTextColor(1, 1, 1)
+	header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+	header.button.expandedIcon:SetTextColor(1, 1, 1)
+	header.button.expandedIcon:SetWidth(20) -- don't wrap the text
+end
+
 local SkinOverviewInfo
 do -- this prevents a taint trying to force a color lock by setting it to E.noop
 	local LockColors = {}
@@ -58,15 +72,11 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 			for i = 4, 18 do
 				select(i, header.button:GetRegions()):SetTexture()
 			end
-
+			ReskinHeader(header)
 			HandleButton(header.button)
 
 			LockColor(header.button.title, true)
 			LockColor(header.button.expandedIcon)
-
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			header.description:SetTextColor(1, 1, 1)
 
 			header.IsSkinned = true
 		end
@@ -103,35 +113,8 @@ local function SkinAbilitiesInfo()
 	local header = _G['EncounterJournalInfoHeader'..index]
 	while header do
 		if not header.IsSkinned then
-			header.flashAnim.Play = E.noop
-
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture()
-			end
-
-			header.description:SetTextColor(1, 1, 1)
-			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-			header.button.title.SetTextColor = E.noop
-			header.button.expandedIcon:SetTextColor(1, 1, 1)
-			header.button.expandedIcon.SetTextColor = E.noop
-
-			HandleButton(header.button)
-
-			header.button.bg = CreateFrame('Frame', nil, header.button)
-			header.button.bg:SetTemplate()
-			header.button.bg:SetOutside(header.button.abilityIcon)
-			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
-			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
-
+			ReskinHeader(header)
 			header.IsSkinned = true
-		end
-
-		if header.button.abilityIcon:IsShown() then
-			header.button.bg:Show()
-		else
-			header.button.bg:Hide()
 		end
 
 		index = index + 1
