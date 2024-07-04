@@ -357,6 +357,20 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 end
 
 for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
+	E:AddTag(format('health:current:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+		local name = UnitName(unit)
+
+		if status then
+			return status
+		elseif cur ~= max then
+			return E:GetFormattedText('CURRENT', cur, max, nil, true)
+		elseif name then
+			return E:ShortenString(name, length)
+		end
+	end)
+
 	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = max - cur
@@ -506,12 +520,35 @@ E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end, not E.Retail)
 
+E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	local absorb = UnitGetTotalAbsorbs(unit) or 0
+	if absorb == 0 then
+		return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
+	end
+
+	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
+	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
+end, not E.Retail)
+
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
 	if deficit > 0 and currentHealth > 0 then
 		return _TAGS['health:percent-nostatus'](unit)
+	else
+		return _TAGS.name(unit)
+	end
+end)
+
+E:AddTag('health:current:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+	local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+	local currentHealth, max = UnitHealth(unit), UnitHealthMax(unit)
+
+	if status then
+		return status
+	elseif currentHealth ~= max then
+		return E:GetFormattedText('CURRENT', currentHealth, max, nil, true)
 	else
 		return _TAGS.name(unit)
 	end
@@ -1464,6 +1501,11 @@ E.TagInfo = {
 		['absorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of absorbs' },
 		['curhp'] = { category = 'Health', description = "Displays the current HP without decimals" },
 		['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" },
+		['health:current:name-long'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 20 letters) when at full health" },
+		['health:current:name-medium'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 15 letters) when at full health" },
+		['health:current:name-short'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 10 letters) when at full health" },
+		['health:current:name-veryshort'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 5 letters) when at full health" },
+		['health:current:name'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the full name of the unit when at full health" },
 		['health:current-max-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current and max health, without status" },
 		['health:current-max-nostatus'] = { category = 'Health', description = "Displays the current and maximum health of the unit, separated by a dash, without status" },
 		['health:current-max-percent-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of current and max hp (% when not full hp, without status)" },
@@ -1494,6 +1536,7 @@ E.TagInfo = {
 		['health:max'] = { category = 'Health', description = "Displays the maximum health of the unit" },
 		['health:percent-nostatus'] = { category = 'Health', description = "Displays the unit's current health as a percentage, without status" },
 		['health:percent-with-absorbs'] = { hidden = not E.Retail, category = 'Health', description = "Displays the unit's current health as a percentage with absorb values" },
+		['health:percent-with-absorbs:nostatus'] = { hidden = not E.Retail, category = 'Health', description = "Displays the unit's current health as a percentage with absorb values, without status" },
 		['health:percent'] = { category = 'Health', description = "Displays the current health of the unit as a percentage" },
 		['incomingheals:others'] = { category = 'Health', description = "Displays only incoming heals from other units" },
 		['incomingheals:personal'] = { category = 'Health', description = "Displays only personal incoming heals" },
