@@ -3615,8 +3615,12 @@ function CH:FCF_Tab_OnClick(button)
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 
-		local tabName = self:GetName()
-		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		if E.Retail then
+			_G.FCF_Tab_SetupMenu(self)
+		else
+			local tabName = self:GetName()
+			_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		end
 	elseif button == 'MiddleButton' then
 		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then
