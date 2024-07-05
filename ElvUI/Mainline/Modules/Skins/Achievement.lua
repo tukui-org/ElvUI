@@ -177,6 +177,8 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameWaterMark:SetAlpha(0)
+	_G.AchievementFrameSummaryAchievementsHeaderHeader:SetAlpha(0)
+	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetAlpha(0)
 
 	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
