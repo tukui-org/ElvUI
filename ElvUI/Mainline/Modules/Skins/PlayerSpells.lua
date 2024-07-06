@@ -173,7 +173,7 @@ function S:Blizzard_PlayerSpells()
 	local TalentsSelect = _G.HeroTalentsSelectionDialog
 	if TalentsSelect then
 		TalentsSelect:StripTextures()
-		TalentsSelect:SetTemplate('Transparent')
+		TalentsSelect:SetTemplate()
 		S:HandleCloseButton(TalentsSelect.CloseButton)
 
 		hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
