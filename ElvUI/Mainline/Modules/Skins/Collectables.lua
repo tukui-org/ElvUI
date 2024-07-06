@@ -308,7 +308,7 @@ end
 
 local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
-	S:HandleButton(_G.MountJournal.FilterDropdown)
+	S:HandleButton(_G.MountJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	local Flyout = _G.MountJournal.DynamicFlightFlyout
 	Flyout.Background:Hide()
@@ -373,7 +373,7 @@ local function SkinPetFrame()
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
 
-	S:HandleButton(_G.PetJournal.FilterDropdown)
+	S:HandleButton(_G.PetJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	_G.PetJournal.FilterDropdown:Height(E.PixelMode and 22 or 24)
 	_G.PetJournal.FilterDropdown:ClearAllPoints()
 	_G.PetJournal.FilterDropdown:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
@@ -476,7 +476,7 @@ local function SkinToyFrame()
 	local ToyBox = _G.ToyBox
 	S:HandleEditBox(ToyBox.searchBox)
 
-	S:HandleButton(_G.ToyBox.FilterDropdown)
+	S:HandleButton(_G.ToyBox.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	_G.ToyBox.FilterDropdown:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
 	S:HandleCloseButton(_G.ToyBox.FilterDropdown.ResetButton)
 	_G.ToyBox.FilterDropdown.ResetButton:ClearAllPoints()
@@ -520,7 +520,7 @@ local function SkinHeirloomFrame()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournal.ClassDropdown)
 
-	S:HandleButton(_G.HeirloomsJournal.FilterDropdown)
+	S:HandleButton(_G.HeirloomsJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	S:HandleCloseButton(_G.HeirloomsJournal.FilterDropdown.ResetButton)
 	_G.HeirloomsJournal.FilterDropdown.ResetButton:ClearAllPoints()
 	_G.HeirloomsJournal.FilterDropdown.ResetButton:Point('CENTER', _G.HeirloomsJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
@@ -553,7 +553,7 @@ local function SkinTransmogFrames()
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ClassDropdown, 145)
 
-	S:HandleButton(WardrobeCollectionFrame.FilterButton)
+	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
 	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
