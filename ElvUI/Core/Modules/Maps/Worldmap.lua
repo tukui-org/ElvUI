@@ -111,9 +111,10 @@ function M:PositionCoords()
 	local yOffset = db.yOffset
 
 	local x, y = 5, 5
-	if strfind(position, 'RIGHT') then	x = -5 end
+	if strfind(position, 'RIGHT') then x = -5 end
 	if strfind(position, 'TOP') then y = -5 end
 
+	if not CoordsHolder then return end
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.ScrollContainer, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
