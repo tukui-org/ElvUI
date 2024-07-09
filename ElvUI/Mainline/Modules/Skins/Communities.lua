@@ -251,9 +251,21 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
 
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox)
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox)
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox)
+	do
+		local checkButtons = {
+			ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+			ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+			ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
+			ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+			ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+			ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
+		}
+
+		for _, checkButton in next, checkButtons do
+			S:HandleCheckBox(checkButton)
+			checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
+		end
+	end
 
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
@@ -271,10 +283,6 @@ function S:Blizzard_Communities()
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Size(118, 20)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
 	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
-
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox)
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox)
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox)
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
