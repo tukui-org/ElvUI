@@ -1,3 +1,12 @@
+### Version 13.68 [ July 9th 2024 ]
+*   Enchant info to display with Item Level on Character and Inspect frames.
+*   Player nameplate not obeying Use Class Color option for Power.
+*   Translit tags sometimes not returning properly.
+*   Frame Level and Strata options for Unitframe power, auras, and frames.
+*   Hit Datatext not updating in some situtations.
+*   Attack Power Datatext now has label options.
+*   Role Checkboxes set to the correct level on Guild Finder.
+
 ### Version 13.67 [ June 26th 2024 ]
 *   Skinned LFG and Dressing Room scrollbar.
 *   Guild reputation progress bar fixed.
