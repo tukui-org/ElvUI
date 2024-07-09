@@ -279,13 +279,17 @@ do --this can save some main file locals
 			z['Whorlock-Spirestone']	= itsElv
 			-- Repooc
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
-			z['Depooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
-			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
-			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
 			z['Sifupooc-Stormrage']		= itsPooc	-- [Alliance] Monk
-			z['Pooc-Stormrage']			= itsPooc	-- [Alliance] Paladin
+			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
 			z['Repøøc-Stormrage']		= itsPooc	-- [Alliance] Shaman
+			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
+			z['Pooc-Stormrage']			= itsPooc	-- [Alliance] Paladin
+			z['Lapooc-Stormrage']		= itsPooc	-- [Alliance] Mage
+			z['Depooc-Stormrage']		= itsPooc	-- [Alliance] DH
+			z['Dapooc-Andorhal']		= itsPooc	-- [Horde] Druid
+			z['Rovert-Andorhal']		= itsPooc	-- [Horde] Mage
+			z['Sliceoflife-Andorhal']	= itsPooc	-- [Horde] Rogue
 			-- Simpy (1168: Cenarius, 125: Cenarion Circle)
 			z['Player-1168-069A1283']	= itsSimpy -- Hunter:	Arieva
 			z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup

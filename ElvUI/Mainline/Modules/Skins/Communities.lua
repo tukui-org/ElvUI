@@ -252,16 +252,24 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
 
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.Checkbox)
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.Checkbox)
-	S:HandleCheckBox(ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.Checkbox)
-
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
 	-- Community and Guild finder Tab
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
+
+	for _, checkButton in next, {
+		ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+		ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+		ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
+	} do
+		S:HandleCheckBox(checkButton)
+		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
+	end
 
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
@@ -272,10 +280,6 @@ function S:Blizzard_Communities()
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Size(118, 20)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
 	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
-
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.Checkbox)
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.Checkbox)
-	S:HandleCheckBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.Checkbox)
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)

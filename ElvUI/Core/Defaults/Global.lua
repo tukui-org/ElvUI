@@ -42,6 +42,7 @@ G.datatexts = {
 	settings = {
 		Agility = { Label = '', NoLabel = false },
 		Armor = { Label = '', NoLabel = false },
+		['Attack Power'] = { Label = '', NoLabel = false },
 		Avoidance = { Label = '', NoLabel = false, decimalLength = 1 },
 		Bags = { textFormat = 'USED_TOTAL', Label = '', NoLabel = false, includeReagents = false },
 		CallToArms = { Label = '', NoLabel = false },
