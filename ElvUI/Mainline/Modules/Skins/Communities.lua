@@ -251,28 +251,24 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
 
-	do
-		local checkButtons = {
-			ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-			ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-			ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
-			ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-			ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-			ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
-		}
-
-		for _, checkButton in next, checkButtons do
-			S:HandleCheckBox(checkButton)
-			checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
-		end
-	end
-
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
 	-- Community and Guild finder Tab
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
+
+	for _, checkButton in next, {
+		ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+		ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+		ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
+	} do
+		S:HandleCheckBox(checkButton)
+		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
+	end
 
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
