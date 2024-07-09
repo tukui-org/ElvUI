@@ -18,13 +18,17 @@ local PET_BONUS_TOOLTIP_SPELLDAMAGE = PET_BONUS_TOOLTIP_SPELLDAMAGE
 local PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER = PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER
 
 local isHunter = E.myclass == 'HUNTER'
-local displayNumberString, totalAP = ''
+local displayNumberString, totalAP, db = ''
 
 local function OnEvent(self)
 	local base, posBuff, negBuff = (isHunter and UnitRangedAttackPower or UnitAttackPower)('player')
 	totalAP = base + posBuff + negBuff
 
-	self.text:SetFormattedText(displayNumberString, ATTACK_POWER, totalAP)
+	if db.NoLabel then
+		self.text:SetFormattedText(displayNumberString, totalAP)
+	else
+		self.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or ATTACK_POWER..': ', totalAP)
+	end
 end
 
 local function OnEnter()
@@ -49,8 +53,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(_, hex)
-	displayNumberString = strjoin('', '%s: ', hex, '%d|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayNumberString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 end
 
 DT:RegisterDatatext('Attack Power', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'UNIT_ATTACK_POWER', 'UNIT_RANGED_ATTACK_POWER' }, OnEvent, nil, nil, OnEnter, nil, _G.ATTACK_POWER_TOOLTIP, nil, ApplySettings)
