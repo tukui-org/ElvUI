@@ -2281,15 +2281,20 @@ function UpdateCooldown(self)
 
 	local hasLocCooldown = locStart and locDuration and locStart > 0 and locDuration > 0
 	local hasCooldown = enable and start and duration and start > 0 and duration > 0
-	if hasLocCooldown and ((not hasCooldown) or ((locStart + locDuration) > (start + duration))) then
+	if hasLocCooldown and (not hasCooldown or ((locStart + locDuration) > (start + duration))) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
 			self.cooldown:SetSwipeColor(0.2, 0, 0)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
+
 		self.cooldown:SetScript("OnCooldownDone", LosCooldownDone)
-		self.cooldown:SetCooldown(locStart, locDuration, modRate)
+
+		if hasCooldown then
+			self.cooldown:SetCooldown(locStart, locDuration, modRate)
+		end
+
 		if self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
@@ -2301,6 +2306,14 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
 
+		if hasLocCooldown then
+			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
+		end
+
+		if hasCooldown then
+			self.cooldown:SetCooldown(start, duration, modRate)
+		end
+
 		if charges and maxCharges and maxCharges > 1 and charges < maxCharges then
 			StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
 
@@ -2308,12 +2321,6 @@ function UpdateCooldown(self)
 		elseif self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
-
-		if hasLocCooldown then
-			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		end
-
-		self.cooldown:SetCooldown(start, duration, modRate)
 	end
 
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
