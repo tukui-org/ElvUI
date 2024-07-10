@@ -2280,7 +2280,7 @@ function UpdateCooldown(self)
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self:GetEffectiveAlpha() > 0.5))
 
 	local hasLocCooldown = locStart and locDuration and locStart > 0 and locDuration > 0
-	local hasCooldown = enable and start and duration and start > 0 and duration > 0
+	local hasCooldown = (enable and enable ~= 0) and (start and duration and start > 0 and duration > 0)
 	if hasLocCooldown and (not hasCooldown or ((locStart + locDuration) > (start + duration))) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
