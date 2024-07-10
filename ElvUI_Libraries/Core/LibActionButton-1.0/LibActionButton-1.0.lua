@@ -1214,7 +1214,7 @@ local function PickupAny(kind, target, detail, ...)
 	elseif kind == 'petaction' then
 		PickupPetAction(target)
 	elseif kind == 'spell' then
-		if C_Spell and C_Spell.PickupSpell then
+		if C_Spell.PickupSpell then
 			C_Spell.PickupSpell(target)
 		else
 			PickupSpell(target)
@@ -2718,19 +2718,19 @@ if not WoWRetail then
 	Action.GetLossOfControlCooldown = function(self) return 0,0 end
 end
 
-local GetSpellTexture = C_Spell and C_Spell.GetSpellTexture or GetSpellTexture
-local GetSpellCastCount = C_Spell and C_Spell.GetSpellCastCount or GetSpellCount
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local GetSpellCastCount = C_Spell.GetSpellCastCount or GetSpellCount
 local IsAttackSpell = C_SpellBook and C_SpellBook.IsAutoAttackSpellBookItem or IsAttackSpell
-local IsCurrentSpell = C_Spell and C_Spell.IsCurrentSpell or IsCurrentSpell
-local IsAutoRepeatSpell = C_Spell and C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
-local IsSpellUsable = C_Spell and C_Spell.IsSpellUsable or IsUsableSpell
-local IsConsumableSpell = C_Spell and C_Spell.IsConsumableSpell or IsConsumableSpell
-local IsSpellInRange = C_Spell and C_Spell.IsSpellInRange or IsSpellInRange
-local GetSpellLossOfControlCooldown = C_Spell and C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
+local IsCurrentSpell = C_Spell.IsCurrentSpell or IsCurrentSpell
+local IsAutoRepeatSpell = C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
+local IsSpellUsable = C_Spell.IsSpellUsable or IsUsableSpell
+local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
+local IsSpellInRange = C_Spell.IsSpellInRange or IsSpellInRange
+local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 
 -- unwrapped functions that return tables now
-local GetSpellCharges = (C_Spell and C_Spell.GetSpellCharges) and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration end end or GetSpellCharges
-local GetSpellCooldown = (C_Spell and C_Spell.GetSpellCooldown) and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
+local GetSpellCharges = C_Spell.GetSpellCharges and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration end end or GetSpellCharges
+local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
 
 local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or "spell"
 
