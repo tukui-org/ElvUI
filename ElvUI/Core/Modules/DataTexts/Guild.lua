@@ -246,11 +246,7 @@ local function Click(self, btn)
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
 		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
-		if E.Retail or E.Cata then
-			ToggleGuildFrame()
-		else
-			ToggleFriendsFrame(3)
-		end
+		ToggleGuildFrame()
 	end
 end
 
