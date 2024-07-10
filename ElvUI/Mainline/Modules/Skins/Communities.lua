@@ -366,14 +366,14 @@ function S:Blizzard_Communities()
 	StatusBar.Progress:SetTexture(E.media.normTex)
 	StatusBar.Progress:ClearAllPoints()
 	StatusBar.Progress:Point('TOPLEFT')
-	StatusBar.Progress:Point('BOTTOMLEFT')
+	StatusBar.Progress:Point('BOTTOMRIGHT')
 	E:RegisterStatusBar(StatusBar)
 
 	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
 	ProgressBarBG:SetFrameLevel(StatusBar:GetFrameLevel())
 	ProgressBarBG:SetTemplate()
 	ProgressBarBG:Point('TOPLEFT')
-	ProgressBarBG:Point('BOTTOMRIGHT', -3, 0)
+	ProgressBarBG:Point('BOTTOMRIGHT')
 	StatusBar.background = ProgressBarBG
 
 	-- Info Tab
