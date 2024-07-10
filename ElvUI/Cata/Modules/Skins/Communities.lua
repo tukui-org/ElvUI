@@ -435,7 +435,6 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
