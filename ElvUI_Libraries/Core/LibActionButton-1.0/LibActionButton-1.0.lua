@@ -25,7 +25,7 @@ local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-local WoWCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 
 -- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
@@ -516,7 +516,7 @@ function SetupSecureSnippets(button)
 	end
 end
 
-function WrapOnClick(button)
+function WrapOnClick(button, unwrapheader)
 	-- unwrap OnClick until we got our old script out
 	if unwrapheader and unwrapheader.UnwrapScript then
 		local wrapheader
@@ -2255,7 +2255,7 @@ end
 
 function UpdateCooldown(self)
 	local locStart, locDuration, _
-	local start, duration, modRate, auraData
+	local start, duration, enable, modRate, auraData
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate
 
 	local passiveCooldownSpellID = self:GetPassiveCooldownSpellID()
@@ -2278,26 +2278,31 @@ function UpdateCooldown(self)
 		chargeStart = currentTime * 0.001
 		chargeDuration = duration * 0.001
 		chargeModRate = modRate
+		enable = 1
 	else
 		locStart, locDuration = self:GetLossOfControlCooldown()
-		start, duration, _, modRate = self:GetCooldown()
+		start, duration, enable, modRate = self:GetCooldown()
 		charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 	end
 
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self:GetEffectiveAlpha() > 0.5))
 
 	local hasLocCooldown = locStart and locDuration and locStart > 0 and locDuration > 0
-	local hasCooldown = enable and start and duration and start > 0 and duration > 0
-	if hasLocCooldown and ((not hasCooldown) or ((locStart + locDuration) > (start + duration))) then
-
+	local hasCooldown = (enable and enable ~= 0) and (start and duration and start > 0 and duration > 0)
+	if hasLocCooldown and (not hasCooldown or ((locStart + locDuration) > (start + duration))) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
 			self.cooldown:SetSwipeColor(0.2, 0, 0)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
+
 		self.cooldown:SetScript("OnCooldownDone", LosCooldownDone)
-		self.cooldown:SetCooldown(locStart, locDuration, modRate)
+
+		if hasCooldown then
+			self.cooldown:SetCooldown(locStart, locDuration, modRate)
+		end
+
 		if self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
@@ -2308,8 +2313,13 @@ function UpdateCooldown(self)
 			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
+
 		if hasLocCooldown then
 			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
+		end
+
+		if hasCooldown then
+			self.cooldown:SetCooldown(start, duration, modRate)
 		end
 
 		if charges and maxCharges and maxCharges > 1 and charges < maxCharges then
@@ -2319,8 +2329,6 @@ function UpdateCooldown(self)
 		elseif self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
 		end
-		self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		self.cooldown:SetCooldown(start, duration, modRate)
 	end
 
 	lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
@@ -2736,6 +2744,7 @@ local GetSpellCharges = (C_Spell and C_Spell.GetSpellCharges) and function(spell
 local GetSpellCooldown = (C_Spell and C_Spell.GetSpellCooldown) and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
 
 local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or "spell"
+
 -----------------------------------------------------------
 --- Spell Button
 Spell.HasAction               = function(self) return true end
@@ -2844,7 +2853,7 @@ Custom.RunCustom               = function(self, unit, button) return self._state
 Custom.GetPassiveCooldownSpellID = function(self) return nil end
 
 --- WoW Classic overrides
-if not (WoWRetail or WoWCata) then
+if not WoWRetail and not WoWCata then
 	UpdateOverlayGlow = function() end
 end
 
