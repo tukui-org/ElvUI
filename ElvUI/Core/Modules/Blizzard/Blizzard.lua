@@ -130,8 +130,9 @@ function BL:Initialize()
 
 	BL:RegisterEvent('ADDON_LOADED')
 
+	BL:SkinBlizzTimers()
+
 	if not E.Classic then
-		BL:SkinBlizzTimers()
 		BL:PositionVehicleFrame()
 
 		if not E:IsAddOnEnabled('SimplePowerBar') then
