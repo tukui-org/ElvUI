@@ -80,10 +80,10 @@ local UnitIsVisible = UnitIsVisible
 local UnitRace = UnitRace
 
 local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetNumSpellTabs = (C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines) or GetNumSpellTabs
 local GetSpellBookItemName = (C_SpellBook and C_SpellBook.GetSpellBookItemName) or GetSpellBookItemName
 local GetSpellTabInfo = (C_SpellBook and C_SpellBook.GetSpellBookSkillLineInfo) or GetSpellTabInfo
-local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
 
 local C_Timer = C_Timer
 local Item = Item

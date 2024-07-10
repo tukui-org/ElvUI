@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
-local GetSpellTexture = (C_Spell and C_Spell.GetSpellTexture) or GetSpellTexture
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 
 --[[
 	To Do:  Parchment Remover

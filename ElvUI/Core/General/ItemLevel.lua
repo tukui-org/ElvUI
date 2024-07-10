@@ -18,7 +18,7 @@ local BONUS_ARMOR = BONUS_ARMOR
 local STAT_MASTERY = STAT_MASTERY
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
-local ESSENCE_DESCRIPTION = C_Spell and C_Spell.GetSpellDescription(277253)
+local ESSENCE_DESCRIPTION = C_Spell.GetSpellDescription and C_Spell.GetSpellDescription(277253)
 
 local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
 local GetCVarBool = C_CVar.GetCVarBool
