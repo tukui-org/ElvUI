@@ -93,10 +93,10 @@ function UF:Configure_Power(frame, healthUpdate)
 		E:SetSmoothing(power, UF.db.smoothbars)
 
 		--Text
-		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo, true)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo or 'Health', true)
 		power.value:ClearAllPoints()
-		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
-		frame:Tag(power.value, db.power.text_format)
+		power.value:Point(db.power.position or 'LEFT', attachPoint, db.power.position or 'LEFT', db.power.xOffset or 2, db.power.yOffset or 0)
+		frame:Tag(power.value, db.power.text_format or '')
 
 		if db.power.attachTextTo == 'Power' then
 			power.value:SetParent(power.RaisedElementParent)
