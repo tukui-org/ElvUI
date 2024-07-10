@@ -2236,7 +2236,7 @@ local function OnCooldownDone(self)
 	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
-local function LosCooldownDone(self)
+local function LocCooldownDone(self)
 	local button = self:GetParent()
 
 	self:SetScript("OnCooldownDone", nil)
@@ -2289,11 +2289,8 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
 
-		self.cooldown:SetScript("OnCooldownDone", LosCooldownDone)
-
-		if hasCooldown then
-			self.cooldown:SetCooldown(locStart, locDuration, modRate)
-		end
+		self.cooldown:SetScript("OnCooldownDone", LocCooldownDone)
+		self.cooldown:SetCooldown(locStart, locDuration, modRate)
 
 		if self.chargeCooldown then
 			EndChargeCooldown(self.chargeCooldown)
