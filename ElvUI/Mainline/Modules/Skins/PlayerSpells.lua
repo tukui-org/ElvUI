@@ -183,10 +183,6 @@ function S:Blizzard_PlayerSpells()
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	if SpellBookFrame then
-		SpellBookFrame.BookBGLeft:SetAlpha(0.3)
-		SpellBookFrame.BookBGRight:SetAlpha(0.3)
-		SpellBookFrame.BookBGHalved:SetAlpha(0.3)
-		SpellBookFrame.Bookmark:SetAlpha(0.3)
 		SpellBookFrame.TopBar:Hide()
 		SpellBookFrame.BookCornerFlipbook:Hide()
 		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
@@ -211,7 +207,8 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
 
-		hooksecurefunc(PagedSpellsFrame, 'DisplayViewsForCurrentPage', HandleTextColor)
+		-- only Parchment or leave it?
+		--hooksecurefunc(PagedSpellsFrame, 'DisplayViewsForCurrentPage', HandleTextColor)
 	end
 end
 
