@@ -394,7 +394,7 @@ function M:UpdateSlotPoints(which, config)
 
 			local weapon = i == 16 or i == 17 or i == 18
 			for u = 1, 10 do
-				local offset = (showItemLevel and 8 or 0) + ((showItemLevel and u or u-1) * 16)
+				local offset = (showItemLevel and 8 or 0) + ((u - (showItemLevel and 0 or 1)) * 16)
 				local newX = (weapon and 0) or ((justify == 'BOTTOMLEFT' or itemRight) and x+offset) or x-offset
 				local newY = (weapon and offset+40) or y
 
