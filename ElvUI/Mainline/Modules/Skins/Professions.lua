@@ -110,6 +110,14 @@ local function ReskinOutputLog(outputlog)
 	hooksecurefunc(outputlog.ScrollBox, 'Update', HandleOutputButtons)
 end
 
+local function HandleRewardButton(button)
+	if not button then return end
+
+	button:StripTextures()
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+end
+
 function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
@@ -120,6 +128,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.CreateButton)
 	S:HandleButton(CraftingPage.CreateAllButton)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
+	S:HandleIcon(CraftingPage.ConcentrationDisplay.Icon)
 	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 
@@ -310,6 +319,7 @@ function S:Blizzard_Professions()
 
 	local Orders = ProfessionsFrame.OrdersPage
 	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.NpcOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.GuildOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.PersonalOrdersButton)
 
@@ -353,6 +363,16 @@ function S:Blizzard_Professions()
 	OrderRankBar.Fill:CreateBackdrop()
 	OrderRankBar.Rank.Text:FontTemplate()
 
+	if OrderRankBar.ExpansionDropdownButton then
+		local arrow = OrderRankBar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
+		arrow:SetTexture(E.Media.Textures.ArrowUp)
+		arrow:Size(11)
+		arrow:Point('CENTER')
+		S:SetupArrow(arrow, 'down')
+
+		S:HandleButton(OrderRankBar.ExpansionDropdownButton)
+	end
+
 	ReskinOutputLog(OrderView.CraftingOutputLog)
 
 	S:HandleButton(OrderView.CreateButton)
@@ -372,6 +392,15 @@ function S:Blizzard_Professions()
 		OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
 	end
 
+	local RewardsFrame = OrderInfo.NPCRewardsFrame
+	if RewardsFrame then
+		RewardsFrame.Background:SetAlpha(0)
+		RewardsFrame.Background:CreateBackdrop('Transparent')
+
+		HandleRewardButton(RewardsFrame.RewardItem1)
+		HandleRewardButton(RewardsFrame.RewardItem2)
+	end
+
 	local OrderDetails = OrderView.OrderDetails
 	OrderDetails:StripTextures()
 	OrderDetails:CreateBackdrop('Transparent')
@@ -381,6 +410,7 @@ function S:Blizzard_Professions()
 
 	local OrderSchematicForm = OrderDetails.SchematicForm
 	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckbox)
+	S:HandleCheckBox(OrderSchematicForm.TrackRecipeCheckbox)
 
 	hooksecurefunc(OrderSchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
@@ -406,6 +436,8 @@ function S:Blizzard_Professions()
 	if FulfillmentForm.NoteEditBox.backdrop then
 		FulfillmentForm.NoteEditBox.backdrop:SetTemplate('Transparent')
 	end
+
+	S:HandleIcon(OrderView.ConcentrationDisplay.Icon)
 
 	local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
 	if OrderItemIcon then
