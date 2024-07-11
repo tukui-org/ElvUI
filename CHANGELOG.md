@@ -1,3 +1,10 @@
+### Version 13.69 [ July 10th 2024 ]
+*   SetCooldown error when using vehicles and Loss of Control cooldowns timers work again.
+*   Communities frame skin updated and the toggles updated for Minimap and Datatext.
+*   Visibility settings for Enchants, Gems, and Item Level for Inspect and Character.
+*   Skinned Swim timers on Classic.
+*   Blacklisted Evoker lust debuff.
+
 ### Version 13.68 [ July 9th 2024 ]
 *   Enchant info to display with Item Level on Character and Inspect frames.
 *   Player nameplate not obeying Use Class Color option for Power.
