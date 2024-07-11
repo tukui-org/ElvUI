@@ -11,6 +11,7 @@ local pairs = pairs
 local unpack = unpack
 
 local UnitGUID = UnitGUID
+local UnitExists = UnitExists
 local CreateFrame = CreateFrame
 
 local InspectItems = {
@@ -67,7 +68,7 @@ function M:UpdateInspectInfo(event, arg1)
 	local frame = _G.InspectFrame
 	if not frame then return end
 
-	if event == 'UNIT_MODEL_CHANGED' then
+	if event == 'UNIT_MODEL_CHANGED' or event == 'FAKE_INSPECT_UPDATE' then
 		if arg1 == 'target' and frame:IsShown() then
 			arg1 = UnitGUID(arg1)
 		else
@@ -104,14 +105,14 @@ function M:ClearPageInfo(frame, which)
 	frame.ItemLevelText:SetText('')
 
 	for i = 1, numInspectItems do
-		if i ~= 4 then
-			local slot = _G[which..InspectItems[i]]
+		local slot = i ~= 4 and _G[which..InspectItems[i]]
+		if slot then
 			slot.enchantText:SetText('')
 			slot.iLvlText:SetText('')
 
 			M:UpdateSocketDisplay(slot)
 
-			for y=1, 10 do
+			for y = 1, 10 do
 				slot['textureSlot'..y]:SetTexture()
 				slot['textureSlotBackdrop'..y]:Hide()
 			end
@@ -172,27 +173,31 @@ end
 function M:UpdatePageStrings(i, iLevelDB, slot, slotInfo, which) -- `which` is used by plugins
 	iLevelDB[i] = slotInfo.iLvl
 
-	slot.enchantText:SetText(slotInfo.enchantTextShort)
-	if slotInfo.enchantColors and next(slotInfo.enchantColors) then
-		slot.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
+	if E.db.general.itemLevel.showEnchants then
+		slot.enchantText:SetText(slotInfo.enchantTextShort)
+		if slotInfo.enchantColors and next(slotInfo.enchantColors) then
+			slot.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
+		end
 	end
 
-	slot.iLvlText:SetText(slotInfo.iLvl)
-	if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
-		slot.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
+	if E.db.general.itemLevel.showItemLevel then
+		slot.iLvlText:SetText(slotInfo.iLvl)
+		if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
+			slot.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
+		end
 	end
 
 	M:UpdateSocketDisplay(slot, true)
 
-	local gemStep, essenceStep = 1, 1
+	local gemStep, essenceStep, showGems = 1, 1, E.db.general.itemLevel.showGems
 	for x = 1, 10 do
 		local texture = slot['textureSlot'..x]
 		local backdrop = slot['textureSlotBackdrop'..x]
 		local essenceType = slot['textureSlotEssenceType'..x]
 		if essenceType then essenceType:Hide() end
 
-		local gem = slotInfo.gems and slotInfo.gems[gemStep]
-		local essence = not gem and (slotInfo.essences and slotInfo.essences[essenceStep])
+		local gem = showGems and slotInfo.gems and slotInfo.gems[gemStep]
+		local essence = showGems and not gem and (slotInfo.essences and slotInfo.essences[essenceStep])
 		if gem then
 			texture:SetTexture(gem)
 			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -263,13 +268,11 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 		-- we have to wait to do this on inspect so handle it in here
 		if not E.db.general.itemLevel.itemLevelRarity then
 			for i = 1, numInspectItems do
-				if i ~= 4 then
-					local ilvl = iLevelDB[i]
-					if ilvl then
-						local inspectItem = _G[which..InspectItems[i]]
-						local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel))
-						inspectItem.iLvlText:SetTextColor(r, g, b)
-					end
+				local ilvl = i ~= 4 and iLevelDB[i]
+				if ilvl then
+					local inspectItem = _G[which..InspectItems[i]]
+					local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel))
+					inspectItem.iLvlText:SetTextColor(r, g, b)
 				end
 			end
 		end
@@ -301,8 +304,8 @@ do
 
 		local waitForItems
 		for i = 1, numInspectItems do
-			if i ~= 4 then
-				local inspectItem = _G[which..InspectItems[i]]
+			local inspectItem = i ~= 4 and _G[which..InspectItems[i]]
+			if inspectItem then
 				inspectItem.enchantText:SetText('')
 				inspectItem.iLvlText:SetText('')
 
@@ -332,10 +335,6 @@ end
 function M:CreateSlotStrings(frame, which)
 	if not (frame and which) then return end
 
-	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
-	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
-	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
-
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
 		frame.ItemLevelText:Point('BOTTOMLEFT', E.Cata and 20 or 6, E.Cata and 84 or 6)
@@ -352,16 +351,37 @@ function M:CreateSlotStrings(frame, which)
 	local totalLevelFontOutline = E.db.general.itemLevel.totalLevelFontOutline or 'OUTLINE'
 	frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
 
+	M:UpdateSlotPoints(which)
+end
+
+function M:UpdateSlotPoints(which, config)
+	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
+	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
+	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
+	local showItemLevel = E.db.general.itemLevel.showItemLevel
+
+	if config and which == 'Inspect' and UnitExists('target') then
+		M:UpdateInspectInfo('FAKE_INSPECT_UPDATE', 'target') -- fake update when inspect is already shown
+	end
+
 	for i, s in pairs(InspectItems) do
-		if i ~= 4 then
-			local slot = _G[which..s]
+		local slot = i ~= 4 and _G[which..s]
+		if slot then
 			local x, y, z, justify = M:GetInspectPoints(i)
-			slot.iLvlText = slot:CreateFontString(nil, 'OVERLAY')
+			if not slot.iLvlText then
+				slot.iLvlText = slot:CreateFontString(nil, 'OVERLAY')
+			end
+
 			slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+			slot.iLvlText:ClearAllPoints()
 			slot.iLvlText:Point('BOTTOM', slot, x, y)
 
-			slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
+			if not slot.enchantText then
+				slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
+			end
+
 			slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+			slot.enchantText:ClearAllPoints()
 
 			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or (E.Cata and i == 18)
 			if itemLeft or itemRight then
@@ -374,9 +394,17 @@ function M:CreateSlotStrings(frame, which)
 
 			local weapon = i == 16 or i == 17 or i == 18
 			for u = 1, 10 do
-				local offset = 8 + (u * 16)
+				local offset = (showItemLevel and 8 or 0) + ((showItemLevel and u or u-1) * 16)
 				local newX = (weapon and 0) or ((justify == 'BOTTOMLEFT' or itemRight) and x+offset) or x-offset
-				slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, (weapon and offset+40) or y)
+				local newY = (weapon and offset+40) or y
+
+				local texSlot = slot['textureSlot'..u]
+				if texSlot then
+					texSlot:ClearAllPoints()
+					texSlot:Point('BOTTOM', newX, newY)
+				else
+					slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, newY)
+				end
 			end
 		end
 	end
@@ -402,12 +430,10 @@ function M:UpdateInspectPageFonts(which)
 	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 	for i, s in pairs(InspectItems) do
-		if i ~= 4 then
-			local slot = _G[which..s]
-			if slot then
-				slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
-				slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
-			end
+		local slot = i ~= 4 and _G[which..s]
+		if slot then
+			slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+			slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 		end
 	end
 end
