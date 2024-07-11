@@ -2303,12 +2303,14 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
 
-		if hasLocCooldown then
-			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		end
-
 		if hasCooldown then
+			if hasLocCooldown then
+				self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
+			end
+
 			self.cooldown:SetCooldown(start, duration, modRate)
+		else
+			self.cooldown:Clear()
 		end
 
 		if charges and maxCharges and maxCharges > 1 and charges < maxCharges then
