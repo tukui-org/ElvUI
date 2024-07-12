@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 54 -- the real minor version is 117
+local MINOR_VERSION = 55 -- the real minor version is 117
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2310,12 +2310,11 @@ function UpdateCooldown(self)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end
 
-		if hasLocCooldown then
-			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-		end
-
 		if hasCooldown then
+			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
 			self.cooldown:SetCooldown(start, duration, modRate)
+		else
+			self.cooldown:Clear()
 		end
 
 		if charges and maxCharges and maxCharges > 1 and charges < maxCharges then

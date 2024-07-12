@@ -36,7 +36,6 @@ local function SkinAchievementAlert(frame)
 	frame.shine:Kill()
 	frame.GuildBanner:Kill()
 	frame.GuildBorder:Kill()
-	frame.OldAchievement:Kill()
 
 	-- Text
 	frame.Unlocked:FontTemplate(nil, 12)

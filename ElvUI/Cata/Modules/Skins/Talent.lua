@@ -362,7 +362,7 @@ function S:Blizzard_GlyphUI()
 				S:HandleIcon(icon)
 				icon:ClearAllPoints()
 				icon:Point('LEFT', 2, 0)
-				icon:Size(37)
+				icon:Size(36)
 			end
 
 			local disabledBG = button.disabledBG
