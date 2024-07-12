@@ -2304,10 +2304,7 @@ function UpdateCooldown(self)
 		end
 
 		if hasCooldown then
-			if hasLocCooldown then
-				self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
-			end
-
+			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone)
 			self.cooldown:SetCooldown(start, duration, modRate)
 		else
 			self.cooldown:Clear()
