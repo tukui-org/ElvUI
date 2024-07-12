@@ -1,3 +1,7 @@
+### Version 13.70 [ July 12th 2024 ]
+*   Cooldowns not finishing correctly.
+*   Achievement skin error on Cataclysm.
+
 ### Version 13.69 [ July 10th 2024 ]
 *   SetCooldown error when using vehicles and Loss of Control cooldowns timers work again.
 *   Communities frame skin updated and the toggles updated for Minimap and Datatext.
