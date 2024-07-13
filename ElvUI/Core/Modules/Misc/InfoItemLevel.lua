@@ -120,7 +120,7 @@ function M:ClearPageInfo(frame, which)
 	end
 end
 
-function M:ToggleItemLevelInfo(setupCharacterPage)
+function M:ToggleItemLevelInfo(setupCharacterPage, config)
 	if E.Classic then return end
 
 	if not E:IsAddOnEnabled('DejaCharacterStats') then
@@ -144,6 +144,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 			end
 
 			if not setupCharacterPage then
+				if config then
+					M:UpdateSlotPoints('Character')
+				end
+
 				M:UpdateCharacterInfo()
 			end
 		else
@@ -163,6 +167,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage)
 	if E.db.general.itemLevel.displayInspectInfo then
 		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
 		M:RegisterEvent('UNIT_MODEL_CHANGED', 'UpdateInspectInfo')
+
+		if config then
+			M:UpdateSlotPoints('Inspect', true)
+		end
 	else
 		M:UnregisterEvent('INSPECT_READY')
 		M:UnregisterEvent('UNIT_MODEL_CHANGED')
