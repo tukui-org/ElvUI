@@ -61,8 +61,8 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	if db.health and health.value then
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.health.attachTextTo)
 		health.value:ClearAllPoints()
-		health.value:Point(db.health.position, attachPoint, db.health.position, db.health.xOffset, db.health.yOffset)
-		frame:Tag(health.value, db.health.text_format)
+		health.value:Point(db.health.position or 'RIGHT', attachPoint, db.health.position or 'RIGHT', db.health.xOffset or -2, db.health.yOffset or 0)
+		frame:Tag(health.value, db.health.text_format or '')
 	end
 
 	--Colors
