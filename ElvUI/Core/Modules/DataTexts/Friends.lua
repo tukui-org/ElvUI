@@ -266,7 +266,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 	if wowProjectID and wowProjectID ~= retailID then
 		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
 
-		if obj.classicText ~= '' and obj.classicText ~= EXPANSION_NAME0 then
+		if obj.classicText and obj.classicText ~= '' and obj.classicText ~= EXPANSION_NAME0 then
 			obj.classicText = gsub(obj.classicText, '%s?'..EXPANSION_NAME0..'%s?', '')
 		end
 	end
