@@ -94,6 +94,7 @@ P.general = {
 	itemLevel = {
 		displayCharacterInfo = true,
 		displayInspectInfo = true,
+		enchantAbbrev = true,
 		showItemLevel = true,
 		showEnchants = true,
 		showGems = true,

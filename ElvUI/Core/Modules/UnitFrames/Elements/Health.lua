@@ -207,10 +207,10 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	if db.health then
 		--Party/Raid Frames allow to change statusbar orientation
 		if db.health.orientation then
-			health:SetOrientation(db.health.orientation)
+			health:SetOrientation(db.health.orientation or 'HORIZONTAL')
 		end
 
-		health:SetReverseFill(db.health.reverseFill)
+		health:SetReverseFill(not not db.health.reverseFill)
 	end
 
 	if powerUpdate then return end -- we dont need to redo this stuff, power updated it
