@@ -159,9 +159,6 @@ function S:WorldMapFrame()
 		DetailsFrame.backdrop:Point('BOTTOMRIGHT', DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
 
 		RewardsFrameContainer.RewardsFrame:StripTextures()
-		RewardsFrameContainer.RewardsFrame:CreateBackdrop()
-		RewardsFrameContainer.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
-		RewardsFrameContainer.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
