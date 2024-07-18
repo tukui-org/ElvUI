@@ -93,6 +93,16 @@ local function QuestLogQuests()
 			button.IsSkinned = true
 		end
 	end
+
+	for header in QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
+		if header.CollapseButton and not header.IsSkinned then
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			header:StripTextures()
+			header.Background:CreateBackdrop('Transparent')
+			header.Highlight:SetColorTexture(r, g, b, 0.75)
+			header.IsSkinned = true
+		end
+	end
 end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
