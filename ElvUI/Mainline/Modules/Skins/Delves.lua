@@ -52,6 +52,9 @@ function S:Blizzard_DelvesDifficultyPicker()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local DifficultyPickerFrame = _G.DelvesDifficultyPickerFrame
+	DifficultyPickerFrame:StripTextures()
+	DifficultyPickerFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(DifficultyPickerFrame.CloseButton)
 	S:HandleDropDownBox(DifficultyPickerFrame.Dropdown)
 	S:HandleButton(DifficultyPickerFrame.EnterDelveButton)
 
