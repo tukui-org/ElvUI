@@ -26,8 +26,6 @@ function S:Blizzard_MajorFactions()
 		S:HandleButton(RenownFrame.LevelSkipButton)
 	end
 
-	RenownFrame.NineSlice:SetAlpha(0)
-
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc(RenownFrame, 'SetUpMajorFactionData', SetupMajorFaction)
 	end
