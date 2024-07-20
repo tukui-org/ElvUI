@@ -20,11 +20,10 @@ local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local DisableAddOn = C_AddOns.DisableAddOn
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local IsHardcoreActive = C_GameRules.IsHardcoreActive
-local IsEngravingEnabled = C_Engraving.IsEngravingEnabled
+local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 
 local C_AddOns_GetAddOnEnableState = C_AddOns.GetAddOnEnableState
-local GetAddOnEnableState = GetAddOnEnableState -- TODO: This is C_AddOns now
 
 local GetCVar = C_CVar.GetCVar
 local SetCVar = C_CVar.SetCVar
@@ -265,11 +264,7 @@ function E:SetCVar(cvar, value, ...)
 end
 
 function E:GetAddOnEnableState(addon, character)
-	if C_AddOns_GetAddOnEnableState then
-		return C_AddOns_GetAddOnEnableState(addon, character)
-	else
-		return GetAddOnEnableState(character, addon)
-	end
+	return C_AddOns_GetAddOnEnableState(addon, character)
 end
 
 function E:IsAddOnEnabled(addon)
