@@ -723,6 +723,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[443612] = List(), -- Baneful Shift
 		[443042] = List(), -- Grasp From Beyond
 	-- Sikran
+		[435410] = List(), -- Phase Lunge
+		[458277] = List(), -- Shattering Sweep
+		[438845] = List(), -- Expose
+		[433517] = List(), -- Phase Blades 1
+		[434860] = List(), -- Phase Blades 2
+		[459785] = List(), -- Cosmic Residue
+		[459273] = List(), -- Cosmic Shards
 	-- Rasha'nan
 		[439785] = List(), -- Corrosion
 		[439786] = List(), -- Rolling Acid 1
@@ -798,6 +805,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[451288] = List(), -- Black Bulwark 2
 		[443203] = List(), -- Crimson Rain
 	-- Sikran
+		[458272] = List(), -- Cosmic Simulacrum
 	-- Rasha'nan
 		[439811] = List(), -- Erosive Spray
 		[451575] = List(), -- Wounded in Battle
