@@ -80,6 +80,10 @@ function S:BlizzardMiscFrames()
 				if not button.IsSkinned then
 					S:HandleButton(button, nil, nil, nil, true)
 					button.backdrop:SetInside(nil, 1, 1)
+				else -- rehook these
+					button:HookScript('OnEnter', S.SetModifiedBackdrop)
+					button:HookScript('OnLeave', S.SetOriginalBackdrop)
+					button:HookScript('OnDisable', S.SetDisabledBackdrop)
 				end
 			end
 
