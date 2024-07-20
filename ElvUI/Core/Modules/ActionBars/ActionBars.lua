@@ -963,7 +963,10 @@ do
 	end
 
 	local function SetTab()
-		for _, frame in _G.PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame:EnumerateFrames() do
+		local spellbook = _G.PlayerSpellsFrame.SpellBookFrame
+		if not (spellbook and spellbook.PagedSpellsFrame) then return end
+
+		for _, frame in spellbook.PagedSpellsFrame:EnumerateFrames() do
 			if frame.HasValidData and frame:HasValidData() then -- Avoid header or spacer frames
 				FixButton(frame)
 			end
