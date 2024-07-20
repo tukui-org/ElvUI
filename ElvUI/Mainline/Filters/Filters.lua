@@ -718,6 +718,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------------------------------------------------
 	-- Ulgrax the Devourer
 	-- The Bloodbound Horror
+		[442604] = List(), -- Goresplatter
+		[445570] = List(), -- Unseeming Blight
+		[443612] = List(), -- Baneful Shift
+		[443042] = List(), -- Grasp From Beyond
 	-- Sikran
 	-- Rasha'nan
 	-- Eggtender Ovi'nax
@@ -765,6 +769,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------------------------------------------------
 	-- Ulgrax the Devourer
 	-- The Bloodbound Horror
+		[454848] = List(), -- Spewing Hemorrhage 1
+		[442635] = List(), -- Spewing Hemorrhage 2
+		[445272] = List(), -- Blood Pact
+		[451305] = List(), -- Black Bulwark 1
+		[451288] = List(), -- Black Bulwark 2
+		[443203] = List(), -- Crimson Rain
 	-- Sikran
 	-- Rasha'nan
 	-- Eggtender Ovi'nax
