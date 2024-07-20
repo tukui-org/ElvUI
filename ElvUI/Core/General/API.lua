@@ -783,7 +783,7 @@ end
 function E:SetupGameMenu()
 	if GameMenuFrame.ElvUI then return end
 
-	local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'GameMenuButtonTemplate')
+	local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
 	button:Size(200, 35)
 
