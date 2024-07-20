@@ -710,8 +710,53 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	--------------- The War Within (Season 1) ----------------
 	----------------------------------------------------------
 	-- Mists of Tirna Scithe
+		[325027] = List(), -- Bramble Burst
+		[323043] = List(), -- Bloodletting
+		[322557] = List(), -- Soul Split
+		[331172] = List(), -- Mind Link
+		[322563] = List(), -- Marked Prey
+		[322487] = List(), -- Overgrowth 1
+		[322486] = List(), -- Overgrowth 2
+		[328756] = List(), -- Repulsive Visage
+		[325021] = List(), -- Mistveil Tear
+		[321891] = List(), -- Freeze Tag Fixation
+		[325224] = List(), -- Anima Injection
+		[326092] = List(), -- Debilitating Poison
+		[325418] = List(), -- Volatile Acid
 	-- The Necrotic Wake
+		[321821] = List(), -- Disgusting Guts
+		[323365] = List(), -- Clinging Darkness
+		[338353] = List(), -- Goresplatter
+		[333485] = List(), -- Disease Cloud
+		[338357] = List(), -- Tenderize
+		[328181] = List(), -- Frigid Cold
+		[320170] = List(), -- Necrotic Bolt
+		[323464] = List(), -- Dark Ichor
+		[323198] = List(), -- Dark Exile
+		[343504] = List(), -- Dark Grasp
+		[343556] = List(), -- Morbid Fixation 1
+		[338606] = List(), -- Morbid Fixation 2
+		[324381] = List(), -- Chill Scythe
+		[320573] = List(), -- Shadow Well
+		[333492] = List(), -- Necrotic Ichor
+		[334748] = List(), -- Drain Fluids
+		[333489] = List(), -- Necrotic Breath
+		[320717] = List(), -- Blood Hunger
 	-- Siege of Boralus
+		[257168] = List(), -- Cursed Slash
+		[272588] = List(), -- Rotting Wounds
+		[272571] = List(), -- Choking Waters
+		[274991] = List(), -- Putrid Waters
+		[275835] = List(), -- Stinging Venom Coating
+		[273930] = List(), -- Hindering Cut
+		[257292] = List(), -- Heavy Slash
+		[261428] = List(), -- Hangman's Noose
+		[256897] = List(), -- Clamping Jaws
+		[272874] = List(), -- Trample
+		[273470] = List(), -- Gut Shot
+		[272834] = List(), -- Viscous Slobber
+		[257169] = List(), -- Terrifying Roar
+		[272713] = List(), -- Crushing Slam
 	-- Grim Batol
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
@@ -815,7 +860,11 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	--------------- The War Within (Season 1) ----------------
 	----------------------------------------------------------
 	-- Mists of Tirna Scithe
+		[336499] = List(), -- Guessing Game
 	-- The Necrotic Wake
+		[321754] = List(), -- Icebound Aegis
+		[343558] = List(), -- Morbid Fixation
+		[343470] = List(), -- Boneshatter Shield
 	-- Siege of Boralus
 	-- Grim Batol
 	---------------------------------------------------------
