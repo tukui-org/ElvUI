@@ -749,6 +749,14 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[439776] = List(), -- Acid Pool
 		[455287] = List(), -- Infested Bite
 	-- Eggtender Ovi'nax
+		[442257] = List(), -- Infest
+		[442799] = List(), -- Sanguine Overflow
+		[441362] = List(), -- Volatile Concotion
+		[442660] = List(), -- Rupture
+		[440421] = List(), -- Experimental Dosage
+		[442250] = List(), -- Fixate
+		[442437] = List(), -- Violent Discharge
+		[443274] = List(), -- Reverberation
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
 		[450129] = List(), -- Entropic Desolation
@@ -818,6 +826,11 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[439811] = List(), -- Erosive Spray
 		[451575] = List(), -- Wounded in Battle
 	-- Eggtender Ovi'nax
+		[458207] = List(), -- Mutation: Accelerated 1
+		[442263] = List(), -- Mutation: Accelerated 2
+		[442432] = List(), -- Ingest Black Blood
+		[438807] = List(), -- Vicious Bite
+		[443273] = List(), -- Transfusion
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
 		[443598] = List(), -- Uncontrollable Rage
