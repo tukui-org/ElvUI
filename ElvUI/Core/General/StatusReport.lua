@@ -8,8 +8,8 @@ local CreateFrame = CreateFrame
 local GetRealZoneText = GetRealZoneText
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns.GetNumAddOns
 
 local UNKNOWN = UNKNOWN
 

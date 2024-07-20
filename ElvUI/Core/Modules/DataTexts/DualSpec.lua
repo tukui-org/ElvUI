@@ -18,7 +18,7 @@ local GetNumTalentGroups = GetNumTalentGroups
 local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
 
-local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+local LoadAddOn = C_AddOns.LoadAddOn
 
 local displayString, db = ''
 local primaryStr, secondaryStr, activeGroup, hasDualSpec = '', ''

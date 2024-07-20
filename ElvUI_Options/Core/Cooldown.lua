@@ -3,7 +3,7 @@ local C, L = unpack(E.Config)
 local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local function profile(db)
 	return (db == 'global' and E.db.cooldown) or E.db[db].cooldown

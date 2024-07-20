@@ -7,8 +7,8 @@ local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 
-local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
-local GetNumAddOns = C_AddOns and C_AddOns.GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns.GetNumAddOns
 
 function S:AddonList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
