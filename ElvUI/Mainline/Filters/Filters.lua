@@ -717,6 +717,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
 	-- Ulgrax the Devourer
+		[434705] = List(), -- Tenderized
+		[435138] = List(), -- Digestive Acid
+		[439037] = List(), -- Disembowel
+		[439419] = List(), -- Stalker Netting
+		[434778] = List(), -- Brutal Lashings
+		[435136] = List(), -- Venomous Lash
+		[438012] = List(), -- Hungering Bellows
 	-- The Bloodbound Horror
 		[442604] = List(), -- Goresplatter
 		[445570] = List(), -- Unseeming Blight
@@ -797,6 +804,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
 	-- Ulgrax the Devourer
+		[440177] = List(), -- Ready to Feed
 	-- The Bloodbound Horror
 		[454848] = List(), -- Spewing Hemorrhage 1
 		[442635] = List(), -- Spewing Hemorrhage 2
