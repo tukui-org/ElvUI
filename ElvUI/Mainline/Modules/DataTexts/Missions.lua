@@ -5,7 +5,6 @@ local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
 
-local EasyMenu = EasyMenu
 local GetMouseFoci = GetMouseFoci
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -322,7 +321,7 @@ local function OnClick(self, btn)
 
 	if btn == 'RightButton' then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif _G.ExpansionLandingPageMinimapButton:IsShown() then
 		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end

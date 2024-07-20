@@ -4,7 +4,6 @@ local M = E:GetModule('Minimap')
 
 local _G = _G
 local strjoin = strjoin
-local EasyMenu = EasyMenu
 local ToggleFrame = ToggleFrame
 local displayString = ''
 
@@ -17,7 +16,7 @@ local function OnClick(self, button)
 		ToggleFrame(_G.GameMenuFrame)
 	else
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		EasyMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		E:ComplicatedMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

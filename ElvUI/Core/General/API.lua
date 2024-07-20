@@ -908,6 +908,39 @@ function E:ScanTooltip_HyperlinkInfo(link)
 	end
 end
 
+do -- complicated backwards compatible menu
+	local HandleMenuList
+	HandleMenuList = function(root, menuList, submenu, depth)
+		if submenu then root = submenu end
+
+		for _, list in next, menuList do
+			local previous
+			if list.isTitle then
+				root:CreateTitle(list.text)
+			elseif list.func or list.hasArrow then
+				local name = list.text or ('test'..depth)
+				if list.notCheckable then
+					previous = root:CreateButton(list.text or name, list.func)
+				else
+					previous = root:CreateCheckbox(list.text or name, list.checked, list.func)
+				end
+			end
+
+			if list.menuList then -- loop it
+				HandleMenuList(root, list.menuList, list.hasArrow and previous, depth + 1)
+			end
+		end
+	end
+
+	function E:ComplicatedMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay)
+		if _G.EasyMenu then
+			_G.EasyMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay)
+		else
+			_G.MenuUtil.CreateContextMenu(menuFrame, function(_, root) HandleMenuList(root, menuList, nil, 1) end)
+		end
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
