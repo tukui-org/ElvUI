@@ -819,8 +819,15 @@ function TT:MODIFIER_STATE_CHANGED()
 			else
 				GameTooltip:SetUnit('mouseover')
 			end
-		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
-			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
+		else
+			local parent = owner and owner:GetParent()
+			if E.Retail then
+				if parent and parent.slotIndex then
+					AB.SpellButtonOnEnter(owner, nil, GameTooltip, parent)
+				end
+			elseif parent and parent == _G.SpellBookSpellIconsFrame then
+				AB.SpellButtonOnEnter(owner, nil, GameTooltip)
+			end
 		end
 	end
 
