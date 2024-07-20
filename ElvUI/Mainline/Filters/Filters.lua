@@ -737,6 +737,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Eggtender Ovi'nax
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
+		[450129] = List(), -- Entropic Desolation
+		[449857] = List(), -- Impaled
+		[438749] = List(), -- Scarab Fixation
+		[438708] = List(), -- Stinging Swarm
+		[438218] = List(), -- Piercing Strike
+		[454311] = List(), -- Barbed Webs
+		[438773] = List(), -- Shattered Shell
+		[438355] = List(), -- Cataclysmic Entropy
+		[438656] = List(), -- Venomous Rain
+		[441772] = List(), -- Void Bolt
+		[441788] = List(), -- Web Vortex
+		[440001] = List(), -- Binding Webs
 	-- Queen Ansurek
 	},
 }
@@ -792,6 +804,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Eggtender Ovi'nax
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
+		[443598] = List(), -- Uncontrollable Rage
+		[451176] = List(), -- Entropic Backlash
+		[451334] = List(), -- Strained Exertion
+		[450980] = List(), -- Shatter Existence
+		[451277] = List(), -- Spike Storm
+		[442994] = List(), -- Unleashed Swarm
+		[438343] = List(), -- Venomous Rain
+		[440179] = List(), -- Entangled
 	-- Queen Ansurek
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
