@@ -758,6 +758,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[442437] = List(), -- Violent Discharge
 		[443274] = List(), -- Reverberation
 	-- Nexus-Princess Ky'veza
+		[440377] = List(), -- Void Shredders
+		[436870] = List(), -- Assassination
+		[440576] = List(), -- Chasmal Gash
+		[437343] = List(), -- Queensbane
+		[436664] = List(), -- Regicide 1
+		[436666] = List(), -- Regicide 2
+		[436671] = List(), -- Regicide 3
+		[435535] = List(), -- Regicide 4
+		[436665] = List(), -- Regicide 5
+		[436663] = List(), -- Regicide 6
 	-- The Silken Court
 		[450129] = List(), -- Entropic Desolation
 		[449857] = List(), -- Impaled
@@ -832,6 +842,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[438807] = List(), -- Vicious Bite
 		[443273] = List(), -- Transfusion
 	-- Nexus-Princess Ky'veza
+		[436757] = List(), -- Reaper
+		[435405] = List(), -- Starless Night
+		[436971] = List(), -- Assassination
+		[436950] = List(), -- Stalking Shadows
+		[438153] = List(), -- Twilight Massacre
+		[436606] = List(), -- Regicide
+		[440407] = List(), -- Void Shredders
 	-- The Silken Court
 		[443598] = List(), -- Uncontrollable Rage
 		[451176] = List(), -- Entropic Backlash
