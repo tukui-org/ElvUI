@@ -49,6 +49,7 @@ local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInf
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
+local StoreEnabled = C_StorePublic.IsEnabled
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
 local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
@@ -735,34 +736,40 @@ function E:GetUnitBattlefieldFaction(unit)
 	return englishFaction, localizedFaction
 end
 
-function E:PositionGameMenuButton()
-	if E.Retail then
-		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	end
-
-	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
-
-	local button = GameMenuFrame.ElvUI
-	if button then
-		button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
-
-		local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-		if relTo ~= button then
-			button:ClearAllPoints()
-			button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
-
-			GameMenuButtonLogout:ClearAllPoints()
-			GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
-		end
-	end
-end
-
 function E:NEUTRAL_FACTION_SELECT_RESULT()
 	E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 end
 
 function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
+end
+
+local gameMenuLastButtons = {
+	[_G.GAMEMENU_OPTIONS] = 1,
+	[_G.BLIZZARD_STORE] = 2
+}
+
+function E:PositionGameMenuButton()
+	if E.Retail then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+
+		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
+		for button in GameMenuFrame.buttonPool:EnumerateActive() do
+			local lastIndex = gameMenuLastButtons[button:GetText()]
+			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
+				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
+			elseif not lastIndex then
+				local point, anchor, point2, x, y = button:GetPoint()
+				button:SetPoint(point, anchor, point2, x, y - 35)
+			end
+		end
+	end
+
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + 35)
+
+	if GameMenuFrame.ElvUI then
+		GameMenuFrame.ElvUI:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
+	end
 end
 
 function E:ClickGameMenu()
@@ -776,13 +783,13 @@ end
 function E:SetupGameMenu()
 	if GameMenuFrame.ElvUI then return end
 
-	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'GameMenuButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
+	button:Size(200, 35)
+
 	GameMenuFrame.ElvUI = button
 
-	button:Size(GameMenuButtonLogout:GetSize())
-	button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+	hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 end
 
 function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
@@ -908,7 +915,7 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	--E:SetupGameMenu()
+	E:SetupGameMenu()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
