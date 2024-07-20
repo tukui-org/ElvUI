@@ -305,6 +305,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
+-- Personal player buffs (defensives, utility, immunities, etc)
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
@@ -678,7 +679,7 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
--- RAID DEBUFFS: This should be pretty self explainitory
+-- Debuffs applied to players by bosses, adds or trash
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
@@ -830,11 +831,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
---[[
-	RAID BUFFS:
-	Buffs that are provided by NPCs in raid or other PvE content.
-	This can be buffs put on other enemies or on players.
-]]
+-- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
@@ -924,6 +921,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	},
 }
 
+-- Aura indicators on UnitFrames (Hots, Shields, Externals)
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	EVOKER = {
@@ -1095,4 +1093,5 @@ G.unitframe.AuraBarColors = {
 	[395152]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < others
 }
 
+-- Auras which should change the color of the UnitFrame
 G.unitframe.AuraHighlightColors = {}
