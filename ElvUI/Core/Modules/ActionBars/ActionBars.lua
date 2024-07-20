@@ -927,28 +927,57 @@ do -- these calls are tainted when accessed by ValidateActionBarTransition
 end
 
 do
+	local function BindOnEnter(button)
+		AB:BindUpdate(button, 'SPELL')
+	end
+
 	local function FixButton(button)
-		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+		if E.Retail then
+			if button.OnIconEnter == AB.SpellButtonOnEnter then
+				return -- don't do this twice, ever
+			end
 
-		AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
+			button.OnIconEnter = AB.SpellButtonOnEnter
+			button.OnIconLeave = AB.SpellButtonOnLeave
 
-		button.OnEnter = AB.SpellButtonOnEnter
-		button.OnLeave = AB.SpellButtonOnLeave
+			if button.Button then -- the icon enter
+				button.Button:HookScript('OnEnter', BindOnEnter)
+			end
+		else
+			if button.OnEnter == AB.SpellButtonOnEnter then
+				return -- don't do this twice, ever
+			end
+
+			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+			button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+			button.OnEnter = AB.SpellButtonOnEnter
+			button.OnLeave = AB.SpellButtonOnLeave
+
+			for i = 1, 12 do
+				_G['SpellButton'..i]:HookScript('OnEnter', BindOnEnter)
+			end
+
+			AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
+		end
+	end
+
+	local function SetTab()
+		for _, frame in _G.PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame:EnumerateFrames() do
+			if frame.HasValidData and frame:HasValidData() then -- Avoid header or spacer frames
+				FixButton(frame)
+			end
+		end
 	end
 
 	function AB:FixSpellBookTaint() -- let spell book buttons work without tainting by replacing this function
-		for i = 1, SPELLS_PER_PAGE do
-			FixButton(_G['SpellButton'..i])
-		end
-
 		if E.Retail then -- same deal with profession buttons, this will fix the tainting
-			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-				for i = 1, 2 do
-					local button = E.Retail and frame['SpellButton'..i] or frame['button'..i]
-					if button then
-						FixButton(button)
-					end
+			hooksecurefunc(_G.PlayerSpellsFrame.SpellBookFrame, 'SetTab', SetTab)
+		else
+			for i = 1, SPELLS_PER_PAGE do
+				local button = _G['SpellButton'..i]
+				if button then
+					FixButton(button)
 				end
 			end
 		end
@@ -964,12 +993,12 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
-function AB:SpellButtonOnEnter(_, tt, parent)
+function AB:SpellButtonOnEnter(_, tt)
 	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
 	if not tt then tt = E.SpellBookTooltip end
 
 	if tt:IsForbidden() then return end
-	tt:SetOwner(self, 'ANCHOR_RIGHT')
+	tt:SetOwner(self, self.Button and 'ANCHOR_CURSOR' or 'ANCHOR_RIGHT') -- 11.0 fix this more
 
 	if E.Retail and InClickBindingMode() and not self.canClickBind then
 		tt:AddLine(CLICK_BINDING_NOT_AVAILABLE, 1, .3, .3)
@@ -977,8 +1006,10 @@ function AB:SpellButtonOnEnter(_, tt, parent)
 		return
 	end
 
-	local slotIndex = (parent and parent.slotIndex) or self.slotIndex or FindSpellBookSlotForSpell(self)
-	local slotBank = (parent and parent.spellBank) or self.spellBank or _G.SpellBookFrame.bookType
+	local slotIndex = self.slotIndex or (not E.Retail and FindSpellBookSlotForSpell(self))
+	local slotBank = self.spellBank or (not E.Retail and _G.SpellBookFrame.bookType)
+	if not (slotIndex and slotBank) then return end -- huh?
+
 	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
 
 	ClearOnBarHighlightMarks()
