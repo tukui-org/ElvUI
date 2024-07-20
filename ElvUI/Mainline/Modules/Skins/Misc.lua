@@ -73,6 +73,16 @@ function S:BlizzardMiscFrames()
 		GameMenuFrame.Header:ClearAllPoints()
 		GameMenuFrame.Header:Point('TOP', GameMenuFrame, 0, 7)
 
+		local function ClearedHooks(button, script)
+			if script == 'OnEnter' then
+				button:HookScript('OnEnter', S.SetModifiedBackdrop)
+			elseif script == 'OnLeave' then
+				button:HookScript('OnLeave', S.SetOriginalBackdrop)
+			elseif script == 'OnDisable' then
+				button:HookScript('OnDisable', S.SetDisabledBackdrop)
+			end
+		end
+
 		hooksecurefunc(GameMenuFrame, 'InitButtons', function(menu)
 			if not menu.buttonPool then return end
 
@@ -80,10 +90,7 @@ function S:BlizzardMiscFrames()
 				if not button.IsSkinned then
 					S:HandleButton(button, nil, nil, nil, true)
 					button.backdrop:SetInside(nil, 1, 1)
-				else -- rehook these
-					button:HookScript('OnEnter', S.SetModifiedBackdrop)
-					button:HookScript('OnLeave', S.SetOriginalBackdrop)
-					button:HookScript('OnDisable', S.SetDisabledBackdrop)
+					hooksecurefunc(button, 'SetScript', ClearedHooks)
 				end
 			end
 
