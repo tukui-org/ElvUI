@@ -65,28 +65,13 @@ function S:BlizzardMiscFrames()
 
 	-- reskin all esc/menu buttons
 	if not E:IsAddOnEnabled('ConsolePort_Menu') then
-		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
-			if Button.IsObjectType and Button:IsObjectType('Button') then
-				S:HandleButton(Button)
-			end
-		end
+		hooksecurefunc(_G.GameMenuFrame, 'InitButtons', function(menu)
+			if not menu.buttonPool then return end
 
-		-- FIX ME 11.0 this now actually style the GameMenuButtons make me pwetty plx
-		hooksecurefunc(GameMenuFrame, 'InitButtons', function(self)
-			if not self.buttonPool then return end
-
-			for button in self.buttonPool:EnumerateActive() do
+			for button in menu.buttonPool:EnumerateActive() do
 				if not button.IsSkinned then
-					button:DisableDrawLayer('BACKGROUND')
-					button:CreateBackdrop()
-
-					local hl = button:GetHighlightTexture()
-					local r, g, b = unpack(E.media.rgbvaluecolor)
-					hl:SetColorTexture(r, g, b, 0.5)
-					hl:SetInside(button.backdrop)
+					S:HandleButton(button, nil, nil, nil, true)
 					button.backdrop:SetInside(3, 3)
-
-					button.IsSkinned = true
 				end
 			end
 		end)
