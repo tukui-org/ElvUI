@@ -964,7 +964,7 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
-function AB:SpellButtonOnEnter(button, tt)
+function AB:SpellButtonOnEnter(_, tt)
 	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
 	if not tt then tt = E.SpellBookTooltip end
 
@@ -977,7 +977,7 @@ function AB:SpellButtonOnEnter(button, tt)
 		return
 	end
 
-	local slotIndex = button.slotIndex or FindSpellBookSlotForSpell(self)
+	local slotIndex = self.slotIndex or FindSpellBookSlotForSpell(self)
 	local needsUpdate = tt:SetSpellBookItem(slotIndex, _G.SpellBookFrame.bookType)
 
 	ClearOnBarHighlightMarks()
