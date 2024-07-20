@@ -1,5 +1,5 @@
 local parent, ns = ...
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = 'devel'
 

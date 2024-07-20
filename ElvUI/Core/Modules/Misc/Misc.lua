@@ -52,7 +52,7 @@ local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
 local GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local IsFriend = C_FriendList.IsFriend
 

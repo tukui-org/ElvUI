@@ -29,8 +29,8 @@ local UnitGUID = UnitGUID
 local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
-local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local DisableAddOn = C_AddOns.DisableAddOn
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local GetCVarBool = C_CVar.GetCVarBool
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME

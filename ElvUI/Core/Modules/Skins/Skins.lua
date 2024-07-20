@@ -8,7 +8,7 @@ local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pair
 local unpack, assert, type, gsub, strfind = unpack, assert, type, gsub, strfind
 
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 

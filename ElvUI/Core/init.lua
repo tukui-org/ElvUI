@@ -17,14 +17,14 @@ local UIParent = UIParent
 
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
-local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
-local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
+local DisableAddOn = C_AddOns.DisableAddOn
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local IsHardcoreActive = C_GameRules.IsHardcoreActive
+local IsEngravingEnabled = C_Engraving.IsEngravingEnabled
 
-local C_AddOns_GetAddOnEnableState = C_AddOns and C_AddOns.GetAddOnEnableState
-local GetAddOnEnableState = GetAddOnEnableState -- eventually this will be on C_AddOns and args swap
+local C_AddOns_GetAddOnEnableState = C_AddOns.GetAddOnEnableState
+local GetAddOnEnableState = GetAddOnEnableState -- TODO: This is C_AddOns now
 
 local GetCVar = C_CVar.GetCVar
 local SetCVar = C_CVar.SetCVar

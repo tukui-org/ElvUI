@@ -6,7 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
-local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, addonIndex)
 	if not entry.IsSkinned then

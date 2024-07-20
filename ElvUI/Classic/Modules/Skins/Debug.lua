@@ -5,7 +5,7 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local FrameTexs = {
 	'TopLeft',
