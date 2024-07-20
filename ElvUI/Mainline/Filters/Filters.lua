@@ -724,6 +724,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[443042] = List(), -- Grasp From Beyond
 	-- Sikran
 	-- Rasha'nan
+		[439785] = List(), -- Corrosion
+		[439786] = List(), -- Rolling Acid 1
+		[439790] = List(), -- Rolling Acid 2
+		[439787] = List(), -- Acidic Stupor
+		[458067] = List(), -- Savage Wound
+		[456170] = List(), -- Spinneret's Strands 1
+		[439783] = List(), -- Spinneret's Strands 2
+		[439780] = List(), -- Sticky Webs
+		[439776] = List(), -- Acid Pool
+		[455287] = List(), -- Infested Bite
 	-- Eggtender Ovi'nax
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
@@ -777,6 +787,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[443203] = List(), -- Crimson Rain
 	-- Sikran
 	-- Rasha'nan
+		[439811] = List(), -- Erosive Spray
+		[451575] = List(), -- Wounded in Battle
 	-- Eggtender Ovi'nax
 	-- Nexus-Princess Ky'veza
 	-- The Silken Court
