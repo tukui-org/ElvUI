@@ -37,12 +37,12 @@ end
 
 local function UpdateTokenSkins(frame)
 	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local child = select(i, self.ScrollTarget:GetChildren())
+		local child = select(i, frame.ScrollTarget:GetChildren())
 		if child and not child.IsSkinned then
 			if child.Right then
 				child:StripTextures()
 				child:CreateBackdrop()
-				child.backdrop:SetInside(2, 2)
+				child.backdrop:SetInside(child)
 
 				updateCollapse(child.Right)
 				updateCollapse(child.HighlightRight)
@@ -445,11 +445,15 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
+	S:HandleButton(TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+
+	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckbox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
+	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
 
-	-- FIX ME 11.0
+	-- FIX ME 11.0, propbly Blizzard typoed by "$parent.CloseButton"
 	if _G.TokenFramePopup.CloseButton then
 		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
 	end

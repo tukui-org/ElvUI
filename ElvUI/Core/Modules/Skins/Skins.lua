@@ -1837,7 +1837,7 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
-			local dropdown = borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu
+			local dropdown = borderBox.IconTypeDropdown -- 11.0 FIX ME (check this if its enough, should be fine tho)
 			if dropdown then
 				S:HandleDropDownBox(dropdown)
 			end
