@@ -83,7 +83,7 @@ function S:BlizzardMiscFrames()
 				end
 			end
 
-			if menu.ElvUI then
+			if menu.ElvUI and not menu.ElvUI.IsSkinned then
 				S:HandleButton(menu.ElvUI, nil, nil, nil, true)
 				menu.ElvUI.backdrop:SetInside(nil, 1, 1)
 			end
