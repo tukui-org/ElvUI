@@ -3,17 +3,15 @@ local S = E:GetModule('Skins')
 
 local hooksecurefunc = hooksecurefunc
 
+local backdrops = {}
 local function SkinFrame(frame)
 	frame:StripTextures()
 
-	if frame.backdrop then
-		frame.backdrop:SetTemplate('Transparent')
+	if backdrops[frame] then
+		frame.backdrop = backdrops[frame] -- relink it back
 	else
 		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
-
-		if frame.ScrollBar then
-			S:HandleTrimScrollBar(frame.ScrollBar)
-		end
+		backdrops[frame] = frame.backdrop
 	end
 end
 
