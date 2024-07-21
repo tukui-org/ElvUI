@@ -282,11 +282,11 @@ function RU:CreateRoleIcons()
 		local frame = CreateFrame('Frame', '$parent_'..data.role, RoleIcons)
 
 		if i == 1 then
-			frame:Point('TOPLEFT', 1, -1)
+			frame:Point('TOPLEFT', 3, -1)
 		else
 			local previous = roles[i-1]
 			if previous and previous.role then
-				frame:Point('LEFT', _G['RaidUtilityRoleIcons_'..previous.role], 'RIGHT', 12, 0)
+				frame:Point('LEFT', _G['RaidUtilityRoleIcons_'..previous.role], 'RIGHT', 6, 0)
 			end
 		end
 
@@ -526,7 +526,7 @@ do
 	end
 
 	local function SetMenu(_, root)
-		root:SetTag('ELVUI_RAID_ULTILITY_RESTRICT_PINGS')
+		root:SetTag('ELVUI_RAID_UTILITY_RESTRICT_PINGS')
 		root:CreateRadio(_G.NONE, IsSelected, SetSelected, RestrictPingsTo.None)
 		root:CreateRadio(_G.RAID_MANAGER_RESTRICT_PINGS_TO_LEAD, IsSelected, SetSelected, RestrictPingsTo.Lead)
 		root:CreateRadio(_G.RAID_MANAGER_RESTRICT_PINGS_TO_ASSIST, IsSelected, SetSelected, RestrictPingsTo.Assist)
@@ -552,7 +552,7 @@ do
 	end
 
 	local function SetMenu(_, root)
-		root:SetTag('ELVUI_RAID_ULTILITY_DIFFICULTY')
+		root:SetTag('ELVUI_RAID_UTILITY_DIFFICULTY')
 		root:CreateRadio(_G.PLAYER_DIFFICULTY1, IsSelected, SetSelected, 1)
 		root:CreateRadio(_G.PLAYER_DIFFICULTY2, IsSelected, SetSelected, 2)
 		root:CreateRadio(_G.PLAYER_DIFFICULTY6, IsSelected, SetSelected, 23)
@@ -831,24 +831,24 @@ function RU:Initialize()
 		end
 	end
 
-	local EveryoneAssist = RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, buttonEvents, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
-
 	if SetRestrictPings then
-		RU:CreateDropdown('RaidUtility_RestrictPings', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 5, 0, _G.RAID_MANAGER_RESTRICT_PINGS, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_RestrictPings, RU.OnDropdown_RestrictPings)
+		RU:CreateDropdown('RaidUtility_RestrictPings', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -5, _G.RAID_MANAGER_RESTRICT_PINGS, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_RestrictPings, RU.OnDropdown_RestrictPings)
 	end
 
 	if SetDungeonDifficultyID then
-		RU:CreateDropdown('RaidUtility_DungeonDifficulty', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', EveryoneAssist, 'BOTTOMLEFT', 5, -(BUTTON_HEIGHT + 5), _G.CRF_DIFFICULTY, { 'PLAYER_DIFFICULTY_CHANGED' }, RU.OnEvent_DungeonDifficulty, RU.OnDropdown_DungeonDifficulty)
+		RU:CreateDropdown('RaidUtility_DungeonDifficulty', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -(BUTTON_HEIGHT + 10), _G.CRF_DIFFICULTY, { 'PLAYER_DIFFICULTY_CHANGED' }, RU.OnEvent_DungeonDifficulty, RU.OnDropdown_DungeonDifficulty)
 	end
 
 	if ConvertToRaid then
-		RU:CreateDropdown('RaidUtility_ModeControl', RaidUtilityPanel, 'WowStyle1DropdownTemplate', BUTTON_WIDTH * 0.5, 'TOPLEFT', RaidCountdownButton or EveryoneAssist, 'TOPRIGHT', 5, 2, nil, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_ModeControl, RU.OnDropdown_ModeControl)
+		RU:CreateDropdown('RaidUtility_ModeControl', RaidUtilityPanel, 'WowStyle1DropdownTemplate', BUTTON_WIDTH * 0.5, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'TOPRIGHT', 5, 2, nil, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_ModeControl, RU.OnDropdown_ModeControl)
 	end
 
 	if _G.GROUPMANAGER_GROUND_MARKER then
 	-- 11.0 this is forbidden to do ground ones or something
 	--	RU:CreateCheckBox('RaidUtility_GroundMarkers', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'BOTTOMRIGHT', RaidUtilityPanel, 'BOTTOMRIGHT', -(BUTTON_HEIGHT * 2.2), 5, _G.GROUPMANAGER_GROUND_MARKER, nil, nil, RU.OnClick_GroundMarkers)
 	end
+
+	RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', _G.RaidUtility_DungeonDifficulty or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, buttonEvents, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
 
 	-- Automatically show/hide the frame if we have RaidLeader or RaidOfficer
 	RU:RegisterEvent('GROUP_ROSTER_UPDATE', 'ToggleRaidUtil')
