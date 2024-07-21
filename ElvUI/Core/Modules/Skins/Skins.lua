@@ -1132,20 +1132,23 @@ end
 function S:HandleDropDownBox(frame, width, template)
 	assert(frame, 'doesn\'t exist!')
 
-	local frameName = frame.GetName and frame:GetName()
-
-	if frame.Arrow then frame.Arrow:SetAlpha(0) end
-
 	if not width then
 		width = 155
 	end
 
+	if frame.Arrow then
+		frame.Arrow:SetAlpha(0)
+	end
+
 	frame:Width(width)
 	frame:StripTextures()
-	frame:CreateBackdrop(template)
-	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	frame.backdrop:Point('TOPLEFT', 0, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+	if not frame.backdrop then
+		frame:CreateBackdrop(template)
+		frame.backdrop:Point('TOPLEFT', 0, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
+		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	end
 
 	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture(E.Media.Textures.ArrowUp)
