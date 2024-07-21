@@ -40,6 +40,9 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
+
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
@@ -48,7 +51,6 @@ local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or Get
 local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-
 local StoreEnabled = C_StorePublic.IsEnabled
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
@@ -606,6 +608,18 @@ end
 
 function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
+end
+
+do
+	local watchedInfo = {}
+	function E:GetWatchedFactionInfo()
+		if GetWatchedFactionInfo then
+			watchedInfo.name, watchedInfo.reaction, watchedInfo.currentReactionThreshold, watchedInfo.nextReactionThreshold, watchedInfo.currentStanding, watchedInfo.factionID = GetWatchedFactionInfo()
+			return watchedInfo
+		else
+			return GetWatchedFactionData()
+		end
+	end
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
