@@ -34,7 +34,7 @@ function AB:UpdatePet(event, unit)
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = button.AutoCastable
+		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		-- this one is different
 		local castable = _G[buttonName..'AutoCastable']
@@ -83,18 +83,19 @@ function AB:UpdatePet(event, unit)
 			end
 		end
 
-		--[[ FIX ME 11.0
 		if autoCastAllowed then
 			autoCast:Show()
 		else
 			autoCast:Hide()
 		end
 
-		if autoCastEnabled then
+		if E.Retail then
+			autoCast:ShowAutoCastEnabled(autoCastEnabled)
+		elseif autoCastEnabled then
 			AutoCastShine_AutoCastStart(button.AutoCastShine)
 		else
 			AutoCastShine_AutoCastStop(button.AutoCastShine)
-		end]]
+		end
 
 		if not PetHasActionBar() and texture and name ~= 'PET_ACTION_FOLLOW' then
 			if PetActionButton_StopFlash then
