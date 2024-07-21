@@ -6,7 +6,9 @@ local hooksecurefunc = hooksecurefunc
 local function SkinFrame(frame)
 	frame:StripTextures()
 
-	if not frame.backdrop then
+	if frame.backdrop then
+		frame.backdrop:SetTemplate('Transparent')
+	else
 		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
 
 		if frame.ScrollBar then
