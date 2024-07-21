@@ -117,6 +117,7 @@ local FILTER_FLAG_IGNORE = (BagSlotFlags and BagSlotFlags.DisableAutoSort) or LE
 local FILTER_FLAG_JUNK = (BagSlotFlags and BagSlotFlags.ClassJunk) or LE_BAG_FILTER_FLAG_JUNK
 local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.ClassQuestItems) or 32 -- didnt exist
 local FILTER_FLAG_JUNKSELL = (BagSlotFlags and BagSlotFlags.ExcludeJunkSell) or 64 -- didnt exist
+local FILTER_FLAG_REAGENTS = (BagSlotFlags and BagSlotFlags.ClassReagents) or 128 -- didnt exist
 
 local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
 local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
@@ -134,12 +135,13 @@ B.GearFilters = {
 	FILTER_FLAG_EQUIPMENT,
 	FILTER_FLAG_CONSUMABLES,
 	FILTER_FLAG_TRADE_GOODS,
-	FILTER_FLAG_JUNK,
+	FILTER_FLAG_JUNK
 }
 
 if not E.Classic then
-	tinsert(B.GearFilters, FILTER_FLAG_JUNKSELL)
 	tinsert(B.GearFilters, FILTER_FLAG_QUEST)
+	tinsert(B.GearFilters, FILTER_FLAG_REAGENTS)
+	tinsert(B.GearFilters, FILTER_FLAG_JUNKSELL)
 end
 
 do
@@ -195,7 +197,8 @@ B.BAG_FILTER_ICONS = {
 	[FILTER_FLAG_CONSUMABLES] = E.Media.Textures.GreenPotion,	-- Interface\ICONS\INV_Potion_93
 	[FILTER_FLAG_TRADE_GOODS] = E.Media.Textures.FabricSilk,	-- Interface\ICONS\INV_Fabric_Silk_02
 	[FILTER_FLAG_JUNK] = E.Media.Textures.GoldCoins,			-- Interface\ICONS\INV_Misc_Coin_01
-	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll				-- Interface\ICONS\INV_Scroll_03
+	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll,				-- Interface\ICONS\INV_Scroll_03
+	[FILTER_FLAG_REAGENTS] = 132854								-- Interface\ICONS\INV_Enchant_DustArcane
 }
 
 local itemSpellID = {
@@ -860,13 +863,109 @@ function B:REAGENTBANK_PURCHASED()
 	B.BankFrame.reagentFrame.cover:Hide()
 end
 
--- Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
-function B:AssignBagFlagMenu()
-	local holder = B.AssignBagDropdown.holder
-	local bagID = holder and holder.BagID
-	if bagID and bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
-		E:SetEasyMenuAnchor(E.EasyMenu, holder)
-		E:ComplicatedMenu((bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.AssignMain or B.AssignMenu, E.EasyMenu, nil, nil, nil, 'MENU')
+do
+	local dropdown
+	local function Cleanup_IsSelected(flag)
+		local holder = dropdown and dropdown.holder
+		if holder then
+			if flag == FILTER_FLAG_IGNORE then
+				return B:IsSortIgnored(holder.BagID)
+			elseif flag == FILTER_FLAG_JUNKSELL then
+				return GetBagSlotFlag(holder.BagID, flag)
+			end
+		end
+	end
+
+	local function Cleanup_SetSelected(flag)
+		local holder = dropdown and dropdown.holder
+		if holder then
+			local value = not Cleanup_IsSelected(flag)
+			if holder.BagID == BANK_CONTAINER then
+				SetBankAutosortDisabled(value)
+			elseif holder.BagID == BACKPACK_CONTAINER then
+				SetBackpackAutosortDisabled(value)
+			else
+				SetBagSlotFlag(holder.BagID, flag, value)
+			end
+
+			dropdown.holder = nil
+		end
+	end
+
+	local function Flags_IsSelected(flag)
+		local holder = dropdown and dropdown.holder
+		if holder then
+			local newFlag = B:GetFilterFlagInfo(holder.BagID, holder.isBank)
+			print(newFlag, flag)
+
+			return newFlag == flag
+		end
+	end
+
+	local function Flags_SetSelected(flag)
+		local holder = dropdown and dropdown.holder
+		if holder then
+			local value = not Flags_IsSelected(flag)
+			return B:SetFilterFlag(holder.BagID, flag, value)
+		end
+	end
+
+	local function Create_FlagsButtons(root)
+		root:CreateTitle(BAG_FILTER_ASSIGN_TO)
+		for _, flag in next, B.GearFilters do
+			local name = BAG_FILTER_LABELS[flag]
+			if name then
+				local checkbox = root:CreateCheckbox(name, Flags_IsSelected, Flags_SetSelected, flag)
+				checkbox:SetResponse(_G.MenuResponse.Close)
+			end
+		end
+	end
+
+	local function Create_CleanUpButtons(root)
+		root:CreateTitle(BAG_FILTER_IGNORE)
+
+		local cleanup = root:CreateCheckbox(BAG_FILTER_CLEANUP, Cleanup_IsSelected, Cleanup_SetSelected, FILTER_FLAG_IGNORE)
+		cleanup:SetResponse(_G.MenuResponse.Close)
+
+		local selljunk = root:CreateCheckbox(SELL_ALL_JUNK_ITEMS, Cleanup_IsSelected, Cleanup_SetSelected, FILTER_FLAG_JUNKSELL)
+		selljunk:SetResponse(_G.MenuResponse.Close)
+	end
+
+	local function SetMenuCleanup(_, root)
+		root:SetTag('ELVUI_BAG_FLAGS_MENU')
+
+		Create_CleanUpButtons(root)
+	end
+
+	local function SetMenuFlags(_, root)
+		root:SetTag('ELVUI_BAG_FLAGS_MENU')
+
+		Create_FlagsButtons(root)
+		Create_CleanUpButtons(root)
+	end
+
+	function B:SetFilterFlag(bagID, flag, value)
+		dropdown.holder = nil
+
+		local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
+		return canAssign and SetBagSlotFlag(bagID, flag, value)
+	end
+
+	function B:SetupBagDropdown(frame, cleanup)
+		frame:SetupMenu(cleanup and SetMenuCleanup or SetMenuFlags)
+	end
+
+	function B:GetBagDropdown(bagID)
+		return (bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.CleanUpBagDropdown or B.FlagsBagDropdown
+	end
+
+	function B:OpenBagFlagsMenu(holder)
+		dropdown = B:GetBagDropdown(holder.BagID)
+		dropdown.holder = holder
+
+		dropdown:ClearAllPoints()
+		dropdown:Point('TOPLEFT', holder)
+		dropdown:OpenMenu()
 	end
 end
 
@@ -882,20 +981,13 @@ end
 
 function B:GetFilterFlagInfo(bagID) -- arg2 is isBank
 	for _, flag in next, B.GearFilters do
-		if flag ~= FILTER_FLAG_IGNORE then
+		if flag ~= FILTER_FLAG_IGNORE and flag ~= FILTER_FLAG_JUNKSELL then
 			local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
 			if canAssign and GetBagSlotFlag(bagID, flag) then
 				return flag, B.BAG_FILTER_ICONS[flag], B.AssignmentColors[flag]
 			end
 		end
 	end
-end
-
-function B:SetFilterFlag(bagID, flag, value)
-	B.AssignBagDropdown.holder = nil
-
-	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-	return canAssign and SetBagSlotFlag(bagID, flag, value)
 end
 
 function B:GetBagAssignedInfo(holder, isBank)
@@ -1489,9 +1581,11 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	if (E.Retail and holder.BagID) and button == 'RightButton' then
-		B.AssignBagDropdown.holder = holder
-		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
+	local bagID = E.Retail and holder.BagID
+	if bagID and button == 'RightButton' then
+		if bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+			B:OpenBagFlagsMenu(holder)
+		end
 	elseif CursorHasItem() then
 		if func then func(id) end
 	elseif IsShiftKeyDown() then
@@ -2756,26 +2850,6 @@ function B:TokenFrame_SetTokenWatched(id, watched)
 	B:UpdateTokensIfVisible()
 end
 
-function B:GetBagFlagMenu(flag, text)
-	local menu = { text = text }
-
-	menu.checked = function()
-		local holder = B.AssignBagDropdown.holder
-		if holder then
-			return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == flag
-		end
-	end
-
-	menu.func = function(_, _, _, value)
-		local holder = B.AssignBagDropdown.holder
-		if holder then
-			return B:SetFilterFlag(holder.BagID, flag, not value)
-		end
-	end
-
-	return menu
-end
-
 function B:GuildBankShow()
 	local frame = _G.GuildBankFrame
 	if frame and frame:IsShown() and B.db.autoToggle.guildBank then
@@ -2794,15 +2868,12 @@ function B:Initialize()
 
 	BIND_START, BIND_END = B:GetBindLines()
 
-	--Bag Assignment Dropdown Menu (also used by BagBar)
-	B.AssignBagDropdown = CreateFrame('Frame', 'ElvUIAssignBagDropdown', E.UIParent, 'UIDropDownMenuTemplate')
-	B.AssignBagDropdown:SetClampedToScreen(true)
-	B.AssignBagDropdown:SetID(1)
-	B.AssignBagDropdown:Hide()
+	-- Bag Assignment Dropdown Menu (also used by BagBar)
+	B.CleanUpBagDropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUI_CleanUpBagDropdown', E.UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+	B:SetupBagDropdown(B.CleanUpBagDropdown, true)
 
-	if E.Retail then
-		_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
-	end
+	B.FlagsBagDropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUI_FlagsBagDropdown', E.UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+	B:SetupBagDropdown(B.FlagsBagDropdown)
 
 	B.AssignmentColors = {
 		[0] = { r = .99, g = .23, b = .21 }, -- fallback
@@ -2811,43 +2882,8 @@ function B:Initialize()
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),
 		[FILTER_FLAG_QUEST] = E:GetColorTable(B.db.colors.items.questItem),
 		[FILTER_FLAG_JUNK] = E:GetColorTable(B.db.colors.assignment.junk),
+		[FILTER_FLAG_REAGENTS] = E:GetColorTable(B.db.colors.profession.reagent)
 	}
-
-	local FILTER_ASSIGN = { text = BAG_FILTER_ASSIGN_TO, isTitle = true, notCheckable = true }
-	local FILTER_CLEANUP = { text = BAG_FILTER_IGNORE, isTitle = true, notCheckable = true }
-	local FILTER_IGNORE = { text = BAG_FILTER_CLEANUP,
-		checked = function()
-			local holder = B.AssignBagDropdown.holder
-			if holder then
-				return B:IsSortIgnored(holder.BagID)
-			end
-		end,
-		func = function(_, _, _, value)
-			local holder = B.AssignBagDropdown.holder
-			if holder then
-				if holder.BagID == BANK_CONTAINER then
-					SetBankAutosortDisabled(not value)
-				elseif holder.BagID == BACKPACK_CONTAINER then
-					SetBackpackAutosortDisabled(not value)
-				else
-					SetBagSlotFlag(holder.BagID, FILTER_FLAG_IGNORE, not value)
-				end
-
-				B.AssignBagDropdown.holder = nil
-			end
-		end
-	}
-
-	local FILTER_JUNKSELL = E.Retail and B:GetBagFlagMenu(FILTER_FLAG_JUNKSELL, SELL_ALL_JUNK_ITEMS)
-
-	B.AssignMain = { FILTER_CLEANUP, FILTER_IGNORE, FILTER_JUNKSELL or nil }
-	B.AssignMenu = { FILTER_ASSIGN, FILTER_CLEANUP, FILTER_IGNORE, FILTER_JUNKSELL or nil }
-
-	for i, flag in next, B.GearFilters do
-		if i ~= FILTER_FLAG_IGNORE and i ~= FILTER_FLAG_JUNKSELL then
-			tinsert(B.AssignMenu, i, B:GetBagFlagMenu(flag, BAG_FILTER_LABELS[flag]))
-		end
-	end
 
 	B.ProfessionColors = {
 		[0x1]		= E:GetColorTable(B.db.colors.profession.quiver),
