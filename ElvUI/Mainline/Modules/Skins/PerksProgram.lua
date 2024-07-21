@@ -27,12 +27,6 @@ local function HandleSortLabel(button)
 	end
 end
 
-local function HandleButton(button) -- Same as Barber Skin
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-	button:SetScale(E.uiscale)
-	button:Size(200, 50)
-end
-
 local function HandleNextPrev(button)
 	S:HandleNextPrevButton(button)
 
@@ -154,9 +148,9 @@ function S:Blizzard_PerksProgram()
 
 		local purchase = footer.PurchaseButton
 		if purchase then
-			HandleButton(footer.LeaveButton)
-			HandleButton(footer.RefundButton)
-			HandleButton(footer.PurchaseButton)
+			S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
 
 			purchase:HookScript('OnEnter', PurchaseButton_OnEnter)
 			purchase:HookScript('OnLeave', PurchaseButton_OnLeave)

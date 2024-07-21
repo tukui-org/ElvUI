@@ -104,22 +104,18 @@ function S:Blizzard_CharacterCustomize()
 	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
-	hooksecurefunc(frame, 'SetSelectedCategory', SetSelectedCategory)
-end
+	SetSelectedCategory(frame)
 
-local function HandleButton(button) -- Same as PerksProgram Skin
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-	button:SetScale(E.uiscale)
-	button:Size(200, 50)
+	hooksecurefunc(frame, 'SetSelectedCategory', SetSelectedCategory)
 end
 
 function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
 	local frame = _G.BarberShopFrame
-	HandleButton(frame.ResetButton)
-	HandleButton(frame.CancelButton)
-	HandleButton(frame.AcceptButton)
+	S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
 end
 
 S:AddCallbackForAddon('Blizzard_BarbershopUI')
