@@ -57,7 +57,6 @@ end
 
 local function HandleListHeader(headerContainer)
 	local maxHeaders = headerContainer:GetNumChildren()
-
 	for i, header in next, { headerContainer:GetChildren() } do
 		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')

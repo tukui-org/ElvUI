@@ -36,9 +36,8 @@ local function updateCollapse(texture, atlas)
 end
 
 local function UpdateTokenSkins(frame)
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local child = select(i, frame.ScrollTarget:GetChildren())
-		if child and not child.IsSkinned then
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if not child.IsSkinned then
 			if child.Right then
 				child:StripTextures()
 				child:CreateBackdrop()
@@ -238,9 +237,8 @@ end
 
 -- FIX ME 11.0 Mostly now in: ReputationEntryMixin
 local function UpdateFactionSkins(frame)
-	for i = 1, frame.ScrollTarget:GetNumChildren() do
-		local child = select(i, frame.ScrollTarget:GetChildren())
-		if child and not child.IsSkinned then
+	for _, child in next, { frame.ScrollTarget:GetChildren() } do
+		if not child.IsSkinned then
 			if child.Right then
 				child:StripTextures()
 				child:CreateBackdrop()
