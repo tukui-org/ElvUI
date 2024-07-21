@@ -13,20 +13,6 @@ local function SkinFrame(frame)
 			S:HandleTrimScrollBar(frame.ScrollBar)
 		end
 	end
-
-	for _, child in next, { frame:GetChildren() } do
-		local minLevel = child.MinLevel
-		if minLevel and not minLevel.IsSkinned then
-			S:HandleExitBox(minLevel)
-			minLevel.IsSkinned = true
-		end
-
-		local maxLevel = child.MaxLevel
-		if maxLevel and not maxLevel.IsSkinned then
-			S:HandleExitBox(maxLevel)
-			maxLevel.IsSkinned = true
-		end
-	end
 end
 
 local function OpenMenu(manager)
