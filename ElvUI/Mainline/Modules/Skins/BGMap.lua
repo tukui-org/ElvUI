@@ -65,11 +65,10 @@ function S:Blizzard_BattlefieldMap()
 	close:Point('TOPRIGHT', 3, 8)
 	S:HandleCloseButton(close)
 
+	local tab = _G.BattlefieldMapTab
 	local scroll = frame.ScrollContainer
 	frame.backdrop:SetOutside(scroll)
 	frame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
-
-	local tab = _G.BattlefieldMapTab
 
 	scroll:HookScript('OnMouseUp', function(_, btn)
 		if btn == 'LeftButton' then
