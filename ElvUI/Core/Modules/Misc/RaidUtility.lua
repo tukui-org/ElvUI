@@ -592,7 +592,7 @@ do
 end
 
 function RU:OnEvent_ModeControl()
-
+	self:GenerateMenu()
 end
 
 function RU:RoleIcons_SortNames(b) -- self is a
