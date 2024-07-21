@@ -919,10 +919,12 @@ do -- complicated backwards compatible menu
 				root:CreateTitle(list.text)
 			elseif list.func or list.hasArrow then
 				local name = list.text or ('test'..depth)
+
+				local func = (list.arg1 or list.arg2) and (function() list.func(nil, list.arg1, list.arg2) end) or list.func
 				if list.notCheckable then
-					previous = root:CreateButton(list.text or name, list.func)
+					previous = root:CreateButton(list.text or name, func)
 				else
-					previous = root:CreateCheckbox(list.text or name, list.checked, list.func)
+					previous = root:CreateCheckbox(list.text or name, list.checked, func)
 				end
 			end
 
