@@ -127,7 +127,7 @@ function M:HandleExpansionButton()
 	M:SaveIconParent(garrison)
 
 	local hidden = not Minimap:IsShown()
-	if hidden then
+	if hidden or E.private.general.minimap.hideClassHallReport then
 		garrison:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
@@ -145,7 +145,7 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.Tracking or MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	M:SaveIconParent(tracking)
@@ -153,7 +153,7 @@ function M:HandleTrackingButton()
 	tracking:ClearAllPoints()
 
 	local hidden = not Minimap:IsShown()
-	if hidden or E.private.general.minimap.hideTracking then
+	if hidden --[[or E.private.general.minimap.hideTracking]] then -- 11.0 need to fix this menu first, dont let people hide it right now
 		tracking:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
@@ -215,21 +215,18 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:CreateMinimapTrackingDropdown()
-	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, 'UIDropDownMenuTemplate')
-	dropdown:SetID(1)
-	dropdown:SetClampedToScreen(true)
-	dropdown:Hide()
+	local dropdown -- 11.0  dropdown:SetupMenu(E.ConfigMode_Initialize)
+	if not E.Retail then
+		dropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+		dropdown:SetID(1)
+		dropdown:SetClampedToScreen(true)
+		dropdown:Hide()
 
-	_G.UIDropDownMenu_Initialize(dropdown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
-	dropdown.noResize = true
+		_G.UIDropDownMenu_Initialize(dropdown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
+		dropdown.noResize = true
+	end
 
 	return dropdown
-end
-
-function M:MinimapTracking_UpdateTracking()
-	if _G.UIDROPDOWNMENU_OPEN_MENU == M.TrackingDropdown then
-		UIDropDownMenu_RefreshAll(M.TrackingDropdown)
-	end
 end
 
 function M:Minimap_OnShow()
@@ -255,10 +252,6 @@ function M:Minimap_EnterLeave(minimap, show)
 end
 
 function M:Minimap_OnMouseDown(btn)
-	_G.MinimapCluster.Tracking.Button:OpenMenu()
-
-	-- FIX ME 11.0
-	--[[
 	menuFrame:Hide()
 
 	if M.TrackingDropdown then
@@ -269,14 +262,17 @@ function M:Minimap_OnMouseDown(btn)
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
 		if not E:AlertCombat() then
 			E:ComplicatedMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
+			menuFrame:Show()
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
+	elseif btn == 'RightButton' and E.Retail then
+		_G.MinimapCluster.Tracking.Button:OpenMenu()
 	elseif E.Retail then
 		Minimap.OnClick(self)
 	else
 		_G.Minimap_OnClick(self)
-	end]]
+	end
 end
 
 function M:MapCanvas_OnMouseDown(btn)
@@ -769,18 +765,10 @@ function M:Initialize()
 		MinimapCluster.BorderTop:StripTextures()
 		MinimapCluster.Tracking.Background:StripTextures()
 
-		M:RegisterEvent('MINIMAP_UPDATE_TRACKING', M.MinimapTracking_UpdateTracking)
-
 		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
 			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
 		else
 			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-		end
-
-		if E.private.general.minimap.hideClassHallReport then
-			local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
-			garrison:Kill()
-			garrison.IsShown = function() return true end
 		end
 	end
 
