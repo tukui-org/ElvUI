@@ -91,7 +91,10 @@ function E:ToggleMoveMode(which)
 		end
 
 		ElvUIMoverPopupWindow:Show()
-		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
+
+		if not E.Retail then
+			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
+		end
 
 		if IsAddOnLoaded('ElvUI_Options') then
 			E:Config_CloseWindow()
@@ -198,18 +201,38 @@ function E:ConfigMode_OnClick()
 	E:ToggleMoveMode(self.value)
 end
 
-function E:ConfigMode_Initialize()
-	local info = _G.UIDropDownMenu_CreateInfo()
-	info.func = E.ConfigMode_OnClick
-
-	for _, configMode in ipairs(E.ConfigModeLayouts) do
-		info.text = E.ConfigModeLocalizedStrings[configMode]
-		info.value = configMode
-		_G.UIDropDownMenu_AddButton(info)
+do
+	local selected = 'ALL'
+	local function IsSelected(restrictEnum)
+		return selected == restrictEnum
 	end
 
-	local dd = ElvUIMoverPopupWindowDropDown
-	_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
+	local function SetSelected(restrictEnum)
+		E:ToggleMoveMode(restrictEnum)
+		selected = restrictEnum
+	end
+
+	function E:ConfigMode_Initialize(root)
+		if E.Retail then
+			root:SetTag('ELVUI_MOVER_LAYOUT')
+
+			for _, configMode in ipairs(E.ConfigModeLayouts) do
+				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
+			end
+		else
+			local info = _G.UIDropDownMenu_CreateInfo()
+			info.func = E.ConfigMode_OnClick
+
+			for _, configMode in ipairs(E.ConfigModeLayouts) do
+				info.text = E.ConfigModeLocalizedStrings[configMode]
+				info.value = configMode
+				_G.UIDropDownMenu_AddButton(info)
+			end
+
+			local dd = ElvUIMoverPopupWindowDropDown
+			_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
+		end
+	end
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
@@ -375,16 +398,26 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	local dropDown = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
+	local dropDown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', f:GetName()..'DropDown', f, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
 	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(dropDown, 165)
+
 	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
 	dropDown.text:SetText(L["Config Mode:"])
 	dropDown.text:FontTemplate(nil, 12, 'SHADOW')
+
 	f.dropDown = dropDown
 
-	_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
+	if E.Retail then
+		dropDown:SetupMenu(E.ConfigMode_Initialize)
+
+		-- how do we raise this????
+		-- dropDown:SetFrameStrata('FULLSCREEN_DIALOG')
+		-- dropDown:SetFrameLevel(300)
+	else
+		_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
+	end
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata('DIALOG')
