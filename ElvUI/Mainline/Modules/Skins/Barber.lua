@@ -104,9 +104,7 @@ function S:Blizzard_CharacterCustomize()
 	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
-	SetSelectedCategory(frame)
-
-	hooksecurefunc(frame, 'SetSelectedCategory', SetSelectedCategory)
+	hooksecurefunc(frame, 'AddMissingOptions', SetSelectedCategory)
 end
 
 function S:Blizzard_BarbershopUI()
