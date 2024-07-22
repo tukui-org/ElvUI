@@ -2726,7 +2726,7 @@ end
 
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local GetSpellCastCount = C_Spell.GetSpellCastCount or GetSpellCount
-local IsAttackSpell = C_SpellBook and C_SpellBook.IsAutoAttackSpellBookItem or IsAttackSpell
+local IsAttackSpell = C_SpellBook.IsAutoAttackSpellBookItem or IsAttackSpell
 local IsCurrentSpell = C_Spell.IsCurrentSpell or IsCurrentSpell
 local IsAutoRepeatSpell = C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
 local IsSpellUsable = C_Spell.IsSpellUsable or IsUsableSpell

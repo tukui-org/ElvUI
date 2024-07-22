@@ -13,7 +13,6 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
-local GetSpellBookItemName = (C_SpellBook and C_SpellBook.GetSpellBookItemName) or GetSpellBookItemName
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -26,6 +25,8 @@ local UIParent = UIParent
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
 local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
+
+local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 
 local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or 'spell'
 
