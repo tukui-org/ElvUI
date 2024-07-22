@@ -245,13 +245,13 @@ local function Path(self, ...)
 end
 
 local function AllPath(...)
-	Path(...)
 	ColorPath(...)
+	Path(...)
 end
 
 local function ForceUpdate(element)
-	Path(element.__owner, 'ForceUpdate')
 	ColorPath(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, 'ForceUpdate')
 end
 
 local function Enable(self, unit)

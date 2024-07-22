@@ -274,7 +274,7 @@ local function Path(self, event, ...)
 end
 
 local function ForceUpdate(element)
-	Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 --[[ Power:SetColorDisconnected(state, isForced)
