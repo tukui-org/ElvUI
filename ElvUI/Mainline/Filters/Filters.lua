@@ -759,6 +759,25 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[257169] = List(), -- Terrifying Roar
 		[272713] = List(), -- Crushing Slam
 	-- Grim Batol
+		[449885] = List(), -- Shadow Gale 1
+		[461513] = List(), -- Shadow Gale 2
+		[449474] = List(), -- Molten Spark
+		[456773] = List(), -- Twilight Wind
+		[448953] = List(), -- Rumbling Earth
+		[447268] = List(), -- Skullsplitter
+		[449536] = List(), -- Molten Pool
+		[450095] = List(), -- Curse of Entropy
+		[448057] = List(), -- Abyssal Corruption
+		[451871] = List(), -- Mass Temor
+		[451613] = List(), -- Twilight Flame
+		[451378] = List(), -- Rive
+		[76711] = List(), -- Sear Mind
+		[462220] = List(), -- Blazing Shadowflame
+		[451395] = List(), -- Corrupt
+		[82850] = List(), -- Flaming Fixate
+		[451241] = List(), -- Shadowflame Slash
+		[451965] = List(), -- Molten Wake
+		[451224] = List(), -- Enveloping Shadowflame
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
@@ -864,6 +883,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[343470] = List(), -- Boneshatter Shield
 	-- Siege of Boralus
 	-- Grim Batol
+		[7603] = List(), -- Twilight Protection
+		[75328] = List(), -- Twilight Shift
+		[449687] = List(), -- Molten Mace
+		[447261] = List(), -- Skullsplitter
+		[450088] = List(), -- Void Infusion
+		[451387] = List(), -- Ascension
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
