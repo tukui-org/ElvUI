@@ -29,13 +29,6 @@ local function ReskinPickerOptions(self)
 	end
 end
 
-local function HandleVoicePicker(voicePicker)
-	local customFrame = voicePicker:GetChildren()
-	customFrame:StripTextures()
-	customFrame:CreateBackdrop('Transparent')
-	voicePicker:HookScript('OnShow', ReskinPickerOptions)
-end
-
 function S:ChatConfig()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -237,10 +230,6 @@ function S:ChatConfig()
 			end
 		end
 	end)
-
-	-- FIX ME 11.0
-	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
-	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
 end
 
 S:AddCallback('ChatConfig')
