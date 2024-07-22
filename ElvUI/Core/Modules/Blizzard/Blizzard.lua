@@ -101,8 +101,11 @@ function BL:ObjectiveTracker_AutoHide()
 	if not tracker.AutoHider then
 		tracker.AutoHider = CreateFrame('Frame', nil, tracker, 'SecureHandlerStateTemplate')
 		tracker.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		tracker.AutoHider:SetScript('OnHide', BL.ObjectiveTracker_AutoHideOnHide)
-		tracker.AutoHider:SetScript('OnShow', BL.ObjectiveTracker_AutoHideOnShow)
+
+		if not E.Retail then -- 11.0 this is broken
+			tracker.AutoHider:SetScript('OnHide', BL.ObjectiveTracker_AutoHideOnHide)
+			tracker.AutoHider:SetScript('OnShow', BL.ObjectiveTracker_AutoHideOnShow)
+		end
 	end
 
 	if E.db.general.objectiveFrameAutoHide then
