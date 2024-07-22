@@ -699,14 +699,114 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Rookery
-	-- The Stonevault
-	-- Priory of the Sacred Flame
-	-- City of Threads
-	-- Cinderbrew Meadery
-	-- Darkflame Cleft
-	-- The Dawnbreaker
-	-- Old City
+	-- The Stonevault (Season 1)
+		[427329] = List(), -- Void Corruption
+		[435813] = List(), -- Void Empowerment
+		[423572] = List(), -- Void Empowerment
+		[424889] = List(), -- Seismic Reverberation
+		[424795] = List(), -- Refracting Beam
+		[457465] = List(), -- Entropy
+		[425974] = List(), -- Ground Pound
+		[445207] = List(), -- Piercing Wail
+		[428887] = List(), -- Smashed
+		[427382] = List(), -- Concussive Smash
+		[449154] = List(), -- Molten Mortar
+		[427361] = List(), -- Fracture
+		[443494] = List(), -- Crystalline Eruption
+		[424913] = List(), -- Volatile Explosion
+		[443954] = List(), -- Exhaust Vents
+		[426308] = List(), -- Void Infection
+		[429999] = List(), -- Flaming Scrap
+		[429545] = List(), -- Censoring Gear
+		[428819] = List(), -- Exhaust Vents
+	-- City of Threads (Season 1)
+		[434722] = List(), -- Subjugate
+		[439341] = List(), -- Splice
+		[440437] = List(), -- Shadow Shunpo
+		[448561] = List(), -- Shadows of Doubt
+		[440107] = List(), -- Knife Throw
+		[439324] = List(), -- Umbral Weave
+		[442285] = List(), -- Corrupted Coating
+		[440238] = List(), -- Ice Sickles
+		[461842] = List(), -- Oozing Smash
+		[434926] = List(), -- Lingering Influence
+		[440310] = List(), -- Chains of Oppression
+		[439646] = List(), -- Process of Elimination
+		[448562] = List(), -- Doubt
+		[441391] = List(), -- Dark Paranoia
+		[461989] = List(), -- Oozing Smash
+		[441298] = List(), -- Freezing Blood
+		[441286] = List(), -- Dark Paranoia
+		[452151] = List(), -- Rigorous Jab
+		[451239] = List(), -- Brutal Jab
+		[443509] = List(), -- Ravenous Swarm
+		[443437] = List(), -- Shadows of Doubt
+		[451295] = List(), -- Void Rush
+		[443427] = List(), -- Web Bolt
+		[461630] = List(), -- Venomous Spray
+		[445435] = List(), -- Black Blood
+		[443401] = List(), -- Venom Strike
+		[443430] = List(), -- Silk Binding
+		[443438] = List(), -- Doubt
+		[443435] = List(), -- Twist Thoughts
+		[443432] = List(), -- Silk Binding
+		[448047] = List(), -- Web Wrap
+		[451426] = List(), -- Gossamer Barrage
+		[446718] = List(), -- Umbral Weave
+		[450055] = List(), -- Gutburst
+		[450783] = List(), -- Perfume Toss
+	-- The Dawnbreaker (Season 1)
+		[463428] = List(), -- Lingering Erosion
+		[426736] = List(), -- Shadow Shroud
+		[434096] = List(), -- Sticky Webs
+		[453173] = List(), -- Collapsing Night
+		[426865] = List(), -- Dark Orb
+		[434090] = List(), -- Spinneret's Strands
+		[434579] = List(), -- Corrosion
+		[426735] = List(), -- Burning Shadows
+		[434576] = List(), -- Acidic Stupor
+		[452127] = List(), -- Animate Shadows
+		[438957] = List(), -- Acid Pools
+		[434441] = List(), -- Rolling Acid
+		[451119] = List(), -- Abyssal Blast
+		[453345] = List(), -- Abyssal Rot
+		[449332] = List(), -- Encroaching Shadows
+		[431333] = List(), -- Tormenting Beam
+		[431309] = List(), -- Ensnaring Shadows
+		[451107] = List(), -- Bursting Cocoon
+		[434406] = List(), -- Rolling Acid
+		[431491] = List(), -- Tainted Slash
+		[434113] = List(), -- Spinneret's Strands
+		[431350] = List(), -- Tormenting Eruption
+		[431365] = List(), -- Tormenting Ray
+		[434668] = List(), -- Sparking Arathi Bomb
+		[460135] = List(), -- Dark Scars
+		[451098] = List(), -- Tacky Nova
+		[450855] = List(), -- Dark Orb
+		[431494] = List(), -- Black Edge
+		[451115] = List(), -- Terrifying Slam
+		[432448] = List(), -- Stygian Seed
+	-- Ara-Kara, City of Echoes (Season 1)
+		[461487] = List(), -- Cultivated Poisons
+		[432227] = List(), -- Venom Volley
+		[432119] = List(), -- Faded
+		[433740] = List(), -- Infestation
+		[439200] = List(), -- Voracious Bite
+		[433781] = List(), -- Ceaseless Swarm
+		[432132] = List(), -- Erupting Webs
+		[434252] = List(), -- Massive Slam
+		[432031] = List(), -- Grasping Blood
+		[438599] = List(), -- Bleeding Jab
+		[438618] = List(), -- Venomous Spit
+		[436401] = List(), -- AUGH!
+		[434830] = List(), -- Vile Webbing
+		[436322] = List(), -- Poison Bolt
+		[434083] = List(), -- Ambush
+		[433843] = List(), -- Erupting Webs
+	-- The Rookery (Season 2)
+	-- Priory of the Sacred Flame (Season 2)
+	-- Cinderbrew Meadery (Season 2)
+	-- Darkflame Cleft (Season 2)
 	----------------------------------------------------------
 	--------------- The War Within (Season 1) ----------------
 	----------------------------------------------------------
@@ -847,6 +947,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[441788] = List(), -- Web Vortex
 		[440001] = List(), -- Binding Webs
 	-- Queen Ansurek
+		-- TODO: No raid testing available for this boss
 	},
 }
 
@@ -864,14 +965,70 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Rookery
-	-- The Stonevault
-	-- Priory of the Sacred Flame
-	-- City of Threads
-	-- Cinderbrew Meadery
-	-- Darkflame Cleft
-	-- The Dawnbreaker
-	-- Old City
+	-- The Stonevault (Season 1)
+		[445541] = List(), -- Activate Ventilation
+		[423228] = List(), -- Crumbling Shell 1
+		[445409] = List(), -- Crumbling Shell 2
+		[428519] = List(), -- Deconstruction 1
+		[428520] = List(), -- Deconstruction 2
+		[462372] = List(), -- Exhaust Vents 1
+		[428820] = List(), -- Exhaust Vents 2
+		[423766] = List(), -- Fracturing Blows
+		[427300] = List(), -- Pillaging
+		[428212] = List(), -- Scrap Song 1
+		[428242] = List(), -- Scrap Song 2
+		[423246] = List(), -- Shattered Shell
+		[448640] = List(), -- Shield Stampede
+		[439577] = List(), -- Silenced Speaker
+		[428532] = List(), -- Unleash the Void
+		[423327] = List(), -- Void Discharge 1
+		[423324] = List(), -- Void Discharge 2
+		[426771] = List(), -- Void Outburst
+		[427315] = List(), -- Void Rift
+	-- City of Threads (Season 1)
+		[450047] = List(), -- Gorged
+		[439518] = List(), -- Twin Fangs
+		[434829] = List(), -- Vociferous Indoctrination
+		[451222] = List(), -- Void Rush
+		[452162] = List(), -- Mending Web
+		[434691] = List(), -- Chains of Oppression
+		[444428] = List(), -- Honored Citizen
+		[436205] = List(), -- Fierce Stomping
+		[445813] = List(), -- Dark Barrage
+		[441395] = List(), -- Dark Pulse
+		[446726] = List(), -- Shadow Shield
+	-- The Dawnbreaker (Season 1)
+		[431493] = List(), -- Darkblade
+		[448888] = List(), -- Erosive Spray
+		[426787] = List(), -- Shadowy Decay
+		[451112] = List(), -- Tactician's Rage
+		[432520] = List(), -- Umbral Barrier
+		[449734] = List(), -- Acidic Eruption
+		[450756] = List(), -- Abyssal Howl
+		[427192] = List(), -- Empowered Might
+		[452450] = List(), -- Rapid Summoning
+		[431364] = List(), -- Tormenting Ray
+		[453212] = List(), -- Obsidian Beam
+		[461904] = List(), -- Cosmic Ascension
+		[431349] = List(), -- Tormenting Eruption
+		[453859] = List(), -- Darkness Comes
+		[451102] = List(), -- Shadowy Decay
+		[446615] = List(), -- Usher Reinforcements
+		[452502] = List(), -- Dark Fervor
+	-- Ara-Kara, City of Echoes (Season 1)
+		[431985] = List(), -- Black Blood 1
+		[433656] = List(), -- Black Blood 2
+		[439333] = List(), -- Hunger
+		[438675] = List(), -- Toxic Rupture 1
+		[438622] = List(), -- Toxic Rupture 2
+		[441645] = List(), -- Unnatural Bloodlust
+		[434254] = List(), -- Intensity
+		[438494] = List(), -- Alerting Shrill
+		[434793] = List(), -- Resonant Barrage
+	-- The Rookery (Season 2)
+	-- Priory of the Sacred Flame (Season 2)
+	-- Cinderbrew Meadery (Season 2)
+	-- Darkflame Cleft (Season 2)
 	----------------------------------------------------------
 	--------------- The War Within (Season 1) ----------------
 	----------------------------------------------------------
@@ -936,6 +1093,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[438343] = List(), -- Venomous Rain
 		[440179] = List(), -- Entangled
 	-- Queen Ansurek
+		-- TODO: No raid testing available for this boss
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
