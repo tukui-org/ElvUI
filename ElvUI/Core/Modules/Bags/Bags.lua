@@ -2815,9 +2815,9 @@ end
 
 function B:AutoToggleFunction()
 	local option = B.AutoToggleEvents[self]
-	if not option then return end
+	if not option or not B.db.autoToggle[option] then return end
 
-	if B.db.autoToggle[option] and not B.AutoToggleClose[self] then
+	if not B.AutoToggleClose[self] then
 		B:OpenBags()
 	else
 		B:CloseBags()
