@@ -97,10 +97,12 @@ local function QuestLogQuests()
 
 	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
 		if header.CollapseButton and not header.IsSkinned then
-			local r, g, b = unpack(E.media.rgbvaluecolor)
 			header:StripTextures()
 			header.Background:CreateBackdrop('Transparent')
+
+			local r, g, b = unpack(E.media.rgbvaluecolor)
 			header.Highlight:SetColorTexture(r, g, b, 0.75)
+
 			header.IsSkinned = true
 		end
 	end
