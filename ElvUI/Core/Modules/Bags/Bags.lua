@@ -951,14 +951,14 @@ function B:Dropdown_SetFilterFlag(bagID, flag, value)
 	return canAssign and SetBagSlotFlag(bagID, flag, value)
 end
 
-function B:Dropdown_SetupBag(frame, cleanup)
+function B:Dropdown_OpenMenu(frame, cleanup)
 	_G.MenuUtil.CreateContextMenu(frame, cleanup and B.Dropdown_Cleanup_SetMenu or B.Dropdown_Flags_SetMenu)
 end
 
 function B:OpenBagFlagsMenu(holder)
 	B.Dropdown.holder = holder
 
-	B:Dropdown_SetupBag(holder, holder.BagID == BACKPACK_CONTAINER or holder.BagID == REAGENT_CONTAINER)
+	B:Dropdown_OpenMenu(holder, holder.BagID == BACKPACK_CONTAINER or holder.BagID == REAGENT_CONTAINER)
 end
 
 function B:IsSortIgnored(bagID)
