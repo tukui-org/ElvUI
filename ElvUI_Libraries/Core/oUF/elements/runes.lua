@@ -18,7 +18,7 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
 ## Options
 
 .colorSpec - Use `self.colors.runes[specID]` to color the bar based on player's spec. `specID` is defined by the return
-             value of [GetSpecialization](http://wowprogramming.com/docs/api/GetSpecialization.html) (boolean)
+             value of [GetSpecialization](https://warcraft.wiki.gg/wiki/API_GetSpecialization) (boolean)
 .sortOrder - Sorting order. Sorts by the remaining cooldown time, 'asc' - from the least cooldown time remaining (fully
              charged) to the most (fully depleted), 'desc' - the opposite (string?)['asc', 'desc']
 

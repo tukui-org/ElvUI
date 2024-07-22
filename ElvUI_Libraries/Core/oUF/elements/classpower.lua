@@ -5,7 +5,7 @@ Handles the visibility and updating of the player's class resources (like Chi Or
 
 ## Widget
 
-ClassPower - An `table` consisting of as many StatusBars as the theoretical maximum return of [UnitPowerMax](http://wowprogramming.com/docs/api/UnitPowerMax.html).
+ClassPower - An `table` consisting of as many StatusBars as the theoretical maximum return of [UnitPowerMax](https://warcraft.wiki.gg/wiki/API_UnitPowerMax).
 
 ## Sub-Widgets
 
@@ -22,6 +22,7 @@ If the sub-widgets are StatusBars, their minimum and maximum values will be set 
 
 Supported class powers:
   - All     - Combo Points
+  - Evoker  - Essence
   - Mage    - Arcane Charges
   - Monk    - Chi Orbs
   - Paladin - Holy Power
@@ -49,10 +50,11 @@ local oUF = ns.oUF
 
 local _, PlayerClass = UnitClass('player')
 
--- sourced from FrameXML/Constants.lua
+-- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
+
 local SPELL_POWER_ENERGY = Enum.PowerType.Energy or 3
 local SPELL_POWER_COMBO_POINTS = Enum.PowerType.ComboPoints or 4
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards or 7

@@ -13,7 +13,8 @@ myBar          - A `StatusBar` used to represent incoming heals from the player.
 otherBar       - A `StatusBar` used to represent incoming heals from others.
 absorbBar      - A `StatusBar` used to represent damage absorbs.
 healAbsorbBar  - A `StatusBar` used to represent heal absorbs.
-overAbsorb     - A `Texture` used to signify that the amount of damage absorb is greater than the unit's missing health.
+overAbsorb     - A `Texture` used to signify that the amount of damage absorb is greater than either the unit's missing
+                 health or the unit's maximum health, if .showRawAbsorb is enabled.
 overHealAbsorb - A `Texture` used to signify that the amount of heal absorb is greater than the unit's current health.
 
 ## Notes
@@ -24,7 +25,9 @@ A default texture will be applied to the Texture widgets if they don't have a te
 ## Options
 
 .maxOverflow - The maximum amount of overflow past the end of the health bar. Set this to 1 to disable the overflow.
-               Defaults to 1.05 (number)
+.maxOverflow   - The maximum amount of overflow past the end of the health bar. Set this to 1 to disable the overflow.
+                 Defaults to 1.05 (number)
+.showRawAbsorb - Makes the element show the raw amount of damage absorb (boolean)
 
 ## Examples
 
