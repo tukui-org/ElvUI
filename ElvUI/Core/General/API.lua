@@ -757,6 +757,18 @@ function E:PositionGameMenuButton()
 	end
 end
 
+function E:SetupGameMenu()
+	if GameMenuFrame.ElvUI then return end
+
+	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	button:SetScript('OnClick', E.ClickGameMenu)
+	GameMenuFrame.ElvUI = button
+
+	button:Size(GameMenuButtonLogout:GetSize())
+	button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+end
+
 function E:NEUTRAL_FACTION_SELECT_RESULT()
 	E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 end
@@ -771,18 +783,6 @@ function E:ClickGameMenu()
 	if not InCombatLockdown() then
 		HideUIPanel(GameMenuFrame)
 	end
-end
-
-function E:SetupGameMenu()
-	if GameMenuFrame.ElvUI then return end
-
-	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	button:SetScript('OnClick', E.ClickGameMenu)
-	GameMenuFrame.ElvUI = button
-
-	button:Size(GameMenuButtonLogout:GetSize())
-	button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-	hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 end
 
 function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
