@@ -2468,13 +2468,28 @@ function B:CloseBank()
 	B:CloseBags()
 end
 
-function B:UpdateContainerFrameAnchors()
+function B:GetInitialContainerFrameOffsetX()
+	if _G.EditModeUtil then
+		return _G.EditModeUtil:GetRightActionBarWidth() + 10
+	else
+		return CONTAINER_OFFSET_X
+	end
+end
+
+function B:GetContainerFrameBags()
+	if _G.ContainerFrameSettingsManager then
+		return _G.ContainerFrameSettingsManager:GetBagsShown()
+	else
+		return _G.ContainerFrame1.bags
+	end
+end
+
+function B:GetContainerFrameScale()
+	local containerFrameOffsetX = B:GetInitialContainerFrameOffsetX()
 	local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column
 	local screenWidth = E.screenWidth
-	local bags = _G.ContainerFrame1.bags
 	local containerScale = 1
 	local leftLimit = 0
-
 	if _G.BankFrame:IsShown() then
 		leftLimit = _G.BankFrame:GetRight() - 25
 	end
@@ -2482,64 +2497,79 @@ function B:UpdateContainerFrameAnchors()
 	while containerScale > CONTAINER_SCALE do
 		screenHeight = E.screenHeight / containerScale
 		-- Adjust the start anchor for bags depending on the multibars
-		xOffset = CONTAINER_OFFSET_X / containerScale
+		xOffset = containerFrameOffsetX / containerScale
 		yOffset = CONTAINER_OFFSET_Y / containerScale
 		-- freeScreenHeight determines when to start a new column of bags
 		freeScreenHeight = screenHeight - yOffset
 		leftMostPoint = screenWidth - xOffset
 		column = 1
 
-		for _, name in ipairs(bags) do
-			local frame = _G[name]
-			local frameHeight = frame:GetHeight()
-			if freeScreenHeight < frameHeight then
-				column = column + 1 -- Start a new column
-				leftMostPoint = screenWidth - (column * CONTAINER_WIDTH * containerScale) - xOffset
-				freeScreenHeight = screenHeight - yOffset
+		local frameHeight
+		local framesInColumn = 0
+		local forceScaleDecrease = false
+		for _, frame in ipairs(B:GetContainerFrameBags()) do
+			if type(frame) == 'string' then
+				frame = _G[frame]
 			end
 
-			freeScreenHeight = freeScreenHeight - frameHeight - VISIBLE_CONTAINER_SPACING
+			framesInColumn = framesInColumn + 1
+			frameHeight = frame:GetHeight(true)
+			if freeScreenHeight < frameHeight then
+				if framesInColumn == 1 then -- If this is the only frame in the column and it doesn't fit, then scale must be reduced and the iteration restarted
+					forceScaleDecrease = true
+					break
+				else -- Start a new column
+					column = column + 1
+					framesInColumn = 0 -- kind of a lie, at this point there's actually a single frame in the new column, but this simplifies where to increment.
+					leftMostPoint = screenWidth - ( column * frame:GetWidth(true) * containerScale ) - xOffset
+					freeScreenHeight = screenHeight - yOffset
+				end
+			end
+
+			freeScreenHeight = freeScreenHeight - frameHeight
 		end
 
-		if leftMostPoint < leftLimit then
+		if forceScaleDecrease or (leftMostPoint < leftLimit) then
 			containerScale = containerScale - 0.01
 		else
 			break
 		end
 	end
 
-	if containerScale < CONTAINER_SCALE then
-		containerScale = CONTAINER_SCALE
-	end
+	return max(containerScale, CONTAINER_SCALE)
+end
 
-	screenHeight = E.screenHeight / containerScale
+function B:UpdateContainerFrameAnchors()
+	local containerScale = B:GetContainerFrameScale()
+	local screenHeight = E.screenHeight / containerScale
+
 	-- Adjust the start anchor for bags depending on the multibars
-	yOffset = CONTAINER_OFFSET_Y / containerScale
+	--local xOffset = GetInitialContainerFrameOffsetX() / containerScale
+	local yOffset = CONTAINER_OFFSET_Y / containerScale
 	-- freeScreenHeight determines when to start a new column of bags
-	freeScreenHeight = screenHeight - yOffset
-	column = 0
+	local freeScreenHeight = screenHeight - yOffset
+	local previousBag, recentBagColumn
 
-	local bagsPerColumn = 0
-	for index, name in ipairs(bags) do
-		local frame = _G[name]
-		local frameHeight = frame:GetHeight()
-
-		frame:SetScale(1)
-
-		if index == 1 then -- First bag
-			frame:Point('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
-			bagsPerColumn = bagsPerColumn + 1
-		elseif freeScreenHeight < frameHeight then -- Start a new column
-			column = column + 1
-			freeScreenHeight = screenHeight - yOffset
-			frame:Point('BOTTOMRIGHT', bags[(index - bagsPerColumn) - (column > 1 and 1 or 0)], 'BOTTOMLEFT', -CONTAINER_SPACING, 0 )
-			bagsPerColumn = 0
-		else -- Anchor to the previous bag
-			frame:Point('BOTTOMRIGHT', bags[index - 1], 'TOPRIGHT', 0, CONTAINER_SPACING)
-			bagsPerColumn = bagsPerColumn + 1
+	for index, frame in ipairs(B:GetContainerFrameBags()) do
+		if type(frame) == 'string' then
+			frame = _G[frame]
 		end
 
-		freeScreenHeight = freeScreenHeight - frameHeight - VISIBLE_CONTAINER_SPACING
+		frame:SetScale(containerScale)
+
+		if index == 1 then -- First bag
+			frame:SetPoint('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
+			recentBagColumn = frame
+		elseif (freeScreenHeight < frame:GetHeight()) or (E.Retail and previousBag:IsCombinedBagContainer()) then -- Start a new column
+			freeScreenHeight = screenHeight - yOffset
+			frame:SetPoint('BOTTOMRIGHT', recentBagColumn, 'BOTTOMLEFT', -11, 0)
+			recentBagColumn = frame
+		else -- Anchor to the previous bag
+			frame:SetPoint('BOTTOMRIGHT', previousBag, 'TOPRIGHT', 0, CONTAINER_SPACING)
+		end
+
+		previousBag = frame
+		freeScreenHeight = freeScreenHeight - frame:GetHeight()
 	end
 end
 
