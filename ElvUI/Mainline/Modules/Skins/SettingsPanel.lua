@@ -87,8 +87,11 @@ local function HandleControlGroup(controls)
 		if child.SliderWithSteppers then
 			S:HandleStepSlider(child.SliderWithSteppers)
 		end
-		if child.CheckBox then
-			S:HandleCheckBox(child.CheckBox)
+		if child.Checkbox then
+			S:HandleCheckBox(child.Checkbox)
+		end
+		if child.Control then
+			HandleDropdown(child.Control)
 		end
 	end
 end
@@ -160,14 +163,14 @@ function S:SettingsPanel()
 				if child.Checkbox then
 					HandleCheckbox(child.Checkbox)
 				end
-				if child.Dropdown then -- isWW
+				if child.Dropdown then
 					HandleOptionDropDown(child.Dropdown)
-				end
-				if child.ColorBlindFilterDropDown then
-					HandleOptionDropDown(child.ColorBlindFilterDropDown)
 				end
 				if child.Control then
 					HandleDropdown(child.Control)
+				end
+				if child.ColorBlindFilterDropDown then
+					HandleOptionDropDown(child.ColorBlindFilterDropDown)
 				end
 				if child.Button then
 					if child.Button:GetWidth() < 250 then
