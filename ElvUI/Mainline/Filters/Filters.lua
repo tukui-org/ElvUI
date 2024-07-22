@@ -882,6 +882,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[343558] = List(), -- Morbid Fixation
 		[343470] = List(), -- Boneshatter Shield
 	-- Siege of Boralus
+		[272471] = List(), -- Evasive
+		[256867] = List(), -- Heavy Hitter
+		[268752] = List(), -- Withdraw
+		[275835] = List(), -- Stinging Venom Coating
+		[272888] = List(), -- Ferocity
+		[275826] = List(), -- Bolstering Shout
 	-- Grim Batol
 		[7603] = List(), -- Twilight Protection
 		[75328] = List(), -- Twilight Shift
