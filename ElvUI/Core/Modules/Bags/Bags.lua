@@ -70,6 +70,7 @@ local SetCurrencyBackpack = C_CurrencyInfo.SetCurrencyBackpack or SetCurrencyBac
 
 local SortBags = C_Container.SortBags
 local SortBankBags = C_Container.SortBankBags
+local SortAccountBankBags = C_Container.SortAccountBankBags
 local SortReagentBankBags = C_Container.SortReagentBankBags
 local SplitContainerItem = C_Container.SplitContainerItem
 local SetItemSearch = C_Container.SetItemSearch
@@ -2036,7 +2037,11 @@ function B:ConstructContainerFrame(name, isBank)
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
 			elseif E.Retail then
-				SortReagentBankBags()
+				if B.BankTab == REAGENTBANK_CONTAINER then
+					SortReagentBankBags()
+				elseif B.WarbandBanks[B.BankTab] then
+					SortAccountBankBags()
+				end
 			end
 		end)
 
