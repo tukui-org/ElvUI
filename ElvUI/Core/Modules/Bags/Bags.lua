@@ -130,6 +130,8 @@ local BAG_FILTER_LABELS = BAG_FILTER_LABELS or {
 	[FILTER_FLAG_QUEST] = BAG_FILTER_QUEST_ITEMS or AUCTION_CATEGORY_QUEST_ITEMS,
 }
 
+B.Dropdown = {}
+
 B.GearFilters = {
 	FILTER_FLAG_IGNORE,
 	FILTER_FLAG_EQUIPMENT,
@@ -865,100 +867,99 @@ function B:REAGENTBANK_PURCHASED()
 	B.BankFrame.reagentFrame.cover:Hide()
 end
 
-do
-	local dropdown = {}
-	local function Cleanup_IsSelected(flag)
-		local holder = dropdown and dropdown.holder
-		if holder then
-			if flag == FILTER_FLAG_IGNORE then
-				return B:IsSortIgnored(holder.BagID)
-			elseif flag == FILTER_FLAG_JUNKSELL then
-				return GetBagSlotFlag(holder.BagID, flag)
-			end
+
+function B:Dropdown_Cleanup_IsSelected()
+	local holder = B.Dropdown.holder
+	if holder then
+		if self == FILTER_FLAG_IGNORE then
+			return B:IsSortIgnored(holder.BagID)
+		elseif self == FILTER_FLAG_JUNKSELL then
+			return GetBagSlotFlag(holder.BagID, self)
 		end
 	end
+end
 
-	local function Cleanup_SetSelected(flag)
-		local holder = dropdown and dropdown.holder
-		if holder then
-			local value = not Cleanup_IsSelected(flag)
-			if holder.BagID == BANK_CONTAINER then
-				SetBankAutosortDisabled(value)
-			elseif holder.BagID == BACKPACK_CONTAINER then
-				SetBackpackAutosortDisabled(value)
-			else
-				SetBagSlotFlag(holder.BagID, flag, value)
-			end
+function B:Dropdown_Cleanup_SetSelected()
+	local holder = B.Dropdown.holder
+	if holder then
+		local value = not B.Dropdown_Cleanup_IsSelected(self)
+		if holder.BagID == BANK_CONTAINER then
+			SetBankAutosortDisabled(value)
+		elseif holder.BagID == BACKPACK_CONTAINER then
+			SetBackpackAutosortDisabled(value)
+		else
+			SetBagSlotFlag(holder.BagID, self, value)
+		end
 
-			dropdown.holder = nil
+		B.Dropdown.holder = nil
+	end
+end
+
+function B:Dropdown_Cleanup_CreateButtons(root)
+	root:CreateTitle(BAG_FILTER_IGNORE)
+
+	local cleanup = root:CreateCheckbox(BAG_FILTER_CLEANUP, B.Dropdown_Cleanup_IsSelected, B.Dropdown_Cleanup_SetSelected, FILTER_FLAG_IGNORE)
+	cleanup:SetResponse(_G.MenuResponse.Close)
+
+	local selljunk = root:CreateCheckbox(SELL_ALL_JUNK_ITEMS, B.Dropdown_Cleanup_IsSelected, B.Dropdown_Cleanup_SetSelected, FILTER_FLAG_JUNKSELL)
+	selljunk:SetResponse(_G.MenuResponse.Close)
+end
+
+function B:Dropdown_Cleanup_SetMenu(root)
+	root:SetTag('ELVUI_BAG_FLAGS_MENU')
+
+	B:Dropdown_Cleanup_CreateButtons(root)
+end
+
+function B:Dropdown_Flags_IsSelected()
+	local holder = B.Dropdown.holder
+	if holder then
+		return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == self
+	end
+end
+
+function B:Dropdown_Flags_SetSelected()
+	local holder = B.Dropdown.holder
+	if holder then
+		local value = not B.Dropdown_Flags_IsSelected(self)
+		return B:SetFilterFlag(holder.BagID, self, value)
+	end
+end
+
+function B:Dropdown_Flags_CreateButtons(root)
+	root:CreateTitle(BAG_FILTER_ASSIGN_TO)
+
+	for _, flag in next, B.GearFilters do
+		local name = BAG_FILTER_LABELS[flag]
+		if name then
+			local checkbox = root:CreateCheckbox(name, B.Dropdown_Flags_IsSelected, B.Dropdown_Flags_SetSelected, flag)
+			checkbox:SetResponse(_G.MenuResponse.Close)
 		end
 	end
+end
 
-	local function Flags_IsSelected(flag)
-		local holder = dropdown and dropdown.holder
-		if holder then
-			return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == flag
-		end
-	end
+function B:Dropdown_Flags_SetMenu(root)
+	root:SetTag('ELVUI_BAG_FLAGS_MENU')
 
-	local function Flags_SetSelected(flag)
-		local holder = dropdown and dropdown.holder
-		if holder then
-			local value = not Flags_IsSelected(flag)
-			return B:SetFilterFlag(holder.BagID, flag, value)
-		end
-	end
+	B:Dropdown_Flags_CreateButtons(root)
+	B:Dropdown_Cleanup_CreateButtons(root)
+end
 
-	local function Create_FlagsButtons(root)
-		root:CreateTitle(BAG_FILTER_ASSIGN_TO)
-		for _, flag in next, B.GearFilters do
-			local name = BAG_FILTER_LABELS[flag]
-			if name then
-				local checkbox = root:CreateCheckbox(name, Flags_IsSelected, Flags_SetSelected, flag)
-				checkbox:SetResponse(_G.MenuResponse.Close)
-			end
-		end
-	end
+function B:SetFilterFlag(bagID, flag, value)
+	B.Dropdown.holder = nil
 
-	local function Create_CleanUpButtons(root)
-		root:CreateTitle(BAG_FILTER_IGNORE)
+	local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
+	return canAssign and SetBagSlotFlag(bagID, flag, value)
+end
 
-		local cleanup = root:CreateCheckbox(BAG_FILTER_CLEANUP, Cleanup_IsSelected, Cleanup_SetSelected, FILTER_FLAG_IGNORE)
-		cleanup:SetResponse(_G.MenuResponse.Close)
+function B:SetupBagDropdown(frame, cleanup)
+	_G.MenuUtil.CreateContextMenu(frame, cleanup and B.Dropdown_Cleanup_SetMenu or B.Dropdown_Flags_SetMenu)
+end
 
-		local selljunk = root:CreateCheckbox(SELL_ALL_JUNK_ITEMS, Cleanup_IsSelected, Cleanup_SetSelected, FILTER_FLAG_JUNKSELL)
-		selljunk:SetResponse(_G.MenuResponse.Close)
-	end
+function B:OpenBagFlagsMenu(holder)
+	B.Dropdown.holder = holder
 
-	local function SetMenuCleanup(_, root)
-		root:SetTag('ELVUI_BAG_FLAGS_MENU')
-
-		Create_CleanUpButtons(root)
-	end
-
-	local function SetMenuFlags(_, root)
-		root:SetTag('ELVUI_BAG_FLAGS_MENU')
-
-		Create_FlagsButtons(root)
-		Create_CleanUpButtons(root)
-	end
-
-	function B:SetFilterFlag(bagID, flag, value)
-		dropdown.holder = nil
-
-		local canAssign = bagID ~= BACKPACK_CONTAINER and bagID ~= BANK_CONTAINER and bagID ~= REAGENT_CONTAINER
-		return canAssign and SetBagSlotFlag(bagID, flag, value)
-	end
-
-	function B:SetupBagDropdown(frame, cleanup)
-		_G.MenuUtil.CreateContextMenu(frame, cleanup and SetMenuCleanup or SetMenuFlags)
-	end
-
-	function B:OpenBagFlagsMenu(holder)
-		dropdown.holder = holder
-
-		B:SetupBagDropdown(holder, holder.BagID == BACKPACK_CONTAINER or holder.BagID == REAGENT_CONTAINER)
-	end
+	B:SetupBagDropdown(holder, holder.BagID == BACKPACK_CONTAINER or holder.BagID == REAGENT_CONTAINER)
 end
 
 function B:IsSortIgnored(bagID)
