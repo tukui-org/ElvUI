@@ -777,9 +777,9 @@ function E:PositionGameMenuButton()
 				button:SetPoint(point, anchor, point2, x, y - 35)
 			end
 		end
-	else
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 35)
+	else
 		local button = GameMenuFrame.ElvUI
 		if button then
 			button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
@@ -793,9 +793,9 @@ function E:PositionGameMenuButton()
 				GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 			end
 		end
-	end
 
-	GameMenuFrame:Height(GameMenuFrame:GetHeight() + 35)
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+	end
 
 	if GameMenuFrame.ElvUI then
 		GameMenuFrame.ElvUI:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
