@@ -7,14 +7,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
 -- Credits: siweia (AuroraClassic)
-local function SkinEditBoxes(Frame)
-	S:HandleEditBox(Frame.MinLevel)
-	S:HandleEditBox(Frame.MaxLevel)
-end
-
 local function SkinFilterButton(Button)
-	--SkinEditBoxes(Button.LevelRangeFrame) -- FIX ME 11.0
-
 	S:HandleCloseButton(Button.ClearFiltersButton)
 	S:HandleButton(Button)
 end
