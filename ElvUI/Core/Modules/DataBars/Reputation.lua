@@ -51,6 +51,10 @@ function DB:ReputationBar_Update()
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 	local displayString, textFormat, standing, rewardPending, _ = '', DB.db.reputation.textFormat
 
+	if reaction == 0 then
+		reaction = 1
+	end
+
 	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
 		standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
