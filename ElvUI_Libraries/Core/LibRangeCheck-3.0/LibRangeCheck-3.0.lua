@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 17 -- real minor version: 13
+local MINOR_VERSION = 18 -- real minor version: 13
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -67,8 +67,8 @@ local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
-local IsItemInRange = IsItemInRange
-local IsSpellInRange = IsSpellInRange
+local IsItemInRange = (C_Item and C_Item.IsItemInRange) or IsItemInRange
+local IsSpellInRange = (C_Spell and C_Spell.IsSpellInRange) or IsSpellInRange
 local UnitCanAssist = UnitCanAssist
 local UnitCanAttack = UnitCanAttack
 local UnitClass = UnitClass
@@ -88,7 +88,7 @@ local GetSpellTabInfo = (C_SpellBook and C_SpellBook.GetSpellBookSkillLineInfo) 
 local C_Timer = C_Timer
 local Item = Item
 
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL
+local BOOKTYPE_SPELL = (BOOKTYPE_SPELL and BOOKTYPE_SPELL) or Enum.SpellBookSpellBank.Player
 local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
