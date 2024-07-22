@@ -1588,23 +1588,25 @@ function B:VendorGrayCheck()
 	end
 end
 
-function B:SetButtonTexture(button, texture)
+function B:SetButtonTexture(button, texture, left, right, top, bottom)
 	button:SetNormalTexture(texture)
 	button:SetPushedTexture(texture)
 	button:SetDisabledTexture(texture)
 
 	local Normal, Pushed, Disabled = button:GetNormalTexture(), button:GetPushedTexture(), button:GetDisabledTexture()
 
-	local left, right, top, bottom = unpack(E.TexCoords)
-	Normal:SetTexCoord(left, right, top, bottom)
 	Normal:SetInside()
-
-	Pushed:SetTexCoord(left, right, top, bottom)
 	Pushed:SetInside()
-
-	Disabled:SetTexCoord(left, right, top, bottom)
 	Disabled:SetInside()
 	Disabled:SetDesaturated(true)
+
+	if not left then
+		left, right, top, bottom = unpack(E.TexCoords)
+	end
+
+	Normal:SetTexCoord(left, right, top, bottom)
+	Pushed:SetTexCoord(left, right, top, bottom)
+	Disabled:SetTexCoord(left, right, top, bottom)
 end
 
 function B:BagItemAction(button, holder, func, id)
@@ -1712,6 +1714,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 	f.ContainerHolderByBagID[bagID] = holder
 	f.ContainerHolder[index] = holder
+
 	holder.name = holderName
 	holder.isBank = isBank
 	holder.bagFrame = f
@@ -1780,6 +1783,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 
 	local bagName = format('%sBag%d', name, bagNum)
 	local bag = CreateFrame('Frame', bagName, f.holderFrame)
+
 	bag.holder = holder
 	bag.name = bagName
 	bag:SetID(bagID)
@@ -1875,7 +1879,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	f.stackButton = CreateFrame('Button', name..'StackButton', f.holderFrame)
-	f.stackButton:Size(18)
+	f.stackButton:Size(20)
 	f.stackButton:SetTemplate()
 	B:SetButtonTexture(f.stackButton, E.Media.Textures.Planks)
 	f.stackButton:StyleButton(nil, true)
@@ -1885,7 +1889,7 @@ function B:ConstructContainerFrame(name, isBank)
 	--Sort Button
 	f.sortButton = CreateFrame('Button', name..'SortButton', f)
 	f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
-	f.sortButton:Size(18)
+	f.sortButton:Size(20)
 	f.sortButton:SetTemplate()
 	B:SetButtonTexture(f.sortButton, E.Media.Textures.PetBroom)
 	f.sortButton:StyleButton(nil, true)
@@ -1899,7 +1903,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Toggle Bags Button
 	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
-	f.bagsButton:Size(18)
+	f.bagsButton:Size(20)
 	f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	f.bagsButton:SetTemplate()
 	B:SetButtonTexture(f.bagsButton, E.Media.Textures.Backpack)
@@ -1912,7 +1916,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox = CreateFrame('EditBox', name..'EditBox', f, 'SearchBoxTemplate')
 	f.editBox:CreateBackdrop()
 	f.editBox:FontTemplate()
-	f.editBox:Height(16)
+	f.editBox:Height(19)
 	f.editBox.Left:SetTexture()
 	f.editBox.Middle:SetTexture()
 	f.editBox.Right:SetTexture()
@@ -1950,10 +1954,10 @@ function B:ConstructContainerFrame(name, isBank)
 				end
 
 				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f)
-				f.warbandToggle:Size(18)
+				f.warbandToggle:Size(20)
 				f.warbandToggle:SetTemplate()
 				f.warbandToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
-				B:SetButtonTexture(f.warbandToggle, 5855107) -- Warband icon from Reputation
+				B:SetButtonTexture(f.warbandToggle, 5855107, 0.05, 0.325, 0.25, 0.75) -- Warband icon from Reputation: Interface\Warbands\UIWarbandsIcons2x
 				f.warbandToggle:StyleButton(nil, true)
 				f.warbandToggle.ttText = L["Show/Hide Warband"]
 				f.warbandToggle:SetScript('OnEnter', B.Tooltip_Show)
@@ -1974,7 +1978,7 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
-				f.reagentToggle:Size(18)
+				f.reagentToggle:Size(20)
 				f.reagentToggle:SetTemplate()
 				f.reagentToggle:Point('RIGHT', f.warbandToggle, 'LEFT', -5, 0)
 				B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
@@ -1990,7 +1994,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 				--Deposite Reagents Button
 				f.depositButton = CreateFrame('Button', name..'DepositButton', f)
-				f.depositButton:Size(18)
+				f.depositButton:Size(20)
 				f.depositButton:SetTemplate()
 				f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
 				B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
@@ -2053,7 +2057,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
 		f.purchaseBagButton:SetShown(not f.fullBank)
-		f.purchaseBagButton:Size(18)
+		f.purchaseBagButton:Size(20)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.purchaseBagButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
@@ -2119,7 +2123,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Keyring Button
 		if E.Classic then
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f.holderFrame)
-			f.keyButton:Size(18)
+			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
 			f.keyButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.keyButton, 134237) -- Interface\ICONS\INV_Misc_Key_03
@@ -2132,7 +2136,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
-		f.vendorGraysButton:Size(18)
+		f.vendorGraysButton:Size(20)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point('RIGHT', E.Classic and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
@@ -2157,7 +2161,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 			for i = 1, MAX_WATCHED_TOKENS do
 				local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
-				currency:Size(18)
+				currency:Size(20)
 				currency:SetTemplate()
 				currency:SetID(i)
 
@@ -2486,7 +2490,7 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, 0)
 	end
 
 	if previousTab ~= B.BankTab then
@@ -2541,7 +2545,7 @@ function B:OpenBank()
 
 	-- allow opening reagent tab directly by holding Shift
 	-- keep this over update slots for bank slot assignments
-	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown())
+	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown() and (B.BankTab ~= REAGENTBANK_CONTAINER) and REAGENTBANK_CONTAINER)
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame, true)
