@@ -28,6 +28,15 @@ Offline units are handled as if they are in range.
 local _, ns = ...
 local oUF = ns.oUF
 
+local _FRAMES = {}
+local OnRangeFrame
+
+local next, tinsert, tremove = next, tinsert, tremove
+
+local CreateFrame = CreateFrame
+local UnitInRange = UnitInRange
+local UnitIsConnected = UnitIsConnected
+
 local function Update(self, event)
 	local element = self.Range
 	local unit = self.unit
@@ -78,6 +87,22 @@ local function Path(self, ...)
 	return (self.Range.Override or Update) (self, ...)
 end
 
+-- Internal updating method
+local timer = 0
+local function OnRangeUpdate(_, elapsed)
+	timer = timer + elapsed
+
+	if(timer >= .20) then
+		for _, object in next, _FRAMES do
+			if(object:IsShown()) then
+				Path(object, 'OnUpdate')
+			end
+		end
+
+		timer = 0
+	end
+end
+
 local function Enable(self)
 	local element = self.Range
 	if(element) then
@@ -85,7 +110,17 @@ local function Enable(self)
 		element.insideAlpha = element.insideAlpha or 1
 		element.outsideAlpha = element.outsideAlpha or 0.55
 
-		self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		else
+			if(not OnRangeFrame) then
+				OnRangeFrame = CreateFrame('Frame')
+				OnRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
+			end
+
+			tinsert(_FRAMES, self)
+			OnRangeFrame:Show()
+		end
 
 		return true
 	end
@@ -96,7 +131,20 @@ local function Disable(self)
 	if(element) then
 		self:SetAlpha(element.insideAlpha)
 
-		self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		else
+			for index, frame in next, _FRAMES do
+				if frame == self then
+					tremove(_FRAMES, index)
+					break
+				end
+			end
+
+			if #_FRAMES == 0 then
+				OnRangeFrame:Hide()
+			end
+		end
 	end
 end
 
