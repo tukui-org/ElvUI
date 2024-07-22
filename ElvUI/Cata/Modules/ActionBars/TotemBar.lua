@@ -251,7 +251,7 @@ function AB:PositionAndSizeTotemBar()
 	bar:SetAlpha(fadeAlpha)
 
 	bar:SetFrameStrata(db.frameStrata or 'LOW')
-	bar:SetFrameStrata(db.frameLevel or 5)
+	bar:SetFrameLevel(db.frameLevel or 5)
 
 	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
