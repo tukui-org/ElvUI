@@ -2,7 +2,7 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
-local GetSpellInfo = (C_Spell and C_Spell.GetSpellInfo) or GetSpellInfo
+local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetArenaCrowdControlInfo = C_PvP.GetArenaCrowdControlInfo
 local RequestCrowdControlSpell = C_PvP.RequestCrowdControlSpell
 local UnitFactionGroup = UnitFactionGroup
