@@ -257,11 +257,6 @@ function S:SettingsPanel()
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:Hide()
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:CreateBackdrop('Transparent')
 	end
-
-	-- New Voice Sliders FIX ME 11.0
-	--S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
-	--S:HandleSliderFrame(_G.UnitPopupVoiceMicrophoneVolume.Slider)
-	--S:HandleSliderFrame(_G.UnitPopupVoiceUserVolume.Slider)
 end
 
 S:AddCallback('SettingsPanel')

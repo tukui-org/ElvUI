@@ -161,7 +161,6 @@ function S:Blizzard_PlayerSpells()
 		hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
 	end
 
-	-- FIX ME 11.0: Discuss the look maybe >.<
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	if SpellBookFrame then
@@ -188,9 +187,6 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
-
-		-- only Parchment or leave it?
-		--hooksecurefunc(PagedSpellsFrame, 'DisplayViewsForCurrentPage', HandleTextColor)
 	end
 end
 
