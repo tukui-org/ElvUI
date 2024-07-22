@@ -83,6 +83,7 @@ function S:Blizzard_ClickBindingUI()
 
 	if frame.EnableMouseoverCastCheckbox then
 		S:HandleCheckBox(frame.EnableMouseoverCastCheckbox)
+		S:HandleDropDownBox(frame.MouseoverCastKeyDropDown)
 	end
 end
 
