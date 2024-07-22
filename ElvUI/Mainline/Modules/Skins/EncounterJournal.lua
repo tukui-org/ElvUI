@@ -6,7 +6,6 @@ local unpack, select = unpack, select
 local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemQualityColor = C_Item.GetItemQualityColor
 

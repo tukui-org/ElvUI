@@ -5,7 +5,7 @@ local LibStub = _G.LibStub
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
-local unpack, assert, type, gsub, strfind = unpack, assert, type, gsub, strfind
+local unpack, assert, type, gsub, rad, strfind = unpack, assert, type, gsub, rad, strfind
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -1129,61 +1129,45 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-if E.Retail then
-	function S:HandleDropDownBox(frame, width, template)
-		assert(frame, 'doesn\'t exist!')
+function S:HandleDropDownBox(frame, width, template)
+	assert(frame, 'doesn\'t exist!')
 
-		if not width then
-			width = 155
-		end
+	if not width then
+		width = 155
+	end
 
+	frame:Width(width)
+	frame:StripTextures()
+
+	if not frame.backdrop then
+		frame:CreateBackdrop(template)
+		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	end
+
+	if E.Retail then
 		if frame.Arrow then
 			frame.Arrow:SetAlpha(0)
 		end
 
-		frame:Width(width)
-		frame:StripTextures()
-
-		if not frame.backdrop then
-			frame:CreateBackdrop(template)
-			frame.backdrop:Point('TOPLEFT', 0, -2)
-			frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
-			frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-		end
+		frame.backdrop:Point('TOPLEFT', 0, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
 		local tex = frame:CreateTexture(nil, 'ARTWORK')
 		tex:SetTexture(E.Media.Textures.ArrowUp)
 		tex:SetRotation(3.14)
 		tex:Point('RIGHT', frame.backdrop, -3, 0)
 		tex:Size(14)
-	end
-else
-	function S:HandleDropDownBox(frame, width, pos, template)
-		assert(frame, 'doesn\'t exist!')
-
+	else
 		local frameName = frame.GetName and frame:GetName()
 		local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
 		local text = frameName and _G[frameName..'Text'] or frame.Text
 		local icon = frame.Icon
 
-		if not width then
-			width = 155
-		end
-
-		frame:Width(width)
-		frame:StripTextures()
-		frame:CreateBackdrop(template)
-		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame.backdrop:Point('TOPLEFT', 20, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
 		button:ClearAllPoints()
-
-		if pos then
-			button:Point('TOPRIGHT', frame.Right, -20, -21)
-		else
-			button:Point('RIGHT', frame, 'RIGHT', -10, 3)
-		end
+		button:Point('RIGHT', frame, 'RIGHT', -10, 3)
 
 		button.SetPoint = E.noop
 		S:HandleNextPrevButton(button, 'down')
