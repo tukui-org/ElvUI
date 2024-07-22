@@ -716,7 +716,7 @@ local function findSpellIdx(spellName, sid)
 
   for i = 1, getNumSpells() do
     local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-    if (sid and sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
+    if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
       return i
     end
   end
