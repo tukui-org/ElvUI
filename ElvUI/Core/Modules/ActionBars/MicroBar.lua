@@ -389,7 +389,7 @@ function AB:UpdateHelpTicketButtonAnchor()
 	if first then
 		local db = AB.db.microbar
 		local size = ((db.keepSizeRatio and db.buttonSize) or db.buttonHeight) or 20
-		local height = (size / 2) + 7
+		local height = (size * 0.5) + 7
 		local _, y = first:GetCenter()
 		local middle = E.screenHeight * 0.5
 
