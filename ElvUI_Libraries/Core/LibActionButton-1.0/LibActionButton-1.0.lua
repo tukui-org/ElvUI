@@ -13,7 +13,6 @@ local type, error, tostring, tonumber, assert, select = type, error, tostring, t
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local str_match, format, tinsert, tremove, strsub = string.match, format, tinsert, tremove, strsub
 
-local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local IsAttackSpell = C_Spell.IsAutoAttackSpell or IsAttackSpell
@@ -25,6 +24,24 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+
+-- backwards compatible
+local GetSpellInfo
+do
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	GetSpellInfo = function(spellID)
+		if not spellID then return end
+
+		if _G.GetSpellInfo then
+			return _G.GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
+	end
+end
 
 -- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled

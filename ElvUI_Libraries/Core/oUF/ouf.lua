@@ -940,6 +940,23 @@ function oUF:GetAuraData(unitToken, index, filter)
 	end
 end
 
+do
+	local GetSpellInfo = GetSpellInfo
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	function oUF:GetSpellInfo(spellID)
+		if not spellID then return end
+
+		if GetSpellInfo then
+			return GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
+	end
+end
+
 oUF.version = _VERSION
 --[[ oUF.objects
 Array containing all unit frames created by `oUF:Spawn`.

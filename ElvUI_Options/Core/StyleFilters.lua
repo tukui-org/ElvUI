@@ -14,7 +14,6 @@ local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetRealZoneText = GetRealZoneText
-local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
@@ -79,7 +78,7 @@ local function GetSpellFilterInfo(name)
 	local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 	local spellID = tonumber(spell)
 	if spellID then
-		local spellName = GetSpellInfo(spellID)
+		local spellName = E:GetSpellInfo(spellID)
 		if spellName then
 			if DisabledFilter() then
 				spell = format('%s (%d)', spellName, spellID)

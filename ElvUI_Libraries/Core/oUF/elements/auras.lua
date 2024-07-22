@@ -84,7 +84,6 @@ local tinsert = tinsert
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local floor, min = math.floor, math.min
 -- end block
 
@@ -170,7 +169,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
-		name, _, icon = GetSpellInfo(spellID)
+		name, _, icon = oUF:GetSpellInfo(spellID)
 
 		if element.forceShow then
 			count, debuffType, duration, expiration, source = 5, "Magic", 0, 60, "player"

@@ -278,6 +278,23 @@ do
 end
 
 do
+	local GetSpellInfo = GetSpellInfo
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	function E:GetSpellInfo(spellID)
+		if not spellID then return end
+
+		if GetSpellInfo then
+			return GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
+	end
+end
+
+do
 	function E:GetAuraData(unitToken, index, filter)
 		if E.Retail then
 			return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))

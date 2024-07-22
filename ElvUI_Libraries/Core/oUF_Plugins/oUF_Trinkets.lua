@@ -2,7 +2,6 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
-local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetArenaCrowdControlInfo = C_PvP.GetArenaCrowdControlInfo
 local RequestCrowdControlSpell = C_PvP.RequestCrowdControlSpell
 local UnitFactionGroup = UnitFactionGroup
@@ -22,7 +21,7 @@ local function UpdateSpell(element, id)
 	if id and id ~= 0 and element.spellID ~= id then
 		element.spellID = id
 
-		local _, _, spellTexture = GetSpellInfo(id)
+		local _, _, spellTexture = oUF:GetSpellInfo(id)
 		element.icon:SetTexture(spellTexture or factions.Unknown)
 	end
 

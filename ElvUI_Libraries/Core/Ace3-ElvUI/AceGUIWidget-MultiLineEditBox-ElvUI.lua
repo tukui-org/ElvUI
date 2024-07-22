@@ -6,8 +6,26 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local _G, pairs = _G, pairs
-local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, ClearCursor
+local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
+
+-- backwards compatible
+local GetSpellInfo
+do
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	GetSpellInfo = function(spellID)
+		if not spellID then return end
+
+		if _G.GetSpellInfo then
+			return _G.GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
+	end
+end
 
 --[[-----------------------------------------------------------------------------
 Support functions
