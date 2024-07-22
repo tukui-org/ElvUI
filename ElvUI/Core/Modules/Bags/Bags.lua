@@ -1902,7 +1902,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	--Toggle Bags Button
-	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
+	f.bagsButton = CreateFrame('Button', name..'BagsButton', f)
 	f.bagsButton:Size(20)
 	f.bagsButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	f.bagsButton:SetTemplate()
@@ -2459,10 +2459,10 @@ function B:ShowBankTab(f, bankTab)
 			f.bankText:SetText(L["Warband Bank"])
 		end
 
+		f.bagsButton:Show()
 		f.reagentFrame:Hide()
-
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2475,6 +2475,7 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
+		f.bagsButton:Hide()
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	else
@@ -2489,6 +2490,7 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
+		f.bagsButton:Show()
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, 0)
 	end
