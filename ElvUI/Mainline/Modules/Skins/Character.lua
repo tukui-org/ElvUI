@@ -233,7 +233,7 @@ local function UpdateFactionSkins(frame)
 		if not child.IsSkinned then
 			if child.Right then
 				child:StripTextures()
-				child:CreateBackdrop()
+				child:CreateBackdrop('Transparent')
 				child.backdrop:SetInside(child)
 
 				updateCollapse(child.Right)
