@@ -444,7 +444,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
-	--S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetToDefaults) -- FIX ME 11.0
+	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetButton)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
