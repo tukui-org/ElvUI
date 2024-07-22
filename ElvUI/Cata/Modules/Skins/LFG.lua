@@ -304,8 +304,8 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
 
-	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropdown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropdown)
+	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
+	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
 	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
 
 	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
