@@ -1877,7 +1877,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
-			f.reagentFrame.cover:SetTemplate(nil, true)
+			f.reagentFrame.cover:SetTemplate()
 			f.reagentFrame.cover:SetFrameLevel(15)
 
 			f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
