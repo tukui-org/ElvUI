@@ -29,6 +29,7 @@ local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or BagSlotFlags.C
 local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or BagSlotFlags.ClassEquipment
 local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or BagSlotFlags.ClassJunk
 local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.ClassQuestItems) or 32 -- didnt exist
+local FILTER_FLAG_REAGENTS = (BagSlotFlags and BagSlotFlags.ClassReagents) or 128 -- didnt exist
 
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
@@ -550,6 +551,7 @@ do
 		[FILTER_FLAG_EQUIPMENT] = 'Equipment',
 		[FILTER_FLAG_CONSUMABLES] = 'Consumables',
 		[FILTER_FLAG_TRADE_GOODS] = 'TradeGoods',
+		[FILTER_FLAG_REAGENTS] = 'Reagents',
 		[FILTER_FLAG_JUNK] = 'Junk',
 		[FILTER_FLAG_QUEST] = 'QuestItems'
 	}
@@ -591,7 +593,9 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local assigned = B:IsAssignedBag(targetBag)
 	if assigned then
-		if assigned == 'Consumables' then
+		if assigned == 'Reagents' then
+			return isReagent
+		elseif assigned == 'Consumables' then
 			return classID == 0
 		elseif assigned == 'TradeGoods' then
 			return classID == 7
