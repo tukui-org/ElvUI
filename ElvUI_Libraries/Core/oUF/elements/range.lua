@@ -113,7 +113,7 @@ local function Enable(self)
 		if oUF.isRetail then
 			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
-			if(not OnRangeFrame) then
+			if not OnRangeFrame then
 				OnRangeFrame = CreateFrame('Frame')
 				OnRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
 			end
