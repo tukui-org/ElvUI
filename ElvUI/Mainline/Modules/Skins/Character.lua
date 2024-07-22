@@ -17,7 +17,6 @@ local showInsetBackdrop = {
 	TokenFrame = true
 }
 
--- FIX ME 11.0 NEEDS SIMPY MAGIC -- Credits NDUI
 local oldAtlas = {
 	Options_ListExpand_Right = 1,
 	Options_ListExpand_Right_Expanded = 1
@@ -52,11 +51,6 @@ local function UpdateTokenSkins(frame)
 			local icon = child.Content and child.Content.CurrencyIcon
 			if icon then
 				S:HandleIcon(icon)
-			end
-
-			if child.ToggleCollapseButton then
-				-- TO DO 11.0 FIX ME
-				--S:HandleCollapseTexture(child.ToggleCollapseButton, true)
 			end
 
 			child.IsSkinned = true
@@ -234,7 +228,6 @@ local function FixSidebarTabCoords()
 	end
 end
 
--- FIX ME 11.0 Mostly now in: ReputationEntryMixin
 local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
 		if not child.IsSkinned then
@@ -259,11 +252,6 @@ local function UpdateFactionSkins(frame)
 					ReputationBar:CreateBackdrop()
 					E:RegisterStatusBar(ReputationBar)
 				end
-			end
-
-			if child.ToggleCollapseButton then
-				-- TO DO 11.0 FIX ME
-				--S:HandleCollapseTexture(child.ToggleCollapseButton, true)
 			end
 
 			child.IsSkinned = true
