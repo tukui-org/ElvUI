@@ -256,6 +256,8 @@ local bankOffset, maxBankSlots = (E.Classic or E.Cata) and 4 or 5, E.Classic and
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
+	BAG_SLOT_FLAGS_UPDATED = true,
+	BANK_BAG_SLOT_FLAGS_UPDATED = true,
 	PLAYERREAGENTBANKSLOTS_CHANGED = true,
 	PLAYERBANKSLOTS_CHANGED = true,
 	BAG_CONTAINER_UPDATE = true,
@@ -864,7 +866,7 @@ function B:REAGENTBANK_PURCHASED()
 end
 
 do
-	local dropdown
+	local dropdown = {}
 	local function Cleanup_IsSelected(flag)
 		local holder = dropdown and dropdown.holder
 		if holder then
@@ -895,10 +897,7 @@ do
 	local function Flags_IsSelected(flag)
 		local holder = dropdown and dropdown.holder
 		if holder then
-			local newFlag = B:GetFilterFlagInfo(holder.BagID, holder.isBank)
-			print(newFlag, flag)
-
-			return newFlag == flag
+			return B:GetFilterFlagInfo(holder.BagID, holder.isBank) == flag
 		end
 	end
 
@@ -952,20 +951,13 @@ do
 	end
 
 	function B:SetupBagDropdown(frame, cleanup)
-		frame:SetupMenu(cleanup and SetMenuCleanup or SetMenuFlags)
-	end
-
-	function B:GetBagDropdown(bagID)
-		return (bagID == BACKPACK_CONTAINER or bagID == REAGENT_CONTAINER) and B.CleanUpBagDropdown or B.FlagsBagDropdown
+		_G.MenuUtil.CreateContextMenu(frame, cleanup and SetMenuCleanup or SetMenuFlags)
 	end
 
 	function B:OpenBagFlagsMenu(holder)
-		dropdown = B:GetBagDropdown(holder.BagID)
 		dropdown.holder = holder
 
-		dropdown:ClearAllPoints()
-		dropdown:Point('TOPLEFT', holder)
-		dropdown:OpenMenu()
+		B:SetupBagDropdown(holder, holder.BagID == BACKPACK_CONTAINER or holder.BagID == REAGENT_CONTAINER)
 	end
 end
 
@@ -2867,13 +2859,6 @@ function B:Initialize()
 	B.db = E.db.bags
 
 	BIND_START, BIND_END = B:GetBindLines()
-
-	-- Bag Assignment Dropdown Menu (also used by BagBar)
-	B.CleanUpBagDropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUI_CleanUpBagDropdown', E.UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
-	B:SetupBagDropdown(B.CleanUpBagDropdown, true)
-
-	B.FlagsBagDropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUI_FlagsBagDropdown', E.UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
-	B:SetupBagDropdown(B.FlagsBagDropdown)
 
 	B.AssignmentColors = {
 		[0] = { r = .99, g = .23, b = .21 }, -- fallback
