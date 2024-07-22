@@ -140,9 +140,12 @@ B.GearFilters = {
 	FILTER_FLAG_JUNK
 }
 
+if E.Retail then
+	tinsert(B.GearFilters, FILTER_FLAG_REAGENTS)
+end
+
 if not E.Classic then
 	tinsert(B.GearFilters, FILTER_FLAG_QUEST)
-	tinsert(B.GearFilters, FILTER_FLAG_REAGENTS)
 	tinsert(B.GearFilters, FILTER_FLAG_JUNKSELL)
 end
 
