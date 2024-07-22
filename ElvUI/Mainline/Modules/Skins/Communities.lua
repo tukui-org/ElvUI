@@ -286,7 +286,7 @@ function S:Blizzard_Communities()
 	ColumnDisplay.InsetBorderTop:Hide()
 
 	S:HandleInsetFrame(MemberList.InsetFrame)
-	--S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu) FIX ME 11.0
+	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropdown)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
