@@ -63,6 +63,7 @@ local strsplit = strsplit
 local tostring = tostring
 local setmetatable = setmetatable
 
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
 local GetTime = GetTime
@@ -711,7 +712,7 @@ local function findSpellIdx(spellName, sid)
 
   for i = 1, getNumSpells() do
     local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
-    if sid == id or (spellName == name and not MatchSpellByID[id]) then
+    if (sid and sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
       return i
     end
   end
