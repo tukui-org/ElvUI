@@ -164,7 +164,7 @@ function AB:PositionAndSizeBarPet()
 	for i, button in ipairs(bar.buttons) do
 		local lastButton = _G['PetActionButton'..i-1]
 		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
-		local autoCast = button.AutoCastable
+		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		button.db = db
 
@@ -183,8 +183,7 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = true -- keep over HandleButton
 		end
 
-		-- FIX ME 11.0
-		--autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, useMasque, true)
 	end
