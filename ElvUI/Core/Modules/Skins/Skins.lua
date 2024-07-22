@@ -1129,32 +1129,74 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, template)
-	assert(frame, 'doesn\'t exist!')
+if E.Retail then
+	function S:HandleDropDownBox(frame, width, template)
+		assert(frame, 'doesn\'t exist!')
 
-	if not width then
-		width = 155
+		if not width then
+			width = 155
+		end
+
+		if frame.Arrow then
+			frame.Arrow:SetAlpha(0)
+		end
+
+		frame:Width(width)
+		frame:StripTextures()
+
+		if not frame.backdrop then
+			frame:CreateBackdrop(template)
+			frame.backdrop:Point('TOPLEFT', 0, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
+			frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+		end
+
+		local tex = frame:CreateTexture(nil, 'ARTWORK')
+		tex:SetTexture(E.Media.Textures.ArrowUp)
+		tex:SetRotation(3.14)
+		tex:Point('RIGHT', frame.backdrop, -3, 0)
+		tex:Size(14)
 	end
+else
+	function S:HandleDropDownBox(frame, width, pos, template)
+		assert(frame, 'doesn\'t exist!')
 
-	if frame.Arrow then
-		frame.Arrow:SetAlpha(0)
-	end
+		local frameName = frame.GetName and frame:GetName()
+		local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
+		local text = frameName and _G[frameName..'Text'] or frame.Text
+		local icon = frame.Icon
 
-	frame:Width(width)
-	frame:StripTextures()
+		if not width then
+			width = 155
+		end
 
-	if not frame.backdrop then
+		frame:Width(width)
+		frame:StripTextures()
 		frame:CreateBackdrop(template)
-		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	end
+		frame.backdrop:Point('TOPLEFT', 20, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
-	local tex = frame:CreateTexture(nil, 'ARTWORK')
-	tex:SetTexture(E.Media.Textures.ArrowUp)
-	tex:SetRotation(3.14)
-	tex:Point('RIGHT', frame.backdrop, -3, 0)
-	tex:Size(14)
+		button:ClearAllPoints()
+
+		if pos then
+			button:Point('TOPRIGHT', frame.Right, -20, -21)
+		else
+			button:Point('RIGHT', frame, 'RIGHT', -10, 3)
+		end
+
+		button.SetPoint = E.noop
+		S:HandleNextPrevButton(button, 'down')
+
+		if text then
+			text:ClearAllPoints()
+			text:Point('RIGHT', button, 'LEFT', -2, 0)
+		end
+
+		if icon then
+			icon:Point('LEFT', 23, 0)
+		end
+	end
 end
 
 function S:HandleStatusBar(frame, color, template)
