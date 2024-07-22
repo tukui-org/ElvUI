@@ -17,16 +17,18 @@ end
 local function FormatProfessionHook(frame, id)
 	if not (id and frame and frame.icon) then return end
 
+	-- Some Texture Magic
 	local texture = select(2, GetProfessionInfo(id))
 	if texture then frame.icon:SetTexture(texture) end
 end
 
-local function ProfessionSpellButtonUpdate(button)
+local function ProfessionButtonUpdate(button)
 	local parent = button:GetParent()
 	if not parent or not parent.spellOffset then return end
 
 	local spellIndex = button:GetID() + parent.spellOffset
 	local spellBookItemInfo = C_SpellBook_GetSpellBookItemInfo(spellIndex, SpellBookSpellBank.Player)
+
 	if spellBookItemInfo.isPassive then
 		button.highlightTexture:SetColorTexture(1, 1, 1, 0)
 	else
@@ -47,6 +49,19 @@ local function ProfessionSpellButtonUpdate(button)
 			button.SpellSubName:SetTextColor(1, 1, 1)
 		end
 	end
+end
+
+local function ProfessionsUpdateButtons(frame)
+	ProfessionButtonUpdate(frame.SpellButton1)
+	ProfessionButtonUpdate(frame.SpellButton2)
+end
+
+local function ProfessionsBookFrameUpdate()
+	ProfessionsUpdateButtons(_G.PrimaryProfession1)
+	ProfessionsUpdateButtons(_G.PrimaryProfession2)
+	ProfessionsUpdateButtons(_G.SecondaryProfession1)
+	ProfessionsUpdateButtons(_G.SecondaryProfession2)
+	ProfessionsUpdateButtons(_G.SecondaryProfession3)
 end
 
 local function HandleSkillButton(button)
@@ -84,15 +99,6 @@ function S:Blizzard_ProfessionsBook()
 	local barColor = {0, .86, 0}
 	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3 } do
 		button.missingHeader:SetTextColor(1, 1, 0)
-
-		--[[ FIX ME 11.0
-			if E.private.skins.parchmentRemoverEnable then
-				button.missingText:SetTextColor(1, 1, 1)
-			else
-				button.missingText:SetTextColor(0, 0, 0)
-			end
-		]]
-
 		button.missingText:SetTextColor(1, 1, 1)
 
 		local a, b, c, _, e = button.statusBar:GetPoint()
@@ -139,11 +145,8 @@ function S:Blizzard_ProfessionsBook()
 		end
 	end
 
-	-- Some Texture Magic
 	hooksecurefunc('FormatProfession', FormatProfessionHook)
-
-	-- FIX ME 11.0
-	hooksecurefunc(_G.ProfessionSpellButtonMixin, 'UpdateButton', ProfessionSpellButtonUpdate)
+	hooksecurefunc('ProfessionsBookFrame_Update', ProfessionsBookFrameUpdate)
 end
 
 S:AddCallbackForAddon('Blizzard_ProfessionsBook')
