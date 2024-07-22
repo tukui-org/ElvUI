@@ -449,9 +449,9 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
 	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
 
-	-- FIX ME 11.0, propbly Blizzard typoed by "$parent.CloseButton"
-	if _G.TokenFramePopup.CloseButton then
-		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
+	local TokenPopupClose = _G.TokenFramePopup['$parent.CloseButton']
+	if TokenPopupClose then
+		S:HandleCloseButton(TokenPopupClose)
 	end
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
