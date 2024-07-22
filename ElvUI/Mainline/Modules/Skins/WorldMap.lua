@@ -66,7 +66,6 @@ local function SkinHeaders(header, isCalling)
 	header.IsSkinned = true
 end
 
--- FIX ME 11.0 look at me plx
 local function QuestLogQuests()
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if button.ButtonText then
@@ -86,10 +85,12 @@ local function QuestLogQuests()
 				button.CheckBox:DisableDrawLayer('BACKGROUND')
 				button.CheckBox:CreateBackdrop()
 			end
+
 			--FIX ME 11.0; Use the actual ElvUI Check Skin thing
 			if button.Check then
 				button.Check:SetAtlas('checkmark-minimal')
 			end
+
 			button.IsSkinned = true
 		end
 	end
@@ -247,14 +248,15 @@ function S:WorldMapFrame()
 	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', NotifyDialogShow)
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
 
-	-- 11.0 Map Legend
 	local MapLegend = QuestMapFrame.MapLegend
 	S:HandleButton(MapLegend.BackButton)
-	MapLegend.TitleText:FontTemplate(nil, 16) -- 16 is okayish
+	MapLegend.TitleText:FontTemplate(nil, 16)
 	MapLegend.BorderFrame:SetAlpha(0)
-	_G.MapLegendScrollFrame:StripTextures()
-	_G.MapLegendScrollFrame:SetTemplate()
-	S:HandleTrimScrollBar(_G.MapLegendScrollFrame.ScrollBar)
+
+	local MapLegendScroll = MapLegend.ScrollFrame
+	MapLegendScroll:StripTextures()
+	MapLegendScroll:SetTemplate()
+	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 end
 
 S:AddCallback('WorldMapFrame')
