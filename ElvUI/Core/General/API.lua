@@ -769,7 +769,11 @@ function E:PositionGameMenuButton()
 
 		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
-			local lastIndex = gameMenuLastButtons[button:GetText()]
+			local text = button:GetText()
+
+			GameMenuFrame.MenuButtons[text] = button -- export these
+
+			local lastIndex = gameMenuLastButtons[text]
 			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
 			elseif not lastIndex then
@@ -819,6 +823,7 @@ function E:SetupGameMenu()
 		button:Size(200, 35)
 
 		GameMenuFrame.ElvUI = button
+		GameMenuFrame.MenuButtons = {}
 
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else

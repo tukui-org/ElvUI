@@ -37,11 +37,19 @@ function EM:LAYOUTS_UPDATED(event, arg1)
 	end
 end
 
+function EM:GetGameMenuEditModeButton() -- MenuButtons is maade in API.lua
+	local menu = _G.GameMenuFrame
+	return menu and menu.MenuButtons and menu.MenuButtons[_G.HUD_EDIT_MODE_MENU]
+end
+
 function EM:PLAYER_REGEN(event)
 	local editMode = _G.EditModeManagerFrame
 	local combatLeave = event == 'PLAYER_REGEN_ENABLED'
-	-- FIX ME 11.0
-	--_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
+
+	local button = EM:GetGameMenuEditModeButton()
+	if button then
+		button:SetEnabled(combatLeave)
+	end
 
 	if combatLeave then
 		if next(hideFrames) then
@@ -123,8 +131,10 @@ function EM:Initialize()
 	_G.EditModeManagerFrame.onCloseCallback = EM.OnClose
 
 	-- keep the button off during combat
-	-- Fix ME 11.0
-	--hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
+	local button = EM:GetGameMenuEditModeButton()
+	if button then
+		hooksecurefunc(button, 'SetEnabled', EM.SetEnabled)
+	end
 
 	-- wait for combat leave to do stuff
 	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED', 'LAYOUTS_UPDATED')
