@@ -140,6 +140,14 @@ B.GearFilters = {
 	FILTER_FLAG_JUNK
 }
 
+B.WarbandBanks = {
+	[Enum.BagIndex.AccountBankTab_1 or 13] = 1,
+	[Enum.BagIndex.AccountBankTab_2 or 14] = 2,
+	[Enum.BagIndex.AccountBankTab_3 or 15] = 3,
+	[Enum.BagIndex.AccountBankTab_4 or 16] = 4,
+	[Enum.BagIndex.AccountBankTab_5 or 17] = 5
+}
+
 if E.Retail then
 	tinsert(B.GearFilters, FILTER_FLAG_REAGENTS)
 end
@@ -188,9 +196,7 @@ end
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
 local MAX_CONTAINER_ITEMS = 36
-local CONTAINER_WIDTH = 192
 local CONTAINER_SPACING = 0
-local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
 local BIND_START, BIND_END
 
@@ -1627,6 +1633,51 @@ function B:UnregisterBagEvents(bagFrame)
 	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
 end
 
+function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
+	local frame = CreateFrame('Frame', keyName, f)
+	f[key] = frame
+
+	frame:Point('TOP', f, 'TOP', 0, -f.topOffset)
+	frame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+	frame:SetID(id)
+	frame:Hide()
+
+	local bag = {}
+	for slotID = 1, keySize do
+		bag[slotID] = B:ConstructContainerButton(f, id, slotID)
+	end
+
+	bag.numSlots = keySize
+	bag.staleSlots = {}
+
+	f.Bags[id] = bag
+	frame.slots = bag
+
+	frame.cover = CreateFrame('Button', nil, frame)
+	frame.cover:SetAllPoints(frame)
+	frame.cover:SetTemplate()
+	frame.cover:SetFrameLevel(15)
+
+	frame.cover.purchaseButton = CreateFrame('Button', nil, frame.cover)
+	frame.cover.purchaseButton:Height(20)
+	frame.cover.purchaseButton:Width(150)
+	frame.cover.purchaseButton:Point('CENTER', frame.cover, 'CENTER')
+	S:HandleButton(frame.cover.purchaseButton)
+	frame.cover.purchaseButton:SetFrameLevel(16)
+
+	frame.cover.purchaseButton.text = frame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
+	frame.cover.purchaseButton.text:FontTemplate()
+	frame.cover.purchaseButton.text:Point('CENTER')
+	frame.cover.purchaseButton.text:SetJustifyH('CENTER')
+	frame.cover.purchaseButton.text:SetText(L["Purchase"])
+
+	frame.cover.purchaseText = frame.cover:CreateFontString(nil, 'OVERLAY')
+	frame.cover.purchaseText:FontTemplate()
+	frame.cover.purchaseText:Point('BOTTOM', frame.cover.purchaseButton, 'TOP', 0, 10)
+
+	return frame
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1858,78 +1909,50 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bankText:SetText(L["Bank"])
 
 		if E.Retail then
-			f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
-			f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-			f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
-			f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
-			f.reagentFrame:Hide()
+			do -- reagent bank
+				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
+				reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
+				reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
+					PlaySound(852) --IG_MAINMENU_OPTION
+					StaticPopup_Show('CONFIRM_BUY_REAGENTBANK_TAB')
+				end)
 
-			local bag = {}
-			for slotID = 1, B.REAGENTBANK_SIZE do
-				bag[slotID] = B:ConstructContainerButton(f, REAGENTBANK_CONTAINER, slotID)
+				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
+				f.reagentToggle:Size(18)
+				f.reagentToggle:SetTemplate()
+				f.reagentToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
+				B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
+				f.reagentToggle:StyleButton(nil, true)
+				f.reagentToggle.ttText = L["Show/Hide Reagents"]
+				f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
+				f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
+				f.reagentToggle:SetScript('OnClick', function()
+					PlaySound(841) --IG_CHARACTER_INFO_TAB
+					B:ShowBankTab(f, f.holderFrame:IsShown() and REAGENTBANK_CONTAINER)
+					B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+				end)
+
+				--Deposite Reagents Button
+				f.depositButton = CreateFrame('Button', name..'DepositButton', f)
+				f.depositButton:Size(18)
+				f.depositButton:SetTemplate()
+				f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+				B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
+				f.depositButton:StyleButton(nil, true)
+				f.depositButton.ttText = L["Deposit Reagents"]
+				f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
+				f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
+				f.depositButton:SetScript('OnClick', function()
+					PlaySound(852) --IG_MAINMENU_OPTION
+					DepositReagentBank()
+				end)
 			end
 
-			bag.numSlots = B.REAGENTBANK_SIZE
-			bag.staleSlots = {}
-
-			f.Bags[REAGENTBANK_CONTAINER] = bag
-			f.reagentFrame.slots = bag
-
-			f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
-			f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
-			f.reagentFrame.cover:SetTemplate()
-			f.reagentFrame.cover:SetFrameLevel(15)
-
-			f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
-			f.reagentFrame.cover.purchaseButton:Height(20)
-			f.reagentFrame.cover.purchaseButton:Width(150)
-			f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
-			S:HandleButton(f.reagentFrame.cover.purchaseButton)
-			f.reagentFrame.cover.purchaseButton:SetFrameLevel(16)
-			f.reagentFrame.cover.purchaseButton.text = f.reagentFrame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
-			f.reagentFrame.cover.purchaseButton.text:FontTemplate()
-			f.reagentFrame.cover.purchaseButton.text:Point('CENTER')
-			f.reagentFrame.cover.purchaseButton.text:SetJustifyH('CENTER')
-			f.reagentFrame.cover.purchaseButton.text:SetText(L["Purchase"])
-			f.reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-				StaticPopup_Show('CONFIRM_BUY_REAGENTBANK_TAB')
-			end)
-
-			f.reagentFrame.cover.purchaseText = f.reagentFrame.cover:CreateFontString(nil, 'OVERLAY')
-			f.reagentFrame.cover.purchaseText:FontTemplate()
-			f.reagentFrame.cover.purchaseText:Point('BOTTOM', f.reagentFrame.cover.purchaseButton, 'TOP', 0, 10)
-			f.reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
-
-			f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
-			f.reagentToggle:Size(18)
-			f.reagentToggle:SetTemplate()
-			f.reagentToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
-			B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
-			f.reagentToggle:StyleButton(nil, true)
-			f.reagentToggle.ttText = L["Show/Hide Reagents"]
-			f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
-			f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
-			f.reagentToggle:SetScript('OnClick', function()
-				PlaySound(841) --IG_CHARACTER_INFO_TAB
-				B:ShowBankTab(f, f.holderFrame:IsShown())
-				B:SetBankSelectedTab() -- the hook doesnt trigger by this button
-			end)
-
-			--Deposite Reagents Button
-			f.depositButton = CreateFrame('Button', name..'DepositButton', f)
-			f.depositButton:Size(18)
-			f.depositButton:SetTemplate()
-			f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-			B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
-			f.depositButton:StyleButton(nil, true)
-			f.depositButton.ttText = L["Deposit Reagents"]
-			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
-			f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
-			f.depositButton:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-				DepositReagentBank()
-			end)
+			do -- warband banks
+				for bankID, bankIndex in next, B.WarbandBanks do
+					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
+				end
+			end
 		end
 
 		-- Stack
@@ -2108,9 +2131,10 @@ end
 function B:ConstructContainerButton(f, bagID, slotID)
 	local bag = f.Bags[bagID]
 	local isReagent = bagID == REAGENTBANK_CONTAINER
-	local slotName = isReagent and ('ElvUIReagentBankFrameItem'..slotID) or (bag.name..'Slot'..slotID)
-	local parent = isReagent and f.reagentFrame or bag
-	local inherit = (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
+	local warbandIndex = B.WarbandBanks[bagID]
+	local slotName = (isReagent and ('ElvUIReagentBankFrameItem'..slotID)) or (warbandIndex and ('ElvUIWarbandBankFrame'..warbandIndex..'Item'..slotID)) or (bag.name..'Slot'..slotID)
+	local parent = (isReagent and f.reagentFrame) or (warbandIndex and f['warbandFrame'..warbandIndex]) or bag
+	local inherit = (bagID == BANK_CONTAINER or isReagent or warbandIndex) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
 	slot:StyleButton()
@@ -2353,12 +2377,22 @@ function B:SetBankSelectedTab()
 	_G.BankFrame.selectedTab = B.BankTab or 1
 end
 
-function B:ShowBankTab(f, showReagent)
+function B:ShowBankTab(f, bankTab)
 	local previousTab = B.BankTab
 
-	if showReagent then
-		B.BankTab = 2
+	B.BankTab = bankTab or 1
 
+	local warbandIndex = B.WarbandBanks[B.BankTab]
+	if warbandIndex then
+		if E.Retail then
+			f['warbandFrame'..warbandIndex]:Show()
+			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
+			f.bankText:SetText(L["Warband Bank"])
+		end
+
+		f.holderFrame:Hide()
+		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.reagentFrame:Show()
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2368,8 +2402,6 @@ function B:ShowBankTab(f, showReagent)
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	else
-		B.BankTab = 1
-
 		if E.Retail then
 			f.reagentFrame:Hide()
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
@@ -2855,6 +2887,7 @@ function B:Initialize()
 	B.Initialized = true
 	B.BagFrames = {}
 	B.REAGENTBANK_SIZE = 98 -- numRow (7) * numColumn (7) * numSubColumn (2) = size = 98
+	B.WARBANDBANK_SIZE = 98 -- same as Reagents but for each tab
 
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMRIGHT', 0, 22 + E.Border*4 - E.Spacing*2)
