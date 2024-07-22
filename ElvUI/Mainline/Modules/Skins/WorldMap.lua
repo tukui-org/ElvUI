@@ -87,6 +87,15 @@ local function QuestLogQuests()
 		end
 	end
 
+	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
+		if header.Text and not header.IsSkinned then
+			header.Text:FontTemplate(nil, 16)
+			header.Progress:FontTemplate(nil, 12)
+
+			header.IsSkinned = true
+		end
+	end
+
 	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
 		if header.CollapseButton and not header.IsSkinned then
 			header:StripTextures()
