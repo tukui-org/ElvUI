@@ -651,23 +651,12 @@ local function SkinTransmogFrames()
 	local WardrobeFrame = _G.WardrobeFrame
 	S:HandlePortraitFrame(WardrobeFrame)
 
-	--local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
-	--WardrobeOutfitFrame:StripTextures()
-	--WardrobeOutfitFrame:SetTemplate('Transparent')
-
-	--S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
-	--S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
-	--_G.WardrobeOutfitDropDown:Height(34)
-	--_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	--_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
-
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 221)
-	WardrobeTransmogFrame.OutfitDropdown:Height(34)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 220)
 	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('TOPLEFT', WardrobeTransmogFrame.OutfitDropdown, 'TOPRIGHT', -2, -2)
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
@@ -693,7 +682,7 @@ local function SkinTransmogFrames()
 		end
 	end
 
-	--S:HandleDropDownBox(WardrobeTransmogFrame.SpecDropdown) -- FIX ME 11.0
+	S:HandleButton(WardrobeTransmogFrame.SpecDropdown)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
