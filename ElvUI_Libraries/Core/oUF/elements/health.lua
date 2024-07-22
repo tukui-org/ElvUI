@@ -353,9 +353,9 @@ local function Enable(self)
 
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 
-		if oUF.isRetail then
+		--[[if oUF.isRetail then
 			oUF:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end
+		end]]
 
 		if oUF.isClassic then
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
@@ -408,9 +408,9 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if oUF.isRetail then
+		--[[if oUF.isRetail then
 			oUF:UnregisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end
+		end]]
 
 		if oUF.isClassic then
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
