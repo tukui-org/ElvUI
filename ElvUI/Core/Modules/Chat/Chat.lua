@@ -25,7 +25,7 @@ local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -462,6 +462,10 @@ do --this can save some main file locals
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
+		end
+	elseif portal == 'test' then -- Beta
+		if E.Retail then
+			z['Player-970-00B4BF90']	= ElvBlue -- [Horde] Evoker
 		end
 	end
 end
@@ -3617,8 +3621,12 @@ function CH:FCF_Tab_OnClick(button)
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 
-		local tabName = self:GetName()
-		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		if E.Retail then
+			_G.FCF_Tab_SetupMenu(self)
+		else
+			local tabName = self:GetName()
+			_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		end
 	elseif button == 'MiddleButton' then
 		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then

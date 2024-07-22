@@ -35,7 +35,9 @@ do
 	AB.MICRO_OFFSETS = {
 		CharacterMicroButton	= 0.07 / meep,
 		SpellbookMicroButton	= 1.05 / meep,
+		ProfessionMicroButton   = 1.05 / meep,
 		TalentMicroButton		= 2.04 / meep,
+		PlayerSpellsMicroButton = 2.04 / meep,
 		AchievementMicroButton	= 3.03 / meep,
 		QuestLogMicroButton		= 4.02 / meep,
 		GuildMicroButton		= 5.01 / meep, -- Retail

@@ -9,7 +9,8 @@ function S:Blizzard_GenericTraitUI()
 
 	local GenericTrait = _G.GenericTraitFrame
 	if E.private.skins.parchmentRemoverEnable then
-		GenericTrait:StripTextures()
+		GenericTrait.Background:SetAlpha(0)
+		GenericTrait.BorderOverlay:SetAlpha(0)
 	end
 
 	GenericTrait:SetTemplate('Transparent')

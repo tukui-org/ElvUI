@@ -73,7 +73,7 @@ function S:MerchantFrame()
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
 
-	S:HandleDropDownBox(_G.MerchantFrameLootFilter)
+	S:HandleDropDownBox(_G.MerchantFrame.FilterDropdown)
 
 	-- Center the columns on the frame
 	_G.MerchantItem1:Point('TOPLEFT', _G.MerchantFrame, 'TOPLEFT', 22, -65)

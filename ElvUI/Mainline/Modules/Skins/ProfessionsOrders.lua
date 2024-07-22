@@ -57,7 +57,6 @@ end
 
 local function HandleListHeader(headerContainer)
 	local maxHeaders = headerContainer:GetNumChildren()
-
 	for i, header in next, { headerContainer:GetChildren() } do
 		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
@@ -228,8 +227,8 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	S:HandleEditBox(search.SearchBox)
 	S:HandleButton(search.SearchButton)
 
-	local filter = search.FilterButton
-	S:HandleCloseButton(filter.ClearFiltersButton)
+	local filter = search.FilterDropdown
+	S:HandleCloseButton(filter.ResetButton)
 	S:HandleButton(filter)
 
 	hooksecurefunc(browseOrders.CategoryList.ScrollBox, 'Update', BrowseOrdersUpdate)
@@ -252,8 +251,8 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	-- Form
 	local form = frame.Form
 	S:HandleButton(form.BackButton)
-	S:HandleCheckBox(form.TrackRecipeCheckBox.Checkbox)
-	S:HandleCheckBox(form.AllocateBestQualityCheckBox)
+	S:HandleCheckBox(form.TrackRecipeCheckbox.Checkbox)
+	S:HandleCheckBox(form.AllocateBestQualityCheckbox)
 
 	form.RecipeHeader:Hide()
 	form.RecipeHeader:CreateBackdrop('Transparent')
@@ -291,11 +290,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		end
 	end
 
-	S:HandleDropDownBox(form.MinimumQuality.DropDown)
-	S:HandleDropDownBox(form.OrderRecipientDropDown)
+	S:HandleDropDownBox(form.MinimumQuality.Dropdown)
+	S:HandleDropDownBox(form.OrderRecipientDropdown)
 	HandleMoneyInput(payment.TipMoneyInputFrame.GoldBox)
 	HandleMoneyInput(payment.TipMoneyInputFrame.SilverBox)
-	S:HandleDropDownBox(payment.DurationDropDown)
+	S:HandleDropDownBox(payment.DurationDropdown)
 	S:HandleButton(payment.ListOrderButton)
 
 	local viewListingButton = payment.ViewListingsButton

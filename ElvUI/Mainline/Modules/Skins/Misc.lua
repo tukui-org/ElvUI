@@ -65,17 +65,40 @@ function S:BlizzardMiscFrames()
 
 	-- reskin all esc/menu buttons
 	if not E:IsAddOnEnabled('ConsolePort_Menu') then
-		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
-			if Button.IsObjectType and Button:IsObjectType('Button') then
-				S:HandleButton(Button)
+		local GameMenuFrame = _G.GameMenuFrame
+		GameMenuFrame:StripTextures()
+		GameMenuFrame:CreateBackdrop('Transparent')
+
+		GameMenuFrame.Header:StripTextures()
+		GameMenuFrame.Header:ClearAllPoints()
+		GameMenuFrame.Header:Point('TOP', GameMenuFrame, 0, 7)
+
+		local function ClearedHooks(button, script)
+			if script == 'OnEnter' then
+				button:HookScript('OnEnter', S.SetModifiedBackdrop)
+			elseif script == 'OnLeave' then
+				button:HookScript('OnLeave', S.SetOriginalBackdrop)
+			elseif script == 'OnDisable' then
+				button:HookScript('OnDisable', S.SetDisabledBackdrop)
 			end
 		end
 
-		_G.GameMenuFrame:StripTextures()
-		_G.GameMenuFrame:SetTemplate('Transparent')
-		_G.GameMenuFrame.Header:StripTextures()
-		_G.GameMenuFrame.Header:ClearAllPoints()
-		_G.GameMenuFrame.Header:Point('TOP', _G.GameMenuFrame, 0, 7)
+		hooksecurefunc(GameMenuFrame, 'InitButtons', function(menu)
+			if not menu.buttonPool then return end
+
+			for button in menu.buttonPool:EnumerateActive() do
+				if not button.IsSkinned then
+					S:HandleButton(button, nil, nil, nil, true)
+					button.backdrop:SetInside(nil, 1, 1)
+					hooksecurefunc(button, 'SetScript', ClearedHooks)
+				end
+			end
+
+			if menu.ElvUI and not menu.ElvUI.IsSkinned then
+				S:HandleButton(menu.ElvUI, nil, nil, nil, true)
+				menu.ElvUI.backdrop:SetInside(nil, 1, 1)
+			end
+		end)
 	end
 
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
@@ -305,10 +328,6 @@ function S:BlizzardMiscFrames()
 			end
 		end
 	end)
-
-	-- LFG -> Custom Groups -> Dungeons -> Filter Button - This sits on the DropDownListMenu 10.2.7
-	S:HandleEditBox(_G.MinRatingFrame.MinRating)
-	_G.MinRatingFrame.MinRating:Size(40, 16) -- Default is 40, 12
 
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(_G.SideDressUpFrameCloseButton)

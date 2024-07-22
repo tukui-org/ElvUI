@@ -280,8 +280,10 @@ local StripTexturesBlizzFrames = {
 	'RightInset',
 	'NineSlice',
 	'BG',
+	'Bg',
 	'border',
 	'Border',
+	'Background',
 	'BorderFrame',
 	'bottomInset',
 	'BottomInset',
@@ -293,6 +295,8 @@ local StripTexturesBlizzFrames = {
 	'Portrait',
 	'portrait',
 	'ScrollFrameBorder',
+	'ScrollUpBorder',
+	'ScrollDownBorder',
 }
 
 local function KillEditMode(object)

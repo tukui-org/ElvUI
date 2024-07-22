@@ -383,7 +383,8 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
 	hooksecurefunc('QuestLogQuests_Update', S.QuestLogQuests_Update) -- Skin the Plus Minus buttons in the QuestLog
-	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
+	-- Fix Me 11.0
+	--hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
 
 	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
@@ -436,7 +437,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
 
-		_G.QuestNPCModelTextFrame:StripTextures()
+		_G.QuestModelScene.ModelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
 		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
@@ -458,7 +459,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetInside(_G.QuestGreetingScrollFrame)
 
-		S:HandleBlizzardRegions(_G.QuestNPCModelTextFrame)
+		S:HandleBlizzardRegions(_G.QuestModelScene.ModelTextFrame)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
@@ -499,7 +500,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene:Height(247)
 	_G.QuestModelScene:StripTextures()
 	_G.QuestModelScene:CreateBackdrop('Transparent')
-	_G.QuestNPCModelTextFrame:CreateBackdrop('Transparent')
+	_G.QuestModelScene.ModelTextFrame:CreateBackdrop('Transparent')
 
 	_G.QuestNPCModelNameText:ClearAllPoints()
 	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
@@ -507,8 +508,8 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestNPCModelText:SetJustifyH('CENTER')
 	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
-	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestNPCModelTextFrame, 2, -2)
-	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestNPCModelTextFrame, -10, 6)
+	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestModelScene.ModelTextFrame, 2, -2)
+	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestModelScene.ModelTextFrame, -10, 6)
 	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
 
 	S:HandleTrimScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)

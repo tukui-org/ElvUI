@@ -138,7 +138,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
-	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.StreamDropdown)
 
 	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
@@ -163,7 +163,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
-	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
+	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropdown)
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(s)
 		s.ShowNotificationsButton:Size(20, 20)
@@ -240,8 +240,9 @@ function S:Blizzard_Communities()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
+	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:ClearAllPoints() -- FIX ME 11.0 Is this DropDown trolling us?
+	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:Point('LEFT', ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown, 'RIGHT', 3, 0)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
 	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
@@ -311,7 +312,7 @@ function S:Blizzard_Communities()
 	ColumnDisplay.InsetBorderTop:Hide()
 
 	S:HandleInsetFrame(MemberList.InsetFrame)
-	S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu)
+	--S:HandleDropDownBox(CommunitiesFrame.GuildMemberListDropDownMenu) FIX ME 11.0
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
@@ -505,7 +506,7 @@ function S:Blizzard_Communities()
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
 	NotificationSettings.Selector:StripTextures()
 	S:HandleFrame(NotificationSettings)
-	S:HandleDropDownBox(NotificationSettings.CommunitiesListDropDownMenu, 190)
+	S:HandleDropDownBox(NotificationSettings.CommunitiesListDropdown, 190)
 	S:HandleCheckBox(NotificationSettings.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.AllButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.NoneButton)
@@ -521,7 +522,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(EditStreamDialog.NameEdit)
 	EditStreamDialog.NameEdit:Size(280, 20)
 	S:HandleEditBox(EditStreamDialog.Description)
-	S:HandleCheckBox(EditStreamDialog.TypeCheckBox)
+	S:HandleCheckBox(EditStreamDialog.TypeCheckbox)
 
 	S:HandleButton(EditStreamDialog.Accept)
 	S:HandleButton(EditStreamDialog.Cancel)
@@ -575,8 +576,9 @@ function S:Blizzard_Communities()
 	S:HandleButton(TicketManager.Close)
 	S:HandleButton(TicketManager.GenerateLinkButton)
 
-	S:HandleDropDownBox(TicketManager.ExpiresDropDownMenu)
-	S:HandleDropDownBox(TicketManager.UsesDropDownMenu)
+	-- FIX ME 11.0
+	--S:HandleDropDownBox(TicketManager.ExpiresDropDowndown)
+	--S:HandleDropDownBox(TicketManager.UsesDropDowndown)
 
 	S:HandleButton(TicketManager.MaximizeButton)
 

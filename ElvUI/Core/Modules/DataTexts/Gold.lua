@@ -7,7 +7,6 @@ local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
 local _G = _G
-local EasyMenu = EasyMenu
 local GetMoney = GetMoney
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
@@ -153,7 +152,7 @@ local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
 			E:SetEasyMenuAnchor(E.EasyMenu, self)
-			EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+			E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0

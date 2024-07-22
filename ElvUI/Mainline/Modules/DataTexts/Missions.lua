@@ -5,8 +5,7 @@ local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
 
-local EasyMenu = EasyMenu
-local GetMouseFocus = GetMouseFocus
+local GetMouseFoci = GetMouseFoci
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -44,21 +43,25 @@ local ISLANDS_HEADER = ISLANDS_HEADER
 local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
 local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
-local GARRISONFOLLOWERTYPE_6_0_BOAT = Enum.GarrisonFollowerType.FollowerType_6_0_Boat
-local GARRISONFOLLOWERTYPE_6_0 = Enum.GarrisonFollowerType.FollowerType_6_0_GarrisonFollower
-local GARRISONFOLLOWERTYPE_7_0 = Enum.GarrisonFollowerType.FollowerType_7_0_GarrisonFollower
-local GARRISONFOLLOWERTYPE_8_0 = Enum.GarrisonFollowerType.FollowerType_8_0_GarrisonFollower
-local GARRISONFOLLOWERTYPE_9_0 = Enum.GarrisonFollowerType.FollowerType_9_0_GarrisonFollower
-local GARRISONTYPE_6_0 = Enum.GarrisonType.Type_6_0
-local GARRISONTYPE_7_0 = Enum.GarrisonType.Type_7_0
-local GARRISONTYPE_8_0 = Enum.GarrisonType.Type_8_0
-local GARRISONTYPE_9_0 = Enum.GarrisonType.Type_9_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
 local EXPANSION_NAME5 = EXPANSION_NAME5 -- 'Warlords of Draenor'
 local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
+
+local GARRISONTYPE = Enum.GarrisonType
+local GARRISONTYPE_6_0 = GARRISONTYPE.Type_6_0_Garrison or GARRISONTYPE.Type_6_0
+local GARRISONTYPE_7_0 = GARRISONTYPE.Type_7_0_Garrison or GARRISONTYPE.Type_7_0
+local GARRISONTYPE_8_0 = GARRISONTYPE.Type_8_0_Garrison or GARRISONTYPE.Type_8_0
+local GARRISONTYPE_9_0 = GARRISONTYPE.Type_9_0_Garrison or GARRISONTYPE.Type_9_0
+
+local GARRISONFOLLOWER = Enum.GarrisonFollowerType
+local GARRISONFOLLOWER_6_0_BOAT = GARRISONFOLLOWER.FollowerType_6_0_Boat
+local GARRISONFOLLOWER_6_0 = GARRISONFOLLOWER.FollowerType_6_0_GarrisonFollower
+local GARRISONFOLLOWER_7_0 = GARRISONFOLLOWER.FollowerType_7_0_GarrisonFollower
+local GARRISONFOLLOWER_8_0 = GARRISONFOLLOWER.FollowerType_8_0_GarrisonFollower
+local GARRISONFOLLOWER_9_0 = GARRISONFOLLOWER.FollowerType_9_0_GarrisonFollower
 
 local numMissions = 0
 local MAIN_CURRENCY = 2003 -- Dragon Isles Supplies
@@ -199,7 +202,7 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(EXPANSION_NAME8, 1, .5, 0)
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
-	AddInProgressMissions(GARRISONFOLLOWERTYPE_9_0)
+	AddInProgressMissions(GARRISONFOLLOWER_9_0)
 
 	if C_CovenantCallings_AreCallingsUnlocked() then
 		local questNum = 0
@@ -225,7 +228,7 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
-		AddInProgressMissions(GARRISONFOLLOWERTYPE_8_0)
+		AddInProgressMissions(GARRISONFOLLOWER_8_0)
 
 		-- Island Expeditions
 		if E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH) then
@@ -256,7 +259,7 @@ local function OnEnter()
 		DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
 
-		AddInProgressMissions(GARRISONFOLLOWERTYPE_7_0)
+		AddInProgressMissions(GARRISONFOLLOWER_7_0)
 		AddFollowerInfo(GARRISONTYPE_7_0)
 
 		-- 'Loose Work Orders' (i.e. research, equipment)
@@ -282,11 +285,11 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
-		AddInProgressMissions(GARRISONFOLLOWERTYPE_6_0)
+		AddInProgressMissions(GARRISONFOLLOWER_6_0)
 
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
-		AddInProgressMissions(GARRISONFOLLOWERTYPE_6_0_BOAT)
+		AddInProgressMissions(GARRISONFOLLOWER_6_0_BOAT)
 
 		--Buildings
 		data = C_Garrison_GetBuildings(GARRISONTYPE_6_0)
@@ -322,7 +325,7 @@ local function OnClick(self, btn)
 
 	if btn == 'RightButton' then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif _G.ExpansionLandingPageMinimapButton:IsShown() then
 		_G.ExpansionLandingPageMinimapButton:ToggleLandingPage()
 	end
@@ -349,11 +352,11 @@ local function OnEvent(self, event, ...)
 	end
 
 	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' or event == 'GARRISON_MISSION_NPC_CLOSED' or event == 'GARRISON_MISSION_LIST_UPDATE' then
-		numMissions = #C_Garrison_GetCompleteMissions(GARRISONFOLLOWERTYPE_9_0)
-		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWERTYPE_8_0)
-		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWERTYPE_7_0)
-		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWERTYPE_6_0_BOAT)
-		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWERTYPE_6_0)
+		numMissions = #C_Garrison_GetCompleteMissions(GARRISONFOLLOWER_9_0)
+		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWER_8_0)
+		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWER_7_0)
+		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWER_6_0_BOAT)
+		+ #C_Garrison_GetCompleteMissions(GARRISONFOLLOWER_6_0)
 	end
 
 	if numMissions > 0 then
@@ -362,7 +365,7 @@ local function OnEvent(self, event, ...)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and GetMouseFocus() == self then
+	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and GetMouseFoci() == self then
 		OnEnter(self)
 	end
 end

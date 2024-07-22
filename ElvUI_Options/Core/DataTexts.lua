@@ -304,7 +304,9 @@ DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTe
 local function addCurrency(_, value)
 	local currencyID = tonumber(value)
 	if not currencyID then return end
-	local data = DT:RegisterCustomCurrencyDT(currencyID)
+
+	local _, name = DT:CurrencyInfo(currencyID)
+	local data = name and DT:RegisterCustomCurrencyDT(currencyID)
 	if data then
 		CreateDTOptions(currencyID, data)
 		DT:LoadDataTexts()

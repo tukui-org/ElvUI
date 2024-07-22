@@ -44,7 +44,6 @@ local PlaySound = PlaySound
 local GetNumFactions = GetNumFactions
 local GetFactionInfo = GetFactionInfo
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
@@ -147,7 +146,8 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 
 	if messagetype == 'FACTION' then
 		local faction, rep = GetCurrentCombatTextEventInfo()
-		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() and rep > 0 then
+		local data = (rep and rep > 0) and (faction ~= 'Guild') and E:GetWatchedFactionInfo()
+		if data and faction ~= data.name then
 			ExpandAllFactionHeaders()
 
 			for i = 1, GetNumFactions() do

@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 local function SetupMajorFaction(frame)
 	if frame.Divider then frame.Divider:Hide() end
 	if frame.NineSlice then frame.NineSlice:Hide() end
+	if frame.Border then frame.Border:Hide() end
+	if frame.TopLeftBorderDecoration then frame.TopLeftBorderDecoration:Hide() end
+	if frame.TopRightBorderDecoration then frame.TopRightBorderDecoration:Hide() end
 	if frame.Background then frame.Background:Hide() end
 	if frame.BackgroundShadow then frame.BackgroundShadow:Hide() end
 	if frame.CloseButton.Border then frame.CloseButton.Border:Hide() end

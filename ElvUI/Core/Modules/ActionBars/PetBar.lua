@@ -34,7 +34,7 @@ function AB:UpdatePet(event, unit)
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = button.AutoCastable
+		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		-- this one is different
 		local castable = _G[buttonName..'AutoCastable']
@@ -89,7 +89,9 @@ function AB:UpdatePet(event, unit)
 			autoCast:Hide()
 		end
 
-		if autoCastEnabled then
+		if E.Retail then
+			autoCast:ShowAutoCastEnabled(autoCastEnabled)
+		elseif autoCastEnabled then
 			AutoCastShine_AutoCastStart(button.AutoCastShine)
 		else
 			AutoCastShine_AutoCastStop(button.AutoCastShine)
@@ -181,7 +183,8 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = true -- keep over HandleButton
 		end
 
-		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		-- FIX ME 11.0
+		--autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, useMasque, true)
 	end

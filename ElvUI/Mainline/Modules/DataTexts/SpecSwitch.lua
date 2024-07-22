@@ -5,7 +5,6 @@ local _G = _G
 local ipairs, tinsert, tremove = ipairs, tinsert, tremove
 local format, next, strjoin = format, next, strjoin
 
-local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -255,7 +254,7 @@ local function OnClick(self, button)
 
 	if menu then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		EasyMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
+		E:ComplicatedMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

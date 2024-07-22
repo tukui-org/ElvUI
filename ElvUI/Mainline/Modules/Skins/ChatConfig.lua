@@ -66,11 +66,11 @@ function S:ChatConfig()
 		local nameString = frame:GetName()..'CheckBox'
 		for index, value in ipairs(checkBoxTable) do
 			local checkBoxName = nameString..index
-			S:HandleCheckBox(_G[checkBoxName])
+			--S:HandleCheckBox(_G[checkBoxName]) -- FIX ME 11.0
 
 			if value.subTypes then
 				for i in ipairs(value.subTypes) do
-					S:HandleCheckBox(_G[checkBoxName..'_'..i])
+					--S:HandleCheckBox(_G[checkBoxName..'_'..i])  -- FIX ME 11.0
 				end
 			end
 		end
@@ -238,8 +238,9 @@ function S:ChatConfig()
 		end
 	end)
 
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
+	-- FIX ME 11.0
+	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
+	--HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
 end
 
 S:AddCallback('ChatConfig')

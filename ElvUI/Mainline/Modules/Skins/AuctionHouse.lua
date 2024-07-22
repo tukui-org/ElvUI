@@ -13,7 +13,7 @@ local function SkinEditBoxes(Frame)
 end
 
 local function SkinFilterButton(Button)
-	SkinEditBoxes(Button.LevelRangeFrame)
+	--SkinEditBoxes(Button.LevelRangeFrame) -- FIX ME 11.0
 
 	S:HandleCloseButton(Button.ClearFiltersButton)
 	S:HandleButton(Button)
@@ -139,7 +139,7 @@ local function HandleSellFrame(frame)
 		S:HandleEditBox(frame.SecondaryPriceInput.MoneyInputFrame.SilverBox)
 	end
 
-	S:HandleDropDownBox(frame.DurationDropDown.DropDown)
+	S:HandleDropDownBox(frame.Duration.Dropdown)
 	S:HandleButton(frame.PostButton)
 
 	if frame.BuyoutModeCheckButton then

@@ -124,9 +124,9 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.SearchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
 	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
+	S:HandleButton(_G.AchievementFrameFilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	_G.AchievementFrameFilterDropdown:ClearAllPoints()
+	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', -3, 0)
 
 	-- Bottom Tabs
 	for i = 1, 3 do

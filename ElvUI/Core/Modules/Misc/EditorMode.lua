@@ -40,7 +40,8 @@ end
 function EM:PLAYER_REGEN(event)
 	local editMode = _G.EditModeManagerFrame
 	local combatLeave = event == 'PLAYER_REGEN_ENABLED'
-	_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
+	-- FIX ME 11.0
+	--_G.GameMenuButtonEditMode:SetEnabled(combatLeave)
 
 	if combatLeave then
 		if next(hideFrames) then
@@ -122,7 +123,8 @@ function EM:Initialize()
 	_G.EditModeManagerFrame.onCloseCallback = EM.OnClose
 
 	-- keep the button off during combat
-	hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
+	-- Fix ME 11.0
+	--hooksecurefunc(_G.GameMenuButtonEditMode, 'SetEnabled', EM.SetEnabled)
 
 	-- wait for combat leave to do stuff
 	EM:RegisterEvent('EDIT_MODE_LAYOUTS_UPDATED', 'LAYOUTS_UPDATED')

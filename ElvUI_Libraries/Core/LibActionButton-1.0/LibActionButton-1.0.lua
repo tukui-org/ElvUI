@@ -13,6 +13,13 @@ local type, error, tostring, tonumber, assert, select = type, error, tostring, t
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local str_match, format, tinsert, tremove, strsub = string.match, format, tinsert, tremove, strsub
 
+local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
+local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local IsAttackSpell = C_Spell.IsAutoAttackSpell or IsAttackSpell
+local IsAutoRepeatSpell =C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
+local IsPressHoldReleaseSpell = C_Spell.IsPressHoldReleaseSpell or IsPressHoldReleaseSpell
+
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
