@@ -48,7 +48,6 @@ local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
 
-local TokenFrame_Update = TokenFrame_Update
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -2772,9 +2771,9 @@ function B:UpdateBindLines(_, cvar)
 	end
 end
 
-function B:TokenFrame_SetTokenWatched(id, watched)
+function B:TokenFrame_SetTokenWatched(_, id, watched)
 	SetCurrencyBackpack(id, watched)
-	TokenFrame_Update()
+	TokenFrame:Update()
 
 	B:UpdateTokensIfVisible()
 end
@@ -2884,8 +2883,7 @@ function B:Initialize()
 	if E.Cata then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
-		-- Fix ME 11.0
-		--B:RawHook('TokenFrame_SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
+		B:RawHook(TokenFrame, 'SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
 	end
 
 	if E.Retail then
