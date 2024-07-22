@@ -260,10 +260,7 @@ local function UpdateFactionSkins(frame)
 end
 
 local function PaperDollUpdateStats()
-	local _, stats = _G.CharacterStatsPane.statsFramePool:EnumerateActive()
-	if not stats then return end
-
-	for frame in next, stats do
+	for frame in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
 		if not frame.leftGrad then
 			ColorizeStatPane(frame)
 		end
