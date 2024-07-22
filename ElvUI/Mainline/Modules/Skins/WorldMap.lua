@@ -68,27 +68,19 @@ end
 
 local function QuestLogQuests()
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
-		if button.ButtonText then
-			if not button.IsSkinned then
-				button:StripTextures()
-				button:SetTemplate('Transparent')
-				button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-
-				button.IsSkinned = true
-			end
+		if button.ButtonText and not button.IsSkinned then
+			button:StripTextures()
+			button.ButtonText:FontTemplate(nil, 16)
+			button.IsSkinned = true
 		end
 	end
 
 	for button in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
 		if not button.IsSkinned then
-			if button.CheckBox then
-				button.CheckBox:DisableDrawLayer('BACKGROUND')
-				button.CheckBox:CreateBackdrop()
-			end
-
 			--FIX ME 11.0; Use the actual ElvUI Check Skin thing
-			if button.Check then
-				button.Check:SetAtlas('checkmark-minimal')
+			if button.Checkbox then
+				button.Checkbox:DisableDrawLayer('BACKGROUND')
+				button.Checkbox:CreateBackdrop()
 			end
 
 			button.IsSkinned = true
