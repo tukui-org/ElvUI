@@ -2773,7 +2773,7 @@ end
 
 function B:TokenFrame_SetTokenWatched(_, id, watched)
 	SetCurrencyBackpack(id, watched)
-	TokenFrame:Update()
+	_G.TokenFrame:Update()
 
 	B:UpdateTokensIfVisible()
 end
@@ -2883,7 +2883,7 @@ function B:Initialize()
 	if E.Cata then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
-		B:RawHook(TokenFrame, 'SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
+		B:RawHook(_G.TokenFrame, 'SetTokenWatched', 'TokenFrame_SetTokenWatched', true)
 	end
 
 	if E.Retail then
