@@ -68,6 +68,7 @@ local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
 local GetItemSpell = C_Item.GetItemSpell or GetItemSpell
 local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
 local SetCurrencyBackpack = C_CurrencyInfo.SetCurrencyBackpack or SetCurrencyBackpack
+
 local SortBags = C_Container.SortBags or SortBags
 local SortBankBags = C_Container.SortBankBags or SortBankBags
 local SortReagentBankBags = C_Container.SortReagentBankBags or SortReagentBankBags

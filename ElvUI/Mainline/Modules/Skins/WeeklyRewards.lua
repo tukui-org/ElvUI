@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
