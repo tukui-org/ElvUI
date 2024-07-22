@@ -103,6 +103,7 @@ local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
 local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
+local WARBANDBANK_TYPE = Enum.BankType.Account or 2
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -1037,6 +1038,35 @@ function B:CreateFilterIcon(parent)
 	parent.filterIcon:SetShown(false)
 end
 
+function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numContainerColumns)
+	local numContainerRows = 1
+
+	local totalSlots, lastReagentRowButton = 0
+	local bag = f.Bags[bankID]
+	for slotID, slot in ipairs(bag) do
+		totalSlots = totalSlots + 1
+
+		slot:ClearAllPoints()
+		slot:SetSize(buttonSize, buttonSize)
+
+		local prevSlot = bag[slotID - 1]
+		if prevSlot then
+			if (totalSlots - 1) % numContainerColumns == 0 then
+				slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
+				lastReagentRowButton = slot
+				numContainerRows = numContainerRows + 1
+			else
+				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
+			end
+		else
+			slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
+			lastReagentRowButton = slot
+		end
+	end
+
+	return numContainerRows
+end
+
 function B:Layout(isBank)
 	if not E.private.bags.enable then return end
 
@@ -1190,37 +1220,28 @@ function B:Layout(isBank)
 		end
 	end
 
-	if E.Retail and isBank and f.reagentFrame:IsShown() then
-		if not IsReagentBankUnlocked() then
-			f.reagentFrame.cover:Show()
-			B:RegisterEvent('REAGENTBANK_PURCHASED')
-		else
-			f.reagentFrame.cover:Hide()
-		end
-
-		numContainerRows = 1
-
-		local totalSlots, lastReagentRowButton = 0
-		local bag = f.Bags[REAGENTBANK_CONTAINER]
-		for slotID, slot in ipairs(bag) do
-			totalSlots = totalSlots + 1
-
-			slot:ClearAllPoints()
-			slot:SetSize(buttonSize, buttonSize)
-
-			local prevSlot = bag[slotID - 1]
-			if prevSlot then
-				if (totalSlots - 1) % numContainerColumns == 0 then
-					slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
-					lastReagentRowButton = slot
-					numContainerRows = numContainerRows + 1
+	if E.Retail and isBank then
+		local warbandIndex = B.WarbandBanks[B.BankTab]
+		if warbandIndex then
+			local warbandFrame = f['warbandFrame'..warbandIndex]
+			if warbandFrame and warbandFrame:IsShown() then
+				--[[if not C_Bank.CanPurchaseBankTab(WARBANDBANK_TYPE) then
+					warbandFrame.cover:Show()
 				else
-					slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
-				end
-			else
-				slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
-				lastReagentRowButton = slot
+					warbandFrame.cover:Hide()
+				end]]
+
+				numContainerRows = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
 			end
+		elseif B.BankTab == REAGENTBANK_CONTAINER then
+			if not IsReagentBankUnlocked() then
+				f.reagentFrame.cover:Show()
+				B:RegisterEvent('REAGENTBANK_PURCHASED')
+			else
+				f.reagentFrame.cover:Hide()
+			end
+
+			numContainerRows = B:LayoutCustomBank(f, REAGENTBANK_CONTAINER, buttonSize, buttonSpacing, numContainerColumns)
 		end
 	end
 
@@ -1909,6 +1930,27 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bankText:SetText(L["Bank"])
 
 		if E.Retail then
+			do -- warband banks
+				for bankID, bankIndex in next, B.WarbandBanks do
+					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
+				end
+
+				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f)
+				f.warbandToggle:Size(18)
+				f.warbandToggle:SetTemplate()
+				f.warbandToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
+				B:SetButtonTexture(f.warbandToggle, 5855107) -- Warband icon from Reputation
+				f.warbandToggle:StyleButton(nil, true)
+				f.warbandToggle.ttText = L["Show/Hide Warband"]
+				f.warbandToggle:SetScript('OnEnter', B.Tooltip_Show)
+				f.warbandToggle:SetScript('OnLeave', GameTooltip_Hide)
+				f.warbandToggle:SetScript('OnClick', function()
+					PlaySound(841) --IG_CHARACTER_INFO_TAB
+					B:ShowBankTab(f, f.holderFrame:IsShown() and 13)
+					B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+				end)
+			end
+
 			do -- reagent bank
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
 				reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
@@ -1920,7 +1962,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
 				f.reagentToggle:Size(18)
 				f.reagentToggle:SetTemplate()
-				f.reagentToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
+				f.reagentToggle:Point('RIGHT', f.warbandToggle, 'LEFT', -5, 0)
 				B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
 				f.reagentToggle:StyleButton(nil, true)
 				f.reagentToggle.ttText = L["Show/Hide Reagents"]
@@ -1946,12 +1988,6 @@ function B:ConstructContainerFrame(name, isBank)
 					PlaySound(852) --IG_MAINMENU_OPTION
 					DepositReagentBank()
 				end)
-			end
-
-			do -- warband banks
-				for bankID, bankIndex in next, B.WarbandBanks do
-					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
-				end
 			end
 		end
 
@@ -2403,9 +2439,14 @@ function B:ShowBankTab(f, bankTab)
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	else
 		if E.Retail then
-			f.reagentFrame:Hide()
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 			f.bankText:SetText(L["Bank"])
+
+			f.reagentFrame:Hide()
+
+			for _, bankIndex in next, B.WarbandBanks do
+				f['warbandFrame'..bankIndex]:Hide()
+			end
 		end
 
 		f.holderFrame:Show()
@@ -2471,6 +2512,10 @@ function B:OpenBank()
 
 		if E.Retail then
 			B:UpdateBagSlots(B.BankFrame, REAGENTBANK_CONTAINER)
+
+			for bankID in next, B.WarbandBanks do
+				B:UpdateBagSlots(B.BankFrame, bankID)
+			end
 		end
 
 		B.BankFrame.firstOpen = nil
