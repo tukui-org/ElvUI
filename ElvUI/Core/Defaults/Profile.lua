@@ -2685,7 +2685,7 @@ P.actionbar = {
 		mouseover = false,
 		visibility = '[vehicleui] hide;show',
 		frameStrata = 'LOW',
-		frameLevel = 1,
+		frameLevel = 5,
 	},
 	microbar = {
 		enabled = false,
