@@ -12,7 +12,7 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local HasPetUI = HasPetUI
 
-local GetContainerItemID = C_Container.GetContainerItemID or GetContainerItemID
+local GetContainerItemID = C_Container.GetContainerItemID
 local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE

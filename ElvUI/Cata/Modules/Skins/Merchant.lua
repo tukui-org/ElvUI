@@ -9,7 +9,7 @@ local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function merchantItemPoint()
 	S:HandlePointXY(_G.MerchantItem1, 6, -40)

@@ -79,7 +79,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitRace = UnitRace
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
 local GetSpellInfo = C_Spell.GetSpellInfo or GetSpellInfo
 local GetNumSpellTabs = (C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines) or GetNumSpellTabs
 local GetSpellBookItemName = (C_SpellBook and C_SpellBook.GetSpellBookItemName) or GetSpellBookItemName

@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()

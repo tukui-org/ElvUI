@@ -72,8 +72,8 @@ local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTool
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
-local GetItemCount = C_Item.GetItemCount or GetItemCount
+local GetItemQualityColor = C_Item.GetItemQualityColor
+local GetItemCount = C_Item.GetItemCount
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex

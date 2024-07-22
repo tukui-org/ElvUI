@@ -5,7 +5,7 @@ local _G = _G
 local ipairs, unpack = ipairs, unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
 local function Update_InspectPaperDollItemSlotButton(button)

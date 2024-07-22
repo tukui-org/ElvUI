@@ -11,7 +11,7 @@ local GetTradeSkillItemLink = GetTradeSkillItemLink
 local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end

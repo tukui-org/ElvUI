@@ -22,7 +22,7 @@ local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 local GetSpellDescription = C_Spell.GetSpellDescription or GetSpellDescription
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
 local GetCVarBool = C_CVar.GetCVarBool
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')

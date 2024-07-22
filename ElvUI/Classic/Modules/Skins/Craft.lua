@@ -11,7 +11,7 @@ local GetCraftReagentInfo = GetCraftReagentInfo
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 function S:SkinCraft()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
