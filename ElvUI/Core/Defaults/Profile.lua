@@ -2683,7 +2683,9 @@ P.actionbar = {
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
 		mouseover = false,
-		visibility = '[vehicleui] hide;show'
+		visibility = '[vehicleui] hide;show',
+		frameStrata = 'LOW',
+		frameLevel = 1,
 	},
 	microbar = {
 		enabled = false,
