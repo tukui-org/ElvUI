@@ -33,7 +33,7 @@ local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
-local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
+local InviteUnit = C_PartyInfo.InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'

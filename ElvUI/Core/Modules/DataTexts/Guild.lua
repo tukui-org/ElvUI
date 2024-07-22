@@ -22,7 +22,7 @@ local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local IsAltKeyDown = IsAltKeyDown
 
-local InviteUnit = C_PartyInfo.InviteUnit or InviteUnit
+local InviteUnit = C_PartyInfo.InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 local LoadAddOn = C_AddOns.LoadAddOn
 
