@@ -68,7 +68,6 @@ function S:Blizzard_InspectUI()
 	if E.private.skins.parchmentRemoverEnable then
 		_G.InspectGuildFrameBG:Kill()
 		_G.InspectPVPFrame.BG:Kill()
-		_G.InspectTalentFrame:StripTextures()
 	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
