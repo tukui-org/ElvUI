@@ -31,9 +31,8 @@ function S:Blizzard_StableUI()
 	StabledPetList.ListCounter:CreateBackdrop('Transparent')
 
 	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
-
-	--S:HandleButton(StabledPetList.FilterBar.FilterButton) -- FIX ME 11.0
-	--S:HandleCloseButton(StabledPetList.FilterBar.FilterButton.ResetButton) -- FIX ME 11.0
+	S:HandleButton(StableFrame.StabledPetList.FilterBar.FilterDropdown)
+	S:HandleCloseButton(StableFrame.StabledPetList.FilterBar.FilterDropdown.ResetButton)
 
 	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
 
