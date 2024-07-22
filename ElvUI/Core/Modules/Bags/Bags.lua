@@ -2427,8 +2427,15 @@ function B:CloseBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
-function B:SetBankSelectedTab()
-	_G.BankFrame.selectedTab = B.BankTab or 1
+do
+	local TabIndex = { REAGENTBANK_CONTAINER = 2 }
+	for bankID in next, B.WarbandBanks do
+		TabIndex[bankID] = 3
+	end
+
+	function B:SetBankSelectedTab()
+		_G.BankFrame[E.Retail and 'activeTabIndex' or 'selectedTab'] = TabIndex[B.BankTab] or 1
+	end
 end
 
 function B:ShowBankTab(f, bankTab)
