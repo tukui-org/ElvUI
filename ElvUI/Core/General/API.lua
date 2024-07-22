@@ -277,7 +277,7 @@ do
 	end
 end
 
-do
+do	-- backwards compatibility for GetSpellInfo
 	local GetSpellInfo = GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 	function E:GetSpellInfo(spellID)

@@ -15,9 +15,8 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 local OKAY = OKAY
 local _G = _G
 
--- backwards compatible
 local GetSpellInfo
-do
+do	-- backwards compatibility for GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 	GetSpellInfo = function(spellID)
 		if not spellID then return end

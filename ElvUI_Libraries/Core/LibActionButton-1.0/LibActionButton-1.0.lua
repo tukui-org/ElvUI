@@ -25,9 +25,8 @@ local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 
--- backwards compatible
 local GetSpellInfo
-do
+do	-- backwards compatibility for GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 	GetSpellInfo = function(spellID)
 		if not spellID then return end

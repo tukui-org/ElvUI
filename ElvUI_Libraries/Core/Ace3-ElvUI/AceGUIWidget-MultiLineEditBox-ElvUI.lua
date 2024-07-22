@@ -9,9 +9,8 @@ local _G, pairs = _G, pairs
 local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
 
--- backwards compatible
 local GetSpellInfo
-do
+do	-- backwards compatibility for GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 	GetSpellInfo = function(spellID)
 		if not spellID then return end

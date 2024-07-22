@@ -940,7 +940,7 @@ function oUF:GetAuraData(unitToken, index, filter)
 	end
 end
 
-do
+do	-- backwards compatibility for GetSpellInfo
 	local GetSpellInfo = GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 	function oUF:GetSpellInfo(spellID)
