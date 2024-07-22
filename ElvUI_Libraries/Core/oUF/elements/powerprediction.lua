@@ -105,7 +105,8 @@ local function Update(self, event, unit)
 			end
 		end
 	elseif(spellID) then
-		-- if we try to cast a spell while casting another one we need to avoid resetting the element
+		-- if we try to cast a spell while casting another one we need to avoid
+		-- resetting the element
 		mainCost = element.mainCost or 0
 		altCost = element.altCost or 0
 	else

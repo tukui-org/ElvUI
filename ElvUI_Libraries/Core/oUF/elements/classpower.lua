@@ -164,7 +164,7 @@ local function Update(self, event, unit, powerType)
 	* max           - the maximum amount of power (number)
 	* hasMaxChanged - indicates whether the maximum amount has changed since the last update (boolean)
 	* powerType     - the active power type (string)
-	* chargedTable  - current chargedPoints table
+	* ...           - the indices of currently charged power points, if any
 	--]]
 	if(element.PostUpdate) then
 		return element:PostUpdate(cur, max, oldMax ~= max, powerType, chargedPoints)  -- ElvUI uses chargedPoints as table

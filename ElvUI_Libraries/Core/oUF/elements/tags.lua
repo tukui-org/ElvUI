@@ -952,7 +952,8 @@ oUF.Tags = {
 	RefreshMethods = function(_, tag)
 		if(not tag) then return end
 
-		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match.
+		-- if a tag's name contains magic chars, there's a chance that string.match will fail to
+		-- find the match
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for bracket in next, bracketFuncs do
@@ -980,7 +981,8 @@ oUF.Tags = {
 	RefreshEvents = function(_, tag)
 		if(not tag) then return end
 
-		-- If a tag's name contains magic chars, there's a chance that string.match will fail to find the match.
+		-- if a tag's name contains magic chars, there's a chance that string.match will fail to
+		-- find the match
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for tagstr in next, tagStringFuncs do

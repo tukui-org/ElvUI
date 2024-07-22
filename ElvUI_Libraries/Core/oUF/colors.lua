@@ -36,7 +36,7 @@ local colorMixin = {
 }
 
 --[[ Colors: oUF:CreateColor(r, g, b[, a])
-Wrapper for [SharedXML\Color.lua's ColorMixin](https://wowpedia.fandom.com/wiki/ColorMixin), extended to support indexed colors used in oUF, as
+Wrapper for [SharedXML\Color.lua's ColorMixin](https://warcraft.wiki.gg/wiki/ColorMixin), extended to support indexed colors used in oUF, as
 well as extra methods for dealing with atlases.
 
 The rgb values can be either normalized (0-1) or bytes (0-255).

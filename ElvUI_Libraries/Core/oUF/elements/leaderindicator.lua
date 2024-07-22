@@ -59,7 +59,7 @@ local function Update(self, event)
 	-- end block
 
 	if(isLeader) then
-       if(isInLFGInstance) then
+		if(isInLFGInstance) then
 			element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
 			element:SetTexCoord(0, 0.296875, 0.015625, 0.3125)
 		else

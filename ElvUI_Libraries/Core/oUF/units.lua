@@ -235,7 +235,7 @@ function oUF:HandleEventlessUnit(object)
 	-- Remove it, in case it's already registered with any timer
 	for _, objects in next, eventlessObjects do
 		for i, obj in next, objects do
-			if obj == object then
+			if(obj == object) then
 				table.remove(objects, i)
 				break
 			end

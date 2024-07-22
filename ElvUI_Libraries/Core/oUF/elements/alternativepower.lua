@@ -22,6 +22,7 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
 .colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
+                     defined by the first return of [UnitThreatSituation](https://warcraft.wiki.gg/wiki/API_UnitThreatSituation) (boolean)
 .colorPower        - Use `self.colors.power[token]` to color the bar based on the unit's alternative power type
                      (boolean)
 .colorClass        - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
@@ -55,7 +56,7 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
--- sourced from FrameXML/UnitPowerBarAlt.lua
+-- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local ALTERNATE_POWER_NAME = 'ALTERNATE'
 local GameTooltip = GameTooltip
