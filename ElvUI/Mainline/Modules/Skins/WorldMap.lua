@@ -68,7 +68,7 @@ end
 
 -- FIX ME 11.0 look at me plx
 local function QuestLogQuests()
-	for button in QuestScrollFrame.headerFramePool:EnumerateActive() do
+	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if button.ButtonText then
 			if not button.IsSkinned then
 				button:StripTextures()
@@ -80,7 +80,7 @@ local function QuestLogQuests()
 		end
 	end
 
-	for button in QuestScrollFrame.titleFramePool:EnumerateActive() do
+	for button in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
 		if not button.IsSkinned then
 			if button.CheckBox then
 				button.CheckBox:DisableDrawLayer('BACKGROUND')
@@ -94,7 +94,7 @@ local function QuestLogQuests()
 		end
 	end
 
-	for header in QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
+	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
 		if header.CollapseButton and not header.IsSkinned then
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			header:StripTextures()
@@ -179,8 +179,8 @@ function S:WorldMapFrame()
 
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
-	QuestScrollBar:Point('TOPLEFT', QuestDetailFrame, 'TOPRIGHT', 4, -15)
-	QuestScrollBar:Point('BOTTOMLEFT', QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
+	QuestScrollBar:Point('TOPLEFT', _G.QuestDetailFrame, 'TOPRIGHT', 4, -15)
+	QuestScrollBar:Point('BOTTOMLEFT', _G.QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)

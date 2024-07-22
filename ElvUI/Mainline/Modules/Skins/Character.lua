@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack, next = unpack, next
-local pairs, select = pairs, select
 local hooksecurefunc = hooksecurefunc
 local CreateColor = CreateColor
 
@@ -20,8 +19,8 @@ local showInsetBackdrop = {
 
 -- FIX ME 11.0 NEEDS SIMPY MAGIC -- Credits NDUI
 local oldAtlas = {
-	['Options_ListExpand_Right'] = 1,
-	['Options_ListExpand_Right_Expanded'] = 1,
+	Options_ListExpand_Right = 1,
+	Options_ListExpand_Right_Expanded = 1
 }
 
 local function updateCollapse(texture, atlas)
@@ -276,7 +275,7 @@ local function PaperDollUpdateStats()
 	local _, stats = _G.CharacterStatsPane.statsFramePool:EnumerateActive()
 	if not stats then return end
 
-	for frame in pairs(stats) do
+	for frame in next, stats do
 		if not frame.leftGrad then
 			ColorizeStatPane(frame)
 		end
@@ -303,7 +302,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar)
 
-	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
+	for _, Slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
@@ -327,7 +326,7 @@ function S:Blizzard_UIPanels_Game()
 	end
 
 	--Give character frame model backdrop it's color back
-	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
+	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
 		local bg = _G['CharacterModelFrameBackground'..corner]
 		if bg then
 			bg:SetDesaturated(false)
@@ -371,11 +370,11 @@ function S:Blizzard_UIPanels_Game()
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	for _, scrollbar in pairs({ _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar }) do
+	for _, scrollbar in next, { _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar } do
 		S:HandleTrimScrollBar(scrollbar)
 	end
 
-	for _, object in pairs(charframe) do
+	for _, object in next, charframe do
 		_G[object]:StripTextures()
 	end
 
@@ -443,7 +442,7 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
-	S:HandleButton(TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 

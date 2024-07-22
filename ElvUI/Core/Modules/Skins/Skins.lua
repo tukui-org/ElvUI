@@ -739,18 +739,14 @@ do
 	end
 end
 
-local arrowDegree = {
-	['up'] = 0,
-	['down'] = 180,
-	['left'] = 90,
-	['right'] = -90,
-}
+do
+	local arrowDegree = { up = 0, down = 180, left = 90, right = -90 }
+	function S:SetupArrow(tex, direction)
+		if not tex then return end
 
-function S:SetupArrow(tex, direction)
-	if not tex then return end
-
-	tex:SetTexture(E.Media.Textures.ArrowUp)
-	tex:SetRotation(rad(arrowDegree[direction]))
+		tex:SetTexture(E.Media.Textures.ArrowUp)
+		tex:SetRotation(rad(arrowDegree[direction]))
+	end
 end
 
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
@@ -798,7 +794,10 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		arrow:Size(10)
 		arrow:ClearAllPoints()
 		arrow:Point('RIGHT', -1, 0)
-		S:SetupArrow(arrow, filterDirection)
+
+		if filterDirection then
+			S:SetupArrow(arrow, filterDirection)
+		end
 	end
 
 	button.IsSkinned = true
@@ -1866,7 +1865,7 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
-			local dropdown = borderBox.IconTypeDropdown -- 11.0 FIX ME (check this if its enough, should be fine tho)
+			local dropdown = borderBox.IconTypeDropdown or (borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu)
 			if dropdown then
 				S:HandleDropDownBox(dropdown)
 			end

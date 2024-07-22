@@ -103,12 +103,9 @@ function S:DressUpFrame()
 	DressUpFrame.OutfitDetailsPanel:DisableDrawLayer('OVERLAY') -- to keep Artwork on the frame
 	DressUpFrame.OutfitDetailsPanel:CreateBackdrop('Transparent')
 	DressUpFrame.OutfitDetailsPanel.ClassBackground:SetAllPoints()
+
 	hooksecurefunc(DressUpFrame.OutfitDetailsPanel, 'Refresh', DetailsPanelRefresh)
 	hooksecurefunc(DressUpFrame, 'ConfigureSize', DressUpConfigureSize)
-
-	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
-	--WardrobeOutfitFrame:StripTextures(true)
-	--WardrobeOutfitFrame:SetTemplate('Transparent')
 
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)

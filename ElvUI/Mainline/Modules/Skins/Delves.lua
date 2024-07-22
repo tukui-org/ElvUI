@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 
 local function HandleButton(button)
 	if button.IsSkinned then return end
@@ -25,6 +26,19 @@ local function HandleOptionSlot(frame, skip)
 
 	if not skip then
 		hooksecurefunc(option.ScrollBox, 'Update', UpdateButton)
+	end
+end
+
+local function SetRewards(frame)
+	for rewardFrame in frame.rewardPool:EnumerateActive() do
+		if not rewardFrame.IsSkinned then
+			rewardFrame:CreateBackdrop('Transparent')
+			rewardFrame.NameFrame:SetAlpha(0)
+			rewardFrame.IconBorder:SetAlpha(0)
+			S:HandleIcon(rewardFrame.Icon)
+
+			rewardFrame.IsSkinned = true
+		end
 	end
 end
 
@@ -54,22 +68,12 @@ function S:Blizzard_DelvesDifficultyPicker()
 	local DifficultyPickerFrame = _G.DelvesDifficultyPickerFrame
 	DifficultyPickerFrame:StripTextures()
 	DifficultyPickerFrame:SetTemplate('Transparent')
+
 	S:HandleCloseButton(DifficultyPickerFrame.CloseButton)
 	S:HandleDropDownBox(DifficultyPickerFrame.Dropdown)
 	S:HandleButton(DifficultyPickerFrame.EnterDelveButton)
 
-	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame, 'SetRewards', function(self)
-		for rewardFrame in self.rewardPool:EnumerateActive() do
-			if not rewardFrame.IsSkinned then
-				rewardFrame:CreateBackdrop('Transparent')
-				rewardFrame.NameFrame:SetAlpha(0)
-				rewardFrame.IconBorder:SetAlpha(0)
-				S:HandleIcon(rewardFrame.Icon)
-
-				rewardFrame.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame, 'SetRewards', SetRewards)
 end
 
 S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')

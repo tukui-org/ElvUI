@@ -61,7 +61,7 @@ function S:Blizzard_TrainerUI()
 	end)
 
 	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
-	S:HandleButton(_G.ClassTrainerFrame.FilterDropdown) -- FIX ME 11.0 This is more a button now
+	S:HandleButton(_G.ClassTrainerFrame.FilterDropdown)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
 	ClassTrainerFrame:SetTemplate('Transparent')

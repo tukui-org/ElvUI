@@ -5,8 +5,8 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local next, unpack = next, unpack
 local ipairs, pairs = ipairs, pairs
+local select, strfind = select, strfind
 local hooksecurefunc = hooksecurefunc
-local strfind = strfind
 
 local CreateFrame = CreateFrame
 local PlayerHasToy = PlayerHasToy

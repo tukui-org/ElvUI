@@ -15,7 +15,6 @@ local function HandleNextPrev(button)
 end
 
 local function SetSelectedCategory(list)
-	-- FIX ME 11.0: does not apply on first show
 	if list.selectionPopoutPool then
 		for frame in list.selectionPopoutPool:EnumerateActive() do
 			if not frame.IsSkinned then

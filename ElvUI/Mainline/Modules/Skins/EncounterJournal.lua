@@ -31,6 +31,7 @@ local function ReskinHeader(header)
 	for i = 4, 18 do
 		select(i, header.button:GetRegions()):SetTexture()
 	end
+
 	HandleButton(header.button)
 
 	header.descriptionBG:SetAlpha(0)
@@ -71,6 +72,7 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 			for i = 4, 18 do
 				select(i, header.button:GetRegions()):SetTexture()
 			end
+
 			ReskinHeader(header)
 			HandleButton(header.button)
 

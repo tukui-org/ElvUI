@@ -55,24 +55,6 @@ local function UpdateSpecFrame(frame)
 	end
 end
 
-local function HandleTextColor(self)
-	for _, button in self:EnumerateFrames() do
-		if not button.IsSkinned then
-			if button.Text then
-				button.Text:SetTextColor(1, .8, 0)
-				button.Text:SetShadowOffset(1, -1) -- Looks better with a lite shadow
-			end
-			if button.Name then
-				button.Name:SetTextColor(1, 1, 1)
-			end
-			if button.SubName then
-				button.SubName:SetTextColor(.7, .7, .7)
-			end
-			button.IsSkinned = true
-		end
-	end
-end
-
 local function HandleHeroTalents(frame)
 	if not frame then return end
 

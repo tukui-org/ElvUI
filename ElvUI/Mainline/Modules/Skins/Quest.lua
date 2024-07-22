@@ -383,6 +383,7 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
 	hooksecurefunc('QuestLogQuests_Update', S.QuestLogQuests_Update) -- Skin the Plus Minus buttons in the QuestLog
+
 	-- Fix Me 11.0
 	--hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
 

@@ -8,10 +8,6 @@ local function GetOpacity()
 	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
 end
 
-local function InitializeOptionsDropDown()
-	_G.BattlefieldMapTab:InitializeOptionsDropDown()
-end
-
 local function setBackdropAlpha()
 	if _G.BattlefieldMapFrame.backdrop then
 		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())

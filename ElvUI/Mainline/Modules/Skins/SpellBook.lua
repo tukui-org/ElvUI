@@ -86,12 +86,13 @@ function S:Blizzard_ProfessionsBook()
 		button.missingHeader:SetTextColor(1, 1, 0)
 
 		--[[ FIX ME 11.0
-		if E.private.skins.parchmentRemoverEnable then
-			button.missingText:SetTextColor(1, 1, 1)
-		else
-			button.missingText:SetTextColor(0, 0, 0)
-		end
+			if E.private.skins.parchmentRemoverEnable then
+				button.missingText:SetTextColor(1, 1, 1)
+			else
+				button.missingText:SetTextColor(0, 0, 0)
+			end
 		]]
+
 		button.missingText:SetTextColor(1, 1, 1)
 
 		local a, b, c, _, e = button.statusBar:GetPoint()
