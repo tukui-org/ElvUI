@@ -550,9 +550,8 @@ function S:Blizzard_Communities()
 	S:HandleButton(TicketManager.Close)
 	S:HandleButton(TicketManager.GenerateLinkButton)
 
-	-- FIX ME 11.0
-	--S:HandleDropDownBox(TicketManager.ExpiresDropDowndown)
-	--S:HandleDropDownBox(TicketManager.UsesDropDowndown)
+	S:HandleDropDownBox(TicketManager.ExpiresDropdown)
+	S:HandleDropDownBox(TicketManager.UsesDropdown)
 
 	S:HandleButton(TicketManager.MaximizeButton)
 
