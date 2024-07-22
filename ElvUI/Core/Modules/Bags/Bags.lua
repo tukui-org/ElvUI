@@ -2793,24 +2793,34 @@ B.QuestKeys = {
 }
 
 B.AutoToggleEvents = {
-	auctionHouse = { AUCTION_HOUSE_SHOW = 'OpenBags', AUCTION_HOUSE_CLOSED = 'CloseBags' },
-	professions = { TRADE_SKILL_SHOW = 'OpenBags', TRADE_SKILL_CLOSE = 'CloseBags' },
-	trade = { TRADE_SHOW = 'OpenBags', TRADE_CLOSED = 'CloseBags' },
+	AUCTION_HOUSE_SHOW = 'auctionHouse',
+	AUCTION_HOUSE_CLOSED = 'auctionHouse',
+	TRADE_SKILL_SHOW = 'professions',
+	TRADE_SKILL_CLOSE = 'professions',
+	TRADE_SHOW = 'trade',
+	TRADE_CLOSED = 'trade'
+}
+
+B.AutoToggleClose = {
+	AUCTION_HOUSE_CLOSED = true,
+	TRADE_SKILL_CLOSE = true,
+	TRADE_CLOSED = true,
 }
 
 if E.Retail then
-	B.AutoToggleEvents.soulBind = { SOULBIND_FORGE_INTERACTION_STARTED = 'OpenBags', SOULBIND_FORGE_INTERACTION_ENDED = 'CloseBags' }
+	B.AutoToggleEvents.SOULBIND_FORGE_INTERACTION_STARTED = 'soulBind'
+	B.AutoToggleEvents.SOULBIND_FORGE_INTERACTION_ENDED = 'soulBind'
+	B.AutoToggleClose.SOULBIND_FORGE_INTERACTION_ENDED = true
 end
 
-function B:AutoToggle()
-	for option, eventTable in next, B.AutoToggleEvents do
-		for event, func in next, eventTable do
-			if B.db.autoToggle[option] then
-				B:RegisterEvent(event, func)
-			else
-				B:UnregisterEvent(event)
-			end
-		end
+function B:AutoToggleFunction()
+	local option = B.AutoToggleEvents[self]
+	if not option then return end
+
+	if B.db.autoToggle[option] and not B.AutoToggleClose[self] then
+		B:OpenBags()
+	else
+		B:CloseBags()
 	end
 end
 
@@ -2979,7 +2989,9 @@ function B:Initialize()
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 	B:RegisterEvent('CVAR_UPDATE', 'UpdateBindLines')
 
-	B:AutoToggle()
+	for event in next, B.AutoToggleEvents do
+		B:RegisterEvent(event, B.AutoToggleFunction)
+	end
 
 	--Enable/Disable 'Loot to Leftmost Bag'
 	SetInsertItemsLeftToRight(B.db.reverseLoot)
