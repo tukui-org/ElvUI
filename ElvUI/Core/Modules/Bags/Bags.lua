@@ -115,7 +115,7 @@ local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
 local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
-local WARBANDBANK_TYPE = Enum.BankType.Account or 2
+local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBANDBANK_OFFSET = 30
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
