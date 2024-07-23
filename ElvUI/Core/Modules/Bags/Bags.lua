@@ -1772,6 +1772,11 @@ function B:Warband_OnLeave()
 	GameTooltip:Hide()
 end
 
+function B:Warband_PanelCheckbox(checkbox)
+	S:HandleCheckBox(checkbox)
+	checkbox:Size(22)
+end
+
 function B:Warband_AccountPanel(bagID)
 	local tabIndex = B:Warband_GetTabIndex(bagID)
 	local bankPanel = tabIndex and _G.BANK_PANELS[tabIndex]
@@ -1790,15 +1795,6 @@ function B:Warband_AccountPanel(bagID)
 			tabMenu:SetParent(_G.UIParent)
 			tabMenu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 
-			local checkBoxes = {
-				tabMenu.DepositSettingsMenu.AssignEquipmentCheckbox,
-				tabMenu.DepositSettingsMenu.AssignConsumablesCheckbox,
-				tabMenu.DepositSettingsMenu.AssignProfessionGoodsCheckbox,
-				tabMenu.DepositSettingsMenu.AssignReagentsCheckbox,
-				tabMenu.DepositSettingsMenu.AssignJunkCheckbox,
-				tabMenu.DepositSettingsMenu.IgnoreCleanUpCheckbox,
-			}
-
 			tabMenu:ClearAllPoints()
 			local point = E:GetScreenQuadrant(B.BankFrame)
 			if strfind(point, 'LEFT') then
@@ -1814,12 +1810,17 @@ function B:Warband_AccountPanel(bagID)
 
 			if not tabMenu.IsSkinned then
 				S:HandleIconSelectionFrame(tabMenu)
-				S:HandleDropDownBox(tabMenu.DepositSettingsMenu.ExpansionFilterDropdown, 120)
 
-				for _, checkBox in pairs(checkBoxes) do
-					if checkBox then
-						S:HandleCheckBox(checkBox)
-					end
+				local deposit = tabMenu.DepositSettingsMenu
+				if deposit then
+					S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
+
+					B:Warband_PanelCheckbox(deposit.AssignEquipmentCheckbox)
+					B:Warband_PanelCheckbox(deposit.AssignConsumablesCheckbox)
+					B:Warband_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
+					B:Warband_PanelCheckbox(deposit.AssignReagentsCheckbox)
+					B:Warband_PanelCheckbox(deposit.AssignJunkCheckbox)
+					B:Warband_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
 				end
 
 				tabMenu.IsSkinned = true
