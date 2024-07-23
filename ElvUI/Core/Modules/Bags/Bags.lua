@@ -1785,6 +1785,7 @@ function B:Warband_AccountPanel(bagID)
 		local tabMenu = accountPanel.TabSettingsMenu
 		if tabMenu then
 			tabMenu:SetParent(_G.UIParent)
+			tabMenu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 			tabMenu:ClearAllPoints()
 			tabMenu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
 			tabMenu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
