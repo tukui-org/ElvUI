@@ -1773,7 +1773,7 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 	-- holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 
 	if index == 1 then
-		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
+		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 30)
 	elseif f.WarbandHolder[index - 1] then
 		holder:Point('LEFT', f.WarbandHolder[index - 1], 'RIGHT', 4, 0)
 	end
@@ -1863,7 +1863,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	end
 
 	if index == 1 then
-		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
+		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, (isBank and 25 or 0) + 5)
 	else
 		holder:Point('LEFT', f.ContainerHolder[index - 1], 'RIGHT', 4, 0)
 	end
@@ -1990,7 +1990,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 
 	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
-	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
+	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, (isBank and 25 or 0) + 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
 	f.ContainerHolder.totalBags = #f.BagIDs
@@ -2067,33 +2067,17 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bankText:SetText(L["Bank"])
 
 		if E.Retail then
-			do -- warband banks
-				f.WarbandHolder = CreateFrame('Button', name..'WarbandHolder', f)
-				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
-				f.WarbandHolder:SetTemplate('Transparent')
-				f.WarbandHolder:Hide()
-				f.WarbandHolder.totalBags = 5
-				f.WarbandHolderByBagID = {}
-
-				for bankIndex, bankID in next, B.WarbandIndexs do
-					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
-
-					local holder = B:ConstructContainerWarband(f, bankID, bankIndex, 'ElvUIWarbandBankFrame')
-					f.WarbandHolderByBagID[bankID] = holder
-				end
-
-				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f)
-				f.warbandToggle:Size(20)
-				f.warbandToggle:SetTemplate()
-				f.warbandToggle:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
-				B:SetButtonTexture(f.warbandToggle, 5855107, 0.05, 0.325, 0.25, 0.75) -- Warband icon from Reputation: Interface\Warbands\UIWarbandsIcons2x
-				f.warbandToggle:StyleButton(nil, true)
-				f.warbandToggle.ttText = L["Show/Hide Warband"]
-				f.warbandToggle:SetScript('OnEnter', B.Tooltip_Show)
-				f.warbandToggle:SetScript('OnLeave', GameTooltip_Hide)
-				f.warbandToggle:SetScript('OnClick', function()
-					B:SelectBankTab(f, 13)
+			do -- main bank button
+				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
+				f.bankToggle:Size(100, 23)
+				f.bankToggle:SetText(L["Bank"])
+				f.bankToggle.Text:SetTextColor(1, 1, 1)
+				f.bankToggle:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 2)
+				f.bankToggle:SetScript('OnClick', function()
+					B:SelectBankTab(f, BANK_CONTAINER)
 				end)
+
+				S:HandleButton(f.bankToggle)
 			end
 
 			do -- reagent bank
@@ -2106,24 +2090,21 @@ function B:ConstructContainerFrame(name, isBank)
 					StaticPopup_Show('CONFIRM_BUY_REAGENTBANK_TAB')
 				end)
 
-				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
-				f.reagentToggle:Size(20)
-				f.reagentToggle:SetTemplate()
-				f.reagentToggle:Point('RIGHT', f.warbandToggle, 'LEFT', -5, 0)
-				B:SetButtonTexture(f.reagentToggle, 132854) -- Interface\ICONS\INV_Enchant_DustArcane
-				f.reagentToggle:StyleButton(nil, true)
-				f.reagentToggle.ttText = L["Show/Hide Reagents"]
-				f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
-				f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
+				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'UIPanelButtonTemplate')
+				f.reagentToggle:Size(100, 23)
+				f.reagentToggle:SetText(L["Reagents"])
+				f.reagentToggle:Point('LEFT', f.bankToggle, 'RIGHT', 5, 0)
 				f.reagentToggle:SetScript('OnClick', function()
 					B:SelectBankTab(f, REAGENTBANK_CONTAINER)
 				end)
+
+				S:HandleButton(f.reagentToggle)
 
 				--Deposite Reagents Button
 				f.depositButton = CreateFrame('Button', name..'DepositButton', f)
 				f.depositButton:Size(20)
 				f.depositButton:SetTemplate()
-				f.depositButton:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+				f.depositButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 				B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
 				f.depositButton:StyleButton(nil, true)
 				f.depositButton.ttText = L["Deposit Reagents"]
@@ -2133,6 +2114,32 @@ function B:ConstructContainerFrame(name, isBank)
 					PlaySound(852) --IG_MAINMENU_OPTION
 					DepositReagentBank()
 				end)
+			end
+
+			do -- warband banks
+				f.WarbandHolder = CreateFrame('Button', name..'WarbandHolder', f)
+				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 26)
+				f.WarbandHolder:SetTemplate('Transparent')
+				f.WarbandHolder:Hide()
+				f.WarbandHolder.totalBags = 5
+				f.WarbandHolderByBagID = {}
+
+				for bankIndex, bankID in next, B.WarbandIndexs do
+					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
+
+					local holder = B:ConstructContainerWarband(f, bankID, bankIndex, 'ElvUIWarbandBankFrame')
+					f.WarbandHolderByBagID[bankID] = holder
+				end
+
+				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f, 'UIPanelButtonTemplate')
+				f.warbandToggle:Size(100, 23)
+				f.warbandToggle:SetText(L["Warband"])
+				f.warbandToggle:Point('LEFT', f.reagentToggle, 'RIGHT', 5, 0)
+				f.warbandToggle:SetScript('OnClick', function()
+					B:SelectBankTab(f, 13)
+				end)
+
+				S:HandleButton(f.warbandToggle)
 			end
 		end
 
@@ -2560,15 +2567,38 @@ do
 		TabIndex[bankID] = 3
 	end
 
+	local activeTab = E.Retail and 'activeTabIndex' or 'selectedTab'
 	function B:SetBankSelectedTab()
-		_G.BankFrame[E.Retail and 'activeTabIndex' or 'selectedTab'] = TabIndex[B.BankTab] or 1
+		local tab = TabIndex[B.BankTab] or 1
+
+		_G.BankFrame[activeTab] = tab
+
+		return tab
+	end
+
+	function B:GetBankSelectedTab()
+		return _G.BankFrame[activeTab]
+	end
+end
+
+function B:SetBankTabColor(button, activeTab, currentTab)
+	if activeTab == currentTab then
+		button.Text:SetTextColor(1, 1, 1)
+	else
+		button.Text:SetTextColor(1, 0.81, 0)
 	end
 end
 
 function B:SelectBankTab(f, bagID)
+	if B.BankTab == bagID then return end
+
 	PlaySound(841) -- IG_CHARACTER_INFO_TAB
-	B:ShowBankTab(f, B.BankTab ~= bagID and bagID)
-	B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+	B:ShowBankTab(f, bagID)
+
+	local activeTab = B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+	B:SetBankTabColor(f.bankToggle, activeTab, 1)
+	B:SetBankTabColor(f.reagentToggle, activeTab, 2)
+	B:SetBankTabColor(f.warbandToggle, activeTab, 3)
 end
 
 function B:Warband_UpdateIcon(f, bankID, data)
