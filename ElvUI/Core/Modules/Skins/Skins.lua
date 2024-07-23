@@ -977,16 +977,19 @@ do
 		if thumb then
 			thumb:DisableDrawLayer('ARTWORK')
 			thumb:DisableDrawLayer('BACKGROUND')
-			thumb:CreateBackdrop('Transparent')
-			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
+
+			if not thumb.backdrop then
+				thumb:CreateBackdrop('Transparent')
+
+				thumb:HookScript('OnEnter', ThumbOnEnter)
+				thumb:HookScript('OnLeave', ThumbOnLeave)
+				thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
+				thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
+			end
 
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
-
-			thumb:HookScript('OnEnter', ThumbOnEnter)
-			thumb:HookScript('OnLeave', ThumbOnLeave)
-			thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
-			thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
+			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel() + 1)
 		end
 	end
 end
