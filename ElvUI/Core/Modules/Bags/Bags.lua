@@ -46,8 +46,9 @@ local UnitAffectingCombat = UnitAffectingCombat
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
-local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
+local CloseBankFrame = C_Bank.CloseBankFrame or CloseBankFrame
 local FetchPurchasedBankTabData = C_Bank.FetchPurchasedBankTabData
+local AutoDepositItemsIntoBank = C_Bank.AutoDepositItemsIntoBank
 local FetchDepositedMoney = C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank.CanPurchaseBankTab
 
@@ -108,6 +109,7 @@ local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 local WARBANDBANK_TYPE = Enum.BankType.Account or 2
+local WARBANDBANK_OFFSET = 30
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -1078,7 +1080,7 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numContainerCo
 				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 			end
 		else
-			slot:Point('TOPLEFT', f.reagentFrame, 0, -BANK_SPACE_OFFSET)
+			slot:Point('TOPLEFT', f.reagentFrame, 0, -BANK_SPACE_OFFSET - (B.WarbandBanks[bankID] and WARBANDBANK_OFFSET or 0))
 			lastReagentRowButton = slot
 		end
 	end
@@ -1259,7 +1261,7 @@ function B:Layout(isBank)
 	end
 
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (B.WarbandBanks[B.BankTab] and WARBANDBANK_OFFSET or 0) + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -2148,7 +2150,32 @@ function B:ConstructContainerFrame(name, isBank)
 					B:SelectBankTab(f, 13)
 				end)
 
+				f.warbandDeposit = CreateFrame('Button', name..'WarbandDeposit', f, 'UIPanelButtonTemplate')
+				f.warbandDeposit:Hide()
+				f.warbandDeposit:Size(190, 23)
+				f.warbandDeposit:SetText(_G.ACCOUNT_BANK_DEPOSIT_BUTTON_LABEL)
+				f.warbandDeposit:Point('TOPLEFT', f.bankToggle, 'BOTTOMLEFT', 0, -5)
+				f.warbandDeposit:SetScript('OnClick', function()
+					PlaySound(852) --IG_MAINMENU_OPTION
+					AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
+				end)
+
+				f.warbandReagents = CreateFrame('CheckButton', name..'WarbandReagents', f, 'UICheckButtonTemplate')
+				f.warbandReagents:Hide()
+				f.warbandReagents:Size(30)
+				f.warbandReagents:Point('LEFT', f.warbandDeposit, 'RIGHT', 5, 0)
+				f.warbandReagents:SetChecked(GetCVarBool('bankAutoDepositReagents'))
+				f.warbandReagents:SetScript('OnClick', function(checkButton)
+					E:SetCVar('bankAutoDepositReagents', checkButton:GetChecked())
+				end)
+
+				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
+				f.warbandReagents.Text:SetText(_G.BANK_DEPOSIT_INCLUDE_REAGENTS_CHECKBOX_LABEL)
+				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
+
 				S:HandleButton(f.warbandToggle)
+				S:HandleButton(f.warbandDeposit)
+				S:HandleCheckBox(f.warbandReagents)
 			end
 
 			do -- account bank gold
@@ -2603,6 +2630,12 @@ do
 	end
 end
 
+function B:SetBankTabs(f)
+	local activeTab = B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+	B:SetBankTabColor(f.bankToggle, activeTab, 1)
+	B:SetBankTabColor(f.reagentToggle, activeTab, 2)
+	B:SetBankTabColor(f.warbandToggle, activeTab, 3)
+end
 function B:SetBankTabColor(button, activeTab, currentTab)
 	if activeTab == currentTab then
 		button.Text:SetTextColor(1, 1, 1)
@@ -2616,11 +2649,7 @@ function B:SelectBankTab(f, bagID)
 
 	PlaySound(841) -- IG_CHARACTER_INFO_TAB
 	B:ShowBankTab(f, bagID)
-
-	local activeTab = B:SetBankSelectedTab() -- the hook doesnt trigger by this button
-	B:SetBankTabColor(f.bankToggle, activeTab, 1)
-	B:SetBankTabColor(f.reagentToggle, activeTab, 2)
-	B:SetBankTabColor(f.warbandToggle, activeTab, 3)
+	B:SetBankTabs(f)
 end
 
 function B:Warband_UpdateIcon(f, bankID, data)
@@ -2693,6 +2722,8 @@ function B:ShowBankTab(f, bankTab)
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Show()
+		f.warbandDeposit:Show()
+		f.warbandReagents:Show()
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2710,6 +2741,8 @@ function B:ShowBankTab(f, bankTab)
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Hide()
+		f.warbandDeposit:Hide()
+		f.warbandReagents:Hide()
 	else
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
@@ -2728,6 +2761,8 @@ function B:ShowBankTab(f, bankTab)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Hide()
+		f.warbandDeposit:Hide()
+		f.warbandReagents:Hide()
 	end
 
 	if previousTab ~= B.BankTab then
@@ -2783,6 +2818,7 @@ function B:OpenBank()
 	-- allow opening reagent tab directly by holding Shift
 	-- keep this over update slots for bank slot assignments
 	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown() and (B.BankTab ~= REAGENTBANK_CONTAINER) and REAGENTBANK_CONTAINER)
+	B:SetBankTabs(B.BankFrame)
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame, true)
