@@ -693,13 +693,15 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.searchOverlay:SetShown(false)
 	end
 
-	if slot.spellID then
-		B:UpdateCooldown(slot)
-		slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
-	else
-		slot.Cooldown:Hide()
-		slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
-		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
+	if slot.Cooldown then
+		if slot.spellID then
+			B:UpdateCooldown(slot)
+			slot:RegisterEvent('SPELL_UPDATE_COOLDOWN')
+		else
+			slot.Cooldown:Hide()
+			slot:UnregisterEvent('SPELL_UPDATE_COOLDOWN')
+			SetItemButtonTextureVertexColor(slot, 1, 1, 1)
+		end
 	end
 
 	if E.Retail then
@@ -861,6 +863,8 @@ function B:UpdateCooldown(slot)
 	end
 
 	local cd = slot.Cooldown
+	if not cd then return end
+
 	if duration and duration > 0 and enabled == 1 then
 		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
 		if newStart or newDuration then
@@ -2305,7 +2309,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	local warbandIndex = B.WarbandBanks[bagID]
 	local slotName = (isReagent and ('ElvUIReagentBankFrameItem'..slotID)) or (warbandIndex and ('ElvUIWarbandBankFrame'..warbandIndex..'Item'..slotID)) or (bag.name..'Slot'..slotID)
 	local parent = (isReagent and f.reagentFrame) or (warbandIndex and f['warbandFrame'..warbandIndex]) or bag
-	local inherit = (bagID == BANK_CONTAINER or isReagent or warbandIndex) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
+	local inherit = (warbandIndex and 'BankItemButtonTemplate') or (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
 	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
 	slot:StyleButton()
@@ -2373,7 +2377,11 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.keyringTexture:SetDesaturated(true)
 	end
 
-	if isReagent then -- mimic ReagentBankItemButtonGenericTemplate
+	if warbandIndex then
+		slot.bankTabID = bagID
+		slot.containerSlotID = slotID
+		slot.isWarband = true
+	elseif isReagent then -- mimic ReagentBankItemButtonGenericTemplate
 		slot.GetInventorySlot = ReagentButtonInventorySlot
 		slot.SplitStack = B.ReagentSplitStack
 		slot.isReagent = true
@@ -2389,8 +2397,10 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.Cooldown = _G[slotName..'Cooldown']
-	slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
-	E:RegisterCooldown(slot.Cooldown, 'bags')
+	if slot.Cooldown then
+		slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
+		E:RegisterCooldown(slot.Cooldown, 'bags')
+	end
 
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
