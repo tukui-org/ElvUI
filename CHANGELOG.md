@@ -1,3 +1,9 @@
+### Version 13.71 [ July 23rd 2024 ]
+*   The War Within patch 11.0 supported.
+*   Unitframe Health causing a point error when profiles switch.
+*   Friends Datatext erroring when Battlenet is being goofy.
+*   Item Level Abbreviation setting for Enchants on Character and Inspect frame.
+
 ### Version 13.70 [ July 12th 2024 ]
 *   Cooldowns not finishing correctly.
 *   Achievement skin error on Cataclysm.
