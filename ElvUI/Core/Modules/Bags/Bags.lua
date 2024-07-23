@@ -2225,7 +2225,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.WarbandHolder.cover.purchaseText:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
 				f.WarbandHolder.cover.purchaseButton:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
-					StaticPopup_Show('CONFIRM_BUY_BANK_SLOT')
+					B:PurchaseButton_ClickWarband()
 				end)
 
 				for bankIndex, bankID in next, B.WarbandIndexs do
