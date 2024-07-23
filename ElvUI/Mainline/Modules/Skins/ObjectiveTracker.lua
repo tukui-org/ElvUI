@@ -152,7 +152,7 @@ local function SkinProgressBars(_, _, line)
 	end
 end
 
- -- new 11.0
+-- new 11.0
 local function ReskinBarTemplate(bar)
 	if bar.backdrop then return end
 
@@ -171,14 +171,13 @@ local function HandleProgressBar(tracker, key)
 	end
 
 	local icon = bar and bar.Icon
-	if icon then
-		if not icon.backdrop then
-			icon:SetMask('') -- This needs to be before the skinning function
-			S:HandleIcon(icon, true)
-			icon:ClearAllPoints()
-			icon:Point('TOPLEFT', bar, 'TOPRIGHT', 5, 0)
-			icon:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', 25, 0)
-		end
+	if icon and not icon.backdrop then
+		icon:SetMask('') -- This needs to be before the skinning function
+		S:HandleIcon(icon, true)
+
+		icon:ClearAllPoints()
+		icon:Point('TOPLEFT', bar, 'TOPRIGHT', 5, 0)
+		icon:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', 25, 0)
 	end
 end
 
@@ -190,7 +189,6 @@ local function HandleTimers(tracker, key)
 		ReskinBarTemplate(bar)
 	end
 end
-
 -- End of 11.0
 
 local function SkinTimerBars(_, _, line)
