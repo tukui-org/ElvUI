@@ -1731,12 +1731,42 @@ function B:ConstructContainerName(isBank, bagNum)
 	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 end
 
-function B:Warband_OnEnter()
+do
+	local function AddBankTabSettingsToTooltip(tooltip, depositFlags)
+		if not tooltip or not depositFlags then return end
 
+		if FlagsUtil.IsSet(depositFlags, Enum.BagSlotFlags.ExpansionCurrent) then
+			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_CURRENT))
+		elseif FlagsUtil.IsSet(depositFlags, Enum.BagSlotFlags.ExpansionLegacy) then
+			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_LEGACY))
+		end
+
+		local filterList = ContainerFrameUtil_ConvertFilterFlagsToList(depositFlags)
+		if filterList then
+			local wrapText = true
+			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_DEPOSIT_ASSIGNMENTS, filterList), wrapText)
+		end
+	end
+
+	function B:Warband_OnEnter()
+		if GameTooltip:IsForbidden() then return end
+
+		local warbandData = B:Warband_FetchData()
+		local warbandInfo = warbandData[self.BagID]
+		if warbandInfo.name then
+			GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+			GameTooltip_SetTitle(GameTooltip, warbandInfo.name, _G.NORMAL_FONT_COLOR)
+			AddBankTabSettingsToTooltip(GameTooltip, warbandInfo.depositFlags)
+			GameTooltip_AddInstructionLine(GameTooltip, _G.BANK_TAB_TOOLTIP_CLICK_INSTRUCTION)
+			GameTooltip:Show()
+		end
+	end
 end
 
 function B:Warband_OnLeave()
+	if GameTooltip:IsForbidden() then return end
 
+	GameTooltip:Hide()
 end
 
 function B:Warband_AccountPanel(bagID)
@@ -1823,6 +1853,7 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 	holder.name = holderName
 	holder.isBank = true
 	holder.bagFrame = f
+	holder.UpdateTooltip = nil -- This is needed to stop constant updates. It will still get updated by OnEnter.
 
 	holder:SetTemplate(B.db.transparent and 'Transparent', true)
 	holder:StyleButton()
@@ -1834,9 +1865,9 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 	end
 
 	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
-	holder:SetScript('OnEnter', B.Warband_OnEnter) -- dont exist yet
-	holder:SetScript('OnLeave', B.Warband_OnLeave) -- dont exist yet
-	holder:SetScript('OnClick', B.Warband_OnClick) -- dont exist yet
+	holder:SetScript('OnEnter', B.Warband_OnEnter)
+	holder:SetScript('OnLeave', B.Warband_OnLeave)
+	holder:SetScript('OnClick', B.Warband_OnClick)
 
 	if holder.animIcon then
 		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
