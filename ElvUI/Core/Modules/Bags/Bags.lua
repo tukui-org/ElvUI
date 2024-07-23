@@ -2767,7 +2767,7 @@ end
 function B:Warband_UpdateIcon(f, bankID, data)
 	if not data or not bankID then return end
 
-	local holder = f.WarbandHolderByBagID[bankID]
+	local holder = f.WarbandHolder and f.WarbandHolderByBagID[bankID]
 	if not holder then return end
 
 	local info = data[bankID]
@@ -2783,7 +2783,7 @@ function B:Warband_UpdateIcon(f, bankID, data)
 end
 
 function B:Warband_CheckCover(warbandData)
-	if not B.BankFrame then return end
+	if not (B.BankFrame and B.BankFrame.WarbandHolder) then return end
 
 	B.BankFrame.WarbandHolder.cover:SetShown(not next(warbandData))
 end
