@@ -1854,10 +1854,10 @@ do
 
 		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
 		local frameName = nameOverride or frame:GetName() -- we need override in case Blizzard fucks up the naming (guild bank)
-		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
-		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or _G[frameName..'EditBox']
-		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or _G[frameName..'Cancel']
-		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or _G[frameName..'Okay']
+		local scrollFrame = frame.ScrollFrame or (frameName and _G[frameName..'ScrollFrame'])
+		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or (frameName and _G[frameName..'EditBox'])
+		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or (frameName and _G[frameName..'Cancel'])
+		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or (frameName and _G[frameName..'Okay'])
 
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
@@ -1891,9 +1891,11 @@ do
 		end
 
 		if numIcons then
-			scrollFrame:StripTextures()
-			scrollFrame:Height(scrollFrame:GetHeight() + 10)
-			S:HandleScrollBar(scrollFrame.ScrollBar)
+			if scrollFrame then
+				scrollFrame:StripTextures()
+				scrollFrame:Height(scrollFrame:GetHeight() + 10)
+				S:HandleScrollBar(scrollFrame.ScrollBar)
+			end
 
 			for i = 1, numIcons do
 				local button = _G[buttonNameTemplate..i]

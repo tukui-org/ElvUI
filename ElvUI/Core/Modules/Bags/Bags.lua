@@ -1739,8 +1739,79 @@ function B:Warband_OnLeave()
 
 end
 
-function B:Warband_OnClick()
-	B:SelectBankTab(self.bagFrame, self.BagID)
+function B:Warband_AccountPanel(bagID)
+	local tabIndex = B:Warband_GetTabIndex(bagID)
+	local bankPanel = tabIndex and _G.BANK_PANELS[tabIndex]
+	if bankPanel then
+		_G.BankFrame_ShowPanel(bankPanel.name)
+	end
+
+	local accountPanel = _G.AccountBankPanel
+	if accountPanel then
+		accountPanel:SetParent(_G.UIParent)
+		accountPanel:ClearAllPoints()
+		accountPanel:SetPoint('TOP', _G.UIParent, 'BOTTOM')
+
+		local tabMenu = accountPanel.TabSettingsMenu
+		if tabMenu then
+			tabMenu:SetParent(_G.UIParent)
+			tabMenu:ClearAllPoints()
+			tabMenu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
+			tabMenu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
+
+			tabMenu:StripTextures()
+			tabMenu:SetTemplate('Transparent')
+
+			if not tabMenu.IsSkinned then
+				S:HandleIconSelectionFrame(tabMenu)
+				S:HandleDropDownBox(tabMenu.DepositSettingsMenu.ExpansionFilterDropdown, 120)
+
+				tabMenu.IsSkinned = true
+			end
+
+			--[[if not tabMenu.IsSkinned then
+				S:HandleTrimScrollBar(tabMenu.IconSelector.ScrollBar)
+
+				local borderBox = tabMenu.BorderBox
+				if borderBox then
+					borderBox.TopEdge:Hide()
+					borderBox.TopLeftCorner:Hide()
+					borderBox.TopRightCorner:Hide()
+					borderBox.BottomEdge:Hide()
+					borderBox.BottomLeftCorner:Hide()
+					borderBox.BottomRightCorner:Hide()
+					borderBox.LeftEdge:Hide()
+					borderBox.RightEdge:Hide()
+
+					-- UIParent.29c9d24b4b0.BorderBox.SelectedIconArea.SelectedIconButton
+
+					S:HandleButton(borderBox.OkayButton)
+					S:HandleButton(borderBox.CancelButton)
+
+					local editBox = borderBox.IconSelectorEditBox
+					if editBox then
+						S:HandleEditBox(editBox)
+						editBox.IconSelectorPopupNameLeft:Hide()
+						editBox.IconSelectorPopupNameMiddle:Hide()
+						editBox.IconSelectorPopupNameRight:Hide()
+					end
+				end
+
+				tabMenu.IsSkinned = true
+			end]]
+		end
+	end
+end
+
+function B:Warband_OnClick(button)
+	local bagID = self.BagID
+
+	if button == 'RightButton' then
+		B:Warband_AccountPanel(bagID)
+		PlaySound(852) --IG_MAINMENU_OPTION
+	else
+		B:SelectBankTab(self.bagFrame, bagID)
+	end
 end
 
 function B:ConstructContainerWarband(f, bagID, index, name)
@@ -2620,10 +2691,15 @@ do
 		TabIndex[bankID] = 3
 	end
 
+	function B:Warband_GetTabIndex(bankID)
+		return TabIndex[bankID]
+	end
+
 	function B:SetBankSelectedTab()
 		local tab = TabIndex[B.BankTab] or 1
 
 		_G.BankFrame.activeTabIndex = tab
+		_G.BankFrame.selectedTabID = B.BankTab
 		_G.BankFrame.selectedTab = tab
 
 		return tab
@@ -2688,6 +2764,12 @@ function B:Warband_UpdateIcons()
 	local warbandData = B:Warband_FetchData()
 	for _, bankID in next, B.WarbandIndexs do
 		B:Warband_UpdateIcon(B.BankFrame, bankID, warbandData)
+	end
+end
+
+function B:BANK_TAB_SETTINGS_UPDATED(_, bankType)
+	if bankType == WARBANDBANK_TYPE then
+		B:Warband_UpdateIcons()
 	end
 end
 
@@ -3284,6 +3366,7 @@ function B:Initialize()
 
 	if E.Retail then
 		B:RegisterEvent('BANK_TABS_CHANGED')
+		B:RegisterEvent('BANK_TAB_SETTINGS_UPDATED')
 		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
