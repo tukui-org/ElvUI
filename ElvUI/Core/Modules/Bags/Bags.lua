@@ -46,11 +46,11 @@ local UnitAffectingCombat = UnitAffectingCombat
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
-local CloseBankFrame = C_Bank.CloseBankFrame or CloseBankFrame
-local FetchPurchasedBankTabData = C_Bank.FetchPurchasedBankTabData
-local AutoDepositItemsIntoBank = C_Bank.AutoDepositItemsIntoBank
-local FetchDepositedMoney = C_Bank.FetchDepositedMoney
-local CanPurchaseBankTab = C_Bank.CanPurchaseBankTab
+local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
+local FetchPurchasedBankTabData = C_Bank and C_Bank.FetchPurchasedBankTabData
+local AutoDepositItemsIntoBank = C_Bank and C_Bank.AutoDepositItemsIntoBank
+local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
+local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
 
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
@@ -2652,6 +2652,20 @@ function B:SelectBankTab(f, bagID)
 	B:SetBankTabs(f)
 end
 
+do
+	local temp  = {}
+	function B:Warband_FetchData()
+		wipe(temp)
+
+		for index, data in ipairs(FetchPurchasedBankTabData(WARBANDBANK_TYPE)) do
+			data.index = index
+			temp[data.ID] = data
+		end
+
+		return temp
+	end
+end
+
 function B:Warband_UpdateIcon(f, bankID, data)
 	if not data or not bankID then return end
 
@@ -2668,27 +2682,18 @@ function B:Warband_UpdateIcon(f, bankID, data)
 	else
 		holder.icon:SetVertexColor(1, .1, .1)
 	end
-
-	--[[ should we hide this or something?
-		holder:SetShown(shouldShow)
-
-		if shouldShow then
-			f.WarbandHolder:Point('TOPRIGHT', holder, 4, 4)
-		end
-	]]
 end
 
-do
-	local temp  = {}
-	function B:Warband_FetchData()
-		wipe(temp)
+function B:Warband_UpdateIcons()
+	local warbandData = B:Warband_FetchData()
+	for _, bankID in next, B.WarbandIndexs do
+		B:Warband_UpdateIcon(B.BankFrame, bankID, warbandData)
+	end
+end
 
-		for index, data in ipairs(FetchPurchasedBankTabData(WARBANDBANK_TYPE)) do
-			data.index = index
-			temp[data.ID] = data
-		end
-
-		return temp
+function B:BANK_TABS_CHANGED(_, bankType)
+	if bankType == WARBANDBANK_TYPE then
+		B:Warband_UpdateIcons()
 	end
 end
 
@@ -3278,6 +3283,7 @@ function B:Initialize()
 	end
 
 	if E.Retail then
+		B:RegisterEvent('BANK_TABS_CHANGED')
 		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
