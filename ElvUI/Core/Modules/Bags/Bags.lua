@@ -2545,7 +2545,7 @@ function B:CloseBags()
 end
 
 do
-	local TabIndex = { REAGENTBANK_CONTAINER = 2 }
+	local TabIndex = { [REAGENTBANK_CONTAINER] = 2 }
 	for bankID in next, B.WarbandBanks do
 		TabIndex[bankID] = 3
 	end
