@@ -72,6 +72,7 @@ function S:Blizzard_ClickBindingUI()
 	local tutorial = frame.TutorialFrame
 	tutorial.NineSlice:StripTextures()
 	tutorial:SetTemplate('Transparent')
+	S:HandlePortraitFrame(tutorial, nil, true)
 
 	local titleBG = tutorial.TitleBg or tutorial.Bg
 	if titleBG then
