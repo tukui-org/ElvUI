@@ -219,7 +219,7 @@ end
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
-local BANK_SPACE_OFFSET = 30
+local BANK_SPACE_OFFSET = E.Retail and 30 or 0
 local MAX_CONTAINER_ITEMS = 36
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
@@ -2853,6 +2853,10 @@ function B:ShowBankTab(f, bankTab)
 
 			f['warbandFrame'..warbandIndex]:Show()
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
+
+			f.WarbandHolder:Show()
+			f.warbandDeposit:Show()
+			f.warbandReagents:Show()
 		end
 
 		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
@@ -2863,9 +2867,6 @@ function B:ShowBankTab(f, bankTab)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
-		f.WarbandHolder:Show()
-		f.warbandDeposit:Show()
-		f.warbandReagents:Show()
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2875,6 +2876,10 @@ function B:ShowBankTab(f, bankTab)
 			for _, bankIndex in next, B.WarbandBanks do
 				f['warbandFrame'..bankIndex]:Hide()
 			end
+
+			f.WarbandHolder:Hide()
+			f.warbandDeposit:Hide()
+			f.warbandReagents:Hide()
 		end
 
 		f.bagsButton:Hide()
@@ -2882,9 +2887,6 @@ function B:ShowBankTab(f, bankTab)
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
-		f.WarbandHolder:Hide()
-		f.warbandDeposit:Hide()
-		f.warbandReagents:Hide()
 	else
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
@@ -2894,6 +2896,10 @@ function B:ShowBankTab(f, bankTab)
 			for _, bankIndex in next, B.WarbandBanks do
 				f['warbandFrame'..bankIndex]:Hide()
 			end
+
+			f.WarbandHolder:Hide()
+			f.warbandDeposit:Hide()
+			f.warbandReagents:Hide()
 		end
 
 		f.bagsButton:Show()
@@ -2902,9 +2908,6 @@ function B:ShowBankTab(f, bankTab)
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, BANK_SPACE_OFFSET)
-		f.WarbandHolder:Hide()
-		f.warbandDeposit:Hide()
-		f.warbandReagents:Hide()
 	end
 
 	if previousTab ~= B.BankTab then
@@ -2960,7 +2963,10 @@ function B:OpenBank()
 	-- allow opening reagent tab directly by holding Shift
 	-- keep this over update slots for bank slot assignments
 	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown() and (B.BankTab ~= REAGENTBANK_CONTAINER) and REAGENTBANK_CONTAINER)
-	B:SetBankTabs(B.BankFrame)
+
+	if E.Retail then
+		B:SetBankTabs(B.BankFrame)
+	end
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame, true)
