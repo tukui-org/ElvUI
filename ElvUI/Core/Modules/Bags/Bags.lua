@@ -209,6 +209,7 @@ end
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
+local BANK_SPACE_OFFSET = 30
 local MAX_CONTAINER_ITEMS = 36
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
@@ -1076,7 +1077,7 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numContainerCo
 				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 			end
 		else
-			slot:Point('TOPLEFT', f.reagentFrame, 'TOPLEFT')
+			slot:Point('TOPLEFT', f.reagentFrame, 0, -BANK_SPACE_OFFSET)
 			lastReagentRowButton = slot
 		end
 	end
@@ -1226,7 +1227,7 @@ function B:Layout(isBank)
 					end
 				else
 					local anchorPoint = reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
-					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, reverseSlots and f.bottomOffset - 8 or 0)
+					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, (reverseSlots and f.bottomOffset - 8 or 0) - (isBank and BANK_SPACE_OFFSET or 0))
 					lastRowButton = slot
 					numContainerRows = numContainerRows + 1
 				end
@@ -1257,7 +1258,7 @@ function B:Layout(isBank)
 	end
 
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -1773,7 +1774,7 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 	-- holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 
 	if index == 1 then
-		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 30)
+		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
 	elseif f.WarbandHolder[index - 1] then
 		holder:Point('LEFT', f.WarbandHolder[index - 1], 'RIGHT', 4, 0)
 	end
@@ -1863,7 +1864,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	end
 
 	if index == 1 then
-		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, (isBank and 25 or 0) + 5)
+		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
 	else
 		holder:Point('LEFT', f.ContainerHolder[index - 1], 'RIGHT', 4, 0)
 	end
@@ -1990,7 +1991,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 
 	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
-	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, (isBank and 25 or 0) + 1)
+	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
 	f.ContainerHolder.totalBags = #f.BagIDs
@@ -2067,19 +2068,6 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bankText:SetText(L["Bank"])
 
 		if E.Retail then
-			do -- main bank button
-				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
-				f.bankToggle:Size(100, 23)
-				f.bankToggle:SetText(L["Bank"])
-				f.bankToggle.Text:SetTextColor(1, 1, 1)
-				f.bankToggle:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 2)
-				f.bankToggle:SetScript('OnClick', function()
-					B:SelectBankTab(f, BANK_CONTAINER)
-				end)
-
-				S:HandleButton(f.bankToggle)
-			end
-
 			do -- reagent bank
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
 
@@ -2093,7 +2081,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'UIPanelButtonTemplate')
 				f.reagentToggle:Size(100, 23)
 				f.reagentToggle:SetText(L["Reagents"])
-				f.reagentToggle:Point('LEFT', f.bankToggle, 'RIGHT', 5, 0)
+				f.reagentToggle:Point('TOP', f, 0, -52)
 				f.reagentToggle:SetScript('OnClick', function()
 					B:SelectBankTab(f, REAGENTBANK_CONTAINER)
 				end)
@@ -2116,9 +2104,22 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 			end
 
+			do -- main bank button
+				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
+				f.bankToggle:Size(100, 23)
+				f.bankToggle:SetText(L["Bank"])
+				f.bankToggle.Text:SetTextColor(1, 1, 1)
+				f.bankToggle:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
+				f.bankToggle:SetScript('OnClick', function()
+					B:SelectBankTab(f, BANK_CONTAINER)
+				end)
+
+				S:HandleButton(f.bankToggle)
+			end
+
 			do -- warband banks
 				f.WarbandHolder = CreateFrame('Button', name..'WarbandHolder', f)
-				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 26)
+				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 				f.WarbandHolder:SetTemplate('Transparent')
 				f.WarbandHolder:Hide()
 				f.WarbandHolder.totalBags = 5
@@ -2670,7 +2671,7 @@ function B:ShowBankTab(f, bankTab)
 		f.purchaseBagButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Show()
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
@@ -2688,7 +2689,7 @@ function B:ShowBankTab(f, bankTab)
 		f.purchaseBagButton:Hide()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Hide()
 	else
 		if E.Retail then
@@ -2707,7 +2708,7 @@ function B:ShowBankTab(f, bankTab)
 		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickBank)
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 		f.WarbandHolder:Hide()
 	end
 
