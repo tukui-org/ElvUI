@@ -46,11 +46,14 @@ local UnitAffectingCombat = UnitAffectingCombat
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
+
+local ConvertFilterFlagsToList = ContainerFrameUtil_ConvertFilterFlagsToList
 local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
 local FetchPurchasedBankTabData = C_Bank and C_Bank.FetchPurchasedBankTabData
 local AutoDepositItemsIntoBank = C_Bank and C_Bank.AutoDepositItemsIntoBank
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
+local FlagsUtil_IsSet = FlagsUtil and FlagsUtil.IsSet
 
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
@@ -102,6 +105,10 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
+local BANK_TAB_DEPOSIT_ASSIGNMENTS = BANK_TAB_DEPOSIT_ASSIGNMENTS
+local BANK_TAB_EXPANSION_ASSIGNMENT = BANK_TAB_EXPANSION_ASSIGNMENT
+local BANK_TAB_EXPANSION_FILTER_LEGACY = BANK_TAB_EXPANSION_FILTER_LEGACY
+local BANK_TAB_EXPANSION_FILTER_CURRENT = BANK_TAB_EXPANSION_FILTER_CURRENT
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
 local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
@@ -1681,6 +1688,10 @@ function B:UnregisterBagEvents(bagFrame)
 end
 
 function B:ConstructContainerPurchaseCover(frame)
+	frame.cover = CreateFrame('Button', nil, frame)
+	frame.cover:SetTemplate()
+	frame.cover:SetFrameLevel(15)
+
 	frame.cover.purchaseButton = CreateFrame('Button', nil, frame.cover)
 	frame.cover.purchaseButton:Height(20)
 	frame.cover.purchaseButton:Width(150)
@@ -1719,11 +1730,6 @@ function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
 	f.Bags[id] = bag
 	frame.slots = bag
 
-	frame.cover = CreateFrame('Button', nil, frame)
-	frame.cover:SetAllPoints(frame)
-	frame.cover:SetTemplate()
-	frame.cover:SetFrameLevel(15)
-
 	return frame
 end
 
@@ -1731,35 +1737,32 @@ function B:ConstructContainerName(isBank, bagNum)
 	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 end
 
-do
-	local function AddBankTabSettingsToTooltip(tooltip, depositFlags)
-		if not tooltip or not depositFlags then return end
+function B:WarbandBankTabSettingsToTooltip(tooltip, depositFlags)
+	if not tooltip or not depositFlags then return end
 
-		if FlagsUtil.IsSet(depositFlags, Enum.BagSlotFlags.ExpansionCurrent) then
-			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_CURRENT))
-		elseif FlagsUtil.IsSet(depositFlags, Enum.BagSlotFlags.ExpansionLegacy) then
-			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_LEGACY))
-		end
-
-		local filterList = ContainerFrameUtil_ConvertFilterFlagsToList(depositFlags)
-		if filterList then
-			local wrapText = true
-			GameTooltip_AddNormalLine(tooltip, format(BANK_TAB_DEPOSIT_ASSIGNMENTS, filterList), wrapText)
-		end
+	if FlagsUtil_IsSet(depositFlags, BagSlotFlags.ExpansionCurrent) then
+		tooltip:AddLine(format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_CURRENT), 1, 0.82, 0)
+	elseif FlagsUtil_IsSet(depositFlags, BagSlotFlags.ExpansionLegacy) then
+		tooltip:AddLine(format(BANK_TAB_EXPANSION_ASSIGNMENT, BANK_TAB_EXPANSION_FILTER_LEGACY), 1, 0.82, 0)
 	end
 
-	function B:Warband_OnEnter()
-		if GameTooltip:IsForbidden() then return end
+	local filterList = ConvertFilterFlagsToList(depositFlags)
+	if filterList then
+		tooltip:AddLine(format(BANK_TAB_DEPOSIT_ASSIGNMENTS, filterList), 0.098, 1, 0.098)
+	end
+end
 
-		local warbandData = B:Warband_FetchData()
-		local warbandInfo = warbandData[self.BagID]
-		if warbandInfo.name then
-			GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-			GameTooltip_SetTitle(GameTooltip, warbandInfo.name, _G.NORMAL_FONT_COLOR)
-			AddBankTabSettingsToTooltip(GameTooltip, warbandInfo.depositFlags)
-			GameTooltip_AddInstructionLine(GameTooltip, _G.BANK_TAB_TOOLTIP_CLICK_INSTRUCTION)
-			GameTooltip:Show()
-		end
+function B:Warband_OnEnter()
+	if GameTooltip:IsForbidden() then return end
+
+	local warbandData = B:Warband_FetchData()
+	local warbandInfo = warbandData[self.BagID]
+	if warbandInfo.name then
+		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+		GameTooltip:AddLine(warbandInfo.name, 1, 0.82, 0)
+		B:WarbandBankTabSettingsToTooltip(GameTooltip, warbandInfo.depositFlags)
+		GameTooltip:AddLine(_G.BANK_TAB_TOOLTIP_CLICK_INSTRUCTION, 0, 1, 0)
+		GameTooltip:Show()
 	end
 end
 
@@ -2174,6 +2177,8 @@ function B:ConstructContainerFrame(name, isBank)
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
 
 				B:ConstructContainerPurchaseCover(reagentFrame)
+				reagentFrame.cover:Point('TOPLEFT', reagentFrame, 0, -BANK_SPACE_OFFSET)
+				reagentFrame.cover:Point('BOTTOMRIGHT', reagentFrame)
 				reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
 				reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
@@ -2213,6 +2218,15 @@ function B:ConstructContainerFrame(name, isBank)
 				f.WarbandHolder:Hide()
 				f.WarbandHolder.totalBags = 5
 				f.WarbandHolderByBagID = {}
+
+				B:ConstructContainerPurchaseCover(f.WarbandHolder)
+				f.WarbandHolder.cover:Point('TOPLEFT', _G.ElvUIReagentBankFrame.cover, 0, -WARBANDBANK_OFFSET)
+				f.WarbandHolder.cover:Point('BOTTOMRIGHT', _G.ElvUIReagentBankFrame.cover)
+				f.WarbandHolder.cover.purchaseText:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
+				f.WarbandHolder.cover.purchaseButton:SetScript('OnClick', function()
+					PlaySound(852) --IG_MAINMENU_OPTION
+					StaticPopup_Show('CONFIRM_BUY_BANK_SLOT')
+				end)
 
 				for bankIndex, bankID in next, B.WarbandIndexs do
 					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
@@ -2768,8 +2782,16 @@ function B:Warband_UpdateIcon(f, bankID, data)
 	end
 end
 
+function B:Warband_CheckCover(warbandData)
+	if not B.BankFrame then return end
+
+	B.BankFrame.WarbandHolder.cover:SetShown(not next(warbandData))
+end
+
 function B:Warband_UpdateIcons()
 	local warbandData = B:Warband_FetchData()
+	B:Warband_CheckCover(warbandData)
+
 	for _, bankID in next, B.WarbandIndexs do
 		B:Warband_UpdateIcon(B.BankFrame, bankID, warbandData)
 	end
@@ -2798,6 +2820,8 @@ function B:ShowBankTab(f, bankTab)
 	if warbandIndex then
 		if E.Retail then
 			local warbandData = B:Warband_FetchData()
+			B:Warband_CheckCover(warbandData)
+
 			for bankIndex, bankID in next, B.WarbandIndexs do
 				B:Warband_UpdateIcon(f, bankID, warbandData)
 
