@@ -110,7 +110,7 @@ function S:SpellBookFrame()
 
 	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G['SpellButton'..i]
-		local highlight =_G['SpellButton'..i..'Highlight']
+		local highlight = _G['SpellButton'..i..'Highlight']
 
 		for _, region in next, { button:GetRegions() } do
 			if region:IsObjectType('Texture') and (region ~= button.FlyoutArrow

@@ -110,11 +110,12 @@ local BANK_TAB_EXPANSION_ASSIGNMENT = BANK_TAB_EXPANSION_ASSIGNMENT
 local BANK_TAB_EXPANSION_FILTER_LEGACY = BANK_TAB_EXPANSION_FILTER_LEGACY
 local BANK_TAB_EXPANSION_FILTER_CURRENT = BANK_TAB_EXPANSION_FILTER_CURRENT
 
-local BANK_CONTAINER = Enum.BagIndex.Bank
-local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
-local REAGENTBANK_CONTAINER = Enum.BagIndex.Reagentbank
-local KEYRING_CONTAINER = Enum.BagIndex.Keyring
-local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
+local BagIndex = Enum.BagIndex
+local BANK_CONTAINER = BagIndex.Bank
+local BACKPACK_CONTAINER = BagIndex.Backpack
+local REAGENTBANK_CONTAINER = BagIndex.Reagentbank
+local KEYRING_CONTAINER = BagIndex.Keyring
+local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBANDBANK_OFFSET = 30
 
@@ -157,19 +158,19 @@ B.GearFilters = {
 }
 
 B.WarbandBanks = {
-	[Enum.BagIndex.AccountBankTab_1 or 13] = 1,
-	[Enum.BagIndex.AccountBankTab_2 or 14] = 2,
-	[Enum.BagIndex.AccountBankTab_3 or 15] = 3,
-	[Enum.BagIndex.AccountBankTab_4 or 16] = 4,
-	[Enum.BagIndex.AccountBankTab_5 or 17] = 5
+	[BagIndex.AccountBankTab_1 or 13] = 1,
+	[BagIndex.AccountBankTab_2 or 14] = 2,
+	[BagIndex.AccountBankTab_3 or 15] = 3,
+	[BagIndex.AccountBankTab_4 or 16] = 4,
+	[BagIndex.AccountBankTab_5 or 17] = 5
 }
 
 B.WarbandIndexs = {
-	Enum.BagIndex.AccountBankTab_1 or 13,
-	Enum.BagIndex.AccountBankTab_2 or 14,
-	Enum.BagIndex.AccountBankTab_3 or 15,
-	Enum.BagIndex.AccountBankTab_4 or 16,
-	Enum.BagIndex.AccountBankTab_5 or 17
+	BagIndex.AccountBankTab_1 or 13,
+	BagIndex.AccountBankTab_2 or 14,
+	BagIndex.AccountBankTab_3 or 15,
+	BagIndex.AccountBankTab_4 or 16,
+	BagIndex.AccountBankTab_5 or 17
 }
 
 if E.Retail then

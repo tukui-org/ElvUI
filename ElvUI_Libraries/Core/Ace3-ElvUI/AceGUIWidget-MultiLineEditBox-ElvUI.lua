@@ -1,13 +1,14 @@
 --[[-----------------------------------------------------------------------------
 MultiLineEditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "MultiLineEditBox-ElvUI", 32
+local Type, Version = "MultiLineEditBox-ElvUI", 33
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local _G, pairs = _G, pairs
 local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
+local ACCEPT = ACCEPT
 
 local GetSpellInfo
 do	-- backwards compatibility for GetSpellInfo
@@ -363,7 +364,7 @@ local function Constructor()
 
 	local editBox = CreateFrame("EditBox", ("%s%dEdit"):format(Type, widgetNum), scrollFrame)
 	editBox:SetAllPoints()
-	editBox:SetFontObject(ChatFontNormal)
+	editBox:SetFontObject('GameFontNormal')
 	editBox:SetMultiLine(true)
 	editBox:EnableMouse(true)
 	editBox:SetAutoFocus(false)

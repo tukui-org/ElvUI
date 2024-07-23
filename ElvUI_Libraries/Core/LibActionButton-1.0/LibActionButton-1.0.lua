@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 55 -- the real minor version is 117
+local MINOR_VERSION = 56 -- the real minor version is 117
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -16,7 +16,7 @@ local str_match, format, tinsert, tremove, strsub = string.match, format, tinser
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local IsAttackSpell = C_Spell.IsAutoAttackSpell or IsAttackSpell
-local IsAutoRepeatSpell =C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
+local IsAutoRepeatSpell = C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
 local IsPressHoldReleaseSpell = C_Spell.IsPressHoldReleaseSpell or IsPressHoldReleaseSpell
 
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
