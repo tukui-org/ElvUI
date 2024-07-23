@@ -399,11 +399,11 @@ do --this can save some main file locals
 			z['Player-5826-02342520']	= ElvGreen -- [Alliance] Rogue
 			z['Player-5826-02342556']	= ElvGreen -- [Alliance] Warrior
 			z['Player-5827-02331C4B']	= ElvGreen -- [Horde] Shaman
-			-- Luckyone Hardcore
-			z["Lucky-Nek'Rosh"]			= ElvGreen -- [Horde] Rogue
-			z["Luckyone-Nek'Rosh"]		= ElvGreen -- [Horde] Hunter
-			z["Unluckyone-Nek'Rosh"] 	= ElvGreen -- [Horde] Mage
-			z["Gigachad-Nek'Rosh"] 		= ElvGreen -- [Horde] Druid
+			-- Luckyone Hardcore (5261: Nek'Rosh)
+			z['Player-5261-01ADAC25']	= ElvGreen -- [Horde] Rogue
+			z['Player-5261-019F4B67']	= ElvGreen -- [Horde] Hunter
+			z['Player-5261-01B3C53A'] 	= ElvGreen -- [Horde] Mage
+			z['Player-5261-01B50AC4'] 	= ElvGreen -- [Horde] Druid
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
