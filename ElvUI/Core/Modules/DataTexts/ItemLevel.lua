@@ -5,7 +5,7 @@ local ipairs = ipairs
 local format = format
 
 local GetItemLevelColor = GetItemLevelColor
-local GetAverageItemLevel= GetAverageItemLevel
+local GetAverageItemLevel = GetAverageItemLevel
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture
 

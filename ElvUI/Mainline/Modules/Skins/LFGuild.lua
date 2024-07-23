@@ -45,7 +45,7 @@ function S:LookingForGuildFrame()
 	end
 
 	-- skin tabs
-	for i= 1, 3 do
+	for i = 1, 3 do
 		S:HandleTab(_G['LookingForGuildFrameTab'..i])
 	end
 
