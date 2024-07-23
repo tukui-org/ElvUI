@@ -550,16 +550,20 @@ function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
 		local menu = _G.ChatMenu
-		menu:ClearAllPoints()
+		if menu then
+			menu:ClearAllPoints()
 
-		local point = E:GetScreenQuadrant(self)
-		if strfind(point, 'LEFT') then
-			menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
-		else
-			menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+			local point = E:GetScreenQuadrant(self)
+			if strfind(point, 'LEFT') then
+				menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+			else
+				menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+			end
+
+			ToggleFrame(menu)
+		elseif E.Retail then
+			_G.ChatFrameMenuButton:OpenMenu()
 		end
-
-		ToggleFrame(menu)
 	else
 		CH:CopyChat(chat)
 	end
@@ -830,7 +834,15 @@ function CH:StyleChat(frame)
 	if scrollToBottom then scrollToBottom:Kill() end
 
 	local buttonFrame = _G[name..'ButtonFrame']
-	if buttonFrame then buttonFrame:Kill() end
+	if buttonFrame then
+		if E.Retail and name == 'ChatFrame1' then
+			buttonFrame.Background:Hide()
+			buttonFrame.minimizeButton:Hide()
+			buttonFrame:StripTextures()
+		else
+			buttonFrame:Kill()
+		end
+	end
 
 	local thumbTexture = _G[name..'ThumbTexture']
 	if thumbTexture then thumbTexture:Kill() end
@@ -2409,7 +2421,6 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
 	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
-	_G.ChatFrameMenuButton:Kill()
 
 	CH:ToggleHyperlink(CH.db.hyperlinkHover)
 	CH:StyleOverflowButton()
@@ -2419,6 +2430,13 @@ function CH:SetupChat()
 
 	if E.Retail then
 		_G.QuickJoinToastButton:Hide()
+
+		_G.ChatFrameMenuButton:SetAlpha(0)
+		_G.ChatFrameMenuButton:EnableMouse(false)
+		_G.ChatFrameMenuButton:ClearAllPoints()
+		_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
+	else
+		_G.ChatFrameMenuButton:Kill()
 	end
 
 	if not CH.HookSecured then
