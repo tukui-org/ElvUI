@@ -193,6 +193,7 @@ end
 tinsert(HarmSpells.EVOKER, 369819) -- Disintegrate (25 yards)
 
 tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
+tinsert(FriendSpells.EVOKER, 431443) -- Chrono Flames (25 yards) (Hero Talent, overrides Living Flame)
 tinsert(FriendSpells.EVOKER, 360823) -- Naturalize (Preservation) (30 yards)
 
 tinsert(ResSpells.EVOKER, 361227) -- Return (40 yards)
