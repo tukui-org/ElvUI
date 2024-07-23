@@ -390,38 +390,38 @@ do --this can save some main file locals
 	elseif portal == 'EU' then
 		if E.Classic then
 			-- Luckyone Seasonal (5826: Lone Wolf EU, 5827: Living Flame EU)
-			z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
-			z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin
-			z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock
-			z['Player-5826-0234253E']	= ElvBlue -- [Alliance] Mage
-			z['Player-5826-02342508']	= ElvBlue -- [Alliance] Priest
-			z['Player-5826-023424EF']	= ElvBlue -- [Alliance] Druid
-			z['Player-5826-02342520']	= ElvBlue -- [Alliance] Rogue
-			z['Player-5826-02342556']	= ElvBlue -- [Alliance] Warrior
-			z['Player-5827-02331C4B']	= ElvBlue -- [Horde] Shaman
+			z['Player-5826-0202765F']	= ElvGreen -- [Alliance] Hunter
+			z['Player-5826-020F7F10']	= ElvGreen -- [Alliance] Paladin
+			z['Player-5826-02172E79']	= ElvGreen -- [Alliance] Warlock
+			z['Player-5826-0234253E']	= ElvGreen -- [Alliance] Mage
+			z['Player-5826-02342508']	= ElvGreen -- [Alliance] Priest
+			z['Player-5826-023424EF']	= ElvGreen -- [Alliance] Druid
+			z['Player-5826-02342520']	= ElvGreen -- [Alliance] Rogue
+			z['Player-5826-02342556']	= ElvGreen -- [Alliance] Warrior
+			z['Player-5827-02331C4B']	= ElvGreen -- [Horde] Shaman
 			-- Luckyone Hardcore
-			z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
-			z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
-			z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
-			z["Gigachad-Nek'Rosh"] 		= ElvBlue -- [Horde] Druid
+			z["Lucky-Nek'Rosh"]			= ElvGreen -- [Horde] Rogue
+			z["Luckyone-Nek'Rosh"]		= ElvGreen -- [Horde] Hunter
+			z["Unluckyone-Nek'Rosh"] 	= ElvGreen -- [Horde] Mage
+			z["Gigachad-Nek'Rosh"] 		= ElvGreen -- [Horde] Druid
 			-- Luckyone Classic Era (5233: Firemaw)
-			z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
-			z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
+			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
+			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
 		elseif E.Cata then
 			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
-			z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
-			z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
-			z['Player-4467-04571AA2']	= ElvBlue -- [Alliance] Warlock
-			z['Player-4467-04571911']	= ElvBlue -- [Alliance] Paladin
-			z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
-			z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
-			z['Player-4467-048C4EED']	= ElvBlue -- [Alliance] Hunter
-			z['Player-4467-0489BE11']	= ElvBlue -- [Alliance] Shaman
-			z['Player-4467-0489BDFD'] 	= ElvBlue -- [Alliance] Rogue
-			z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
-			z['Player-4440-03AD654A']	= ElvBlue -- [Alliance] Rogue
-			z['Player-4440-03ADE2DF']	= ElvBlue -- [Alliance] Shaman
-			z['Player-4476-03BF41C9']	= ElvBlue -- [Horde] Hunter
+			z['Player-4467-04540395']	= ElvGreen -- [Alliance] Druid
+			z['Player-4467-04542B4A']	= ElvGreen -- [Alliance] Priest
+			z['Player-4467-04571AA2']	= ElvGreen -- [Alliance] Warlock
+			z['Player-4467-04571911']	= ElvGreen -- [Alliance] Paladin
+			z['Player-4467-04571A9F']	= ElvGreen -- [Alliance] Mage
+			z['Player-4467-04571A8D']	= ElvGreen -- [Alliance] DK
+			z['Player-4467-048C4EED']	= ElvGreen -- [Alliance] Hunter
+			z['Player-4467-0489BE11']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4467-0489BDFD'] 	= ElvGreen -- [Alliance] Rogue
+			z['Player-4467-04571A98']	= ElvGreen -- [Alliance] Warrior
+			z['Player-4440-03AD654A']	= ElvGreen -- [Alliance] Rogue
+			z['Player-4440-03ADE2DF']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4476-03BF41C9']	= ElvGreen -- [Horde] Hunter
 		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
@@ -444,21 +444,21 @@ do --this can save some main file locals
 			z['Player-1401-041C0AE2']	= ElvGreen	-- [Alliance] Hunter:	Róhal
 			z['Player-1401-05CEABFA']	= ElvRed	-- [Alliance] DK:		Jahzzy
 			-- Luckyone (1598: LaughingSkull)
-			z['Player-1598-0F5E4639']	= ElvBlue -- [Alliance] Druid: Luckyone
-			z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid: Luckydruid
-			z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker
-			z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH
-			z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest
-			z['Player-1598-0BEFA545']	= ElvBlue -- [Horde] Monk
-			z['Player-1598-0E1A06DE']	= ElvBlue -- [Horde] Rogue
-			z['Player-1598-0BF2E377']	= ElvBlue -- [Horde] Hunter
-			z['Player-1598-0BF18248']	= ElvBlue -- [Horde] DK
-			z['Player-1598-0BFABB95']	= ElvBlue -- [Horde] Mage
-			z['Player-1598-0E67511D']	= ElvBlue -- [Horde] Paladin
-			z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock
-			z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior
-			z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman
-			z['Player-1598-0F87B5AA']	= ElvBlue -- [Alliance] Priest
+			z['Player-1598-0F5E4639']	= ElvGreen -- [Alliance] Druid: Luckyone
+			z['Player-1598-0F3E51B0']	= ElvGreen -- [Alliance] Druid: Luckydruid
+			z['Player-1598-0F46FF5A']	= ElvGreen -- [Horde] Evoker
+			z['Player-1598-0BFF3341']	= ElvGreen -- [Horde] DH
+			z['Player-1598-0BD22704']	= ElvGreen -- [Horde] Priest
+			z['Player-1598-0BEFA545']	= ElvGreen -- [Horde] Monk
+			z['Player-1598-0E1A06DE']	= ElvGreen -- [Horde] Rogue
+			z['Player-1598-0BF2E377']	= ElvGreen -- [Horde] Hunter
+			z['Player-1598-0BF18248']	= ElvGreen -- [Horde] DK
+			z['Player-1598-0BFABB95']	= ElvGreen -- [Horde] Mage
+			z['Player-1598-0E67511D']	= ElvGreen -- [Horde] Paladin
+			z['Player-1598-0C0DD01B']	= ElvGreen -- [Horde] Warlock
+			z['Player-1598-0BF8013A']	= ElvGreen -- [Horde] Warrior
+			z['Player-1598-0BF56103']	= ElvGreen -- [Horde] Shaman
+			z['Player-1598-0F87B5AA']	= ElvGreen -- [Alliance] Priest
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
