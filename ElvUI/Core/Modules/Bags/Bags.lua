@@ -48,6 +48,7 @@ local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
 local FetchPurchasedBankTabData = C_Bank.FetchPurchasedBankTabData
+local FetchDepositedMoney = C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank.CanPurchaseBankTab
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -1486,6 +1487,11 @@ function B:UpdateTokens()
 end
 
 function B:UpdateGoldText()
+	if E.Retail then
+		B.BankFrame.goldText:SetShown(true)
+		B.BankFrame.goldText:SetText(E:FormatMoney(FetchDepositedMoney(WARBANDBANK_TYPE), B.db.moneyFormat, not B.db.moneyCoins))
+	end
+
 	B.BagFrame.goldText:SetShown(B.db.moneyFormat ~= 'HIDE')
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney() - GetCursorMoney() - GetPlayerTradeMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
@@ -2056,18 +2062,24 @@ function B:ConstructContainerFrame(name, isBank)
 	f.spinnerIcon:EnableMouse(false)
 	f.spinnerIcon:Hide()
 
+	--Gold Text
+	f.goldText = f:CreateFontString(nil, 'OVERLAY')
+	f.goldText:FontTemplate()
+	f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -10, -2)
+	f.goldText:SetJustifyH('RIGHT')
+
+	f.pickupGold = CreateFrame('Button', nil, f)
+	f.pickupGold:SetAllPoints(f.goldText)
+
 	if isBank then
 		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
 
-		--Bank Text
-		f.bankText = f:CreateFontString(nil, 'OVERLAY')
-		f.bankText:FontTemplate()
-		f.bankText:Point('RIGHT', f.helpButton, 'LEFT', -5, -2)
-		f.bankText:SetJustifyH('RIGHT')
-		f.bankText:SetText(L["Bank"])
-
 		if E.Retail then
+			f.pickupGold:SetScript('OnClick', function()
+				StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+			end)
+
 			do -- reagent bank
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
 
@@ -2202,14 +2214,6 @@ function B:ConstructContainerFrame(name, isBank)
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
-		--Gold Text
-		f.goldText = f:CreateFontString(nil, 'OVERLAY')
-		f.goldText:FontTemplate()
-		f.goldText:Point('RIGHT', f.helpButton, 'LEFT', -10, -2)
-		f.goldText:SetJustifyH('RIGHT')
-
-		f.pickupGold = CreateFrame('Button', nil, f)
-		f.pickupGold:SetAllPoints(f.goldText)
 		f.pickupGold:SetScript('OnClick', function()
 			StaticPopup_Show('PICKUP_MONEY')
 		end)
@@ -2661,7 +2665,6 @@ function B:ShowBankTab(f, bankTab)
 
 			f['warbandFrame'..warbandIndex]:Show()
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
-			f.bankText:SetText(L["Warband Bank"])
 		end
 
 		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
@@ -2676,7 +2679,6 @@ function B:ShowBankTab(f, bankTab)
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
-			f.bankText:SetText(L["Reagent Bank"])
 
 			f.reagentFrame:Show()
 
@@ -2694,7 +2696,6 @@ function B:ShowBankTab(f, bankTab)
 	else
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
-			f.bankText:SetText(L["Bank"])
 
 			f.reagentFrame:Hide()
 
@@ -3224,6 +3225,7 @@ function B:Initialize()
 	end
 
 	if E.Retail then
+		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
 		B.BankFrame:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED') -- let reagent collect data for next open
 	end
