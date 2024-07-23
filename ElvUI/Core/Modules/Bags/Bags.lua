@@ -1718,6 +1718,18 @@ function B:ConstructContainerName(isBank, bagNum)
 	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
 end
 
+function B:Warband_OnEnter()
+
+end
+
+function B:Warband_OnLeave()
+
+end
+
+function B:Warband_OnClick()
+	B:SelectBankTab(self.bagFrame, self.BagID)
+end
+
 function B:ConstructContainerWarband(f, bagID, index, name)
 	local bagNum = bagID - bankOffset
 	local holderName = B:ConstructContainerName(true, bagNum)
@@ -1781,7 +1793,7 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 	return holder
 end
 
-function B:ConstructHolderConstainer(f, bagID, isBank, name, index)
+function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
 	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
 	local inherit = (E.Retail and not isBank and '') or (isBank and 'BankItemButtonBagTemplate') or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
@@ -1890,20 +1902,14 @@ function B:PurchaseButton_ClickBank()
 	end
 end
 
-function B:PurchaseButton_ClickWarband()
-	if CanPurchaseBankTab(WARBANDBANK_TYPE) then
-		E:StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, { bankType = WARBANDBANK_TYPE })
-	else
-		E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
-	end
-end
-
-function B:BagsButton_ClickWarband()
-	local frame = self:GetParent()
-	ToggleFrame(frame.WarbandHolder)
-
-	if frame.ContainerHolder:IsShown() then
-		frame.ContainerHolder:SetShown(false)
+do
+	local warbandInfo = { bankType = WARBANDBANK_TYPE }
+	function B:PurchaseButton_ClickWarband()
+		if CanPurchaseBankTab(WARBANDBANK_TYPE) then
+			E:StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
+		else
+			E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
+		end
 	end
 end
 
@@ -1911,19 +1917,11 @@ function B:BagsButton_ClickBank()
 	local frame = self:GetParent()
 	ToggleFrame(frame.ContainerHolder)
 	PlaySound(852) --IG_MAINMENU_OPTION
-
-	if frame.WarbandHolder:IsShown() then
-		frame.WarbandHolder:SetShown(false)
-	end
 end
 
 function B:BagsButton_ClickBag()
 	local frame = self:GetParent()
 	ToggleFrame(frame.ContainerHolder)
-
-	if frame.WarbandHolder:IsShown() then
-		frame.WarbandHolder:SetShown(false)
-	end
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1995,7 +1993,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for index, bagID in next, f.BagIDs do
-		B:ConstructHolderConstainer(f, bagID, isBank, name, index)
+		B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	end
 
 	f.stackButton = CreateFrame('Button', name..'StackButton', f.holderFrame)
@@ -2090,9 +2088,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.warbandToggle:SetScript('OnEnter', B.Tooltip_Show)
 				f.warbandToggle:SetScript('OnLeave', GameTooltip_Hide)
 				f.warbandToggle:SetScript('OnClick', function()
-					PlaySound(841) --IG_CHARACTER_INFO_TAB
-					B:ShowBankTab(f, B.BankTab ~= 13 and 13)
-					B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+					B:SelectBankTab(f, 13)
 				end)
 			end
 
@@ -2116,9 +2112,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.reagentToggle:SetScript('OnEnter', B.Tooltip_Show)
 				f.reagentToggle:SetScript('OnLeave', GameTooltip_Hide)
 				f.reagentToggle:SetScript('OnClick', function()
-					PlaySound(841) --IG_CHARACTER_INFO_TAB
-					B:ShowBankTab(f, B.BankTab ~= REAGENTBANK_CONTAINER and REAGENTBANK_CONTAINER)
-					B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+					B:SelectBankTab(f, REAGENTBANK_CONTAINER)
 				end)
 
 				--Deposite Reagents Button
@@ -2561,8 +2555,10 @@ do
 	end
 end
 
-function B:Warband_FetchData()
-	return FetchPurchasedBankTabData(WARBANDBANK_TYPE)
+function B:SelectBankTab(f, bagID)
+	PlaySound(841) -- IG_CHARACTER_INFO_TAB
+	B:ShowBankTab(f, B.BankTab ~= bagID and bagID)
+	B:SetBankSelectedTab() -- the hook doesnt trigger by this button
 end
 
 function B:Warband_UpdateIcon(f, bankID, data)
@@ -2571,10 +2567,37 @@ function B:Warband_UpdateIcon(f, bankID, data)
 	local holder = f.WarbandHolderByBagID[bankID]
 	if not holder then return end
 
-	for _, info in ipairs(data) do
-		if info.ID == bankID then
-			return holder.icon:SetTexture(info.icon or DEFAULT_ICON)
+	local info = data[bankID]
+	local shouldShow = not not info
+	holder:SetEnabled(shouldShow)
+
+	if info then
+		holder.icon:SetTexture(info.icon or DEFAULT_ICON)
+		holder.icon:SetVertexColor(1, 1, 1)
+	else
+		holder.icon:SetVertexColor(1, .1, .1)
+	end
+
+	--[[ should we hide this or something?
+		holder:SetShown(shouldShow)
+
+		if shouldShow then
+			f.WarbandHolder:Point('TOPRIGHT', holder, 4, 4)
 		end
+	]]
+end
+
+do
+	local temp  = {}
+	function B:Warband_FetchData()
+		wipe(temp)
+
+		for index, data in ipairs(FetchPurchasedBankTabData(WARBANDBANK_TYPE)) do
+			data.index = index
+			temp[data.ID] = data
+		end
+
+		return temp
 	end
 end
 
@@ -2583,11 +2606,13 @@ function B:ShowBankTab(f, bankTab)
 
 	B.BankTab = bankTab or 1
 
+	f.ContainerHolder:Hide()
+
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
 		if E.Retail then
 			local warbandData = B:Warband_FetchData()
-			for bankID, bankIndex in next, B.WarbandBanks do
+			for bankIndex, bankID in next, B.WarbandIndexs do
 				B:Warband_UpdateIcon(f, bankID, warbandData)
 
 				f['warbandFrame'..bankIndex]:Hide() -- hide them all first
@@ -2599,13 +2624,14 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
-		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickWarband)
-		f.bagsButton:Show(canBuyTab)
-		f.purchaseBagButton:SetShown()
+		f.bagsButton:Hide()
+		f.purchaseBagButton:SetShown(canBuyTab)
 		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickWarband)
+		f.purchaseBagButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, 0)
+		f.WarbandHolder:Show()
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2618,11 +2644,12 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
-		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 		f.bagsButton:Hide()
 		f.purchaseBagButton:Hide()
+		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+		f.WarbandHolder:Hide()
 	else
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
@@ -2635,12 +2662,13 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
-		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 		f.bagsButton:Show()
 		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickBank)
+		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, 0)
+		f.WarbandHolder:Hide()
 	end
 
 	if previousTab ~= B.BankTab then
