@@ -47,6 +47,8 @@ local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
+local FetchPurchasedBankTabData = C_Bank.FetchPurchasedBankTabData
+local CanPurchaseBankTab = C_Bank.CanPurchaseBankTab
 
 local EditBox_HighlightText = EditBox_HighlightText
 local BankFrameItemButton_Update = BankFrameItemButton_Update
@@ -121,6 +123,8 @@ local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.ClassQuestItems) or 32 
 local FILTER_FLAG_JUNKSELL = (BagSlotFlags and BagSlotFlags.ExcludeJunkSell) or 64 -- didnt exist
 local FILTER_FLAG_REAGENTS = (BagSlotFlags and BagSlotFlags.ClassReagents) or 128 -- didnt exist
 
+local DEFAULT_ICON = 136511
+
 local READY_TEX = [[Interface\RaidFrame\ReadyCheck-Ready]]
 local NOT_READY_TEX = [[Interface\RaidFrame\ReadyCheck-NotReady]]
 
@@ -148,6 +152,14 @@ B.WarbandBanks = {
 	[Enum.BagIndex.AccountBankTab_3 or 15] = 3,
 	[Enum.BagIndex.AccountBankTab_4 or 16] = 4,
 	[Enum.BagIndex.AccountBankTab_5 or 17] = 5
+}
+
+B.WarbandIndexs = {
+	Enum.BagIndex.AccountBankTab_1 or 13,
+	Enum.BagIndex.AccountBankTab_2 or 14,
+	Enum.BagIndex.AccountBankTab_3 or 15,
+	Enum.BagIndex.AccountBankTab_4 or 16,
+	Enum.BagIndex.AccountBankTab_5 or 17
 }
 
 if E.Retail then
@@ -1226,12 +1238,6 @@ function B:Layout(isBank)
 		if warbandIndex then
 			local warbandFrame = f['warbandFrame'..warbandIndex]
 			if warbandFrame and warbandFrame:IsShown() then
-				--[[if not C_Bank.CanPurchaseBankTab(WARBANDBANK_TYPE) then
-					warbandFrame.cover:Show()
-				else
-					warbandFrame.cover:Hide()
-				end]]
-
 				numContainerRows = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
 			end
 		elseif B.BankTab == REAGENTBANK_CONTAINER then
@@ -1654,11 +1660,30 @@ end
 function B:UpdateContainerIcon(holder, bagID)
 	if not holder or not bagID or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER then return end
 
-	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or 136511)
+	holder.icon:SetTexture(GetInventoryItemTexture('player', holder:GetID()) or DEFAULT_ICON)
 end
 
 function B:UnregisterBagEvents(bagFrame)
 	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
+end
+
+function B:ConstructContainerPurchaseCover(frame)
+	frame.cover.purchaseButton = CreateFrame('Button', nil, frame.cover)
+	frame.cover.purchaseButton:Height(20)
+	frame.cover.purchaseButton:Width(150)
+	frame.cover.purchaseButton:Point('CENTER', frame.cover, 'CENTER')
+	S:HandleButton(frame.cover.purchaseButton)
+	frame.cover.purchaseButton:SetFrameLevel(16)
+
+	frame.cover.purchaseButton.text = frame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
+	frame.cover.purchaseButton.text:FontTemplate()
+	frame.cover.purchaseButton.text:Point('CENTER')
+	frame.cover.purchaseButton.text:SetJustifyH('CENTER')
+	frame.cover.purchaseButton.text:SetText(L["Purchase"])
+
+	frame.cover.purchaseText = frame.cover:CreateFontString(nil, 'OVERLAY')
+	frame.cover.purchaseText:FontTemplate()
+	frame.cover.purchaseText:Point('BOTTOM', frame.cover.purchaseButton, 'TOP', 0, 10)
 end
 
 function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
@@ -1686,30 +1711,80 @@ function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
 	frame.cover:SetTemplate()
 	frame.cover:SetFrameLevel(15)
 
-	frame.cover.purchaseButton = CreateFrame('Button', nil, frame.cover)
-	frame.cover.purchaseButton:Height(20)
-	frame.cover.purchaseButton:Width(150)
-	frame.cover.purchaseButton:Point('CENTER', frame.cover, 'CENTER')
-	S:HandleButton(frame.cover.purchaseButton)
-	frame.cover.purchaseButton:SetFrameLevel(16)
-
-	frame.cover.purchaseButton.text = frame.cover.purchaseButton:CreateFontString(nil, 'OVERLAY')
-	frame.cover.purchaseButton.text:FontTemplate()
-	frame.cover.purchaseButton.text:Point('CENTER')
-	frame.cover.purchaseButton.text:SetJustifyH('CENTER')
-	frame.cover.purchaseButton.text:SetText(L["Purchase"])
-
-	frame.cover.purchaseText = frame.cover:CreateFontString(nil, 'OVERLAY')
-	frame.cover.purchaseText:FontTemplate()
-	frame.cover.purchaseText:Point('BOTTOM', frame.cover.purchaseButton, 'TOP', 0, 10)
-
 	return frame
 end
 
-function B:ConstructContainerHolder(f, bagID, isBank, name, index)
+function B:ConstructContainerName(isBank, bagNum)
+	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+end
+
+function B:ConstructContainerWarband(f, bagID, index, name)
+	local bagNum = bagID - bankOffset
+	local holderName = B:ConstructContainerName(true, bagNum)
+	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.WarbandHolder, 'BankItemButtonBagTemplate')
+	f.WarbandHolder[index] = holder
+
+	holder.name = holderName
+	holder.isBank = true
+	holder.bagFrame = f
+
+	holder:SetTemplate(B.db.transparent and 'Transparent', true)
+	holder:StyleButton()
+
+	holder:SetNormalTexture(E.ClearTexture)
+	holder:SetPushedTexture(E.ClearTexture)
+	if holder.SetCheckedTexture then
+		holder:SetCheckedTexture(E.ClearTexture)
+	end
+
+	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+	holder:SetScript('OnEnter', B.Warband_OnEnter) -- dont exist yet
+	holder:SetScript('OnLeave', B.Warband_OnLeave) -- dont exist yet
+	holder:SetScript('OnClick', B.Warband_OnClick) -- dont exist yet
+
+	if holder.animIcon then
+		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
+	end
+
+	holder.icon:SetTexCoord(unpack(E.TexCoords))
+	holder.icon:SetTexture(DEFAULT_ICON)
+	holder.icon:SetInside()
+
+	holder.IconBorder:SetAlpha(0)
+
+	holder:SetID(bagNum)
+	-- holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
+	-- holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+
+	if index == 1 then
+		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
+	elseif f.WarbandHolder[index - 1] then
+		holder:Point('LEFT', f.WarbandHolder[index - 1], 'RIGHT', 4, 0)
+	end
+
+	if index == f.WarbandHolder.totalBags then
+		f.WarbandHolder:Point('TOPRIGHT', holder, 4, 4)
+	end
+
+	local bagName = format('%sBag%d', name, bagNum)
+	local bag = CreateFrame('Frame', bagName, f.holderFrame)
+
+	bag.holder = holder
+	bag.name = bagName
+	bag:SetID(bagID)
+
+	holder.BagID = bagID
+	holder.bag = bag
+	holder.frame = f
+	holder.index = index
+
+	return holder
+end
+
+function B:ConstructHolderConstainer(f, bagID, isBank, name, index)
 	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
-	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
-	local inherit = (E.Retail and not isBank and '') or isBank and 'BankItemButtonBagTemplate' or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
+	local inherit = (E.Retail and not isBank and '') or (isBank and 'BankItemButtonBagTemplate') or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 	f.ContainerHolderByBagID[bagID] = holder
@@ -1806,6 +1881,51 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	return holder
 end
 
+function B:PurchaseButton_ClickBank()
+	local _, full = GetNumBankSlots()
+	if full then
+		E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
+	else
+		E:StaticPopup_Show('BUY_BANK_SLOT')
+	end
+end
+
+function B:PurchaseButton_ClickWarband()
+	if CanPurchaseBankTab(WARBANDBANK_TYPE) then
+		E:StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, { bankType = WARBANDBANK_TYPE })
+	else
+		E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
+	end
+end
+
+function B:BagsButton_ClickWarband()
+	local frame = self:GetParent()
+	ToggleFrame(frame.WarbandHolder)
+
+	if frame.ContainerHolder:IsShown() then
+		frame.ContainerHolder:SetShown(false)
+	end
+end
+
+function B:BagsButton_ClickBank()
+	local frame = self:GetParent()
+	ToggleFrame(frame.ContainerHolder)
+	PlaySound(852) --IG_MAINMENU_OPTION
+
+	if frame.WarbandHolder:IsShown() then
+		frame.WarbandHolder:SetShown(false)
+	end
+end
+
+function B:BagsButton_ClickBag()
+	local frame = self:GetParent()
+	ToggleFrame(frame.ContainerHolder)
+
+	if frame.WarbandHolder:IsShown() then
+		frame.WarbandHolder:SetShown(false)
+	end
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1875,7 +1995,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for index, bagID in next, f.BagIDs do
-		B:ConstructContainerHolder(f, bagID, isBank, name, index)
+		B:ConstructHolderConstainer(f, bagID, isBank, name, index)
 	end
 
 	f.stackButton = CreateFrame('Button', name..'StackButton', f.holderFrame)
@@ -1946,11 +2066,18 @@ function B:ConstructContainerFrame(name, isBank)
 
 		if E.Retail then
 			do -- warband banks
-				for bankID, bankIndex in next, B.WarbandBanks do
+				f.WarbandHolder = CreateFrame('Button', name..'WarbandHolder', f)
+				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
+				f.WarbandHolder:SetTemplate('Transparent')
+				f.WarbandHolder:Hide()
+				f.WarbandHolder.totalBags = 5
+				f.WarbandHolderByBagID = {}
+
+				for bankIndex, bankID in next, B.WarbandIndexs do
 					B:ConstructContainerCustomBank(f, bankID, 'warbandFrame'..bankIndex, 'ElvUIWarbandBankFrame'..bankIndex, B.WARBANDBANK_SIZE)
 
-					--local holder = B:ConstructContainerHolder(f, bankID, isBank, name, bankIndex)
-					--f.ContainerHolderByBagID[bankID] = holder
+					local holder = B:ConstructContainerWarband(f, bankID, bankIndex, 'ElvUIWarbandBankFrame')
+					f.WarbandHolderByBagID[bankID] = holder
 				end
 
 				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f)
@@ -1971,6 +2098,8 @@ function B:ConstructContainerFrame(name, isBank)
 
 			do -- reagent bank
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
+
+				B:ConstructContainerPurchaseCover(reagentFrame)
 				reagentFrame.cover.purchaseText:SetText(REAGENTBANK_PURCHASE_TEXT)
 				reagentFrame.cover.purchaseButton:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
@@ -2050,12 +2179,9 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Toggle Bags Button
-		f.bagsButton:SetScript('OnClick', function()
-			ToggleFrame(f.ContainerHolder)
-			PlaySound(852) --IG_MAINMENU_OPTION
-		end)
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
-		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
+		f.purchaseBagButton = CreateFrame('Button', nil, f)
 		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Size(20)
 		f.purchaseBagButton:SetTemplate()
@@ -2065,14 +2191,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.purchaseBagButton.ttText = L["Purchase Bags"]
 		f.purchaseBagButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.purchaseBagButton:SetScript('OnLeave', GameTooltip_Hide)
-		f.purchaseBagButton:SetScript('OnClick', function()
-			local _, full = GetNumBankSlots()
-			if full then
-				E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
-			else
-				E:StaticPopup_Show('BUY_BANK_SLOT')
-			end
-		end)
+		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickBank)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
@@ -2118,7 +2237,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Bags Button
-		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
 
 		--Keyring Button
 		if E.Classic then
@@ -2442,6 +2561,23 @@ do
 	end
 end
 
+function B:Warband_FetchData()
+	return FetchPurchasedBankTabData(WARBANDBANK_TYPE)
+end
+
+function B:Warband_UpdateIcon(f, bankID, data)
+	if not data or not bankID then return end
+
+	local holder = f.WarbandHolderByBagID[bankID]
+	if not holder then return end
+
+	for _, info in ipairs(data) do
+		if info.ID == bankID then
+			return holder.icon:SetTexture(info.icon or DEFAULT_ICON)
+		end
+	end
+end
+
 function B:ShowBankTab(f, bankTab)
 	local previousTab = B.BankTab
 
@@ -2450,7 +2586,10 @@ function B:ShowBankTab(f, bankTab)
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
 		if E.Retail then
-			for _, bankIndex in next, B.WarbandBanks do
+			local warbandData = B:Warband_FetchData()
+			for bankID, bankIndex in next, B.WarbandBanks do
+				B:Warband_UpdateIcon(f, bankID, warbandData)
+
 				f['warbandFrame'..bankIndex]:Hide() -- hide them all first
 			end
 
@@ -2459,10 +2598,14 @@ function B:ShowBankTab(f, bankTab)
 			f.bankText:SetText(L["Warband Bank"])
 		end
 
-		f.bagsButton:Show()
+		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickWarband)
+		f.bagsButton:Show(canBuyTab)
+		f.purchaseBagButton:SetShown()
+		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickWarband)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
+		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, 0)
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2475,7 +2618,9 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 		f.bagsButton:Hide()
+		f.purchaseBagButton:Hide()
 		f.holderFrame:Hide()
 		f.editBox:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 	else
@@ -2490,7 +2635,10 @@ function B:ShowBankTab(f, bankTab)
 			end
 		end
 
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 		f.bagsButton:Show()
+		f.purchaseBagButton:SetShown(not f.fullBank)
+		f.purchaseBagButton:SetScript('OnClick', B.PurchaseButton_ClickBank)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, 0)
 	end
