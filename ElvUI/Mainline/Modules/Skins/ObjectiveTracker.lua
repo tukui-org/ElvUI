@@ -152,6 +152,47 @@ local function SkinProgressBars(_, _, line)
 	end
 end
 
+ -- new 11.0
+local function ReskinBarTemplate(bar)
+	if bar.backdrop then return end
+
+	bar:StripTextures()
+	bar:CreateBackdrop()
+	bar:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(bar)
+end
+
+local function HandleProgressBar(tracker, key)
+	local progressBar = tracker.usedProgressBars[key]
+	local bar = progressBar and progressBar.Bar
+
+	if bar then
+		ReskinBarTemplate(bar)
+	end
+
+	local icon = bar and bar.Icon
+	if icon then
+		if not icon.backdrop then
+			icon:SetMask('') -- This needs to be before the skinning function
+			S:HandleIcon(icon, true)
+			icon:ClearAllPoints()
+			icon:Point('TOPLEFT', bar, 'TOPRIGHT', 5, 0)
+			icon:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', 25, 0)
+		end
+	end
+end
+
+local function HandleTimers(tracker, key)
+	local timerBar = tracker.usedTimerBars[key]
+	local bar = timerBar and timerBar.Bar
+
+	if bar then
+		ReskinBarTemplate(bar)
+	end
+end
+
+-- End of 11.0
+
 local function SkinTimerBars(_, _, line)
 	local timerBar = line and line.TimerBar
 	local bar = timerBar and timerBar.Bar
@@ -229,38 +270,12 @@ function S:Blizzard_ObjectiveTracker()
 	MainMinimize.tex:SetInside()
 
 	for _, tracker in pairs(trackers) do
-		if tracker then
-			SkinOjectiveTrackerHeaders(tracker.Header)
+		SkinOjectiveTrackerHeaders(tracker.Header)
 
-			hooksecurefunc(tracker, 'AddBlock', HandleItemButton)
-			--hooksecurefunc(tracker, 'GetProgressBar', SkinProgressBars) -- FIX ME 11.0
-			hooksecurefunc(tracker, 'GetTimerBar', SkinTimerBars)
-		end
+		hooksecurefunc(tracker, 'AddBlock', HandleItemButton)  -- FIX ME 11.0
+		hooksecurefunc(tracker, 'GetProgressBar', HandleProgressBar) -- Make me pretty
+		hooksecurefunc(tracker, 'GetTimerBar', HandleTimers) -- Make me pretty
 	end
-
-
-	-- FIX ME 11.0 seems depricated in TWW
-	--hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
-	--hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
-
-	--hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
-	--hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE, 'AddObjective', HandleItemButton)
-	--hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
-	--hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
-	--hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
-	--hooksecurefunc('QuestObjectiveSetupBlockButton_AddRightButton',PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
-	--hooksecurefunc('ObjectiveTracker_CheckAndHideHeader',SkinOjectiveTrackerHeaders)		--[Skin]: Module Headers
-	--hooksecurefunc('QuestObjectiveSetupBlockButton_FindGroup',SkinFindGroupButton)			--[Skin]: The eye
-	--hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
-	--hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: World Quest Progress Bar
-	--hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)	--[Skin]: Quest Progress Bar
-	--hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: Scenario Progress Bar
-	--hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)		--[Skin]: Campaign Progress Bar
-	--hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)				--[Skin]: Quest Progress Bar
-	--hooksecurefunc(_G.UI_WIDGET_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: New DF Quest Progress Bar
-	--hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)						--[Skin]: Quest Timer Bar
-	--hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)					--[Skin]: Scenario Timer Bar
-	--hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)				--[Skin]: Achievement Timer Bar
 end
 
 S:AddCallbackForAddon('Blizzard_ObjectiveTracker')
