@@ -9,7 +9,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local tinsert, tremove, wipe = tinsert, tremove, wipe
 local type, ipairs, unpack, select = type, ipairs, unpack, select
-local next, max, floor, format, strsub = next, max, floor, format, strsub
+local next, max, floor, format, strsub, strfind = next, max, floor, format, strsub, strfind
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local CreateFrame = CreateFrame
@@ -1786,8 +1786,15 @@ function B:Warband_AccountPanel(bagID)
 		if tabMenu then
 			tabMenu:SetParent(_G.UIParent)
 			tabMenu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
+
 			tabMenu:ClearAllPoints()
-			tabMenu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
+			local point = E:GetScreenQuadrant(B.BankFrame)
+			if strfind(point, 'LEFT') then
+				tabMenu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
+			else
+				tabMenu:Point('BOTTOMRIGHT', B.BankFrame, 'BOTTOMLEFT', -5, 0)
+			end
+
 			tabMenu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
 
 			tabMenu:StripTextures()
@@ -1799,37 +1806,6 @@ function B:Warband_AccountPanel(bagID)
 
 				tabMenu.IsSkinned = true
 			end
-
-			--[[if not tabMenu.IsSkinned then
-				S:HandleTrimScrollBar(tabMenu.IconSelector.ScrollBar)
-
-				local borderBox = tabMenu.BorderBox
-				if borderBox then
-					borderBox.TopEdge:Hide()
-					borderBox.TopLeftCorner:Hide()
-					borderBox.TopRightCorner:Hide()
-					borderBox.BottomEdge:Hide()
-					borderBox.BottomLeftCorner:Hide()
-					borderBox.BottomRightCorner:Hide()
-					borderBox.LeftEdge:Hide()
-					borderBox.RightEdge:Hide()
-
-					-- UIParent.29c9d24b4b0.BorderBox.SelectedIconArea.SelectedIconButton
-
-					S:HandleButton(borderBox.OkayButton)
-					S:HandleButton(borderBox.CancelButton)
-
-					local editBox = borderBox.IconSelectorEditBox
-					if editBox then
-						S:HandleEditBox(editBox)
-						editBox.IconSelectorPopupNameLeft:Hide()
-						editBox.IconSelectorPopupNameMiddle:Hide()
-						editBox.IconSelectorPopupNameRight:Hide()
-					end
-				end
-
-				tabMenu.IsSkinned = true
-			end]]
 		end
 	end
 end
