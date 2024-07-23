@@ -1790,6 +1790,15 @@ function B:Warband_AccountPanel(bagID)
 			tabMenu:SetParent(_G.UIParent)
 			tabMenu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 
+			local checkBoxes = {
+				tabMenu.DepositSettingsMenu.AssignEquipmentCheckbox,
+				tabMenu.DepositSettingsMenu.AssignConsumablesCheckbox,
+				tabMenu.DepositSettingsMenu.AssignProfessionGoodsCheckbox,
+				tabMenu.DepositSettingsMenu.AssignReagentsCheckbox,
+				tabMenu.DepositSettingsMenu.AssignJunkCheckbox,
+				tabMenu.DepositSettingsMenu.IgnoreCleanUpCheckbox,
+			}
+
 			tabMenu:ClearAllPoints()
 			local point = E:GetScreenQuadrant(B.BankFrame)
 			if strfind(point, 'LEFT') then
@@ -1806,6 +1815,12 @@ function B:Warband_AccountPanel(bagID)
 			if not tabMenu.IsSkinned then
 				S:HandleIconSelectionFrame(tabMenu)
 				S:HandleDropDownBox(tabMenu.DepositSettingsMenu.ExpansionFilterDropdown, 120)
+
+				for _, checkBox in pairs(checkBoxes) do
+					if checkBox then
+						S:HandleCheckBox(checkBox)
+					end
+				end
 
 				tabMenu.IsSkinned = true
 			end
