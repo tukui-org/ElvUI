@@ -2076,9 +2076,18 @@ function B:ConstructContainerFrame(name, isBank)
 		f.fullBank = select(2, GetNumBankSlots())
 
 		if E.Retail then
-			f.pickupGold:SetScript('OnClick', function()
-				StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
-			end)
+			do -- main bank button
+				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
+				f.bankToggle:Size(71, 23)
+				f.bankToggle:SetText(L["Bank"])
+				f.bankToggle.Text:SetTextColor(1, 1, 1)
+				f.bankToggle:Point('TOPLEFT', f, 14, -52)
+				f.bankToggle:SetScript('OnClick', function()
+					B:SelectBankTab(f, BANK_CONTAINER)
+				end)
+
+				S:HandleButton(f.bankToggle)
+			end
 
 			do -- reagent bank
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
@@ -2091,9 +2100,9 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'UIPanelButtonTemplate')
-				f.reagentToggle:Size(100, 23)
+				f.reagentToggle:Size(71, 23)
 				f.reagentToggle:SetText(L["Reagents"])
-				f.reagentToggle:Point('TOP', f, 0, -52)
+				f.reagentToggle:Point('LEFT', f.bankToggle, 'RIGHT', 5, 0)
 				f.reagentToggle:SetScript('OnClick', function()
 					B:SelectBankTab(f, REAGENTBANK_CONTAINER)
 				end)
@@ -2116,19 +2125,6 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 			end
 
-			do -- main bank button
-				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
-				f.bankToggle:Size(100, 23)
-				f.bankToggle:SetText(L["Bank"])
-				f.bankToggle.Text:SetTextColor(1, 1, 1)
-				f.bankToggle:Point('RIGHT', f.reagentToggle, 'LEFT', -5, 0)
-				f.bankToggle:SetScript('OnClick', function()
-					B:SelectBankTab(f, BANK_CONTAINER)
-				end)
-
-				S:HandleButton(f.bankToggle)
-			end
-
 			do -- warband banks
 				f.WarbandHolder = CreateFrame('Button', name..'WarbandHolder', f)
 				f.WarbandHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
@@ -2145,7 +2141,7 @@ function B:ConstructContainerFrame(name, isBank)
 				end
 
 				f.warbandToggle = CreateFrame('Button', name..'WarbandButton', f, 'UIPanelButtonTemplate')
-				f.warbandToggle:Size(100, 23)
+				f.warbandToggle:Size(71, 23)
 				f.warbandToggle:SetText(L["Warband"])
 				f.warbandToggle:Point('LEFT', f.reagentToggle, 'RIGHT', 5, 0)
 				f.warbandToggle:SetScript('OnClick', function()
@@ -2153,6 +2149,31 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				S:HandleButton(f.warbandToggle)
+			end
+
+			do -- account bank gold
+				f.pickupGold:SetScript('OnClick', function()
+					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+				end)
+
+				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
+				f.goldDeposit:Size(71, 23)
+				f.goldDeposit:SetText(L["Deposit"])
+				f.goldDeposit:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
+				f.goldDeposit:SetScript('OnClick', function()
+					StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
+				end)
+
+				f.goldWithdrawl = CreateFrame('Button', name..'WithdrawlButton', f, 'UIPanelButtonTemplate')
+				f.goldWithdrawl:Size(71, 23)
+				f.goldWithdrawl:SetText(L["Withdrawl"])
+				f.goldWithdrawl:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
+				f.goldWithdrawl:SetScript('OnClick', function()
+					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+				end)
+
+				S:HandleButton(f.goldWithdrawl)
+				S:HandleButton(f.goldDeposit)
 			end
 		end
 
@@ -2572,17 +2593,13 @@ do
 		TabIndex[bankID] = 3
 	end
 
-	local activeTab = E.Retail and 'activeTabIndex' or 'selectedTab'
 	function B:SetBankSelectedTab()
 		local tab = TabIndex[B.BankTab] or 1
 
-		_G.BankFrame[activeTab] = tab
+		_G.BankFrame.activeTabIndex = tab
+		_G.BankFrame.selectedTab = tab
 
 		return tab
-	end
-
-	function B:GetBankSelectedTab()
-		return _G.BankFrame[activeTab]
 	end
 end
 
