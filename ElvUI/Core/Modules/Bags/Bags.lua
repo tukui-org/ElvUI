@@ -1777,6 +1777,43 @@ function B:Warband_PanelCheckbox(checkbox)
 	checkbox:Size(22)
 end
 
+function B:Warband_MenuPosition(menu)
+	menu:ClearAllPoints()
+
+	local point = E:GetScreenQuadrant(B.BankFrame)
+	if strfind(point, 'LEFT') then
+		menu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
+	else
+		menu:Point('BOTTOMRIGHT', B.BankFrame, 'BOTTOMLEFT', -5, 0)
+	end
+end
+
+function B:Warband_MenuSkin(menu)
+	if not menu.IsSkinned then
+		S:HandleIconSelectionFrame(menu)
+
+		local deposit = menu.DepositSettingsMenu
+		if deposit then
+			S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
+
+			B:Warband_PanelCheckbox(deposit.AssignEquipmentCheckbox)
+			B:Warband_PanelCheckbox(deposit.AssignConsumablesCheckbox)
+			B:Warband_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
+			B:Warband_PanelCheckbox(deposit.AssignReagentsCheckbox)
+			B:Warband_PanelCheckbox(deposit.AssignJunkCheckbox)
+			B:Warband_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
+		end
+
+		menu.IsSkinned = true
+	end
+end
+
+function B:Warband_MenuSpawn(menu, bagID)
+	menu:SetParent(_G.UIParent)
+	menu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
+	menu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
+end
+
 function B:Warband_AccountPanel(bagID)
 	local tabIndex = B:Warband_GetTabIndex(bagID)
 	local bankPanel = tabIndex and _G.BANK_PANELS[tabIndex]
@@ -1792,39 +1829,9 @@ function B:Warband_AccountPanel(bagID)
 
 		local tabMenu = accountPanel.TabSettingsMenu
 		if tabMenu then
-			tabMenu:SetParent(_G.UIParent)
-			tabMenu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
-
-			tabMenu:ClearAllPoints()
-			local point = E:GetScreenQuadrant(B.BankFrame)
-			if strfind(point, 'LEFT') then
-				tabMenu:Point('BOTTOMLEFT', B.BankFrame, 'BOTTOMRIGHT', 5, 0)
-			else
-				tabMenu:Point('BOTTOMRIGHT', B.BankFrame, 'BOTTOMLEFT', -5, 0)
-			end
-
-			tabMenu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
-
-			tabMenu:StripTextures()
-			tabMenu:SetTemplate('Transparent')
-
-			if not tabMenu.IsSkinned then
-				S:HandleIconSelectionFrame(tabMenu)
-
-				local deposit = tabMenu.DepositSettingsMenu
-				if deposit then
-					S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
-
-					B:Warband_PanelCheckbox(deposit.AssignEquipmentCheckbox)
-					B:Warband_PanelCheckbox(deposit.AssignConsumablesCheckbox)
-					B:Warband_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
-					B:Warband_PanelCheckbox(deposit.AssignReagentsCheckbox)
-					B:Warband_PanelCheckbox(deposit.AssignJunkCheckbox)
-					B:Warband_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
-				end
-
-				tabMenu.IsSkinned = true
-			end
+			B:Warband_MenuPosition(tabMenu)
+			B:Warband_MenuSpawn(tabMenu, bagID)
+			B:Warband_MenuSkin(tabMenu)
 		end
 	end
 end
