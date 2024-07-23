@@ -1757,7 +1757,7 @@ function B:Warband_OnEnter()
 
 	local warbandData = B:Warband_FetchData()
 	local warbandInfo = warbandData[self.BagID]
-	if warbandInfo.name then
+	if warbandInfo and warbandInfo.name then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 		GameTooltip:AddLine(warbandInfo.name, 1, 0.82, 0)
 		B:WarbandBankTabSettingsToTooltip(GameTooltip, warbandInfo.depositFlags)
