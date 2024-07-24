@@ -65,10 +65,14 @@ function S:Blizzard_WeeklyRewards()
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 
-		frame.BorderContainer:SetAlpha(0)
-
 		header:StripTextures()
 		header:SetTemplate('Transparent')
+
+		header.Right:SetAlpha(0)
+		header.Left:SetAlpha(0)
+		header.Middle:SetAlpha(0)
+		frame.NineSlice:SetAlpha(0)
+		frame.BackgroundTile:SetAlpha(0)
 
 		header:ClearAllPoints()
 		header:Point('TOP', 1, -42)
