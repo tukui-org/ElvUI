@@ -2821,17 +2821,19 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 
 	for i = 1, BNGetNumFriends() do
 		local info = C_BattleNet_GetAccountInfoByID(i)
-		for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
-			local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-			if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
-				playerName = gameInfo.characterName
+		if info and info.accountName then
+			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+				if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
+					playerName = gameInfo.characterName
 
-				if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
-					playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
-				end
+					if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
+						playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
+					end
 
-				if leaderName == playerName then
-					return true
+					if leaderName == playerName then
+						return true
+					end
 				end
 			end
 		end
