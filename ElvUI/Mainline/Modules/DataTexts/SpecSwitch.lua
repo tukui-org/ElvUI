@@ -238,7 +238,7 @@ local function OnClick(self, button)
 
 		if IsShiftKeyDown() then
 			if not E:AlertCombat() then
-				ToggleTalentFrame(_G.TalentMicroButton.suggestedTab)
+				TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
 			end
 		else
 			menu = IsControlKeyDown() and loadoutList or specList
