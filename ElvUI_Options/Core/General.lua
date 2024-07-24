@@ -191,6 +191,10 @@ Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the came
 Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
 Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
+Cosmetic.gameMenuGroup = ACH:Group(L["Game Menu"], nil, 31, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
+Cosmetic.gameMenuGroup.inline = true
+Cosmetic.gameMenuGroup.args.gameMenuScale = ACH:Range(L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.1 })
+
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true
 Cosmetic.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
