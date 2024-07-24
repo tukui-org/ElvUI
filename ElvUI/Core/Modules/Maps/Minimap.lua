@@ -8,6 +8,7 @@ local next = next
 local sort = sort
 local ipairs = ipairs
 local unpack = unpack
+local format = format
 local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 local utf8sub = string.utf8sub
@@ -49,8 +50,8 @@ local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UID
 local menuList = {
 	{text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
 	{text = E.Retail and _G.SPELLBOOK or _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleSpellBookFrame() else ToggleFrame(_G.SpellBookFrame) end end },
-	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
-	{text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = 1 }, -- Interface\ICONS\UI_Chat
+	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = E.Retail and 5 or 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
+	{text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = E.Retail and 5 or 1 }, -- Interface\ICONS\UI_Chat
 	{text = _G.SOCIAL_BUTTON, func = function() _G.ToggleFriendsFrame() end, icon = 796351, cropIcon = 10 }, -- Interface\FriendsFrame\Battlenet-BattlenetIcon
 	{text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleClassTalentFrame() else _G.ToggleTalentFrame() end end },
 	{text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() _G.ToggleGuildFrame() end },
@@ -64,7 +65,7 @@ if E.Retail or E.Cata then
 	tinsert(menuList, {text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
 	tinsert(menuList, {text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
 	tinsert(menuList, {text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
-	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = 1 }) -- Interface\Calendar\MeetingIcon
+	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = E.Retail and 5 or 1 }) -- Interface\Calendar\MeetingIcon
 	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
@@ -660,18 +661,30 @@ function M:Initialize()
 	for _, menu in ipairs(menuList) do
 		menu.notCheckable = true
 
-		if menu.cropIcon then
-			local left = 0.02 * menu.cropIcon
-			local right = 1 - left
-			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, left, right
-			menu.cropIcon = nil
-		end
-
-		if menu.microOffset then
+		if E.Retail then -- new menu 11.0 don't support icons? lets use t strings
+			local icon = menu.microOffset == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance)
+			if icon then
+				menu.text = format('|T%s:18:18:0:0:64:64:5:59:5:59|t %s', menu.icon, menu.text)
+			elseif menu.cropIcon then
+				local inverse = 64 - menu.cropIcon
+				menu.text = format('|T%s:18:18:0:0:64:64:%s:%s:%s:%s|t %s', menu.icon, menu.cropIcon, inverse, menu.cropIcon, inverse, menu.text)
+			else
+				local offset = AB.MICRO_OFFSETS[menu.microOffset]
+				if offset then
+					local new = offset * 12.125
+					menu.text = format('|T%s:18:18:0:0:512:128:%s:%s:%s:%s|t %s', E.Media.Textures.MicroBar, 42 * new, 42 * (new + 1), 0, 42, menu.text)
+				end
+			end
+		elseif menu.microOffset then
 			local left, right, top, bottom = AB:GetMicroCoords(menu.microOffset, true)
 			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, top, bottom
 			menu.icon = menu.microOffset == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance) or E.Media.Textures.MicroBar
 			menu.microOffset = nil
+		elseif menu.cropIcon then
+			local left = 0.02 * menu.cropIcon
+			local right = 1 - left
+			menu.tCoordLeft, menu.tCoordRight, menu.tCoordTop, menu.tCoordBottom = left, right, left, right
+			menu.cropIcon = nil
 		end
 	end
 
