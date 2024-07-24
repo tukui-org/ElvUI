@@ -70,13 +70,13 @@ do
 	end
 
 	loadout_func = function(_, arg1)
-		if not _G.ClassTalentFrame then
-			_G.ClassTalentFrame_LoadUI()
+		if not _G.PlayerSpellsFrame then
+			_G.PlayerSpellsFrame_LoadUI()
 		end
 
 		loadoutID = arg1
 
-		_G.ClassTalentFrame.TalentsTab:LoadConfigByPredicate(loadout_callback)
+		_G.PlayerSpellsFrame.TalentsFrame:LoadConfigByPredicate(loadout_callback)
 	end
 end
 
