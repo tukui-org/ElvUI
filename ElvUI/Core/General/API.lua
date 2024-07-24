@@ -842,9 +842,7 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
-		-- Optional scale
-		local db = E.private.general.gameMenuScale
-		GameMenuFrame:SetScale(db)
+		GameMenuFrame:SetScale(E.private.general.gameMenuScale or 1)
 
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else
