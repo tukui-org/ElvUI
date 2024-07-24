@@ -48,7 +48,7 @@ function DB:ReputationBar_Update()
 	if not bar.db.enable or bar:ShouldHide() then return end
 
 	local data = E:GetWatchedFactionInfo()
-	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
+	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name or UNKNOWN, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 	local displayString, textFormat, standing, rewardPending, _ = '', DB.db.reputation.textFormat
 
 	if reaction == 0 then
