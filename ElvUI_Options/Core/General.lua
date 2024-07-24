@@ -193,7 +193,7 @@ Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil,
 
 Cosmetic.gameMenuGroup = ACH:Group(L["Game Menu"], nil, 31, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 Cosmetic.gameMenuGroup.inline = true
-Cosmetic.gameMenuGroup.args.gameMenuScale = ACH:Range(L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.1 })
+Cosmetic.gameMenuGroup.args.gameMenuScale = ACH:Range(E.NewSign..L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.1 })
 
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true
