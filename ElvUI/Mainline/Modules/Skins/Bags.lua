@@ -242,7 +242,7 @@ local function UpdateBankItem(button)
 		S:HandleButton(_G.BankFramePurchaseButton, true)
 		S:HandleCloseButton(_G.BankFrameCloseButton)
 
-		_G.BankFrameMoneyFrameInset:Kill()
+		_G.AccountBankPanel.NineSlice:Kill()
 		_G.BankFrameMoneyFrameBorder:Kill()
 
 		BankFrame:StripTextures(true)
