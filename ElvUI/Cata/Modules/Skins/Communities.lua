@@ -266,8 +266,8 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.GuildMemberDetailFrame.RemoveButton:Point('BOTTOMLEFT', 10, 4)
 
 	local DropDown = CommunitiesFrame.GuildMemberDetailFrame.RankDropdown
-	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', -12, -3)
-	S:HandleDropDownBox(DropDown, 175)
+	DropDown:Point('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', 0, -3)
+	S:HandleDropDownBox(DropDown, 150)
 
 	-- Roster Tab
 	local MemberList = CommunitiesFrame.MemberList
