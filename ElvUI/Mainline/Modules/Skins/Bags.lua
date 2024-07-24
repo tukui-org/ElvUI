@@ -312,6 +312,7 @@ function S:ContainerFrame()
 	_G.BankSlotsFrame:StripTextures()
 	S:HandleTab(_G.BankFrameTab1)
 	S:HandleTab(_G.BankFrameTab2)
+	S:HandleTab(_G.BankFrameTab3)
 	S:HandleEditBox(_G.BagItemSearchBox)
 	S:HandleEditBox(_G.BankItemSearchBox)
 
