@@ -81,7 +81,7 @@ local UnitRace = UnitRace
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
 
-local BOOKTYPE_SPELL = BOOKTYPE_SPELL or Enum.SpellBookSpellBank.Player
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
 local GetSpellBookItemName = _G.GetSpellBookItemName or function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)

@@ -28,7 +28,7 @@ local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 
 local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 
-local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or 'spell'
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS

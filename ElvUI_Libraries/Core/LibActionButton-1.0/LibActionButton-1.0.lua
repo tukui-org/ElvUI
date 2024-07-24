@@ -2754,7 +2754,7 @@ local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or G
 local GetSpellCharges = C_Spell.GetSpellCharges and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration end end or GetSpellCharges
 local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
 
-local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or "spell"
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 -----------------------------------------------------------
 --- Spell Button
