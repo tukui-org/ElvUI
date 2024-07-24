@@ -12,14 +12,12 @@ local STANDING = STANDING
 
 local function OnEvent(self)
 	local data = E:GetWatchedFactionInfo()
-	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
-	if not name then
+	if not (data and data.name) then
 		return 	self.text:SetText(NOT_APPLICABLE)
 	end
 
-	local standingLabel
-	local isCapped
-
+	local standingLabel, isCapped
+	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
 	if reaction == _G.MAX_REPUTATION_REACTION then
 		isCapped = true
 	end
@@ -61,8 +59,9 @@ end
 
 local function OnEnter()
 	local data = E:GetWatchedFactionInfo()
-	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
+	if not data then return end
 
+	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
 	if name then
 		DT.tooltip:ClearLines()
 		DT.tooltip:AddLine(name)
