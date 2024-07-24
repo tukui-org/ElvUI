@@ -48,7 +48,7 @@ function DB:ReputationBar_Update()
 	if not bar.db.enable or bar:ShouldHide() then return end
 
 	local data = E:GetWatchedFactionInfo()
-	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name or UNKNOWN, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
+	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 	local displayString, textFormat, standing, rewardPending, _ = '', DB.db.reputation.textFormat
 
 	if reaction == 0 then
@@ -99,23 +99,25 @@ function DB:ReputationBar_Update()
 	bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
-	local current, maximum, percent, capped = GetValues(currentStanding, currentReactionThreshold, total)
-	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
-		displayString = format('%s: [%s]', name, standing)
-	elseif textFormat == 'PERCENT' then
-		displayString = format('%s: %d%% [%s]', name, percent, standing)
-	elseif textFormat == 'CURMAX' then
-		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
-	elseif textFormat == 'CURPERC' then
-		displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
-	elseif textFormat == 'CUR' then
-		displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
-	elseif textFormat == 'REM' then
-		displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
-	elseif textFormat == 'CURREM' then
-		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
-	elseif textFormat == 'CURPERCREM' then
-		displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
+	if name then
+		local current, maximum, percent, capped = GetValues(currentStanding, currentReactionThreshold, total)
+		if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
+			displayString = format('%s: [%s]', name, standing)
+		elseif textFormat == 'PERCENT' then
+			displayString = format('%s: %d%% [%s]', name, percent, standing)
+		elseif textFormat == 'CURMAX' then
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
+		elseif textFormat == 'CURPERC' then
+			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
+		elseif textFormat == 'CUR' then
+			displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
+		elseif textFormat == 'REM' then
+			displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
+		elseif textFormat == 'CURREM' then
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
+		elseif textFormat == 'CURPERCREM' then
+			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
+		end
 	end
 
 	bar.text:SetText(displayString)
