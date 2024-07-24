@@ -6,7 +6,6 @@ local ipairs, select, next, sort, unpack, wipe, ceil = ipairs, select, next, sor
 local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
 
 local GetDisplayedInviteType = GetDisplayedInviteType
-local GetGuildFactionInfo = GetGuildFactionInfo
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterMOTD = GetGuildRosterMOTD
@@ -53,6 +52,19 @@ local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '..
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local clubTable, guildTable, guildMotD = {}, {}, ''
+
+local GetGuildFactionInfo = (C_Reputation and C_Reputation.GetGuildFactionData) or function()
+	local guildName, description, standingID, barMin, barMax, barValue = _G.GetGuildFactionInfo()
+
+	return {
+		name = guildName,
+		description = description,
+		reaction = standingID,
+		currentReactionThreshold = barMin,
+		nextReactionThreshold = barMax,
+		currentStanding = barValue
+	}
+end
 
 local function sortByRank(a, b)
 	if a and b then
@@ -270,11 +282,11 @@ local function OnEnter(_, _, noUpdate)
 	end
 
 	if E.Retail then
-		local _, _, standingID, barMin, barMax, barValue = GetGuildFactionInfo()
-		if standingID ~= 8 then -- Not Max Rep
-			barMax = barMax - barMin
-			barValue = barValue - barMin
-			DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(barValue), E:ShortValue(barMax), ceil((barValue / barMax) * 100)))
+		local info = GetGuildFactionInfo()
+		if info and info.reaction ~= 8 then -- Not Max Rep
+			local nextReactionThreshold = info.nextReactionThreshold - info.currentReactionThreshold
+			local currentStanding = info.currentStanding - info.currentReactionThreshold
+			DT.tooltip:AddLine(format(standingString, COMBAT_FACTION_CHANGE, E:ShortValue(currentStanding), E:ShortValue(nextReactionThreshold), ceil((currentStanding / nextReactionThreshold) * 100)))
 		end
 	end
 
