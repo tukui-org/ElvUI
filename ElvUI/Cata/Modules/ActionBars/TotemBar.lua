@@ -14,7 +14,6 @@ local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Totem Bar')
 
 local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerStateTemplate')
-bar:SetFrameStrata('LOW')
 
 local SLOT_BORDER_COLORS = {
 	summon					= {r = 0, g = 0, b = 0},
@@ -58,12 +57,10 @@ function AB:MultiCastActionButton_Update(button)
 end
 
 function AB:MultiCastSummonSpellButton_Update(summonButton)
-	local buttonSpacing = AB.db.totemBar.spacing
-
 	-- reposition the first slot to the summon button
 	local slot1 = _G.MultiCastSlotButton1
 	slot1:ClearAllPoints()
-	slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
+	slot1:Point('LEFT', summonButton, 'RIGHT', AB.db.totemBar.spacing or 4, 0)
 end
 
 function AB:StyleTotemSlotButton(button, slot)
@@ -77,7 +74,7 @@ function AB:StyleTotemSlotButton(button, slot)
 end
 
 function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
-	if button.isSkinned then return end
+	if button.IsSkinned then return end
 
 	local name = button:GetName()
 	local highlight = _G[name..'Highlight']
@@ -114,7 +111,7 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	AB.handledbuttons[button] = true
 	bar.buttons[button] = true
-	button.isSkinned = true
+	button.IsSkinned = true
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
@@ -125,12 +122,13 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 	local numButtons, totalHeight = 0, 0
 
-	local buttonWidth = AB.db.totemBar.flyoutSize
-	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.flyoutSize) or AB.db.totemBar.flyoutHeight
-	local buttonSpacing = AB.db.totemBar.flyoutSpacing
+	local db = AB.db.totemBar
+	local buttonWidth = db.flyoutSize
+	local buttonHeight = (db.keepSizeRatio and db.flyoutSize) or db.flyoutHeight
+	local buttonSpacing = db.flyoutSpacing
 
 	for i, button in ipairs(frame.buttons) do
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			AB:SkinMultiCastButton(button, nil, useMasque)
 
 			-- these only need mouseover script, dont need the bind key script
@@ -151,7 +149,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			AB:TrimIcon(button, useMasque)
 
 			local anchor = (i == 1 and parent) or frame.buttons[i - 1]
-			if AB.db.totemBar.flyoutDirection == 'UP' then
+			if db.flyoutDirection == 'UP' then
 				button:Point('BOTTOM', anchor, 'TOP', 0, buttonSpacing)
 			else
 				button:Point('TOP', anchor, 'BOTTOM', 0, -buttonSpacing)
@@ -171,7 +169,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	frame:ClearAllPoints()
 	closeButton:ClearAllPoints()
-	if AB.db.totemBar.flyoutDirection == 'UP' then
+	if db.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
 		closeButton:Point('TOP', frame, 'TOP')
 	else
@@ -225,12 +223,13 @@ function AB:PositionAndSizeTotemBar()
 		return
 	end
 
+	local db = AB.db.totemBar
 	local barFrame = _G.MultiCastActionBarFrame
 	local numActiveSlots = barFrame.numActiveSlots
-	local buttonSpacing = AB.db.totemBar.spacing
+	local buttonSpacing = db.spacing
 
-	local buttonWidth = AB.db.totemBar.buttonSize
-	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize) or AB.db.totemBar.buttonHeight
+	local buttonWidth = db.buttonSize
+	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 
 	local mainWidth = (buttonWidth * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
@@ -246,12 +245,15 @@ function AB:PositionAndSizeTotemBar()
 		barFrame:SetPoint('BOTTOM', barFrameAnchor)
 	end -- this is Simpy voodoo, dont change it
 
-	bar.mouseover = AB.db.totemBar.mouseover
+	bar.mouseover = db.mouseover
 
-	local fadeAlpha = bar.mouseover and 0 or AB.db.totemBar.alpha
+	local fadeAlpha = bar.mouseover and 0 or db.alpha
 	bar:SetAlpha(fadeAlpha)
 
-	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
+	bar:SetFrameStrata(db.frameStrata or 'LOW')
+	bar:SetFrameLevel(db.frameLevel or 5)
+
+	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
 
 	local summonButton = _G.MultiCastSummonSpellButton
@@ -304,8 +306,9 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
-	local font = LSM:Fetch('font', AB.db.totemBar.font)
-	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
+	local db = AB.db.totemBar
+	local font = LSM:Fetch('font', db.font)
+	local size, outline = db.fontSize, db.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
 	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
@@ -411,12 +414,13 @@ function AB:CreateTotemBar()
 	end
 
 	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
+		local spacing = AB.db.totemBar.spacing or 4
 		if InCombatLockdown() then
 			AB.NeedsRecallButtonUpdate = true
 			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		elseif xOffset ~= AB.db.totemBar.spacing or button:GetPoint(2) then
+		elseif xOffset ~= spacing or button:GetPoint(2) then
 			button:ClearAllPoints()
-			button:SetPoint(point, attachTo, anchorPoint, AB.db.totemBar.spacing, yOffset)
+			button:SetPoint(point, attachTo, anchorPoint, spacing, yOffset)
 		end
 	end)
 

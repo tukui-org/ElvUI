@@ -6,8 +6,8 @@ local _G = _G
 local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemInfo = C_Item.GetItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
@@ -65,7 +65,7 @@ function S:Blizzard_PVPUI()
 	HonorFrame:StripTextures()
 
 	S:HandleTrimScrollBar(_G.HonorFrame.SpecificScrollBar)
-	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 230)
+	S:HandleDropDownBox(_G.HonorFrameTypeDropdown, 230)
 	S:HandleButton(_G.HonorFrameQueueButton)
 
 	local BonusFrame = HonorFrame.BonusFrame
@@ -139,7 +139,7 @@ function S:Blizzard_PVPUI()
 	HandleRoleButton(ConquestFrame.HealerIcon)
 	HandleRoleButton(ConquestFrame.DPSIcon)
 
-	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
+	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
@@ -175,7 +175,9 @@ function S:Blizzard_PVPUI()
 		if rewardTexture then
 			local r, g, b = GetItemQualityColor(rewardQuaility)
 			rewardFrame.Icon:SetTexture(rewardTexture)
-			rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			if rewardFrame.Icon.backdrop then
+				rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end
 		end
 	end)
 

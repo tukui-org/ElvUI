@@ -35,7 +35,9 @@ do
 	AB.MICRO_OFFSETS = {
 		CharacterMicroButton	= 0.07 / meep,
 		SpellbookMicroButton	= 1.05 / meep,
+		ProfessionMicroButton   = 1.05 / meep,
 		TalentMicroButton		= 2.04 / meep,
+		PlayerSpellsMicroButton = 2.04 / meep,
 		AchievementMicroButton	= 3.03 / meep,
 		QuestLogMicroButton		= 4.02 / meep,
 		GuildMicroButton		= 5.01 / meep, -- Retail
@@ -387,7 +389,7 @@ function AB:UpdateHelpTicketButtonAnchor()
 	if first then
 		local db = AB.db.microbar
 		local size = ((db.keepSizeRatio and db.buttonSize) or db.buttonHeight) or 20
-		local height = (size / 2) + 7
+		local height = (size * 0.5) + 7
 		local _, y = first:GetCenter()
 		local middle = E.screenHeight * 0.5
 

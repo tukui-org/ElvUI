@@ -19,7 +19,6 @@ local type, pairs, wipe = type, pairs, wipe
 
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
-local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 
 local debuff_data = {}
@@ -52,7 +51,7 @@ local DispelColor = {
 
 local function add(spell, priority, stackThreshold)
 	if addon.MatchBySpellName and type(spell) == 'number' then
-		spell = GetSpellInfo(spell)
+		spell = oUF:GetSpellInfo(spell)
 	end
 
 	if spell then
@@ -221,7 +220,7 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 
 	if self.RaidDebuffs.forceShow then
 		_spellID = 5782
-		_name, _, _icon = GetSpellInfo(_spellID)
+		_name, _, _icon = oUF:GetSpellInfo(_spellID)
 		_count, _dtype, _duration, _endTime, _stackThreshold = 5, 'Magic', 0, 60, 0
 	end
 

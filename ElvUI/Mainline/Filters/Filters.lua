@@ -305,6 +305,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
+-- Personal player buffs (defensives, utility, immunities, etc)
 G.unitframe.aurafilters.PlayerBuffs = {
 	type = 'Whitelist',
 	spells = {
@@ -637,6 +638,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[374037]	= List(), -- Overwhelming Rage
 		[383600]	= List(), -- Surrounding Storm (Strunraan)
 		[390106]	= List(), -- Riding Along
+		[390435]	= List(), -- Exhaustion (Evoker lust debuff)
 		[392960]	= List(), -- Waygate Travel
 		[392992]	= List(), -- Silent Lava
 		[393798]	= List(), -- Activated Defense Systems
@@ -648,9 +650,6 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-	-- WoW: Remix TEMPORARY STUFF
-		[440393]	= List(), -- Timerunner's Advantage
-		[424143] 	= List(), -- WoW Remix: Mists of Pandaria
 	-- Haste effects
 		[2825]		= List(), -- [Shaman] Bloodlust
 		[32182]		= List(), -- [Shaman] Heroism
@@ -680,7 +679,7 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
--- RAID DEBUFFS: This should be pretty self explainitory
+-- Debuffs applied to players by bosses, adds or trash
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
@@ -697,6 +696,258 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[240559] = List(), -- Grievous
 		[240443] = List(), -- Bursting
 		[409492] = List(), -- Afflicted Cry
+	----------------------------------------------------------
+	---------------- The War Within Dungeons -----------------
+	----------------------------------------------------------
+	-- The Stonevault (Season 1)
+		[427329] = List(), -- Void Corruption
+		[435813] = List(), -- Void Empowerment
+		[423572] = List(), -- Void Empowerment
+		[424889] = List(), -- Seismic Reverberation
+		[424795] = List(), -- Refracting Beam
+		[457465] = List(), -- Entropy
+		[425974] = List(), -- Ground Pound
+		[445207] = List(), -- Piercing Wail
+		[428887] = List(), -- Smashed
+		[427382] = List(), -- Concussive Smash
+		[449154] = List(), -- Molten Mortar
+		[427361] = List(), -- Fracture
+		[443494] = List(), -- Crystalline Eruption
+		[424913] = List(), -- Volatile Explosion
+		[443954] = List(), -- Exhaust Vents
+		[426308] = List(), -- Void Infection
+		[429999] = List(), -- Flaming Scrap
+		[429545] = List(), -- Censoring Gear
+		[428819] = List(), -- Exhaust Vents
+	-- City of Threads (Season 1)
+		[434722] = List(), -- Subjugate
+		[439341] = List(), -- Splice
+		[440437] = List(), -- Shadow Shunpo
+		[448561] = List(), -- Shadows of Doubt
+		[440107] = List(), -- Knife Throw
+		[439324] = List(), -- Umbral Weave
+		[442285] = List(), -- Corrupted Coating
+		[440238] = List(), -- Ice Sickles
+		[461842] = List(), -- Oozing Smash
+		[434926] = List(), -- Lingering Influence
+		[440310] = List(), -- Chains of Oppression
+		[439646] = List(), -- Process of Elimination
+		[448562] = List(), -- Doubt
+		[441391] = List(), -- Dark Paranoia
+		[461989] = List(), -- Oozing Smash
+		[441298] = List(), -- Freezing Blood
+		[441286] = List(), -- Dark Paranoia
+		[452151] = List(), -- Rigorous Jab
+		[451239] = List(), -- Brutal Jab
+		[443509] = List(), -- Ravenous Swarm
+		[443437] = List(), -- Shadows of Doubt
+		[451295] = List(), -- Void Rush
+		[443427] = List(), -- Web Bolt
+		[461630] = List(), -- Venomous Spray
+		[445435] = List(), -- Black Blood
+		[443401] = List(), -- Venom Strike
+		[443430] = List(), -- Silk Binding
+		[443438] = List(), -- Doubt
+		[443435] = List(), -- Twist Thoughts
+		[443432] = List(), -- Silk Binding
+		[448047] = List(), -- Web Wrap
+		[451426] = List(), -- Gossamer Barrage
+		[446718] = List(), -- Umbral Weave
+		[450055] = List(), -- Gutburst
+		[450783] = List(), -- Perfume Toss
+	-- The Dawnbreaker (Season 1)
+		[463428] = List(), -- Lingering Erosion
+		[426736] = List(), -- Shadow Shroud
+		[434096] = List(), -- Sticky Webs
+		[453173] = List(), -- Collapsing Night
+		[426865] = List(), -- Dark Orb
+		[434090] = List(), -- Spinneret's Strands
+		[434579] = List(), -- Corrosion
+		[426735] = List(), -- Burning Shadows
+		[434576] = List(), -- Acidic Stupor
+		[452127] = List(), -- Animate Shadows
+		[438957] = List(), -- Acid Pools
+		[434441] = List(), -- Rolling Acid
+		[451119] = List(), -- Abyssal Blast
+		[453345] = List(), -- Abyssal Rot
+		[449332] = List(), -- Encroaching Shadows
+		[431333] = List(), -- Tormenting Beam
+		[431309] = List(), -- Ensnaring Shadows
+		[451107] = List(), -- Bursting Cocoon
+		[434406] = List(), -- Rolling Acid
+		[431491] = List(), -- Tainted Slash
+		[434113] = List(), -- Spinneret's Strands
+		[431350] = List(), -- Tormenting Eruption
+		[431365] = List(), -- Tormenting Ray
+		[434668] = List(), -- Sparking Arathi Bomb
+		[460135] = List(), -- Dark Scars
+		[451098] = List(), -- Tacky Nova
+		[450855] = List(), -- Dark Orb
+		[431494] = List(), -- Black Edge
+		[451115] = List(), -- Terrifying Slam
+		[432448] = List(), -- Stygian Seed
+	-- Ara-Kara, City of Echoes (Season 1)
+		[461487] = List(), -- Cultivated Poisons
+		[432227] = List(), -- Venom Volley
+		[432119] = List(), -- Faded
+		[433740] = List(), -- Infestation
+		[439200] = List(), -- Voracious Bite
+		[433781] = List(), -- Ceaseless Swarm
+		[432132] = List(), -- Erupting Webs
+		[434252] = List(), -- Massive Slam
+		[432031] = List(), -- Grasping Blood
+		[438599] = List(), -- Bleeding Jab
+		[438618] = List(), -- Venomous Spit
+		[436401] = List(), -- AUGH!
+		[434830] = List(), -- Vile Webbing
+		[436322] = List(), -- Poison Bolt
+		[434083] = List(), -- Ambush
+		[433843] = List(), -- Erupting Webs
+	-- The Rookery (Season 2)
+	-- Priory of the Sacred Flame (Season 2)
+	-- Cinderbrew Meadery (Season 2)
+	-- Darkflame Cleft (Season 2)
+	----------------------------------------------------------
+	--------------- The War Within (Season 1) ----------------
+	----------------------------------------------------------
+	-- Mists of Tirna Scithe
+		[325027] = List(), -- Bramble Burst
+		[323043] = List(), -- Bloodletting
+		[322557] = List(), -- Soul Split
+		[331172] = List(), -- Mind Link
+		[322563] = List(), -- Marked Prey
+		[322487] = List(), -- Overgrowth 1
+		[322486] = List(), -- Overgrowth 2
+		[328756] = List(), -- Repulsive Visage
+		[325021] = List(), -- Mistveil Tear
+		[321891] = List(), -- Freeze Tag Fixation
+		[325224] = List(), -- Anima Injection
+		[326092] = List(), -- Debilitating Poison
+		[325418] = List(), -- Volatile Acid
+	-- The Necrotic Wake
+		[321821] = List(), -- Disgusting Guts
+		[323365] = List(), -- Clinging Darkness
+		[338353] = List(), -- Goresplatter
+		[333485] = List(), -- Disease Cloud
+		[338357] = List(), -- Tenderize
+		[328181] = List(), -- Frigid Cold
+		[320170] = List(), -- Necrotic Bolt
+		[323464] = List(), -- Dark Ichor
+		[323198] = List(), -- Dark Exile
+		[343504] = List(), -- Dark Grasp
+		[343556] = List(), -- Morbid Fixation 1
+		[338606] = List(), -- Morbid Fixation 2
+		[324381] = List(), -- Chill Scythe
+		[320573] = List(), -- Shadow Well
+		[333492] = List(), -- Necrotic Ichor
+		[334748] = List(), -- Drain Fluids
+		[333489] = List(), -- Necrotic Breath
+		[320717] = List(), -- Blood Hunger
+	-- Siege of Boralus
+		[257168] = List(), -- Cursed Slash
+		[272588] = List(), -- Rotting Wounds
+		[272571] = List(), -- Choking Waters
+		[274991] = List(), -- Putrid Waters
+		[275835] = List(), -- Stinging Venom Coating
+		[273930] = List(), -- Hindering Cut
+		[257292] = List(), -- Heavy Slash
+		[261428] = List(), -- Hangman's Noose
+		[256897] = List(), -- Clamping Jaws
+		[272874] = List(), -- Trample
+		[273470] = List(), -- Gut Shot
+		[272834] = List(), -- Viscous Slobber
+		[257169] = List(), -- Terrifying Roar
+		[272713] = List(), -- Crushing Slam
+	-- Grim Batol
+		[449885] = List(), -- Shadow Gale 1
+		[461513] = List(), -- Shadow Gale 2
+		[449474] = List(), -- Molten Spark
+		[456773] = List(), -- Twilight Wind
+		[448953] = List(), -- Rumbling Earth
+		[447268] = List(), -- Skullsplitter
+		[449536] = List(), -- Molten Pool
+		[450095] = List(), -- Curse of Entropy
+		[448057] = List(), -- Abyssal Corruption
+		[451871] = List(), -- Mass Temor
+		[451613] = List(), -- Twilight Flame
+		[451378] = List(), -- Rive
+		[76711] = List(), -- Sear Mind
+		[462220] = List(), -- Blazing Shadowflame
+		[451395] = List(), -- Corrupt
+		[82850] = List(), -- Flaming Fixate
+		[451241] = List(), -- Shadowflame Slash
+		[451965] = List(), -- Molten Wake
+		[451224] = List(), -- Enveloping Shadowflame
+	---------------------------------------------------------
+	------------------- Nerub'ar Palace ---------------------
+	---------------------------------------------------------
+	-- Ulgrax the Devourer
+		[434705] = List(), -- Tenderized
+		[435138] = List(), -- Digestive Acid
+		[439037] = List(), -- Disembowel
+		[439419] = List(), -- Stalker Netting
+		[434778] = List(), -- Brutal Lashings
+		[435136] = List(), -- Venomous Lash
+		[438012] = List(), -- Hungering Bellows
+	-- The Bloodbound Horror
+		[442604] = List(), -- Goresplatter
+		[445570] = List(), -- Unseeming Blight
+		[443612] = List(), -- Baneful Shift
+		[443042] = List(), -- Grasp From Beyond
+	-- Sikran
+		[435410] = List(), -- Phase Lunge
+		[458277] = List(), -- Shattering Sweep
+		[438845] = List(), -- Expose
+		[433517] = List(), -- Phase Blades 1
+		[434860] = List(), -- Phase Blades 2
+		[459785] = List(), -- Cosmic Residue
+		[459273] = List(), -- Cosmic Shards
+	-- Rasha'nan
+		[439785] = List(), -- Corrosion
+		[439786] = List(), -- Rolling Acid 1
+		[439790] = List(), -- Rolling Acid 2
+		[439787] = List(), -- Acidic Stupor
+		[458067] = List(), -- Savage Wound
+		[456170] = List(), -- Spinneret's Strands 1
+		[439783] = List(), -- Spinneret's Strands 2
+		[439780] = List(), -- Sticky Webs
+		[439776] = List(), -- Acid Pool
+		[455287] = List(), -- Infested Bite
+	-- Eggtender Ovi'nax
+		[442257] = List(), -- Infest
+		[442799] = List(), -- Sanguine Overflow
+		[441362] = List(), -- Volatile Concotion
+		[442660] = List(), -- Rupture
+		[440421] = List(), -- Experimental Dosage
+		[442250] = List(), -- Fixate
+		[442437] = List(), -- Violent Discharge
+		[443274] = List(), -- Reverberation
+	-- Nexus-Princess Ky'veza
+		[440377] = List(), -- Void Shredders
+		[436870] = List(), -- Assassination
+		[440576] = List(), -- Chasmal Gash
+		[437343] = List(), -- Queensbane
+		[436664] = List(), -- Regicide 1
+		[436666] = List(), -- Regicide 2
+		[436671] = List(), -- Regicide 3
+		[435535] = List(), -- Regicide 4
+		[436665] = List(), -- Regicide 5
+		[436663] = List(), -- Regicide 6
+	-- The Silken Court
+		[450129] = List(), -- Entropic Desolation
+		[449857] = List(), -- Impaled
+		[438749] = List(), -- Scarab Fixation
+		[438708] = List(), -- Stinging Swarm
+		[438218] = List(), -- Piercing Strike
+		[454311] = List(), -- Barbed Webs
+		[438773] = List(), -- Shattered Shell
+		[438355] = List(), -- Cataclysmic Entropy
+		[438656] = List(), -- Venomous Rain
+		[441772] = List(), -- Void Bolt
+		[441788] = List(), -- Web Vortex
+		[440001] = List(), -- Binding Webs
+	-- Queen Ansurek
+		-- TODO: No raid testing available for this boss
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
@@ -1222,11 +1473,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
---[[
-	RAID BUFFS:
-	Buffs that are provided by NPCs in raid or other PvE content.
-	This can be buffs put on other enemies or on players.
-]]
+-- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
@@ -1237,6 +1484,138 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = List(), -- Bolster
 		[178658] = List(), -- Raging
 		[226510] = List(), -- Sanguine
+	----------------------------------------------------------
+	---------------- The War Within Dungeons -----------------
+	----------------------------------------------------------
+	-- The Stonevault (Season 1)
+		[445541] = List(), -- Activate Ventilation
+		[423228] = List(), -- Crumbling Shell 1
+		[445409] = List(), -- Crumbling Shell 2
+		[428519] = List(), -- Deconstruction 1
+		[428520] = List(), -- Deconstruction 2
+		[462372] = List(), -- Exhaust Vents 1
+		[428820] = List(), -- Exhaust Vents 2
+		[423766] = List(), -- Fracturing Blows
+		[427300] = List(), -- Pillaging
+		[428212] = List(), -- Scrap Song 1
+		[428242] = List(), -- Scrap Song 2
+		[423246] = List(), -- Shattered Shell
+		[448640] = List(), -- Shield Stampede
+		[439577] = List(), -- Silenced Speaker
+		[428532] = List(), -- Unleash the Void
+		[423327] = List(), -- Void Discharge 1
+		[423324] = List(), -- Void Discharge 2
+		[426771] = List(), -- Void Outburst
+		[427315] = List(), -- Void Rift
+	-- City of Threads (Season 1)
+		[450047] = List(), -- Gorged
+		[439518] = List(), -- Twin Fangs
+		[434829] = List(), -- Vociferous Indoctrination
+		[451222] = List(), -- Void Rush
+		[452162] = List(), -- Mending Web
+		[434691] = List(), -- Chains of Oppression
+		[444428] = List(), -- Honored Citizen
+		[436205] = List(), -- Fierce Stomping
+		[445813] = List(), -- Dark Barrage
+		[441395] = List(), -- Dark Pulse
+		[446726] = List(), -- Shadow Shield
+	-- The Dawnbreaker (Season 1)
+		[431493] = List(), -- Darkblade
+		[448888] = List(), -- Erosive Spray
+		[426787] = List(), -- Shadowy Decay
+		[451112] = List(), -- Tactician's Rage
+		[432520] = List(), -- Umbral Barrier
+		[449734] = List(), -- Acidic Eruption
+		[450756] = List(), -- Abyssal Howl
+		[427192] = List(), -- Empowered Might
+		[452450] = List(), -- Rapid Summoning
+		[431364] = List(), -- Tormenting Ray
+		[453212] = List(), -- Obsidian Beam
+		[461904] = List(), -- Cosmic Ascension
+		[431349] = List(), -- Tormenting Eruption
+		[453859] = List(), -- Darkness Comes
+		[451102] = List(), -- Shadowy Decay
+		[446615] = List(), -- Usher Reinforcements
+		[452502] = List(), -- Dark Fervor
+	-- Ara-Kara, City of Echoes (Season 1)
+		[431985] = List(), -- Black Blood 1
+		[433656] = List(), -- Black Blood 2
+		[439333] = List(), -- Hunger
+		[438675] = List(), -- Toxic Rupture 1
+		[438622] = List(), -- Toxic Rupture 2
+		[441645] = List(), -- Unnatural Bloodlust
+		[434254] = List(), -- Intensity
+		[438494] = List(), -- Alerting Shrill
+		[434793] = List(), -- Resonant Barrage
+	-- The Rookery (Season 2)
+	-- Priory of the Sacred Flame (Season 2)
+	-- Cinderbrew Meadery (Season 2)
+	-- Darkflame Cleft (Season 2)
+	----------------------------------------------------------
+	--------------- The War Within (Season 1) ----------------
+	----------------------------------------------------------
+	-- Mists of Tirna Scithe
+		[336499] = List(), -- Guessing Game
+	-- The Necrotic Wake
+		[321754] = List(), -- Icebound Aegis
+		[343558] = List(), -- Morbid Fixation
+		[343470] = List(), -- Boneshatter Shield
+	-- Siege of Boralus
+		[272471] = List(), -- Evasive
+		[256867] = List(), -- Heavy Hitter
+		[268752] = List(), -- Withdraw
+		[275835] = List(), -- Stinging Venom Coating
+		[272888] = List(), -- Ferocity
+		[275826] = List(), -- Bolstering Shout
+	-- Grim Batol
+		[7603] = List(), -- Twilight Protection
+		[75328] = List(), -- Twilight Shift
+		[449687] = List(), -- Molten Mace
+		[447261] = List(), -- Skullsplitter
+		[450088] = List(), -- Void Infusion
+		[451387] = List(), -- Ascension
+	---------------------------------------------------------
+	------------------- Nerub'ar Palace ---------------------
+	---------------------------------------------------------
+	-- Ulgrax the Devourer
+		[440177] = List(), -- Ready to Feed
+	-- The Bloodbound Horror
+		[454848] = List(), -- Spewing Hemorrhage 1
+		[442635] = List(), -- Spewing Hemorrhage 2
+		[445272] = List(), -- Blood Pact
+		[451305] = List(), -- Black Bulwark 1
+		[451288] = List(), -- Black Bulwark 2
+		[443203] = List(), -- Crimson Rain
+	-- Sikran
+		[458272] = List(), -- Cosmic Simulacrum
+	-- Rasha'nan
+		[439811] = List(), -- Erosive Spray
+		[451575] = List(), -- Wounded in Battle
+	-- Eggtender Ovi'nax
+		[458207] = List(), -- Mutation: Accelerated 1
+		[442263] = List(), -- Mutation: Accelerated 2
+		[442432] = List(), -- Ingest Black Blood
+		[438807] = List(), -- Vicious Bite
+		[443273] = List(), -- Transfusion
+	-- Nexus-Princess Ky'veza
+		[436757] = List(), -- Reaper
+		[435405] = List(), -- Starless Night
+		[436971] = List(), -- Assassination
+		[436950] = List(), -- Stalking Shadows
+		[438153] = List(), -- Twilight Massacre
+		[436606] = List(), -- Regicide
+		[440407] = List(), -- Void Shredders
+	-- The Silken Court
+		[443598] = List(), -- Uncontrollable Rage
+		[451176] = List(), -- Entropic Backlash
+		[451334] = List(), -- Strained Exertion
+		[450980] = List(), -- Shatter Existence
+		[451277] = List(), -- Spike Storm
+		[442994] = List(), -- Unleashed Swarm
+		[438343] = List(), -- Venomous Rain
+		[440179] = List(), -- Entangled
+	-- Queen Ansurek
+		-- TODO: No raid testing available for this boss
 	----------------------------------------------------------
 	----------------- Dragonflight Dungeons ------------------
 	----------------------------------------------------------
@@ -1628,6 +2007,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	},
 }
 
+-- Aura indicators on UnitFrames (Hots, Shields, Externals)
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	EVOKER = {
@@ -1737,6 +2117,8 @@ G.unitframe.ChannelTicks = {
 	[48045]		= 6, -- Mind Sear
 	[47757]		= 3, -- Penance (heal)
 	[47758]		= 3, -- Penance (dps)
+	[373129]	= 3, -- Penance (Dark Reprimand, dps)
+	[400171]	= 3, -- Penance (Dark Reprimand, heal)
 	[64902]		= 5, -- Symbol of Hope (Mana Hymn)
 	-- Mage
 	[5143]		= 4, -- Arcane Missiles
@@ -1797,4 +2179,5 @@ G.unitframe.AuraBarColors = {
 	[395152]	= { enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < others
 }
 
+-- Auras which should change the color of the UnitFrame
 G.unitframe.AuraHighlightColors = {}

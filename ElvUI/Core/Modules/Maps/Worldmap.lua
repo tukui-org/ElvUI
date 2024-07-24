@@ -111,8 +111,12 @@ function M:PositionCoords()
 	local yOffset = db.yOffset
 
 	local x, y = 5, 5
-	if strfind(position, 'RIGHT') then	x = -5 end
+	if strfind(position, 'RIGHT') then x = -5 end
 	if strfind(position, 'TOP') then y = -5 end
+
+	if not CoordsHolder then
+		M:CreateCoordsHolder()
+	end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
 	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.ScrollContainer, position, x + xOffset, y + yOffset)
@@ -249,27 +253,34 @@ function M:WorldMap_OnHide()
 	end
 end
 
+function M:CreateCoordsHolder()
+	if not CoordsHolder then
+		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', _G.WorldMapFrame)
+		CoordsHolder:SetFrameStrata(not E.Retail and not E.global.general.smallerWorldMap and 'FULLSCREEN' or 'MEDIUM')
+		CoordsHolder:SetFrameLevel(10)
+	end
+
+	if not CoordsHolder.playerCoords then
+		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
+		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
+		CoordsHolder.playerCoords:SetFontObject('NumberFontNormal')
+		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
+	end
+
+	if not CoordsHolder.mouseCoords then
+		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
+		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
+		CoordsHolder.mouseCoords:SetFontObject('NumberFontNormal')
+		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
+	end
+end
+
 function M:Initialize()
 	self.Initialized = true
 
 	if not E.private.general.worldMap then return end
-	local useSmallerMap = E.global.general.smallerWorldMap
 
-	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
-		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', WorldMapFrame)
-		CoordsHolder:SetFrameStrata(not E.Retail and not useSmallerMap and 'FULLSCREEN' or 'MEDIUM')
-		CoordsHolder:SetFrameLevel(10)
-
-		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
-		CoordsHolder.mouseCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
-		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
-		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
-		CoordsHolder.playerCoords:SetFontObject('NumberFontNormal')
-		CoordsHolder.mouseCoords:SetFontObject('NumberFontNormal')
-		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
-		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
-
 		M:PositionCoords()
 
 		E:RegisterEventForObject('LOADING_SCREEN_DISABLED', E.MapInfo, M.UpdateRestrictedArea)
@@ -278,7 +289,8 @@ function M:Initialize()
 		E:RegisterEventForObject('ZONE_CHANGED', E.MapInfo, M.UpdateRestrictedArea)
 	end
 
-	if useSmallerMap then
+	local WorldMapFrame = _G.WorldMapFrame
+	if E.global.general.smallerWorldMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
 
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()

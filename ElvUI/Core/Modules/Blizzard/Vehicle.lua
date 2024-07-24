@@ -6,7 +6,7 @@ local hooksecurefunc = hooksecurefunc
 local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 
-local function SetPosition(_, _, relativeTo)
+function BL:SetVehiclePosition(_, relativeTo)
 	local mover = _G.VehicleSeatIndicator.mover
 	if mover and relativeTo ~= mover then
 		_G.VehicleSeatIndicator:ClearAllPoints()
@@ -14,56 +14,58 @@ local function SetPosition(_, _, relativeTo)
 	end
 end
 
-local function VehicleSetUp(vehicleID)
+function BL:SetUpVehicle()
 	local size = E.db.general.vehicleSeatIndicatorSize
 	_G.VehicleSeatIndicator:Size(size)
 
-	if not vehicleID then return end
+	if not self then return end -- this is vehicleIndicatorID
 
-	local _, numIndicators = GetVehicleUIIndicator(vehicleID)
+	local _, numIndicators = GetVehicleUIIndicator(self)
 	if numIndicators then
 		local fourth = size * 0.25
-
 		for i = 1, numIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
-			button:Size(fourth)
-
-			local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i)
-			button:ClearAllPoints()
-			button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * size, -yOffset * size)
+			if button then
+				local _, x, y = GetVehicleUIIndicatorSeat(self, i)
+				button:ClearAllPoints()
+				button:Point('CENTER', button:GetParent(), 'TOPLEFT', x * size, -y * size)
+				button:Size(fourth)
+			end
 		end
 	end
 end
 
+function BL:UnloadVehicleTextures() -- removes UIParent_ManageFramePositions()
+	self.BackgroundTexture:SetTexture()
+	self.currSkin = nil
+
+	self:HideButtons()
+	self:UpdateShownState()
+
+	_G.DurabilityFrame:SetAlerts()
+end
+
 function BL:UpdateVehicleFrame()
-	VehicleSetUp(_G.VehicleSeatIndicator.currSkin)
+	BL.SetUpVehicle(_G.VehicleSeatIndicator.currSkin)
 end
 
 function BL:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
-	if not indicator.PositionVehicleFrameHooked then
-		hooksecurefunc(indicator, 'SetPoint', SetPosition)
-		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', VehicleSetUp)
+	if E.Cata then
+		if not indicator.PositionVehicleFrameHooked then
+			hooksecurefunc(indicator, 'SetPoint', BL.SetVehiclePosition)
+			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', BL.SetUpVehicle)
 
-		indicator:ClearAllPoints()
-		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
-		indicator:Size(E.db.general.vehicleSeatIndicatorSize)
+			indicator:ClearAllPoints()
+			indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
+			indicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
-		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
-		indicator.PositionVehicleFrameHooked = true
-	end
-
-	BL:UpdateVehicleFrame()
-
-	if E.Retail and E.private.actionbar.enable then -- fix a taint when actionbars in use
-		indicator.UnloadTextures = function(frame) -- removes UIParent_ManageFramePositions()
-			frame.BackgroundTexture:SetTexture()
-			frame.currSkin = nil
-
-			frame:HideButtons()
-			frame:UpdateShownState()
-
-			_G.DurabilityFrame:SetAlerts()
+			E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+			indicator.PositionVehicleFrameHooked = true
 		end
+
+		BL:UpdateVehicleFrame()
+	elseif E.Retail and E.private.actionbar.enable then
+		indicator.UnloadTextures = BL.UnloadVehicleTextures -- fix a taint when actionbars in use
 	end
 end

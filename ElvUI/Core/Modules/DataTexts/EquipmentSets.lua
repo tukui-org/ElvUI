@@ -7,7 +7,6 @@ local strjoin = strjoin
 local pairs = pairs
 local wipe = wipe
 
-local EasyMenu = EasyMenu
 local C_EquipmentSet_GetEquipmentSetIDs = C_EquipmentSet.GetEquipmentSetIDs
 local C_EquipmentSet_GetEquipmentSetInfo = C_EquipmentSet.GetEquipmentSetInfo
 local C_EquipmentSet_UseEquipmentSet = C_EquipmentSet.UseEquipmentSet
@@ -30,7 +29,7 @@ end
 
 local function OnClick(self)
 	E:SetEasyMenuAnchor(E.EasyMenu, self)
-	EasyMenu(eqSets, E.EasyMenu, nil, nil, nil, 'MENU')
+	E:ComplicatedMenu(eqSets, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 local function OnEvent(self, event)

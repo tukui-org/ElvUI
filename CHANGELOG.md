@@ -1,3 +1,60 @@
+### Version 13.71 [ July 23rd 2024 ]
+*   The War Within patch 11.0 supported.
+*   Unitframe Health causing a point error when profiles switch.
+*   Friends Datatext erroring when Battlenet is being goofy.
+*   Item Level Abbreviation setting for Enchants on Character and Inspect frame.
+
+### Version 13.70 [ July 12th 2024 ]
+*   Cooldowns not finishing correctly.
+*   Achievement skin error on Cataclysm.
+
+### Version 13.69 [ July 10th 2024 ]
+*   SetCooldown error when using vehicles and Loss of Control cooldowns timers work again.
+*   Communities frame skin updated and the toggles updated for Minimap and Datatext.
+*   Visibility settings for Enchants, Gems, and Item Level for Inspect and Character.
+*   Skinned Swim timers on Classic.
+*   Blacklisted Evoker lust debuff.
+
+### Version 13.68 [ July 9th 2024 ]
+*   Enchant info to display with Item Level on Character and Inspect frames.
+*   Player nameplate not obeying Use Class Color option for Power.
+*   Translit tags sometimes not returning properly.
+*   Frame Level and Strata options for Unitframe power, auras, and frames.
+*   Hit Datatext not updating in some situations.
+*   Attack Power Datatext now has label options.
+*   Role Checkboxes set to the correct level on Guild Finder.
+*   New tags [health:percent-with-absorbs:nostatus] and [health:current:name]
+
+### Version 13.67 [ June 26th 2024 ]
+*   Skinned LFG and Dressing Room scrollbar.
+*   Guild reputation progress bar fixed.
+*   Player Alt Power bar not staying connected to its mover.
+*   ObjectiveTracker leveling taint  (Retail & Panda Remix).
+*   Guild Datatext timer Timerunning icon shows correctly.
+*   Mastery & Haste Datatext added for Cataclysm (Thanks Tsxy).
+*   Healer only and Auto hide options for Unitframe power.
+*   Cataclysm tooltip can now show Item Level.
+
+### Version 13.66 [ May 31st 2024 ]
+*   Classic: Combo points appearing on new targets.
+*   Cataclysm: Reforge skin toggle not working and PVP skin updated.
+*   Raid Utility: Removed the ability to move this in combat because of secure elements.
+*   Timerunning icon added for Chat, Guild Datatext, and Friends Datatext.
+*   Castbar ticks not working properly when castbars were enabled on group frames.
+
+### Version 13.65 [ May 24th 2024 ]
+*   Cataclysm: Druid and Paladin dispel fix.
+*   Cataclysm: AuraWatch & Spell Filter updates.
+*   Cataclysm: Cabal Zealot chat bug fixed.
+*   Cataclysm: Rogue Redirect & Combo Points fixed.
+*   Cataclysm: Friends frame skin error fixed.
+*   Group frames now show Alternative Power options.
+*   Guild Instance Difficulty icon shows correctly.
+*   Missing battleground healer/tank icons on some locales.
+*   Raid Utility: Target Icons (all), Role Icons (party), World Markers (Cata)
+*   Panda Remix: Fixed double character page gem display.
+*   Party Pets & Target: Individual Glow settings added.
+
 ### Version 13.64 [ May 7th 2024 ]
 *   Cataclysm Hotfixes
     *   Shaman dispel conditions fixed. (Thanks Oppzippy)

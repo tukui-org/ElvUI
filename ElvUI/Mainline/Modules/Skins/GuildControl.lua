@@ -37,7 +37,7 @@ local function SkinBankTabs()
 		if not tab then break end
 
 		local buy = tab.buy
-		if buy and buy.button and not buy.button.isSkinned then
+		if buy and buy.button and not buy.button.IsSkinned then
 			S:HandleButton(buy.button)
 		end
 
@@ -48,10 +48,10 @@ local function SkinBankTabs()
 			if owned.editBox and not owned.editBox.backdrop then
 				S:HandleEditBox(owned.editBox)
 			end
-			if owned.viewCB and not owned.viewCB.isSkinned then
+			if owned.viewCB and not owned.viewCB.IsSkinned then
 				S:HandleCheckBox(owned.viewCB)
 			end
-			if owned.depositCB and not owned.depositCB.isSkinned then
+			if owned.depositCB and not owned.depositCB.IsSkinned then
 				S:HandleCheckBox(owned.depositCB)
 			end
 		end
@@ -72,13 +72,17 @@ function S:Blizzard_GuildControlUI()
 
 	S:HandleButton(_G.GuildControlUIRankOrderFrameNewButton)
 	S:HandleCloseButton(_G.GuildControlUICloseButton)
-	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropDown, 180)
+	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropdown, 180)
 	S:HandleTrimScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrame.ScrollBar)
-	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
-	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
-	_G.GuildControlUINavigationDropDownButton:Width(20)
-	_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
-	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
+	S:HandleDropDownBox(_G.GuildControlUINavigationDropdown)
+	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropdown, 180)
+
+	--[[ FIX ME 11.0
+		_G.GuildControlUINavigationDropDownButton:Width(20)
+		_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
+		_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
+	]]
+
 	_G.GuildControlUIRankBankFrame:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()

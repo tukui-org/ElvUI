@@ -6,12 +6,12 @@ local _G = _G
 local select, unpack = select, unpack
 local hooksecurefunc = hooksecurefunc
 
-local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID or ContainerIDToInventoryID
-local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots or GetContainerNumFreeSlots
-local GetContainerItemLink = C_Container.GetContainerItemLink or GetContainerItemLink
-local GetInventoryItemLink = C_Container.GetInventoryItemLink or GetInventoryItemLink
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
+local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
+local GetContainerItemLink = C_Container.GetContainerItemLink
+local GetInventoryItemLink = C_Container.GetInventoryItemLink
+local GetItemQualityColor = C_Item.GetItemQualityColor
+local GetItemInfo = C_Item.GetItemInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetInventoryItemID = GetInventoryItemID
 

@@ -192,8 +192,7 @@ end
 
 function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
-		B.AssignBagDropdown.holder = self
-		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
+		B:OpenBagFlagsMenu(self)
 	end
 end
 

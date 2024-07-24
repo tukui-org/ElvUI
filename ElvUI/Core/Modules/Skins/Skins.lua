@@ -5,10 +5,10 @@ local LibStub = _G.LibStub
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
-local unpack, assert, type, gsub, strfind = unpack, assert, type, gsub, strfind
+local unpack, assert, type, gsub, rad, strfind = unpack, assert, type, gsub, rad, strfind
 
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
@@ -80,7 +80,7 @@ do
 	end
 
 	function S:HandleCategoriesButtons(button, strip)
-		if button.isSkinned then return end
+		if button.IsSkinned then return end
 
 		if button.SetNormalTexture then button:SetNormalTexture(E.ClearTexture) end
 		if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
@@ -101,7 +101,7 @@ do
 		button:HookScript('OnEnter', HighlightOnEnter)
 		button:HookScript('OnLeave', HighlightOnLeave)
 
-		button.isSkinned = true
+		button.IsSkinned = true
 	end
 end
 
@@ -130,7 +130,7 @@ do
 
 		local total = #self.navList
 		local button = self.navList[total]
-		if button and not button.isSkinned then
+		if button and not button.IsSkinned then
 			S:HandleButton(button, true)
 			button:GetFontString():SetTextColor(1, 1, 1)
 
@@ -152,7 +152,7 @@ do
 				hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
 			end
 
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 end
@@ -707,7 +707,7 @@ do
 		for _, name in next, keys do
 			local button = frame[name]
 			if button then
-				if not button.isSkinned then
+				if not button.IsSkinned then
 					S:HandleButton(button)
 					button:Size(22)
 
@@ -732,17 +732,27 @@ do
 	end
 
 	function S:HandleModelSceneControlButtons(frame)
-		if not frame.isSkinned then
-			frame.isSkinned = true
+		if not frame.IsSkinned then
+			frame.IsSkinned = true
 			hooksecurefunc(frame, 'UpdateLayout', UpdateLayout)
 		end
 	end
 end
 
-function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero)
+do
+	local arrowDegree = { up = 0, down = 180, left = 90, right = -90 }
+	function S:SetupArrow(tex, direction)
+		if not tex then return end
+
+		tex:SetTexture(E.Media.Textures.ArrowUp)
+		tex:SetRotation(rad(arrowDegree[direction]))
+	end
+end
+
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
 	assert(button, 'doesn\'t exist!')
 
-	if button.isSkinned then return end
+	if button.IsSkinned then return end
 
 	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.ClearTexture) end
 	if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end
@@ -750,6 +760,7 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 	if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 	if strip then button:StripTextures() end
+	if button.Texture then button.Texture:SetAlpha(0) end
 
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
@@ -778,7 +789,18 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		button:HookScript('OnDisable', S.SetDisabledBackdrop)
 	end
 
-	button.isSkinned = true
+	if isFilterButton then
+		local arrow = button:CreateTexture(nil, 'ARTWORK')
+		arrow:Size(10)
+		arrow:ClearAllPoints()
+		arrow:Point('RIGHT', -1, 0)
+
+		if filterDirection then
+			S:SetupArrow(arrow, filterDirection)
+		end
+	end
+
+	button.IsSkinned = true
 end
 
 do
@@ -955,16 +977,19 @@ do
 		if thumb then
 			thumb:DisableDrawLayer('ARTWORK')
 			thumb:DisableDrawLayer('BACKGROUND')
-			thumb:CreateBackdrop('Transparent')
-			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel()+1)
+
+			if not thumb.backdrop then
+				thumb:CreateBackdrop('Transparent')
+
+				thumb:HookScript('OnEnter', ThumbOnEnter)
+				thumb:HookScript('OnLeave', ThumbOnLeave)
+				thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
+				thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
+			end
 
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			thumb.backdrop:SetBackdropColor(r, g, b, .25)
-
-			thumb:HookScript('OnEnter', ThumbOnEnter)
-			thumb:HookScript('OnLeave', ThumbOnLeave)
-			thumb:HookScript('OnMouseUp', ThumbOnMouseUp)
-			thumb:HookScript('OnMouseDown', ThumbOnMouseDown)
+			thumb.backdrop:SetFrameLevel(thumb:GetFrameLevel() + 1)
 		end
 	end
 end
@@ -1009,7 +1034,7 @@ do --Tab Regions
 end
 
 function S:HandleRotateButton(btn)
-	if btn.isSkinned then return end
+	if btn.IsSkinned then return end
 
 	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
@@ -1027,7 +1052,7 @@ function S:HandleRotateButton(btn)
 	highlightTex:SetAllPoints(normTex)
 	highlightTex:SetColorTexture(1, 1, 1, 0.3)
 
-	btn.isSkinned = true
+	btn.IsSkinned = true
 end
 
 do
@@ -1046,7 +1071,7 @@ do
 	function S:HandleMaxMinFrame(frame)
 		assert(frame, 'doesn\'t exist.')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		frame:StripTextures(true)
 
@@ -1070,7 +1095,7 @@ do
 			end
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 
@@ -1106,13 +1131,8 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, pos, template)
+function S:HandleDropDownBox(frame, width, template)
 	assert(frame, 'doesn\'t exist!')
-
-	local frameName = frame.GetName and frame:GetName()
-	local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
-	local text = frameName and _G[frameName..'Text'] or frame.Text
-	local icon = frame.Icon
 
 	if not width then
 		width = 155
@@ -1120,29 +1140,48 @@ function S:HandleDropDownBox(frame, width, pos, template)
 
 	frame:Width(width)
 	frame:StripTextures()
-	frame:CreateBackdrop(template)
-	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	frame.backdrop:Point('TOPLEFT', 20, -2)
-	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
-	button:ClearAllPoints()
+	if not frame.backdrop then
+		frame:CreateBackdrop(template)
+		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+	end
 
-	if pos then
-		button:Point('TOPRIGHT', frame.Right, -20, -21)
+	if E.Retail then
+		if frame.Arrow then
+			frame.Arrow:SetAlpha(0)
+		end
+
+		frame.backdrop:Point('TOPLEFT', 0, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+		local tex = frame:CreateTexture(nil, 'ARTWORK')
+		tex:SetTexture(E.Media.Textures.ArrowUp)
+		tex:SetRotation(3.14)
+		tex:Point('RIGHT', frame.backdrop, -3, 0)
+		tex:Size(14)
 	else
+		local frameName = frame.GetName and frame:GetName()
+		local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
+		local text = frameName and _G[frameName..'Text'] or frame.Text
+		local icon = frame.Icon
+
+		frame.backdrop:Point('TOPLEFT', 20, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
+
+		button:ClearAllPoints()
 		button:Point('RIGHT', frame, 'RIGHT', -10, 3)
-	end
 
-	button.SetPoint = E.noop
-	S:HandleNextPrevButton(button, 'down')
+		button.SetPoint = E.noop
+		S:HandleNextPrevButton(button, 'down')
 
-	if text then
-		text:ClearAllPoints()
-		text:Point('RIGHT', button, 'LEFT', -2, 0)
-	end
+		if text then
+			text:ClearAllPoints()
+			text:Point('RIGHT', button, 'LEFT', -2, 0)
+		end
 
-	if icon then
-		icon:Point('LEFT', 23, 0)
+		if icon then
+			icon:Point('LEFT', 23, 0)
+		end
 	end
 end
 
@@ -1174,7 +1213,7 @@ do
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
 		assert(frame, 'doesn\'t exist.')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		frame:StripTextures()
 
@@ -1226,7 +1265,7 @@ do
 			hooksecurefunc(frame, 'SetHighlightTexture', checkHighlightTexture)
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 
@@ -1239,7 +1278,7 @@ do
 	local function buttonHighlightTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetHighlightTexture(E.ClearTexture) end end
 
 	function S:HandleRadioButton(Button)
-		if Button.isSkinned then return end
+		if Button.IsSkinned then return end
 
 		local InsideMask = Button:CreateMaskTexture()
 		InsideMask:SetTexture(background, 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
@@ -1284,7 +1323,7 @@ do
 		hooksecurefunc(Button, 'SetDisabledTexture', buttonDisabledTexture)
 		hooksecurefunc(Button, 'SetHighlightTexture', buttonHighlightTexture)
 
-		Button.isSkinned = true
+		Button.IsSkinned = true
 	end
 end
 
@@ -1305,7 +1344,7 @@ function S:HandleIcon(icon, backdrop)
 end
 
 function S:HandleItemButton(b, setInside)
-	if b.isSkinned then return end
+	if b.IsSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))
@@ -1331,7 +1370,7 @@ function S:HandleItemButton(b, setInside)
 		end
 	end
 
-	b.isSkinned = true
+	b.IsSkinned = true
 end
 
 do
@@ -1339,7 +1378,7 @@ do
 	local closeOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 	function S:HandleCloseButton(f, point, x, y)
-		if f.isSkinned then return end
+		if f.IsSkinned then return end
 
 		f:StripTextures()
 
@@ -1357,11 +1396,11 @@ do
 			f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
 		end
 
-		f.isSkinned = true
+		f.IsSkinned = true
 	end
 
 	function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel, buttonSize)
-		if btn.isSkinned then return end
+		if btn.IsSkinned then return end
 
 		if not arrowDir then
 			arrowDir = 'down'
@@ -1434,7 +1473,7 @@ do
 			Normal:SetVertexColor(1, 1, 1)
 		end
 
-		btn.isSkinned = true
+		btn.IsSkinned = true
 	end
 end
 
@@ -1809,7 +1848,7 @@ do
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
 		assert(frame, 'doesn\'t exist!')
 
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets
 			frame:HookScript('OnShow', selectionOffset)
@@ -1818,10 +1857,10 @@ do
 
 		local borderBox = frame.BorderBox or _G.BorderBox -- it's a sub frame only on retail, on wrath it's a global?
 		local frameName = nameOverride or frame:GetName() -- we need override in case Blizzard fucks up the naming (guild bank)
-		local scrollFrame = frame.ScrollFrame or _G[frameName..'ScrollFrame']
-		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or _G[frameName..'EditBox']
-		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or _G[frameName..'Cancel']
-		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or _G[frameName..'Okay']
+		local scrollFrame = frame.ScrollFrame or (frameName and _G[frameName..'ScrollFrame'])
+		local editBox = (borderBox and borderBox.IconSelectorEditBox) or frame.EditBox or (frameName and _G[frameName..'EditBox'])
+		local cancel = frame.CancelButton or (borderBox and borderBox.CancelButton) or (frameName and _G[frameName..'Cancel'])
+		local okay = frame.OkayButton or (borderBox and borderBox.OkayButton) or (frameName and _G[frameName..'Okay'])
 
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
@@ -1829,7 +1868,7 @@ do
 		if borderBox then
 			borderBox:StripTextures()
 
-			local dropdown = borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu
+			local dropdown = borderBox.IconTypeDropdown or (borderBox.IconTypeDropDown and borderBox.IconTypeDropDown.DropDownMenu)
 			if dropdown then
 				S:HandleDropDownBox(dropdown)
 			end
@@ -1855,9 +1894,11 @@ do
 		end
 
 		if numIcons then
-			scrollFrame:StripTextures()
-			scrollFrame:Height(scrollFrame:GetHeight() + 10)
-			S:HandleScrollBar(scrollFrame.ScrollBar)
+			if scrollFrame then
+				scrollFrame:StripTextures()
+				scrollFrame:Height(scrollFrame:GetHeight() + 10)
+				S:HandleScrollBar(scrollFrame.ScrollBar)
+			end
 
 			for i = 1, numIcons do
 				local button = _G[buttonNameTemplate..i]
@@ -1873,7 +1914,7 @@ do
 			end
 		end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 end
 

@@ -8,8 +8,8 @@ local CreateFrame = CreateFrame
 local GetRealZoneText = GetRealZoneText
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns.GetNumAddOns
 
 local UNKNOWN = UNKNOWN
 
@@ -253,7 +253,7 @@ function E:UpdateStatusFrame()
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	end
 
-	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', (E.TimerunningID == 1 and 'Remix') or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Retail and 'Classic') or 'Normal')
+	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', (E.TimerunningID == 1 and 'Remix') or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Retail and 'Classic') or 'Retail')
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end

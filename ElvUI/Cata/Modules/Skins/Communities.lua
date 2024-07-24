@@ -4,37 +4,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, pairs, select = next, pairs, select
 
-local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
-local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-
----- current unused:
-local function UpdateNames(button)
-	if not button.expanded then return end
-
-	local memberInfo = button:GetMemberInfo()
-	if memberInfo and memberInfo.classID then
-		local classInfo = C_CreatureInfo_GetClassInfo(memberInfo.classID)
-		if classInfo then
-			button.Class:SetTexCoord(E:GetClassCoords(classInfo.classFile, true))
-		end
-	end
-end
-
-local function ColorMemberName(button, info)
-	if not info then return end
-
-	local class = button.Class
-	local _, classTag = GetClassInfo(info.classID)
-	if classTag then
-		class:SetTexCoord(E:GetClassCoords(classTag, true))
-	end
-end
----- TODO: need to reimplement this ^
 
 local function HandleCommunitiesButtons(button)
 	button.Background:Hide()
@@ -356,15 +330,19 @@ function S:Blizzard_Communities()
 	StatusBar.Right:Hide()
 	StatusBar.Left:Hide()
 	StatusBar.BG:Hide()
-	StatusBar.Shadow:Hide()
+	StatusBar.Shadow:SetAlpha(0)
 	StatusBar.Progress:SetTexture(E.media.normTex)
-	StatusBar.Progress:SetAllPoints()
+	StatusBar.Progress:ClearAllPoints()
+	StatusBar.Progress:Point('TOPLEFT')
+	StatusBar.Progress:Point('BOTTOMRIGHT')
 	E:RegisterStatusBar(StatusBar)
 
-	local bg = CreateFrame('Frame', nil, StatusBar)
-	bg:SetFrameLevel(StatusBar:GetFrameLevel())
-	bg:SetTemplate()
-	bg:SetOutside()
+	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
+	ProgressBarBG:SetFrameLevel(StatusBar:GetFrameLevel())
+	ProgressBarBG:SetTemplate()
+	ProgressBarBG:Point('TOPLEFT')
+	ProgressBarBG:Point('BOTTOMRIGHT')
+	StatusBar.background = ProgressBarBG
 
 	-- Info Tab
 	local GuildDetails = _G.CommunitiesFrameGuildDetailsFrame
@@ -431,7 +409,6 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
 	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel

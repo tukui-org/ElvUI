@@ -14,7 +14,6 @@ local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetNumGroupMembers = GetNumGroupMembers
-local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
@@ -29,8 +28,8 @@ local UnitGUID = UnitGUID
 local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
-local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local DisableAddOn = C_AddOns.DisableAddOn
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local GetCVarBool = C_CVar.GetCVarBool
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -1198,7 +1197,7 @@ do -- BFA Convert, deprecated..
 		local auraBarColors = E.global.unitframe.AuraBarColors
 		for spell, info in pairs(auraBarColors) do
 			if type(spell) == 'string' then
-				local spellID = select(7, GetSpellInfo(spell))
+				local _, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
 				if spellID and not auraBarColors[spellID] then
 					auraBarColors[spellID] = info
 					auraBarColors[spell] = nil

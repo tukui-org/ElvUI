@@ -36,7 +36,7 @@ local colorMixin = {
 }
 
 --[[ Colors: oUF:CreateColor(r, g, b[, a])
-Wrapper for [SharedXML\Color.lua's ColorMixin](https://wowpedia.fandom.com/wiki/ColorMixin), extended to support indexed colors used in oUF, as
+Wrapper for [SharedXML\Color.lua's ColorMixin](https://warcraft.wiki.gg/wiki/ColorMixin), extended to support indexed colors used in oUF, as
 well as extra methods for dealing with atlases.
 
 The rgb values can be either normalized (0-1) or bytes (0-255).
@@ -182,32 +182,35 @@ for power, color in next, PowerBarColor do
 	end
 end
 
--- sourced from FrameXML/Constants.lua
-colors.power[0] = colors.power.MANA
-colors.power[1] = colors.power.RAGE
-colors.power[2] = colors.power.FOCUS
-colors.power[3] = colors.power.ENERGY
-colors.power[4] = colors.power.COMBO_POINTS
-colors.power[5] = colors.power.RUNES
-colors.power[6] = colors.power.RUNIC_POWER
-colors.power[7] = colors.power.SOUL_SHARDS
-colors.power[8] = colors.power.LUNAR_POWER
-colors.power[9] = colors.power.HOLY_POWER
-colors.power[11] = colors.power.MAELSTROM
-colors.power[12] = colors.power.CHI
-colors.power[13] = colors.power.INSANITY
-colors.power[16] = colors.power.ARCANE_CHARGES
-colors.power[17] = colors.power.FURY
-colors.power[18] = colors.power.PAIN
+-- fallback integer index to named index
+-- sourced from PowerBarColor - Blizzard_UnitFrame/Mainline/PowerBarColorUtil.lua
+colors.power[Enum.PowerType.Mana or 0] = colors.power.MANA
+colors.power[Enum.PowerType.Rage or 1] = colors.power.RAGE
+colors.power[Enum.PowerType.Focus or 2] = colors.power.FOCUS
+colors.power[Enum.PowerType.Energy or 3] = colors.power.ENERGY
+colors.power[Enum.PowerType.ComboPoints or 4] = colors.power.COMBO_POINTS
+colors.power[Enum.PowerType.Runes or 5] = colors.power.RUNES
+colors.power[Enum.PowerType.RunicPower or 6] = colors.power.RUNIC_POWER
+colors.power[Enum.PowerType.SoulShards or 7] = colors.power.SOUL_SHARDS
+colors.power[Enum.PowerType.LunarPower or 8] = colors.power.LUNAR_POWER
+colors.power[Enum.PowerType.HolyPower or 9] = colors.power.HOLY_POWER
+colors.power[Enum.PowerType.Maelstrom or 11] = colors.power.MAELSTROM
+colors.power[Enum.PowerType.Insanity or 13] = colors.power.INSANITY
+colors.power[Enum.PowerType.Fury or 17] = colors.power.FURY
+colors.power[Enum.PowerType.Pain or 18] = colors.power.PAIN
+
+-- these two don't have fallback values in PowerBarColor, but we want them
+colors.power[Enum.PowerType.Chi or 12] = colors.power.CHI
+colors.power[Enum.PowerType.ArcaneCharges or 16] = colors.power.ARCANE_CHARGES
 
 -- there's no official colour for evoker's essence
 -- use the average colour of the essence texture instead
 colors.power.ESSENCE = oUF:CreateColor(100, 173, 206)
-colors.power[19] = colors.power.ESSENCE
+colors.power[Enum.PowerType.Essence or 19] = colors.power.ESSENCE
 
--- alternate power, sourced from FrameXML/CompactUnitFrame.lua
+-- alternate power, originally sourced from CompactUnitFrame.lua
 colors.power.ALTERNATE = oUF:CreateColor(0.7, 0.7, 0.6)
-colors.power[10] = colors.power.ALTERNATE
+colors.power[Enum.PowerType.Alternate or 10] = colors.power.ALTERNATE
 
 if GetThreatStatusColor then
 	for i = 0, 3 do

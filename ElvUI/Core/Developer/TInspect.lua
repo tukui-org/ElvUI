@@ -4,7 +4,7 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 -- GLOBALS: ElvUI
 

@@ -29,13 +29,6 @@ local function ReskinPickerOptions(self)
 	end
 end
 
-local function HandleVoicePicker(voicePicker)
-	local customFrame = voicePicker:GetChildren()
-	customFrame:StripTextures()
-	customFrame:CreateBackdrop('Transparent')
-	voicePicker:HookScript('OnShow', ReskinPickerOptions)
-end
-
 function S:ChatConfig()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -47,13 +40,13 @@ function S:ChatConfig()
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
 		if not FCF_GetCurrentChatFrame() then return end
 
-		local nameString = frame:GetName()..'CheckBox'
+		local nameString = frame:GetName()..'Checkbox'
 		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxName = nameString..index
-			local checkbox = _G[checkBoxName]
+			local checkboxName = nameString..index
+			local checkbox = _G[checkboxName]
 			if checkbox and not checkbox.IsSkinned then
 				checkbox:StripTextures()
-				S:HandleCheckBox(_G[checkBoxName..'Check'])
+				S:HandleCheckBox(_G[checkboxName..'Check'])
 
 				checkbox.IsSkinned = true
 			end
@@ -63,14 +56,14 @@ function S:ChatConfig()
 	hooksecurefunc('ChatConfig_CreateTieredCheckboxes', function(frame, checkBoxTable)
 		if frame.IsSkinned then return end
 
-		local nameString = frame:GetName()..'CheckBox'
+		local nameString = frame:GetName()..'Checkbox'
 		for index, value in ipairs(checkBoxTable) do
-			local checkBoxName = nameString..index
-			S:HandleCheckBox(_G[checkBoxName])
+			local checkboxName = nameString..index
+			S:HandleCheckBox(_G[checkboxName])
 
 			if value.subTypes then
 				for i in ipairs(value.subTypes) do
-					S:HandleCheckBox(_G[checkBoxName..'_'..i])
+					S:HandleCheckBox(_G[checkboxName..'_'..i])
 				end
 			end
 		end
@@ -237,9 +230,6 @@ function S:ChatConfig()
 			end
 		end
 	end)
-
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
-	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
 end
 
 S:AddCallback('ChatConfig')

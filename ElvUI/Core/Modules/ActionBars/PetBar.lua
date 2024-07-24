@@ -34,7 +34,7 @@ function AB:UpdatePet(event, unit)
 	for i, button in ipairs(bar.buttons) do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = 'PetActionButton'..i
-		local autoCast = button.AutoCastable
+		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		-- this one is different
 		local castable = _G[buttonName..'AutoCastable']
@@ -89,7 +89,9 @@ function AB:UpdatePet(event, unit)
 			autoCast:Hide()
 		end
 
-		if autoCastEnabled then
+		if E.Retail then
+			autoCast:ShowAutoCastEnabled(autoCastEnabled)
+		elseif autoCastEnabled then
 			AutoCastShine_AutoCastStart(button.AutoCastShine)
 		else
 			AutoCastShine_AutoCastStop(button.AutoCastShine)
@@ -119,16 +121,13 @@ function AB:PositionAndSizeBarPet()
 	local db = AB.db.barPet
 	if not db then return end
 
+	local buttonWidth = db.buttonSize
+	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local buttonWidth = db.buttonSize
-	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 	local point = db.point
-
-	local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
-	local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
 
 	bar.db = db
 	bar.mouseover = db.mouseover
@@ -162,7 +161,7 @@ function AB:PositionAndSizeBarPet()
 	for i, button in ipairs(bar.buttons) do
 		local lastButton = _G['PetActionButton'..i-1]
 		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
-		local autoCast = button.AutoCastable
+		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		button.db = db
 
@@ -181,7 +180,14 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = true -- keep over HandleButton
 		end
 
-		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		if E.Retail then
+			autoCast:SetOutside(button, 1, 1)
+		else
+			local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
+			local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
+			autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		end
+
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, useMasque, true)
 	end

@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()
@@ -25,7 +25,7 @@ local function ReforgingFrameUpdate()
 end
 
 function S:Blizzard_ReforgingUI()
-	if not (E.private.skins.blizzard.enable or not E.private.skins.blizzard.reforge) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.reforge) then return end
 
 	local ReforgingFrame = _G.ReforgingFrame
 	ReforgingFrame:StripTextures()
@@ -47,7 +47,7 @@ function S:Blizzard_ReforgingUI()
 	if ItemButton then
 		ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
 		ItemButton:StripTextures()
-		ItemButton:SetTemplate('Default', true)
+		ItemButton:SetTemplate(nil, true)
 		ItemButton:StyleButton()
 	end
 

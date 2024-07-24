@@ -13,7 +13,6 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
-local GetSpellBookItemName = GetSpellBookItemName
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -26,6 +25,10 @@ local UIParent = UIParent
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
 local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
+
+local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
+
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
@@ -177,10 +180,21 @@ function AB:BindUpdate(button, spellmacro)
 
 	if spellmacro == 'FLYOUT' then
 		bind.name = button.spellName or button:GetAttribute('spellName') -- attribute is from the LAB custom flyout
-		if bind.name then button.bindstring = 'SPELL '..bind.name end
+
+		if bind.name then
+			button.bindstring = 'SPELL '..bind.name
+		end
 	elseif spellmacro == 'SPELL' then
-		button.id = SpellBook_GetSpellBookSlot(button)
-		bind.name = button.id and GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType) or nil
+		if E.Retail then
+			local slotIndex = button.slotIndex or button:GetParent().slotIndex
+			if slotIndex then
+				bind.name = GetSpellBookItemName(slotIndex, BOOKTYPE_SPELL) or nil
+			end
+		else
+			button.id = SpellBook_GetSpellBookSlot(button)
+			bind.name = button.id and GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType) or nil
+		end
+
 		if bind.name then button.bindstring = 'SPELL '..bind.name end
 	elseif spellmacro == 'MACRO' then
 		button.id = button.selectionIndex or button:GetID()
@@ -231,6 +245,13 @@ function AB:BindUpdate(button, spellmacro)
 
 	if button.bindstring then
 		button.bindings = { GetBindingKey(button.bindstring) }
+
+		-- retail: fix the tooltip not changing correctly for flyouts
+		-- 11.0 this is still broken for actual spells, this method doesn't seem to work
+		if spellmacro == 'FLYOUT' and not next(button.bindings) then
+			trigger = true
+		end
+
 		AB:BindTooltip(trigger)
 	end
 end
@@ -269,6 +290,8 @@ do
 			end
 
 			AB:UnregisterEvent('ADDON_LOADED')
+		elseif addon == 'Blizzard_PlayerSpells' then
+			AB:FixSpellBookTaint()
 		end
 	end
 end
@@ -328,11 +351,6 @@ function AB:LoadKeyBinder()
 	bind:SetScript('OnKeyUp', function(_, key) self:BindListener(key) end)
 	bind:SetScript('OnMouseUp', function(_, key) self:BindListener(key) end)
 	bind:SetScript('OnMouseWheel', function(_, delta) if delta>0 then self:BindListener('MOUSEWHEELUP') else self:BindListener('MOUSEWHEELDOWN') end end)
-
-	for i = 1, 12 do
-		local b = _G['SpellButton'..i]
-		b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL') end)
-	end
 
 	local function buttonOnEnter(b) AB:BindUpdate(b) end
 	for b in next, self.handledbuttons do

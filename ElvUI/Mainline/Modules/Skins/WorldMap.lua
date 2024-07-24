@@ -23,7 +23,7 @@ local function UpdateExecuteCommandAtlases(frame, command)
 end
 
 local function NotifyDialogShow(_, dialog)
-	if dialog.isSkinned then return end
+	if dialog.IsSkinned then return end
 
 	dialog:StripTextures()
 	dialog:SetTemplate('Transparent')
@@ -43,27 +43,69 @@ local function NotifyDialogShow(_, dialog)
 		minimize:SetHighlightTexture(130837, 'ADD') -- Interface\Buttons\UI-PlusButton-Hilight
 	end
 
-	dialog.isSkinned = true
+	dialog.IsSkinned = true
 end
 
-local function SkinHeaders(header)
+local function SkinHeaders(header, isCalling)
 	if header.IsSkinned then return end
 
-	if header.TopFiligree then
-		header.TopFiligree:Hide()
-	end
-
-	header:SetAlpha(.8)
+	if header.Background then header.Background:SetAlpha(.7) end
+	if header.TopFiligree then header.TopFiligree:Hide() end
+	if header.Divider then header.Divider:Hide() end
 
 	header.HighlightTexture:SetAllPoints(header.Background)
 	header.HighlightTexture:SetAlpha(0)
+
+	local collapseButton = isCalling and header or header.CollapseButton
+	if collapseButton then
+		collapseButton:GetPushedTexture():SetAlpha(0)
+		collapseButton:GetHighlightTexture():SetAlpha(0)
+		S:HandleCollapseTexture(collapseButton, true)
+	end
 
 	header.IsSkinned = true
 end
 
 local function QuestLogQuests()
+	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
+		if button.ButtonText and not button.IsSkinned then
+			button:StripTextures()
+			button.ButtonText:FontTemplate(nil, 16)
+			button.IsSkinned = true
+		end
+	end
+
+	for button in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
+		if not button.IsSkinned then
+			--FIX ME 11.0; Use the actual ElvUI Check Skin thing
+			if button.Checkbox then
+				button.Checkbox:DisableDrawLayer('BACKGROUND')
+				button.Checkbox:CreateBackdrop()
+			end
+
+			button.IsSkinned = true
+		end
+	end
+
 	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
-		SkinHeaders(header)
+		if header.Text and not header.IsSkinned then
+			header.Text:FontTemplate(nil, 16)
+			header.Progress:FontTemplate(nil, 12)
+
+			header.IsSkinned = true
+		end
+	end
+
+	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
+		if header.CollapseButton and not header.IsSkinned then
+			header:StripTextures()
+			header.Background:CreateBackdrop('Transparent')
+
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			header.Highlight:SetColorTexture(r, g, b, 0.75)
+
+			header.IsSkinned = true
+		end
 	end
 end
 
@@ -99,15 +141,28 @@ function S:WorldMapFrame()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
 	local DetailsFrame = QuestMapFrame.DetailsFrame
+	S:HandleButton(DetailsFrame.BackFrame.BackButton, true)
+	S:HandleButton(DetailsFrame.AbandonButton, true)
+	DetailsFrame.ShareButton:StripTextures() -- strip the Blizz Art around from it
+	S:HandleButton(DetailsFrame.ShareButton, true)
+	S:HandleButton(DetailsFrame.TrackButton, true)
+
+	DetailsFrame.BackFrame:StripTextures()
+	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
+	DetailsFrame.AbandonButton:SetFrameLevel(5)
+	DetailsFrame.ShareButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:SetFrameLevel(5)
+	DetailsFrame.TrackButton:Width(95)
+
+	local RewardsFrameContainer = DetailsFrame.RewardsFrameContainer
 	if E.private.skins.parchmentRemoverEnable then
 		DetailsFrame:StripTextures(true)
+		DetailsFrame.BackFrame:StripTextures()
 		DetailsFrame:CreateBackdrop()
 		DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
 		DetailsFrame.backdrop:Point('BOTTOMRIGHT', DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
-		DetailsFrame.RewardsFrame:StripTextures()
-		DetailsFrame.RewardsFrame:CreateBackdrop()
-		DetailsFrame.RewardsFrame.backdrop:Point('TOPLEFT', -3, -14)
-		DetailsFrame.RewardsFrame.backdrop:Point('BOTTOMRIGHT', -1, 1)
+
+		RewardsFrameContainer.RewardsFrame:StripTextures()
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
@@ -120,37 +175,16 @@ function S:WorldMapFrame()
 
 	local QuestScrollFrame = _G.QuestScrollFrame
 	QuestScrollFrame.Edge:SetAlpha(0)
+	QuestScrollFrame.BorderFrame:SetAlpha(0)
+	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
-
-	local QuestDetailFrame = QuestScrollFrame.DetailFrame
-	QuestDetailFrame:StripTextures()
-	QuestDetailFrame.BottomDetail:Hide()
-	QuestDetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 1)
-
-	if QuestDetailFrame.backdrop then
-		QuestDetailFrame.backdrop:Point('TOPLEFT', QuestDetailFrame, 'TOPLEFT', 3, 1)
-		QuestDetailFrame.backdrop:Point('BOTTOMRIGHT', QuestDetailFrame, 'BOTTOMRIGHT', -2, -7)
-	end
+	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
-	QuestScrollBar:Point('TOPLEFT', QuestDetailFrame, 'TOPRIGHT', 4, -15)
-	QuestScrollBar:Point('BOTTOMLEFT', QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
-
-	S:HandleButton(DetailsFrame.CompleteQuestFrame.CompleteButton, true)
-	DetailsFrame.CompleteQuestFrame:StripTextures()
-
-	S:HandleButton(DetailsFrame.BackButton, true)
-	S:HandleButton(DetailsFrame.AbandonButton, true)
-	S:HandleButton(DetailsFrame.ShareButton, true)
-	S:HandleButton(DetailsFrame.TrackButton, true)
-
-	DetailsFrame.BackButton:SetFrameLevel(5)
-	DetailsFrame.AbandonButton:SetFrameLevel(5)
-	DetailsFrame.ShareButton:SetFrameLevel(5)
-	DetailsFrame.TrackButton:SetFrameLevel(5)
-	DetailsFrame.TrackButton:Width(95)
+	QuestScrollBar:Point('TOPLEFT', _G.QuestDetailFrame, 'TOPRIGHT', 4, -15)
+	QuestScrollBar:Point('BOTTOMLEFT', _G.QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)
@@ -216,6 +250,16 @@ function S:WorldMapFrame()
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', UpdateExecuteCommandAtlases)
 	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', NotifyDialogShow)
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
+
+	local MapLegend = QuestMapFrame.MapLegend
+	S:HandleButton(MapLegend.BackButton)
+	MapLegend.TitleText:FontTemplate(nil, 16)
+	MapLegend.BorderFrame:SetAlpha(0)
+
+	local MapLegendScroll = MapLegend.ScrollFrame
+	MapLegendScroll:StripTextures()
+	MapLegendScroll:SetTemplate()
+	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 end
 
 S:AddCallback('WorldMapFrame')

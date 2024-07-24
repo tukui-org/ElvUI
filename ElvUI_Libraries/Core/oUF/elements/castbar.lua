@@ -23,7 +23,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 ## Options
 
 .timeToHold      - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
-				   event. Defaults to 0 (number)
+                   event. Defaults to 0 (number)
 .hideTradeSkills - Makes the element ignore casts related to crafting professions (boolean)
 
 ## Attributes
@@ -34,57 +34,61 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 .empowering       - Indicates whether the current spell is an empowering cast (boolean)
 .notInterruptible - Indicates whether the current spell is interruptible (boolean)
 .spellID          - The spell identifier of the currently cast/channeled/empowering spell (number)
+.numStages        - The number of empowerment stages of the current spell (number?)
+.curStage         - The current empowerment stage of the spell. It updates only if the PostUpdateStage callback is
+                    defined (number?)
+.stagePoints      - The timestamps (in seconds) for each empowerment stage (table)
 
 ## Examples
 
-	-- Position and size
-	local Castbar = CreateFrame('StatusBar', nil, self)
-	Castbar:SetSize(20, 20)
-	Castbar:SetPoint('TOP')
-	Castbar:SetPoint('LEFT')
-	Castbar:SetPoint('RIGHT')
+    -- Position and size
+    local Castbar = CreateFrame('StatusBar', nil, self)
+    Castbar:SetSize(20, 20)
+    Castbar:SetPoint('TOP')
+    Castbar:SetPoint('LEFT')
+    Castbar:SetPoint('RIGHT')
 
-	-- Add a background
-	local Background = Castbar:CreateTexture(nil, 'BACKGROUND')
-	Background:SetAllPoints(Castbar)
-	Background:SetColorTexture(1, 1, 1, .5)
+    -- Add a background
+    local Background = Castbar:CreateTexture(nil, 'BACKGROUND')
+    Background:SetAllPoints(Castbar)
+    Background:SetColorTexture(1, 1, 1, .5)
 
-	-- Add a spark
-	local Spark = Castbar:CreateTexture(nil, 'OVERLAY')
-	Spark:SetSize(20, 20)
-	Spark:SetBlendMode('ADD')
-	Spark:SetPoint('CENTER', Castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+    -- Add a spark
+    local Spark = Castbar:CreateTexture(nil, 'OVERLAY')
+    Spark:SetSize(20, 20)
+    Spark:SetBlendMode('ADD')
+    Spark:SetPoint('CENTER', Castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 
-	-- Add a timer
-	local Time = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
-	Time:SetPoint('RIGHT', Castbar)
+    -- Add a timer
+    local Time = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
+    Time:SetPoint('RIGHT', Castbar)
 
-	-- Add spell text
-	local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
-	Text:SetPoint('LEFT', Castbar)
+    -- Add spell text
+    local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
+    Text:SetPoint('LEFT', Castbar)
 
-	-- Add spell icon
-	local Icon = Castbar:CreateTexture(nil, 'OVERLAY')
-	Icon:SetSize(20, 20)
-	Icon:SetPoint('TOPLEFT', Castbar, 'TOPLEFT')
+    -- Add spell icon
+    local Icon = Castbar:CreateTexture(nil, 'OVERLAY')
+    Icon:SetSize(20, 20)
+    Icon:SetPoint('TOPLEFT', Castbar, 'TOPLEFT')
 
-	-- Add Shield
-	local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
-	Shield:SetSize(20, 20)
-	Shield:SetPoint('CENTER', Castbar)
+    -- Add Shield
+    local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
+    Shield:SetSize(20, 20)
+    Shield:SetPoint('CENTER', Castbar)
 
-	-- Add safezone
-	local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
+    -- Add safezone
+    local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
 
-	-- Register it with oUF
-	Castbar.bg = Background
-	Castbar.Spark = Spark
-	Castbar.Time = Time
-	Castbar.Text = Text
-	Castbar.Icon = Icon
-	Castbar.Shield = Shield
-	Castbar.SafeZone = SafeZone
-	self.Castbar = Castbar
+    -- Register it with oUF
+    Castbar.bg = Background
+    Castbar.Spark = Spark
+    Castbar.Time = Time
+    Castbar.Text = Text
+    Castbar.Icon = Icon
+    Castbar.Shield = Shield
+    Castbar.SafeZone = SafeZone
+    self.Castbar = Castbar
 --]]
 
 local _, ns = ...

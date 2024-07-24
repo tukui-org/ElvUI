@@ -16,8 +16,6 @@ local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
-local ticks = {}
-
 do
 	local pipMapColor = {4, 1, 2, 3}
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
@@ -119,6 +117,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
 	castbar.CreatePip = UF.BuildPip
+	castbar.TickLines = {}
 
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
@@ -194,13 +193,8 @@ function UF:Configure_Castbar(frame)
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
 	if oSC then oSC(castbar.Holder) end
 
-	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
-		castbar:SetFrameStrata(db.strataAndLevel.frameStrata)
-	end
-
-	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
-		castbar:SetFrameLevel(db.strataAndLevel.frameLevel)
-	end
+	castbar:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	castbar:SetFrameLevel((db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.CastBarLevel) or 1)
 
 	--Empowered
 	castbar.pipColor = UF.db.colors.empoweredCast
@@ -333,7 +327,7 @@ function UF:Configure_Castbar(frame)
 		castbar.tickWidth = db.tickWidth
 		castbar.tickColor = db.tickColor
 
-		for _, tick in next, ticks do
+		for _, tick in next, castbar.TickLines do
 			tick:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
 			tick:Width(castbar.tickWidth)
 		end
@@ -427,26 +421,26 @@ function UF:CustomTimeText(duration)
 	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
-function UF:HideTicks()
-	for _, tick in next, ticks do
+function UF:HideTicks(frame)
+	for _, tick in next, frame.TickLines do
 		tick:Hide()
 	end
 end
 
 function UF:SetCastTicks(frame, numTicks)
-	UF:HideTicks()
+	UF:HideTicks(frame)
 
 	if numTicks and numTicks <= 0 then return end
 
 	local offset = frame:GetWidth() / numTicks
 
 	for i = 1, numTicks - 1 do
-		local tick = ticks[i]
+		local tick = frame.TickLines[i]
 		if not tick then
 			tick = frame:CreateTexture(nil, 'OVERLAY')
 			tick:SetTexture(E.media.blankTex)
 			tick:Width(frame.tickWidth)
-			ticks[i] = tick
+			frame.TickLines[i] = tick
 		end
 
 		tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
@@ -510,7 +504,7 @@ function UF:PostCastStart(unit)
 		end
 	end
 
-	if self.channeling and db.castbar.ticks and unit == 'player' then
+	if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
 		local spellID, global = self.spellID, E.global.unitframe
 		local baseTicks = global.ChannelTicks[spellID]
 
@@ -576,7 +570,7 @@ function UF:PostCastStart(unit)
 			UF:SetCastTicks(self, baseTicks)
 			self.hadTicks = true
 		else
-			UF:HideTicks()
+			UF:HideTicks(self)
 		end
 	end
 
@@ -589,7 +583,7 @@ end
 
 function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
-		UF:HideTicks()
+		UF:HideTicks(self)
 		self.hadTicks = false
 		self.chainTick = nil -- reset the chain
 		self.chainTime = nil -- spell cast vars

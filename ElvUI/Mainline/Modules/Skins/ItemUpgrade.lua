@@ -51,7 +51,7 @@ function S:Blizzard_ItemUpgradeUI()
 		frame.TopBG:CreateBackdrop('Transparent')
 	end
 
-	hooksecurefunc(frame, 'Update', Update)
+	--hooksecurefunc(frame, 'Update', Update) -- FIX ME 11.0
 
 	S:HandleIconBorder(button.IconBorder)
 	S:HandleButton(frame.UpgradeButton, true)

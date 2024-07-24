@@ -29,7 +29,7 @@ This element updates by changing the texture.
 local _, ns = ...
 local oUF = ns.oUF
 
--- sourced from FrameXML/CompactUnitFrame.lua
+-- sourced from Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua
 local ICONS = {
 	[Enum.PvPUnitClassification.FlagCarrierHorde or 0] = "nameplates-icon-flag-horde",
 	[Enum.PvPUnitClassification.FlagCarrierAlliance or 1] = "nameplates-icon-flag-alliance",

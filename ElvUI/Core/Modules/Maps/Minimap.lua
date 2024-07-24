@@ -24,15 +24,15 @@ local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
-local EasyMenu = EasyMenu
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local UIDropDownMenu_RefreshAll = UIDropDownMenu_RefreshAll
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local StoreEnabled = C_StorePublic.IsEnabled
 local GetZonePVPInfo = (C_PvP and C_PvP.GetZonePVPInfo) or GetZonePVPInfo
 
+local PlayerSpellsUtil = _G.PlayerSpellsUtil
 local WorldMapFrame = _G.WorldMapFrame
 local MinimapCluster = _G.MinimapCluster
 local Minimap = _G.Minimap
@@ -47,32 +47,35 @@ local IconParents = {}
 --Create the minimap micro menu
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
-	{ text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
-	{ text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() ToggleFrame(_G.SpellBookFrame) end },
-	{ text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
-	{ text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = 1 }, -- Interface\ICONS\UI_Chat
-	{ text = _G.SOCIAL_BUTTON, func =  function() _G.ToggleFriendsFrame() end, icon = 796351, cropIcon = 10 }, -- Interface\FriendsFrame\Battlenet-BattlenetIcon
-	{ text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func = function() _G.ToggleTalentFrame() end },
-	{ text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() if E.Retail or E.Cata then _G.ToggleGuildFrame() else _G.ToggleFriendsFrame(3) end end },
+	{text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
+	{text = _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleSpellBookFrame() else ToggleFrame(_G.SpellBookFrame) end end },
+	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
+	{text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = 1 }, -- Interface\ICONS\UI_Chat
+	{text = _G.SOCIAL_BUTTON, func = function() _G.ToggleFriendsFrame() end, icon = 796351, cropIcon = 10 }, -- Interface\FriendsFrame\Battlenet-BattlenetIcon
+	{text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleClassTalentFrame() else _G.ToggleTalentFrame() end end },
+	{text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() _G.ToggleGuildFrame() end },
 }
 
 if E.Cata and E.mylevel >= _G.SHOW_PVP_LEVEL then
-	tinsert(menuList, { text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end })
+	tinsert(menuList, {text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end, })
 end
 
 if E.Retail or E.Cata then
-	tinsert(menuList, { text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
-	tinsert(menuList, { text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
-	tinsert(menuList, { text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
-	tinsert(menuList, { text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = 1 }) -- Interface\Calendar\MeetingIcon
-	tinsert(menuList, { text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
+	tinsert(menuList, {text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
+	tinsert(menuList, {text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
+	tinsert(menuList, {text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
+	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = 1 }) -- Interface\Calendar\MeetingIcon
+	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
 if E.Retail then
-	tinsert(menuList, { text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
-	tinsert(menuList, { text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
+	if StoreEnabled and StoreEnabled() then
+		tinsert(menuList, {text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
+	end
+
+	tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
 else
-	tinsert(menuList, { text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
+	tinsert(menuList, {text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
 end
 
 sort(menuList, function(a, b) if a and b and a.text and b.text then return a.text < b.text end end)
@@ -110,7 +113,7 @@ tinsert(menuList, {
 	end
 })
 
-tinsert(menuList, { text = _G.HELP_BUTTON, microOffset = not E.Retail and 'HelpMicroButton' or nil, bottom = true, func = function() _G.ToggleHelpFrame() end, icon = 132088, cropIcon = 8 })
+tinsert(menuList, {text = _G.HELP_BUTTON, microOffset = not E.Retail and 'HelpMicroButton' or nil, bottom = true, func = function() _G.ToggleHelpFrame() end, icon = 132088, cropIcon = 8 })
 
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
@@ -127,7 +130,7 @@ function M:HandleExpansionButton()
 	M:SaveIconParent(garrison)
 
 	local hidden = not Minimap:IsShown()
-	if hidden then
+	if hidden or E.private.general.minimap.hideClassHallReport then
 		garrison:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
@@ -145,7 +148,7 @@ function M:HandleExpansionButton()
 end
 
 function M:HandleTrackingButton()
-	local tracking = MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
+	local tracking = MinimapCluster.Tracking or MinimapCluster.TrackingFrame or _G.MiniMapTrackingFrame or _G.MiniMapTracking
 	if not tracking then return end
 
 	M:SaveIconParent(tracking)
@@ -153,7 +156,7 @@ function M:HandleTrackingButton()
 	tracking:ClearAllPoints()
 
 	local hidden = not Minimap:IsShown()
-	if hidden or E.private.general.minimap.hideTracking then
+	if hidden --[[or E.private.general.minimap.hideTracking]] then -- 11.0 need to fix this menu first, dont let people hide it right now
 		tracking:SetParent(E.HiddenFrame)
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
@@ -215,21 +218,18 @@ function M:ADDON_LOADED(_, addon)
 end
 
 function M:CreateMinimapTrackingDropdown()
-	local dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, 'UIDropDownMenuTemplate')
-	dropdown:SetID(1)
-	dropdown:SetClampedToScreen(true)
-	dropdown:Hide()
+	local dropdown -- 11.0  dropdown:SetupMenu(E.ConfigMode_Initialize)
+	if not E.Retail then
+		dropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+		dropdown:SetID(1)
+		dropdown:SetClampedToScreen(true)
+		dropdown:Hide()
 
-	_G.UIDropDownMenu_Initialize(dropdown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
-	dropdown.noResize = true
+		_G.UIDropDownMenu_Initialize(dropdown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
+		dropdown.noResize = true
+	end
 
 	return dropdown
-end
-
-function M:MinimapTracking_UpdateTracking()
-	if _G.UIDROPDOWNMENU_OPEN_MENU == M.TrackingDropdown then
-		UIDropDownMenu_RefreshAll(M.TrackingDropdown)
-	end
 end
 
 function M:Minimap_OnShow()
@@ -264,10 +264,13 @@ function M:Minimap_OnMouseDown(btn)
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
 		if not E:AlertCombat() then
-			EasyMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
+			E:ComplicatedMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
+			menuFrame:Show()
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
+	elseif btn == 'RightButton' and E.Retail then
+		_G.MinimapCluster.Tracking.Button:OpenMenu()
 	elseif E.Retail then
 		Minimap.OnClick(self)
 	else
@@ -285,7 +288,7 @@ function M:MapCanvas_OnMouseDown(btn)
 	local position = M.MapHolder.mover:GetPoint()
 	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
 		if not E:AlertCombat() then
-			EasyMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
+			E:ComplicatedMenu(menuList, menuFrame, 'cursor', position:match('LEFT') and 0 or -160, 0, 'MENU')
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
@@ -563,7 +566,7 @@ function M:UpdateSettings()
 	local mmOffset = E.PixelMode and 1 or 3
 	local mmScale = E.db.general.minimap.scale
 	Minimap:ClearAllPoints()
-	Minimap:Point('TOPRIGHT', holder, -mmOffset/mmScale, -mmOffset/mmScale)
+	Minimap:Point('TOPRIGHT', holder, -mmOffset / mmScale, -mmOffset / mmScale)
 	Minimap:Size(E.MinimapSize)
 
 	local mWidth, mHeight = Minimap:GetSize()
@@ -594,7 +597,7 @@ function M:UpdateSettings()
 		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
 
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont), E.db.general.minimap.timeFontSize, E.db.general.minimap.timeFontOutline)
+		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont),E.db.general.minimap.timeFontSize,E.db.general.minimap.timeFontOutline)
 
 		if noCluster then
 			MinimapCluster.ZoneTextButton:Kill()
@@ -763,20 +766,12 @@ function M:Initialize()
 		tinsert(killFrames, Minimap.ZoomOut)
 
 		MinimapCluster.BorderTop:StripTextures()
-		MinimapCluster.TrackingFrame.Background:StripTextures()
-
-		M:RegisterEvent('MINIMAP_UPDATE_TRACKING', M.MinimapTracking_UpdateTracking)
+		MinimapCluster.Tracking.Background:StripTextures()
 
 		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
 			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
 		else
 			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-		end
-
-		if E.private.general.minimap.hideClassHallReport then
-			local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
-			garrison:Kill()
-			garrison.IsShown = function() return true end
 		end
 	end
 

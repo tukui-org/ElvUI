@@ -295,7 +295,7 @@ function S:Blizzard_GlyphUI()
 	S:HandleEditBox(_G.GlyphFrameSearchBox)
 	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
 
-	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210, nil, 'Transparent')
+	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210, 'Transparent')
 	_G.GlyphFrameFilterDropDown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
 
 	for i = 1, _G.NUM_GLYPH_SLOTS do
@@ -353,7 +353,7 @@ function S:Blizzard_GlyphUI()
 
 	for i = 1, 10 do
 		local button = _G['GlyphFrameScrollFrameButton'..i]
-		if button and not button.isSkinned then
+		if button and not button.IsSkinned then
 			S:HandleButton(button, nil, nil, nil, true, 'Transparent')
 			button.backdrop:SetInside()
 
@@ -362,7 +362,7 @@ function S:Blizzard_GlyphUI()
 				S:HandleIcon(icon)
 				icon:ClearAllPoints()
 				icon:Point('LEFT', 2, 0)
-				icon:Size(37)
+				icon:Size(36)
 			end
 
 			local disabledBG = button.disabledBG
@@ -370,7 +370,7 @@ function S:Blizzard_GlyphUI()
 				disabledBG:SetAlpha(0)
 			end
 
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 

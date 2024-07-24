@@ -7,10 +7,10 @@ local lower, wipe, next, print = strlower, wipe, next, print
 
 local ReloadUI = ReloadUI
 
-local DisableAddOn = (C_AddOns and C_AddOns.DisableAddOn) or DisableAddOn
-local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+local DisableAddOn = C_AddOns.DisableAddOn
+local EnableAddOn = C_AddOns.EnableAddOn
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns.GetNumAddOns
 
 -- GLOBALS: ElvUIGrid, ElvDB
 

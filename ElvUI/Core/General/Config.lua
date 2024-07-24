@@ -15,16 +15,16 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
 local EditBox_ClearFocus = EditBox_ClearFocus
 
-local EnableAddOn = (C_AddOns and C_AddOns.EnableAddOn) or EnableAddOn
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+local EnableAddOn = C_AddOns.EnableAddOn
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local LoadAddOn = C_AddOns.LoadAddOn
 
 -- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
 
@@ -91,7 +91,10 @@ function E:ToggleMoveMode(which)
 		end
 
 		ElvUIMoverPopupWindow:Show()
-		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
+
+		if not E.Retail then
+			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
+		end
 
 		if IsAddOnLoaded('ElvUI_Options') then
 			E:Config_CloseWindow()
@@ -198,18 +201,38 @@ function E:ConfigMode_OnClick()
 	E:ToggleMoveMode(self.value)
 end
 
-function E:ConfigMode_Initialize()
-	local info = _G.UIDropDownMenu_CreateInfo()
-	info.func = E.ConfigMode_OnClick
-
-	for _, configMode in ipairs(E.ConfigModeLayouts) do
-		info.text = E.ConfigModeLocalizedStrings[configMode]
-		info.value = configMode
-		_G.UIDropDownMenu_AddButton(info)
+do
+	local selected = 'ALL'
+	local function IsSelected(restrictEnum)
+		return selected == restrictEnum
 	end
 
-	local dd = ElvUIMoverPopupWindowDropDown
-	_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
+	local function SetSelected(restrictEnum)
+		E:ToggleMoveMode(restrictEnum)
+		selected = restrictEnum
+	end
+
+	function E:ConfigMode_Initialize(root)
+		if E.Retail then
+			root:SetTag('ELVUI_MOVER_LAYOUT')
+
+			for _, configMode in ipairs(E.ConfigModeLayouts) do
+				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
+			end
+		else
+			local info = _G.UIDropDownMenu_CreateInfo()
+			info.func = E.ConfigMode_OnClick
+
+			for _, configMode in ipairs(E.ConfigModeLayouts) do
+				info.text = E.ConfigModeLocalizedStrings[configMode]
+				info.value = configMode
+				_G.UIDropDownMenu_AddButton(info)
+			end
+
+			local dd = ElvUIMoverPopupWindowDropDown
+			_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
+		end
+	end
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
@@ -375,16 +398,26 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	local dropDown = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
+	local dropDown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', f:GetName()..'DropDown', f, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
 	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(dropDown, 165)
+
 	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
 	dropDown.text:SetText(L["Config Mode:"])
 	dropDown.text:FontTemplate(nil, 12, 'SHADOW')
+
 	f.dropDown = dropDown
 
-	_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
+	if E.Retail then
+		dropDown:SetupMenu(E.ConfigMode_Initialize)
+
+		-- how do we raise this????
+		-- dropDown:SetFrameStrata('FULLSCREEN_DIALOG')
+		-- dropDown:SetFrameLevel(300)
+	else
+		_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
+	end
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata('DIALOG')
@@ -677,6 +710,11 @@ function E:Config_SearchUpdate(userInput)
 		C:Search_AddResults()
 
 		ACD:SelectGroup('ElvUI', 'search') -- trigger update
+	else
+		local _, selected = E:Config_GetStatus(self.frame)
+		if selected == 'search' then
+			ACD:SelectGroup('ElvUI', self.selected or 'general') -- try to stay or swap back to general if it cant
+		end
 	end
 end
 

@@ -41,18 +41,18 @@ local function ReskinSlotButton(button)
 	ps:SetBlendMode('ADD')
 	ps:SetOutside(button)
 
-	if not button.isSkinned then
+	if not button.IsSkinned then
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
 
-		button.isSkinned = true
+		button.IsSkinned = true
 	end
 end
 
 local function HandleOutputButtons(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.isSkinned then
+		if not child.IsSkinned then
 			local itemContainer = child.ItemContainer
 			if itemContainer then
 				local item = itemContainer.Item
@@ -80,7 +80,7 @@ local function HandleOutputButtons(frame)
 				S:HandleIcon(icon)
 			end
 
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 
 		local itemContainer = child.ItemContainer
@@ -110,6 +110,14 @@ local function ReskinOutputLog(outputlog)
 	hooksecurefunc(outputlog.ScrollBox, 'Update', HandleOutputButtons)
 end
 
+local function HandleRewardButton(button)
+	if not button then return end
+
+	button:StripTextures()
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+end
+
 function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
@@ -120,6 +128,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.CreateButton)
 	S:HandleButton(CraftingPage.CreateAllButton)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
+	S:HandleIcon(CraftingPage.ConcentrationDisplay.Icon)
 	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 
@@ -134,6 +143,16 @@ function S:Blizzard_Professions()
 	CraftingRankBar.Background:Hide()
 	CraftingRankBar.Fill:CreateBackdrop()
 	CraftingRankBar.Rank.Text:FontTemplate()
+
+	if CraftingRankBar.ExpansionDropdownButton then
+		local arrow = CraftingRankBar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
+		arrow:SetTexture(E.Media.Textures.ArrowUp)
+		arrow:Size(11)
+		arrow:Point('CENTER')
+		S:SetupArrow(arrow, 'down')
+
+		S:HandleButton(CraftingRankBar.ExpansionDropdownButton)
+	end
 
 	local LinkButton = CraftingPage.LinkButton
 	LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
@@ -179,8 +198,8 @@ function S:Blizzard_Professions()
 	CraftList:CreateBackdrop('Transparent')
 	CraftList.backdrop:SetInside()
 	S:HandleEditBox(CraftList.SearchBox)
-	S:HandleButton(CraftList.FilterButton)
-	S:HandleCloseButton(CraftList.FilterButton.ResetButton)
+	S:HandleButton(CraftList.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	S:HandleCloseButton(CraftList.FilterDropdown.ResetButton)
 
 	local SchematicForm = CraftingPage.SchematicForm
 	SchematicForm:StripTextures()
@@ -214,13 +233,13 @@ function S:Blizzard_Professions()
 		end
 	end)
 
-	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckBox
+	local TrackRecipeCheckBox = SchematicForm.TrackRecipeCheckbox
 	if TrackRecipeCheckBox then
 		S:HandleCheckBox(TrackRecipeCheckBox)
 		TrackRecipeCheckBox:Size(24)
 	end
 
-	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckBox
+	local QualityCheckBox = SchematicForm.AllocateBestQualityCheckbox
 	if QualityCheckBox then
 		S:HandleCheckBox(QualityCheckBox)
 		QualityCheckBox:Size(24)
@@ -278,9 +297,9 @@ function S:Blizzard_Professions()
 
 	hooksecurefunc(SpecPage, 'UpdateTabs', function(frame)
 		for tab in frame.tabsPool:EnumerateActive() do
-			if not tab.isSkinned then
+			if not tab.IsSkinned then
 				S:HandleTab(tab)
-				tab.isSkinned = true
+				tab.IsSkinned = true
 			end
 		end
 	end)
@@ -300,6 +319,7 @@ function S:Blizzard_Professions()
 
 	local Orders = ProfessionsFrame.OrdersPage
 	S:HandleTab(Orders.BrowseFrame.PublicOrdersButton)
+	S:HandleTab(Orders.BrowseFrame.NpcOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.GuildOrdersButton)
 	S:HandleTab(Orders.BrowseFrame.PersonalOrdersButton)
 
@@ -320,7 +340,7 @@ function S:Blizzard_Professions()
 	BrowseList:StripTextures()
 	S:HandleTrimScrollBar(BrowseList.ScrollBar)
 	S:HandleEditBox(BrowseList.SearchBox)
-	S:HandleButton(BrowseList.FilterButton)
+	S:HandleButton(BrowseList.FilterDropdown)
 	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
 	local OrderList = Orders.BrowseFrame.OrderList
@@ -343,6 +363,16 @@ function S:Blizzard_Professions()
 	OrderRankBar.Fill:CreateBackdrop()
 	OrderRankBar.Rank.Text:FontTemplate()
 
+	if OrderRankBar.ExpansionDropdownButton then
+		local arrow = OrderRankBar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
+		arrow:SetTexture(E.Media.Textures.ArrowUp)
+		arrow:Size(11)
+		arrow:Point('CENTER')
+		S:SetupArrow(arrow, 'down')
+
+		S:HandleButton(OrderRankBar.ExpansionDropdownButton)
+	end
+
 	ReskinOutputLog(OrderView.CraftingOutputLog)
 
 	S:HandleButton(OrderView.CreateButton)
@@ -357,10 +387,18 @@ function S:Blizzard_Professions()
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)
-	S:HandleNextPrevButton(OrderInfo.SocialDropdownButton)
 	S:HandleEditBox(OrderInfo.NoteBox)
 	if OrderInfo.NoteBox.backdrop then
 		OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
+	end
+
+	local RewardsFrame = OrderInfo.NPCRewardsFrame
+	if RewardsFrame then
+		RewardsFrame.Background:SetAlpha(0)
+		RewardsFrame.Background:CreateBackdrop('Transparent')
+
+		HandleRewardButton(RewardsFrame.RewardItem1)
+		HandleRewardButton(RewardsFrame.RewardItem2)
 	end
 
 	local OrderDetails = OrderView.OrderDetails
@@ -371,7 +409,8 @@ function S:Blizzard_Professions()
 	OrderDetails.Background:SetAlpha(.5)
 
 	local OrderSchematicForm = OrderDetails.SchematicForm
-	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckBox)
+	S:HandleCheckBox(OrderSchematicForm.AllocateBestQualityCheckbox)
+	S:HandleCheckBox(OrderSchematicForm.TrackRecipeCheckbox)
 
 	hooksecurefunc(OrderSchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
@@ -397,6 +436,8 @@ function S:Blizzard_Professions()
 	if FulfillmentForm.NoteEditBox.backdrop then
 		FulfillmentForm.NoteEditBox.backdrop:SetTemplate('Transparent')
 	end
+
+	S:HandleIcon(OrderView.ConcentrationDisplay.Icon)
 
 	local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
 	if OrderItemIcon then

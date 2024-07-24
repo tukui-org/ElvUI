@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
 local unpack, next = unpack, next
 local hooksecurefunc = hooksecurefunc
 local CreateColor = CreateColor
@@ -18,40 +17,50 @@ local showInsetBackdrop = {
 	TokenFrame = true
 }
 
-local function TokenFrame_ScrollUpdate(frame)
+local oldAtlas = {
+	Options_ListExpand_Right = 1,
+	Options_ListExpand_Right_Expanded = 1
+}
+
+local function updateCollapse(texture, atlas)
+	if not atlas or oldAtlas[atlas] then
+		local parent = texture:GetParent()
+		if parent:IsCollapsed() then
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
+		else
+			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Collapse')
+		end
+	end
+end
+
+local function UpdateTokenSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.Highlight and not child.IsSkinned then
-			child.CategoryLeft:SetAlpha(0)
-			child.CategoryRight:SetAlpha(0)
-			child.CategoryMiddle:SetAlpha(0)
-			child.Stripe:SetAlpha(0.75)
+		if not child.IsSkinned then
+			if child.Right then
+				child:StripTextures()
+				child:CreateBackdrop()
+				child.backdrop:SetInside(child)
 
-			child.Highlight:SetInside()
-			child.Highlight:SetColorTexture(1, 1, 1, .25)
+				updateCollapse(child.Right)
+				updateCollapse(child.HighlightRight)
 
-			child.Highlight.SetPoint = E.noop
-			child.Highlight.SetTexture = E.noop
+				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
+			end
 
-			S:HandleIcon(child.Icon, true)
-			child.Icon.backdrop:SetFrameLevel(child:GetFrameLevel())
-
-			if child.ExpandIcon then
-				child.ExpandIcon:CreateBackdrop('Transparent')
-				child.ExpandIcon.backdrop:SetInside(3, 3)
+			local icon = child.Content and child.Content.CurrencyIcon
+			if icon then
+				S:HandleIcon(icon)
 			end
 
 			child.IsSkinned = true
 		end
-
-		child.Icon.backdrop:SetShown(not child.isHeader)
-		child.ExpandIcon.backdrop:SetShown(child.isHeader)
-		child.Stripe:SetShown(not child.isHeader)
 	end
 end
 
 local function EquipmentManagerPane_Update(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.icon and not child.isSkinned then
+		if child.icon and not child.IsSkinned then
 			child.BgTop:SetTexture(E.ClearTexture)
 			child.BgMiddle:SetTexture(E.ClearTexture)
 			child.BgBottom:SetTexture(E.ClearTexture)
@@ -61,16 +70,16 @@ local function EquipmentManagerPane_Update(frame)
 			child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
 			child.SelectedBar:SetDrawLayer('BACKGROUND')
 
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 	end
 end
 
 local function TitleManagerPane_Update(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.isSkinned then
+		if not child.IsSkinned then
 			child:DisableDrawLayer('BACKGROUND')
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 	end
 end
@@ -221,34 +230,37 @@ end
 
 local function UpdateFactionSkins(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		local container = child.Container
-		if container and not container.IsSkinned then
-			container.IsSkinned = true
+		if not child.IsSkinned then
+			if child.Right then
+				child:StripTextures()
+				child:CreateBackdrop('Transparent')
+				child.backdrop:SetInside(child)
 
-			container:StripTextures()
+				updateCollapse(child.Right)
+				updateCollapse(child.HighlightRight)
 
-			if container.ExpandOrCollapseButton then
-				S:HandleCollapseTexture(container.ExpandOrCollapseButton)
+				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
 			end
 
-			if container.ReputationBar then
-				container.ReputationBar:StripTextures()
-				container.ReputationBar:SetStatusBarTexture(E.media.normTex)
+			local ReputationBar = child.Content and child.Content.ReputationBar
+			if ReputationBar then
+				ReputationBar:StripTextures()
+				ReputationBar:SetStatusBarTexture(E.media.normTex)
 
-				if not container.ReputationBar.backdrop then
-					container.ReputationBar:CreateBackdrop()
-					E:RegisterStatusBar(container.ReputationBar)
+				if not ReputationBar.backdrop then
+					ReputationBar:CreateBackdrop()
+					E:RegisterStatusBar(ReputationBar)
 				end
 			end
+
+			child.IsSkinned = true
 		end
 	end
 end
 
 local function PaperDollUpdateStats()
-	local _, stats = _G.CharacterStatsPane.statsFramePool:EnumerateActive()
-	if not stats then return end
-
-	for frame in pairs(stats) do
+	for frame in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
 		if not frame.leftGrad then
 			ColorizeStatPane(frame)
 		end
@@ -265,7 +277,7 @@ local function BackdropDesaturated(background, value)
 	end
 end
 
-function S:CharacterFrame()
+function S:Blizzard_UIPanels_Game()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
 	-- General
@@ -275,7 +287,7 @@ function S:CharacterFrame()
 	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar)
 
-	for _, Slot in pairs({_G.PaperDollItemsFrame:GetChildren()}) do
+	for _, Slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
@@ -299,7 +311,7 @@ function S:CharacterFrame()
 	end
 
 	--Give character frame model backdrop it's color back
-	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
+	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
 		local bg = _G['CharacterModelFrameBackground'..corner]
 		if bg then
 			bg:SetDesaturated(false)
@@ -343,11 +355,11 @@ function S:CharacterFrame()
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	for _, scrollbar in pairs({ _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar }) do
+	for _, scrollbar in next, { _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar } do
 		S:HandleTrimScrollBar(scrollbar)
 	end
 
-	for _, object in pairs(charframe) do
+	for _, object in next, charframe do
 		_G[object]:StripTextures()
 	end
 
@@ -356,7 +368,6 @@ function S:CharacterFrame()
 	_G.CharacterModelScene:CreateBackdrop()
 	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
-	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 
 	S:HandleModelSceneControlButtons(_G.CharacterModelScene.ControlFrame)
 
@@ -370,7 +381,7 @@ function S:CharacterFrame()
 
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
-		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
+		if frame.IsSkinned then return end -- set by HandleIconSelectionFrame
 
 		S:HandleIconSelectionFrame(frame)
 	end)
@@ -397,31 +408,42 @@ function S:CharacterFrame()
 	end
 
 	-- Reputation Frame
-	_G.ReputationDetailFrame:StripTextures()
-	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleButton(_G.ReputationDetailViewRenownButton)
+	local ReputationFrame = _G.ReputationFrame
+	ReputationFrame:StripTextures()
+	S:HandleDropDownBox(ReputationFrame.filterDropdown)
+
+	local DetailFrame = ReputationFrame.ReputationDetailFrame
+	DetailFrame:StripTextures()
+	DetailFrame:SetTemplate('Transparent')
+	DetailFrame.CloseButton:StripTextures()
+	S:HandleCloseButton(DetailFrame.CloseButton)
+	S:HandleCheckBox(DetailFrame.AtWarCheckbox)
+	S:HandleCheckBox(DetailFrame.MakeInactiveCheckbox)
+	S:HandleCheckBox(DetailFrame.WatchFactionCheckbox)
+	S:HandleButton(DetailFrame.ViewRenownButton)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
+	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckBox)
+	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 
-	if _G.TokenFramePopup.CloseButton then
-		S:HandleCloseButton(_G.TokenFramePopup.CloseButton)
+	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckbox)
+	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
+	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
+
+	local TokenPopupClose = _G.TokenFramePopup['$parent.CloseButton']
+	if TokenPopupClose then
+		S:HandleCloseButton(TokenPopupClose)
 	end
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
-	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', TokenFrame_ScrollUpdate)
+	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
-	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
+	hooksecurefunc(_G.CharacterFrameMixin, 'ShowSubFrame', UpdateCharacterInset)
 end
 
-S:AddCallback('CharacterFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game')

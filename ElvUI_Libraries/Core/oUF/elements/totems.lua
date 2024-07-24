@@ -164,7 +164,7 @@ local function Update(self, event)
 end
 
 local function ForceUpdate(element)
-	Update(element.__owner, 'ForceUpdate')
+	return Update(element.__owner, 'ForceUpdate')
 end
 
 local function Enable(self)

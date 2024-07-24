@@ -91,8 +91,8 @@ Fonts.general.inline = true
 
 Fonts.blizzard = ACH:Group('', nil, 12, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Fonts.blizzard.args.replaceBlizzFonts = ACH:Toggle(L["Replace Blizzard Fonts"], L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."], 1)
-Fonts.blizzard.args.blizzardFontSize = ACH:Toggle(E.NewSign..L["Blizzard Font Size"], L["Font Size as defined by Blizzard."], 2, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
-Fonts.blizzard.args.noFontScale = ACH:Toggle(E.NewSign..L["No Font Scale"], L["Dont scale by Font Size as base."], 3, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
+Fonts.blizzard.args.blizzardFontSize = ACH:Toggle(L["Blizzard Font Size"], L["Font Size as defined by Blizzard."], 2, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
+Fonts.blizzard.args.noFontScale = ACH:Toggle(L["No Font Scale"], L["Dont scale by Font Size as base."], 3, nil, nil, nil, nil, function(info, value) E.private.general[info[#info]] = value E:UpdateBlizzardFonts() end, function() return not E.private.general.replaceBlizzFonts end)
 Fonts.blizzard.inline = true
 
 Fonts.combat = ACH:Group('', nil, 13, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
@@ -248,18 +248,22 @@ blizz.lootRollGroup.args.fontGroup.args.nameFontSize = ACH:Range(L["Font Size"],
 blizz.lootRollGroup.args.fontGroup.args.nameFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.lootRollGroup.args.fontGroup.inline = true
 
-blizz.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value M:ToggleItemLevelInfo() end, nil, E.Classic)
+blizz.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value M:ToggleItemLevelInfo(nil, true) end, nil, E.Classic)
 blizz.itemLevelInfo.args.displayInspectInfo = ACH:Toggle(L["Display Inspect Info"], L["Shows item level of each item, enchants, and gems when inspecting another player."], 1)
 blizz.itemLevelInfo.args.displayCharacterInfo = ACH:Toggle(L["Display Character Info"], L["Shows item level of each item, enchants, and gems on the character page."], 2, nil, nil, nil, nil, nil, function() return E:IsAddOnEnabled('DejaCharacterStats') end)
-blizz.itemLevelInfo.args.itemLevelRarity = ACH:Toggle(L["Rarity Color"], nil, 3)
+blizz.itemLevelInfo.args.enchantAbbrev = ACH:Toggle(L["Abbreviate Enchants"], nil, 3)
+blizz.itemLevelInfo.args.itemLevelRarity = ACH:Toggle(L["Rarity Color"], nil, 4)
+blizz.itemLevelInfo.args.showEnchants = ACH:Toggle(L["Show Enchants"], nil, 10)
+blizz.itemLevelInfo.args.showItemLevel = ACH:Toggle(L["Show ItemLevel"], nil, 11)
+blizz.itemLevelInfo.args.showGems = ACH:Toggle(L["Show Gems"], nil, 12)
 
-blizz.itemLevelInfo.args.fontGroup = ACH:Group(L["Item Score"], nil, 50, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
+blizz.itemLevelInfo.args.fontGroup = ACH:Group(L["Item Score"], nil, 70, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 4)
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 5, C.Values.FontSize)
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 blizz.itemLevelInfo.args.fontGroup.inline = true
 
-blizz.itemLevelInfo.args.totalFontGroup = ACH:Group(L["Total Score"], nil, 55, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
+blizz.itemLevelInfo.args.totalFontGroup = ACH:Group(L["Total Score"], nil, 80, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFont = ACH:SharedMediaFont(L["Font"], nil, 4)
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontSize = ACH:Range(L["Font Size"], nil, 5, C.Values.FontSize)
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
@@ -301,7 +305,7 @@ blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
 
-blizz.guildBank = ACH:Group(E.NewSign..L["Guild Bank"], nil, 70, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
+blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 70, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
 blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Cata)
 
 blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 10)

@@ -54,10 +54,32 @@ local function SetSelectedCategory(list)
 		end
 	end
 
+	if list.dropdownPool then
+		for option in list.dropdownPool:EnumerateActive() do
+			if not option.IsSkinned then
+				S:HandleButton(option.Dropdown)
+				S:HandleButton(option.DecrementButton)
+				S:HandleButton(option.IncrementButton)
+
+				option.IsSkinned = true
+			end
+		end
+	end
+
+	if list.sliderPool then
+		for slider in list.sliderPool:EnumerateActive() do
+			if not slider.IsSkinned then
+				S:HandleSliderFrame(slider)
+
+				slider.IsSkinned = true
+			end
+		end
+	end
+
 	local pool = list.pools and list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
 	if pool then
 		for frame in pool:EnumerateActive() do
-			if not frame.isSkinned then
+			if not frame.IsSkinned then
 				if frame.Button then
 					S:HandleCheckBox(frame.Button)
 				end
@@ -81,22 +103,16 @@ function S:Blizzard_CharacterCustomize()
 	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
-	hooksecurefunc(frame, 'SetSelectedCategory', SetSelectedCategory)
-end
-
-local function HandleButton(button) -- Same as PerksProgram Skin
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-	button:SetScale(E.uiscale)
-	button:Size(200, 50)
+	hooksecurefunc(frame, 'AddMissingOptions', SetSelectedCategory)
 end
 
 function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
 	local frame = _G.BarberShopFrame
-	HandleButton(frame.ResetButton)
-	HandleButton(frame.CancelButton)
-	HandleButton(frame.AcceptButton)
+	S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
 end
 
 S:AddCallbackForAddon('Blizzard_BarbershopUI')

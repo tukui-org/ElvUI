@@ -6,18 +6,18 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
-local GetAddOnInfo = C_AddOns and C_AddOns.GetAddOnInfo
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, addonIndex)
-	if not entry.isSkinned then
+	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
 		S:HandleButton(entry.LoadAddonButton)
 
-		entry.isSkinned = true
+		entry.IsSkinned = true
 	end
 
 	local checkall -- Get the character from the current list (nil is all characters)
-	local character = UIDropDownMenu_GetSelectedValue(_G.AddonCharacterDropDown)
+	local character = UIDropDownMenu_GetSelectedValue(_G.AddonList.Dropdown)
 	if character == true then
 		character = nil
 	else
@@ -90,7 +90,7 @@ function S:AddonList()
 	S:HandleButton(AddonList.DisableAllButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(AddonList.OkayButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(AddonList.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
-	S:HandleDropDownBox(_G.AddonCharacterDropDown, 165)
+	S:HandleDropDownBox(_G.AddonList.Dropdown, 165)
 	S:HandleTrimScrollBar(_G.AddonList.ScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 	_G.AddonListForceLoad:Size(26)

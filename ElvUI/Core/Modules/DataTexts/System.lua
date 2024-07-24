@@ -24,9 +24,9 @@ local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
 
 local GetCVarBool = C_CVar.GetCVarBool
 
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local GetNumAddOns = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local GetNumAddOns = C_AddOns.GetNumAddOns
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local UNKNOWN = UNKNOWN
 

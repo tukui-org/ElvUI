@@ -163,7 +163,7 @@ general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Colo
 general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
 general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, not E.Retail)
 general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item"], nil, 7)
-general.args.colorGroup.args.targetReticleColor = ACH:Color(E.NewSign..L["Target Reticle"], nil, 8)
+general.args.colorGroup.args.targetReticleColor = ACH:Color(L["Target Reticle"], nil, 8)
 
 general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 35, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value, info[#info - 1] == 'fontGroup') end)
 general.args.applyGroup.args.fontGroup = ACH:Group(L["Font Group"], nil, 1)
@@ -238,6 +238,9 @@ ActionBar.args.totemBar.args.buttonSize.desc = function() return E.db.actionbar.
 ActionBar.args.totemBar.args.buttonHeight.hidden = function() return E.db.actionbar.totemBar.keepSizeRatio end
 
 ActionBar.args.totemBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 20, nil, 'full')
+
+ActionBar.args.totemBar.args.strataAndLevel = SharedBarOptions.strataAndLevel
+ActionBar.args.totemBar.args.strataAndLevel.order = 30
 
 ActionBar.args.totemBar.args.fontGroup = ACH:Group(L["Font Group"], nil, 40, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value AB:UpdateTotemBindings(info[#info], value, true) end)
 ActionBar.args.totemBar.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
@@ -338,7 +341,7 @@ local function CreateBarOptions(num)
 	bar.args.generalOptions.values.keepSizeRatio = L["Keep Size Ratio"]
 
 	if E.Retail then
-		bar.args.generalOptions.values.targetReticle = E.NewSign..L["Target Reticle"]
+		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
 	end
 
 	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar[barNumber][info[#info]] = value AB:UpdateButtonSettings(barNumber) end)

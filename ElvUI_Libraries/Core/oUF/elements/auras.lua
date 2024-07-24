@@ -15,23 +15,24 @@ At least one of the above widgets must be present for the element to work.
 
 ## Options
 
-.disableMouse       - Disables mouse events (boolean)
-.disableCooldown    - Disables the cooldown spiral (boolean)
-.size               - Aura button size. Defaults to 16 (number)
-.width              - Aura button width. Takes priority over `size` (number)
-.height             - Aura button height. Takes priority over `size` (number)
-.onlyShowPlayer     - Shows only auras created by player/vehicle (boolean)
-.showStealableBuffs - Displays the stealable texture on buffs that can be stolen (boolean)
-.spacing            - Spacing between each button. Defaults to 0 (number)
-.['spacing-x']      - Horizontal spacing between each button. Takes priority over `spacing` (number)
-.['spacing-y']      - Vertical spacing between each button. Takes priority over `spacing` (number)
-.['growth-x']       - Horizontal growth direction. Defaults to 'RIGHT' (string)
-.['growth-y']       - Vertical growth direction. Defaults to 'UP' (string)
-.initialAnchor      - Anchor point for the aura buttons. Defaults to 'BOTTOMLEFT' (string)
-.filter             - Custom filter list for auras to display. Defaults to 'HELPFUL' for buffs and 'HARMFUL' for
-                      debuffs (string)
-.tooltipAnchor      - Anchor point for the tooltip. Defaults to 'ANCHOR_BOTTOMRIGHT', however, if a frame has anchoring
-                      restrictions it will be set to 'ANCHOR_CURSOR' (string)
+.disableMouse             - Disables mouse events (boolean)
+.disableCooldown          - Disables the cooldown spiral (boolean)
+.size                     - Aura button size. Defaults to 16 (number)
+.width                    - Aura button width. Takes priority over `size` (number)
+.height                   - Aura button height. Takes priority over `size` (number)
+.onlyShowPlayer           - Shows only auras created by player/vehicle (boolean)
+.showStealableBuffs       - Displays the stealable texture on buffs that can be stolen (boolean)
+.spacing                  - Spacing between each button. Defaults to 0 (number)
+.['spacing-x']            - Horizontal spacing between each button. Takes priority over `spacing` (number)
+.['spacing-y']            - Vertical spacing between each button. Takes priority over `spacing` (number)
+.['growth-x']             - Horizontal growth direction. Defaults to 'RIGHT' (string)
+.['growth-y']             - Vertical growth direction. Defaults to 'UP' (string)
+.initialAnchor            - Anchor point for the aura buttons. Defaults to 'BOTTOMLEFT' (string)
+.filter                   - Custom filter list for auras to display. Defaults to 'HELPFUL' for buffs and 'HARMFUL' for
+                            debuffs (string)
+.tooltipAnchor            - Anchor point for the tooltip. Defaults to 'ANCHOR_BOTTOMRIGHT', however, if a frame has
+                            anchoring restrictions it will be set to 'ANCHOR_CURSOR' (string)
+.reanchorIfVisibleChanged - Reanchors aura buttons when the number of visible auras has changed (boolean)
 
 ## Options Auras
 
@@ -60,13 +61,13 @@ button.isPlayer		- indicates if the aura caster is the player or their vehicle (
 
 ## Examples
 
-	-- Position and size
-	local Buffs = CreateFrame('Frame', nil, self)
-	Buffs:SetPoint('RIGHT', self, 'LEFT')
-	Buffs:SetSize(16 * 2, 16 * 16)
+    -- Position and size
+    local Buffs = CreateFrame('Frame', nil, self)
+    Buffs:SetPoint('RIGHT', self, 'LEFT')
+    Buffs:SetSize(16 * 2, 16 * 16)
 
-	-- Register with oUF
-	self.Buffs = Buffs
+    -- Register with oUF
+    self.Buffs = Buffs
 --]]
 
 local _, ns = ...
@@ -84,7 +85,6 @@ local tinsert = tinsert
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local GetSpellInfo = GetSpellInfo
 local floor, min = math.floor, math.min
 -- end block
 
@@ -170,7 +170,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
-		name, _, icon = GetSpellInfo(spellID)
+		name, _, icon = oUF:GetSpellInfo(spellID)
 
 		if element.forceShow then
 			count, debuffType, duration, expiration, source = 5, "Magic", 0, 60, "player"
@@ -183,7 +183,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	local button = element[position]
 	if(not button) then
 		--[[ Override: Auras:CreateButton(position)
-		Used to create the aura button at a given position.
+		Used to create an aura button at a given position.
 
 		* self     - the widget holding the aura buttons
 		* position - the position at which the aura button is to be created (number)

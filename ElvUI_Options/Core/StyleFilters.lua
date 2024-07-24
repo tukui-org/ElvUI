@@ -14,8 +14,7 @@ local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetRealZoneText = GetRealZoneText
-local GetSpellInfo = GetSpellInfo
-local GetSpellTexture = GetSpellTexture
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
@@ -79,7 +78,7 @@ local function GetSpellFilterInfo(name)
 	local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
 	local spellID = tonumber(spell)
 	if spellID then
-		local spellName = GetSpellInfo(spellID)
+		local spellName = E:GetSpellInfo(spellID)
 		if spellName then
 			if DisabledFilter() then
 				spell = format('%s (%d)', spellName, spellID)
@@ -291,7 +290,7 @@ StyleFilters.triggers.args.combat.args.unitGroup.args.notInParty = ACH:Toggle(L[
 StyleFilters.triggers.args.combat.args.unitGroup.args.inRaid = ACH:Toggle(L["In Raid"], L["If enabled then the filter will only activate when the unit is in your Raid."], 7)
 StyleFilters.triggers.args.combat.args.unitGroup.args.notInRaid = ACH:Toggle(L["Not in Raid"], L["If enabled then the filter will only activate when the unit is not in your Raid."], 8)
 StyleFilters.triggers.args.combat.args.unitGroup.args.isPet = ACH:Toggle(L["Is Pet"], L["If enabled then the filter will only activate when the unit is the active player's pet."], 9)
-StyleFilters.triggers.args.combat.args.unitGroup.args.isNotPet= ACH:Toggle(L["Not Pet"], L["If enabled then the filter will only activate when the unit is not the active player's pet."], 10)
+StyleFilters.triggers.args.combat.args.unitGroup.args.isNotPet = ACH:Toggle(L["Not Pet"], L["If enabled then the filter will only activate when the unit is not the active player's pet."], 10)
 StyleFilters.triggers.args.combat.args.unitGroup.args.isPlayerControlled = ACH:Toggle(L["Player Controlled"], L["If enabled then the filter will only activate when the unit is controlled by the player."], 11)
 StyleFilters.triggers.args.combat.args.unitGroup.args.isNotPlayerControlled = ACH:Toggle(L["Not Player Controlled"], L["If enabled then the filter will only activate when the unit is not controlled by the player."], 12)
 StyleFilters.triggers.args.combat.args.unitGroup.args.isOwnedByPlayer = ACH:Toggle(L["Owned By Player"], L["If enabled then the filter will only activate when the unit is owned by the player."], 13)

@@ -17,7 +17,7 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS

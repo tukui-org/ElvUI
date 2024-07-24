@@ -31,7 +31,11 @@ local oUF = ns.oUF
 local _FRAMES = {}
 local OnRangeFrame
 
-local UnitInRange, UnitIsConnected = UnitInRange, UnitIsConnected
+local next, tinsert, tremove = next, tinsert, tremove
+
+local CreateFrame = CreateFrame
+local UnitInRange = UnitInRange
+local UnitIsConnected = UnitIsConnected
 
 local function Update(self, event)
 	local element = self.Range
@@ -106,13 +110,17 @@ local function Enable(self)
 		element.insideAlpha = element.insideAlpha or 1
 		element.outsideAlpha = element.outsideAlpha or 0.55
 
-		if(not OnRangeFrame) then
-			OnRangeFrame = CreateFrame('Frame')
-			OnRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
-		end
+		if oUF.isRetail then
+			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		else
+			if not OnRangeFrame then
+				OnRangeFrame = CreateFrame('Frame')
+				OnRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
+			end
 
-		table.insert(_FRAMES, self)
-		OnRangeFrame:Show()
+			tinsert(_FRAMES, self)
+			OnRangeFrame:Show()
+		end
 
 		return true
 	end
@@ -121,16 +129,21 @@ end
 local function Disable(self)
 	local element = self.Range
 	if(element) then
-		for index, frame in next, _FRAMES do
-			if(frame == self) then
-				table.remove(_FRAMES, index)
-				break
-			end
-		end
 		self:SetAlpha(element.insideAlpha)
 
-		if(#_FRAMES == 0) then
-			OnRangeFrame:Hide()
+		if oUF.isRetail then
+			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
+		else
+			for index, frame in next, _FRAMES do
+				if frame == self then
+					tremove(_FRAMES, index)
+					break
+				end
+			end
+
+			if #_FRAMES == 0 then
+				OnRangeFrame:Hide()
+			end
 		end
 	end
 end

@@ -9,7 +9,7 @@ local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
@@ -197,7 +197,7 @@ function S:LookingForGroupFrames()
 	end
 
 	hooksecurefunc('SetCheckButtonIsRadio', function(button)
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			S:HandleCheckBox(button)
 		end
 	end)
@@ -286,7 +286,7 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 
@@ -294,9 +294,11 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:ClearAllPoints()
 	_G.PVEFrameTab2:ClearAllPoints()
 	_G.PVEFrameTab3:ClearAllPoints()
+	_G.PVEFrameTab4:ClearAllPoints()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
+	_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
 
 	-- Szenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
@@ -304,9 +306,12 @@ function S:LookingForGroupFrames()
 		ScenarioQueueFrame:StripTextures()
 		_G.ScenarioFinderFrameInset:StripTextures()
 		_G.ScenarioQueueFrameBackground:SetAlpha(0)
-		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown)
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+
+		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+		S:HandleScrollBar(_G.ScenarioQueueFrameSpecificScrollFrame.ScrollBar)
 
 		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
 			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
@@ -316,6 +321,7 @@ function S:LookingForGroupFrames()
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()
@@ -333,12 +339,12 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
+	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown, 200)
 
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
-	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropDown)
+	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
@@ -362,7 +368,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
-	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
@@ -372,42 +377,43 @@ function S:LookingForGroupFrames()
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 
-	LFGListFrame.EntryCreation.Inset:StripTextures()
-	S:HandleButton(LFGListFrame.EntryCreation.CancelButton)
-	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton)
-	LFGListFrame.EntryCreation.CancelButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
-	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
-	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
+	local EntryCreation = LFGListFrame.EntryCreation
+	EntryCreation.Inset:StripTextures()
+	S:HandleButton(EntryCreation.CancelButton)
+	S:HandleButton(EntryCreation.ListGroupButton)
+	EntryCreation.CancelButton:ClearAllPoints()
+	EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
+	EntryCreation.ListGroupButton:ClearAllPoints()
+	EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
+	S:HandleEditBox(EntryCreation.Description)
 
-	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.MythicPlusRating.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.PvpItemLevel.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
+	S:HandleDropDownBox(EntryCreation.GroupDropdown)
+	S:HandleDropDownBox(EntryCreation.ActivityDropdown, 120)
+	S:HandleDropDownBox(EntryCreation.PlayStyleDropdown)
 
-	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropDown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropDown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
+	S:HandleEditBox(EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(EntryCreation.MythicPlusRating.EditBox)
+	S:HandleEditBox(EntryCreation.PVPRating.EditBox)
+	S:HandleEditBox(EntryCreation.PvpItemLevel.EditBox)
+	S:HandleEditBox(EntryCreation.VoiceChat.EditBox)
+	S:HandleEditBox(EntryCreation.Name)
 
-	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.MythicPlusRating.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PvpItemLevel.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.CrossFactionGroup.CheckButton)
+	S:HandleCheckBox(EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(EntryCreation.MythicPlusRating.CheckButton)
+	S:HandleCheckBox(EntryCreation.PrivateGroup.CheckButton)
+	S:HandleCheckBox(EntryCreation.PvpItemLevel.CheckButton)
+	S:HandleCheckBox(EntryCreation.PVPRating.CheckButton)
+	S:HandleCheckBox(EntryCreation.VoiceChat.CheckButton)
+	S:HandleCheckBox(EntryCreation.CrossFactionGroup.CheckButton)
 
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
+	EntryCreation.ActivityFinder.Dialog:StripTextures()
+	EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
+	EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
+	EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
 
-	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
-	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
-	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+	S:HandleEditBox(EntryCreation.ActivityFinder.Dialog.EntryBox)
+	S:HandleButton(EntryCreation.ActivityFinder.Dialog.SelectButton)
+	S:HandleButton(EntryCreation.ActivityFinder.Dialog.CancelButton)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
@@ -430,6 +436,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
+	S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
@@ -437,7 +444,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
-	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetToDefaults)
+	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetButton)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
@@ -459,9 +466,9 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(panel)
 		for _, child in next, { LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren() } do
-			if not child.isSkinned and child:IsObjectType('Button') then
+			if not child.IsSkinned and child:IsObjectType('Button') then
 				S:HandleButton(child)
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 
@@ -545,7 +552,7 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
 		local button = btn.CategoryButtons[btnIndex]
 		if button then
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				button:SetTemplate()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -556,7 +563,7 @@ function S:LookingForGroupFrames()
 
 				--Fix issue with labels not following changes to GameFontNormal as they should
 				button.Label:SetFontObject('GameFontNormal')
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 
 			button.SelectedTexture:Hide()

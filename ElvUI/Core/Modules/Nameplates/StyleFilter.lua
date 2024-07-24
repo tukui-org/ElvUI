@@ -14,7 +14,6 @@ local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpellCharges = GetSpellCharges
 local GetSpellCooldown = GetSpellCooldown
-local GetSpellInfo = GetSpellInfo
 local GetTime = GetTime
 local IsEquippedItem = IsEquippedItem
 local IsPlayerSpell = IsPlayerSpell
@@ -470,7 +469,7 @@ function NP:StyleFilterCooldownCheck(names, mustHaveAll)
 	local total, count = 0, 0
 
 	for name, value in pairs(names) do
-		if GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
+		if E:GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
 			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
 				total = total + 1 -- keep track of the names
 

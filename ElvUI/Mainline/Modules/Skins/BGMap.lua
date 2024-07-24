@@ -8,10 +8,6 @@ local function GetOpacity()
 	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
 end
 
-local function InitializeOptionsDropDown()
-	_G.BattlefieldMapTab:InitializeOptionsDropDown()
-end
-
 local function setBackdropAlpha()
 	if _G.BattlefieldMapFrame.backdrop then
 		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
@@ -65,33 +61,26 @@ function S:Blizzard_BattlefieldMap()
 	close:Point('TOPRIGHT', 3, 8)
 	S:HandleCloseButton(close)
 
+	local tab = _G.BattlefieldMapTab
 	local scroll = frame.ScrollContainer
 	frame.backdrop:SetOutside(scroll)
 	frame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
 
-	local tab = _G.BattlefieldMapTab
-	local position = {}
-
 	scroll:HookScript('OnMouseUp', function(_, btn)
 		if btn == 'LeftButton' then
 			tab:StopMovingOrSizing()
-			position.x, position.y = tab:GetCenter()
 		elseif btn == 'RightButton' then
-			_G.UIDropDownMenu_Initialize(tab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
-			_G.ToggleDropDownMenu(1, nil, tab.OptionsDropDown, frame:GetName(), 0, -4)
+			tab:Click('RightButton')
 		end
 
-		if _G.OpacityFrame:IsShown() then
-			_G.OpacityFrame:Hide()
+		local slider = _G.OpacityFrame
+		if slider and slider:IsShown() then
+			slider:Hide()
 		end
 	end)
 
 	scroll:HookScript('OnMouseDown', function(_, btn)
 		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-			if _G.BattlefieldMapOptions.position ~= position then
-				_G.BattlefieldMapOptions.position = position
-			end
-
 			tab:StartMoving()
 		end
 	end)

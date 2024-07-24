@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local pairs, format, tinsert = pairs, format, tinsert
 
-local EasyMenu = EasyMenu
 local GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo, ResetInstances = GetInstanceInfo, GetDifficultyInfo, ResetInstances
@@ -107,7 +106,7 @@ end
 
 local function OnClick(self)
 	E:SetEasyMenuAnchor(E.EasyMenu, self)
-	EasyMenu(RightClickMenu, E.EasyMenu, nil, nil, nil, 'MENU')
+	E:ComplicatedMenu(RightClickMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 local function OnEvent(self)

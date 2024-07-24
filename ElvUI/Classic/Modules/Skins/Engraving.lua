@@ -21,9 +21,9 @@ local function UpdateRuneList()
 	local buttons = frame and frame.scrollFrame and frame.scrollFrame.buttons
 	for i = 1, (buttons and #buttons or 0) do
 		local button = _G['EngravingFrameScrollFrameButton'..i]
-		if button and not button.isSkinned then
+		if button and not button.IsSkinned then
 			S:HandleButton(button)
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 	end
 end

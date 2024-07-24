@@ -202,10 +202,10 @@ function S:FriendsFrame()
 	_G.FriendsFrameIcon:Hide()
 	_G.IgnoreListFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
+	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
 
-	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:Point('TOPLEFT', FriendsFrame, 'TOPLEFT', 5, -24)
+	_G.FriendsFrameStatusDropdown:ClearAllPoints()
+	_G.FriendsFrameStatusDropdown:Point('TOPLEFT', FriendsFrame, 'TOPLEFT', 5, -24)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -318,7 +318,7 @@ function S:FriendsFrame()
 		end
 	end
 
-	S:HandleDropDownBox(_G.WhoFrameDropDown, 120)
+	S:HandleDropDownBox(_G.WhoFrameDropdown, 120)
 
 	-- Bottom Tabs
 	HandleTabs()
@@ -335,7 +335,7 @@ function S:FriendsFrame()
 	FriendsFriendsFrame.ScrollFrameBorder:Hide()
 	FriendsFriendsFrame:StripTextures()
 	FriendsFriendsFrame:SetTemplate('Transparent')
-	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown, 150)
+	S:HandleDropDownBox(_G.FriendsFriendsFrameDropdown, 150)
 	S:HandleButton(FriendsFriendsFrame.SendRequestButton)
 	S:HandleButton(FriendsFriendsFrame.CloseButton)
 

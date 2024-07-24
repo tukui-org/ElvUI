@@ -13,7 +13,6 @@ local strlower = strlower
 local strmatch = strmatch
 local tonumber = tonumber
 local tostring = tostring
-local GetSpellInfo = GetSpellInfo
 local GetSpellSubtext = GetSpellSubtext
 
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
@@ -136,7 +135,7 @@ local function GetSpellNameRank(id)
 		return ' '
 	end
 
-	local name = tonumber(id) and GetSpellInfo(id)
+	local name = tonumber(id) and E:GetSpellInfo(id)
 	if not name then
 		return tostring(id)
 	end
@@ -233,7 +232,7 @@ local function AddOrRemoveSpellID(info, value)
 	if info[#info] == 'removeSpell' then
 		selectedSpell = nil
 	else
-		local spellName = GetSpellInfo(value)
+		local spellName = E:GetSpellInfo(value)
 		selectedSpell = (spellName and value)
 	end
 
@@ -414,7 +413,7 @@ Filters.mainOptions.args.spellGroup.args.removeColor = ACH:Execute(L["Restore De
 
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator = ACH:Group(L["Used as Raid Debuff Indicator"], nil, 4, nil, debuffIndicator, debuffIndicator, nil, function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)') end)
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.inline = true
-Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.priority = ACH:Range(L["Priority"], L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."], 1, { min = 0, max = 99, step = 1 })
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.priority = ACH:Range(L["Priority"], L["Set the priority order of the spell, please note that priorities are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."], 1, { min = 0, max = 99, step = 1 })
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."], 2, { min = 0, max = 99, step = 1 })
 Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Player Only"], L["Only highlight the aura that originated from you and not others."], 5, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
 

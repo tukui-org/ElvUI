@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
@@ -34,7 +34,6 @@ local function SkinActivityFrame(frame, isObject)
 		if isObject then
 			frame.Border:SetAlpha(0)
 			frame.SelectedTexture:SetAlpha(0)
-			frame.LockIcon:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
 		else
@@ -45,6 +44,7 @@ local function SkinActivityFrame(frame, isObject)
 	end
 
 	if frame.Background then
+		frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
 		frame.Background:CreateBackdrop()
 	end
 end
@@ -63,16 +63,13 @@ function S:Blizzard_WeeklyRewards()
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
-		frame.NineSlice:Kill()
-		frame.BackgroundTile:SetAlpha(0)
 		frame:SetTemplate('Transparent')
+
+		frame.BorderContainer:SetAlpha(0)
 
 		header:StripTextures()
 		header:SetTemplate('Transparent')
-		header.Left:SetAlpha(0)
-		header.Center:SetAlpha(0)
-		header.Right:SetAlpha(0)
-		header.Middle:SetAlpha(0)
+
 		header:ClearAllPoints()
 		header:Point('TOP', 1, -42)
 	end
@@ -83,6 +80,7 @@ function S:Blizzard_WeeklyRewards()
 	SkinActivityFrame(frame.RaidFrame)
 	SkinActivityFrame(frame.MythicFrame)
 	SkinActivityFrame(frame.PVPFrame)
+	SkinActivityFrame(frame.WorldFrame)
 
 	for _, activity in pairs(frame.Activities) do
 		SkinActivityFrame(activity, true)

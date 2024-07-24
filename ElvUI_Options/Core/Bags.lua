@@ -8,8 +8,8 @@ local format, strmatch = format, strmatch
 local tonumber = tonumber
 
 local GameTooltip = GameTooltip
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight or SetInsertItemsLeftToRight
+local GetItemInfo = C_Item.GetItemInfo
+local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 
 local Bags = ACH:Group(L["Bags"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
 E.Options.args.bags = Bags
@@ -139,7 +139,7 @@ Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelxOffset =
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 
 Bags.args.general.args.autoToggle = ACH:Group(L["Auto Toggle"], nil, 11)
-Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 1, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = L["Guild Bank"], auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value B:AutoToggle() end)
+Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 1, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = L["Guild Bank"], auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value end)
 
 if E.Retail then
 	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = L["Soul Binds"]

@@ -12,7 +12,7 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local HasPetUI = HasPetUI
 
-local GetContainerItemID = C_Container.GetContainerItemID or GetContainerItemID
+local GetContainerItemID = C_Container.GetContainerItemID
 local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
@@ -30,7 +30,7 @@ local FLYOUT_LOCATIONS = {
 
 local function EquipmentManagerPane_Update(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.icon and not child.isSkinned then
+		if child.icon and not child.IsSkinned then
 			child.BgTop:SetTexture(E.ClearTexture)
 			child.BgMiddle:SetTexture(E.ClearTexture)
 			child.BgBottom:SetTexture(E.ClearTexture)
@@ -40,16 +40,16 @@ local function EquipmentManagerPane_Update(frame)
 			child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
 			child.SelectedBar:SetDrawLayer('BACKGROUND')
 
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 	end
 end
 
 local function TitleManagerPane_Update(frame)
 	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.isSkinned then
+		if not child.IsSkinned then
 			child:DisableDrawLayer('BACKGROUND')
-			child.isSkinned = true
+			child.IsSkinned = true
 		end
 	end
 end
@@ -393,7 +393,7 @@ function S:CharacterFrame()
 
 	-- Icon selection frame
 	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
-		if frame.isSkinned then return end -- set by HandleIconSelectionFrame
+		if frame.IsSkinned then return end -- set by HandleIconSelectionFrame
 
 		S:HandleIconSelectionFrame(frame)
 	end)

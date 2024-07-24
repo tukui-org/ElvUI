@@ -45,7 +45,6 @@ local CreateFrame = CreateFrame
 local GetTime = GetTime
 
 local UnitGUID = UnitGUID
-local GetSpellInfo = GetSpellInfo
 local UnitCastingInfo = UnitCastingInfo
 local UnitRangedDamage = UnitRangedDamage
 local UnitAttackSpeed = UnitAttackSpeed
@@ -72,7 +71,7 @@ end
 local OnDurationUpdate
 do
 	local slamtime, slamelapsed, checkelapsed = 0, 0, 0
-	local slam = GetSpellInfo(1464)
+	local slam = oUF:GetSpellInfo(1464)
 
 	function OnDurationUpdate(self, elapsed)
 		local now = GetTime()
@@ -242,7 +241,7 @@ local RangedChange = function(self, event, unit)
 end
 
 local Ranged = function(self, event, unit, spellName)
-	if unit ~= 'player' or (spellName ~= GetSpellInfo(75) and spellName ~= GetSpellInfo(5019)) then return end
+	if unit ~= 'player' or (spellName ~= oUF:GetSpellInfo(75) and spellName ~= oUF:GetSpellInfo(5019)) then return end
 
 	local bar = self.Swing
 	local swing = bar.Twohand

@@ -228,7 +228,7 @@ function S:PetBattleFrame()
 		if s.petOwner and s.petIndex and (s.Icon.backdrop and s.Icon.backdrop:IsShown()) then
 			local rarity = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
 			if rarity then
-				local color = ITEM_QUALITY_COLORS[rarity-1]
+				local color = ITEM_QUALITY_COLORS[rarity]
 				s.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 			end
 		end

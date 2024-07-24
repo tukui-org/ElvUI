@@ -1,5 +1,5 @@
 local parent, ns = ...
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = 'devel'
 
@@ -317,11 +317,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 		-- Expose the frame through oUF.objects.
 		tinsert(objects, object)
 
-		-- add the mixin for pings
-		if PingableType_UnitFrameMixin then
-			Mixin(object, PingableType_UnitFrameMixin)
-		end
-
 		-- We have to force update the frames when PEW fires.
 		-- It's also important to evaluate units before running an update
 		-- because sometimes events that are required for unit updates end up
@@ -348,15 +343,6 @@ local function initObject(unit, style, styleFunc, header, ...)
 			object:SetAttribute('*type1', 'target')
 			object:SetAttribute('*type2', 'togglemenu')
 			object:SetAttribute('toggleForVehicle', true)
-
-			--[[ frame.IsPingable
-			This boolean can be set to false to disable the frame from being pingable. Enabled by default.
-			--]]
-			--[[ Override: frame:GetContextualPingType()
-			Used to define which contextual ping is used for the frame.
-			By default this wraps `C_Ping.GetContextualPingTypeForUnit(UnitGUID(frame.unit))`.
-			--]]
-			object:SetAttribute('ping-receiver', true)
 
 			if(isEventlessUnit(objectUnit)) then
 				oUF:HandleEventlessUnit(object)
@@ -648,8 +634,6 @@ do
 				frame:SetAttribute('*type1', 'target')
 				frame:SetAttribute('*type2', 'togglemenu')
 				frame:SetAttribute('oUF-guessUnit', unit)
-
-				frame:SetAttribute('ping-receiver', true)
 			end
 
 			local body = header:GetAttribute('oUF-initialConfigFunction')
@@ -676,11 +660,11 @@ do
 	* template     - name of a template to be used for creating the header. Defaults to `'SecureGroupHeaderTemplate'`
 	                 (string?)
 	* visibility   - macro conditional(s) which define when to display the header (string).
-	* ...          - further argument pairs. Consult [Group Headers](http://wowprogramming.com/docs/secure_template/Group_Headers.html)
+	* ...          - further argument pairs. Consult [Group Headers](https://warcraft.wiki.gg/wiki/SecureGroupHeaderTemplate)
 	                 for possible values.
 
 	In addition to the standard group headers, oUF implements some of its own attributes. These can be supplied by the
-	layout, but are optional.
+	layout, but are optional. PingableUnitFrameTemplate is inherited for Ping support.
 
 	* oUF-initialConfigFunction - can contain code that will be securely run at the end of the initial secure
 	                              configuration (string?)
@@ -695,7 +679,7 @@ do
 		local name = overrideName or generateName(nil, ...)
 		local header = CreateFrame('Frame', name, UFParent, template)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
 		for i = 1, select('#', ...), 2 do
 			local att, val = select(i, ...)
 			if(not att) then break end
@@ -775,6 +759,7 @@ Used to create a single unit frame and apply the currently active style to it.
                  (string?)
 
 oUF implements some of its own attributes. These can be supplied by the layout, but are optional.
+PingableUnitFrameTemplate is inherited for Ping support.
 
 * oUF-enableArenaPrep - can be used to toggle arena prep support. Defaults to true (boolean)
 --]]
@@ -785,7 +770,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, UFParent, overrideTemplate or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParent, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -806,6 +791,8 @@ Used to create nameplates and apply the currently active style to them.
               the callback are the updated nameplate, if any, the event that triggered the update, and the new unit
               (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
+
+PingableUnitFrameTemplate is inherited for Ping support.
 --]]
 function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
@@ -874,7 +861,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 			if(not nameplate.unitFrame) then
 				nameplate.style = style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate)
+				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 
@@ -937,6 +924,23 @@ function oUF:GetAuraData(unitToken, index, filter)
 		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 	else
 		return UnitAura(unitToken, index, filter)
+	end
+end
+
+do	-- backwards compatibility for GetSpellInfo
+	local GetSpellInfo = GetSpellInfo
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	function oUF:GetSpellInfo(spellID)
+		if not spellID then return end
+
+		if GetSpellInfo then
+			return GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
 	end
 end
 

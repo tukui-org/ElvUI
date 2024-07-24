@@ -43,9 +43,9 @@ local function UpdateDisplayObjectives(frame)
 	local objectives = frame:GetObjectiveFrame()
 	if objectives and objectives.progressBars then
 		for _, bar in next, objectives.progressBars do
-			if not bar.isSkinned then
+			if not bar.IsSkinned then
 				S:HandleStatusBar(bar)
-				bar.isSkinned = true
+				bar.IsSkinned = true
 			end
 		end
 	end
@@ -124,9 +124,9 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.SearchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
 	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', 5, -5)
+	S:HandleButton(_G.AchievementFrameFilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	_G.AchievementFrameFilterDropdown:ClearAllPoints()
+	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', -3, 0)
 
 	-- Bottom Tabs
 	for i = 1, 3 do
@@ -159,14 +159,14 @@ function S:Blizzard_AchievementUI()
 
 	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				child:StripTextures()
 				S:HandleIcon(child.Icon)
 				child:CreateBackdrop('Transparent')
 				child.backdrop:SetInside()
 				SetupButtonHighlight(child, child.backdrop)
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -187,7 +187,7 @@ function S:Blizzard_AchievementUI()
 				bu.Label:SetTextColor(.9, .9, .9)
 			end
 
-			if not bu.isSkinned then
+			if not bu.IsSkinned then
 				bu:StripTextures(true)
 				bu:DisableDrawLayer('BORDER')
 				HideBackdrop(bu)
@@ -206,7 +206,7 @@ function S:Blizzard_AchievementUI()
 				bu.backdrop:Point('TOPLEFT', 2, -2)
 				bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
 
-				bu.isSkinned = true
+				bu.IsSkinned = true
 			end
 
 			bu.Description:SetTextColor(.9, .9, .9)
@@ -256,13 +256,13 @@ function S:Blizzard_AchievementUI()
 		local Comparison = _G.AchievementFrameComparison
 		hooksecurefunc(Comparison.AchievementContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					HandleCompareCategory(child.Player)
 					child.Player.Description:SetTextColor(.9, .9, .9)
 					child.Player.Description.SetTextColor = E.noop
 					HandleCompareCategory(child.Friend)
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)
@@ -272,10 +272,10 @@ function S:Blizzard_AchievementUI()
 
 		hooksecurefunc(Comparison.StatContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					S:HandleFrame(child, true, nil, 2, -E.mult, 6, E.mult)
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)
@@ -297,7 +297,7 @@ function S:Blizzard_AchievementUI()
 
 	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				child:StripTextures(true)
 				child.Background:SetAlpha(0)
 				child.Highlight:SetAlpha(0)
@@ -317,7 +317,7 @@ function S:Blizzard_AchievementUI()
 				hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
 				hooksecurefunc(child, 'DisplayObjectives', UpdateDisplayObjectives)
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -383,11 +383,11 @@ function S:Blizzard_AchievementUI()
 	local index = 1
 	local button = _G['AchievementFrameCategoriesContainerButton'..index]
 	while button do
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			button:StripTextures(true)
 			button:StyleButton()
 
-			button.isSkinned = true
+			button.IsSkinned = true
 		end
 
 		index = 1

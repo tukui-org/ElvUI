@@ -62,9 +62,7 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(EventTrace.SubtitleBar.ViewFilter)
 
 	-- Options Dropdown
-	local OptionsDropDown = EventTrace.SubtitleBar.OptionsDropDown
-	OptionsDropDown:SetWidth(135)
-	S:HandleButton(OptionsDropDown)
+	S:HandleButton(EventTrace.SubtitleBar.OptionsDropdown)
 
 	-- Log Bar
 	local LogBar = EventTrace.Log.Bar

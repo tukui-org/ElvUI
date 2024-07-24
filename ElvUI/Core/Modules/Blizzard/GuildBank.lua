@@ -8,9 +8,9 @@ local hooksecurefunc = hooksecurefunc
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemLink = GetGuildBankItemLink
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
-local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo or GetDetailedItemLevelInfo
+local GetItemInfo = C_Item.GetItemInfo
+local GetItemQualityColor = C_Item.GetItemQualityColor
+local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
 local NUM_GUILDBANK_COLUMNS = 7

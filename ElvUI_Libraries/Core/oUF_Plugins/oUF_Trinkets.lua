@@ -2,6 +2,10 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
+local GetArenaCrowdControlInfo = C_PvP.GetArenaCrowdControlInfo
+local RequestCrowdControlSpell = C_PvP.RequestCrowdControlSpell
+local UnitFactionGroup = UnitFactionGroup
+
 local factions = {
 	Horde = [[Interface\Icons\INV_Jewelry_Necklace_38]],
 	Alliance = [[Interface\Icons\INV_Jewelry_Necklace_37]],
@@ -17,7 +21,7 @@ local function UpdateSpell(element, id)
 	if id and id ~= 0 and element.spellID ~= id then
 		element.spellID = id
 
-		local _, _, spellTexture = GetSpellInfo(id)
+		local _, _, spellTexture = oUF:GetSpellInfo(id)
 		element.icon:SetTexture(spellTexture or factions.Unknown)
 	end
 
@@ -26,7 +30,7 @@ end
 local function UpdateTrinket(frame, unit)
 	local element = frame.Trinket
 
-	local spellID, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit or frame.unit)
+	local spellID, startTime, duration = GetArenaCrowdControlInfo(unit or frame.unit)
 	UpdateSpell(element, spellID)
 
 	if startTime and duration > 0 then
@@ -61,7 +65,7 @@ local function Update(frame, event, unit, arg2)
 	end
 
 	if event == 'OnShow' or (event == 'ARENA_OPPONENT_UPDATE' and arg2 == 'seen') then -- arg2: updateReason
-		C_PvP.RequestCrowdControlSpell(unit)
+		RequestCrowdControlSpell(unit)
 	elseif event == 'ARENA_COOLDOWNS_UPDATE' then
 		UpdateTrinket(frame, unit)
 	elseif event == 'ARENA_CROWD_CONTROL_SPELL_UPDATE' then

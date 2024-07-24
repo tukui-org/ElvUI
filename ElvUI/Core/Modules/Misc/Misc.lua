@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
-local CH = E:GetModule('Chat')
 
 local _G = _G
 local next = next
@@ -45,14 +44,14 @@ local PlaySound = PlaySound
 local GetNumFactions = GetNumFactions
 local GetFactionInfo = GetFactionInfo
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
+local GetItemInfo = C_Item.GetItemInfo
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
 local IsFriend = C_FriendList.IsFriend
 
@@ -147,7 +146,8 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 
 	if messagetype == 'FACTION' then
 		local faction, rep = GetCurrentCombatTextEventInfo()
-		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() and rep > 0 then
+		local data = (rep and rep > 0) and (faction ~= 'Guild') and E:GetWatchedFactionInfo()
+		if data and faction ~= data.name then
 			ExpandAllFactionHeaders()
 
 			for i = 1, GetNumFactions() do
@@ -268,7 +268,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		local queueButton = M:GetQueueStatusButton() -- don't auto accept during a queue
 		if queueButton and queueButton:IsShown() then return end
 
-		if CH.BNGetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
+		if GetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true
 			AcceptGroup()
 		end

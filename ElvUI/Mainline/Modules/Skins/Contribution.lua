@@ -23,9 +23,9 @@ function S:Blizzard_Contribution()
 
 	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(s)
 		-- Skin the Contribute Buttons
-		if not s.isSkinned then
+		if not s.IsSkinned then
 			S:HandleButton(s.ContributeButton)
-			s.isSkinned = true
+			s.IsSkinned = true
 		end
 
 		-- Skin the StatusBar

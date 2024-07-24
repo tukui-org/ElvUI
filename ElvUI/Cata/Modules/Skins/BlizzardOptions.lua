@@ -217,13 +217,13 @@ function S:BlizzardOptions()
 			local checkBoxName = checkBoxNameString..index
 			local checkBox = _G[checkBoxName]
 			local check = _G[checkBoxName..'Check']
-			if checkBox and not checkBox.isSkinned then
+			if checkBox and not checkBox.IsSkinned then
 				checkBox:StripTextures()
 				S:HandleCheckBox(check)
 				if _G[checkBoxName..'ColorClasses'] then
 					S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
 				end
-				checkBox.isSkinned = true
+				checkBox.IsSkinned = true
 			end
 		end
 	end)

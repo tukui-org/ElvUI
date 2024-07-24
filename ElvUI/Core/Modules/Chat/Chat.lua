@@ -25,7 +25,7 @@ local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -52,6 +52,12 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
+local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
+local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
+local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
+local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
+local C_BattleNet_GetGameAccountInfoByID = C_BattleNet.GetGameAccountInfoByID
+
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local C_LFGList_GetActivityInfoTable = C_LFGList.GetActivityInfoTable
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
@@ -69,6 +75,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
 local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
@@ -78,7 +85,6 @@ local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
-local RecruitLinkType = Enum.RafLinkType and Enum.RafLinkType.Recruit
 local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.Small
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
@@ -88,6 +94,10 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
+
+local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
+local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+
 -- GLOBALS: ElvCharacterDB
 
 CH.GuidCache = {}
@@ -163,86 +173,6 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_OFFICER		= 'OFFICER', -- only used for alerts, not in FindURL_Events as this is a protected channel
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
-
-if not (E.Retail or E.Cata) then
-	CH.BNGetFriendInfo = _G.BNGetFriendInfo
-	CH.BNGetFriendInfoByID = _G.BNGetFriendInfoByID
-	CH.BNGetFriendGameAccountInfo = _G.BNGetFriendGameAccountInfo
-	CH.BNGetGameAccountInfoByGUID = _G.BNGetGameAccountInfoByGUID
-	CH.BNGetNumFriendGameAccounts = _G.BNGetNumFriendGameAccounts
-
-	CH.BNGetGameAccountInfo = function(_, gameAccountID)
-		return _G.BNGetGameAccountInfo(gameAccountID)
-	end
-else -- cause it doesnt exist on tbc or classic
-	local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
-	local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
-	local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
-	local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
-	local C_BattleNet_GetGameAccountInfoByID = C_BattleNet.GetGameAccountInfoByID
-	local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
-	local C_BattleNet_GetAccountInfoByGUID = C_BattleNet.GetAccountInfoByGUID
-
-	local getDeprecatedAccountInfo = function(accountInfo)
-		if accountInfo then
-			local wowProjectID = accountInfo.gameAccountInfo.wowProjectID or 0
-			local clientProgram = accountInfo.gameAccountInfo.clientProgram ~= '' and accountInfo.gameAccountInfo.clientProgram or nil
-			return	accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, accountInfo.isBattleTagFriend,
-					accountInfo.gameAccountInfo.characterName, accountInfo.gameAccountInfo.gameAccountID, clientProgram,
-					accountInfo.gameAccountInfo.isOnline, accountInfo.lastOnlineTime, accountInfo.isAFK, accountInfo.isDND, accountInfo.customMessage, accountInfo.note, accountInfo.isFriend,
-					accountInfo.customMessageTime, wowProjectID, accountInfo.rafLinkType == RecruitLinkType, accountInfo.gameAccountInfo.canSummon, accountInfo.isFavorite, accountInfo.gameAccountInfo.isWowMobile
-		end
-	end
-
-	local getDeprecatedGameAccountInfo = function(gameAccountInfo, accountInfo)
-		if gameAccountInfo and accountInfo then
-			local wowProjectID = gameAccountInfo.wowProjectID or 0
-			local characterName = gameAccountInfo.characterName or ''
-			local realmName = gameAccountInfo.realmName or ''
-			local realmID = gameAccountInfo.realmID or 0
-			local factionName = gameAccountInfo.factionName or ''
-			local raceName = gameAccountInfo.raceName or ''
-			local className = gameAccountInfo.className or ''
-			local areaName = gameAccountInfo.areaName or ''
-			local characterLevel = gameAccountInfo.characterLevel or ''
-			local richPresence = gameAccountInfo.richPresence or ''
-			local gameAccountID = gameAccountInfo.gameAccountID or 0
-			local playerGuid = gameAccountInfo.playerGuid or 0
-			return	gameAccountInfo.hasFocus, characterName, gameAccountInfo.clientProgram,
-					realmName, realmID, factionName, raceName, className, '', areaName, characterLevel,
-					richPresence, accountInfo.customMessage, accountInfo.customMessageTime,
-					gameAccountInfo.isOnline, gameAccountID, accountInfo.bnetAccountID, gameAccountInfo.isGameAFK, gameAccountInfo.isGameBusy,
-					playerGuid, wowProjectID, gameAccountInfo.isWowMobile
-		end
-	end
-
-	CH.BNGetFriendInfo = function(friendIndex)
-		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
-		return getDeprecatedAccountInfo(accountInfo)
-	end
-	CH.BNGetFriendInfoByID = function(id)
-		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
-		return getDeprecatedAccountInfo(accountInfo)
-	end
-	CH.BNGetFriendGameAccountInfo = function(friendIndex, accountIndex)
-		local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(friendIndex, accountIndex)
-		local accountInfo = C_BattleNet_GetFriendAccountInfo(friendIndex)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetGameAccountInfo = function(id, gameAccountID)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByID(gameAccountID)
-		local accountInfo = C_BattleNet_GetAccountInfoByID(id)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetGameAccountInfoByGUID = function(guid)
-		local gameAccountInfo = C_BattleNet_GetGameAccountInfoByGUID(guid)
-		local accountInfo = C_BattleNet_GetAccountInfoByGUID(guid)
-		return getDeprecatedGameAccountInfo(gameAccountInfo, accountInfo)
-	end
-	CH.BNGetNumFriendGameAccounts = function(friendIndex)
-		return C_BattleNet_GetFriendNumGameAccounts(friendIndex)
-	end
-end
 
 local canChangeMessage = function(arg1, id)
 	if id and arg1 == '' then return id end
@@ -334,8 +264,7 @@ do --this can save some main file locals
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
 			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
 			-- Repooc
-			z['Poocsdk-Mankrik']		= ElvBlue -- [Horde] DK
-			z['Repooc-Mankrik']			= ElvBlue
+			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
 			-- Elv
 			z['Elv-Spirestone']			= itsElv
@@ -351,16 +280,23 @@ do --this can save some main file locals
 			-- Repooc
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
-			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
-			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
 			z['Sifupooc-Stormrage']		= itsPooc	-- [Alliance] Monk
-			z['Pooc-Stormrage']			= itsPooc	-- [Alliance] Paladin
+			z['Dapooc-Stormrage']		= itsPooc	-- [Alliance] Druid
 			z['Repøøc-Stormrage']		= itsPooc	-- [Alliance] Shaman
+			z['Poocvoker-Stormrage']	= itsPooc	-- [Alliance] Evoker
+			z['Pooc-Stormrage']			= itsPooc	-- [Alliance] Paladin
+			z['Lapooc-Stormrage']		= itsPooc	-- [Alliance] Mage
+			z['Depooc-Stormrage']		= itsPooc	-- [Alliance] DH
+			z['Dapooc-Andorhal']		= itsPooc	-- [Horde] Druid
+			z['Rovert-Andorhal']		= itsPooc	-- [Horde] Mage
+			z['Sliceoflife-Andorhal']	= itsPooc	-- [Horde] Rogue
 			-- Simpy (1168: Cenarius, 125: Cenarion Circle)
 			z['Player-1168-069A1283']	= itsSimpy -- Hunter:	Arieva
 			z['Player-1168-0698394A']	= itsSimpy -- Rogue:	Buddercup
 			z['Player-1168-069A3A12']	= itsSimpy -- Paladin:	Cutepally
+			z['Player-1168-0AD0F035']	= itsSimpy -- DH:		Puddle
 			z['Player-1168-0A99F54B']	= itsSimpy -- Mage:		Cuddle
+			z['Player-1168-0ACDC528']	= itsSimpy -- Priest:	Snuggle
 			z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
 			z['Player-1168-06981C6F']	= itsSimpy -- Warrior:	Glice
 			z['Player-1168-0698066B']	= itsSimpy -- Shaman:	Kalline
@@ -379,12 +315,15 @@ do --this can save some main file locals
 			z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
 			z['Player-1168-0A39554F']	= itsSimpy -- [Horde] Warlock:	Imsosaucy
 			z['Player-1168-0A395551']	= itsSimpy -- [Horde] Rogue:	Imsodrippy
-			z['Player-125-0A62DE05']	= itsSimpy -- [RP] Evoker:	Lumee
+			z['Player-1168-0AD0C8C9']	= itsSimpy -- [Horde] Warrior:	Imsobubbly
+			z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
 			z['Player-125-09A7F9ED']	= itsSimpy -- [RP] Warrior:	Bunne
 			z['Player-125-09A8CC43']	= itsSimpy -- [RP] Monk:	Loppie
 			z['Player-125-09A7EB72']	= itsSimpy -- [RP] Mage:	Loppybunny
+			z['Player-125-0A62DE05']	= itsSimpy -- [RP] Evoker:	Lumee
 			z['Player-125-09A7DAD9']	= itsSimpy -- [RP] DH:		Rubee
-			z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
+			z['Player-125-0AAD259D']	= itsSimpy -- [RP] DK:		Sunne
+			z['Player-125-0AAD2555']	= itsSimpy -- [RP] Druid:	Honeybun
 			-- Melbelle (Simpys Bestie)
 			z['Melbelle-Bladefist']		= itsMel -- Hunter
 			z['Deathchaser-Bladefist']	= itsMel -- DH
@@ -451,44 +390,46 @@ do --this can save some main file locals
 	elseif portal == 'EU' then
 		if E.Classic then
 			-- Luckyone Seasonal (5826: Lone Wolf EU, 5827: Living Flame EU)
-			z['Player-5826-0202765F']	= ElvBlue -- [Alliance] Hunter
-			z['Player-5826-020F7F10']	= ElvBlue -- [Alliance] Paladin
-			z['Player-5826-02172E79']	= ElvBlue -- [Alliance] Warlock
-			z['Player-5826-0234253E']	= ElvBlue -- [Alliance] Mage
-			z['Player-5826-02342508']	= ElvBlue -- [Alliance] Priest
-			z['Player-5826-023424EF']	= ElvBlue -- [Alliance] Druid
-			z['Player-5826-02342520']	= ElvBlue -- [Alliance] Rogue
-			z['Player-5826-02342556']	= ElvBlue -- [Alliance] Warrior
-			z['Player-5827-02331C4B']	= ElvBlue -- [Horde] Shaman
-			-- Luckyone Hardcore
-			z["Lucky-Nek'Rosh"]			= ElvBlue -- [Horde] Rogue
-			z["Luckyone-Nek'Rosh"]		= ElvBlue -- [Horde] Hunter
-			z["Unluckyone-Nek'Rosh"] 	= ElvBlue -- [Horde] Mage
-			z["Gigachad-Nek'Rosh"] 		= ElvBlue -- [Horde] Druid
+			z['Player-5826-0202765F']	= ElvGreen -- [Alliance] Hunter
+			z['Player-5826-020F7F10']	= ElvGreen -- [Alliance] Paladin
+			z['Player-5826-02172E79']	= ElvGreen -- [Alliance] Warlock
+			z['Player-5826-0234253E']	= ElvGreen -- [Alliance] Mage
+			z['Player-5826-02342508']	= ElvGreen -- [Alliance] Priest
+			z['Player-5826-023424EF']	= ElvGreen -- [Alliance] Druid
+			z['Player-5826-02342520']	= ElvGreen -- [Alliance] Rogue
+			z['Player-5826-02342556']	= ElvGreen -- [Alliance] Warrior
+			z['Player-5827-02331C4B']	= ElvGreen -- [Horde] Shaman
+			-- Luckyone Hardcore (5261: Nek'Rosh)
+			z['Player-5261-01ADAC25']	= ElvGreen -- [Horde] Rogue
+			z['Player-5261-019F4B67']	= ElvGreen -- [Horde] Hunter
+			z['Player-5261-01B3C53A'] 	= ElvGreen -- [Horde] Mage
+			z['Player-5261-01B50AC4'] 	= ElvGreen -- [Horde] Druid
 			-- Luckyone Classic Era (5233: Firemaw)
-			z['Player-5233-01D22A72']	= ElvBlue -- [Horde] Hunter: Unluckyone
-			z['Player-5233-01D27011']	= ElvBlue -- [Horde] Druid: Luckydruid
+			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
+			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
 		elseif E.Cata then
 			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
-			z['Player-4467-04540395']	= ElvBlue -- [Alliance] Druid
-			z['Player-4467-04542B4A']	= ElvBlue -- [Alliance] Priest
-			z['Player-4467-04571AA2']	= ElvBlue -- [Alliance] Warlock
-			z['Player-4467-04571911']	= ElvBlue -- [Alliance] Paladin
-			z['Player-4467-04571A9F']	= ElvBlue -- [Alliance] Mage
-			z['Player-4467-04571A8D']	= ElvBlue -- [Alliance] DK
-			z['Player-4467-0489BE11']	= ElvBlue -- [Alliance] Shaman
-			z['Player-4467-0489BDFD'] 	= ElvBlue -- [Alliance] Rogue
-			z['Player-4467-04571A98']	= ElvBlue -- [Alliance] Warrior
-			z['Player-4440-03AD654A']	= ElvBlue -- [Alliance] Rogue
-			z['Player-4440-03ADE2DF']	= ElvBlue -- [Alliance] Shaman
-			z['Player-4476-03BF41C9']	= ElvBlue -- [Horde] Hunter
+			z['Player-4467-04540395']	= ElvGreen -- [Alliance] Druid
+			z['Player-4467-04542B4A']	= ElvGreen -- [Alliance] Priest
+			z['Player-4467-04571AA2']	= ElvGreen -- [Alliance] Warlock
+			z['Player-4467-04571911']	= ElvGreen -- [Alliance] Paladin
+			z['Player-4467-04571A9F']	= ElvGreen -- [Alliance] Mage
+			z['Player-4467-04571A8D']	= ElvGreen -- [Alliance] DK
+			z['Player-4467-048C4EED']	= ElvGreen -- [Alliance] Hunter
+			z['Player-4467-0489BE11']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4467-0489BDFD'] 	= ElvGreen -- [Alliance] Rogue
+			z['Player-4467-04571A98']	= ElvGreen -- [Alliance] Warrior
+			z['Player-4440-03AD654A']	= ElvGreen -- [Alliance] Rogue
+			z['Player-4440-03ADE2DF']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4476-03BF41C9']	= ElvGreen -- [Horde] Hunter
 		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
 			z['Chazii-Silvermoon']		= ElvBlue -- Shaman
 			-- Merathilis (1401: Shattrath/Garrosh)
 			z['Player-1401-04217BB2']	= ElvPurple	-- [Alliance] Warlock:	Asragoth
-			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brìtt
+			z['Player-1401-0421EB9F']	= ElvBlue	-- [Alliance] Warrior:	Brítt
+			z['Player-1401-0ABBE432']	= ElvBlue	-- [Alliance] Warrior:	Brìtt/WoW Remix
 			z['Player-1401-0421F909']	= ElvRed	-- [Alliance] Paladin:	Damará
 			z["Player-1401-0AB0E6D1"]	= ElvRed --	 . [Alliance] Paladin:	Damara/WoW Remix
 			z['Player-1401-0421EC36']	= ElvBlue	-- [Alliance] Priest:	Jazira
@@ -503,21 +444,21 @@ do --this can save some main file locals
 			z['Player-1401-041C0AE2']	= ElvGreen	-- [Alliance] Hunter:	Róhal
 			z['Player-1401-05CEABFA']	= ElvRed	-- [Alliance] DK:		Jahzzy
 			-- Luckyone (1598: LaughingSkull)
-			z['Player-1598-0F5E4639']	= ElvBlue -- [Alliance] Druid: Luckyone
-			z['Player-1598-0F3E51B0']	= ElvBlue -- [Alliance] Druid: Luckydruid
-			z['Player-1598-0F46FF5A']	= ElvBlue -- [Horde] Evoker
-			z['Player-1598-0BFF3341']	= ElvBlue -- [Horde] DH
-			z['Player-1598-0BD22704']	= ElvBlue -- [Horde] Priest
-			z['Player-1598-0BEFA545']	= ElvBlue -- [Horde] Monk
-			z['Player-1598-0E1A06DE']	= ElvBlue -- [Horde] Rogue
-			z['Player-1598-0BF2E377']	= ElvBlue -- [Horde] Hunter
-			z['Player-1598-0BF18248']	= ElvBlue -- [Horde] DK
-			z['Player-1598-0BFABB95']	= ElvBlue -- [Horde] Mage
-			z['Player-1598-0E67511D']	= ElvBlue -- [Horde] Paladin
-			z['Player-1598-0C0DD01B']	= ElvBlue -- [Horde] Warlock
-			z['Player-1598-0BF8013A']	= ElvBlue -- [Horde] Warrior
-			z['Player-1598-0BF56103']	= ElvBlue -- [Horde] Shaman
-			z['Player-1598-0F87B5AA']	= ElvBlue -- [Alliance] Priest
+			z['Player-1598-0F5E4639']	= ElvGreen -- [Alliance] Druid: Luckyone
+			z['Player-1598-0F3E51B0']	= ElvGreen -- [Alliance] Druid: Luckydruid
+			z['Player-1598-0F46FF5A']	= ElvGreen -- [Horde] Evoker
+			z['Player-1598-0BFF3341']	= ElvGreen -- [Horde] DH
+			z['Player-1598-0BD22704']	= ElvGreen -- [Horde] Priest
+			z['Player-1598-0BEFA545']	= ElvGreen -- [Horde] Monk
+			z['Player-1598-0E1A06DE']	= ElvGreen -- [Horde] Rogue
+			z['Player-1598-0BF2E377']	= ElvGreen -- [Horde] Hunter
+			z['Player-1598-0BF18248']	= ElvGreen -- [Horde] DK
+			z['Player-1598-0BFABB95']	= ElvGreen -- [Horde] Mage
+			z['Player-1598-0E67511D']	= ElvGreen -- [Horde] Paladin
+			z['Player-1598-0C0DD01B']	= ElvGreen -- [Horde] Warlock
+			z['Player-1598-0BF8013A']	= ElvGreen -- [Horde] Warrior
+			z['Player-1598-0BF56103']	= ElvGreen -- [Horde] Shaman
+			z['Player-1598-0F87B5AA']	= ElvGreen -- [Alliance] Priest
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
@@ -609,16 +550,20 @@ function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
 		local menu = _G.ChatMenu
-		menu:ClearAllPoints()
+		if menu then
+			menu:ClearAllPoints()
 
-		local point = E:GetScreenQuadrant(self)
-		if strfind(point, 'LEFT') then
-			menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
-		else
-			menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+			local point = E:GetScreenQuadrant(self)
+			if strfind(point, 'LEFT') then
+				menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+			else
+				menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+			end
+
+			ToggleFrame(menu)
+		elseif E.Retail then
+			_G.ChatFrameMenuButton:OpenMenu()
 		end
-
-		ToggleFrame(menu)
 	else
 		CH:CopyChat(chat)
 	end
@@ -889,7 +834,15 @@ function CH:StyleChat(frame)
 	if scrollToBottom then scrollToBottom:Kill() end
 
 	local buttonFrame = _G[name..'ButtonFrame']
-	if buttonFrame then buttonFrame:Kill() end
+	if buttonFrame then
+		if E.Retail and name == 'ChatFrame1' then
+			buttonFrame.Background:Hide()
+			buttonFrame.minimizeButton:Hide()
+			buttonFrame:StripTextures()
+		else
+			buttonFrame:Kill()
+		end
+	end
 
 	local thumbTexture = _G[name..'ThumbTexture']
 	if thumbTexture then thumbTexture:Kill() end
@@ -1665,40 +1618,40 @@ end
 function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	for i = 1, BNGetNumFriends() do
-		local bnetIDAccount, _, _, _, _, _, _, isOnline = CH.BNGetFriendInfo(i)
-		if isOnline and bnetIDAccount == id then
-			for y = 1, CH.BNGetNumFriendGameAccounts(i) do
-				local _, _, clientProgram, _, _, _, _, className = CH.BNGetFriendGameAccountInfo(i, y)
-				if clientProgram == BNET_CLIENT_WOW and className and className ~= '' then
-					return className -- return the first toon's class
+		local info = C_BattleNet_GetFriendAccountInfo(i)
+		if info.bnetAccountID == id then
+			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+				if gameInfo.clientProgram == BNET_CLIENT_WOW and gameInfo.className and gameInfo.className ~= '' then
+					return gameInfo.className -- return the first toon's class
 				end
 			end
+
 			break
 		end
 	end
 end
 
 function CH:GetBNFriendColor(name, id, useBTag)
-	local _, _, battleTag, isBattleTagFriend, _, gameAccountID = CH.BNGetFriendInfoByID(id)
-
-	local BATTLE_TAG = battleTag and strmatch(battleTag,'([^#]+)')
+	local info = C_BattleNet_GetAccountInfoByID(id)
+	local BATTLE_TAG = info.battleTag and strmatch(info.battleTag,'([^#]+)')
 	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
 
 	local Class
-	if gameAccountID then
-		local _, _, _, _, _, _, _, className = CH.BNGetGameAccountInfo(id, gameAccountID)
-		Class = className and E:UnlocalizedClassName(className)
+	local gameInfo = info.gameAccountID and C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
+	if gameInfo and gameInfo.className then
+		Class = E:UnlocalizedClassName(gameInfo.className)
 	else
 		local firstToonClass = CH:GetBNFirstToonClassColor(id)
 		if firstToonClass then
 			Class = E:UnlocalizedClassName(firstToonClass)
 		else
-			return TAG or name, isBattleTagFriend and BATTLE_TAG
+			return TAG or name, info.isBattleTagFriend and BATTLE_TAG
 		end
 	end
 
 	local Color = Class and E:ClassColor(Class)
-	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, isBattleTagFriend and BATTLE_TAG
+	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, info.isBattleTagFriend and BATTLE_TAG
 end
 
 local PluginIconsCalls = {}
@@ -1787,26 +1740,31 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 	return message
 end
 
--- copied from ChatFrame.lua
-local function GetPFlag(specialFlag, zoneChannelID, localChannelID)
+function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
+	local flag = ''
+
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
 			-- Add Blizzard Icon if this was sent by a GM/DEV
-			return [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
-		elseif specialFlag == 'GUIDE' and E.Retail then
-			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
-				return NPEV2_CHAT_USER_TAG_GUIDE
+			flag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
+		elseif specialFlag == 'GUIDE' then
+			if CH.db.mentorshipIcon and _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
+				flag = NPEV2_CHAT_USER_TAG_GUIDE
 			end
-		elseif specialFlag == 'NEWCOMER' and E.Retail then
-			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
-				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
+		elseif specialFlag == 'NEWCOMER' then
+			if CH.db.mentorshipIcon and _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
+				flag = _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
-			return _G['CHAT_FLAG_'..specialFlag]
+			flag = _G['CHAT_FLAG_'..specialFlag]
 		end
 	end
 
-	return ''
+	if E.Retail and CH.db.timerunningIcon and unitGUID and IsTimerunningPlayer(unitGUID) then
+		flag = flag .. TIMERUNNING_SMALL
+	end
+
+	return flag
 end
 
 -- copied from ChatFrame.lua
@@ -1938,7 +1896,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	-- Player Flags
-	local pflag = GetPFlag(arg6, arg7, arg8)
+	local pflag = CH:GetPFlag(arg6, arg7, arg12)
 	if not bossMonster then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
@@ -2243,13 +2201,14 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
 				message = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-				local _, _, battleTag, _, characterName, _, clientProgram = CH.BNGetFriendInfoByID(arg13)
+				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				local gameInfo = accountInfo.gameAccountInfo
 
-				if clientProgram and clientProgram ~= '' then
+				if gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
 					if GetTitleIconTexture then
-						GetTitleIconTexture(clientProgram, TitleIconVersion_Small, function(success, texture)
+						GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
 							if success then
-								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(characterName, battleTag, texture, 32, 32, 10)
+								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
 								local linkDisplayText = format('[%s] (%s)', arg2, charName)
 								local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
@@ -2262,8 +2221,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 						return
 					else
-						local clientTexture = GetClientTexture(clientProgram, 14)
-						local charName = _G.BNet_GetValidatedCharacterName(characterName, battleTag, clientProgram) or ''
+						local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
+						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
 						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
 						local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 						message = format(globalstring, playerLink)
@@ -2403,7 +2362,7 @@ do
 
 	function CH:StyleOverflowButton()
 		local btn = _G.GeneralDockManagerOverflowButton
-		local wasSkinned = btn.isSkinned -- keep this before HandleNextPrev
+		local wasSkinned = btn.IsSkinned -- keep this before HandleNextPrev
 		S:HandleNextPrevButton(btn, 'down', overflowColor, true)
 		btn:SetHighlightTexture(E.Media.Textures.ArrowUpGlow)
 
@@ -2462,7 +2421,6 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
 	_G.CHAT_FONT_HEIGHTS = CH.FontHeights
-	_G.ChatFrameMenuButton:Kill()
 
 	CH:ToggleHyperlink(CH.db.hyperlinkHover)
 	CH:StyleOverflowButton()
@@ -2472,6 +2430,13 @@ function CH:SetupChat()
 
 	if E.Retail then
 		_G.QuickJoinToastButton:Hide()
+
+		_G.ChatFrameMenuButton:SetAlpha(0)
+		_G.ChatFrameMenuButton:EnableMouse(false)
+		_G.ChatFrameMenuButton:ClearAllPoints()
+		_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
+	else
+		_G.ChatFrameMenuButton:Kill()
 	end
 
 	if not CH.HookSecured then
@@ -2855,18 +2820,18 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 	end
 
 	for i = 1, BNGetNumFriends() do
-		local _, accountName, _, _, _, _, _, isOnline = CH.BNGetFriendInfoByID(i)
-		if isOnline then
-			for y = 1, CH.BNGetNumFriendGameAccounts(i) do
-				local _, characterName, clientProgram, realmName = CH.BNGetFriendGameAccountInfo(i, y)
-				if clientProgram == BNET_CLIENT_WOW and accountName == playerName then
-					playerName = characterName
-					if realmName and realmName ~= E.myrealm then
-						playerName = format('%s-%s', playerName, E:ShortenRealm(realmName))
-					end
-					if leaderName == playerName then
-						return true
-					end
+		local info = C_BattleNet_GetAccountInfoByID(i)
+		for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+			local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+			if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
+				playerName = gameInfo.characterName
+
+				if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
+					playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
+				end
+
+				if leaderName == playerName then
+					return true
 				end
 			end
 		end
@@ -3670,8 +3635,12 @@ function CH:FCF_Tab_OnClick(button)
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 
-		local tabName = self:GetName()
-		_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		if E.Retail then
+			_G.FCF_Tab_SetupMenu(self)
+		else
+			local tabName = self:GetName()
+			_G.ToggleDropDownMenu(1, nil, _G[tabName..'DropDown'], tabName, 0, 0)
+		end
 	elseif button == 'MiddleButton' then
 		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then

@@ -7,7 +7,6 @@ local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
 local _G = _G
-local EasyMenu = EasyMenu
 local GetMoney = GetMoney
 local IsLoggedIn = IsLoggedIn
 local IsShiftKeyDown = IsShiftKeyDown
@@ -17,6 +16,9 @@ local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
 
+local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
+local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
+
 local Profit, Spent, Ticker = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Hold Shift + Right Click"], '|r')
@@ -25,7 +27,7 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local CURRENCY = CURRENCY
 
 local menuList, myGold = {}, {}
-local totalGold, totalHorde, totalAlliance = 0, 0, 0
+local warbandGold, totalGold, totalHorde, totalAlliance = 0, 0, 0, 0
 local iconStringName = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s'
 local db
 
@@ -110,6 +112,10 @@ local function updateGold(self, updateAll, goldChange)
 	end
 end
 
+local function UpdateWarbandGold()
+	warbandGold = FetchDepositedMoney(WARBANDBANK_TYPE)
+end
+
 local function UpdateMarketPrice()
 	return C_WowTokenPublic_UpdateMarketPrice()
 end
@@ -121,9 +127,13 @@ local function OnEvent(self, event)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	if E.Retail and not Ticker then
-		C_WowTokenPublic_UpdateMarketPrice()
-		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
+	if E.Retail then
+		UpdateWarbandGold()
+
+		if not Ticker then
+			C_WowTokenPublic_UpdateMarketPrice()
+			Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
+		end
 	end
 
 	--prevent an error possibly from really old profiles
@@ -153,7 +163,7 @@ local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
 			E:SetEasyMenuAnchor(E.EasyMenu, self)
-			EasyMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
+			E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0
@@ -203,6 +213,7 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 
 	if E.Retail then
+		DT.tooltip:AddDoubleLine(L["Warband:"], E:FormatMoney(warbandGold or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 	end
@@ -238,4 +249,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Gold', nil, {'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH'}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])
+DT:RegisterDatatext('Gold', nil, {E.Retail and 'ACCOUNT_MONEY' or nil, 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH'}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

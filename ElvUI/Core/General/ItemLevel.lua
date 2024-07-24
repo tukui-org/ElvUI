@@ -14,16 +14,34 @@ local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
 local UIParent = UIParent
 
+local BONUS_ARMOR = BONUS_ARMOR
+local STAT_MASTERY = STAT_MASTERY
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
+
+local GetSpellDescription = C_Spell.GetSpellDescription or GetSpellDescription
 local ESSENCE_DESCRIPTION = GetSpellDescription(277253)
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
 local GetCVarBool = C_CVar.GetCVarBool
 
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
+local AZERITE_RESPEC_BUTTON = { -- use this to find Reforge (taken from retail)
+	enUS = 'Reforge',
+	frFR = 'Retouche',
+	deDE = 'Umschmieden',
+	koKR = '재연마',
+	ruRU = 'Перековать',
+	zhCN = '重铸',
+	zhTW = '重鑄',
+	esES = 'Reforjar',
+	esMX = 'Reforjar',
+	ptBR = 'Reforjar',
+	itIT = 'Riforgia'
+}
+
 local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_2HWEAPON = true,
 	INVTYPE_RANGEDRIGHT = true,
@@ -33,35 +51,45 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 }, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Cata and 18 or nil}
 
 function E:InspectGearSlot(line, lineText, slotInfo)
-	local enchant = strmatch(lineText, MATCH_ENCHANT)
-	if enchant then
-		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
-		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
-		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
-		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(text, 1, 18), color2 or '')
-		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
+	if not lineText then return end
 
-		local r, g, b = line:GetTextColor()
-		slotInfo.enchantColors[1] = r
-		slotInfo.enchantColors[2] = g
-		slotInfo.enchantColors[3] = b
-	end
-
-	local itemLevel = lineText and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL))
+	-- handle item level
+	local itemLevel = strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or strmatch(lineText, MATCH_ITEM_LEVEL)
 	if itemLevel then
 		slotInfo.iLvl = tonumber(itemLevel)
 
-		local r, g, b = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
-		slotInfo.itemLevelColors[1] = r
-		slotInfo.itemLevelColors[2] = g
-		slotInfo.itemLevelColors[3] = b
+		local r1, g1, b1 = _G.ElvUI_ScanTooltipTextLeft1:GetTextColor()
+		slotInfo.itemLevelColors[1] = r1
+		slotInfo.itemLevelColors[2] = g1
+		slotInfo.itemLevelColors[3] = b1
+	end
+
+	-- handle encahants
+	local r, g, b = line:GetTextColor()
+	local allow = not E.Cata or ((r == 0 and g == 1 and b == 0) and not strfind(lineText, ITEM_SPELL_TRIGGER_ONEQUIP, nil, true) and not strfind(lineText, AZERITE_RESPEC_BUTTON[E.locale or 'enUS'], nil, true) and not strfind(lineText, '%(%d+ min%)'))
+	if not allow then return end
+
+	local enchant = (not E.Cata and strmatch(lineText, MATCH_ENCHANT)) or (E.Cata and strfind(lineText, '^%+') and not strfind(lineText, BONUS_ARMOR, nil, true) and not strfind(lineText, STAT_MASTERY, nil, true) and lineText)
+	if enchant then
+		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
+		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+
+		local shortStrip = gsub(text, '[&+] ?', '')
+		local shortAbbrev = E.db.general.itemLevel.enchantAbbrev and gsub(shortStrip, '(%w%w%w)%w+', '%1')
+		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
+		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(shortAbbrev or shortStrip, 1, 20), color2 or '')
+		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
+
+		slotInfo.enchantColors[1] = r
+		slotInfo.enchantColors[2] = g
+		slotInfo.enchantColors[3] = b
 	end
 end
 
 function E:CollectEssenceInfo(index, lineText, slotInfo)
 	local step = 1
 	local essence = slotInfo.essences[step]
-	if essence and next(essence) and (strfind(lineText, ITEM_SPELL_TRIGGER_ONEQUIP, nil, true) and strfind(lineText, ESSENCE_DESCRIPTION, nil, true)) then
+	if essence and next(essence) and (ESSENCE_DESCRIPTION and strfind(lineText, ESSENCE_DESCRIPTION, nil, true) and strfind(lineText, ITEM_SPELL_TRIGGER_ONEQUIP, nil, true)) then
 		for i = 5, 2, -1 do
 			local line = _G['ElvUI_ScanTooltipTextLeft'..index - i]
 			local text = line and line:GetText()
@@ -115,8 +143,9 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			return 'tooSoon'
 		end
 
-		local colorblind = GetCVarBool('colorblindmode') and 4 or 3
-		for x = 2, colorblind do
+		local colorblind = GetCVarBool('colorblindmode')
+		local numLines = E.Cata and (colorblind and 21 or 20) or (colorblind and 4 or 3)
+		for x = 2, numLines do
 			local line = info.lines[x]
 			if line then
 				local text = line.leftText
@@ -218,7 +247,7 @@ do
 		if next(iLevelDB) then wipe(iLevelDB) end
 		if next(tryAgain) then wipe(tryAgain) end
 
-		for i = 1, 17 do
+		for i = 1, E.Cata and 18 or 17 do
 			if i ~= 4 then
 				local slotInfo = E:GetGearSlotInfo(unit, i)
 				if slotInfo == 'tooSoon' then

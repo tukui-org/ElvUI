@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 44
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 45
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -44,8 +44,8 @@ local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local GetAddOnMetadata = (C_AddOns and C_AddOns.GetAddOnMetadata) or GetAddOnMetadata
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 

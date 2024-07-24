@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1002
+local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1003
 local LCS = LibStub:NewLibrary(MAJOR, MINOR)
 if not LCS then return end
 
@@ -408,7 +408,7 @@ function LCS.GetSpecialization(isInspect, isPet)
 	local specIndex, maxSpent = 0, 0
 
 	for tabIndex = 1, GetNumTalentTabs() do
-		local spent = select(isCata and 5 or 3, GetTalentTabInfo(tabIndex))
+		local spent = select(5, GetTalentTabInfo(tabIndex))
 		if (spent > maxSpent) then
 			specIndex, maxSpent = tabIndex, spent
 		end

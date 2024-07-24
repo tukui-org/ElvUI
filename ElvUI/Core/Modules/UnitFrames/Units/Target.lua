@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local _G = _G
 local tinsert = tinsert
 
 function UF:Construct_TargetFrame(frame)
@@ -68,16 +67,10 @@ function UF:Update_TargetFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
-	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
-		frame:SetFrameStrata(db.strataAndLevel.frameStrata)
-	end
-
-	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
-		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
-	end
-
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	frame.mover:Size(frame:GetSize())
+	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)

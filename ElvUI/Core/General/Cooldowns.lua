@@ -9,7 +9,7 @@ local GetTime = GetTime
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
 local FONT_SIZE = 20 --the base font size to use at a scale of 1
@@ -242,7 +242,7 @@ function E:OnSetCooldown(start, duration, modRate)
 			timer.buggedTime = nil
 		else -- https://github.com/Stanzilla/WoWUIBugs/issues/47
 			local startup = time() - now
-			local cdtime = (2 ^ 32) / 1000 - start
+			local cdtime = (2 ^ 32) * 0.001 - start
 			local startTime = startup - cdtime
 			timer.endTime = startTime + duration
 			timer.buggedTime = true

@@ -33,24 +33,24 @@ The following options are listed by priority. The first check that returns true 
 .colorDisconnected - Use `self.colors.disconnected` to color the bar if the unit is offline (boolean)
 .colorTapping      - Use `self.colors.tapping` to color the bar if the unit isn't tapped by the player (boolean)
 .colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
-                     defined by the first return of [UnitThreatSituation](https://wow.gamepedia.com/API_UnitThreatSituation) (boolean)
+                     defined by the first return of [UnitThreatSituation](https://warcraft.wiki.gg/wiki/API_UnitThreatSituation) (boolean)
 .colorPower        - Use `self.colors.power[token]` to color the bar based on the unit's power type. This method will
                      fall-back to `:GetAlternativeColor()` if it can't find a color matching the token. If this function
                      isn't defined, then it will attempt to color based upon the alternative power colors returned by
-                     [UnitPowerType](http://wowprogramming.com/docs/api/UnitPowerType.html). If these aren't
+                     [UnitPowerType](https://warcraft.wiki.gg/wiki/API_UnitPowerType). If these aren't
                      defined, then it will attempt to color the bar based upon `self.colors.power[type]`. In case of
                      failure it'll default to `self.colors.power.MANA` (boolean)
 .colorClass        - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
-                     second return of [UnitClass](http://wowprogramming.com/docs/api/UnitClass.html) (boolean)
+                     second return of [UnitClass](https://warcraft.wiki.gg/wiki/API_UnitClass) (boolean)
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
 .colorClassPet     - Use `self.colors.class[class]` to color the bar if the unit is player controlled, but not a player
                      (boolean)
 .colorSelection    - Use `self.colors.selection[selection]` to color the bar based on the unit's selection color.
                      `selection` is defined by the return value of Private.unitSelectionType, a wrapper function
-                     for [UnitSelectionType](https://wow.gamepedia.com/API_UnitSelectionType) (boolean)
+                     for [UnitSelectionType](https://warcraft.wiki.gg/wiki/API_UnitSelectionType) (boolean)
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
-                     [UnitReaction](http://wowprogramming.com/docs/api/UnitReaction.html) (boolean)
+                     [UnitReaction](https://warcraft.wiki.gg/wiki/API_UnitReaction) (boolean)
 .colorSmooth       - Use `smoothGradient` if present or `self.colors.smooth` to color the bar with a smooth gradient
                      based on the player's current power percentage (boolean)
 
@@ -95,13 +95,13 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
--- sourced from FrameXML/UnitPowerBarAlt.lua
+-- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 --[[ Override: Power:GetDisplayPower()
 Used to get info on the unit's alternative power, if any.
-Should return the power type index (see [Enum.PowerType.Alternate](https://wow.gamepedia.com/Enum_Unit.PowerType))
-and the minimum value for the given power type (see [info.minPower](https://wow.gamepedia.com/API_GetUnitPowerBarInfo))
+Should return the power type index (see [Enum.PowerType.Alternate](https://warcraft.wiki.gg/wiki/Enum.PowerType))
+and the minimum value for the given power type (see [info.minPower](https://warcraft.wiki.gg/wiki/API_GetUnitPowerBarInfo))
 or nil if the unit has no alternative (alternate) power or it should not be
 displayed. In case of a nil return, the element defaults to the primary power
 type and zero for the minimum value.
@@ -274,7 +274,7 @@ local function Path(self, event, ...)
 end
 
 local function ForceUpdate(element)
-	Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 --[[ Power:SetColorDisconnected(state, isForced)

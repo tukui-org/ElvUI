@@ -4,6 +4,8 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local floor = floor
+local hooksecurefunc = hooksecurefunc
+
 local UnitPower = UnitPower
 local CreateFrame = CreateFrame
 local UnitPowerMax = UnitPowerMax
@@ -54,6 +56,20 @@ function BL:SetAltPowerBarText(text, name, value, max, percent)
 	end
 end
 
+function BL:SetUpUnitPowerBarAlt()
+	local holder = BL.AltPowerBarHolder
+	if not holder then return end
+
+	local bar = _G.PlayerPowerBarAlt
+	if not bar then return end
+
+	if self == bar and bar.isPlayerBar then
+		bar:SetParent(holder)
+		bar:ClearAllPoints()
+		bar:Point('CENTER', BL.AltPowerBarHolder)
+	end
+end
+
 function BL:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', 0, -40)
@@ -61,12 +77,19 @@ function BL:PositionAltPowerBar()
 
 	BL.AltPowerBarHolder = holder
 
-	_G.PlayerPowerBarAlt:ClearAllPoints()
-	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
-	_G.PlayerPowerBarAlt:SetParent(holder)
-	_G.PlayerPowerBarAlt:SetMovable(true)
-	_G.PlayerPowerBarAlt:SetUserPlaced(true)
-	_G.PlayerPowerBarAlt:SetDontSavePosition(true)
+	local bar = _G.PlayerPowerBarAlt
+	if bar then
+		bar:SetParent(holder)
+		bar:ClearAllPoints()
+		bar:Point('CENTER', holder)
+		bar:SetMovable(true)
+		bar:SetUserPlaced(true)
+		bar:SetDontSavePosition(true)
+	end
+
+	if E.Cata then -- Blizzard adjusts this in UnitPowerBarAlt_SetUp when it has isPlayerBar
+		hooksecurefunc('UnitPowerBarAlt_SetUp', BL.SetUpUnitPowerBarAlt)
+	end
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
@@ -107,8 +130,11 @@ function BL:UpdateAltPowerBarSettings()
 end
 
 function BL:UpdateAltPowerBar()
-	_G.PlayerPowerBarAlt:UnregisterAllEvents()
-	_G.PlayerPowerBarAlt:Hide()
+	local bar = _G.PlayerPowerBarAlt
+	if bar then
+		bar:UnregisterAllEvents()
+		bar:Hide()
+	end
 
 	local barInfo = GetUnitPowerBarInfo('player')
 	if barInfo then

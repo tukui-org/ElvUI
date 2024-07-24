@@ -22,7 +22,7 @@ local buttonPositions = {
 
 local textFontSize = { min = 6, max = 42, step = 1 }
 local buttonScale = { min = 0.5, max = 3, step = 0.05 }
-local buttonOffsets = { min = -60, max = 60, step = 1 }
+local buttonOffsets = { min = -100, max = 100, step = 1 }
 
 local Maps = ACH:Group(L["Maps"], nil, 2, 'tab')
 E.Options.args.maps = Maps

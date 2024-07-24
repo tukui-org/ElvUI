@@ -55,7 +55,7 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
+	if not E:IsAddOnEnabled('ConsolePort_Menu') then
 		-- reskin all esc/menu buttons
 		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
 			if Button.IsObjectType and Button:IsObjectType('Button') then
@@ -77,7 +77,7 @@ function S:BlizzardMiscFrames()
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:SetTemplate('Transparent')

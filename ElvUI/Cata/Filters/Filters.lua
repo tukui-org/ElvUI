@@ -674,7 +674,8 @@ G.unitframe.aurawatch = {
 		[41635]	= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
 		[10060] = Aura(10060, nil, 'TOP', {0.17, 1.00, 0.45}), -- Power Infusion
 		[47788] = Aura(47788, nil, 'TOP', {0.17, 1.00, 0.45}), -- Guardian Spirit
-		[33206] = Aura(33206, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Pain Suppression
+		[33206] = Aura(33206, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}), -- Pain Suppression
+		[56161] = Aura(56161, nil, 'LEFT', {1.0, 1.0, 1.0}) -- Glyph of Prayer of Healing
 	},
 	ROGUE = {
 		[57933] = Aura(57933, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
@@ -757,7 +758,13 @@ G.unitframe.AuraChannelTicks = {}
 
 -- Spells Effected By Haste, value is Base Tick Size
 G.unitframe.HastedChannelTicks = {
-	-- [spellID] = 1, -- SpellName
+	-- Warlock
+	[1120]	= true, -- Drain Soul
+	[689]	= true, -- Drain Life
+	[5740]	= true, -- Rain of Fire
+	[755]	= true, -- Health Funnel
+	[79268]	= true, -- Soul Harvest
+	[1949]	= true, -- Hellfire
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch

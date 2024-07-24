@@ -29,16 +29,16 @@ end
 local function HandleDialogs()
 	local dialog = _G.EditModeSystemSettingsDialog
 	for _, button in next, { dialog.Buttons:GetChildren() } do
-		if button.Controller and not button.isSkinned then
+		if button.Controller and not button.IsSkinned then
 			S:HandleButton(button)
 		end
 	end
 
 	for _, frame in next, { dialog.Settings:GetChildren() } do
 		local dd = frame.Dropdown
-		if dd and (dd.DropDownMenu and not dd.isSkinned) then
+		if dd and (dd.DropDownMenu and not dd.IsSkinned) then
 			S:HandleDropDownBox(dd.DropDownMenu, 250)
-			dd.isSkinned = true
+			dd.IsSkinned = true
 		end
 
 		local checkbox = frame.Button
@@ -63,7 +63,7 @@ function S:EditorManagerFrame()
 	S:HandleCloseButton(editMode.CloseButton)
 	S:HandleButton(editMode.RevertAllChangesButton)
 	S:HandleButton(editMode.SaveChangesButton)
-	S:HandleDropDownBox(editMode.LayoutDropdown.DropDownMenu, 250)
+	S:HandleDropDownBox(editMode.LayoutDropdown, 250)
 
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)

@@ -39,14 +39,14 @@ local function HandleListIcon(frame)
 		if row then
 			local cell = row.cells and row.cells[1]
 			if cell and cell.Icon then
-				if not cell.isSkinned then
+				if not cell.IsSkinned then
 					S:HandleIcon(cell.Icon, true)
 
 					if cell.IconBorder then
 						cell.IconBorder:Hide()
 					end
 
-					cell.isSkinned = true
+					cell.IsSkinned = true
 				end
 
 				cell.Icon.backdrop:SetShown(cell.Icon:IsShown())
@@ -57,9 +57,8 @@ end
 
 local function HandleListHeader(headerContainer)
 	local maxHeaders = headerContainer:GetNumChildren()
-
 	for i, header in next, { headerContainer:GetChildren() } do
-		if not header.isSkinned then
+		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 			header:CreateBackdrop('Transparent')
 
@@ -67,7 +66,7 @@ local function HandleListHeader(headerContainer)
 			highlight:SetColorTexture(1, 1, 1, .1)
 			highlight:SetAllPoints(header.backdrop)
 
-			header.isSkinned = true
+			header.IsSkinned = true
 		end
 
 		if header.backdrop then
@@ -109,7 +108,7 @@ local function FormInit(form)
 			ps:SetBlendMode('ADD')
 			ps:SetOutside(button)
 
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				S:HandleIcon(icon, true)
 				S:HandleIconBorder(button.IconBorder, icon.backdrop)
 				icon:SetOutside(button)
@@ -118,14 +117,14 @@ local function FormInit(form)
 					S:HandleCheckBox(slot.Checkbox)
 				end
 
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 		end
 	end
 end
 
 local function HandleFlyouts(flyout)
-	if not flyout.isSkinned then
+	if not flyout.IsSkinned then
 		flyout:StripTextures()
 		flyout:SetTemplate('Transparent')
 
@@ -133,7 +132,7 @@ local function HandleFlyouts(flyout)
 
 		hooksecurefunc(flyout.ScrollBox, 'Update', RefreshFlyoutButtons)
 
-		flyout.isSkinned = true
+		flyout.IsSkinned = true
 	end
 end
 
@@ -228,8 +227,8 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	S:HandleEditBox(search.SearchBox)
 	S:HandleButton(search.SearchButton)
 
-	local filter = search.FilterButton
-	S:HandleCloseButton(filter.ClearFiltersButton)
+	local filter = search.FilterDropdown
+	S:HandleCloseButton(filter.ResetButton)
 	S:HandleButton(filter)
 
 	hooksecurefunc(browseOrders.CategoryList.ScrollBox, 'Update', BrowseOrdersUpdate)
@@ -252,8 +251,8 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	-- Form
 	local form = frame.Form
 	S:HandleButton(form.BackButton)
-	S:HandleCheckBox(form.TrackRecipeCheckBox.Checkbox)
-	S:HandleCheckBox(form.AllocateBestQualityCheckBox)
+	S:HandleCheckBox(form.TrackRecipeCheckbox.Checkbox)
+	S:HandleCheckBox(form.AllocateBestQualityCheckbox)
 
 	form.RecipeHeader:Hide()
 	form.RecipeHeader:CreateBackdrop('Transparent')
@@ -291,11 +290,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 		end
 	end
 
-	S:HandleDropDownBox(form.MinimumQuality.DropDown)
-	S:HandleDropDownBox(form.OrderRecipientDropDown)
+	S:HandleDropDownBox(form.MinimumQuality.Dropdown)
+	S:HandleDropDownBox(form.OrderRecipientDropdown)
 	HandleMoneyInput(payment.TipMoneyInputFrame.GoldBox)
 	HandleMoneyInput(payment.TipMoneyInputFrame.SilverBox)
-	S:HandleDropDownBox(payment.DurationDropDown)
+	S:HandleDropDownBox(payment.DurationDropdown)
 	S:HandleButton(payment.ListOrderButton)
 
 	local viewListingButton = payment.ViewListingsButton

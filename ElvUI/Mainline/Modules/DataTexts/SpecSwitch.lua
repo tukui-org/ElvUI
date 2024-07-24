@@ -5,7 +5,6 @@ local _G = _G
 local ipairs, tinsert, tremove = ipairs, tinsert, tremove
 local format, next, strjoin = format, next, strjoin
 
-local EasyMenu = EasyMenu
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -17,7 +16,7 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ToggleTalentFrame = ToggleTalentFrame
 
-local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+local LoadAddOn = C_AddOns.LoadAddOn
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 
@@ -255,7 +254,7 @@ local function OnClick(self, button)
 
 	if menu then
 		E:SetEasyMenuAnchor(E.EasyMenu, self)
-		EasyMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
+		E:ComplicatedMenu(menu, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end
 

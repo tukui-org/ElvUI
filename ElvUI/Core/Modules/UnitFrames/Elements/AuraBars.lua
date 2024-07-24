@@ -8,7 +8,6 @@ local unpack = unpack
 local strfind = strfind
 
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
@@ -191,7 +190,7 @@ function UF:Configure_AuraBars(frame)
 end
 
 local GOTAK_ID = 86659
-local GOTAK = GetSpellInfo(GOTAK_ID)
+local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellID, spellName = bar.spellID, bar.spell
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color

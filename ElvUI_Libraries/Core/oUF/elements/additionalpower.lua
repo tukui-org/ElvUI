@@ -27,7 +27,7 @@ The following options are listed by priority. The first check that returns true 
 .colorPower  - Use `self.colors.power[token]` to color the bar based on the player's additional power type
                (boolean)
 .colorClass  - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
-               second return of [UnitClass](http://wowprogramming.com/docs/api/UnitClass.html) (boolean)
+               second return of [UnitClass](https://warcraft.wiki.gg/wiki/API_UnitClass) (boolean)
 .colorSmooth - Use `self.colors.smooth` to color the bar with a smooth gradient based on the player's current
                additional power percentage (boolean)
 
@@ -250,7 +250,7 @@ local function VisibilityPath(self, ...)
 end
 
 local function ForceUpdate(element)
-	VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
 --[[ Power:SetFrequentUpdates(state, isForced)

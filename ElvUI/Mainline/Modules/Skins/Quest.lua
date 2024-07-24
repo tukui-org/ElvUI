@@ -230,7 +230,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		end
 
 		for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
-			if not followerReward.isSkinned then
+			if not followerReward.IsSkinned then
 				followerReward:CreateBackdrop()
 				followerReward.backdrop:SetAllPoints(followerReward.BG)
 				followerReward.backdrop:Point('TOPLEFT', 40, -5)
@@ -256,7 +256,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 				squareBG:SetTemplate()
 				followerReward.PortraitFrame.squareBG = squareBG
 
-				followerReward.isSkinned = true
+				followerReward.IsSkinned = true
 			end
 
 			local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
@@ -383,7 +383,9 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
 	hooksecurefunc('QuestLogQuests_Update', S.QuestLogQuests_Update) -- Skin the Plus Minus buttons in the QuestLog
-	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
+
+	-- Fix Me 11.0
+	--hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
 
 	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])

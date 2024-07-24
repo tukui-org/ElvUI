@@ -14,7 +14,6 @@ local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
-local EasyMenu = EasyMenu
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetNumSpecializations = GetNumSpecializations
@@ -74,7 +73,7 @@ function DT:QuickDTMode(_, key, active)
 		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT.OnLeave(DT.SelectedDatatext)
 			E:SetEasyMenuAnchor(E.EasyMenu, DT.SelectedDatatext)
-			EasyMenu(QuickList, E.EasyMenu, nil, nil, nil, 'MENU')
+			E:ComplicatedMenu(QuickList, E.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
 		end
@@ -801,7 +800,7 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
-		local name = DT:CurrencyInfo(currencyID)
+		local _, name = DT:CurrencyInfo(currencyID)
 		if name then
 			DT:PopulateData(true)
 		end

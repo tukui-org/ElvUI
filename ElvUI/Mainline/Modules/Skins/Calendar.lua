@@ -36,6 +36,7 @@ function S:Blizzard_Calendar()
 	CalendarFrame:DisableDrawLayer('BORDER')
 	CalendarFrame:CreateBackdrop('Transparent')
 
+	S:HandleButton(CalendarFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	S:HandleCloseButton(_G.CalendarCloseButton)
 	_G.CalendarCloseButton:Point('TOPRIGHT', CalendarFrame, 'TOPRIGHT', -4, -4)
 
@@ -63,35 +64,13 @@ function S:Blizzard_Calendar()
 	_G.CalendarClassTotalsButtonBackgroundTop:Hide()
 	_G.CalendarClassTotalsButtonBackgroundMiddle:Hide()
 	_G.CalendarClassTotalsButtonBackgroundBottom:Hide()
-	_G.CalendarFilterFrameLeft:Hide()
-	_G.CalendarFilterFrameMiddle:Hide()
-	_G.CalendarFilterFrameRight:Hide()
 	_G.CalendarViewEventDivider:Hide()
 	_G.CalendarCreateEventDivider:Hide()
 
 	S:HandleNextPrevButton(_G.CalendarPrevMonthButton, nil, nil, true)
 	S:HandleNextPrevButton(_G.CalendarNextMonthButton, nil, nil, true)
 
-	_G.CalendarFilterFrame:StripTextures()
-	_G.CalendarFilterFrame:Width(155)
-
-	_G.CalendarFilterFrameText:ClearAllPoints()
-	_G.CalendarFilterFrameText:Point('RIGHT', _G.CalendarFilterButton, 'LEFT', -2, 0)
-
-	_G.CalendarFilterButton:ClearAllPoints()
-	_G.CalendarFilterButton:Point('RIGHT', _G.CalendarFilterFrame, 'RIGHT', -10, 3)
-	_G.CalendarFilterButton.SetPoint = E.noop
-
-	S:HandleNextPrevButton(_G.CalendarFilterButton)
-
-	_G.CalendarFilterFrame:CreateBackdrop()
-	_G.CalendarFilterFrame.backdrop:Point('TOPLEFT', 20, 2)
-	_G.CalendarFilterFrame.backdrop:Point('BOTTOMRIGHT', _G.CalendarFilterButton, 'BOTTOMRIGHT', 2, -2)
-
-	_G.CalendarContextMenu.NineSlice:SetTemplate('Transparent')
-	_G.CalendarInviteStatusContextMenu.NineSlice:SetTemplate('Transparent')
-
-	--Boost frame levels
+	-- Boost frame levels
 	for i = 1, 42 do
 		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(.5)
 		local bu = _G['CalendarDayButton'..i]
@@ -127,7 +106,7 @@ function S:Blizzard_Calendar()
 		_G.CalendarTodayFrame:SetAllPoints()
 	end)
 
-	--CreateEventFrame
+	-- CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
 	_G.CalendarCreateEventFrame:SetTemplate('Transparent')
 	_G.CalendarCreateEventFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
@@ -142,16 +121,19 @@ function S:Blizzard_Calendar()
 
 	S:HandleEditBox(_G.CalendarCreateEventInviteEdit)
 	S:HandleEditBox(_G.CalendarCreateEventTitleEdit)
-	S:HandleDropDownBox(_G.CalendarCreateEventTypeDropDown, 120)
-	S:HandleDropDownBox(_G.CalendarCreateEventCommunityDropDown, 240)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.EventTypeDropdown, 120)
 
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
 	S:HandleCheckBox(_G.CalendarCreateEventLockEventCheck)
 
-	S:HandleDropDownBox(_G.CalendarCreateEventHourDropDown, 75)
-	S:HandleDropDownBox(_G.CalendarCreateEventMinuteDropDown, 75)
-	S:HandleDropDownBox(_G.CalendarCreateEventAMPMDropDown, 75)
-	S:HandleDropDownBox(_G.CalendarCreateEventDifficultyOptionDropDown)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 60)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 60)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 60)
+
+	-- Difficulty Dropdown
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)
+	_G.CalendarCreateEventFrame.DifficultyOptionDropdown:ClearAllPoints()
+	_G.CalendarCreateEventFrame.DifficultyOptionDropdown:Point('TOPLEFT', _G.CalendarCreateEventFrame, 'TOPLEFT', 220, -114)
 
 	_G.CalendarViewEventTitle:ClearAllPoints()
 	_G.CalendarViewEventTitle:Point('TOPLEFT', _G.CalendarViewEventIcon, 'TOPRIGHT', 5, 0)
@@ -188,35 +170,35 @@ function S:Blizzard_Calendar()
 	_G.CalendarClassTotalsButton:SetTemplate()
 	_G.CalendarClassTotalsButton:Size(28, 18)
 
-	--Texture Picker Frame
+	-- Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()
 	_G.CalendarTexturePickerFrame.Header:StripTextures()
 	_G.CalendarTexturePickerFrame:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(_G.CalendarTexturePickerFrame.ScrollBar)
 
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
 	S:HandleButton(_G.CalendarTexturePickerCancelButton, true)
 	S:HandleButton(_G.CalendarCreateEventInviteButton, true)
 	S:HandleButton(_G.CalendarCreateEventRaidInviteButton, true)
 
-	--Mass Invite Frame
+	-- Mass Invite Frame
 	_G.CalendarMassInviteFrame:StripTextures()
 	_G.CalendarMassInviteFrame:SetTemplate('Transparent')
 	_G.CalendarMassInviteFrame.Header:StripTextures()
-	S:HandleDropDownBox(_G.CalendarMassInviteCommunityDropDown, 200)
-	S:HandleDropDownBox(_G.CalendarMassInviteRankMenu)
+	S:HandleDropDownBox(_G.CalendarMassInviteFrame.CommunityDropdown, 200)
 	S:HandleEditBox(_G.CalendarMassInviteMinLevelEdit)
 	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
 	S:HandleButton(_G.CalendarMassInviteAcceptButton)
 
-	--Raid View
+	-- Raid View
 	_G.CalendarViewRaidFrame:StripTextures()
 	_G.CalendarViewRaidFrame:SetTemplate('Transparent')
 	_G.CalendarViewRaidFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
 	_G.CalendarViewRaidFrame.Header:StripTextures()
 	S:HandleCloseButton(_G.CalendarViewRaidCloseButton)
 
-	--Holiday View
+	-- Holiday View
 	_G.CalendarViewHolidayFrame:StripTextures(true)
 	_G.CalendarViewHolidayFrame:SetTemplate('Transparent')
 	_G.CalendarViewHolidayFrame:Point('TOPLEFT', CalendarFrame, 'TOPRIGHT', 3, -24)
@@ -237,7 +219,7 @@ function S:Blizzard_Calendar()
 	S:HandleButton(_G.CalendarViewEventRemoveButton)
 	S:HandleButton(_G.CalendarViewEventDeclineButton)
 
-	--Event Picker Frame
+	-- Event Picker Frame
 	_G.CalendarEventPickerFrame:StripTextures()
 	_G.CalendarEventPickerFrame.Header:StripTextures()
 	_G.CalendarEventPickerFrame:SetTemplate('Transparent')

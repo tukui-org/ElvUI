@@ -2,12 +2,12 @@ local print, strmatch, strlower = print, strmatch, strlower
 local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local SlashCmdList = SlashCmdList
-local GetMouseFocus = GetMouseFocus
+local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParentLoadAddOn = UIParentLoadAddOn
 
-local GetAddOnInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-local LoadAddOn = (C_AddOns and C_AddOns.LoadAddOn) or LoadAddOn
+local GetAddOnInfo = C_AddOns.GetAddOnInfo
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local LoadAddOn = C_AddOns.LoadAddOn
 
 -- GLOBALS: ElvUI_CPU, ElvUI
 

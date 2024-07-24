@@ -83,7 +83,8 @@ function BL:ObjectiveTracker_AutoHideOnShow()
 end
 
 function BL:ObjectiveTracker_Setup()
-	hooksecurefunc(_G.BonusObjectiveRewardsFrameMixin, 'AnimateReward', BonusRewards_SetPosition)
+	-- FIX ME 11.0 mostly not there anymore
+	--hooksecurefunc(_G.ObjectiveTrackerRewardsToastMixin, 'AnimateReward', BonusRewards_SetPosition)
 
 	BL:ObjectiveTracker_AutoHide()
 end

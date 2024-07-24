@@ -10,7 +10,6 @@ local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetOverrideBarIndex = GetOverrideBarIndex
-local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
@@ -46,10 +45,13 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
+local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+
 local GetProfessionQuality = C_ActionBar.GetProfessionQuality
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
-local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -925,28 +927,60 @@ do -- these calls are tainted when accessed by ValidateActionBarTransition
 end
 
 do
+	local function BindOnEnter(button)
+		AB:BindUpdate(button, 'SPELL')
+	end
+
 	local function FixButton(button)
-		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
-		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+		if E.Retail then
+			if button.OnIconEnter == AB.SpellButtonOnEnter then
+				return -- don't do this twice, ever
+			end
 
-		AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
+			button.OnIconEnter = AB.SpellButtonOnEnter
+			button.OnIconLeave = AB.SpellButtonOnLeave
 
-		button.OnEnter = AB.SpellButtonOnEnter
-		button.OnLeave = AB.SpellButtonOnLeave
+			if button.Button then -- the icon enter
+				button.Button:HookScript('OnEnter', BindOnEnter)
+			end
+		else
+			if button.OnEnter == AB.SpellButtonOnEnter then
+				return -- don't do this twice, ever
+			end
+
+			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+			button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+			button.OnEnter = AB.SpellButtonOnEnter
+			button.OnLeave = AB.SpellButtonOnLeave
+
+			for i = 1, 12 do
+				_G['SpellButton'..i]:HookScript('OnEnter', BindOnEnter)
+			end
+
+			AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
+		end
+	end
+
+	local function SetTab()
+		local spellbook = _G.PlayerSpellsFrame.SpellBookFrame
+		if not (spellbook and spellbook.PagedSpellsFrame) then return end
+
+		for _, frame in spellbook.PagedSpellsFrame:EnumerateFrames() do
+			if frame.HasValidData and frame:HasValidData() then -- Avoid header or spacer frames
+				FixButton(frame)
+			end
+		end
 	end
 
 	function AB:FixSpellBookTaint() -- let spell book buttons work without tainting by replacing this function
-		for i = 1, SPELLS_PER_PAGE do
-			FixButton(_G['SpellButton'..i])
-		end
-
 		if E.Retail then -- same deal with profession buttons, this will fix the tainting
-			for _, frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
-				for i = 1, 2 do
-					local button = E.Retail and frame['SpellButton'..i] or frame['button'..i]
-					if button then
-						FixButton(button)
-					end
+			hooksecurefunc(_G.PlayerSpellsFrame.SpellBookFrame, 'SetTab', SetTab)
+		else
+			for i = 1, SPELLS_PER_PAGE do
+				local button = _G['SpellButton'..i]
+				if button then
+					FixButton(button)
 				end
 			end
 		end
@@ -967,7 +1001,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	if not tt then tt = E.SpellBookTooltip end
 
 	if tt:IsForbidden() then return end
-	tt:SetOwner(self, 'ANCHOR_RIGHT')
+	tt:SetOwner(self, self.Button and 'ANCHOR_CURSOR' or 'ANCHOR_RIGHT') -- 11.0 fix this more
 
 	if E.Retail and InClickBindingMode() and not self.canClickBind then
 		tt:AddLine(CLICK_BINDING_NOT_AVAILABLE, 1, .3, .3)
@@ -975,13 +1009,16 @@ function AB:SpellButtonOnEnter(_, tt)
 		return
 	end
 
-	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
+	local slotIndex = self.slotIndex or (not E.Retail and FindSpellBookSlotForSpell(self))
+	local slotBank = self.spellBank or (not E.Retail and _G.SpellBookFrame.bookType)
+	if not (slotIndex and slotBank) then return end -- huh?
+
+	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
 
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
 
-	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
+	local slotType, actionID = GetSpellBookItemInfo(slotIndex, slotBank)
 	if slotType == 'SPELL' then
 		UpdateOnBarHighlightMarksBySpell(actionID)
 	elseif slotType == 'FLYOUT' then
@@ -1051,7 +1088,7 @@ end
 function AB:IconIntroTracker_Skin()
 	local l, r, t, b = unpack(E.TexCoords)
 	for _, iconIntro in ipairs(self.iconList) do
-		if not iconIntro.isSkinned then
+		if not iconIntro.IsSkinned then
 			iconIntro.trail1.icon:SetTexCoord(l, r, t, b)
 			iconIntro.trail1.bg:SetTexCoord(l, r, t, b)
 
@@ -1064,7 +1101,7 @@ function AB:IconIntroTracker_Skin()
 			iconIntro.icon.icon:SetTexCoord(l, r, t, b)
 			iconIntro.icon.bg:SetTexCoord(l, r, t, b)
 
-			iconIntro.isSkinned = true
+			iconIntro.IsSkinned = true
 		end
 	end
 end
@@ -1120,7 +1157,9 @@ do
 			end
 		end
 
-		AB:FixSpellBookTaint()
+		if not E.Retail then
+			AB:FixSpellBookTaint()
+		end
 
 		-- shut down some events for things we dont use
 		_G.ActionBarController:UnregisterAllEvents()
@@ -1166,7 +1205,7 @@ do
 						if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
 							child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
 						else
-							child.CheckBox:SetEnabled(false)
+							child.Checkbox:SetEnabled(false)
 							child:DisplayEnabled(false)
 						end
 					end

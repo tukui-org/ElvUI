@@ -5,7 +5,7 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local function MailFrameSkin()
+local function Skin_SendMail()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G['SendMailAttachment'..i]
 		if not btn.template then
@@ -16,10 +16,51 @@ local function MailFrameSkin()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local t = btn:GetNormalTexture()
-		if t then
-			t:SetTexCoord(unpack(E.TexCoords))
-			t:SetInside()
+		local icon = btn:GetNormalTexture()
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetInside()
+		end
+	end
+end
+
+local function Skin_OpenMail()
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
+		local btn = _G['OpenMailAttachmentButton'..i]
+		if not btn.template then
+			btn:StripTextures()
+			btn:SetTemplate(nil, true)
+			btn:StyleButton()
+
+			S:HandleIconBorder(btn.IconBorder)
+		end
+
+		local icon = btn.icon or btn.Icon
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetInside()
+		end
+	end
+end
+
+local function Skin_InboxItems()
+	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
+		local item = _G['MailItem'..i]
+		item:StripTextures() -- background
+
+		local btn = item.Button
+		if not btn.template then
+			btn:StripTextures()
+			btn:SetTemplate(nil, true)
+			btn:StyleButton()
+
+			S:HandleIconBorder(btn.IconBorder)
+		end
+
+		local icon = btn.icon or btn.Icon
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetInside()
 		end
 	end
 end
@@ -29,22 +70,6 @@ function S:MailFrame()
 
 	local MailFrame = _G.MailFrame
 	S:HandlePortraitFrame(MailFrame)
-
-	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
-		local bg = _G['MailItem'..i]
-		bg:StripTextures()
-
-		local btn = _G['MailItem'..i..'Button']
-		btn:StripTextures()
-		btn:SetTemplate(nil, true)
-		btn:StyleButton()
-
-		local t = _G['MailItem'..i..'ButtonIcon']
-		t:SetTexCoord(unpack(E.TexCoords))
-		t:SetInside()
-
-		S:HandleIconBorder(_G['MailItem'..i..'ButtonIconBorder'])
-	end
 
 	_G.InboxFrame:CreateBackdrop('Transparent')
 	_G.InboxFrame.backdrop:Point('TOPLEFT', _G.MailItem1, 'TOPLEFT')
@@ -91,7 +116,13 @@ function S:MailFrame()
 
 	_G.SendMailFrame:StripTextures()
 
-	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
+	Skin_SendMail()
+	Skin_OpenMail()
+	Skin_InboxItems()
+
+	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
+	hooksecurefunc('OpenMail_Update', Skin_OpenMail)
+	hooksecurefunc('InboxFrame_Update', Skin_InboxItems)
 
 	S:HandleButton(_G.SendMailMailButton, true)
 	S:HandleButton(_G.SendMailCancelButton, true)
@@ -138,21 +169,6 @@ function S:MailFrame()
 	_G.OpenMailMoneyButton:StyleButton()
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
-
-	for i = 1, _G.ATTACHMENTS_MAX_SEND do
-		local btn = _G['OpenMailAttachmentButton'..i]
-		btn:StripTextures()
-		btn:SetTemplate(nil, true)
-		btn:StyleButton()
-
-		S:HandleIconBorder(btn.IconBorder)
-
-		local t = _G['OpenMailAttachmentButton'..i..'IconTexture']
-		if t then
-			t:SetTexCoord(unpack(E.TexCoords))
-			t:SetInside()
-		end
-	end
 
 	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
 	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)

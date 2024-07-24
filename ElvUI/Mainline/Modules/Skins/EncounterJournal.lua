@@ -6,9 +6,8 @@ local unpack, select = unpack, select
 local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -26,6 +25,21 @@ local function HandleButton(btn, strip, ...)
 	if str then
 		str:SetTextColor(1, 1, 1)
 	end
+end
+
+local function ReskinHeader(header)
+	for i = 4, 18 do
+		select(i, header.button:GetRegions()):SetTexture()
+	end
+
+	HandleButton(header.button)
+
+	header.descriptionBG:SetAlpha(0)
+	header.descriptionBGBottom:SetAlpha(0)
+	header.description:SetTextColor(1, 1, 1)
+	header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
+	header.button.expandedIcon:SetTextColor(1, 1, 1)
+	header.button.expandedIcon:SetWidth(20) -- don't wrap the text
 end
 
 local SkinOverviewInfo
@@ -54,21 +68,18 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 
 	SkinOverviewInfo = function(frame, _, index)
 		local header = frame.overviews[index]
-		if not header.isSkinned then
+		if not header.IsSkinned then
 			for i = 4, 18 do
 				select(i, header.button:GetRegions()):SetTexture()
 			end
 
+			ReskinHeader(header)
 			HandleButton(header.button)
 
 			LockColor(header.button.title, true)
 			LockColor(header.button.expandedIcon)
 
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			header.description:SetTextColor(1, 1, 1)
-
-			header.isSkinned = true
+			header.IsSkinned = true
 		end
 	end
 end
@@ -102,36 +113,9 @@ local function SkinAbilitiesInfo()
 	local index = 1
 	local header = _G['EncounterJournalInfoHeader'..index]
 	while header do
-		if not header.isSkinned then
-			header.flashAnim.Play = E.noop
-
-			header.descriptionBG:SetAlpha(0)
-			header.descriptionBGBottom:SetAlpha(0)
-			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture()
-			end
-
-			header.description:SetTextColor(1, 1, 1)
-			header.button.title:SetTextColor(unpack(E.media.rgbvaluecolor))
-			header.button.title.SetTextColor = E.noop
-			header.button.expandedIcon:SetTextColor(1, 1, 1)
-			header.button.expandedIcon.SetTextColor = E.noop
-
-			HandleButton(header.button)
-
-			header.button.bg = CreateFrame('Frame', nil, header.button)
-			header.button.bg:SetTemplate()
-			header.button.bg:SetOutside(header.button.abilityIcon)
-			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
-			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
-
-			header.isSkinned = true
-		end
-
-		if header.button.abilityIcon:IsShown() then
-			header.button.bg:Show()
-		else
-			header.button.bg:Hide()
+		if not header.IsSkinned then
+			ReskinHeader(header)
+			header.IsSkinned = true
 		end
 
 		index = index + 1
@@ -170,13 +154,13 @@ local function ItemSetElements(set)
 			end
 
 			local border = button.Border
-			if border and not border.isSkinned then
+			if border and not border.IsSkinned then
 				border:SetAlpha(0)
 
 				ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
 				hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
 
-				border.isSkinned = true
+				border.IsSkinned = true
 			end
 		end
 	end
@@ -215,7 +199,7 @@ function S:Blizzard_EncounterJournal()
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
 
-	S:HandleDropDownBox(InstanceSelect.tierDropDown)
+	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
@@ -268,30 +252,35 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
 
-	EncounterInfo.difficulty:StripTextures()
 	EncounterInfo.reset:StripTextures()
 
 	-- Buttons
 	EncounterInfo.difficulty:ClearAllPoints()
 	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
-	HandleButton(EncounterInfo.reset)
-	HandleButton(EncounterInfo.difficulty)
+	S:HandleDropDownBox(EncounterInfo.difficulty, 120)
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
+	EncounterInfo.LootContainer.filter:ClearAllPoints()
+	EncounterInfo.LootContainer.filter:Point('RIGHT', EncounterInfo.difficulty, 'LEFT', -120, 0)
+	S:HandleDropDownBox(EncounterInfo.LootContainer.filter, 120)
+	S:HandleDropDownBox(EncounterInfo.LootContainer.slotFilter, 100)
+
 	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar)
 	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar)
 
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point('CENTER', 0, 40)
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point('CENTER', 0, 15)
+	_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:ClearAllPoints()
+	_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:Point('TOP', _G.EncounterJournalEncounterFrameInstanceFrameBG, 'TOP', 0, -32)
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point('TOP', 0, -105)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point('TOP', 0, -85)
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -56)
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -78)
 
 	S:HandleTrimScrollBar(EncounterInfo.overviewScroll.ScrollBar)
 	S:HandleTrimScrollBar(EncounterInfo.detailsScroll.ScrollBar)
@@ -471,13 +460,7 @@ function S:Blizzard_EncounterJournal()
 		item2.IconBorder:Kill()
 	end
 
-	-- Powers
 	local LJ = EJ.LootJournal
-	HandleButton(LJ.ClassDropDownButton, true)
-	LJ.ClassDropDownButton:SetFrameLevel(10)
-	HandleButton(LJ.RuneforgePowerFilterDropDownButton, true)
-	LJ.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
-	S:HandleDropDownBox(EJ.LootJournalViewDropDown)
 	S:HandleTrimScrollBar(LJ.ScrollBar)
 
 	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
@@ -486,7 +469,7 @@ function S:Blizzard_EncounterJournal()
 
 	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				child:SetNormalTexture(E.ClearTexture)
 				child:SetHighlightTexture(E.ClearTexture)
 				child:SetPushedTexture(E.ClearTexture)
@@ -498,7 +481,7 @@ function S:Blizzard_EncounterJournal()
 					bgImage.backdrop:Point('BOTTOMRIGHT', -4, 2)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -509,7 +492,7 @@ function S:Blizzard_EncounterJournal()
 
 		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					S:HandleButton(child)
 
 					local hl = child:GetHighlightTexture()
@@ -520,14 +503,14 @@ function S:Blizzard_EncounterJournal()
 					child.text.SetTextColor = E.noop
 					child.creature:Point('TOPLEFT', 0, -4)
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)
 
 		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', function(frame)
 			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.isSkinned then
+				if not child.IsSkinned then
 					if child.bossTexture then child.bossTexture:SetAlpha(0) end
 					if child.bosslessTexture then child.bosslessTexture:SetAlpha(0) end
 
@@ -566,7 +549,7 @@ function S:Blizzard_EncounterJournal()
 						child.armorType:SetTextColor(1, 1, 1)
 					end
 
-					child.isSkinned = true
+					child.IsSkinned = true
 				end
 			end
 		end)
@@ -608,8 +591,8 @@ function S:Blizzard_EncounterJournal()
 
 	do -- Item Sets
 		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
-		HandleButton(ItemSetsFrame.ClassButton, true)
 		S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar)
+		S:HandleDropDownBox(ItemSetsFrame.ClassDropdown)
 
 		if E.private.skins.parchmentRemoverEnable then
 			EJ.LootJournalItems:StripTextures()

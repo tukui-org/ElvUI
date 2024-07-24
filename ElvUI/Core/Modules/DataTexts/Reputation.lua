@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format = format
 
-local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 
 local NOT_APPLICABLE = NOT_APPLICABLE
@@ -12,7 +11,8 @@ local REPUTATION = REPUTATION
 local STANDING = STANDING
 
 local function OnEvent(self)
-	local name, reaction, min, max, value = GetWatchedFactionInfo()
+	local data = E:GetWatchedFactionInfo()
+	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
 	if not name then
 		return 	self.text:SetText(NOT_APPLICABLE)
 	end
@@ -60,7 +60,8 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	local name, reaction, min, max, value = GetWatchedFactionInfo()
+	local data = E:GetWatchedFactionInfo()
+	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
 
 	if name then
 		DT.tooltip:ClearLines()

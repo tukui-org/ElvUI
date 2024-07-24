@@ -5,6 +5,38 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local function HandleDropDownArrow(button, direction)
+	button.NormalTexture:SetAlpha(0)
+	button.PushedTexture:SetAlpha(0)
+	button:GetHighlightTexture():SetAlpha(0)
+
+	local dis = button:GetDisabledTexture()
+	S:SetupArrow(dis, direction)
+	dis:SetVertexColor(0, 0, 0, .7)
+	dis:SetDrawLayer('OVERLAY')
+	dis:SetInside(button, 4, 4)
+
+	local tex = button:CreateTexture(nil, 'ARTWORK')
+	tex:SetInside(button, 4, 4)
+	S:SetupArrow(tex, direction)
+end
+
+local function HandleOptionDropDown(option)
+	local button = option.Button
+	S:HandleButton(button)
+	button.NormalTexture:SetAlpha(0)
+	button.HighlightTexture:SetAlpha(0)
+
+	HandleDropDownArrow(option.DecrementButton, 'left')
+	HandleDropDownArrow(option.IncrementButton, 'right')
+end
+
+local function HandleDropdown(option)
+	S:HandleButton(option.Dropdown)
+	S:HandleButton(option.DecrementButton)
+	S:HandleButton(option.IncrementButton)
+end
+
 local function HandleTabs(tab)
 	if tab then
 		tab:StripTextures(true)
@@ -14,11 +46,11 @@ end
 local function UpdateKeybindButtons(self)
 	if not self.bindingsPool then return end
 	for panel in self.bindingsPool:EnumerateActive() do
-		if not panel.isSkinned then
+		if not panel.IsSkinned then
 			S:HandleButton(panel.Button1)
 			S:HandleButton(panel.Button2)
 			if panel.CustomButton then S:HandleButton(panel.CustomButton) end
-			panel.isSkinned = true
+			panel.IsSkinned = true
 		end
 	end
 end
@@ -55,8 +87,11 @@ local function HandleControlGroup(controls)
 		if child.SliderWithSteppers then
 			S:HandleStepSlider(child.SliderWithSteppers)
 		end
-		if child.CheckBox then
-			S:HandleCheckBox(child.CheckBox)
+		if child.Checkbox then
+			S:HandleCheckBox(child.Checkbox)
+		end
+		if child.Control then
+			HandleDropdown(child.Control)
 		end
 	end
 end
@@ -93,7 +128,7 @@ function S:SettingsPanel()
 
 	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				if child.Background then
 					child.Background:SetAlpha(0)
 					child.Background:CreateBackdrop('Transparent')
@@ -102,11 +137,11 @@ function S:SettingsPanel()
 				end
 
 				local toggle = child.Toggle
-				if toggle then -- ToDo Handle the toggle. DF
+				if toggle then
 					toggle:GetPushedTexture():SetAlpha(0)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -118,15 +153,24 @@ function S:SettingsPanel()
 
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.isSkinned then
+			if not child.IsSkinned then
 				if child.NineSlice then
 					child.NineSlice:SetAlpha(0)
 					child:CreateBackdrop('Transparent')
 					child.backdrop:Point('TOPLEFT', 15, -30)
 					child.backdrop:Point('BOTTOMRIGHT', -30, -5)
 				end
-				if child.CheckBox then
-					HandleCheckbox(child.CheckBox) -- this is atlas shit, so S.HandleCheckBox wont work right now
+				if child.Checkbox then
+					HandleCheckbox(child.Checkbox)
+				end
+				if child.Dropdown then
+					HandleOptionDropDown(child.Dropdown)
+				end
+				if child.Control then
+					HandleDropdown(child.Control)
+				end
+				if child.ColorBlindFilterDropDown then
+					HandleOptionDropDown(child.ColorBlindFilterDropDown)
 				end
 				if child.Button then
 					if child.Button:GetWidth() < 250 then
@@ -191,7 +235,7 @@ function S:SettingsPanel()
 					HandleControlGroup(child.RaidQualityControls)
 				end
 
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -216,11 +260,6 @@ function S:SettingsPanel()
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:Hide()
 		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:CreateBackdrop('Transparent')
 	end
-
-	-- New Voice Sliders
-	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
-	S:HandleSliderFrame(_G.UnitPopupVoiceMicrophoneVolume.Slider)
-	S:HandleSliderFrame(_G.UnitPopupVoiceUserVolume.Slider)
 end
 
 S:AddCallback('SettingsPanel')

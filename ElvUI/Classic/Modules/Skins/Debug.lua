@@ -5,7 +5,7 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local FrameTexs = {
 	'TopLeft',
@@ -91,7 +91,7 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
 
-	frame.isSkinned = true
+	frame.IsSkinned = true
 end
 
 function S:ScriptErrorsFrame()
@@ -111,7 +111,7 @@ function S:Blizzard_DebugTools()
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.isSkinned then
+		if frame.ScrollFrameArt and not frame.IsSkinned then
 			SkinTableAttributeDisplay(frame)
 		end
 	end)

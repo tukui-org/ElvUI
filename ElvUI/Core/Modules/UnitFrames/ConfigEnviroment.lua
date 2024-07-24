@@ -26,6 +26,7 @@ local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
+UF.overrideTags = {} -- used so plugin tags can have randomization during testing groups
 
 local forceShown = {}
 local attributeBlacklist = {
@@ -147,7 +148,7 @@ local function createConfigEnv()
 	})
 
 	for tag, func in next, ElvUF.Tags.Methods do
-		if colorTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
+		if colorTags[tag] or UF.overrideTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
 			overrideFuncs[tag] = func
 		end
 	end

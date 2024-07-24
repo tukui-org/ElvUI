@@ -11,7 +11,7 @@ local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 

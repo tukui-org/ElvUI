@@ -17,8 +17,8 @@ local SharedOptions = {
 	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 5, { min = 10, max = 60, step = 1 }),
 	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 6, { min = 1, max = 32, step = 1 }),
 	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 7, { min = 1, max = 32, step = 1 }),
-	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 8, { min = 0, max = 50, step = 1 }),
-	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 9, { min = 0, max = 50, step = 1 }),
+	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 8, { min = -5, max = 50, step = 1 }),
+	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 9, { min = -5, max = 50, step = 1 }),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 10, { min = -1, max = 30, step = 1 }),
 	showDuration = ACH:Toggle(L["Duration Enable"], nil, 11),
 

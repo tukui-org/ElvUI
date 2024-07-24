@@ -61,7 +61,7 @@ function S:Blizzard_TrainerUI()
 	end)
 
 	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
-	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
+	S:HandleButton(_G.ClassTrainerFrame.FilterDropdown)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
 	ClassTrainerFrame:SetTemplate('Transparent')

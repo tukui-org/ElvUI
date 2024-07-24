@@ -40,6 +40,9 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
+
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
@@ -47,8 +50,8 @@ local UnitAura = UnitAura
 local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
-local IsAddOnLoaded = (C_AddOns and C_AddOns.IsAddOnLoaded) or IsAddOnLoaded
-
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local StoreEnabled = C_StorePublic.IsEnabled
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
 local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
@@ -271,6 +274,23 @@ do
 		end
 
 		return tt.gems, tt.essences
+	end
+end
+
+do	-- backwards compatibility for GetSpellInfo
+	local GetSpellInfo = GetSpellInfo
+	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	function E:GetSpellInfo(spellID)
+		if not spellID then return end
+
+		if GetSpellInfo then
+			return GetSpellInfo(spellID)
+		else
+			local info = C_Spell_GetSpellInfo(spellID)
+			if info then
+				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+			end
+		end
 	end
 end
 
@@ -607,6 +627,18 @@ function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
 
+do
+	local watchedInfo = {}
+	function E:GetWatchedFactionInfo()
+		if GetWatchedFactionInfo then
+			watchedInfo.name, watchedInfo.reaction, watchedInfo.currentReactionThreshold, watchedInfo.nextReactionThreshold, watchedInfo.currentStanding, watchedInfo.factionID = GetWatchedFactionInfo()
+			return watchedInfo
+		else
+			return GetWatchedFactionData()
+		end
+	end
+end
+
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	E:CheckRole()
 
@@ -735,30 +767,60 @@ function E:GetUnitBattlefieldFaction(unit)
 	return englishFaction, localizedFaction
 end
 
-function E:PositionGameMenuButton()
-	if E.Retail then
-		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	end
-	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
-
-	local button = GameMenuFrame.ElvUI
-	button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
-
-	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-	if relTo ~= button then
-		button:ClearAllPoints()
-		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
-		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
-	end
-end
-
 function E:NEUTRAL_FACTION_SELECT_RESULT()
 	E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 end
 
 function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
+end
+
+local gameMenuLastButtons = {
+	[_G.GAMEMENU_OPTIONS] = 1,
+	[_G.BLIZZARD_STORE] = 2
+}
+
+function E:PositionGameMenuButton()
+	if E.Retail then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+
+		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
+		for button in GameMenuFrame.buttonPool:EnumerateActive() do
+			local text = button:GetText()
+
+			GameMenuFrame.MenuButtons[text] = button -- export these
+
+			local lastIndex = gameMenuLastButtons[text]
+			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
+				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
+			elseif not lastIndex then
+				local point, anchor, point2, x, y = button:GetPoint()
+				button:SetPoint(point, anchor, point2, x, y - 35)
+			end
+		end
+
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 35)
+	else
+		local button = GameMenuFrame.ElvUI
+		if button then
+			button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
+
+			local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
+			if relTo ~= button then
+				button:ClearAllPoints()
+				button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+
+				GameMenuButtonLogout:ClearAllPoints()
+				GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+			end
+		end
+
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+	end
+
+	if GameMenuFrame.ElvUI then
+		GameMenuFrame.ElvUI:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
+	end
 end
 
 function E:ClickGameMenu()
@@ -770,12 +832,23 @@ function E:ClickGameMenu()
 end
 
 function E:SetupGameMenu()
-	local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	button:SetScript('OnClick', E.ClickGameMenu)
-	GameMenuFrame.ElvUI = button
+	if GameMenuFrame.ElvUI then return end
 
-	if not E:IsAddOnEnabled('ConsolePortUI_Menu') then
-		button:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+	if E.Retail then
+		local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
+		button:SetScript('OnClick', E.ClickGameMenu)
+		button:Size(200, 35)
+
+		GameMenuFrame.ElvUI = button
+		GameMenuFrame.MenuButtons = {}
+
+		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
+	else
+		local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+		button:SetScript('OnClick', E.ClickGameMenu)
+		GameMenuFrame.ElvUI = button
+
+		button:Size(GameMenuButtonLogout:GetSize())
 		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
@@ -894,6 +967,41 @@ function E:ScanTooltip_HyperlinkInfo(link)
 		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
+	end
+end
+
+do -- complicated backwards compatible menu
+	local HandleMenuList
+	HandleMenuList = function(root, menuList, submenu, depth)
+		if submenu then root = submenu end
+
+		for _, list in next, menuList do
+			local previous
+			if list.isTitle then
+				root:CreateTitle(list.text)
+			elseif list.func or list.hasArrow then
+				local name = list.text or ('test'..depth)
+
+				local func = (list.arg1 or list.arg2) and (function() list.func(nil, list.arg1, list.arg2) end) or list.func
+				if list.notCheckable then
+					previous = root:CreateButton(list.text or name, func)
+				else
+					previous = root:CreateCheckbox(list.text or name, list.checked, func)
+				end
+			end
+
+			if list.menuList then -- loop it
+				HandleMenuList(root, list.menuList, list.hasArrow and previous, depth + 1)
+			end
+		end
+	end
+
+	function E:ComplicatedMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay)
+		if _G.EasyMenu then
+			_G.EasyMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay)
+		else
+			_G.MenuUtil.CreateContextMenu(menuFrame, function(_, root) HandleMenuList(root, menuList, nil, 1) end)
+		end
 	end
 end
 

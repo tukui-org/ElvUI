@@ -6,8 +6,8 @@ local hooksecurefunc = hooksecurefunc
 
 local function HandleRewardButton(box)
 	local container = box.ContentsContainer
-	if container and not container.isSkinned then
-		container.isSkinned = true
+	if container and not container.IsSkinned then
+		container.IsSkinned = true
 
 		S:HandleIcon(container.Icon)
 		S.ReplaceIconString(container.Price)
@@ -25,12 +25,6 @@ local function HandleSortLabel(button)
 	if button and button.Label then
 		button.Label:FontTemplate()
 	end
-end
-
-local function HandleButton(button) -- Same as Barber Skin
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-	button:SetScale(E.uiscale)
-	button:Size(200, 50)
 end
 
 local function HandleNextPrev(button)
@@ -144,6 +138,7 @@ function S:Blizzard_PerksProgram()
 	local footer = frame.FooterFrame
 	if footer then
 		S:HandleCheckBox(footer.TogglePlayerPreview)
+		S:HandleCheckBox(footer.ToggleMountSpecial)
 		S:HandleCheckBox(footer.ToggleHideArmor)
 
 		local armorText = footer.ToggleHideArmor.Text
@@ -153,9 +148,9 @@ function S:Blizzard_PerksProgram()
 
 		local purchase = footer.PurchaseButton
 		if purchase then
-			HandleButton(footer.LeaveButton)
-			HandleButton(footer.RefundButton)
-			HandleButton(footer.PurchaseButton)
+			S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
 
 			purchase:HookScript('OnEnter', PurchaseButton_OnEnter)
 			purchase:HookScript('OnLeave', PurchaseButton_OnLeave)

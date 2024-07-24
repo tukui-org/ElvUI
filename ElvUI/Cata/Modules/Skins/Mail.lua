@@ -11,7 +11,7 @@ local GetInboxNumItems = GetInboxNumItems
 local GetSendMailItem = GetSendMailItem
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor or GetItemQualityColor
+local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function MailFrameSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do

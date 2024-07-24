@@ -24,25 +24,26 @@ local BANK_CONTAINER = Enum.BagIndex.Bank
 local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
-local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods
-local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or BagSlotFlags.PriorityConsumables
-local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or BagSlotFlags.PriorityEquipment
-local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or BagSlotFlags.PriorityJunk
-local FILTER_FLAG_QUEST = (BagSlotFlags and BagSlotFlags.PriorityQuestItems) or 32 -- didnt exist
+local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods or BagSlotFlags.ClassProfessionGoods
+local FILTER_FLAG_CONSUMABLES = LE_BAG_FILTER_FLAG_CONSUMABLES or BagSlotFlags.PriorityConsumables or BagSlotFlags.ClassConsumables
+local FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT or BagSlotFlags.PriorityEquipment or BagSlotFlags.ClassEquipment
+local FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK or BagSlotFlags.PriorityJunk or BagSlotFlags.ClassJunk
+local FILTER_FLAG_QUEST = (BagSlotFlags and (BagSlotFlags.PriorityQuestItems or BagSlotFlags.ClassQuestItems)) or 32 -- didnt exist
+local FILTER_FLAG_REAGENTS = (BagSlotFlags and BagSlotFlags.ClassReagents) or 128 -- didnt exist
 
 local ItemClass_Armor = Enum.ItemClass.Armor
 local ItemClass_Weapon = Enum.ItemClass.Weapon
 
-local GetItemInfo = C_Item.GetItemInfo or GetItemInfo
-local GetItemFamily = C_Item.GetItemFamily or GetItemFamily
+local GetItemInfo = C_Item.GetItemInfo
+local GetItemFamily = C_Item.GetItemFamily
 local GetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
-local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID or ContainerIDToInventoryID
-local GetContainerItemID = C_Container.GetContainerItemID or GetContainerItemID
-local GetContainerItemLink = C_Container.GetContainerItemLink or GetContainerItemLink
-local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots or GetContainerNumFreeSlots
-local GetContainerNumSlots = C_Container.GetContainerNumSlots or GetContainerNumSlots
-local PickupContainerItem = C_Container.PickupContainerItem or PickupContainerItem
-local SplitContainerItem = C_Container.SplitContainerItem or SplitContainerItem
+local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
+local GetContainerItemID = C_Container.GetContainerItemID
+local GetContainerItemLink = C_Container.GetContainerItemLink
+local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
+local GetContainerNumSlots = C_Container.GetContainerNumSlots
+local PickupContainerItem = C_Container.PickupContainerItem
+local SplitContainerItem = C_Container.SplitContainerItem
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -550,6 +551,7 @@ do
 		[FILTER_FLAG_EQUIPMENT] = 'Equipment',
 		[FILTER_FLAG_CONSUMABLES] = 'Consumables',
 		[FILTER_FLAG_TRADE_GOODS] = 'TradeGoods',
+		[FILTER_FLAG_REAGENTS] = 'Reagents',
 		[FILTER_FLAG_JUNK] = 'Junk',
 		[FILTER_FLAG_QUEST] = 'QuestItems'
 	}
@@ -591,7 +593,9 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local assigned = B:IsAssignedBag(targetBag)
 	if assigned then
-		if assigned == 'Consumables' then
+		if assigned == 'Reagents' then
+			return isReagent
+		elseif assigned == 'Consumables' then
 			return classID == 0
 		elseif assigned == 'TradeGoods' then
 			return classID == 7
