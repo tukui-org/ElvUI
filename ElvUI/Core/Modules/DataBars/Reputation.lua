@@ -241,7 +241,12 @@ function DB:ReputationBar()
 	Reputation.Reward:Size(20)
 
 	Reputation.ShouldHide = function()
-		return (DB.db.reputation.hideBelowMaxLevel and not E:XPIsLevelMax()) or not E:GetWatchedFactionInfo()
+		if DB.db.reputation.hideBelowMaxLevel and not E:XPIsLevelMax() then
+			return true
+		else
+			local data = E:GetWatchedFactionInfo()
+			return not (data and data.name)
+		end
 	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
