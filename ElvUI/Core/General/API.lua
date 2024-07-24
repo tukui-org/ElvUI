@@ -842,8 +842,6 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
-		GameMenuFrame:SetScale(.8)
-
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else
 		local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
