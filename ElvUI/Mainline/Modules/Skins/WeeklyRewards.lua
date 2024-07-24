@@ -59,23 +59,25 @@ function S:Blizzard_WeeklyRewards()
 
 	-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 	local frame = _G.WeeklyRewardsFrame
-	local header = frame.HeaderFrame
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 
-		header:StripTextures()
-		header:SetTemplate('Transparent')
-
-		header.Right:SetAlpha(0)
-		header.Left:SetAlpha(0)
-		header.Middle:SetAlpha(0)
 		frame.NineSlice:SetAlpha(0)
 		frame.BackgroundTile:SetAlpha(0)
 
-		header:ClearAllPoints()
-		header:Point('TOP', 1, -42)
+		local header = frame.HeaderFrame
+		if header then
+			header:ClearAllPoints()
+			header:Point('TOP', 1, -42)
+			header:StripTextures()
+			header:SetTemplate('Transparent')
+
+			header.Right:SetAlpha(0)
+			header.Left:SetAlpha(0)
+			header.Middle:SetAlpha(0)
+		end
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
