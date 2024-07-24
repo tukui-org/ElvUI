@@ -14,6 +14,10 @@ local function SkinFrame(frame)
 		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
 		backdrops[frame] = frame.backdrop
 	end
+
+	if frame.ScrollBar then
+		S:HandleTrimScrollBar(frame.ScrollBar)
+	end
 end
 
 local function OpenMenu(manager)
