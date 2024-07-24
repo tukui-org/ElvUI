@@ -16,16 +16,18 @@ function S:Blizzard_ScrappingMachineUI()
 
 	-- this used to be setup good
 	for i, button in next, { ItemSlots:GetChildren() } do
-		local holder = i == 1 and button:GetParent()
-		if holder and not holder.backdrop then
-			holder:CreateBackdrop('Transparent')
-			holder.backdrop:SetOutside(nil, 30, 10)
-		end
+		if button.Icon then
+			local holder = i == 1 and button:GetParent()
+			if holder and not holder.backdrop then
+				holder:CreateBackdrop('Transparent')
+				holder.backdrop:SetOutside(nil, 30, 10)
+			end
 
-		button:StripTextures()
-		S:HandleIcon(button.Icon, true)
-		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
-		button.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button:StripTextures()
+			S:HandleIcon(button.Icon, true)
+			S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+			button.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
 	end
 
 	-- Temp mover
