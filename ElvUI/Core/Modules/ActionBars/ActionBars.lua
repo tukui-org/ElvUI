@@ -694,13 +694,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.ignoreNormal = ignoreNormal
 
 	icon:SetDrawLayer('ARTWORK', -1)
-
-	if hotkey:GetDrawLayer() ~= 'OVERLAY' then
-		hotkey:SetDrawLayer('OVERLAY')
-	end
-	if hotkey:GetParent() ~= button then
-		hotkey:SetParent(button) -- otherwise its on level 500 thanks to ActionButtonTextOverlayContainerMixin
-	end
+	hotkey:SetDrawLayer('OVERLAY')
+	hotkey:SetParent(button) -- otherwise its on level 500 thanks to ActionButtonTextOverlayContainerMixin
 
 	if normal and not ignoreNormal then normal:SetTexture() normal:Hide() normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture() normal2:Hide() normal2:SetAlpha(0) end
