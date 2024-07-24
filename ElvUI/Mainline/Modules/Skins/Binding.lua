@@ -78,12 +78,12 @@ function S:Blizzard_ClickBindingUI()
 		titleBG:Hide()
 	end
 
-	HandlePortraitIcon(frame.SpellbookPortrait, 136830)
+	HandlePortraitIcon(frame.PlayerSpellsPortrait, 136830)
 	HandlePortraitIcon(frame.MacrosPortrait, 136377)
 
 	if frame.EnableMouseoverCastCheckbox then
 		S:HandleCheckBox(frame.EnableMouseoverCastCheckbox)
-		S:HandleDropDownBox(frame.MouseoverCastKeyDropDown)
+		S:HandleDropDownBox(frame.MouseoverCastKeyDropdown)
 	end
 end
 
