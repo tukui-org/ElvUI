@@ -29,7 +29,7 @@ local function ProfessionButtonUpdate(button)
 	local spellIndex = button:GetID() + parent.spellOffset
 	local spellBookItemInfo = C_SpellBook_GetSpellBookItemInfo(spellIndex, SpellBookSpellBank.Player)
 
-	if spellBookItemInfo.isPassive then
+	if spellBookItemInfo and spellBookItemInfo.isPassive then
 		button.highlightTexture:SetColorTexture(1, 1, 1, 0)
 	else
 		button.highlightTexture:SetColorTexture(1, 1, 1, .25)
