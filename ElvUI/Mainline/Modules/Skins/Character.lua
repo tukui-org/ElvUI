@@ -439,6 +439,16 @@ function S:Blizzard_UIPanels_Game()
 		S:HandleCloseButton(TokenPopupClose)
 	end
 
+	-- Currency Transfer (new in 11.0)
+	local currencyTransfer = _G.CurrencyTransferMenu
+	currencyTransfer:StripTextures()
+	currencyTransfer:SetTemplate('Transparent')
+	S:HandleCloseButton(currencyTransfer.CloseButton)
+	S:HandleDropDownBox(currencyTransfer.SourceSelector.Dropdown)
+	S:HandleEditBox(currencyTransfer.AmountSelector.InputBox)
+	S:HandleButton(currencyTransfer.ConfirmButton)
+	S:HandleButton(currencyTransfer.CancelButton)
+
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
