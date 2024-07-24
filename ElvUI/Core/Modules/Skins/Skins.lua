@@ -1131,7 +1131,7 @@ function S:HandleEditBox(frame, template)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, template)
+function S:HandleDropDownBox(frame, width, template, old)
 	assert(frame, 'doesn\'t exist!')
 
 	if not width then
@@ -1146,7 +1146,7 @@ function S:HandleDropDownBox(frame, width, template)
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	end
 
-	if E.Retail then
+	if E.Retail and not old then
 		if frame.Arrow then
 			frame.Arrow:SetAlpha(0)
 		end
