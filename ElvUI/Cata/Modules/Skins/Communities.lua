@@ -324,7 +324,6 @@ function S:Blizzard_Communities()
 		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButton)
 	end
 
-	-- Guild Reputation Bar TO DO: Adjust me!
 	local StatusBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
 	StatusBar.Middle:Hide()
 	StatusBar.Right:Hide()
@@ -334,7 +333,7 @@ function S:Blizzard_Communities()
 	StatusBar.Progress:SetTexture(E.media.normTex)
 	StatusBar.Progress:ClearAllPoints()
 	StatusBar.Progress:Point('TOPLEFT')
-	StatusBar.Progress:Point('BOTTOMRIGHT')
+	StatusBar.Progress:Point('BOTTOMLEFT')
 	E:RegisterStatusBar(StatusBar)
 
 	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
