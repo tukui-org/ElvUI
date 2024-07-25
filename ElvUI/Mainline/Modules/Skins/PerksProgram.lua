@@ -93,7 +93,7 @@ function S:Blizzard_PerksProgram()
 	end
 
 	if products then
-		S:HandleButton(products.PerksProgramFilter.FilterDropDownButton)
+		S:HandleButton(products.PerksProgramFilter)
 
 		local currency = products.PerksProgramCurrencyFrame
 		if currency then
