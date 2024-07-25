@@ -126,7 +126,7 @@ function RU:HasPermission()
 end
 
 function RU:InGroup()
-	return true or IsInGroup() and RU:NotInPVP()
+	return IsInGroup() and RU:NotInPVP()
 end
 
 -- Change border when mouse is inside the button
