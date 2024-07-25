@@ -1832,7 +1832,7 @@ function B:Warband_AccountPanel(bagID)
 	if accountPanel then
 		accountPanel:SetParent(UIParent)
 		accountPanel:ClearAllPoints()
-		accountPanel:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)
+		accountPanel:SetPoint('TOP', UIParent, 'BOTTOM')
 
 		local tabMenu = accountPanel.TabSettingsMenu
 		if tabMenu then
