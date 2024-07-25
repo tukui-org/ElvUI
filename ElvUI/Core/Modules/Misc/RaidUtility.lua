@@ -52,6 +52,7 @@ local TARGET_SIZE = 22
 
 -- GLOBALS: C_PartyInfo
 
+local raidMarkers = {}
 local roleRoster = {}
 local roleCount = {}
 local roles = {
@@ -128,7 +129,7 @@ function RU:HasPermission()
 end
 
 function RU:InGroup()
-	return IsInGroup() and RU:NotInPVP()
+	return true or IsInGroup() and RU:NotInPVP()
 end
 
 -- Change border when mouse is inside the button
@@ -326,6 +327,19 @@ function RU:TargetIcons_GetCoords(button)
 	tex:SetTexCoord(left, right, top, bottom)
 end
 
+do
+	local ground = { 5, 6, 3, 2, 7, 1, 4 }
+	function RU:TargetIcons_UpdateMacro(button, i, world)
+		button:SetAttribute('macrotext', format('/%s %d', world and (i == 0 and 'cwm' or 'wm') or 'tm', world and ground[i] or i))
+	end
+
+	function RU:TargetIcons_UpdateMacros(world)
+		for i, button in next, raidMarkers do
+			RU:TargetIcons_UpdateMacro(button, i, world)
+		end
+	end
+end
+
 function RU:CreateTargetIcons()
 	local TargetIcons = CreateFrame('Frame', 'RaidUtilityTargetIcons', _G.RaidUtilityPanel)
 	TargetIcons:Size(PANEL_WIDTH, BUTTON_HEIGHT + 8)
@@ -334,13 +348,19 @@ function RU:CreateTargetIcons()
 
 	local num, previous = _G.NUM_RAID_ICONS + 1 -- include clear
 	for i = 1, num do
-		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons)
+		local id = num - i
+		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons, 'SecureActionButtonTemplate')
 		button:SetScript('OnMouseDown', RU.MouseDown_TargetIcon)
 		button:SetScript('OnMouseUp', RU.MouseUp_TargetIcon)
-		button:SetScript('OnClick', RU.OnClick_TargetIcon)
+		button:SetAttribute('type', 'macro')
+		button:RegisterForClicks('AnyDown', 'AnyUp')
 		button:SetNormalTexture(i == num and [[Interface\Buttons\UI-GroupLoot-Pass-Up]] or [[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-		button:SetID(num - i)
+		button:SetID(id)
 		button:Size(TARGET_SIZE)
+
+		RU:TargetIcons_UpdateMacro(button, id)
+
+		raidMarkers[id] = button
 
 		if i == 1 then
 			button:SetPoint('TOPLEFT', TargetIcons, 6, -3)
@@ -405,19 +425,11 @@ function RU:MouseUp_TargetIcon()
 	tex:SetSize(self:GetSize())
 end
 
-function RU:OnClick_TargetIcon()
-	PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
-
-	local id = self:GetID()
-	local toggle = _G.RaidUtility_GroundMarkers
-	if toggle and toggle:GetChecked() then
-		local flipped = _G.NUM_RAID_MARKERS - (id + 1)
-		local marker = _G.WORLD_RAID_MARKER_ORDER[flipped]
-		ClearRaidMarker(marker)
-		-- PlaceRaidMarker(marker)
-		-- its forbidden, need to do something else
+function RU:OnClick_GroundMarkers()
+	if InCombatLockdown() then
+		self:SetChecked(not self:GetChecked())
 	else
-		SetRaidTarget('target', id)
+		RU:TargetIcons_UpdateMacros(self:GetChecked())
 	end
 end
 
@@ -838,8 +850,7 @@ function RU:Initialize()
 	end
 
 	if _G.GROUPMANAGER_GROUND_MARKER then
-	-- 11.0 this is forbidden to do ground ones or something
-	--	RU:CreateCheckBox('RaidUtility_GroundMarkers', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'BOTTOMRIGHT', RaidUtilityPanel, 'BOTTOMRIGHT', -(BUTTON_HEIGHT * 2.2), 5, _G.GROUPMANAGER_GROUND_MARKER, nil, nil, RU.OnClick_GroundMarkers)
+		RU:CreateCheckBox('RaidUtility_GroundMarkers', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'BOTTOMRIGHT', RaidUtilityPanel, 'BOTTOMRIGHT', -(BUTTON_HEIGHT * 2.2), 5, _G.GROUPMANAGER_GROUND_MARKER, nil, nil, RU.OnClick_GroundMarkers)
 	end
 
 	RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', _G.RaidUtility_DungeonDifficulty or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, buttonEvents, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
