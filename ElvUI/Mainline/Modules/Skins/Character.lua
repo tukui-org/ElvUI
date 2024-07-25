@@ -426,7 +426,6 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
-	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 
