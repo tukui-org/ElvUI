@@ -218,6 +218,11 @@ do
 			for _, configMode in ipairs(E.ConfigModeLayouts) do
 				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
 			end
+
+			--[[if self.menu then -- 11.0 this doesnt work...
+				self.menu:SetFrameStrata('DIALOG')
+				self.menu:SetFrameLevel(1200)
+			end]]
 		else
 			local info = _G.UIDropDownMenu_CreateInfo()
 			info.func = E.ConfigMode_OnClick
@@ -273,11 +278,11 @@ function E:CreateMoverPopup()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', UIParent)
-	f:SetFrameStrata('FULLSCREEN_DIALOG')
+	f:SetFrameStrata('DIALOG')
+	f:SetFrameLevel(1000)
 	f:SetToplevel(true)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameLevel(200)
 	f:SetClampedToScreen(true)
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
@@ -410,10 +415,6 @@ function E:CreateMoverPopup()
 
 	if E.Retail then
 		dropDown:SetupMenu(E.ConfigMode_Initialize)
-
-		-- how do we raise this????
-		-- dropDown:SetFrameStrata('FULLSCREEN_DIALOG')
-		-- dropDown:SetFrameLevel(300)
 	else
 		_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
 	end
