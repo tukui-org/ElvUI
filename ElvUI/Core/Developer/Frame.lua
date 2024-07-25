@@ -9,7 +9,7 @@ local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LoadAddOn = C_AddOns.LoadAddOn
 
 local GetMouseFocus = GetMouseFocus or function()
-  local frames = GetMouseFoci()
+  local frames = _G.GetMouseFoci()
   return frames and frames[1]
 end
 

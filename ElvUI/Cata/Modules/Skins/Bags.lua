@@ -140,8 +140,8 @@ function S:ContainerFrame()
 		end
 	end)
 
-	if BackpackTokenFrame then
-		BackpackTokenFrame:StripTextures()
+	if _G.BackpackTokenFrame then
+		_G.BackpackTokenFrame:StripTextures()
 	end
 
 	-- BankFrame

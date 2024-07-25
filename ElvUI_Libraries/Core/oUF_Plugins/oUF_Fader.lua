@@ -24,7 +24,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
 local GetMouseFocus = GetMouseFocus or function()
-  local frames = GetMouseFoci()
+  local frames = _G.GetMouseFoci()
   return frames and frames[1]
 end
 

@@ -14,7 +14,7 @@ local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
-local ToggleTalentFrame = ToggleTalentFrame
+local TogglePlayerSpellsFrame = TogglePlayerSpellsFrame
 
 local LoadAddOn = C_AddOns.LoadAddOn
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
