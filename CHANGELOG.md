@@ -1,6 +1,5 @@
 ### Version 13.72 [ July 25th 2024 ]
 *   Chat error when Battlenet is failing to provide info during Social Queue.
-*   Objective Tracker causing an error trying to show and hide still, currently the autohide functionality is broken.
 *   Spec Switch Datatext was not opening Talents.
 *   Added option to adjust the scaling of the Retail ESC Game Menu in General > Cosmetic
 *   Hotkey text was over Cooldowns (this was something Blizzard changed so this fix only applies to our Actionbars).
