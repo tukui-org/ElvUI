@@ -230,6 +230,7 @@ blizz.raidControl = ACH:Group(L["RAID_CONTROL"], nil, 10, nil, function(info) re
 blizz.raidControl.args.raidUtility = ACH:Toggle(L["Enable"], L["Enables the ElvUI Raid Control panel."], 1, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.raidControl.args.modifier = ACH:Select(L["Modifier"], nil, 2, modifierValues)
 blizz.raidControl.args.modifierSwap = ACH:Select(L["Swap Modifier"], nil, 3, { world = L["World"], target = L["Target"] })
+blizz.raidControl.args.showTooltip = ACH:Toggle(L["Tooltip"], L["Display Tooltip on Raid Markers."], 4, nil, nil, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value end)
 blizz.raidControl.inline = true
 
 blizz.quest = ACH:Group(L["Quests"], nil, 20)

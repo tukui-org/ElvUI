@@ -325,7 +325,7 @@ function RU:TargetIcons_GetCoords(button)
 end
 
 do
-	local ground = { 5, 6, 3, 2, 7, 1, 4 }
+	local ground = { 5, 6, 3, 2, 7, 1, 4, 8 }
 	local keys = { SHIFT = 'shift-', ALT = 'alt-', CTRL = 'ctrl-' }
 
 	function RU:TargetIcons_Update()
@@ -342,9 +342,10 @@ do
 		local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
 		local modType = E.db.general.raidUtility.modifierSwap or 'world'
 
+		local id = ground[i]
 		local world = modType == 'world'
 		local tm = format('/tm %d', i)
-		local wm = format('/%s %d', i == 0 and 'cwm' or 'wm', ground[i])
+		local wm = format(i == 0 and '/cwm 0' or '/cwm %d\n/wm %d', id, id)
 		button:SetAttribute('macrotext', world and wm or tm)
 		button:SetAttribute('macrotext1', world and tm or wm)
 		button:SetAttribute('macrotext2', world and tm or wm)
@@ -363,8 +364,10 @@ function RU:CreateTargetIcons()
 	for i = 1, num do
 		local id = num - i
 		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons, 'SecureActionButtonTemplate')
-		button:SetScript('OnMouseDown', RU.MouseDown_TargetIcon)
-		button:SetScript('OnMouseUp', RU.MouseUp_TargetIcon)
+		button:SetScript('OnMouseDown', RU.TargetIcons_MouseDown)
+		button:SetScript('OnMouseUp', RU.TargetIcons_MouseUp)
+		button:SetScript('OnEnter', RU.TargetIcons_OnEnter)
+		button:SetScript('OnLeave', RU.TargetIcons_OnLeave)
 		button:RegisterForClicks('AnyDown', 'AnyUp')
 		button:SetAttribute('type1', 'macro')
 		button:SetAttribute('type2', 'macro')
@@ -430,13 +433,29 @@ function RU:ToggleRaidUtil(event)
 	end
 end
 
-function RU:MouseDown_TargetIcon()
+function RU:TargetIcons_OnEnter()
+	if _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
+
+	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
+	_G.GameTooltip:SetText(L["Raid Markers"])
+	_G.GameTooltip:AddLine(' ')
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.GROUPMANAGER_GROUND_MARKER, L[E.db.general.raidUtility.modifier or 'SHIFT'], 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.GROUPMANAGER_GROUND_MARKER or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:Show()
+end
+
+function RU:TargetIcons_OnLeave()
+	_G.GameTooltip:Hide()
+end
+
+function RU:TargetIcons_MouseDown()
 	local tex = self:GetNormalTexture()
 	local width, height = self:GetSize()
 	tex:SetSize(width-4, height-4)
 end
 
-function RU:MouseUp_TargetIcon()
+function RU:TargetIcons_MouseUp()
 	local tex = self:GetNormalTexture()
 	tex:SetSize(self:GetSize())
 end

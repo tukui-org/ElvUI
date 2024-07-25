@@ -61,7 +61,8 @@ P.general = {
 	},
 	raidUtility = {
 		modifier = 'SHIFT',
-		modifierSwap = 'world'
+		modifierSwap = 'world',
+		showTooltip = true
 	},
 	fonts = {
 		cooldown = { enable = true, font = 'Expressway', size = 20, outline = 'SHADOWOUTLINE' },
