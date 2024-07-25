@@ -3,12 +3,9 @@ local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local min = min
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-
-local Tracker_Collapse = WatchFrame_Collapse
-local Tracker_Expand = WatchFrame_Expand
-local Tracker = WatchFrame
 
 local function ObjectiveTracker_SetPoint(tracker, _, parent)
 	if parent ~= tracker.holder then
@@ -18,26 +15,20 @@ local function ObjectiveTracker_SetPoint(tracker, _, parent)
 end
 
 function BL:ObjectiveTracker_SetHeight()
-	local top = Tracker:GetTop() or 0
+	local tracker = _G.WatchFrame
+	local top = tracker:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
 	local frameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	Tracker:Height(frameHeight)
+	tracker:Height(frameHeight)
 end
 
 function BL:ObjectiveTracker_AutoHideOnHide()
-	if not Tracker.collapsed then
-		Tracker.userCollapsed = true
-		Tracker_Collapse(Tracker)
-	end
-end
+	local tracker = _G.WatchFrame
+	if tracker and tracker.autoHidden then return end
 
-function BL:ObjectiveTracker_AutoHideOnShow()
-	if Tracker.collapsed then
-		Tracker.userCollapsed = nil
-		Tracker_Expand(Tracker)
-	end
+	BL:ObjectiveTracker_Collapse(tracker)
 end
 
 function BL:ObjectiveTracker_Setup()
@@ -49,15 +40,16 @@ function BL:ObjectiveTracker_Setup()
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	-- prevent it from being moved by blizzard (the hook below will most likely do nothing now)
-	Tracker:SetMovable(true)
-	Tracker:SetUserPlaced(true)
-	Tracker:SetDontSavePosition(true)
-	Tracker:SetClampedToScreen(false)
-	Tracker:ClearAllPoints()
-	Tracker:SetPoint('TOP', holder)
+	local tracker = _G.WatchFrame
+	tracker:SetMovable(true)
+	tracker:SetUserPlaced(true)
+	tracker:SetDontSavePosition(true)
+	tracker:SetClampedToScreen(false)
+	tracker:ClearAllPoints()
+	tracker:SetPoint('TOP', holder)
 
-	Tracker.holder = holder
-	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
+	tracker.holder = holder
+	hooksecurefunc(tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
 	BL:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
 	BL:ObjectiveTracker_SetHeight()
