@@ -403,8 +403,8 @@ function E:CreateMoverPopup()
 	end)
 
 	local dropDown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', f:GetName()..'DropDown', f, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
-	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
-	S:HandleDropDownBox(dropDown, 165)
+	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 2, 0)
+	S:HandleDropDownBox(dropDown, 160)
 
 	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
