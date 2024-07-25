@@ -1256,6 +1256,10 @@ function B:Layout(isBank)
 			if warbandFrame and warbandFrame:IsShown() then
 				numContainerRows = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
 			end
+
+			if f.WarbandHolder then
+				f.WarbandHolder.cover.purchaseText:SetWidth(B.db.bankWidth - 40)
+			end
 		elseif B.BankTab == REAGENTBANK_CONTAINER then
 			if not IsReagentBankUnlocked() then
 				f.reagentFrame.cover:Show()
@@ -1709,6 +1713,7 @@ function B:ConstructContainerPurchaseCover(frame)
 	frame.cover.purchaseText = frame.cover:CreateFontString(nil, 'OVERLAY')
 	frame.cover.purchaseText:FontTemplate()
 	frame.cover.purchaseText:Point('BOTTOM', frame.cover.purchaseButton, 'TOP', 0, 10)
+	frame.cover.purchaseText:SetWordWrap(true)
 end
 
 function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
