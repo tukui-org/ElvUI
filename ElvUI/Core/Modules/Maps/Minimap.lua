@@ -667,6 +667,7 @@ function M:Initialize()
 		return
 	end
 
+	local useIcons = E.db.actionbar.microbar.useIcons
 	for _, menu in ipairs(menuList) do
 		menu.notCheckable = true
 
@@ -681,7 +682,8 @@ function M:Initialize()
 				local offset = AB.MICRO_OFFSETS[menu.microOffset]
 				if offset then
 					local new = offset * 12.125
-					menu.text = format('|T%s:18:18:0:0:512:128:%s:%s:%s:%s|t %s', E.Media.Textures.MicroBar, 42 * new, 42 * (new + 1), 0, 42, menu.text)
+					local swap = useIcons and 46 or 0
+					menu.text = format('|T%s:18:18:0:0:512:128:%s:%s:%s:%s|t %s', E.Media.Textures.MicroBar, 42 * new, 42 * (new + 1), 0 + swap, 42 + swap, menu.text)
 				end
 			end
 		elseif menu.microOffset then
