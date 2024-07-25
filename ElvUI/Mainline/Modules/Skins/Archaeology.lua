@@ -70,7 +70,7 @@ function S:Blizzard_ArchaeologyUI()
 
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
 	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
-	_G.ArcheologyDigsiteProgressBar:Point('TOP', UIParent, 'TOP', 0, -500)
+	_G.ArcheologyDigsiteProgressBar:Point('TOP', UIParent, 'TOP', 0, -400)
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 
