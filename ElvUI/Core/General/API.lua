@@ -76,7 +76,6 @@ local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 E.MountIDs = {}
 E.MountText = {}
-E.MountDragons = {}
 
 E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
 E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
@@ -869,14 +868,6 @@ function E:SetupGameMenu()
 	end
 end
 
-function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
-	for spellID in next, E.MountDragons do
-		if E:GetAuraByID('player', spellID, 'HELPFUL') then
-			return true
-		end
-	end
-end
-
 function E:CompatibleTooltip(tt) -- knock off compatibility
 	if tt.GetTooltipData then return end -- real support exists
 
@@ -1032,13 +1023,9 @@ function E:LoadAPI()
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID, _, _, _, _, _, _, _, _, _, _, isForDragonriding = C_MountJournal_GetMountInfoByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
 			E.MountIDs[spellID] = mountID
 			E.MountText[mountID] = sourceText
-
-			if isForDragonriding then
-				E.MountDragons[spellID] = mountID
-			end
 		end
 
 		do -- fill the spec info tables
