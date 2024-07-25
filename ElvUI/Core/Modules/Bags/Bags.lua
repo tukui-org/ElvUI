@@ -2308,15 +2308,15 @@ function B:ConstructContainerFrame(name, isBank)
 					StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
 				end)
 
-				f.goldWithdrawl = CreateFrame('Button', name..'WithdrawlButton', f, 'UIPanelButtonTemplate')
-				f.goldWithdrawl:Size(71, 23)
-				f.goldWithdrawl:SetText(L["Withdrawl"])
-				f.goldWithdrawl:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
-				f.goldWithdrawl:SetScript('OnClick', function()
+				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
+				f.goldWithdraw:Size(71, 23)
+				f.goldWithdraw:SetText(L["Withdraw"])
+				f.goldWithdraw:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
+				f.goldWithdraw:SetScript('OnClick', function()
 					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
 				end)
 
-				S:HandleButton(f.goldWithdrawl)
+				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
 			end
 		end
