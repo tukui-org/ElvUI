@@ -440,7 +440,7 @@ function RU:TargetIcons_OnEnter()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
 	_G.GameTooltip:SetText(L["Raid Markers"])
 	_G.GameTooltip:AddLine(' ')
-	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.GROUPMANAGER_GROUND_MARKER, L[E.db.general.raidUtility.modifier or 'SHIFT'], 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.GROUPMANAGER_GROUND_MARKER, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(isTarget and _G.GROUPMANAGER_GROUND_MARKER or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
 	_G.GameTooltip:Show()
 end
