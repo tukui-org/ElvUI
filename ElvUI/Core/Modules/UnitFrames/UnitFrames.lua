@@ -1033,7 +1033,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
 
 		if numGroups then
-			Header = CreateFrame('Frame', 'ElvUF_'..name, E.UFParent, 'SecureHandlerStateTemplate')
+			Header = CreateFrame('Frame', 'ElvUF_'..name, E.UFParent)
 			Header.groups = {}
 			Header.groupName = group
 			Header.template = Header.template or template
