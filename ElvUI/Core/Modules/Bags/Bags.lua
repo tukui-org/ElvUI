@@ -2275,7 +2275,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.warbandDeposit = CreateFrame('Button', name..'WarbandDeposit', f, 'UIPanelButtonTemplate')
 				f.warbandDeposit:Hide()
 				f.warbandDeposit:Size(190, 23)
-				f.warbandDeposit:SetText(_G.ACCOUNT_BANK_DEPOSIT_BUTTON_LABEL)
+				f.warbandDeposit:SetText(L["Deposit Warbound Items"])
 				f.warbandDeposit:Point('TOPLEFT', f.bankToggle, 'BOTTOMLEFT', 0, -5)
 				f.warbandDeposit:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
@@ -2292,7 +2292,7 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
-				f.warbandReagents.Text:SetText(_G.BANK_DEPOSIT_INCLUDE_REAGENTS_CHECKBOX_LABEL)
+				f.warbandReagents.Text:SetText(L["Include Reagents"])
 				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
 
 				S:HandleButton(f.warbandToggle)
