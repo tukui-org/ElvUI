@@ -2,12 +2,16 @@ local print, strmatch, strlower = print, strmatch, strlower
 local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
 
 local SlashCmdList = SlashCmdList
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParentLoadAddOn = UIParentLoadAddOn
 
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LoadAddOn = C_AddOns.LoadAddOn
+
+local GetMouseFocus = GetMouseFocus or function()
+  local frames = GetMouseFoci()
+  return frames and frames[1]
+end
 
 -- GLOBALS: ElvUI_CPU, ElvUI
 

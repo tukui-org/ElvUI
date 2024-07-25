@@ -15,7 +15,6 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -745,7 +744,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	local frame = self:HasFocus() and GetMouseFocus()
+	local frame = self:HasFocus() and E:GetMouseFocus()
 	if frame and (frame ~= self and frame ~= self.clearButton) then
 		EditBox_ClearFocus(self)
 	end

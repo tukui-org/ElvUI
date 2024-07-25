@@ -25,7 +25,6 @@ local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -1028,7 +1027,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1043,7 +1042,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1082,7 +1081,7 @@ function CH:HandleFadeTabs(chat, hook)
 		end
 	end
 
-	local focus = GetMouseFocus()
+	local focus = E:GetMouseFocus()
 	if not hook then
 		CH:TabOnEnter(tab)
 	elseif focus ~= tab and focus ~= chat then

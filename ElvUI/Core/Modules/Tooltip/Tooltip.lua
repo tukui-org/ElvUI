@@ -22,7 +22,6 @@ local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local CheckInteractDistance = CheckInteractDistance
 local GetGuildInfo = GetGuildInfo
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetTime = GetTime
@@ -551,7 +550,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 	end
 
 	if not unit then
-		local GMF = GetMouseFocus()
+		local GMF = E:GetMouseFocus()
 		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
 		if focusUnit then unit = focusUnit end
 		if not unit or not UnitExists(unit) then
@@ -624,7 +623,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	-- try to get ahold of the unit token
 	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
-		local frame = GetMouseFocus()
+		local frame = E:GetMouseFocus()
 		if frame and frame.GetAttribute then
 			unit = frame:GetAttribute('unit')
 		end

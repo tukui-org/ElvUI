@@ -277,6 +277,19 @@ do
 	end
 end
 
+do -- backwards compatibility for GetMouseFocus
+	local GetMouseFocus = GetMouseFocus
+	local GetMouseFoci = GetMouseFoci
+	function E:GetMouseFocus()
+		if GetMouseFoci then
+			local frames = GetMouseFoci()
+			return frames and frames[1]
+		else
+			return GetMouseFocus()
+		end
+	end
+end
+
 do	-- backwards compatibility for GetSpellInfo
 	local GetSpellInfo = GetSpellInfo
 	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo

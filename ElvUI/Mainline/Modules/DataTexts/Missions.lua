@@ -5,7 +5,6 @@ local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
 
-local GetMouseFoci = GetMouseFoci
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -365,7 +364,7 @@ local function OnEvent(self, event, ...)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and GetMouseFoci() == self then
+	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and E:GetMouseFocus() == self then
 		OnEnter(self)
 	end
 end

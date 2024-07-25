@@ -11,7 +11,6 @@ local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetInstanceInfo = GetInstanceInfo
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
@@ -23,6 +22,11 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+
+local GetMouseFocus = GetMouseFocus or function()
+  local frames = GetMouseFoci()
+  return frames and frames[1]
+end
 
 local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 
