@@ -158,13 +158,12 @@ function M:HandleTrackingButton()
 	tracking:ClearAllPoints()
 
 	local hidden = not Minimap:IsShown()
-	if hidden --[[or E.private.general.minimap.hideTracking]] then -- 11.0 need to fix this menu first, dont let people hide it right now
-		tracking:SetParent(E.HiddenFrame)
+	if hidden or E.private.general.minimap.hideTracking then
+		tracking:Point('TOP', UIParent, 'BOTTOM', 0, -500) -- retail cant hide the parent otherwise the menu will error
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
 		tracking:Point(position, Minimap, xOffset, yOffset)
-		M:SetIconParent(tracking)
 		M:SetScale(tracking, scale)
 
 		local button = E.Retail and tracking.Button
@@ -272,7 +271,17 @@ function M:Minimap_OnMouseDown(btn)
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
 	elseif btn == 'RightButton' and E.Retail then
-		_G.MinimapCluster.Tracking.Button:OpenMenu()
+		local button = _G.MinimapCluster.Tracking.Button
+		if button then
+			button:OpenMenu()
+
+			if button.menu then
+				local pos = M.MapHolder.mover:GetPoint()
+				local left = pos and pos:match('RIGHT')
+				button.menu:ClearAllPoints()
+				button.menu:Point(left and 'TOPRIGHT' or 'TOPLEFT', Minimap, left and 'LEFT' or 'RIGHT', left and -4 or 4, 0)
+			end
+		end
 	elseif E.Retail then
 		Minimap.OnClick(self)
 	else

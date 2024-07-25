@@ -40,8 +40,9 @@ local SetItemButtonQuality = SetItemButtonQuality
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
-local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
+local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
@@ -1815,7 +1816,7 @@ function B:Warband_MenuSkin(menu)
 end
 
 function B:Warband_MenuSpawn(menu, bagID)
-	menu:SetParent(_G.UIParent)
+	menu:SetParent(UIParent)
 	menu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 	menu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
 end
@@ -1829,9 +1830,9 @@ function B:Warband_AccountPanel(bagID)
 
 	local accountPanel = _G.AccountBankPanel
 	if accountPanel then
-		accountPanel:SetParent(_G.UIParent)
+		accountPanel:SetParent(UIParent)
 		accountPanel:ClearAllPoints()
-		accountPanel:SetPoint('TOP', _G.UIParent, 'BOTTOM')
+		accountPanel:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)
 
 		local tabMenu = accountPanel.TabSettingsMenu
 		if tabMenu then
