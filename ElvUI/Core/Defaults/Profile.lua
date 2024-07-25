@@ -59,6 +59,10 @@ P.general = {
 		height = 22,
 		width = 0
 	},
+	raidUtility = {
+		modifier = 'SHIFT',
+		modifierSwap = 'world'
+	},
 	fonts = {
 		cooldown = { enable = true, font = 'Expressway', size = 20, outline = 'SHADOWOUTLINE' },
 		errortext = { enable = true, font = 'Expressway', size = 18, outline = 'SHADOW' },
