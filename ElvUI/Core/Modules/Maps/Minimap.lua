@@ -275,7 +275,7 @@ function M:Minimap_OnMouseDown(btn)
 		if button then
 			button:OpenMenu()
 
-			if button.menu then
+			if button.menu and E.private.general.minimap.hideTracking then
 				local pos = M.MapHolder.mover:GetPoint()
 				local left = pos and pos:match('RIGHT')
 				button.menu:ClearAllPoints()
