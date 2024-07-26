@@ -82,7 +82,9 @@ local function HandleProgressBar(tracker, key)
 
 	if bar then
 		ReskinBarTemplate(bar)
-		S:StatusBarColorGradient(bar, bar:GetValue(), 100)
+
+		local _, maxValue = bar:GetMinMaxValues()
+		S:StatusBarColorGradient(bar, bar:GetValue(), maxValue)
 
 		local icon = bar.Icon
 		if icon and not icon.backdrop then
