@@ -22,13 +22,12 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local UnitPowerBarID = UnitPowerBarID
 
 local GetMouseFocus = GetMouseFocus or function()
   local frames = _G.GetMouseFoci()
   return frames and frames[1]
 end
-
-local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
 ---- Fader.HoverHooked, Fader.TargetHooked
@@ -68,10 +67,9 @@ local function updateInstanceDifficulty(element)
 end
 
 local function CanGlide()
-	if not GetGlidingInfo then return end
+	if not E.Retail then return end
 
-	local _, canGlide = GetGlidingInfo()
-	return canGlide
+	return UnitPowerBarID("player") == 631
 end
 
 local function Update(self, event, unit)
@@ -87,7 +85,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if event == 'PLAYER_CAN_GLIDE_CHANGED' or not unit then
+	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
 		unit = self.unit
 	end
 
@@ -317,9 +315,9 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update, true)
+			self:RegisterEvent('PLAYER_IS_GLIDING_CHANGED', Update, true)
 		end,
-		events = {'PLAYER_CAN_GLIDE_CHANGED'}
+		events = {'PLAYER_IS_GLIDING_CHANGED'}
 	}
 end
 
