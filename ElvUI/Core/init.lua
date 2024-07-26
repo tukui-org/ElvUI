@@ -279,7 +279,7 @@ function E:SetEasyMenuAnchor(menu, frame)
 	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
 	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
 
-	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, frame, anchor2)
+	UIDropDownMenu_SetAnchor(menu, 1, -1, anchor1, frame, anchor2)
 end
 
 function E:ResetProfile()
