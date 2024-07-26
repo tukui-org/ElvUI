@@ -20,9 +20,9 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
+local UnitPowerBarID = UnitPowerBarID
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
-local UnitPowerBarID = UnitPowerBarID
 
 local GetMouseFocus = GetMouseFocus or function()
   local frames = _G.GetMouseFoci()
