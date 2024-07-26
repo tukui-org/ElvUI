@@ -234,12 +234,12 @@ function S:Blizzard_Communities()
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
 	for _, checkButton in next, {
-		ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-		ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-		ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
+		ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.Checkbox,
+		ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.Checkbox,
+		ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.Checkbox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.Checkbox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.Checkbox,
+		ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.Checkbox
 	} do
 		S:HandleCheckBox(checkButton)
 		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
