@@ -182,9 +182,9 @@ function S:Blizzard_Communities()
 
 				hooksecurefunc(requestFrame, 'Initialize', function(s)
 					for button in s.SpecsPool:EnumerateActive() do
-						if button.CheckBox then
-							S:HandleCheckBox(button.CheckBox)
-							button.CheckBox:Size(26)
+						if button.Checkbox then
+							S:HandleCheckBox(button.Checkbox)
+							button.Checkbox:Size(26)
 						end
 					end
 				end)
