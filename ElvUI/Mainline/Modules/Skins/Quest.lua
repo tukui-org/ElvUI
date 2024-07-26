@@ -180,7 +180,10 @@ end
 function S:QuestLogQuests_Update() -- self is not S
 	for _, child in next, { _G.QuestMapFrame.QuestsFrame.Contents:GetChildren() } do
 		if child.ButtonText and not child.questID then
-			child:Size(16)
+			if child.CollapseButton then
+				child.CollapseButton:ClearAllPoints()
+				child.CollapseButton:Point('LEFT', -10, 0)
+			end
 
 			for _, tex in next, { child:GetRegions() } do
 				if tex.GetAtlas then
