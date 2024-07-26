@@ -54,24 +54,53 @@ local function ReskinConfirmIcon(frame)
 	S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 end
 
+local function SelectReward(reward)
+	local selection = reward.confirmSelectionFrame
+	if selection then
+		_G.WeeklyRewardsFrameNameFrame:Hide()
+		ReskinConfirmIcon(selection.ItemFrame)
+
+		local alsoItems = selection.AlsoItemsFrame
+		if alsoItems and alsoItems.pool then
+			for items in alsoItems.pool:EnumerateActive() do
+				ReskinConfirmIcon(items)
+			end
+		end
+	end
+end
+
+local function UpdateOverlay(frame)
+	local overlay = frame.Overlay
+	if overlay then
+		overlay:StripTextures()
+		overlay:SetTemplate()
+	end
+end
+
 function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
 	-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 	local frame = _G.WeeklyRewardsFrame
-	local header = frame.HeaderFrame
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 
-		frame.BorderContainer:SetAlpha(0)
+		frame.NineSlice:SetAlpha(0)
+		frame.BackgroundTile:SetAlpha(0)
 
-		header:StripTextures()
-		header:SetTemplate('Transparent')
+		local header = frame.HeaderFrame
+		if header then
+			header:ClearAllPoints()
+			header:Point('TOP', 1, -42)
+			header:StripTextures()
+			header:SetTemplate('Transparent')
 
-		header:ClearAllPoints()
-		header:Point('TOP', 1, -42)
+			header.Right:SetAlpha(0)
+			header.Left:SetAlpha(0)
+			header.Middle:SetAlpha(0)
+		end
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
@@ -86,32 +115,14 @@ function S:Blizzard_WeeklyRewards()
 		SkinActivityFrame(activity, true)
 	end
 
-	hooksecurefunc(frame, 'SelectReward', function(reward)
-		local selection = reward.confirmSelectionFrame
-		if selection then
-			_G.WeeklyRewardsFrameNameFrame:Hide()
-			ReskinConfirmIcon(selection.ItemFrame)
-
-			local alsoItems = selection.AlsoItemsFrame
-			if alsoItems and alsoItems.pool then
-				for items in alsoItems.pool:EnumerateActive() do
-					ReskinConfirmIcon(items)
-				end
-			end
-		end
-	end)
-
-	hooksecurefunc(frame, 'UpdateOverlay', function()
-		local overlay = frame.Overlay
-		if overlay then
-			overlay:StripTextures()
-			overlay:SetTemplate()
-		end
-	end)
-
 	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
-	S.ReplaceIconString(rewardText)
-	hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
+	if rewardText then
+		S.ReplaceIconString(rewardText)
+		hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
+	end
+
+	hooksecurefunc(frame, 'SelectReward', SelectReward)
+	hooksecurefunc(frame, 'UpdateOverlay', UpdateOverlay)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')

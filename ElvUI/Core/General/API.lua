@@ -76,7 +76,6 @@ local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 E.MountIDs = {}
 E.MountText = {}
-E.MountDragons = {}
 
 E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
 E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
@@ -274,6 +273,19 @@ do
 		end
 
 		return tt.gems, tt.essences
+	end
+end
+
+do -- backwards compatibility for GetMouseFocus
+	local GetMouseFocus = GetMouseFocus
+	local GetMouseFoci = GetMouseFoci
+	function E:GetMouseFocus()
+		if GetMouseFoci then
+			local frames = GetMouseFoci()
+			return frames and frames[1]
+		else
+			return GetMouseFocus()
+		end
 	end
 end
 
@@ -842,6 +854,8 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
+		GameMenuFrame:SetScale(E.private.general.gameMenuScale or 1)
+
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else
 		local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
@@ -851,14 +865,6 @@ function E:SetupGameMenu()
 		button:Size(GameMenuButtonLogout:GetSize())
 		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
-	end
-end
-
-function E:IsDragonRiding() -- currently unused, was used to help actionbars fade
-	for spellID in next, E.MountDragons do
-		if E:GetAuraByID('player', spellID, 'HELPFUL') then
-			return true
-		end
 	end
 end
 
@@ -1017,13 +1023,9 @@ function E:LoadAPI()
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
 			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID, _, _, _, _, _, _, _, _, _, _, isForDragonriding = C_MountJournal_GetMountInfoByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
 			E.MountIDs[spellID] = mountID
 			E.MountText[mountID] = sourceText
-
-			if isForDragonriding then
-				E.MountDragons[spellID] = mountID
-			end
 		end
 
 		do -- fill the spec info tables

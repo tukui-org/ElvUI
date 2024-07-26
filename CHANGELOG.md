@@ -1,3 +1,28 @@
+### Version 13.72 [ July 25th 2024 ]
+*   Chat error when Battlenet is failing to provide info during Social Queue.
+*   Spec Switch Datatext was not opening Talents.
+*   Added option to adjust the scaling of the Retail ESC Game Menu in General > Cosmetic
+*   Hotkey text was over Cooldowns (this was something Blizzard changed so this fix only applies to our Actionbars).
+*   Minimap Middle Click menu has icons again and also has the Profession button like Microbar (on retail).
+*   Reimplemented Autohide for Objective Tracker (updated the Autohide Objective Tracker for Cataclysm Arena too).
+*   World Markers can be set by holding shift in Raid Control, this mod key can be adjusted in General > BlizzUI Improvements > Raid Control.
+*   Spell ID will show up on #showtooltip macros again.
+*   Unitframe Fader during Hover not working correctly.
+*   Minimap Tracking button hide is reactivated.
+*   Party frames were not pingable anymore on Retail.
+*   Issue with using Transfer Currencies involving RequestCurrencyFromAccountCharacter.
+*   ExpandAllFactionHeaders error resolved.
+*   Mover dropdown under the Nudge frame itself.
+*   Skin issues:
+    *   Guild Reputation progress bar was always full.
+    *   Dropdown boxes overlapping with zone text in the /who list.
+    *   Updated the color for the quest text notice "This quest has been completed on your account already"
+    *   Bags/Bank skin in Classic and Cataclysm are fixed when Bags module is disabled.
+    *   Great Vault skin error when parchment remover was enabled.
+    *   Spellbook skin error when you unlearn a profession.
+    *   Scrapping Machine skin erroring on open.
+    *   Skinned new Currency Transfer menu.
+
 ### Version 13.71 [ July 23rd 2024 ]
 *   The War Within patch 11.0 supported.
 *   Unitframe Health causing a point error when profiles switch.
@@ -51,7 +76,7 @@
 *   Group frames now show Alternative Power options.
 *   Guild Instance Difficulty icon shows correctly.
 *   Missing battleground healer/tank icons on some locales.
-*   Raid Utility: Target Icons (all), Role Icons (party), World Markers (Cata)
+*   Raid Utility: Target Icons (all), Role Icons (party), World Markers (Cataclysm)
 *   Panda Remix: Fixed double character page gem display.
 *   Party Pets & Target: Individual Glow settings added.
 

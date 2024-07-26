@@ -6,7 +6,7 @@ local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, select, ipairs = unpack, select, ipairs
+local unpack, ipairs = unpack, ipairs
 local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
@@ -22,7 +22,6 @@ local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local CheckInteractDistance = CheckInteractDistance
 local GetGuildInfo = GetGuildInfo
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetTime = GetTime
@@ -551,7 +550,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 	end
 
 	if not unit then
-		local GMF = GetMouseFocus()
+		local GMF = E:GetMouseFocus()
 		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
 		if focusUnit then unit = focusUnit end
 		if not unit or not UnitExists(unit) then
@@ -624,7 +623,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	-- try to get ahold of the unit token
 	local _, unit = tt:GetParent():GetUnit()
 	if not unit then
-		local frame = GetMouseFocus()
+		local frame = E:GetMouseFocus()
 		if frame and frame.GetAttribute then
 			unit = frame:GetAttribute('unit')
 		end
@@ -873,24 +872,25 @@ end
 function TT:GameTooltip_OnTooltipSetSpell(data)
 	if (self ~= GameTooltip and self ~= E.SpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
-	local id = (data and data.id) or select(2, self:GetSpell())
-	if not id then return end
-
-	local ID = format(IDLine, _G.ID, id)
-	local info = self:GetTooltipData()
-	if info and info.lines[3] then
-		for _, line in next, info.lines, 3 do
-			local text = line and line.leftText
-			if not text or text == '' then return end
-
-			if strfind(text, ID) then
-				return -- this is called twice on talents for some reason?
+	local spellID, _
+	if E.Retail then
+		if data and data.type then
+			if data.type == TooltipDataType.Spell then
+				spellID = data.id
+			elseif data.type == TooltipDataType.Macro then
+				local info = self:GetTooltipData()
+				local line = info and info.lines[1]
+				spellID = line and line.tooltipID
 			end
 		end
+	else
+		_, spellID = self:GetSpell()
 	end
 
-	self:AddLine(ID)
-	self:Show()
+	if spellID then
+		self:AddLine(format(IDLine, _G.ID, spellID))
+		self:Show()
+	end
 end
 
 function TT:SetItemRef(link)
@@ -1070,6 +1070,7 @@ function TT:Initialize()
 
 	if AddTooltipPostCall and not E.Cata then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
+		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 

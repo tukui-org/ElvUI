@@ -53,17 +53,10 @@ local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local clubTable, guildTable, guildMotD = {}, {}, ''
 
+local factionTemp = {}
 local GetGuildFactionInfo = (C_Reputation and C_Reputation.GetGuildFactionData) or function()
-	local guildName, description, standingID, barMin, barMax, barValue = _G.GetGuildFactionInfo()
-
-	return {
-		name = guildName,
-		description = description,
-		reaction = standingID,
-		currentReactionThreshold = barMin,
-		nextReactionThreshold = barMax,
-		currentStanding = barValue
-	}
+	factionTemp.name, factionTemp.description, factionTemp.reaction, factionTemp.currentReactionThreshold, factionTemp.nextReactionThreshold, factionTemp.currentStanding = _G.GetGuildFactionInfo()
+	return factionTemp
 end
 
 local function sortByRank(a, b)

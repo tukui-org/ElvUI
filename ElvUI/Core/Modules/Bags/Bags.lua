@@ -40,8 +40,9 @@ local SetItemButtonQuality = SetItemButtonQuality
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
-local ToggleFrame = ToggleFrame
 local UnitAffectingCombat = UnitAffectingCombat
+local ToggleFrame = ToggleFrame
+local UIParent = UIParent
 
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
@@ -1256,6 +1257,10 @@ function B:Layout(isBank)
 			if warbandFrame and warbandFrame:IsShown() then
 				numContainerRows = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
 			end
+
+			if f.WarbandHolder then
+				f.WarbandHolder.cover.purchaseText:SetWidth(B.db.bankWidth - 40)
+			end
 		elseif B.BankTab == REAGENTBANK_CONTAINER then
 			if not IsReagentBankUnlocked() then
 				f.reagentFrame.cover:Show()
@@ -1709,6 +1714,7 @@ function B:ConstructContainerPurchaseCover(frame)
 	frame.cover.purchaseText = frame.cover:CreateFontString(nil, 'OVERLAY')
 	frame.cover.purchaseText:FontTemplate()
 	frame.cover.purchaseText:Point('BOTTOM', frame.cover.purchaseButton, 'TOP', 0, 10)
+	frame.cover.purchaseText:SetWordWrap(true)
 end
 
 function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
@@ -1810,7 +1816,7 @@ function B:Warband_MenuSkin(menu)
 end
 
 function B:Warband_MenuSpawn(menu, bagID)
-	menu:SetParent(_G.UIParent)
+	menu:SetParent(UIParent)
 	menu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 	menu:TriggerEvent(_G.BankPanelTabSettingsMenuMixin.Event.OpenTabSettingsRequested, bagID)
 end
@@ -1824,9 +1830,9 @@ function B:Warband_AccountPanel(bagID)
 
 	local accountPanel = _G.AccountBankPanel
 	if accountPanel then
-		accountPanel:SetParent(_G.UIParent)
+		accountPanel:SetParent(UIParent)
 		accountPanel:ClearAllPoints()
-		accountPanel:SetPoint('TOP', _G.UIParent, 'BOTTOM')
+		accountPanel:SetPoint('TOP', UIParent, 'BOTTOM')
 
 		local tabMenu = accountPanel.TabSettingsMenu
 		if tabMenu then
@@ -2270,7 +2276,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.warbandDeposit = CreateFrame('Button', name..'WarbandDeposit', f, 'UIPanelButtonTemplate')
 				f.warbandDeposit:Hide()
 				f.warbandDeposit:Size(190, 23)
-				f.warbandDeposit:SetText(_G.ACCOUNT_BANK_DEPOSIT_BUTTON_LABEL)
+				f.warbandDeposit:SetText(L["Deposit Warbound Items"])
 				f.warbandDeposit:Point('TOPLEFT', f.bankToggle, 'BOTTOMLEFT', 0, -5)
 				f.warbandDeposit:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
@@ -2287,7 +2293,7 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
-				f.warbandReagents.Text:SetText(_G.BANK_DEPOSIT_INCLUDE_REAGENTS_CHECKBOX_LABEL)
+				f.warbandReagents.Text:SetText(L["Include Reagents"])
 				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
 
 				S:HandleButton(f.warbandToggle)
@@ -2308,15 +2314,15 @@ function B:ConstructContainerFrame(name, isBank)
 					StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
 				end)
 
-				f.goldWithdrawl = CreateFrame('Button', name..'WithdrawlButton', f, 'UIPanelButtonTemplate')
-				f.goldWithdrawl:Size(71, 23)
-				f.goldWithdrawl:SetText(L["Withdrawl"])
-				f.goldWithdrawl:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
-				f.goldWithdrawl:SetScript('OnClick', function()
+				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
+				f.goldWithdraw:Size(71, 23)
+				f.goldWithdraw:SetText(L["Withdraw"])
+				f.goldWithdraw:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
+				f.goldWithdraw:SetScript('OnClick', function()
 					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
 				end)
 
-				S:HandleButton(f.goldWithdrawl)
+				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
 			end
 		end

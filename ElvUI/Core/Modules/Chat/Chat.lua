@@ -25,7 +25,6 @@ local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -1028,7 +1027,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1043,7 +1042,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1082,7 +1081,7 @@ function CH:HandleFadeTabs(chat, hook)
 		end
 	end
 
-	local focus = GetMouseFocus()
+	local focus = E:GetMouseFocus()
 	if not hook then
 		CH:TabOnEnter(tab)
 	elseif focus ~= tab and focus ~= chat then
@@ -2821,17 +2820,19 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 
 	for i = 1, BNGetNumFriends() do
 		local info = C_BattleNet_GetAccountInfoByID(i)
-		for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
-			local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-			if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
-				playerName = gameInfo.characterName
+		if info and info.accountName then
+			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
+				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
+				if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
+					playerName = gameInfo.characterName
 
-				if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
-					playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
-				end
+					if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
+						playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
+					end
 
-				if leaderName == playerName then
-					return true
+					if leaderName == playerName then
+						return true
+					end
 				end
 			end
 		end

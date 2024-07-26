@@ -38,7 +38,7 @@ local function UpdateTokenSkins(frame)
 		if not child.IsSkinned then
 			if child.Right then
 				child:StripTextures()
-				child:CreateBackdrop()
+				child:CreateBackdrop('Transparent')
 				child.backdrop:SetInside(child)
 
 				updateCollapse(child.Right)
@@ -426,7 +426,6 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:StripTextures()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
-	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 
@@ -438,6 +437,16 @@ function S:Blizzard_UIPanels_Game()
 	if TokenPopupClose then
 		S:HandleCloseButton(TokenPopupClose)
 	end
+
+	-- Currency Transfer (new in 11.0)
+	local currencyTransfer = _G.CurrencyTransferMenu
+	currencyTransfer:StripTextures()
+	currencyTransfer:SetTemplate('Transparent')
+	S:HandleCloseButton(currencyTransfer.CloseButton)
+	S:HandleDropDownBox(currencyTransfer.SourceSelector.Dropdown)
+	S:HandleEditBox(currencyTransfer.AmountSelector.InputBox)
+	S:HandleButton(currencyTransfer.ConfirmButton)
+	S:HandleButton(currencyTransfer.CancelButton)
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)

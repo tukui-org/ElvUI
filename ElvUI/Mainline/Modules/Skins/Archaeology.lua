@@ -13,9 +13,9 @@ function S:Blizzard_ArchaeologyUI()
 	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
 	S:HandleButton(ArchaeologyFrame.artifactPage.backButton, true)
 
-	S:HandleDropDownBox(_G.ArchaeologyFrame.raceFilterDropDown)
-	_G.ArchaeologyFrame.raceFilterDropDown.Text:ClearAllPoints()
-	_G.ArchaeologyFrame.raceFilterDropDown.Text:Point('LEFT', _G.ArchaeologyFrame.raceFilterDropDown.backdrop, 'LEFT', 4, 0)
+	S:HandleDropDownBox(_G.ArchaeologyFrameRaceFilter)
+	_G.ArchaeologyFrameRaceFilter.Text:ClearAllPoints()
+	_G.ArchaeologyFrameRaceFilter.Text:Point('LEFT', _G.ArchaeologyFrameRaceFilter.backdrop, 'LEFT', 4, 0)
 
 	if E.private.skins.parchmentRemoverEnable then
 		_G.ArchaeologyFrameBgLeft:Kill()

@@ -15,7 +15,6 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local GetMouseFocus = GetMouseFoci or GetMouseFocus
 local UIParent = UIParent
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -219,6 +218,11 @@ do
 			for _, configMode in ipairs(E.ConfigModeLayouts) do
 				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
 			end
+
+			--[[if self.menu then -- 11.0 this doesnt work...
+				self.menu:SetFrameStrata('DIALOG')
+				self.menu:SetFrameLevel(1200)
+			end]]
 		else
 			local info = _G.UIDropDownMenu_CreateInfo()
 			info.func = E.ConfigMode_OnClick
@@ -274,11 +278,11 @@ function E:CreateMoverPopup()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', UIParent)
-	f:SetFrameStrata('FULLSCREEN_DIALOG')
+	f:SetFrameStrata('DIALOG')
+	f:SetFrameLevel(1000)
 	f:SetToplevel(true)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameLevel(200)
 	f:SetClampedToScreen(true)
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
@@ -399,8 +403,8 @@ function E:CreateMoverPopup()
 	end)
 
 	local dropDown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', f:GetName()..'DropDown', f, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
-	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
-	S:HandleDropDownBox(dropDown, 165)
+	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 2, 0)
+	S:HandleDropDownBox(dropDown, 160)
 
 	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
@@ -411,10 +415,6 @@ function E:CreateMoverPopup()
 
 	if E.Retail then
 		dropDown:SetupMenu(E.ConfigMode_Initialize)
-
-		-- how do we raise this????
-		-- dropDown:SetFrameStrata('FULLSCREEN_DIALOG')
-		-- dropDown:SetFrameLevel(300)
 	else
 		_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
 	end
@@ -745,7 +745,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	local frame = self:HasFocus() and GetMouseFocus()
+	local frame = self:HasFocus() and E:GetMouseFocus()
 	if frame and (frame ~= self and frame ~= self.clearButton) then
 		EditBox_ClearFocus(self)
 	end

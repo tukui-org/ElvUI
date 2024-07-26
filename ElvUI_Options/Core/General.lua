@@ -7,6 +7,7 @@ local M = E:GetModule('Misc')
 local NP = E:GetModule('NamePlates')
 local TM = E:GetModule('TotemTracker')
 local UF = E:GetModule('UnitFrames')
+local RU = E:GetModule('RaidUtility')
 local ACH = E.Libs.ACH
 
 local _G = _G
@@ -22,6 +23,8 @@ local function GetChatWindowInfo()
 	end
 	return ChatTabInfo
 end
+
+local modifierValues = { SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
 E.Options.args.general = ACH:Group(L["General"], nil, 1, 'tab', function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
 local General = E.Options.args.general.args
@@ -191,6 +194,10 @@ Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the came
 Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
 Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
+Cosmetic.gameMenuGroup = ACH:Group(L["Game Menu"], nil, 31, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
+Cosmetic.gameMenuGroup.inline = true
+Cosmetic.gameMenuGroup.args.gameMenuScale = ACH:Range(E.NewSign..L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.1 })
+
 Cosmetic.chatBubblesGroup = ACH:Group(L["Chat Bubbles"], nil, 35, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 Cosmetic.chatBubblesGroup.inline = true
 Cosmetic.chatBubblesGroup.args.replaceBubbleFont = ACH:Toggle(L["Replace Font"], nil, 1)
@@ -209,24 +216,30 @@ blizz.general = ACH:Group(L["General"], nil, 1)
 blizz.general.args.hideErrorFrame = ACH:Toggle(L["Hide Error Text"], L["Hides the red error text at the top of the screen while in combat."], 1)
 blizz.general.args.enhancedPvpMessages = ACH:Toggle(L["Enhanced PVP Messages"], L["Display battleground messages in the middle of the screen."], 2)
 blizz.general.args.disableTutorialButtons = ACH:Toggle(L["Disable Tutorial Buttons"], L["Disables the tutorial button found on some frames."], 3, nil, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end)
-blizz.general.args.raidUtility = ACH:Toggle(L["RAID_CONTROL"], L["Enables the ElvUI Raid Control panel."], 4, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.voiceOverlay = ACH:Toggle(L["Voice Overlay"], L["Replace Blizzard's Voice Overlay."], 5, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.resurrectSound = ACH:Toggle(L["Resurrect Sound"], L["Enable to hear sound if you receive a resurrect."], 6)
 blizz.general.args.loot = ACH:Toggle(L["Loot Frame"], L["Enable/Disable the loot frame."], 7, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.hideZoneText = ACH:Toggle(L["Hide Zone Text"], L["Enable/Disable the on-screen zone text when you change zones."], 8, nil, nil, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value; M:ZoneTextToggle() end)
 blizz.general.args.spacer1 = ACH:Spacer(14, 'full')
-blizz.general.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 15, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateVehicleFrame() end, nil, not E.Cata)
 blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, not E.Cata)
 blizz.general.inline = true
 
-blizz.quest = ACH:Group(L["Quests"], nil, 2)
+blizz.raidControl = ACH:Group(L["RAID_CONTROL"], nil, 10, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value RU:TargetIcons_Update() end)
+blizz.raidControl.args.raidUtility = ACH:Toggle(L["Enable"], L["Enables the ElvUI Raid Control panel."], 1, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
+blizz.raidControl.args.modifier = ACH:Select(L["Modifier"], nil, 2, modifierValues)
+blizz.raidControl.args.modifierSwap = ACH:Select(L["Swap Modifier"], nil, 3, { world = L["World"], target = L["Target"] })
+blizz.raidControl.args.showTooltip = ACH:Toggle(L["Tooltip"], L["Display Tooltip on Raid Markers."], 4, nil, nil, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value end)
+blizz.raidControl.inline = true
+
+blizz.quest = ACH:Group(L["Quests"], nil, 20)
 blizz.quest.args.questRewardMostValueIcon = ACH:Toggle(L["Mark Quest Reward"], L["Marks the most valuable quest reward with a gold coin."], 1)
 blizz.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
-blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 1, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, not E.Classic)
+blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 3, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, not E.Classic)
+blizz.quest.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 4, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 blizz.quest.inline = true
 
-blizz.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 3, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value M:UpdateLootRollFrames() end)
+blizz.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 30, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value M:UpdateLootRollFrames() end)
 blizz.lootRollGroup.args.lootRoll = ACH:Toggle(L["Enable"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E.ShowPopup = true end)
 blizz.lootRollGroup.args.qualityName = ACH:Toggle(L["Quality Name"], nil, 1)
 blizz.lootRollGroup.args.qualityItemLevel = ACH:Toggle(L["Quality Itemlevel"], nil, 2)
@@ -248,7 +261,7 @@ blizz.lootRollGroup.args.fontGroup.args.nameFontSize = ACH:Range(L["Font Size"],
 blizz.lootRollGroup.args.fontGroup.args.nameFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.lootRollGroup.args.fontGroup.inline = true
 
-blizz.itemLevelInfo = ACH:Group(L["Item Level"], nil, 4, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value M:ToggleItemLevelInfo(nil, true) end, nil, E.Classic)
+blizz.itemLevelInfo = ACH:Group(L["Item Level"], nil, 40, nil, function(info) return E.db.general.itemLevel[info[#info]] end, function(info, value) E.db.general.itemLevel[info[#info]] = value M:ToggleItemLevelInfo(nil, true) end, nil, E.Classic)
 blizz.itemLevelInfo.args.displayInspectInfo = ACH:Toggle(L["Display Inspect Info"], L["Shows item level of each item, enchants, and gems when inspecting another player."], 1)
 blizz.itemLevelInfo.args.displayCharacterInfo = ACH:Toggle(L["Display Character Info"], L["Shows item level of each item, enchants, and gems on the character page."], 2, nil, nil, nil, nil, nil, function() return E:IsAddOnEnabled('DejaCharacterStats') end)
 blizz.itemLevelInfo.args.enchantAbbrev = ACH:Toggle(L["Abbreviate Enchants"], nil, 3)
@@ -269,13 +282,13 @@ blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontSize = ACH:Range(L["F
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 blizz.itemLevelInfo.args.totalFontGroup.inline = true
 
-blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 5, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Cata))
+blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 50, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Cata))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_AutoHide() end, nil, not (E.Retail or E.Cata))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or not E.db.general.objectiveFrameAutoHide end)
 blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Cata)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 
-blizz.addonCompartment = ACH:Group(L["Addon Compartment"], nil, 6, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; BL:HandleAddonCompartment() end, nil, not E.Retail)
+blizz.addonCompartment = ACH:Group(L["Addon Compartment"], nil, 60, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; BL:HandleAddonCompartment() end, nil, not E.Retail)
 blizz.addonCompartment.args.size = ACH:Range(L["Size"], nil, 1, { min = 10, max = 40, step = 1 })
 blizz.addonCompartment.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, { min = 2, max = 128, step = 1 })
 blizz.addonCompartment.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 3, C.Values.Strata)
@@ -287,7 +300,7 @@ blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], 
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
 
-blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 60, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
+blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 70, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
 blizz.queueStatus.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.queueStatus end, function(_, value) E.private.general.queueStatus = value E.ShowPopup = true end, nil, function() return not E.Retail or E.private.actionbar.enable end)
 blizz.queueStatus.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.3, max = 1, step = 0.05 })
 blizz.queueStatus.args.frameLevel = ACH:Range(L["Frame Level"], nil, 3, { min = 2, max = 128, step = 1 })
@@ -305,7 +318,7 @@ blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
 
-blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 70, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
+blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 80, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
 blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Cata)
 
 blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 10)

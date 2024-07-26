@@ -692,7 +692,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Retail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
 
@@ -1111,7 +1111,7 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Retail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, 'SecureUnitButtonTemplate')
 
 		UF.units[unit] = frame
 		UF[unit] = frame

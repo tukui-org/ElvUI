@@ -27,9 +27,6 @@ local IsEveryoneAssistant = IsEveryoneAssistant
 local SetEveryoneIsAssistant = SetEveryoneIsAssistant
 local SetDungeonDifficultyID = SetDungeonDifficultyID
 local GetDungeonDifficultyID = GetDungeonDifficultyID
-local ClearRaidMarker = ClearRaidMarker
-local PlaceRaidMarker = PlaceRaidMarker
-local SetRaidTarget = SetRaidTarget
 local IsInGroup = IsInGroup
 local PlaySound = PlaySound
 local UnitClass = UnitClass
@@ -52,6 +49,7 @@ local TARGET_SIZE = 22
 
 -- GLOBALS: C_PartyInfo
 
+local raidMarkers = {}
 local roleRoster = {}
 local roleCount = {}
 local roles = {
@@ -326,6 +324,36 @@ function RU:TargetIcons_GetCoords(button)
 	tex:SetTexCoord(left, right, top, bottom)
 end
 
+do
+	local ground = { 5, 6, 3, 2, 7, 1, 4, 8 }
+	local keys = { SHIFT = 'shift-', ALT = 'alt-', CTRL = 'ctrl-' }
+
+	function RU:TargetIcons_Update()
+		for id, button in next, raidMarkers do
+			for _, key in next, keys do -- clear the last ones
+				button:SetAttribute(key..'type*', nil)
+			end
+
+			RU:TargetIcons_UpdateMacro(button, id)
+		end
+	end
+
+	function RU:TargetIcons_UpdateMacro(button, i)
+		local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
+		local modType = E.db.general.raidUtility.modifierSwap or 'world'
+
+		local id = ground[i]
+		local world = modType == 'world'
+		local tm = format('/tm %d', i)
+		local wm = format(i == 0 and '/cwm 0' or '/cwm %d\n/wm %d', id, id)
+		button:SetAttribute('macrotext', world and wm or tm)
+		button:SetAttribute('macrotext1', world and tm or wm)
+		button:SetAttribute('macrotext2', world and tm or wm)
+		button:SetAttribute('macrotext3', world and tm or wm)
+		button:SetAttribute(modifier..'type*', 'macro')
+	end
+end
+
 function RU:CreateTargetIcons()
 	local TargetIcons = CreateFrame('Frame', 'RaidUtilityTargetIcons', _G.RaidUtilityPanel)
 	TargetIcons:Size(PANEL_WIDTH, BUTTON_HEIGHT + 8)
@@ -334,13 +362,24 @@ function RU:CreateTargetIcons()
 
 	local num, previous = _G.NUM_RAID_ICONS + 1 -- include clear
 	for i = 1, num do
-		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons)
-		button:SetScript('OnMouseDown', RU.MouseDown_TargetIcon)
-		button:SetScript('OnMouseUp', RU.MouseUp_TargetIcon)
-		button:SetScript('OnClick', RU.OnClick_TargetIcon)
+		local id = num - i
+		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons, 'SecureActionButtonTemplate')
+		button:SetScript('OnMouseDown', RU.TargetIcons_MouseDown)
+		button:SetScript('OnMouseUp', RU.TargetIcons_MouseUp)
+		button:SetScript('OnEnter', RU.TargetIcons_OnEnter)
+		button:SetScript('OnLeave', RU.TargetIcons_OnLeave)
+		button:RegisterForClicks('AnyDown', 'AnyUp')
+		button:SetAttribute('type1', 'macro')
+		button:SetAttribute('type2', 'macro')
+		button:SetAttribute('type3', 'macro')
 		button:SetNormalTexture(i == num and [[Interface\Buttons\UI-GroupLoot-Pass-Up]] or [[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-		button:SetID(num - i)
+		button:SetID(id)
 		button:Size(TARGET_SIZE)
+		button.keys = {}
+
+		RU:TargetIcons_UpdateMacro(button, id)
+
+		raidMarkers[id] = button
 
 		if i == 1 then
 			button:SetPoint('TOPLEFT', TargetIcons, 6, -3)
@@ -394,31 +433,31 @@ function RU:ToggleRaidUtil(event)
 	end
 end
 
-function RU:MouseDown_TargetIcon()
+function RU:TargetIcons_OnEnter()
+	if _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
+
+	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
+	_G.GameTooltip:SetText(L["Raid Markers"])
+	_G.GameTooltip:AddLine(' ')
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.GROUPMANAGER_GROUND_MARKER, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.GROUPMANAGER_GROUND_MARKER or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:Show()
+end
+
+function RU:TargetIcons_OnLeave()
+	_G.GameTooltip:Hide()
+end
+
+function RU:TargetIcons_MouseDown()
 	local tex = self:GetNormalTexture()
 	local width, height = self:GetSize()
 	tex:SetSize(width-4, height-4)
 end
 
-function RU:MouseUp_TargetIcon()
+function RU:TargetIcons_MouseUp()
 	local tex = self:GetNormalTexture()
 	tex:SetSize(self:GetSize())
-end
-
-function RU:OnClick_TargetIcon()
-	PlaySound(IG_MAINMENU_OPTION_CHECKBOX_ON)
-
-	local id = self:GetID()
-	local toggle = _G.RaidUtility_GroundMarkers
-	if toggle and toggle:GetChecked() then
-		local flipped = _G.NUM_RAID_MARKERS - (id + 1)
-		local marker = _G.WORLD_RAID_MARKER_ORDER[flipped]
-		ClearRaidMarker(marker)
-		-- PlaceRaidMarker(marker)
-		-- its forbidden, need to do something else
-	else
-		SetRaidTarget('target', id)
-	end
 end
 
 function RU:OnClick_RaidUtilityPanel(...)
@@ -680,7 +719,10 @@ function RU:PositionSections()
 	local point = E:GetScreenQuadrant(ShowButton)
 	local bottom = point and strfind(point, 'BOTTOM')
 
-	RU:ReanchorSection(_G.RaidUtilityTargetIcons, bottom)
+	if not InCombatLockdown() then
+		RU:ReanchorSection(_G.RaidUtilityTargetIcons, bottom)
+	end
+
 	RU:ReanchorSection(_G.RaidUtilityRoleIcons, bottom, _G.RaidUtilityTargetIcons)
 end
 
@@ -835,11 +877,6 @@ function RU:Initialize()
 		RU:CreateDropdown('RaidUtility_RestrictPings', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -5, _G.RAID_MANAGER_RESTRICT_PINGS, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_RestrictPings, RU.OnDropdown_RestrictPings)
 		RU:CreateDropdown('RaidUtility_DungeonDifficulty', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -(BUTTON_HEIGHT + 10), _G.CRF_DIFFICULTY, { 'PLAYER_DIFFICULTY_CHANGED' }, RU.OnEvent_DungeonDifficulty, RU.OnDropdown_DungeonDifficulty)
 		RU:CreateDropdown('RaidUtility_ModeControl', RaidUtilityPanel, 'WowStyle1DropdownTemplate', BUTTON_WIDTH * 0.5, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'TOPRIGHT', 5, 2, nil, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_ModeControl, RU.OnDropdown_ModeControl)
-	end
-
-	if _G.GROUPMANAGER_GROUND_MARKER then
-	-- 11.0 this is forbidden to do ground ones or something
-	--	RU:CreateCheckBox('RaidUtility_GroundMarkers', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'BOTTOMRIGHT', RaidUtilityPanel, 'BOTTOMRIGHT', -(BUTTON_HEIGHT * 2.2), 5, _G.GROUPMANAGER_GROUND_MARKER, nil, nil, RU.OnClick_GroundMarkers)
 	end
 
 	RU:CreateCheckBox('RaidUtility_EveryoneAssist', RaidUtilityPanel, 'UICheckButtonTemplate', BUTTON_HEIGHT + 4, 'TOPLEFT', _G.RaidUtility_DungeonDifficulty or MainTankButton, 'BOTTOMLEFT', -4, -3, _G.ALL_ASSIST_LABEL_LONG, buttonEvents, RU.OnEvent_EveryoneAssist, RU.OnClick_EveryoneAssist)
