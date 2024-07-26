@@ -234,8 +234,11 @@ function S:Blizzard_Communities()
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
-	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
-	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown, 120)
+	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown, 120)
+
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown:ClearAllPoints()
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown:Point('RIGHT', ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown, 'RIGHT', 120, 0)
 
 	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
