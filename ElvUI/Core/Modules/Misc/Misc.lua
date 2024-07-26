@@ -146,7 +146,7 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 
 	if messagetype == 'FACTION' then
 		local faction, rep = GetCurrentCombatTextEventInfo()
-		local data = (rep and rep > 0) and (faction ~= 'Guild') and E:GetWatchedFactionInfo()
+		local data = (rep and rep > 0) and (faction and faction ~= 'Guild') and E:GetWatchedFactionInfo()
 		if data and faction ~= data.name then
 			ExpandAllFactionHeaders()
 
