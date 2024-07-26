@@ -83,22 +83,22 @@ local function HandleProgressBar(tracker, key)
 	if bar then
 		ReskinBarTemplate(bar)
 		S:StatusBarColorGradient(bar, bar:GetValue(), 100)
-	end
 
-	local icon = bar and bar.Icon
-	if icon and not icon.backdrop then
-		icon:SetMask('') -- This needs to be before S:HandleIcon
-		S:HandleIcon(icon, true)
+		local icon = bar.Icon
+		if icon and not icon.backdrop then
+			icon:SetMask('') -- This needs to be before S:HandleIcon
+			S:HandleIcon(icon, true)
 
-		icon:ClearAllPoints()
-		icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
-	end
+			icon:ClearAllPoints()
+			icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
+		end
 
-	local label = bar and bar.Label
-	if label then
-		label:ClearAllPoints()
-		label:Point('CENTER', bar)
-		label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
+		local label = bar.Label
+		if label then
+			label:ClearAllPoints()
+			label:Point('CENTER', bar)
+			label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
+		end
 	end
 end
 
