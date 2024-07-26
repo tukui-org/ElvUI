@@ -11,9 +11,8 @@ local function SkinFrame(frame)
 	if backdrops[frame] then
 		frame.backdrop = backdrops[frame] -- relink it back
 	else
-		backdrops[frame] = frame.backdrop
-
 		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
+		backdrops[frame] = frame.backdrop -- keep below CreateBackdrop
 
 		if frame.ScrollBar then
 			S:HandleTrimScrollBar(frame.ScrollBar)
