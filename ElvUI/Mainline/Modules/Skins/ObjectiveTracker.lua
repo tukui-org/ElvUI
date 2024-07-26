@@ -71,7 +71,7 @@ local function ReskinBarTemplate(bar)
 	if bar.backdrop then return end
 
 	bar:StripTextures()
-	bar:CreateBackdrop()
+	bar:CreateBackdrop('Transparent')
 	bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(bar)
 end

@@ -4,6 +4,19 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local function HandleSetButtons(button)
+	if not button then return end
+
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+
+	button.BackgroundTexture:SetAlpha(0)
+	button.SelectedTexture:SetColorTexture(1, .8, 0, .25)
+	button.SelectedTexture:SetInside()
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+	button.HighlightTexture:SetInside()
+end
+
 local function HandleRewardButton(box)
 	local container = box.ContentsContainer
 	if container and not container.IsSkinned then
@@ -114,6 +127,10 @@ function S:Blizzard_PerksProgram()
 				HandleNextPrev(carousel.DecrementButton)
 			end
 		end
+
+		hooksecurefunc(products.PerksProgramProductDetailsContainerFrame.SetDetailsScrollBoxContainer.ScrollBox, 'Update', function(self)
+			self:ForEachFrame(HandleSetButtons)
+		end)
 
 		local container = products.ProductsScrollBoxContainer
 		if container then
