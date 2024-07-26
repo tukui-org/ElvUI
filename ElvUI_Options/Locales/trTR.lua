@@ -1136,6 +1136,7 @@ L["No Label"] = "Etiket yok"
 L["No NPC Title"] = true
 L["No Sorting"] = "Siralama Yok"
 L["No Target"] = true
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "Engellenemez"
 L["Non-Raid Frame"] = "Baskin Olmayan Cerceve"
 L["Non-Target Alpha"] = "Hedef Olmayan Alfa"

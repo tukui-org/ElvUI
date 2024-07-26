@@ -1137,6 +1137,7 @@ L["No Label"] = "无标签"
 L["No NPC Title"] = true
 L["No Sorting"] = "不排序"
 L["No Target"] = true
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "不可打断"
 L["Non-Raid Frame"] = "非团队框架"
 L["Non-Target Alpha"] = "非目标透明度"

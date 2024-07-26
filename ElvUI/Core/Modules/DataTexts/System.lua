@@ -112,7 +112,8 @@ local function displaySort(a, b)
 end
 
 local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
-local function OnEnter(_, slow)
+local function OnEnter(self, slow)
+	if db.NoTooltip and self == E:GetMouseFocus() then return end
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 

@@ -1155,6 +1155,7 @@ L["No Label"] = "라벨 없음"
 L["No NPC Title"] = "NPC 제목 없음"
 L["No Sorting"] = "구분 없음"
 L["No Target"] = "대상 없음"
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "차단불가능 기술"
 L["Non-Raid Frame"] = "비공격대 프레임"
 L["Non-Target Alpha"] = "타겟 외 투명도"

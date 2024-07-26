@@ -1133,6 +1133,7 @@ L["No Label"] = "Pas d'étiquette"
 L["No NPC Title"] = "Pas de titre de PNJ"
 L["No Sorting"] = "Aucun tri"
 L["No Target"] = "Pas de cible"
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "Non-interruptible"
 L["Non-Raid Frame"] = "Fenêtre non Raid"
 L["Non-Target Alpha"] = "Alpha non ciblé"

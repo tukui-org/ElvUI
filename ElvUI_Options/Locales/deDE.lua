@@ -1135,6 +1135,7 @@ L["No Label"] = "Keine Beschriftung"
 L["No NPC Title"] = "Kein NPC Titel"
 L["No Sorting"] = "Nicht Sortieren"
 L["No Target"] = "Kein Ziel"
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "Nicht Unterbrechbar"
 L["Non-Raid Frame"] = "Kein Schlachtzugsfenster"
 L["Non-Target Alpha"] = "Nicht Anvisiert Alpha"

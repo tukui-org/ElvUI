@@ -186,6 +186,8 @@ local function CreateDTOptions(name, data)
 				optionTable.args[key] = ACH:Select(L["Latency"], nil, 20, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
 			elseif key == 'school' then
 				optionTable.args[key] = ACH:Select(L["School"], nil, 20, { [0] = "Default", [1] = "Physical", [2] = "Holy", [3] = "Fire", [4] = "Nature", [5] = "Frost", [6] = "Shadow", [7] = "Arcane" })
+			elseif key == 'NoTooltip' then
+				optionTable.args[key] = ACH:Toggle(L["No Tooltip"], nil, 20)
 			end
 		end
 

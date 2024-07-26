@@ -1144,6 +1144,7 @@ L["No Label"] = "Без ярлыка"
 L["No NPC Title"] = "Нет титула НИП"
 L["No Sorting"] = "Без сортировки"
 L["No Target"] = "Нет цели"
+L["No Tooltip"] = true
 L["Non-Interruptible"] = "Непрерываемые"
 L["Non-Raid Frame"] = "Не рейдовые фреймы"
 L["Non-Target Alpha"] = "Прозрачность не цели"
