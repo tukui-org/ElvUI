@@ -7,8 +7,10 @@ local hooksecurefunc = hooksecurefunc
 local function HandleSetButtons(button)
 	if not button then return end
 
-	S:HandleIcon(button.Icon, true)
-	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+	if not button.Icon.backdrop then
+		S:HandleIcon(button.Icon, true)
+		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+	end
 
 	button.BackgroundTexture:SetAlpha(0)
 	button.SelectedTexture:SetColorTexture(1, .8, 0, .25)
@@ -95,6 +97,10 @@ local function GlowEmitterFactory_Hide(frame, target)
 	GlowEmitterFactory_Toggle(frame, target)
 end
 
+local function DetailsScrollBoxUpdate(box)
+	box:ForEachFrame(HandleSetButtons)
+end
+
 function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
@@ -119,7 +125,13 @@ function S:Blizzard_PerksProgram()
 		if details then
 			details.Border:Hide()
 			details:SetTemplate('Transparent')
-			S:HandleTrimScrollBar(details.SetDetailsScrollBoxContainer.ScrollBar)
+
+			local container = details.SetDetailsScrollBoxContainer
+			if container then
+				S:HandleTrimScrollBar(container.ScrollBar)
+
+				hooksecurefunc(container.ScrollBox, 'Update', DetailsScrollBoxUpdate)
+			end
 
 			local carousel = details.CarouselFrame
 			if carousel and carousel.IncrementButton then
@@ -127,10 +139,6 @@ function S:Blizzard_PerksProgram()
 				HandleNextPrev(carousel.DecrementButton)
 			end
 		end
-
-		hooksecurefunc(products.PerksProgramProductDetailsContainerFrame.SetDetailsScrollBoxContainer.ScrollBox, 'Update', function(self)
-			self:ForEachFrame(HandleSetButtons)
-		end)
 
 		local container = products.ProductsScrollBoxContainer
 		if container then
