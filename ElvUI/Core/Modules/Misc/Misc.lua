@@ -151,8 +151,9 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 			ExpandAllFactionHeaders()
 
 			for i = 1, GetNumFactions() do
-				local factionData = GetFactionInfo(i)
-				if (E.Retail and factionData.name or factionData) == faction then
+				local info = GetFactionInfo(i)
+				local name = (E.Retail and info and info.name) or (not E.Retail and info)
+				if name == faction then
 					SetWatchedFactionIndex(i)
 					break
 				end
