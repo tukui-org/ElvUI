@@ -177,28 +177,6 @@ function S:QuestInfoItem_OnClick() -- self is not S
 	self.Name:SetTextColor(1, .8, .1)
 end
 
-function S:QuestLogQuests_Update() -- self is not S
-	for _, child in next, { _G.QuestMapFrame.QuestsFrame.Contents:GetChildren() } do
-		if child.ButtonText and not child.questID then
-			if child.CollapseButton then
-				child.CollapseButton:ClearAllPoints()
-				child.CollapseButton:Point('LEFT', -10, 0)
-			end
-
-			for _, tex in next, { child:GetRegions() } do
-				if tex.GetAtlas then
-					local atlas = tex:GetAtlas()
-					if atlas == 'Campaign_HeaderIcon_Closed' or atlas == 'Campaign_HeaderIcon_ClosedPressed' then
-						tex:SetTexture(E.Media.Textures.PlusButton)
-					elseif atlas == 'Campaign_HeaderIcon_Open' or atlas == 'Campaign_HeaderIcon_OpenPressed' then
-						tex:SetTexture(E.Media.Textures.MinusButton)
-					end
-				end
-			end
-		end
-	end
-end
-
 function S:QuestInfo_Display(parentFrame) -- self is template, not S
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
@@ -386,7 +364,6 @@ function S:BlizzardQuestFrames()
 
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
-	hooksecurefunc('QuestLogQuests_Update', S.QuestLogQuests_Update) -- Skin the Plus Minus buttons in the QuestLog
 
 	-- Fix Me 11.0
 	--hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog

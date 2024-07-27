@@ -67,9 +67,13 @@ local function SkinHeaders(header, isCalling)
 end
 
 local function QuestLogQuests()
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if button.ButtonText and not button.IsSkinned then
 			button:StripTextures()
+			button:CreateBackdrop('Transparent')
+			button:GetHighlightTexture():SetColorTexture(r, g, b, .25)
 			button.ButtonText:FontTemplate(nil, 16)
 			button.IsSkinned = true
 		end
@@ -100,10 +104,7 @@ local function QuestLogQuests()
 		if header.CollapseButton and not header.IsSkinned then
 			header:StripTextures()
 			header.Background:CreateBackdrop('Transparent')
-
-			local r, g, b = unpack(E.media.rgbvaluecolor)
 			header.Highlight:SetColorTexture(r, g, b, 0.75)
-
 			header.IsSkinned = true
 		end
 	end
