@@ -40,7 +40,7 @@ local inactiveString = strjoin('', '|cffFF0000', _G.FACTION_INACTIVE, '|r')
 
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
-	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) end },
+	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) DT:CloseMenus() end },
 }
 
 local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
@@ -81,10 +81,10 @@ do
 end
 
 local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
-local function menu_func(_, arg1) SetLootSpecialization(arg1) end
+local function menu_func(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
 
 local function spec_checked(data) return data and data.arg1 == GetSpecialization() end
-local function spec_func(_, arg1) SetSpecialization(arg1) end
+local function spec_func(_, arg1) SetSpecialization(arg1) DT:CloseMenus() end
 
 local function OnEvent(self, event, loadoutID)
 	if #menuList == 2 then
@@ -97,8 +97,8 @@ local function OnEvent(self, event, loadoutID)
 		end
 	end
 
+	local specLoot = GetLootSpecialization()
 	local specIndex = GetSpecialization()
-	local specialization = GetLootSpecialization()
 	local info = DT.SPECIALIZATION_CACHE[specIndex]
 	local ID = info and info.id
 
@@ -150,14 +150,14 @@ local function OnEvent(self, event, loadoutID)
 	local size = db.iconSize or mainSize
 	local spec, text = format(mainIcon, info.icon, size, size)
 	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
-		if specialization == 0 or ID == specialization then
+		if (specLoot == 0 or ID == specLoot) and not db.showBoth then
 			if db.iconOnly then
 				text = format('%s', spec)
 			else
 				text = format('%s %s', spec, info.name)
 			end
 		else
-			local cache = DT.SPECIALIZATION_CACHE[specialization]
+			local cache = DT.SPECIALIZATION_CACHE[(specLoot == 0 and specIndex) or specLoot]
 			if db.iconOnly then
 				text = format('%s %s', spec, format(mainIcon, cache.icon, size, size))
 			else
@@ -186,9 +186,9 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(' ')
 
-	local specialization = GetLootSpecialization()
-	local sameSpec = specialization == 0 and GetSpecialization()
-	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specialization]
+	local specLoot = GetLootSpecialization()
+	local sameSpec = specLoot == 0 and GetSpecialization()
+	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specLoot]
 	if specIndex and specIndex.name then
 		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specIndex.name) or specIndex.name))
 	end

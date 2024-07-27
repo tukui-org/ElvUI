@@ -42,10 +42,10 @@ local UnitName = UnitName
 local IsInGuild = IsInGuild
 local PlaySound = PlaySound
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
-local GetFactionInfo = GetFactionInfo
+local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
 local UnitIsGroupLeader = UnitIsGroupLeader
 local ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders or ExpandAllFactionHeaders
-local SetWatchedFactionIndex = SetWatchedFactionIndex
+local SetWatchedFactionIndex = C_Reputation.SetWatchedFactionByIndex or SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
@@ -142,19 +142,19 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function M:COMBAT_TEXT_UPDATE(_, messagetype)
-	if not E.db.general.autoTrackReputation then return end
+	if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
-	if messagetype == 'FACTION' then
-		local faction, rep = GetCurrentCombatTextEventInfo()
-		local data = (rep and rep > 0) and (faction ~= 'Guild') and E:GetWatchedFactionInfo()
-		if data and faction ~= data.name then
-			ExpandAllFactionHeaders()
+	local faction, rep = GetCurrentCombatTextEventInfo()
+	local data = (faction and faction ~= 'Guild') and (rep and rep > 0) and E:GetWatchedFactionInfo()
+	if data and faction ~= data.name then
+		ExpandAllFactionHeaders()
 
-			for i = 1, GetNumFactions() do
-				if faction == GetFactionInfo(i) then
-					SetWatchedFactionIndex(i)
-					break
-				end
+		for i = 1, GetNumFactions() do
+			local info = GetFactionInfo(i)
+			local name = (E.Retail and info and info.name) or (not E.Retail and info)
+			if name == faction then
+				SetWatchedFactionIndex(i)
+				break
 			end
 		end
 	end

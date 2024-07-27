@@ -20,6 +20,7 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
+local UnitPowerBarID = UnitPowerBarID
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
@@ -28,8 +29,6 @@ local GetMouseFocus = GetMouseFocus or function()
   return frames and frames[1]
 end
 
-local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
-
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
 ---- Fader.HoverHooked, Fader.TargetHooked
 
@@ -37,6 +36,7 @@ local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
+local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -68,10 +68,9 @@ local function updateInstanceDifficulty(element)
 end
 
 local function CanGlide()
-	if not GetGlidingInfo then return end
+	if not E.Retail then return end
 
-	local _, canGlide = GetGlidingInfo()
-	return canGlide
+	return UnitPowerBarID('player') == VIGOR_BAR_ID
 end
 
 local function Update(self, event, unit)
@@ -87,7 +86,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if event == 'PLAYER_CAN_GLIDE_CHANGED' or not unit then
+	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
 		unit = self.unit
 	end
 
@@ -317,9 +316,9 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update, true)
+			self:RegisterEvent('PLAYER_IS_GLIDING_CHANGED', Update, true)
 		end,
-		events = {'PLAYER_CAN_GLIDE_CHANGED'}
+		events = {'PLAYER_IS_GLIDING_CHANGED'}
 	}
 end
 

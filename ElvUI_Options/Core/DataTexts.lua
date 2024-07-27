@@ -220,6 +220,8 @@ local function CreateDTOptions(name, data)
 					optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = ACH:Toggle(info[1], nil, i, nil, nil, nil, function() return settings.idEnable[info[2]] end, function(_, value) settings.idEnable[info[2]] = value end)
 				end
 			end
+		elseif name == 'System' then
+			optionTable.args.showTooltip = ACH:Toggle(L["Tooltip"], nil, 20)
 		elseif name == 'Durability' then
 			optionTable.args.percThreshold = ACH:Range(L["Flash Threshold"], L["The durability percent that the datatext will start flashing.  Set to -1 to disable"], 5, { min = -1, max = 99, step = 1 }, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
 		elseif name == 'Friends' then
@@ -242,7 +244,8 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Talent/Loot Specialization' then
 			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] })
 			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)
-			optionTable.args.iconSize = ACH:Range(L["Icon Size"], nil, 3, { min = 10, softMax = 24, step = 1})
+			optionTable.args.showBoth = ACH:Toggle(L["Show Both"], L["Always show Loot Specialization."], 3)
+			optionTable.args.iconSize = ACH:Range(L["Icon Size"], nil, 4, { min = 10, softMax = 24, step = 1})
 		elseif name == 'Time' then
 			optionTable.args.time24 = ACH:Toggle(L["24-Hour Time"], L["Toggle 24-hour mode for the time datatext."], 5)
 			optionTable.args.seconds = ACH:Toggle(L["Seconds"], L["Show seconds on the time display."], 6)

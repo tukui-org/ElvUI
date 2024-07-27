@@ -113,6 +113,8 @@ end
 
 local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
 local function OnEnter(_, slow)
+	if not db.showTooltip then return end
+
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 

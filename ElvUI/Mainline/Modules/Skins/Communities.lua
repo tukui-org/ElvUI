@@ -182,9 +182,9 @@ function S:Blizzard_Communities()
 
 				hooksecurefunc(requestFrame, 'Initialize', function(s)
 					for button in s.SpecsPool:EnumerateActive() do
-						if button.CheckBox then
-							S:HandleCheckBox(button.CheckBox)
-							button.CheckBox:Size(26)
+						if button.Checkbox then
+							S:HandleCheckBox(button.Checkbox)
+							button.Checkbox:Size(26)
 						end
 					end
 				end)
@@ -214,46 +214,51 @@ function S:Blizzard_Communities()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
-	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
-	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:ClearAllPoints() -- FIX ME 11.0 Is this DropDown trolling us?
-	ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown:Point('LEFT', ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown, 'RIGHT', 3, 0)
-	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
+	local ClubFinderGuildOptionsList = ClubFinderGuildFinderFrame.OptionsList
+	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubFilterDropdown)
+	ClubFinderGuildOptionsList.ClubSizeDropdown:ClearAllPoints() -- FIX ME 11.0 Is this DropDown trolling us?
+	ClubFinderGuildOptionsList.ClubSizeDropdown:Point('LEFT', ClubFinderGuildOptionsList.ClubFilterDropdown, 'RIGHT', 3, 0)
+	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubSizeDropdown)
 
-	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
-	ClubFinderGuildFinderFrame.OptionsList.Search:Size(118, 20)
-	ClubFinderGuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	ClubFinderGuildFinderFrame.OptionsList.Search:Point('TOP', ClubFinderGuildFinderFrame.OptionsList.SearchBox, 'BOTTOM', 1, -3)
-	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
-	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
+	ClubFinderGuildOptionsList.SearchBox:Size(118, 20)
+	ClubFinderGuildOptionsList.Search:Size(118, 20)
+	ClubFinderGuildOptionsList.Search:ClearAllPoints()
+	ClubFinderGuildOptionsList.Search:Point('TOP', ClubFinderGuildOptionsList.SearchBox, 'BOTTOM', 1, -3)
+	S:HandleEditBox(ClubFinderGuildOptionsList.SearchBox)
+	S:HandleButton(ClubFinderGuildOptionsList.Search)
 
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
 
 	-- Community and Guild finder Tab
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
+	local ClubFinderCommunityOptionsList = ClubFinderCommunityAndGuildFinderFrame.OptionsList
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
 	for _, checkButton in next, {
-		ClubFinderGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-		ClubFinderGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-		ClubFinderGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.HealerRoleFrame.CheckBox,
-		ClubFinderCommunityAndGuildFinderFrame.OptionsList.DpsRoleFrame.CheckBox
+		ClubFinderGuildOptionsList.TankRoleFrame.Checkbox,
+		ClubFinderGuildOptionsList.HealerRoleFrame.Checkbox,
+		ClubFinderGuildOptionsList.DpsRoleFrame.Checkbox,
+		ClubFinderCommunityOptionsList.TankRoleFrame.Checkbox,
+		ClubFinderCommunityOptionsList.HealerRoleFrame.Checkbox,
+		ClubFinderCommunityOptionsList.DpsRoleFrame.Checkbox
 	} do
 		S:HandleCheckBox(checkButton)
 		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
 	end
 
-	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
-	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
+	S:HandleDropDownBox(ClubFinderCommunityOptionsList.ClubFilterDropdown, 120)
+	S:HandleDropDownBox(ClubFinderCommunityOptionsList.SortByDropdown, 120)
 
-	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Point('TOP', ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, 'BOTTOM', 1, -3)
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Size(118, 20)
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
-	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
+	ClubFinderCommunityOptionsList.SortByDropdown:ClearAllPoints()
+	ClubFinderCommunityOptionsList.SortByDropdown:Point('RIGHT', ClubFinderCommunityOptionsList.ClubFilterDropdown, 'RIGHT', 120, 0)
+
+	S:HandleButton(ClubFinderCommunityOptionsList.Search)
+	ClubFinderCommunityOptionsList.Search:ClearAllPoints()
+	ClubFinderCommunityOptionsList.Search:Point('TOP', ClubFinderCommunityOptionsList.SearchBox, 'BOTTOM', 1, -3)
+	ClubFinderCommunityOptionsList.Search:Size(118, 20)
+	ClubFinderCommunityOptionsList.SearchBox:Size(118, 20)
+	S:HandleEditBox(ClubFinderCommunityOptionsList.SearchBox)
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
@@ -463,9 +468,9 @@ function S:Blizzard_Communities()
 	RecruitmentDialog:StripTextures()
 	RecruitmentDialog:SetTemplate('Transparent')
 	S:HandleCheckBox(RecruitmentDialog.ShouldListClub.Button)
-	S:HandleDropDownBox(RecruitmentDialog.ClubFocusDropdown, 220)
-	S:HandleDropDownBox(RecruitmentDialog.LookingForDropdown, 220)
-	S:HandleDropDownBox(RecruitmentDialog.LanguageDropdown, 190)
+	S:HandleDropDownBox(RecruitmentDialog.ClubFocusDropdown, 200)
+	S:HandleDropDownBox(RecruitmentDialog.LookingForDropdown, 200)
+	S:HandleDropDownBox(RecruitmentDialog.LanguageDropdown, 140)
 	RecruitmentDialog.RecruitmentMessageFrame:StripTextures()
 	S:HandleEditBox(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput)
 	S:HandleCheckBox(RecruitmentDialog.MaxLevelOnly.Button)
