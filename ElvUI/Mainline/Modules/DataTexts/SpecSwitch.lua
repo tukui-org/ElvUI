@@ -40,7 +40,7 @@ local inactiveString = strjoin('', '|cffFF0000', _G.FACTION_INACTIVE, '|r')
 
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
-	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) end },
+	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) DT:CloseMenus() end },
 }
 
 local specList = { { text = _G.SPECIALIZATION, isTitle = true, notCheckable = true } }
@@ -81,10 +81,10 @@ do
 end
 
 local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
-local function menu_func(_, arg1) SetLootSpecialization(arg1) end
+local function menu_func(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
 
 local function spec_checked(data) return data and data.arg1 == GetSpecialization() end
-local function spec_func(_, arg1) SetSpecialization(arg1) end
+local function spec_func(_, arg1) SetSpecialization(arg1) DT:CloseMenus() end
 
 local function OnEvent(self, event, loadoutID)
 	if #menuList == 2 then

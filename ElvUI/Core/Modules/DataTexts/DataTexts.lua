@@ -861,6 +861,15 @@ function DT:BuildTables()
 	db.serverID[E.serverID][E.myrealm] = true
 end
 
+function DT:CloseMenus()
+	if E.Retail then
+		local manager = _G.Menu.GetManager()
+		manager:CloseMenus()
+	else
+		CloseDropDownMenus()
+	end
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
@@ -878,12 +887,7 @@ function DT:Initialize()
 
 		DT.SelectedDatatext = nil
 
-		if E.Retail then
-			local manager = _G.Menu.GetManager()
-			manager:CloseMenus()
-		else
-			CloseDropDownMenus()
-		end
+		DT:CloseMenus()
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
 		local panelDB = (dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
