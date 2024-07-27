@@ -150,7 +150,7 @@ local function OnEvent(self, event, loadoutID)
 	local size = db.iconSize or mainSize
 	local spec, text = format(mainIcon, info.icon, size, size)
 	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
-		if specLoot == 0 and not db.showBoth then
+		if (specLoot == 0 or ID == specLoot) and not db.showBoth then
 			if db.iconOnly then
 				text = format('%s', spec)
 			else
