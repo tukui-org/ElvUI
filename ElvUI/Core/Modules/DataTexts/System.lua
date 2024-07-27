@@ -113,7 +113,8 @@ end
 
 local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
 local function OnEnter(self, slow)
-	if db.NoTooltip and self == E:GetMouseFocus() then return end
+	if not db.showTooltip then return end
+
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 

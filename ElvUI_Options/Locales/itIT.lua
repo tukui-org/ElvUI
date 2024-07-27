@@ -1135,7 +1135,6 @@ L["No Label"] = true
 L["No NPC Title"] = true
 L["No Sorting"] = true
 L["No Target"] = true
-L["No Tooltip"] = true
 L["Non-Interruptible"] = true
 L["Non-Raid Frame"] = true
 L["Non-Target Alpha"] = true

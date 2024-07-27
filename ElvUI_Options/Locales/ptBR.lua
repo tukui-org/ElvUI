@@ -1136,7 +1136,6 @@ L["No Label"] = "Sem Rótulo"
 L["No NPC Title"] = "Sem Título de NPC"
 L["No Sorting"] = "Não organizado"
 L["No Target"] = "Sem Alvo"
-L["No Tooltip"] = true
 L["Non-Interruptible"] = "Não interrompível"
 L["Non-Raid Frame"] = "Quadro Não Raide"
 L["Non-Target Alpha"] = "Transparência de Não Alvo"
