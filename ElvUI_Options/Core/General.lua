@@ -76,7 +76,7 @@ GenGen.scaling.args.ScaleAuto = ACH:Execute(L["Auto Scale"], nil, 5, function() 
 
 GenGen.gameMenuGroup = ACH:Group(L["Game Menu"], nil, 70, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value E:ScaleGameMenu() end, nil, not E.Retail)
 GenGen.gameMenuGroup.inline = true
-GenGen.gameMenuGroup.args.gameMenuScale = ACH:Range(E.NewSign..L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.1 })
+GenGen.gameMenuGroup.args.gameMenuScale = ACH:Range(E.NewSign..L["Scale"], L["Change the scale of the Game Menu which shows up when you press ESC."], 1, { min = 0.5, max = 1.5, step = 0.01 })
 
 GenGen.automation = ACH:Group(L["Automation"], nil, 80)
 GenGen.automation.inline = true
