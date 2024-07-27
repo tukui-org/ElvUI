@@ -2,6 +2,9 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["Small"] = "迷你"
+L["Medium"] = "中"
+L["Large"] = "大"
 L["Countdown"] = "倒计时"
 L["Reset"] = "重置"
 L["ELVUI_DESC"] = ("*ElvUI|r|cFFffffff为一套功能完整, 可用来替换WoW原始界面的套件|r"):gsub('*', E.InfoColor)
