@@ -870,16 +870,23 @@ function DT:Initialize()
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
 	E.EasyMenu.MenuSetItem = function(dt, value)
-		local panelDB = dt.battlePanel and DT.db.battlePanel or DT.db.panels
-
-		panelDB[dt.parentName][dt.pointIndex] = value
-		DT:UpdatePanelInfo(dt.parentName, dt.parent)
+		local panelDB = (dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
+		if panelDB then
+			panelDB[dt.parentName][dt.pointIndex] = value
+			DT:UpdatePanelInfo(dt.parentName, dt.parent)
+		end
 
 		DT.SelectedDatatext = nil
-		CloseDropDownMenus()
+
+		if E.Retail then
+			local manager = _G.Menu.GetManager()
+			manager:CloseMenus()
+		else
+			CloseDropDownMenus()
+		end
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
-		local panelDB = dt.battlePanel and DT.db.battlePanel or DT.db.panels
+		local panelDB = (dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
 		return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
 	end
 
