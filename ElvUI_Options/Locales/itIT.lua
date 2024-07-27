@@ -1264,7 +1264,6 @@ L["Player Power"] = true
 L["Player Spell"] = true
 L["Player Target"] = true
 L["Player Titles"] = true
-L["Player"] = true
 L["PLAYER_DIFFICULTY1"] = "Normal"
 L["Plugin"] = true
 L["Plugins"] = true

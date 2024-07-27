@@ -1265,7 +1265,6 @@ L["Player Power"] = "Oyuncu Gucu"
 L["Player Spell"] = true
 L["Player Target"] = "Oyuncu Hedefi"
 L["Player Titles"] = "Oyuncu Unvanlari"
-L["Player"] = "Oyuncu"
 L["PLAYER_DIFFICULTY1"] = "Normal"
 L["Plugin"] = "Eklenti"
 L["Plugins"] = true

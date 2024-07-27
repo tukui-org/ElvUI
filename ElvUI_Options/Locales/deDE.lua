@@ -1264,7 +1264,6 @@ L["Player Power"] = "Spielerkraft"
 L["Player Spell"] = "Spielerzauber"
 L["Player Target"] = "Spielerziel"
 L["Player Titles"] = "Spielertitel"
-L["Player"] = "Spieler"
 L["PLAYER_DIFFICULTY1"] = "Normal"
 L["Plugin"] = true --No need to translate
 L["Plugins"] = true --No need to translate

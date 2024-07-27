@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'frFR')
 
+L["Player"] = "Joueur"
 L["Small"] = "Petit"
 L["Medium"] = "Moyen"
 L["Large"] = "Grand"

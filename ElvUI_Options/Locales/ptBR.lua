@@ -1265,7 +1265,6 @@ L["Player Power"] = "Poder do Jogador"
 L["Player Spell"] = "Feitiço de Jogador"
 L["Player Target"] = "Alvo do Jogador"
 L["Player Titles"] = "Títulos dos Jogadores"
-L["Player"] = "Player"
 L["PLAYER_DIFFICULTY1"] = "Normal"
 L["Plugin"] = true
 L["Plugins"] = true

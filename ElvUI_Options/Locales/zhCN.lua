@@ -1266,7 +1266,6 @@ L["Player Power"] = "玩家能量"
 L["Player Spell"] = true
 L["Player Target"] = "玩家目标"
 L["Player Titles"] = "玩家头衔"
-L["Player"] = "玩家"
 L["PLAYER_DIFFICULTY1"] = "普通"
 L["Plugin"] = "插件"
 L["Plugins"] = true

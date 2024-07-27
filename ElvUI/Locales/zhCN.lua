@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["Player"] = "玩家"
 L["Small"] = "迷你"
 L["Medium"] = "中"
 L["Large"] = "大"
