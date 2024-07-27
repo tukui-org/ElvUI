@@ -843,6 +843,10 @@ function E:ClickGameMenu()
 	end
 end
 
+function E:ScaleGameMenu()
+	GameMenuFrame:SetScale(E.db.general.gameMenuScale or 1)
+end
+
 function E:SetupGameMenu()
 	if GameMenuFrame.ElvUI then return end
 
@@ -854,7 +858,7 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
-		GameMenuFrame:SetScale(E.private.general.gameMenuScale or 1)
+		E:ScaleGameMenu()
 
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else
