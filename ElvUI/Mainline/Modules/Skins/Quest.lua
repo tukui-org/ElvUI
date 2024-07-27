@@ -296,18 +296,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 	end
 end
 
-function S:CampaignCollapseButton_UpdateState(isCollapsed) -- self is button, not S
-	if isCollapsed then
-		self:SetNormalTexture(E.Media.Textures.PlusButton)
-		self:SetPushedTexture(E.Media.Textures.PlusButton)
-	else
-		self:SetNormalTexture(E.Media.Textures.MinusButton)
-		self:SetPushedTexture(E.Media.Textures.MinusButton)
-	end
-
-	self:Size(16)
-end
-
 function S:QuestFrameProgressItems_Update() -- self is not S
 	_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
 	_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
@@ -364,9 +352,6 @@ function S:BlizzardQuestFrames()
 
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
-
-	-- Fix Me 11.0
-	--hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
 
 	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
