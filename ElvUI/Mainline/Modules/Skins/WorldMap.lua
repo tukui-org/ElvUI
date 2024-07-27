@@ -178,7 +178,7 @@ function S:WorldMapFrame()
 	QuestScrollFrame.Edge:SetAlpha(0)
 	QuestScrollFrame.BorderFrame:SetAlpha(0)
 	QuestScrollFrame.Background:SetAlpha(0)
-	QuestScrollFrame.Contents.Separator.Divider:Hide()
+	QuestScrollFrame.Contents.Separator:SetAlpha(0)
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
@@ -189,7 +189,7 @@ function S:WorldMapFrame()
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
 	SkinHeaders(CampaignOverview.Header)
-	CampaignOverview.ScrollFrame:StripTextures()
+	CampaignOverview.BorderFrame.Border:SetAlpha(0)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
