@@ -864,7 +864,9 @@ end
 function DT:CloseMenus()
 	if E.Retail then
 		local manager = _G.Menu.GetManager()
-		manager:CloseMenus()
+		if manager then
+			manager:CloseMenus()
+		end
 	else
 		CloseDropDownMenus()
 	end

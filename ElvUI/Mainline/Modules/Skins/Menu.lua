@@ -31,8 +31,10 @@ function S:Blizzard_Menu()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	local manager = _G.Menu.GetManager()
-	hooksecurefunc(manager, 'OpenMenu', OpenMenu)
-	hooksecurefunc(manager, 'OpenContextMenu', OpenMenu)
+	if manager then
+		hooksecurefunc(manager, 'OpenMenu', OpenMenu)
+		hooksecurefunc(manager, 'OpenContextMenu', OpenMenu)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_Menu')
