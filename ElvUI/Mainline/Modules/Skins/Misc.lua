@@ -88,6 +88,7 @@ function S:BlizzardMiscFrames()
 
 			for button in menu.buttonPool:EnumerateActive() do
 				if not button.IsSkinned then
+					button:SetSize(150, 28)
 					S:HandleButton(button, nil, nil, nil, true)
 					button.backdrop:SetInside(nil, 1, 1)
 					hooksecurefunc(button, 'SetScript', ClearedHooks)
