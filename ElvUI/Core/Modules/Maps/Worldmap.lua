@@ -13,7 +13,6 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 local GetCVar = C_CVar.GetCVar
 
 local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
-local PLAYER = PLAYER
 
 local CoordsHolder
 local INVERTED_POINTS = {
@@ -76,7 +75,7 @@ function M:UpdateRestrictedArea()
 		inRestrictedArea = false
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', PLAYER, 'N/A')
+		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
 	end
 end
 
@@ -97,9 +96,9 @@ function M:UpdateCoords(OnShow)
 
 	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then
 		if E.MapInfo.x and E.MapInfo.y then
-			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', L["Player"], (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', PLAYER, 'N/A')
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
 		end
 	end
 end
@@ -264,7 +263,7 @@ function M:CreateCoordsHolder()
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
 		CoordsHolder.playerCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject('NumberFontNormal')
-		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
+		CoordsHolder.playerCoords:SetText(L["Player"]..':   0, 0')
 	end
 
 	if not CoordsHolder.mouseCoords then

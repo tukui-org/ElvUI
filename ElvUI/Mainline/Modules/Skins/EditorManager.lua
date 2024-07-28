@@ -64,7 +64,10 @@ function S:EditorManagerFrame()
 	S:HandleButton(editMode.RevertAllChangesButton)
 	S:HandleButton(editMode.SaveChangesButton)
 	S:HandleDropDownBox(editMode.LayoutDropdown, 250)
-
+	
+	S:HandleStepSlider(editMode.GridSpacingSlider.Slider)
+	S:HandleNextPrevButton(editMode.GridSpacingSlider.Slider.Back)
+	S:HandleNextPrevButton(editMode.GridSpacingSlider.Slider.Forward)
 	S:HandleCheckBox(editMode.ShowGridCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableSnapCheckButton.Button)
 	S:HandleCheckBox(editMode.EnableAdvancedOptionsCheckButton.Button)

@@ -137,9 +137,17 @@ function NP:SetCVars()
 	if NP.db.clampToScreen then
 		E:SetCVar('nameplateOtherTopInset', 0.08)
 		E:SetCVar('nameplateOtherBottomInset', 0.1)
+
+		if not E.Retail then -- dont exist in retail
+			E:SetCVar('clampTargetNameplateToScreen', 1)
+		end
 	elseif GetCVar('nameplateOtherTopInset') == '0.08' and GetCVar('nameplateOtherBottomInset') == '0.1' then
 		E:SetCVar('nameplateOtherTopInset', -1)
 		E:SetCVar('nameplateOtherBottomInset', -1)
+
+		if not E.Retail then
+			E:SetCVar('clampTargetNameplateToScreen', 0)
+		end
 	end
 
 	E:SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)

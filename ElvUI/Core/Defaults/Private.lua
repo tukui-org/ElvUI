@@ -15,7 +15,6 @@ V.general = {
 	chatBubbleFontSize = 12,
 	chatBubbleFontOutline = 'NONE',
 	chatBubbleName = false,
-	gameMenuScale = 1,
 	nameplateFont = 'PT Sans Narrow',
 	nameplateFontSize = 9,
 	nameplateFontOutline = 'OUTLINE',

@@ -1402,6 +1402,13 @@ function E:DBConvertDF()
 	end
 end
 
+function E:DBConvertDev()
+	if E.private.general.gameMenuScale ~= nil then
+		E.db.general.gameMenuScale = E.private.general.gameMenuScale
+		E.private.general.gameMenuScale = nil
+	end
+end
+
 function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.global = E.data.global
@@ -1871,10 +1878,11 @@ function E:DBConversions()
 
 		E:DBConvertBFA()
 		E:DBConvertSL()
+		E:DBConvertDF()
 	end
 
 	-- development converts
-	E:DBConvertDF()
+	E:DBConvertDev()
 
 	-- always convert
 	if not ElvCharacterDB.ConvertKeybindings then

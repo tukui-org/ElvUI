@@ -2,6 +2,10 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
+L["Player"] = true
+L["Small"] = "Pequeno"
+L["Medium"] = "Médio"
+L["Large"] = "Grande"
 L["Countdown"] = "Iniciar"
 L["Reset"] = "Reiniciar"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffé um Addon de substituição completa da interface original do World of Warcraft.|r"):gsub('*', E.InfoColor)
