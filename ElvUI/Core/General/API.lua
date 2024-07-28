@@ -853,7 +853,7 @@ function E:SetupGameMenu()
 	if E.Retail then
 		local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
 		button:SetScript('OnClick', E.ClickGameMenu)
-		button:Size(200, 35)
+		button:Size(150, 28)
 
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
