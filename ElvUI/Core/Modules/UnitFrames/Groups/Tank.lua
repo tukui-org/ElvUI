@@ -139,4 +139,4 @@ function UF:Update_TankFrames(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-UF.headerstoload.tank = {'MAINTANK', 'ELVUI_UNITTARGET'}
+UF.headerstoload.tank = {'MAINTANK', E.Retail and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}
