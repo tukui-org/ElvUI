@@ -139,4 +139,4 @@ function UF:Update_AssistFrames(frame, db)
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
-UF.headerstoload.assist = {'MAINASSIST', 'ELVUI_UNITTARGET'}
+UF.headerstoload.assist = {'MAINASSIST', E.Retail and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}

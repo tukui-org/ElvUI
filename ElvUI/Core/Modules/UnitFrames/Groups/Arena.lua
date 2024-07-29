@@ -184,5 +184,5 @@ function UF:Update_ArenaFrames(frame, db)
 end
 
 if not E.Classic then
-	UF.unitgroupstoload.arena = {5, 'ELVUI_UNITTARGET'}
+	UF.unitgroupstoload.arena = {5}
 end
