@@ -318,16 +318,14 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	-- Raid finder
+	-- Dungoen finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()
 
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
-	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
@@ -345,6 +343,8 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
 	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
+	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
+	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 	_G.RaidFinderQueueFrame:StripTextures()
