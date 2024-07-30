@@ -126,9 +126,9 @@ function S:Blizzard_Calendar()
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
 	S:HandleCheckBox(_G.CalendarCreateEventLockEventCheck)
 
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 60)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 60)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 60)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 58)
 
 	-- Difficulty Dropdown
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)
