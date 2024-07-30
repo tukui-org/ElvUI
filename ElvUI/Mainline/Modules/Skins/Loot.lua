@@ -192,7 +192,7 @@ function S:LootFrame()
 			HistoryFrame.Bg:SetAlpha(0)
 		end
 
-		local Dropdown = HistoryFrame.EncounterDropDown
+		local Dropdown = HistoryFrame.EncounterDropdown
 		if Dropdown then
 			S:HandleDropDownBox(Dropdown)
 			hooksecurefunc(Dropdown, 'SetWidth', EncounterDropdownWidth)
