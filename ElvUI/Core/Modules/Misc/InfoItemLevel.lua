@@ -120,48 +120,50 @@ function M:ClearPageInfo(frame, which)
 	end
 end
 
+function M:CheckStatsItemLevel()
+	return E.Retail and not E:IsAddOnEnabled('DejaCharacterStats')
+end
+
 function M:ToggleItemLevelInfo(setupCharacterPage, config)
 	if E.Classic then return end
 
-	if not E:IsAddOnEnabled('DejaCharacterStats') then
-		if setupCharacterPage then
-			M:CreateSlotStrings(_G.CharacterFrame, 'Character')
+	if setupCharacterPage then
+		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
+	end
+
+	if E.db.general.itemLevel.displayCharacterInfo then
+		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
+		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
+		M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
+
+		if M:CheckStatsItemLevel() then
+			_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
 		end
 
-		if E.db.general.itemLevel.displayCharacterInfo then
-			M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
-			M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
-			M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
-			M:RegisterEvent('UPDATE_INVENTORY_DURABILITY', 'UpdateCharacterInfo')
-
-			if E.Retail then
-				_G.CharacterStatsPane.ItemLevelFrame.Value:Hide()
-			end
-
-			if not _G.CharacterFrame.CharacterInfoHooked then
-				_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
-				_G.CharacterFrame.CharacterInfoHooked = true
-			end
-
-			if not setupCharacterPage then
-				if config then
-					M:UpdateSlotPoints('Character')
-				end
-
-				M:UpdateCharacterInfo()
-			end
-		else
-			M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
-			M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-			M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
-			M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
-
-			if E.Retail then
-				_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
-			end
-
-			M:ClearPageInfo(_G.CharacterFrame, 'Character')
+		if not _G.CharacterFrame.CharacterInfoHooked then
+			_G.CharacterFrame:HookScript('OnShow', M.UpdateCharacterInfo)
+			_G.CharacterFrame.CharacterInfoHooked = true
 		end
+
+		if not setupCharacterPage then
+			if config then
+				M:UpdateSlotPoints('Character')
+			end
+
+			M:UpdateCharacterInfo()
+		end
+	else
+		M:UnregisterEvent('AZERITE_ESSENCE_UPDATE')
+		M:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
+		M:UnregisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+		M:UnregisterEvent('UPDATE_INVENTORY_DURABILITY')
+
+		if M:CheckStatsItemLevel() then
+			_G.CharacterStatsPane.ItemLevelFrame.Value:Show()
+		end
+
+		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
 	if E.db.general.itemLevel.displayInspectInfo then
@@ -262,30 +264,30 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 		avgItemLevel = E:CalculateAverageItemLevel(iLevelDB, frame.unit)
 	end
 
-	if avgItemLevel then
+	if avgItemLevel and (not charPage or not E:IsAddOnEnabled('DejaCharacterStats')) then
 		if charPage then
 			frame.ItemLevelText:SetText(avgItemLevel)
 
-			if E.Retail then
+			if M:CheckStatsItemLevel() then
 				frame.ItemLevelText:SetTextColor(_G.CharacterStatsPane.ItemLevelFrame.Value:GetTextColor())
 			end
 		else
 			frame.ItemLevelText:SetText(avgItemLevel)
 		end
-
-		-- we have to wait to do this on inspect so handle it in here
-		if not E.db.general.itemLevel.itemLevelRarity then
-			for i = 1, numInspectItems do
-				local ilvl = i ~= 4 and iLevelDB[i]
-				if ilvl then
-					local inspectItem = _G[which..InspectItems[i]]
-					local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel))
-					inspectItem.iLvlText:SetTextColor(r, g, b)
-				end
-			end
-		end
 	else
 		frame.ItemLevelText:SetText('')
+	end
+
+	-- we have to wait to do this on inspect so handle it in here
+	if not E.db.general.itemLevel.itemLevelRarity then
+		for i = 1, numInspectItems do
+			local ilvl = i ~= 4 and iLevelDB[i]
+			local inspectItem = ilvl and _G[which..InspectItems[i]]
+			if inspectItem then
+				local r, g, b = E:ColorizeItemLevel(ilvl - (avgTotal or avgItemLevel or 0))
+				inspectItem.iLvlText:SetTextColor(r, g, b)
+			end
+		end
 	end
 end
 
