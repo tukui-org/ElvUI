@@ -318,7 +318,7 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	-- Dungoen finder
+	-- Dungeon finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
 
