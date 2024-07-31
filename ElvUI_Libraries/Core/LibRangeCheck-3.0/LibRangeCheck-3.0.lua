@@ -83,14 +83,16 @@ local IsItemInRange = C_Item.IsItemInRange
 
 local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
+local GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
+
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
-local CustomSpellBookItemName = _G.GetSpellBookItemName or function(index, bookType)
+local CustomSpellBookItemName = C_SpellBook_GetSpellBookItemInfo and function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)
   return result.name, result.subName, result.spellID, result.itemType, result.isPassive
-end
+end or _G.GetSpellBookItemName
 
 local C_Spell_IsSpellInRange = C_Spell.IsSpellInRange
-local CustomSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)
+local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(index, spellBank, unit)
   local result = C_Spell_IsSpellInRange(index, spellBank, unit)
   if result == true then
     return 1
@@ -98,7 +100,34 @@ local CustomSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBan
     return 0
   end
   return nil
-end
+end or _G.IsSpellInRange
+
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local GetSpellInfo = C_Spell_GetSpellInfo and function(spellID)
+  if not spellID then
+    return nil;
+  end
+
+  local spellInfo = C_Spell_GetSpellInfo(spellID);
+  if spellInfo then
+    return spellInfo.name, nil, spellInfo.iconID, spellInfo.castTime, spellInfo.minRange, spellInfo.maxRange, spellInfo.spellID, spellInfo.originalIconID;
+  end
+end or _G.GetSpellInfo
+
+local C_SpellBook_GetSpellBookSkillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo
+local CustomSpellTabInfo = C_SpellBook_GetSpellBookSkillLineInfo and function(index)
+  local skillLineInfo = C_SpellBook_GetSpellBookSkillLineInfo(index);
+  if skillLineInfo then
+    return skillLineInfo.name,
+        skillLineInfo.iconID,
+        skillLineInfo.itemIndexOffset,
+        skillLineInfo.numSpellBookItems,
+        skillLineInfo.isGuild,
+        skillLineInfo.offSpecID,
+        skillLineInfo.shouldHide,
+        skillLineInfo.specID;
+  end
+end or _G.GetSpellTabInfo
 
 local C_Timer = C_Timer
 local Item = Item
@@ -114,34 +143,6 @@ local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 local isEraSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 local InCombatLockdownRestriction = function(unit) return InCombatLockdown() and not UnitCanAttack("player", unit) end
-
-local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
-local GetSpellInfo = _G.GetSpellInfo or function(spellID)
-  if not spellID then
-    return nil;
-  end
-
-  local spellInfo = C_Spell_GetSpellInfo(spellID);
-  if spellInfo then
-    return spellInfo.name, nil, spellInfo.iconID, spellInfo.castTime, spellInfo.minRange, spellInfo.maxRange, spellInfo.spellID, spellInfo.originalIconID;
-  end
-end
-
-local C_SpellBook_GetSpellBookSkillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo
-local GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
-local GetSpellTabInfo = _G.GetSpellTabInfo or function(index)
-  local skillLineInfo = C_SpellBook_GetSpellBookSkillLineInfo(index);
-  if skillLineInfo then
-    return skillLineInfo.name,
-        skillLineInfo.iconID,
-        skillLineInfo.itemIndexOffset,
-        skillLineInfo.numSpellBookItems,
-        skillLineInfo.isGuild,
-        skillLineInfo.offSpecID,
-        skillLineInfo.shouldHide,
-        skillLineInfo.specID;
-  end
-end
 
 -- << STATIC CONFIG
 
@@ -695,7 +696,7 @@ local function initItemRequests(cacheAll)
 end
 
 local function getNumSpells()
-  local _, _, offset, numSpells = GetSpellTabInfo(GetNumSpellTabs())
+  local _, _, offset, numSpells = CustomSpellTabInfo(GetNumSpellTabs())
   return offset + numSpells
 end
 
@@ -708,9 +709,7 @@ local function findSpellIdx(spellName, sid)
   for i = 1, getNumSpells() do
     local name, _, id, spellType, isPassive = CustomSpellBookItemName(i, BOOKTYPE_SPELL)
     if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-      if not spellType or not isPassive then
-        return i
-      end
+      return (not spellType or not isPassive) and i
     end
   end
 
@@ -725,12 +724,14 @@ end
 
 local function getSpellData(sid)
   local name, _, _, _, minRange, range = GetSpellInfo(sid)
+
   return name, fixRange(minRange), fixRange(range), findSpellIdx(name, sid)
 end
 
 -- minRange should be nil if there's no minRange, not 0
 local function addChecker(t, range, minRange, checker, info)
-  local rc = { ["range"] = range, ["minRange"] = minRange, ["checker"] = checker, ["info"] = info }
+  local rc = { range = range, minRange = minRange, checker = checker, info = info }
+
   for i = 1, #t do
     local v = t[i]
     if rc.range == v.range then
