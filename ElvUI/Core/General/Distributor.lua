@@ -223,24 +223,18 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			textString = format(L["%s is attempting to share his filters with you. Would you like to accept the request?"], sender)
 		end
 
-		E.PopupDialogs.DISTRIBUTOR_RESPONSE = {
-			text = textString,
-			OnAccept = function()
-				self.statusBar:SetMinMaxValues(0, length)
-				self.statusBar:SetValue(0)
-				self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
-				E:StaticPopupSpecial_Show(self.statusBar)
-				D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
-			end,
-			OnCancel = function()
-				D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
-			end,
-			button1 = ACCEPT,
-			button2 = CANCEL,
-			timeout = 30,
-			whileDead = 1,
-			hideOnEscape = 1,
-		}
+		local popup = E.PopupDialogs.DISTRIBUTOR_RESPONSE
+		popup.text = textString
+		popup.OnAccept = function()
+			self.statusBar:SetMinMaxValues(0, length)
+			self.statusBar:SetValue(0)
+			self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
+			E:StaticPopupSpecial_Show(self.statusBar)
+			D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
+		end
+		popup.OnCancel = function()
+			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
+		end
 
 		E:StaticPopup_Show('DISTRIBUTOR_RESPONSE')
 
@@ -268,11 +262,11 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		D:UnregisterComm(TRANSFER_PREFIX)
 		E:StaticPopupSpecial_Hide(D.statusBar)
 
-		local profileKey = Downloads[sender].profile
 		local success, data = D:Deserialize(msg)
-
 		if success then
+			local profileKey = Downloads[sender].profile
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
+			local popup = E.PopupDialogs.DISTRIBUTOR_CONFIRM
 
 			if profileKey == 'global' then
 				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
@@ -281,25 +275,24 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 					ElvDB.profiles[profileKey] = data
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
-					E.PopupDialogs.DISTRIBUTOR_CONFIRM = {
-						text = textString,
-						button1 = ACCEPT,
-						hasEditBox = 1,
-						editBoxWidth = 350,
-						maxLetters = 127,
-						OnAccept = function(popup)
-							ElvDB.profiles[popup.editBox:GetText()] = data
-							E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(popup.editBox:GetText())
-							E:StaggeredUpdateAll()
-							Downloads[sender] = nil
-						end,
-						OnShow = function(popup) popup.editBox:SetText(profileKey) popup.editBox:SetFocus() end,
-						timeout = 0,
-						exclusive = 1,
-						whileDead = 1,
-						hideOnEscape = 1,
-						preferredIndex = 3
-					}
+					popup.text = textString
+					popup.button1 = ACCEPT
+					popup.button2 = nil
+					popup.hasEditBox = 1
+					popup.editBoxWidth = 350
+					popup.maxLetters = 127
+					popup.timeout = 0
+					popup.exclusive = 1
+					popup.preferredIndex = 3
+
+					popup.OnAccept = function(frame)
+						ElvDB.profiles[frame.editBox:GetText()] = data
+						E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(frame.editBox:GetText())
+						E:StaggeredUpdateAll()
+						Downloads[sender] = nil
+					end
+					popup.OnShow = function(frame) frame.editBox:SetText(profileKey) frame.editBox:SetFocus() end
+					popup.OnCancel = nil
 
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
 					D:SendCommMessage(TRANSFER_COMPLETE_PREFIX, 'COMPLETE', dist, sender)
@@ -307,25 +300,29 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				end
 			end
 
-			E.PopupDialogs.DISTRIBUTOR_CONFIRM = {
-				text = textString,
-				OnAccept = function()
-					if profileKey == 'global' then
-						E:CopyTable(ElvDB.global, data)
-						E:StaggeredUpdateAll()
-					else
-						E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(profileKey)
-					end
-					Downloads[sender] = nil
-				end,
-				OnCancel = function()
-					Downloads[sender] = nil
-				end,
-				button1 = YES,
-				button2 = NO,
-				whileDead = 1,
-				hideOnEscape = 1,
-			}
+			popup.text = textString
+			popup.button1 = YES
+			popup.button2 = NO
+			popup.hasEditBox = nil
+			popup.editBoxWidth = nil
+			popup.maxLetters = nil
+			popup.timeout = nil
+			popup.exclusive = nil
+			popup.preferredIndex = nil
+
+			popup.OnAccept = function()
+				if profileKey == 'global' then
+					E:CopyTable(ElvDB.global, data)
+					E:StaggeredUpdateAll()
+				else
+					E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(profileKey)
+				end
+				Downloads[sender] = nil
+			end
+			popup.OnShow = nil
+			popup.OnCancel = function()
+				Downloads[sender] = nil
+			end
 
 			E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
 			D:SendCommMessage(TRANSFER_COMPLETE_PREFIX, 'COMPLETE', dist, sender)
@@ -564,8 +561,18 @@ E.PopupDialogs.DISTRIBUTOR_FAILED = {
 	button1 = _G.OKAY,
 }
 
-E.PopupDialogs.DISTRIBUTOR_RESPONSE = {}
-E.PopupDialogs.DISTRIBUTOR_CONFIRM = {}
+E.PopupDialogs.DISTRIBUTOR_RESPONSE = {
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	timeout = 30,
+	whileDead = 1,
+	hideOnEscape = 1
+}
+
+E.PopupDialogs.DISTRIBUTOR_CONFIRM = {
+	whileDead = 1,
+	hideOnEscape = 1
+}
 
 E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	text = L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."],
