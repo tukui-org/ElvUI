@@ -135,18 +135,18 @@ function D:Initialize()
 
 	D:UpdateSettings()
 
-	D.statusBar = CreateFrame('StatusBar', 'ElvUI_Download', E.UIParent)
-	D.statusBar:CreateBackdrop()
-	D.statusBar:SetStatusBarTexture(E.media.normTex)
-	D.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
-	D.statusBar:Size(250, 18)
-	D.statusBar:Hide()
+	D.StatusBar = CreateFrame('StatusBar', 'ElvUI_Distributor_StatusBar', E.UIParent)
+	D.StatusBar:CreateBackdrop()
+	D.StatusBar:SetStatusBarTexture(E.media.normTex)
+	D.StatusBar:SetStatusBarColor(0.95, 0.15, 0.15)
+	D.StatusBar:Size(250, 18)
+	D.StatusBar:Hide()
 
-	D.statusBar.text = D.statusBar:CreateFontString(nil, 'OVERLAY')
-	D.statusBar.text:FontTemplate()
-	D.statusBar.text:Point('CENTER')
+	D.StatusBar.text = D.StatusBar:CreateFontString(nil, 'OVERLAY')
+	D.StatusBar.text:FontTemplate()
+	D.StatusBar.text:Point('CENTER')
 
-	E:RegisterStatusBar(D.statusBar)
+	E:RegisterStatusBar(D.StatusBar)
 end
 
 function D:UpdateSettings()
@@ -204,7 +204,7 @@ function D:CHAT_MSG_ADDON(_, prefix, message, _, senderOne, senderTwo)
 	if current > max then current = max end
 	Downloads[sender].current = current
 
-	D.statusBar:SetValue(current)
+	D.StatusBar:SetValue(current)
 end
 
 function D:OnCommReceived(prefix, msg, dist, sender)
@@ -215,7 +215,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			return
 		end
 
-		if D.statusBar:IsShown() then
+		if D.StatusBar:IsShown() then
 			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
 			return
 		end
@@ -228,10 +228,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		local popup = E.PopupDialogs.DISTRIBUTOR_RESPONSE
 		popup.text = textString
 		popup.OnAccept = function()
-			D.statusBar:SetMinMaxValues(0, length)
-			D.statusBar:SetValue(0)
-			D.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
-			E:StaticPopupSpecial_Show(D.statusBar)
+			D.StatusBar:SetMinMaxValues(0, length)
+			D.StatusBar:SetValue(0)
+			D.StatusBar.text:SetFormattedText(L["Data From: %s"], sender)
+			E:StaticPopupSpecial_Show(D.StatusBar)
 			D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
 		end
 		popup.OnCancel = function()
@@ -262,7 +262,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		Uploads[profileKey] = nil
 	elseif prefix == TRANSFER_PREFIX then
 		D:UnregisterComm(TRANSFER_PREFIX)
-		E:StaticPopupSpecial_Hide(D.statusBar)
+		E:StaticPopupSpecial_Hide(D.StatusBar)
 
 		local success, data = D:Deserialize(msg)
 		if success then
