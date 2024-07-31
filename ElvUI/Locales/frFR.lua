@@ -426,21 +426,21 @@ L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffMa
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
 
 Options:
-  LeftClick - Toggle Nudge Frame.
-  Clic Droit - Open Config Section.
+  Clic Gauche - Ouvre le cadre d'aide au positionnement.
+  Clic Droit - Ouvre la section Configuration.
   Shift + clic droit - Cacher temporairement.
   Ctrl + clic droit - Réinitialiser la position par défaut.
 ]=]
 
-L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *Options|r.
- */kb|r  -  Toggle the keybind mode.
- */emove|r  -  Toggle anchors to reposition various elements.
- */ereset|r  -  Reset all frames to their original positions.
- */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */estatus|r  -  Important informations for support questions.
- */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
- */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
-  using */edebug|r ^on|r within that session.
+L["EHELP_COMMANDS"] = ([=[Voici une liste de toutes les commandes importantes d'*ElvUI|r :
+ */ec|r or */elvui|r  -  Ouvre les *Options|r.
+ */kb|r  -  Ouvre le mode des raccourcis clavier.
+ */emove|r  -  Ouvre les ancres, afin de repositionner divers éléments.
+ */ereset|r  -  Réinitialise tous les cadres d'unités à leur position originale.
+ */bgstats|r  -  Ouvre les statistiques de Champ de bataille au niveau de vos Textes d'informations.
+ */estatus|r  -  Informations importantes à fournir si vous posez une question au support.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Ouvre une grille pixel.
+ */edebug|r ^on|r or ^off|r  -  Désactive tous les AddOns sauf ElvUI.
+  NOTE: */edebug|r ^off|r réactivera tous les AddOns désactivés par
+  la commande */edebug|r ^on|r pendant cette session.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
