@@ -300,7 +300,7 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
 
-	-- Szenario Tab [[New in 10.2.7]]
+	-- Scenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
 	if ScenarioQueueFrame then
 		ScenarioQueueFrame:StripTextures()
