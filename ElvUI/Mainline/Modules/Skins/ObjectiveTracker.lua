@@ -113,10 +113,10 @@ local function HandleTimers(tracker, key)
 	end
 end
 
-local function HandleButton(_, collapsed)
-	local MainMinimize = _G.ObjectiveTrackerFrame.Header.MinimizeButton
-	local normalTexture = MainMinimize:GetNormalTexture()
-	local pushedTexture = MainMinimize:GetPushedTexture()
+local function SetCollapsed(header, collapsed)
+	local MinimizeButton = header.MinimizeButton
+	local normalTexture = MinimizeButton:GetNormalTexture()
+	local pushedTexture = MinimizeButton:GetPushedTexture()
 
 	if collapsed then
 		normalTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Expand', true)
@@ -130,16 +130,20 @@ end
 function S:Blizzard_ObjectiveTracker()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
-	local MainHeader = _G.ObjectiveTrackerFrame.Header
-	SkinOjectiveTrackerHeaders(MainHeader)
+	local TrackerFrame = _G.ObjectiveTrackerFrame
+	local TrackerHeader = TrackerFrame and TrackerFrame.Header
+	if TrackerHeader then
+		SkinOjectiveTrackerHeaders(TrackerHeader)
 
-	local MainMinimize = MainHeader.MinimizeButton
-	MainMinimize:Size(16)
-	MainMinimize:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
+		local MinimizeButton = TrackerHeader.MinimizeButton
+		if MinimizeButton then
+			MinimizeButton:Size(16)
+			MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
 
-	HandleButton(nil, _G.ObjectiveTrackerFrame.isCollapsed)
-
-	hooksecurefunc(_G.ObjectiveTrackerFrame.Header, 'SetCollapsed', HandleButton)
+			SetCollapsed(TrackerHeader, TrackerFrame.isCollapsed)
+			hooksecurefunc(TrackerHeader, 'SetCollapsed', SetCollapsed)
+		end
+	end
 
 	for _, tracker in pairs(trackers) do
 		SkinOjectiveTrackerHeaders(tracker.Header)
