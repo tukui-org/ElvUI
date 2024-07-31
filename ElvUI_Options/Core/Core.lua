@@ -445,7 +445,7 @@ do -- Import and Export
 				input.hidden = not exporting
 
 				if exporting then
-					local profileKey, profileExport = D:ExportProfile(profileType, which)
+					local profileKey, profileExport = D:ExportProfile(profileType, nil, which)
 					if not profileKey or not profileExport then
 						label.name = L["Error exporting profile!"]
 					else

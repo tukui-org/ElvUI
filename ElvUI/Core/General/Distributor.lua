@@ -513,13 +513,13 @@ function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
 	end
 end
 
-function D:ExportProfile(dataType, dataFormat)
+function D:ExportProfile(dataType, dataKey, dataFormat) -- dataKey can be nil
 	if not dataType or not dataFormat then
 		E:Print('Bad argument to "ExportProfile" (string expected)')
 		return
 	end
 
-	return D:GetProfileExport(dataType, dataFormat)
+	return D:GetProfileExport(dataType, dataKey, dataFormat)
 end
 
 function D:ImportProfile(dataString)
