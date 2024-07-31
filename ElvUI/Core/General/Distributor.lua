@@ -196,13 +196,13 @@ function D:Distribute(target, otherServer, isGlobal)
 end
 
 function D:CHAT_MSG_ADDON(_, prefix, message, _, senderOne, senderTwo)
-	local sender = strfind(senderOne, '-') and senderOne or senderTwo
-	if prefix ~= TRANSFER_PREFIX or not Downloads[sender] then return end
+	local download = prefix == TRANSFER_PREFIX and Downloads[strfind(senderOne, '-') and senderOne or senderTwo]
+	if not download then return end
 
-	local cur, max = len(message), Downloads[sender].length
-	local current = Downloads[sender].current + cur
+	local cur, max = len(message), download.length
+	local current = download.current + cur
 	if current > max then current = max end
-	Downloads[sender].current = current
+	download.current = current
 
 	D.StatusBar:SetValue(current)
 end
@@ -264,9 +264,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		D:UnregisterComm(TRANSFER_PREFIX)
 		E:StaticPopupSpecial_Hide(D.StatusBar)
 
-		local success, data = D:Deserialize(msg)
+		local download, success, data = Downloads[sender]
+		local profileKey = download and download.profile
+		if profileKey then -- verify sender first before trying to handle the msg
+			success, data = D:Deserialize(msg)
+		end
+
 		if success then
-			local profileKey = Downloads[sender].profile
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 			local popup = E.PopupDialogs.DISTRIBUTOR_CONFIRM
 
@@ -319,6 +323,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				else
 					E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(profileKey)
 				end
+
 				Downloads[sender] = nil
 			end
 			popup.OnShow = nil
@@ -334,6 +339,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		end
 	elseif prefix == TRANSFER_COMPLETE_PREFIX then
 		D:UnregisterComm(TRANSFER_COMPLETE_PREFIX)
+
 		if msg == 'COMPLETE' then
 			E:StaticPopup_Show('DISTRIBUTOR_SUCCESS')
 		else
