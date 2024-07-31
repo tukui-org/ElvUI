@@ -140,10 +140,12 @@ function D:Initialize()
 	D.statusBar:SetStatusBarTexture(E.media.normTex)
 	D.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
 	D.statusBar:Size(250, 18)
+	D.statusBar:Hide()
+
 	D.statusBar.text = D.statusBar:CreateFontString(nil, 'OVERLAY')
 	D.statusBar.text:FontTemplate()
 	D.statusBar.text:Point('CENTER')
-	D.statusBar:Hide()
+
 	E:RegisterStatusBar(D.statusBar)
 end
 
