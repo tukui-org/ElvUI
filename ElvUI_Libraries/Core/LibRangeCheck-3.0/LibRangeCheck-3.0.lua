@@ -92,8 +92,8 @@ local CustomSpellBookItemName = C_SpellBook_GetSpellBookItemInfo and function(in
 end or _G.GetSpellBookItemName
 
 local C_Spell_IsSpellInRange = C_Spell.IsSpellInRange
-local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(index, spellBank, unit)
-  local result = C_Spell_IsSpellInRange(index, spellBank, unit)
+local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, spellBank, unit)
+  local result = C_Spell_IsSpellInRange(spellID, unit)
   if result == true then
     return 1
   elseif result == false then
@@ -709,7 +709,7 @@ local function findSpellIdx(spellName, sid)
   for i = 1, getNumSpells() do
     local name, _, id, spellType, isPassive = CustomSpellBookItemName(i, BOOKTYPE_SPELL)
     if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-      return (not spellType or not isPassive) and i
+      return (not spellType and i) or (not isPassive and id)
     end
   end
 
