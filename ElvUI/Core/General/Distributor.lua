@@ -389,7 +389,7 @@ function D:GetProfileData(profileType, profileKey)
 end
 
 function D:GetProfileExport(profileType, exportFormat, profileKey)
-  local profileData
+	local profileData
 	profileKey, profileData = D:GetProfileData(profileType, profileKey)
 	local profileExport
 
@@ -527,7 +527,7 @@ function D:ExportProfile(profileType, exportFormat, profileKey)
 		return
 	end
 
-  local profileExport
+	local profileExport
 	profileKey, profileExport = D:GetProfileExport(profileType, exportFormat, profileKey)
 
 	return profileKey, profileExport
