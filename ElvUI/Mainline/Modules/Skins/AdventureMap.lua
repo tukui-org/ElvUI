@@ -6,7 +6,11 @@ local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 local function SkinRewards()
-	for reward in pairs(_G.AdventureMapQuestChoiceDialog.rewardPool.activeObjects) do
+	local pool = _G.AdventureMapQuestChoiceDialog.rewardPool
+	local objects = pool and pool.activeObjects
+	if not objects then return end
+
+	for reward in pairs(objects) do
 		if not reward.IsSkinned then
 			S:HandleItemButton(reward)
 			S:HandleIcon(reward.Icon)
