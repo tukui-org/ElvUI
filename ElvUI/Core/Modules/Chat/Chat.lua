@@ -299,6 +299,7 @@ do --this can save some main file locals
 			z['Player-1168-0680170F']	= itsSimpy -- DK:		Ezek
 			z['Player-1168-06981C6F']	= itsSimpy -- Warrior:	Glice
 			z['Player-1168-0698066B']	= itsSimpy -- Shaman:	Kalline
+			z['Player-1168-0AD631CE']	= itsSimpy -- Shaman:	Barbossa
 			z['Player-1168-06989ADF']	= itsSimpy -- Druid:	Puttietat
 			z['Player-1168-069837CD']	= itsSimpy -- Warlock:	Simpy
 			z['Player-1168-06984CD4']	= itsSimpy -- Monk:		Twigly
