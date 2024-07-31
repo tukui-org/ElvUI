@@ -81,27 +81,18 @@ local UnitRace = UnitRace
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
 
+local SpellBookItemType = Enum.SpellBookItemType
 local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
+
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
-local GetSpellBookItemName = _G.GetSpellBookItemName or function(index, bookType)
+local CustomSpellBookItemName = _G.GetSpellBookItemName or function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)
-  return result.name, result.subName, result.spellID
+  return result.name, result.subName, result.spellID, result.itemType, result.isPassive
 end
 
 local C_Spell_IsSpellInRange = C_Spell.IsSpellInRange
-local IsSpellInRange = _G.IsSpellInRange or function(id, unit)
-  local result = C_Spell_IsSpellInRange(id, unit)
-  if result == true then
-    return 1
-  elseif result == false then
-    return 0
-  end
-  return nil
-end
-
-local C_SpellBook_IsSpellBookItemInRange = C_SpellBook.IsSpellBookItemInRange
-local IsSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)
-  local result = C_SpellBook_IsSpellBookItemInRange(index, spellBank, unit)
+local CustomSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)
+  local result = C_Spell_IsSpellInRange(index, unit)
   if result == true then
     return 1
   elseif result == false then
@@ -190,7 +181,7 @@ for _, n in ipairs({ "EVOKER", "DEATHKNIGHT", "DEMONHUNTER", "DRUID", "HUNTER", 
 end
 
 -- Evoker
-tinsert(HarmSpells.EVOKER, 369819) -- Disintegrate (25 yards)
+tinsert(HarmSpells.EVOKER, 362969) -- Azure Strike (25 yards)
 
 tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
 tinsert(FriendSpells.EVOKER, 431443) -- Chrono Flames (25 yards) (Hero Talent, overrides Living Flame)
@@ -608,7 +599,7 @@ local lastUpdate = 0
 local checkers_Spell = setmetatable({}, {
   __index = function(t, spellIdx)
     local func = function(unit)
-      if IsSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
+      if CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
         return true
       end
     end
@@ -716,9 +707,11 @@ local function findSpellIdx(spellName, sid)
   end
 
   for i = 1, getNumSpells() do
-    local name, _, id = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+    local name, _, id, spellType, isPassive = CustomSpellBookItemName(i, BOOKTYPE_SPELL)
     if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-      return i
+      if not spellType or ((SpellBookItemType and not isPassive) and (spellType == SpellBookItemType.Spell or spellType == SpellBookItemType.FutureSpell)) then
+        return i
+      end
     end
   end
 
