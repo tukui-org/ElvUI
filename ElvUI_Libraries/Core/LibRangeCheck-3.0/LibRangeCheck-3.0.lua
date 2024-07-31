@@ -86,7 +86,7 @@ local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Play
 local GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
 
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
-local CustomSpellBookItemName = C_SpellBook_GetSpellBookItemInfo and function(index, bookType)
+local CustomSpellBookItemData = C_SpellBook_GetSpellBookItemInfo and function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)
   return result.name, result.subName, result.spellID, result.itemType, result.isPassive
 end or _G.GetSpellBookItemName
@@ -103,7 +103,7 @@ local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, 
 end or _G.IsSpellInRange
 
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
-local GetSpellInfo = C_Spell_GetSpellInfo and function(spellID)
+local CustomSpellInfo = C_Spell_GetSpellInfo and function(spellID)
   if not spellID then
     return nil;
   end
@@ -707,7 +707,7 @@ local function findSpellIdx(spellName, sid)
   end
 
   for i = 1, getNumSpells() do
-    local name, _, id, spellType, isPassive = CustomSpellBookItemName(i, BOOKTYPE_SPELL)
+    local name, _, id, spellType, isPassive = CustomSpellBookItemData(i, BOOKTYPE_SPELL)
     if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
       return (not spellType and i) or (not isPassive and id)
     end
@@ -723,8 +723,7 @@ local function fixRange(range)
 end
 
 local function getSpellData(sid)
-  local name, _, _, _, minRange, range = GetSpellInfo(sid)
-
+  local name, _, _, _, minRange, range = CustomSpellInfo(sid)
   return name, fixRange(minRange), fixRange(range), findSpellIdx(name, sid)
 end
 
@@ -1041,7 +1040,7 @@ lib.CHECKERS_CHANGED = "CHECKERS_CHANGED"
 lib.MeleeRange = MeleeRange
 
 function lib:findSpellIndex(spell)
-  local name, _, _, _, _, _, sid = GetSpellInfo(spell)
+  local name, _, _, _, _, _, sid = CustomSpellInfo(spell)
   return findSpellIdx(name, sid)
 end
 
