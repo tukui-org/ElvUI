@@ -226,10 +226,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		local popup = E.PopupDialogs.DISTRIBUTOR_RESPONSE
 		popup.text = textString
 		popup.OnAccept = function()
-			self.statusBar:SetMinMaxValues(0, length)
-			self.statusBar:SetValue(0)
-			self.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
-			E:StaticPopupSpecial_Show(self.statusBar)
+			D.statusBar:SetMinMaxValues(0, length)
+			D.statusBar:SetValue(0)
+			D.statusBar.text:SetFormattedText(L["Data From: %s"], sender)
+			E:StaticPopupSpecial_Show(D.statusBar)
 			D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
 		end
 		popup.OnCancel = function()
@@ -581,15 +581,15 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,
-	OnAccept = function(self, data)
-		D:SetImportedProfile(data.profileType, self.editBox:GetText(), data.profileData, true)
+	OnAccept = function(frame, data)
+		D:SetImportedProfile(data.profileType, frame.editBox:GetText(), data.profileData, true)
 	end,
-	EditBoxOnTextChanged = function(self)
-		self:GetParent().button1:SetEnabled(self:GetText() ~= '')
+	EditBoxOnTextChanged = function(frame)
+		frame:GetParent().button1:SetEnabled(frame:GetText() ~= '')
 	end,
-	OnShow = function(self, data)
-		self.editBox:SetText(data.profileKey)
-		self.editBox:SetFocus()
+	OnShow = function(frame, data)
+		frame.editBox:SetText(data.profileKey)
+		frame.editBox:SetFocus()
 	end,
 	timeout = 0,
 	whileDead = 1,
