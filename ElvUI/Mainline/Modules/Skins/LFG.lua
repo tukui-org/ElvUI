@@ -127,7 +127,6 @@ function S:LookingForGroupFrames()
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame)
 
-	_G.RaidFinderQueueFrame:StripTextures(true)
 	_G.PVEFrameBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 
@@ -300,7 +299,7 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
 
-	-- Szenario Tab [[New in 10.2.7]]
+	-- Scenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
 	if ScenarioQueueFrame then
 		ScenarioQueueFrame:StripTextures()
@@ -318,16 +317,14 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	-- Raid finder
+	-- Dungeon finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()
 
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
-	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
 
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
@@ -344,10 +341,15 @@ function S:LookingForGroupFrames()
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
+	_G.RaidFinderQueueFrame:StripTextures(true)
+
 	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
+
+	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
+	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
+
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
-	_G.RaidFinderQueueFrame:StripTextures()
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)

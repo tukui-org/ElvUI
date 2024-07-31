@@ -343,7 +343,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
-local function GetProfileData(profileType)
+function D:GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
 		return
@@ -388,8 +388,8 @@ local function GetProfileData(profileType)
 	return profileKey, profileData
 end
 
-local function GetProfileExport(profileType, exportFormat)
-	local profileKey, profileData = GetProfileData(profileType)
+function D:GetProfileExport(profileType, exportFormat)
+	local profileKey, profileData = D:GetProfileData(profileType)
 	local profileExport
 
 	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then
@@ -482,7 +482,7 @@ function D:Decode(dataString)
 	return profileType, profileKey, profileData
 end
 
-local function SetImportedProfile(profileType, profileKey, profileData, force)
+function D:SetImportedProfile(profileType, profileKey, profileData, force)
 	if profileType == 'profile' then
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile) --Remove unwanted options from import
 
@@ -526,7 +526,7 @@ function D:ExportProfile(profileType, exportFormat)
 		return
 	end
 
-	local profileKey, profileExport = GetProfileExport(profileType, exportFormat)
+	local profileKey, profileExport = D:GetProfileExport(profileType, exportFormat)
 
 	return profileKey, profileExport
 end
@@ -540,7 +540,7 @@ function D:ImportProfile(dataString)
 	end
 
 	if profileType and ((profileType == 'profile' and profileKey) or profileType ~= 'profile') then
-		SetImportedProfile(profileType, profileKey, profileData)
+		D:SetImportedProfile(profileType, profileKey, profileData)
 	end
 
 	return true
@@ -585,7 +585,7 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	editBoxWidth = 350,
 	maxLetters = 127,
 	OnAccept = function(self, data)
-		SetImportedProfile(data.profileType, self.editBox:GetText(), data.profileData, true)
+		D:SetImportedProfile(data.profileType, self.editBox:GetText(), data.profileData, true)
 	end,
 	EditBoxOnTextChanged = function(self)
 		self:GetParent().button1:SetEnabled(self:GetText() ~= '')
