@@ -81,7 +81,6 @@ local UnitRace = UnitRace
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
 
-local SpellBookItemType = Enum.SpellBookItemType
 local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
@@ -92,7 +91,7 @@ end
 
 local C_Spell_IsSpellInRange = C_Spell.IsSpellInRange
 local CustomSpellBookItemInRange = _G.IsSpellInRange or function(index, spellBank, unit)
-  local result = C_Spell_IsSpellInRange(index, unit)
+  local result = C_Spell_IsSpellInRange(index, spellBank, unit)
   if result == true then
     return 1
   elseif result == false then
@@ -709,7 +708,7 @@ local function findSpellIdx(spellName, sid)
   for i = 1, getNumSpells() do
     local name, _, id, spellType, isPassive = CustomSpellBookItemName(i, BOOKTYPE_SPELL)
     if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-      if not spellType or ((SpellBookItemType and not isPassive) and (spellType == SpellBookItemType.Spell or spellType == SpellBookItemType.FutureSpell)) then
+      if not spellType or not isPassive then
         return i
       end
     end
