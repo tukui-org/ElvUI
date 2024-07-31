@@ -1619,7 +1619,7 @@ function CH:GetBNFirstToonClassColor(id)
 	if not id then return end
 	for i = 1, BNGetNumFriends() do
 		local info = C_BattleNet_GetFriendAccountInfo(i)
-		if info.bnetAccountID == id then
+		if info and info.bnetAccountID == id then
 			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
 				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
 				if gameInfo.clientProgram == BNET_CLIENT_WOW and gameInfo.className and gameInfo.className ~= '' then
