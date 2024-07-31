@@ -840,8 +840,8 @@ do
 
 		local printableString
 		if which == 'text' then
-			local serialData = D:Serialize(data)
-			local exportString = D:CreateProfileExport('styleFilters', 'styleFilters', serialData)
+			local serialString = D:Serialize(data)
+			local exportString = D:CreateProfileExport('styleFilters', 'styleFilters', serialString)
 			local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
 			local printable = LibDeflate:EncodeForPrint(compressedData)
 			if printable then

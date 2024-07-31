@@ -122,7 +122,7 @@ D.GeneratedKeys = {
 do
 	local units = D.GeneratedKeys.profile.unitframe.units
 	for unit in pairs(P.unitframe.units) do
-		units[unit] = {customTexts = true}
+		units[unit] = { customTexts = true }
 	end
 
 	for i = 1, 10 do
@@ -172,11 +172,11 @@ function D:Distribute(target, otherServer, isGlobal)
 
 	if not data then return end
 
-	local serialData = D:Serialize(data)
-	local length = len(serialData)
+	local serialString = D:Serialize(data)
+	local length = len(serialString)
 	local message = format('%s:%d:%s', profileKey, length, target)
 
-	Uploads[profileKey] = {serialData = serialData, target = target}
+	Uploads[profileKey] = { serialString = serialString, target = target }
 
 	if otherServer then
 		if IsInRaid() and UnitInRaid('target') then
@@ -253,9 +253,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		E:StaticPopup_Hide('DISTRIBUTOR_WAITING')
 
 		local profileKey, response = split(':', msg)
-		if response == 'YES' then
+		local upload = Uploads[profileKey]
+		if upload and response == 'YES' then
 			D:RegisterComm(TRANSFER_COMPLETE_PREFIX)
-			D:SendCommMessage(TRANSFER_PREFIX, Uploads[profileKey].serialData, dist, Uploads[profileKey].target)
+			D:SendCommMessage(TRANSFER_PREFIX, upload.serialString, dist, upload.target)
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_REQUEST_DENIED')
 		end
