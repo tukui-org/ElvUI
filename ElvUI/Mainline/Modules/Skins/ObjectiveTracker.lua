@@ -135,7 +135,7 @@ function S:Blizzard_ObjectiveTracker()
 
 	local MainMinimize = MainHeader.MinimizeButton
 	MainMinimize:Size(16)
-	MainMinimize:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'BLEND')
+	MainMinimize:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
 
 	HandleButton(nil, _G.ObjectiveTrackerFrame.isCollapsed)
 
