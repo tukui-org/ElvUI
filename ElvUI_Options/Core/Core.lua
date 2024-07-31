@@ -340,7 +340,7 @@ do -- Import and Export
 			return E:ProfileTableToPluginFormat(profileData, profileType)
 		else
 			local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-			return D:CreateProfileExport(decodedText, profileType, profileKey)
+			return D:CreateProfileExport(profileType, profileKey, decodedText)
 		end
 	end
 

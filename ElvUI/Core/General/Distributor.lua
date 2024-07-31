@@ -343,16 +343,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
-function D:GetProfileData(profileType, profileKey)
-	if not profileType or type(profileType) ~= 'string' then
-		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
-		return
-	end
+function D:GetProfileData(dataType, dataKey)
+	if not dataType or type(dataType) ~= 'string' then return end
 
-	local profileData = {}
-	if profileType == 'profile' then
+	local profileData, profileKey = {}
+	if dataType == 'profile' then
 		--Copy current profile data
-		profileKey = profileKey or ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
+		profileKey = dataKey or (ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm])
 		profileData = E:CopyTable(profileData, ElvDB.profiles[profileKey])
 
 		--This table will also hold all default values, not just the changed settings.
@@ -360,24 +357,24 @@ function D:GetProfileData(profileType, profileKey)
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile)
-	elseif profileType == 'private' then
+	elseif dataType == 'private' then
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateKey])
 		profileData = E:RemoveTableDuplicates(profileData, V, D.GeneratedKeys.private)
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.private)
 		profileKey = 'private'
-	elseif profileType == 'global' then
+	elseif dataType == 'global' then
 		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.global)
 		profileKey = 'global'
-	elseif profileType == 'filters' then
+	elseif dataType == 'filters' then
 		profileData.unitframe = {}
 		profileData.unitframe.aurafilters = E:CopyTable({}, ElvDB.global.unitframe.aurafilters)
 		profileData.unitframe.aurawatch = E:CopyTable({}, ElvDB.global.unitframe.aurawatch)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileKey = 'filters'
-	elseif profileType == 'styleFilters' then
+	elseif dataType == 'styleFilters' then
 		profileKey = 'styleFilters'
 		profileData.nameplates = {}
 		profileData.nameplates.filters = E:CopyTable({}, ElvDB.global.nameplates.filters)
@@ -388,34 +385,29 @@ function D:GetProfileData(profileType, profileKey)
 	return profileKey, profileData
 end
 
-function D:GetProfileExport(profileType, exportFormat, profileKey)
-	local profileData
-	profileKey, profileData = D:GetProfileData(profileType, profileKey)
+function D:GetProfileExport(dataType, dataKey, dataFormat)
+	local profileKey, profileData = D:GetProfileData(dataType, dataKey)
+	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then return end
+
 	local profileExport
-
-	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then
-		E:Print('Error getting data from "GetProfileData"')
-		return
-	end
-
-	if exportFormat == 'text' then
-		local serialData = D:Serialize(profileData)
-		local exportString = D:CreateProfileExport(serialData, profileType, profileKey)
+	if dataFormat == 'text' then
+		local serialString = D:Serialize(profileData)
+		local exportString = D:CreateProfileExport(dataType, profileKey, serialString)
 		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
 		local printableString = LibDeflate:EncodeForPrint(compressedData)
 		profileExport = printableString and format('%s%s', EXPORT_PREFIX, printableString) or nil
-	elseif exportFormat == 'luaTable' then
+	elseif dataFormat == 'luaTable' then
 		local exportString = E:TableToLuaString(profileData)
-		profileExport = D:CreateProfileExport(exportString, profileType, profileKey)
-	elseif exportFormat == 'luaPlugin' then
-		profileExport = E:ProfileTableToPluginFormat(profileData, profileType)
+		profileExport = D:CreateProfileExport(dataType, profileKey, exportString)
+	elseif dataFormat == 'luaPlugin' then
+		profileExport = E:ProfileTableToPluginFormat(profileData, dataType)
 	end
 
 	return profileKey, profileExport
 end
 
-function D:CreateProfileExport(dataString, profileType, profileKey)
-	return (profileType == 'profile' and format('%s::%s::%s', dataString, profileType, profileKey)) or (profileType and format('%s::%s', dataString, profileType))
+function D:CreateProfileExport(dataType, dataKey, dataString)
+	return (dataType == 'profile' and format('%s::%s::%s', dataString, dataType, dataKey)) or (dataType and format('%s::%s', dataString, dataType))
 end
 
 function D:GetImportStringType(dataString)
@@ -423,8 +415,8 @@ function D:GetImportStringType(dataString)
 end
 
 function D:Decode(dataString)
-	local profileInfo, profileType, profileKey, profileData
 	local stringType = D:GetImportStringType(dataString)
+	local profileInfo, profileType, profileKey, profileData
 
 	if stringType == 'Deflate' then
 		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
@@ -483,59 +475,55 @@ function D:Decode(dataString)
 	return profileType, profileKey, profileData
 end
 
-function D:SetImportedProfile(profileType, profileKey, profileData, force)
-	if profileType == 'profile' then
-		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile) --Remove unwanted options from import
+function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
+	if dataType == 'profile' then
+		local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.profile) --Remove unwanted options from import
 
-		if not ElvDB.profiles[profileKey] or force then
-			if force and E.data.keys.profile == profileKey then
+		if not ElvDB.profiles[dataKey] or force then
+			if force and E.data.keys.profile == dataKey then
 				--Overwriting an active profile doesn't update when calling SetProfile
 				--So make it look like we use a different profile
-				E.data.keys.profile = profileKey..'_Temp'
+				E.data.keys.profile = dataKey..'_Temp'
 			end
 
-			ElvDB.profiles[profileKey] = profileData
+			ElvDB.profiles[dataKey] = profileData
 
 			--Calling SetProfile will now update all settings correctly
-			E.data:SetProfile(profileKey)
+			E.data:SetProfile(dataKey)
 		else
-			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS', nil, nil, {profileKey = profileKey, profileType = profileType, profileData = profileData})
+			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS', nil, nil, { profileKey = dataKey, profileType = dataType, profileData = profileData })
 		end
-	elseif profileType == 'private' then
+	elseif dataType == 'private' then
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		if privateKey then
-			profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.private) --Remove unwanted options from import
+			local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.private) --Remove unwanted options from import
 			ElvPrivateDB.profiles[privateKey] = profileData
 			E:StaticPopup_Show('IMPORT_RL')
 		end
-	elseif profileType == 'global' then
-		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.global) --Remove unwanted options from import
+	elseif dataType == 'global' then
+		local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
-	elseif profileType == 'filters' then
-		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
+	elseif dataType == 'filters' then
+		E:CopyTable(ElvDB.global.unitframe, dataProfile.unitframe)
 		E:UpdateUnitFrames()
-	elseif profileType == 'styleFilters' then
-		E:CopyTable(ElvDB.global.nameplates, profileData.nameplates or profileData.nameplate)
+	elseif dataType == 'styleFilters' then
+		E:CopyTable(ElvDB.global.nameplates, dataProfile.nameplates or dataProfile.nameplate)
 		E:UpdateNamePlates()
 	end
 end
 
-function D:ExportProfile(profileType, exportFormat, profileKey)
-	if not profileType or not exportFormat then
+function D:ExportProfile(dataType, dataFormat)
+	if not dataType or not dataFormat then
 		E:Print('Bad argument to "ExportProfile" (string expected)')
 		return
 	end
 
-	local profileExport
-	profileKey, profileExport = D:GetProfileExport(profileType, exportFormat, profileKey)
-
-	return profileKey, profileExport
+	return D:GetProfileExport(dataType, dataFormat)
 end
 
 function D:ImportProfile(dataString)
 	local profileType, profileKey, profileData = D:Decode(dataString)
-
 	if not profileData or type(profileData) ~= 'table' then
 		E:Print('Error: something went wrong when converting string to table!')
 		return
