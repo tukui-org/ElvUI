@@ -217,6 +217,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 		if D.StatusBar:IsShown() then
 			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
+
 			return
 		end
 
@@ -281,6 +282,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 					ElvDB.profiles[profileKey] = data
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
+
 					popup.text = textString
 					popup.button1 = ACCEPT
 					popup.button2 = nil
@@ -302,6 +304,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
 					D:SendCommMessage(TRANSFER_COMPLETE_PREFIX, 'COMPLETE', dist, sender)
+
 					return
 				end
 			end
@@ -355,7 +358,11 @@ function D:GetProfileData(dataType, dataKey)
 	if dataType == 'profile' then
 		--Copy current profile data
 		profileKey = dataKey or (ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm])
-		profileData = E:CopyTable(profileData, ElvDB.profiles[profileKey])
+
+		local data = ElvDB.profiles[profileKey]
+		if not data then return end -- bad dataKey
+
+		profileData = E:CopyTable(profileData, data)
 
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
@@ -483,7 +490,6 @@ end
 function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
 	if dataType == 'profile' then
 		local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.profile) --Remove unwanted options from import
-
 		if not ElvDB.profiles[dataKey] or force then
 			if force and E.data.keys.profile == dataKey then
 				--Overwriting an active profile doesn't update when calling SetProfile
