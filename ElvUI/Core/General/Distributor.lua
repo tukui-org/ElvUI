@@ -343,16 +343,16 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 	end
 end
 
-function D:GetProfileData(profileType)
+function D:GetProfileData(profileType, profileKey)
 	if not profileType or type(profileType) ~= 'string' then
 		E:Print('Bad argument #1 to "GetProfileData" (string expected)')
 		return
 	end
 
-	local profileData, profileKey = {}
+	local profileData = {}
 	if profileType == 'profile' then
 		--Copy current profile data
-		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
+		profileKey = profileKey or ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
 		profileData = E:CopyTable(profileData, ElvDB.profiles[profileKey])
 
 		--This table will also hold all default values, not just the changed settings.
@@ -388,8 +388,9 @@ function D:GetProfileData(profileType)
 	return profileKey, profileData
 end
 
-function D:GetProfileExport(profileType, exportFormat)
-	local profileKey, profileData = D:GetProfileData(profileType)
+function D:GetProfileExport(profileType, exportFormat, profileKey)
+  local profileData
+	profileKey, profileData = D:GetProfileData(profileType, profileKey)
 	local profileExport
 
 	if not profileKey or not profileData or (profileData and type(profileData) ~= 'table') then
@@ -520,13 +521,14 @@ function D:SetImportedProfile(profileType, profileKey, profileData, force)
 	end
 end
 
-function D:ExportProfile(profileType, exportFormat)
+function D:ExportProfile(profileType, exportFormat, profileKey)
 	if not profileType or not exportFormat then
 		E:Print('Bad argument to "ExportProfile" (string expected)')
 		return
 	end
 
-	local profileKey, profileExport = D:GetProfileExport(profileType, exportFormat)
+  local profileExport
+	profileKey, profileExport = D:GetProfileExport(profileType, exportFormat, profileKey)
 
 	return profileKey, profileExport
 end
