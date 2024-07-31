@@ -127,7 +127,6 @@ function S:LookingForGroupFrames()
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame)
 
-	_G.RaidFinderQueueFrame:StripTextures(true)
 	_G.PVEFrameBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 
@@ -342,12 +341,15 @@ function S:LookingForGroupFrames()
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
+	_G.RaidFinderQueueFrame:StripTextures(true)
+
 	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
+
 	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
+
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
-	_G.RaidFinderQueueFrame:StripTextures()
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
