@@ -5,7 +5,7 @@ local LibDeflate = E.Libs.Deflate
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
-local len, format, split, strmatch, strfind = strlen, format, strsplit, strmatch, strfind
+local strlen, format, split, strmatch, strfind = strlen, format, strsplit, strmatch, strfind
 
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -172,8 +172,16 @@ function D:Distribute(target, otherServer, isGlobal)
 
 	if not data then return end
 
+	if profileKey == 'global' then
+		data = E:RemoveTableDuplicates(data, G, D.GeneratedKeys.global)
+		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.global)
+	else
+		data = E:RemoveTableDuplicates(data, P, D.GeneratedKeys.profile)
+		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.profile)
+	end
+
 	local serialString = D:Serialize(data)
-	local length = len(serialString)
+	local length = strlen(serialString)
 	local message = format('%s:%d:%s', profileKey, length, target)
 
 	Uploads[profileKey] = { serialString = serialString, target = target }
@@ -199,7 +207,7 @@ function D:CHAT_MSG_ADDON(_, prefix, message, _, senderOne, senderTwo)
 	local download = prefix == TRANSFER_PREFIX and Downloads[strfind(senderOne, '-') and senderOne or senderTwo]
 	if not download then return end
 
-	local cur, max = len(message), download.length
+	local cur, max = strlen(message), download.length
 	local current = download.current + cur
 	if current > max then current = max end
 	download.current = current
