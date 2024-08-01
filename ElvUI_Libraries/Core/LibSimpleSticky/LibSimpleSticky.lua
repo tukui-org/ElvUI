@@ -90,6 +90,7 @@ function StickyFrames:StartMoving(frame, frameList, left, top, right, bottom, an
 	info.bottom = bottom
 	info.xoffset = x
 	info.yoffset = y
+	info.anchor = anchor
 
 	self.scripts[frame] = frame:GetScript("OnUpdate")
 	frame:SetScript("OnUpdate", self.GetUpdateFunc)
@@ -152,13 +153,13 @@ function StickyFrames:GetUpdateFunc() -- self is frame
 
 	StickyFrames.sticky[self] = nil
 
-	local frameList = data.frameList
+	local frameList = (not data.anchor or data.anchor == self) and data.frameList
 	if frameList then
 		local left, right, top, bottom = data.left, data.right, data.top, data.bottom
 		for i = 1, #frameList do
 			local v = frameList[i]
 			if self ~= v and self ~= v:GetParent() and not IsShiftKeyDown() and v:IsVisible() then
-				if self:SnapFrame(self, v, left, top, right, bottom) then
+				if StickyFrames:SnapFrame(self, v, left, top, right, bottom) then
 					StickyFrames.sticky[self] = v
 					break
 				end
