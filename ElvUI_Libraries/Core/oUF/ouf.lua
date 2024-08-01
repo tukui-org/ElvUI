@@ -519,12 +519,11 @@ do
 	end
 end
 
-local function generateName(unit, ...)
+local function generateName(unit, attributes)
 	local name = 'oUF_' .. style:gsub('^oUF_?', ''):gsub('[^%a%d_]+', '')
 
 	local raid, party, groupFilter, unitsuffix
-	for i = 1, select('#', ...), 2 do
-		local att, val = select(i, ...)
+	for att, val in next, attributes do
 		if(att == 'oUF-initialConfigFunction') then
 			unitsuffix = val:match('unitsuffix[%p%s]+(%a+)')
 		elseif(att == 'showRaid') then
@@ -668,19 +667,18 @@ do
 	                              configuration (string?)
 	* oUF-onlyProcessChildren   - can be used to force headers to only process children (boolean?)
 	--]]
-	function oUF:SpawnHeader(overrideName, template, visibility, ...)
+	function oUF:SpawnHeader(overrideName, template, visibility, attributes)
 		if(not style) then return error('Unable to create frame. No styles have been registered.') end
 
 		template = (template or 'SecureGroupHeaderTemplate')
 
 		local isPetHeader = template:match('PetHeader')
-		local name = overrideName or generateName(nil, ...)
+		local name = overrideName or generateName(nil, attributes)
 		local header = CreateFrame('Frame', name, UFParent, template)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
-		for i = 1, select('#', ...), 2 do
-			local att, val = select(i, ...)
-			if(not att) then break end
+
+		for att, val in next, attributes do
 			header:SetAttribute(att, val)
 		end
 
