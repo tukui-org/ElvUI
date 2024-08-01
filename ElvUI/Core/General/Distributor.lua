@@ -160,21 +160,26 @@ function D:UpdateSettings()
 end
 
 -- Used to start uploads
-function D:Distribute(target, otherServer, isGlobal)
+function D:Distribute(target, otherServer, dataKey)
 	local profileKey, data
-	if not isGlobal then
+	if dataKey == 'global' then
+		profileKey = dataKey
+		data = ElvDB.global
+	elseif dataKey == 'private' then
+		profileKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
+		data = ElvPrivateDB.profiles[profileKey]
+	else
 		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
 		data = ElvDB.profiles[profileKey]
-	else
-		profileKey = 'global'
-		data = ElvDB.global
 	end
 
 	if not data then return end
-
-	if profileKey == 'global' then
+	if dataKey == 'global' then
 		data = E:RemoveTableDuplicates(data, G, D.GeneratedKeys.global)
 		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.global)
+	elseif dataKey == 'private' then
+		data = E:RemoveTableDuplicates(data, V, D.GeneratedKeys.private)
+		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.private)
 	else
 		data = E:RemoveTableDuplicates(data, P, D.GeneratedKeys.profile)
 		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.profile)
@@ -182,7 +187,7 @@ function D:Distribute(target, otherServer, isGlobal)
 
 	local serialString = D:Serialize(data)
 	local length = strlen(serialString)
-	local message = format('%s:%d:%s', profileKey, length, target)
+	local message = format('%s:%d:%s:%s', profileKey, length, target, dataKey or 'profile')
 
 	Uploads[profileKey] = { serialString = serialString, target = target }
 
@@ -217,11 +222,8 @@ end
 
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if prefix == REQUEST_PREFIX then
-		local profile, length, sendTo = split(':', msg)
-
-		if dist ~= 'WHISPER' and sendTo ~= E.myname then
-			return
-		end
+		local profile, length, sendTo, dataKey = split(':', msg)
+		if dist ~= 'WHISPER' and sendTo ~= E.myname then return end
 
 		if D.StatusBar:IsShown() then
 			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
@@ -253,6 +255,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			current = 0,
 			length = tonumber(length),
 			profile = profile,
+			dataKey = dataKey
 		}
 
 		D:RegisterComm(TRANSFER_PREFIX)
@@ -284,10 +287,12 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 			local popup = E.PopupDialogs.DISTRIBUTOR_CONFIRM
 
-			if profileKey == 'global' then
+			if download.dataKey == 'global' then
 				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
 			else
-				if not ElvDB.profiles[profileKey] then
+				if download.dataKey == 'private' and not ElvPrivateDB.profiles[profileKey] then
+					ElvPrivateDB.profiles[profileKey] = data
+				elseif download.dataKey == 'profile' and not ElvDB.profiles[profileKey] then
 					ElvDB.profiles[profileKey] = data
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
@@ -302,13 +307,24 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 					popup.exclusive = 1
 					popup.preferredIndex = 3
 
-					popup.OnAccept = function(frame)
-						ElvDB.profiles[frame.editBox:GetText()] = data
-						E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(frame.editBox:GetText())
-						E:StaggeredUpdateAll()
+					popup.OnAccept = function()
+						if download.dataKey == 'private' then
+							ElvPrivateDB.profiles[profileKey] = data
+
+							E:StaticPopup_Show('IMPORT_RL')
+						elseif download.dataKey == 'profile' then
+							ElvDB.profiles[profileKey] = data
+
+							E.data:SetProfile(profileKey)
+							E:StaggeredUpdateAll()
+						end
+
 						Downloads[sender] = nil
 					end
-					popup.OnShow = function(frame) frame.editBox:SetText(profileKey) frame.editBox:SetFocus() end
+					popup.OnShow = function(frame)
+						frame.editBox:SetText(profileKey)
+						frame.editBox:SetFocus()
+					end
 					popup.OnCancel = nil
 
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
@@ -329,11 +345,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			popup.preferredIndex = nil
 
 			popup.OnAccept = function()
-				if profileKey == 'global' then
+				if download.dataKey == 'global' then
 					E:CopyTable(ElvDB.global, data)
 					E:StaggeredUpdateAll()
-				else
-					E.Libs.AceAddon:GetAddon('ElvUI').data:SetProfile(profileKey)
+				elseif download.dataKey == 'private' then
+					E:StaticPopup_Show('IMPORT_RL')
+				elseif download.dataKey == 'profile' then
+					E.data:SetProfile(profileKey)
 				end
 
 				Downloads[sender] = nil
@@ -523,7 +541,7 @@ function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
 	elseif dataType == 'global' then
 		local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
-		E:StaticPopup_Show('IMPORT_RL')
+		E:StaggeredUpdateAll()
 	elseif dataType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, dataProfile.unitframe)
 		E:UpdateUnitFrames()
