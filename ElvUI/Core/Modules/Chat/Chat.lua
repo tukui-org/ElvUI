@@ -774,6 +774,18 @@ function CH:StyleChat(frame)
 	tab:SetScript('OnClick', CH.Tab_OnClick)
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
+	if frame == _G.GeneralDockManager.primary then
+		local GMChatFrame = _G.GMChatFrame
+		if GMChatFrame then
+			GMChatFrame:FontTemplate(font, size, outline)
+		end
+
+		local communities = _G.CommunitiesFrame and _G.CommunitiesFrame.Chat and _G.CommunitiesFrame.Chat.MessageFrame
+		if communities then
+			communities:FontTemplate(font, size, outline)
+		end
+	end
+
 	if not frame.isDocked then
 		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
 	end
