@@ -166,15 +166,15 @@ end
 
 function DT:ReleasePanel(givenName)
 	local panel = DT.PanelPool.InUse[givenName]
-	if panel then
-		DT:EmptyPanel(panel)
-		DT.PanelPool.Free[givenName] = panel
-		DT.PanelPool.InUse[givenName] = nil
-		DT.RegisteredPanels[givenName] = nil
+	if not panel then return end
 
-		if E.db.movers then
-			E.db.movers[panel.moverName] = nil
-		end
+	DT:EmptyPanel(panel)
+	DT.PanelPool.Free[givenName] = panel
+	DT.PanelPool.InUse[givenName] = nil
+	DT.RegisteredPanels[givenName] = nil
+
+	if E.db.movers then
+		E.db.movers[panel.moverName] = nil
 	end
 end
 
@@ -643,6 +643,8 @@ end
 
 function DT:UpdatePanelAttributes(name, db, fromLoad)
 	local Panel = DT.PanelPool.InUse[name]
+	if not Panel then return end
+
 	DT.OnLeave(Panel)
 
 	Panel.db = db
