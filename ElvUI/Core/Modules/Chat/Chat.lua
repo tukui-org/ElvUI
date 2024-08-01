@@ -3675,12 +3675,13 @@ function CH:FCF_Tab_OnClick(button)
 		_G.CloseDropDownMenus() -- Close all dropdowns
 		_G.SELECTED_CHAT_FRAME = chat -- If frame is docked assume that a click is to select a chat window, not drag it
 
-		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chat then
+		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GeneralDockManager) ~= chat then
 			_G.FCF_SelectDockFrame(chat)
 		end
 
 		if GetCVar('chatStyle') ~= 'classic' then
-			_G.ChatEdit_SetLastActiveWindow(chat.editBox)
+			local chatFrame = (chat.isDocked and _G.GeneralDockManager.primary) or chat
+			_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
 		end
 
 		chat:ResetAllFadeTimes()
