@@ -23,10 +23,11 @@ local MAJOR, MINOR = "LibSimpleSticky-1.0", 3
 local StickyFrames, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not StickyFrames then return end
 
--- GLOBALS: WorldFrame, UIParent, ElvUIParent
+local _G = _G
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local GetCursorPosition = GetCursorPosition
 local IsShiftKeyDown = IsShiftKeyDown
+local WorldFrame = WorldFrame
 local UIParent = UIParent
 local tostring = tostring
 
@@ -218,7 +219,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Left
 		if lA <= (lB + StickyFrames.rangeX) and lA >= (lB - StickyFrames.rangeX) then
 			newX = lB + wA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
+			if frameB == UIParent or frameB == WorldFrame or frameB == _G.ElvUIParent then
 				newX = newX + 4
 			end
 			snap = true
@@ -227,7 +228,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Right
 		if rA <= (rB + StickyFrames.rangeX) and rA >= (rB - StickyFrames.rangeX) then
 			newX = rB - wA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
+			if frameB == UIParent or frameB == WorldFrame or frameB == _G.ElvUIParent then
 				newX = newX - 4
 			end
 			snap = true
@@ -259,7 +260,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Top
 		if tA <= (tB + StickyFrames.rangeY) and tA >= (tB - StickyFrames.rangeY) then
 			newY = tB - hA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
+			if frameB == UIParent or frameB == WorldFrame or frameB == _G.ElvUIParent then
 				newY = newY - 4
 			end
 			snap = true
@@ -268,7 +269,7 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 		-- Interior Bottom
 		if bA <= (bB + StickyFrames.rangeY) and bA >= (bB - StickyFrames.rangeY) then
 			newY = bB + hA
-			if frameB == UIParent or frameB == WorldFrame or frameB == ElvUIParent then
+			if frameB == UIParent or frameB == WorldFrame or frameB == _G.ElvUIParent then
 				newY = newY + 4
 			end
 			snap = true
