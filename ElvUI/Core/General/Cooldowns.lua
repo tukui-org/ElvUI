@@ -319,6 +319,10 @@ function E:RegisterCooldown(cooldown, module)
 			E.RegisteredCooldowns[module] = {}
 		end
 
+		if module == 'WeakAuras' then
+			cooldown.skipScale = true -- [Animations: Preset Grow] will shut off the timer so ignore the scale
+		end
+
 		tinsert(E.RegisteredCooldowns[module], cooldown)
 		cooldown.isRegisteredCooldown = true
 	end

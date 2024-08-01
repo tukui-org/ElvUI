@@ -1442,7 +1442,7 @@ function NP:StyleFilterConfigure()
 
 				if t.casting then
 					local spell
-					if next(t.casting.spells) then
+					if t.casting.spells and next(t.casting.spells) then
 						for _, value in pairs(t.casting.spells) do
 							if value then
 								spell = true

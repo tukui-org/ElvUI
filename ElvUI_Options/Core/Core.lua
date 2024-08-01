@@ -296,9 +296,10 @@ E.Options.args.info.args.credits.args.donators.args.string = ACH:Description(DON
 --Create Profiles Table
 E.Options.args.profiles = ACH:Group(L["Profiles"], nil, 4, 'tab')
 E.Options.args.profiles.args.desc = ACH:Description(L["This feature will allow you to transfer settings to other characters."], 0)
-E.Options.args.profiles.args.distributeProfile = ACH:Execute(L["Share Current Profile"], L["Sends your current profile to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name) elseif server then D:Distribute(name, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
-E.Options.args.profiles.args.distributeGlobal = ACH:Execute(L["Share Filters"], L["Sends your filter settings to your target."], 2, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, true) elseif server then D:Distribute(name, true, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
-E.Options.args.profiles.args.allowDistributor = ACH:Toggle(L["Allow Sharing"], L["Both users will need this option enabled."], 3, nil, nil, nil, function() return E.global.general.allowDistributor end, function(_, value) E.global.general.allowDistributor = value; D:UpdateSettings() end)
+E.Options.args.profiles.args.distributeProfile = ACH:Execute(L["Share Profile"], L["Sends your current profile to your target."], 1, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name) elseif server then D:Distribute(name, true) end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
+E.Options.args.profiles.args.distributePrivate = ACH:Execute(L["Share Private"], nil, 2, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, 'private') elseif server then D:Distribute(name, true, 'private') end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
+E.Options.args.profiles.args.distributeGlobal = ACH:Execute(L["Share Global"], nil, 3, function() if not UnitExists('target') or not UnitIsPlayer('target') or not UnitIsFriend('player', 'target') or UnitIsUnit('player', 'target') then E:Print(L["You must be targeting a player."]) return end local name, server = UnitName('target') if name and (not server or server == '') then D:Distribute(name, false, 'global') elseif server then D:Distribute(name, true, 'global') end end, nil, nil, nil, nil, nil, function() return not E.global.general.allowDistributor end)
+E.Options.args.profiles.args.allowDistributor = ACH:Toggle(L["Allow Sharing"], L["Both users will need this option enabled."], 4, nil, nil, nil, function() return E.global.general.allowDistributor end, function(_, value) E.global.general.allowDistributor = value; D:UpdateSettings() end)
 E.Options.args.profiles.args.spacer = ACH:Spacer(10)
 
 E.Options.args.profiles.args.profile = E.Libs.AceDBOptions:GetOptionsTable(E.data)
@@ -339,8 +340,8 @@ do -- Import and Export
 		if plugin then
 			return E:ProfileTableToPluginFormat(profileData, profileType)
 		else
-			local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-			return D:CreateProfileExport(decodedText, profileType, profileKey)
+			local decodedString = (profileData and E:TableToLuaString(profileData)) or nil
+			return D:CreateProfileExport(profileType, profileKey, decodedString)
 		end
 	end
 
@@ -445,7 +446,7 @@ do -- Import and Export
 				input.hidden = not exporting
 
 				if exporting then
-					local profileKey, profileExport = D:ExportProfile(profileType, which)
+					local profileKey, profileExport = D:ExportProfile(profileType, nil, which)
 					if not profileKey or not profileExport then
 						label.name = L["Error exporting profile!"]
 					else

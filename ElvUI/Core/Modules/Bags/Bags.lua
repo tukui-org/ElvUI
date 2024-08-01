@@ -40,6 +40,7 @@ local SetItemButtonQuality = SetItemButtonQuality
 local SetItemButtonTexture = SetItemButtonTexture
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
 local StaticPopup_Show = StaticPopup_Show
+local StaticPopup_FindVisible = StaticPopup_FindVisible
 local UnitAffectingCombat = UnitAffectingCombat
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
@@ -2303,7 +2304,9 @@ function B:ConstructContainerFrame(name, isBank)
 
 			do -- account bank gold
 				f.pickupGold:SetScript('OnClick', function()
-					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
+						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+					end
 				end)
 
 				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
@@ -2311,7 +2314,9 @@ function B:ConstructContainerFrame(name, isBank)
 				f.goldDeposit:SetText(L["Deposit"])
 				f.goldDeposit:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
 				f.goldDeposit:SetScript('OnClick', function()
-					StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
+					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
+						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
+					end
 				end)
 
 				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
@@ -2319,7 +2324,9 @@ function B:ConstructContainerFrame(name, isBank)
 				f.goldWithdraw:SetText(L["Withdraw"])
 				f.goldWithdraw:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
 				f.goldWithdraw:SetScript('OnClick', function()
-					StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
+						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+					end
 				end)
 
 				S:HandleButton(f.goldWithdraw)

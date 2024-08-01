@@ -771,7 +771,7 @@ local function DecodeString(text)
 	local profileType, profileKey, profileData = D:Decode(text)
 	if profileType == 'styleFilters' then
 		local decodedText = (profileData and E:TableToLuaString(profileData)) or nil
-		return D:CreateProfileExport(decodedText, profileType, profileKey)
+		return D:CreateProfileExport(profileType, profileKey, decodedText)
 	else
 		return ''
 	end
@@ -840,8 +840,8 @@ do
 
 		local printableString
 		if which == 'text' then
-			local serialData = D:Serialize(data)
-			local exportString = D:CreateProfileExport(serialData, 'styleFilters', 'styleFilters')
+			local serialString = D:Serialize(data)
+			local exportString = D:CreateProfileExport('styleFilters', 'styleFilters', serialString)
 			local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
 			local printable = LibDeflate:EncodeForPrint(compressedData)
 			if printable then
@@ -849,7 +849,7 @@ do
 			end
 		elseif which == 'luaTable' then
 			local exportString = E:TableToLuaString(data)
-			printableString = D:CreateProfileExport(exportString, 'styleFilters', 'styleFilters')
+			printableString = D:CreateProfileExport('styleFilters', 'styleFilters', exportString)
 		elseif which == 'luaPlugin' then
 			printableString = E:ProfileTableToPluginFormat(data, 'styleFilters')
 		end

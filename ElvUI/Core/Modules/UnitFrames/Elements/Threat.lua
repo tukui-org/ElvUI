@@ -113,7 +113,7 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 		threat.PowerGlow:SetShown(parent.USE_POWERBAR_OFFSET and status)
 		threat.PowerGlow:SetBackdropBorderColor(r, g, b)
 	elseif threatStyle == 'BORDERS' then
-		local cb = parent.Castbar
+		local cb = parent.db.castbar and parent.Castbar
 		if cb and parent.db.castbar.overlayOnFrame ~= 'None' then
 			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
 			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)
@@ -130,7 +130,7 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
 		UF:ThreatClassBarBorderColor(parent, status, r, g, b)
 	elseif threatStyle == 'HEALTHBORDER' then
-		local cb = parent.Castbar
+		local cb = parent.db.castbar and parent.Castbar
 		if cb and parent.db.castbar.overlayOnFrame == 'Health' then
 			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
 			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)
@@ -138,7 +138,7 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 
 		UF:ThreatBorderColor(parent.Health.backdrop, status, r, g, b)
 	elseif threatStyle == 'INFOPANELBORDER' then
-		local cb = parent.Castbar
+		local cb = parent.db.castbar and parent.Castbar
 		if cb and parent.db.castbar.overlayOnFrame == 'InfoPanel' then
 			UF:ThreatBorderColor(cb.backdrop, status, r, g, b)
 			UF:ThreatBorderColor(cb.ButtonIcon.bg, status, r, g, b)

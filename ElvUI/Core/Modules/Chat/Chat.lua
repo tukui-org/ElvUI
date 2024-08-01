@@ -774,6 +774,18 @@ function CH:StyleChat(frame)
 	tab:SetScript('OnClick', CH.Tab_OnClick)
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
+	if frame == _G.GeneralDockManager.primary then
+		local GMChatFrame = _G.GMChatFrame
+		if GMChatFrame then
+			GMChatFrame:FontTemplate(font, size, outline)
+		end
+
+		local communities = _G.CommunitiesFrame and _G.CommunitiesFrame.Chat and _G.CommunitiesFrame.Chat.MessageFrame
+		if communities then
+			communities:FontTemplate(font, size, outline)
+		end
+	end
+
 	if not frame.isDocked then
 		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
 	end
@@ -990,17 +1002,15 @@ function CH:GetLines(frame)
 end
 
 function CH:CopyChat(frame)
-	if not _G.CopyChatFrame:IsShown() then
-		local _, fontSize = _G.FCF_GetChatWindowInfo(frame:GetID())
+	if not CH.CopyChatFrame:IsShown() then
+		local count = CH:GetLines(frame)
+		local text = tconcat(copyLines, ' \n', 1, count)
 
-		_G.FCF_SetChatWindowFontSize(frame, frame, 0.01)
-		_G.CopyChatFrame:Show()
-		local lineCt = CH:GetLines(frame)
-		local text = tconcat(copyLines, ' \n', 1, lineCt)
-		_G.FCF_SetChatWindowFontSize(frame, frame, fontSize)
-		_G.CopyChatFrameEditBox:SetText(text)
+		CH.CopyChatFrameEditBox:SetText(text)
+		CH.CopyChatFrame:Show()
 	else
-		_G.CopyChatFrame:Hide()
+		CH.CopyChatFrameEditBox:SetText('')
+		CH.CopyChatFrame:Hide()
 	end
 end
 
@@ -3295,7 +3305,7 @@ function CH:SetupQuickJoin(holder)
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent)
+	local frame = CreateFrame('Frame', 'ElvUI_CopyChatFrame', E.UIParent)
 	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
@@ -3330,36 +3340,39 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 	frame:SetFrameStrata('DIALOG')
+	CH.CopyChatFrame = frame
 
-	local scrollArea = CreateFrame('ScrollFrame', 'CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
-	scrollArea:Point('TOPLEFT', frame, 'TOPLEFT', 8, -30)
-	scrollArea:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
-	S:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
-	scrollArea:SetScript('OnSizeChanged', function(scroll)
-		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
-		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
-	end)
-	scrollArea:HookScript('OnVerticalScroll', function(scroll, offset)
-		_G.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (_G.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
-	end)
-
-	local editBox = CreateFrame('EditBox', 'CopyChatFrameEditBox', frame)
+	local editBox = CreateFrame('EditBox', 'ElvUI_CopyChatFrameEditBox', frame)
+	editBox:Height(200)
 	editBox:SetMultiLine(true)
 	editBox:SetMaxLetters(99999)
 	editBox:EnableMouse(true)
 	editBox:SetAutoFocus(false)
 	editBox:SetFontObject('ChatFontNormal')
-	editBox:Width(scrollArea:GetWidth())
-	editBox:Height(200)
-	editBox:SetScript('OnEscapePressed', function() _G.CopyChatFrame:Hide() end)
-	scrollArea:SetScrollChild(editBox)
-	_G.CopyChatFrameEditBox:SetScript('OnTextChanged', function(_, userInput)
+	editBox:SetScript('OnEscapePressed', function() CH.CopyChatFrame:Hide() end)
+	editBox:SetScript('OnTextChanged', function(_, userInput)
 		if userInput then return end
-		local _, Max = _G.CopyChatScrollFrameScrollBar:GetMinMaxValues()
-		for _ = 1, Max do
-			_G.ScrollFrameTemplate_OnMouseWheel(_G.CopyChatScrollFrame, -1)
+		local _, maxValue = CH.CopyChatScrollFrame.ScrollBar:GetMinMaxValues()
+		for _ = 1, maxValue do
+			_G.ScrollFrameTemplate_OnMouseWheel(CH.CopyChatScrollFrame, -1)
 		end
 	end)
+	CH.CopyChatFrameEditBox = editBox
+
+	local scrollFrame = CreateFrame('ScrollFrame', 'ElvUI_CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
+	scrollFrame:Point('TOPLEFT', frame, 'TOPLEFT', 8, -30)
+	scrollFrame:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
+	scrollFrame:SetScript('OnSizeChanged', function(_, width, height)
+		CH.CopyChatFrameEditBox:Size(width, height)
+	end)
+	scrollFrame:HookScript('OnVerticalScroll', function(scroll, offset)
+		CH.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (CH.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
+	end)
+	CH.CopyChatScrollFrame = scrollFrame
+
+	scrollFrame:SetScrollChild(editBox)
+	editBox:Width(scrollFrame:GetWidth())
+	S:HandleScrollBar(scrollFrame.ScrollBar)
 
 	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT')
@@ -3662,12 +3675,13 @@ function CH:FCF_Tab_OnClick(button)
 		_G.CloseDropDownMenus() -- Close all dropdowns
 		_G.SELECTED_CHAT_FRAME = chat -- If frame is docked assume that a click is to select a chat window, not drag it
 
-		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GENERAL_CHAT_DOCK) ~= chat then
+		if chat.isDocked and _G.FCFDock_GetSelectedWindow(_G.GeneralDockManager) ~= chat then
 			_G.FCF_SelectDockFrame(chat)
 		end
 
 		if GetCVar('chatStyle') ~= 'classic' then
-			_G.ChatEdit_SetLastActiveWindow(chat.editBox)
+			local chatFrame = (chat.isDocked and _G.GeneralDockManager.primary) or chat
+			_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
 		end
 
 		chat:ResetAllFadeTimes()

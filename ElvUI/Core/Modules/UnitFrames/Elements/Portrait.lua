@@ -128,9 +128,9 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		if not db then return end
 
 		if self.state then
-			self:SetCamDistanceScale(db.camDistanceScale)
-			self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
-			self:SetRotation(rad(db.rotation))
+			self:SetCamDistanceScale(db.camDistanceScale or 2)
+			self:SetViewTranslation((db.xOffset or 0) * 100, (db.yOffset or 0) * 100)
+			self:SetRotation(rad(db.rotation or 0))
 		end
 
 		-- mimic ModelAlphaFix, so when the module updates the correct alpha is set
@@ -139,8 +139,8 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetModelAlpha(alpha * frame:GetAlpha())
 
 		-- handle the other settings
-		self:SetDesaturation(db.desaturation)
-		self:SetPaused(db.paused)
+		self:SetDesaturation(db.desaturation or 0)
+		self:SetPaused(db.paused or false)
 	elseif self.useClassBase then
 		self:SetTexCoord(unpack(E.TexCoords))
 	end

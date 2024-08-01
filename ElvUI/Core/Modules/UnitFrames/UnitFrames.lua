@@ -990,32 +990,38 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 end
 
-function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName, headerTemplate)
-	local group = parent.groupName or groupName
-	local db = UF.db.units[group]
-	ElvUF:SetActiveStyle('ElvUF_'..E:StringTitle(group))
+do
+	local attributes = {}
+	function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName, headerTemplate)
+		local group = parent.groupName or groupName
+		local db = UF.db.units[group]
+		ElvUF:SetActiveStyle('ElvUF_'..E:StringTitle(group))
 
-	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
-		'oUF-initialConfigFunction', format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height),
-		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= 'party', 'showSolo', true,
-		template and 'template', template
-	)
+		-- setup the attributes for header
+		attributes['oUF-initialConfigFunction'] = format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height)
+		attributes.template = template or nil
+		attributes.groupFilter = groupFilter
+		attributes.showRaid = group ~= 'party'
+		attributes.showParty = true
+		attributes.showSolo = true
 
-	header.groupName = group
-	header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
-	header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
+		local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil, attributes)
+		header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
+		header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
+		header.groupName = group
 
-	if parent ~= E.UFParent then
-		header:SetParent(parent)
+		if parent ~= E.UFParent then
+			header:SetParent(parent)
+		end
+
+		header:Show()
+
+		for k, v in pairs(UF.headerPrototype) do
+			header[k] = v
+		end
+
+		return header
 	end
-
-	header:Show()
-
-	for k, v in pairs(UF.headerPrototype) do
-		header[k] = v
-	end
-
-	return header
 end
 
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, skip)
