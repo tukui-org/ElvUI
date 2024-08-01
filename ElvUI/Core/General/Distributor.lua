@@ -298,7 +298,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			import.OnAccept = ReloadUI -- private will select the profile first
 
 			if download.dataKey == 'global' then
-				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
+				textString = format(L["Download complete from %s, would you like to apply changes now?"], sender)
 			else
 				if download.dataKey == 'private' and not ElvPrivateDB.profiles[profileKey] then
 					ElvPrivateDB.profiles[profileKey] = data
