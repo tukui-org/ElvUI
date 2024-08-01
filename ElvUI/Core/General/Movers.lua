@@ -3,7 +3,7 @@ local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
 local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
-local format, split, find, strupper = format, strsplit, strfind, strupper
+local format, wipe, split, find, strupper = format, wipe, strsplit, strfind, strupper
 
 local UIParent = UIParent
 local CreateFrame = CreateFrame
@@ -14,6 +14,7 @@ local hooksecurefunc = hooksecurefunc
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}
+E.ConnectedMovers = {}
 
 local function SizeChanged(frame, width, height)
 	if InCombatLockdown() then return end
@@ -92,6 +93,10 @@ local function HandlePostDrag(self, event)
 	end
 end
 
+local function StartMoving(frame, anchor)
+	Sticky:StartMoving(frame, E.db.general.stickyFrames and E.snapBars, frame.snapOffset, frame.snapOffset, frame.snapOffset, frame.snapOffset, anchor)
+end
+
 local function OnDragStart(self)
 	if E:AlertCombat() then return end
 
@@ -99,11 +104,31 @@ local function OnDragStart(self)
 		E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1)
 	end
 
-	Sticky:StartMoving(self, E.db.general.stickyFrames and E.snapBars, self.snapOffset, self.snapOffset, self.snapOffset, self.snapOffset)
+	if next(E.ConnectedMovers) then
+		for mover in next, E.ConnectedMovers do
+			StartMoving(mover, self)
+		end
+	else
+		StartMoving(self)
+	end
 
 	coordFrame.child = self
 	coordFrame:Show()
 	isDragging = true
+end
+
+local function StopMoving(frame)
+	Sticky:StopMoving(frame)
+
+	local x2, y2, p2 = E:CalculateMoverPoints(frame)
+	frame:ClearAllPoints()
+	frame:SetPoint(p2, UIParent, p2, x2, y2)
+
+	E:SaveMoverPosition(frame.name)
+
+	HandlePostDrag(frame)
+
+	frame:SetUserPlaced(false)
 end
 
 local function OnDragStop(self)
@@ -113,21 +138,19 @@ local function OnDragStop(self)
 		E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)
 	end
 
-	Sticky:StopMoving(self)
-
-	local x2, y2, p2 = E:CalculateMoverPoints(self)
-	self:ClearAllPoints()
-	self:SetPoint(p2, UIParent, p2, x2, y2)
-
-	E:SaveMoverPosition(self.name)
-
 	coordFrame.child = nil
 	coordFrame:Hide()
 	isDragging = false
 
-	HandlePostDrag(self)
+	if next(E.ConnectedMovers) then
+		for mover in next, E.ConnectedMovers do
+			StopMoving(mover)
+		end
+	else
+		StopMoving(self)
+	end
 
-	self:SetUserPlaced(false)
+	wipe(E.ConnectedMovers)
 end
 
 local function OnEnter(self)
@@ -178,6 +201,8 @@ local function OnMouseDown(self, button)
 		elseif self.configString then
 			E:ToggleOptions(self.configString) --OpenConfig
 		end
+	elseif IsControlKeyDown() then
+		E.ConnectedMovers[self] = true
 	end
 end
 

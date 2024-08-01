@@ -27,6 +27,7 @@ if not StickyFrames then return end
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local GetCursorPosition = GetCursorPosition
 local IsShiftKeyDown = IsShiftKeyDown
+local UIParent = UIParent
 local tostring = tostring
 
 --[[---------------------------------------------------------------------------------
@@ -34,6 +35,7 @@ local tostring = tostring
   scripts.
 ------------------------------------------------------------------------------------]]
 
+StickyFrames.data = StickyFrames.data or {}
 StickyFrames.scripts = StickyFrames.scripts or {}
 StickyFrames.sticky = StickyFrames.sticky or {}
 StickyFrames.rangeX = 15
@@ -63,15 +65,34 @@ StickyFrames.rangeY = 15
 	bottom:		same
 ------------------------------------------------------------------------------------]]
 
-function StickyFrames:StartMoving(frame, frameList, left, top, right, bottom)
-	local x,y = GetCursorPosition()
-	local aX,aY = frame:GetCenter()
-	local aS = frame:GetEffectiveScale()
+function StickyFrames:StartMoving(frame, frameList, left, top, right, bottom, anchor)
+	local aX, aY = frame:GetCenter()
 
-	aX,aY = aX*aS,aY*aS
-	local xoffset,yoffset = (aX - x),(aY - y)
+	local x, y
+	if anchor and anchor ~= frame then
+		local bX, bY = anchor:GetCenter()
+		x, y = aX - bX, aY - bY
+	else
+		local cx, cy = GetCursorPosition()
+		local aS = frame:GetEffectiveScale()
+		x, y = (aX * aS) - cx, (aY * aS) - cy
+	end
+
+	if not self.data[frame] then
+		self.data[frame] = {}
+	end
+
+	local info = self.data[frame]
+	info.frameList = frameList
+	info.left = left
+	info.top = top
+	info.right = right
+	info.bottom = bottom
+	info.xoffset = x
+	info.yoffset = y
+
 	self.scripts[frame] = frame:GetScript("OnUpdate")
-	frame:SetScript("OnUpdate", self:GetUpdateFunc(frame, frameList, xoffset, yoffset, left, top, right, bottom))
+	frame:SetScript("OnUpdate", self.GetUpdateFunc)
 end
 
 --[[---------------------------------------------------------------------------------
@@ -83,6 +104,7 @@ end
 function StickyFrames:StopMoving(frame)
 	frame:SetScript("OnUpdate", self.scripts[frame])
 	self.scripts[frame] = nil
+	self.data[frame] = nil
 
 	if StickyFrames.sticky[frame] then
 		local sticky = StickyFrames.sticky[frame]
@@ -117,33 +139,28 @@ end
   Internal Functions -- Do not call these.
 ------------------------------------------------------------------------------------]]
 
---[[---------------------------------------------------------------------------------
-  Returns an anonymous OnUpdate function for the frame in question.  Need
-  to provide the frame, frameList along with the x and y offset (difference between
-  where the mouse picked up the frame, and the insets (left,top,right,bottom) in the
-  case of borders, etc.w
-------------------------------------------------------------------------------------]]
+function StickyFrames:GetUpdateFunc() -- self is frame
+	local data = StickyFrames.data[self]
+	if not data then return end
 
-function StickyFrames:GetUpdateFunc(frame, frameList, xoffset, yoffset, left, top, right, bottom)
-	return function()
-		local x,y = GetCursorPosition()
-		local s = frame:GetEffectiveScale()
+	local x, y = GetCursorPosition()
+	local s = self:GetEffectiveScale()
+	if s > 0 then x, y = x / s, y / s end
 
-		x,y = x/s,y/s
+	self:ClearAllPoints()
+	self:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x + data.xoffset, y + data.yoffset)
 
-		frame:ClearAllPoints()
-		frame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x+xoffset, y+yoffset)
+	StickyFrames.sticky[self] = nil
 
-		StickyFrames.sticky[frame] = nil
-
-		if frameList then
-			for i = 1, #frameList do
-				local v = frameList[i]
-				if frame ~= v and frame ~= v:GetParent() and not IsShiftKeyDown() and v:IsVisible() then
-					if self:SnapFrame(frame, v, left, top, right, bottom) then
-						StickyFrames.sticky[frame] = v
-						break
-					end
+	local frameList = data.frameList
+	if frameList then
+		local left, right, top, bottom = data.left, data.right, data.top, data.bottom
+		for i = 1, #frameList do
+			local v = frameList[i]
+			if self ~= v and self ~= v:GetParent() and not IsShiftKeyDown() and v:IsVisible() then
+				if self:SnapFrame(self, v, left, top, right, bottom) then
+					StickyFrames.sticky[self] = v
+					break
 				end
 			end
 		end
