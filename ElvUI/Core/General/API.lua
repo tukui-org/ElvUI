@@ -150,9 +150,9 @@ E.SpecName = { -- english locale
 	[257]	= 'Holy',
 	[258]	= 'Shadow',
 	-- Rogue
-	[259]	= 'Assasination',
+	[259]	= 'Assassination',
 	[260]	= 'Combat',
-	[261]	= 'Sublety',
+	[261]	= 'Subtlety',
 	-- Shaman
 	[262]	= 'Elemental',
 	[263]	= 'Enhancement',
