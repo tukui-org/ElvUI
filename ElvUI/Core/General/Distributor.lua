@@ -7,6 +7,7 @@ local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
 local strlen, format, split, strmatch, strfind = strlen, format, strsplit, strmatch, strfind
 
+local ReloadUI = ReloadUI
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
 local IsInGroup, UnitInParty = IsInGroup, UnitInParty
@@ -231,21 +232,27 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			return
 		end
 
-		local textString = format(L["%s is attempting to share the profile %s with you. Would you like to accept the request?"], sender, profile)
-		if profile == 'global' then
-			textString = format(L["%s is attempting to share his filters with you. Would you like to accept the request?"], sender)
+		local textString
+		if dataKey == 'global' then
+			textString = format(L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"], sender)
+		elseif dataKey == 'private' then
+			textString = format(L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"], sender, profile)
+		elseif dataKey == 'profile' then
+			textString = format(L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"], sender, profile)
 		end
 
-		local popup = E.PopupDialogs.DISTRIBUTOR_RESPONSE
-		popup.text = textString
-		popup.OnAccept = function()
+		if not textString then return end
+
+		local response = E.PopupDialogs.DISTRIBUTOR_RESPONSE
+		response.text = textString
+		response.OnAccept = function()
 			D.StatusBar:SetMinMaxValues(0, length)
 			D.StatusBar:SetValue(0)
 			D.StatusBar.text:SetFormattedText(L["Data From: %s"], sender)
 			E:StaticPopupSpecial_Show(D.StatusBar)
 			D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
 		end
-		popup.OnCancel = function()
+		response.OnCancel = function()
 			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
 		end
 
@@ -285,7 +292,10 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 		if success then
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
-			local popup = E.PopupDialogs.DISTRIBUTOR_CONFIRM
+
+			local confirm = E.PopupDialogs.DISTRIBUTOR_CONFIRM
+			local import = E.PopupDialogs.IMPORT_RL
+			import.OnAccept = ReloadUI -- private will select the profile first
 
 			if download.dataKey == 'global' then
 				textString = format(L["Filter download complete from %s, would you like to apply changes now?"], sender)
@@ -297,19 +307,24 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 
-					popup.text = textString
-					popup.button1 = ACCEPT
-					popup.button2 = nil
-					popup.hasEditBox = 1
-					popup.editBoxWidth = 350
-					popup.maxLetters = 127
-					popup.timeout = 0
-					popup.exclusive = 1
-					popup.preferredIndex = 3
+					confirm.text = textString
+					confirm.button1 = ACCEPT
+					confirm.button2 = nil
+					confirm.hasEditBox = 1
+					confirm.editBoxWidth = 350
+					confirm.maxLetters = 127
+					confirm.timeout = 0
+					confirm.exclusive = 1
+					confirm.preferredIndex = 3
 
-					popup.OnAccept = function()
+					confirm.OnAccept = function()
 						if download.dataKey == 'private' then
 							ElvPrivateDB.profiles[profileKey] = data
+
+							import.OnAccept = function()
+								E.charSettings:SetProfile(profileKey)
+								ReloadUI()
+							end
 
 							E:StaticPopup_Show('IMPORT_RL')
 						elseif download.dataKey == 'profile' then
@@ -321,11 +336,11 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 						Downloads[sender] = nil
 					end
-					popup.OnShow = function(frame)
+					confirm.OnShow = function(frame)
 						frame.editBox:SetText(profileKey)
 						frame.editBox:SetFocus()
 					end
-					popup.OnCancel = nil
+					confirm.OnCancel = nil
 
 					E:StaticPopup_Show('DISTRIBUTOR_CONFIRM')
 					D:SendCommMessage(TRANSFER_COMPLETE_PREFIX, 'COMPLETE', dist, sender)
@@ -334,21 +349,26 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				end
 			end
 
-			popup.text = textString
-			popup.button1 = YES
-			popup.button2 = NO
-			popup.hasEditBox = nil
-			popup.editBoxWidth = nil
-			popup.maxLetters = nil
-			popup.timeout = nil
-			popup.exclusive = nil
-			popup.preferredIndex = nil
+			confirm.text = textString
+			confirm.button1 = YES
+			confirm.button2 = NO
+			confirm.hasEditBox = nil
+			confirm.editBoxWidth = nil
+			confirm.maxLetters = nil
+			confirm.timeout = nil
+			confirm.exclusive = nil
+			confirm.preferredIndex = nil
 
-			popup.OnAccept = function()
+			confirm.OnAccept = function()
 				if download.dataKey == 'global' then
 					E:CopyTable(ElvDB.global, data)
 					E:StaggeredUpdateAll()
 				elseif download.dataKey == 'private' then
+					import.OnAccept = function()
+						E.charSettings:SetProfile(profileKey)
+						ReloadUI()
+					end
+
 					E:StaticPopup_Show('IMPORT_RL')
 				elseif download.dataKey == 'profile' then
 					E.data:SetProfile(profileKey)
@@ -356,8 +376,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 				Downloads[sender] = nil
 			end
-			popup.OnShow = nil
-			popup.OnCancel = function()
+			confirm.OnShow = nil
+			confirm.OnCancel = function()
 				Downloads[sender] = nil
 			end
 
@@ -642,7 +662,6 @@ E.PopupDialogs.IMPORT_RL = {
 	text = L["You have imported settings which may require a UI reload to take effect. Reload now?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = _G.ReloadUI,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = false,
