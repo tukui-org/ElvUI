@@ -54,6 +54,7 @@ local colorOverrideValues = {
 	USE_DEFAULT = L["Use Default"],
 	FORCE_ON = L["Force On"],
 	FORCE_OFF = L["Force Off"],
+	ALWAYS = L["Always"],
 }
 
 local blendModeValues = {
