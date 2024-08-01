@@ -107,8 +107,8 @@ function StickyFrames:StopMoving(frame)
 	self.scripts[frame] = nil
 	self.data[frame] = nil
 
-	if StickyFrames.sticky[frame] then
-		local sticky = StickyFrames.sticky[frame]
+	local sticky = StickyFrames.sticky[frame]
+	if sticky then
 		StickyFrames.sticky[frame] = nil
 		return true, sticky
 	else
