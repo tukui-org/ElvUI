@@ -3,7 +3,7 @@ local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
 local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
-local format, wipe, split, find, strupper = format, wipe, strsplit, strfind, strupper
+local format, next, split, find, strupper = format, next, strsplit, strfind, strupper
 
 local UIParent = UIParent
 local CreateFrame = CreateFrame
@@ -50,10 +50,9 @@ local function UpdateCoords(self)
 	local mover = self.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
-	local nudgeFrame = _G.ElvUIMoverNudgeWindow
 
-	nudgeFrame:ClearAllPoints()
-	nudgeFrame:SetPoint(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	E.MoverNudgeFrame:ClearAllPoints()
+	E.MoverNudgeFrame:SetPoint(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -97,7 +96,7 @@ local function StartMoving(frame, anchor)
 	Sticky:StartMoving(frame, E.db.general.stickyFrames and E.snapBars, frame.snapOffset, frame.snapOffset, frame.snapOffset, frame.snapOffset, anchor)
 end
 
-local function OnDragStart(self)
+local function OnDragStart(frame)
 	if E:AlertCombat() then return end
 
 	if _G.ElvUIGrid then
@@ -106,13 +105,13 @@ local function OnDragStart(self)
 
 	if next(E.ConnectedMovers) then
 		for mover in next, E.ConnectedMovers do
-			StartMoving(mover, self)
+			StartMoving(mover, frame)
 		end
 	else
-		StartMoving(self)
+		StartMoving(frame)
 	end
 
-	coordFrame.child = self
+	coordFrame.child = frame
 	coordFrame:Show()
 	isDragging = true
 end
@@ -131,7 +130,7 @@ local function StopMoving(frame)
 	frame:SetUserPlaced(false)
 end
 
-local function OnDragStop(self)
+local function OnDragStop(frame)
 	if E:AlertCombat() then return end
 
 	if _G.ElvUIGrid and E.ConfigurationMode then
@@ -143,14 +142,19 @@ local function OnDragStop(self)
 	isDragging = false
 
 	if next(E.ConnectedMovers) then
+		local r, g, b = unpack(E.media.rgbvaluecolor)
 		for mover in next, E.ConnectedMovers do
 			StopMoving(mover)
+
+			mover.text:SetTextColor(r, g, b)
+			mover:SetBackdropBorderColor(r, g, b)
+
+			mover.IsConnected = nil
+			E.ConnectedMovers[mover] = nil
 		end
 	else
-		StopMoving(self)
+		StopMoving(frame)
 	end
-
-	wipe(E.ConnectedMovers)
 end
 
 local function OnEnter(self)
@@ -168,7 +172,9 @@ local function OnEnter(self)
 	coordFrame.child = self
 	coordFrame:GetScript('OnUpdate')(coordFrame)
 
-	self.text:SetTextColor(1, 1, 1)
+	if not self.IsConnected then
+		self.text:SetTextColor(1, 1, 1)
+	end
 end
 
 local function OnLeave(self)
@@ -181,12 +187,14 @@ local function OnLeave(self)
 		end
 	end
 
-	self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	if not self.IsConnected then
+		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
 end
 
 local function OnMouseUp(_, button)
-	if button == 'LeftButton' and not isDragging then
-		_G.ElvUIMoverNudgeWindow:SetShown(not _G.ElvUIMoverNudgeWindow:IsShown())
+	if button == 'LeftButton' and not isDragging and not IsShiftKeyDown() then
+		E.MoverNudgeFrame:SetShown(not E.MoverNudgeFrame:IsShown())
 	end
 end
 
@@ -201,8 +209,12 @@ local function OnMouseDown(self, button)
 		elseif self.configString then
 			E:ToggleOptions(self.configString) --OpenConfig
 		end
-	elseif IsControlKeyDown() then
-		E.ConnectedMovers[self] = true
+	elseif IsShiftKeyDown() then
+	--	E.ConnectedMovers[self] = true
+	--	self.IsConnected = true
+
+	--	self.text:SetTextColor(1, 0.3, 0.3)
+	--	self:SetBackdropBorderColor(1, 0.3, 0.3)
 	end
 end
 
@@ -395,6 +407,9 @@ function E:ToggleMovers(show, which)
 	for _, holder in pairs(E.CreatedMovers) do
 		local isName = (holder.mover.name == which) or strupper(holder.mover.textString) == upperText
 		holder.mover:SetShown(show and (isName or holder.types[upperText]))
+
+		holder.mover.IsConnected = nil
+		E.ConnectedMovers[holder.mover] = nil
 	end
 end
 

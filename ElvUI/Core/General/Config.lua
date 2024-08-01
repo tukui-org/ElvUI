@@ -25,8 +25,6 @@ local GetAddOnInfo = C_AddOns.GetAddOnInfo
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LoadAddOn = C_AddOns.LoadAddOn
 
--- GLOBALS: ElvUIMoverNudgeWindow, ElvUIMoverPopupWindow, ElvUIMoverPopupWindowDropDown
-
 local grid
 E.ConfigModeLayouts = {
 	'ALL',
@@ -85,14 +83,14 @@ function E:ToggleMoveMode(which)
 		E:Grid_Show()
 		_G.ElvUIGrid:SetAlpha(0.4)
 
-		if not ElvUIMoverPopupWindow then
+		if not E.MoverPopupWindow then
 			E:CreateMoverPopup()
 		end
 
-		ElvUIMoverPopupWindow:Show()
+		E.MoverPopupWindow:Show()
 
 		if not E.Retail then
-			_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
+			_G.UIDropDownMenu_SetSelectedValue(E.MoverPopupDropdown, strupper(which))
 		end
 
 		if IsAddOnLoaded('ElvUI_Options') then
@@ -102,8 +100,8 @@ function E:ToggleMoveMode(which)
 		E:Grid_Hide()
 		_G.ElvUIGrid:SetAlpha(1)
 
-		if ElvUIMoverPopupWindow then
-			ElvUIMoverPopupWindow:Hide()
+		if E.MoverPopupWindow then
+			E.MoverPopupWindow:Hide()
 		end
 	end
 end
@@ -233,14 +231,13 @@ do
 				_G.UIDropDownMenu_AddButton(info)
 			end
 
-			local dd = ElvUIMoverPopupWindowDropDown
-			_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
+			_G.UIDropDownMenu_SetSelectedValue(E.MoverPopupDropdown, E.MoverPopupDropdown.selectedValue or 'ALL')
 		end
 	end
 end
 
 function E:NudgeMover(nudgeX, nudgeY)
-	local mover = ElvUIMoverNudgeWindow.child
+	local mover = E.MoverNudgeFrame.child
 	if not mover then return end
 
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -261,16 +258,15 @@ function E:UpdateNudgeFrame(mover, x, y)
 	x = E:Round(x)
 	y = E:Round(y)
 
-	local ElvUIMoverNudgeWindow = ElvUIMoverNudgeWindow
-	ElvUIMoverNudgeWindow.xOffset:SetText(x)
-	ElvUIMoverNudgeWindow.yOffset:SetText(y)
-	ElvUIMoverNudgeWindow.xOffset.currentValue = x
-	ElvUIMoverNudgeWindow.yOffset.currentValue = y
-	ElvUIMoverNudgeWindow.title:SetText(mover.textString)
+	E.MoverNudgeFrame.xOffset:SetText(x)
+	E.MoverNudgeFrame.yOffset:SetText(y)
+	E.MoverNudgeFrame.xOffset.currentValue = x
+	E.MoverNudgeFrame.yOffset.currentValue = y
+	E.MoverNudgeFrame.title:SetText(mover.textString)
 end
 
 function E:AssignFrameToNudge()
-	ElvUIMoverNudgeWindow.child = self
+	E.MoverNudgeFrame.child = self
 	E:UpdateNudgeFrame(self)
 end
 
@@ -288,6 +284,11 @@ function E:CreateMoverPopup()
 	f:SetTemplate('Transparent')
 	f:Point('BOTTOM', UIParent, 'CENTER', 0, 100)
 	f:Hide()
+	f:HookScript('OnHide', function()
+		E.MoverNudgeFrame:Hide()
+	end)
+
+	E.MoverPopupWindow = f
 
 	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)
@@ -411,6 +412,8 @@ function E:CreateMoverPopup()
 	dropDown.text:SetText(L["Config Mode:"])
 	dropDown.text:FontTemplate(nil, 12, 'SHADOW')
 
+	E.MoverPopupDropdown = dropDown
+
 	f.dropDown = dropDown
 
 	if E.Retail then
@@ -442,7 +445,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
+	E.MoverNudgeFrame = nudgeFrame
 
 	desc = nudgeFrame:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
@@ -541,8 +544,8 @@ function E:CreateMoverPopup()
 	resetButton:Point('TOP', nudgeFrame, 'CENTER', 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript('OnClick', function()
-		if ElvUIMoverNudgeWindow.child and ElvUIMoverNudgeWindow.child.textString then
-			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
+		if E.MoverNudgeFrame.child and E.MoverNudgeFrame.child.textString then
+			E:ResetMovers(E.MoverNudgeFrame.child.textString)
 		end
 	end)
 	S:HandleButton(resetButton)
@@ -1045,8 +1048,8 @@ E.valueColorUpdateFuncs.ConfigLogo = function(_, _, r, g, b)
 		ConfigLogoTop:SetVertexColor(r, g, b)
 	end
 
-	if ElvUIMoverNudgeWindow and ElvUIMoverNudgeWindow.shadow then
-		ElvUIMoverNudgeWindow.shadow:SetBackdropBorderColor(r, g, b, 0.9)
+	if E.MoverNudgeFrame and E.MoverNudgeFrame.shadow then
+		E.MoverNudgeFrame.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	end
 end
 
