@@ -30,6 +30,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local WorldFrame = WorldFrame
 local UIParent = UIParent
 local tostring = tostring
+local ipairs = ipairs
 
 --[[---------------------------------------------------------------------------------
   Class declaration, along with a temporary table to hold any existing OnUpdate
@@ -154,16 +155,13 @@ function StickyFrames:GetUpdateFunc() -- self is frame
 
 	StickyFrames.sticky[self] = nil
 
-	local frameList = (not data.anchor or data.anchor == self) and data.frameList
+	local frameList = not IsShiftKeyDown() and (not data.anchor or data.anchor == self) and data.frameList
 	if frameList then
 		local left, right, top, bottom = data.left, data.right, data.top, data.bottom
-		for i = 1, #frameList do
-			local v = frameList[i]
-			if self ~= v and self ~= v:GetParent() and not IsShiftKeyDown() and v:IsVisible() then
-				if StickyFrames:SnapFrame(self, v, left, top, right, bottom) then
-					StickyFrames.sticky[self] = v
-					break
-				end
+		for _, other in ipairs(frameList) do
+			if (self ~= other and self ~= other:GetParent() and other:IsVisible()) and StickyFrames:SnapFrame(self, other, left, top, right, bottom) then
+				StickyFrames.sticky[self] = other
+				break
 			end
 		end
 	end
@@ -209,7 +207,6 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 	lB, tB, rB, bB = (lB * sB) / sA, (tB * sB) / sA, (rB * sB) / sA, (bB * sB) / sA
 
 	if (bA <= tB and bB <= tA) then
-
 		-- Horizontal Centers
 		if xA <= (xB + StickyFrames.rangeX) and xA >= (xB - StickyFrames.rangeX) then
 			newX = xB
@@ -246,11 +243,9 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 			newX = lB - (wA - right)
 			snap = true
 		end
-
 	end
 
 	if (lA <= rB and lB <= rA) then
-
 		-- Vertical Centers
 		if yA <= (yB + StickyFrames.rangeY) and yA >= (yB - StickyFrames.rangeY) then
 			newY = yB
@@ -286,7 +281,6 @@ function StickyFrames:SnapFrame(frameA, frameB, left, top, right, bottom)
 			newY = tB + (hA - bottom)
 			snap = true
 		end
-
 	end
 
 	if snap then
