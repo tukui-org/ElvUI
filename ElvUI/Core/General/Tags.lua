@@ -1553,6 +1553,7 @@ E.TagInfo = {
 	-- Level
 		['level'] = { category = 'Level', description = "Displays the level of the unit" },
 		['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
+		['ilvl'] = { category = 'Level', description = "Displays the item level of the unit" },
 	-- Mana
 		['additionalmana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" },
 		['additionalmana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum additional mana, separated by a dash" },
