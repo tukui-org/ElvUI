@@ -87,7 +87,7 @@ local function HandleProgressBar(tracker, key)
 		S:StatusBarColorGradient(bar, bar:GetValue(), maxValue)
 
 		local icon = bar.Icon
-		if icon and not icon.backdrop then
+		if icon and icon:IsShown() and not icon.backdrop then
 			icon:SetMask('') -- This needs to be before S:HandleIcon
 			S:HandleIcon(icon, true)
 
