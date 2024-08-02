@@ -249,6 +249,15 @@ local tagStrings = {
 			return '??'
 		end
 	end]],
+	['ilvl'] = [[function(u)
+		local E = unpack(ElvUI)
+		local itemLevel = E:GetUnitItemLevel(u);
+		if itemLevel then
+			return itemLevel
+		else
+			return "-_-"
+		end
+	end]],
 
 	['maxmana'] = [[function(unit)
 		return UnitPowerMax(unit, Enum.PowerType.Mana)
@@ -569,6 +578,7 @@ if oUF.isRetail then
 	tagEvents['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents['ilvl']                = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 elseif oUF.isCata then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
