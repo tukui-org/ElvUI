@@ -9,28 +9,36 @@ local GetQuestIndexForWatch = GetQuestIndexForWatch
 local QuestLog_SetSelection = QuestLog_SetSelection
 local QuestLog_Update = QuestLog_Update
 local ShowUIPanel = ShowUIPanel
+local hooksecurefunc = hooksecurefunc
 
 BL.QuestWatch_ClickFrames = {}
-function BL:QuestWatch_MoveFrames()
-	local QuestWatchFrameHolder = CreateFrame('Frame', nil, E.UIParent)
-	QuestWatchFrameHolder:Size(130, 22)
-	QuestWatchFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-	E:CreateMover(QuestWatchFrameHolder, 'QuestWatchFrameMover', L["Quest Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 
-	local QuestTimerFrameHolder = CreateFrame('Frame', nil, E.UIParent)
-	QuestTimerFrameHolder:Size(158, 72)
-	QuestTimerFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-	E:CreateMover(QuestTimerFrameHolder, 'QuestTimerFrameMover', L["Quest Timer Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+local MoverInfo = {
+	QuestTimerFrameMover = { text = _G.QUEST_TIMERS, point = 'TOP' },
+	QuestWatchFrameMover = { text = L["Quest Objective Frame"], point = 'TOPRIGHT' }
+}
 
-	local QuestWatchFrame = _G.QuestWatchFrame
-	QuestWatchFrameHolder:SetAllPoints(_G.QuestWatchFrameMover)
-	QuestWatchFrame:ClearAllPoints()
-	QuestWatchFrame:SetAllPoints(QuestWatchFrameHolder)
+local function QuestWatch_SetPoint(tracker, _, anchor)
+	if tracker.holder and anchor ~= tracker.holder then
+		tracker:ClearAllPoints()
+		tracker:SetPoint('TOP', tracker.holder)
+	end
+end
 
-	local QuestTimerFrame = _G.QuestTimerFrame
-	QuestTimerFrameHolder:SetAllPoints(_G.QuestTimerFrameMover)
-	QuestTimerFrame:ClearAllPoints()
-	QuestTimerFrame:SetAllPoints(QuestTimerFrameHolder)
+function BL:QuestWatch_CreateMover(frame, name)
+	local info = MoverInfo[name]
+	if not (info and info.text) then return end
+
+	local holder = CreateFrame('Frame', nil, E.UIParent)
+	holder:Size(info.width or 150, info.height or 22)
+	holder:SetPoint(info.point, info.parent or E.UIParent, info.x or 0, info.y or 0)
+	E:CreateMover(holder, name, info.text, nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+
+	frame:ClearAllPoints()
+	frame:Point('TOP', holder)
+	frame.holder = holder
+
+	hooksecurefunc(frame, 'SetPoint', QuestWatch_SetPoint)
 end
 
 function BL:QuestWatch_OnClick()
@@ -68,9 +76,10 @@ function BL:QuestWatch_AddQuestClick()
 		if questIndex then
 			local numQuests = GetNumQuestLeaderBoards(questIndex)
 			if numQuests > 0 then
-				local text = _G['QuestWatchLine'..lineIndex + 1]
+				local line = lineIndex + 1
+				local text = _G['QuestWatchLine'..line]
 
-				lineIndex = numQuests + lineIndex + 1 -- Bump index
+				lineIndex = numQuests + line -- Bump index
 
 				BL:QuestWatch_SetClickFrames(i, questIndex, text)
 			end

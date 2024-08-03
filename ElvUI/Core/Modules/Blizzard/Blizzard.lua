@@ -135,6 +135,10 @@ end
 function BL:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_GuildBankUI' then
 		BL:ImproveGuildBank()
+	elseif addon == 'Blizzard_QuestTimer' then
+		if E.Classic then
+			BL:QuestWatch_CreateMover(_G.QuestTimerFrame, 'QuestTimerFrameMover')
+		end
 	elseif BL.TryDisableTutorials then
 		BL:ShutdownTutorials()
 	end
@@ -177,7 +181,7 @@ function BL:Initialize()
 
 	if E.Classic then
 		if E.db.general.objectiveTracker then
-			BL:QuestWatch_MoveFrames()
+			BL:QuestWatch_CreateMover(_G.QuestWatchFrame, 'QuestWatchFrameMover')
 			hooksecurefunc('QuestWatch_Update', BL.QuestWatch_AddQuestClick)
 		end
 	elseif not BL:ObjectiveTracker_HasQuestTracker() then
