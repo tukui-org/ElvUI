@@ -17,10 +17,20 @@ function BL:QuestWatch_MoveFrames()
 	QuestWatchFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	E:CreateMover(QuestWatchFrameHolder, 'QuestWatchFrameMover', L["Quest Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 
+	local QuestTimerFrameHolder = CreateFrame('Frame', nil, E.UIParent)
+	QuestTimerFrameHolder:Size(158, 72)
+	QuestTimerFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	E:CreateMover(QuestTimerFrameHolder, 'QuestTimerFrameMover', L["Quest Timer Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+
 	local QuestWatchFrame = _G.QuestWatchFrame
 	QuestWatchFrameHolder:SetAllPoints(_G.QuestWatchFrameMover)
 	QuestWatchFrame:ClearAllPoints()
 	QuestWatchFrame:SetAllPoints(QuestWatchFrameHolder)
+
+	local QuestTimerFrame = _G.QuestTimerFrame
+	QuestTimerFrameHolder:SetAllPoints(_G.QuestTimerFrameMover)
+	QuestTimerFrame:ClearAllPoints()
+	QuestTimerFrame:SetAllPoints(QuestTimerFrameHolder)
 end
 
 function BL:QuestWatch_OnClick()
