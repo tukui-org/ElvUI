@@ -152,6 +152,7 @@ V.skins = {
 		pvp = true,
 		quest = true,
 		questChoice = true,
+		questTimers = true,
 		raid = true,
 		reforge = true,
 		runeforge = true,

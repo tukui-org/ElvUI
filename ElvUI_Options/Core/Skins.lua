@@ -64,6 +64,10 @@ if E.Cata or E.Retail then
 	toggles.lfg = L["LFG_TITLE"]
 end
 
+if not E.Retail then
+	toggles.questTimers = L["Quest Timers"]
+end
+
 if E.Retail then
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
