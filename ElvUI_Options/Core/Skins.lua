@@ -118,7 +118,7 @@ elseif E.Classic then
 end
 
 if not E.Retail then
-	toggles.questtimers = L["Quest Timers"]
+	toggles.questTimers = L["Quest Timers"]
 end
 
 local function ToggleSkins(value)
