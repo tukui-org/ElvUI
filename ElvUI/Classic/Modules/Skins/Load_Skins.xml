@@ -30,6 +30,7 @@
 	<Script file='Misc.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='Quest.lua'/>
+	<Script file='QuestTimers.lua'/>
 	<Script file='Raid.lua'/>
 	<Script file='SettingsPanel.lua'/>
 	<Script file='SpellBook.lua'/>

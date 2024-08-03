@@ -117,6 +117,10 @@ elseif E.Classic then
 	toggles.craft = L["Craft"]
 end
 
+if not E.Retail then
+	toggles.questtimers = L["Quest Timers"]
+end
+
 local function ToggleSkins(value)
 	E.ShowPopup = true
 
