@@ -55,6 +55,7 @@ local FetchPurchasedBankTabData = C_Bank and C_Bank.FetchPurchasedBankTabData
 local AutoDepositItemsIntoBank = C_Bank and C_Bank.AutoDepositItemsIntoBank
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
+local CanViewBank = C_Bank and C_Bank.CanViewBank
 local FlagsUtil_IsSet = FlagsUtil and FlagsUtil.IsSet
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -118,6 +119,7 @@ local BACKPACK_CONTAINER = BagIndex.Backpack
 local REAGENTBANK_CONTAINER = BagIndex.Reagentbank
 local KEYRING_CONTAINER = BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
+local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBANDBANK_OFFSET = 30
 
@@ -2191,6 +2193,14 @@ function B:ConstructContainerFrame(name, isBank)
 		f.fullBank = select(2, GetNumBankSlots())
 
 		if E.Retail then
+			--[[do
+				B:ConstructContainerCover(f.holderFrame)
+				f.holderFrame.cover:Point('TOPLEFT', 0, -BANK_SPACE_OFFSET)
+				f.holderFrame.cover:Point('BOTTOMRIGHT')
+				f.holderFrame.cover.text:SetText('Cover for the Bank')
+				f.holderFrame.cover.button:Hide()
+			end]]
+
 			do -- main bank button
 				f.bankToggle = CreateFrame('Button', name..'BankButton', f, 'UIPanelButtonTemplate')
 				f.bankToggle:Size(71, 23)
@@ -2208,8 +2218,8 @@ function B:ConstructContainerFrame(name, isBank)
 				local reagentFrame = B:ConstructContainerCustomBank(f, REAGENTBANK_CONTAINER, 'reagentFrame', 'ElvUIReagentBankFrame', B.REAGENTBANK_SIZE)
 
 				B:ConstructContainerCover(reagentFrame)
-				reagentFrame.cover:Point('TOPLEFT', reagentFrame, 0, -BANK_SPACE_OFFSET)
-				reagentFrame.cover:Point('BOTTOMRIGHT', reagentFrame)
+				reagentFrame.cover:Point('TOPLEFT', 0, -BANK_SPACE_OFFSET)
+				reagentFrame.cover:Point('BOTTOMRIGHT')
 				reagentFrame.cover.text:SetText(REAGENTBANK_PURCHASE_TEXT)
 				reagentFrame.cover.button:SetScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
@@ -2771,8 +2781,14 @@ function B:SetBankTabs(f)
 	B:SetBankTabColor(f.reagentToggle, activeTab, 2)
 	B:SetBankTabColor(f.warbandToggle, activeTab, 3)
 end
+
 function B:SetBankTabColor(button, activeTab, currentTab)
-	if activeTab == currentTab then
+	local canView = CanViewBank(currentTab == 3 and WARBANDBANK_TYPE or CHARACTERBANK_TYPE)
+	button:SetEnabled(canView)
+
+	if not canView then
+		button.Text:SetTextColor(0.4, 0.4, 0.4)
+	elseif activeTab == currentTab then
 		button.Text:SetTextColor(1, 1, 1)
 	else
 		button.Text:SetTextColor(1, 0.81, 0)
@@ -2974,9 +2990,14 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
-	-- allow opening reagent tab directly by holding Shift
+	-- open to Warband when using Warband Bank Distance Inhibitor
+	-- otherwise, allow opening Reagents directly by holding Shift
 	-- keep this over update slots for bank slot assignments
-	B:ShowBankTab(B.BankFrame, E.Retail and IsShiftKeyDown() and (B.BankTab ~= REAGENTBANK_CONTAINER) and REAGENTBANK_CONTAINER)
+	local viewCharacter = E.Retail and CanViewBank(CHARACTERBANK_TYPE)
+	local openToWarband = E.Retail and not viewCharacter and CanViewBank(WARBANDBANK_TYPE) and B.WarbandIndexs[1]
+	local openToReagent = viewCharacter and IsShiftKeyDown() and (B.BankTab ~= REAGENTBANK_CONTAINER) and REAGENTBANK_CONTAINER
+
+	B:ShowBankTab(B.BankFrame, openToReagent or openToWarband)
 
 	if E.Retail then
 		B:SetBankTabs(B.BankFrame)
