@@ -1325,7 +1325,7 @@ end, not E.Retail)
 
 E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	return _TAGS.spec(unit)
-end)
+end, not E.Retail)
 
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()
