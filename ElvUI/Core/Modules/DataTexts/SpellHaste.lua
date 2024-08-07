@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 
+local UnitSpellHaste = UnitSpellHaste
 local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HASTE_SPELL = CR_HASTE_SPELL
@@ -10,7 +11,7 @@ local CR_HASTE_SPELL = CR_HASTE_SPELL
 local displayString = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
+	self.text:SetFormattedText(displayString, E.Cata and UnitSpellHaste('player') or GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
 end
 
 local function ApplySettings(_, hex)
