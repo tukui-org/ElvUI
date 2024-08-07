@@ -1,3 +1,36 @@
+### Version 13.73 [ August 7th 2024 ]
+*   **Important:**
+    *   Unitframe range was a bit messed up.
+    *   Better compatibility with DejaCharacterStats.
+    *   WeakAura Cooldowns not showing timers for Grow animation Auras.
+    *   Share Global Profile and Private Profile added.  Profiles take less time than previous versions to send now.
+*   **Datatext issues:**
+    *   Reputation would error about GetNumFactions.
+    *   Quick switching to another Datatext would cause an error.
+    *   Specialization would display incorrectly.
+    *   System now has a display Tooltip setting.
+    *   Spell Haste incorrect on Cataclysm.
+*   **Skin issues:**
+    *   Communities skin updated to fix more checkboxes. (Thanks Hopesedge)
+    *   Worldmap Questlog categories expand clickable area was terrible.
+    *   AdventureMap skin error when no rewards are available.
+    *   Quest progress bar to have gradient color again.
+*   LibDispel Bleed list updated.
+*   Auto Track Reputation would error about GetFactionInfo.
+*   Dragonriding Fader option wasn't working.
+*   Evoker Sense Power added to Aura Watch.
+*   Blacklisted Sweltering Heat and Stinky RP buffs.
+*   Clamp Nameplates not working properly on Classic and Cataclysm.
+*   Raid Utility Assist Promote checkbox misplaced on Classic and Cataclysm.
+*   Communities Chat to follow the default Chat font settings.
+*   Chat IM Style not using the correct Chat Editbox.
+*   Unitframe Class Color Override has a new setting "Always" which will show Class Color ignoring health by value and health breakpoints when set.
+*   Blizzard Nameplate Monk Stagger bar being shown on our Player Nameplate.
+*   Tag [specialization] erroring on Classic and Cataclysm.
+*   Classic Mage Advanced Warding Rune which adds Remove Greater Curse not properly displaying dispels.
+*   Classic Mage Channel Ticks for Regeneration and Mass Regeneration. (Thanks Zavoky)
+
+
 ### Version 13.72 [ July 25th 2024 ]
 *   Chat error when Battlenet is failing to provide info during Social Queue.
 *   Spec Switch Datatext was not opening Talents.
@@ -13,7 +46,7 @@
 *   Issue with using Transfer Currencies involving RequestCurrencyFromAccountCharacter.
 *   ExpandAllFactionHeaders error resolved.
 *   Mover dropdown under the Nudge frame itself.
-*   Skin issues:
+*   **Skin issues:**
     *   Guild Reputation progress bar was always full.
     *   Dropdown boxes overlapping with zone text in the /who list.
     *   Updated the color for the quest text notice "This quest has been completed on your account already"
@@ -81,7 +114,7 @@
 *   Party Pets & Target: Individual Glow settings added.
 
 ### Version 13.64 [ May 7th 2024 ]
-*   Cataclysm Hotfixes
+*   **Cataclysm Hotfixes:**
     *   Shaman dispel conditions fixed. (Thanks Oppzippy)
     *   Bag menu to assign removed as the API doesn't work anymore.
     *   Bag Starter Quest icon not displaying.
@@ -90,7 +123,7 @@
     *   Pet Stable skin updated.
 
 ### Version 13.63 [ May 2nd 2024 ]
-*   Cataclysm Hotfixes
+*   **Cataclysm Hotfixes:**
     *   Color Picker
     *   Battleground Queue
     *   Skinned GhostFrame
