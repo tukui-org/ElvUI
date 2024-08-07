@@ -64,7 +64,7 @@ function S:EditorManagerFrame()
 	S:HandleButton(editMode.RevertAllChangesButton)
 	S:HandleButton(editMode.SaveChangesButton)
 	S:HandleDropDownBox(editMode.LayoutDropdown, 250)
-	
+
 	S:HandleStepSlider(editMode.GridSpacingSlider.Slider)
 	S:HandleNextPrevButton(editMode.GridSpacingSlider.Slider.Back)
 	S:HandleNextPrevButton(editMode.GridSpacingSlider.Slider.Forward)

@@ -19,7 +19,7 @@
 This is a modified version by Elv and Simpy for ElvUI
 ------------------------------------------------------------------------------------]]
 
-local MAJOR, MINOR = "LibSimpleSticky-1.0", 3
+local MAJOR, MINOR = "LibSimpleSticky-1.0", 4
 local StickyFrames, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not StickyFrames then return end
 
