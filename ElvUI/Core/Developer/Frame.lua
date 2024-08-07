@@ -9,8 +9,8 @@ local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LoadAddOn = C_AddOns.LoadAddOn
 
 local GetMouseFocus = GetMouseFocus or function()
-  local frames = _G.GetMouseFoci()
-  return frames and frames[1]
+	local frames = _G.GetMouseFoci()
+	return frames and frames[1]
 end
 
 -- GLOBALS: ElvUI_CPU, ElvUI

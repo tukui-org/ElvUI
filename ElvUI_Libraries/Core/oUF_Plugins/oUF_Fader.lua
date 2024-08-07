@@ -25,8 +25,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
 local GetMouseFocus = GetMouseFocus or function()
-  local frames = _G.GetMouseFoci()
-  return frames and frames[1]
+	local frames = _G.GetMouseFoci()
+	return frames and frames[1]
 end
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
