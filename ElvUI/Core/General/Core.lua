@@ -1394,19 +1394,27 @@ function E:DBConvertDF()
 	local currency = E.global.datatexts.customCurrencies
 	if currency then
 		for id, data in next, E.global.datatexts.customCurrencies do
-			local info = { name = data.NAME, showMax = data.SHOW_MAX, currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP, nameStyle = data.DISPLAY_STYLE and (strfind(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or strfind(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil }
+			local info = {
+				name = data.NAME or nil,
+				showMax = data.SHOW_MAX or nil,
+				currencyTooltip = data.DISPLAY_IN_MAIN_TOOLTIP or nil,
+				nameStyle = data.DISPLAY_STYLE and (strfind(data.DISPLAY_STYLE, 'ABBR') and 'abbr' or strfind(data.DISPLAY_STYLE, 'TEXT') and 'full' or 'none') or nil
+			}
+
 			if next(info) then
 				E.global.datatexts.customCurrencies[id] = info
 			end
 		end
 	end
-end
 
-function E:DBConvertDev()
 	if E.private.general.gameMenuScale ~= nil then
 		E.db.general.gameMenuScale = E.private.general.gameMenuScale
 		E.private.general.gameMenuScale = nil
 	end
+end
+
+function E:DBConvertDev()
+
 end
 
 function E:UpdateDB()

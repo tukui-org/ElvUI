@@ -1321,7 +1321,7 @@ E:AddTag('spec', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	if info then
 		return info.name
 	end
-end, not E.Retail)
+end)
 
 E:AddTag('specialization', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 	return _TAGS.spec(unit)
