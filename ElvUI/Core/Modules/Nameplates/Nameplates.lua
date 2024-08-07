@@ -957,6 +957,10 @@ function NP:Initialize()
 			if frame.classNamePlateMechanicFrame then
 				frame.classNamePlateMechanicFrame:Hide()
 			end
+			if frame.classNamePlateAlternatePowerBar then -- Monk Stagger Bar (Might be for other classes?)
+				frame.classNamePlateAlternatePowerBar:Hide()
+				frame.classNamePlateAlternatePowerBar:UnregisterAllEvents()
+			end
 			if frame.classNamePlatePowerBar then
 				frame.classNamePlatePowerBar:Hide()
 				frame.classNamePlatePowerBar:UnregisterAllEvents()
