@@ -957,8 +957,8 @@ function NP:Initialize()
 			if frame.classNamePlateMechanicFrame then
 				frame.classNamePlateMechanicFrame:Hide()
 			end
-			if ClassNameplateBrewmasterBarFrame then -- Monk Stagger Bar (Might be for other classes?)
-				ClassNameplateBrewmasterBarFrame:Hide()
+			if _G.ClassNameplateBrewmasterBarFrame then -- Monk Stagger Bar (Might be for other classes?)
+				_G.ClassNameplateBrewmasterBarFrame:Hide()
 			end
 			if frame.classNamePlatePowerBar then
 				frame.classNamePlatePowerBar:Hide()
