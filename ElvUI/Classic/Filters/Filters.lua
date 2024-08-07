@@ -941,6 +941,10 @@ G.unitframe.ChannelTicks = {
 }
 
 if E.ClassicSOD then
+	-- Mage
+	G.unitframe.ChannelTicks[401417] = 3 -- Regeneration
+	G.unitframe.ChannelTicks[412510] = 3 -- Mass Regeneration
+	-- Priest
 	G.unitframe.ChannelTicks[402261] = 3 -- Penance (DPS)
 	G.unitframe.ChannelTicks[402277] = 3 -- Penance (Healing)
 	G.unitframe.ChannelTicks[413259] = 5 -- Mind Sear (Rune)
