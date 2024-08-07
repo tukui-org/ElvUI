@@ -932,7 +932,7 @@ function NP:SetupClassNameplateBars()
 
 	NP:HideClassNameplateBar(self.classNamePlatePowerBar)
 	NP:HideClassNameplateBar(self.classNamePlateMechanicFrame)
-	NP:HideClassNameplateBar(self.classNamePlateAlternatePowerBar)  -- BrewmasterBar / EbonMightBar
+	NP:HideClassNameplateBar(self.classNamePlateAlternatePowerBar) -- BrewmasterBar / EbonMightBar
 end
 
 function NP:Initialize()
