@@ -481,7 +481,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
-	for index, child in pairs({header:GetChildren()}) do
+	for index, child in ipairs({header:GetChildren()}) do
 		child.db = db
 		child.auraType = header.auraType -- used to update cooldown text
 
