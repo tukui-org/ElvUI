@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function SkinPvpTalents(slot)
@@ -84,7 +84,7 @@ function S:Blizzard_InspectUI()
 	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
 
 	-- Give inspect frame model backdrop it's color back
-	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
+	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
 		local bg = _G['InspectModelFrameBackground'..corner]
 		if bg then
 			bg:SetDesaturated(false)
@@ -97,7 +97,7 @@ function S:Blizzard_InspectUI()
 		end
 	end
 
-	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
+	for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			if not Slot.icon then return end
 

@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next, unpack = next, unpack
-local pairs = pairs
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
@@ -57,7 +56,7 @@ function S:BlizzardMiscFrames()
 
 	if not E:IsAddOnEnabled('ConsolePort_Menu') then
 		-- reskin all esc/menu buttons
-		for _, Button in pairs({_G.GameMenuFrame:GetChildren()}) do
+		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
 			if Button.IsObjectType and Button:IsObjectType('Button') then
 				S:HandleButton(Button)
 			end
@@ -190,8 +189,7 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StackSplitOkayButton)
 	S:HandleButton(_G.StackSplitCancelButton)
 
-	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
-	for _, btn in pairs(buttons) do
+	for _, btn in next, { StackSplitFrame.LeftButton, StackSplitFrame.RightButton } do
 		btn:Size(14, 18)
 
 		btn:ClearAllPoints()

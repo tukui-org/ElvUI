@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tonumber = tonumber
+local unpack, strmatch = unpack, strmatch
 local format, tinsert, next = format, tinsert, next
-local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -481,7 +481,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
-	for index, child in ipairs({header:GetChildren()}) do
+	for index, child in next, { header:GetChildren() } do
 		child.db = db
 		child.auraType = header.auraType -- used to update cooldown text
 
