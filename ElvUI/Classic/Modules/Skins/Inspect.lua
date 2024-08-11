@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityColor = C_Item.GetItemQualityColor
@@ -39,7 +39,7 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectPaperDollFrame:StripTextures()
 
-	for _, slot in ipairs({ _G.InspectPaperDollItemsFrame:GetChildren() }) do
+	for _, slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 		local icon = _G[slot:GetName()..'IconTexture']
 		local cooldown = _G[slot:GetName()..'Cooldown']
 

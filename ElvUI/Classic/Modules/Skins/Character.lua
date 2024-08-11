@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local unpack, pairs = unpack, pairs
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local HasPetUI = HasPetUI
@@ -149,7 +149,7 @@ function S:CharacterFrame()
 
 	HandleResistanceFrame('MagicResFrame')
 
-	for _, slot in pairs({ _G.PaperDollItemsFrame:GetChildren() }) do
+	for _, slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if slot:IsObjectType('Button') and slot.Count then
 			local name = slot:GetName()
 			local icon = _G[name..'IconTexture']
