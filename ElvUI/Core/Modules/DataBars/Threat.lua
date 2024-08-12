@@ -58,22 +58,26 @@ function DB:ThreatBar_Update()
 			local name, isTank = UnitName('target') or UNKNOWN, E.myrole == 'TANK'
 			bar.showBar = true
 
-			if petExists then
-				_, _, bar.list.pet = UnitDetailedThreatSituation('pet', 'target')
-			end
+			local leadPercent, largestUnit
+			if percent == 100 then
+				if petExists then
+					_, _, bar.list.pet = UnitDetailedThreatSituation('pet', 'target')
+				end
 
-			if hasGroup then
-				local isInRaid = IsInRaid()
-				for i = 1, GetNumGroupMembers() do
-					local groupUnit = (isInRaid and 'raid' or 'party')..i
-					if UnitExists(groupUnit) and not UnitIsUnit(groupUnit, 'player') then
-						_, _, bar.list[groupUnit] = UnitDetailedThreatSituation(groupUnit, 'target')
+				if hasGroup then
+					local isInRaid = IsInRaid()
+					for i = 1, GetNumGroupMembers() do
+						local groupUnit = (isInRaid and 'raid' or 'party')..i
+						if UnitExists(groupUnit) and not UnitIsUnit(groupUnit, 'player') then
+							_, _, bar.list[groupUnit] = UnitDetailedThreatSituation(groupUnit, 'target')
+						end
 					end
 				end
+
+				leadPercent, largestUnit = DB:ThreatBar_GetLargestThreatOnList(percent)
 			end
 
-			local leadPercent, largestUnit = DB:ThreatBar_GetLargestThreatOnList(percent)
-			if percent == 100 and leadPercent > 0 and largestUnit ~= nil then
+			if largestUnit ~= nil and leadPercent > 0 then
 				local r, g, b = DB:ThreatBar_GetColor(largestUnit)
 				bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
 				bar:SetValue(isTank and leadPercent or percent)
