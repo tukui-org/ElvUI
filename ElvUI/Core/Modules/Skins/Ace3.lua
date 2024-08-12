@@ -628,7 +628,7 @@ do -- Early Skin Loading
 
 	for n in next, LibStub.libs do
 		if n == 'AceGUI-3.0' then
-			for _, x in ipairs({UIParent:GetChildren()}) do
+			for _, x in next, { UIParent:GetChildren() } do
 				if x and x.obj then earlyWidget(x.obj) end
 			end
 		end

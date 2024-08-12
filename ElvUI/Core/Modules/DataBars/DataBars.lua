@@ -3,8 +3,9 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, select = unpack, select
-local pairs, ipairs = pairs, ipairs
+local next = next
+local select = select
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -79,7 +80,7 @@ function DB:UpdateBarBubbles(bar)
 	local bubbleWidth, bubbleHeight = vertical and (width - 2) or 1, vertical and 1 or (height - 2)
 	local offset = (vertical and height or width) * 0.05
 
-	for i, bubble in ipairs(bar.bubbles) do
+	for i, bubble in next, bar.bubbles do
 		bubble:ClearAllPoints()
 		bubble:SetShown(bar.db.showBubbles)
 		bubble:Size(bubbleWidth, bubbleHeight)
@@ -95,7 +96,7 @@ end
 function DB:UpdateAll()
 	local texture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
-	for _, bar in pairs(DB.StatusBars) do
+	for _, bar in next, DB.StatusBars do
 		bar.holder.db = bar.db
 		bar.holder:Size(bar.db.width, bar.db.height)
 		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
@@ -131,7 +132,7 @@ function DB:UpdateAll()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
 
-		for _, child in ipairs({bar.holder:GetChildren()}) do
+		for _, child in next, { bar.holder:GetChildren() } do
 			if child:IsObjectType('StatusBar') then
 				SetStatusBarTexture(child, texture)
 				child:SetOrientation(orientation)
@@ -164,7 +165,7 @@ function DB:SetVisibility(bar)
 end
 
 function DB:HandleVisibility()
-	for _, bar in pairs(DB.StatusBars) do
+	for _, bar in next, DB.StatusBars do
 		DB:SetVisibility(bar)
 	end
 end

@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tonumber = tonumber
+local unpack, strmatch = unpack, strmatch
 local format, tinsert, next = format, tinsert, next
-local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -481,9 +481,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
-	local index = 1
-	local child = select(index, header:GetChildren())
-	while child do
+	for index, child in next, { header:GetChildren() } do
 		child.db = db
 		child.auraType = header.auraType -- used to update cooldown text
 
@@ -494,9 +492,6 @@ function A:UpdateHeader(header)
 		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
 			child:Hide()
 		end
-
-		index = index + 1
-		child = select(index, header:GetChildren())
 	end
 
 	if MasqueGroupBuffs and E.private.auras.buffsHeader and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end

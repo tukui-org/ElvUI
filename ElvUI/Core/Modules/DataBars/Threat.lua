@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
 
-local pairs, select, wipe = pairs, select, wipe
+local next = next
+local wipe = wipe
 
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitAffectingCombat = UnitAffectingCombat
@@ -20,7 +21,7 @@ local tankStatus = {[0] = 3, 2, 1, 0}
 
 function DB:ThreatBar_GetLargestThreatOnList(percent)
 	local largestValue, largestUnit = 0, nil
-	for unit, threatPercent in pairs(DB.StatusBars.Threat.list) do
+	for unit, threatPercent in next, DB.StatusBars.Threat.list do
 		if threatPercent > largestValue then
 			largestValue = threatPercent
 			largestUnit = unit
@@ -47,29 +48,32 @@ end
 
 function DB:ThreatBar_Update()
 	local bar = DB.StatusBars.Threat
-	local petExists = UnitExists('pet')
+	local petExists, hasGroup = UnitExists('pet'), IsInGroup()
+	bar.showBar = false
 
-	if UnitAffectingCombat('player') and (petExists or IsInGroup()) then
+	if UnitAffectingCombat('player') and (petExists or hasGroup) then
 		local _, status, percent = UnitDetailedThreatSituation('player', 'target')
-		local name = UnitName('target') or UNKNOWN
-		bar.showBar = true
 
-		local isTank = E.myrole == 'TANK'
-		if percent == 100 then
+		if percent then
+			local name, isTank = UnitName('target') or UNKNOWN, E.myrole == 'TANK'
+			bar.showBar = true
+
 			if petExists then
-				bar.list.pet = select(3, UnitDetailedThreatSituation('pet', 'target'))
+				_, _, bar.list.pet = UnitDetailedThreatSituation('pet', 'target')
 			end
 
-			local isInRaid = IsInRaid()
-			for i = 1, GetNumGroupMembers() do
-				local groupUnit = (isInRaid and 'raid' or 'party')..i
-				if UnitExists(groupUnit) and not UnitIsUnit(groupUnit, 'player') then
-					bar.list[groupUnit] = select(3, UnitDetailedThreatSituation(groupUnit, 'target'))
+			if hasGroup then
+				local isInRaid = IsInRaid()
+				for i = 1, GetNumGroupMembers() do
+					local groupUnit = (isInRaid and 'raid' or 'party')..i
+					if UnitExists(groupUnit) and not UnitIsUnit(groupUnit, 'player') then
+						_, _, bar.list[groupUnit] = UnitDetailedThreatSituation(groupUnit, 'target')
+					end
 				end
 			end
 
 			local leadPercent, largestUnit = DB:ThreatBar_GetLargestThreatOnList(percent)
-			if leadPercent > 0 and largestUnit ~= nil then
+			if percent == 100 and leadPercent > 0 and largestUnit ~= nil then
 				local r, g, b = DB:ThreatBar_GetColor(largestUnit)
 				bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
 				bar:SetValue(isTank and leadPercent or percent)
@@ -77,19 +81,12 @@ function DB:ThreatBar_Update()
 				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 				bar:SetValue(percent)
 			end
-		elseif percent then
-			bar.text:SetFormattedText('%s: %.0f%%', name, percent)
-			bar:SetValue(percent)
-		else
-			bar.showBar = false
-		end
 
-		local r, g, b = E:GetThreatStatusColor(isTank and bar.db.tankStatus and tankStatus[status] or status)
-		if r then
-			bar:SetStatusBarColor(r, g, b, 0.8)
+			local r, g, b = E:GetThreatStatusColor(isTank and bar.db.tankStatus and tankStatus[status] or status)
+			if r then
+				bar:SetStatusBarColor(r, g, b, 0.8)
+			end
 		end
-	else
-		bar.showBar = false
 	end
 
 	bar.text:SetShown(bar.db.displayText)

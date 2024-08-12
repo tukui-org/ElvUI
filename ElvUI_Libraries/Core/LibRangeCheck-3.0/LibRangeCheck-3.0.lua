@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 19 -- based off real minor version: 21
+local MINOR_VERSION = 19 -- based off real minor version: 23
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -353,9 +353,12 @@ if not isRetail then
 end
 
 -- Warlocks
-tinsert(FriendSpells.WARLOCK, 132) -- Detect Invisibility (30 yards, level 26)
+if isEra then
+  tinsert(FriendSpells.WARLOCK, 132) -- Detect Invisibility (30 yards, level 26)
+else
+  tinsert(FriendSpells.WARLOCK, 20707) -- Soulstone (40 yards) ~ this can be precasted so leave it in friendly as well as res
+end
 tinsert(FriendSpells.WARLOCK, 5697) -- Unending Breath (30 yards)
-tinsert(FriendSpells.WARLOCK, 20707) -- Soulstone (40 yards) ~ this can be precasted so leave it in friendly as well as res
 
 if isRetail then
   tinsert(HarmSpells.WARLOCK, 234153) -- Drain Life (40 yards, level 9)
@@ -367,14 +370,18 @@ else
   tinsert(HarmSpells.WARLOCK, 17877) -- Shadowburn (Destruction) (20/22/24 yards, rank 1)
   tinsert(HarmSpells.WARLOCK, 18223) -- Curse of Exhaustion (Affliction) (30/33/36/35/38/42 yards)
   tinsert(HarmSpells.WARLOCK, 689) -- Drain Life (Affliction) (20/22/24 yards, level 14, rank 1)
-  tinsert(HarmSpells.WARLOCK, 403677) -- Master Channeler (Affliction) (20/22/24 yards, level 14, rank 1)
 end
 
 tinsert(HarmSpells.WARLOCK, 5019) -- Shoot (30 yards)
 tinsert(HarmSpells.WARLOCK, 686) -- Shadow Bolt (Demonology, Affliction) (40 yards)
 tinsert(HarmSpells.WARLOCK, 5782) -- Fear (30 yards)
 
-tinsert(ResSpells.WARLOCK, 20707) -- Soulstone (40 yards)
+if isEra then
+  tinsert(HarmSpells.WARLOCK, 403677) -- Master Channeler (Affliction) (20/22/24 yards, level 14, rank 1)
+  tinsert(HarmSpells.WARLOCK, 426320) -- Shadowflame (30/33/36/39/42 yards, level 14, rank 1)
+else
+  tinsert(ResSpells.WARLOCK, 20707) -- Soulstone (40 yards)
+end
 
 tinsert(PetSpells.WARLOCK, 755) -- Health Funnel (45 yards)
 
@@ -697,6 +704,10 @@ end
 
 local function getNumSpells()
   local _, _, offset, numSpells = CustomSpellTabInfo(GetNumSpellTabs())
+  if not offset or not numSpells then
+    return 0
+  end
+
   return offset + numSpells
 end
 

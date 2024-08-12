@@ -191,6 +191,7 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
+	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
 
 	if E.global.general.disableTutorialButtons then
 		EJ.MonthlyActivitiesFrame.HelpButton:Kill()
@@ -371,6 +372,8 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
+		EJ.MonthlyActivitiesFrame.Divider:Hide()
+		EJ.MonthlyActivitiesFrame.DividerVertical:Hide()
 		EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
 		EJ.MonthlyActivitiesFrame.ThemeContainer:SetAlpha(0)
 		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
