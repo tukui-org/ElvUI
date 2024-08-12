@@ -77,7 +77,7 @@ function DB:ThreatBar_Update()
 				leadPercent, largestUnit = DB:ThreatBar_GetLargestThreatOnList(percent)
 			end
 
-			if largestUnit ~= nil and leadPercent > 0 then
+			if largestUnit and leadPercent > 0 then
 				local r, g, b = DB:ThreatBar_GetColor(largestUnit)
 				bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
 				bar:SetValue(isTank and leadPercent or percent)
