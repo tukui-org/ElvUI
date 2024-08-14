@@ -706,13 +706,10 @@ do
 			end
 		end
 
-		if E.CreatedMovers then
-			for name in pairs(E.CreatedMovers) do
-				local mover = _G[name]
-				if mover and mover:IsShown() then
-					mover:Hide()
-					wasShown = true
-				end
+		for _, frame in next, E.CreatedMovers do
+			if frame.mover and frame.mover:IsShown() then
+				frame.mover:Hide()
+				wasShown = true
 			end
 		end
 

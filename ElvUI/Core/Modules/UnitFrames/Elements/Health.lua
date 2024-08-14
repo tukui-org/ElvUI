@@ -103,7 +103,6 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health.HEIGHT = db.height
 
 	local BORDER_SPACING = UF.BORDER + UF.SPACING
-	local BORDER_NOSPACING = UF.BORDER - UF.SPACING
 	local LESS_SPACING = -UF.BORDER - UF.SPACING
 
 	local CLASSBAR_YOFFSET = frame.CLASSBAR_YOFFSET or 0

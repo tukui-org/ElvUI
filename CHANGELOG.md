@@ -1,3 +1,7 @@
+### Version 13.74 [ August 14th 2024 ]
+*   Changes required for 11.0.2
+*   Unitframe Portraits not lined up in thick border mode
+
 ### Version 13.73 [ August 7th 2024 ]
 *   **Important:**
     *   Unitframe range was a bit messed up.
@@ -29,7 +33,6 @@
 *   Tag [specialization] erroring on Classic and Cataclysm.
 *   Classic Mage Advanced Warding Rune which adds Remove Greater Curse not properly displaying dispels.
 *   Classic Mage Channel Ticks for Regeneration and Mass Regeneration. (Thanks Zavoky)
-
 
 ### Version 13.72 [ July 25th 2024 ]
 *   Chat error when Battlenet is failing to provide info during Social Queue.

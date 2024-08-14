@@ -337,17 +337,17 @@ local function BuildBNTable(total)
 	local bnIndex = 0
 
 	for i = 1, total do
-		local info = GetFriendAccountInfo(i)
-		local mainInfo = info.gameAccountInfo
-		if mainInfo.isOnline then
+		local accountInfo = GetFriendAccountInfo(i)
+		local gameInfo = accountInfo.gameAccountInfo
+		if gameInfo and gameInfo.isOnline then
 			local numGameAccounts = GetFriendNumGameAccounts(i)
 			if numGameAccounts and numGameAccounts > 0 then
 				for y = 1, numGameAccounts do
-					local gameInfo = GetFriendGameAccountInfo(i, y)
-					bnIndex = PopulateBNTable(bnIndex, info.bnetAccountID, info.accountName, info.battleTag, gameInfo.characterName, gameInfo.gameAccountID, gameInfo.clientProgram, gameInfo.isOnline, info.isAFK or gameInfo.isGameAFK, info.isDND or gameInfo.isGameBusy, info.note, gameInfo.wowProjectID, gameInfo.timerunningSeasonID, gameInfo.realmName, gameInfo.factionName, gameInfo.raceName, gameInfo.className, gameInfo.areaName, gameInfo.characterLevel, gameInfo.playerGuid, gameInfo.richPresence, gameInfo.hasFocus)
+					local gameOther = GetFriendGameAccountInfo(i, y)
+					bnIndex = PopulateBNTable(bnIndex, accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, gameOther.characterName, gameOther.gameAccountID, gameOther.clientProgram, gameOther.isOnline, accountInfo.isAFK or gameOther.isGameAFK, accountInfo.isDND or gameOther.isGameBusy, accountInfo.note, gameOther.wowProjectID, gameOther.timerunningSeasonID, gameOther.realmName, gameOther.factionName, gameOther.raceName, gameOther.className, gameOther.areaName, gameOther.characterLevel, gameOther.playerGuid, gameOther.richPresence, gameOther.hasFocus)
 				end
 			else
-				bnIndex = PopulateBNTable(bnIndex, info.bnetAccountID, info.accountName, info.battleTag, mainInfo.characterName, mainInfo.gameAccountID, mainInfo.clientProgram, mainInfo.isOnline, info.isAFK, info.isDND, info.note, mainInfo.wowProjectID, mainInfo.timerunningSeasonID)
+				bnIndex = PopulateBNTable(bnIndex, accountInfo.bnetAccountID, accountInfo.accountName, accountInfo.battleTag, gameInfo.characterName, gameInfo.gameAccountID, gameInfo.clientProgram, gameInfo.isOnline, accountInfo.isAFK, accountInfo.isDND, accountInfo.note, gameInfo.wowProjectID, gameInfo.timerunningSeasonID)
 			end
 		end
 	end
