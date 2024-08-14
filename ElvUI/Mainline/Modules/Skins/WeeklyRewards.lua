@@ -42,11 +42,6 @@ local function SkinActivityFrame(frame, isObject)
 			frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
 		end
 	end
-
-	if frame.Background then
-		frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
-		frame.Background:CreateBackdrop()
-	end
 end
 
 local function ReskinConfirmIcon(frame)
@@ -97,6 +92,13 @@ function S:Blizzard_WeeklyRewards()
 
 		frame.BorderContainer:StripTextures()
 		frame.ConcessionFrame:StripTextures()
+
+		frame.RaidFrame:CreateBackdrop('Transparent')
+		frame.RaidFrame.Background:Size(394, 140)
+		frame.MythicFrame:CreateBackdrop('Transparent')
+		frame.MythicFrame.Background:Size(394, 140)
+		frame.PVPFrame:CreateBackdrop('Transparent')
+		frame.PVPFrame.Background:Size(394, 140)
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
@@ -115,6 +117,12 @@ function S:Blizzard_WeeklyRewards()
 	if rewardText then
 		S.ReplaceIconString(rewardText)
 		hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
+	end
+
+	-- Warning dialog between seasons, doesn't always exist
+	if WeeklyRewardExpirationWarningDialog then
+		WeeklyRewardExpirationWarningDialog.NineSlice:SetTemplate('Transparent')
+		WeeklyRewardExpirationWarningDialog.NineSlice.ExtraBG:Hide()
 	end
 
 	hooksecurefunc(frame, 'SelectReward', SelectReward)
