@@ -41,13 +41,17 @@ local function SkinActivityFrame(frame, isObject)
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
 		elseif frame.RewardsFrame then -- the button
 			frame:CreateBackdrop('Transparent')
-			frame.SelectedTexture:SetTexture(E.ClearTexture)
+			frame.SelectedTexture:SetAlpha(0)
+			frame.UnselectedFrame:SetAlpha(0)
+
 			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 		end
 	else
-		frame.Border:SetTexCoord(.926, 1, 0, 1)
-		frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
-		frame.Border:Size(25, 137)
+		if frame.Border then
+			frame.Border:SetTexCoord(.926, 1, 0, 1)
+			frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
+			frame.Border:Size(25, 137)
+		end
 
 		if frame.Background and frame.Name then
 			frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
