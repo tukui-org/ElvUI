@@ -467,8 +467,11 @@ function S:Blizzard_EncounterJournal()
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
 				child:SetNormalTexture(E.ClearTexture)
-				child:SetHighlightTexture(E.ClearTexture)
 				child:SetPushedTexture(E.ClearTexture)
+				child:SetHighlightTexture(E.media.normTex)
+				local hl = child:GetHighlightTexture()
+				hl:SetVertexColor(0.8, 0.8, 0.8, .25)
+				hl:SetInside(child, 3, 3)
 
 				local bgImage = child.bgImage
 				if bgImage then
