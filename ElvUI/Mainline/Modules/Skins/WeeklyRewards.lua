@@ -39,7 +39,7 @@ local function SkinActivityFrame(frame, isObject)
 
 		if frame.ItemFrame then
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
-		elseif frame.RewardsFrame then -- the button
+		elseif frame.UnselectedFrame and E.private.skins.parchmentRemoverEnable then -- the button
 			frame:CreateBackdrop('Transparent')
 			frame.SelectedTexture:SetAlpha(0)
 			frame.UnselectedFrame:SetAlpha(0)
@@ -55,7 +55,10 @@ local function SkinActivityFrame(frame, isObject)
 
 		if frame.Background and frame.Name then
 			frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
+			frame.Background:SetDrawLayer('ARTWORK', 2)
+
 			frame.Background:CreateBackdrop('Transparent')
+			frame.Background.backdrop.Center:SetDrawLayer('ARTWORK', 1)
 		end
 	end
 end
