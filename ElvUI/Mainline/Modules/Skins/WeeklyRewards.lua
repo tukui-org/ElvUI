@@ -22,6 +22,8 @@ end
 local function UpdateSelection(frame)
 	if not frame.backdrop then return end
 
+	frame.SelectedTexture:SetAlpha(0)
+
 	if frame.SelectedTexture:IsShown() then
 		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
 	else
