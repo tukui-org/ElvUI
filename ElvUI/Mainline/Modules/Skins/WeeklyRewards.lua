@@ -22,10 +22,8 @@ end
 local function UpdateSelection(frame)
 	if not frame.backdrop then return end
 
-	frame.SelectedTexture:SetAlpha(0)
-
 	if frame.SelectedTexture:IsShown() then
-		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
+		frame.backdrop:SetBackdropBorderColor(1, 0.8, 0)
 	else
 		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
 	end
@@ -43,7 +41,7 @@ local function SkinActivityFrame(frame, isObject)
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
 		elseif frame.RewardsFrame then -- the button
 			frame:CreateBackdrop('Transparent')
-			frame.SelectedTexture:SetAlpha(0)
+			frame.SelectedTexture:SetTexture(E.ClearTexture)
 			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 		end
 	else
