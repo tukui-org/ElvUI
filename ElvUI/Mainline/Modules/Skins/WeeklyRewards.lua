@@ -87,20 +87,16 @@ function S:Blizzard_WeeklyRewards()
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 
-		frame.NineSlice:SetAlpha(0)
-		frame.BackgroundTile:SetAlpha(0)
-
 		local header = frame.HeaderFrame
 		if header then
 			header:ClearAllPoints()
 			header:Point('TOP', 1, -42)
 			header:StripTextures()
 			header:SetTemplate('Transparent')
-
-			header.Right:SetAlpha(0)
-			header.Left:SetAlpha(0)
-			header.Middle:SetAlpha(0)
 		end
+
+		frame.BorderContainer:StripTextures()
+		frame.ConcessionFrame:StripTextures()
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
