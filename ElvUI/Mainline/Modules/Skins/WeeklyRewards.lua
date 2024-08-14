@@ -30,16 +30,27 @@ local function UpdateSelection(frame)
 end
 
 local function SkinActivityFrame(frame, isObject)
-	if frame.Border then
-		if isObject then
+	if not frame then return end
+
+	if isObject then
+		hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
+		frame.SelectedTexture:SetAlpha(0)
+
+		if frame.Border then
 			frame.Border:SetAlpha(0)
-			frame.SelectedTexture:SetAlpha(0)
-			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
+		end
+
+		if frame.ItemFrame then
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
-		else
-			frame.Border:SetTexCoord(.926, 1, 0, 1)
-			frame.Border:Size(25, 137)
-			frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
+		end
+	else
+		frame.Border:SetTexCoord(.926, 1, 0, 1)
+		frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
+		frame.Border:Size(25, 137)
+
+		if frame.Background and frame.Name then
+			frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
+			frame.Background:CreateBackdrop('Transparent')
 		end
 	end
 end
@@ -72,6 +83,11 @@ local function UpdateOverlay(frame)
 	end
 end
 
+local function HandleWarning(frame)
+	frame:SetTemplate('Transparent')
+	frame.ExtraBG:Hide()
+end
+
 function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
@@ -92,13 +108,6 @@ function S:Blizzard_WeeklyRewards()
 
 		frame.BorderContainer:StripTextures()
 		frame.ConcessionFrame:StripTextures()
-
-		frame.RaidFrame:CreateBackdrop('Transparent')
-		frame.RaidFrame.Background:Size(394, 140)
-		frame.MythicFrame:CreateBackdrop('Transparent')
-		frame.MythicFrame.Background:Size(394, 140)
-		frame.PVPFrame:CreateBackdrop('Transparent')
-		frame.PVPFrame.Background:Size(394, 140)
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
@@ -119,10 +128,10 @@ function S:Blizzard_WeeklyRewards()
 		hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
 	end
 
-	-- Warning dialog between seasons, doesn't always exist
-	if WeeklyRewardExpirationWarningDialog then
-		WeeklyRewardExpirationWarningDialog.NineSlice:SetTemplate('Transparent')
-		WeeklyRewardExpirationWarningDialog.NineSlice.ExtraBG:Hide()
+	local warningDialog = _G.WeeklyRewardExpirationWarningDialog
+	if warningDialog then -- doesn't always exist
+		warningDialog:Point('TOP', frame, 'BOTTOM', 0, -1)
+		warningDialog.NineSlice:HookScript('OnShow', HandleWarning)
 	end
 
 	hooksecurefunc(frame, 'SelectReward', SelectReward)
