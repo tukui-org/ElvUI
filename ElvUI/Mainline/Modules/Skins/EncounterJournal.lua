@@ -253,17 +253,10 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceTitle:ClearAllPoints()
 	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
 
-	EncounterInfo.reset:StripTextures()
-
 	-- Buttons
 	EncounterInfo.difficulty:ClearAllPoints()
 	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
 	S:HandleDropDownBox(EncounterInfo.difficulty, 120)
-
-	EncounterInfo.reset:ClearAllPoints()
-	EncounterInfo.reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
-	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
-	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
 	EncounterInfo.LootContainer.filter:ClearAllPoints()
 	EncounterInfo.LootContainer.filter:Point('RIGHT', EncounterInfo.difficulty, 'LEFT', -120, 0)
