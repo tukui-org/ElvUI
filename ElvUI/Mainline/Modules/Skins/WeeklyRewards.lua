@@ -33,15 +33,16 @@ local function SkinActivityFrame(frame, isObject)
 	if not frame then return end
 
 	if isObject then
-		hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
-		frame.SelectedTexture:SetAlpha(0)
-
 		if frame.Border then
 			frame.Border:SetAlpha(0)
 		end
 
 		if frame.ItemFrame then
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
+		elseif frame.RewardsFrame then -- the button
+			frame:CreateBackdrop('Transparent')
+			frame.SelectedTexture:SetAlpha(0)
+			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 		end
 	else
 		frame.Border:SetTexCoord(.926, 1, 0, 1)
