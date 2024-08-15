@@ -5,7 +5,7 @@
 		Name = 'AddOnName',
 		tutorialImage = 'TexturePath',
 		tutorialImageSize = {x,y},
-		tutorialImagetutorialImagePoint = {xOffset,yOffset},
+		tutorialImagePoint = {xOffset,yOffset},
 		Pages = {
 			function1,
 			function2,
