@@ -213,7 +213,7 @@ do --this can save some main file locals
 	local PalmTree		= E:TextureString(E.Media.ChatLogos.PalmTree,x)
 	local TyroneBiggums = E:TextureString(E.Media.ChatLogos.TyroneBiggums,x)
 	local SuperBear		= E:TextureString(E.Media.ChatLogos.SuperBear,x)
-	local AngryUnicorn	= E:TextureString(E.Media.ChatLogos.AngryUnicron,x)
+	local AngryUnicorn	= E:TextureString(E.Media.ChatLogos.AngryUnicorn,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
