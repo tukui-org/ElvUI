@@ -163,4 +163,4 @@ local function OnClick(self, button)
 	end
 end
 
-DT:RegisterDatatext(L["Volume"], nil, {'CVAR_UPDATE'}, OnEvent, nil, OnClick, OnEnter)
+DT:RegisterDatatext("Volume", nil, {'CVAR_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Volume"])
