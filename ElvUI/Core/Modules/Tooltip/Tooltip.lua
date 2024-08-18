@@ -1026,8 +1026,6 @@ function TT:WorldCursorTooltipUpdate(_, state)
 end
 
 function TT:Initialize()
-	TT.db = E.db.tooltip
-
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 

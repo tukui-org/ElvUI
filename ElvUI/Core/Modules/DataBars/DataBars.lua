@@ -200,8 +200,6 @@ function DB:Initialize()
 	DB.Initialized = true
 	DB.StatusBars = {}
 
-	DB.db = E.db.databars
-
 	DB:CreateAll()
 	DB:UpdateAll()
 

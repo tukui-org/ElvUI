@@ -1423,17 +1423,7 @@ function E:UpdateDB()
 	E.db = E.data.profile
 
 	E:DBConversions()
-
-	Auras.db = E.db.auras
-	ActionBars.db = E.db.actionbar
-	Bags.db = E.db.bags
-	Chat.db = E.db.chat
-	DataBars.db = E.db.databars
-	DataTexts.db = E.db.datatexts
-	NamePlates.db = E.db.nameplates
-	Tooltip.db = E.db.tooltip
-	UnitFrames.db = E.db.unitframe
-	TotemTracker.db = E.db.general.totems
+	E:SetupDB()
 
 	--Not part of staggered update
 end
@@ -1839,11 +1829,11 @@ do
 end
 
 function E:CallLoadedModule(obj, silent, object, index)
-	local name, func
-	if type(obj) == 'table' then name, func = unpack(obj) else name = obj end
-	local module = name and E:GetModule(name, silent)
+	local name, func = obj.name, obj.func
 
+	local module = name and E:GetModule(name, silent)
 	if not module then return end
+
 	if func and type(func) == 'string' then
 		E:CallLoadFunc(module[func], module)
 	elseif func and type(func) == 'function' then
@@ -1852,18 +1842,26 @@ function E:CallLoadedModule(obj, silent, object, index)
 		E:CallLoadFunc(module.Initialize, module)
 	end
 
-	if object and index then object[index] = nil end
+	if object and index then
+		object[index] = nil
+	end
 end
 
 function E:RegisterInitialModule(name, func)
-	E.RegisteredInitialModules[#E.RegisteredInitialModules + 1] = (func and {name, func}) or name
+	E.RegisteredInitialModules[#E.RegisteredInitialModules + 1] = { name = name, func = func }
 end
 
-function E:RegisterModule(name, func)
-	if E.initialized then
-		E:CallLoadedModule((func and {name, func}) or name)
-	else
-		E.RegisteredModules[#E.RegisteredModules + 1] = (func and {name, func}) or name
+do
+	local loaded = {}
+	function E:RegisterModule(name, func)
+		if E.initialized then
+			loaded.name = name
+			loaded.func = func
+
+			E:CallLoadedModule(loaded)
+		else
+			E.RegisteredModules[#E.RegisteredModules + 1] = { name = name, func = func }
+		end
 	end
 end
 

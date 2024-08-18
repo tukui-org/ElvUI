@@ -3374,8 +3374,6 @@ function B:ADDON_LOADED(_, addon)
 end
 
 function B:Initialize()
-	B.db = E.db.bags
-
 	BIND_START, BIND_END = B:GetBindLines()
 
 	B.AssignmentColors = {

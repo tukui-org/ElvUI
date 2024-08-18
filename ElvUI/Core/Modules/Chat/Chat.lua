@@ -3725,7 +3725,6 @@ function CH:Initialize()
 
 	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
-	CH.db = E.db.chat
 	if not E.private.chat.enable then
 		-- if the chat module is off we still need to spawn the dts for the panels
 		-- if we are going to have the panels show even when it's disabled

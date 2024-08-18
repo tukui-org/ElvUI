@@ -876,7 +876,6 @@ end
 
 function DT:Initialize()
 	DT.Initialized = true
-	DT.db = E.db.datatexts
 
 	DT:BuildTables()
 

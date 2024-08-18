@@ -1743,8 +1743,6 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 end
 
 function AB:Initialize()
-	AB.db = E.db.actionbar
-
 	_G.BINDING_HEADER_ELVUI = E.title
 
 	for _, barNumber in pairs({2, 7, 8, 9, 10}) do

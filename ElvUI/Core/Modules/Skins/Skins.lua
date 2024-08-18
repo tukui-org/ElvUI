@@ -2181,7 +2181,6 @@ end
 
 function S:Initialize()
 	S.Initialized = true
-	S.db = E.private.skins
 
 	for index, func in next, S.nonAddonsToLoad do
 		xpcall(func, errorhandler)
