@@ -318,6 +318,7 @@ function S:ContainerFrame()
 
 	S:HandleButton(_G.ReagentBankFrame.DespositButton)
 	_G.ReagentBankFrame:HookScript('OnShow', _G.ReagentBankFrame.StripTextures)
+	_G.ReagentBankFrame.UnlockInfo:SetFrameLevel(4)
 
 	for _, icon in next, { _G.BagItemAutoSortButton, _G.BankItemAutoSortButton } do
 		icon:StripTextures()
