@@ -163,7 +163,7 @@ function E:UpdateBlizzardFonts()
 			for _, object in next, data.objects do
 				E:SetFontMap(object, font, data, replaceFonts)
 			end
-		else
+		elseif data.object then
 			E:SetFontMap(data.object, font, data, replaceFonts)
 		end
 	end
