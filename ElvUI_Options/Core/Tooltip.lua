@@ -36,6 +36,9 @@ General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -2)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues)
 General.modifierGroup.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 2, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["None"] })
 General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
+General.modifierGroup.args.spacer = ACH:Spacer(5)
+General.modifierGroup.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 6)
+General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7)
 General.modifierGroup.inline = true
 
 General.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, -1, nil, nil, nil, nil, not E.Retail)
