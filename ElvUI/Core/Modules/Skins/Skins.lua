@@ -2219,7 +2219,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.Retail then
+	if E.Retail and S.db.blizzard.enable and S.db.blizzard.misc then
 		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
 		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end
