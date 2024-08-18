@@ -38,9 +38,6 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
-local PlaySound = PlaySound
-local CloseMenus = CloseMenus
-local CloseAllWindows = CloseAllWindows
 
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
@@ -835,16 +832,9 @@ function E:PositionGameMenuButton()
 end
 
 function E:ClickGameMenu()
-	if not GameMenuFrame:IsShown() then
-		PlaySound(850) --IG_MAINMENU_OPEN
-		_G.GameMenuFrame:Show()
-	else
-		CloseMenus()
-		CloseAllWindows()
-		PlaySound(854) --IG_MAINMENU_QUIT
-	end
-
 	E:ToggleOptions() -- we already prevent it from opening in combat
+
+	GameMenuFrame:Hide()
 end
 
 function E:ScaleGameMenu()
