@@ -242,6 +242,14 @@ B.BAG_FILTER_ICONS = {
 	[FILTER_FLAG_REAGENTS] = 132854								-- Interface\ICONS\INV_Enchant_DustArcane
 }
 
+B.BindText = {
+	[Enum.ItemBind.OnAcquire or 1] = L["BoP"],
+	[Enum.ItemBind.OnEquip or 2] = L["BoE"],
+	[Enum.ItemBind.OnUse or 3] = L["BoU"],
+	[Enum.ItemBind.ToBnetAccount or 8] = L["BoW"],
+	[Enum.ItemBind.ToBnetAccountUntilEquipped or 9] = L["BoWE"]
+}
+
 local itemSpellID = {
 	-- Deposit Anima: Infuse (value) stored Anima into your covenant's Reservoir.
 	[347555] = 3,
@@ -692,10 +700,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
-		local BoE, BoU = bindType == 2, bindType == 3
-		if B.db.showBindType and not slot.isBound and (BoE or BoU) then
-			slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
-		end
+		local BoX = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[bindType]
+		if BoX then slot.bindType:SetText(BoX) end
 
 		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
 		if mult then
