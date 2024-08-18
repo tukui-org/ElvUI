@@ -1226,7 +1226,7 @@ do
 
 		if not noReplaceTextures then
 			if frame.SetCheckedTexture then
-				if E.private.skins.checkBoxSkin then
+				if S.db.checkBoxSkin then
 					frame:SetCheckedTexture(E.Media.Textures.Melli)
 
 					local checkedTexture = frame:GetCheckedTexture()
@@ -1242,7 +1242,7 @@ do
 			end
 
 			if frame.SetDisabledTexture then
-				if E.private.skins.checkBoxSkin then
+				if S.db.checkBoxSkin then
 					frame:SetDisabledTexture(E.Media.Textures.Melli)
 
 					local disabledTexture = frame:GetDisabledTexture()
