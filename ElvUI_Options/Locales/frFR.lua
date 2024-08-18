@@ -16,6 +16,10 @@ L["LEFT"] = "GAUCHE"
 L["RIGHT"] = "DROITE"
 L["TOP"] = "HAUT"
 
+L["Add Aura ID"] = true
+L["Remove Aura"] = true
+L["Select Aura"] = true
+L["Add an aura to the filter. Aura IDs can be acquired using the tooltip to find the correct ID."] = true
 L["Primary Unit"] = "Unité principale"
 L["Requires the unit to be the primary target to display."] = "Nécessite que l'unité soit la cible principale pour s'afficher."
 L["Pet Specific"] = "Spécifique au familier"
