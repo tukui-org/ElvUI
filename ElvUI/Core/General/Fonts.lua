@@ -208,7 +208,7 @@ function E:UpdateBlizzardFonts()
 
 		-- world map fonts
 		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or gigantic, outline)		-- WorldMap, SubZone
-		E:SetFont(_G.WorldMapTextFont,						NORMAL, (blizz and 32) or unscale or massive, outline)		-- WorldMap Retail
+		E:SetFont(_G.WorldMapTextFont,						NORMAL, (blizz and 32) or unscale or massive, outline)		-- WorldMap, MainZone
 
 		-- objective fonts
 		E:SetFont(_G.ObjectiveTrackerHeaderFont,			NORMAL, (blizz and 14) or unscale or medium, 'OUTLINE')
