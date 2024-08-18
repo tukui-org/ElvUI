@@ -68,6 +68,7 @@ local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogColl
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
+local C_Item_IsBoundToAccountUntilEquip = C_Item.IsBoundToAccountUntilEquip
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
@@ -247,7 +248,7 @@ B.BindText = {
 	[Enum.ItemBind.OnEquip or 2] = L["BoE"],
 	[Enum.ItemBind.OnUse or 3] = L["BoU"],
 	[Enum.ItemBind.ToBnetAccount or 8] = L["BoW"],
-	[Enum.ItemBind.ToBnetAccountUntilEquipped or 9] = L["BoWE"]
+	[Enum.ItemBind.ToBnetAccountUntilEquipped or 9] = L["WuE"]
 }
 
 local itemSpellID = {
@@ -700,8 +701,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
-		local BoX = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[bindType]
-		if BoX then slot.bindType:SetText(BoX) end
+		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and 9
+		local bindTo = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[WuE or bindType]
+		if bindTo then slot.bindType:SetText(bindTo) end
 
 		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
 		if mult then
