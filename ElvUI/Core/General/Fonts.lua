@@ -4,10 +4,11 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next = next
 local strsub = strsub
+local tinsert = tinsert
 local strmatch = strmatch
 
 local FontMap = {
-	worldzone		= { object = _G.ZoneTextFont },
+	worldzone		= { objects = { _G.ZoneTextFont, _G.WorldMapTextFont } },
 	worldsubzone	= { object = _G.SubZoneTextFont },
 	pvpzone			= { object = _G.PVPArenaTextString },
 	pvpsubzone		= { object = _G.PVPInfoTextString },
@@ -28,9 +29,13 @@ local FontMap = {
 }
 
 if E.Retail then
-	FontMap.objective		= { object = _G.ObjectiveFont }
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
+	FontMap.objective = { objects = { _G.ObjectiveFont } } -- not _G.ObjectiveTrackerHeaderFont ?
+
+	for i = 12, 22 do
+		tinsert(FontMap.objective.objects, _G['ObjectiveTrackerFont'..i])
+	end
 end
 
 function E:SetFontMap(object, opt, data, replace)
@@ -153,23 +158,13 @@ function E:UpdateBlizzardFonts()
 	-- custom font settings
 	for name, data in next, FontMap do
 		local font = E.db.general.fonts[name]
-		E:SetFontMap(data.object, font, data, replaceFonts)
 
-		if name == 'objective' then
-			-- E:SetFontMap(_G.ObjectiveTrackerHeaderFont, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont12, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont13, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont14, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont15, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont16, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont17, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont18, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont19, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont20, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont21, font, data, replaceFonts)
-			E:SetFontMap(_G.ObjectiveTrackerFont22, font, data, replaceFonts)
-		elseif name == 'worldzone' then
-			E:SetFontMap(_G.WorldMapTextFont, font, data, replaceFonts)
+		if data.objects then
+			for _, object in next, data.objects do
+				E:SetFontMap(object, font, data, replaceFonts)
+			end
+		else
+			E:SetFontMap(data.object, font, data, replaceFonts)
 		end
 	end
 
