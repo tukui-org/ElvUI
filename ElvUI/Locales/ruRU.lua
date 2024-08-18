@@ -2,6 +2,7 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["Restrict Pings"] = true
 L["Player"] = "Игрок"
 L["Small"] = "Малый"
 L["Medium"] = "Средний"

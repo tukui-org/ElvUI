@@ -1837,7 +1837,6 @@ function UF:Setup()
 end
 
 function UF:Initialize()
-	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders
 	UF.maxAllowedGroups = 8
 

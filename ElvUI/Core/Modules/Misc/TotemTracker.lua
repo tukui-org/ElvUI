@@ -108,7 +108,6 @@ function TM:Initialize()
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 
 	TM.bar = bar
-	TM.db = E.db.general.totems
 
 	for i = 1, MAX_TOTEMS do
 		local button = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)

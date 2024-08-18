@@ -306,18 +306,85 @@ local function UpdateBankItem(button)
 	end
 end
 
+local function HandleWarbandItem(button)
+	button:StripTextures()
+	button:StyleButton()
+	button:SetTemplate()
+
+	button.icon:SetInside()
+	button.icon:SetTexCoord(unpack(E.TexCoords))
+
+	S:HandleIconBorder(button.IconBorder)
+end
+
+local function HandleWarbandTab(tab)
+	S:HandleIcon(tab.Icon, true)
+	S:HandleTab(tab)
+
+	tab.SelectedTexture:SetColorTexture(1, 1, 1, .25)
+	tab.Border:SetAlpha(0)
+end
+
+local function RefreshWarbandTabs(frame)
+	if frame.bankTabPool then
+		for tab in frame.bankTabPool:EnumerateActive() do
+			if not tab.IsSkinned then
+				HandleWarbandTab(tab)
+
+				tab.IsSkinned = true
+			end
+		end
+	end
+end
+
+local function GenerateWarbandSlots(frame)
+	if frame.itemButtonPool then
+		for item in frame.itemButtonPool:EnumerateActive() do
+			if not item.IsSkinned then
+				HandleWarbandItem(item)
+
+				item.IsSkinned = true
+			end
+		end
+	end
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	_G.BankSlotsFrame:StripTextures()
+	_G.BankSlotsFrame.EdgeShadows:Hide()
+
 	S:HandleTab(_G.BankFrameTab1)
 	S:HandleTab(_G.BankFrameTab2)
 	S:HandleTab(_G.BankFrameTab3)
 	S:HandleEditBox(_G.BagItemSearchBox)
 	S:HandleEditBox(_G.BankItemSearchBox)
 
+	local warband = _G.AccountBankPanel
+	if warband then
+		S:HandleButton(warband.ItemDepositFrame.DepositButton)
+		S:HandleButton(warband.MoneyFrame.DepositButton)
+		S:HandleButton(warband.MoneyFrame.WithdrawButton)
+		S:HandleCheckBox(warband.ItemDepositFrame.IncludeReagentsCheckbox)
+		warband.EdgeShadows:Hide()
+		warband.MoneyFrame.Border:Hide()
+
+		warband.backdrop2 = CreateFrame('Frame', nil, warband)
+		warband.backdrop2:SetTemplate('Transparent')
+		warband.backdrop2:Point('TOPLEFT', warband.PurchasePrompt, 'TOPLEFT', 8, 2)
+		warband.backdrop2:Point('BOTTOMRIGHT', warband.PurchasePrompt, 'BOTTOMRIGHT', -6, 2)
+
+		HandleWarbandTab(warband.PurchaseTab)
+
+		hooksecurefunc(warband, 'RefreshBankTabs', RefreshWarbandTabs)
+		hooksecurefunc(warband, 'GenerateItemSlotsForSelectedTab', GenerateWarbandSlots)
+	end
+
 	S:HandleButton(_G.ReagentBankFrame.DespositButton)
 	_G.ReagentBankFrame:HookScript('OnShow', _G.ReagentBankFrame.StripTextures)
+	_G.ReagentBankFrame.EdgeShadows:Hide()
+	_G.ReagentBankFrame.UnlockInfo:SetFrameLevel(4)
 
 	for _, icon in next, { _G.BagItemAutoSortButton, _G.BankItemAutoSortButton } do
 		icon:StripTextures()

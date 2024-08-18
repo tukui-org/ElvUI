@@ -4,10 +4,11 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next = next
 local strsub = strsub
+local tinsert = tinsert
 local strmatch = strmatch
 
 local FontMap = {
-	worldzone		= { object = _G.ZoneTextFont },
+	worldzone		= { objects = { _G.ZoneTextFont, _G.WorldMapTextFont } },
 	worldsubzone	= { object = _G.SubZoneTextFont },
 	pvpzone			= { object = _G.PVPArenaTextString },
 	pvpsubzone		= { object = _G.PVPInfoTextString },
@@ -28,9 +29,13 @@ local FontMap = {
 }
 
 if E.Retail then
-	FontMap.objective		= { object = _G.ObjectiveFont }
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
+	FontMap.objective = { objects = { _G.ObjectiveFont } } -- not _G.ObjectiveTrackerHeaderFont ?
+
+	for i = 12, 22 do
+		tinsert(FontMap.objective.objects, _G['ObjectiveTrackerFont'..i])
+	end
 end
 
 function E:SetFontMap(object, opt, data, replace)
@@ -152,7 +157,15 @@ function E:UpdateBlizzardFonts()
 
 	-- custom font settings
 	for name, data in next, FontMap do
-		E:SetFontMap(data.object, E.db.general.fonts[name], data, replaceFonts)
+		local font = E.db.general.fonts[name]
+
+		if data.objects then
+			for _, object in next, data.objects do
+				E:SetFontMap(object, font, data, replaceFonts)
+			end
+		elseif data.object then
+			E:SetFontMap(data.object, font, data, replaceFonts)
+		end
 	end
 
 	-- handle replace blizzard, when needed
@@ -192,6 +205,24 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number18Font,							NUMBER, (blizz and 18) or unscale or big)
 		E:SetFont(_G.Number18FontWhite,						NUMBER, (blizz and 18) or unscale or big, 'SHADOW')
 		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, (blizz and 30) or unscale or enormous, thick)
+
+		-- world map fonts
+		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or gigantic, outline)		-- WorldMap, SubZone
+		E:SetFont(_G.WorldMapTextFont,						NORMAL, (blizz and 32) or unscale or massive, outline)		-- WorldMap, MainZone
+
+		-- objective fonts
+		E:SetFont(_G.ObjectiveTrackerHeaderFont,			NORMAL, (blizz and 14) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.ObjectiveTrackerFont12,				NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.ObjectiveTrackerFont13,				NORMAL, (blizz and 13) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont14,				NORMAL, (blizz and 14) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont15,				NORMAL, (blizz and 15) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont16,				NORMAL, (blizz and 16) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont17,				NORMAL, (blizz and 17) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont18,				NORMAL, (blizz and 18) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont19,				NORMAL, (blizz and 19) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont20,				NORMAL, (blizz and 20) or unscale or large)
+		E:SetFont(_G.ObjectiveTrackerFont21,				NORMAL, (blizz and 21) or unscale or large)
+		E:SetFont(_G.ObjectiveTrackerFont22,				NORMAL, (blizz and 22) or unscale or large)
 
 		-- quest fonts (shadow variants)
 		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW', 0.49, 0.35, 0.05, 1)
@@ -264,7 +295,6 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Huge2,						NORMAL, (blizz and 24) or unscale or huge)					-- Mythic+ Score
 		E:SetFont(_G.BossEmoteNormalHuge,					NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- Talent Title
 		E:SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- FlightMap
-		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or mega, outline)			-- WorldMap, SubZone
 		E:SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, (blizz and 27) or unscale or mega, 'SHADOW')
 		E:SetFont(_G.Game30Font,							NORMAL, (blizz and 30) or unscale or enormous)				-- Mission Level
 		E:SetFont(_G.QuestFont_Enormous, 					NORMAL, (blizz and 30) or unscale or enormous)				-- Garrison Titles

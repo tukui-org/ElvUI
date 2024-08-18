@@ -68,6 +68,7 @@ local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogColl
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
+local C_Item_IsBoundToAccountUntilEquip = C_Item.IsBoundToAccountUntilEquip
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local C_Item_IsBound = C_Item.IsBound
@@ -121,6 +122,7 @@ local KEYRING_CONTAINER = BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
+local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
 local WARBANDBANK_OFFSET = 30
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -240,6 +242,14 @@ B.BAG_FILTER_ICONS = {
 	[FILTER_FLAG_JUNK] = E.Media.Textures.GoldCoins,			-- Interface\ICONS\INV_Misc_Coin_01
 	[FILTER_FLAG_QUEST] = E.Media.Textures.Scroll,				-- Interface\ICONS\INV_Scroll_03
 	[FILTER_FLAG_REAGENTS] = 132854								-- Interface\ICONS\INV_Enchant_DustArcane
+}
+
+B.BindText = {
+	[Enum.ItemBind.OnAcquire or 1] = L["BoP"],
+	[Enum.ItemBind.OnEquip or 2] = L["BoE"],
+	[Enum.ItemBind.OnUse or 3] = L["BoU"],
+	[Enum.ItemBind.ToBnetAccount or 8] = L["BoW"],
+	[WARBAND_UNTIL_EQUIPPED] = L["WuE"]
 }
 
 local itemSpellID = {
@@ -692,10 +702,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
-		local BoE, BoU = bindType == 2, bindType == 3
-		if B.db.showBindType and not slot.isBound and (BoE or BoU) then
-			slot.bindType:SetText(BoE and L["BoE"] or L["BoU"])
-		end
+		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
+		local bindTo = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[WuE or bindType]
+		if bindTo then slot.bindType:SetText(bindTo) end
 
 		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
 		if mult then
@@ -2034,7 +2043,7 @@ do
 	local warbandInfo = { bankType = WARBANDBANK_TYPE }
 	function B:CoverButton_ClickWarband()
 		if CanPurchaseBankTab(WARBANDBANK_TYPE) then
-			E:StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
+		--	StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
 		else
 			E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
 		end
@@ -3365,8 +3374,6 @@ function B:ADDON_LOADED(_, addon)
 end
 
 function B:Initialize()
-	B.db = E.db.bags
-
 	BIND_START, BIND_END = B:GetBindLines()
 
 	B.AssignmentColors = {

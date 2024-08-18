@@ -293,7 +293,7 @@ function M:CANCEL_ALL_LOOT_ROLLS(event)
 end
 
 function M:START_LOOT_ROLL(event, rollID, rollTime)
-	local texture, name, count, quality, bop, canNeed, canGreed, canDisenchant, _, _, _, _, canTransmog = GetLootRollItemInfo(rollID)
+	local texture, name, count, quality, _, canNeed, canGreed, canDisenchant, _, _, _, _, canTransmog = GetLootRollItemInfo(rollID)
 	if not name then -- also done in GroupLootFrame_OnShow
 		for _, rollBar in next, M.RollBars do
 			if rollBar.rollID == rollID then
@@ -316,8 +316,6 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 	local itemLink = GetLootRollItemLink(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 	local db, color = E.db.general.lootRoll, ITEM_QUALITY_COLORS[quality]
-
-	if not bop then bop = bindType == 1 end -- recheck sometimes, we need this from bindType
 
 	wipe(bar.rolls)
 
@@ -363,8 +361,9 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 		bar.button.ilvl:SetTextColor(1, 1, 1)
 	end
 
-	bar.bind:SetText(bop and L["BoP"] or bindType == 2 and L["BoE"] or bindType == 3 and L["BoU"] or '')
+	local bop = bindType == 1
 	bar.bind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
+	bar.bind:SetText(B.BindText[bindType] or '')
 
 	if db.qualityStatusBar then
 		bar.status:SetStatusBarColor(color.r, color.g, color.b, .7)

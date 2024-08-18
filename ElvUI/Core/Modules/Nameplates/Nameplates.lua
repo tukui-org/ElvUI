@@ -936,8 +936,6 @@ function NP:SetupClassNameplateBars()
 end
 
 function NP:Initialize()
-	NP.db = E.db.nameplates
-
 	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
 

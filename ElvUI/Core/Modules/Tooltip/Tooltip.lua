@@ -740,14 +740,15 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 
 		if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
 			local count = GetItemCount(link)
-			local total = GetItemCount(link, true)
+			local bank = GetItemCount(link, true, nil, TT.db.includeReagents, TT.db.includeWarband)
+
 			if TT.db.itemCount == 'BAGS_ONLY' then
 				bagCount = format(IDLine, L["Bags"], count)
 			elseif TT.db.itemCount == 'BANK_ONLY' then
-				bankCount = format(IDLine, L["Bank"], total - count)
+				bankCount = format(IDLine, L["Bank"], bank - count)
 			elseif TT.db.itemCount == 'BOTH' then
 				bagCount = format(IDLine, L["Bags"], count)
-				bankCount = format(IDLine, L["Bank"], total - count)
+				bankCount = format(IDLine, L["Bank"], bank - count)
 			end
 		end
 	elseif modKey then
@@ -1025,8 +1026,6 @@ function TT:WorldCursorTooltipUpdate(_, state)
 end
 
 function TT:Initialize()
-	TT.db = E.db.tooltip
-
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 

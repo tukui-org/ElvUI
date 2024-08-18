@@ -302,6 +302,21 @@ function E:OnEnable()
 	E:Initialize()
 end
 
+function E:SetupDB()
+	E.Auras.db = E.db.auras
+	E.ActionBars.db = E.db.actionbar
+	E.Bags.db = E.db.bags
+	E.Chat.db = E.db.chat
+	E.DataBars.db = E.db.databars
+	E.DataTexts.db = E.db.datatexts
+	E.NamePlates.db = E.db.nameplates
+	E.Tooltip.db = E.db.tooltip
+	E.UnitFrames.db = E.db.unitframe
+	E.TotemTracker.db = E.db.general.totems
+
+	E.Skins.db = E.private.skins
+end
+
 function E:OnInitialize()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
@@ -343,6 +358,7 @@ function E:OnInitialize()
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
 
+	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()

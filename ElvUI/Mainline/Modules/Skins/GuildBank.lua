@@ -70,7 +70,7 @@ function S:Blizzard_GuildBankUI()
 			local button = column['Button'..x]
 			button:StripTextures()
 			button:StyleButton()
-			button:SetTemplate('Transparent')
+			button:SetTemplate()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
