@@ -2040,7 +2040,7 @@ do
 	local warbandInfo = { bankType = WARBANDBANK_TYPE }
 	function B:CoverButton_ClickWarband()
 		if CanPurchaseBankTab(WARBANDBANK_TYPE) then
-			E:StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
+		--	StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
 		else
 			E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
 		end

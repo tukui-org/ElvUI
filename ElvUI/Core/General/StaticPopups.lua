@@ -5,8 +5,8 @@ local M = E:GetModule('Misc')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, type, unpack, assert, ceil = pairs, type, unpack, assert, ceil
-local tremove, tContains, tinsert, wipe, error = tremove, tContains, tinsert, wipe, error
+local pairs, type, unpack, assert, ceil, error = pairs, type, unpack, assert, ceil, error
+local tremove, tContains, tinsert, next, wipe = tremove, tContains, tinsert, next, wipe
 
 local CreateFrame = CreateFrame
 local MoneyFrame_Update = MoneyFrame_Update
@@ -24,7 +24,6 @@ local DisableAddOn = C_AddOns.DisableAddOn
 local EnableAddOn = C_AddOns.EnableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
-local C_Bank_PurchaseBankTab = C_Bank and C_Bank.PurchaseBankTab
 local C_Bank_FetchNextPurchasableBankTabCost = C_Bank and C_Bank.FetchNextPurchasableBankTabCost
 
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
@@ -284,14 +283,25 @@ E.PopupDialogs.CONFIRM_BUY_BANK_TAB = {
 	text = CONFIRM_BUY_ACCOUNT_BANK_TAB,
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function(self)
-		C_Bank_PurchaseBankTab(self.data.bankType)
-	end,
-	OnShow = function(self)
-		local cost = C_Bank_FetchNextPurchasableBankTabCost(self.data.bankType)
+	OnShow = function(self, data)
+	--[[
+		local secureButton = E:StaticPopup_GetSecureButton('BuyBankTab')
+		if secureButton then
+			E:StaticPopup_PositionSecureButton(self, self.button1, secureButton)
+		else
+			secureButton = E:StaticPopup_CreateSecureButton(self, self.button1, YES, { type = 'click', clickbutton = _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton })
+			E:StaticPopup_SetSecureButton('BuyBankTab', secureButton)
+		end
+
+		self.button1:Hide()
+
+		_G.AccountBankPanel:SetBankType(data.bankType)
+
+		local cost = C_Bank_FetchNextPurchasableBankTabCost(data.bankType)
 		if cost then
 			MoneyFrame_Update(self.moneyFrame, cost)
 		end
+	]]
 	end,
 	hasMoneyFrame = 1,
 	hideOnEscape = 1,
@@ -1099,18 +1109,21 @@ end
 -- Static popup secure buttons
 local SecureButtons = {}
 local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
-local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
-function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
+local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.2, 0.2) end
+function E:StaticPopup_CreateSecureButton(popup, button, text, attributes)
 	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
-	btn:SetAttribute('type', 'macro')
-	btn:SetAttribute('macrotext', macro)
+	btn:RegisterForClicks('AnyUp', 'AnyDown')
 	btn:SetAllPoints(button)
 	btn:Size(button:GetSize())
 	btn:HookScript('OnEnter', SecureOnEnter)
 	btn:HookScript('OnLeave', SecureOnLeave)
 	S:HandleButton(btn)
 
-	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
+	for key, value in next, attributes do
+		btn:SetAttribute(key, value)
+	end
+
+	local t = btn:CreateFontString(nil, 'OVERLAY')
 	t:Point('CENTER', 0, 1)
 	t:FontTemplate(nil, nil, 'SHADOW')
 	t:SetJustifyH('CENTER')
