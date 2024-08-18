@@ -108,13 +108,13 @@ end
 do
 	local NavBarCheck = {
 		EncounterJournal = function()
-			return E.private.skins.blizzard.encounterjournal
+			return S.db.blizzard.encounterjournal
 		end,
 		WorldMapFrame = function()
-			return E.private.skins.blizzard.worldmap
+			return S.db.blizzard.worldmap
 		end,
 		HelpFrameKnowledgebase = function()
-			return E.private.skins.blizzard.help
+			return S.db.blizzard.help
 		end
 	}
 
@@ -507,7 +507,7 @@ do -- WIM replaces Blizzard globals we need to rehook
 					end
 
 					if check then
-						if E.private.skins.checkBoxSkin then
+						if S.db.checkBoxSkin then
 							check:SetTexture(E.media.normTex)
 							check:SetVertexColor(r, g, b, 1)
 							check:Size(10)
@@ -1203,11 +1203,11 @@ do
 	local function checkHighlightTexture(checkbox, texture) if texture ~= E.ClearTexture then checkbox:SetHighlightTexture(E.ClearTexture) end end
 	local function checkCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
-		checkbox:SetCheckedTexture(E.private.skins.checkBoxSkin and E.Media.Textures.Melli or check)
+		checkbox:SetCheckedTexture(S.db.checkBoxSkin and E.Media.Textures.Melli or check)
 	end
 	local function checkOnDisable(checkbox)
 		if not checkbox.SetDisabledTexture then return end
-		checkbox:SetDisabledTexture(checkbox:GetChecked() and (E.private.skins.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
+		checkbox:SetDisabledTexture(checkbox:GetChecked() and (S.db.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
 	end
 
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
@@ -1226,7 +1226,7 @@ do
 
 		if not noReplaceTextures then
 			if frame.SetCheckedTexture then
-				if E.private.skins.checkBoxSkin then
+				if S.db.checkBoxSkin then
 					frame:SetCheckedTexture(E.Media.Textures.Melli)
 
 					local checkedTexture = frame:GetCheckedTexture()
@@ -1242,7 +1242,7 @@ do
 			end
 
 			if frame.SetDisabledTexture then
-				if E.private.skins.checkBoxSkin then
+				if S.db.checkBoxSkin then
 					frame:SetDisabledTexture(E.Media.Textures.Melli)
 
 					local disabledTexture = frame:GetDisabledTexture()
@@ -1730,7 +1730,7 @@ do
 	end
 
 	function S:HandleFollowerListOnUpdateData(frame)
-		if frame == 'GarrisonLandingPageFollowerList' and (not E.private.skins.blizzard.orderhall or not E.private.skins.blizzard.garrison) then
+		if frame == 'GarrisonLandingPageFollowerList' and (not S.db.blizzard.orderhall or not S.db.blizzard.garrison) then
 			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
 		end
 
@@ -2196,7 +2196,7 @@ function S:Initialize()
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
-	if E.private.skins.ace3Enable and S.EarlyAceWidgets then
+	if S.db.ace3Enable and S.EarlyAceWidgets then
 		for _, n in next, S.EarlyAceWidgets do
 			if n.SetLayout then
 				S:Ace3_RegisterAsContainer(n)
@@ -2209,7 +2209,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.private.skins.libDropdown and S.EarlyDropdowns then
+	if S.db.libDropdown and S.EarlyDropdowns then
 		for _, n in next, S.EarlyDropdowns do
 			if n == 'LibDropDownMenu_List' then
 				S:SkinDropDownMenu(n, 15)
