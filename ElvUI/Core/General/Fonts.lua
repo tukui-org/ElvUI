@@ -152,7 +152,23 @@ function E:UpdateBlizzardFonts()
 
 	-- custom font settings
 	for name, data in next, FontMap do
-		E:SetFontMap(data.object, E.db.general.fonts[name], data, replaceFonts)
+		local font = E.db.general.fonts[name]
+		E:SetFontMap(data.object, font, data, replaceFonts)
+
+		if name == 'objective' then
+			-- E:SetFontMap(_G.ObjectiveTrackerHeaderFont, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont12, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont13, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont14, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont15, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont16, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont17, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont18, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont19, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont20, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont21, font, data, replaceFonts)
+			E:SetFontMap(_G.ObjectiveTrackerFont22, font, data, replaceFonts)
+		end
 	end
 
 	-- handle replace blizzard, when needed
@@ -192,6 +208,20 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number18Font,							NUMBER, (blizz and 18) or unscale or big)
 		E:SetFont(_G.Number18FontWhite,						NUMBER, (blizz and 18) or unscale or big, 'SHADOW')
 		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, (blizz and 30) or unscale or enormous, thick)
+
+		-- objective fonts
+		E:SetFont(_G.ObjectiveTrackerHeaderFont,			NORMAL, (blizz and 14) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.ObjectiveTrackerFont12,				NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.ObjectiveTrackerFont13,				NORMAL, (blizz and 13) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont14,				NORMAL, (blizz and 14) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont15,				NORMAL, (blizz and 15) or unscale or medium)
+		E:SetFont(_G.ObjectiveTrackerFont16,				NORMAL, (blizz and 16) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont17,				NORMAL, (blizz and 17) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont18,				NORMAL, (blizz and 18) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont19,				NORMAL, (blizz and 19) or unscale or big)
+		E:SetFont(_G.ObjectiveTrackerFont20,				NORMAL, (blizz and 20) or unscale or large)
+		E:SetFont(_G.ObjectiveTrackerFont21,				NORMAL, (blizz and 21) or unscale or large)
+		E:SetFont(_G.ObjectiveTrackerFont22,				NORMAL, (blizz and 22) or unscale or large)
 
 		-- quest fonts (shadow variants)
 		E:SetFont(_G.QuestFont_Shadow_Small,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW', 0.49, 0.35, 0.05, 1)
