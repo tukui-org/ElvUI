@@ -4,9 +4,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format, strjoin = format, strjoin
-local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
-local ShowUIPanel = ShowUIPanel
 
 local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC
 local MAX_TALENT_TABS = MAX_TALENT_TABS
@@ -73,11 +71,7 @@ local function OnClick(_, button)
 		end
 
 		if IsShiftKeyDown() then
-			if not _G.PlayerTalentFrame:IsShown() then
-				ShowUIPanel(_G.PlayerTalentFrame)
-			else
-				HideUIPanel(_G.PlayerTalentFrame)
-			end
+			_G.PlayerTalentFrame:SetShown(not _G.PlayerTalentFrame:IsShown())
 		elseif hasDualSpec then
 			SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
 		end

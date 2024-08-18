@@ -17,11 +17,9 @@ local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame
 local GetMinimapZoneText = GetMinimapZoneText
-local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
-local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
@@ -101,10 +99,10 @@ tinsert(menuList, {
 			CloseMenus()
 			CloseAllWindows()
 			PlaySound(850) --IG_MAINMENU_OPEN
-			ShowUIPanel(_G.GameMenuFrame)
+			_G.GameMenuFrame:Show()
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
-			HideUIPanel(_G.GameMenuFrame)
+			_G.GameMenuFrame:Hide()
 
 			if E.Retail then
 				MainMenuMicroButton:SetButtonState('NORMAL')
@@ -204,7 +202,7 @@ end
 function M:HideNonInstancePanels()
 	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
 
-	HideUIPanel(WorldMapFrame)
+	WorldMapFrame:Hide()
 end
 
 function M:ADDON_LOADED(_, addon)

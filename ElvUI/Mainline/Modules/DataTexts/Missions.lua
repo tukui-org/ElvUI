@@ -5,7 +5,6 @@ local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
 
-local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
@@ -88,7 +87,7 @@ local function LandingPage(_, ...)
 	end
 
 	if _G.GarrisonLandingPage then
-		HideUIPanel(_G.GarrisonLandingPage)
+		_G.GarrisonLandingPage:Hide()
 
 		for _, frame in next, garrisonPages do
 			if _G.GarrisonLandingPage[frame] then

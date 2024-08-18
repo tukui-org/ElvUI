@@ -3,7 +3,6 @@ local EM = E:GetModule('EditorMode')
 
 local _G = _G
 local next = next
-local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
@@ -54,7 +53,7 @@ function EM:PLAYER_REGEN(event)
 	if combatLeave then
 		if next(hideFrames) then
 			for frame in next, hideFrames do
-				HideUIPanel(frame)
+				frame:Hide()
 				frame:SetScale(1)
 
 				hideFrames[frame] = nil
@@ -85,8 +84,8 @@ function EM:HandleHide(frame)
 		end
 	end
 
-	HideUIPanel(frame, not combat)
 	frame:SetScale(combat and 0.00001 or 1)
+	frame:Hide()
 end
 
 function EM:OnProceed()
