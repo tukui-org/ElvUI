@@ -122,6 +122,7 @@ local KEYRING_CONTAINER = BagIndex.Keyring
 local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
+local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
 local WARBANDBANK_OFFSET = 30
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
@@ -248,7 +249,7 @@ B.BindText = {
 	[Enum.ItemBind.OnEquip or 2] = L["BoE"],
 	[Enum.ItemBind.OnUse or 3] = L["BoU"],
 	[Enum.ItemBind.ToBnetAccount or 8] = L["BoW"],
-	[Enum.ItemBind.ToBnetAccountUntilEquipped or 9] = L["WuE"]
+	[WARBAND_UNTIL_EQUIPPED] = L["WuE"]
 }
 
 local itemSpellID = {
@@ -701,7 +702,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
-		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and 9
+		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
 		local bindTo = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[WuE or bindType]
 		if bindTo then slot.bindType:SetText(bindTo) end
 
