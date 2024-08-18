@@ -338,11 +338,13 @@ local function RefreshWarbandTabs(frame)
 end
 
 local function GenerateWarbandSlots(frame)
-	for item in frame.itemButtonPool:EnumerateActive() do
-		if not item.IsSkinned then
-			HandleWarbandItem(item)
+	if frame.itemButtonPool then
+		for item in frame.itemButtonPool:EnumerateActive() do
+			if not item.IsSkinned then
+				HandleWarbandItem(item)
 
-			item.IsSkinned = true
+				item.IsSkinned = true
+			end
 		end
 	end
 end
