@@ -838,7 +838,7 @@ function E:ClickGameMenu()
 	if not GameMenuFrame:IsShown() then
 		PlaySound(850) --IG_MAINMENU_OPEN
 		_G.GameMenuFrame:Show()
-	else
+	elseif not InCombatLockdown() then
 		CloseMenus()
 		CloseAllWindows()
 		PlaySound(854) --IG_MAINMENU_QUIT
