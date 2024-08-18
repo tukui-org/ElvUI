@@ -19,6 +19,7 @@ local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetServerTime = GetServerTime
 local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
@@ -834,7 +835,9 @@ end
 function E:ClickGameMenu()
 	E:ToggleOptions() -- we already prevent it from opening in combat
 
-	GameMenuFrame:Hide()
+	if not InCombatLockdown() then
+		HideUIPanel(GameMenuFrame)
+	end
 end
 
 function E:ScaleGameMenu()

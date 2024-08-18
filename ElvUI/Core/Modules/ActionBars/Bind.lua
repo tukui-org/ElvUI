@@ -13,6 +13,7 @@ local GameTooltip_Hide = GameTooltip_Hide
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
+local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -301,7 +302,7 @@ do
 
 		AB:ActivateBindMode()
 
-		_G.SettingsPanel:Hide()
+		HideUIPanel(_G.SettingsPanel)
 	end
 
 	local function UpdateScrollBox(scrollBox)

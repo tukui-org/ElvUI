@@ -8,6 +8,7 @@ local GetNumQuestWatches = GetNumQuestWatches
 local GetQuestIndexForWatch = GetQuestIndexForWatch
 local QuestLog_SetSelection = QuestLog_SetSelection
 local QuestLog_Update = QuestLog_Update
+local ShowUIPanel = ShowUIPanel
 local hooksecurefunc = hooksecurefunc
 
 BL.QuestWatch_ClickFrames = {}
@@ -41,7 +42,7 @@ function BL:QuestWatch_CreateMover(frame, name)
 end
 
 function BL:QuestWatch_OnClick()
-	_G.QuestLogFrame:Show()
+	ShowUIPanel(_G.QuestLogFrame)
 	QuestLog_SetSelection(self.Quest)
 	QuestLog_Update()
 end

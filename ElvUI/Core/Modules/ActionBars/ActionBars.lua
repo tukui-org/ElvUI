@@ -13,6 +13,7 @@ local GetOverrideBarIndex = GetOverrideBarIndex
 local GetTempShapeshiftBarIndex = GetTempShapeshiftBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local HasOverrideActionBar = HasOverrideActionBar
+local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
 local InClickBindingMode = InClickBindingMode
 local InCombatLockdown = InCombatLockdown
@@ -1134,7 +1135,7 @@ do
 
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
-		_G.SettingsPanel:Hide()
+		HideUIPanel(_G.SettingsPanel)
 		frame:UnregisterEvent(event)
 	end)
 
@@ -1191,7 +1192,7 @@ do
 					settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
 					frame:SetScale(0.00001)
 				else
-					frame:Hide()
+					HideUIPanel(frame)
 				end
 			end
 
