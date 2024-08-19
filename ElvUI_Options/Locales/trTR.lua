@@ -1876,7 +1876,6 @@ L["You are about to reset paging. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = "Mevcut |cff4beb2c\"%s\"|r profilinizden |cffD3CF00\"%s\"|r icin ayarlari |cff4beb2c\"%s\"|r profiline kopyalayacaksiniz. Emin misiniz?"
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = "|cffD3CF00\"%s\"|r icin ayarlari |cff4beb2c\"%s\"|r profilinden mevcut |cff4beb2c\"%s\"|r profilinize kopyalayacaksiniz. Emin misiniz?"
 L["You cannot copy settings from the same unit."] = "Ayni birimden ayarlari kopyalayamazsiniz."
-L["You cannot copy settings from the same unit."] = true
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = "Bu buyulerin tetiklenmesi icin Herhangi Bir sey Yayinliyor veya Herhangi Bir sey Yonlendiriyor kullanmaniza gerek yok."
 L["You must be targeting a player."] = "Bir oyuncuyu hedef aliyor olmalisin."
 L["Your Auras First"] = "Once Sizin Auralariniz"
