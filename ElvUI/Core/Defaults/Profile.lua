@@ -370,12 +370,16 @@ P.databars.azerite.hideAtMaxLevel = true
 --Bags
 P.bags = {
 	sortInverted = true,
+	warbandCombined = true,
+	warbandSize = 30,
 	bagSize = 34,
 	bagButtonSpacing = 1,
 	bankButtonSpacing = 1,
+	warbandButtonSpacing = 1,
 	bankSize = 34,
-	bagWidth = 406,
-	bankWidth = 406,
+	bagWidth = 600,
+	bankWidth = 600,
+	warbandWidth = 900,
 	currencyFormat = 'ICON_TEXT_ABBR',
 	moneyFormat = 'SMART',
 	moneyCoins = true,
@@ -460,8 +464,10 @@ P.bags = {
 	split = {
 		bagSpacing = 5,
 		bankSpacing = 5,
+		warbandSpacing = 5,
 		player = false,
 		bank = false,
+		warband = false,
 	},
 	shownBags = {},
 	autoToggle = {
@@ -503,6 +509,10 @@ for i = -3, 12 do
 	if i >= 1 then
 		P.bags.split[name] = false
 	end
+end
+
+for id = 14, 17 do -- ignore first bag (13)
+	P.bags.split['warband'..id] = false
 end
 
 local NP_Auras = {
