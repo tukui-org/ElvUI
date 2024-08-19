@@ -48,11 +48,12 @@ E.ConfigModeLocalizedStrings = {
 	WIDGETS = L["Blizzard Widgets"]
 }
 
-function E:AddConfigModeGroup(layoutName, localizedName)
-	if not E.ConfigModeLocalizedStrings[layoutName] then
-		tinsert(E.ConfigModeLayouts, layoutName)
-		E.ConfigModeLocalizedStrings[layoutName] = localizedName or layoutName
-	end
+function E:ConfigMode_AddGroup(layoutName, localizedName)
+	if E.ConfigModeLocalizedStrings[layoutName] then return end
+
+	tinsert(E.ConfigModeLayouts, layoutName)
+	E.ConfigModeLocalizedStrings[layoutName] = localizedName or layoutName
+
 	return true
 end
 
