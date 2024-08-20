@@ -293,6 +293,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.GameFontNormalHuge2,					NORMAL, (blizz and 24) or unscale or huge, 'SHADOW')		-- Mythic weekly best dungeon name
 		E:SetFont(_G.QuestFont_Super_Huge,					NORMAL, (blizz and 24) or unscale or huge)
 		E:SetFont(_G.SystemFont_Huge2,						NORMAL, (blizz and 24) or unscale or huge)					-- Mythic+ Score
+		E:SetFont(_G.SystemFont_Shadow_Huge2,				NORMAL, (blizz and 24) or unscale or huge, 'SHADOW')		-- Widget Top Center Text
 		E:SetFont(_G.BossEmoteNormalHuge,					NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- Talent Title
 		E:SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, (blizz and 25) or unscale or mega, 'SHADOW')		-- FlightMap
 		E:SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, (blizz and 27) or unscale or mega, 'SHADOW')
