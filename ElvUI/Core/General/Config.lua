@@ -48,6 +48,15 @@ E.ConfigModeLocalizedStrings = {
 	WIDGETS = L["Blizzard Widgets"]
 }
 
+function E:ConfigMode_AddGroup(layoutName, localizedName)
+	if E.ConfigModeLocalizedStrings[layoutName] then return end
+
+	tinsert(E.ConfigModeLayouts, layoutName)
+	E.ConfigModeLocalizedStrings[layoutName] = localizedName or layoutName
+
+	return true
+end
+
 function E:Grid_Show()
 	if not grid then
 		E:Grid_Create()

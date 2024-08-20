@@ -66,10 +66,10 @@ Bags.args.general.args.generalGroup.set = function(_, key, value)
 end
 
 Bags.args.general.args.playerGroup = ACH:Group(L["Bags"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout() end, function() return not E.Bags.Initialized end)
-Bags.args.general.args.playerGroup.args.disableBagSort = ACH:Toggle(L["Disable Sort"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(false) end)
 Bags.args.general.args.playerGroup.args.bagSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.playerGroup.args.bagButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.playerGroup.args.bagWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bag frame."], 4, { min = 150, max = 1400, step = 1 })
+Bags.args.general.args.playerGroup.args.disableBagSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(false) end)
 
 Bags.args.general.args.playerGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout() end)
 Bags.args.general.args.playerGroup.args.split.args.player = ACH:Toggle(L["Enable"], nil, 1)
@@ -78,10 +78,10 @@ Bags.args.general.args.playerGroup.args.split.args.splitbags = ACH:MultiSelect('
 Bags.args.general.args.playerGroup.args.split.inline = true
 
 Bags.args.general.args.bankGroup = ACH:Group(L["Bank"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)
-Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
 Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
+Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
@@ -90,6 +90,18 @@ Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('',
 Bags.args.general.args.bankGroup.args.split.args.splitbank.sortByValue = true
 Bags.args.general.args.bankGroup.args.split.inline = true
 
+Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)
+Bags.args.general.args.warbandGroup.args.warbandSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
+Bags.args.general.args.warbandGroup.args.warbandButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
+Bags.args.general.args.warbandGroup.args.warbandWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
+Bags.args.general.args.warbandGroup.args.warbandCombined = ACH:Toggle(L["Combined"], nil, 6)
+
+Bags.args.general.args.warbandGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
+Bags.args.general.args.warbandGroup.args.split.args.warband = ACH:Toggle(L["Enable"], nil, 1)
+Bags.args.general.args.warbandGroup.args.split.args.warbandSpacing = ACH:Range(L["Bag Spacing"], nil, 2, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.split.warband end)
+Bags.args.general.args.warbandGroup.args.split.args.splitWarband = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.warband end)
+Bags.args.general.args.warbandGroup.args.split.inline = true
+
 for i = 1, (E.Retail and 12 or 11) do
 	local bag = 'bag'..i
 	local lastSlot = (E.Retail and 5 or 4)
@@ -97,6 +109,12 @@ for i = 1, (E.Retail and 12 or 11) do
 		Bags.args.general.args.playerGroup.args.split.args.splitbags.values[bag] = i == 5 and L["Reagent"] or format(L["Bag %d"], i)
 	else
 		Bags.args.general.args.bankGroup.args.split.args.splitbank.values[bag] = format(L["Bank %d"], i - lastSlot)
+	end
+end
+
+for id, index in next, B.WarbandBanks do
+	if index ~= 1 then
+		Bags.args.general.args.warbandGroup.args.split.args.splitWarband.values['warband'..id] = format(L["Tab %d"], index)
 	end
 end
 

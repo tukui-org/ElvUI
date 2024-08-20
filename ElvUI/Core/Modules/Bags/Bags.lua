@@ -1080,10 +1080,10 @@ function B:CreateFilterIcon(parent)
 	parent.filterIcon:SetShown(false)
 end
 
-function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numContainerColumns)
-	local numContainerRows = 1
+function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, numColumns, numRows, lastSlot, lastRow, totalSlots, tabSplit)
+	if not numRows then numRows = 1 end
+	if not totalSlots or tabSplit then totalSlots = 0 end
 
-	local totalSlots, lastReagentRowButton = 0
 	local bag = f.Bags[bankID]
 	for slotID, slot in ipairs(bag) do
 		totalSlots = totalSlots + 1
@@ -1091,22 +1091,57 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numContainerCo
 		slot:ClearAllPoints()
 		slot:SetSize(buttonSize, buttonSize)
 
-		local prevSlot = bag[slotID - 1]
+		local prevSlot = bag[slotID - 1] or (slotID == 1 and lastSlot)
 		if prevSlot then
-			if (totalSlots - 1) % numContainerColumns == 0 then
-				slot:Point('TOP', lastReagentRowButton, 'BOTTOM', 0, -buttonSpacing)
-				lastReagentRowButton = slot
-				numContainerRows = numContainerRows + 1
+			if (totalSlots - 1) % numColumns == 0 then
+				slot:Point('TOP', lastRow, 'BOTTOM', 0, -(buttonSpacing + (totalSlots == 1 and bagSpacing or 0)))
+				lastRow = slot
+				numRows = numRows + 1
 			else
 				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 			end
 		else
 			slot:Point('TOPLEFT', f.reagentFrame, 0, -BANK_SPACE_OFFSET - (B.WarbandBanks[bankID] and WARBANDBANK_OFFSET or 0))
-			lastReagentRowButton = slot
+			lastRow = slot
+		end
+
+		lastSlot = slot
+	end
+
+	return numRows, lastSlot, lastRow, totalSlots
+end
+
+function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns)
+	local warbandIndex = B.WarbandBanks[B.BankTab]
+	if warbandIndex then -- and combinded warband option
+		local warbandData = B:Warband_FetchData()
+		B:Warband_CheckCover(warbandData)
+
+		local combined = B.db.warbandCombined
+		local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split.warband, B.db.split.warbandSpacing, 0
+		for index, warbandID in next, B.WarbandIndexs do
+			B:Warband_UpdateIcon(f, warbandID, warbandData)
+
+			local showTab = combined and warbandData[warbandID]
+			f['warbandFrame'..index]:SetShown(showTab)
+
+			if showTab then
+				local tabSplit = isSplit and B.db.split['warband'..warbandID]
+				if tabSplit then numSpaced = numSpaced + 1 end
+
+				numRows, lastSlot, lastRow, totalSlots = B:LayoutCustomSlots(f, warbandID, buttonSize, buttonSpacing, bagSpacing, numColumns, numRows, lastSlot, lastRow, totalSlots, tabSplit)
+			end
+		end
+
+		if combined then
+			return numRows, numSpaced > 0 and (numSpaced * bagSpacing) or 0
+		else
+			f['warbandFrame'..warbandIndex]:Show() -- the only one we show
 		end
 	end
 
-	return numContainerRows
+	local numRows = B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, 0, numColumns)
+	return numRows, 0
 end
 
 function B:Layout(isBank)
@@ -1116,9 +1151,10 @@ function B:Layout(isBank)
 	if not f then return end
 
 	local lastButton, lastRowButton, newBag
-	local buttonSpacing = isBank and B.db.bankButtonSpacing or B.db.bagButtonSpacing
-	local buttonSize = E:Scale(isBank and B.db.bankSize or B.db.bagSize)
-	local containerWidth = ((isBank and B.db.bankWidth) or B.db.bagWidth)
+	local warbandIndex = isBank and B.WarbandBanks[B.BankTab]
+	local buttonSpacing = warbandIndex and B.db.warbandButtonSpacing or (isBank and B.db.bankButtonSpacing) or B.db.bagButtonSpacing
+	local buttonSize = E:Scale(warbandIndex and B.db.warbandSize or (isBank and B.db.bankSize) or B.db.bagSize)
+	local containerWidth = warbandIndex and B.db.warbandWidth or (isBank and B.db.bankWidth) or B.db.bagWidth
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local numContainerRows, numBags, numBagSlots = 0, 0, 0
@@ -1262,16 +1298,13 @@ function B:Layout(isBank)
 		end
 	end
 
+	local warbandSplitOffset
 	if E.Retail and isBank then
-		local warbandIndex = B.WarbandBanks[B.BankTab]
 		if warbandIndex then
-			local warbandFrame = f['warbandFrame'..warbandIndex]
-			if warbandFrame and warbandFrame:IsShown() then
-				numContainerRows = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
-			end
+			numContainerRows, warbandSplitOffset = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns)
 
 			if f.WarbandHolder then
-				f.WarbandHolder.cover.text:SetWidth(B.db.bankWidth - 40)
+				f.WarbandHolder.cover.text:SetWidth(B.db.warbandWidth - 40)
 			end
 		elseif B.BankTab == REAGENTBANK_CONTAINER then
 			if not IsReagentBankUnlocked() then
@@ -1285,8 +1318,9 @@ function B:Layout(isBank)
 		end
 	end
 
+	local splitOffset = warbandSplitOffset or (isSplit and (numBags * bagSpacing)) or 0
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (B.WarbandBanks[B.BankTab] and WARBANDBANK_OFFSET or 0) + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + splitOffset)
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -1861,7 +1895,7 @@ function B:Warband_OnClick(button)
 	if button == 'RightButton' then
 		B:Warband_AccountPanel(bagID)
 		PlaySound(852) --IG_MAINMENU_OPTION
-	else
+	elseif not B.db.warbandCombined then
 		B:SelectBankTab(self.bagFrame, bagID)
 	end
 end
@@ -2881,16 +2915,6 @@ function B:ShowBankTab(f, bankTab)
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
 		if E.Retail then
-			local warbandData = B:Warband_FetchData()
-			B:Warband_CheckCover(warbandData)
-
-			for bankIndex, bankID in next, B.WarbandIndexs do
-				B:Warband_UpdateIcon(f, bankID, warbandData)
-
-				f['warbandFrame'..bankIndex]:Hide() -- hide them all first
-			end
-
-			f['warbandFrame'..warbandIndex]:Show()
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 
 			f.WarbandHolder:Show()

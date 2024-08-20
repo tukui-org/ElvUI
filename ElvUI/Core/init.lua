@@ -302,19 +302,30 @@ function E:OnEnable()
 	E:Initialize()
 end
 
-function E:SetupDB()
-	E.Auras.db = E.db.auras
-	E.ActionBars.db = E.db.actionbar
-	E.Bags.db = E.db.bags
-	E.Chat.db = E.db.chat
-	E.DataBars.db = E.db.databars
-	E.DataTexts.db = E.db.datatexts
-	E.NamePlates.db = E.db.nameplates
-	E.Tooltip.db = E.db.tooltip
-	E.UnitFrames.db = E.db.unitframe
-	E.TotemTracker.db = E.db.general.totems
+do
+	local info = {
+		Auras = 'auras',
+		ActionBars = 'actionbar',
+		Bags = 'bags',
+		Chat = 'chat',
+		DataBars = 'databars',
+		DataTexts = 'datatexts',
+		NamePlates = 'nameplates',
+		Tooltip = 'tooltip',
+		UnitFrames = 'unitframe'
+	}
 
-	E.Skins.db = E.private.skins
+	function E:SetupDB()
+		for key, value in next, info do
+			local module = E[key]
+			if module then
+				module.db = E.db[value]
+			end
+		end
+
+		E.TotemTracker.db = E.db.general.totems
+		E.Skins.db = E.private.skins
+	end
 end
 
 function E:OnInitialize()

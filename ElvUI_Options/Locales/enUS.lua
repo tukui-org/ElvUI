@@ -1873,7 +1873,6 @@ L["You are about to reset paging. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from your current |cff4beb2c\"%s\"|r profile to |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You are going to copy settings for |cffD3CF00\"%s\"|r from |cff4beb2c\"%s\"|r profile to your current |cff4beb2c\"%s\"|r profile. Are you sure?"] = true
 L["You cannot copy settings from the same unit."] = true
-L["You cannot copy settings from the same unit."] = true
 L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."] = true
 L["You must be targeting a player."] = true
 L["Your Auras First"] = true
