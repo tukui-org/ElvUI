@@ -231,7 +231,7 @@ tinsert(PetSpells.HUNTER, 136) -- Mend Pet (45 yards)
 
 -- Mages
 tinsert(FriendSpells.MAGE, 1459) -- Arcane Intellect (40 yards, level 8)
-tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
+tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 9)
 
 if isEraSOD then
   MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
@@ -240,12 +240,14 @@ if isEraSOD then
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
 
-tinsert(HarmSpells.MAGE, 44614) -- Flurry (40 yards)
+tinsert(HarmSpells.MAGE, 2139) -- Counterspell (40 yards, level 7)
 tinsert(HarmSpells.MAGE, 5019) -- Shoot (30 yards)
 tinsert(HarmSpells.MAGE, 118) -- Polymorph (30 yards)
 tinsert(HarmSpells.MAGE, 116) -- Frostbolt (40 yards)
 tinsert(HarmSpells.MAGE, 133) -- Fireball (40 yards)
 tinsert(HarmSpells.MAGE, 44425) -- Arcane Barrage (40 yards)
+
+MatchSpellByID[118] = true -- Polymorph
 
 -- Monks
 MatchSpellByID[218164] = true -- Detox
