@@ -2094,6 +2094,23 @@ function B:BagsButton_ClickBag()
 	ToggleFrame(frame.ContainerHolder)
 end
 
+function B:ConstructPurchaseButton(frame, text, template)
+	local button = CreateFrame('Button', nil, frame, template)
+	button:Size(20)
+	button:SetTemplate()
+	button:Point('RIGHT', frame.bagsButton, 'LEFT', -5, 0)
+
+	B:SetButtonTexture(button, 133784) -- Interface\ICONS\INV_Misc_Coin_01
+	button:StyleButton(nil, true)
+
+	button.ttText = text
+
+	button:SetScript('OnEnter', B.Tooltip_Show)
+	button:SetScript('OnLeave', GameTooltip_Hide)
+
+	return button
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -2432,29 +2449,13 @@ function B:ConstructContainerFrame(name, isBank)
 		--Toggle Bags Button
 		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
-		f.purchaseBagButton = CreateFrame('Button', nil, f)
-		f.purchaseBagButton:SetShown(not f.fullBank)
-		f.purchaseBagButton:Size(20)
-		f.purchaseBagButton:SetTemplate()
-		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.purchaseBagButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
-		f.purchaseBagButton:StyleButton(nil, true)
-		f.purchaseBagButton.ttText = L["Purchase Bags"]
-		f.purchaseBagButton:SetScript('OnEnter', B.Tooltip_Show)
-		f.purchaseBagButton:SetScript('OnLeave', GameTooltip_Hide)
+		f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
+		f.purchaseBagButton:SetShown(not f.fullBank)
 
-		f.purchaseSecureButton = CreateFrame('Button', nil, f, 'SecureActionButtonTemplate')
+		f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'SecureActionButtonTemplate')
 		f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
 		f.purchaseSecureButton:Hide()
-		f.purchaseSecureButton:Size(20)
-		f.purchaseSecureButton:SetTemplate()
-		f.purchaseSecureButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
-		B:SetButtonTexture(f.purchaseSecureButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
-		f.purchaseSecureButton:StyleButton(nil, true)
-		f.purchaseSecureButton.ttText = L["Purchase Bags"]
-		f.purchaseSecureButton:SetScript('OnEnter', B.Tooltip_Show)
-		f.purchaseSecureButton:SetScript('OnLeave', GameTooltip_Hide)
 		f.purchaseSecureButton:SetAttribute('type', 'click')
 		f.purchaseSecureButton:SetAttribute('clickbutton', _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
 		f.purchaseSecureButton:HookScript('OnClick', function()
