@@ -231,11 +231,7 @@ tinsert(PetSpells.HUNTER, 136) -- Mend Pet (45 yards)
 
 -- Mages
 tinsert(FriendSpells.MAGE, 1459) -- Arcane Intellect (40 yards, level 8)
-tinsert(FriendSpells.MAGE, 475) -- Remove Curse (40 yards, level 28)
-
-if not isRetail then
-  tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
-end
+tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
 
 if isEraSOD then
   MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
