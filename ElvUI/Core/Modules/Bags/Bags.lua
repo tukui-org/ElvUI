@@ -1761,7 +1761,7 @@ function B:ConstructContainerCover(frame)
 	frame.cover:SetTemplate()
 	frame.cover:SetFrameLevel(15)
 
-	frame.cover.secureButton = B:ConstructCoverButton(frame, L["Purchase"], 'SecureActionButtonTemplate')
+	frame.cover.secureButton = B:ConstructCoverButton(frame, L["Purchase"], 'InsecureActionButtonTemplate')
 	frame.cover.secureButton:RegisterForClicks('AnyUp', 'AnyDown')
 	frame.cover.secureButton:Hide()
 
@@ -2453,7 +2453,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
 		f.purchaseBagButton:SetShown(not f.fullBank)
 
-		f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'SecureActionButtonTemplate')
+		f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
 		f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
 		f.purchaseSecureButton:Hide()
 		f.purchaseSecureButton:SetAttribute('type', 'click')
