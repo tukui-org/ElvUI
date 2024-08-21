@@ -241,8 +241,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SubSpellFont,							NORMAL, (blizz and 10) or unscale or small)					-- Spellbook Sub Names
 		E:SetFont(_G.SystemFont_Outline_Small,				NORMAL, (blizz and 10) or unscale or small, 'OUTLINE')
 		E:SetFont(_G.SystemFont_Shadow_Small,				NORMAL, (blizz and 10) or unscale or small, 'SHADOW')
-		E:SetFont(_G.SystemFont_Small,						NORMAL, (blizz and 10) or unscale or small)
 		E:SetFont(_G.Tooltip_Small,							NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.SystemFont_Small,						NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.SystemFont_Small2,						NORMAL, (blizz and 11) or unscale or small)					-- Quest Detail (Warband Completed)
 		E:SetFont(_G.FriendsFont_11,						NORMAL, (blizz and 11) or unscale or small, 'SHADOW')
 		E:SetFont(_G.FriendsFont_UserText,					NORMAL, (blizz and 11) or unscale or small, 'SHADOW')
 		E:SetFont(_G.GameFontHighlightSmall2,				NORMAL, (blizz and 11) or unscale or small, 'SHADOW')		-- Skill or Recipe description on TradeSkill frame
