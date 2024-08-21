@@ -7,16 +7,16 @@ L["SHIFT"] = true
 L["NONE"] = true
 L["GROUP"] = true
 
+-----------  Position  -----------
+L["CENTER"] = true
 L["BOTTOM"] = true
 L["BOTTOMLEFT"] = true
 L["BOTTOMRIGHT"] = true
-L["CENTER"] = true
 L["TOPLEFT"] = true
 L["TOPRIGHT"] = true
 L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
-
 ------------  Strata  ------------
 L["BACKGROUND"] = true
 L["DIALOG"] = true

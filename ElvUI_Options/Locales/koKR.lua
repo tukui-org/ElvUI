@@ -7,6 +7,8 @@ L["SHIFT"] = true
 L["NONE"] = true
 L["GROUP"] = true
 
+-----------  Position  -----------
+L["CENTER"] = true
 L["BOTTOM"] = "아래쪽"
 L["BOTTOMLEFT"] = "아래 왼쪽"
 L["BOTTOMRIGHT"] = "아래 오른쪽"
@@ -15,6 +17,14 @@ L["TOPRIGHT"] = "위 오른쪽"
 L["LEFT"] = "왼쪽"
 L["RIGHT"] = "오른쪽"
 L["TOP"] = "위쪽"
+------------  Strata  ------------
+L["BACKGROUND"] = true
+L["DIALOG"] = true
+L["HIGH"] = true
+L["LOW"] = true
+L["MEDIUM"] = true
+L["TOOLTIP"] = true
+----------------------------------
 
 L["Add Aura ID"] = true
 L["Remove Aura"] = true
