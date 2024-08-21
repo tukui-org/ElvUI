@@ -193,7 +193,18 @@ local function OnEnter()
 
 	sort(myGold, sortFunction)
 
-	for _, g in ipairs(myGold) do
+	local total, limit = #myGold, db.maxLimit
+	local useLimit = limit > 0
+	for i, g in ipairs(myGold) do
+		if useLimit and i > limit then
+			local count = total - limit
+			if count > 1 then
+				DT.tooltip:AddLine(format('+%d %s', count, L["Hidden Characters"]), 0.75, 0.9, 1)
+			end
+
+			break
+		end
+
 		local nameLine = ''
 		if g.faction ~= '' and g.faction ~= 'Neutral' then
 			nameLine = format([[|TInterface\FriendsFrame\PlusManz-%s:14|t ]], g.faction)
