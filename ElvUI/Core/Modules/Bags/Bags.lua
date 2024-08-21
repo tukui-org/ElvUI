@@ -1739,23 +1739,33 @@ function B:UnregisterBagEvents(bagFrame)
 	bagFrame:UnregisterAllEvents() -- Unregister to prevent unnecessary updates during sorting
 end
 
+function B:ConstructCoverButton(frame, text, template)
+	local button = CreateFrame('Button', nil, frame.cover, template)
+	button:SetFrameLevel(16)
+	button:Point('CENTER', frame.cover)
+	button:Size(150, 20)
+	button:Hide()
+	S:HandleButton(button)
+
+	button.text = button:CreateFontString(nil, 'OVERLAY')
+	button.text:FontTemplate()
+	button.text:Point('CENTER')
+	button.text:SetJustifyH('CENTER')
+	button.text:SetText(text)
+
+	return button
+end
+
 function B:ConstructContainerCover(frame)
 	frame.cover = CreateFrame('Button', nil, frame)
 	frame.cover:SetTemplate()
 	frame.cover:SetFrameLevel(15)
 
-	frame.cover.button = CreateFrame('Button', nil, frame.cover)
-	frame.cover.button:Height(20)
-	frame.cover.button:Width(150)
-	frame.cover.button:Point('CENTER', frame.cover, 'CENTER')
-	S:HandleButton(frame.cover.button)
-	frame.cover.button:SetFrameLevel(16)
+	frame.cover.secureButton = B:ConstructCoverButton(frame, L["Purchase"], 'SecureActionButtonTemplate')
+	frame.cover.secureButton:RegisterForClicks('AnyUp', 'AnyDown')
+	frame.cover.secureButton:Hide()
 
-	frame.cover.button.text = frame.cover.button:CreateFontString(nil, 'OVERLAY')
-	frame.cover.button.text:FontTemplate()
-	frame.cover.button.text:Point('CENTER')
-	frame.cover.button.text:SetJustifyH('CENTER')
-	frame.cover.button.text:SetText(L["Purchase"])
+	frame.cover.button = B:ConstructCoverButton(frame, L["Purchase"])
 
 	frame.cover.text = frame.cover:CreateFontString(nil, 'OVERLAY')
 	frame.cover.text:FontTemplate()
@@ -2073,17 +2083,6 @@ function B:CoverButton_ClickBank()
 	end
 end
 
-do
-	local warbandInfo = { bankType = WARBANDBANK_TYPE }
-	function B:CoverButton_ClickWarband()
-		if CanPurchaseBankTab(WARBANDBANK_TYPE) then
-		--	StaticPopup_Show('CONFIRM_BUY_BANK_TAB', nil, nil, warbandInfo)
-		else
-			E:StaticPopup_Show('CANNOT_BUY_BANK_SLOT')
-		end
-	end
-end
-
 function B:BagsButton_ClickBank()
 	local frame = self:GetParent()
 	ToggleFrame(frame.ContainerHolder)
@@ -2307,9 +2306,12 @@ function B:ConstructContainerFrame(name, isBank)
 				f.WarbandHolder.cover:Point('TOPLEFT', _G.ElvUIReagentBankFrame.cover, 0, -WARBANDBANK_OFFSET)
 				f.WarbandHolder.cover:Point('BOTTOMRIGHT', _G.ElvUIReagentBankFrame.cover)
 				f.WarbandHolder.cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
-				f.WarbandHolder.cover.button:SetScript('OnClick', function()
+				f.WarbandHolder.cover.button:Hide()
+				f.WarbandHolder.cover.secureButton:Show()
+				f.WarbandHolder.cover.secureButton:SetAttribute('type', 'click')
+				f.WarbandHolder.cover.secureButton:SetAttribute('clickbutton', _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
+				f.WarbandHolder.cover.secureButton:HookScript('OnClick', function()
 					PlaySound(852) --IG_MAINMENU_OPTION
-					B:CoverButton_ClickWarband()
 				end)
 
 				for bankIndex, bankID in next, B.WarbandIndexs do
@@ -2441,6 +2443,23 @@ function B:ConstructContainerFrame(name, isBank)
 		f.purchaseBagButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.purchaseBagButton:SetScript('OnLeave', GameTooltip_Hide)
 		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
+
+		f.purchaseSecureButton = CreateFrame('Button', nil, f, 'SecureActionButtonTemplate')
+		f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
+		f.purchaseSecureButton:Hide()
+		f.purchaseSecureButton:Size(20)
+		f.purchaseSecureButton:SetTemplate()
+		f.purchaseSecureButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
+		B:SetButtonTexture(f.purchaseSecureButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
+		f.purchaseSecureButton:StyleButton(nil, true)
+		f.purchaseSecureButton.ttText = L["Purchase Bags"]
+		f.purchaseSecureButton:SetScript('OnEnter', B.Tooltip_Show)
+		f.purchaseSecureButton:SetScript('OnLeave', GameTooltip_Hide)
+		f.purchaseSecureButton:SetAttribute('type', 'click')
+		f.purchaseSecureButton:SetAttribute('clickbutton', _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
+		f.purchaseSecureButton:HookScript('OnClick', function()
+			PlaySound(852) --IG_MAINMENU_OPTION
+		end)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
@@ -2924,12 +2943,12 @@ function B:ShowBankTab(f, bankTab)
 
 		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
 		f.bagsButton:Hide()
-		f.purchaseBagButton:SetShown(canBuyTab)
-		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickWarband)
-		f.purchaseBagButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+		f.purchaseBagButton:Hide()
+		f.purchaseSecureButton:SetShown(canBuyTab)
+		f.purchaseSecureButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseSecureButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2946,6 +2965,7 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.bagsButton:Hide()
+		f.purchaseSecureButton:Hide()
 		f.purchaseBagButton:Hide()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Hide()
@@ -2966,8 +2986,8 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.bagsButton:Show()
+		f.purchaseSecureButton:Hide()
 		f.purchaseBagButton:SetShown(not f.fullBank)
-		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', (f.fullBank and f.bagsButton) or f.purchaseBagButton, 'LEFT', -5, BANK_SPACE_OFFSET)

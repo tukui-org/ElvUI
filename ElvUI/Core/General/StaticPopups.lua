@@ -279,34 +279,6 @@ E.PopupDialogs.BUY_BANK_SLOT = {
 	hideOnEscape = 1,
 }
 
-E.PopupDialogs.CONFIRM_BUY_BANK_TAB = {
-	text = CONFIRM_BUY_ACCOUNT_BANK_TAB,
-	button1 = YES,
-	button2 = NO,
-	OnShow = function(self, data)
-	--[[
-		local secureButton = E:StaticPopup_GetSecureButton('BuyBankTab')
-		if secureButton then
-			E:StaticPopup_PositionSecureButton(self, self.button1, secureButton)
-		else
-			secureButton = E:StaticPopup_CreateSecureButton(self, self.button1, YES, { type = 'click', clickbutton = _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton })
-			E:StaticPopup_SetSecureButton('BuyBankTab', secureButton)
-		end
-
-		self.button1:Hide()
-
-		_G.AccountBankPanel:SetBankType(data.bankType)
-
-		local cost = C_Bank_FetchNextPurchasableBankTabCost(data.bankType)
-		if cost then
-			MoneyFrame_Update(self.moneyFrame, cost)
-		end
-	]]
-	end,
-	hasMoneyFrame = 1,
-	hideOnEscape = 1,
-}
-
 E.PopupDialogs.CANNOT_BUY_BANK_SLOT = {
 	text = L["Can't buy anymore slots!"],
 	button1 = ACCEPT,
