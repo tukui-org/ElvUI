@@ -10,11 +10,21 @@ L["GROUP"] = true
 L["BOTTOM"] = "下"
 L["BOTTOMLEFT"] = "左下"
 L["BOTTOMRIGHT"] = "右下"
+L["CENTER"] = "中"
 L["TOPLEFT"] = "左上"
 L["TOPRIGHT"] = "右上"
 L["LEFT"] = "左"
 L["RIGHT"] = "右"
 L["TOP"] = "上"
+
+------------  Strata  ------------
+L["BACKGROUND"] = "背景"
+L["DIALOG"] = "对话框"
+L["HIGH"] = "高"
+L["LOW"] = "低"
+L["MEDIUM"] = "中"
+L["TOOLTIP"] = "鼠标提示"
+----------------------------------
 
 L["Add Aura ID"] = "添加光环ID"
 L["Remove Aura"] = "移除光环"
