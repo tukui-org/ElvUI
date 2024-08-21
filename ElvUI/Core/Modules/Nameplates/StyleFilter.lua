@@ -652,25 +652,26 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 		LCG.ShowOverlayGlow(frame.Health, actions.glow)
 	end
 	if HealthFlash then
-		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
 
 		if not HealthTexture then
 			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 
-		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
-
 		local anim = frame.HealthFlashTexture.anim or NP:StyleFilterSetupFlash(frame.HealthFlashTexture)
-		anim.Fade.customValue = fc.a or 1
-		anim.Fade:SetDuration(actions.flash.speed * 0.1)
-		anim.Fade:SetChange(anim.Fade.customValue)
+		if anim and anim.Fade then
+			local fc = (actions.flash.class and frame.classColor) or actions.flash.color
+			anim.Fade.customValue = fc.a or 1
+			anim.Fade:SetDuration(actions.flash.speed * 0.1)
+			anim.Fade:SetChange(anim.Fade.customValue)
 
-		frame.HealthFlashTexture:Show()
-		frame.HealthFlashTexture:SetAlpha(anim.Fade.customValue) -- set the start alpha
+			frame.HealthFlashTexture:Show()
+			frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
+			frame.HealthFlashTexture:SetAlpha(anim.Fade.customValue) -- set the start alpha
 
-		if not anim:IsPlaying() then
-			anim:Play()
+			if not anim:IsPlaying() then
+				anim:Play()
+			end
 		end
 	end
 	if HealthTexture then
@@ -747,8 +748,9 @@ function NP:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, Hea
 		end
 	end
 	if HealthFlash then
-		if frame.HealthFlashTexture.anim:IsPlaying() then
-			frame.HealthFlashTexture.anim:Stop()
+		local anim = frame.HealthFlashTexture.anim
+		if anim and anim:IsPlaying() then
+			anim:Stop()
 		end
 
 		frame.HealthFlashTexture:Hide()
