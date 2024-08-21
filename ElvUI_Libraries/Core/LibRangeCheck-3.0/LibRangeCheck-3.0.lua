@@ -247,8 +247,6 @@ tinsert(HarmSpells.MAGE, 116) -- Frostbolt (40 yards)
 tinsert(HarmSpells.MAGE, 133) -- Fireball (40 yards)
 tinsert(HarmSpells.MAGE, 44425) -- Arcane Barrage (40 yards)
 
-MatchSpellByID[118] = true -- Polymorph
-
 -- Monks
 MatchSpellByID[218164] = true -- Detox
 MatchSpellByID[115450] = true -- Detox
