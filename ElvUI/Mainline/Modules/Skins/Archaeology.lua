@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, next = pairs, next
-local UIParent = UIParent
 
 function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
@@ -69,8 +68,6 @@ function S:Blizzard_ArchaeologyUI()
 	S:HandleIcon(_G.ArchaeologyFrameArtifactPageIcon)
 
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
-	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
-	_G.ArcheologyDigsiteProgressBar:Point('TOP', UIParent, 'TOP', 0, -400)
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 
