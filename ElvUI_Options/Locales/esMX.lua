@@ -7,14 +7,24 @@ L["SHIFT"] = true
 L["NONE"] = true
 L["GROUP"] = true
 
-L["BOTTOM"] = true
-L["BOTTOMLEFT"] = true
-L["BOTTOMRIGHT"] = true
-L["TOPLEFT"] = true
-L["TOPRIGHT"] = true
-L["LEFT"] = true
-L["RIGHT"] = true
-L["TOP"] = true
+-----------  Position  -----------
+L["CENTER"] = "Centro"
+L["BOTTOM"] = "Abajo"
+L["BOTTOMLEFT"] = "Inferior Izquierda"
+L["BOTTOMRIGHT"] = "Inferior Derecha"
+L["TOPLEFT"] = "Arriba Izquierda"
+L["TOPRIGHT"] = "Arriba Derecha"
+L["LEFT"] = "Izquierda"
+L["RIGHT"] = "Derecha"
+L["TOP"] = "Arriba"
+------------  Strata  ------------
+L["BACKGROUND"] = "Fondo"
+L["DIALOG"] = "Diálogo"
+L["HIGH"] = "Alta"
+L["LOW"] = "Baja"
+L["MEDIUM"] = "Medio"
+L["TOOLTIP"] = "Descripción Emergente"
+----------------------------------
 
 L["Add Aura ID"] = true
 L["Remove Aura"] = true

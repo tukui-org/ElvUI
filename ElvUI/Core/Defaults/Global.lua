@@ -72,8 +72,8 @@ G.datatexts = {
 			hideBSAp = false, --Mobile
 			hideApp = false, --Launcher
 		},
-		Gold = { goldFormat = 'BLIZZARD', goldCoins = true },
-		Guild = { Label = '', NoLabel = false },
+		Gold = { goldFormat = 'BLIZZARD', maxLimit = 30, goldCoins = true },
+		Guild = { Label = '', NoLabel = false, maxLimit = 30 },
 		Haste = { Label = '', NoLabel = false, decimalLength = 1 },
 		Hit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Intellect = { Label = '', NoLabel = false},

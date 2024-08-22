@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 56 -- the real minor version is 117
+local MINOR_VERSION = 57 -- the real minor version is 117
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1461,6 +1461,7 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
+	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 
 	lib.eventFrame:RegisterEvent("PLAYER_ENTER_COMBAT")
 	lib.eventFrame:RegisterEvent("PLAYER_LEAVE_COMBAT")
@@ -1486,6 +1487,7 @@ function InitializeEventHandler()
 	end
 
 	if WoWRetail then
+		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
 	else
@@ -1500,12 +1502,6 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
-
-	if WoWRetail then
-		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
-	else
-		lib.eventFrame:RegisterEvent("UNIT_MODEL_CHANGED")
-	end
 
 	if UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
@@ -1523,17 +1519,6 @@ function OnEvent(frame, event, arg1, ...)
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "SPELLS_CHANGED" then
-		for button in next, ActiveButtons do
-			local texture = button:GetTexture()
-			if texture then
-				button.icon:SetTexture(texture)
-			end
-		end
-
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
-		end
-
 		if UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
@@ -1546,7 +1531,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 
 		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
+			UpdateAuraCooldowns(event)
 		end
 	elseif event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
@@ -1566,7 +1551,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 
 		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
+			UpdateAuraCooldowns(event)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update, nil, event)
@@ -1578,7 +1563,7 @@ function OnEvent(frame, event, arg1, ...)
 		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
 		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
+			UpdateAuraCooldowns(event)
 		end
 
 		if not WoWRetail then
@@ -1588,7 +1573,7 @@ function OnEvent(frame, event, arg1, ...)
 		end
 	elseif event == "UNIT_AURA" then
 		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns()
+			UpdateAuraCooldowns(event)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
@@ -1808,7 +1793,7 @@ end
 --- Active Aura Cooldowns for Target ~ By Simpy
 
 local currentAuras = {}
-function UpdateAuraCooldowns(disable)
+function UpdateAuraCooldowns(event, disable)
 	local filter = disable and "" or UnitIsFriend("player", "target") and "PLAYER|HELPFUL" or "PLAYER|HARMFUL"
 
 	local previousAuras = CopyTable(currentAuras, true)
@@ -1842,13 +1827,13 @@ end
 function lib:SetAuraCooldownDuration(value)
 	AURA_COOLDOWNS_DURATION = value
 
-	UpdateAuraCooldowns()
+	UpdateAuraCooldowns('SetAuraCooldownDuration')
 end
 
 function lib:SetAuraCooldowns(enabled)
 	AURA_COOLDOWNS_ENABLED = enabled
 
-	UpdateAuraCooldowns(not enabled)
+	UpdateAuraCooldowns('SetAuraCooldowns', not enabled)
 end
 
 -----------------------------------------------------------

@@ -7,6 +7,8 @@ L["SHIFT"] = true
 L["NONE"] = true
 L["GROUP"] = true
 
+-----------  Position  -----------
+L["CENTER"] = true
 L["BOTTOM"] = true
 L["BOTTOMLEFT"] = true
 L["BOTTOMRIGHT"] = true
@@ -15,6 +17,14 @@ L["TOPRIGHT"] = true
 L["LEFT"] = true
 L["RIGHT"] = true
 L["TOP"] = true
+------------  Strata  ------------
+L["BACKGROUND"] = true
+L["DIALOG"] = true
+L["HIGH"] = true
+L["LOW"] = true
+L["MEDIUM"] = true
+L["TOOLTIP"] = true
+----------------------------------
 
 L["Add Aura ID"] = true
 L["Remove Aura"] = true

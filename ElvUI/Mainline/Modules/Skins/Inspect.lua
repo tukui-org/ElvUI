@@ -8,8 +8,10 @@ local hooksecurefunc = hooksecurefunc
 local function SkinPvpTalents(slot)
 	local icon = slot.Texture
 	slot:StripTextures()
-	S:HandleIcon(icon, true)
 	slot.Border:Hide()
+
+	S:HandleIcon(icon, true)
+	icon.backdrop:SetFrameLevel(2)
 end
 
 local function HandleTabs()

@@ -176,6 +176,8 @@ local function CreateDTOptions(name, data)
 				optionTable.args[key] = ACH:Toggle(L["Other AddOns"], nil, 4)
 			elseif key == 'decimalLength' then
 				optionTable.args[key] = ACH:Range(L["Decimal Length"], nil, 20, { min = 0, max = 5, step = 1 })
+			elseif key == 'maxLimit' then
+				optionTable.args[key] = ACH:Range(L["Max Limit"], L["Limit the maximum, zero will disable the limit"], 20, { min = 0, max = 60, step = 1 })
 			elseif key == 'goldFormat' then
 				optionTable.args[key] = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], 10, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
 			elseif key == 'goldCoins' then

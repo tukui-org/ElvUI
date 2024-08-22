@@ -213,7 +213,6 @@ AddMedia('logo','ElvPurple')
 AddMedia('logo','ElvYellow')
 AddMedia('logo','ElvRed')
 AddMedia('logo','ElvSimpy')
-AddMedia('logo','AngryUnicorn')
 
 AddMedia('logo','Bathrobe')
 AddMedia('logo','Rainbow')

@@ -37,6 +37,7 @@ local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
 local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+local UnitPowerBarID = UnitPowerBarID
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
@@ -50,7 +51,6 @@ local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBa
 
 local GetProfessionQuality = C_ActionBar.GetProfessionQuality
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
@@ -61,6 +61,7 @@ local LSM = E.Libs.LSM
 local Masque = E.Masque
 local FlyoutMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Flyouts')
 local VehicleMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Leave Vehicle')
+local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local buttonDefaults = {
 	hideElements = {},
@@ -893,10 +894,7 @@ end
 
 do
 	local function CanGlide()
-		if not GetGlidingInfo then return end
-
-		local _, canGlide = GetGlidingInfo()
-		return canGlide
+		return UnitPowerBarID('player') == VIGOR_BAR_ID
 	end
 
 	function AB:FadeParent_OnEvent()
@@ -1785,7 +1783,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
-		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
+		AB.fadeParent:RegisterEvent('PLAYER_IS_GLIDING_CHANGED')
 	end
 
 	if E.Retail or E.Cata then

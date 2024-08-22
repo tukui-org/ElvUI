@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 20 -- based off real minor version: 23
+local MINOR_VERSION = 21 -- based off real minor version: 23
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -185,7 +185,7 @@ tinsert(HarmSpells.EVOKER, 362969) -- Azure Strike (25 yards)
 
 tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
 tinsert(FriendSpells.EVOKER, 431443) -- Chrono Flames (25 yards) (Hero Talent, overrides Living Flame)
-tinsert(FriendSpells.EVOKER, 360823) -- Naturalize (Preservation) (30 yards)
+tinsert(FriendSpells.EVOKER, 355913) -- Emerald Blossom (25 yards)
 
 tinsert(ResSpells.EVOKER, 361227) -- Return (40 yards)
 
@@ -231,11 +231,7 @@ tinsert(PetSpells.HUNTER, 136) -- Mend Pet (45 yards)
 
 -- Mages
 tinsert(FriendSpells.MAGE, 1459) -- Arcane Intellect (40 yards, level 8)
-tinsert(FriendSpells.MAGE, 475) -- Remove Curse (40 yards, level 28)
-
-if not isRetail then
-  tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 12)
-end
+tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 9)
 
 if isEraSOD then
   MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
@@ -244,7 +240,7 @@ if isEraSOD then
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
 
-tinsert(HarmSpells.MAGE, 44614) -- Flurry (40 yards)
+tinsert(HarmSpells.MAGE, 2139) -- Counterspell (40 yards, level 7)
 tinsert(HarmSpells.MAGE, 5019) -- Shoot (30 yards)
 tinsert(HarmSpells.MAGE, 118) -- Polymorph (30 yards)
 tinsert(HarmSpells.MAGE, 116) -- Frostbolt (40 yards)
@@ -315,9 +311,10 @@ else
   tinsert(HarmSpells.ROGUE, 2764) -- Throw (30 yards)
 end
 
-tinsert(HarmSpells.ROGUE, 185565) -- Poisoned Knife (Assassination) (30 yards, level 29)
-tinsert(HarmSpells.ROGUE, 36554) -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
 tinsert(HarmSpells.ROGUE, 185763) -- Pistol Shot (Outlaw) (20 yards)
+tinsert(HarmSpells.ROGUE, 114014) -- Shuriken Toss (Subtlety) (30 yards, levl 16)
+tinsert(HarmSpells.ROGUE, 185565) -- Poisoned Knife (Assassination) (30 yards, level 29)
+tinsert(HarmSpells.ROGUE, 36554) -- Shadowstep (25 yards, level 18)
 tinsert(HarmSpells.ROGUE, 2094) -- Blind (15 yards)
 tinsert(HarmSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24)
 

@@ -101,6 +101,15 @@ local function DetailsScrollBoxUpdate(box)
 	box:ForEachFrame(HandleSetButtons)
 end
 
+local function HandleCheckbox(box)
+	S:HandleCheckBox(box)
+
+	local text = box.Text
+	if text then
+		text:FontTemplate()
+	end
+end
+
 function S:Blizzard_PerksProgram()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
@@ -162,14 +171,10 @@ function S:Blizzard_PerksProgram()
 
 	local footer = frame.FooterFrame
 	if footer then
-		S:HandleCheckBox(footer.TogglePlayerPreview)
-		S:HandleCheckBox(footer.ToggleMountSpecial)
-		S:HandleCheckBox(footer.ToggleHideArmor)
-
-		local armorText = footer.ToggleHideArmor.Text
-		if armorText then
-			armorText:FontTemplate()
-		end
+		HandleCheckbox(footer.ToggleAttackAnimation)
+		HandleCheckbox(footer.TogglePlayerPreview)
+		HandleCheckbox(footer.ToggleMountSpecial)
+		HandleCheckbox(footer.ToggleHideArmor)
 
 		local purchase = footer.PurchaseButton
 		if purchase then

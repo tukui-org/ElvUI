@@ -491,26 +491,23 @@ function NP:StyleFilterCooldownCheck(names, mustHaveAll)
 	end
 end
 
-function NP:StyleFilterFinishedFlash(requested)
-	if not requested then self:Play() end
+function NP:StyleFilterFinishedFlash()
+	if self:GetChange() == self.customValue then
+		self:SetChange(0)
+	else
+		self:SetChange(self.customValue)
+	end
 end
 
 function NP:StyleFilterSetupFlash(FlashTexture)
-	local anim = FlashTexture:CreateAnimationGroup('Flash')
-	anim:SetScript('OnFinished', NP.StyleFilterFinishedFlash)
+	local anim = _G.CreateAnimationGroup(FlashTexture)
+	anim:SetLooping(true)
 	FlashTexture.anim = anim
 
-	local fadein = anim:CreateAnimation('ALPHA', 'FadeIn')
-	fadein:SetFromAlpha(0)
-	fadein:SetToAlpha(1)
-	fadein:SetOrder(2)
-	anim.fadein = fadein
-
-	local fadeout = anim:CreateAnimation('ALPHA', 'FadeOut')
-	fadeout:SetFromAlpha(1)
-	fadeout:SetToAlpha(0)
-	fadeout:SetOrder(1)
-	anim.fadeout = fadeout
+	anim.Fade = anim:CreateAnimation('fade')
+	anim.Fade:SetChange(0)
+	anim.Fade:SetEasing('in')
+	anim.Fade:SetScript('OnFinished', NP.StyleFilterFinishedFlash)
 
 	return anim
 end
@@ -655,21 +652,27 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 		LCG.ShowOverlayGlow(frame.Health, actions.glow)
 	end
 	if HealthFlash then
-		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
 
 		if not HealthTexture then
 			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 
-		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
-
 		local anim = frame.HealthFlashTexture.anim or NP:StyleFilterSetupFlash(frame.HealthFlashTexture)
-		anim.fadein:SetToAlpha(fc.a or 1)
-		anim.fadeout:SetFromAlpha(fc.a or 1)
+		if anim and anim.Fade then
+			local fc = (actions.flash.class and frame.classColor) or actions.flash.color
+			anim.Fade.customValue = fc.a or 1
+			anim.Fade:SetDuration(actions.flash.speed * 0.1)
+			anim.Fade:SetChange(anim.Fade.customValue)
 
-		frame.HealthFlashTexture:Show()
-		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
+			frame.HealthFlashTexture:Show()
+			frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
+			frame.HealthFlashTexture:SetAlpha(anim.Fade.customValue) -- set the start alpha
+
+			if not anim:IsPlaying() then
+				anim:Play()
+			end
+		end
 	end
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
@@ -745,7 +748,11 @@ function NP:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, Hea
 		end
 	end
 	if HealthFlash then
-		E:StopFlash(frame.HealthFlashTexture)
+		local anim = frame.HealthFlashTexture.anim
+		if anim and anim:IsPlaying() then
+			anim:Stop()
+		end
+
 		frame.HealthFlashTexture:Hide()
 	end
 	if HealthTexture then

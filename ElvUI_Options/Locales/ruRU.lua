@@ -7,6 +7,8 @@ L["SHIFT"] = "Shift"
 L["NONE"] = "Нет"
 L["GROUP"] = "Группа"
 
+-----------  Position  -----------
+L["CENTER"] = true
 L["BOTTOM"] = "Внизу"
 L["BOTTOMLEFT"] = "Внизу слева"
 L["BOTTOMRIGHT"] = "Внизу справа"
@@ -15,6 +17,14 @@ L["TOPRIGHT"] = "Вверху справа"
 L["LEFT"] = "Слева"
 L["RIGHT"] = "Справа"
 L["TOP"] = "Вверху"
+------------  Strata  ------------
+L["BACKGROUND"] = true
+L["DIALOG"] = true
+L["HIGH"] = true
+L["LOW"] = true
+L["MEDIUM"] = true
+L["TOOLTIP"] = true
+----------------------------------
 
 L["Add Aura ID"] = true
 L["Remove Aura"] = true

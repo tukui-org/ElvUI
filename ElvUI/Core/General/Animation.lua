@@ -40,10 +40,6 @@ E.AnimElastic = {
 	function(anim) anim:Stop() if anim.loop then anim.elastic[3]:Play() end end
 }
 
-function E:FlashLoopFinished(requested)
-	if not requested then self:Play() end
-end
-
 function E:RandomAnimShake(index)
 	local p1, p2, p3, p4 = unpack(E.AnimShake[index])
 	return random(p1, p2), random(p3, p4)
@@ -56,20 +52,18 @@ function E:SetUpAnimGroup(obj, animType, ...)
 
 	local shortType = strsub(animType, 1, 5)
 	if shortType == 'Flash' then
-		obj.anim = obj:CreateAnimationGroup('Flash')
-		obj.anim.fadein = obj.anim:CreateAnimation('ALPHA', 'FadeIn')
-		obj.anim.fadein:SetFromAlpha(0)
-		obj.anim.fadein:SetToAlpha(1)
-		obj.anim.fadein:SetOrder(2)
+		obj.anim = _G.CreateAnimationGroup(obj)
+		obj.anim:SetLooping(animType == 'FlashLoop')
 
-		obj.anim.fadeout = obj.anim:CreateAnimation('ALPHA', 'FadeOut')
-		obj.anim.fadeout:SetFromAlpha(1)
-		obj.anim.fadeout:SetToAlpha(0)
-		obj.anim.fadeout:SetOrder(1)
+		obj.anim.FadeOut = obj.anim:CreateAnimation('fade')
+		obj.anim.FadeOut:SetChange(0)
+		obj.anim.FadeOut:SetOrder(1)
+		obj.anim.FadeOut:SetEasing('in-sinusoidal')
 
-		if animType == 'FlashLoop' then
-			obj.anim:SetScript('OnFinished', E.FlashLoopFinished)
-		end
+		obj.anim.FadeIn = obj.anim:CreateAnimation('fade')
+		obj.anim.FadeIn:SetChange(1)
+		obj.anim.FadeIn:SetOrder(2)
+		obj.anim.FadeIn:SetEasing('out-sinusoidal')
 	elseif shortType == 'Shake' then
 		local shake = obj:CreateAnimationGroup(animType)
 		shake:SetLooping('REPEAT')
@@ -238,8 +232,13 @@ function E:Flash(obj, duration, loop)
 	end
 
 	if not obj.anim:IsPlaying() then
-		obj.anim.fadein:SetDuration(duration)
-		obj.anim.fadeout:SetDuration(duration)
+		if obj.anim.FadeIn then
+			obj.anim.FadeIn:SetDuration(duration)
+		end
+		if obj.anim.FadeOut then
+			obj.anim.FadeOut:SetDuration(duration)
+		end
+
 		obj.anim:Play()
 	end
 end

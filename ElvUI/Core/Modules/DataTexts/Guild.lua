@@ -48,7 +48,7 @@ local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r'
 local levelNameStatusString = '|cff%02x%02x%02x%d|r %s%s%s %s'
 local nameRankString = '%s |cff999999-|cffffffff %s'
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFFFF%s/%s (%s%%)'
-local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
+local moreMembersOnlineString = strjoin('', '+%d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local clubTable, guildTable, guildMotD = {}, {}, ''
@@ -286,10 +286,16 @@ local function OnEnter(_, _, noUpdate)
 	local zonec
 
 	DT.tooltip:AddLine(' ')
+	local limit = db.maxLimit
+	local useLimit = limit > 0
 	for i, info in ipairs(guildTable) do
-		-- if more then 30 guild members are online, we don't Show any more, but inform user there are more
-		if 30 - i < 1 then
-			if online - 30 > 1 then DT.tooltip:AddLine(format(moreMembersOnlineString, online - 30), ttsubh.r, ttsubh.g, ttsubh.b) end
+		-- if more then guild members are online, we don't Show any more, but inform user there are more
+		if useLimit and i > limit then
+			local count = online - limit
+			if count > 1 then
+				DT.tooltip:AddLine(format(moreMembersOnlineString, count), ttsubh.r, ttsubh.g, ttsubh.b)
+			end
+
 			break
 		end
 
