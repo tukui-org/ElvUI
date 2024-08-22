@@ -243,9 +243,13 @@ function E:Flash(obj, duration, loop)
 	end
 end
 
-function E:StopFlash(obj)
+function E:StopFlash(obj, stopAlpha)
 	if obj.anim and obj.anim:IsPlaying() then
 		obj.anim:Stop()
+
+		if stopAlpha then
+			obj:SetAlpha(stopAlpha)
+		end
 	end
 end
 
