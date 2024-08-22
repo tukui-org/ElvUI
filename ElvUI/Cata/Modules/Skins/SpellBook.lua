@@ -37,7 +37,7 @@ local function UpdateButton()
 			if highlight:IsShown() then
 				E:Flash(highlight, 1, true)
 			else
-				E:StopFlash(highlight)
+				E:StopFlash(highlight, 1)
 			end
 		end
 

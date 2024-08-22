@@ -569,7 +569,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.watchModKey = nil
 		dt.name = nil
 
-		E:StopFlash(dt)
+		E:StopFlash(dt, 1)
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
