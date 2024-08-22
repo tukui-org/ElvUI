@@ -2930,27 +2930,29 @@ function B:ShowBankTab(f, bankTab)
 
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
+		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 
 			f.WarbandHolder:Show()
 			f.warbandDeposit:Show()
 			f.warbandReagents:Show()
+
+			f.purchaseSecureButton:SetShown(canBuyTab)
+			f.purchaseSecureButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		end
 
-		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
 		f.bagsButton:Hide()
 		f.purchaseBagButton:Hide()
-		f.purchaseSecureButton:SetShown(canBuyTab)
-		f.purchaseSecureButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.reagentFrame:Hide()
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseSecureButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 	elseif B.BankTab == REAGENTBANK_CONTAINER then
 		if E.Retail then
 			f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 
 			f.reagentFrame:Show()
+			f.purchaseSecureButton:Hide()
 
 			for _, bankIndex in next, B.WarbandBanks do
 				f['warbandFrame'..bankIndex]:Hide()
@@ -2962,7 +2964,6 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.bagsButton:Hide()
-		f.purchaseSecureButton:Hide()
 		f.purchaseBagButton:Hide()
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Hide()
@@ -2972,6 +2973,7 @@ function B:ShowBankTab(f, bankTab)
 			f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 
 			f.reagentFrame:Hide()
+			f.purchaseSecureButton:Hide()
 
 			for _, bankIndex in next, B.WarbandBanks do
 				f['warbandFrame'..bankIndex]:Hide()
@@ -2983,7 +2985,6 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.bagsButton:Show()
-		f.purchaseSecureButton:Hide()
 		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.holderFrame:Show()
