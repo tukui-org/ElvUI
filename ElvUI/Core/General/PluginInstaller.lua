@@ -538,7 +538,7 @@ function PI:RunInstall()
 		E:Flash(f.pending, 0.53, true)
 	else
 		f.pending:Hide()
-		E:StopFlash(f.pending)
+		E:StopFlash(f.pending, 1)
 	end
 end
 

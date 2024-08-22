@@ -70,7 +70,7 @@ local function OnEvent(self)
 	if totalDurability <= db.percThreshold then
 		E:Flash(self, 0.53, true)
 	else
-		E:StopFlash(self)
+		E:StopFlash(self, 1)
 	end
 end
 

@@ -345,7 +345,7 @@ function OnUpdate(self, t)
 		if db.flashInvite and _G.GameTimeFrame.flashInvite then
 			E:Flash(self, 0.5, true)
 		else
-			E:StopFlash(self)
+			E:StopFlash(self, 1)
 		end
 	end
 
