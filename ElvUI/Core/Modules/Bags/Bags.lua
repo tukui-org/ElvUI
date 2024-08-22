@@ -2403,10 +2403,16 @@ function B:ConstructContainerFrame(name, isBank)
 				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
 			end
-		end
 
-		-- Stack
-		if E.Retail then
+			f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
+			f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
+			f.purchaseSecureButton:Hide()
+			f.purchaseSecureButton:SetAttribute('type', 'click')
+			f.purchaseSecureButton:SetAttribute('clickbutton', _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
+			f.purchaseSecureButton:HookScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+			end)
+
 			f.stackButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		else
 			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
@@ -2451,15 +2457,6 @@ function B:ConstructContainerFrame(name, isBank)
 		f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 		f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
 		f.purchaseBagButton:SetShown(not f.fullBank)
-
-		f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
-		f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
-		f.purchaseSecureButton:Hide()
-		f.purchaseSecureButton:SetAttribute('type', 'click')
-		f.purchaseSecureButton:SetAttribute('clickbutton', _G.AccountBankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
-		f.purchaseSecureButton:HookScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-		end)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
