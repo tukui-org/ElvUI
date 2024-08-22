@@ -286,7 +286,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandlePortraitFrame(CharacterFrame)
 
 	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar, true) -- updates to this can taint transferring currencies
 
 	for _, Slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then

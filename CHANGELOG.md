@@ -1,3 +1,28 @@
+### Version 13.75 [ August 22nd 2024 ]
+*   **Warband Bank:**
+    *   Tabs can be purchased again.
+    *   Option exists for combined mode.
+    *   Bag module off Warband is now skinned.
+*   Unitframe range for Evoker, Rogue, and Mage was broken.
+*   Encounter Journal skin error resolved regarding index field reset.
+*   Error resolved during combat involving SetPropagateKeyboardInput.
+*   Tooltip Item Count now has options Include Reagents and Include Warband.
+*   Bag Module can now display WuE (Warband until Equipped) and BoW (Bind on Warbound, may not be fully implemented yet).
+*   Blizzard Widgets skinning can be disabled via the Miscellaneous toggle in Skins now.
+*   Priest void form on Retail should swap to the correct bar.
+*   Objective Tracker and World Map text overrides should work again.
+*   Paladin Dawnlight and Eternal Flame added to Aura Indicator.
+*   Datatext Custom Currency dropdown not listing all currencies.
+*   Archaeology dig site progress bar position was not being set properly.
+*   Action bars not properly fading with dragon riding.
+*   Gold and Guild Datatext now have a max limit option to reduce the overall size by amount of toons.
+*   Reporting a group for Advertisement wasn't working in LFG.
+*   Auto track reputation not actually setting the new one.
+*   Zone Map skin causing an error on the protected function SetPropagateMouseClicks.
+*   CompactRaidGroup causing a protected call error to SetSize when Blizzard raid frames were disabled.
+*   Top Auras threshold flashing not ending properly (also they have a new flash curve).
+*   Transferring currencies would sometimes cause an error.
+
 ### Version 13.74 [ August 14th 2024 ]
 *   Changes required for 11.0.2
 *   Unitframe Portraits not lined up in thick border mode

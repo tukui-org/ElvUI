@@ -1081,8 +1081,8 @@ function B:CreateFilterIcon(parent)
 end
 
 function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, numColumns, numRows, lastSlot, lastRow, totalSlots, tabSplit)
-	if not numRows then numRows = 1 end
 	if not totalSlots or tabSplit then totalSlots = 0 end
+	if not numRows then numRows = 1 end
 
 	local bag = f.Bags[bankID]
 	for slotID, slot in ipairs(bag) do
@@ -1118,7 +1118,7 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns)
 		B:Warband_CheckCover(warbandData)
 
 		local combined = B.db.warbandCombined
-		local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split.warband, B.db.split.warbandSpacing, 0
+		local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split.warband, B.db.split.warbandSpacing, 0, 0
 		for index, warbandID in next, B.WarbandIndexs do
 			B:Warband_UpdateIcon(f, warbandID, warbandData)
 
@@ -1128,6 +1128,7 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns)
 			if showTab then
 				local tabSplit = isSplit and B.db.split['warband'..warbandID]
 				if tabSplit then numSpaced = numSpaced + 1 end
+				if numRows == 0 then numRows = 1 end
 
 				numRows, lastSlot, lastRow, totalSlots = B:LayoutCustomSlots(f, warbandID, buttonSize, buttonSpacing, bagSpacing, numColumns, numRows, lastSlot, lastRow, totalSlots, tabSplit)
 			end

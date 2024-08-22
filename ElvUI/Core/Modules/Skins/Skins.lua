@@ -956,7 +956,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame)
+	function S:HandleTrimScrollBar(frame, ignoreUpdates)
 		assert(frame, 'doesn\'t exist.')
 
 		frame:StripTextures()
@@ -979,7 +979,7 @@ do
 			thumb:DisableDrawLayer('BACKGROUND')
 
 			if not thumb.backdrop then
-				thumb:CreateBackdrop('Transparent')
+				thumb:CreateBackdrop('Transparent', nil, ignoreUpdates)
 
 				thumb:HookScript('OnEnter', ThumbOnEnter)
 				thumb:HookScript('OnLeave', ThumbOnLeave)
