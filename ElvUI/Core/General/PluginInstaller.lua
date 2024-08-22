@@ -535,7 +535,7 @@ function PI:RunInstall()
 
 	if #PI.Installs > 1 then
 		f.pending:Show()
-		E:Flash(f.pending, 0.53, true)
+		E:Flash(f.pending, 0.5, true)
 	else
 		f.pending:Hide()
 		E:StopFlash(f.pending, 1)
