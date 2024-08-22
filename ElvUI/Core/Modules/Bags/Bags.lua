@@ -1081,8 +1081,8 @@ function B:CreateFilterIcon(parent)
 end
 
 function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, numColumns, numRows, lastSlot, lastRow, totalSlots, tabSplit)
-	if not numRows then numRows = 1 end
 	if not totalSlots or tabSplit then totalSlots = 0 end
+	if not numRows then numRows = 1 end
 
 	local bag = f.Bags[bankID]
 	for slotID, slot in ipairs(bag) do
