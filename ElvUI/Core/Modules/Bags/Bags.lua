@@ -1744,7 +1744,6 @@ function B:ConstructCoverButton(frame, text, template)
 	button:SetFrameLevel(16)
 	button:Point('CENTER', frame.cover)
 	button:Size(150, 20)
-	button:Hide()
 	S:HandleButton(button)
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
