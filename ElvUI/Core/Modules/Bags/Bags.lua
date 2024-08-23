@@ -96,6 +96,9 @@ local GetContainerNumSlots = C_Container.GetContainerNumSlots
 local SetBackpackAutosortDisabled = C_Container.SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 local UseContainerItem = C_Container.UseContainerItem
+local GetContainerItemInfo = C_Container.GetContainerItemInfo
+local GetContainerItemQuestInfo = C_Container.GetContainerItemQuestInfo
+local GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -189,38 +192,16 @@ if not E.Classic then
 end
 
 do
-	local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerItemInfo
-	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or C_Container.GetContainerItemQuestInfo
-	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
-
 	function B:GetBackpackCurrencyInfo(index)
-		if _G.GetBackpackCurrencyInfo then
-			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
-			return info
-		else
-			return GetBackpackCurrencyInfo(index)
-		end
+		return GetBackpackCurrencyInfo(index)
 	end
 
 	function B:GetContainerItemInfo(containerIndex, slotIndex)
-		if _G.GetContainerItemInfo then
-			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
-			return info
-		else
-			return GetContainerItemInfo(containerIndex, slotIndex) or {}
-		end
+		return GetContainerItemInfo(containerIndex, slotIndex) or {}
 	end
 
 	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
-		if _G.GetContainerItemQuestInfo then
-			local info = {}
-			info.isQuestItem, info.questID, info.isActive = GetContainerItemQuestInfo(containerIndex, slotIndex)
-			return info
-		else
-			return GetContainerItemQuestInfo(containerIndex, slotIndex)
-		end
+		return GetContainerItemQuestInfo(containerIndex, slotIndex)
 	end
 end
 
@@ -1926,9 +1907,6 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 
 	holder:SetNormalTexture(E.ClearTexture)
 	holder:SetPushedTexture(E.ClearTexture)
-	if holder.SetCheckedTexture then
-		holder:SetCheckedTexture(E.ClearTexture)
-	end
 
 	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	holder:SetScript('OnEnter', B.Warband_OnEnter)
@@ -1993,9 +1971,6 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 
 	holder:SetNormalTexture(E.ClearTexture)
 	holder:SetPushedTexture(E.ClearTexture)
-	if holder.SetCheckedTexture then
-		holder:SetCheckedTexture(E.ClearTexture)
-	end
 
 	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	holder:SetScript('OnEnter', B.Holder_OnEnter)
@@ -2571,7 +2546,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	local parent = (isReagent and f.reagentFrame) or (warbandIndex and f['warbandFrame'..warbandIndex]) or bag
 	local inherit = (warbandIndex and 'BankItemButtonTemplate') or (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
+	local slot = CreateFrame('ItemButton', slotName, parent, inherit)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
@@ -2580,9 +2555,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetID(slotID)
 
 	slot:SetNormalTexture(E.ClearTexture)
-	if slot.SetCheckedTexture then
-		slot:SetCheckedTexture(E.ClearTexture)
-	end
 
 	slot.bagFrame = f
 	slot.BagID = bagID
