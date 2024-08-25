@@ -86,7 +86,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if event == 'PLAYER_CAN_GLIDE_CHANGED' or not unit then
+	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
 		unit = self.unit
 	end
 
@@ -316,9 +316,9 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
 		enable = function(self)
-			self:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED', Update, true)
+			self:RegisterEvent('PLAYER_IS_GLIDING_CHANGED', Update, true)
 		end,
-		events = {'PLAYER_CAN_GLIDE_CHANGED'}
+		events = {'PLAYER_IS_GLIDING_CHANGED'}
 	}
 end
 
