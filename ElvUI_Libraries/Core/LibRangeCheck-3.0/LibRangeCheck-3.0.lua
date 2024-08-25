@@ -93,7 +93,7 @@ end or function(index, bookType)
   local name, subName = _G.GetSpellBookItemName(index, bookType)
   if name then
     local spellType, spellID = _G.GetSpellBookItemInfo(index, bookType)
-    local isPassive = _G.IsPassiveSpell(spellID, bookType)
+    local isPassive = _G.IsPassiveSpell(index, bookType)
     return name, subName, spellID, spellType, isPassive
   end
 end
