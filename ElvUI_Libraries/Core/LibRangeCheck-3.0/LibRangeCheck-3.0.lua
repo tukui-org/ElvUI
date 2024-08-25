@@ -89,7 +89,14 @@ local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
 local CustomSpellBookItemData = C_SpellBook_GetSpellBookItemInfo and function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)
   return result.name, result.subName, result.spellID, result.itemType, result.isPassive
-end or _G.GetSpellBookItemName
+end or function(index, bookType)
+  local name, subName = _G.GetSpellBookItemName(index, bookType)
+  if name then
+    local spellType, spellID = _G.GetSpellBookItemInfo(index, bookType)
+    local isPassive = _G.IsPassiveSpell(spellID, bookType)
+    return name, subName, spellID, spellType, isPassive
+  end
+end
 
 local C_Spell_IsSpellInRange = C_Spell.IsSpellInRange
 local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, spellBank, unit)
@@ -708,6 +715,7 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
+local allowedSpellType = isRetail and (Enum.SpellBookItemType.Spell or 1) or 'SPELL'
 local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
@@ -715,8 +723,10 @@ local function findSpellIdx(spellName, sid)
 
   for i = 1, getNumSpells() do
     local name, _, id, spellType, isPassive = CustomSpellBookItemData(i, BOOKTYPE_SPELL)
-    if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-      return (not spellType and i) or (not isPassive and id)
+    if spellType == allowedSpellType then
+      if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
+        return not isPassive and (isRetail and id or i)
+      end
     end
   end
 
