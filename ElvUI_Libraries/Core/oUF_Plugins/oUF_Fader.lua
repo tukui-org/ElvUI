@@ -73,6 +73,7 @@ local function CanGlide()
 	return UnitPowerBarID('player') == VIGOR_BAR_ID
 end
 
+local isGliding = false
 local function Update(self, event, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
@@ -87,6 +88,7 @@ local function Update(self, event, unit)
 
 	-- try to get the unit from the parent
 	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
+		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
 		unit = self.unit
 	end
 
@@ -118,7 +120,7 @@ local function Update(self, event, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)) or
-		(element.DynamicFlight and oUF.isRetail and not CanGlide()) or
+		(element.DynamicFlight and oUF.isRetail and not isGliding) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)
