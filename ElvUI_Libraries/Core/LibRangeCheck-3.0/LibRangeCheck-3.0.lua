@@ -715,7 +715,7 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
-local allowedSpellType = C_SpellBook_GetSpellBookItemInfo and (Enum.SpellBookItemType.Spell or 1) or 'SPELL'
+local isTypeSpell = C_SpellBook_GetSpellBookItemInfo and (Enum.SpellBookItemType.Spell or 1) or 'SPELL'
 local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
@@ -723,10 +723,8 @@ local function findSpellIdx(spellName, sid)
 
   for i = 1, getNumSpells() do
     local name, _, id, spellType, isPassive = CustomSpellBookItemData(i, BOOKTYPE_SPELL)
-    if spellType == allowedSpellType then
-      if (sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id]) then
-        return not isPassive and (C_Spell_IsSpellInRange and id or i)
-      end
+    if spellType == isTypeSpell and ((sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id])) then
+      return not isPassive and (C_Spell_IsSpellInRange and id or i)
     end
   end
 
