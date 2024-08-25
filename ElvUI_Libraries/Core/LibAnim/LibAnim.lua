@@ -1,5 +1,5 @@
 -- LibAnim by Hydra
-local Version = 2.901 -- based on 2.03
+local Version = 2.902 -- based on 2.03
 
 -- Note, deprecated items will be removed next version.
 -- Please update your usage accordingly. (ctrl + f - "Deprecated")
@@ -1098,11 +1098,11 @@ Update.color = function(self, elapsed, i)
 	elseif self.children then
 		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
 		for _, child in pairs(self.children) do
-			Set[self.ColorType](child, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+			Set[self.ColorType](child, GetColor(self.ColorOffset / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 		end
 	else
 		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
-		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
+		Set[self.ColorType](self.Parent, GetColor(self.ColorOffset / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 	end
 end
 
