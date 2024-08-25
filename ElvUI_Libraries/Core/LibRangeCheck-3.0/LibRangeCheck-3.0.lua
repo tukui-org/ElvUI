@@ -180,7 +180,6 @@ local InteractLists = {
 }
 
 local MeleeRange = 2
-local MatchSpellByID = {} -- specific matching to avoid incorrect index
 local FriendSpells, HarmSpells, ResSpells, PetSpells = {}, {}, {}, {}
 
 for _, n in ipairs({ "EVOKER", "DEATHKNIGHT", "DEMONHUNTER", "DRUID", "HUNTER", "SHAMAN", "MAGE", "PALADIN", "PRIEST", "WARLOCK", "WARRIOR", "MONK", "ROGUE" }) do
@@ -240,8 +239,6 @@ tinsert(FriendSpells.MAGE, 1459) -- Arcane Intellect (40 yards, level 8)
 tinsert(FriendSpells.MAGE, 130) -- Slow Fall (40 yards, level 9)
 
 if isEraSOD then
-  MatchSpellByID[401417] = true -- Regeneration (Rune): Conflicts with Racial Passive on Trolls
-
   tinsert(FriendSpells.MAGE, 401417) -- Regeneration (40 yards)
   tinsert(FriendSpells.MAGE, 412510) -- Mass Regeneration (40 yards)
 end
@@ -254,9 +251,6 @@ tinsert(HarmSpells.MAGE, 133) -- Fireball (40 yards)
 tinsert(HarmSpells.MAGE, 44425) -- Arcane Barrage (40 yards)
 
 -- Monks
-MatchSpellByID[218164] = true -- Detox
-MatchSpellByID[115450] = true -- Detox
-
 tinsert(FriendSpells.MONK, 218164) -- Detox (40 yards): Brewmaster, Windwalker
 tinsert(FriendSpells.MONK, 115450) -- Detox (40 yards): Mistweaver
 tinsert(FriendSpells.MONK, 115546) -- Provoke (30 yards)
@@ -715,16 +709,15 @@ local function getNumSpells()
 end
 
 -- return the spellIndex of the given spell by scanning the spellbook
-local isTypeSpell = C_SpellBook_GetSpellBookItemInfo and (Enum.SpellBookItemType.Spell or 1) or 'SPELL'
 local function findSpellIdx(spellName, sid)
   if not spellName or spellName == "" then
     return nil
   end
 
   for i = 1, getNumSpells() do
-    local name, _, id, spellType, isPassive = CustomSpellBookItemData(i, BOOKTYPE_SPELL)
-    if spellType == isTypeSpell and ((sid == id and IsSpellKnownOrOverridesKnown(id)) or (spellName == name and not MatchSpellByID[id])) then
-      return not isPassive and (C_Spell_IsSpellInRange and id or i)
+    local _, _, id, _, isPassive = CustomSpellBookItemData(i, BOOKTYPE_SPELL)
+    if sid == id and not isPassive and IsSpellKnownOrOverridesKnown(id) then
+      return C_Spell_IsSpellInRange and id or i
     end
   end
 
