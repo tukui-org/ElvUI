@@ -106,7 +106,6 @@ local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, 
   elseif result == false then
     return 0
   end
-  return nil
 end or _G.IsSpellInRange
 
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
@@ -720,8 +719,6 @@ local function findSpellIdx(spellName, sid)
       return C_Spell_IsSpellInRange and id or i
     end
   end
-
-  return nil
 end
 
 local function fixRange(range)
