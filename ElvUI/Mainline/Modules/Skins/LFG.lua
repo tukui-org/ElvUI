@@ -179,6 +179,9 @@ function S:LookingForGroupFrames()
 		_G.LFGListApplicationDialog.TankButton,
 		_G.LFGListApplicationDialog.HealerButton,
 		_G.LFGListApplicationDialog.DamagerButton,
+		_G.LFDRoleCheckPopupRoleButtonTank,
+		_G.LFDRoleCheckPopupRoleButtonDPS,
+		_G.LFDRoleCheckPopupRoleButtonHealer,
 
 		-- these three arent scaled to 0.7
 		_G.RolePollPopupRoleButtonTank,
