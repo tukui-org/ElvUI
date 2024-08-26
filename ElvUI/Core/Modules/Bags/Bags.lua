@@ -126,7 +126,10 @@ local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
+
 local WARBANDBANK_OFFSET = 30
+local BOTTOM_OFFSET = 8
+local TOP_OFFSET = 50
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -1133,13 +1136,14 @@ function B:Layout(isBank)
 	if not f then return end
 
 	local lastButton, lastRowButton, newBag
+	local numContainerRows, numBags, numBagSlots = 0, 0, 0
+	local bankSpaceOffset = isBank and BANK_SPACE_OFFSET or 0
 	local warbandIndex = isBank and B.WarbandBanks[B.BankTab]
 	local buttonSpacing = warbandIndex and B.db.warbandButtonSpacing or (isBank and B.db.bankButtonSpacing) or B.db.bagButtonSpacing
 	local buttonSize = E:Scale(warbandIndex and B.db.warbandSize or (isBank and B.db.bankSize) or B.db.bagSize)
 	local containerWidth = warbandIndex and B.db.warbandWidth or (isBank and B.db.bankWidth) or B.db.bagWidth
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
-	local numContainerRows, numBags, numBagSlots = 0, 0, 0
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 	local reverseSlots = B.db.reverseSlots
@@ -1159,8 +1163,8 @@ function B:Layout(isBank)
 	if not isBank then
 		local currencies = f.currencyButton
 		if B.numTrackedTokens == 0 then
-			if f.bottomOffset > 8 then
-				f.bottomOffset = 8
+			if f.bottomOffset > BOTTOM_OFFSET then
+				f.bottomOffset = BOTTOM_OFFSET
 			end
 		else
 			local currentRow = 1
@@ -1205,7 +1209,7 @@ function B:Layout(isBank)
 			local height = 24 * currentRow
 			currencies:Height(height)
 
-			local offset = height + 8
+			local offset = height + BOTTOM_OFFSET
 			if f.bottomOffset ~= offset then
 				f.bottomOffset = offset
 			end
@@ -1269,7 +1273,7 @@ function B:Layout(isBank)
 					end
 				else
 					local anchorPoint = reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
-					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, (reverseSlots and f.bottomOffset - 8 or 0) - (isBank and BANK_SPACE_OFFSET or 0))
+					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, (reverseSlots and f.bottomOffset - BOTTOM_OFFSET or 0) - (reverseSlots and 0 or bankSpaceOffset))
 					lastRowButton = slot
 					numContainerRows = numContainerRows + 1
 				end
@@ -1302,7 +1306,7 @@ function B:Layout(isBank)
 
 	local splitOffset = warbandSplitOffset or (isSplit and (numBags * bagSpacing)) or 0
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + splitOffset)
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + bankSpaceOffset + f.bottomOffset + splitOffset)
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -1759,7 +1763,7 @@ function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
 	f[key] = frame
 
 	frame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-	frame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+	frame:Point('BOTTOM', f, 'BOTTOM', 0, BOTTOM_OFFSET)
 	frame:SetID(id)
 	frame:Hide()
 
@@ -2100,8 +2104,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f:Hide()
 
 	f.isBank = isBank
-	f.topOffset = 50
-	f.bottomOffset = 8
+	f.topOffset = TOP_OFFSET
+	f.bottomOffset = BOTTOM_OFFSET
 	f.BagIDs = (isBank and bankIDs) or bagIDs
 	f.staleBags = {} -- used to keep track of bank items that need update on next open
 	f.Bags = {}
@@ -2145,7 +2149,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.holderFrame = CreateFrame('Frame', nil, f)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, BOTTOM_OFFSET)
 
 	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
