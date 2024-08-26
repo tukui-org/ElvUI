@@ -155,8 +155,9 @@ function EM:Initialize()
 	end
 	if CheckActionBar() then
 		mixin.RefreshVehicleLeaveButton = E.noop
-		mixin.RefreshStatusTrackingBar2 = E.noop
 		mixin.RefreshActionBarShown = E.noop
+		mixin.RefreshEncounterBar = E.noop
+		mixin.RefreshStatusTrackingBar2 = E.noop
 
 		for _, name in next, ignoreFrames do
 			local frame = _G[name]
