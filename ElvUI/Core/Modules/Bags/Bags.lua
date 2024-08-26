@@ -98,7 +98,6 @@ local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 local UseContainerItem = C_Container.UseContainerItem
 local GetContainerItemInfo = C_Container.GetContainerItemInfo
 local GetContainerItemQuestInfo = C_Container.GetContainerItemQuestInfo
-local GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -195,8 +194,16 @@ if not E.Classic then
 end
 
 do
+	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
+
 	function B:GetBackpackCurrencyInfo(index)
-		return GetBackpackCurrencyInfo(index)
+		if _G.GetBackpackCurrencyInfo then
+			local info = {}
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+			return info
+		else
+			return GetBackpackCurrencyInfo(index)
+		end
 	end
 
 	function B:GetContainerItemInfo(containerIndex, slotIndex)
