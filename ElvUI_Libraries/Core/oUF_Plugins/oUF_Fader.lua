@@ -87,7 +87,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
+	if event == 'PLAYER_IS_GLIDING_CHANGED' then
 		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
 		unit = self.unit
 	end
