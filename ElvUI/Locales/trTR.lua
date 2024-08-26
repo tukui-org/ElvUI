@@ -279,7 +279,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "D
 L["Please click the button below to setup your CVars."] = "CVar'larinizi ayarlamak icin lutfen asagidaki dugmeye tiklayin."
 L["Please click the button below to setup your Profile Settings."] = "Profil Ayarlarinizi yapmak icin lutfen asagidaki dugmeye tiklayin."
 L["Please press the continue button to go onto the next step."] = "Bir sonraki adima gecmek icin lutfen devam dugmesine basin."
-L["PowerBarWidget"] = "GucCubukBileseni"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "%s adresinden profil indirme islemi tamamlandi, ancak %s profili zaten var. Adi degistirin, yoksa mevcut profilin uzerine yazar."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "%s adresinden profil indirme islemi tamamlandi, %s profilini simdi yuklemek ister misiniz?"
 L["Profile request sent. Waiting for response from player."] = "Profil istegi gonderildi. Oyuncudan yanit bekleniyor."
