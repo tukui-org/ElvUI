@@ -36,7 +36,6 @@ local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -65,12 +64,6 @@ end
 local function updateInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
 	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
-end
-
-local function CanGlide()
-	if not E.Retail then return end
-
-	return UnitPowerBarID('player') == VIGOR_BAR_ID
 end
 
 local isGliding = false
