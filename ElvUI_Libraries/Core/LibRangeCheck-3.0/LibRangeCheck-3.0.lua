@@ -78,6 +78,8 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitRace = UnitRace
 
+local GetCVar = C_CVar.GetCVar
+local SetCVar = C_CVar.SetCVar
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
 
@@ -1071,12 +1073,17 @@ function lib:init(forced)
   if self.initialized and not forced then
     return
   end
+
   self.initialized = true
   local _, playerClass = UnitClass("player")
   local _, playerRace = UnitRace("player")
 
   local interactList = InteractLists[playerRace] or DefaultInteractList
   self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
+
+  -- this will fix a problem where spells dont show as existing because they are 'hidden'
+  local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
+
   local changed = false
   if updateCheckers(self.friendRC, self.friendRCInCombat, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
     changed = true
@@ -1099,8 +1106,13 @@ function lib:init(forced)
   if updateCheckers(self.petRC, self.petRCInCombat, createCheckerList(PetSpells[playerClass], nil, interactList)) then
     changed = true
   end
+
   if changed and self.callbacks then
     self.callbacks:Fire(self.CHECKERS_CHANGED)
+  end
+
+  if undoRanks then
+    SetCVar('ShowAllSpellRanks', '0')
   end
 end
 
