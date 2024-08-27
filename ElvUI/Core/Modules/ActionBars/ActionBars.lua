@@ -893,11 +893,11 @@ function AB:BlizzardOptionsPanel_OnEvent()
 end
 
 do
-	local function CanGlide()
+	local function CanGlide() -- required when reloading because the event wont fire yet
 		return UnitPowerBarID('player') == VIGOR_BAR_ID
 	end
 
-	local canGlide = false
+	local canGlide = false -- sometimes the Vigor bar is not activated yet
 	function AB:FadeParent_OnEvent(event, arg)
 		if event == 'PLAYER_CAN_GLIDE_CHANGED' then
 			canGlide = arg
