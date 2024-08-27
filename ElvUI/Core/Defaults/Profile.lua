@@ -777,7 +777,7 @@ P.nameplates = {
 	},
 	filters = {
 		ElvUI_Boss = {triggers = {enable = false}},
-		ElvUI_Target = {triggers = {enable = true}},
+		ElvUI_Target = {triggers = {enable = false}},
 		ElvUI_NonTarget = {triggers = {enable = true}},
 		ElvUI_Incorporeal = {triggers = {enable = true}},
 	},
