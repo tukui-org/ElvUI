@@ -607,9 +607,15 @@ local lastUpdate = 0
 local checkers_Spell = setmetatable({}, {
   __index = function(t, spellIdx)
     local func = function(unit)
-      if CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-        return true
+      -- this will fix a problem where spells dont show as existing because they are 'hidden'
+      local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
+      local inRange = CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1
+
+      if undoRanks then
+        SetCVar('ShowAllSpellRanks', '0')
       end
+
+      return inRange
     end
     t[spellIdx] = func
     return func
@@ -1081,9 +1087,6 @@ function lib:init(forced)
   local interactList = InteractLists[playerRace] or DefaultInteractList
   self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
 
-  -- this will fix a problem where spells dont show as existing because they are 'hidden'
-  local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
-
   local changed = false
   if updateCheckers(self.friendRC, self.friendRCInCombat, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
     changed = true
@@ -1109,10 +1112,6 @@ function lib:init(forced)
 
   if changed and self.callbacks then
     self.callbacks:Fire(self.CHECKERS_CHANGED)
-  end
-
-  if undoRanks then
-    SetCVar('ShowAllSpellRanks', '0')
   end
 end
 
