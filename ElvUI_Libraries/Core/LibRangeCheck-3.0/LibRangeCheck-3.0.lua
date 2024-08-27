@@ -78,8 +78,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitRace = UnitRace
 
-local GetCVar = C_CVar.GetCVar
-local SetCVar = C_CVar.SetCVar
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
 
@@ -1311,6 +1309,11 @@ function lib:SPELLS_CHANGED()
   self:scheduleInit()
 end
 
+function lib:CVAR_UPDATE(_, cvar)
+  if cvar == "ShowAllSpellRanks" then
+    self:scheduleInit()
+  end
+end
 function lib:UNIT_INVENTORY_CHANGED(event, unit)
   if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
     self:scheduleInit()
@@ -1439,6 +1442,8 @@ function lib:activate()
 
     if isRetail or isCata then
       frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+    elseif isEra then
+      frame:RegisterEvent("CVAR_UPDATE")
     end
 
     local _, playerClass = UnitClass("player")
