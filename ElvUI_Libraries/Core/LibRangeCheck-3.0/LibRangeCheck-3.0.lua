@@ -607,15 +607,7 @@ local lastUpdate = 0
 local checkers_Spell = setmetatable({}, {
   __index = function(t, spellIdx)
     local func = function(unit)
-      -- this will fix a problem where spells dont show as existing because they are 'hidden'
-      local undoRanks = (not isRetail and GetCVar('ShowAllSpellRanks') ~= '1') and SetCVar('ShowAllSpellRanks', '1')
-      local inRange = CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1
-
-      if undoRanks then
-        SetCVar('ShowAllSpellRanks', '0')
-      end
-
-      return inRange
+      return CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1
     end
     t[spellIdx] = func
     return func

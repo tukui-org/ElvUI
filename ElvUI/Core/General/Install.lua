@@ -179,6 +179,10 @@ function E:SetupCVars(noDisplayMsg)
 		E:SetCVar('chatClassColorOverride', 0)
 	end
 
+	if E.Classic then
+		E:SetCVar('ShowAllSpellRanks', 1) -- Required for LibRangeCheck to function properly with Spell Ranks
+	end
+
 	local ActionButtonPickUp = _G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
 	if ActionButtonPickUp then
 		ActionButtonPickUp:SetValue('SHIFT')
