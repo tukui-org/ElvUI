@@ -3,8 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
+
 local UnitArmor = UnitArmor
 local UnitLevel = UnitLevel
+
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 

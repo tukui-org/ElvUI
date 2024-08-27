@@ -85,15 +85,18 @@ local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Play
 
 local GetNumSpellTabs = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
 
+local IsPassiveSpell = IsPassiveSpell
+local GetSpellBookItemName = GetSpellBookItemName
+local GetSpellBookItemInfo = GetSpellBookItemInfo
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
 local CustomSpellBookItemData = C_SpellBook_GetSpellBookItemInfo and function(index, bookType)
   local result = C_SpellBook_GetSpellBookItemInfo(index, bookType)
   return result.name, result.subName, result.spellID, result.itemType, result.isPassive
 end or function(index, bookType)
-  local name, subName = _G.GetSpellBookItemName(index, bookType)
+  local name, subName = GetSpellBookItemName(index, bookType)
   if name then
-    local spellType, spellID = _G.GetSpellBookItemInfo(index, bookType)
-    local isPassive = _G.IsPassiveSpell(index, bookType)
+    local spellType, spellID = GetSpellBookItemInfo(index, bookType)
+    local isPassive = IsPassiveSpell(index, bookType)
     return name, subName, spellID, spellType, isPassive
   end
 end
