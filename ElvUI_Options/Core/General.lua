@@ -133,7 +133,7 @@ do
 		pvpzone = { name = L["PVP Zone Text"], order = 54 },
 		pvpsubzone = { name = L["PVP Sub Zone"], order = 55 },
 		objective = { name = L["Objective Text"], order = 56, hidden = not E.Retail },
-		errortext = { name = L["Error Text"], order = 57 },
+		errortext = { name = L["Quest Progress and Error Text"], order = 57 },
 		mailbody = { name = L["Mail Text"], order = 58 },
 		questtitle = { name = L["Quest Title"], order = 59 },
 		questtext = { name = L["Quest Text"], order = 60 },
@@ -213,7 +213,7 @@ General.blizzUIImprovements = ACH:Group(L["BlizzUI Improvements"], nil, 30, 'tab
 local blizz = General.blizzUIImprovements.args
 
 blizz.general = ACH:Group(L["General"], nil, 1)
-blizz.general.args.hideErrorFrame = ACH:Toggle(L["Hide Error Text"], L["Hides the red error text at the top of the screen while in combat."], 1)
+blizz.general.args.hideErrorFrame = ACH:Toggle(L["Hide Quest Progress and Error Text"], L["Hides the yellow quest progress text and red error text at the top of the screen while in combat."], 1)
 blizz.general.args.enhancedPvpMessages = ACH:Toggle(L["Enhanced PVP Messages"], L["Display battleground messages in the middle of the screen."], 2)
 blizz.general.args.disableTutorialButtons = ACH:Toggle(L["Disable Tutorial Buttons"], L["Disables the tutorial button found on some frames."], 3, nil, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.voiceOverlay = ACH:Toggle(L["Voice Overlay"], L["Replace Blizzard's Voice Overlay."], 5, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
