@@ -3,8 +3,10 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
+
 local UnitArmor = UnitArmor
 local UnitLevel = UnitLevel
+
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 
@@ -16,6 +18,7 @@ local function GetArmorReduction(armor, attackerLevel)
 	if levelModifier > 59 then
 		levelModifier = levelModifier + (4.5 * (levelModifier - 59))
 	end
+
 	local temp = 0.1 * armor / (8.5 * levelModifier + 40)
 	temp = temp/(1 + temp)
 

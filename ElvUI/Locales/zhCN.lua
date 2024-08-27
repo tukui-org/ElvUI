@@ -282,7 +282,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "�
 L["Please click the button below to setup your CVars."] = "请按下方按钮设置参数（CVars）."
 L["Please click the button below to setup your Profile Settings."] = "请单击下面的按钮来设置您的个人配置文件设置。"
 L["Please press the continue button to go onto the next step."] = "请按继续按钮到下一步"
-L["PowerBarWidget"] = "能量条"
 L["Private Auras"] = "个人光环"
 L["Private Raid Warning"] = "个人团队警告"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "配置文件从 %s 下载完成, 但是配置文件 %s 已存在. 请更改名称, 否则它会覆盖你的现有配置文件."

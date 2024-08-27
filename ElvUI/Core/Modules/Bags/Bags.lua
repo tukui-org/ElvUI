@@ -96,6 +96,8 @@ local GetContainerNumSlots = C_Container.GetContainerNumSlots
 local SetBackpackAutosortDisabled = C_Container.SetBackpackAutosortDisabled
 local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 local UseContainerItem = C_Container.UseContainerItem
+local GetContainerItemInfo = C_Container.GetContainerItemInfo
+local GetContainerItemQuestInfo = C_Container.GetContainerItemQuestInfo
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
 local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
@@ -123,7 +125,10 @@ local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
+
 local WARBANDBANK_OFFSET = 30
+local BOTTOM_OFFSET = 8
+local TOP_OFFSET = 50
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -189,8 +194,6 @@ if not E.Classic then
 end
 
 do
-	local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerItemInfo
-	local GetContainerItemQuestInfo = GetContainerItemQuestInfo or C_Container.GetContainerItemQuestInfo
 	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 
 	function B:GetBackpackCurrencyInfo(index)
@@ -204,30 +207,18 @@ do
 	end
 
 	function B:GetContainerItemInfo(containerIndex, slotIndex)
-		if _G.GetContainerItemInfo then
-			local info = {}
-			info.iconFileID, info.stackCount, info.isLocked, info.quality, info.isReadable, info.hasLoot, info.hyperlink, info.isFiltered, info.hasNoValue, info.itemID, info.isBound = GetContainerItemInfo(containerIndex, slotIndex)
-			return info
-		else
-			return GetContainerItemInfo(containerIndex, slotIndex) or {}
-		end
+		return GetContainerItemInfo(containerIndex, slotIndex) or {}
 	end
 
 	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
-		if _G.GetContainerItemQuestInfo then
-			local info = {}
-			info.isQuestItem, info.questID, info.isActive = GetContainerItemQuestInfo(containerIndex, slotIndex)
-			return info
-		else
-			return GetContainerItemQuestInfo(containerIndex, slotIndex)
-		end
+		return GetContainerItemQuestInfo(containerIndex, slotIndex)
 	end
 end
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
 local BANK_SPACE_OFFSET = E.Retail and 30 or 0
-local MAX_CONTAINER_ITEMS = 36
+local MAX_CONTAINER_ITEMS = 38
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
 local BIND_START, BIND_END
@@ -1152,13 +1143,14 @@ function B:Layout(isBank)
 	if not f then return end
 
 	local lastButton, lastRowButton, newBag
+	local numContainerRows, numBags, numBagSlots = 0, 0, 0
+	local bankSpaceOffset = isBank and BANK_SPACE_OFFSET or 0
 	local warbandIndex = isBank and B.WarbandBanks[B.BankTab]
 	local buttonSpacing = warbandIndex and B.db.warbandButtonSpacing or (isBank and B.db.bankButtonSpacing) or B.db.bagButtonSpacing
 	local buttonSize = E:Scale(warbandIndex and B.db.warbandSize or (isBank and B.db.bankSize) or B.db.bagSize)
 	local containerWidth = warbandIndex and B.db.warbandWidth or (isBank and B.db.bankWidth) or B.db.bagWidth
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
-	local numContainerRows, numBags, numBagSlots = 0, 0, 0
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 	local reverseSlots = B.db.reverseSlots
@@ -1178,8 +1170,8 @@ function B:Layout(isBank)
 	if not isBank then
 		local currencies = f.currencyButton
 		if B.numTrackedTokens == 0 then
-			if f.bottomOffset > 8 then
-				f.bottomOffset = 8
+			if f.bottomOffset > BOTTOM_OFFSET then
+				f.bottomOffset = BOTTOM_OFFSET
 			end
 		else
 			local currentRow = 1
@@ -1224,7 +1216,7 @@ function B:Layout(isBank)
 			local height = 24 * currentRow
 			currencies:Height(height)
 
-			local offset = height + 8
+			local offset = height + BOTTOM_OFFSET
 			if f.bottomOffset ~= offset then
 				f.bottomOffset = offset
 			end
@@ -1288,7 +1280,7 @@ function B:Layout(isBank)
 					end
 				else
 					local anchorPoint = reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
-					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, (reverseSlots and f.bottomOffset - 8 or 0) - (isBank and BANK_SPACE_OFFSET or 0))
+					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, (reverseSlots and f.bottomOffset - BOTTOM_OFFSET or 0) - (reverseSlots and 2 or bankSpaceOffset))
 					lastRowButton = slot
 					numContainerRows = numContainerRows + 1
 				end
@@ -1321,7 +1313,7 @@ function B:Layout(isBank)
 
 	local splitOffset = warbandSplitOffset or (isSplit and (numBags * bagSpacing)) or 0
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + (isBank and BANK_SPACE_OFFSET or 0) + f.bottomOffset + splitOffset)
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + bankSpaceOffset + f.bottomOffset + splitOffset)
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -1778,7 +1770,7 @@ function B:ConstructContainerCustomBank(f, id, key, keyName, keySize)
 	f[key] = frame
 
 	frame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-	frame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+	frame:Point('BOTTOM', f, 'BOTTOM', 0, BOTTOM_OFFSET)
 	frame:SetID(id)
 	frame:Hide()
 
@@ -1926,9 +1918,6 @@ function B:ConstructContainerWarband(f, bagID, index, name)
 
 	holder:SetNormalTexture(E.ClearTexture)
 	holder:SetPushedTexture(E.ClearTexture)
-	if holder.SetCheckedTexture then
-		holder:SetCheckedTexture(E.ClearTexture)
-	end
 
 	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	holder:SetScript('OnEnter', B.Warband_OnEnter)
@@ -1993,9 +1982,6 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 
 	holder:SetNormalTexture(E.ClearTexture)
 	holder:SetPushedTexture(E.ClearTexture)
-	if holder.SetCheckedTexture then
-		holder:SetCheckedTexture(E.ClearTexture)
-	end
 
 	holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	holder:SetScript('OnEnter', B.Holder_OnEnter)
@@ -2125,8 +2111,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f:Hide()
 
 	f.isBank = isBank
-	f.topOffset = 50
-	f.bottomOffset = 8
+	f.topOffset = TOP_OFFSET
+	f.bottomOffset = BOTTOM_OFFSET
 	f.BagIDs = (isBank and bankIDs) or bagIDs
 	f.staleBags = {} -- used to keep track of bank items that need update on next open
 	f.Bags = {}
@@ -2170,7 +2156,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	f.holderFrame = CreateFrame('Frame', nil, f)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
+	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, BOTTOM_OFFSET)
 
 	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
@@ -2571,7 +2557,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	local parent = (isReagent and f.reagentFrame) or (warbandIndex and f['warbandFrame'..warbandIndex]) or bag
 	local inherit = (warbandIndex and 'BankItemButtonTemplate') or (bagID == BANK_CONTAINER or isReagent) and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate'
 
-	local slot = CreateFrame(E.Retail and 'ItemButton' or 'CheckButton', slotName, parent, inherit)
+	local slot = CreateFrame('ItemButton', slotName, parent, inherit)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
@@ -2580,9 +2566,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetID(slotID)
 
 	slot:SetNormalTexture(E.ClearTexture)
-	if slot.SetCheckedTexture then
-		slot:SetCheckedTexture(E.ClearTexture)
-	end
 
 	slot.bagFrame = f
 	slot.BagID = bagID

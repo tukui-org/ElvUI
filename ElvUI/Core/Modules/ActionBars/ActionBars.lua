@@ -1783,7 +1783,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
-		AB.fadeParent:RegisterEvent('PLAYER_IS_GLIDING_CHANGED')
+		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
 	if E.Retail or E.Cata then

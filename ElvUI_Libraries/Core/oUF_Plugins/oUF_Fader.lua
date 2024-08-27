@@ -20,7 +20,6 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
-local UnitPowerBarID = UnitPowerBarID
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
@@ -36,7 +35,6 @@ local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -67,12 +65,7 @@ local function updateInstanceDifficulty(element)
 	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
 end
 
-local function CanGlide()
-	if not E.Retail then return end
-
-	return UnitPowerBarID('player') == VIGOR_BAR_ID
-end
-
+local isGliding = false
 local function Update(self, event, unit)
 	local element = self.Fader
 	if self.isForced or (not element or not element.count or element.count <= 0) then
@@ -86,7 +79,11 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if event == 'PLAYER_IS_GLIDING_CHANGED' or not unit then
+	if event == 'PLAYER_IS_GLIDING_CHANGED' then
+		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+	end
+
+	if not unit then
 		unit = self.unit
 	end
 
@@ -118,7 +115,7 @@ local function Update(self, event, unit)
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)) or
-		(element.DynamicFlight and oUF.isRetail and not CanGlide()) or
+		(element.DynamicFlight and oUF.isRetail and not isGliding) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
 		ToggleAlpha(self, element, element.MaxAlpha)

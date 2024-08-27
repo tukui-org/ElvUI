@@ -279,7 +279,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = tr
 L["Please click the button below to setup your CVars."] = true
 L["Please click the button below to setup your Profile Settings."] = true
 L["Please press the continue button to go onto the next step."] = true
-L["PowerBarWidget"] = true
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = true
 L["Profile download complete from %s, would you like to load the profile %s now?"] = true
 L["Profile request sent. Waiting for response from player."] = true

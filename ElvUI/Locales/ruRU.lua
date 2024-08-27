@@ -277,7 +277,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "�
 L["Please click the button below to setup your CVars."] = "Пожалуйста, нажмите кнопку ниже для сброса настроек."
 L["Please click the button below to setup your Profile Settings."] = "Пожалуйста, нажмите кнопку ниже, чтобы настроить параметры профиля."
 L["Please press the continue button to go onto the next step."] = "Пожалуйста, нажмите кнопку 'Продолжить' для перехода к следующему шагу."
-L["PowerBarWidget"] = "Виджет панели ресурса"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Загрузка профиля от %s завершена, но профиль %s уже существует. Измените его название или он перезапишет уже существующий профиль."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Загрузка профиля от %s завершена, хотите загрузить профиль %s сейчас?"
 L["Profile request sent. Waiting for response from player."] = "Запрос на передачу профиля отправлен. Ждите, пожалуйста, ответа."

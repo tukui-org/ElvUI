@@ -13,7 +13,6 @@ local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpellCharges = GetSpellCharges
-local GetSpellCooldown = GetSpellCooldown
 local GetTime = GetTime
 local IsEquippedItem = IsEquippedItem
 local IsPlayerSpell = IsPlayerSpell
@@ -50,6 +49,7 @@ local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local GetSpellCooldown = C_Spell.GetSpellCooldown or GetSpellCooldown
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 

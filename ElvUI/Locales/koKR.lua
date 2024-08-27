@@ -277,7 +277,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "�
 L["Please click the button below to setup your CVars."] = "ElvUI의 게임 인터페이스 설정을 적용하려면 아래 버튼을 클릭하세요."
 L["Please click the button below to setup your Profile Settings."] = "프로필 설정하려면 아래 버튼을 누르세요."
 L["Please press the continue button to go onto the next step."] = "|cff2eb7e4[계속]|r 버튼으로 설치를 진행하세요."
-L["PowerBarWidget"] = "자원바 위젯"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "%s 유저에게서 ElvUI 설정 다운로드가 완료되었습니다. 하지만 건네받은 프로필 이름이 이미 존재합니다. 프로필 이름을 바꾸지 않으면 기존의 것에 덮어씌웁니다."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "%s 유저에게서 ElvUI 설정 다운로드가 완료되었습니다. 건네받은 설정을 지금 불러올까요?"
 L["Profile request sent. Waiting for response from player."] = "상대에게서 전송 여부를 확인받고 있습니다."

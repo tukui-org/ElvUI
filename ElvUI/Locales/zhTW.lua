@@ -281,7 +281,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "�
 L["Please click the button below to setup your CVars."] = "請按下方按鈕設定參數."
 L["Please click the button below to setup your Profile Settings."] = "請按下方按鈕設置設定檔."
 L["Please press the continue button to go onto the next step."] = "請按「繼續」按鈕, 執行下一個步驟."
-L["PowerBarWidget"] = "能量條"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "設定文件從 %s 下載完成, 但是設定文件 %s 已存在. 請更改名稱, 否則它會覆蓋你的現有設定檔."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "設定檔從 %s 下載完成, 你是否要加載設定檔 %s?"
 L["Profile request sent. Waiting for response from player."] = "已發送設定檔請求. 等待對方回應"

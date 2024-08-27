@@ -341,12 +341,10 @@ function OnUpdate(self, t)
 	if self.timeElapsed > 0 then return end
 	self.timeElapsed = updateTime
 
-	if E.Retail then
-		if db.flashInvite and _G.GameTimeFrame.flashInvite then
-			E:Flash(self, 0.5, true)
-		else
-			E:StopFlash(self, 1)
-		end
+	if db.flashInvite and _G.GameTimeFrame.flashInvite then
+		E:Flash(self, 0.5, true)
+	else
+		E:StopFlash(self, 1)
 	end
 
 	if enteredFrame then

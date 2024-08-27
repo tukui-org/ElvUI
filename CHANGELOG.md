@@ -1,3 +1,10 @@
+### Version 13.76 [ August 27th 2024 ]
+*   More Unitframe range issues resolved.
+*   Fader updated again for dragon riding.
+*   Bag module error when equipping a bag with 38 slots.
+*   Bank slots offset wrong when using Reverse Slots option.
+*   Priest form was unexpectedly paging when using Spirit of Redemption.
+
 ### Version 13.75 [ August 22nd 2024 ]
 *   **Warband Bank:**
     *   Tabs can be purchased again.

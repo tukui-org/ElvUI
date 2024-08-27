@@ -278,7 +278,6 @@ L["Please click the button below so you can setup variables and ReloadUI."] = "B
 L["Please click the button below to setup your CVars."] = "Klicke 'Installiere CVars' um die CVars einzurichten."
 L["Please click the button below to setup your Profile Settings."] = "Bitte klicke auf die Schaltfläche unten, um deine Profileinstellungen einzurichten."
 L["Please press the continue button to go onto the next step."] = "Bitte drücke die Weiter-Taste um zum nächsten Schritt zu gelangen."
-L["PowerBarWidget"] = "Kraftleisten Widget"
 L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."] = "Profil komplett heruntergeladen von %s, allerdings ist das Profil %s bereits vorhanden. Ändere den Namen oder das bereits existierende Profil wird überschrieben."
 L["Profile download complete from %s, would you like to load the profile %s now?"] = "Profil komplett heruntergeladen von %s, möchtest du das Profil %s nun laden?"
 L["Profile request sent. Waiting for response from player."] = "Profil Anfrage gesendet. Warte auf die Antwort des Spielers."
