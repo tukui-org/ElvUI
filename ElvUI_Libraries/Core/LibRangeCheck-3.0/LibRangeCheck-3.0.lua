@@ -1314,6 +1314,7 @@ function lib:CVAR_UPDATE(_, cvar)
     self:scheduleInit()
   end
 end
+
 function lib:UNIT_INVENTORY_CHANGED(event, unit)
   if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
     self:scheduleInit()
