@@ -306,6 +306,18 @@ do	-- backwards compatibility for GetSpellInfo
 	end
 end
 
+do -- Spell renaming provided by BigWigs
+	function E:GetSpellRename(spellID)
+		if not spellID then return end
+
+		local API = _G.BigWigsAPI
+		local SpellRename = API and API.GetSpellRename
+		if SpellRename then
+			return SpellRename(spellID)
+		end
+	end
+end
+
 do
 	function E:GetAuraData(unitToken, index, filter)
 		if E.Retail then
