@@ -28,7 +28,7 @@ end
 
 local function insertConfirm(opt, confirm)
 	local confirmType = type(confirm)
-	opt.confirm = confirmType == 'function' and confirm or true
+	opt.confirm = confirmType == 'function' and confirm or true -- func|bool
 	opt.confirmText = confirmType == 'string' and confirm or nil
 end
 
