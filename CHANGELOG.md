@@ -443,7 +443,7 @@
 *   Gold can be picked up from the Bags by clicking on the text.
 *   Tooltip Level line on Russian client was incorrect.
 *   Classic Era: Actionbars to show count for spells that require reagents.
-*   Actionbars now handle fading better with Dragon-flying.
+*   Actionbars now handle fading better with Skyriding.
 *   Added Evoker Time Dilation to TurtleBuffs (Thanks wing5wong).
 *   Added Dawn of the Infinite auras to Raid Buffs and Debuffs.
 *   Tag Update Rate default changed to 0.2 and minimum value lowered to 0.05
@@ -490,7 +490,7 @@
 
 ### Version 13.35 [ June 20th 2023 ]
 *   Skinned a dropdown on the Profession Orders frame.
-*   Actionbar for Dragonflight fading sometimes didn't work properly on login.
+*   Actionbar for Skyriding fading sometimes didn't work properly on login.
 *   Small tweaks to the Profession and Settings skins.
 *   Ready for Wrath patch.
 
@@ -557,7 +557,7 @@
 *   StyleFilters now have a Heath Glow action for Pixel Glow and Shine. (Thanks Eltreum)
 *   Minimap Cluster would cause an error.
 *   Tag Update Rate not applying on loading in.
-*   Inherit Global fade will not fade during Dragonflying.
+*   Inherit Global fade will not fade during Skyriding.
 *   Tag error trying to use [classpowercolor] on Classic Era.
 
 ### Version 13.29 [ March 21st 2023 ]
@@ -670,7 +670,7 @@
     *   Mage Greater Invisibility swapped to the aura with a duration.
     *   Added Raszageth auras to Raid Filters and cleaned up Mythic+ Affixes.
     *   Added Evoker Nullifying shroud (PvP) to Turtle Buffs. (Thanks shrom)
-    *   Blacklisted some annoyance auras: Riding Along (Dragonflying extra seat), Silent Lava, Activated Defense Systems, and Surrounding Storm (Strunraan).
+    *   Blacklisted some annoyance auras: Riding Along (Skyriding extra seat), Silent Lava, Activated Defense Systems, and Surrounding Storm (Strunraan).
 *   **Aura Indicator:**
     *   Resto Druid: adds Tranquility and Adaptive Swarm by default and moves Focused Growth (PvP) slightly left to not stack on top of Spring Blossoms.
     *   Priest: Echo of Light from self and Power Infusion from any unit will display as well and moves Pain Supp and Guardian Spirit to the bottom.
@@ -718,7 +718,7 @@
 *   Bag assignments can be sorted now, also work on classic (looting to that bag seems to work as well).
 *   3D Portraits can properly fade out again (using a work-around as this is still bugged).
 *   Actionbar Auto Add New Spells setting wasn't working correctly (this is handled by a CVar now).
-*   Dragonflying was messing up Release Cast spells.
+*   Skyriding was messing up Release Cast spells.
 *   Microbar has a new option for the art it displays (ActionBars > MicroBar > Use Icons).
 *   RaidUtility would still appear as a black boxes when disabled, that is sorted now.
 *   MainMenuBar taint involving PetBar and SetPointBase should be resolved finally.
