@@ -1,6 +1,6 @@
 ### Version 13.76 [ August 27th 2024 ]
 *   More Unitframe range issues resolved.
-*   Fader updated again for dragon riding.
+*   Fader updated again for Skyriding.
 *   Bag module error when equipping a bag with 38 slots.
 *   Bank slots offset wrong when using Reverse Slots option.
 *   Priest form was unexpectedly paging when using Spirit of Redemption.
@@ -21,7 +21,7 @@
 *   Paladin Dawnlight and Eternal Flame added to Aura Indicator.
 *   Datatext Custom Currency dropdown not listing all currencies.
 *   Archaeology dig site progress bar position was not being set properly.
-*   Action bars not properly fading with dragon riding.
+*   Action bars not properly fading with Skyriding.
 *   Gold and Guild Datatext now have a max limit option to reduce the overall size by amount of toons.
 *   Reporting a group for Advertisement wasn't working in LFG.
 *   Auto track reputation not actually setting the new one.
@@ -53,7 +53,7 @@
     *   Quest progress bar to have gradient color again.
 *   LibDispel Bleed list updated.
 *   Auto Track Reputation would error about GetFactionInfo.
-*   Dragonriding Fader option wasn't working.
+*   Skyriding Fader option wasn't working.
 *   Evoker Sense Power added to Aura Watch.
 *   Blacklisted Sweltering Heat and Stinky RP buffs.
 *   Clamp Nameplates not working properly on Classic and Cataclysm.
@@ -500,7 +500,7 @@
 *   Nameplate Widgets not appearing for Goblins.
 *   Nameplate Widgets now have option to place below, including offsets.
 *   Number of Datatexts slider on Custom Panel now functions properly.
-*   Global Fade now works properly while Dragonriding, various Hide issues are now resolved.
+*   Global Fade now works properly while Skyriding, various Hide issues are now resolved.
 *   Using Spec Datatext to open Talent Frame will no longer cause button issues.
 *   Warlock Singe Magic from Grimoire of Sacrifice will trigger dispel highlight.
 *   Withering Vulnerability added to Raid Debuff filters.
