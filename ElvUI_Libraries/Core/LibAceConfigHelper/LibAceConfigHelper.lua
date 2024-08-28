@@ -27,8 +27,9 @@ local function insertWidth(opt, width)
 end
 
 local function insertConfirm(opt, confirm)
-	opt.confirm = confirm
-	opt.confirmText = type(confirm) == 'string' and confirm or nil
+	local confirmType = type(confirm)
+	opt.confirm = confirmType == 'function' and confirm or true
+	opt.confirmText = confirmType == 'string' and confirm or nil
 end
 
 function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
