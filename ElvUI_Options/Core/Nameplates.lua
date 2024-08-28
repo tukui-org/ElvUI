@@ -549,7 +549,7 @@ NamePlates.colorsGroup.args.castGroup.args.castbarDesaturate = ACH:Toggle(L["Des
 NamePlates.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.castGroup.args.empowerStage.inline = true
 
-for i = 1, 4 do
+for i in next, P.nameplates.colors.empoweredCast do
 	NamePlates.colorsGroup.args.castGroup.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 

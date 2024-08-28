@@ -1188,7 +1188,7 @@ Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11,
 Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
-for i = 1, 4 do
+for i in next, P.unitframe.colors.empoweredCast do
 	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
