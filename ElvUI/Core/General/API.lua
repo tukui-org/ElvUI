@@ -311,9 +311,19 @@ do -- Spell renaming provided by BigWigs
 		if not spellID then return end
 
 		local API = _G.BigWigsAPI
-		local SpellRename = API and API.GetSpellRename
-		if SpellRename then
-			return SpellRename(spellID)
+		local GetRename = API and API.GetSpellRename
+		if GetRename then
+			return GetRename(spellID)
+		end
+	end
+
+	function E:SetSpellRename(spellID, text)
+		if not spellID then return end
+
+		local API = _G.BigWigsAPI
+		local SetRename = API and API.SetSpellRename
+		if SetRename then
+			SetRename(spellID, text)
 		end
 	end
 end
