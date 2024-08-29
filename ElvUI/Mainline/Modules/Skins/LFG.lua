@@ -431,6 +431,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
+	S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
