@@ -333,7 +333,7 @@ end
 
 tinsert(HarmSpells.SHAMAN, 370) -- Purge (30 yards)
 tinsert(HarmSpells.SHAMAN, 188196) -- Lightning Bolt (40 yards)
-tinsert(HarmSpells.SHAMAN, 454009) -- Tempest (40 yards, replaces Lightning bolt sometimes on proc)
+tinsert(HarmSpells.SHAMAN, 188389) -- Flame Shock (40 yards)(Fallback for when Lightning Bolt fails due to hero talents)
 tinsert(HarmSpells.SHAMAN, 73899) -- Primal Strike (Melee Range)
 
 if not isRetail then
