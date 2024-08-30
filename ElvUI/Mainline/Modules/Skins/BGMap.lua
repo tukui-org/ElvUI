@@ -45,6 +45,7 @@ end
 local function OnMouseDown(_, btn)
 	local tab = _G.BattlefieldMapTab
 	if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
+		tab:SetUserPlaced(true)
 		tab:StartMoving()
 	end
 end
