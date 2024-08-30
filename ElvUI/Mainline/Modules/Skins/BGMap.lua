@@ -38,7 +38,7 @@ function S:Blizzard_BattlefieldMap()
 
 	tab.Text:SetInside(tab)
 
-	local close = frame.BorderFrame
+	local close = frame.BorderFrame.CloseButton
 	close:SetAlpha(0.25)
 	close:SetIgnoreParentAlpha(1)
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
