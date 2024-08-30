@@ -11,16 +11,27 @@ local function SetBackdropAlpha()
 	end
 end
 
-local function OnShow()
-    SetBackdropAlpha()
+local function GetCloseButton(frame)
+	if not frame then
+		frame = _G.BattlefieldMapFrame
+	end
+
+	local border = frame and frame.BorderFrame
+	return border and border.CloseButton
 end
 
 local function OnLeave()
-	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(0.1)
+	end
 end
 
 local function OnEnter()
-	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(1)
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(1)
+	end
 end
 
 function S:Blizzard_BattlefieldMap()
@@ -30,32 +41,42 @@ function S:Blizzard_BattlefieldMap()
 	frame:StripTextures()
 	frame:CreateBackdrop()
 	frame:SetFrameStrata('LOW')
-
-	local tab = _G.BattlefieldMapTab
-	tab:SetHeight(24)
-	tab:StripTextures()
-	tab:CreateBackdrop()
-
-	tab.Text:SetInside(tab)
-
-	local close = frame.BorderFrame.CloseButton
-	close:SetAlpha(0.25)
-	close:SetIgnoreParentAlpha(1)
-	close:SetFrameLevel(close:GetFrameLevel() + 1)
-	close:ClearAllPoints()
-	close:Point('TOPRIGHT', 3, 5)
-	S:HandleCloseButton(close)
-
+	frame:HookScript('OnShow', SetBackdropAlpha)
 	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
-	frame:HookScript('OnShow', OnShow)
 
 	local scroll = frame.ScrollContainer
-	scroll:HookScript('OnLeave', OnLeave)
-	scroll:HookScript('OnEnter', OnEnter)
-	frame.backdrop:SetOutside(scroll)
+	if scroll then
+		if frame.backdrop then
+			frame.backdrop:SetOutside(scroll)
+		end
 
-	close:HookScript('OnLeave', OnLeave)
-	close:HookScript('OnEnter', OnEnter)
+		scroll:HookScript('OnLeave', OnLeave)
+		scroll:HookScript('OnEnter', OnEnter)
+	end
+
+	local tab = _G.BattlefieldMapTab
+	if tab then
+		tab:SetHeight(24)
+		tab:StripTextures()
+		tab:CreateBackdrop()
+
+		if tab.Text then
+			tab.Text:SetInside(tab)
+		end
+	end
+
+	local close = GetCloseButton(frame)
+	if close then
+		S:HandleCloseButton(close)
+
+		close:SetAlpha(0.25)
+		close:SetIgnoreParentAlpha(1)
+		close:SetFrameLevel(close:GetFrameLevel() + 1)
+		close:ClearAllPoints()
+		close:Point('TOPRIGHT', 3, 5)
+		close:HookScript('OnLeave', OnLeave)
+		close:HookScript('OnEnter', OnEnter)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')

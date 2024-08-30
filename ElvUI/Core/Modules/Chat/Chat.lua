@@ -266,9 +266,9 @@ do --this can save some main file locals
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
 			-- Elv
-			z['Player-127-0AB2F946']	= itsElv --Paladin
-			z['Player-5-0E83B943']		= itsElv --Druid
-			z['Player-5-0E8393EF']		= itsElv --Monk
+			z['Player-127-0AB2F946']	= itsElv -- Paladin
+			z['Player-5-0E83B943']		= itsElv -- Druid
+			z['Player-5-0E8393EF']		= itsElv -- Monk
 			z['Player-3675-0A85E395']	= itsElv -- Warrior
 			z['Player-5-0E8301B7']		= itsElv -- Mage
 			z['Player-5-0E885971']		= itsElv -- Shaman
