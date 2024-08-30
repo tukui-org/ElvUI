@@ -852,7 +852,7 @@ P.nameplates = {
 			{r = 1.00, g = 0.80, b = 0.26, a = 0.3}, -- orange
 			{r = 1.00, g = 1.00, b = 0.26, a = 0.3}, -- yellow
 			{r = 0.66, g = 1.00, b = 0.40, a = 0.3}, -- green
-			{r = 0.31, g = 0.45, b = 0.63, a = 0.3}, -- blue?? placeholder
+			{r = 0.36, g = 0.90, b = 0.80, a = 0.3}, -- turquoise
 		},
 		classResources = {
 			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },

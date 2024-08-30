@@ -17,7 +17,7 @@ local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
 do
-	local pipMapColor = {4, 1, 2, 3}
+	local pipMapColor = {4, 1, 2, 3, 5}
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
 		if castbar.pipColor then
 			local color = castbar.pipColor[pipMapColor[stage]]
@@ -25,7 +25,7 @@ do
 		end
 	end
 
-	local pipMapAlpha = {2, 3, 4, 1}
+	local pipMapAlpha = {2, 3, 4, 1, 5}
 	function UF:UpdatePipStep(stage) -- self is element
 		local onlyThree = (stage == 3 and self.numStages == 3) and 4
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
