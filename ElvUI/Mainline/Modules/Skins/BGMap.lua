@@ -11,6 +11,15 @@ local function SetBackdropAlpha()
 	end
 end
 
+local function SetScale()
+    _G.BattlefieldMapFrame.ScrollContainer:SetScale(1.0)
+end
+
+local function OnShow()
+    SetBackdropAlpha()
+    SetScale()
+end
+
 local function OnLeave()
 	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
 end
@@ -33,10 +42,13 @@ local function OnMouseUp(_, btn)
 	end
 end
 
-local function OnMouseDown(_, btn)
+local function OnMouseDown(self, btn)
 	local tab = _G.BattlefieldMapTab
 	if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-		tab:StartMoving()
+		if self == tab then
+			tab:SetUserPlaced(true)
+			tab:StartMoving()
+		end
 	end
 end
 
@@ -70,7 +82,7 @@ function S:Blizzard_BattlefieldMap()
 	S:HandleCloseButton(close)
 
 	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
-	frame:HookScript('OnShow', SetBackdropAlpha)
+	frame:HookScript('OnShow', OnShow)
 
 	local scroll = frame.ScrollContainer
 	scroll:HookScript('OnMouseUp', OnMouseUp)
