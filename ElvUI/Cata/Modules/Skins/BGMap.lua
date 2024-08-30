@@ -11,32 +11,26 @@ local function SetBackdropAlpha()
 	end
 end
 
+local function GetCloseButton(frame)
+	if not frame then
+		frame = _G.BattlefieldMapFrame
+	end
+
+	local border = frame and frame.BorderFrame
+	return border and border.CloseButton
+end
+
 local function OnLeave()
-	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(0.1)
+	end
 end
 
 local function OnEnter()
-	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(1)
-end
-
-local function OnMouseUp(_, btn)
-	local tab = _G.BattlefieldMapTab
-	if btn == 'LeftButton' then
-		tab:StopMovingOrSizing()
-	elseif btn == 'RightButton' then
-		tab:Click('RightButton')
-	end
-
-	local slider = _G.OpacityFrame
-	if slider and slider:IsShown() then
-		slider:Hide()
-	end
-end
-
-local function OnMouseDown(_, btn)
-	local tab = _G.BattlefieldMapTab
-	if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-		tab:StartMoving()
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(1)
 	end
 end
 
@@ -46,41 +40,43 @@ function S:Blizzard_BattlefieldMap()
 	local frame = _G.BattlefieldMapFrame
 	frame:StripTextures()
 	frame:CreateBackdrop()
-	frame:EnableMouse(true)
-	frame:SetMovable(true)
-	frame:SetClampedToScreen(true)
 	frame:SetFrameStrata('LOW')
-
-	local tab = _G.BattlefieldMapTab
-	tab:SetHeight(24)
-	tab:StripTextures()
-	tab:CreateBackdrop()
-
-	tab.Text:SetInside(tab)
-
-	local border = frame.BorderFrame
-	border:StripTextures()
-
-	local close = border.CloseButton
-	close:SetAlpha(0.1)
-	close:SetIgnoreParentAlpha(1)
-	close:SetFrameLevel(close:GetFrameLevel() + 1)
-	close:ClearAllPoints()
-	close:Point('TOPRIGHT', 3, 8)
-	S:HandleCloseButton(close)
-
-	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
 	frame:HookScript('OnShow', SetBackdropAlpha)
+	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
 
 	local scroll = frame.ScrollContainer
-	scroll:HookScript('OnMouseUp', OnMouseUp)
-	scroll:HookScript('OnMouseDown', OnMouseDown)
-	scroll:HookScript('OnLeave', OnLeave)
-	scroll:HookScript('OnEnter', OnEnter)
-	frame.backdrop:SetOutside(scroll)
+	if scroll then
+		if frame.backdrop then
+			frame.backdrop:SetOutside(scroll)
+		end
 
-	close:HookScript('OnLeave', OnLeave)
-	close:HookScript('OnEnter', OnEnter)
+		scroll:HookScript('OnLeave', OnLeave)
+		scroll:HookScript('OnEnter', OnEnter)
+	end
+
+	local tab = _G.BattlefieldMapTab
+	if tab then
+		tab:SetHeight(24)
+		tab:StripTextures()
+		tab:CreateBackdrop()
+
+		if tab.Text then
+			tab.Text:SetInside(tab)
+		end
+	end
+
+	local close = GetCloseButton(frame)
+	if close then
+		S:HandleCloseButton(close)
+
+		close:SetAlpha(0.25)
+		close:SetIgnoreParentAlpha(1)
+		close:SetFrameLevel(close:GetFrameLevel() + 1)
+		close:ClearAllPoints()
+		close:Point('TOPRIGHT', 3, 5)
+		close:HookScript('OnLeave', OnLeave)
+		close:HookScript('OnEnter', OnEnter)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')
