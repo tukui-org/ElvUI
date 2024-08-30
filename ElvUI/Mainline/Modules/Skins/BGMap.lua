@@ -11,6 +11,15 @@ local function SetBackdropAlpha()
 	end
 end
 
+local function SetScale()
+    _G.BattlefieldMapFrame.ScrollContainer:SetScale(1.0)
+end
+
+local function OnShow()
+    SetBackdropAlpha()
+    SetScale()
+end
+
 local function OnLeave()
 	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
 end
@@ -70,7 +79,7 @@ function S:Blizzard_BattlefieldMap()
 	S:HandleCloseButton(close)
 
 	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
-	frame:HookScript('OnShow', SetBackdropAlpha)
+	frame:HookScript('OnShow', OnShow)
 
 	local scroll = frame.ScrollContainer
 	scroll:HookScript('OnMouseUp', OnMouseUp)
