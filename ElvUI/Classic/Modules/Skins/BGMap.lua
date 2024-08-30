@@ -5,9 +5,11 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function SetBackdropAlpha()
-	if _G.BattlefieldMapFrame.backdrop then
-		local opacity = 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
-		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, opacity)
+	local frame = _G.BattlefieldMapFrame
+	if frame and frame.backdrop then
+		local options = _G.BattlefieldMapOptions
+		local opacity = 1 - (options and options.opacity or 1)
+		frame.backdrop:SetBackdropColor(0, 0, 0, opacity)
 	end
 end
 
