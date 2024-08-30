@@ -220,7 +220,6 @@ L["Location"] = true
 L["Lock"] = "Kilit"
 L["LOGIN_MSG"] = ("*ElvUI|r surum *%s|r'ye hos geldiniz, oyun ici yapilandirma menusune erismek icin */ec|r yazin. Teknik destege ihtiyaciniz varsa bizi https://www.tukui adresinden ziyaret edebilirsiniz. .org veya Discord'umuza katilin: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Kullanilabilir *ElvUI|r komutlarinin listesi icin lutfen */ehelp|r kullanin."):gsub('*', E.InfoColor)
-L["LOGIN_PTR"] = ("|cffff3333su anda *ElvUI|r'nin PTR surumunu calistirmiyorsunuz, bu da sorunlara neden olabilir.|r ^Lutfen asagidaki baglantidan PTR surumunu indirin.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Loot / Alert Frames"] = "Ganimet / Uyari Cerceveleri"
 L["Loot Frame"] = "Ganimet Cercevesi"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Tanrim! Bu bir mucize! indirme ruzgarda bir osuruk gibi kayboldu! Tekrar Dene!"
