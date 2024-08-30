@@ -12,6 +12,7 @@ local function SetBackdropAlpha()
 		frame.backdrop:SetBackdropColor(0, 0, 0, opacity)
 	end
 end
+
 local function GetCloseButton(frame)
 	if not frame then
 		frame = _G.BattlefieldMapFrame
