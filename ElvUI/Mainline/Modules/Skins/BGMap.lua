@@ -11,13 +11,8 @@ local function SetBackdropAlpha()
 	end
 end
 
-local function SetScale()
-    _G.BattlefieldMapFrame.ScrollContainer:SetScale(1.0)
-end
-
 local function OnShow()
     SetBackdropAlpha()
-    SetScale()
 end
 
 local function OnLeave()
@@ -28,39 +23,12 @@ local function OnEnter()
 	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(1)
 end
 
-local function OnMouseUp(_, btn)
-	local tab = _G.BattlefieldMapTab
-	if btn == 'LeftButton' then
-		tab:StopMovingOrSizing()
-	elseif btn == 'RightButton' then
-		tab:Click('RightButton')
-	end
-
-	local slider = _G.OpacityFrame
-	if slider and slider:IsShown() then
-		slider:Hide()
-	end
-end
-
-local function OnMouseDown(self, btn)
-	local tab = _G.BattlefieldMapTab
-	if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-		if self == tab then
-			tab:SetUserPlaced(true)
-			tab:StartMoving()
-		end
-	end
-end
-
 function S:Blizzard_BattlefieldMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgmap) then return end
 
 	local frame = _G.BattlefieldMapFrame
 	frame:StripTextures()
 	frame:CreateBackdrop()
-	frame:EnableMouse(true)
-	frame:SetMovable(true)
-	frame:SetClampedToScreen(true)
 	frame:SetFrameStrata('LOW')
 
 	local tab = _G.BattlefieldMapTab
@@ -70,23 +38,18 @@ function S:Blizzard_BattlefieldMap()
 
 	tab.Text:SetInside(tab)
 
-	local border = frame.BorderFrame
-	border:StripTextures()
-
-	local close = border.CloseButton
-	close:SetAlpha(0.1)
+	local close = frame.BorderFrame
+	close:SetAlpha(0.25)
 	close:SetIgnoreParentAlpha(1)
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:ClearAllPoints()
-	close:Point('TOPRIGHT', 3, 8)
+	close:Point('TOPRIGHT', 3, 5)
 	S:HandleCloseButton(close)
 
 	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
 	frame:HookScript('OnShow', OnShow)
 
 	local scroll = frame.ScrollContainer
-	scroll:HookScript('OnMouseUp', OnMouseUp)
-	scroll:HookScript('OnMouseDown', OnMouseDown)
 	scroll:HookScript('OnLeave', OnLeave)
 	scroll:HookScript('OnEnter', OnEnter)
 	frame.backdrop:SetOutside(scroll)
