@@ -158,6 +158,10 @@ function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hid
 	return SharedMediaSelect('LSM30_Border', name, desc, order, function() return LSM:HashTable('border') end, width, get, set, disabled, hidden)
 end
 
+function ACH:ActionSlotWidget(name, desc, order, multiline, width, get, set, disabled, hidden, validate)
+	return { type = 'input', dialogControl = 'ActionSlot', name = name, desc = desc, order = order, multiline = multiline, width = width, get = get, set = set, disabled = disabled, hidden = hidden, validate = validate }
+end
+
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
 	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = ACH.FontValues, sortByValue = true }
 

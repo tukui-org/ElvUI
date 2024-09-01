@@ -391,29 +391,26 @@ end
 
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and button.CreateTexture and not button.hover and not noHover then
-		local hover = button:CreateTexture()
+		local hover = button:GetHighlightTexture()
 		hover:SetInside()
 		hover:SetBlendMode('ADD')
-		hover:SetColorTexture(1, 1, 1, 0.3)
-		button:SetHighlightTexture(hover)
+		hover:SetColorTexture(1, 1, 1, .3)
 		button.hover = hover
 	end
 
 	if button.SetPushedTexture and button.CreateTexture and not button.pushed and not noPushed then
-		local pushed = button:CreateTexture()
+		local pushed = button:GetPushedTexture()
 		pushed:SetInside()
 		pushed:SetBlendMode('ADD')
 		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-		button:SetPushedTexture(pushed)
 		button.pushed = pushed
 	end
 
 	if button.SetCheckedTexture and button.CreateTexture and not button.checked and not noChecked then
-		local checked = button:CreateTexture()
+		local checked = button:GetCheckedTexture()
 		checked:SetInside()
 		checked:SetBlendMode('ADD')
 		checked:SetColorTexture(1, 1, 1, 0.3)
-		button:SetCheckedTexture(checked)
 		button.checked = checked
 	end
 
