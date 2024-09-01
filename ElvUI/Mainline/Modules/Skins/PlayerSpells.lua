@@ -78,8 +78,10 @@ function S:UpdateSpellFrame_Dimensions()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	if PlayerSpellsFrame.SpellBookFrame:IsShown() then
 		PlayerSpellsFrame:SetHeight(760)
+		PlayerSpellsFrame.SpellBookFrame:SetHeight(747)
 	else
 		PlayerSpellsFrame:SetHeight(883)
+		PlayerSpellsFrame.SpellBookFrame:SetHeight(856)
 	end
 end
 
@@ -197,12 +199,15 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
+		
 		PagingControls:ClearAllPoints()
-		PagingControls:SetPoint("TOPRIGHT", -47, -40)
+		PagingControls:SetPoint("BOTTOMRIGHT", -20, 5)
 
 		--Set Height
 		SpellBookFrame:SetHeight(747)
-		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)		
+		SpellBookFrame.PagedSpellsFrame:SetPoint("TOPLEFT")
+		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)	
+		PlayerSpellsFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)	
 	end
 end
 
