@@ -76,6 +76,7 @@ end
 
 function S:UpdateSpellFrame_Dimensions()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
+
 	if PlayerSpellsFrame.SpellBookFrame:IsShown() then
 		PlayerSpellsFrame:SetHeight(760)
 		PlayerSpellsFrame.SpellBookFrame:SetHeight(747)
@@ -207,7 +208,7 @@ function S:Blizzard_PlayerSpells()
 		SpellBookFrame:SetHeight(747)
 		SpellBookFrame.PagedSpellsFrame:SetPoint("TOPLEFT")
 		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)	
-		PlayerSpellsFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)	
+		hooksecurefunc(PlayerSpellsFrame, "UpdateTabs", S.UpdateSpellFrame_Dimensions)
 	end
 end
 
