@@ -74,6 +74,16 @@ local function HandleHeroTalents(frame)
 	end
 end
 
+function S:UpdateSpellFrame_Dimensions()
+	local PlayerSpellsFrame = _G.PlayerSpellsFrame
+	if PlayerSpellsFrame.SpellBookFrame:IsShown() then
+		PlayerSpellsFrame:SetHeight(760)
+	else
+		PlayerSpellsFrame:SetHeight(883)
+	end
+end
+
+
 function S:Blizzard_PlayerSpells()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -187,6 +197,12 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
+		PagingControls:ClearAllPoints()
+		PagingControls:SetPoint("TOPRIGHT", -47, -40)
+
+		--Set Height
+		SpellBookFrame:SetHeight(747)
+		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)		
 	end
 end
 
