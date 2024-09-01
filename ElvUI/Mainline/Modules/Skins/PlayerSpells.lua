@@ -95,6 +95,8 @@ function S:Blizzard_PlayerSpells()
 
 	-- Specialisation
 	hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
+	PlayerSpellsFrame.SpecFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
+	PlayerSpellsFrame.SpecFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
 
 	-- TalentsFrame
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
@@ -122,6 +124,9 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.PvPTalentList:CreateBackdrop()
 	TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
 	TalentsFrame.PvPTalentList.backdrop:SetFrameLevel(2000)
+
+	TalentsFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
+	TalentsFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
 
 	for _, tab in next, { PlayerSpellsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
@@ -206,9 +211,11 @@ function S:Blizzard_PlayerSpells()
 
 		--Set Height
 		SpellBookFrame:SetHeight(747)
-		SpellBookFrame.PagedSpellsFrame:SetPoint("TOPLEFT")
+		SpellBookFrame.PagedSpellsFrame:SetPoint("TOPLEFT", 0, -10)
 		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)	
-		hooksecurefunc(PlayerSpellsFrame, "UpdateTabs", S.UpdateSpellFrame_Dimensions)
+		SpellBookFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
+		SpellBookFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
+
 	end
 end
 
