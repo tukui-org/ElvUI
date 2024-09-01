@@ -6,9 +6,19 @@ local format = format
 
 local ToggleCharacter = ToggleCharacter
 
+local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
+local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
+local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
+local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
+local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
+local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
+
+local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local NOT_APPLICABLE = NOT_APPLICABLE
+local RENOWN_LEVEL_LABEL = RENOWN_LEVEL_LABEL
 local REPUTATION = REPUTATION
 local STANDING = STANDING
+local UNKNOWN = UNKNOWN
 
 local function OnEvent(self)
 	local data = E:GetWatchedFactionInfo()
@@ -57,20 +67,62 @@ local function OnEvent(self)
 	self.text:SetText(text)
 end
 
+local function GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)
+	local maximum = nextReactionThreshold - currentReactionThreshold
+	local current, diff = currentStanding - currentReactionThreshold, maximum
+
+	if diff == 0 then diff = 1 end -- prevent a division by zero
+
+	if current == maximum then
+		return 1, 1, 100, true
+	else
+		return current, maximum, current / diff * 100
+	end
+end
+
 local function OnEnter()
 	local data = E:GetWatchedFactionInfo()
 	if not data then return end
+	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 
-	local name, reaction, min, max, value = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding
+	local isParagon = factionID and C_Reputation_IsFactionParagon(factionID)
+	local standing
+
+	if isParagon then
+		local current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+		if current and threshold then
+			standing, currentReactionThreshold, nextReactionThreshold, currentStanding = L["Paragon"], 0, threshold, current % threshold
+		end
+	end
+
 	if name then
 		DT.tooltip:ClearLines()
 		DT.tooltip:AddLine(name)
 		DT.tooltip:AddLine(' ')
 
-		DT.tooltip:AddDoubleLine(STANDING..':', _G['FACTION_STANDING_LABEL'..reaction], 1, 1, 1)
-		if reaction ~= _G.MAX_REPUTATION_REACTION then
-			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
+		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
+			standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 		end
+
+		if not standing then
+			standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
+		end
+
+		local isMajorFaction = factionID and E.Retail and C_Reputation_IsMajorFaction(factionID)
+		if not isMajorFaction then
+			DT.tooltip:AddDoubleLine(STANDING..':', standing, 1, 1, 1)
+		end
+
+		if not isParagon and isMajorFaction then
+			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			currentStanding = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
+			nextReactionThreshold = majorFactionData.renownLevelThreshold
+			DT.tooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
+		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and nextReactionThreshold ~= huge then
+			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)), 1, 1, 1)
+		end
+
 		DT.tooltip:Show()
 	end
 end
