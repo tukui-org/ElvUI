@@ -370,19 +370,13 @@ local function FontTemplate(fs, font, size, style, skip)
 	-- grab values from profile before conversion
 	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
 	if not size then size = E.db.general.fontSize or P.general.fontSize end
+	if style == 'NONE' then style = '' end
 
-	if style and strsub(style, 0, 6) == 'SHADOW' then
-		style = strsub(style, 7) -- shadow isnt a real style
-		fs:SetShadowOffset(1, -1)
-		fs:SetShadowColor(0, 0, 0, style == '' and 1 or 0.6)
-	else
-		fs:SetShadowOffset(0, 0)
-		fs:SetShadowColor(0, 0, 0, 0)
-	end
+	local shadow = strsub(style, 0, 6) == 'SHADOW'
+	if shadow then style = strsub(style, 7) end -- shadow isnt a real style
 
-	if style == 'NONE' or not style then
-		style = '' -- none isnt a real style
-	end
+	fs:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+	fs:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 
 	fs:SetFont(font or E.media.normFont, size, style)
 
