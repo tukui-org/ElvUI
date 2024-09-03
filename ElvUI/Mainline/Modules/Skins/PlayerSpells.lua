@@ -76,7 +76,6 @@ end
 
 function S:UpdateSpellFrame_Dimensions()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
-
 	if PlayerSpellsFrame.SpellBookFrame:IsShown() then
 		PlayerSpellsFrame:SetHeight(760)
 		PlayerSpellsFrame.SpellBookFrame:SetHeight(747)
@@ -95,8 +94,8 @@ function S:Blizzard_PlayerSpells()
 
 	-- Specialisation
 	hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
-	PlayerSpellsFrame.SpecFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
-	PlayerSpellsFrame.SpecFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
+	PlayerSpellsFrame.SpecFrame:HookScript('OnShow', S.UpdateSpellFrame_Dimensions)
+	PlayerSpellsFrame.SpecFrame:HookScript('OnHide', S.UpdateSpellFrame_Dimensions)
 
 	-- TalentsFrame
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
@@ -125,8 +124,8 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
 	TalentsFrame.PvPTalentList.backdrop:SetFrameLevel(2000)
 
-	TalentsFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
-	TalentsFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
+	TalentsFrame:HookScript('OnShow', S.UpdateSpellFrame_Dimensions)
+	TalentsFrame:HookScript('OnHide', S.UpdateSpellFrame_Dimensions)
 
 	for _, tab in next, { PlayerSpellsFrame.TabSystem:GetChildren() } do
 		S:HandleTab(tab)
@@ -205,16 +204,16 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
-		
+
 		PagingControls:ClearAllPoints()
-		PagingControls:SetPoint("BOTTOMRIGHT", -20, 5)
+		PagingControls:SetPoint('BOTTOMRIGHT', -20, 5)
 
 		--Set Height
 		SpellBookFrame:SetHeight(747)
-		SpellBookFrame.PagedSpellsFrame:SetPoint("TOPLEFT", 0, -10)
-		hooksecurefunc(PlayerSpellsFrame, "SetWidth", S.UpdateSpellFrame_Dimensions)	
-		SpellBookFrame:HookScript("OnShow", S.UpdateSpellFrame_Dimensions)
-		SpellBookFrame:HookScript("OnHide", S.UpdateSpellFrame_Dimensions)
+		SpellBookFrame.PagedSpellsFrame:SetPoint('TOPLEFT', 0, -10)
+		hooksecurefunc(PlayerSpellsFrame, 'SetWidth', S.UpdateSpellFrame_Dimensions)
+		SpellBookFrame:HookScript('OnShow', S.UpdateSpellFrame_Dimensions)
+		SpellBookFrame:HookScript('OnHide', S.UpdateSpellFrame_Dimensions)
 
 	end
 end

@@ -6,13 +6,12 @@ local format = format
 local huge = math.huge
 
 local ToggleCharacter = ToggleCharacter
-
-local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
+local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 
 local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local NOT_APPLICABLE = NOT_APPLICABLE
@@ -41,7 +40,7 @@ local function OnEvent(self)
 	end
 
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
-	local displayString, textFormat, standing, rewardPending, _ = '', E.global.datatexts.settings.Reputation.textFormat
+	local displayString, textFormat, standing = '', E.global.datatexts.settings.Reputation.textFormat
 
 	if reaction == 0 then
 		reaction = 1
@@ -54,14 +53,14 @@ local function OnEvent(self)
 
 	if not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
-		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+		current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 
 		if current and threshold then
 			standing, currentReactionThreshold, nextReactionThreshold, currentStanding, reaction = L["Paragon"], 0, threshold, current % threshold, 9
 		end
 	end
-	local color = _G.FACTION_BAR_COLORS[reaction]
 
+	local color = _G.FACTION_BAR_COLORS[reaction]
 	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 		color = E.DataBars.db.colors.factionColors[10]
@@ -76,28 +75,25 @@ local function OnEvent(self)
 		standing = E:RGBToHex(color.r, color.g, color.b, nil, standingLabel..'|r')
 	end
 
-	local total = nextReactionThreshold == huge and 1 or nextReactionThreshold -- we need to correct the min/max of friendship factions to display the bar at 100%
-
 	if name then
+		local total = nextReactionThreshold == huge and 1 or nextReactionThreshold -- we need to correct the min/max of friendship factions to display the bar at 100%
 		local current, maximum, percent, capped = GetValues(currentStanding, currentReactionThreshold, total)
 		if capped then -- show only name and standing on exalted
 			displayString = format('%s: [%s]', name, standing)
-		else
-			if textFormat == 'PERCENT' then
-				displayString = format('%s: %d%% [%s]', name, percent, standing)
-			elseif textFormat == 'CURMAX' then
-				displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
-			elseif textFormat == 'CURPERC' then
-				displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
-			elseif textFormat == 'CUR' then
-				displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
-			elseif textFormat == 'REM' then
-				displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
-			elseif textFormat == 'CURREM' then
-				displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
-			elseif textFormat == 'CURPERCREM' then
-				displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
-			end
+		elseif textFormat == 'PERCENT' then
+			displayString = format('%s: %d%% [%s]', name, percent, standing)
+		elseif textFormat == 'CURMAX' then
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
+		elseif textFormat == 'CURPERC' then
+			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
+		elseif textFormat == 'CUR' then
+			displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
+		elseif textFormat == 'REM' then
+			displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
+		elseif textFormat == 'CURREM' then
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
+		elseif textFormat == 'CURPERCREM' then
+			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
 		end
 	end
 
