@@ -460,6 +460,11 @@ do --this can save some main file locals
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
+			-- AcidWeb
+			z['Player-3713-08235A93']	= Gem
+			z['Player-3713-0819EA18']	= Gem
+			z['Player-3713-08FC8520']	= Gem
+			z['Player-3713-0AD1682D']	= Gem
 		end
 	end
 end
