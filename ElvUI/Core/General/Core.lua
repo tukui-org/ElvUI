@@ -91,7 +91,13 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.valueColorUpdateFuncs = {}
+E.valueColorUpdateFuncs = setmetatable({}, {
+	__newindex = function(t, key, value)
+		if type(key) == 'function' then return nil end
+		rawset(E.valueColorUpdateFuncs, key, value)
+	end
+})
+
 E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
