@@ -236,7 +236,8 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[353362]	= List(), -- Dematerialize (PvP)
 	-- Paladin
 		[642]		= List(), -- Divine Shield
-		[498]		= List(), -- Divine Protection
+		[498]		= List(), -- Divine Protection (Holy)
+		[403876]	= List(), -- Divine Protection (Retri)
 		[205191]	= List(), -- Eye for an Eye
 		[184662]	= List(), -- Shield of Vengeance
 		[1022]		= List(), -- Blessing of Protection
