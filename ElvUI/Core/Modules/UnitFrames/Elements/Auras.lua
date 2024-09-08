@@ -198,8 +198,8 @@ function UF:Aura_OnClick()
 	local keyDown = IsShiftKeyDown() and 'SHIFT' or IsAltKeyDown() and 'ALT' or IsControlKeyDown() and 'CTRL'
 	if not keyDown then return end
 
-	local spellName, spellID = self.name, self.spellID
 	local listName = UF.db.modifiers[keyDown]
+	local spellName, spellID = self.name, self.spellID
 	if spellName and spellID and listName ~= 'NONE' then
 		if not E.global.unitframe.aurafilters[listName].spells[spellID] then
 			E:Print(format(L["The spell '%s' has been added to the '%s' unitframe aura filter."], spellName, listName))
@@ -207,8 +207,6 @@ function UF:Aura_OnClick()
 		else
 			E.global.unitframe.aurafilters[listName].spells[spellID].enable = true
 		end
-
-		UF:Update_AllFrames()
 	end
 end
 
