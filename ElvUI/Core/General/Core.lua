@@ -92,8 +92,8 @@ E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
 E.valueColorUpdateFuncs = setmetatable({}, {
-	__newindex = function(t, key, value)
-		if type(key) == 'function' then return nil end
+	__newindex = function(_, key, value)
+		if type(key) == 'function' then return end
 		rawset(E.valueColorUpdateFuncs, key, value)
 	end
 })
