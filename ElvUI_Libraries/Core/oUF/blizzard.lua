@@ -1,10 +1,10 @@
 local _, ns = ...
 local oUF = ns.oUF
 
--- sourced from FrameXML/TargetFrame.lua
+-- sourced from Blizzard_UnitFrame/TargetFrame.lua
 local MAX_BOSS_FRAMES = 8
 
--- sourced from FrameXML/RaidFrame.lua
+-- sourced from Blizzard_FrameXMLBase/Shared/Constants.lua
 local MEMBERS_PER_RAID_GROUP = _G.MEMBERS_PER_RAID_GROUP or 5
 
 local hookedFrames = {}

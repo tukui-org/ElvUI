@@ -57,6 +57,18 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 local ALT_POWER_BAR_PAIR_DISPLAY_INFO = ALT_POWER_BAR_PAIR_DISPLAY_INFO
 -- end block
 
+local function UpdateSize(self, event, unit)
+	local element = self.PowerPrediction
+
+	if(element.mainBar and element.mainSize) then
+		element.mainBar[element.isMainHoriz and 'SetWidth' or 'SetHeight'](element.mainBar, element.mainSize)
+	end
+
+	if(element.altBar and element.altSize) then
+		element.altBar[element.isAltHoriz and 'SetWidth' or 'SetHeight'](element.altBar, element.altSize)
+	end
+end
+
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
 
@@ -140,7 +152,45 @@ local function Update(self, event, unit)
 	end
 end
 
+local function shouldUpdateMainSize(self)
+	if(not self.Power) then return end
+
+	local isHoriz = self.Power:GetOrientation() == 'HORIZONTAL'
+	local newSize = self.Power[isHoriz and 'GetWidth' or 'GetHeight'](self.Power)
+	if(isHoriz ~= self.PowerPrediction.isMainHoriz or newSize ~= self.PowerPrediction.mainSize) then
+		self.PowerPrediction.isMainHoriz = isHoriz
+		self.PowerPrediction.mainSize = newSize
+
+		return true
+	end
+end
+
+local function shouldUpdateAltSize(self)
+	if(not self.AdditionalPower) then return end
+
+	local isHoriz = self.AdditionalPower:GetOrientation() == 'HORIZONTAL'
+	local newSize = self.AdditionalPower[isHoriz and 'GetWidth' or 'GetHeight'](self.AdditionalPower)
+	if(isHoriz ~= self.PowerPrediction.isAltHoriz or newSize ~= self.PowerPrediction.altSize) then
+		self.PowerPrediction.isAltHoriz = isHoriz
+		self.PowerPrediction.altSize = newSize
+
+		return true
+	end
+end
+
 local function Path(self, ...)
+	--[[ Override: PowerPrediction.UpdateSize(self, event, unit, ...)
+	Used to completely override the internal function for updating the widgets' size.
+
+	* self  - the parent object
+	* event - the event triggering the update (string)
+	* unit  - the unit accompanying the event (string)
+	* ...   - the arguments accompanying the event
+	--]]
+	--[[if(shouldUpdateMainSize(self) or shouldUpdateAltSize(self)) then
+		(self.PowerPrediction.UpdateSize or UpdateSize) (self, ...)
+	end]]
+
 	--[[ Override: PowerPrediction.Override(self, event, unit, ...)
 	Used to completely override the internal update function.
 
