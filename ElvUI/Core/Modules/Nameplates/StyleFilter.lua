@@ -46,8 +46,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
+local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local IsEquippedItem = C_Item.IsEquippedItem or IsEquippedItem
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 
@@ -1140,7 +1140,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.items and next(trigger.items) then
 		for item, value in pairs(trigger.items) do
 			if value then -- only run if at least one is selected
-				local hasItem = IsEquippedItem(item)
+				local hasItem = C_Item_IsEquippedItem(item)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
 			end
 		end
