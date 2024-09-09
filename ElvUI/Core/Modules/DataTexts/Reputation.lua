@@ -21,14 +21,17 @@ local STANDING = STANDING
 local UNKNOWN = UNKNOWN
 
 local function GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)
+	local current = currentStanding - currentReactionThreshold
 	local maximum = nextReactionThreshold - currentReactionThreshold
-	local current, diff = currentStanding - currentReactionThreshold, maximum
 
-	if diff == 0 then diff = 1 end -- prevent a division by zero
+	if maximum < 0 then
+		maximum = current -- account for negative maximum
+	end
 
 	if current == maximum then
 		return 1, 1, 100, true
 	else
+		local diff = (maximum ~= 0 and maximum) or 1 -- prevent a division by zero
 		return current, maximum, current / diff * 100
 	end
 end
