@@ -12,9 +12,7 @@ local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort,
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetSpellCharges = GetSpellCharges
 local GetTime = GetTime
-local IsEquippedItem = IsEquippedItem
 local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
@@ -49,7 +47,10 @@ local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+
+local IsEquippedItem = C_Item.IsEquippedItem or IsEquippedItem
 local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
+local GetSpellCharges = C_Spell.GetSpellCharges and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration, c.chargeModRate end end or GetSpellCharges
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 
