@@ -49,7 +49,7 @@ local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local GetSpellCooldown = C_Spell.GetSpellCooldown or GetSpellCooldown
+local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 
