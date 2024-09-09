@@ -47,10 +47,7 @@ local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-
 local IsEquippedItem = C_Item.IsEquippedItem or IsEquippedItem
-local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
-local GetSpellCharges = C_Spell.GetSpellCharges and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration, c.chargeModRate end end or GetSpellCharges
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 
@@ -466,7 +463,7 @@ function NP:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mis
 end
 
 function NP:StyleFilterCooldownCheck(names, mustHaveAll)
-	local _, gcd = GetSpellCooldown(61304)
+	local _, gcd = E:GetSpellCooldown(61304)
 	local total, count = 0, 0
 
 	for name, value in pairs(names) do
@@ -474,8 +471,8 @@ function NP:StyleFilterCooldownCheck(names, mustHaveAll)
 			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
 				total = total + 1 -- keep track of the names
 
-				local charges = GetSpellCharges(name)
-				local _, duration = GetSpellCooldown(name)
+				local charges = E:GetSpellCharges(name)
+				local _, duration = E:GetSpellCooldown(name)
 
 				if (charges and charges == 0 and value == 'ONCD') -- charges exist and the current number of charges is 0 means that it is completely on cooldown.
 				or (charges and charges > 0 and value == 'OFFCD') -- charges exist and the current number of charges is greater than 0 means it is not on cooldown.
