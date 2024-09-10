@@ -125,7 +125,8 @@ function AB:ExtraButtons_UpdateScale()
 	AB:ExtraButtons_ZoneScale()
 
 	local scale = E.db.actionbar.extraActionButton.scale
-	_G.ExtraActionBarFrame:SetScale(scale)
+	_G.ExtraActionBarFrame:SetScale(scale * E.uiscale)
+	_G.ExtraActionBarFrame:SetIgnoreParentScale(true)
 
 	local width, height = _G.ExtraActionBarFrame.button:GetSize()
 	ExtraActionBarHolder:SetSize(width * scale, height * scale)
