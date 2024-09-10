@@ -157,7 +157,8 @@ Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelxOffset =
 Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 
 Bags.args.general.args.autoToggle = ACH:Group(L["Auto Toggle"], nil, 11)
-Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 1, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = L["Guild Bank"], auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value end)
+Bags.args.general.args.autoToggle.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.db.bags.autoToggle.enable end, function(_, value) E.db.bags.autoToggle.enable = value B:SetupAutoToggle() end)
+Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 2, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = L["Guild Bank"], auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value end, function() return not E.db.bags.autoToggle.enable end)
 
 if E.Retail then
 	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = L["Soul Binds"]

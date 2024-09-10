@@ -1,5 +1,5 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 11
+local MAJOR, MINOR = 'LibAceConfigHelper', 12
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -28,14 +28,8 @@ end
 
 local function insertConfirm(opt, confirm)
 	local confirmType = type(confirm)
-	if confirmType == 'boolean' then
-		opt.confirm = true
-	elseif confirmType == 'string' then
-		opt.confirm = true
-		opt.confirmText = confirm
-	elseif confirmType == 'function' then
-		opt.confirm = confirm
-	end
+	opt.confirm = confirmType == 'function' and confirm or true -- func|bool
+	opt.confirmText = confirmType == 'string' and confirm or nil
 end
 
 function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)

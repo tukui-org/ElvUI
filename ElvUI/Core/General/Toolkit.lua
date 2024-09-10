@@ -370,19 +370,13 @@ local function FontTemplate(fs, font, size, style, skip)
 	-- grab values from profile before conversion
 	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
 	if not size then size = E.db.general.fontSize or P.general.fontSize end
+	if style == 'NONE' then style = '' end -- none isnt a real style
 
-	if style and strsub(style, 0, 6) == 'SHADOW' then
-		style = strsub(style, 7) -- shadow isnt a real style
-		fs:SetShadowOffset(1, -1)
-		fs:SetShadowColor(0, 0, 0, style == '' and 1 or 0.6)
-	else
-		fs:SetShadowOffset(0, 0)
-		fs:SetShadowColor(0, 0, 0, 0)
-	end
+	local shadow = strsub(style, 0, 6) == 'SHADOW'
+	if shadow then style = strsub(style, 7) end -- shadow isnt a real style
 
-	if style == 'NONE' or not style then
-		style = '' -- none isnt a real style
-	end
+	fs:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+	fs:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 
 	fs:SetFont(font or E.media.normFont, size, style)
 
@@ -391,29 +385,32 @@ end
 
 local function StyleButton(button, noHover, noPushed, noChecked)
 	if button.SetHighlightTexture and button.CreateTexture and not button.hover and not noHover then
-		local hover = button:CreateTexture()
+		button:SetHighlightTexture(E.media.blankTex)
+
+		local hover = button:GetHighlightTexture()
 		hover:SetInside()
 		hover:SetBlendMode('ADD')
-		hover:SetColorTexture(1, 1, 1, 0.3)
-		button:SetHighlightTexture(hover)
+		hover:SetColorTexture(1, 1, 1, .3)
 		button.hover = hover
 	end
 
 	if button.SetPushedTexture and button.CreateTexture and not button.pushed and not noPushed then
-		local pushed = button:CreateTexture()
+		button:SetPushedTexture(E.media.blankTex)
+
+		local pushed = button:GetPushedTexture()
 		pushed:SetInside()
 		pushed:SetBlendMode('ADD')
 		pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-		button:SetPushedTexture(pushed)
 		button.pushed = pushed
 	end
 
 	if button.SetCheckedTexture and button.CreateTexture and not button.checked and not noChecked then
-		local checked = button:CreateTexture()
+		button:SetCheckedTexture(E.media.blankTex)
+
+		local checked = button:GetCheckedTexture()
 		checked:SetInside()
 		checked:SetBlendMode('ADD')
 		checked:SetColorTexture(1, 1, 1, 0.3)
-		button:SetCheckedTexture(checked)
 		button.checked = checked
 	end
 

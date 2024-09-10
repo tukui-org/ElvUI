@@ -471,6 +471,7 @@ P.bags = {
 	},
 	shownBags = {},
 	autoToggle = {
+		enable = true,
 		bank = true,
 		mail = true,
 		vendor = true,
@@ -658,6 +659,7 @@ local NP_Castbar = {
 	displayTarget = false,
 	hideSpellName = false,
 	hideTime = false,
+	spellRename = true,
 	sourceInterrupt = true,
 	sourceInterruptClassColor = true,
 	castTimeFormat = 'CURRENT',
@@ -777,9 +779,8 @@ P.nameplates = {
 	},
 	filters = {
 		ElvUI_Boss = {triggers = {enable = false}},
-		ElvUI_Target = {triggers = {enable = true}},
+		ElvUI_Target = {triggers = {enable = false}},
 		ElvUI_NonTarget = {triggers = {enable = true}},
-		ElvUI_Incorporeal = {triggers = {enable = true}},
 	},
 	widgets = {
 		below = true,
@@ -852,6 +853,7 @@ P.nameplates = {
 			{r = 1.00, g = 0.80, b = 0.26, a = 0.3}, -- orange
 			{r = 1.00, g = 1.00, b = 0.26, a = 0.3}, -- yellow
 			{r = 0.66, g = 1.00, b = 0.40, a = 0.3}, -- green
+			{r = 0.36, g = 0.90, b = 0.80, a = 0.3}, -- turquoise
 		},
 		classResources = {
 			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
@@ -1420,6 +1422,7 @@ local UF_Castbar = {
 	iconSize = 42,
 	iconXOffset = -10,
 	iconYOffset = 0,
+	spellRename = true,
 	insideInfoPanel = true,
 	overlayOnFrame = 'None',
 	displayTarget = false,
@@ -2868,7 +2871,7 @@ P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Cata and ' [bonusbar:2] 8;
 P.actionbar.bar1.paging.WARLOCK = E.Cata and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.PRIEST = (E.Retail or E.Classic) and '[form:1, spec:3] 7;' or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 
 P.actionbar.bar3.enabled = true

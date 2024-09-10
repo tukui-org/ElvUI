@@ -89,7 +89,7 @@ local function UpdateColor(self, event, unit, powerType)
 	local element = self.AlternativePower
 
 	local r, g, b, color
-	local isPlayer = UnitIsPlayer(unit)
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 	local reaction = element.colorReaction and UnitReaction(unit, 'player')
 	local selection = element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)
 	local colorThreat = element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)

@@ -44,18 +44,21 @@ local function SkinAchievementAlert(frame)
 	frame.Unlocked:SetTextColor(1, 1, 1)
 	frame.Name:FontTemplate(nil, 12)
 
-	-- Icon
-	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
-	frame.Icon.Overlay:Kill()
+	local icon = frame.Icon
+	if icon then
+		icon.Overlay:Kill()
 
-	frame.Icon.Texture:ClearAllPoints()
-	frame.Icon.Texture:Point('LEFT', frame, 7, 0)
+		local texture = frame.Icon.Texture
+		if texture then
+			texture:SetTexCoord(unpack(E.TexCoords))
+			texture:ClearAllPoints()
+			texture:Point('LEFT', frame, 7, 0)
 
-	if not frame.Icon.Texture.b then
-		frame.Icon.Texture.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.Texture.b:SetTemplate()
-		frame.Icon.Texture.b:SetOutside(frame.Icon.Texture)
-		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
+			if not icon.backdrop then
+				icon:CreateBackdrop()
+				icon.backdrop:SetOutside(texture)
+			end
+		end
 	end
 end
 

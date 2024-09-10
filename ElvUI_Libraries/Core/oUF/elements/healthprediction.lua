@@ -152,6 +152,7 @@ local function Update(self, event, unit)
 
 		if(health < healAbsorb) then
 			hasOverHealAbsorb = true
+			healAbsorb = health
 		end
 	else
 		allIncomingHeal = allIncomingHeal - healAbsorb
@@ -169,8 +170,16 @@ local function Update(self, event, unit)
 	end
 
 	local hasOverAbsorb = false
-	if(health + allIncomingHeal + absorb >= maxHealth) and (absorb > 0) then
-		hasOverAbsorb = true
+	if(element.showRawAbsorb) then
+		if(absorb > maxHealth) then
+			hasOverAbsorb = true
+		end
+	elseif(health + allIncomingHeal + absorb >= maxHealth) then
+		if(absorb > 0) then
+			hasOverAbsorb = true
+		end
+
+		absorb = math.max(0, maxHealth - health - allIncomingHeal)
 	end
 
 	if(element.myBar) then
@@ -230,7 +239,32 @@ local function Update(self, event, unit)
 	end
 end
 
-local function Path(self, ...)
+local function shouldUpdateSize(self)
+	if(not self.Health) then return end
+
+	local isHoriz = self.Health:GetOrientation() == 'HORIZONTAL'
+	local newSize = self.Health[isHoriz and 'GetWidth' or 'GetHeight'](self.Health)
+	if(isHoriz ~= self.HealthPrediction.isHoriz or newSize ~= self.HealthPrediction.size) then
+		self.HealthPrediction.isHoriz = isHoriz
+		self.HealthPrediction.size = newSize
+
+		return true
+	end
+end
+
+local function Path(self, event, ...)
+	--[[ Override: HealthPrediction.UpdateSize(self, event, unit, ...)
+	Used to completely override the internal function for updating the widgets' size.
+
+	* self  - the parent object
+	* event - the event triggering the update (string)
+	* unit  - the unit accompanying the event (string)
+	* ...   - the arguments accompanying the event
+	--]]
+	--[[if(shouldUpdateSize(self)) then
+		(self.HealthPrediction.UpdateSize or UpdateSize) (self, ...)
+	end]]
+
 	--[[ Override: HealthPrediction.Override(self, event, unit)
 	Used to completely override the internal update function.
 
@@ -238,10 +272,13 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event
 	--]]
-	return (self.HealthPrediction.Override or Update) (self, ...)
+	return (self.HealthPrediction.Override or Update) (self, event, ...)
 end
 
 local function ForceUpdate(element)
+	element.isHoriz = nil
+	element.size = nil
+
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
@@ -305,6 +342,7 @@ local function Enable(self)
 		if oUF.isRetail then
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:RegisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
 		else
 			element:SetUseHealComm(true)
 		end
@@ -394,6 +432,7 @@ local function Disable(self)
 		if oUF.isRetail then
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
+			oUF:UnregisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
 		else
 			element:SetUseHealComm(false)
 		end

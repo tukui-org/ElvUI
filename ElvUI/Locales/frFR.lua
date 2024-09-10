@@ -220,7 +220,6 @@ L["Location"] = "Emplacement"
 L["Lock"] = "Verrouiller"
 L["LOGIN_MSG"] = ("Bienvenue sur *ElvUI|r version *%s|r. Tapez */ec|r pour accéder au menu de configuration en jeu. Si vous avez besoin d'assistance technique, vous pouvez nous rendre visite sur https://tukui.org ou rejoindre notre serveur Discord : https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Utilisez */ehelp|r pour obtenir la liste des commandes disponibles dans *ElvUI|r."):gsub('*', E.InfoColor)
-L["LOGIN_PTR"] = ("|cffff3333Vous n'utilisez pas actuellement la version PTR de *ElvUI|r, ce qui peut causer des problèmes.|r ^Veuillez télécharger la version PTR depuis le lien suivant.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Loot / Alert Frames"] = "Cadres de butin / alerte"
 L["Loot Frame"] = "Cadre de butin"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Seigneur ! C'est un miracle ! Le téléchargement a disparu comme un pet dans le vent ! Réessayez !"

@@ -246,7 +246,6 @@ G.unitframe.aurafilters.Blacklist = {
 	-- General
 		[186403] = List(),	-- Sign of Battle
 		[377749] = List(),	-- Joyous Journeys
-		[24755] = List(), 	-- Tricked or Treated
 		[6788] = List(),	-- Weakended Soul
 		[8326] = List(),	-- Ghost
 		[8733] = List(),	-- Blessing of Blackfathom

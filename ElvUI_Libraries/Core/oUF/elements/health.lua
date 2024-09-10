@@ -399,6 +399,7 @@ local function Enable(self)
 
 			element.TempLoss:Show()
 		end
+
 		return true
 	end
 end

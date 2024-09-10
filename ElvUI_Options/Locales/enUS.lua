@@ -26,6 +26,8 @@ L["MEDIUM"] = true
 L["TOOLTIP"] = true
 ----------------------------------
 
+L["BigWigs Spell Rename"] = true
+L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
 L["Add Aura ID"] = true
 L["Remove Aura"] = true
 L["Select Aura"] = true

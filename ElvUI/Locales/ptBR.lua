@@ -219,7 +219,6 @@ L["Location"] = "Localização"
 L["Lock"] = "Travar"
 L["LOGIN_MSG"] = ("Bem-vindo ao *ElvUI|r versão *%s|r, digite */ec|r para acessar as configurações dentro do jogo. Se você precisa de suporte técnico nos contate em https://tukui.org ou se entre no Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Por favor use */ehelp|r para ver a lista de comandos do *ElvUI|r."):gsub('*', E.InfoColor)
-L["LOGIN_PTR"] = ("|cffff3333Atualmente você não está utilizando uma versão de PTR do *ElvUI|r o que pode causar problemas.|r ^Por favor baixe a versão de PTR no link a seguir.|r %s"):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["Loot / Alert Frames"] = "Quadro de Saque / Alerta"
 L["Loot Frame"] = "Quadro de Saque"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Senhor! É um milagre! O Download sumiu como um peido no vento! Tente novamente!"

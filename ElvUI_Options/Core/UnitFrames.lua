@@ -377,6 +377,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
 	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
+	config.args.spellRename = ACH:Toggle(E.NewSign..L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = 50, max = ceil(E.screenWidth), step = 1 })
@@ -765,7 +766,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 20, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
 	config.args.generalGroup.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 30)
-	config.args.generalGroup.args.visibilityGroup.args.onlyHealer = ACH:Toggle(E.NewSign..L["Only Healer"], nil, 1, nil, nil, nil, nil, nil, nil, E.Classic or (groupName == 'raidpet' or groupName == 'pet'))
+	config.args.generalGroup.args.visibilityGroup.args.onlyHealer = ACH:Toggle(L["Only Healer"], nil, 1, nil, nil, nil, nil, nil, nil, E.Classic or (groupName == 'raidpet' or groupName == 'pet'))
 	config.args.generalGroup.args.visibilityGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 2)
 	config.args.generalGroup.args.visibilityGroup.args.notInCombat = ACH:Toggle(L["Hide Out of Combat"], nil, 3)
 	config.args.generalGroup.args.visibilityGroup.inline = true
@@ -1188,7 +1189,7 @@ Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11,
 Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
-for i = 1, 4 do
+for i in next, P.unitframe.colors.empoweredCast do
 	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 

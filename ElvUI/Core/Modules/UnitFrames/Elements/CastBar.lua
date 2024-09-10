@@ -17,7 +17,7 @@ local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
 do
-	local pipMapColor = {4, 1, 2, 3}
+	local pipMapColor = {4, 1, 2, 3, 5}
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
 		if castbar.pipColor then
 			local color = castbar.pipColor[pipMapColor[stage]]
@@ -25,7 +25,7 @@ do
 		end
 	end
 
-	local pipMapAlpha = {2, 3, 4, 1}
+	local pipMapAlpha = {2, 3, 4, 1, 5}
 	function UF:UpdatePipStep(stage) -- self is element
 		local onlyThree = (stage == 3 and self.numStages == 3) and 4
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
@@ -491,17 +491,22 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
+	local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
+	local spellName = spellRename or self.spellName
+
 	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 		if parent.unitframeType == 'player' then
 			if self.curTarget then
-				self.Text:SetText(self.spellName..' > '..self.curTarget)
+				self.Text:SetText(spellName..' > '..self.curTarget)
 			end
 		elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
 			local target = self.curTarget or UnitName(unit..'target')
 			if target and target ~= '' and target ~= UnitName(unit) then
-				self.Text:SetText(self.spellName..' > '..target)
+				self.Text:SetText(spellName..' > '..target)
 			end
 		end
+	elseif spellRename then
+		self.Text:SetText(spellName)
 	end
 
 	if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then

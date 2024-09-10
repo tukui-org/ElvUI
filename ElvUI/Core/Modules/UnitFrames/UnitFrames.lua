@@ -421,7 +421,7 @@ function UF:UpdateColors()
 		ElvUF.colors.empoweredCast = {}
 	end
 
-	for i = 1, 4 do
+	for i in next, P.unitframe.colors.empoweredCast do
 		ElvUF.colors.empoweredCast[i] = E:SetColorTable(ElvUF.colors.empoweredCast[i], db.empoweredCast[i])
 	end
 

@@ -1,6 +1,19 @@
+### Version 13.77 [ September 10th 2024 ]
+*   Unitframe range issue with Shaman resolved.
+*   Castbar option to allow BigWigs to rename spells to something better to understand (Example: 'Impaling Eruption' becomes 'Frontal').
+*   Nameplate Stylefilter that use Spell Cooldown trigger would cause an error.
+*   Nameplate Stylefilter ElvUI_Target disabled by default.
+*   Priest form paging readjusted on Classic Era.
+*   Actionbar Fade updated more for Skyriding.
+*   Raid Menu button not working on Classic Era.
+*   Button button scaled wrong when displayed during combat.
+*   Guild members getting an Achievement would sometimes cause an error.
+*   Auction house opening bags when Auto Toggle was unchecked.
+*   Cleaned up Zone Map skin.
+
 ### Version 13.76 [ August 27th 2024 ]
 *   More Unitframe range issues resolved.
-*   Fader updated again for dragon riding.
+*   Fader updated again for Skyriding.
 *   Bag module error when equipping a bag with 38 slots.
 *   Bank slots offset wrong when using Reverse Slots option.
 *   Priest form was unexpectedly paging when using Spirit of Redemption.
@@ -21,7 +34,7 @@
 *   Paladin Dawnlight and Eternal Flame added to Aura Indicator.
 *   Datatext Custom Currency dropdown not listing all currencies.
 *   Archaeology dig site progress bar position was not being set properly.
-*   Action bars not properly fading with dragon riding.
+*   Action bars not properly fading with Skyriding.
 *   Gold and Guild Datatext now have a max limit option to reduce the overall size by amount of toons.
 *   Reporting a group for Advertisement wasn't working in LFG.
 *   Auto track reputation not actually setting the new one.
@@ -53,7 +66,7 @@
     *   Quest progress bar to have gradient color again.
 *   LibDispel Bleed list updated.
 *   Auto Track Reputation would error about GetFactionInfo.
-*   Dragonriding Fader option wasn't working.
+*   Skyriding Fader option wasn't working.
 *   Evoker Sense Power added to Aura Watch.
 *   Blacklisted Sweltering Heat and Stinky RP buffs.
 *   Clamp Nameplates not working properly on Classic and Cataclysm.
@@ -443,7 +456,7 @@
 *   Gold can be picked up from the Bags by clicking on the text.
 *   Tooltip Level line on Russian client was incorrect.
 *   Classic Era: Actionbars to show count for spells that require reagents.
-*   Actionbars now handle fading better with Dragon-flying.
+*   Actionbars now handle fading better with Skyriding.
 *   Added Evoker Time Dilation to TurtleBuffs (Thanks wing5wong).
 *   Added Dawn of the Infinite auras to Raid Buffs and Debuffs.
 *   Tag Update Rate default changed to 0.2 and minimum value lowered to 0.05
@@ -490,7 +503,7 @@
 
 ### Version 13.35 [ June 20th 2023 ]
 *   Skinned a dropdown on the Profession Orders frame.
-*   Actionbar for Dragonflight fading sometimes didn't work properly on login.
+*   Actionbar for Skyriding fading sometimes didn't work properly on login.
 *   Small tweaks to the Profession and Settings skins.
 *   Ready for Wrath patch.
 
@@ -500,7 +513,7 @@
 *   Nameplate Widgets not appearing for Goblins.
 *   Nameplate Widgets now have option to place below, including offsets.
 *   Number of Datatexts slider on Custom Panel now functions properly.
-*   Global Fade now works properly while Dragonriding, various Hide issues are now resolved.
+*   Global Fade now works properly while Skyriding, various Hide issues are now resolved.
 *   Using Spec Datatext to open Talent Frame will no longer cause button issues.
 *   Warlock Singe Magic from Grimoire of Sacrifice will trigger dispel highlight.
 *   Withering Vulnerability added to Raid Debuff filters.
@@ -557,7 +570,7 @@
 *   StyleFilters now have a Heath Glow action for Pixel Glow and Shine. (Thanks Eltreum)
 *   Minimap Cluster would cause an error.
 *   Tag Update Rate not applying on loading in.
-*   Inherit Global fade will not fade during Dragonflying.
+*   Inherit Global fade will not fade during Skyriding.
 *   Tag error trying to use [classpowercolor] on Classic Era.
 
 ### Version 13.29 [ March 21st 2023 ]
@@ -670,7 +683,7 @@
     *   Mage Greater Invisibility swapped to the aura with a duration.
     *   Added Raszageth auras to Raid Filters and cleaned up Mythic+ Affixes.
     *   Added Evoker Nullifying shroud (PvP) to Turtle Buffs. (Thanks shrom)
-    *   Blacklisted some annoyance auras: Riding Along (Dragonflying extra seat), Silent Lava, Activated Defense Systems, and Surrounding Storm (Strunraan).
+    *   Blacklisted some annoyance auras: Riding Along (Skyriding extra seat), Silent Lava, Activated Defense Systems, and Surrounding Storm (Strunraan).
 *   **Aura Indicator:**
     *   Resto Druid: adds Tranquility and Adaptive Swarm by default and moves Focused Growth (PvP) slightly left to not stack on top of Spring Blossoms.
     *   Priest: Echo of Light from self and Power Infusion from any unit will display as well and moves Pain Supp and Guardian Spirit to the bottom.
@@ -718,7 +731,7 @@
 *   Bag assignments can be sorted now, also work on classic (looting to that bag seems to work as well).
 *   3D Portraits can properly fade out again (using a work-around as this is still bugged).
 *   Actionbar Auto Add New Spells setting wasn't working correctly (this is handled by a CVar now).
-*   Dragonflying was messing up Release Cast spells.
+*   Skyriding was messing up Release Cast spells.
 *   Microbar has a new option for the art it displays (ActionBars > MicroBar > Use Icons).
 *   RaidUtility would still appear as a black boxes when disabled, that is sorted now.
 *   MainMenuBar taint involving PetBar and SetPointBase should be resolved finally.

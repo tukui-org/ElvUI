@@ -658,7 +658,7 @@ do
 	                 (string?)
 	* visibility   - macro conditional(s) which define when to display the header (string).
 	* ...          - further argument pairs. Consult [Group Headers](https://warcraft.wiki.gg/wiki/SecureGroupHeaderTemplate)
-	                 for possible values.
+	                 for possible values. If preferred, the attributes can be an associative table.
 
 	In addition to the standard group headers, oUF implements some of its own attributes. These can be supplied by the
 	layout, but are optional. PingableUnitFrameTemplate is inherited for Ping support.

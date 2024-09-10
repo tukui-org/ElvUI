@@ -29,14 +29,17 @@ local UNKNOWN = UNKNOWN
 local QuestRep = 0
 
 local function GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)
+	local current = currentStanding - currentReactionThreshold
 	local maximum = nextReactionThreshold - currentReactionThreshold
-	local current, diff = currentStanding - currentReactionThreshold, maximum
 
-	if diff == 0 then diff = 1 end -- prevent a division by zero
+	if maximum < 0 then
+		maximum = current -- account for negative maximum
+	end
 
 	if current == maximum then
 		return 1, 1, 100, true
 	else
+		local diff = (maximum ~= 0 and maximum) or 1 -- prevent a division by zero
 		return current, maximum, current / diff * 100
 	end
 end
@@ -106,17 +109,17 @@ function DB:ReputationBar_Update()
 		elseif textFormat == 'PERCENT' then
 			displayString = format('%s: %d%% [%s]', name, percent, standing)
 		elseif textFormat == 'CURMAX' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
+			displayString = format('%s: %s / %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
+			displayString = format('%s: %s / %d%% [%s]', name, E:ShortValue(current), percent, standing)
 		elseif textFormat == 'CUR' then
 			displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
 		elseif textFormat == 'REM' then
 			displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
 		elseif textFormat == 'CURREM' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
+			displayString = format('%s: %s / %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
+			displayString = format('%s: %s / %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
 		end
 	end
 

@@ -1563,6 +1563,7 @@ B.ExcludeGrays = E.Retail and {
 	[62072] = "Robble's Wobbly Staff",
 	[67410] = "Very Unlucky Rock",
 	[190382] = "Warped Pocket Dimension",
+	[226681] = "Sizzling Cinderpollen"
 } or { -- TBC and Classic
 	[32888] = "The Relics of Terokk",
 	[28664] = "Nitrin's Instructions",
@@ -3346,12 +3347,22 @@ end
 
 function B:AutoToggleFunction()
 	local option = B.AutoToggleEvents[self]
-	if not option or not B.db.autoToggle[option] then return end
+	if not option then return end
 
-	if not B.AutoToggleClose[self] then
+	if B.db.autoToggle[option] and not B.AutoToggleClose[self] then
 		B:OpenBags()
 	else
 		B:CloseBags()
+	end
+end
+
+function B:SetupAutoToggle()
+	for event in next, B.AutoToggleEvents do
+		if B.db.autoToggle.enable then
+			B:RegisterEvent(event, B.AutoToggleFunction)
+		else
+			B:UnregisterEvent(event)
+		end
 	end
 end
 
@@ -3508,6 +3519,7 @@ function B:Initialize()
 	B:SecureHook('ToggleBackpack')
 	B:SecureHook('BankFrame_ShowPanel', 'SetBankSelectedTab')
 
+	B:SetupAutoToggle()
 	B:DisableBlizzard()
 	B:UpdateGoldText()
 
@@ -3520,10 +3532,6 @@ function B:Initialize()
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 	B:RegisterEvent('CVAR_UPDATE', 'UpdateBindLines')
-
-	for event in next, B.AutoToggleEvents do
-		B:RegisterEvent(event, B.AutoToggleFunction)
-	end
 
 	--Enable/Disable 'Loot to Leftmost Bag'
 	SetInsertItemsLeftToRight(B.db.reverseLoot)

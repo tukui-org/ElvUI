@@ -211,7 +211,7 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 	* self   - the widget holding the aura buttons
 	* unit   - the unit on which the aura is cast (string)
 	* button - the button displaying the aura (Button)
-	* ...    - the return values from [UnitAura](http://wowprogramming.com/docs/api/UnitAura.html)
+	* ...    - the return values from [UnitAura](https://warcraft.wiki.gg/wiki/API_UnitAura)
 
 	## Returns
 

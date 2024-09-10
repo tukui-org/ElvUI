@@ -208,7 +208,7 @@ colors.power[Enum.PowerType.ArcaneCharges or 16] = colors.power.ARCANE_CHARGES
 colors.power.ESSENCE = oUF:CreateColor(100, 173, 206)
 colors.power[Enum.PowerType.Essence or 19] = colors.power.ESSENCE
 
--- alternate power, originally sourced from CompactUnitFrame.lua
+-- alternate power, sourced from Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua
 colors.power.ALTERNATE = oUF:CreateColor(0.7, 0.7, 0.6)
 colors.power[Enum.PowerType.Alternate or 10] = colors.power.ALTERNATE
 
@@ -230,7 +230,7 @@ local function colorsAndPercent(a, b, ...)
 	return relperc, select((segment * 3) + 1, ...)
 end
 
--- http://www.wowwiki.com/ColorGradient
+-- https://warcraft.wiki.gg/wiki/ColorGradient
 --[[ Colors: oUF:RGBColorGradient(a, b, ...)
 Used to convert a percent value (the quotient of `a` and `b`) into a gradient from 2 or more RGB colors. If more than 2
 colors are passed, the gradient will be between the two colors which perc lies in an evenly divided range. A RGB color

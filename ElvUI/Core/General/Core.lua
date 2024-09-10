@@ -29,7 +29,6 @@ local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or Get
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = C_AddOns.DisableAddOn
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
 local GetCVarBool = C_CVar.GetCVarBool
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -58,7 +57,6 @@ local LSM = E.Libs.LSM
 --Constants
 E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
-E.toc = tonumber(GetAddOnMetadata('ElvUI', 'X-Interface'))
 E.version, E.versionString, E.versionDev, E.versionGit = E:ParseVersionString('ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
@@ -92,7 +90,13 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.valueColorUpdateFuncs = {}
+E.valueColorUpdateFuncs = setmetatable({}, {
+	__newindex = function(_, key, value)
+		if type(key) == 'function' then return end
+		rawset(E.valueColorUpdateFuncs, key, value)
+	end
+})
+
 E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
@@ -2016,11 +2020,5 @@ function E:Initialize()
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
 		print(L["LOGIN_MSG_HELP"])
-	end
-
-	if E.wowtoc > E.toc then
-		local msg = format(L["LOGIN_PTR"], 'https://api.tukui.org/v1/download/dev/elvui/ptr')
-		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
-		print(msg)
 	end
 end

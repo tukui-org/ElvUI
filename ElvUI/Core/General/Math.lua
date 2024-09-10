@@ -71,7 +71,7 @@ function E:IsEvenNumber(num)
 	return num % 2 == 0
 end
 
--- http://www.wowwiki.com/ColorGradient
+-- https://warcraft.wiki.gg/wiki/ColorGradient
 function E:ColorGradient(perc, ...)
 	local value = select('#', ...)
 	if perc >= 1 then

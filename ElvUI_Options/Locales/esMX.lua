@@ -26,6 +26,8 @@ L["MEDIUM"] = "Medio"
 L["TOOLTIP"] = "Descripción Emergente"
 ----------------------------------
 
+L["BigWigs Spell Rename"] = "BigWigs Hechizo Renombrar"
+L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = "Permite a los BigWigs cambiar el nombre de hechizos de encuentro específicos de tu barra de lanzamiento a algo más fácil de entender. Ejemplo: 'Impaling Eruption' se convierte en 'Frontal' y 'Twilight Massacre' en 'Dash'."
 L["Add Aura ID"] = true
 L["Remove Aura"] = true
 L["Select Aura"] = true

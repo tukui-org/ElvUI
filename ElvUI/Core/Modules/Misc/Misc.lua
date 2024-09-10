@@ -346,6 +346,15 @@ function M:BossBanner_ConfigureLootFrame(lootFrame)
 	lootFrame.IconHitBox.IconOverlay2:Hide()
 end
 
+function M:ToggleInterrupt()
+	local announce = E.db.general.interruptAnnounce
+	if announce and announce ~= 'NONE' then
+		M:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	else
+		M:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	end
+end
+
 function M:Initialize()
 	M.Initialized = true
 
@@ -356,6 +365,7 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:LoadQueueStatus()
 	M:ZoneTextToggle()
+	M:ToggleInterrupt()
 
 	M:RegisterEvent('MERCHANT_SHOW')
 	M:RegisterEvent('RESURRECT_REQUEST')
@@ -393,10 +403,6 @@ function M:Initialize()
 				M.QuestRewardGoldIconFrame:Hide()
 			end
 		end)
-	end
-
-	if E.db.general.interruptAnnounce ~= 'NONE' then
-		M:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
 	if E.Retail then

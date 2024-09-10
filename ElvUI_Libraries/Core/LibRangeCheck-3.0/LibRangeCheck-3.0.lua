@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 21 -- based off real minor version: 23
+local MINOR_VERSION = 22 -- based off real minor version: 23
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -307,8 +307,8 @@ tinsert(ResSpells.PRIEST, 2006) -- Resurrection (40 yards, level 10)
 
 -- Rogues
 if isRetail then
-  tinsert(FriendSpells.ROGUE, 36554) -- Shadowstep (Assassination, Subtlety) (25 yards, level 18) -- works on friendly in retail
-  tinsert(FriendSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24) -- this works for range, keep it in friendly as well for retail but on classic this is melee range and will return min 0 range 0
+  tinsert(FriendSpells.ROGUE, 36554) -- Shadowstep (Assassination, Subtlety) (25 yards, level 18); works on friendly in retail
+  tinsert(FriendSpells.ROGUE, 921) -- Pick Pocket (10 yards, level 24); this works for range, keep it in friendly as well for retail but on classic this is melee range and will return min 0 range 0
 else
   tinsert(HarmSpells.ROGUE, 2764) -- Throw (30 yards)
 end
@@ -333,6 +333,7 @@ end
 
 tinsert(HarmSpells.SHAMAN, 370) -- Purge (30 yards)
 tinsert(HarmSpells.SHAMAN, 188196) -- Lightning Bolt (40 yards)
+tinsert(HarmSpells.SHAMAN, 188389) -- Flame Shock (40 yards); Fallback for when Lightning Bolt fails due to hero talents
 tinsert(HarmSpells.SHAMAN, 73899) -- Primal Strike (Melee Range)
 
 if not isRetail then
@@ -469,7 +470,7 @@ local FriendItems = {
 
 if isRetail then
   FriendItems[1] = {
-    90175, -- Gin-Ji Knife Set -- doesn't seem to work for pets (always returns nil)
+    90175, -- Gin-Ji Knife Set; doesn't seem to work for pets (always returns nil)
   }
   FriendItems[4] = {
     129055, -- Shoe Shine Kit
@@ -605,9 +606,7 @@ local lastUpdate = 0
 local checkers_Spell = setmetatable({}, {
   __index = function(t, spellIdx)
     local func = function(unit)
-      if CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-        return true
-      end
+      return CustomSpellBookItemInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1
     end
     t[spellIdx] = func
     return func
@@ -1071,12 +1070,14 @@ function lib:init(forced)
   if self.initialized and not forced then
     return
   end
+
   self.initialized = true
   local _, playerClass = UnitClass("player")
   local _, playerRace = UnitRace("player")
 
   local interactList = InteractLists[playerRace] or DefaultInteractList
   self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
+
   local changed = false
   if updateCheckers(self.friendRC, self.friendRCInCombat, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
     changed = true
@@ -1099,6 +1100,7 @@ function lib:init(forced)
   if updateCheckers(self.petRC, self.petRCInCombat, createCheckerList(PetSpells[playerClass], nil, interactList)) then
     changed = true
   end
+
   if changed and self.callbacks then
     self.callbacks:Fire(self.CHECKERS_CHANGED)
   end
@@ -1436,16 +1438,14 @@ function lib:activate()
     local frame = CreateFrame("Frame")
     self.frame = frame
 
-    frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
     frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
+    frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
     frame:RegisterEvent("SPELLS_CHANGED")
-
-    if isEra or isCata then
-      frame:RegisterEvent("CVAR_UPDATE")
-    end
 
     if isRetail or isCata then
       frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+    elseif isEra then
+      frame:RegisterEvent("CVAR_UPDATE")
     end
 
     local _, playerClass = UnitClass("player")

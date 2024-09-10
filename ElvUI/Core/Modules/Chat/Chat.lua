@@ -266,16 +266,12 @@ do --this can save some main file locals
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
 			-- Elv
-			z['Elv-Spirestone']			= itsElv
-			z['Elvz-Spirestone']		= itsElv
-			z['Fleshlite-Spirestone']	= itsElv
-			z['Elvidan-Spirestone']		= itsElv
-			z['Elvilas-Spirestone']		= itsElv
-			z['Fraku-Spirestone']		= itsElv
-			z['Jarvix-Spirestone']		= itsElv
-			z['Watermelon-Spirestone']	= itsElv
-			z['Zinxbe-Spirestone']		= itsElv
-			z['Whorlock-Spirestone']	= itsElv
+			z['Player-127-0AB2F946']	= itsElv -- Paladin
+			z['Player-5-0E83B943']		= itsElv -- Druid
+			z['Player-5-0E8393EF']		= itsElv -- Monk
+			z['Player-3675-0A85E395']	= itsElv -- Warrior
+			z['Player-5-0E8301B7']		= itsElv -- Mage
+			z['Player-5-0E885971']		= itsElv -- Shaman
 			-- Repooc
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
@@ -464,6 +460,11 @@ do --this can save some main file locals
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
+			-- AcidWeb
+			z['Player-3713-08235A93']	= Gem
+			z['Player-3713-0819EA18']	= Gem
+			z['Player-3713-08FC8520']	= Gem
+			z['Player-3713-0AD1682D']	= Gem
 		end
 	end
 end

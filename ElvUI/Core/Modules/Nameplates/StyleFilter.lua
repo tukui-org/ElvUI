@@ -12,9 +12,7 @@ local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort,
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetSpellCharges = GetSpellCharges
 local GetTime = GetTime
-local IsEquippedItem = IsEquippedItem
 local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
@@ -48,8 +46,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
 local C_Timer_NewTimer = C_Timer.NewTimer
+local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local GetSpellCooldown = C_Spell.GetSpellCooldown or GetSpellCooldown
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 
@@ -465,7 +463,7 @@ function NP:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mis
 end
 
 function NP:StyleFilterCooldownCheck(names, mustHaveAll)
-	local _, gcd = GetSpellCooldown(61304)
+	local _, gcd = E:GetSpellCooldown(61304)
 	local total, count = 0, 0
 
 	for name, value in pairs(names) do
@@ -473,8 +471,8 @@ function NP:StyleFilterCooldownCheck(names, mustHaveAll)
 			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
 				total = total + 1 -- keep track of the names
 
-				local charges = GetSpellCharges(name)
-				local _, duration = GetSpellCooldown(name)
+				local charges = E:GetSpellCharges(name)
+				local _, duration = E:GetSpellCooldown(name)
 
 				if (charges and charges == 0 and value == 'ONCD') -- charges exist and the current number of charges is 0 means that it is completely on cooldown.
 				or (charges and charges > 0 and value == 'OFFCD') -- charges exist and the current number of charges is greater than 0 means it is not on cooldown.
@@ -1142,7 +1140,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.items and next(trigger.items) then
 		for item, value in pairs(trigger.items) do
 			if value then -- only run if at least one is selected
-				local hasItem = IsEquippedItem(item)
+				local hasItem = C_Item_IsEquippedItem(item)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
 			end
 		end
