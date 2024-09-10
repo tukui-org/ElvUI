@@ -174,7 +174,7 @@ local function Update(self, event, unit)
 		if(absorb > maxHealth) then
 			hasOverAbsorb = true
 		end
-	elseif (health + allIncomingHeal + absorb >= maxHealth) and (absorb > 0) then
+	elseif(absorb > 0) and (health + allIncomingHeal + absorb >= maxHealth) then
 		hasOverAbsorb = true
 	end
 
