@@ -30,7 +30,7 @@ local function SplashFrame_OnHide(frame)
 	_G.AlertFrame:SetAlertsEnabled(true, 'splashFrame')
 	-- ObjectiveTrackerFrame:Update()
 
-	if not InCombatLockdown() and not frame.showingQuestDialog and fromGameMenu then
+	if fromGameMenu and not frame.showingQuestDialog and not InCombatLockdown() then
 		ShowUIPanel(_G.GameMenuFrame)
 	end
 
