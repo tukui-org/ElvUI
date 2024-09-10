@@ -1,3 +1,16 @@
+### Version 13.77 [ September 10th 2024 ]
+*   Unitframe range issue with Shaman resolved.
+*   Castbar option to allow BigWigs to rename spells to something better to understand (Example: 'Impaling Eruption' becomes 'Frontal').
+*   Nameplate Stylefilter that use Spell Cooldown trigger would cause an error.
+*   Nameplate Stylefilter ElvUI_Target disabled by default.
+*   Priest form paging readjusted on Classic Era.
+*   Actionbar Fade updated more for Skyriding.
+*   Raid Menu button not working on Classic Era.
+*   Button button scaled wrong when displayed during combat.
+*   Guild members getting an Achievement would sometimes cause an error.
+*   Auction house opening bags when Auto Toggle was unchecked.
+*   Cleaned up Zone Map skin.
+
 ### Version 13.76 [ August 27th 2024 ]
 *   More Unitframe range issues resolved.
 *   Fader updated again for Skyriding.
