@@ -55,7 +55,6 @@ local function SkinAchievementAlert(frame)
 		frame.Icon.Texture.b = CreateFrame('Frame', nil, frame)
 		frame.Icon.Texture.b:SetTemplate()
 		frame.Icon.Texture.b:SetOutside(frame.Icon.Texture)
-		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
 end
 
