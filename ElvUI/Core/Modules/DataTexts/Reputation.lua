@@ -86,17 +86,17 @@ local function OnEvent(self)
 		elseif textFormat == 'PERCENT' then
 			displayString = format('%s: %d%% [%s]', name, percent, standing)
 		elseif textFormat == 'CURMAX' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
+			displayString = format('%s: %s / %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), standing)
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, standing)
+			displayString = format('%s: %s / %d%% [%s]', name, E:ShortValue(current), percent, standing)
 		elseif textFormat == 'CUR' then
 			displayString = format('%s: %s [%s]', name, E:ShortValue(current), standing)
 		elseif textFormat == 'REM' then
 			displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), standing)
 		elseif textFormat == 'CURREM' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
+			displayString = format('%s: %s / %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), standing)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
+			displayString = format('%s: %s / %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), standing)
 		end
 	end
 
