@@ -471,6 +471,7 @@ P.bags = {
 	},
 	shownBags = {},
 	autoToggle = {
+		enable = true,
 		bank = true,
 		mail = true,
 		vendor = true,
