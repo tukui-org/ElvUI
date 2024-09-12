@@ -7,6 +7,7 @@ local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
 local MouseIsOver = MouseIsOver
+local BNConnected = BNConnected
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
@@ -329,6 +330,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 	return bnIndex
 end
 
+local isBNOnline
 local function BuildBNTable(total)
 	for _, v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
@@ -471,7 +473,7 @@ local function OnEnter()
 	if not dataValid then
 		-- only retrieve information for all on-line members when we actually view the tooltip
 		if numberOfFriends > 0 then BuildFriendTable(numberOfFriends) end
-		if totalBNet > 0 then BuildBNTable(totalBNet) end
+		if totalBNet > 0 and isBNOnline then BuildBNTable(totalBNet) end
 		dataValid = true
 	end
 
@@ -561,6 +563,7 @@ end
 
 local function OnEvent(self, event, message)
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
+	isBNOnline = BNConnected()
 	local _, numBNetOnline = BNGetNumFriends()
 
 	-- special handler to detect friend coming online or going offline
