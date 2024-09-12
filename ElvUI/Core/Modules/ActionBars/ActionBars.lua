@@ -37,7 +37,6 @@ local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
 local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
-local UnitPowerBarID = UnitPowerBarID
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
