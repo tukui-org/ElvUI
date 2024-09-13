@@ -154,7 +154,6 @@ local function OnEnter()
 
 	if not enteredFrame then
 		enteredFrame = true
-		RequestRaidInfo()
 	end
 
 	if E.Retail then
@@ -210,23 +209,6 @@ local function OnEnter()
 	end
 
 	if db.savedInstances then
-		wipe(lockedInstances.raids)
-		wipe(lockedInstances.dungeons)
-
-		for i = 1, GetNumSavedInstances() do
-			local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
-			local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
-			if name and (locked or extended) and (isRaid or allowID[difficulty]) then
-				local isLFR = lfrID[difficulty]
-				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-				local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-				local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
-				local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
-
-				tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
-			end
-		end
-
 		if next(lockedInstances.raids) then
 			if DT.tooltip:NumLines() > 0 then
 				DT.tooltip:AddLine(' ')
@@ -315,10 +297,32 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
+	if event == 'UPDATE_INSTANCE_INFO' or event == 'ENCOUNTER_END' then
+		wipe(lockedInstances.raids)
+		wipe(lockedInstances.dungeons)
+
+		for i = 1, GetNumSavedInstances() do
+			local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
+			local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
+			if name and (locked or extended) and (isRaid or allowID[difficulty]) then
+				local isLFR = lfrID[difficulty]
+				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+				local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+				local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
+				local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
+
+				tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
+			end
+		end
+
+		if enteredFrame then
+			OnEnter(self)
+		end
+	end
 	if event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
 		OnLeave()
-	elseif event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
-		OnEnter(self)
+	elseif event == 'ELVUI_FORCE_UPDATE' then
+		RequestRaidInfo()
 	end
 end
 
@@ -357,4 +361,4 @@ local function ApplySettings(self, hex)
 	OnUpdate(self, 20000)
 end
 
-DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
+DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED', 'ENCOUNTER_END' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
