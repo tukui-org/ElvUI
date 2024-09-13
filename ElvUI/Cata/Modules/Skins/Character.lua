@@ -482,10 +482,6 @@ function S:CharacterFrame()
 	S:HandleCloseButton(_G.ReputationDetailCloseButton)
 	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
 
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
 
@@ -496,9 +492,6 @@ function S:CharacterFrame()
 			break
 		end
 	end
-
-	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
