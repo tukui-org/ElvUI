@@ -65,26 +65,10 @@ local lfrID = {
 	[17] = true
 }
 
-local OnUpdate, db
+local db
 
 local function ToTime(start, seconds)
 	return SecondsToTime(start, not seconds, nil, 3)
-end
-
-local function ApplySettings(self, hex)
-	if not db then
-		db = E.global.datatexts.settings[self.name]
-	end
-
-	updateTime = db.seconds and 1 or 5
-
-	local sec = db.seconds and ':|r%02d' or '|r%s'
-	displayFormats.eu_nocolor = strjoin('', '%02d', ':|r%02d', sec)
-	displayFormats.na_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
-	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
-	displayFormats.na_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
-
-	OnUpdate(self, 20000)
 end
 
 local function ConvertTime(h, m, s)
@@ -225,61 +209,63 @@ local function OnEnter()
 		end
 	end
 
-	wipe(lockedInstances.raids)
-	wipe(lockedInstances.dungeons)
+	if db.savedInstances then
+		wipe(lockedInstances.raids)
+		wipe(lockedInstances.dungeons)
 
-	for i = 1, GetNumSavedInstances() do
-		local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
-		local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
-		if name and (locked or extended) and (isRaid or allowID[difficulty]) then
-			local isLFR = lfrID[difficulty]
-			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
-			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
-			local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
-			local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
+		for i = 1, GetNumSavedInstances() do
+			local info = { GetSavedInstanceInfo(i) } -- we want to send entire info
+			local name, _, _, difficulty, locked, extended, _, isRaid = unpack(info)
+			if name and (locked or extended) and (isRaid or allowID[difficulty]) then
+				local isLFR = lfrID[difficulty]
+				local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
+				local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
+				local difficultyLetter = (displayMythic and difficultyTag[4]) or ((isHeroic or displayHeroic) and difficultyTag[3]) or (isLFR and difficultyTag[1]) or difficultyTag[2]
+				local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
 
-			tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
-		end
-	end
-
-	if next(lockedInstances.raids) then
-		if DT.tooltip:NumLines() > 0 then
-			DT.tooltip:AddLine(' ')
-		end
-		DT.tooltip:AddLine(L["Saved Raid(s)"])
-
-		sort(lockedInstances.raids, sortFunc)
-
-		for _, info in next, lockedInstances.raids do
-			local difficultyLetter, buttonImg = info[2], info[3]
-			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
-
-			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				tinsert(lockedInstances[isRaid and 'raids' or 'dungeons'], { sortName, difficultyLetter, buttonImg, info })
 			end
 		end
-	end
 
-	if next(lockedInstances.dungeons) then
-		if DT.tooltip:NumLines() > 0 then
-			DT.tooltip:AddLine(' ')
+		if next(lockedInstances.raids) then
+			if DT.tooltip:NumLines() > 0 then
+				DT.tooltip:AddLine(' ')
+			end
+			DT.tooltip:AddLine(L["Saved Raid(s)"])
+
+			sort(lockedInstances.raids, sortFunc)
+
+			for _, info in next, lockedInstances.raids do
+				local difficultyLetter, buttonImg = info[2], info[3]
+				local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
+
+				local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+				if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
+					DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				else
+					DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				end
+			end
 		end
-		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		sort(lockedInstances.dungeons, sortFunc)
+		if next(lockedInstances.dungeons) then
+			if DT.tooltip:NumLines() > 0 then
+				DT.tooltip:AddLine(' ')
+			end
+			DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-		for _, info in next, lockedInstances.dungeons do
-			local difficultyLetter, buttonImg = info[2], info[3]
-			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
+			sort(lockedInstances.dungeons, sortFunc)
 
-			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
-			else
-				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+			for _, info in next, lockedInstances.dungeons do
+				local difficultyLetter, buttonImg = info[2], info[3]
+				local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(info[4])
+
+				local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
+				if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
+					DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				else
+					DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), ToTime(reset), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
+				end
 			end
 		end
 	end
@@ -336,7 +322,7 @@ local function OnEvent(self, event)
 	end
 end
 
-function OnUpdate(self, t)
+local function OnUpdate(self, t)
 	self.timeElapsed = (self.timeElapsed or updateTime) - t
 	if self.timeElapsed > 0 then return end
 	self.timeElapsed = updateTime
@@ -353,6 +339,22 @@ function OnUpdate(self, t)
 
 	local Hr, Min, Sec, AmPm = GetTimeValues()
 	self.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'na_color'], Hr, Min, Sec, APM[AmPm])
+end
+
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	updateTime = db.seconds and 1 or 5
+
+	local sec = db.seconds and ':|r%02d' or '|r%s'
+	displayFormats.eu_nocolor = strjoin('', '%02d', ':|r%02d', sec)
+	displayFormats.na_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
+	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
+	displayFormats.na_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
+
+	OnUpdate(self, 20000)
 end
 
 DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
