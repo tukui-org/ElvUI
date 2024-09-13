@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 22 -- based off real minor version: 23
+local MINOR_VERSION = 22 -- based off real minor version: 26
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -191,8 +191,8 @@ end
 -- Evoker
 tinsert(HarmSpells.EVOKER, 362969) -- Azure Strike (25 yards)
 
-tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
 tinsert(FriendSpells.EVOKER, 355913) -- Emerald Blossom (25 yards)
+tinsert(FriendSpells.EVOKER, 361469) -- Living Flame (25 yards)
 
 tinsert(ResSpells.EVOKER, 361227) -- Return (40 yards)
 
@@ -296,12 +296,9 @@ tinsert(FriendSpells.PRIEST, 527) -- Purify / Dispel Magic (40 yards retail, 30 
 tinsert(FriendSpells.PRIEST, 2061) -- Flash Heal (40 yards, level 3 retail, level 20 tbc)
 
 tinsert(HarmSpells.PRIEST, 589) -- Shadow Word: Pain (40 yards)
+tinsert(HarmSpells.PRIEST, 8092) -- Mindblast (40 yards retail; 30 yards, level 10)
 tinsert(HarmSpells.PRIEST, 585) -- Smite (40 yards)
 tinsert(HarmSpells.PRIEST, 5019) -- Shoot (30 yards)
-
-if not isRetail then
-  tinsert(HarmSpells.PRIEST, 8092) -- Mindblast (30 yards, level 10)
-end
 
 tinsert(ResSpells.PRIEST, 2006) -- Resurrection (40 yards, level 10)
 
@@ -332,13 +329,14 @@ if not isRetail then
 end
 
 tinsert(HarmSpells.SHAMAN, 370) -- Purge (30 yards)
+tinsert(HarmSpells.SHAMAN, 8042) -- Earth Shock (40 yards retail; 20 yards, level 4, rank 1)
+tinsert(HarmSpells.SHAMAN, 117014) -- Elemental Blast (40 yards)
 tinsert(HarmSpells.SHAMAN, 188196) -- Lightning Bolt (40 yards)
 tinsert(HarmSpells.SHAMAN, 188389) -- Flame Shock (40 yards); Fallback for when Lightning Bolt fails due to hero talents
 tinsert(HarmSpells.SHAMAN, 73899) -- Primal Strike (Melee Range)
 
 if not isRetail then
   tinsert(HarmSpells.SHAMAN, 403) -- Lightning Bolt (30 yards, level 1, rank 1)
-  tinsert(HarmSpells.SHAMAN, 8042) -- Earth Shock (20 yards, level 4, rank 1)
 end
 
 tinsert(ResSpells.SHAMAN, 2008) -- Ancestral Spirit (40 yards, level 13)

@@ -37,7 +37,6 @@ local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
 local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
-local UnitPowerBarID = UnitPowerBarID
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
@@ -61,7 +60,6 @@ local LSM = E.Libs.LSM
 local Masque = E.Masque
 local FlyoutMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Flyouts')
 local VehicleMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Leave Vehicle')
-local VIGOR_BAR_ID = 631 -- this is the oval & diamond variant
 
 local buttonDefaults = {
 	hideElements = {},
@@ -894,7 +892,8 @@ end
 
 do
 	local function CanGlide() -- required when reloading because the event wont fire yet
-		return UnitPowerBarID('player') == VIGOR_BAR_ID
+		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
+		return isGliding or canGlide
 	end
 
 	local canGlide = false -- sometimes the Vigor bar is not activated yet
