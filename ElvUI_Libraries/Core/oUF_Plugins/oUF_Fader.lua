@@ -22,6 +22,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 
 local GetMouseFocus = GetMouseFocus or function()
 	local frames = _G.GetMouseFoci()
@@ -76,6 +77,10 @@ local function Update(self, event, unit)
 	-- Instance Difficulty is enabled and we haven't checked yet
 	if element.InstanceDifficulty and not element.InstancedCached then
 		updateInstanceDifficulty(element)
+	end
+
+	if event == 'ForceUpdate' then
+		isGliding = C_PlayerInfo_GetGlidingInfo()
 	end
 
 	-- try to get the unit from the parent
