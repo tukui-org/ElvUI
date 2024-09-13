@@ -253,9 +253,9 @@ function S:CharacterFrame()
 	S:HandleCloseButton(_G.ReputationDetailCloseButton)
 	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
 
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, unpack = select, unpack
+local unpack, select = unpack, select
 local hooksecurefunc = hooksecurefunc
 
 local function SetPlayTexture()
@@ -19,7 +19,7 @@ function S:Blizzard_TimeManager()
 	local TimeManagerFrame = _G.TimeManagerFrame
 	S:HandleFrame(TimeManagerFrame, true)
 	TimeManagerFrame:Size(185, 240)
-	TimeManagerFrame:Point('TOPRIGHT', -1, -210)
+	TimeManagerFrame:Point('TOPRIGHT', -1, -186)
 
 	select(7, TimeManagerFrame:GetRegions()):Point('TOP', 0, -5)
 
@@ -34,10 +34,6 @@ function S:Blizzard_TimeManager()
 	_G.TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 
 	_G.TimeManagerAlarmTimeFrame:Point('TOPLEFT', 12, -65)
-
-	S:HandleDropDownBox(_G.TimeManagerAlarmHourDropDown, 80)
-	S:HandleDropDownBox(_G.TimeManagerAlarmMinuteDropDown, 80)
-	S:HandleDropDownBox(_G.TimeManagerAlarmAMPMDropDown, 80)
 
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 

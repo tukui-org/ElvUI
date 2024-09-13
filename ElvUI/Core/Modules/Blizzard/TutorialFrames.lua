@@ -5,11 +5,6 @@ local _G = _G
 local wipe, next = wipe, next
 local hooksecurefunc = hooksecurefunc
 
-function BL:KillBlizzard() -- current not E.Retail
-	_G.Advanced_UIScaleSlider:Kill()
-	_G.Advanced_UseUIScale:Kill()
-end
-
 local function AcknowledgeTips()
 	for frame in _G.HelpTip.framePool:EnumerateActive() do
 		frame:Acknowledge()

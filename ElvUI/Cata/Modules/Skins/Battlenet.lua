@@ -22,7 +22,6 @@ function S:BattleNetFrames()
 
 	ReportFrame.Comment:StripTextures()
 	S:HandleEditBox(ReportFrame.Comment)
-	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 
 	S:HandleButton(ReportFrame.ReportButton)
 	S:HandleButton(ReportFrame.CloseButton)
