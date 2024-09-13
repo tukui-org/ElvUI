@@ -103,11 +103,26 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	for _, frame in next, { _G.ChatMenu.NineSlice, _G.EmoteMenu.NineSlice, _G.LanguageMenu.NineSlice, _G.VoiceMacroMenu.NineSlice } do
-		if frame == _G.ChatMenu then
-			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) menu:ClearAllPoints() menu:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
-		else
-			frame:HookScript('OnShow', function(menu) menu:SetTemplate('Transparent', true) menu:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+	do
+		local menuBackdrop = function(s)
+			s:SetTemplate('Transparent')
+		end
+
+		local chatMenuBackdrop = function(s)
+			s:SetTemplate('Transparent')
+
+			s:ClearAllPoints()
+			s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
+		end
+
+		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
+			menu:StripTextures()
+
+			if index == 1 then -- ChatMenu
+				menu:HookScript('OnShow', chatMenuBackdrop)
+			else
+				menu:HookScript('OnShow', menuBackdrop)
+			end
 		end
 	end
 

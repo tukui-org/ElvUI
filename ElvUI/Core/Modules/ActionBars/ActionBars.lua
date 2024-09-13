@@ -1222,28 +1222,6 @@ do
 			-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 			_G.VerticalMultiBarsContainer:Size(10) -- dummy values so GetTop etc doesnt fail without replacing
 			AB:SetNoopsi(_G.VerticalMultiBarsContainer)
-
-			-- hide some interface options we dont use
-			if E.Classic then
-				_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
-				_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
-				_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
-				_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
-				_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
-				_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.00001)
-				_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
-				_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.00001)
-				_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-				_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.00001)
-				_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
-				_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.00001)
-				_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
-
-				_G.InterfaceOptionsCombatPanelAutoSelfCast:Hide()
-				_G.InterfaceOptionsCombatPanelSelfCastKeyDropDown:Hide()
-
-				AB:SecureHook('BlizzardOptionsPanel_OnEvent')
-			end
 		end
 
 		for name in next, untaintButtons do

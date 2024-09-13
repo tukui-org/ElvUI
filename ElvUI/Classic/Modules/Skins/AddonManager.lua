@@ -22,7 +22,6 @@ function S:AddonList()
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
-	S:HandleDropDownBox(AddonCharacterDropDown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 

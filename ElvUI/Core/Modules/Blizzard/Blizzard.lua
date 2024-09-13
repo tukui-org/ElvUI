@@ -165,10 +165,6 @@ function BL:Initialize()
 		end
 	end
 
-	if E.Classic then
-		BL:KillBlizzard()
-	end
-
 	if E.Retail then
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
