@@ -53,6 +53,7 @@ local GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local GetItemInfo = C_Item.GetItemInfo
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
+local IsPartyWalkIn = C_PartyInfo and C_PartyInfo.IsPartyWalkIn
 local IsFriend = C_FriendList.IsFriend
 
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
@@ -96,6 +97,10 @@ function M:ZoneTextToggle()
 	end
 end
 
+local function IsRandomGroup()
+	return IsPartyLFG() or IsPartyWalkIn() -- This is the API for Delves
+end
+
 function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local inGroup = IsInGroup()
 	if not inGroup then return end
@@ -104,7 +109,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local announce = spellName and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and strmatch(event, '_INTERRUPT')
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
 
-	local inRaid, inPartyLFG = IsInRaid(), E.Retail and IsPartyLFG()
+	local inRaid, inPartyLFG = IsInRaid(), E.Retail and IsRandomGroup()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns 'false'
 	local _, instanceType = GetInstanceInfo()
