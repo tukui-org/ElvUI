@@ -79,13 +79,14 @@ local function Update(self, event, unit)
 		updateInstanceDifficulty(element)
 	end
 
-	-- try to get the unit from the parent
+	-- stuff for Skyriding
 	if event == 'ForceUpdate' then
 		isGliding = C_PlayerInfo_GetGlidingInfo()
 	elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
 		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
 	end
 
+	-- try to get the unit from the parent
 	if not unit then
 		unit = self.unit
 	end
