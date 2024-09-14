@@ -79,12 +79,10 @@ local function Update(self, event, unit)
 		updateInstanceDifficulty(element)
 	end
 
+	-- try to get the unit from the parent
 	if event == 'ForceUpdate' then
 		isGliding = C_PlayerInfo_GetGlidingInfo()
-	end
-
-	-- try to get the unit from the parent
-	if event == 'PLAYER_IS_GLIDING_CHANGED' then
+	elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
 		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
 	end
 

@@ -318,11 +318,10 @@ local function OnEvent(self, event)
 		if enteredFrame then
 			OnEnter(self)
 		end
-	end
-	if event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
-		OnLeave()
 	elseif event == 'ELVUI_FORCE_UPDATE' then
 		RequestRaidInfo()
+	elseif event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
+		OnLeave()
 	end
 end
 

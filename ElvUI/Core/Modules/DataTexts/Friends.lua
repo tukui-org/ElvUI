@@ -330,7 +330,6 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 	return bnIndex
 end
 
-local isBNOnline
 local function BuildBNTable(total)
 	for _, v in pairs(tableList) do wipe(v) end
 	wipe(BNTable)
@@ -458,6 +457,7 @@ local function TooltipAddXLine(X, header, ...)
 	DT.tooltip[X](DT.tooltip, ...)
 end
 
+local isBNOnline
 local function OnEnter()
 	DT.tooltip:ClearLines()
 	lastTooltipXLineHeader = nil
@@ -563,8 +563,8 @@ end
 
 local function OnEvent(self, event, message)
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
-	isBNOnline = BNConnected()
 	local _, numBNetOnline = BNGetNumFriends()
+	isBNOnline = BNConnected()
 
 	-- special handler to detect friend coming online or going offline
 	-- when this is the case, we invalidate our buffered table and update the

@@ -2779,7 +2779,10 @@ function B:OpenBags()
 	end
 
 	B.BagFrame:Show()
-	if E.Retail then B:UpdateTokensIfVisible() end
+
+	if E.Retail then
+		B:UpdateTokensIfVisible()
+	end
 
 	PlaySound(IG_BACKPACK_OPEN)
 
@@ -3390,10 +3393,6 @@ function B:UpdateBindLines(_, cvar)
 	end
 end
 
-function B:TokenFrame_SetTokenWatched(_, id, watched)
-	B:UpdateTokensIfVisible()
-end
-
 function B:GuildBankShow()
 	local frame = _G.GuildBankFrame
 	if frame and frame:IsShown() and B.db.autoToggle.guildBank then
@@ -3498,7 +3497,7 @@ function B:Initialize()
 	if E.Cata then
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	elseif E.Retail then
-		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'TokenFrame_SetTokenWatched')
+		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'UpdateTokensIfVisible')
 	end
 
 	if E.Retail then
