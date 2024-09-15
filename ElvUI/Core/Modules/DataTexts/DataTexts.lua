@@ -33,6 +33,14 @@ local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
 
+local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
+local BNInviteFriend = BNInviteFriend
+local BNRequestInviteFriend = BNRequestInviteFriend
+local InviteUnit = C_PartyInfo.InviteUnit
+local GetDisplayedInviteType = GetDisplayedInviteType
+local SetItemRef = SetItemRef
+local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
+
 local MISCELLANEOUS = MISCELLANEOUS
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
 local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
@@ -738,6 +746,44 @@ do
 		})
 
 		DT:SortMenuList(QuickList)
+	end
+
+	function DT:Player_Invite(_, name, guid)
+		if not (name and name ~= '') then return end
+		local isBNet = type(name) == 'number'
+
+		if guid then
+			local inviteType = GetDisplayedInviteType(guid)
+			if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
+				if isBNet then
+					BNInviteFriend(name)
+				else
+					InviteUnit(name)
+				end
+			elseif inviteType == 'REQUEST_INVITE' then
+				if isBNet then
+					BNRequestInviteFriend(name)
+				elseif E.Retail then
+					C_PartyInfo_RequestInviteFromUnit(name)
+				end
+			end
+		else
+			-- if for some reason guid isnt here fallback and just try to invite them
+			-- this is unlikely but having a fallback doesnt hurt
+			if isBNet then
+				BNInviteFriend(name)
+			else
+				InviteUnit(name)
+			end
+		end
+	end
+
+	function DT:Player_Whisper(_, name, battleNet)
+		if battleNet then
+			ChatFrame_SendBNetTell(name)
+		else
+			SetItemRef( 'player:'..name, format('|Hplayer:%1$s|h[%1$s]|h',name), 'LeftButton' )
+		end
 	end
 end
 

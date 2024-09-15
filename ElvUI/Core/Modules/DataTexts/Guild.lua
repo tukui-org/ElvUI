@@ -5,7 +5,6 @@ local _G = _G
 local ipairs, select, next, sort, unpack, wipe, ceil = ipairs, select, next, sort, unpack, wipe, ceil
 local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
 
-local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetGuildRosterMOTD = GetGuildRosterMOTD
@@ -15,14 +14,11 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
-local SetItemRef = SetItemRef
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local IsAltKeyDown = IsAltKeyDown
 
-local InviteUnit = C_PartyInfo.InviteUnit
-local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 local LoadAddOn = C_AddOns.LoadAddOn
 
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
@@ -196,30 +192,6 @@ local menuList = {
 	{ text = _G.CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
-local function inviteClick(_, name, guid)
-	E.EasyMenu:Hide()
-
-	if not (name and name ~= '') then return end
-
-	if guid then
-		local inviteType = GetDisplayedInviteType(guid)
-		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
-			InviteUnit(name)
-		elseif inviteType == 'REQUEST_INVITE' and E.Retail then
-			C_PartyInfo_RequestInviteFromUnit(name)
-		end
-	else
-		-- if for some reason guid isnt here fallback and just try to invite them
-		-- this is unlikely but having a fallback doesnt hurt
-		InviteUnit(name)
-	end
-end
-
-local function whisperClick(_, playerName)
-	E.EasyMenu:Hide()
-	SetItemRef( 'player:'..playerName, format('|Hplayer:%1$s|h[%1$s]|h',playerName), 'LeftButton' )
-end
-
 local function Click(self, btn)
 	if btn == 'RightButton' and IsInGuild() then
 		local menuCountWhispers = 0
@@ -238,11 +210,11 @@ local function Click(self, btn)
 					name = name..' |cffaaaaaa*|r'
 				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = inviteClick}
+					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
 				end
 
 				menuCountWhispers = menuCountWhispers + 1
-				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = whisperClick}
+				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = DT.Player_Whisper}
 			end
 		end
 

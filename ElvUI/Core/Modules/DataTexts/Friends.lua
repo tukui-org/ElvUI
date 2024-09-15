@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local type, ipairs, pairs, select = type, ipairs, pairs, select
+local ipairs, pairs, select = ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
@@ -10,17 +10,13 @@ local MouseIsOver = MouseIsOver
 local BNConnected = BNConnected
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
-local BNInviteFriend = BNInviteFriend
-local BNRequestInviteFriend = BNRequestInviteFriend
 local BNSetCustomMessage = BNSetCustomMessage
-local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsAltKeyDown = IsAltKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SendChatMessage = SendChatMessage
-local SetItemRef = SetItemRef
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
@@ -32,9 +28,6 @@ local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
-local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
-local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
-local InviteUnit = C_PartyInfo.InviteUnit
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
@@ -74,48 +67,6 @@ local menuList = {
 	},
 	{ text = _G.BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show('SET_BN_BROADCAST') end },
 }
-
-local function inviteClick(_, name, guid)
-	E.EasyMenu:Hide()
-
-	if not (name and name ~= '') then return end
-	local isBNet = type(name) == 'number'
-
-	if guid then
-		local inviteType = GetDisplayedInviteType(guid)
-		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
-			if isBNet then
-				BNInviteFriend(name)
-			else
-				InviteUnit(name)
-			end
-		elseif inviteType == 'REQUEST_INVITE' then
-			if isBNet then
-				BNRequestInviteFriend(name)
-			elseif E.Retail then
-				C_PartyInfo_RequestInviteFromUnit(name)
-			end
-		end
-	else
-		-- if for some reason guid isnt here fallback and just try to invite them
-		-- this is unlikely but having a fallback doesnt hurt
-		if isBNet then
-			BNInviteFriend(name)
-		else
-			InviteUnit(name)
-		end
-	end
-end
-
-local function whisperClick(_, name, battleNet)
-	E.EasyMenu:Hide()
-
-	if battleNet then
-		ChatFrame_SendBNetTell(name)
-	else
-		SetItemRef( 'player:'..name, format('|Hplayer:%1$s|h[%1$s]|h',name), 'LeftButton' )
-	end
-end
 
 local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r'
 local levelNameClassString = '|cff%02x%02x%02x%d|r %s%s%s'
@@ -389,11 +340,11 @@ local function Click(self, btn)
 						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
-						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = whisperClick}
+						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = DT.Player_Whisper}
 
 						if inGroup(info.name) == '' then
 							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = inviteClick}
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
 						end
 					end
 				end
@@ -423,7 +374,7 @@ local function Click(self, btn)
 
 					if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
 						menuCountWhispers = menuCountWhispers + 1
-						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = whisperClick}
+						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.Player_Whisper}
 					end
 
 					if (info.client and info.client == wowString) and inGroup(info.characterName, info.realmName) == '' then
@@ -432,7 +383,7 @@ local function Click(self, btn)
 
 						if info.wowProjectID == retailID then
 							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName), arg1 = info.gameID, arg2 = info.guid, notCheckable=true, func = inviteClick}
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName), arg1 = info.gameID, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
 						end
 					end
 				end
