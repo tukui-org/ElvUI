@@ -273,6 +273,7 @@ do --this can save some main file locals
 			z['Player-5-0E8301B7']		= itsElv -- Mage
 			z['Player-5-0E885971']		= itsElv -- Shaman
 			-- Repooc
+			z['Dapooc-Spirestone']		= itsPooc	-- [Alliance] Druid
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
 			z['Fragmented-Stormrage']	= itsPooc	-- [Alliance] Warlock
 			z['Sifupooc-Stormrage']		= itsPooc	-- [Alliance] Monk
