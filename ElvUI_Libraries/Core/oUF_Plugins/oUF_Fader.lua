@@ -80,10 +80,12 @@ local function Update(self, event, unit)
 	end
 
 	-- stuff for Skyriding
-	if event == 'ForceUpdate' then
-		isGliding = C_PlayerInfo_GetGlidingInfo()
-	elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
-		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+	if oUF.isRetail then
+		if event == 'ForceUpdate' then
+			isGliding = C_PlayerInfo_GetGlidingInfo()
+		elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
+			isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+		end
 	end
 
 	-- try to get the unit from the parent
