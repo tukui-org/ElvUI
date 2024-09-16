@@ -477,7 +477,11 @@ function S:CharacterFrame()
 
 	_G.ReputationDetailFrame:StripTextures()
 	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', -31, -12)
+	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 1, 0)
+
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
 
 	S:HandleCloseButton(_G.ReputationDetailCloseButton)
 	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
@@ -493,6 +497,7 @@ function S:CharacterFrame()
 		end
 	end
 
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
