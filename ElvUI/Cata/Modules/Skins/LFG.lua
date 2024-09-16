@@ -246,6 +246,8 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
+	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown)
+
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
 
@@ -303,6 +305,10 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
 	S:HandleCheckBox(LFGListFrame.EntryCreation.CrossFactionGroup.CheckButton)
+
+	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropdown)
+	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropdown)
+	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
