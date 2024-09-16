@@ -36,7 +36,7 @@ function S:SkinEngravings()
 	_G.EngravingFrameSideInset:Kill()
 
 	S:HandleEditBox(_G.EngravingFrameSearchBox)
-	S:HandleDropDownBox(_G.EngravingFrameFilterDropDown, 210)
+	S:HandleDropDownBox(_G.EngravingFrame.FilterDropdown, 176)
 	S:HandleScrollBar(_G.EngravingFrameScrollFrameScrollBar)
 
 	hooksecurefunc('EngravingFrame_UpdateRuneList', UpdateRuneList)
