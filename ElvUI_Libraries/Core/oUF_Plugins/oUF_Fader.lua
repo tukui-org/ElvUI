@@ -22,6 +22,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
 
 local GetMouseFocus = GetMouseFocus or function()
 	local frames = _G.GetMouseFoci()
@@ -78,11 +79,16 @@ local function Update(self, event, unit)
 		updateInstanceDifficulty(element)
 	end
 
-	-- try to get the unit from the parent
-	if event == 'PLAYER_IS_GLIDING_CHANGED' then
-		isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+	-- stuff for Skyriding
+	if oUF.isRetail then
+		if event == 'ForceUpdate' then
+			isGliding = C_PlayerInfo_GetGlidingInfo()
+		elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
+			isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+		end
 	end
 
+	-- try to get the unit from the parent
 	if not unit then
 		unit = self.unit
 	end

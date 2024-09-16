@@ -253,6 +253,7 @@ local function CreateDTOptions(name, data)
 			optionTable.args.seconds = ACH:Toggle(L["Seconds"], L["Show seconds on the time display."], 6)
 			optionTable.args.localTime = ACH:Toggle(L["Local Time"], L["If not set to true then the server time will be displayed instead."], 7)
 			optionTable.args.flashInvite = ACH:Toggle(L["Flash Invites"], L["This will allow you to toggle flashing of the time datatext when there are calendar invites."], 8, nil, nil, nil, nil, nil, nil, E.Classic)
+			optionTable.args.savedInstances = ACH:Toggle(L["Saved Instances"], nil, 9)
 		end
 	end
 end
