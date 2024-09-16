@@ -15,11 +15,26 @@ function S:WorldMapFrame()
 
 	WorldMapFrame.MiniBorderFrame:StripTextures()
 	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
-	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -25)
+	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -2)
 
+	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown)
+	S:HandleDropDownBox(_G.WorldMapContinentDropdown)
+	S:HandleDropDownBox(_G.WorldMapZoneDropdown)
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
-	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropDown, 'RIGHT', 3, 3)
+	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
+	_G.WorldMapContinentDropdown:Width(205)
+	_G.WorldMapContinentDropdown:Height(33)
+
+	_G.WorldMapZoneDropdown:Point('LEFT', _G.WorldMapContinentDropdown, 'RIGHT', -20, 0)
+	_G.WorldMapZoneDropdown:Width(205)
+	_G.WorldMapZoneDropdown:Height(33)
+
+	_G.WorldMapZoneMinimapDropdown:Point('RIGHT', _G.WorldMapContinentDropdown, 'LEFT', 20, 0)
+	_G.WorldMapZoneMinimapDropdown:Width(205)
+	_G.WorldMapZoneMinimapDropdown:Height(33)
+
+	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 3, 3)
 	_G.WorldMapZoomOutButton:Height(23)
 	_G.WorldMapZoomOutButton:Width(100)
 	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
