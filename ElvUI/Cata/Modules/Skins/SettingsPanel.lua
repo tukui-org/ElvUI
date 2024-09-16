@@ -5,8 +5,42 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local function HandleDropDownArrow(button, direction)
+	button.NormalTexture:SetAlpha(0)
+	button.PushedTexture:SetAlpha(0)
+	button:GetHighlightTexture():SetAlpha(0)
+
+	local dis = button:GetDisabledTexture()
+	S:SetupArrow(dis, direction)
+	dis:SetVertexColor(0, 0, 0, .7)
+	dis:SetDrawLayer('OVERLAY')
+	dis:SetInside(button, 4, 4)
+
+	local tex = button:CreateTexture(nil, 'ARTWORK')
+	tex:SetInside(button, 4, 4)
+	S:SetupArrow(tex, direction)
+end
+
+local function HandleOptionDropDown(option)
+	local button = option.Button
+	S:HandleButton(button)
+	button.NormalTexture:SetAlpha(0)
+	button.HighlightTexture:SetAlpha(0)
+
+	HandleDropDownArrow(option.DecrementButton, 'left')
+	HandleDropDownArrow(option.IncrementButton, 'right')
+end
+
+local function HandleDropdown(option)
+	S:HandleButton(option.Dropdown)
+	S:HandleButton(option.DecrementButton)
+	S:HandleButton(option.IncrementButton)
+end
+
 local function HandleTabs(tab)
-	if tab then tab:StripTextures(true) end
+	if tab then
+		tab:StripTextures(true)
+	end
 end
 
 local function UpdateKeybindButtons(self)
@@ -48,6 +82,29 @@ local function HandleCheckbox(checkbox)
 	end
 end
 
+local function HandleControlGroup(controls)
+	for _, child in next, { controls:GetChildren() } do
+		if child.SliderWithSteppers then
+			S:HandleStepSlider(child.SliderWithSteppers)
+		end
+		if child.Checkbox then
+			S:HandleCheckBox(child.Checkbox)
+		end
+		if child.Control then
+			HandleDropdown(child.Control)
+		end
+	end
+end
+
+local function HandleControlTab(tab)
+	tab:StripTextures(nil, true)
+	tab:CreateBackdrop()
+
+	local spacing = E.Retail and 3 or 10
+	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -12 or -14)
+	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
+end
+
 function S:SettingsPanel()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -80,7 +137,7 @@ function S:SettingsPanel()
 				end
 
 				local toggle = child.Toggle
-				if toggle then -- ToDo Handle the toggle. DF
+				if toggle then
 					toggle:GetPushedTexture():SetAlpha(0)
 				end
 
@@ -97,10 +154,24 @@ function S:SettingsPanel()
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
 			if not child.IsSkinned then
-				if child.CheckBox then
-					HandleCheckbox(child.CheckBox) -- this is atlas shit, so S.HandleCheckBox wont work right now
+				if child.NineSlice then
+					child.NineSlice:SetAlpha(0)
+					child:CreateBackdrop('Transparent')
+					child.backdrop:Point('TOPLEFT', 15, -30)
+					child.backdrop:Point('BOTTOMRIGHT', -30, -5)
 				end
-
+				if child.Checkbox then
+					HandleCheckbox(child.Checkbox)
+				end
+				if child.Dropdown then
+					HandleOptionDropDown(child.Dropdown)
+				end
+				if child.Control then
+					HandleDropdown(child.Control)
+				end
+				if child.ColorBlindFilterDropDown then
+					HandleOptionDropDown(child.ColorBlindFilterDropDown)
+				end
 				if child.Button then
 					if child.Button:GetWidth() < 250 then
 						S:HandleButton(child.Button)
@@ -143,9 +214,25 @@ function S:SettingsPanel()
 					S:HandleButton(child.Button1)
 					S:HandleButton(child.Button2)
 				end
-				if child.NewButton and child.DeleteButton then
-					S:HandleButton(child.NewButton)
-					S:HandleButton(child.DeleteButton)
+				if child.Controls then
+					for i = 1, #child.Controls do
+						local control = child.Controls[i]
+						if control.SliderWithSteppers then
+							S:HandleStepSlider(control.SliderWithSteppers)
+						end
+					end
+				end
+				if child.BaseTab then
+					HandleControlTab(child.BaseTab)
+				end
+				if child.RaidTab then
+					HandleControlTab(child.RaidTab)
+				end
+				if child.BaseQualityControls then
+					HandleControlGroup(child.BaseQualityControls)
+				end
+				if child.RaidQualityControls then
+					HandleControlGroup(child.RaidQualityControls)
 				end
 
 				child.IsSkinned = true
