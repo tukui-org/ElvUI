@@ -35,6 +35,10 @@ function S:Blizzard_TimeManager()
 
 	_G.TimeManagerAlarmTimeFrame:Point('TOPLEFT', 12, -65)
 
+	S:HandleDropDownBox(_G.TimeManagerAlarmTimeFrame.HourDropdown, 80)
+	S:HandleDropDownBox(_G.TimeManagerAlarmTimeFrame.MinuteDropdown, 80)
+	S:HandleDropDownBox(_G.TimeManagerAlarmTimeFrame.AMPMDropdown, 80)
+
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 
 	_G.TimeManagerAlarmEnabledButton:Point('LEFT', 16, -45)
