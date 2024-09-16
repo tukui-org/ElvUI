@@ -23,6 +23,7 @@ function S:AddonList()
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
+	S:HandleDropDownBox(AddonList.Dropdown)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 
 	_G.AddonListForceLoad:Size(26)
