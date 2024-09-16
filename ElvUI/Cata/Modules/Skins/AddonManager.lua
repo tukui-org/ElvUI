@@ -15,13 +15,14 @@ function S:AddonList()
 
 	local AddonList = _G.AddonList
 	local maxShown = _G.MAX_ADDONS_DISPLAYED
-	local AddonCharacterDropDown = _G.AddonCharacterDropDown
+	local AddonListDropdown = _G.AddonList.Dropdown
 
 	S:HandleFrame(AddonList, true)
 	S:HandleButton(AddonList.EnableAllButton, true)
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)
 	S:HandleButton(AddonList.CancelButton, true)
+	S:HandleDropDownBox(AddonList.Dropdown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
 
@@ -46,7 +47,7 @@ function S:AddonList()
 
 				-- Get the character from the current list (nil is all characters)
 				local checkall
-				local character = UIDropDownMenu_GetSelectedValue(AddonCharacterDropDown)
+				local character = UIDropDownMenu_GetSelectedValue(AddonListDropdown)
 				if character == true then
 					character = nil
 				else
