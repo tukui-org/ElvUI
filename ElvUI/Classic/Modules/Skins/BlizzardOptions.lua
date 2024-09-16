@@ -197,7 +197,7 @@ function S:BlizzardOptions()
 		end
 		if group.subTypes then
 			for k in ipairs(group.subTypes) do
-				S:HandleCheckBox(_G[frame:GetName()..'CheckBox'..index..'_'..k])
+				S:HandleCheckBox(_G[frame:GetName()..'Checkbox'..index..'_'..k])
 			end
 		end
 	end)
