@@ -26,9 +26,7 @@ local function OpenMenu(manager, region, menuDescription)
 		-- Initial context menu
 		SkinFrame(menu)
 		-- SubMenus
-		menuDescription:AddMenuAcquiredCallback(function(subMenu)
-			SkinFrame(subMenu)
-		end)
+		menuDescription:AddMenuAcquiredCallback(SkinFrame)
 	end
 end
 
