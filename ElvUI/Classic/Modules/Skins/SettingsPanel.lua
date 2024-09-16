@@ -247,7 +247,7 @@ function S:SettingsPanel()
 			elseif child:IsObjectType('Button') then
 				S:HandleButton(child)
 			elseif child:IsObjectType('Frame') and (child.Left and child.Middle and child.Right) then
-				S:HandleDropdownBox(child)
+				S:HandleDropDownBox(child)
 			end
 		end
 	end
