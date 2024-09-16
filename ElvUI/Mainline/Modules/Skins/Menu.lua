@@ -20,10 +20,15 @@ local function SkinFrame(frame)
 	end
 end
 
-local function OpenMenu(manager)
+local function OpenMenu(manager, region, menuDescription)
 	local menu = manager:GetOpenMenu()
 	if menu then
+		-- Initial context menu
 		SkinFrame(menu)
+		-- SubMenus
+		menuDescription:AddMenuAcquiredCallback(function(subMenu)
+			SkinFrame(subMenu)
+		end)
 	end
 end
 
