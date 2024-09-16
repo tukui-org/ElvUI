@@ -273,9 +273,9 @@ function S:Blizzard_AchievementUI()
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
+	S:HandleDropDownBox(_G.AchievementFrameFilterDropdown)
+	_G.AchievementFrameFilterDropdown:ClearAllPoints()
+	_G.AchievementFrameFilterDropdown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
 
 	-- ScrollBars
 	local scrollBars = {
