@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 45
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 46
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -17,12 +17,12 @@ Plugin Table Format:  (for reference only).
 	}
 
 LibElvUIPlugin API:
-	RegisterPlugin(name, callback, isLib, libVersion)
+	RegisterPlugin(name, callback, isLib, version)
 	-- Registers a module with the given name and option callback:
-		name		- name of plugin
-		verion		- version number
+		name		- name of the plugin
+		callback	- callback to call when ElvUI_Options is loaded
 		isLib		- plugin is a library
-		libVersion	- plugin library version (optional, defaults to 1)
+		version		- optional, version of the plugin (pulls version info from metadata, libraries can define their own)
 
 	HookInitialize(table, function)
 	-- Posthook ElvUI Initialize function:
@@ -107,7 +107,7 @@ local function checkElvUI()
 	end
 end
 
-function lib:RegisterPlugin(name, callback, isLib, libVersion)
+function lib:RegisterPlugin(name, callback, isLib, version)
 	if not IsAddOnLoaded(name) then return end
 	checkElvUI()
 
@@ -123,9 +123,9 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 
 	if isLib then
 		plugin.isLib = true
-		plugin.version = libVersion or 1
+		plugin.version = version or 1
 	else
-		plugin.version = (name == MAJOR and MINOR) or GetAddOnMetadata(name, 'Version') or UNKNOWN
+		plugin.version = (name == MAJOR and MINOR) or version or GetAddOnMetadata(name, 'Version') or UNKNOWN
 	end
 
 	lib.plugins[name] = plugin
