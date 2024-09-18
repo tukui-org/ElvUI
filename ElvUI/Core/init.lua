@@ -113,11 +113,10 @@ do -- this is different from E.locale because we need to convert for ace locale 
 	end
 end
 
-function E:ParseVersionString(addon, projectVariable)
+function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		local main = GetAddOnMetadata(addon, projectVariable or 'X-Version')
-		return main, main..'-git', nil, true
+		return 13.77, '13.77-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
