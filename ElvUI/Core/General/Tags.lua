@@ -451,8 +451,7 @@ end
 ------------------------------------------------------------------------
 
 E:AddTag('classcolor:target', 'UNIT_TARGET', function(unit)
-	local targetName = UnitName(unit..'target')
-	if targetName then
+	if UnitExists(unit..'target') then
 		return _TAGS.classcolor(unit..'target')
 	end
 end)
