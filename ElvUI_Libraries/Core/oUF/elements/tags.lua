@@ -688,7 +688,7 @@ local bracketFuncs = {}
 local buffer = {}
 
 local function getTagName(tag)
-	local tagStart = tag:match('>+()') or 2
+	local tagStart = tag:match('.*>()') or 2
 	local tagEnd = (tag:match('.-()<') or -1) - 1
 
 	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
