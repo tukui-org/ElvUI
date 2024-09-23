@@ -387,15 +387,15 @@ do --this can save some main file locals
 		end
 	elseif portal == 'EU' then
 		if E.Classic then
-			-- Luckyone Seasonal (5826: Lone Wolf EU, 5827: Living Flame EU)
-			z['Player-5826-0202765F']	= ElvGreen -- [Alliance] Hunter
-			z['Player-5826-020F7F10']	= ElvGreen -- [Alliance] Paladin
-			z['Player-5826-02172E79']	= ElvGreen -- [Alliance] Warlock
-			z['Player-5826-0234253E']	= ElvGreen -- [Alliance] Mage
-			z['Player-5826-02342508']	= ElvGreen -- [Alliance] Priest
-			z['Player-5826-023424EF']	= ElvGreen -- [Alliance] Druid
-			z['Player-5826-02342520']	= ElvGreen -- [Alliance] Rogue
-			z['Player-5826-02342556']	= ElvGreen -- [Alliance] Warrior
+			-- Luckyone Seasonal (5827: Living Flame EU)
+			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
+			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin
+			z['Player-5827-0273D63D']	= ElvGreen -- [Alliance] Warlock
+			z['Player-5827-0273D649']	= ElvGreen -- [Alliance] Mage
+			z['Player-5827-0273D661']	= ElvGreen -- [Alliance] Priest
+			z['Player-5827-0273D65D']	= ElvGreen -- [Alliance] Druid
+			z['Player-5827-0273D63F']	= ElvGreen -- [Alliance] Rogue
+			z['Player-5827-0273D638']	= ElvGreen -- [Alliance] Warrior
 			z['Player-5827-02331C4B']	= ElvGreen -- [Horde] Shaman
 			-- Luckyone Hardcore (5261: Nek'Rosh)
 			z['Player-5261-01ADAC25']	= ElvGreen -- [Horde] Rogue

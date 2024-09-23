@@ -451,7 +451,9 @@ end
 ------------------------------------------------------------------------
 
 E:AddTag('classcolor:target', 'UNIT_TARGET', function(unit)
-	return _TAGS.classcolor(unit..'target')
+	if UnitExists(unit..'target') then
+		return _TAGS.classcolor(unit..'target')
+	end
 end)
 
 E:AddTag('target', 'UNIT_TARGET', function(unit)
