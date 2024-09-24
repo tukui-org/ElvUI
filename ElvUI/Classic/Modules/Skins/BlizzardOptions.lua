@@ -108,6 +108,9 @@ function S:BlizzardOptions()
 	_G.CombatConfigTab1:ClearAllPoints()
 	_G.CombatConfigTab1:Point('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
+	_G.ChatConfigChatSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+	_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
@@ -129,10 +132,11 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then return end
-
+		if not _G.FCF_GetCurrentChatFrame() then
+			return
+		end
 		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxNameString = frame:GetName()..'CheckBox'
+			local checkBoxNameString = frame:GetName()..'Checkbox'
 			local checkBoxName = checkBoxNameString..index
 			local checkBox = _G[checkBoxName]
 			local check = _G[checkBoxName..'Check']
@@ -149,7 +153,7 @@ function S:BlizzardOptions()
 
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
-		local checkBox = _G[frame:GetName()..'CheckBox'..index]
+		local checkBox = _G[frame:GetName()..'Checkbox'..index]
 		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
@@ -161,26 +165,25 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then return end
-
+		if not _G.FCF_GetCurrentChatFrame() then
+			return
+		end
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName()..'Swatch'..index]:StripTextures()
 		end
 	end)
 
 	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
-		if not frame.boxTable then return end
-
 		local boxName = frame:GetName()..'Box'
-		for index in next, frame.boxTable do
-			local box = _G[boxName..index]
-			if box then
-				if box.NineSlice then
-					box.NineSlice:SetTemplate('Transparent')
-				end
 
-				if box.Button then
-					S:HandleButton(box.Button)
+		if frame.boxTable then
+			for index in next, frame.boxTable do
+				local box = _G[boxName..index]
+				if box then
+					box.NineSlice:SetTemplate('Transparent')
+					if box.Button then
+						S:HandleButton(box.Button)
+					end
 				end
 			end
 		end
