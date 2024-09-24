@@ -167,10 +167,11 @@ function BL:Initialize()
 
 	if E.Cata then
 		BL:KillBlizzard()
-	else
+	end
+
+	if E.Retail then
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
-		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
