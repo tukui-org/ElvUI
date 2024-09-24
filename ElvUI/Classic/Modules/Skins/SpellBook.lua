@@ -30,6 +30,12 @@ function S:SpellBookFrame()
 
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
 
+	local showAllRanks = _G.ShowAllSpellRanksCheckbox
+	if showAllRanks then
+		S:HandleCheckBox(showAllRanks)
+		showAllRanks:Point('TOPLEFT', 20, -20)
+	end
+
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
 
