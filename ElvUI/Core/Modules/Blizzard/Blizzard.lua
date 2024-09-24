@@ -165,7 +165,7 @@ function BL:Initialize()
 		end
 	end
 
-	if not E.Retail then
+	if E.Cata then
 		BL:KillBlizzard()
 	else
 		BL:DisableHelpTip()

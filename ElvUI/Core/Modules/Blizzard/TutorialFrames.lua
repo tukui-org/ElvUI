@@ -5,7 +5,7 @@ local _G = _G
 local wipe, next = wipe, next
 local hooksecurefunc = hooksecurefunc
 
-function BL:KillBlizzard() -- current not E.Retail
+function BL:KillBlizzard() -- for Cata (for now)
 	_G.Advanced_UIScaleSlider:Kill()
 	_G.Advanced_UseUIScale:Kill()
 end

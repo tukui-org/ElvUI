@@ -63,7 +63,7 @@ function DB:ReputationBar_Update()
 		standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
 
-	if not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
+	if E.Retail and not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
 		local current, threshold
 		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 

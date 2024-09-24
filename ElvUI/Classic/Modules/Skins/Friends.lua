@@ -29,8 +29,8 @@ function S:FriendsFrame()
 
 	_G.FriendsFrameCloseButton:Point('TOPRIGHT', 0, 2)
 
-	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 72)
-	S:HandlePointXY(_G.FriendsFrameStatusDropDown, 266, -55)
+	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
+	S:HandlePointXY(_G.FriendsFrameStatusDropdown, 256, -55)
 
 	for i = 1, #_G.FRIENDSFRAME_SUBFRAMES do
 		S:HandleTab(_G['FriendsFrameTab'..i])
@@ -156,7 +156,7 @@ function S:FriendsFrame()
 
 	S:HandleScrollBar(_G.FriendsFriendsScrollFrameScrollBar)
 
-	S:HandleDropDownBox(_G.FriendsFriendsFrameDropDown, 150)
+	S:HandleDropDownBox(_G.FriendsFriendsFrameDropdown, 150)
 
 	-- Ignore List Frame
 	_G.IgnoreListFrame:StripTextures()
@@ -201,8 +201,8 @@ function S:FriendsFrame()
 	S:HandleButton(_G.WhoFrameGroupInviteButton)
 	_G.WhoFrameGroupInviteButton:Point('BOTTOMRIGHT', -6, 4)
 
-	S:HandleDropDownBox(_G.WhoFrameDropDown)
-	_G.WhoFrameDropDown:Point('TOPLEFT', -6, 4)
+	S:HandleDropDownBox(_G.WhoFrameDropdown)
+	_G.WhoFrameDropdown:Point('TOPLEFT', -6, 4)
 
 	S:HandleScrollBar(_G.WhoListScrollFrameScrollBar, 3)
 	_G.WhoListScrollFrameScrollBar:ClearAllPoints()
