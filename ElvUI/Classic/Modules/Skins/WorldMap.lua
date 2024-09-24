@@ -23,15 +23,15 @@ function S:WorldMapFrame()
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
 	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
-	_G.WorldMapContinentDropdown:Height(28)
+	_G.WorldMapContinentDropdown:Height(26)
 
 	_G.WorldMapZoneDropdown:Point('LEFT', _G.WorldMapContinentDropdown, 'RIGHT', 10, 0)
-	_G.WorldMapZoneDropdown:Height(28)
+	_G.WorldMapZoneDropdown:Height(26)
 
 	_G.WorldMapZoneMinimapDropdown:Point('RIGHT', _G.WorldMapContinentDropdown, 'LEFT', -10, 0)
-	_G.WorldMapZoneMinimapDropdown:Height(28)
+	_G.WorldMapZoneMinimapDropdown:Height(26)
 
-	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 3, 3)
+	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 10, 1)
 	_G.WorldMapZoomOutButton:Height(23)
 	_G.WorldMapZoomOutButton:Width(100)
 	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
