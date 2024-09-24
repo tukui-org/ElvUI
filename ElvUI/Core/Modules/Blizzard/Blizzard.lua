@@ -167,9 +167,7 @@ function BL:Initialize()
 
 	if E.Cata then
 		BL:KillBlizzard()
-	end
-
-	if E.Retail then
+	elseif E.Retail then
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
 		BL:HandleTalkingHead()
