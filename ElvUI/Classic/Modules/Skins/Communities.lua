@@ -223,9 +223,9 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(ClubFinderGuildOptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildOptionsList.Search)
 
-	--S:HandleCheckBox(ClubFinderGuildOptionsList.TankRoleFrame.Checkbox)
-	--S:HandleCheckBox(ClubFinderGuildOptionsList.HealerRoleFrame.Checkbox)
-	--S:HandleCheckBox(ClubFinderGuildOptionsList.DpsRoleFrame.Checkbox)
+	S:HandleCheckBox(ClubFinderGuildOptionsList.TankRoleFrame.Checkbox)
+	S:HandleCheckBox(ClubFinderGuildOptionsList.HealerRoleFrame.Checkbox)
+	S:HandleCheckBox(ClubFinderGuildOptionsList.DpsRoleFrame.Checkbox)
 
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
