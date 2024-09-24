@@ -1139,7 +1139,7 @@ function S:HandleDropDownBox(frame, width, template, old)
 	end
 
 	frame:Width(width)
-	frame:StripTextures()
+	frame:StripTextures(true)
 
 	if not frame.backdrop then
 		frame:CreateBackdrop(template)
