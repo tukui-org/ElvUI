@@ -5,29 +5,6 @@ local _G = _G
 local ipairs, pairs, next = ipairs, pairs, next
 
 local hooksecurefunc = hooksecurefunc
-local InCombatLockdown = InCombatLockdown
-
-local function ReskinPickerOptions(self)
-	local scrollTarget = self.ScrollBox.ScrollTarget
-	if scrollTarget then
-		for _, child in next, { scrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child.UnCheck:SetTexture(nil)
-				child.Highlight:SetColorTexture(1, .82, 0, 0.4)
-
-				local check = child.Check
-				if check then
-					check:SetColorTexture(1, .82, 0, 0.8)
-					check:SetSize(10, 10)
-					check:Point('LEFT', 2, 0)
-					check:CreateBackdrop('Transparent')
-				end
-
-				child.IsSkinned = true
-			end
-		end
-	end
-end
 
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
