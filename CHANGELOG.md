@@ -1,3 +1,9 @@
+### Version 13.78 [ September 24th 2024 ]
+*   Priest and Shaman spells added to help with Range checking.
+*   Objective Tracker taint caused from SplashFrame (there are likely more causes).
+*   Time Datatext now has an option to toggle Saved Instances.
+*   Heal Prediction no longer being goofy.
+
 ### Version 13.77 [ September 10th 2024 ]
 *   Unitframe range issue with Shaman resolved.
 *   Castbar option to allow BigWigs to rename spells to something better to understand (Example: 'Impaling Eruption' becomes 'Frontal').
