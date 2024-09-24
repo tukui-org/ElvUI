@@ -748,7 +748,7 @@ do
 		DT:SortMenuList(QuickList)
 	end
 
-	function DT:Player_Invite(name, guid)
+	function DT:InviteFriend(name, guid)
 		if not (name and name ~= '') then return end
 		local isBNet = type(name) == 'number'
 
@@ -778,7 +778,7 @@ do
 		end
 	end
 
-	function DT:Player_Whisper(name, battleNet)
+	function DT:SendWhisper(name, battleNet)
 		if battleNet then
 			ChatFrame_SendBNetTell(name)
 		else

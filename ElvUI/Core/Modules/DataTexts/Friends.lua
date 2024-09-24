@@ -340,11 +340,11 @@ local function Click(self, btn)
 						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
-						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = DT.Player_Whisper}
+						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = DT.SendWhisper}
 
 						if inGroup(info.name) == '' then
 							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 						end
 					end
 				end
@@ -374,7 +374,7 @@ local function Click(self, btn)
 
 					if not hasBnet then -- hasBnet will make sure only one is added to whispers but still allow us to add multiple into invites
 						menuCountWhispers = menuCountWhispers + 1
-						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.Player_Whisper}
+						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.SendWhisper}
 					end
 
 					if (info.client and info.client == wowString) and inGroup(info.characterName, info.realmName) == '' then
@@ -383,7 +383,7 @@ local function Click(self, btn)
 
 						if info.wowProjectID == retailID then
 							menuCountInvites = menuCountInvites + 1
-							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName), arg1 = info.gameID, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
+							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName), arg1 = info.gameID, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 						end
 					end
 				end

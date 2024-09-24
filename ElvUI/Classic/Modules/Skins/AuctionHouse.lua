@@ -234,7 +234,6 @@ function S:Blizzard_AuctionUI()
 	S:HandleRadioButton(_G.AuctionsLongAuctionButton)
 
 	S:HandleDropDownBox(_G.BrowseDropdown, 155)
-	-- S:HandleDropDownBox(_G.PriceDropDown)
 
 	-- Progress Frame
 	_G.AuctionProgressFrame:StripTextures()

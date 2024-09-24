@@ -97,8 +97,8 @@ function M:ZoneTextToggle()
 	end
 end
 
-local function IsRandomGroup()
-	return IsPartyLFG() or IsPartyWalkIn() -- This is the API for Delves
+function M:IsRandomGroup()
+	return IsPartyLFG() or (E.Retail and IsPartyWalkIn()) -- This is the API for Delves
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
@@ -109,11 +109,11 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local announce = spellName and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and strmatch(event, '_INTERRUPT')
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
 
-	local inRaid, inPartyLFG = IsInRaid(), E.Retail and IsRandomGroup()
+	local inRaid, inPartyLFG = IsInRaid(), M:IsRandomGroup()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns 'false'
 	local _, instanceType = GetInstanceInfo()
-	if E.Retail and instanceType == 'arena' then
+	if not E.Classic and instanceType == 'arena' then
 		local skirmish = IsArenaSkirmish()
 		local _, isRegistered = IsActiveBattlefieldArena()
 		if skirmish or not isRegistered then

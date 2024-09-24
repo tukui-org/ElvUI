@@ -210,11 +210,11 @@ local function Click(self, btn)
 					name = name..' |cffaaaaaa*|r'
 				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
-					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.Player_Invite}
+					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 				end
 
 				menuCountWhispers = menuCountWhispers + 1
-				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = DT.Player_Whisper}
+				menuList[3].menuList[menuCountWhispers] = {text = name, arg1 = info.name, notCheckable=true, func = DT.SendWhisper}
 			end
 		end
 

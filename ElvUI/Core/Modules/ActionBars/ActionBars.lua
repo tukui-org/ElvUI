@@ -50,6 +50,7 @@ local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBa
 
 local GetProfessionQuality = C_ActionBar.GetProfessionQuality
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
@@ -892,7 +893,7 @@ end
 
 do
 	local function CanGlide() -- required when reloading because the event wont fire yet
-		local isGliding, canGlide = C_PlayerInfo.GetGlidingInfo()
+		local isGliding, canGlide = C_PlayerInfo_GetGlidingInfo()
 		return isGliding or canGlide
 	end
 
