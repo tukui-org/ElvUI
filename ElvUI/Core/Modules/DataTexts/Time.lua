@@ -213,6 +213,7 @@ local function OnEnter()
 			if DT.tooltip:NumLines() > 0 then
 				DT.tooltip:AddLine(' ')
 			end
+
 			DT.tooltip:AddLine(L["Saved Raid(s)"])
 
 			sort(lockedInstances.raids, sortFunc)
@@ -234,6 +235,7 @@ local function OnEnter()
 			if DT.tooltip:NumLines() > 0 then
 				DT.tooltip:AddLine(' ')
 			end
+
 			DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
 			sort(lockedInstances.dungeons, sortFunc)
@@ -269,6 +271,7 @@ local function OnEnter()
 					if DT.tooltip:NumLines() > 0 then
 						DT.tooltip:AddLine(' ')
 					end
+
 					DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 					addedLine = true
 				end
