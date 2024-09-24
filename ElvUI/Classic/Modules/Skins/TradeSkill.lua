@@ -46,11 +46,11 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetDisabledTexture():Size(15)
 	TradeSkillCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 140)
+	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 110)
 	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
 	_G.TradeSkillInvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
 
-	S:HandleDropDownBox(_G.TradeSkillSubClassDropdown, 140)
+	S:HandleDropDownBox(_G.TradeSkillSubClassDropdown, 110)
 	_G.TradeSkillSubClassDropdown:ClearAllPoints()
 	_G.TradeSkillSubClassDropdown:Point('RIGHT', _G.TradeSkillInvSlotDropdown, 'RIGHT', -120, 0)
 
