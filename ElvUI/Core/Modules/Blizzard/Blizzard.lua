@@ -172,6 +172,7 @@ function BL:Initialize()
 	if E.Retail then
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
+		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()
 
 		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
