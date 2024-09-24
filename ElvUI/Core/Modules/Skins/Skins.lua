@@ -1146,9 +1146,7 @@ function S:HandleDropDownBox(frame, width, template, old)
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	end
 
-	-- Add cata check back when merging ptr>main for classic 1.15.4
 	if not old then
-	-- if not E.Cata and not old then
 		if frame.Arrow then
 			frame.Arrow:SetAlpha(0)
 		end
