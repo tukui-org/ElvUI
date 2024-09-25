@@ -88,7 +88,7 @@ tinsert(menuList, {
 	microOffset = 'MainMenuMicroButton',
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
-			if not E.Retail then
+			if E.Cata then
 				if _G.VideoOptionsFrame:IsShown() then
 					_G.VideoOptionsFrameCancel:Click()
 				elseif _G.AudioOptionsFrame:IsShown() then
