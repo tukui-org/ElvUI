@@ -152,7 +152,7 @@ function DB:ReputationBar_OnEnter()
 	local data = E:GetWatchedFactionInfo()
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 
-	local isParagon = factionID and C_Reputation_IsFactionParagon(factionID)
+	local isParagon = E.Retail and factionID and C_Reputation_IsFactionParagon(factionID)
 	local standing
 
 	if isParagon then
