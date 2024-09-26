@@ -566,6 +566,11 @@ function CH:CopyButtonOnMouseUp(btn)
 
 			ToggleFrame(menu)
 		elseif E.Retail or E.Classic then
+			if E.Classic then
+				_G.ChatFrameMenuButton:ClearAllPoints()
+				_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
+			end
+
 			_G.ChatFrameMenuButton:OpenMenu()
 		end
 	else
