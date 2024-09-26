@@ -112,4 +112,7 @@ group( 7, 'actionbar',	L["ActionBars"])
 group( 8, 'bags',		L["Bags"])
 group( 9, 'nameplates',	L["Nameplates"])
 group(10, 'unitframe',	L["UnitFrames"])
-group(20, 'WeakAuras',	L["WeakAuras"])
+
+if E:IsAddOnEnabled('WeakAuras') then
+	group(20, 'WeakAuras',	L["WeakAuras"])
+end
