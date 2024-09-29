@@ -875,72 +875,49 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
 	-- Ulgrax the Devourer
+		[434776] = List(), -- Carnivorous Contest
 		[434705] = List(), -- Tenderized
-		[435138] = List(), -- Digestive Acid
+		[439419] = List(), -- Stalker's Netting
 		[439037] = List(), -- Disembowel
-		[439419] = List(), -- Stalker Netting
-		[434778] = List(), -- Brutal Lashings
-		[435136] = List(), -- Venomous Lash
-		[438012] = List(), -- Hungering Bellows
 	-- The Bloodbound Horror
+		[442656] = List(), -- Spewing Hemorrhage
 		[442604] = List(), -- Goresplatter
-		[445570] = List(), -- Unseeming Blight
-		[443612] = List(), -- Baneful Shift
-		[443042] = List(), -- Grasp From Beyond
+		[443612] = List(), -- Gruesome Disgorge
 	-- Sikran
 		[435410] = List(), -- Phase Lunge
-		[458277] = List(), -- Shattering Sweep
+		[439191] = List(), -- Decimate
+		[434860] = List(), -- Phase Blades
+		[433517] = List(), -- Phase Blades 2
 		[438845] = List(), -- Expose
-		[433517] = List(), -- Phase Blades 1
-		[434860] = List(), -- Phase Blades 2
-		[459785] = List(), -- Cosmic Residue
-		[459273] = List(), -- Cosmic Shards
 	-- Rasha'nan
-		[439785] = List(), -- Corrosion
-		[439786] = List(), -- Rolling Acid 1
-		[439790] = List(), -- Rolling Acid 2
 		[439787] = List(), -- Acidic Stupor
-		[458067] = List(), -- Savage Wound
-		[456170] = List(), -- Spinneret's Strands 1
-		[439783] = List(), -- Spinneret's Strands 2
-		[439780] = List(), -- Sticky Webs
-		[439776] = List(), -- Acid Pool
-		[455287] = List(), -- Infested Bite
+		[439815] = List(), -- Infested Spawn
+		[439783] = List(), -- Spinneret's Strands
+		[456170] = List(), -- Spinneret's Strands 2
+		[439790] = List(), -- Rolling Acid
 	-- Eggtender Ovi'nax
-		[442257] = List(), -- Infest
-		[442799] = List(), -- Sanguine Overflow
-		[441362] = List(), -- Volatile Concotion
-		[442660] = List(), -- Rupture
-		[440421] = List(), -- Experimental Dosage
 		[442250] = List(), -- Fixate
-		[442437] = List(), -- Violent Discharge
-		[443274] = List(), -- Reverberation
+		[442257] = List(), -- Infest
+		[446351] = List(), -- Web Eruption
+		[446349] = List(), -- Sticky Web
+		[440421] = List(), -- Experimental Dosage
+		[441362] = List(), -- Volatile Concoction
 	-- Nexus-Princess Ky'veza
-		[440377] = List(), -- Void Shredders
 		[436870] = List(), -- Assassination
-		[440576] = List(), -- Chasmal Gash
 		[437343] = List(), -- Queensbane
-		[436664] = List(), -- Regicide 1
-		[436666] = List(), -- Regicide 2
-		[436671] = List(), -- Regicide 3
-		[435535] = List(), -- Regicide 4
-		[436665] = List(), -- Regicide 5
-		[436663] = List(), -- Regicide 6
+		[440576] = List(), -- Chasmal Gash
 	-- The Silken Court
-		[450129] = List(), -- Entropic Desolation
-		[449857] = List(), -- Impaled
 		[438749] = List(), -- Scarab Fixation
-		[438708] = List(), -- Stinging Swarm
-		[438218] = List(), -- Piercing Strike
-		[454311] = List(), -- Barbed Webs
-		[438773] = List(), -- Shattered Shell
-		[438355] = List(), -- Cataclysmic Entropy
-		[438656] = List(), -- Venomous Rain
-		[441772] = List(), -- Void Bolt
-		[441788] = List(), -- Web Vortex
 		[440001] = List(), -- Binding Webs
+		[449857] = List(), -- Impaled
+		[438218] = List(), -- Piercing Strike
 	-- Queen Ansurek
-		-- TODO: No raid testing available for this boss
+		[441865] = List(), -- Royal Shackles
+		[436800] = List(), -- Liquefy
+		[455404] = List(), -- Feast
+		[439829] = List(), -- Silken Tomb
+		[439825] = List(), -- Silken Tomb 2
+		[437586] = List(), -- Reactive Toxin
 	},
 }
 
@@ -1079,7 +1056,9 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[438343] = List(), -- Venomous Rain
 		[440179] = List(), -- Entangled
 	-- Queen Ansurek
-		-- TODO: No raid testing available for this boss
+		[448488] = List(), -- Worshipper's Protection
+		[448505] = List(), -- Worshipper's Protection 2
+		[445013] = List(), -- Dark Barrier
 	---------------------------------------------------------
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
