@@ -1059,19 +1059,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[448488] = List(), -- Worshipper's Protection
 		[448505] = List(), -- Worshipper's Protection 2
 		[445013] = List(), -- Dark Barrier
-	---------------------------------------------------------
-	----------------------- Open World ----------------------
-	---------------------------------------------------------
-	-- Korthia
-		[354840] = List(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
-		[355249] = List(), -- Anima Gorged (Consumption)
-	-- Zereth Mortis
-		[360945] = List(), -- Creation Catalyst Overcharge (Nascent Servitor)
-		[366309] = List(), -- Meltdown (Destabilized Core)
-		[365596] = List(), -- Overload (Destabilized Core)
-		[360750] = List(), -- Aurelid Lure
-	-- Emerald Dream
-		[420009] = List(), -- Corrupting Sparks (Splinterlimb)
 	},
 }
 
