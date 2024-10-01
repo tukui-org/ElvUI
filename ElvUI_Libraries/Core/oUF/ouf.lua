@@ -925,17 +925,17 @@ end
 
 do	-- backwards compatibility for GetSpellInfo
 	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
 	function oUF:GetSpellInfo(spellID)
 		if not spellID then return end
 
-		if GetSpellInfo then
-			return GetSpellInfo(spellID)
-		else
+		if C_Spell_GetSpellInfo then
 			local info = C_Spell_GetSpellInfo(spellID)
 			if info then
 				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
 			end
+		else
+			return GetSpellInfo(spellID)
 		end
 	end
 end

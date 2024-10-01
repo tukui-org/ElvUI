@@ -111,7 +111,7 @@ local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, 
   end
 end or _G.IsSpellInRange
 
-local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
 local CustomSpellInfo = C_Spell_GetSpellInfo and function(spellID)
   if not spellID then
     return nil;
