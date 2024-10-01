@@ -111,7 +111,7 @@ local CustomSpellBookItemInRange = C_Spell_IsSpellInRange and function(spellID, 
   end
 end or _G.IsSpellInRange
 
-local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
 local CustomSpellInfo = C_Spell_GetSpellInfo and function(spellID)
   if not spellID then
     return nil;
@@ -647,7 +647,7 @@ local checkers_SpellWithMin = setmetatable({}, {
       local which, id = strsplit(':', key)
       local isInteract = which == 'interact'
 
-      local func = function(unit, skipInCombatCheck)
+      local func = function(unit, skipInCombatCheck, inCombat)
         if isInteract then
           local interactCheck = checkers_Interact[id]
           if interactCheck and interactCheck(unit, skipInCombatCheck) then
@@ -657,7 +657,7 @@ local checkers_SpellWithMin = setmetatable({}, {
           local spellCheck = checkers_Spell[id]
           if spellCheck and spellCheck(unit) then
             return true
-          elseif t.MinInteractList then -- fallback to try interact when a spell failed
+          elseif not inCombat and t.MinInteractList then -- fallback to try interact when a spell failed
             for index in pairs(t.MinInteractList) do
               local interactCheck = checkers_Interact[index]
               if interactCheck and interactCheck(unit, skipInCombatCheck) then
@@ -829,17 +829,18 @@ local function invalidateRangeCache(maxAge)
 end
 
 -- returns minRange, maxRange  or nil
-local function getRangeWithCheckerList(unit, checkerList)
+local function getRangeWithCheckerList(unit, inCombat, checkerList)
   local lo, hi = 1, #checkerList
   while lo <= hi do
     local mid = floor((lo + hi) / 2)
     local rc = checkerList[mid]
-    if rc.checker(unit, true) then
+    if rc.checker(unit, true, inCombat) then
       lo = mid + 1
     else
       hi = mid - 1
     end
   end
+
   if #checkerList == 0 then
     return nil, nil
   elseif lo > #checkerList then
@@ -852,41 +853,24 @@ local function getRangeWithCheckerList(unit, checkerList)
 end
 
 local function getRange(unit, noItems)
+  local inCombat = InCombatLockdownRestriction(unit)
   local canAssist = UnitCanAssist("player", unit)
-  if UnitIsDeadOrGhost(unit) then
-    if canAssist then
-      return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.resRCInCombat or lib.resRC)
-    else
-      return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.miscRCInCombat or lib.miscRC)
-    end
-  end
 
-  if UnitCanAttack("player", unit) then
-    return getRangeWithCheckerList(unit, noItems and lib.harmNoItemsRC or lib.harmRC)
+  if UnitIsDeadOrGhost(unit) then
+    return getRangeWithCheckerList(unit, inCombat, canAssist and (inCombat and lib.resRCInCombat or lib.resRC) or (inCombat and lib.miscRCInCombat or lib.miscRC))
+  elseif UnitCanAttack("player", unit) then
+    return getRangeWithCheckerList(unit, inCombat, noItems and lib.harmNoItemsRC or lib.harmRC)
   elseif UnitIsUnit("pet", unit) then
-    if InCombatLockdownRestriction(unit) then
-      local minRange, maxRange = getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat)
-      if minRange or maxRange then
-        return minRange, maxRange
-      else
-        return getRangeWithCheckerList(unit, lib.petRCInCombat)
-      end
+    local minRange, maxRange = getRangeWithCheckerList(unit, inCombat, inCombat and (noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat) or (noItems and lib.friendNoItemsRC or lib.friendRC))
+    if minRange or maxRange then
+      return minRange, maxRange
     else
-      local minRange, maxRange = getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
-      if minRange or maxRange then
-        return minRange, maxRange
-      else
-        return getRangeWithCheckerList(unit, lib.petRC)
-      end
+      return getRangeWithCheckerList(unit, inCombat, inCombat and lib.petRCInCombat or lib.petRC)
     end
   elseif canAssist then
-    if InCombatLockdownRestriction(unit) then
-      return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat)
-    else
-      return getRangeWithCheckerList(unit, noItems and lib.friendNoItemsRC or lib.friendRC)
-    end
+    return getRangeWithCheckerList(unit, inCombat, inCombat and (noItems and lib.friendNoItemsRCInCombat or lib.friendRCInCombat) or (noItems and lib.friendNoItemsRC or lib.friendRC))
   else
-    return getRangeWithCheckerList(unit, InCombatLockdownRestriction(unit) and lib.miscRCInCombat or lib.miscRC)
+    return getRangeWithCheckerList(unit, inCombat, inCombat and lib.miscRCInCombat or lib.miscRC)
   end
 end
 

@@ -925,17 +925,17 @@ end
 
 do	-- backwards compatibility for GetSpellInfo
 	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
 	function oUF:GetSpellInfo(spellID)
 		if not spellID then return end
 
-		if GetSpellInfo then
-			return GetSpellInfo(spellID)
-		else
+		if C_Spell_GetSpellInfo then
 			local info = C_Spell_GetSpellInfo(spellID)
 			if info then
 				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
 			end
+		else
+			return GetSpellInfo(spellID)
 		end
 	end
 end
@@ -1068,30 +1068,31 @@ do -- Event Pooler by Simpy
 	pooler.delay = 0.1 -- update check rate
 	pooler.instant = 1 -- seconds since last event
 
-	pooler.run = function(funcs, frame, event, ...)
-		for _, func in pairs(funcs) do
-			func(frame, event, ...)
+	local function run(funcs, frame, event, ...)
+		for i = 1, #funcs do
+			funcs[i](frame, event, ...)
 		end
 	end
 
-	pooler.execute = function(event, pool, instant, arg1, ...)
+	local function execute(event, pool, instant, arg1, ...)
 		for frame, info in pairs(pool) do
 			local funcs = info.functions
 			if instant and funcs then
 				if event == 'UNIT_AURA' and oUF.isRetail then
 					local fullUpdate, updatedAuras = ...
 					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, fullUpdate, updatedAuras) then
-						pooler.run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
+						run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
 					end
 				else
-					pooler.run(funcs, frame, event, arg1, ...)
+					run(funcs, frame, event, arg1, ...)
 				end
 			else
 				local data = funcs and info.data[event]
 				if data then
 					if event == 'UNIT_AURA' and oUF.isRetail then
 						local allowUnit = false
-						for _, args in ipairs(data) do
+						for i = 1, #data do
+							local args = data[i]
 							local unit, fullUpdate, updatedAuras = unpack(args)
 							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras) then
 								allowUnit = unit
@@ -1100,16 +1101,15 @@ do -- Event Pooler by Simpy
 						end
 
 						if allowUnit then
-							pooler.run(funcs, frame, event, allowUnit)
+							run(funcs, frame, event, allowUnit)
 						end
 					else
 						local count = #data
 						local args = count and data[count]
 						if args then
 							-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
-							pooler.run(funcs, frame, event, unpack(args))
+							run(funcs, frame, event, unpack(args))
 						end
-
 					end
 
 					wipe(data)
@@ -1118,30 +1118,31 @@ do -- Event Pooler by Simpy
 		end
 	end
 
-	pooler.update = function()
+	local function update()
 		for event, pool in pairs(pooler.events) do
-			pooler.execute(event, pool)
+			execute(event, pool)
 		end
 	end
 
-	pooler.tracker = function(frame, event, arg1, ...)
+	local function tracker(frame, event, arg1, ...)
 		-- print('tracker', frame, event, arg1, ...)
-
 		local pool = pooler.events[event]
 		if pool then
 			local now = time()
 			local last = pooler.times[event]
 			if last and (last + pooler.instant) < now then
-				pooler.execute(event, pool, true, arg1, ...)
+				execute(event, pool, true, arg1, ...)
 				-- print('instant', frame:GetDebugName(), event, arg1)
 			elseif arg1 ~= nil then -- require arg1, no unitless
 				local pooled = pool[frame]
 				if pooled then
-					if not pooled.data[event] then
-						pooled.data[event] = {}
+					local eventData = pooled.data[event]
+					if not eventData then
+						eventData = {}
+						pooled.data[event] = eventData
 					end
 
-					tinsert(pooled.data[event], {arg1, ...})
+					tinsert(eventData, {arg1, ...})
 				end
 			end
 
@@ -1149,58 +1150,57 @@ do -- Event Pooler by Simpy
 		end
 	end
 
-	pooler.onUpdate = function(self, elapsed)
-		if self.elapsed and self.elapsed > pooler.delay then
-			pooler.update()
-
+	local function onUpdate(self, elapsed)
+		local elapsedTime = self.elapsed or 0
+		if elapsedTime > pooler.delay then
+			update()
 			self.elapsed = 0
 		else
-			self.elapsed = (self.elapsed or 0) + elapsed
+			self.elapsed = elapsedTime + elapsed
 		end
 	end
 
-	pooler:SetScript('OnUpdate', pooler.onUpdate)
+	pooler:SetScript('OnUpdate', onUpdate)
 
 	function oUF:RegisterEvent(frame, event, func)
 		-- print('RegisterEvent', frame, event, func)
-
-		if not pooler.events[event] then
-			pooler.events[event] = {}
-			pooler.events[event][frame] = {functions={},data={}}
-		elseif not pooler.events[event][frame] then
-			pooler.events[event][frame] = {functions={},data={}}
+		local eventPool = pooler.events[event]
+		if not eventPool then
+			eventPool = {}
+			pooler.events[event] = eventPool
 		end
 
-		frame:RegisterEvent(event, pooler.tracker)
-		tinsert(pooler.events[event][frame].functions, func)
+		local framePool = eventPool[frame]
+		if not framePool then
+			framePool = {functions = {}, data = {}}
+			eventPool[frame] = framePool
+		end
+
+		frame:RegisterEvent(event, tracker)
+		tinsert(framePool.functions, func)
 	end
 
 	function oUF:UnregisterEvent(frame, event, func)
 		-- print('UnregisterEvent', frame, event, func)
-
 		local pool = pooler.events[event]
 		if pool then
 			local pooled = pool[frame]
 			if pooled then
-				for i, funct in ipairs(pooled.functions) do
-					if funct == func then
-						tremove(pooled.functions, i)
+				local funcs = pooled.functions
+				for i = #funcs, 1, -1 do
+					if funcs[i] == func then
+						tremove(funcs, i)
 					end
 				end
 
-				if not next(pooled.functions) then
-					pooled.functions = nil
-					pooled.data = nil -- clear data
-				end
-
-				if not next(pooled) then
+				if not next(funcs) then
 					pool[frame] = nil
 				end
 			end
 
 			if not next(pool) then
 				pooler.events[event] = nil
-				frame:UnregisterEvent(event, pooler.tracker)
+				frame:UnregisterEvent(event, tracker)
 			end
 		end
 	end

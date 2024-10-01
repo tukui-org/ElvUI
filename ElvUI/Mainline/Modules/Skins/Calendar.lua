@@ -128,7 +128,7 @@ function S:Blizzard_Calendar()
 
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 52)
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 58)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 57)
 
 	-- Difficulty Dropdown
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)

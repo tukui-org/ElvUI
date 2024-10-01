@@ -17,17 +17,17 @@ local _G = _G
 
 local GetSpellInfo
 do	-- backwards compatibility for GetSpellInfo
-	local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+	local C_Spell_GetSpellInfo = not _G.GetSpellInfo and C_Spell.GetSpellInfo
 	GetSpellInfo = function(spellID)
 		if not spellID then return end
 
-		if _G.GetSpellInfo then
-			return _G.GetSpellInfo(spellID)
-		else
+		if C_Spell_GetSpellInfo then
 			local info = C_Spell_GetSpellInfo(spellID)
 			if info then
 				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
 			end
+		else
+			return _G.GetSpellInfo(spellID)
 		end
 	end
 end

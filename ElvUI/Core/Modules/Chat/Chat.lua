@@ -565,7 +565,9 @@ function CH:CopyButtonOnMouseUp(btn)
 			end
 
 			ToggleFrame(menu)
-		elseif E.Retail then
+		else
+			_G.ChatFrameMenuButton:ClearAllPoints()
+			_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
 			_G.ChatFrameMenuButton:OpenMenu()
 		end
 	else
@@ -851,13 +853,9 @@ function CH:StyleChat(frame)
 
 	local buttonFrame = _G[name..'ButtonFrame']
 	if buttonFrame then
-		if E.Retail and name == 'ChatFrame1' then
-			buttonFrame.Background:Hide()
-			buttonFrame.minimizeButton:Hide()
-			buttonFrame:StripTextures()
-		else
-			buttonFrame:Kill()
-		end
+		buttonFrame:SetScale(0.00001)
+		buttonFrame:ClearAllPoints()
+		buttonFrame:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
 	end
 
 	local thumbTexture = _G[name..'ThumbTexture']
@@ -2443,13 +2441,6 @@ function CH:SetupChat()
 
 	if E.Retail then
 		_G.QuickJoinToastButton:Hide()
-
-		_G.ChatFrameMenuButton:SetAlpha(0)
-		_G.ChatFrameMenuButton:EnableMouse(false)
-		_G.ChatFrameMenuButton:ClearAllPoints()
-		_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
-	else
-		_G.ChatFrameMenuButton:Kill()
 	end
 
 	if not CH.HookSecured then
