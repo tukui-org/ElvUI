@@ -377,7 +377,7 @@ Filters.mainOptions.args.createFilter.customWidth = 140
 Filters.mainOptions.args.selectFilter = ACH:Select(L["Select Filter"], nil, 2, SetFilterList, nil, nil, getSelectedFilter, resetSelectedFilter)
 Filters.mainOptions.args.deleteFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, DeleteFilterList, confirmResetFilter, nil, nil, function(_, value) E.global.unitframe.aurafilters[value] = nil resetSelectedFilter() removePriority(value) end, DeleteFilterListDisable)
 Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."], 4, ResetFilterList, confirmResetFilter, nil, nil, resetFilter)
-Filters.mainOptions.args.resetFilters = ACH:Execute(L["Reset All"], nil, 5, function() E:StaticPopup_Show('RESET_ALL_FILTERS') resetSelectedFilter() end)
+Filters.mainOptions.args.resetFilters = ACH:Execute(L["Reset All"], L["This reset excludes AuraBar Colors, Aura Highlight, and Aura Indicators."], 5, function() E:StaticPopup_Show('RESET_ALL_FILTERS') resetSelectedFilter() end)
 Filters.mainOptions.args.resetFilters.customWidth = 100
 
 Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
