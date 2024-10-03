@@ -241,6 +241,21 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:ResetFilters() -- keep similar to with resetFilter in Filters.lua of Options
+	E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+	E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
+
+	for name, data in next, E.global.unitframe.aurafilters do
+		local default = G.unitframe.aurafilters[name]
+		if default then
+			data.type = default.type
+			data.spells = E:CopyTable({}, default.spells)
+		else -- not a default filter, delete it
+			E.global.unitframe.aurafilters[name] = nil
+		end
+	end
+end
+
 function UF:CreateRaisedText(raised)
 	local text = raised:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(text)

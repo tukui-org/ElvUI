@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 local UF = E:GetModule('UnitFrames')
+local NP = E:GetModule('NamePlates')
 local M = E:GetModule('Misc')
 local S = E:GetModule('Skins')
 
@@ -195,6 +196,24 @@ E.PopupDialogs.PRIVATE_RL = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = ReloadUI,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
+E.PopupDialogs.RESET_ALL_FILTERS = {
+	text = L["Accepting this will reset all filters to default. Are you sure?"],
+	button1 = ACCEPT,
+	button2 = CANCEL,
+	OnAccept = function()
+		UF:ResetFilters()
+
+		if E:Config_GetWindow() then
+			E:RefreshGUI()
+		end
+
+		UF:Update_AllFrames()
+		NP:ConfigureAll()
+	end,
 	whileDead = 1,
 	hideOnEscape = false,
 }
