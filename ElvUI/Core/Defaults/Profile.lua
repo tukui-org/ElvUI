@@ -234,6 +234,9 @@ P.general = {
 		frameStrata = 'MEDIUM',
 		frameLevel = 20
 	},
+	privateRaidWarning = {
+		scale = 1,
+	},
 	privateAuras = {
 		enable = true,
 		countdownFrame = true,
