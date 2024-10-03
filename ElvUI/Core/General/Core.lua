@@ -563,7 +563,9 @@ do
 			'AdiBags',
 			'ArkInventory',
 			'Baganator',
-			'BetterBags'
+			'Bagnon',
+			'BetterBags',
+			'Sorted'
 		},
 		Chat = {
 			info = {
