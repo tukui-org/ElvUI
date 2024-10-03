@@ -241,6 +241,20 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:ResetAuraPriority()
+	for unitName, content in pairs(E.db.unitframe.units) do
+		if content.buffs then
+			content.buffs.priority = P.unitframe.units[unitName].buffs.priority
+		end
+		if content.debuffs then
+			content.debuffs.priority = P.unitframe.units[unitName].debuffs.priority
+		end
+		if content.aurabar then
+			content.aurabar.priority = P.unitframe.units[unitName].aurabar.priority
+		end
+	end
+end
+
 function UF:ResetFilters(include) -- keep similar to with resetFilter in Filters.lua of Options
 	if include then
 		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)

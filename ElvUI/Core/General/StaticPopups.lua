@@ -252,17 +252,7 @@ E.PopupDialogs.RESET_UF_AF = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
-		for unitName, content in pairs(E.db.unitframe.units) do
-			if content.buffs then
-				content.buffs.priority = P.unitframe.units[unitName].buffs.priority
-			end
-			if content.debuffs then
-				content.debuffs.priority = P.unitframe.units[unitName].debuffs.priority
-			end
-			if content.aurabar then
-				content.aurabar.priority = P.unitframe.units[unitName].aurabar.priority
-			end
-		end
+		UF:ResetAuraPriority()
 	end,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -273,14 +263,7 @@ E.PopupDialogs.RESET_NP_AF = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
-		for unitType, content in pairs(E.db.nameplates.units) do
-			if content.buffs and content.buffs.filters then
-				content.buffs.filters.priority = P.nameplates.units[unitType].buffs.filters.priority
-			end
-			if content.debuffs and content.debuffs.filters then
-				content.debuffs.filters.priority = P.nameplates.units[unitType].debuffs.filters.priority
-			end
-		end
+		NP:ResetAuraPriority()
 	end,
 	whileDead = 1,
 	hideOnEscape = false,
