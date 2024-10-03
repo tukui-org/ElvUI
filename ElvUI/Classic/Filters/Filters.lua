@@ -3,6 +3,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
+-- This used to be standalone and is no merged into G.unitframe.aurafilters.Whitelist
+G.unitframe.aurafilters.PlayerBuffs = nil
+
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
@@ -236,8 +239,34 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
---Default whitelist for player buffs, still WIP
-G.unitframe.aurafilters.PlayerBuffs = {
+-- Buffs that we don't really need to see
+G.unitframe.aurafilters.Blacklist = {
+	type = 'Blacklist',
+	spells = {
+	-- Seasonal
+		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
+		[458841] = List(), -- Sweltering Heat: Perma roleplay text while in Molten Core. (Heat level 1)
+		[458842] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 2)
+		[458843] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 3)
+		[446720] = List(), -- Stinky: Perma roleplay text after eating Sunken Temple food.
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
+	},
+}
+
+--[[
+	This should be a list of important buffs that we always want to see when they are active
+	bloodlust, paladin hand spells, raid cooldowns, etc..
+]]
+G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
 	-- Druid
@@ -399,51 +428,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[20594]	= List(), -- Stoneform
 	-- All Classes
 		[19753]	= List(), -- Divine Intervention
-	},
-}
-
--- Buffs that we don't really need to see
-G.unitframe.aurafilters.Blacklist = {
-	type = 'Blacklist',
-	spells = {
-	-- Seasonal
-		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
-		[458841] = List(), -- Sweltering Heat: Perma roleplay text while in Molten Core. (Heat level 1)
-		[458842] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 2)
-		[458843] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 3)
-		[446720] = List(), -- Stinky: Perma roleplay text after eating Sunken Temple food.
-	-- Druid
-	-- Hunter
-	-- Mage
-	-- Paladin
-	-- Priest
-	-- Rogue
-	-- Shaman
-	-- Warlock
-	-- Warrior
-	-- Racial
-	},
-}
-
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
-G.unitframe.aurafilters.Whitelist = {
-	type = 'Whitelist',
-	spells = {
 	-- General
-	[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
-	-- Druid
-	-- Hunter
-	-- Mage
-	-- Paladin
-	-- Priest
-	-- Rogue
-	-- Shaman
-	-- Warlock
-	-- Warrior
-	-- Racial
+		[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
 	},
 }
 

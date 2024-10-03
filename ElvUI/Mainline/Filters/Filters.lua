@@ -3,6 +3,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
+-- This used to be standalone and is no merged into G.unitframe.aurafilters.Whitelist
+G.unitframe.aurafilters.PlayerBuffs = nil
+
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
@@ -297,8 +300,65 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
--- Personal player buffs (defensives, utility, immunities, etc)
-G.unitframe.aurafilters.PlayerBuffs = {
+-- Buffs that we don't really need to see
+G.unitframe.aurafilters.Blacklist = {
+	type = 'Blacklist',
+	spells = {
+		[8326]		= List(), -- Ghost
+		[8733]		= List(), -- Blessing of Blackfathom
+		[15007]		= List(), -- Ress Sickness
+		[23445]		= List(), -- Evil Twin
+		[24755]		= List(), -- Tricked or Treated
+		[25163]		= List(), -- Oozeling's Disgusting Aura
+		[25771]		= List(), -- Forbearance
+		[26013]		= List(), -- Deserter
+		[36032]		= List(), -- Arcane Charge
+		[36893]		= List(), -- Transporter Malfunction
+		[36900]		= List(), -- Soul Split: Evil!
+		[36901]		= List(), -- Soul Split: Good
+		[41425]		= List(), -- Hypothermia
+		[49822]		= List(), -- Bloated
+		[55711]		= List(), -- Weakened Heart
+		[57723]		= List(), -- Exhaustion (heroism debuff)
+		[57724]		= List(), -- Sated (lust debuff)
+		[58539]		= List(), -- Watcher's Corpse
+		[71041]		= List(), -- Dungeon Deserter
+		[80354]		= List(), -- Temporal Displacement (timewarp debuff)
+		[89140]		= List(), -- Demonic Rebirth: Cooldown
+		[95809]		= List(), -- Insanity debuff (hunter pet heroism: ancient hysteria)
+		[96041]		= List(), -- Stink Bombed
+		[97821]		= List(), -- Void-Touched
+		[113942]	= List(), -- Demonic: Gateway
+		[117870]	= List(), -- Touch of The Titans
+		[123981]	= List(), -- Perdition
+		[124273]	= List(), -- Stagger
+		[124274]	= List(), -- Stagger
+		[124275]	= List(), -- Stagger
+		[195776]	= List(), -- Moonfeather Fever
+		[196342]	= List(), -- Zanzil's Embrace
+		[206150]	= List(), -- Challenger's Burden SL
+		[206151]	= List(), -- Challenger's Burden BfA
+		[206662]	= List(), -- Experience Eliminated (in range)
+		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
+		[287825]	= List(), -- Lethargy debuff (fight or flight)
+		[306600]	= List(), -- Experience Eliminated (oor - 5m)
+		[313015]	= List(), -- Recently Failed (Mechagnome racial)
+		[322695]	= List(), -- Drained
+		[328891]	= List(), -- A Gilded Perspective
+		[348443]	= List(), -- Experience Eliminated
+		[374037]	= List(), -- Overwhelming Rage
+		[383600]	= List(), -- Surrounding Storm (Strunraan)
+		[390106]	= List(), -- Riding Along
+		[390435]	= List(), -- Exhaustion (Evoker lust debuff)
+		[392960]	= List(), -- Waygate Travel
+		[392992]	= List(), -- Silent Lava
+		[393798]	= List(), -- Activated Defense Systems
+		[418990]	= List(), -- Wicker Men's Curse
+	},
+}
+
+-- A list of important buffs that we always want to see
+G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
 	-- Evoker
@@ -576,70 +636,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[26297]		= List(), -- Berserking
 		[68992]		= List(), -- Darkflight
 		[58984]		= List(), -- Shadowmeld
-	},
-}
-
--- Buffs that we don't really need to see
-G.unitframe.aurafilters.Blacklist = {
-	type = 'Blacklist',
-	spells = {
-		[8326]		= List(), -- Ghost
-		[8733]		= List(), -- Blessing of Blackfathom
-		[15007]		= List(), -- Ress Sickness
-		[23445]		= List(), -- Evil Twin
-		[24755]		= List(), -- Tricked or Treated
-		[25163]		= List(), -- Oozeling's Disgusting Aura
-		[25771]		= List(), -- Forbearance
-		[26013]		= List(), -- Deserter
-		[36032]		= List(), -- Arcane Charge
-		[36893]		= List(), -- Transporter Malfunction
-		[36900]		= List(), -- Soul Split: Evil!
-		[36901]		= List(), -- Soul Split: Good
-		[41425]		= List(), -- Hypothermia
-		[49822]		= List(), -- Bloated
-		[55711]		= List(), -- Weakened Heart
-		[57723]		= List(), -- Exhaustion (heroism debuff)
-		[57724]		= List(), -- Sated (lust debuff)
-		[58539]		= List(), -- Watcher's Corpse
-		[71041]		= List(), -- Dungeon Deserter
-		[80354]		= List(), -- Temporal Displacement (timewarp debuff)
-		[89140]		= List(), -- Demonic Rebirth: Cooldown
-		[95809]		= List(), -- Insanity debuff (hunter pet heroism: ancient hysteria)
-		[96041]		= List(), -- Stink Bombed
-		[97821]		= List(), -- Void-Touched
-		[113942]	= List(), -- Demonic: Gateway
-		[117870]	= List(), -- Touch of The Titans
-		[123981]	= List(), -- Perdition
-		[124273]	= List(), -- Stagger
-		[124274]	= List(), -- Stagger
-		[124275]	= List(), -- Stagger
-		[195776]	= List(), -- Moonfeather Fever
-		[196342]	= List(), -- Zanzil's Embrace
-		[206150]	= List(), -- Challenger's Burden SL
-		[206151]	= List(), -- Challenger's Burden BfA
-		[206662]	= List(), -- Experience Eliminated (in range)
-		[234143]	= List(), -- Temptation (Upper Karazhan Ring Debuff)
-		[287825]	= List(), -- Lethargy debuff (fight or flight)
-		[306600]	= List(), -- Experience Eliminated (oor - 5m)
-		[313015]	= List(), -- Recently Failed (Mechagnome racial)
-		[322695]	= List(), -- Drained
-		[328891]	= List(), -- A Gilded Perspective
-		[348443]	= List(), -- Experience Eliminated
-		[374037]	= List(), -- Overwhelming Rage
-		[383600]	= List(), -- Surrounding Storm (Strunraan)
-		[390106]	= List(), -- Riding Along
-		[390435]	= List(), -- Exhaustion (Evoker lust debuff)
-		[392960]	= List(), -- Waygate Travel
-		[392992]	= List(), -- Silent Lava
-		[393798]	= List(), -- Activated Defense Systems
-		[418990]	= List(), -- Wicker Men's Curse
-	},
-}
-
--- A list of important buffs that we always want to see
-G.unitframe.aurafilters.Whitelist = {
-	type = 'Whitelist',
-	spells = {
 	-- Haste effects
 		[2825]		= List(), -- [Shaman] Bloodlust
 		[32182]		= List(), -- [Shaman] Heroism
