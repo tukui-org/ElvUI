@@ -262,10 +262,7 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
+-- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
@@ -677,11 +674,7 @@ if E.ClassicSOD then
 	RaidDebuffs[444165] = List(5) -- Skeletal
 end
 
---[[
-	RAID BUFFS:
-	Buffs that are provided by NPCs in raid or other PvE content.
-	This can be buffs put on other enemies or on players.
-]]
+-- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
