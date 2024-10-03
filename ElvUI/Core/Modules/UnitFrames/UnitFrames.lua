@@ -244,14 +244,17 @@ end
 
 function UF:ResetAuraPriority()
 	for unitName, content in pairs(E.db.unitframe.units) do
-		if content.buffs then
-			content.buffs.priority = P.unitframe.units[unitName].buffs.priority
-		end
-		if content.debuffs then
-			content.debuffs.priority = P.unitframe.units[unitName].debuffs.priority
-		end
-		if content.aurabar then
-			content.aurabar.priority = P.unitframe.units[unitName].aurabar.priority
+		local default = P.unitframe.units[unitName]
+		if default then
+			if content.buffs then
+				content.buffs.priority = default.buffs.priority
+			end
+			if content.debuffs then
+				content.debuffs.priority = default.debuffs.priority
+			end
+			if content.aurabar then
+				content.aurabar.priority = default.aurabar.priority
+			end
 		end
 	end
 end

@@ -83,11 +83,14 @@ local Blacklist = {
 
 function NP:ResetAuraPriority()
 	for unitType, content in pairs(E.db.nameplates.units) do
-		if content.buffs and content.buffs.filters then
-			content.buffs.filters.priority = P.nameplates.units[unitType].buffs.filters.priority
-		end
-		if content.debuffs and content.debuffs.filters then
-			content.debuffs.filters.priority = P.nameplates.units[unitType].debuffs.filters.priority
+		local default = P.nameplates.units[unitType]
+		if default then
+			if content.buffs and content.buffs.filters then
+				content.buffs.filters.priority = default.buffs.filters.priority
+			end
+			if content.debuffs and content.debuffs.filters then
+				content.debuffs.filters.priority = default.debuffs.filters.priority
+			end
 		end
 	end
 end
