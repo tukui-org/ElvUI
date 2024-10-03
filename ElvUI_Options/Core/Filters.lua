@@ -292,18 +292,20 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function confirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 
 local function resetFilter(_, value)
-	if value == 'Aura Highlight' then
-		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
-	elseif value == 'AuraBar Colors' then
-		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-	elseif value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
+	if value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
 		local selectedTable, defaultTable = GetSelectedFilters()
 		wipe(selectedTable)
 		E:CopyTable(selectedTable, defaultTable)
+	elseif value == 'AuraBar Colors' then
+		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+	elseif value == 'Aura Highlight' then
+		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
 	else
 		E.global.unitframe.aurafilters[value].spells = E:CopyTable({}, G.unitframe.aurafilters[value].spells)
 	end
+
 	resetSelectedFilter()
+
 	UF:Update_AllFrames()
 end
 
