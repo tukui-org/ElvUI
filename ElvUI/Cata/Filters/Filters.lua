@@ -3,6 +3,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
+-- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
+G.unitframe.aurafilters.PlayerBuffs = nil
+
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
@@ -130,7 +133,39 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
-G.unitframe.aurafilters.PlayerBuffs = {
+-- Buffs that we don't really need to see
+G.unitframe.aurafilters.Blacklist = {
+	type = 'Blacklist',
+	spells = {
+	-- General
+		[186403] = List(),	-- Sign of Battle
+		[377749] = List(),	-- Joyous Journeys
+		[6788] = List(),	-- Weakended Soul
+		[8326] = List(),	-- Ghost
+		[8733] = List(),	-- Blessing of Blackfathom
+		[15007] = List(),	-- Resurrection Sickness
+		[23445] = List(),	-- Evil Twin
+		[24755] = List(),	-- Trick or Treat
+		[25163] = List(),	-- Oozeling Disgusting Aura
+		[25771] = List(),	-- Forbearance
+		[26013] = List(),	-- Deserter
+		[36032] = List(),	-- Arcane Blast
+		[41425] = List(),	-- Hypothermia
+		[46221] = List(),	-- Animal Blood
+		[55711] = List(),	-- Weakened Heart
+		[57723] = List(),	-- Exhaustion
+		[57724] = List(),	-- Sated
+		[58539] = List(),	-- Watchers Corpse
+		[69438] = List(),	-- Sample Satisfaction
+		[71041] = List(),	-- Dungeon Deserter
+		[80354] = List(),	-- Timewarp
+		[95809] = List(),	-- Insanity
+		[95223] = List()	-- Group Res
+	},
+}
+
+-- A list of important buffs that we always want to see
+G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
 	-- Mage
@@ -235,45 +270,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[20572] = List(),	-- Blood Fury
 		[20594] = List(),	-- Stoneform
 		[26297] = List(),	-- Berserking
-		[59545] = List()	-- Gift of the Naaru
-	},
-}
-
--- Buffs that we don't really need to see
-G.unitframe.aurafilters.Blacklist = {
-	type = 'Blacklist',
-	spells = {
-	-- General
-		[186403] = List(),	-- Sign of Battle
-		[377749] = List(),	-- Joyous Journeys
-		[6788] = List(),	-- Weakended Soul
-		[8326] = List(),	-- Ghost
-		[8733] = List(),	-- Blessing of Blackfathom
-		[15007] = List(),	-- Resurrection Sickness
-		[23445] = List(),	-- Evil Twin
-		[24755] = List(),	-- Trick or Treat
-		[25163] = List(),	-- Oozeling Disgusting Aura
-		[25771] = List(),	-- Forbearance
-		[26013] = List(),	-- Deserter
-		[36032] = List(),	-- Arcane Blast
-		[41425] = List(),	-- Hypothermia
-		[46221] = List(),	-- Animal Blood
-		[55711] = List(),	-- Weakened Heart
-		[57723] = List(),	-- Exhaustion
-		[57724] = List(),	-- Sated
-		[58539] = List(),	-- Watchers Corpse
-		[69438] = List(),	-- Sample Satisfaction
-		[71041] = List(),	-- Dungeon Deserter
-		[80354] = List(),	-- Timewarp
-		[95809] = List(),	-- Insanity
-		[95223] = List()	-- Group Res
-	},
-}
-
--- A list of important buffs that we always want to see
-G.unitframe.aurafilters.Whitelist = {
-	type = 'Whitelist',
-	spells = {
+		[59545] = List(),	-- Gift of the Naaru
 	-- General
 		[1022] = List(),	-- Hand of Protection
 		[1490] = List(),	-- Curse of the elements
@@ -470,11 +467,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
---[[
-	RAID BUFFS:
-	Buffs that are provided by NPCs in raid or other PvE content.
-	This can be buffs put on other enemies or on players.
-]]
+-- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
