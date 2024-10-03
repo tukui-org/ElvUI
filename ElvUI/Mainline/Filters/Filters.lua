@@ -294,13 +294,6 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[132404]	= List(), -- Shield Block
 	-- Racial
 		[65116]		= List(), -- Stoneform
-	-- Potion
-		[251231]	= List(), -- Steelskin Potion
-	-- Covenant
-		[324867]	= List(), -- Fleshcraft (Necrolord)
-	-- PvP
-		[363522]	= List(), -- Gladiator's Eternal Aegis
-		[362699]	= List(), -- Gladiator's Resolve
 	},
 }
 
