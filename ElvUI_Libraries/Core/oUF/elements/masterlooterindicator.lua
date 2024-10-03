@@ -43,8 +43,10 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isShown = false
-	if(UnitInParty(unit) or UnitInRaid(unit)) then
+	local isShown
+	if element.combatHide and InCombatLockdown() then
+		isShown = false
+	elseif(UnitInParty(unit) or UnitInRaid(unit)) then
 		local method, partyIndex, raidIndex = GetLootMethod()
 		if(method == 'master') then
 			local mlUnit
@@ -100,8 +102,10 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path, true)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
+		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\GroupFrame\UI-Group-MasterLooter]])
@@ -116,8 +120,10 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('PARTY_LOOT_METHOD_CHANGED', Path)
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
+		self:UnregisterEvent('PARTY_LOOT_METHOD_CHANGED', Path)
+		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
 	end
 end
 

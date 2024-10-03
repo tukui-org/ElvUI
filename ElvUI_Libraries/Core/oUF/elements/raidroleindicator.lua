@@ -42,16 +42,20 @@ local function Update(self, event)
 	end
 
 	local role, isShown
-	local inVehicle = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)
-	if(UnitInRaid(unit) and not inVehicle) then
-		if(GetPartyAssignment('MAINTANK', unit)) then
-			isShown = true
-			element:SetTexture(MAINTANK_ICON)
-			role = 'MAINTANK'
-		elseif(GetPartyAssignment('MAINASSIST', unit)) then
-			isShown = true
-			element:SetTexture(MAINASSIST_ICON)
-			role = 'MAINASSIST'
+	if element.combatHide and InCombatLockdown() then
+		isShown = false
+	else
+		local inVehicle = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)
+		if(UnitInRaid(unit) and not inVehicle) then
+			if(GetPartyAssignment('MAINTANK', unit)) then
+				isShown = true
+				element:SetTexture(MAINTANK_ICON)
+				role = 'MAINTANK'
+			elseif(GetPartyAssignment('MAINASSIST', unit)) then
+				isShown = true
+				element:SetTexture(MAINASSIST_ICON)
+				role = 'MAINASSIST'
+			end
 		end
 	end
 
@@ -90,6 +94,8 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
 
 		return true
 	end
@@ -101,6 +107,8 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
+		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
 	end
 end
 

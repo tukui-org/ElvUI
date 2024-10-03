@@ -38,11 +38,15 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
-	if(isAssistant) then
-		element:Show()
-	else
+	if element.combatHide and InCombatLockdown() then
 		element:Hide()
+	else
+		local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
+		if(isAssistant) then
+			element:Show()
+		else
+			element:Hide()
+		end
 	end
 
 	--[[ Callback: AssistantIndicator:PostUpdate(isAssistant)
@@ -78,6 +82,8 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\GroupFrame\UI-Group-AssistantIcon]])
@@ -93,6 +99,8 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
+		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
 	end
 end
 

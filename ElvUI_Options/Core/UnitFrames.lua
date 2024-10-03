@@ -885,8 +885,9 @@ end
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 	local config = ACH:Group(L["Raid Role Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-	config.args.scale = ACH:Range(L["Scale"], nil, 1, { min = 0.5, max = 2, step = 0.01, isPercent = true })
+	config.args.combatHide = ACH:Toggle(L["Hide In Combat"], nil, 1)
 	config.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
+	config.args.scale = ACH:Range(L["Scale"], nil, 3, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetLong)
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetLong)
 
