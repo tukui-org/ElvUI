@@ -916,8 +916,8 @@ function CH:StyleChat(frame)
 end
 
 function CH:AddMessageEdits(frame, msg, isHistory, historyTime)
-	if not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
-		local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
+	if not strmatch(msg, '^%s*$') and not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
+		local historyTimestamp -- we need to extend the arguments on AddMessage so we can properly handle times without overriding
 		if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 		if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
