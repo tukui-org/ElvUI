@@ -266,6 +266,23 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+		[349981] = List(), -- Supercharged Chronoboon Displacer (Suspended World Buffs)
+	-- Consumables
+		[3169]	= List(), -- Limited Invulnerability Potion
+		[6615]	= List(), -- Free Action Potion
+	-- Racial
+		[20554]	= List(), -- Berserking (Mana)
+		[26296]	= List(), -- Berserking (Rage)
+		[26297]	= List(), -- Berserking (Energy)
+		[7744]	= List(), -- Will of the Forsaken
+		[20572]	= List(), -- Blood Fury (Physical)
+		[33697]	= List(), -- Blood Fury (Both)
+		[33702]	= List(), -- Blood Fury (Spell)
+		[6346]	= List(), -- Fear Ward
+		[20594]	= List(), -- Stoneform
+	-- All Classes
+		[19753]	= List(), -- Divine Intervention
 	-- Druid
 		[29166]	= List(), -- Innervate
 		[22812]	= List(), -- Barkskin
@@ -410,23 +427,6 @@ G.unitframe.aurafilters.Whitelist = {
 		[14202]	= List(), -- Enrage (Rank 3)
 		[14203]	= List(), -- Enrage (Rank 4)
 		[14204]	= List(), -- Enrage (Rank 5)
-	-- Consumables
-		[3169]	= List(), -- Limited Invulnerability Potion
-		[6615]	= List(), -- Free Action Potion
-	-- Racial
-		[20554]	= List(), -- Berserking (Mana)
-		[26296]	= List(), -- Berserking (Rage)
-		[26297]	= List(), -- Berserking (Energy)
-		[7744]	= List(), -- Will of the Forsaken
-		[20572]	= List(), -- Blood Fury (Physical)
-		[33697]	= List(), -- Blood Fury (Both)
-		[33702]	= List(), -- Blood Fury (Spell)
-		[6346]	= List(), -- Fear Ward
-		[20594]	= List(), -- Stoneform
-	-- All Classes
-		[19753]	= List(), -- Divine Intervention
-	-- General
-		[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
 	},
 }
 

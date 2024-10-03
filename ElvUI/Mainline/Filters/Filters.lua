@@ -361,6 +361,14 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+		[256948]	= List(), -- Spatial Rift
+		[65116]		= List(), -- Stoneform
+		[59547]		= List(), -- Gift of the Naaru
+		[20572]		= List(), -- Blood Fury
+		[26297]		= List(), -- Berserking
+		[68992]		= List(), -- Darkflight
+		[58984]		= List(), -- Shadowmeld
 	-- Evoker
 		[363916]	= List(), -- Obsidian Scales
 		[374348]	= List(), -- Renewing Blaze
@@ -371,6 +379,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[371807]	= List(), -- Recall
 		[395296]	= List(), -- Ebon Might < self
 		[395152]	= List(), -- Ebon Might < others
+		[390386]	= List(), -- [Evoker] Fury of the Aspects
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -407,6 +416,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[162264]	= List(), -- Metamorphosis
 		[205629]	= List(), -- Demonic Trample
 		[188501]	= List(), -- Spectral Sight
+		[196718]	= List(), -- Darkness
 	-- Druid
 		[102342]	= List(), -- Ironbark
 		[61336]		= List(), -- Survival Instincts
@@ -544,6 +554,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[210980]	= List(), -- Focus in the Light
 		[221660]	= List(), -- Holy Concentration
 		[15286]		= List(), -- Vampiric Embrace
+		[62618]		= List(), -- Power Word: Barrier
 	-- Rogue
 		[315496]	= List(), -- Slice and Dice
 		[5277]		= List(), -- Evasion
@@ -590,6 +601,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[2645]		= List(), -- Ghost Wolf
 		[32182]		= List(), -- Heroism
 		[108281]	= List(), -- Ancestral Guidance
+		[20608]		= List(), -- Reincarnation
 	-- Warlock
 		[108416]	= List(), -- Dark Pact
 		[113860]	= List(), -- Dark Soul: Misery
@@ -628,40 +640,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[202164]	= List(), -- Bounding Stride
 		[215572]	= List(), -- Frothing Berserker
 		[199203]	= List(), -- Thirst for Battle
-	-- Racials
-		[256948]	= List(), -- Spatial Rift
-		[65116]		= List(), -- Stoneform
-		[59547]		= List(), -- Gift of the Naaru
-		[20572]		= List(), -- Blood Fury
-		[26297]		= List(), -- Berserking
-		[68992]		= List(), -- Darkflight
-		[58984]		= List(), -- Shadowmeld
-	-- Haste effects
-		[2825]		= List(), -- [Shaman] Bloodlust
-		[32182]		= List(), -- [Shaman] Heroism
-		[80353]		= List(), -- [Mage] Time Warp
-		[90355]		= List(), -- [Hunter] Ancient Hysteria
-		[390386]	= List(), -- [Evoker] Fury of the Aspects
-	-- Paladin
-		[31821]		= List(), -- Aura Mastery
-		[1022]		= List(), -- Blessing of Protection
-		[204018]	= List(), -- Blessing of Spellwarding
-		[6940]		= List(), -- Blessing of Sacrifice
-		[1044]		= List(), -- Blessing of Freedom
-	-- Priest
-		[47788]		= List(), -- Guardian Spirit
-		[33206]		= List(), -- Pain Suppression
-		[62618]		= List(), -- Power Word: Barrier
-	-- Monk
-		[116849]	= List(), -- Life Cocoon
-	-- Druid
-		[102342]	= List(), -- Ironbark
-	-- Shaman
-		[325174]	= List(), -- Spirit Link
-		[20608]		= List(), -- Reincarnation
-	-- Other
 		[97462]		= List(), -- Rallying Cry
-		[196718]	= List(), -- Darkness
 	},
 }
 

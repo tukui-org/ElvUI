@@ -168,6 +168,8 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+		[96694] = List(),	-- Reflective Shield
 	-- Mage
 		[12042] = List(),	-- Arcane Power
 		[12051] = List(),	-- Evocation
@@ -196,6 +198,8 @@ G.unitframe.aurafilters.Whitelist = {
 		[62618] = List(),	-- Power Word: Barrier
 	-- Warlock
 		[88448] = List(),	-- Demonic Rebirth
+		[1490] = List(),	-- Curse of the elements
+		[18708] = List(),	-- Fel Domination
 	-- Druid
 		[1850] = List(),	-- Dash
 		[16689] = List(),	-- Nature's Grasp
@@ -271,34 +275,6 @@ G.unitframe.aurafilters.Whitelist = {
 		[20594] = List(),	-- Stoneform
 		[26297] = List(),	-- Berserking
 		[59545] = List(),	-- Gift of the Naaru
-	-- General
-		[1022] = List(),	-- Hand of Protection
-		[1490] = List(),	-- Curse of the elements
-		[2825] = List(),	-- Bloodlust
-		[12051] = List(),	-- Evocation
-		[18708] = List(),	-- Fel Domination
-		[22812] = List(),	-- Barkskin
-		[29166] = List(),	-- Innervate
-		[31821] = List(),	-- Aura Mastery
-		[32182] = List(),	-- Heroism
-		[33206] = List(),	-- Pain Suppression
-		[47788] = List(),	-- Guardian Spirit
-		[54428] = List(),	-- Divine Plea
-		[90355] = List(),	-- Ancient Hysteria
-		[80353] = List(),	-- Time Warp
-	-- Turtling
-		[871] = List(),		-- Shield Wall
-		[19263] = List(),	-- Deterrence
-		[31224] = List(),	-- Cloak of Shadows
-		[48707] = List(),	-- Anti-Magic Shell
-		[47585] = List(),	-- Dispersion
-	-- Immunities
-		[642] = List(),		-- Divine shield
-		[45438] = List(),	-- Ice Block
-		[96694] = List(),	-- Reflective Shield
-	-- Offensive
-		[31884] = List(),	-- Avenging Wrath
-		[34471] = List()	-- The Beast Within
 	},
 }
 
