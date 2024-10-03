@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local format, strlower = format, strlower
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
-local sort, wipe, unpack, next, floor = sort, wipe, unpack, next, floor
+local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
 
 local CreateFrame = CreateFrame
 local IsAltKeyDown = IsAltKeyDown
@@ -504,11 +504,13 @@ function UF:ConvertFilters(auras, priority)
 	if not priority or priority == '' then return end
 
 	local list = auras.filterList or {}
-	if next(list) then wipe(list) end
+	if #list > 0 then wipe(list) end
 
 	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-	for _, name in next, { strsplit(',', priority) } do
+	local temp = { strsplit(',', priority) }
+	for i = 1, #temp do
+		local name = temp[i]
 		local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
 		local real = friend or enemy or name
 		local custom = filters[real]
@@ -522,13 +524,14 @@ function UF:ConvertFilters(auras, priority)
 		end
 	end
 
-	if next(list) then
+	if #list > 0 then
 		return list
 	end
 end
 
 function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, isMount, castByPlayer, nameplateShowSelf, nameplateShowAll, filterList)
-	for _, data in next, filterList do
+	for i = 1, #filterList do
+		local data = filterList[i]
 		local status = data.status
 		local skip = (status == 1 and not isFriend) or (status == 2 and isFriend)
 		if not skip then
