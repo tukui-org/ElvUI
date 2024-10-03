@@ -42,7 +42,7 @@ local function Update(self, event)
 	end
 
 	local role, isShown
-	if element.combatHide and InCombatLockdown() then
+	if element.combatHide and UnitAffectingCombat(unit) then
 		isShown = false
 	else
 		local inVehicle = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)

@@ -38,7 +38,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	if element.combatHide and InCombatLockdown() then
+	if element.combatHide and UnitAffectingCombat(unit) then
 		element:Hide()
 	else
 		-- There are two kinds of group leaders: guides and leaders. Guides are leaders of groups formed via LFD/LFR.

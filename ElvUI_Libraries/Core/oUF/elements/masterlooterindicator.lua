@@ -44,7 +44,7 @@ local function Update(self, event)
 	end
 
 	local isShown
-	if element.combatHide and InCombatLockdown() then
+	if element.combatHide and UnitAffectingCombat(unit) then
 		isShown = false
 	elseif(UnitInParty(unit) or UnitInRaid(unit)) then
 		local method, partyIndex, raidIndex = GetLootMethod()

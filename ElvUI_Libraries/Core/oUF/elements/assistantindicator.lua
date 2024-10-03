@@ -38,7 +38,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	if element.combatHide and InCombatLockdown() then
+	if element.combatHide and UnitAffectingCombat(unit) then
 		element:Hide()
 	else
 		local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
