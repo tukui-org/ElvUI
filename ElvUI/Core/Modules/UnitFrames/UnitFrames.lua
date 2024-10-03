@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local NP = E:GetModule('NamePlates')
 local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
@@ -255,8 +256,8 @@ function UF:ResetAuraPriority()
 	end
 end
 
-function UF:ResetFilters(include) -- keep similar to with resetFilter in Filters.lua of Options
-	if include then
+function UF:ResetFilters(includeIndicators, resetPriority) -- keep similar to with resetFilter in Filters.lua of Options
+	if includeIndicators then
 		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
 		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
 
@@ -269,6 +270,11 @@ function UF:ResetFilters(include) -- keep similar to with resetFilter in Filters
 			local default = P.unitframe.filters.aurawatch[name]
 			E.db.unitframe.filters.aurawatch[name] = (default and E:CopyTable({}, default)) or nil
 		end
+	end
+
+	if resetPriority then
+		UF:ResetAuraPriority()
+		NP:ResetAuraPriority()
 	end
 
 	for name, data in next, E.global.unitframe.aurafilters do
