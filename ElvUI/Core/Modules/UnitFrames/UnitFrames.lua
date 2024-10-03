@@ -241,9 +241,21 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
-function UF:ResetFilters() -- keep similar to with resetFilter in Filters.lua of Options
-	E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-	E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
+function UF:ResetFilters(include) -- keep similar to with resetFilter in Filters.lua of Options
+	if include then
+		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
+
+		for name in next, E.global.unitframe.aurawatch do
+			local default = G.unitframe.aurawatch[name]
+			E.global.unitframe.aurawatch[name] = (default and E:CopyTable({}, default)) or nil
+		end
+
+		for name in next, E.db.unitframe.filters.aurawatch do -- profile specific
+			local default = P.unitframe.filters.aurawatch[name]
+			E.db.unitframe.filters.aurawatch[name] = (default and E:CopyTable({}, default)) or nil
+		end
+	end
 
 	for name, data in next, E.global.unitframe.aurafilters do
 		local default = G.unitframe.aurafilters[name]
