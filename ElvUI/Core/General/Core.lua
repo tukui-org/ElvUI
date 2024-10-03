@@ -554,6 +554,17 @@ do
 			'Bartender4',
 			'Dominos'
 		},
+		Bags = {
+			info = {
+				enabled = function() return E.private.bags.enable end,
+				accept = function() E.private.bags.enable = false; ReloadUI() end,
+				name = 'ElvUI Bags'
+			},
+			'AdiBags',
+			'ArkInventory',
+			'Baganator',
+			'BetterBags'
+		},
 		Chat = {
 			info = {
 				enabled = function() return E.private.chat.enable end,
