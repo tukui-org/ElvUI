@@ -1604,6 +1604,7 @@ local UF_PVPIcon = {
 
 local UF_RaidRoles = {
 	enable = true,
+	combatHide = false,
 	scale = 1,
 	position = 'TOPLEFT',
 	xOffset = 0,
