@@ -17,38 +17,30 @@ function S:WorldMapFrame()
 	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
 	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -2)
 
-	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown)
-	S:HandleDropDownBox(_G.WorldMapContinentDropdown)
-	S:HandleDropDownBox(_G.WorldMapZoneDropdown)
+	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapContinentDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
-	S:HandleCheckBox(_G.WorldMapTrackQuest)
 	S:HandleCheckBox(_G.WorldMapShowDigsites)
 	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
 
-	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 230, -35)
-	_G.WorldMapContinentDropdown:Width(130)
---	_G.WorldMapContinentDropdown:Height(23)
+	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
+	_G.WorldMapContinentDropdown:Height(26)
 
-	_G.WorldMapZoneDropdown:Point('LEFT', _G.WorldMapContinentDropdown, 'RIGHT', 5, 0)
-	_G.WorldMapZoneDropdown:Width(130)
---	_G.WorldMapZoneDropdown:Height(23)
+	_G.WorldMapZoneDropdown:Point('LEFT', _G.WorldMapContinentDropdown, 'RIGHT', 10, 0)
+	_G.WorldMapZoneDropdown:Height(26)
 
-	_G.WorldMapZoneMinimapDropdown:Point('RIGHT', _G.WorldMapContinentDropdown, 'LEFT', -20, 0)
-	_G.WorldMapZoneMinimapDropdown:Width(130)
---	_G.WorldMapZoneMinimapDropdown:Height(23)
+	_G.WorldMapZoneMinimapDropdown:Point('RIGHT', _G.WorldMapContinentDropdown, 'LEFT', -10, 0)
+	_G.WorldMapZoneMinimapDropdown:Height(26)
 
-	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 3, 0)
-	_G.WorldMapZoomOutButton:Height(20)
+	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 10, 1)
+	_G.WorldMapZoomOutButton:Height(23)
 	_G.WorldMapZoomOutButton:Width(100)
 	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
 
 	S:HandleButton(_G.WorldMapZoomOutButton)
 	S:HandleSliderFrame(_G.OpacityFrameSlider)
-
-	S:HandleTrimScrollBar(_G.QuestScrollFrame.ScrollBar)
-	_G.QuestMapDetailsScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
 
 	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)

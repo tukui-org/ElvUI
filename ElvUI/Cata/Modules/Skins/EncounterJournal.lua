@@ -210,6 +210,9 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.bg:Kill()
 
 	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfo.LootContainer.filter, 100)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfo.LootContainer.slotFilter, 100)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfoDifficulty, 110)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
@@ -254,10 +257,10 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.reset:StripTextures()
 
 	-- Buttons
---	EncounterInfo.difficulty:ClearAllPoints()
---	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
+	EncounterInfo.difficulty:ClearAllPoints()
+	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
 	HandleButton(EncounterInfo.reset)
---	HandleButton(EncounterInfo.difficulty)
+	HandleButton(EncounterInfo.difficulty)
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
@@ -278,10 +281,6 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(EncounterInfo.overviewScroll.ScrollBar)
 	S:HandleTrimScrollBar(EncounterInfo.detailsScroll.ScrollBar)
 	S:HandleTrimScrollBar(EncounterInfo.LootContainer.ScrollBar)
-
-	S:HandleDropDownBox(_G.EncounterJournalEncounterFrameInfo.LootContainer.filter, 120)
-	S:HandleDropDownBox(_G.EncounterJournalEncounterFrameInfo.LootContainer.slotFilter, 90)
-	S:HandleDropDownBox(_G.EncounterJournalEncounterFrameInfoDifficulty, 100)
 
 	EncounterInfo.detailsScroll:Height(360)
 	EncounterInfo.LootContainer:Height(360)
@@ -325,9 +324,9 @@ function S:Blizzard_EncounterJournal()
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
 	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
 
---	for _, button in next, { _G.EncounterJournalEncounterFrameInfo.LootContainer.filter, _G.EncounterJournalEncounterFrameInfo.LootContainer.slotFilter } do
---		HandleButton(button, true)
---	end
+	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
+		HandleButton(button, true)
+	end
 
 	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', function(frame)
 		for _, child in next, { frame.ScrollTarget:GetChildren() } do
