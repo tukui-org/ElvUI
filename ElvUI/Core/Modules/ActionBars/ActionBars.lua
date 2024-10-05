@@ -1013,8 +1013,8 @@ function AB:SpellButtonOnEnter(_, tt)
 		return
 	end
 
-	local slotIndex = self.slotIndex or (E.Classic and FindSpellBookSlotForSpell(self))
-	local slotBank = self.spellBank or (E.Classic and _G.SpellBookFrame.bookType)
+	local slotIndex = (E.Classic and FindSpellBookSlotForSpell(self)) or self.slotIndex
+	local slotBank = (E.Classic and _G.SpellBookFrame.bookType) or self.spellBank
 	if not (slotIndex and slotBank) then return end -- huh?
 
 	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
@@ -1455,6 +1455,13 @@ function AB:FixKeybindText(button)
 	end
 end
 
+local function skinFlyout()
+	if _G.SpellFlyout.Background then _G.SpellFlyout.Background:Hide() end
+	if _G.SpellFlyoutBackgroundEnd then _G.SpellFlyoutBackgroundEnd:Hide() end
+	if _G.SpellFlyoutHorizontalBackground then _G.SpellFlyoutHorizontalBackground:Hide() end
+	if _G.SpellFlyoutVerticalBackground then _G.SpellFlyoutVerticalBackground:Hide() end
+end
+
 local function flyoutButtonAnchor(frame)
 	local parent = frame:GetParent()
 	local _, parentAnchorButton = parent:GetPoint()
@@ -1493,7 +1500,6 @@ function AB:SpellFlyout_OnLeave()
 end
 
 function AB:UpdateFlyoutButtons()
-	if _G.SpellFlyout then _G.SpellFlyout.Background:Hide() end
 	if _G.LABFlyoutHandlerFrame then _G.LABFlyoutHandlerFrame.Background:Hide() end
 
 	local isShown = _G.SpellFlyout:IsShown()
@@ -1832,6 +1838,10 @@ function AB:Initialize()
 
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
+	end
+
+	if not E.Classic then
+		hooksecurefunc(_G.SpellFlyout, 'Toggle', skinFlyout)
 	end
 end
 
