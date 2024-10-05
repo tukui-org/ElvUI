@@ -335,7 +335,7 @@ local function SkinMountFrame()
 	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
 
 	S:HandleButton(_G.MountJournalMountButton)
-	S:Nudge(_G.MountJournalMountButton, 0, -3)
+	_G.MountJournalMountButton:NudgePoint(0, -3)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
 	S:HandleModelSceneControlButtons(_G.MountJournal.MountDisplay.ModelScene.ControlFrame)
