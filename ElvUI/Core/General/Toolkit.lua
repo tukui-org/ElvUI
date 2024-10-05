@@ -110,6 +110,20 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
+local function GetChild(frame, child, index, debug)
+	local name = frame and child and ((debug and frame.GetDebugName and frame:GetDebugName()) or (frame.GetName and frame:GetName()))
+	if not name then return nil end
+	if not index then index = '' end
+
+	-- try keyed first
+	local main = _G[name]
+	local sub = main and main[child..index]
+	if sub then return sub end
+
+	-- if its not keyed try named
+	return _G[name..child..index]
+end
+
 local function Size(frame, width, height, ...)
 	local w = E:Scale(width)
 	frame:SetSize(w, (height and E:Scale(height)) or w, ...)
@@ -132,6 +146,36 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
+end
+
+local function GrabPoint(obj, pointValue)
+	for i = 1, obj:GetNumPoints() do
+		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
+		if not point then
+			break
+		elseif point == pointValue then
+			return point, relativeTo, relativePoint, xOfs, yOfs
+		end
+	end
+end
+
+local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
+	xAxis = xAxis or 0
+	yAxis = yAxis or 0
+
+	local point, relativeTo, relativePoint, xOfs, yOfs
+	if type(pointValue) == 'string' then
+		point, relativeTo, relativePoint, xOfs, yOfs = obj:GrabPoint(pointValue)
+	end
+
+	if not point then
+		point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointValue)
+	end
+
+	local x = (noScale and xAxis) or E:Scale(xAxis)
+	local y = (noScale and yAxis) or E:Scale(yAxis)
+
+	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
@@ -446,50 +490,6 @@ do
 
 		frame.CloseButton = CloseButton
 	end
-end
-
-local function GrabPoint(obj, pointValue)
-	for i = 1, obj:GetNumPoints() do
-		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
-		if not point then
-			break
-		elseif point == pointValue then
-			return point, relativeTo, relativePoint, xOfs, yOfs
-		end
-	end
-end
-
-local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
-	xAxis = xAxis or 0
-	yAxis = yAxis or 0
-
-	local point, relativeTo, relativePoint, xOfs, yOfs
-	if type(pointValue) == 'string' then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GrabPoint(pointValue)
-	end
-
-	if not point then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointValue)
-	end
-
-	local x = (noScale and xAxis) or E:Scale(xAxis)
-	local y = (noScale and yAxis) or E:Scale(yAxis)
-
-	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
-end
-
-local function GetChild(frame, child, index, debug)
-	local name = frame and child and ((debug and frame.GetDebugName and frame:GetDebugName()) or (frame.GetName and frame:GetName()))
-	if not name then return nil end
-	if not index then index = '' end
-
-	-- try keyed first
-	local main = _G[name]
-	local sub = main and main[child..index]
-	if sub then return sub end
-
-	-- if its not keyed try named
-	return _G[name..child..index]
 end
 
 local API = {
