@@ -1013,8 +1013,8 @@ function AB:SpellButtonOnEnter(_, tt)
 		return
 	end
 
-	local slotIndex = self.slotIndex or (not E.Retail and FindSpellBookSlotForSpell(self))
-	local slotBank = self.spellBank or (not E.Retail and _G.SpellBookFrame.bookType)
+	local slotIndex = self.slotIndex or (E.Classic and FindSpellBookSlotForSpell(self))
+	local slotBank = self.spellBank or (E.Classic and _G.SpellBookFrame.bookType)
 	if not (slotIndex and slotBank) then return end -- huh?
 
 	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
