@@ -139,9 +139,11 @@ function S:FriendsFrame()
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetPoint('LEFT', 11, 0)
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetPoint('TOPLEFT', 8, -10)
 
-	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', function()
-		for object in pairs(_G.FriendsFrameFriendsScrollFrame.invitePool.activeObjects) do
-			skinFriendRequest(object)
+	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', function(pool)
+		if pool.activeObjects then
+			for object in pairs(pool.activeObjects) do
+				skinFriendRequest(object)
+			end
 		end
 	end)
 
