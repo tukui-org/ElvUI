@@ -8,6 +8,7 @@ local select = select
 local bitband = bit.band
 
 local hooksecurefunc = hooksecurefunc
+local IsInGuild = IsInGuild
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 
@@ -302,7 +303,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameTab1:ClearAllPoints()
 	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -10, 0)
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
-	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.AchievementFrameTab3:Point('TOPLEFT', IsInGuild() and _G.AchievementFrameTab2 or _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 
