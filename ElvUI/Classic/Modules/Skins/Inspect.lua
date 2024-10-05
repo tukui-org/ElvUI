@@ -76,7 +76,7 @@ function S:Blizzard_InspectUI()
 	InspectHonorFrameProgressBar:Width(325)
 	InspectHonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
 
-	S:HandlePointXY(InspectHonorFrameProgressBar, 19, -74)
+	InspectHonorFrameProgressBar:PointXY(19, -74)
 
 	E:RegisterStatusBar(InspectHonorFrameProgressBar)
 end

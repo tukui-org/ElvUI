@@ -148,6 +148,11 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
+local function PointXY(obj, x, y)
+	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint()
+	obj:SetPoint(point, relativeTo, relativePoint, x or xOfs, y or yOfs)
+end
+
 local function GrabPoint(obj, pointValue)
 	for i = 1, obj:GetNumPoints() do
 		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
@@ -498,6 +503,7 @@ local API = {
 	Point = Point,
 	Width = Width,
 	Height = Height,
+	PointXY = PointXY,
 	GrabPoint = GrabPoint,
 	NudgePoint = NudgePoint,
 	SetOutside = SetOutside,

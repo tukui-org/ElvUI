@@ -16,13 +16,13 @@ local GetItemQualityColor = C_Item.GetItemQualityColor
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 
 local function merchantItemPoint()
-	S:HandlePointXY(_G.MerchantItem1, 6, -40)
+	_G.MerchantItem1:PointXY(6, -40)
 
 	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
 		if E:IsEvenNumber(i) then
-			S:HandlePointXY(_G['MerchantItem'..i], 12, 0)
+			_G['MerchantItem'..i]:PointXY(12, 0)
 		else
-			S:HandlePointXY(_G['MerchantItem'..i], 0, -16)
+			_G['MerchantItem'..i]:PointXY(0, -16)
 		end
 	end
 end
@@ -114,7 +114,7 @@ function S:MerchantFrame()
 
 	S:HandleFrame(_G.MerchantBuyBackItem, true, nil, -1, 3, 2, -2)
 	_G.MerchantBuyBackItem:Height(46)
-	S:HandlePointXY(_G.MerchantBuyBackItem, 0, -16)
+	_G.MerchantBuyBackItem:PointXY(0, -16)
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()

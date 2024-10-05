@@ -107,15 +107,15 @@ function S:SpellBookFrame()
 		E:RegisterCooldown(cooldown)
 	end
 
-	S:HandlePointXY(_G.SpellButton1, 28, -55)
+	_G.SpellButton1:PointXY(28, -55)
 
 	-- evens
 	for i = 2, _G.SPELLS_PER_PAGE, 2 do
-		S:HandlePointXY(_G['SpellButton'..i], 163, 0)
+		_G['SpellButton'..i]:PointXY(163, 0)
 	end
 	-- odds
 	for i = 3, _G.SPELLS_PER_PAGE, 2 do
-		S:HandlePointXY(_G['SpellButton'..i], 0, -20)
+		_G['SpellButton'..i]:PointXY(0, -20)
 	end
 
 	hooksecurefunc('SpellButton_UpdateButton', function(button)

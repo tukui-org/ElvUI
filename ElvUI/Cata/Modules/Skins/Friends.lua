@@ -30,7 +30,7 @@ function S:FriendsFrame()
 	_G.FriendsFrameCloseButton:Point('TOPRIGHT', 0, 2)
 
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 72)
-	S:HandlePointXY(_G.FriendsFrameStatusDropDown, 266, -55)
+	_G.FriendsFrameStatusDropDown:PointXY(266, -55)
 
 	for i = 1, #_G.FRIENDSFRAME_SUBFRAMES do
 		S:HandleTab(_G['FriendsFrameTab'..i])
@@ -75,7 +75,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.FriendsFrameSendMessageButton)
 	S:HandleButton(_G.FriendsFrameUnsquelchButton)
 
-	S:HandlePointXY(_G.FriendsFrameAddFriendButton, -1, 4)
+	_G.FriendsFrameAddFriendButton:PointXY(-1, 4)
 
 	-- Battle.net
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame

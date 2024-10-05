@@ -181,11 +181,6 @@ function S:HandleButtonHighlight(frame, r, g, b)
 	frame.highlightGradient:SetVertexColor(r, g, b, 0.3)
 end
 
-function S:HandlePointXY(frame, x, y)
-	local a, b, c, d, e = frame:GetPoint()
-	frame:SetPoint(a, b, c, x or d, y or e)
-end
-
 function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 	assert(frame, 'doesn\'t exist!')
 
@@ -498,7 +493,7 @@ do -- WIM replaces Blizzard globals we need to rehook
 				if not button.notCheckable then
 					local text = _G[name..'NormalText']
 					if text then
-						S:HandlePointXY(text, textX or 5, textY)
+						text:PointXY(textX or 5, textY)
 					end
 
 					local uncheck = _G[name..'UnCheck']
