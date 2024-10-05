@@ -13,8 +13,8 @@ function S:Blizzard_TrainerUI()
 
 	_G.ClassTrainerExpandButtonFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown)
-	_G.ClassTrainerFrameFilterDropDown:Point('TOPRIGHT', -40, -64)
+	S:HandleDropDownBox(_G.ClassTrainerFrame.FilterDropdown)
+	_G.ClassTrainerFrame.FilterDropdown:Point('TOPRIGHT', -40, -64)
 
 	_G.ClassTrainerListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ClassTrainerListScrollFrameScrollBar)
