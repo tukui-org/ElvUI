@@ -749,6 +749,18 @@ do
 	end
 end
 
+function S:Nudge(obj, xAxis, yAxis, noScale)
+	assert(obj, 'doesn\'t exist!')
+	xAxis = xAxis or 0
+	yAxis = yAxis or 0
+
+	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint()
+	local x = (noScale and xAxis) or E:Scale(xAxis)
+	local y = (noScale and yAxis) or E:Scale(yAxis)
+
+	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
+end
+
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
 	assert(button, 'doesn\'t exist!')
 
