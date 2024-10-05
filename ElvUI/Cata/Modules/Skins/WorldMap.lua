@@ -22,8 +22,9 @@ function S:WorldMapFrame()
 	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
-	S:HandleCheckBox(_G.WorldMapShowDigsites)
 	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
+	S:HandleCheckBox(_G.WorldMapShowDigsites)
+	S:HandleCheckBox(_G.WorldMapTrackQuest)
 
 	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
 	_G.WorldMapContinentDropdown:Height(26)
@@ -41,6 +42,8 @@ function S:WorldMapFrame()
 
 	S:HandleButton(_G.WorldMapZoomOutButton)
 	S:HandleSliderFrame(_G.OpacityFrameSlider)
+	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
+	S:HandleScrollBar(_G.QuestScrollFrame.ScrollBar)
 
 	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)
