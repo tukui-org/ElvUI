@@ -46,8 +46,7 @@ function S:TabardFrame()
 			button:ClearAllPoints()
 			button:Point('TOP', _G['TabardFrameCustomization'..i - 1], 'BOTTOM', 0, -6)
 		else
-			local point, anchor, point2, x, y = button:GetPoint()
-			button:Point(point, anchor, point2, x, y+4)
+			button:NudgePoint(nil, 4)
 		end
 	end
 

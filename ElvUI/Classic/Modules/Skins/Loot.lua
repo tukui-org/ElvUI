@@ -144,9 +144,7 @@ function S:LootFrame()
 		S:HandleItemButton(button, true)
 		S:HandleIconBorder(button.IconBorder, button.backdrop)
 
-		local point, attachTo, point2, x, y = button:GetPoint()
-		button:ClearAllPoints()
-		button:Point(point, attachTo, point2, x, y+30)
+		button:NudgePoint(nil, 30, nil, nil, true)
 	end
 
 	hooksecurefunc('LootFrame_UpdateButton', function(index)

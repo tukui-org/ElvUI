@@ -168,7 +168,7 @@ local function GrabPoint(obj, pointValue)
 	return obj:GetPoint(pointValue)
 end
 
-local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
+local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue, clearPoints)
 	xAxis = xAxis or 0
 	yAxis = yAxis or 0
 
@@ -176,14 +176,24 @@ local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
+
+	if clearPoints or E:SetPointsRestricted(obj) then
+		obj:ClearAllPoints()
+	end
+
 	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
 end
 
-local function PointXY(obj, xOffset, yOffset, noScale, pointValue)
+local function PointXY(obj, xOffset, yOffset, noScale, pointValue, clearPoints)
 	local x = xOffset and ((noScale and xOffset) or E:Scale(xOffset))
 	local y = yOffset and ((noScale and yOffset) or E:Scale(yOffset))
 
 	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
+
+	if clearPoints or E:SetPointsRestricted(obj) then
+		obj:ClearAllPoints()
+	end
+
 	obj:SetPoint(point, relativeTo, relativePoint, x or xOfs, y or yOfs)
 end
 
