@@ -454,6 +454,10 @@ local function SkinTransmogFrames()
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
+	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 220)
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
