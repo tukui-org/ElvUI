@@ -335,6 +335,7 @@ local function SkinMountFrame()
 	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
 
 	S:HandleButton(_G.MountJournalMountButton)
+	_G.MountJournalMountButton:NudgePoint(0, -3)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
 	S:HandleModelSceneControlButtons(_G.MountJournal.MountDisplay.ModelScene.ControlFrame)
@@ -343,7 +344,8 @@ local function SkinMountFrame()
 	MountJournal.BottomLeftInset:SetTemplate('Transparent')
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
 	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
-	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
+	S:HandleButton(MountJournal.BottomLeftInset.SlotButton, nil, nil, nil, true)
+	MountJournal.BottomLeftInset.SlotButton.backdrop:SetOutside(nil, -3, -3)
 	hooksecurefunc(MountJournal.ScrollBox, 'Update', JournalScrollButtons)
 end
 
@@ -715,7 +717,7 @@ local function HandleTabs()
 		tab:ClearAllPoints()
 
 		if index == 1 then
-			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 2)
 		else
 			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
 			lastTab = tab
