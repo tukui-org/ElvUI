@@ -749,13 +749,32 @@ do
 	end
 end
 
-function S:Nudge(obj, xAxis, yAxis, noScale, pointIndex)
+function S:GrabPoint(obj, pointValue)
+	for i = 1, obj:GetNumPoints() do
+		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
+		if not point then
+			break
+		elseif point == pointValue then
+			return point, relativeTo, relativePoint, xOfs, yOfs
+		end
+	end
+end
+
+function S:Nudge(obj, xAxis, yAxis, noScale, pointValue)
 	assert(obj, 'doesn\'t exist!')
 
 	xAxis = xAxis or 0
 	yAxis = yAxis or 0
 
-	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointIndex)
+	local point, relativeTo, relativePoint, xOfs, yOfs
+	if type(pointValue) == 'string' then
+		point, relativeTo, relativePoint, xOfs, yOfs = S:GrabPoint(obj, pointValue)
+	end
+
+	if not point then
+		point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointValue)
+	end
+
 	local x = (noScale and xAxis) or E:Scale(xAxis)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
 
