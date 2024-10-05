@@ -447,10 +447,18 @@ do
 	end
 end
 
-local function GetNamedChild(frame, childName, index)
-	local name = frame and frame.GetName and frame:GetName()
-	if not name or not childName then return nil end
-	return _G[name..childName..(index or '')]
+local function GetChild(frame, child, index, debug)
+	local name = frame and child and ((debug and frame.GetDebugName and frame:GetDebugName()) or (frame.GetName and frame:GetName()))
+	if not name then return nil end
+	if not index then index = '' end
+
+	-- try keyed first
+	local main = _G[name]
+	local sub = main and main[child..index]
+	if sub then return sub end
+
+	-- if its not keyed try named
+	return _G[name..child..index]
 end
 
 local function addapi(object)
@@ -472,7 +480,7 @@ local function addapi(object)
 	if not object.StripTexts then mk.StripTexts = StripTexts end
 	if not object.StyleButton then mk.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mk.CreateCloseButton = CreateCloseButton end
-	if not object.GetNamedChild then mk.GetNamedChild = GetNamedChild end
+	if not object.GetChild then mk.GetChild = GetChild end
 
 	if not object.DisabledPixelSnap and (mk.SetSnapToPixelGrid or mk.SetStatusBarTexture or mk.SetColorTexture or mk.SetVertexColor or mk.CreateTexture or mk.SetTexCoord or mk.SetTexture) then
 		if mk.SetSnapToPixelGrid then hooksecurefunc(mk, 'SetSnapToPixelGrid', WatchPixelSnap) end
