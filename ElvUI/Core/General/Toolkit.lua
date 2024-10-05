@@ -148,39 +148,38 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
-local function PointXY(obj, x, y)
-	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint()
-	obj:SetPoint(point, relativeTo, relativePoint, x or xOfs, y or yOfs)
-end
-
 local function GrabPoint(obj, pointValue)
-	for i = 1, obj:GetNumPoints() do
-		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
-		if not point then
-			break
-		elseif point == pointValue then
-			return point, relativeTo, relativePoint, xOfs, yOfs
+	if type(pointValue) == 'string' then
+		for i = 1, obj:GetNumPoints() do
+			local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
+			if not point then
+				break
+			elseif point == pointValue then
+				return point, relativeTo, relativePoint, xOfs, yOfs
+			end
 		end
 	end
+
+	return obj:GetPoint(pointValue)
 end
 
 local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
 	xAxis = xAxis or 0
 	yAxis = yAxis or 0
 
-	local point, relativeTo, relativePoint, xOfs, yOfs
-	if type(pointValue) == 'string' then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GrabPoint(pointValue)
-	end
-
-	if not point then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointValue)
-	end
-
 	local x = (noScale and xAxis) or E:Scale(xAxis)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
 
+	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
 	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
+end
+
+local function PointXY(obj, xOffset, yOffset, noScale, pointValue)
+	local x = xOffset and ((noScale and xOffset) or E:Scale(xOffset))
+	local y = yOffset and ((noScale and yOffset) or E:Scale(yOffset))
+
+	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
+	obj:SetPoint(point, relativeTo, relativePoint, x or xOfs, y or yOfs)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
