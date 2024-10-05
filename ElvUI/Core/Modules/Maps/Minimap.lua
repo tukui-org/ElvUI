@@ -76,6 +76,7 @@ if E.Retail then
 
 	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, microOffset = 'ProfessionMicroButton', func = function() _G.ToggleProfessionsBook() end })
 	tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
+	tinsert(menuList, {text = _G.QUESTLOG_BUTTON, microOffset = 'QuestLogMicroButton', func = function() _G.ToggleQuestLog() end })
 else
 	tinsert(menuList, {text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
 end
