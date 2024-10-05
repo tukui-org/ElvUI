@@ -150,14 +150,19 @@ end
 
 local function GrabPoint(obj, pointValue)
 	if type(pointValue) == 'string' then
-		for i = 1, obj:GetNumPoints() do
-			local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
-			if not point then
-				break
-			elseif point == pointValue then
-				return point, relativeTo, relativePoint, xOfs, yOfs
+		local pointIndex = tonumber(pointValue) -- but why?
+		if not pointIndex then
+			for i = 1, obj:GetNumPoints() do
+				local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
+				if not point then
+					break
+				elseif point == pointValue then
+					return point, relativeTo, relativePoint, xOfs, yOfs
+				end
 			end
 		end
+
+		pointValue = pointIndex -- convert it, if possible
 	end
 
 	return obj:GetPoint(pointValue)
