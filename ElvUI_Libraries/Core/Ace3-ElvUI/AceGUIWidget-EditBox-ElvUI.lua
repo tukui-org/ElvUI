@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox-ElvUI", 29
+local Type, Version = "EditBox-ElvUI", 30
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -35,12 +35,12 @@ end
 --[[-----------------------------------------------------------------------------
 Support functions
 -------------------------------------------------------------------------------]]
-if not AceGUIEditBoxInsertLink then
+if not AceGUIEditBoxInsertLinkElvUI then
 	-- upgradeable hook
-	hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIEditBoxInsertLink(...) end)
+	hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIEditBoxInsertLinkElvUI(...) end)
 end
 
-function _G.AceGUIEditBoxInsertLink(text)
+function _G.AceGUIEditBoxInsertLinkElvUI(text)
 	for i = 1, AceGUI:GetWidgetCount(Type) do
 		local editbox = _G["ElvUIAceGUI-3.0EditBox"..i]
 		if editbox and editbox:IsVisible() and editbox:HasFocus() then

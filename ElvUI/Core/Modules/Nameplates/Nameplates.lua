@@ -81,6 +81,20 @@ local Blacklist = {
 	FRIENDLY_NPC = {},
 }
 
+function NP:ResetAuraPriority()
+	for unitType, content in pairs(E.db.nameplates.units) do
+		local default = P.nameplates.units[unitType]
+		if default then
+			if content.buffs and content.buffs.filters then
+				content.buffs.filters.priority = default.buffs.filters.priority
+			end
+			if content.debuffs and content.debuffs.filters then
+				content.debuffs.filters.priority = default.debuffs.filters.priority
+			end
+		end
+	end
+end
+
 function NP:ResetSettings(unit)
 	E:CopyTable(NP.db.units[unit], P.nameplates.units[unit])
 end

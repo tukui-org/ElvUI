@@ -292,18 +292,29 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function confirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 
 local function resetFilter(_, value)
-	if value == 'Aura Highlight' then
-		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
-	elseif value == 'AuraBar Colors' then
-		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-	elseif value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
+	if value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator (Class)' or value == 'Aura Indicator (Global)' then
 		local selectedTable, defaultTable = GetSelectedFilters()
 		wipe(selectedTable)
 		E:CopyTable(selectedTable, defaultTable)
+	elseif value == 'AuraBar Colors' then
+		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+	elseif value == 'Aura Highlight' then
+		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
 	else
-		E.global.unitframe.aurafilters[value].spells = E:CopyTable({}, G.unitframe.aurafilters[value].spells)
+		local default = G.unitframe.aurafilters[value]
+		local data = E.global.unitframe.aurafilters[value]
+		if not data then
+			local info = {}
+			E.global.unitframe.aurafilters[value] = info
+			data = info
+		end
+
+		data.type = (default and default.type) or 'Whitelist'
+		data.spells = E:CopyTable({}, (default and default.spells) or {})
 	end
+
 	resetSelectedFilter()
+
 	UF:Update_AllFrames()
 end
 
@@ -362,9 +373,12 @@ local Filters = E.Options.args.filters.args
 
 Filters.mainOptions = ACH:Group(L["Main Options"], nil, 1)
 Filters.mainOptions.args.createFilter = ACH:Input(L["Create Filter"], L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."], 1, nil, nil, nil, function(_, value) value = gsub(value, ',', '') E.global.unitframe.aurafilters[value] = { type = 'whitelist', spells = {} } selectedFilter = value selectedSpell = nil end, nil, nil, validateCreateFilter)
+Filters.mainOptions.args.createFilter.customWidth = 140
 Filters.mainOptions.args.selectFilter = ACH:Select(L["Select Filter"], nil, 2, SetFilterList, nil, nil, getSelectedFilter, resetSelectedFilter)
 Filters.mainOptions.args.deleteFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, DeleteFilterList, confirmResetFilter, nil, nil, function(_, value) E.global.unitframe.aurafilters[value] = nil resetSelectedFilter() removePriority(value) end, DeleteFilterListDisable)
 Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."], 4, ResetFilterList, confirmResetFilter, nil, nil, resetFilter)
+Filters.mainOptions.args.resetFilters = ACH:Execute(L["Reset All"], L["This reset excludes AuraBar Colors, Aura Highlight, and Aura Indicators."], 5, function() E:StaticPopup_Show('RESET_ALL_FILTERS') resetSelectedFilter() end)
+Filters.mainOptions.args.resetFilters.customWidth = 100
 
 Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
 Filters.mainOptions.args.filterGroup.inline = true

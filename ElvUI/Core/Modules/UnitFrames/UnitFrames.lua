@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local NP = E:GetModule('NamePlates')
 local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
@@ -238,6 +239,55 @@ function UF:ConvertGroupDB(group)
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
 		db.growthDirection = db.growthDirection..'_RIGHT'
+	end
+end
+
+function UF:ResetAuraPriority()
+	for unitName, content in pairs(E.db.unitframe.units) do
+		local default = P.unitframe.units[unitName]
+		if default then
+			if content.buffs then
+				content.buffs.priority = default.buffs.priority
+			end
+			if content.debuffs then
+				content.debuffs.priority = default.debuffs.priority
+			end
+			if content.aurabar then
+				content.aurabar.priority = default.aurabar.priority
+			end
+		end
+	end
+end
+
+function UF:ResetFilters(includeIndicators, resetPriority) -- keep similar to with resetFilter in Filters.lua of Options
+	if includeIndicators then
+		E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
+		E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.AuraHighlightColors)
+
+		for name in next, E.global.unitframe.aurawatch do
+			local default = G.unitframe.aurawatch[name]
+			E.global.unitframe.aurawatch[name] = (default and E:CopyTable({}, default)) or nil
+		end
+
+		for name in next, E.db.unitframe.filters.aurawatch do -- profile specific
+			local default = P.unitframe.filters.aurawatch[name]
+			E.db.unitframe.filters.aurawatch[name] = (default and E:CopyTable({}, default)) or nil
+		end
+	end
+
+	if resetPriority then
+		UF:ResetAuraPriority()
+		NP:ResetAuraPriority()
+	end
+
+	for name, data in next, E.global.unitframe.aurafilters do
+		local default = G.unitframe.aurafilters[name]
+		if default then
+			data.type = default.type
+			data.spells = E:CopyTable({}, default.spells)
+		else -- not a default filter, delete it
+			E.global.unitframe.aurafilters[name] = nil
+		end
 	end
 end
 

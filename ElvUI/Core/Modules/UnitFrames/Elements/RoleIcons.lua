@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local random = random
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
 
@@ -30,7 +31,7 @@ function UF:GetRoleIcon(frame)
 	end
 end
 
-function UF:UpdateRoleIcon(event)
+function UF:UpdateRoleIcon()
 	local lfdrole = self.GroupRoleIndicator
 	if not self.db then return end
 
@@ -43,44 +44,30 @@ function UF:UpdateRoleIcon(event)
 		return
 	end
 
-	if (self.isForced or UnitIsConnected(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
+	local show = self.isForced or UnitIsConnected(self.unit)
+	if show and (not lfdrole.combatHide or not UnitAffectingCombat(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
 		lfdrole:SetTexture(UF.RoleIconTextures[role])
-
-		if not (event == 'PLAYER_REGEN_DISABLED' and db.combatHide) then
-			lfdrole:Show()
-		else
-			lfdrole:Hide()
-		end
+		lfdrole:Show()
 	else
 		lfdrole:Hide()
 	end
 end
 
 function UF:Configure_RoleIcon(frame)
-	local role = frame.GroupRoleIndicator
+	local lfdrole = frame.GroupRoleIndicator
 	local db = frame.db and frame.db.roleIcon
 
 	if db.enable then
 		frame:EnableElement('GroupRoleIndicator')
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTo)
 
-		role:ClearAllPoints()
-		role:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
-		role:Size(db.size)
+		lfdrole.combatHide = db.combatHide
 
-		if db.combatHide then
-			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)
-			E:RegisterEventForObject('PLAYER_REGEN_DISABLED', frame, UF.UpdateRoleIcon)
-		else
-			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)
-			E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', frame, UF.UpdateRoleIcon)
-		end
+		lfdrole:ClearAllPoints()
+		lfdrole:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
+		lfdrole:Size(db.size)
 	else
 		frame:DisableElement('GroupRoleIndicator')
-		role:Hide()
-
-		--Unregister combat hide events
-		E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)
-		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', frame, UF.UpdateRoleIcon)
+		lfdrole:Hide()
 	end
 end

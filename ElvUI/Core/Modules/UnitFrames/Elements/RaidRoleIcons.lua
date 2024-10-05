@@ -22,6 +22,7 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.MasterLooterIndicator.PostUpdate = UF.RaidRoleUpdate
+	frame.RaidRoleIndicator.PostUpdate = UF.RaidRoleUpdate
 
 	return anchor
 end
@@ -29,19 +30,25 @@ end
 function UF:Configure_RaidRoleIcons(frame)
 	local raidRoleFrameAnchor = frame.RaidRoleFramesAnchor
 
-	if frame.db.raidRoleIcons.enable then
+	local db = frame.db and frame.db.raidRoleIcons
+	if db and db.enable then
 		raidRoleFrameAnchor:Show()
-		if not frame:IsElementEnabled('LeaderIndicator') then
-			frame:EnableElement('LeaderIndicator')
-			frame:EnableElement('AssistantIndicator')
-			frame:EnableElement('MasterLooterIndicator')
-			frame:EnableElement('RaidRoleIndicator')
-		end
+
+		frame.LeaderIndicator.combatHide = db.combatHide
+		frame.AssistantIndicator.combatHide = db.combatHide
+		frame.MasterLooterIndicator.combatHide = db.combatHide
+		frame.RaidRoleIndicator.combatHide = db.combatHide
+
+		if not frame:IsElementEnabled('LeaderIndicator') then frame:EnableElement('LeaderIndicator') end
+		if not frame:IsElementEnabled('AssistantIndicator') then frame:EnableElement('AssistantIndicator') end
+		if not frame:IsElementEnabled('MasterLooterIndicator') then frame:EnableElement('MasterLooterIndicator') end
+		if not frame:IsElementEnabled('RaidRoleIndicator') then frame:EnableElement('RaidRoleIndicator') end
 
 		raidRoleFrameAnchor:ClearAllPoints()
-		raidRoleFrameAnchor:Point(frame.db.raidRoleIcons.position, frame, frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
+		raidRoleFrameAnchor:Point(db.position, frame, db.xOffset, db.yOffset)
 	elseif frame:IsElementEnabled('LeaderIndicator') then
 		raidRoleFrameAnchor:Hide()
+
 		frame:DisableElement('LeaderIndicator')
 		frame:DisableElement('AssistantIndicator')
 		frame:DisableElement('MasterLooterIndicator')
@@ -54,29 +61,29 @@ function UF:RaidRoleUpdate()
 	local frame = anchor and anchor:GetParent():GetParent()
 	if not frame then return end
 
-	local leader = frame.LeaderIndicator
-	local assistant = frame.AssistantIndicator
-	local masterlooter = frame.MasterLooterIndicator
-	local mamt = frame.RaidRoleIndicator
-
-	local isLeader = leader:IsShown()
-	local isAssist = assistant:IsShown()
-	local isMAMT = mamt:IsShown()
-	local isML = masterlooter:IsShown()
-
-	leader:ClearAllPoints()
-	assistant:ClearAllPoints()
-	masterlooter:ClearAllPoints()
-	mamt:ClearAllPoints()
-
 	local db = frame.db and frame.db.raidRoleIcons
 	if db then
+		local leader = frame.LeaderIndicator
+		local assistant = frame.AssistantIndicator
+		local masterlooter = frame.MasterLooterIndicator
+		local mamt = frame.RaidRoleIndicator
+
 		local pos, x, y = db.position or 'TOPLEFT', db.xOffset or 0, db.yOffset or 4
 		local size = 12 * (db.scale or 1)
 
 		local right = strfind(pos, 'RIGHT')
 		local pos1 = right and 'RIGHT' or 'LEFT'
 		local pos2 = right and 'LEFT' or 'RIGHT'
+
+		local isLeader = leader:IsShown()
+		local isAssist = assistant:IsShown()
+		local isMAMT = mamt:IsShown()
+		local isML = masterlooter:IsShown()
+
+		leader:ClearAllPoints()
+		assistant:ClearAllPoints()
+		masterlooter:ClearAllPoints()
+		mamt:ClearAllPoints()
 
 		leader:Size(size)
 		assistant:Size(size)

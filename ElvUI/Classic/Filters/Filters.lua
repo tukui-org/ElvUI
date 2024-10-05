@@ -3,6 +3,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
+-- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
+G.unitframe.aurafilters.PlayerBuffs = nil
+
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
@@ -236,10 +239,50 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
---Default whitelist for player buffs, still WIP
-G.unitframe.aurafilters.PlayerBuffs = {
+-- Buffs that we don't really need to see
+G.unitframe.aurafilters.Blacklist = {
+	type = 'Blacklist',
+	spells = {
+	-- Seasonal
+		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
+		[458841] = List(), -- Sweltering Heat: Perma roleplay text while in Molten Core. (Heat level 1)
+		[458842] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 2)
+		[458843] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 3)
+		[446720] = List(), -- Stinky: Perma roleplay text after eating Sunken Temple food.
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
+	},
+}
+
+-- A list of important buffs that we always want to see
+G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
+	-- General
+		[349981] = List(), -- Supercharged Chronoboon Displacer (Suspended World Buffs)
+	-- Consumables
+		[3169]	= List(), -- Limited Invulnerability Potion
+		[6615]	= List(), -- Free Action Potion
+	-- Racial
+		[20554]	= List(), -- Berserking (Mana)
+		[26296]	= List(), -- Berserking (Rage)
+		[26297]	= List(), -- Berserking (Energy)
+		[7744]	= List(), -- Will of the Forsaken
+		[20572]	= List(), -- Blood Fury (Physical)
+		[33697]	= List(), -- Blood Fury (Both)
+		[33702]	= List(), -- Blood Fury (Spell)
+		[6346]	= List(), -- Fear Ward
+		[20594]	= List(), -- Stoneform
+	-- All Classes
+		[19753]	= List(), -- Divine Intervention
 	-- Druid
 		[29166]	= List(), -- Innervate
 		[22812]	= List(), -- Barkskin
@@ -384,66 +427,6 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[14202]	= List(), -- Enrage (Rank 3)
 		[14203]	= List(), -- Enrage (Rank 4)
 		[14204]	= List(), -- Enrage (Rank 5)
-	-- Consumables
-		[3169]	= List(), -- Limited Invulnerability Potion
-		[6615]	= List(), -- Free Action Potion
-	-- Racial
-		[20554]	= List(), -- Berserking (Mana)
-		[26296]	= List(), -- Berserking (Rage)
-		[26297]	= List(), -- Berserking (Energy)
-		[7744]	= List(), -- Will of the Forsaken
-		[20572]	= List(), -- Blood Fury (Physical)
-		[33697]	= List(), -- Blood Fury (Both)
-		[33702]	= List(), -- Blood Fury (Spell)
-		[6346]	= List(), -- Fear Ward
-		[20594]	= List(), -- Stoneform
-	-- All Classes
-		[19753]	= List(), -- Divine Intervention
-	},
-}
-
--- Buffs that we don't really need to see
-G.unitframe.aurafilters.Blacklist = {
-	type = 'Blacklist',
-	spells = {
-	-- Seasonal
-		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
-		[458841] = List(), -- Sweltering Heat: Perma roleplay text while in Molten Core. (Heat level 1)
-		[458842] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 2)
-		[458843] = List(), -- Blistering Heat: Perma roleplay text while in Molten Core. (Heat level 3)
-		[446720] = List(), -- Stinky: Perma roleplay text after eating Sunken Temple food.
-	-- Druid
-	-- Hunter
-	-- Mage
-	-- Paladin
-	-- Priest
-	-- Rogue
-	-- Shaman
-	-- Warlock
-	-- Warrior
-	-- Racial
-	},
-}
-
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
-G.unitframe.aurafilters.Whitelist = {
-	type = 'Whitelist',
-	spells = {
-	-- General
-	[349981] = List() -- Supercharged Chronoboon Displacer (Suspended World Buffs)
-	-- Druid
-	-- Hunter
-	-- Mage
-	-- Paladin
-	-- Priest
-	-- Rogue
-	-- Shaman
-	-- Warlock
-	-- Warrior
-	-- Racial
 	},
 }
 
@@ -691,11 +674,7 @@ if E.ClassicSOD then
 	RaidDebuffs[444165] = List(5) -- Skeletal
 end
 
---[[
-	RAID BUFFS:
-	Buffs that are provided by NPCs in raid or other PvE content.
-	This can be buffs put on other enemies or on players.
-]]
+-- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
