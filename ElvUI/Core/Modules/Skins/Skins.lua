@@ -749,12 +749,13 @@ do
 	end
 end
 
-function S:Nudge(obj, xAxis, yAxis, noScale)
+function S:Nudge(obj, xAxis, yAxis, noScale, pointIndex)
 	assert(obj, 'doesn\'t exist!')
+
 	xAxis = xAxis or 0
 	yAxis = yAxis or 0
 
-	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint()
+	local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointIndex)
 	local x = (noScale and xAxis) or E:Scale(xAxis)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
 
