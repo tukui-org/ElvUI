@@ -46,7 +46,6 @@ function _G.AceGUIMultiLineEditBoxInsertLinkElvUI(text)
 	end
 end
 
-
 local function Layout(self)
 	self:SetHeight(self.numlines * 14 + (self.disablebutton and 19 or 41) + self.labelHeight)
 

@@ -1104,20 +1104,17 @@ function lib:GetFriendCheckersNoItems(inCombat)
   return rcIterator(inCombat and self.friendNoItemsRCInCombat or self.friendNoItemsRC)
 end
 
-
 --- Return an iterator for checkers usable on enemy units as (**range**, **checker**) pairs.
 -- @param inCombat if true, only checkers that can be used in combat ar returned
 function lib:GetHarmCheckers(inCombat)
   return rcIterator(inCombat and self.harmRCInCombat or self.harmRC)
 end
 
-
 --- Return an iterator for checkers usable on enemy units as (**range**, **checker**) pairs.
 -- @param inCombat if true, only checkers that can be used in combat ar returned
 function lib:GetHarmCheckersNoItems(inCombat)
   return rcIterator(inCombat and self.harmNoItemsRCInCombat or self.harmNoItemsRC)
 end
-
 
 --- Return an iterator for checkers usable on miscellaneous units as (**range**, **checker**) pairs.  These units are neither enemy nor friendly, such as people in sanctuaries or corpses.
 -- @param inCombat if true, only checkers that can be used in combat ar returned

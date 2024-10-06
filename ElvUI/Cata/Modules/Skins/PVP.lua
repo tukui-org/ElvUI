@@ -146,7 +146,6 @@ function S:SkinPVPFrame()
 	PVPFrameLowLevelFrame.backdrop:Point('TOPLEFT', -2, -40)
 	PVPFrameLowLevelFrame.backdrop:Point('BOTTOMRIGHT', 5, 80)
 
-
 	-- PvP Icon
 	if _G.PVPFrameCurrency then
 		local PVPFrameCurrency = _G.PVPFrameCurrency
