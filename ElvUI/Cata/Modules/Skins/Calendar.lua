@@ -133,6 +133,11 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventDateLabel:Point('TOPLEFT', _G.CalendarCreateEventIcon, 'TOPRIGHT', 5, 0)
 	HandleEventIcon(_G.CalendarCreateEventIcon)
 
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 57)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.EventTypeDropdown, 120)
+
 	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 3 or 5, 0)
 
 	local lastClassButton
