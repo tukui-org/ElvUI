@@ -151,9 +151,11 @@ local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:SetTemplate('Transparent')
+		S:HandleCheckBox(TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(TokenFramePopupBackpackCheckbox)
 	end
 
 	local TokenFrameContainer = _G.TokenFrameContainer
