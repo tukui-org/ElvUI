@@ -303,7 +303,7 @@ function S:BlizzardMiscFrames()
 			end
 
 			if not button.notCheckable then
-				S:HandlePointXY(text, 15)
+				text:PointXY(15)
 				uncheck:SetTexture()
 
 				if E.private.skins.checkBoxSkin then

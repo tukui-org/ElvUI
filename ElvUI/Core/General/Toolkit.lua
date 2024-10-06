@@ -149,33 +149,52 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function GrabPoint(obj, pointValue)
-	for i = 1, obj:GetNumPoints() do
-		local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
-		if not point then
-			break
-		elseif point == pointValue then
-			return point, relativeTo, relativePoint, xOfs, yOfs
+	if type(pointValue) == 'string' then
+		local pointIndex = tonumber(pointValue) -- but why?
+		if not pointIndex then
+			for i = 1, obj:GetNumPoints() do
+				local point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(i)
+				if not point then
+					break
+				elseif point == pointValue then
+					return point, relativeTo, relativePoint, xOfs, yOfs
+				end
+			end
 		end
+
+		pointValue = pointIndex -- convert it, if possible
 	end
+
+	return obj:GetPoint(pointValue)
 end
 
-local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue)
-	xAxis = xAxis or 0
-	yAxis = yAxis or 0
-
-	local point, relativeTo, relativePoint, xOfs, yOfs
-	if type(pointValue) == 'string' then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GrabPoint(pointValue)
-	end
-
-	if not point then
-		point, relativeTo, relativePoint, xOfs, yOfs = obj:GetPoint(pointValue)
-	end
+local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue, clearPoints)
+	if not xAxis then xAxis = 0 end
+	if not yAxis then yAxis = 0 end
 
 	local x = (noScale and xAxis) or E:Scale(xAxis)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
 
+	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
+
+	if clearPoints or E:SetPointsRestricted(obj) then
+		obj:ClearAllPoints()
+	end
+
 	obj:SetPoint(point, relativeTo, relativePoint, xOfs + x, yOfs + y)
+end
+
+local function PointXY(obj, xOffset, yOffset, noScale, pointValue, clearPoints)
+	local x = xOffset and ((noScale and xOffset) or E:Scale(xOffset))
+	local y = yOffset and ((noScale and yOffset) or E:Scale(yOffset))
+
+	local point, relativeTo, relativePoint, xOfs, yOfs = GrabPoint(obj, pointValue)
+
+	if clearPoints or E:SetPointsRestricted(obj) then
+		obj:ClearAllPoints()
+	end
+
+	obj:SetPoint(point, relativeTo, relativePoint, x or xOfs, y or yOfs)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
@@ -498,6 +517,7 @@ local API = {
 	Point = Point,
 	Width = Width,
 	Height = Height,
+	PointXY = PointXY,
 	GrabPoint = GrabPoint,
 	NudgePoint = NudgePoint,
 	SetOutside = SetOutside,

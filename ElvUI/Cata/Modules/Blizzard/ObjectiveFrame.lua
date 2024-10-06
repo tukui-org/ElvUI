@@ -26,7 +26,7 @@ end
 
 function BL:ObjectiveTracker_AutoHideOnHide()
 	local tracker = _G.WatchFrame
-	if tracker and tracker.autoHidden then return end
+	if not tracker or BL:ObjectiveTracker_IsCollapsed(tracker) then return end
 
 	BL:ObjectiveTracker_Collapse(tracker)
 end

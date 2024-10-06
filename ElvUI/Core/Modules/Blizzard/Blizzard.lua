@@ -96,19 +96,21 @@ function BL:ObjectiveTracker_HasQuestTracker()
 	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
 end
 
+function BL:ObjectiveTracker_IsCollapsed(frame)
+	return frame:GetParent() == E.HiddenFrame
+end
+
 function BL:ObjectiveTracker_Collapse(frame)
-	frame.autoHidden = true
 	frame:SetParent(E.HiddenFrame)
 end
 
 function BL:ObjectiveTracker_Expand(frame)
-	frame.autoHidden = nil
 	frame:SetParent(_G.UIParent)
 end
 
 function BL:ObjectiveTracker_AutoHideOnShow()
 	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
-	if tracker and tracker.autoHidden then
+	if tracker and BL:ObjectiveTracker_IsCollapsed(tracker) then
 		BL:ObjectiveTracker_Expand(tracker)
 	end
 end

@@ -855,8 +855,7 @@ function E:PositionGameMenuButton()
 			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
 			elseif not lastIndex then
-				local point, anchor, point2, x, y = button:GetPoint()
-				button:SetPoint(point, anchor, point2, x, y - 35)
+				button:NudgePoint(nil, -35)
 			end
 		end
 

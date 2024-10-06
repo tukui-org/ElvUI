@@ -9,7 +9,7 @@ local C_TalkingHead_SetConversationsDeferred = C_TalkingHead.SetConversationsDef
 
 function BL:ObjectiveTracker_AutoHideOnHide()
 	local tracker = _G.ObjectiveTrackerFrame
-	if tracker and tracker.autoHidden then return end
+	if not tracker or BL:ObjectiveTracker_IsCollapsed(tracker) then return end
 
 	if E.db.general.objectiveFrameAutoHideInKeystone then
 		BL:ObjectiveTracker_Collapse(tracker)
