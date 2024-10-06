@@ -136,7 +136,7 @@ function S:BlizzardOptions()
 			return
 		end
 		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxNameString = frame:GetName()..'CheckBox'
+			local checkBoxNameString = frame:GetName()..'Checkbox'
 			local checkBoxName = checkBoxNameString..index
 			local checkBox = _G[checkBoxName]
 			local check = _G[checkBoxName..'Check']
@@ -153,7 +153,7 @@ function S:BlizzardOptions()
 
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
-		local checkBox = _G[frame:GetName()..'CheckBox'..index]
+		local checkBox = _G[frame:GetName()..'Checkbox'..index]
 		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
