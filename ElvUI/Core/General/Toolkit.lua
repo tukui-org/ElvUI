@@ -169,8 +169,8 @@ local function GrabPoint(obj, pointValue)
 end
 
 local function NudgePoint(obj, xAxis, yAxis, noScale, pointValue, clearPoints)
-	xAxis = xAxis or 0
-	yAxis = yAxis or 0
+	if not xAxis then xAxis = 0 end
+	if not yAxis then yAxis = 0 end
 
 	local x = (noScale and xAxis) or E:Scale(xAxis)
 	local y = (noScale and yAxis) or E:Scale(yAxis)
