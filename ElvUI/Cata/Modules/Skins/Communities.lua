@@ -213,8 +213,8 @@ function S:Blizzard_Communities()
 	ClubFinderGuildFinderFrame:StripTextures()
 
 	local ClubFinderGuildOptionsList = ClubFinderGuildFinderFrame.OptionsList
-	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubFilterDropdown)
-	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubSizeDropdown)
+	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubFilterDropdown, 100)
+	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubSizeDropdown, 100)
 
 	ClubFinderGuildOptionsList.SearchBox:Size(118, 20)
 	ClubFinderGuildOptionsList.Search:Size(118, 20)
