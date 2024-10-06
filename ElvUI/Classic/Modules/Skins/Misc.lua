@@ -23,7 +23,6 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-
 	for _, frame in next, { _G.AutoCompleteBox, _G.ReadyCheckFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')

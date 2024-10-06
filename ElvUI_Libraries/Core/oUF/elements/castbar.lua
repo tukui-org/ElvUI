@@ -230,7 +230,6 @@ local function ShouldShow(element, unit)
 	return element.__owner.unit == unit
 end
 
-
 local function CastStart(self, real, unit, castGUID)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
