@@ -166,7 +166,7 @@ local function CreateSlot(id)
 	slot.icon = icon
 
 	local count = iconFrame:CreateFontString(nil, 'OVERLAY')
-	count:SetJustifyH'RIGHT'
+	count:SetJustifyH('RIGHT')
 	count:Point('BOTTOMRIGHT', iconFrame, -2, 2)
 	count:FontTemplate(nil, nil, 'OUTLINE')
 	count:SetText(1)
