@@ -286,7 +286,7 @@ function M:LOOT_OPENED(_, autoloot)
 				max_quality = max(max_quality, quality)
 			end
 
-			if itemLink then
+			if E.Retail and itemLink then
 				local profQuality = GetItemReagentQualityByItemInfo(itemLink)
 				local atlas = format('Professions-Icon-Quality-Tier%d-Inv', profQuality)
 				slot.ProfessionQualityOverlayFrame:SetAtlas(atlas, true)
