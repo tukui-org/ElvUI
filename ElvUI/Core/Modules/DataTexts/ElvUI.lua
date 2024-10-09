@@ -16,6 +16,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Hold Shift + Left Click:"], L["Toggle Mover Mode"], 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Hold Shift + Right Click:"], reloadText, 1, 1, 1)
 
 	if E.Libs.EP.registeredPrefix then
@@ -38,6 +39,8 @@ local function OnClick(_, button)
 
 	if button == 'LeftButton' then
 		E:ToggleOptions()
+	elseif button == 'LeftButton' and IsShiftKeyDown() then
+		E:ToggleMoverMode()
 	elseif button == 'RightButton' and IsShiftKeyDown() then
 		ReloadUI()
 	end

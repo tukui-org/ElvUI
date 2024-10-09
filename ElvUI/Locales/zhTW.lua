@@ -370,6 +370,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "開啟/關閉背包"
 L["Toggle Chat Frame"] = "開關對話框架"
 L["Toggle Configuration"] = "開啟/關閉設定"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "開啟/關閉音頻流"
 L["Tooltip"] = "浮動提示"
 L["TopCenterWidget"] = "中間上方組件"

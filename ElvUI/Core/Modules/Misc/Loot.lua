@@ -34,6 +34,7 @@ local CursorOnUpdate = CursorOnUpdate
 local CursorUpdate = CursorUpdate
 local GameTooltip = GameTooltip
 local GetCursorPosition = GetCursorPosition
+local GetItemReagentQualityByItemInfo = C_TradeSkillUI and C_TradeSkillUI.GetItemReagentQualityByItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
 local GetLootSlotLink = GetLootSlotLink
 local GetNumLootItems = GetNumLootItems
@@ -166,7 +167,7 @@ local function CreateSlot(id)
 	slot.icon = icon
 
 	local count = iconFrame:CreateFontString(nil, 'OVERLAY')
-	count:SetJustifyH'RIGHT'
+	count:SetJustifyH('RIGHT')
 	count:Point('BOTTOMRIGHT', iconFrame, -2, 2)
 	count:FontTemplate(nil, nil, 'OUTLINE')
 	count:SetText(1)
@@ -193,6 +194,12 @@ local function CreateSlot(id)
 	questTexture:SetTexture(TEXTURE_ITEM_QUEST_BANG)
 	questTexture:SetTexCoord(unpack(E.TexCoords))
 	slot.questTexture = questTexture
+
+	if E.Retail then
+		local profQuality = iconFrame:CreateTexture(nil, 'OVERLAY')
+		profQuality:SetPoint('TOPLEFT', -3, 2)
+		slot.ProfessionQualityOverlayFrame = profQuality
+	end
 
 	lootFrame.slots[id] = slot
 	return slot
@@ -256,6 +263,7 @@ function M:LOOT_OPENED(_, autoloot)
 			local slot = lootFrame.slots[i] or CreateSlot(i)
 			local textureID, item, count, _, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
 			local color = ITEM_QUALITY_COLORS[quality or 0]
+			local itemLink = GetLootSlotLink(i)
 
 			if coinTextureIDs[textureID] then
 				item = item:gsub('\n', ', ')
@@ -276,6 +284,12 @@ function M:LOOT_OPENED(_, autoloot)
 
 			if quality then
 				max_quality = max(max_quality, quality)
+			end
+
+			if E.Retail and itemLink then
+				local profQuality = GetItemReagentQualityByItemInfo(itemLink)
+				local atlas = format('Professions-Icon-Quality-Tier%d-Inv', profQuality)
+				slot.ProfessionQualityOverlayFrame:SetAtlas(atlas, true)
 			end
 
 			local questTexture = slot.questTexture

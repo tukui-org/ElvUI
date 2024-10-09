@@ -366,6 +366,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "가방 슬롯 보기"
 L["Toggle Chat Frame"] = "패널 표시 전환"
 L["Toggle Configuration"] = "ElvUI 설정 창 열기"
+L["Toggle Mover Mode"] = true
 L["Toggle Tutorials"] = "튜토리얼 학습"
 L["Toggle Volume Stream"] = "볼륨 조정 열기"
 L["Tooltip"] = "툴팁"

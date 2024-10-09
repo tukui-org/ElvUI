@@ -366,6 +366,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "Mostrar/Ocultar Bolsas"
 L["Toggle Chat Frame"] = "Mostrar/Ocultar Bate-papo"
 L["Toggle Configuration"] = "Mostrar/Ocultar Modo de Configuração"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "Mostrar/Ocultar Volume do Canal"
 L["Tooltip"] = "Dica"
 L["TopCenterWidget"] = "Widget Central"

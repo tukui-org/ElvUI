@@ -368,6 +368,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "cantalari Ac/Kapat"
 L["Toggle Chat Frame"] = "Sohbet Cercevesini Ac/Kapat"
 L["Toggle Configuration"] = "Yapilandirmayi Degistir"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "Ses Akisini Ac/Kapat"
 L["Tooltip"] = "Ipucu Penceresi"
 L["TopCenterWidget"] = "UstMerkezBileseni"
