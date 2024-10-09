@@ -368,6 +368,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "Basculer les sacs"
 L["Toggle Chat Frame"] = "Basculer le cadre de discussion"
 L["Toggle Configuration"] = "Basculer la configuration"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "Basculer le flux de volume"
 L["Tooltip"] = "Infobulle"
 L["TopCenterWidget"] = "Widget du centre supérieur"

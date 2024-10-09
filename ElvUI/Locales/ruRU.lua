@@ -366,6 +366,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "Показать сумки"
 L["Toggle Chat Frame"] = "Показать/скрыть чат"
 L["Toggle Configuration"] = "Конфигурация"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "Вкл/откл звуковой поток"
 L["Tooltip"] = "Подсказка"
 L["TopCenterWidget"] = "Центральный виджет"

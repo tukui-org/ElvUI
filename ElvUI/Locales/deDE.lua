@@ -367,6 +367,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "Taschen an-/ausschalten"
 L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten"
 L["Toggle Configuration"] = "Konfiguration an-/ausschalten"
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = "Lautstärke Stream an-/ausschalten"
 L["Tooltip"] = "Tooltip"
 L["TopCenterWidget"] = "Oberes Center Widget"

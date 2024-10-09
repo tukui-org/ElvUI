@@ -366,6 +366,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = true
 L["Toggle Chat Frame"] = true
 L["Toggle Configuration"] = true
+L["Toggle Mover Mode"] = true
 L["Toggle Volume Stream"] = true
 L["Tooltip"] = true
 L["TopCenterWidget"] = true
