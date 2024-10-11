@@ -506,6 +506,13 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	end
 end, not E.Retail)
 
+E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
+    	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+    	if healAbsorb ~= 0 then
+        	return E:ShortValue(healAbsorb)
+	end
+end, not E.Retail)
+
 E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
@@ -1501,6 +1508,7 @@ E.TagInfo = {
 		['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	-- Health
 		['absorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of absorbs' },
+		['healabsorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of heal absorbs' },
 		['curhp'] = { category = 'Health', description = "Displays the current HP without decimals" },
 		['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" },
 		['health:current:name-long'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 20 letters) when at full health" },
