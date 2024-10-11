@@ -40,6 +40,7 @@ local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
 local UnitIsAFK = UnitIsAFK
@@ -507,9 +508,9 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 end, not E.Retail)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
-    	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
-    	if healAbsorb ~= 0 then
-        	return E:ShortValue(healAbsorb)
+		local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+		if healAbsorb ~= 0 then
+			return E:ShortValue(healAbsorb)
 	end
 end, not E.Retail)
 
