@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Publish release to CDN
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
     steps:
@@ -24,7 +24,7 @@ jobs:
         with:
           args: -n "{package-name}-{project-version}"
       - name: Get package name
-        run: | 
+        run: |
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
       - name: Publish package
         run: |
