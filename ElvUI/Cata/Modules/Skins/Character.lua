@@ -154,8 +154,9 @@ local function UpdateCurrencySkins()
 		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:SetTemplate('Transparent')
-		S:HandleCheckBox(TokenFramePopupInactiveCheckbox)
-		S:HandleCheckBox(TokenFramePopupBackpackCheckbox)
+
+		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
 	end
 
 	local TokenFrameContainer = _G.TokenFrameContainer
