@@ -59,7 +59,7 @@ local function SetTip(button)
 		for _, infoTable in next, rolls do
 			local playerName, className = unpack(infoTable)
 			if not lineAdded then
-				GameTooltip_AddBlankLineToTooltip(GameTooltip)
+				GameTooltip:AddLine(' ')
 				lineAdded = true
 			end
 

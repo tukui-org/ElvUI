@@ -344,7 +344,7 @@ function B:Tooltip_Show()
 
 	if self.ttText2 then
 		if self.ttText2desc then
-			GameTooltip_AddBlankLineToTooltip(GameTooltip)
+			GameTooltip:AddLine(' ')
 			GameTooltip:AddDoubleLine(self.ttText2, self.ttText2desc, 1, 1, 1)
 		else
 			GameTooltip:AddLine(self.ttText2)
@@ -844,7 +844,7 @@ function B:Holder_OnEnter()
 			GameTooltip:SetInventoryItem('player', self:GetID())
 		end
 
-		GameTooltip_AddBlankLineToTooltip(GameTooltip)
+		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
 
 		if E.Retail then
