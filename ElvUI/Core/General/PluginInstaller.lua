@@ -224,7 +224,7 @@ end
 function PI:Pending_OnEnter()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
 	_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
-	_G.GameTooltip:AddLine(' ')
+	_G.GameTooltip_AddBlankLineToTooltip(GameTooltip)
 	for i = 1, #PI.Installs do
 		_G.GameTooltip:AddDoubleLine(format('%d. %s', i, (PI.Installs[i].Name or UNKNOWN)), i == 1 and format('|cff00FF00%s|r', L["In Progress"]) or format('|cffFF0000%s|r', L["Pending"]))
 	end

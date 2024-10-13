@@ -60,7 +60,7 @@ function DB:PetExperienceBar_OnEnter()
 	if max <= 0 then max = 1 end
 
 	GameTooltip:AddLine(L["Pet Experience"])
-	GameTooltip:AddLine(' ')
+	GameTooltip_AddBlankLineToTooltip(GameTooltip)
 
 	GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%d%%)', cur, max, cur/max * 100), 1, 1, 1)
 	GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - cur, (max - cur) / max * 100, 20 * (max - cur) / max), 1, 1, 1)

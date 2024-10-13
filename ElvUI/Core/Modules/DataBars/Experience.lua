@@ -199,7 +199,7 @@ function DB:ExperienceBar_OnEnter()
 	GameTooltip:AddDoubleLine(L["Experience"], format('%s %d', L["Level"], E.mylevel))
 
 	if CurrentXP then
-		GameTooltip:AddLine(' ')
+		GameTooltip_AddBlankLineToTooltip(GameTooltip)
 		GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%.2f%%)', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel), PercentXP), 1, 1, 1)
 	end
 	if RemainXP then

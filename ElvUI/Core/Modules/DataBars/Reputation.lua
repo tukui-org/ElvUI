@@ -166,7 +166,7 @@ function DB:ReputationBar_OnEnter()
 		GameTooltip:ClearLines()
 		GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 		GameTooltip:AddLine(name)
-		GameTooltip:AddLine(' ')
+		GameTooltip_AddBlankLineToTooltip(GameTooltip)
 
 		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
 		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
