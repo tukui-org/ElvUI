@@ -8,6 +8,7 @@ local hooksecurefunc = hooksecurefunc
 local function SetPlayTexture()
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 end
+
 local function SetPauseTexture()
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Pause)
 end

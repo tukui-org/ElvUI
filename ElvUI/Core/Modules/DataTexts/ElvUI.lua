@@ -37,12 +37,15 @@ end
 local function OnClick(_, button)
 	if E:AlertCombat() then return end
 
-	if button == 'LeftButton' then
-		E:ToggleOptions()
-	elseif button == 'LeftButton' and IsShiftKeyDown() then
-		E:ToggleMoverMode()
-	elseif button == 'RightButton' and IsShiftKeyDown() then
+	local shiftDown = IsShiftKeyDown()
+	if button == 'RightButton' and shiftDown then
 		ReloadUI()
+	elseif button == 'LeftButton' then
+		if shiftDown then
+			E:ToggleMoverMode()
+		else
+			E:ToggleOptions()
+		end
 	end
 end
 

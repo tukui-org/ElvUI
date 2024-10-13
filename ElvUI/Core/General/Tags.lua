@@ -40,6 +40,7 @@ local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
 local UnitIsAFK = UnitIsAFK
@@ -503,6 +504,13 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
 	if absorb ~= 0 then
 		return E:ShortValue(absorb)
+	end
+end, not E.Retail)
+
+E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
+	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
+	if healAbsorb ~= 0 then
+		return E:ShortValue(healAbsorb)
 	end
 end, not E.Retail)
 
@@ -1501,6 +1509,7 @@ E.TagInfo = {
 		['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	-- Health
 		['absorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of absorbs' },
+		['healabsorbs'] = { hidden = not E.Retail, category = 'Health', description = 'Displays the amount of heal absorbs' },
 		['curhp'] = { category = 'Health', description = "Displays the current HP without decimals" },
 		['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" },
 		['health:current:name-long'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 20 letters) when at full health" },
