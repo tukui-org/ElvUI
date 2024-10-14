@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local random = random
+local UnitExists = UnitExists
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
@@ -44,7 +44,7 @@ function UF:UpdateRoleIcon()
 		return
 	end
 
-	local show = self.isForced or UnitIsConnected(self.unit)
+	local show = self.isForced or UnitExists(self.unit)
 	if show and (not lfdrole.combatHide or not UnitAffectingCombat(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
 		lfdrole:SetTexture(UF.RoleIconTextures[role])
 		lfdrole:Show()
