@@ -102,6 +102,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
+		self:RegisterEvent('UNIT_FLAGS', Path)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
 		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path, true)
 		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
@@ -120,6 +121,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
+		self:UnregisterEvent('UNIT_FLAGS', Path)
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
 		self:UnregisterEvent('PARTY_LOOT_METHOD_CHANGED', Path)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
