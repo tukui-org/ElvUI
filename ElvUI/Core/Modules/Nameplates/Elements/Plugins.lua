@@ -327,6 +327,6 @@ function NP:Update_PrivateAuras(nameplate, disable)
 		nameplate.PrivateAuras:ClearAllPoints()
 		nameplate.PrivateAuras:Point(E.InversePoints[db.parent.point], nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		nameplate.PrivateAuras:Size(db.icon.size)
-		nameplate.PrivateAuras:SetFrameLevel(6)
+		nameplate.PrivateAuras:SetFrameLevel(16)
 	end
 end
