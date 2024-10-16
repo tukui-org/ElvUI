@@ -6,7 +6,7 @@ local format = format
 
 function UF:Construct_RaidFrames()
 	UF:ConstructFrame(self, 'raid')
-	UF:BuildFrame(self, self:GetParent().groupName)
+	UF:BuildFrame(self, self.originalParent.groupName)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
