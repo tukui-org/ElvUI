@@ -9,7 +9,9 @@ local MAX_BOSS_FRAMES = 8
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
-	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
+	UF:ConstructFrame(frame, 'boss')
+	UF:BuildFrame(frame, 'boss')
+
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.displayAltPower = true
@@ -31,13 +33,10 @@ function UF:Construct_BossFrames(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
-	frame.customTexts = {}
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, 'BossHeaderMover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')
 	frame.mover = BossHeader.mover
-
-	frame.unitframeType = 'boss'
 end
 
 function UF:Update_BossFrames(frame, db)
@@ -69,23 +68,7 @@ function UF:Update_BossFrames(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_Castbar(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_AuraHighlight(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_AuraWatch(frame)
+	UF:ConfigureFrame(frame, 'boss')
 
 	frame:ClearAllPoints()
 
@@ -118,10 +101,6 @@ function UF:Update_BossFrames(frame, db)
 		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
 		BossHeader:Height(frame.UNIT_HEIGHT)
 	end
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 if not E.Classic then

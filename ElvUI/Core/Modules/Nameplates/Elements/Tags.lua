@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 function NP:Construct_TagText(nameplate)
-	local Text = nameplate:CreateFontString(nil, 'OVERLAY')
+	local Text = nameplate.RaisedElement:CreateFontString(nil, 'OVERLAY')
 	Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	return Text

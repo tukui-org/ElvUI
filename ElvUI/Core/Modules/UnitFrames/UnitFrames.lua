@@ -291,36 +291,38 @@ function UF:ResetFilters(includeIndicators, resetPriority) -- keep similar to wi
 	end
 end
 
-function UF:CreateRaisedText(raised)
-	local text = raised:CreateFontString(nil, 'OVERLAY')
+function UF:CreateRaisedText(RaisedElement)
+	local text = RaisedElement:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(text)
 
 	return text
 end
 
 function UF:CreateRaisedElement(frame, bar)
-	local raised = CreateFrame('Frame', nil, frame)
-	local level = frame:GetFrameLevel() + 100
-	raised:SetFrameLevel(level)
-	raised.__owner = frame
+	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', frame)
+	local RaisedLevel = frame:GetFrameLevel() + 100
+	RaisedElement:SetFrameLevel(RaisedLevel)
+	RaisedElement.frameName = RaisedElement:GetName()
+	RaisedElement.__owner = frame
 
 	-- layer levels (level +1 is icons)
-	raised.AuraLevel = level
-	raised.PVPSpecLevel = level + 5
-	raised.AuraBarLevel = level + 10
-	raised.RaidDebuffLevel = level + 15
-	raised.AuraWatchLevel = level + 20
-	raised.RestingIconLevel = level + 25
-	raised.RaidRoleLevel = level + 30
-	raised.CastBarLevel = level + 35
+	RaisedElement.AuraLevel = RaisedLevel
+	RaisedElement.PrivateAurasLevel = RaisedLevel + 5
+	RaisedElement.PVPSpecLevel = RaisedLevel + 10
+	RaisedElement.AuraBarLevel = RaisedLevel + 15
+	RaisedElement.RaidDebuffLevel = RaisedLevel + 20
+	RaisedElement.AuraWatchLevel = RaisedLevel + 25
+	RaisedElement.RestingIconLevel = RaisedLevel + 30
+	RaisedElement.RaidRoleLevel = RaisedLevel + 35
+	RaisedElement.CastBarLevel = RaisedLevel + 40
 
 	if bar then
-		raised:SetAllPoints()
+		RaisedElement:SetAllPoints()
 	else
-		raised.TextureParent = CreateFrame('Frame', nil, raised)
+		RaisedElement.TextureParent = CreateFrame('Frame', nil, RaisedElement)
 	end
 
-	return raised
+	return RaisedElement
 end
 
 function UF:SetAlpha_MouseTags(mousetags, alpha)
@@ -341,13 +343,9 @@ function UF:UnitFrame_OnLeave(...)
 end
 
 function UF:Construct_UF(frame, unit)
-	frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
-	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
-
 	frame.SHADOW_SPACING = 3
-	frame.CLASSBAR_YOFFSET = 0 --placeholder
-	frame.BOTTOM_OFFSET = 0 --placeholder
+	frame.CLASSBAR_YOFFSET = 0 -- placeholder
+	frame.BOTTOM_OFFSET = 0 -- placeholder
 
 	if not UF.groupunits[unit] then
 		UF['Construct_'..gsub(E:StringTitle(unit), 't(arget)', 'T%1')..'Frame'](UF, frame, unit)
@@ -578,7 +576,7 @@ function UF:Update_FontStrings()
 end
 
 function UF:Construct_PrivateAuras(frame)
-	return CreateFrame('Frame', '$parent_PrivateAuras', frame.RaisedElementParent)
+	return CreateFrame('Frame', frame.frameName..'PrivateAuras')
 end
 
 function UF:Configure_PrivateAuras(frame)
@@ -595,6 +593,7 @@ function UF:Configure_PrivateAuras(frame)
 		frame.PrivateAuras:ClearAllPoints()
 		frame.PrivateAuras:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		frame.PrivateAuras:Size(db.icon.size)
+		frame.PrivateAuras:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
 	end
 end
 
@@ -1187,6 +1186,210 @@ function UF:CreateAndUpdateUF(unit)
 		E:EnableMover(frame.mover.name)
 	else
 		E:DisableMover(frame.mover.name)
+	end
+end
+
+do
+	local mouseover = {
+		tank = true,
+		assist = true,
+		party = true,
+		raid = true,
+		raidpet = true
+	}
+
+	-- 1) we need to get some things ready very early on
+	function UF:ConstructFrame(frame, group)
+		-- we use this to move various objects over the base frame
+		if not frame.RaisedElementParent then
+			frame.RaisedElementParent = UF:CreateRaisedElement(frame)
+		end
+
+		-- setup some useful variables that we need
+		if group then
+			local parent = frame:GetParent()
+			frame.originalParent = parent
+
+			local parentName = parent and parent:GetName()
+			frame.originalParentName = parentName or nil
+
+			if group == 'party' then
+				frame.childType = frame.isChild and ((parentName and frame == _G[parentName..'Target'] and 'target') or 'pet') or nil
+			end
+		end
+
+		-- handle the enter / leave scripts, for ones that need it
+		if not group or mouseover[group] then
+			frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+			frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+		end
+	end
+
+	-- 2) after that we need to setup additional things
+	function UF:BuildFrame(frame, unitframeType)
+		frame.unitframeType = unitframeType
+		frame.frameName = frame:GetName()
+		frame.customTexts = {}
+	end
+
+	-- various checks to determine the setup
+	local isPet = { partypet = true, pet = true, raidpet = true }
+	local noAuras = { assisttarget = true, partypet = true, partytarget = true, tanktarget = true }
+	local noInfoPanel = { assist = true, assisttarget = true, partypet = true, partytarget = true, raidpet = true, tank = true, tanktarget = true }
+	local noPortrait = { assist = true, assisttarget = true, partypet = true, partytarget = true, tank = true, tanktarget = true }
+	local noPower = { assist = true, assisttarget = true, partypet = true, partytarget = true, raidpet = true, tank = true, tanktarget = true }
+	local noBossArena = { arena = true, boss = true }
+	local noTargets = { arena = true, assisttarget = true, focustarget = true, partytarget = true, pettarget = true, tanktarget = true, targettarget = true, targettargettarget = true }
+
+	-- which elements on what
+	local auraHighlight = { assist = true, boss = true, focus = true, party = true, player = true, raid = true, raidpet = true, tank = true, target = true }
+	local castBar = { arena = true, boss = true, focus = true, party = true, pet = true, player = true, target = true }
+	local classBar = { party = true, player = true, raid = true }
+	local iconCombat = { focus = true, party = true, player = true, target = true }
+	local iconPhase = { party = true, raid = true, target = true }
+	local iconPVP = { player = true, target = true }
+	local iconRaid = { party = true, player = true, raid = true, target = true }
+	local iconRoles = { party = true, raid = true }
+	local pvpIndicator = { arena = true, party = true, raid = true }
+	local raidDebuffs = { assist = true, party = true, raid = true, raidpet = true, tank = true }
+
+	-- 3) this is used on all the unitframes to configure elements
+	--- the order of these is sometimes very important, try not to change them
+	---------------------------------------------------------------------------
+	--- which is not the unitframeType, its used for setting up frames
+	---- party: 'party', 'partytarget', 'partypet'
+	---- assist: 'assist', 'assisttarget'
+	---- tank: 'tank', 'tanktarget'
+	function UF:ConfigureFrame(frame, which, offset)
+		if not noInfoPanel[which] then
+			UF:Configure_InfoPanel(frame)
+		end
+
+		UF:Configure_HealthBar(frame)
+		UF:Configure_HealComm(frame)
+		UF:Configure_Cutaway(frame)
+		UF:Configure_Fader(frame)
+
+		if not noBossArena[which] then
+			UF:Configure_Threat(frame)
+		end
+
+		if not noPower[which] then
+			UF:Configure_Power(frame)
+			UF:Configure_PowerPrediction(frame)
+		end
+
+		if not noPortrait[which] then
+			UF:Configure_Portrait(frame)
+		end
+
+		if not noAuras[which] then
+			UF:EnableDisable_Auras(frame)
+			UF:Configure_AllAuras(frame)
+
+			UF:Configure_CustomTexts(frame)
+		end
+
+		if not noTargets[which] then
+			UF:Configure_AuraWatch(frame, isPet[which])
+			UF:Configure_PrivateAuras(frame)
+		end
+
+		if raidDebuffs[which] then
+			UF:Configure_RaidDebuffs(frame)
+		end
+
+		if auraHighlight[which] then
+			UF:Configure_AuraHighlight(frame)
+		end
+
+		if castBar[which] then
+			UF:Configure_Castbar(frame)
+		end
+
+		if which ~= 'arena' then
+			UF:Configure_RaidIcon(frame)
+		end
+
+		if iconPhase[which] then
+			UF:Configure_PhaseIcon(frame)
+		end
+
+		if iconPVP[which] then
+			UF:Configure_PVPIcon(frame)
+		end
+
+		if iconCombat[which] then
+			UF:Configure_CombatIndicator(frame)
+		end
+
+		if iconRaid[which] then
+			UF:Configure_RaidRoleIcons(frame)
+
+			if not E.Classic then
+				UF:Configure_ResurrectionIcon(frame)
+			end
+		end
+
+		if iconRoles[which] then
+			UF:Configure_RoleIcon(frame)
+			UF:Configure_ReadyCheckIcon(frame)
+
+			if not E.Classic then
+				UF:Configure_SummonIcon(frame)
+				UF:Configure_AltPowerBar(frame)
+			end
+		end
+
+		if not E.Classic and pvpIndicator[which] then
+			UF:Configure_PvPClassificationIndicator(frame)
+		end
+
+		if classBar[which] then
+			UF:Configure_ClassBar(frame)
+		end
+
+		-- any additional custom setup
+		if which == 'pet' then
+			UF:Configure_AuraBars(frame)
+		elseif which == 'focus' then
+			UF:Configure_AuraBars(frame)
+		elseif which == 'target' then
+			UF:Configure_AuraBars(frame)
+		elseif which == 'arena' then
+			UF:Configure_Trinket(frame)
+
+			if E.Retail then
+				UF:Configure_PVPSpecIcon(frame)
+			end
+		elseif which == 'player' then
+			UF:Configure_AuraBars(frame)
+			UF:Configure_PVPText(frame)
+			UF:Configure_PartyIndicator(frame)
+			UF:Configure_RestingIndicator(frame)
+
+			if E.Classic and E.myclass ~= 'WARRIOR' then
+				UF:Configure_EnergyManaRegen(frame)
+			end
+
+			-- We need to update Target AuraBars if attached to Player AuraBars,
+			-- mainly because of issues when using power offset on player and switching to/from middle orientation
+			if UF.db.units.target.aurabar.attachTo == 'PLAYER_AURABARS' and UF.target then
+				UF:Configure_AuraBars(UF.target)
+			end
+		end
+
+		-- trigger some final things
+		UF:UpdateNameSettings(frame)
+		UF:HandleRegisterClicks(frame)
+
+		-- set mover snapping offset, if available
+		if offset then
+			E:SetMoverSnapOffset(frame.mover.name, -offset)
+		end
+
+		-- do the update to the frame; which fires an update to all oUF elements
+		frame:UpdateAllElements('ElvUI_UpdateAllElements')
 	end
 end
 

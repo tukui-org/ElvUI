@@ -7,10 +7,11 @@ local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 
 function UF:Construct_TankFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	local isChild = self.isChild
 
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
+	UF:ConstructFrame(self, 'tank')
+	UF:BuildFrame(self, isChild and 'tanktarget' or 'tank')
+
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
@@ -29,14 +30,7 @@ function UF:Construct_TankFrames()
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
-		self.customTexts = {}
-
-		self.unitframeType = 'tank'
-	else
-		self.unitframeType = 'tanktarget'
 	end
-
-	self.originalParent = self:GetParent()
 
 	return self
 end
@@ -116,27 +110,7 @@ function UF:Update_TankFrames(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Threat(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidIcon(frame)
-
-	if not frame.isChild then
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_AllAuras(frame)
-		UF:Configure_RaidDebuffs(frame)
-		UF:Configure_AuraHighlight(frame)
-		UF:Configure_AuraWatch(frame)
-		UF:Configure_CustomTexts(frame)
-	end
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, frame.isChild and 'tanktarget' or 'tank')
 end
 
 UF.headerstoload.tank = {'MAINTANK', E.Retail and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}

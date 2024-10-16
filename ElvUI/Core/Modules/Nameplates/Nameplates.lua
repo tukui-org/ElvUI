@@ -227,9 +227,11 @@ function NP:PLAYER_REGEN_ENABLED()
 end
 
 function NP:Style(unit)
+	local frameName = self:GetName()
+	self.frameName = frameName
 	self.isNamePlate = true
 
-	if self:GetName() == 'ElvNP_TargetClassPower' then
+	if frameName == 'ElvNP_TargetClassPower' then
 		NP:StyleTargetPlate(self, unit)
 	else
 		NP:StylePlate(self, unit)
@@ -239,11 +241,13 @@ function NP:Style(unit)
 end
 
 function NP:Construct_RaisedELement(nameplate)
-	local RaisedElement = CreateFrame('Frame', nameplate:GetName() .. 'RaisedElement', nameplate)
+	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
 	RaisedElement:EnableMouse(false)
+
+	RaisedElement.frameName = RaisedElement:GetName()
 
 	return RaisedElement
 end
@@ -322,26 +326,26 @@ function NP:StylePlate(nameplate)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
-	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.Health.Text = NP:Construct_TagText(nameplate)
 	nameplate.Health.Text.frequentUpdates = .1
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 	nameplate.Power = NP:Construct_Power(nameplate)
-	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Name = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Level = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.Title = NP:Construct_TagText(nameplate.RaisedElement)
-	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate.RaisedElement)
+	nameplate.Power.Text = NP:Construct_TagText(nameplate)
+	nameplate.Name = NP:Construct_TagText(nameplate)
+	nameplate.Level = NP:Construct_TagText(nameplate)
+	nameplate.Title = NP:Construct_TagText(nameplate)
+	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
-	nameplate.Portrait = NP:Construct_Portrait(nameplate.RaisedElement)
-	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate.RaisedElement)
-	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate.RaisedElement)
+	nameplate.Portrait = NP:Construct_Portrait(nameplate)
+	nameplate.QuestIcons = NP:Construct_QuestIcons(nameplate)
+	nameplate.RaidTargetIndicator = NP:Construct_RaidTargetIndicator(nameplate)
 	nameplate.TargetIndicator = NP:Construct_TargetIndicator(nameplate)
-	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate.RaisedElement)
+	nameplate.ThreatIndicator = NP:Construct_ThreatIndicator(nameplate)
 	nameplate.Highlight = NP:Construct_Highlight(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
-	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate.RaisedElement) -- Horde / Alliance / HonorInfo
-	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
-	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
+	nameplate.PvPIndicator = NP:Construct_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
+	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
+	nameplate.PVPRole = NP:Construct_PVPRole(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.PrivateAuras = NP:Construct_PrivateAuras(nameplate)
 	nameplate.BossMods = NP:Construct_BossMods(nameplate)
@@ -351,7 +355,7 @@ function NP:StylePlate(nameplate)
 
 	NP:Construct_ClassPowerTwo(nameplate)
 
-	NP.Plates[nameplate] = nameplate:GetName()
+	NP.Plates[nameplate] = nameplate.frameName
 
 	hooksecurefunc(nameplate, 'UpdateAllElements', NP.PostUpdateAllElements)
 end
@@ -554,7 +558,7 @@ function NP:GROUP_ROSTER_UPDATE()
 	if NP.IsInGroup then
 		local group = isInRaid and 'raid' or 'party'
 		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
-			local unit = group .. i
+			local unit = group..i
 			if UnitExists(unit) then
 				NP.GroupRoles[UnitName(unit)] = not E.Retail and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
 			end
@@ -917,7 +921,7 @@ end
 
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
-		local o = _G['InterfaceOptionsNamesPanelUnitNameplates' .. x]
+		local o = _G['InterfaceOptionsNamesPanelUnitNameplates'..x]
 		if o then
 			o:SetSize(0.00001, 0.00001)
 			o:SetAlpha(0)

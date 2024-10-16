@@ -9,9 +9,8 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
-	local frameName = nameplate:GetName()
 
-	local Buffs = CreateFrame('Frame', frameName..'Buffs', nameplate)
+	local Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
 	Buffs:Size(1)
@@ -30,7 +29,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.stacks = {}
 	Buffs.rows = {}
 
-	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
+	local Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
 	Debuffs:Size(1)

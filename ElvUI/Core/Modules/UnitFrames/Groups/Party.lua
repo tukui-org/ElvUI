@@ -2,43 +2,19 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local _G = _G
 local InCombatLockdown = InCombatLockdown
 
 function UF:Construct_PartyFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	local isChild = self.isChild
 
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
+	UF:ConstructFrame(self, 'party')
+	UF:BuildFrame(self, 'party'..(isChild and self.childType or ''))
 
 	self.BORDER = UF.BORDER
 	self.SPACING = UF.SPACING
 	self.SHADOW_SPACING = 3
 
-	if self.isChild then
-		self.Health = UF:Construct_HealthBar(self, true)
-		self.MouseGlow = UF:Construct_MouseGlow(self)
-		self.TargetGlow = UF:Construct_TargetGlow(self)
-		self.FocusGlow = UF:Construct_FocusGlow(self)
-		self.Name = UF:Construct_NameText(self)
-		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
-		self.AuraHighlight = UF:Construct_AuraHighlight(self)
-		self.ThreatIndicator = UF:Construct_Threat(self)
-
-		self.originalParent = self:GetParent()
-
-		self.childType = 'pet'
-		if self == _G[self.originalParent:GetName()..'Target'] then
-			self.childType = 'target'
-		end
-
-		if self.childType == 'pet' then
-			self.AuraWatch = UF:Construct_AuraWatch(self)
-			self.HealthPrediction = UF:Construct_HealComm(self)
-		end
-
-		self.unitframeType = 'party'..self.childType
-	else
+	if not isChild then
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 		self.PowerPrediction = UF:Construct_PowerPrediction(self)
@@ -65,7 +41,6 @@ function UF:Construct_PartyFrames()
 		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
-		self.customTexts = {}
 
 		if E.Retail then
 			self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
@@ -75,8 +50,20 @@ function UF:Construct_PartyFrames()
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end
+	else
+		self.Health = UF:Construct_HealthBar(self, true)
+		self.MouseGlow = UF:Construct_MouseGlow(self)
+		self.TargetGlow = UF:Construct_TargetGlow(self)
+		self.FocusGlow = UF:Construct_FocusGlow(self)
+		self.Name = UF:Construct_NameText(self)
+		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
+		self.AuraHighlight = UF:Construct_AuraHighlight(self)
+		self.ThreatIndicator = UF:Construct_Threat(self)
 
-		self.unitframeType = 'party'
+		if self.childType == 'pet' then
+			self.AuraWatch = UF:Construct_AuraWatch(self)
+			self.HealthPrediction = UF:Construct_HealComm(self)
+		end
 	end
 
 	self.Fader = UF:Construct_Fader()
@@ -164,58 +151,18 @@ function UF:Update_PartyFrames(frame, db)
 		if frame.childType == 'pet' then
 			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
 
-			UF:Configure_HealthBar(frame) -- keep over HealComm and after colorPetByUnitClass
-			UF:Configure_AuraWatch(frame)
-			UF:Configure_HealComm(frame)
+			UF:ConfigureFrame(frame, 'partypet')
 		else
-			UF:Configure_HealthBar(frame)
+			UF:ConfigureFrame(frame, 'partytarget')
 		end
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
-		UF:EnableDisable_Auras(frame)
-		UF:Configure_AllAuras(frame)
-		UF:Configure_InfoPanel(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_PhaseIcon(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_Portrait(frame)
-		UF:Configure_RaidDebuffs(frame)
-		UF:Configure_Castbar(frame)
-		UF:Configure_RoleIcon(frame)
-		UF:Configure_RaidRoleIcons(frame)
-		UF:Configure_AuraWatch(frame)
-		UF:Configure_HealComm(frame)
-		UF:Configure_ReadyCheckIcon(frame)
-		UF:Configure_ClassBar(frame)
-		UF:Configure_CustomTexts(frame)
-		UF:Configure_CombatIndicator(frame)
-
-		if not E.Classic then
-			UF:Configure_AltPowerBar(frame)
-		end
-
-		if E.Retail then
-			UF:Configure_ResurrectionIcon(frame)
-			UF:Configure_SummonIcon(frame)
-			UF:Configure_PvPClassificationIndicator(frame)
-		end
+		UF:ConfigureFrame(frame, 'party')
 	end
 
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
-
-	UF:UpdateNameSettings(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_Threat(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_AuraHighlight(frame)
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.headerstoload.party = {nil, E.Retail and 'ELVUI_UNITPET_PINGABLE, ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

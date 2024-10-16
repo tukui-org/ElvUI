@@ -45,7 +45,7 @@ function NP:Update_PortraitBackdrop()
 end
 
 function NP:Construct_Portrait(nameplate)
-	local Portrait = nameplate:CreateTexture(nameplate:GetName() .. 'Portrait', 'OVERLAY', nil, 2)
+	local Portrait = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'Portrait', 'OVERLAY', nil, 2)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:SetSize(28, 28)

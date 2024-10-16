@@ -21,7 +21,7 @@ local allowHostile = false
 function NP:BossMods_CreateIcon(element)
 	element.index = not element.index and 1 or (element.index + 1)
 
-	local button = CreateFrame('Button', element:GetName()..'Button'..element.index, element)
+	local button = CreateFrame('Button', '$parentButton'..element.index, element)
 	button:EnableMouse(false)
 	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 

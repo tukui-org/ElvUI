@@ -50,7 +50,9 @@ function UF:PostUpdateArenaPreparation(_, specID)
 end
 
 function UF:Construct_ArenaFrames(frame)
-	frame.RaisedElementParent = UF:CreateRaisedElement(frame)
+	UF:ConstructFrame(frame, 'arena')
+	UF:BuildFrame(frame, 'arena')
+
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Name = UF:Construct_NameText(frame)
 
@@ -69,13 +71,9 @@ function UF:Construct_ArenaFrames(frame)
 		frame.TargetGlow = UF:Construct_TargetGlow(frame)
 		frame.FocusGlow = UF:Construct_FocusGlow(frame)
 		frame.Trinket = UF:Construct_Trinket(frame)
-
+		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
-
-		frame.customTexts = {}
-		frame.InfoPanel = UF:Construct_InfoPanel(frame)
-		frame.unitframeType = 'arena'
 
 		if E.Retail then
 			frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
@@ -126,25 +124,7 @@ function UF:Update_ArenaFrames(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_Castbar(frame)
-	UF:Configure_Trinket(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_PvPClassificationIndicator(frame)
-
-	if E.Retail then
-		UF:Configure_PVPSpecIcon(frame)
-	end
+	UF:ConfigureFrame(frame, 'arena')
 
 	frame:ClearAllPoints()
 
@@ -177,10 +157,6 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
 		ArenaHeader:Height(frame.UNIT_HEIGHT)
 	end
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 if not E.Classic then

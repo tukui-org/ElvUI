@@ -9,6 +9,9 @@ local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function UF:Construct_PlayerFrame(frame)
+	UF:ConstructFrame(frame)
+	UF:BuildFrame(frame, 'player')
+
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
@@ -46,7 +49,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
-	frame.customTexts = {}
 
 	if E.Cata and E.myclass == 'DRUID' then
 		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
@@ -58,8 +60,6 @@ function UF:Construct_PlayerFrame(frame)
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
-
-	frame.unitframeType = 'player'
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -101,48 +101,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_RestingIndicator(frame)
-	UF:Configure_RaidRoleIcons(frame)
-	UF:Configure_AuraHighlight(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_AuraBars(frame)
-	UF:Configure_PVPIcon(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_CombatIndicator(frame)
-	UF:Configure_ClassBar(frame)
-	UF:Configure_PVPText(frame)
-	UF:Configure_PartyIndicator(frame)
-	UF:Configure_ResurrectionIcon(frame)
-	UF:Configure_AuraWatch(frame)
-	UF:Configure_Castbar(frame)
-	UF:Configure_Fader(frame)
-
-	if E.Classic and E.myclass ~= 'WARRIOR' then
-		UF:Configure_EnergyManaRegen(frame)
-	end
-
-	--We need to update Target AuraBars if attached to Player AuraBars
-	--mainly because of issues when using power offset on player and switching to/from middle orientation
-	if UF.db.units.target.aurabar.attachTo == 'PLAYER_AURABARS' and UF.target then
-		UF:Configure_AuraBars(UF.target)
-	end
-
-	UF:HandleRegisterClicks(frame)
-
-	E:SetMoverSnapOffset(frame.mover.name, -(12 + db.castbar.height))
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'player', 12 + db.castbar.height)
 end
 
 tinsert(UF.unitstoload, 'player')

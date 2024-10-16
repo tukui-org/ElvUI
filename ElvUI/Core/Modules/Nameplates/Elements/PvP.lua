@@ -11,8 +11,8 @@ function NP:PvPIndicator_PostUpdate(_, status)
 end
 
 function NP:Construct_PvPIndicator(nameplate)
-	local PvPIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	PvPIndicator.Badge_ = nameplate:CreateTexture(nil, 'ARTWORK')
+	local PvPIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	PvPIndicator.Badge_ = nameplate.RaisedElement:CreateTexture(nil, 'ARTWORK')
 	PvPIndicator.PostUpdate = NP.PvPIndicator_PostUpdate
 
 	return PvPIndicator
@@ -43,8 +43,7 @@ function NP:Update_PvPIndicator(nameplate)
 end
 
 function NP:Construct_PvPClassificationIndicator(nameplate)
-	local PvPClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	return PvPClassificationIndicator
+	return nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
 end
 
 function NP:Update_PvPClassificationIndicator(nameplate)
