@@ -576,7 +576,7 @@ function UF:Update_FontStrings()
 end
 
 function UF:Construct_PrivateAuras(frame)
-	return CreateFrame('Frame', frame.frameName..'PrivateAuras')
+	return CreateFrame('Frame', frame.frameName..'PrivateAuras', frame.RaisedElementParent)
 end
 
 function UF:Configure_PrivateAuras(frame)
