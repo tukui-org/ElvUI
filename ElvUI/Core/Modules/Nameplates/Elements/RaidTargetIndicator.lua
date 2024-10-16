@@ -17,7 +17,7 @@ function NP:RaidTargetIndicator_Override()
 end
 
 function NP:Construct_RaidTargetIndicator(nameplate)
-	local RaidTargetIndicator = nameplate:CreateTexture(nil, 'OVERLAY', nil, 7)
+	local RaidTargetIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY', nil, 7)
 	RaidTargetIndicator.Override = NP.RaidTargetIndicator_Override
 	RaidTargetIndicator:Hide()
 

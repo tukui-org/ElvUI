@@ -5,6 +5,9 @@ local ElvUF = E.oUF
 local tinsert = tinsert
 
 function UF:Construct_TargetTargetTargetFrame(frame)
+	UF:ConstructFrame(frame)
+	UF:BuildFrame(frame, 'targettargettarget')
+
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
@@ -22,12 +25,9 @@ function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
-	frame.customTexts = {}
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,targettargettarget,generalGroup')
-
-	frame.unitframeType = 'targettargettarget'
 end
 
 function UF:Update_TargetTargetTargetFrame(frame, db)
@@ -59,25 +59,7 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_Fader(frame)
-
-	UF:HandleRegisterClicks(frame)
-
-	E:SetMoverSnapOffset(frame.mover.name, -(12 + UF.db.units.player.castbar.height))
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'targettargettarget', 12 + UF.db.units.player.castbar.height)
 end
 
 tinsert(UF.unitstoload, 'targettargettarget')

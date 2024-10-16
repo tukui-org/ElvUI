@@ -6,7 +6,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	local auras = CreateFrame('Frame', frame:GetName() .. 'AuraWatch', frame)
+	local auras = CreateFrame('Frame', '$parentAuraWatch', frame)
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 	auras:SetInside(frame.Health)
 

@@ -5,6 +5,9 @@ local ElvUF = E.oUF
 local tinsert = tinsert
 
 function UF:Construct_PetTargetFrame(frame)
+	UF:ConstructFrame(frame)
+	UF:BuildFrame(frame, 'pettarget')
+
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
@@ -22,12 +25,9 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
-	frame.customTexts = {}
 
 	frame:Point('BOTTOM', UF.pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pettarget,generalGroup')
-
-	frame.unitframeType = 'pettarget'
 end
 
 function UF:Update_PetTargetFrame(frame, db)
@@ -59,24 +59,7 @@ function UF:Update_PetTargetFrame(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_Fader(frame)
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'pettarget')
 end
 
 tinsert(UF.unitstoload, 'pettarget')

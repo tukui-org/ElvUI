@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
 
 function NP:Construct_QuestIcons(nameplate)
-	local QuestIcons = CreateFrame('Frame', nameplate:GetName() .. 'QuestIcons', nameplate)
+	local QuestIcons = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
 	QuestIcons:CreateBackdrop()
@@ -67,7 +67,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	return nameplate:CreateTexture(nameplate:GetName() .. 'ClassificationIndicator', 'OVERLAY')
+	return nameplate.RaisedElement:CreateTexture(nameplate.frameName..'ClassificationIndicator', 'OVERLAY')
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
@@ -88,7 +88,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 end
 
 function NP:Construct_TargetIndicator(nameplate)
-	local TargetIndicator = CreateFrame('Frame', nameplate:GetName() .. 'TargetIndicator', nameplate)
+	local TargetIndicator = CreateFrame('Frame', '$parentTargetIndicator', nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
@@ -169,7 +169,7 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame('Frame', nameplate:GetName() .. 'Highlight', nameplate)
+	local Highlight = CreateFrame('Frame', '$parentHighlight', nameplate)
 	Highlight:Hide()
 	Highlight:EnableMouse(false)
 	Highlight:SetFrameLevel(9)
@@ -202,7 +202,7 @@ function NP:Update_Highlight(nameplate, nameOnlySF)
 end
 
 function NP:Construct_PVPRole(nameplate)
-	local texture = nameplate:CreateTexture(nameplate:GetName() .. 'PVPRole', 'OVERLAY', nil, 1)
+	local texture = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'PVPRole', 'OVERLAY', nil, 1)
 	texture:Size(40)
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
@@ -266,15 +266,14 @@ function NP:Update_Fader(nameplate)
 end
 
 function NP:Construct_Cutaway(nameplate)
-	local frameName = nameplate:GetName()
 	local Cutaway = {}
 
-	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(frameName .. 'CutawayHealth')
+	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(nameplate.frameName..'CutawayHealth')
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
 	Cutaway.Health:Point('TOPLEFT', healthTexture, 'TOPRIGHT')
 	Cutaway.Health:Point('BOTTOMLEFT', healthTexture, 'BOTTOMRIGHT')
 
-	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(frameName .. 'CutawayPower')
+	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate.frameName..'CutawayPower')
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
 	Cutaway.Power:Point('TOPLEFT', powerTexture, 'TOPRIGHT')
 	Cutaway.Power:Point('BOTTOMLEFT', powerTexture, 'BOTTOMRIGHT')
@@ -310,7 +309,7 @@ function NP:Update_Cutaway(nameplate)
 end
 
 function NP:Construct_PrivateAuras(nameplate)
-	return CreateFrame('Frame', nameplate:GetName() .. 'PrivateAuras', nameplate)
+	return CreateFrame('Frame', nameplate.frameName..'PrivateAuras')
 end
 
 function NP:Update_PrivateAuras(nameplate, disable)
@@ -328,5 +327,6 @@ function NP:Update_PrivateAuras(nameplate, disable)
 		nameplate.PrivateAuras:ClearAllPoints()
 		nameplate.PrivateAuras:Point(E.InversePoints[db.parent.point], nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		nameplate.PrivateAuras:Size(db.icon.size)
+		nameplate.PrivateAuras:SetFrameLevel(6)
 	end
 end

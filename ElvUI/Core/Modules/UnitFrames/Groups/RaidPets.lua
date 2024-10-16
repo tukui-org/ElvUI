@@ -3,10 +3,9 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 function UF:Construct_RaidpetFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	UF:ConstructFrame(self, 'raidpet')
+	UF:BuildFrame(self, 'raidpet')
 
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
 	self.Portrait3D = UF:Construct_Portrait(self, 'model')
@@ -25,10 +24,6 @@ function UF:Construct_RaidpetFrames()
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
-
-	self.customTexts = {}
-
-	self.unitframeType = 'raidpet'
 
 	return self
 end
@@ -74,25 +69,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_RaidDebuffs(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_AuraHighlight(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_AuraWatch(frame, true)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_CustomTexts(frame)
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'raidpet')
 end
 
 --Added an additional argument at the end, specifying the header Template we want to use

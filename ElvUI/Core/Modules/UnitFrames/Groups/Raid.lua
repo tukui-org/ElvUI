@@ -5,10 +5,9 @@ local ElvUF = E.oUF
 local format = format
 
 function UF:Construct_RaidFrames()
-	self:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-	self:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+	UF:ConstructFrame(self, 'raid')
+	UF:BuildFrame(self, self:GetParent().groupName)
 
-	self.RaisedElementParent = UF:CreateRaisedElement(self)
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
 	self.PowerPrediction = UF:Construct_PowerPrediction(self)
@@ -36,7 +35,6 @@ function UF:Construct_RaidFrames()
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
-	self.customTexts = {}
 
 	if E.Retail then
 		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
@@ -46,8 +44,6 @@ function UF:Construct_RaidFrames()
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
 		self.ClassBar = 'AlternativePower'
 	end
-
-	self.unitframeType = self:GetParent().groupName
 
 	return self
 end
@@ -114,43 +110,7 @@ function UF:Update_RaidFrames(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:Configure_RaidDebuffs(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_AuraHighlight(frame)
-	UF:Configure_RoleIcon(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidRoleIcons(frame)
-	UF:Configure_Fader(frame)
-	UF:Configure_AuraWatch(frame)
-	UF:Configure_ReadyCheckIcon(frame)
-	UF:Configure_ResurrectionIcon(frame)
-	UF:Configure_SummonIcon(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_PhaseIcon(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_ClassBar(frame)
-	UF:UpdateNameSettings(frame)
-
-	if not E.Classic then
-		UF:Configure_AltPowerBar(frame)
-	end
-
-	if E.Retail then
-		UF:Configure_PvPClassificationIndicator(frame)
-	end
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'raid')
 end
 
 for i = 1, 3 do

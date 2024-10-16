@@ -5,6 +5,9 @@ local ElvUF = E.oUF
 local tinsert = tinsert
 
 function UF:Construct_FocusFrame(frame)
+	UF:ConstructFrame(frame)
+	UF:BuildFrame(frame, 'focus')
+
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true
@@ -32,11 +35,8 @@ function UF:Construct_FocusFrame(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
-	frame.customTexts = {}
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 59)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,generalGroup')
-
-	frame.unitframeType = 'focus'
 end
 
 function UF:Update_FocusFrame(frame, db)
@@ -68,30 +68,7 @@ function UF:Update_FocusFrame(frame, db)
 	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
-	UF:Configure_InfoPanel(frame)
-	UF:Configure_HealthBar(frame)
-	UF:UpdateNameSettings(frame)
-	UF:Configure_Power(frame)
-	UF:Configure_PowerPrediction(frame)
-	UF:Configure_Portrait(frame)
-	UF:Configure_Threat(frame)
-	UF:EnableDisable_Auras(frame)
-	UF:Configure_AllAuras(frame)
-	UF:Configure_AuraHighlight(frame)
-	UF:Configure_HealComm(frame)
-	UF:Configure_RaidIcon(frame)
-	UF:Configure_AuraBars(frame)
-	UF:Configure_Cutaway(frame)
-	UF:Configure_PrivateAuras(frame)
-	UF:Configure_CustomTexts(frame)
-	UF:Configure_CombatIndicator(frame)
-	UF:Configure_AuraWatch(frame)
-	UF:Configure_Castbar(frame)
-	UF:Configure_Fader(frame)
-
-	UF:HandleRegisterClicks(frame)
-
-	frame:UpdateAllElements('ElvUI_UpdateAllElements')
+	UF:ConfigureFrame(frame, 'focus')
 end
 
 if not E.Classic then

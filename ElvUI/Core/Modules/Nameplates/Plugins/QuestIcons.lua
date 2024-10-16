@@ -37,7 +37,7 @@ NP.QuestIcons = {
 local typesLocalized = {
 	enUS = {
 		--- short matching applies here so,
-		-- kill: killed, destory: destoryed, etc ...
+		-- kill: killed, destory: destoryed, etc...
 		KILL = {'slain', 'destroy', 'eliminate', 'repel', 'kill', 'defeat'},
 		CHAT = {'speak', 'talk'}
 	},

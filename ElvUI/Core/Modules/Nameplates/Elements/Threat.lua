@@ -72,10 +72,10 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 end
 
 function NP:Construct_ThreatIndicator(nameplate)
-	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
+	local ThreatIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
 	ThreatIndicator:Size(16)
 	ThreatIndicator:Hide()
-	ThreatIndicator:Point('CENTER', nameplate, 'TOPRIGHT')
+	ThreatIndicator:Point('CENTER', nameplate.RaisedElement, 'TOPRIGHT')
 
 	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
 	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
