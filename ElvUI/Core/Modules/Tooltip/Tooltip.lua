@@ -751,7 +751,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 				bankCount = format(IDLine, L["Bank"], bank - count)
 			end
 			local _, _, _, _, _, _, _, stack = GetItemInfo(link)
-			if stack then
+			if stack and stack > 1 then
 				stackSize = format(IDLine, L["Stack Size"], stack)
 			end
 		end
