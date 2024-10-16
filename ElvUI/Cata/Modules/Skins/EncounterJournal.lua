@@ -289,7 +289,7 @@ function S:Blizzard_EncounterJournal()
 
 		local tab = info[name]
 		tab:CreateBackdrop('Transparent')
-		tab.backdrop:SetInside(2, 2)
+		tab.backdrop:SetInside(nil, 2, 2)
 
 		tab:SetNormalTexture(E.ClearTexture)
 		tab:SetPushedTexture(E.ClearTexture)
