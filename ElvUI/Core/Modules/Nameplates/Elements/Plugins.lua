@@ -309,7 +309,7 @@ function NP:Update_Cutaway(nameplate)
 end
 
 function NP:Construct_PrivateAuras(nameplate)
-	return CreateFrame('Frame', nameplate.frameName..'PrivateAuras')
+	return CreateFrame('Frame', nameplate.frameName..'PrivateAuras', nameplate.RaisedElement)
 end
 
 function NP:Update_PrivateAuras(nameplate, disable)
