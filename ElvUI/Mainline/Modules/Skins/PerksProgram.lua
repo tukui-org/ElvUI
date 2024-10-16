@@ -110,7 +110,7 @@ local function HandleCheckbox(box)
 	end
 end
 
-function S:Blizzard_PerksProgram()
+function S:Blizzard_PerksProgram() -- Trading Post
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
 
 	local frame = _G.PerksProgramFrame
@@ -133,7 +133,8 @@ function S:Blizzard_PerksProgram()
 		local details = products.PerksProgramProductDetailsContainerFrame
 		if details then
 			details.Border:Hide()
-			details:SetTemplate('Transparent')
+			details:CreateBackdrop('Transparent')
+			details.backdrop:SetFrameLevel(details.Border:GetFrameLevel() - 10)
 
 			local container = details.SetDetailsScrollBoxContainer
 			if container then
@@ -152,14 +153,16 @@ function S:Blizzard_PerksProgram()
 		local container = products.ProductsScrollBoxContainer
 		if container then
 			container:StripTextures()
-			container:SetTemplate('Transparent')
+			container:CreateBackdrop('Transparent')
+			container.backdrop:SetFrameLevel(container.Border:GetFrameLevel() - 10)
+
 			S:HandleTrimScrollBar(container.ScrollBar)
 
 			local hold = container.PerksProgramHoldFrame
 			if hold then
 				hold:StripTextures()
 				hold:CreateBackdrop('Transparent')
-				hold.backdrop:SetInside(3, 3)
+				hold.backdrop:SetInside(hold, 3, 3)
 			end
 
 			HandleSortLabel(container.NameSortButton)
