@@ -289,9 +289,9 @@ local function SetColorDisconnected(element, state, isForced)
 	if(element.colorDisconnected ~= state or isForced) then
 		element.colorDisconnected = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
 		end
 	end
 end
@@ -307,9 +307,9 @@ local function SetColorSelection(element, state, isForced)
 	if(element.colorSelection ~= state or isForced) then
 		element.colorSelection = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_FLAGS', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_FLAGS', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
 		end
 	end
 end
@@ -325,9 +325,9 @@ local function SetColorTapping(element, state, isForced)
 	if(element.colorTapping ~= state or isForced) then
 		element.colorTapping = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
 		end
 	end
 end
@@ -343,9 +343,9 @@ local function SetColorThreat(element, state, isForced)
 	if(element.colorThreat ~= state or isForced) then
 		element.colorThreat = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 	end
 end
@@ -361,11 +361,11 @@ local function SetFrequentUpdates(element, state, isForced)
 	if(element.frequentUpdates ~= state or isForced) then
 		element.frequentUpdates = state
 		if(state) then
-			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
+			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
 		else
-			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
+			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
 		end
 	end
 end

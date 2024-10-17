@@ -264,11 +264,11 @@ local function SetFrequentUpdates(element, state, isForced)
 	if(element.frequentUpdates ~= state or isForced) then
 		element.frequentUpdates = state
 		if(state) then
-			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
+			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
 		else
-			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
+			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
 		end
 	end
 end
@@ -280,7 +280,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 		element.SetFrequentUpdates = SetFrequentUpdates
 
-		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(not element.displayPairs) then
 			element.displayPairs = CopyTable(ALT_POWER_INFO)
@@ -299,7 +299,7 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
 
