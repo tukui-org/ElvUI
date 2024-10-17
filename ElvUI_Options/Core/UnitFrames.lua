@@ -992,9 +992,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if P.unitframe.units[groupName].debuffHighlight then
-		config.args.debuffHighlightGroup = ACH:Group(L["Aura Highlight"], nil, 50, nil, function(info) return E.db.unitframe.units[groupName].debuffHighlight[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].debuffHighlight[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-		config.args.debuffHighlightGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-		config.args.debuffHighlightGroup.inline = true
+		config.args.debuffHighlightEnable = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[groupName].debuffHighlight.enable = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	if groupName == 'arena' then
