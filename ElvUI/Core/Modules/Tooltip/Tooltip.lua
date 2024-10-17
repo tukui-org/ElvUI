@@ -73,6 +73,7 @@ local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetItemCount = C_Item.GetItemCount
+local GetItemInfo = C_Item.GetItemInfo
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -750,6 +751,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 				bagCount = format(IDLine, L["Bags"], count)
 				bankCount = format(IDLine, L["Bank"], bank - count)
 			end
+
 			local _, _, _, _, _, _, _, stack = GetItemInfo(link)
 			if stack and stack > 1 then
 				stackSize = format(IDLine, L["Stack Size"], stack)
