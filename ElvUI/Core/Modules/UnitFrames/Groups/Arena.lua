@@ -50,8 +50,8 @@ function UF:PostUpdateArenaPreparation(_, specID)
 end
 
 function UF:Construct_ArenaFrames(frame)
+	UF:PrepareFrame(frame, 'arena')
 	UF:ConstructFrame(frame, 'arena')
-	UF:BuildFrame(frame, 'arena')
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Name = UF:Construct_NameText(frame)

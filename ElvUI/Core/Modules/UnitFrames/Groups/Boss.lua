@@ -9,8 +9,8 @@ local MAX_BOSS_FRAMES = 8
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
+	UF:PrepareFrame(frame, 'boss')
 	UF:ConstructFrame(frame, 'boss')
-	UF:BuildFrame(frame, 'boss')
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')

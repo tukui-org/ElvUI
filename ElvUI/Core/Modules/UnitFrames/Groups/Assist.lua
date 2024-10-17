@@ -9,8 +9,8 @@ local RegisterAttributeDriver = RegisterAttributeDriver
 function UF:Construct_AssistFrames()
 	local isChild = self.isChild
 
-	UF:ConstructFrame(self, 'assist')
-	UF:BuildFrame(self, isChild and 'assisttarget' or 'assist')
+	UF:PrepareFrame(self, 'assist')
+	UF:ConstructFrame(self, isChild and 'assisttarget' or 'assist')
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)

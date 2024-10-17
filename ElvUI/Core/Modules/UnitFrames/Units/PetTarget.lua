@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 local tinsert = tinsert
 
 function UF:Construct_PetTargetFrame(frame)
-	UF:ConstructFrame(frame)
-	UF:BuildFrame(frame, 'pettarget')
+	UF:PrepareFrame(frame)
+	UF:ConstructFrame(frame, 'pettarget')
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')

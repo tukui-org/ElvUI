@@ -3,8 +3,8 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 function UF:Construct_RaidpetFrames()
+	UF:PrepareFrame(self, 'raidpet')
 	UF:ConstructFrame(self, 'raidpet')
-	UF:BuildFrame(self, 'raidpet')
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)
