@@ -263,13 +263,13 @@ local function SetColorDisconnected(element, state, isForced)
 	if(element.colorDisconnected ~= state or isForced) then
 		element.colorDisconnected = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
-			element.__owner:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-			element.__owner:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
-			element.__owner:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-			element.__owner:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
 		end
 	end
 end
@@ -285,9 +285,9 @@ local function SetColorSelection(element, state, isForced)
 	if(element.colorSelection ~= state or isForced) then
 		element.colorSelection = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_FLAGS', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_FLAGS', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
 		end
 	end
 end
@@ -303,9 +303,9 @@ local function SetColorTapping(element, state, isForced)
 	if(element.colorTapping ~= state or isForced) then
 		element.colorTapping = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
 		end
 	end
 end
@@ -321,9 +321,9 @@ local function SetColorThreat(element, state, isForced)
 	if(element.colorThreat ~= state or isForced) then
 		element.colorThreat = state
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 	end
 end
@@ -333,9 +333,9 @@ local function SetColorHappiness(element, state, isForced)
 		element.colorHappiness = state
 
 		if(state) then
-			element.__owner:RegisterEvent('UNIT_HAPPINESS', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'UNIT_HAPPINESS', ColorPath)
 		else
-			element.__owner:UnregisterEvent('UNIT_HAPPINESS', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'UNIT_HAPPINESS', ColorPath)
 		end
 	end
 end
@@ -353,9 +353,9 @@ local function Enable(self)
 
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
 
-		--[[if oUF.isRetail then
-			oUF:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end]]
+		if oUF.isRetail then
+			oUF:RegisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
+		end
 
 		if oUF.isClassic then
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
@@ -409,9 +409,9 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		--[[if oUF.isRetail then
-			oUF:UnregisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end]]
+		if oUF.isRetail then
+			oUF:UnregisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
+		end
 
 		if oUF.isClassic then
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
