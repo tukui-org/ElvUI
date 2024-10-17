@@ -334,6 +334,7 @@ L["Stack Items In Bags"] = true
 L["Stack Items In Bank"] = true
 L["Stack Items To Bags"] = true
 L["Stack Items To Bank"] = true
+L["Stack Size"] = true
 L["Stance Bar"] = true
 L["Steps"] = true
 L["Sticky Frames"] = true
