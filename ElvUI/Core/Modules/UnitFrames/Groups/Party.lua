@@ -7,8 +7,8 @@ local InCombatLockdown = InCombatLockdown
 function UF:Construct_PartyFrames()
 	local isChild = self.isChild
 
-	UF:ConstructFrame(self, 'party')
-	UF:BuildFrame(self, 'party'..(isChild and self.childType or ''))
+	UF:PrepareFrame(self, 'party')
+	UF:ConstructFrame(self, 'party'..(isChild and self.childType or ''))
 
 	self.BORDER = UF.BORDER
 	self.SPACING = UF.SPACING

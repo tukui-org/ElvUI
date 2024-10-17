@@ -991,10 +991,14 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 2, C.Values.SmartAuraPositions)
 	end
 
+	if P.unitframe.units[groupName].debuffHighlight then
+		config.args.debuffHighlightEnable = ACH:Toggle(E.NewSign..L["Aura Highlight"], nil, 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[groupName].debuffHighlight.enable = value updateFunc(UF, groupName, numUnits) end)
+	end
+
 	if groupName == 'arena' then
-		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 6, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
+		config.args.pvpSpecIcon = ACH:Toggle(L["Spec Icon"], L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."], 7, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
 	else
-		config.args.threatGroup = ACH:Group(L["Threat"], nil, 50)
+		config.args.threatGroup = ACH:Group(L["Threat"], nil, 60)
 		config.args.threatGroup.args.threatStyle = ACH:Select(L["Display Mode"], nil, 1, threatValues)
 		config.args.threatGroup.args.threatPrimary = ACH:Toggle(L["Primary Unit"], L["Requires the unit to be the primary target to display."], 2)
 		config.args.threatGroup.inline = true
@@ -1012,8 +1016,8 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, C.Values.GrowthDirection)
 		config.args.positionsGroup.args.numGroups = ACH:Range(L["Number of Groups"], nil, 7, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
 		config.args.positionsGroup.args.groupsPerRowCol = ACH:Range(L["Groups Per Row/Column"], nil, 8, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end, nil, groupName == 'party')
-		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, spacingNormal)
-		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, spacingNormal)
+		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, spacingLong)
+		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, spacingLong)
 		config.args.positionsGroup.args.groupSpacing = ACH:Range(L["Group Spacing"], L["Additional spacing between each individual group."], 11, spacingNormal, nil, nil, nil, nil, groupName == 'party')
 
 		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)

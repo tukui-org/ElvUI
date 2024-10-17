@@ -9,8 +9,8 @@ local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function UF:Construct_PlayerFrame(frame)
-	UF:ConstructFrame(frame)
-	UF:BuildFrame(frame, 'player')
+	UF:PrepareFrame(frame)
+	UF:ConstructFrame(frame, 'player')
 
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')

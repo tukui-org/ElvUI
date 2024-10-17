@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 local tinsert = tinsert
 
 function UF:Construct_PetFrame(frame)
-	UF:ConstructFrame(frame)
-	UF:BuildFrame(frame, 'pet')
+	UF:PrepareFrame(frame)
+	UF:ConstructFrame(frame, 'pet')
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
@@ -22,6 +22,7 @@ function UF:Construct_PetFrame(frame)
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)

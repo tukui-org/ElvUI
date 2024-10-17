@@ -1199,7 +1199,7 @@ do
 	}
 
 	-- 1) we need to get some things ready very early on
-	function UF:ConstructFrame(frame, group)
+	function UF:PrepareFrame(frame, group)
 		-- we use this to move various objects over the base frame
 		if not frame.RaisedElementParent then
 			frame.RaisedElementParent = UF:CreateRaisedElement(frame)
@@ -1226,7 +1226,7 @@ do
 	end
 
 	-- 2) after that we need to setup additional things
-	function UF:BuildFrame(frame, unitframeType)
+	function UF:ConstructFrame(frame, unitframeType)
 		frame.unitframeType = unitframeType
 		frame.frameName = frame:GetName()
 		frame.customTexts = {}
@@ -1242,7 +1242,7 @@ do
 	local noTargets = { arena = true, assisttarget = true, focustarget = true, partytarget = true, pettarget = true, tanktarget = true, targettarget = true, targettargettarget = true }
 
 	-- which elements on what
-	local auraHighlight = { assist = true, boss = true, focus = true, party = true, player = true, raid = true, raidpet = true, tank = true, target = true }
+	local auraHighlight = { assist = true, boss = true, focus = true, party = true, pet = true, player = true, raid = true, raidpet = true, tank = true, target = true }
 	local castBar = { arena = true, boss = true, focus = true, party = true, pet = true, player = true, target = true }
 	local classBar = { party = true, player = true, raid = true }
 	local iconCombat = { focus = true, party = true, player = true, target = true }

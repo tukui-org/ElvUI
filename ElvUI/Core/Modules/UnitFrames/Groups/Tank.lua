@@ -9,8 +9,8 @@ local RegisterAttributeDriver = RegisterAttributeDriver
 function UF:Construct_TankFrames()
 	local isChild = self.isChild
 
-	UF:ConstructFrame(self, 'tank')
-	UF:BuildFrame(self, isChild and 'tanktarget' or 'tank')
+	UF:PrepareFrame(self, 'tank')
+	UF:ConstructFrame(self, isChild and 'tanktarget' or 'tank')
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Name = UF:Construct_NameText(self)

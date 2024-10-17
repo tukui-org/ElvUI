@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 local format = format
 
 function UF:Construct_RaidFrames()
-	UF:ConstructFrame(self, 'raid')
-	UF:BuildFrame(self, self.originalParent.groupName)
+	UF:PrepareFrame(self, 'raid')
+	UF:ConstructFrame(self, self.originalParent.groupName)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 	self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')

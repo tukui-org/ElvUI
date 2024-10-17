@@ -25,7 +25,9 @@ function UF:Construct_AuraHighlight(frame)
 end
 
 function UF:Configure_AuraHighlight(frame)
-	if E.db.unitframe.debuffHighlighting ~= 'NONE' then
+	local mode = E.db.unitframe.debuffHighlighting
+	local db = frame.db and frame.db.debuffHighlight
+	if db.enable and mode ~= 'NONE' then
 		if not frame:IsElementEnabled('AuraHighlight') then
 			frame:EnableElement('AuraHighlight')
 		end
@@ -34,8 +36,9 @@ function UF:Configure_AuraHighlight(frame)
 		frame.AuraHighlight:SetAllPoints(frame.Health:GetStatusBarTexture())
 		frame.AuraHighlightFilterTable = E.global.unitframe.AuraHighlightColors
 
-		if E.db.unitframe.debuffHighlighting == 'GLOW' then
+		if mode == 'GLOW' then
 			frame.AuraHighlightBackdrop = true
+
 			if frame.ThreatIndicator then
 				frame.AuraHightlightGlow:SetAllPoints(frame.ThreatIndicator.MainGlow)
 			elseif frame.TargetGlow then
