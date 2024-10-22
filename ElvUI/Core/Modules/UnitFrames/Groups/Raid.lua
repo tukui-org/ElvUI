@@ -36,11 +36,8 @@ function UF:Construct_RaidFrames()
 	self.Cutaway = UF:Construct_Cutaway(self)
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 
-	if E.Retail then
-		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
-	end
-
 	if not E.Classic then
+		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
 		self.ClassBar = 'AlternativePower'
 	end
