@@ -38,15 +38,13 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
+	local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
 	if element.combatHide and UnitAffectingCombat(unit) then
 		element:Hide()
+	elseif(isAssistant) then
+		element:Show()
 	else
-		local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
-		if(isAssistant) then
-			element:Show()
-		else
-			element:Hide()
-		end
+		element:Hide()
 	end
 
 	--[[ Callback: AssistantIndicator:PostUpdate(isAssistant)

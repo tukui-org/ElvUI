@@ -25,8 +25,6 @@ local DisableAddOn = C_AddOns.DisableAddOn
 local EnableAddOn = C_AddOns.EnableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
-local C_Bank_FetchNextPurchasableBankTabCost = C_Bank and C_Bank.FetchNextPurchasableBankTabCost
-
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
 local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DECLINE

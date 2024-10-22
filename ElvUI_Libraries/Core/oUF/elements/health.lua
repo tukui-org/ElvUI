@@ -117,6 +117,9 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 local _, PlayerClass = UnitClass('player')
 
+local gsub, unpack = gsub, unpack
+local Clamp = Clamp
+
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health

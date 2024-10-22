@@ -41,25 +41,22 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local role, isShown
-	if element.combatHide and UnitAffectingCombat(unit) then
-		isShown = false
-	else
-		local inVehicle = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)
-		if(UnitInRaid(unit) and not inVehicle) then
-			if(GetPartyAssignment('MAINTANK', unit)) then
-				isShown = true
-				element:SetTexture(MAINTANK_ICON)
-				role = 'MAINTANK'
-			elseif(GetPartyAssignment('MAINASSIST', unit)) then
-				isShown = true
-				element:SetTexture(MAINASSIST_ICON)
-				role = 'MAINASSIST'
-			end
+	local inVehicle, role = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)
+	if(UnitInRaid(unit) and not inVehicle) then
+		if(GetPartyAssignment('MAINTANK', unit)) then
+			role = 'MAINTANK'
+			element:SetTexture(MAINTANK_ICON)
+		elseif(GetPartyAssignment('MAINASSIST', unit)) then
+			role = 'MAINASSIST'
+			element:SetTexture(MAINASSIST_ICON)
 		end
 	end
 
-	element:SetShown(isShown)
+	if element.combatHide and UnitAffectingCombat(unit) then
+		element:SetShown(false)
+	else
+		element:SetShown(not not role)
+	end
 
 	--[[ Callback: RaidRoleIndicator:PostUpdate(role)
 	Called after the element has been updated.

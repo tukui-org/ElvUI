@@ -4,12 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 
---[[
-	To Do:  Parchment Remover
-		    Monitor it due to changes from Blizz
-]]
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 
 local function HandleTalentFrameDialog(dialog)
 	if not dialog then return end

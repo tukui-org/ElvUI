@@ -5,6 +5,7 @@ local _G = _G
 local ShowUIPanel = ShowUIPanel
 local GetInstanceInfo = GetInstanceInfo
 local InCombatLockdown = InCombatLockdown
+
 local C_TalkingHead_SetConversationsDeferred = C_TalkingHead.SetConversationsDeferred
 
 function BL:ObjectiveTracker_AutoHideOnHide()

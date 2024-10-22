@@ -95,6 +95,8 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local unpack = unpack
+
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
