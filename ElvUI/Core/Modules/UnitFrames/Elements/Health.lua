@@ -15,6 +15,8 @@ local UnitIsCharmed = UnitIsCharmed
 local UnitIsEnemy = UnitIsEnemy
 local UnitInPartyIsAI = UnitInPartyIsAI
 
+local BACKDROP_MULT = 0.35
+
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)
 
@@ -33,7 +35,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
 		health.bg:SetTexture(E.media.blankTex)
-		health.bg.multiplier = 0.35
+		health.bg.multiplier = BACKDROP_MULT
 	end
 
 	if text then
@@ -57,7 +59,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorDisconnected(true)
 	E:SetSmoothing(health, UF.db.smoothbars)
 
-	--Text
+	-- Text
 	if db.health and health.value then
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.health.attachTextTo)
 		health.value:ClearAllPoints()
@@ -65,7 +67,13 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 		frame:Tag(health.value, db.health.text_format or '')
 	end
 
-	--Colors
+	-- Backdrop Multiplier
+	if health.bg then
+		local colors = E.db.unitframe.colors
+		health.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or BACKDROP_MULT
+	end
+
+	-- Colors
 	local colorSelection
 	health.colorSmooth = nil
 	health.colorHealth = nil
@@ -286,11 +294,9 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
 	end
 
-	local bg = self.bg
+	local bg, bgc = self.bg
 	if bg then
-		local mult, bgc = (colors.healthMultiplier > 0 and colors.healthMultiplier) or 0.35
-		bg.multiplier = mult
-
+		local mult = bg.multiplier or BACKDROP_MULT
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 		elseif colors.healthbackdropbyvalue then
@@ -319,8 +325,6 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			bg:SetVertexColor(bgc.r * mult, bgc.g * mult, bgc.b * mult)
 		elseif newb then
 			bg:SetVertexColor(newr * mult, newg * mult, newb * mult)
-		else
-			bg:SetVertexColor(r * mult, g * mult, b * mult)
 		end
 	end
 end
