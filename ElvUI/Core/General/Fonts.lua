@@ -312,8 +312,8 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game46Font,							NORMAL, (blizz and 46) or unscale or massive)				-- Added in 7.3.5 used for ?
 		E:SetFont(_G.Game48Font,							NORMAL, (blizz and 48) or unscale or massive)
 		E:SetFont(_G.Game48FontShadow,						NORMAL, (blizz and 48) or unscale or massive, 'SHADOW')
-		E:SetFont(_G.Game60Font,							NORMAL, (blizz and 60) or unscale or colossal)
-		E:SetFont(_G.Game72Font,							NORMAL, (blizz and 72) or unscale or monstrous)
-		E:SetFont(_G.Game120Font,							NORMAL, (blizz and 120) or unscale or titanic)
+		E:SetFont(_G.Game60Font,							NORMAL, (blizz and 60) or unscale or colossal, 'OUTLINE')
+		E:SetFont(_G.Game72Font,							NORMAL, (blizz and 72) or unscale or monstrous, 'OUTLINE')
+		E:SetFont(_G.Game120Font,							NORMAL, (blizz and 120) or unscale or titanic, 'OUTLINE')
 	end
 end
