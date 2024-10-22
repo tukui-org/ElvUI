@@ -30,10 +30,16 @@ local SharedBarOptions = {
 	buttonGroup = ACH:Group(L["Button Settings"], nil, 4),
 	backdropGroup = ACH:Group(L["Backdrop Settings"], nil, 5),
 	barGroup = ACH:Group(L["Bar Settings"], nil, 6),
-	strataAndLevel = ACH:Group(L["Strata and Level"], nil, 7)
+	strataAndLevel = ACH:Group(L["Strata and Level"], nil, 7),
+	visibilityGroup = ACH:Group(L["Visibility State"], nil, 8),
+	pagingGroup = ACH:Group(L["Action Paging"], nil, 9)
 }
 
-SharedBarOptions.barGroup.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 8, 4, 'full')
+SharedBarOptions.pagingGroup.args.defaults = ACH:Execute(L["Restore Defaults"], nil, 1, nil, nil, L["You are about to reset paging. Are you sure?"])
+SharedBarOptions.pagingGroup.args.paging = ACH:Input('', L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 2, 4, 'full')
+
+SharedBarOptions.visibilityGroup.args.defaults = ACH:Execute(L["Restore Defaults"], nil, 1, nil, nil, true)
+SharedBarOptions.visibilityGroup.args.visibility = ACH:Input('', L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 2, 4, 'full')
 
 local castKeyValues = { NONE = L["None"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
@@ -199,7 +205,9 @@ ActionBar.args.barPet.args.buttonGroup.args.buttonSize.desc = function() return 
 ActionBar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
 ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = ACTION_SLOTS
 ActionBar.args.barPet.args.buttonGroup.args.buttons.max = ACTION_SLOTS
-ActionBar.args.barPet.args.barGroup.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value AB:PositionAndSizeBarPet() end
+ActionBar.args.barPet.args.visibilityGroup.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value AB:PositionAndSizeBarPet() end
+ActionBar.args.barPet.args.visibilityGroup.args.defaults.func = function() E.db.actionbar.barPet.visibility = P.actionbar.barPet.visibility AB:PositionAndSizeBarPet() end
+ActionBar.args.barPet.args.visibilityGroup.args.defaults.desc = function() return P.actionbar.barPet.visibility end
 
 ActionBar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
 ActionBar.args.stanceBar.args = CopyTable(SharedBarOptions)
@@ -211,7 +219,9 @@ ActionBar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidden = function() 
 ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = STANCE_SLOTS
 ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = STANCE_SLOTS
 ActionBar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] }, nil, nil, nil, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value AB:PositionAndSizeBarShapeShift() AB:StyleShapeShift() end)
-ActionBar.args.stanceBar.args.barGroup.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value AB:PositionAndSizeBarShapeShift() end
+ActionBar.args.stanceBar.args.visibilityGroup.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value AB:PositionAndSizeBarShapeShift() end
+ActionBar.args.stanceBar.args.visibilityGroup.args.defaults.func = function() E.db.actionbar.stanceBar.visibility = P.actionbar.stanceBar.visibility AB:PositionAndSizeBarShapeShift() end
+ActionBar.args.stanceBar.args.visibilityGroup.args.defaults.desc = function() return P.actionbar.stanceBar.visibility end
 
 ActionBar.args.microbar = ACH:Group(L["Micro Bar"], nil, 16, nil, function(info) return E.db.actionbar.microbar[info[#info]] end, function(info, value) E.db.actionbar.microbar[info[#info]] = value AB:UpdateMicroButtons() end, function() return not E.ActionBars.Initialized end)
 ActionBar.args.microbar.args = CopyTable(SharedBarOptions)
@@ -222,7 +232,9 @@ ActionBar.args.microbar.args.buttonGroup.args.buttonsPerRow.max = MICRO_SLOTS
 ActionBar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
-ActionBar.args.microbar.args.barGroup.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value AB:UpdateMicroButtons() end
+ActionBar.args.microbar.args.visibilityGroup.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value AB:UpdateMicroButtons() end
+ActionBar.args.microbar.args.visibilityGroup.args.defaults.func = function() E.db.actionbar.microbar.visibility = P.actionbar.microbar.visibility AB:UpdateMicroButtons() end
+ActionBar.args.microbar.args.visibilityGroup.args.defaults.desc = function() return P.actionbar.microbar.visibility end
 
 ActionBar.args.totemBar = ACH:Group(L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Cata)
 ActionBar.args.totemBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.totemBar[info[#info]] = value E.ShowPopup = true end)
@@ -344,9 +356,16 @@ local function CreateBarOptions(num)
 		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
 	end
 
+	bar.args.visibilityGroup.args.visibility.set = function(_, value) E.db.actionbar[barNumber].visibility = value AB:UpdateButtonSettings(barNumber) end
+	bar.args.visibilityGroup.args.defaults.func = function() E.db.actionbar[barNumber].visibility = P.actionbar[barNumber].visibility AB:UpdateButtonSettings(barNumber) end
+	bar.args.visibilityGroup.args.defaults.desc = function() return P.actionbar[barNumber].visibility end
+
+	bar.args.pagingGroup.args.paging.get = function() return E.db.actionbar[barNumber].paging[E.myclass] end
+	bar.args.pagingGroup.args.paging.set = function(_, value) E.db.actionbar[barNumber].paging[E.myclass] = value AB:UpdateButtonSettings(barNumber) end
+	bar.args.pagingGroup.args.defaults.func = function() E.db.actionbar[barNumber].paging[E.myclass] = P.actionbar[barNumber].paging[E.myclass] AB:UpdateButtonSettings(barNumber) end
+	bar.args.pagingGroup.args.defaults.desc = function() return P.actionbar[barNumber].paging[E.myclass] end
+
 	bar.args.barGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 3, { UP = L["Up"], DOWN = L["Down"], LEFT = L["Left"], RIGHT = L["Right"], AUTOMATIC = L["Automatic"] }, nil, nil, nil, function(info, value) E.db.actionbar[barNumber][info[#info]] = value AB:UpdateButtonSettings(barNumber) end)
-	bar.args.barGroup.args.visibility.set = function(_, value) E.db.actionbar[barNumber].visibility = value AB:UpdateButtonSettings(barNumber) end
-	bar.args.barGroup.args.paging = ACH:Input(L["Action Paging"], L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 7, 4, 'full', function() return E.db.actionbar[barNumber].paging[E.myclass] end, function(_, value) E.db.actionbar[barNumber].paging[E.myclass] = value AB:UpdateButtonSettings(barNumber) end)
 
 	bar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar[barNumber].keepSizeRatio and L["Button Size"] or L["Button Width"] end
 	bar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar[barNumber].keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
@@ -379,5 +398,3 @@ end
 for i = 13, 15 do
 	CreateBarOptions(i)
 end
-
-ActionBar.args.playerBars.args.bar1.args.pagingReset = ACH:Execute(L["Reset Action Paging"], nil, 2, function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings('bar1') end, nil, L["You are about to reset paging. Are you sure?"])

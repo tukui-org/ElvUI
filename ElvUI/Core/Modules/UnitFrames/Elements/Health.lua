@@ -15,6 +15,8 @@ local UnitIsCharmed = UnitIsCharmed
 local UnitIsEnemy = UnitIsEnemy
 local UnitInPartyIsAI = UnitInPartyIsAI
 
+local BACKDROP_MULT = 0.35
+
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)
 
@@ -33,7 +35,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
 		health.bg:SetTexture(E.media.blankTex)
-		health.bg.multiplier = 0.35
+		health.bg.multiplier = BACKDROP_MULT
 	end
 
 	if text then
@@ -57,7 +59,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorDisconnected(true)
 	E:SetSmoothing(health, UF.db.smoothbars)
 
-	--Text
+	-- Text
 	if db.health and health.value then
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.health.attachTextTo)
 		health.value:ClearAllPoints()
@@ -65,7 +67,13 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 		frame:Tag(health.value, db.health.text_format or '')
 	end
 
-	--Colors
+	-- Backdrop Multiplier
+	if health.bg then
+		local colors = E.db.unitframe.colors
+		health.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or BACKDROP_MULT
+	end
+
+	-- Colors
 	local colorSelection
 	health.colorSmooth = nil
 	health.colorHealth = nil
@@ -248,62 +256,75 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local isDeadOrGhost = UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local newr, newg, newb -- fallback for bg if custom settings arent used
-	if not b then r, g, b = colors.health.r, colors.health.g, colors.health.b end
-	if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
-		if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
-			newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
-			self:SetStatusBarColor(newr, newg, newb)
-		elseif healthBreak and healthBreak.enabled then
-			local breakPoint = self.max > 0 and (self.cur / self.max) or 1
-			local onlyLow, color = healthBreak.onlyLow
-
-			if breakPoint <= healthBreak.low then
-				color = healthBreak.bad
-			elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
-				color = healthBreak.good
-			elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
-				color = colors.healthBreak.neutral
-			end
-
-			if color then
-				self:SetStatusBarColor(color.r, color.g, color.b)
-			end
-		end
+	local color -- main bar
+	if not b then
+		r, g, b = colors.health.r, colors.health.g, colors.health.b
 	end
 
 	-- Charmed player should have hostile color
-	if unit and (strmatch(unit, "raid%d+") or strmatch(unit, "party%d+")) then
-		if not isDeadOrGhost and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
-			local color = parent.colors.reaction[HOSTILE_REACTION]
-			if color then self:SetStatusBarColor(color.r, color.g, color.b) end
+	if unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+')) then
+		if not isDeadOrGhost and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy('player', unit) then
+			color = parent.colors.reaction[HOSTILE_REACTION]
 		end
 	end
 
-	if self.bg then
-		self.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or 0.35
+	local newr, newg, newb
+	if not color then -- dont need to process this when its hostile
+		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
+			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
+				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+			elseif healthBreak and healthBreak.enabled then
+				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
+				local onlyLow = healthBreak.onlyLow
 
+				if breakPoint <= healthBreak.low then
+					color = healthBreak.bad
+				elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
+					color = healthBreak.good
+				elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
+					color = colors.healthBreak.neutral
+				end
+			end
+		end
+	end
+
+	if color then
+		self:SetStatusBarColor(color.r, color.g, color.b)
+	elseif newb then
+		self:SetStatusBarColor(newr, newg, newb)
+	end
+
+	local bg, bgc = self.bg
+	if bg then
+		local mult = bg.multiplier or BACKDROP_MULT
 		if colors.useDeadBackdrop and isDeadOrGhost then
-			self.bg:SetVertexColor(colors.health_backdrop_dead.r, colors.health_backdrop_dead.g, colors.health_backdrop_dead.b)
+			bgc = colors.health_backdrop_dead
+		elseif colors.healthbackdropbyvalue then
+			if colors.customhealthbackdrop then
+				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				mult = 1 -- custom backdrop
+			elseif not newb and not colors.colorhealthbyvalue then
+				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+			end
 		elseif colors.customhealthbackdrop then
-			self.bg:SetVertexColor(colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+			bgc = colors.health_backdrop
+			mult = 1 -- custom backdrop
 		elseif colors.classbackdrop then
-			local reaction, color = (UnitReaction(unit, 'player'))
-
 			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
-				local _, Class = UnitClass(unit)
-				color = parent.colors.class[Class]
-			elseif reaction then
-				color = parent.colors.reaction[reaction]
+				local _, unitClass = UnitClass(unit)
+				bgc = parent.colors.class[unitClass]
 			end
 
-			if color then
-				self.bg:SetVertexColor(color.r * self.bg.multiplier, color.g * self.bg.multiplier, color.b * self.bg.multiplier)
+			local reaction = not bgc and UnitReaction(unit, 'player')
+			if reaction then
+				bgc = parent.colors.reaction[reaction]
 			end
+		end
+
+		if bgc then
+			bg:SetVertexColor(bgc.r * mult, bgc.g * mult, bgc.b * mult)
 		elseif newb then
-			self.bg:SetVertexColor(newr * self.bg.multiplier, newg * self.bg.multiplier, newb * self.bg.multiplier)
-		else
-			self.bg:SetVertexColor(r * self.bg.multiplier, g * self.bg.multiplier, b * self.bg.multiplier)
+			bg:SetVertexColor(newr * mult, newg * mult, newb * mult)
 		end
 	end
 end

@@ -1771,6 +1771,7 @@ P.unitframe = {
 		--powerthreat = false,
 		powerselection = false,
 		colorhealthbyvalue = true,
+		healthbackdropbyvalue = false,
 		customhealthbackdrop = false,
 		custompowerbackdrop = false,
 		customcastbarbackdrop = false,
