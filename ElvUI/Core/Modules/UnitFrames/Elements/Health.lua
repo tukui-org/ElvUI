@@ -265,7 +265,6 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
-				self:SetStatusBarColor(newr, newg, newb)
 			elseif healthBreak and healthBreak.enabled then
 				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
 				local onlyLow = healthBreak.onlyLow
@@ -283,6 +282,8 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 
 	if color then
 		self:SetStatusBarColor(color.r, color.g, color.b)
+	elseif newb then
+		self:SetStatusBarColor(newr, newg, newb)
 	end
 
 	local bg = self.bg
