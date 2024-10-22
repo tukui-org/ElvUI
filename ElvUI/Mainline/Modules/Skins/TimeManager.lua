@@ -19,9 +19,11 @@ function S:Blizzard_TimeManager()
 	S:HandlePortraitFrame(TimeManagerFrame)
 
 	local Alarm = _G.TimeManagerAlarmTimeFrame
-	S:HandleDropDownBox(Alarm.HourDropdown, 80)
-	S:HandleDropDownBox(Alarm.MinuteDropdown, 80)
-	S:HandleDropDownBox(Alarm.AMPMDropdown, 80)
+	if Alarm then
+		S:HandleDropDownBox(Alarm.HourDropdown, 80)
+		S:HandleDropDownBox(Alarm.MinuteDropdown, 80)
+		S:HandleDropDownBox(Alarm.AMPMDropdown, 80)
+	end
 
 	S:HandleEditBox(_G.TimeManagerAlarmMessageEditBox)
 	S:HandleCheckBox(_G.TimeManagerAlarmEnabledButton)
