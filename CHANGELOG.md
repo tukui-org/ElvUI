@@ -1,3 +1,20 @@
+### Version 13.79 [ October 22nd 2024 ]
+*   Unitframe range issue with Mage resolved.
+*   Reorganized Aura Filter priority list for all Unitframes and merged PlayerBuffs filter into Whitelist.
+*   Reset All button added for Filters section; this will entirely wipe any custom filters used and reset default filters.  AuraBar Colors, Aura Highlight, and Aura Indicators are excluded from this.
+*   Reputation error on Datatext and Databars on Classic or Cataclysm.
+*   Range issues resolved on Classic Era (you must have Show All Spell Ranked enabled).
+*   Scale option added for Private Raid Warnings (Buffs and Debuffs > Private Auras > Raid Warning > Scale).
+*   Tags [dead], [offline], and [status] should update faster now.
+*   Shift clicking from SpellBook or Talents into WeakAuras not working.
+*   LibDispel breaking on Cataclysm when trying to call SetCVar.
+*   Shift + Left click ElvUI Menu Datatext to toggle mover mode.
+*   Show the Profession Quality texture on items while looting.
+*   Aura Highlight can be toggled off for specific Unitframes.
+*   Stack size will also be shown in Tooltips.
+*   Improved Trading Post skin.
+*   Health Backdrop by Value setting added to Unitframes.
+
 ### Version 13.78 [ September 24th 2024 ]
 *   Priest and Shaman spells added to help with Range checking.
 *   Objective Tracker taint caused from SplashFrame (there are likely more causes).
