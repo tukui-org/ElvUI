@@ -89,7 +89,6 @@ function S:Blizzard_AuctionUI()
 
 		if i <= 4 then
 			CheckBox:Size(24)
-
 			CheckBox:PointXY(nil, (i == 1 and -40) or (i == 3 and -5) or 3)
 		elseif CheckBox.Text then
 			CheckBox.Text:Point('LEFT', CheckBox, 'Right', 2, 0)

@@ -1545,7 +1545,6 @@ function S:HandleStepSlider(frame, minimal)
 	end
 end
 
--- TODO: Update the function for BFA/Shadowlands
 function S:HandleFollowerAbilities(followerList)
 	local followerTab = followerList and followerList.followerTab
 	local abilityFrame = followerTab.AbilitiesFrame

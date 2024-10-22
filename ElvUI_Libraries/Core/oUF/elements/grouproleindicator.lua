@@ -48,16 +48,14 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
+	local role = UnitGroupRolesAssigned(self.unit)
 	if element.combatHide and UnitAffectingCombat(self.unit) then
 		element:Hide()
+	elseif(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') then
+		element:SetTexCoord(GetTexCoordsForRoleSmallCircle(role))
+		element:Show()
 	else
-		local role = UnitGroupRolesAssigned(self.unit)
-		if(role == 'TANK' or role == 'HEALER' or role == 'DAMAGER') then
-			element:SetTexCoord(GetTexCoordsForRoleSmallCircle(role))
-			element:Show()
-		else
-			element:Hide()
-		end
+		element:Hide()
 	end
 
 	--[[ Callback: GroupRoleIndicator:PostUpdate(role)

@@ -5,7 +5,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local select, strsplit = select, strsplit
+local select, strsplit, tonumber = select, strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
@@ -673,7 +673,7 @@ end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
 	local guid = UnitGUID(unit)
-	return guid and select(6, strsplit('-', guid)), guid
+	return tonumber(guid and select(6, strsplit('-', guid))), guid
 end
 
 function NP:UpdateNumPlates()

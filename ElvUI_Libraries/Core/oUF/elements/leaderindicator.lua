@@ -38,42 +38,40 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
+	-- There are two kinds of group leaders: guides and leaders. Guides are leaders of groups formed via LFD/LFR.
+	-- There are also two types of groups: home (LE_PARTY_CATEGORY_HOME) and instance (LE_PARTY_CATEGORY_INSTANCE).
+	-- A unit can be the leader of both, only one, or none. Use UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_HOME) and
+	-- UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_INSTANCE) for more detailed info.
+	-- There can be only ONE guide in any given party, but there can be multiple leaders, for instance, if two 2-man
+	-- premades were put in one group, they'll keep their leader roles which can be seen by other members of their
+	-- own groups via UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_HOME) or by members of other groups via
+	-- UnitLeadsAnyGroup(unit). Inside the group formed by the dungeon finder UnitIsGroupLeader(unit) will only return
+	-- true for the instance leader.
+	local isInLFGInstance = oUF.isRetail and HasLFGRestrictions()
+
+	-- ElvUI changed block
+	local isLeader
+	if IsInInstance() then
+		isLeader = UnitIsGroupLeader(unit)
+	else
+		isLeader = UnitLeadsAnyGroup(unit)
+	end
+	-- end block
+
 	if element.combatHide and UnitAffectingCombat(unit) then
 		element:Hide()
+	elseif(isLeader) then
+		if(isInLFGInstance) then
+			element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
+			element:SetTexCoord(0, 0.296875, 0.015625, 0.3125)
+		else
+			element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
+			element:SetTexCoord(0, 1, 0, 1)
+		end
+
+		element:Show()
 	else
-		-- There are two kinds of group leaders: guides and leaders. Guides are leaders of groups formed via LFD/LFR.
-		-- There are also two types of groups: home (LE_PARTY_CATEGORY_HOME) and instance (LE_PARTY_CATEGORY_INSTANCE).
-		-- A unit can be the leader of both, only one, or none. Use UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_HOME) and
-		-- UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_INSTANCE) for more detailed info.
-		-- There can be only ONE guide in any given party, but there can be multiple leaders, for instance, if two 2-man
-		-- premades were put in one group, they'll keep their leader roles which can be seen by other members of their
-		-- own groups via UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_HOME) or by members of other groups via
-		-- UnitLeadsAnyGroup(unit). Inside the group formed by the dungeon finder UnitIsGroupLeader(unit) will only return
-		-- true for the instance leader.
-		local isInLFGInstance = oUF.isRetail and HasLFGRestrictions()
-
-		-- ElvUI changed block
-		local isLeader
-		if IsInInstance() then
-			isLeader = UnitIsGroupLeader(unit)
-		else
-			isLeader = UnitLeadsAnyGroup(unit)
-		end
-		-- end block
-
-		if(isLeader) then
-			if(isInLFGInstance) then
-				element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
-				element:SetTexCoord(0, 0.296875, 0.015625, 0.3125)
-			else
-				element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-				element:SetTexCoord(0, 1, 0, 1)
-			end
-
-			element:Show()
-		else
-			element:Hide()
-		end
+		element:Hide()
 	end
 
 	--[[ Callback: LeaderIndicator:PostUpdate(isLeader)

@@ -1571,8 +1571,8 @@ B.ExcludeGrays = E.Retail and {
 
 -- Vendors to avoid selling to
 B.ExcludeVendors = {
-	['113831'] = "Auto-Hammer",
-	['100995'] = "Auto-Hammer"
+	[113831] = "Auto-Hammer",
+	[100995] = "Auto-Hammer"
 }
 
 function B:GetGrays(vendor)

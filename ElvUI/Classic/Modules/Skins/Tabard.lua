@@ -34,19 +34,32 @@ function S:TabardFrame()
 		frame:Show()
 	end
 
-	for i = 1, 5 do
-		local custom = 'TabardFrameCustomization'..i
-		local button = _G[custom]
+	do
+		local i = 1
+		local button, previous = _G['TabardFrameCustomization'..i]
+		while button do
+			button:StripTextures()
 
-		button:StripTextures()
-		S:HandleNextPrevButton(_G[custom..'LeftButton'])
-		S:HandleNextPrevButton(_G[custom..'RightButton'])
+			local left = _G['TabardFrameCustomization'..i..'LeftButton']
+			if left then
+				S:HandleNextPrevButton(left)
+			end
 
-		if i > 1 then
-			button:ClearAllPoints()
-			button:Point('TOP', _G['TabardFrameCustomization'..i - 1], 'BOTTOM', 0, -6)
-		else
-			button:NudgePoint(nil, 4)
+			local right = _G['TabardFrameCustomization'..i..'RightButton']
+			if right then
+				S:HandleNextPrevButton(right)
+			end
+
+			if previous then
+				button:ClearAllPoints()
+				button:Point('TOP', previous, 'BOTTOM', 0, -6)
+			else
+				button:NudgePoint(0, 4)
+			end
+
+			i = i + 1
+			previous = button
+			button = _G['TabardFrameCustomization'..i]
 		end
 	end
 

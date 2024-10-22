@@ -7,6 +7,7 @@ local pairs, pcall, unpack = pairs, pcall, unpack
 local strsub, type, next = strsub, type, next
 local hooksecurefunc = hooksecurefunc
 local getmetatable = getmetatable
+local tonumber = tonumber
 
 local EnumerateFrames = EnumerateFrames
 local CreateFrame = CreateFrame

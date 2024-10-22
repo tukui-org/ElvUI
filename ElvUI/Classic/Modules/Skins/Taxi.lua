@@ -9,10 +9,8 @@ function S:TaxiFrame()
 	local TaxiFrame = _G.TaxiFrame
 	S:HandleFrame(TaxiFrame, true, nil, 11, -12, -32, 76)
 	_G.TaxiPortrait:Kill() -- Blizz didnt name this TaxiFramePortrait
-
 	_G.TaxiMap:PointXY(-11, -71)
 	_G.TaxiRouteMap:PointXY(-11, -71)
-
 	_G.TaxiMerchant:SetTextColor(1, 1, 1)
 
 	S:HandleCloseButton(_G.TaxiCloseButton, TaxiFrame.backdrop)

@@ -1120,7 +1120,8 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.names and next(trigger.names) then
 		for _, value in pairs(trigger.names) do
 			if value then -- only run if at least one is selected
-				local name = trigger.names[frame.unitName] or trigger.names[frame.npcID]
+				local npcID = frame.npcID and tostring(frame.npcID) or nil
+				local name = trigger.names[frame.unitName] or trigger.names[npcID]
 				if (not trigger.negativeMatch and name) or (trigger.negativeMatch and not name) then passed = true else return end
 				break -- we can execute this once on the first enabled option then kill the loop
 			end
