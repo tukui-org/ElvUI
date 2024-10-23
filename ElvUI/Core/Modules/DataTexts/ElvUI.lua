@@ -42,7 +42,7 @@ local function OnClick(_, button)
 		ReloadUI()
 	elseif button == 'LeftButton' then
 		if shiftDown then
-			E:ToggleMoverMode()
+			E:ToggleMoveMode()
 		else
 			E:ToggleOptions()
 		end

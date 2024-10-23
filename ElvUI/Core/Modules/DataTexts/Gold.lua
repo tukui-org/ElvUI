@@ -194,7 +194,7 @@ local function OnEnter()
 	sort(myGold, sortFunction)
 
 	local total, limit = #myGold, db.maxLimit
-	local useLimit = limit > 0
+	local useLimit = limit and limit > 0
 	for i, g in ipairs(myGold) do
 		if useLimit and i > limit then
 			local count = total - limit
