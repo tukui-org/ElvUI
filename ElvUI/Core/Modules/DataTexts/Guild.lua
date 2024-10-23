@@ -231,6 +231,9 @@ local function OnEnter(_, _, noUpdate)
 
 	local shiftDown = IsShiftKeyDown()
 	local total, _, online = GetNumGuildMembers()
+	if not total then total = 0 end
+	if not online then online = 0 end
+
 	if #guildTable == 0 then BuildGuildTable() end
 
 	SortGuildTable(shiftDown)
@@ -259,10 +262,10 @@ local function OnEnter(_, _, noUpdate)
 
 	DT.tooltip:AddLine(' ')
 	local limit = db.maxLimit
-	local useLimit = limit > 0
+	local useLimit = limit and limit > 0
 	for i, info in ipairs(guildTable) do
 		-- if more then guild members are online, we don't Show any more, but inform user there are more
-		if online and useLimit and i > limit then
+		if useLimit and i > limit then
 			local count = online - limit
 			if count > 1 then
 				DT.tooltip:AddLine(format(moreMembersOnlineString, count), ttsubh.r, ttsubh.g, ttsubh.b)
