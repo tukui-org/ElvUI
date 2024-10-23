@@ -446,6 +446,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCloseButton(currencyTransfer.CloseButton)
 	S:HandleDropDownBox(currencyTransfer.SourceSelector.Dropdown)
 	S:HandleEditBox(currencyTransfer.AmountSelector.InputBox)
+	S:HandleButton(currencyTransfer.AmountSelector.MaxQuantityButton)
 	S:HandleButton(currencyTransfer.ConfirmButton)
 	S:HandleButton(currencyTransfer.CancelButton)
 
