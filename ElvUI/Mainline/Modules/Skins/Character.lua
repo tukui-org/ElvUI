@@ -428,8 +428,14 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:SetTemplate('Transparent')
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
 
-	S:HandlePortraitFrame(_G.CurrencyTransferLog)
+	S:HandleDropDownBox(_G.TokenFrame.filterDropdown)
+	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton)
 
+	_G.TokenFrame.CurrencyTransferLogToggleButton.NormalTexture:SetTexture(E.Media.Textures.Copy)
+	_G.TokenFrame.CurrencyTransferLogToggleButton.PushedTexture:SetTexture(E.Media.Textures.Copy)
+	_G.TokenFrame.CurrencyTransferLogToggleButton.PushedTexture:SetVertexColor(unpack(E.media.rgbvaluecolor))
+
+	S:HandlePortraitFrame(_G.CurrencyTransferLog)
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckbox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
 	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
@@ -446,6 +452,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCloseButton(currencyTransfer.CloseButton)
 	S:HandleDropDownBox(currencyTransfer.SourceSelector.Dropdown)
 	S:HandleEditBox(currencyTransfer.AmountSelector.InputBox)
+	S:HandleButton(currencyTransfer.AmountSelector.MaxQuantityButton)
 	S:HandleButton(currencyTransfer.ConfirmButton)
 	S:HandleButton(currencyTransfer.CancelButton)
 
