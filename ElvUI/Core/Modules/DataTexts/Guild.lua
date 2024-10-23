@@ -262,7 +262,7 @@ local function OnEnter(_, _, noUpdate)
 	local useLimit = limit > 0
 	for i, info in ipairs(guildTable) do
 		-- if more then guild members are online, we don't Show any more, but inform user there are more
-		if useLimit and i > limit then
+		if online and useLimit and i > limit then
 			local count = online - limit
 			if count > 1 then
 				DT.tooltip:AddLine(format(moreMembersOnlineString, count), ttsubh.r, ttsubh.g, ttsubh.b)
