@@ -299,6 +299,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		local mult = bg.multiplier or BACKDROP_MULT
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
+			mult = 1 -- custom backdrop (dead)
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
