@@ -9,10 +9,14 @@ function S:Blizzard_Channels()
 
 	local ChannelFrame = _G.ChannelFrame
 	local CreateChannelPopup = _G.CreateChannelPopup
+  	local Header = CreateChannelPopup.Header
 
 	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
 	CreateChannelPopup:SetTemplate('Transparent')
+	if Header then
+		Header:StripTextures()
+	end
 
 	S:HandleButton(ChannelFrame.SettingsButton) -- using -4, 4
 	S:HandleButton(ChannelFrame.NewButton)
