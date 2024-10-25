@@ -1430,8 +1430,37 @@ function E:DBConvertDF()
 	end
 end
 
-function E:DBConvertDev()
+function E:DBConvertTWW()
 
+end
+
+function E:DBConvertDev()
+	-- tooltip item count to be more optional
+	local itemCount = E.db.tooltip.itemCount
+	if type(itemCount) == 'string' then
+		local db = E:CopyTable({}, P.tooltip.itemCount)
+		if itemCount == 'BAGS_ONLY' then
+			db.bags = true
+			db.bank = false
+		elseif itemCount == 'BANK_ONLY' then
+			db.bags = false
+			db.bank = true
+		elseif itemCount == 'BOTH' then
+			db.bags = true
+			db.bank = true
+		elseif itemCount == 'NONE' then
+			db.bags = false
+			db.bank = false
+		end
+
+		E.db.tooltip.itemCount = db
+	end
+
+	-- always convert
+	if not ElvCharacterDB.ConvertKeybindings then
+		E:ConvertActionBarKeybinds()
+		ElvCharacterDB.ConvertKeybindings = true
+	end
 end
 
 function E:UpdateDB()
@@ -1904,16 +1933,11 @@ function E:DBConversions()
 		E:DBConvertBFA()
 		E:DBConvertSL()
 		E:DBConvertDF()
+		E:DBConvertTWW()
 	end
 
 	-- development converts
 	E:DBConvertDev()
-
-	-- always convert
-	if not ElvCharacterDB.ConvertKeybindings then
-		E:ConvertActionBarKeybinds()
-		ElvCharacterDB.ConvertKeybindings = true
-	end
 end
 
 function E:ConvertActionBarKeybinds()
