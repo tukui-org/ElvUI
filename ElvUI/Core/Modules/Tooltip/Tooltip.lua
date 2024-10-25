@@ -739,22 +739,26 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			itemID = format('|cFFCA3C3C%s|r %s', _G.ID, (data and data.id) or strmatch(link, ':(%w+)'))
 		end
 
-		if TT.db.itemCount ~= 'NONE' and (not TT.db.modifierCount or modKey) then
+		if not TT.db.modifierCount or modKey then
 			local count = GetItemCount(link)
-			local bank = GetItemCount(link, true, nil, TT.db.includeReagents, TT.db.includeWarband)
-
-			if TT.db.itemCount == 'BAGS_ONLY' then
+			local itemCount = TT.db.itemCount
+			if itemCount.bags then
 				bagCount = format(IDLine, L["Bags"], count)
-			elseif TT.db.itemCount == 'BANK_ONLY' then
-				bankCount = format(IDLine, L["Bank"], bank - count)
-			elseif TT.db.itemCount == 'BOTH' then
-				bagCount = format(IDLine, L["Bags"], count)
-				bankCount = format(IDLine, L["Bank"], bank - count)
 			end
 
-			local _, _, _, _, _, _, _, stack = GetItemInfo(link)
-			if stack and stack > 1 then
-				stackSize = format(IDLine, L["Stack Size"], stack)
+			if itemCount.bank then
+				local bank = GetItemCount(link, true, nil, TT.db.includeReagents, TT.db.includeWarband)
+				local amount = bank and (bank - count)
+				if amount and amount > 0 then
+					bankCount = format(IDLine, L["Bank"], amount)
+				end
+			end
+
+			if itemCount.stack then
+				local _, _, _, _, _, _, _, stack = GetItemInfo(link)
+				if stack and stack > 1 then
+					stackSize = format(IDLine, L["Stack Size"], stack)
+				end
 			end
 		end
 	elseif modKey then
@@ -764,10 +768,18 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 		end
 	end
 
-	if itemID or bagCount or bankCount or stackSize then self:AddLine(' ') end
-	if itemID or bagCount then self:AddDoubleLine(itemID or ' ', bagCount or ' ') end
-	if bankCount then self:AddDoubleLine(' ', bankCount) end
-	if stackSize then self:AddDoubleLine(' ', stackSize) end
+	if itemID or bagCount or bankCount or stackSize then
+		self:AddLine(' ')
+		self:AddDoubleLine(itemID or ' ', bagCount or bankCount or stackSize or ' ')
+	end
+
+	if (bagCount and bankCount) then
+		self:AddDoubleLine(' ', bankCount)
+	end
+
+	if (bagCount or bankCount) and stackSize then
+		self:AddDoubleLine(' ', stackSize)
+	end
 end
 
 function TT:GameTooltip_AddQuestRewardsToTooltip(tt, questID)
