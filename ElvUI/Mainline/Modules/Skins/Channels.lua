@@ -8,15 +8,12 @@ function S:Blizzard_Channels()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.channels) then return end
 
 	local ChannelFrame = _G.ChannelFrame
-	local CreateChannelPopup = _G.CreateChannelPopup
-  	local Header = CreateChannelPopup.Header
+	local CreateChannelPopup = _G.CreateChannelPopup 
 
 	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
 	CreateChannelPopup:SetTemplate('Transparent')
-	if Header then
-		Header:StripTextures()
-	end
+	CreateChannelPopup.Header:StripTextures()
 
 	S:HandleButton(ChannelFrame.SettingsButton) -- using -4, 4
 	S:HandleButton(ChannelFrame.NewButton)
