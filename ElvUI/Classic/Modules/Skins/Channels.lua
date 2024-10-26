@@ -5,8 +5,11 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function ButtonHeader_Update(header)
-	header:SetTemplate('Transparent')
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	header.HighlightTexture:SetColorTexture(r, g, b, 0.25)
+	header.HighlightTexture:SetInside()
 	header.NormalTexture:SetTexture()
+	header:SetTemplate('Transparent')
 end
 
 function S:Blizzard_Channels()
