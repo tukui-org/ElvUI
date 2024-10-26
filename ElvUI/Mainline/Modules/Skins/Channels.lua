@@ -13,6 +13,7 @@ function S:Blizzard_Channels()
 	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
 	CreateChannelPopup:SetTemplate('Transparent')
+	CreateChannelPopup.Header:StripTextures()
 
 	S:HandleButton(ChannelFrame.SettingsButton) -- using -4, 4
 	S:HandleButton(ChannelFrame.NewButton)
