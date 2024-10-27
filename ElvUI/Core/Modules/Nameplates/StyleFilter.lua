@@ -1435,8 +1435,8 @@ function NP:StyleFilterConfigure()
 
 	if NP.db.filters then
 		for filterName, filter in pairs(E.global.nameplates.filters) do
-			local t = filter.triggers
-			if t and NP.db.filters[filterName] and NP.db.filters[filterName].triggers and NP.db.filters[filterName].triggers.enable then
+			local t, db = filter.triggers, NP.db.filters[filterName]
+			if t and db and db.triggers and db.triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
