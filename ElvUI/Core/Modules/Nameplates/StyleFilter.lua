@@ -1032,12 +1032,12 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	do
-		local instanceName, instanceType, difficultyID, instanceID, _
 		local which, location = trigger.instanceType, trigger.location
 		local activeType = which and (which.none or which.scenario or which.party or which.raid or which.arena or which.pvp)
 		local activeID = location and location.instanceIDEnabled
 
 		-- Instance Type
+		local instanceName, instanceType, difficultyID, instanceID, _
 		if activeType or activeID then
 			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
 		end
@@ -1057,7 +1057,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Location
-		if activeID or location and (location.mapIDEnabled or location.zoneNamesEnabled or location.subZoneNamesEnabled) then
+		if activeID or (location and (location.mapIDEnabled or location.zoneNamesEnabled or location.subZoneNamesEnabled)) then
 			if activeID and next(location.instanceIDs) then
 				if (instanceID and location.instanceIDs[tostring(instanceID)]) or location.instanceIDs[instanceName] then passed = true else return end
 			end
