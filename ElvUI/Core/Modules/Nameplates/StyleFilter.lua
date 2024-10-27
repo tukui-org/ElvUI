@@ -964,7 +964,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Unit Role
-	if E.Retail and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
+	if E.Retail and trigger.unitRole and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
 		local role = UnitGroupRolesAssigned(frame.unit)
 		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
 	end
@@ -987,17 +987,17 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Classification
-	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
+	if trigger.classification and (trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus) then
 		if trigger.classification[frame.classification] then passed = true else return end
 	end
 
 	-- Faction
-	if trigger.faction.Alliance or trigger.faction.Horde or trigger.faction.Neutral then
+	if trigger.faction and (trigger.faction.Alliance or trigger.faction.Horde or trigger.faction.Neutral) then
 		if trigger.faction[frame.battleFaction] then passed = true else return end
 	end
 
 	-- My Role
-	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
+	if trigger.role and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
 		if trigger.role[NP.TriggerConditions.roles[E.myrole]] then passed = true else return end
 	end
 
@@ -1027,22 +1027,23 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Raid Target
-	if trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull then
+	if trigger.raidTarget and (trigger.raidTarget.star or trigger.raidTarget.circle or trigger.raidTarget.diamond or trigger.raidTarget.triangle or trigger.raidTarget.moon or trigger.raidTarget.square or trigger.raidTarget.cross or trigger.raidTarget.skull) then
 		if trigger.raidTarget[NP.TriggerConditions.raidTargets[frame.RaidTargetIndex]] then passed = true else return end
 	end
 
 	do
-		local instanceName, instanceType, difficultyID, instanceID, _
-		local activeType = trigger.instanceType.none or trigger.instanceType.scenario or trigger.instanceType.party or trigger.instanceType.raid or trigger.instanceType.arena or trigger.instanceType.pvp
-		local activeID = trigger.location.instanceIDEnabled
+		local which, location = trigger.instanceType, trigger.location
+		local activeType = which and (which.none or which.scenario or which.party or which.raid or which.arena or which.pvp)
+		local activeID = location and location.instanceIDEnabled
 
 		-- Instance Type
+		local instanceName, instanceType, difficultyID, instanceID, _
 		if activeType or activeID then
 			instanceName, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
 		end
 
 		if activeType then
-			if trigger.instanceType[instanceType] then
+			if which[instanceType] then
 				passed = true
 
 				-- Instance Difficulty
@@ -1056,18 +1057,18 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 
 		-- Location
-		if activeID or trigger.location.mapIDEnabled or trigger.location.zoneNamesEnabled or trigger.location.subZoneNamesEnabled then
-			if activeID and next(trigger.location.instanceIDs) then
-				if (instanceID and trigger.location.instanceIDs[tostring(instanceID)]) or trigger.location.instanceIDs[instanceName] then passed = true else return end
+		if activeID or (location and (location.mapIDEnabled or location.zoneNamesEnabled or location.subZoneNamesEnabled)) then
+			if activeID and next(location.instanceIDs) then
+				if (instanceID and location.instanceIDs[tostring(instanceID)]) or location.instanceIDs[instanceName] then passed = true else return end
 			end
-			if trigger.location.mapIDEnabled and next(trigger.location.mapIDs) then
-				if (E.MapInfo.mapID and trigger.location.mapIDs[tostring(E.MapInfo.mapID)]) or trigger.location.mapIDs[E.MapInfo.name] then passed = true else return end
+			if location.mapIDEnabled and next(location.mapIDs) then
+				if (E.MapInfo.mapID and location.mapIDs[tostring(E.MapInfo.mapID)]) or location.mapIDs[E.MapInfo.name] then passed = true else return end
 			end
-			if trigger.location.zoneNamesEnabled and next(trigger.location.zoneNames) then
-				if trigger.location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
+			if location.zoneNamesEnabled and next(location.zoneNames) then
+				if location.zoneNames[E.MapInfo.realZoneText] then passed = true else return end
 			end
-			if trigger.location.subZoneNamesEnabled and next(trigger.location.subZoneNames) then
-				if trigger.location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
+			if location.subZoneNamesEnabled and next(location.subZoneNames) then
+				if location.subZoneNames[E.MapInfo.subZoneText] then passed = true else return end
 			end
 		end
 	end
@@ -1434,8 +1435,8 @@ function NP:StyleFilterConfigure()
 
 	if NP.db.filters then
 		for filterName, filter in pairs(E.global.nameplates.filters) do
-			local t = filter.triggers
-			if t and NP.db.filters[filterName] and NP.db.filters[filterName].triggers and NP.db.filters[filterName].triggers.enable then
+			local t, db = filter.triggers, NP.db.filters[filterName]
+			if t and db and db.triggers and db.triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
@@ -1517,7 +1518,7 @@ function NP:StyleFilterConfigure()
 					events.UNIT_FLAGS = 1
 				end
 
-				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or t.unitRole then
+				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or (E.Retail and t.unitRole and (t.unitRole.tank or t.unitRole.healer or t.unitRole.damager)) then
 					events.GROUP_ROSTER_UPDATE = 1
 				end
 
