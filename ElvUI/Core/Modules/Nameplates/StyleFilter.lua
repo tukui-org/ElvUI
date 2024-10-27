@@ -1518,7 +1518,7 @@ function NP:StyleFilterConfigure()
 					events.UNIT_FLAGS = 1
 				end
 
-				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or t.unitRole then
+				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or (E.Retail and t.unitRole and (t.unitRole.tank or t.unitRole.healer or t.unitRole.damager)) then
 					events.GROUP_ROSTER_UPDATE = 1
 				end
 
