@@ -821,6 +821,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[272834] = List(), -- Viscous Slobber
 		[257169] = List(), -- Terrifying Roar
 		[272713] = List(), -- Crushing Slam
+		[257459] = List(), -- On the Hook
+		[463182] = List(), -- Fiery Ricochet
 	-- Grim Batol
 		[449885] = List(), -- Shadow Gale 1
 		[461513] = List(), -- Shadow Gale 2
