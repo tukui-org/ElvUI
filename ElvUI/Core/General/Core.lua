@@ -1431,10 +1431,6 @@ function E:DBConvertDF()
 end
 
 function E:DBConvertTWW()
-
-end
-
-function E:DBConvertDev()
 	-- tooltip item count to be more optional
 	local itemCount = E.db.tooltip.itemCount
 	if type(itemCount) == 'string' then
@@ -1455,8 +1451,9 @@ function E:DBConvertDev()
 
 		E.db.tooltip.itemCount = db
 	end
+end
 
-	-- always convert
+function E:DBConvertDev()
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
@@ -1936,7 +1933,7 @@ function E:DBConversions()
 		E:DBConvertTWW()
 	end
 
-	-- development converts
+	-- development convert always
 	E:DBConvertDev()
 end
 

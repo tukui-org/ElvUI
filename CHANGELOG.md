@@ -1,3 +1,14 @@
+### Version 13.80 [ October 29th 2024 ]
+*   Currency Transfer skin updated.
+*   Blacklisted Auras: Flight Style, Call of the Elder Druid, DK Blood Draw, WoW's Anniversary, and Warband Mentored Leveling.
+*   Shift + Left click ElvUI Menu Datatext to toggle mover mode actually works now.
+*   Unitframe Health Dead Backdrop using multiplier when it shouldn't.
+*   Guild Datatext error when online members is invalid.
+*   Guild Datatext will now show which faction members are on.
+*   Tooltip option to hide Stack Size on items.
+*   Stylefilter error when Importing Profiles, also reduced wasteful execution of filters.
+*   Simplify AddonList skin, which should make it more clear what addons are actually enabled.
+
 ### Version 13.79 [ October 22nd 2024 ]
 *   Unitframe range issue with Mage resolved.
 *   Reorganized Aura Filter priority list for all Unitframes and merged PlayerBuffs filter into Whitelist.
