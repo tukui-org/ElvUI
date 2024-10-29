@@ -246,10 +246,10 @@ local function HeirloomsJournalLayoutCurrentPage()
 end
 
 local function SkinMountFrame()
-	S:HandleButton(_G.MountJournalFilterButton)
+	S:HandleButton(_G.MountJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-	_G.MountJournalFilterButton:ClearAllPoints()
-	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
+	_G.MountJournal.FilterDropdown:ClearAllPoints()
+	_G.MountJournal.FilterDropdown:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
@@ -280,10 +280,10 @@ local function SkinPetFrame()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
-	S:HandleButton(_G.PetJournalFilterButton)
-	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
-	_G.PetJournalFilterButton:ClearAllPoints()
-	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
+	S:HandleButton(_G.PetJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	_G.PetJournal.FilterDropdown:Height(E.PixelMode and 22 or 24)
+	_G.PetJournal.FilterDropdown:ClearAllPoints()
+	_G.PetJournal.FilterDropdown:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
 	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
@@ -297,8 +297,12 @@ end
 local function SkinToyFrame()
 	local ToyBox = _G.ToyBox
 	S:HandleEditBox(ToyBox.searchBox)
-	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
+
+	S:HandleButton(_G.ToyBox.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	_G.ToyBox.FilterDropdown:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
+	S:HandleCloseButton(_G.ToyBox.FilterDropdown.ResetButton)
+	_G.ToyBox.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.ToyBox.FilterDropdown.ResetButton:Point('CENTER', _G.ToyBox.FilterDropdown, 'TOPRIGHT', 0, 0)
 
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
@@ -336,9 +340,12 @@ local function SkinHeirloomFrame()
 
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
-	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
+	S:HandleDropDownBox(_G.HeirloomsJournal.ClassDropdown)
 
-	S:HandleButton(_G.HeirloomsJournal.FilterButton)
+	S:HandleButton(_G.HeirloomsJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	S:HandleCloseButton(_G.HeirloomsJournal.FilterDropdown.ResetButton)
+	_G.HeirloomsJournal.FilterDropdown.ResetButton:ClearAllPoints()
+	_G.HeirloomsJournal.FilterDropdown.ResetButton:Point('CENTER', _G.HeirloomsJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
 
 	HeirloomsJournal.progressBar.border:Hide()
 	HeirloomsJournal.progressBar:DisableDrawLayer('BACKGROUND')
@@ -363,9 +370,12 @@ local function SkinTransmogFrames()
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
-	S:HandleButton(WardrobeCollectionFrame.FilterButton)
+	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
-	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
+	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
+	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
+	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ItemsCollectionFrame.WeaponDropdown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
@@ -444,6 +454,10 @@ local function SkinTransmogFrames()
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
+	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 220)
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
+	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]

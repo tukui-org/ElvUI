@@ -295,8 +295,8 @@ function S:Blizzard_GlyphUI()
 	S:HandleEditBox(_G.GlyphFrameSearchBox)
 	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
 
-	S:HandleDropDownBox(_G.GlyphFrameFilterDropDown, 210, 'Transparent')
-	_G.GlyphFrameFilterDropDown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', -22, -3)
+	S:HandleDropDownBox(_G.GlyphFrame.FilterDropdown, 180, 'Transparent')
+	_G.GlyphFrame.FilterDropdown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', 0, -3)
 
 	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local frame = _G['GlyphFrameGlyph'..i]

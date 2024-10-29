@@ -209,7 +209,10 @@ function S:Blizzard_EncounterJournal()
 	local InstanceSelect = EJ.instanceSelect
 	InstanceSelect.bg:Kill()
 
-	S:HandleDropDownBox(InstanceSelect.tierDropDown)
+	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfo.LootContainer.filter, 100)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfo.LootContainer.slotFilter, 100)
+	S:HandleDropDownBox(EncounterJournalEncounterFrameInfoDifficulty, 110)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs

@@ -1141,7 +1141,7 @@ function S:HandleDropDownBox(frame, width, template, old)
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	end
 
-	if not E.Cata and not old then
+	if not old then
 		if frame.Arrow then
 			frame.Arrow:SetAlpha(0)
 		end

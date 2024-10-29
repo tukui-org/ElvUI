@@ -151,9 +151,12 @@ local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:SetTemplate('Transparent')
+
+		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
 	end
 
 	local TokenFrameContainer = _G.TokenFrameContainer
@@ -477,14 +480,14 @@ function S:CharacterFrame()
 
 	_G.ReputationDetailFrame:StripTextures()
 	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', -31, -12)
+	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 1, 0)
+
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
 
 	S:HandleCloseButton(_G.ReputationDetailCloseButton)
 	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
-
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
@@ -497,9 +500,7 @@ function S:CharacterFrame()
 		end
 	end
 
-	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
-
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)

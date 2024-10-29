@@ -8,6 +8,7 @@ local select = select
 local bitband = bit.band
 
 local hooksecurefunc = hooksecurefunc
+local IsInGuild = IsInGuild
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 
@@ -273,9 +274,9 @@ function S:Blizzard_AchievementUI()
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
+	S:HandleDropDownBox(_G.AchievementFrameFilterDropdown)
+	_G.AchievementFrameFilterDropdown:ClearAllPoints()
+	_G.AchievementFrameFilterDropdown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
 
 	-- ScrollBars
 	local scrollBars = {
@@ -302,6 +303,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameTab1:ClearAllPoints()
 	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -10, 0)
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.AchievementFrameTab3:Point('TOPLEFT', IsInGuild() and _G.AchievementFrameTab2 or _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 
