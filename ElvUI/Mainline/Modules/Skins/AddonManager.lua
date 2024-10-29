@@ -5,7 +5,6 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, addonIndex)
@@ -13,72 +12,34 @@ local function HandleButton(entry, addonIndex)
 		S:HandleCheckBox(entry.Enabled)
 		S:HandleButton(entry.LoadAddonButton)
 
+		entry.Title:SetFontObject('ElvUIFontNormal')
+		entry.Status:SetFontObject('ElvUIFontSmall')
+		entry.Reload:SetFontObject('ElvUIFontSmall')
+		entry.Reload:SetTextColor(1.0, 0.3, 0.3)
+		entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
+
 		entry.IsSkinned = true
 	end
 
-	local checkall -- Get the character from the current list (nil is all characters)
-	local character = UIDropDownMenu_GetSelectedValue(_G.AddonList.Dropdown)
-	if character == true then
-		character = nil
-	else
-		checkall = E:GetAddOnEnableState(addonIndex)
-	end
-
-	entry.Title:SetFontObject('ElvUIFontNormal')
-	entry.Status:SetFontObject('ElvUIFontSmall')
-	entry.Reload:SetFontObject('ElvUIFontSmall')
-	entry.Reload:SetTextColor(1.0, 0.3, 0.3)
-	entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
-
-	local checkstate = E:GetAddOnEnableState(addonIndex, character)
-	local enabledForSome = not character and checkstate == 1
-	local enabled = checkstate > 0
-	local disabled = not enabled or enabledForSome
-
-	if disabled then
-		entry.Status:SetTextColor(0.4, 0.4, 0.4)
-	else
+	local checkstate = E:GetAddOnEnableState(addonIndex)
+	if checkstate == 2 then
 		entry.Status:SetTextColor(0.7, 0.7, 0.7)
-	end
-
-	local name, title, _, loadable, reason = GetAddOnInfo(addonIndex)
-	if disabled or reason == 'DEP_DISABLED' then
-		entry.Title:SetText(E:StripString(title or name, true))
-	end
-
-	if enabledForSome then
-		entry.Title:SetTextColor(0.5, 0.5, 0.5)
-	elseif enabled and (loadable or reason == 'DEP_DEMAND_LOADED' or reason == 'DEMAND_LOADED') then
-		entry.Title:SetTextColor(0.9, 0.9, 0.9)
-	elseif enabled and reason ~= 'DEP_DISABLED' then
-		entry.Title:SetTextColor(1.0, 0.2, 0.2)
 	else
-		entry.Title:SetTextColor(0.3, 0.3, 0.3)
+		entry.Status:SetTextColor(0.4, 0.4, 0.4)
 	end
 
+	local _, _, _, _, reason = GetAddOnInfo(addonIndex)
 	local checktex = entry.Enabled:GetCheckedTexture()
-	checktex.SetVertexColor = nil
-	checktex.SetDesaturated = nil
-
-	if not enabled and checkall == 1 then
-		checktex:SetVertexColor(0.3, 0.3, 0.3)
-		checktex:SetDesaturated(true)
-		checktex:Show()
-	elseif not checkstate or checkstate == 0 then
-		checktex:Hide()
-	elseif checkstate == 1 or reason == 'DEP_DISABLED' then
+	if reason == 'DEP_DISABLED' then
 		checktex:SetVertexColor(0.6, 0.6, 0.6)
 		checktex:SetDesaturated(true)
-		checktex:Show()
+	elseif checkstate == 1 then
+		checktex:SetVertexColor(1, 0.8, 0.1)
+		checktex:SetDesaturated(false)
 	elseif checkstate == 2 then
 		checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		checktex:SetDesaturated(false)
-		checktex:Show()
 	end
-
-	-- TriStateCheckbox_SetState interferes (checktex all share the same name)
-	checktex.SetVertexColor = E.noop
-	checktex.SetDesaturated = E.noop
 end
 
 function S:AddonList()

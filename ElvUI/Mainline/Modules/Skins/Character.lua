@@ -429,7 +429,7 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 3, -28)
 
 	S:HandleDropDownBox(_G.TokenFrame.filterDropdown)
-	S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton)
+	--S:HandleButton(_G.TokenFrame.CurrencyTransferLogToggleButton) -- No no no, this taints
 
 	_G.TokenFrame.CurrencyTransferLogToggleButton.NormalTexture:SetTexture(E.Media.Textures.Copy)
 	_G.TokenFrame.CurrencyTransferLogToggleButton.PushedTexture:SetTexture(E.Media.Textures.Copy)
