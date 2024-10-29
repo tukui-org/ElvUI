@@ -356,6 +356,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[404464]	= List(), -- Flight Style: Skyriding
 		[404468]	= List(), -- Flight Style: Steady
 		[418990]	= List(), -- Wicker Men's Curse
+		[426790]	= List(), -- Call of the Elder Druid
 		[430191]	= List(), -- Warband Mentored Leveling
 		[455020]	= List(), -- WoW's Anniversary
 	},
