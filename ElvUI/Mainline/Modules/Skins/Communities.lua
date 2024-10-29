@@ -586,6 +586,7 @@ function S:Blizzard_Communities()
 	ApplicantList:CreateBackdrop('Transparent')
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
+	S:HandleTrimScrollBar(ApplicantList.ScrollBar)
 
 	hooksecurefunc(ApplicantList, 'BuildList', function(list)
 		local columnDisplay = list.ColumnDisplay

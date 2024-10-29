@@ -33,6 +33,10 @@ local CLUBTYPE_GUILD = Enum.ClubType.Guild
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
 
+local FACTION_ATLAS = '|A:communities-icon-faction-%s:%s:%s:0:0|a'
+local FACTION_ALLIANCE = format(FACTION_ATLAS, 'alliance', 13, 13)
+local FACTION_HORDE = format(FACTION_ATLAS, 'horde', 13, 13)
+
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString, db = ''
@@ -41,8 +45,8 @@ local guildInfoString = '%s'
 local guildInfoString2 = GUILD..': %d/%d'
 local guildMotDString = '%s |cffaaaaaa- |cffffffff%s'
 local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r'
-local levelNameStatusString = '|cff%02x%02x%02x%d|r %s%s%s %s'
-local nameRankString = '%s |cff999999-|cffffffff %s'
+local levelNameStatusString = '%s |cff%02x%02x%02x%d|r %s%s%s %s'
+local nameRankString = '%s %s |cff999999-|cffffffff %s'
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFFFF%s/%s (%s%%)'
 local moreMembersOnlineString = strjoin('', '+%d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
@@ -126,8 +130,7 @@ local function BuildGuildTable()
 
 		if connected or isMobile then
 			local clubMember = clubTable[guid]
-
-			guildTable[#guildTable + 1] = {
+			local data = {
 				name = E:StripMyRealm(name),	--1
 				rank = rank,					--2
 				level = level,					--3
@@ -139,9 +142,15 @@ local function BuildGuildTable()
 				class = className,				--9
 				rankIndex = rankIndex,			--10
 				isMobile = isMobile,			--11
-				guid = guid,					--12
-				timerunningID = clubMember and clubMember.timerunningSeasonID
+				guid = guid						--12
 			}
+
+			if clubMember then
+				data.timerunningID = clubMember.timerunningSeasonID
+				data.faction = clubMember.faction
+			end
+
+			guildTable[#guildTable + 1] = data
 		end
 	end
 end
@@ -279,12 +288,13 @@ local function OnEnter(_, _, noUpdate)
 		local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 		if not classc then classc = levelc end
 
+		local faction = info.faction == 1 and FACTION_ALLIANCE or info.faction == 0 and FACTION_HORDE or ''
 		if shiftDown then
-			DT.tooltip:AddDoubleLine(format(nameRankString, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
+			DT.tooltip:AddDoubleLine(format(nameRankString, faction, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
 			if info.note ~= '' then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info.officerNote ~= '' then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,'([^%-]+).*'), inGroup(info.name), info.status, info.timerunningID and TIMERUNNING_SMALL or ''), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, faction, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,'([^%-]+).*'), inGroup(info.name), info.status, info.timerunningID and TIMERUNNING_SMALL or ''), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 

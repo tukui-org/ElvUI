@@ -347,6 +347,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[328891]	= List(), -- A Gilded Perspective
 		[348443]	= List(), -- Experience Eliminated
 		[374037]	= List(), -- Overwhelming Rage
+		[374609]	= List(), -- Blood Draw
 		[383600]	= List(), -- Surrounding Storm (Strunraan)
 		[390106]	= List(), -- Riding Along
 		[390435]	= List(), -- Exhaustion (Evoker lust debuff)
