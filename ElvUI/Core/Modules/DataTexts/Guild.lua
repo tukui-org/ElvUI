@@ -33,7 +33,7 @@ local CLUBTYPE_GUILD = Enum.ClubType.Guild
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
 
-local FACTION_ATLAS = '|A:communities-icon-faction-%s:%s:%s:0:0|a'
+local FACTION_ATLAS = '|A:communities-icon-faction-%s:%s:%s:0:0|a '
 local FACTION_ALLIANCE = format(FACTION_ATLAS, 'alliance', 13, 13)
 local FACTION_HORDE = format(FACTION_ATLAS, 'horde', 13, 13)
 
@@ -45,8 +45,8 @@ local guildInfoString = '%s'
 local guildInfoString2 = GUILD..': %d/%d'
 local guildMotDString = '%s |cffaaaaaa- |cffffffff%s'
 local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r'
-local levelNameStatusString = '%s |cff%02x%02x%02x%d|r %s%s%s %s'
-local nameRankString = '%s %s |cff999999-|cffffffff %s'
+local levelNameStatusString = '%s|cff%02x%02x%02x%d|r %s%s%s %s'
+local nameRankString = '%s %s|cff999999-|cffffffff %s'
 local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFFFF%s/%s (%s%%)'
 local moreMembersOnlineString = strjoin('', '+%d ', _G.FRIENDS_LIST_ONLINE, '...')
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
