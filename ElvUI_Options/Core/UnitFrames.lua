@@ -1172,7 +1172,7 @@ Colors.healthGroup.args.healthBreak.args.high = ACH:Range(L["High"], nil, 2, { m
 Colors.healthGroup.args.healthBreak.args.low = ACH:Range(L["Low"], nil, 3, { min = 0, max = 0.5, step = 0.01, isPercent = true })
 Colors.healthGroup.args.healthBreak.args.onlyLow = ACH:Toggle(L["Only Low"], nil, 4)
 Colors.healthGroup.args.healthBreak.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 5)
-Colors.healthGroup.args.spacer = ACH:Spacer(6, 'full')
+Colors.healthGroup.args.healthBreak.args.spacer = ACH:Spacer(6, 'full')
 Colors.healthGroup.args.healthBreak.args.good = ACH:Color(L["Good"], nil, 7)
 Colors.healthGroup.args.healthBreak.args.neutral = ACH:Color(L["Neutral"], nil, 8)
 Colors.healthGroup.args.healthBreak.args.bad = ACH:Color(L["Bad"], nil, 9)
