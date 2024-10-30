@@ -1767,6 +1767,7 @@ P.unitframe = {
 			good = { r = 0, g = 1, b = 0 },
 			neutral = { r = 1, g = 1, b = 0 },
 			bad = { r = 1, g = 0, b = 0 },
+			colorBackdrop = 0,
 		},
 		--healththreat = false,
 		healthselection = false,

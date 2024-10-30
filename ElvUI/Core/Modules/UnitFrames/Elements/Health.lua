@@ -255,6 +255,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local isTapped = UnitIsTapDenied(unit)
 	local isDeadOrGhost = UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
+	local usingHealthBreakBg
 
 	local color -- main bar
 	if not b then
@@ -284,6 +285,10 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 				elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
 					color = colors.healthBreak.neutral
 				end
+
+				if color and healthBreak.colorBackdrop then
+					usingHealthBreakBg = 1
+				end
 			end
 		end
 	end
@@ -297,9 +302,14 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local bg, bgc = self.bg
 	if bg then
 		local mult = bg.multiplier or BACKDROP_MULT
+
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 			mult = 1 -- custom backdrop (dead)
+		elseif usingHealthBreakBg then
+			bgc = color
+			-- is mult = 1 required?
+			mult = 1 -- custom backdrop
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
