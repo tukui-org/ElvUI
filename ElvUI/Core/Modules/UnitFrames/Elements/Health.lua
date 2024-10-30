@@ -268,7 +268,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		end
 	end
 
-	local newr, newg, newb
+	local newr, newg, newb, healthbreakBackdrop
 	if not color then -- dont need to process this when its hostile
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
@@ -283,6 +283,10 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 					color = healthBreak.good
 				elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
 					color = colors.healthBreak.neutral
+				end
+
+				if color and healthBreak.colorBackdrop then
+					healthbreakBackdrop = true
 				end
 			end
 		end
@@ -300,6 +304,8 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 			mult = 1 -- custom backdrop (dead)
+		elseif healthbreakBackdrop then
+			bgc = color
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)

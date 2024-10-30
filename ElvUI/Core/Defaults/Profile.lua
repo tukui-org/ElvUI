@@ -1764,6 +1764,7 @@ P.unitframe = {
 			high = 0.75,
 			low = 0.3,
 			onlyLow = false,
+			colorBackdrop = false,
 			good = { r = 0, g = 1, b = 0 },
 			neutral = { r = 1, g = 1, b = 0 },
 			bad = { r = 1, g = 0, b = 0 },
