@@ -98,7 +98,7 @@ function E:ToggleMoveMode(which)
 
 		E.MoverPopupWindow:Show()
 
-		if not E.Retail then
+		if E.Classic then
 			_G.UIDropDownMenu_SetSelectedValue(E.MoverPopupDropdown, strupper(which))
 		end
 
@@ -219,18 +219,7 @@ do
 	end
 
 	function E:ConfigMode_Initialize(root)
-		if E.Retail then
-			root:SetTag('ELVUI_MOVER_LAYOUT')
-
-			for _, configMode in ipairs(E.ConfigModeLayouts) do
-				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
-			end
-
-			--[[if self.menu then -- 11.0 this doesnt work...
-				self.menu:SetFrameStrata('DIALOG')
-				self.menu:SetFrameLevel(1200)
-			end]]
-		else
+		if E.Classic then
 			local info = _G.UIDropDownMenu_CreateInfo()
 			info.func = E.ConfigMode_OnClick
 
@@ -241,6 +230,12 @@ do
 			end
 
 			_G.UIDropDownMenu_SetSelectedValue(E.MoverPopupDropdown, E.MoverPopupDropdown.selectedValue or 'ALL')
+		else
+			root:SetTag('ELVUI_MOVER_LAYOUT')
+
+			for _, configMode in ipairs(E.ConfigModeLayouts) do
+				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
+			end
 		end
 	end
 end
@@ -412,7 +407,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	local dropDown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', f:GetName()..'DropDown', f, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+	local dropDown = CreateFrame(E.Classic and 'Frame' or 'DropdownButton', f:GetName()..'DropDown', f, E.Classic and 'UIDropDownMenuTemplate' or 'WowStyle1DropdownTemplate')
 	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 2, 0)
 	S:HandleDropDownBox(dropDown, 160)
 
@@ -425,10 +420,10 @@ function E:CreateMoverPopup()
 
 	f.dropDown = dropDown
 
-	if E.Retail then
-		dropDown:SetupMenu(E.ConfigMode_Initialize)
-	else
+	if E.Classic then
 		_G.UIDropDownMenu_Initialize(dropDown, E.ConfigMode_Initialize)
+	else
+		dropDown:SetupMenu(E.ConfigMode_Initialize)
 	end
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
