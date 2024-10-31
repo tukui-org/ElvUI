@@ -274,19 +274,23 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 			elseif healthBreak and healthBreak.enabled then
-				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
-				local onlyLow = healthBreak.onlyLow
+				if healthBreak.onlyFriendly and not UnitIsFriend("player", unit) then
+					-- do nothing if we have onlyFriendly and we are not friendly >:(
+				else 
+					local breakPoint = self.max > 0 and (self.cur / self.max) or 1
+					local onlyLow = healthBreak.onlyLow
 
-				if breakPoint <= healthBreak.low then
-					color = healthBreak.bad
-				elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
-					color = healthBreak.good
-				elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
-					color = colors.healthBreak.neutral
-				end
+					if breakPoint <= healthBreak.low then
+						color = healthBreak.bad
+					elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
+						color = healthBreak.good
+					elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
+						color = colors.healthBreak.neutral
+					end
 
-				if color and healthBreak.colorBackdrop then
-					healthbreakBackdrop = true
+					if color and healthBreak.colorBackdrop then
+						healthbreakBackdrop = true
+					end
 				end
 			end
 		end
@@ -306,6 +310,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			mult = 1 -- custom backdrop (dead)
 		elseif healthbreakBackdrop then
 			bgc = color
+			mult = healthBreak.customMult
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
