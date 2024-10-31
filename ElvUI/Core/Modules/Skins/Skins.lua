@@ -474,13 +474,15 @@ do -- WIM replaces Blizzard globals we need to rehook
 
 		for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
 			local indexName = level..'Button'..i
-			local name = prefix..indexName
 
+			local name = prefix..indexName
 			local button = _G[name]
 			if not button then -- fallback to blizzards
 				name = 'DropDownList'..indexName
 				button = _G[name]
 			end
+
+			if not button then return end -- bail out
 
 			local highlight = _G[name..'Highlight']
 			if highlight then
