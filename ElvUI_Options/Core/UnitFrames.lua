@@ -1174,7 +1174,7 @@ Colors.healthGroup.args.healthBreak.args.onlyLow = ACH:Toggle(L["Only Low"], nil
 Colors.healthGroup.args.healthBreak.args.onlyFriendly = ACH:Toggle(L["Only Friendly"], nil, 5)
 Colors.healthGroup.args.healthBreak.args.spacer = ACH:Spacer(6, 'full')
 Colors.healthGroup.args.healthBreak.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 7)
-Colors.healthGroup.args.healthBreak.args.customMult = ACH:Range(L["Backdrop Multiplier"], L["Use the custom backdrop color instead of a multiple of the main color. Default [0.35]"], 8, { min = 0, softMax = 0.75, max = 1, step = 0.01 }, nil, nil, nil)
+Colors.healthGroup.args.healthBreak.args.customMult = ACH:Range(L["Backdrop Multiplier"], L["Use the custom backdrop color instead of a multiple of the main color. Default [0.35]"], 8, { min = 0, softMax = 0.75, max = 1, step = 0.01 }, nil, nil, nil, function() return not E.db.unitframe.colors.healthBreak.colorBackdrop end)
 Colors.healthGroup.args.healthBreak.args.spacer2 = ACH:Spacer(9, 'full')
 Colors.healthGroup.args.healthBreak.args.good = ACH:Color(L["Good"], nil, 10)
 Colors.healthGroup.args.healthBreak.args.neutral = ACH:Color(L["Neutral"], nil, 11)
