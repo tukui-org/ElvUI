@@ -763,6 +763,14 @@ function CH:UpdateEditboxFont(chatFrame)
 	end
 end
 
+function CH:PositionButtonFrame(chat)
+	if not chat.buttonFrame then return end
+
+	chat.buttonFrame:SetScale(0.00001)
+	chat.buttonFrame:ClearAllPoints()
+	chat.buttonFrame:SetPoint('TOP', chat, 'BOTTOM', 0, -99999)
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
@@ -845,18 +853,13 @@ function CH:StyleChat(frame)
 	end
 
 	-- stuff to hide
+	CH:PositionButtonFrame(frame)
+
 	local scrollBar = frame.ScrollBar
 	if scrollBar then scrollBar:Kill() end
 
 	local scrollToBottom = frame.ScrollToBottomButton
 	if scrollToBottom then scrollToBottom:Kill() end
-
-	local buttonFrame = _G[name..'ButtonFrame']
-	if buttonFrame then
-		buttonFrame:SetScale(0.00001)
-		buttonFrame:ClearAllPoints()
-		buttonFrame:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
-	end
 
 	local thumbTexture = _G[name..'ThumbTexture']
 	if thumbTexture then thumbTexture:Kill() end
@@ -3644,7 +3647,6 @@ function CH:FCF_Tab_OnClick(button)
 
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 		_G.FCF_Tab_SetupMenu(self)
-
 	elseif button == 'MiddleButton' then
 		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
 			if not chat.isTemporary then
@@ -3742,6 +3744,7 @@ function CH:Initialize()
 	CH:SecureHook('FCFDock_SelectWindow')
 	CH:SecureHook('FCFDock_ScrollToSelectedTab')
 	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('FCF_SetButtonSide', 'PositionButtonFrame')
 	CH:SecureHook('FCF_Close', 'PostChatClose')
 	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
 	CH:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
