@@ -236,11 +236,6 @@ do
 			for _, configMode in ipairs(E.ConfigModeLayouts) do
 				root:CreateRadio(E.ConfigModeLocalizedStrings[configMode], IsSelected, SetSelected, configMode)
 			end
-
-			--[[if self.menu then -- 11.0 this doesnt work...
-				self.menu:SetFrameStrata('DIALOG')
-				self.menu:SetFrameLevel(1200)
-			end]]
 		end
 	end
 end
