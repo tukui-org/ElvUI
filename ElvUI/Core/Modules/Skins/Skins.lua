@@ -473,10 +473,12 @@ do -- WIM replaces Blizzard globals we need to rehook
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 
 		for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-			local name = prefix..level..'Button'..i
+			local indexName = level..'Button'..i
+			local name = prefix..indexName
+
 			local button = _G[name]
 			if not button then -- fallback to blizzards
-				name = 'DropDownList'..level..'Button'..i
+				name = 'DropDownList'..indexName
 				button = _G[name]
 			end
 
