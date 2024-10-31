@@ -440,8 +440,12 @@ do -- WIM replaces Blizzard globals we need to rehook
 
 		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
 			local listFrame = _G[prefix..level]
-			local listFrameName = listFrame:GetName()
-			local expandArrow = _G[listFrameName..'Button'..index..'ExpandArrow']
+			if not listFrame then return end
+
+			local listName = listFrame:GetName()
+			if not listName then return end
+
+			local expandArrow = _G[listName..'Button'..index..'ExpandArrow']
 			if expandArrow then
 				expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 				expandArrow:Size(12)
@@ -453,16 +457,16 @@ do -- WIM replaces Blizzard globals we need to rehook
 				end
 			end
 
-			SkinMenu(listFrameName..'Backdrop')
-			SkinMenu(listFrameName..'MenuBackdrop')
+			SkinMenu(listName..'Backdrop')
+			SkinMenu(listName..'MenuBackdrop')
 		end)
 
 		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
-			if texture:find('Divider') then
-				local r, g, b = unpack(E.media.rgbvaluecolor)
-				icon:SetColorTexture(r, g, b, 0.45)
-				icon:Height(1)
-			end
+			if not strfind(texture, 'Divider') then return end
+
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			icon:SetColorTexture(r, g, b, 0.45)
+			icon:Height(1)
 		end)
 
 		hooksecurefunc('ToggleDropDownMenu', function(level)
