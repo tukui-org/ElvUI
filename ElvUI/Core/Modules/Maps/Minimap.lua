@@ -221,8 +221,8 @@ end
 
 function M:CreateMinimapTrackingDropdown()
 	local dropdown -- 11.0  dropdown:SetupMenu(E.ConfigMode_Initialize)
-	if not E.Retail then
-		dropdown = CreateFrame(E.Retail and 'DropdownButton' or 'Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, E.Retail and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
+	if E.Classic then
+		dropdown = CreateFrame('Frame', 'ElvUIMiniMapTrackingDropDown', UIParent, 'UIDropDownMenuTemplate')
 		dropdown:SetID(1)
 		dropdown:SetClampedToScreen(true)
 		dropdown:Hide()
@@ -271,8 +271,8 @@ function M:Minimap_OnMouseDown(btn)
 		end
 	elseif btn == 'RightButton' and M.TrackingDropdown then
 		_G.ToggleDropDownMenu(1, nil, M.TrackingDropdown, 'cursor')
-	elseif btn == 'RightButton' and E.Retail then
-		local button = _G.MinimapCluster.Tracking.Button
+	elseif btn == 'RightButton' and not E.Classic then
+		local button = (E.Retail and _G.MinimapCluster.Tracking.Button) or _G.MiniMapTrackingButton
 		if button then
 			button:OpenMenu()
 
