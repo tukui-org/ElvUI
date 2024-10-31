@@ -420,10 +420,10 @@ do -- DropDownMenu library support
 end
 
 do -- WIM replaces Blizzard globals we need to rehook
-	local hooked = {}
+	S.DropDownMenu_Hooks = {}
 
-	local function SkinMenu(name)
-		local backdrop = _G[name]
+	function S:DropDownMenu_SkinMenu(prefix, name)
+		local backdrop = prefix and _G[name]
 		if not backdrop then return end
 
 		if backdrop.NineSlice then
@@ -435,104 +435,111 @@ do -- WIM replaces Blizzard globals we need to rehook
 		end
 	end
 
+	function S:DropDownMenu_CreateFrames(prefix, level, index)
+		local listFrame = prefix and level and _G[prefix..level]
+		if not listFrame then return end
+
+		local listName = listFrame:GetName()
+		if not listName then return end
+
+		local expandArrow = _G[listName..'Button'..index..'ExpandArrow']
+		if expandArrow then
+			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
+			expandArrow:Size(12)
+
+			local normTex = expandArrow:GetNormalTexture()
+			if normTex then
+				normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+				normTex:SetRotation(S.ArrowRotation.right)
+			end
+		end
+
+		S:DropDownMenu_SkinMenu(prefix, listName..'Backdrop')
+		S:DropDownMenu_SkinMenu(prefix, listName..'MenuBackdrop')
+	end
+
+	function S:DropDownMenu_SetIconImage(prefix, icon, texture)
+		if not (prefix and icon and texture) or not strfind(texture, 'Divider') then return end
+
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		icon:SetColorTexture(r, g, b, 0.45)
+		icon:Height(1)
+	end
+
+	function S:DropDownMenu_Toggle(prefix, level, textX, textY)
+		if not prefix then return end
+
+		if not level then level = 1 end
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+
+		for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
+			local name = prefix..level..'Button'..i
+			local button = _G[name]
+			if not button then -- fallback to blizzards
+				name = 'DropDownList'..level..'Button'..i
+				button = _G[name]
+			end
+
+			local highlight = _G[name..'Highlight']
+			if highlight then
+				highlight:SetTexture(E.Media.Textures.Highlight)
+				highlight:SetBlendMode('BLEND')
+				highlight:SetDrawLayer('BACKGROUND')
+				highlight:SetVertexColor(r, g, b)
+			end
+
+			if not button.backdrop then
+				button:CreateBackdrop()
+			end
+
+			local check = _G[name..'Check']
+			if not button.notCheckable then
+				local text = _G[name..'NormalText']
+				if text then
+					text:PointXY(textX or 5, textY)
+				end
+
+				local uncheck = _G[name..'UnCheck']
+				if uncheck then
+					uncheck:SetTexture()
+				end
+
+				if check then
+					if S.db.checkBoxSkin then
+						check:SetTexture(E.media.normTex)
+						check:SetVertexColor(r, g, b, 1)
+						check:Size(10)
+						check:SetDesaturated(false)
+						button.backdrop:SetOutside(check)
+					else
+						check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
+						check:SetVertexColor(r, g, b, 1)
+						check:Size(20)
+						check:SetDesaturated(true)
+						button.backdrop:SetInside(check, 4, 4)
+					end
+
+					check:SetTexCoord(0, 1, 0, 1)
+				end
+
+				button.backdrop:Show()
+			else
+				if check then
+					check:Size(16)
+				end
+
+				button.backdrop:Hide()
+			end
+		end
+	end
+
 	function S:SkinDropDownMenu(prefix, textX, textY)
-		if hooked[prefix] then return end
+		if S.DropDownMenu_Hooks[prefix] then return end
+		S.DropDownMenu_Hooks[prefix] = true
 
-		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
-			local listFrame = _G[prefix..level]
-			if not listFrame then return end
-
-			local listName = listFrame:GetName()
-			if not listName then return end
-
-			local expandArrow = _G[listName..'Button'..index..'ExpandArrow']
-			if expandArrow then
-				expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
-				expandArrow:Size(12)
-
-				local normTex = expandArrow:GetNormalTexture()
-				if normTex then
-					normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
-					normTex:SetRotation(S.ArrowRotation.right)
-				end
-			end
-
-			SkinMenu(listName..'Backdrop')
-			SkinMenu(listName..'MenuBackdrop')
-		end)
-
-		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
-			if not strfind(texture, 'Divider') then return end
-
-			local r, g, b = unpack(E.media.rgbvaluecolor)
-			icon:SetColorTexture(r, g, b, 0.45)
-			icon:Height(1)
-		end)
-
-		hooksecurefunc('ToggleDropDownMenu', function(level)
-			if not level then level = 1 end
-			local r, g, b = unpack(E.media.rgbvaluecolor)
-
-			for i = 1, _G.UIDROPDOWNMENU_MAXBUTTONS do
-				local name = prefix..level..'Button'..i
-				local button = _G[name]
-				if not button then -- fallback to blizzards
-					name = 'DropDownList'..level..'Button'..i
-					button = _G[name]
-				end
-
-				local highlight = _G[name..'Highlight']
-				if highlight then
-					highlight:SetTexture(E.Media.Textures.Highlight)
-					highlight:SetBlendMode('BLEND')
-					highlight:SetDrawLayer('BACKGROUND')
-					highlight:SetVertexColor(r, g, b)
-				end
-
-				if not button.backdrop then
-					button:CreateBackdrop()
-				end
-
-				local check = _G[name..'Check']
-				if not button.notCheckable then
-					local text = _G[name..'NormalText']
-					if text then
-						text:PointXY(textX or 5, textY)
-					end
-
-					local uncheck = _G[name..'UnCheck']
-					if uncheck then
-						uncheck:SetTexture()
-					end
-
-					if check then
-						if S.db.checkBoxSkin then
-							check:SetTexture(E.media.normTex)
-							check:SetVertexColor(r, g, b, 1)
-							check:Size(10)
-							check:SetDesaturated(false)
-							button.backdrop:SetOutside(check)
-						else
-							check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
-							check:SetVertexColor(r, g, b, 1)
-							check:Size(20)
-							check:SetDesaturated(true)
-							button.backdrop:SetInside(check, 4, 4)
-						end
-
-						check:SetTexCoord(0, 1, 0, 1)
-					end
-
-					button.backdrop:Show()
-				else
-					if check then
-						check:Size(16)
-					end
-
-					button.backdrop:Hide()
-				end
-			end
-		end)
+		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index) S:DropDownMenu_CreateFrames(prefix, level, index) end)
+		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture) S:DropDownMenu_SetIconImage(prefix, icon, texture) end)
+		hooksecurefunc('ToggleDropDownMenu', function(level) S:DropDownMenu_Toggle(prefix, level, textX, textY) end)
 	end
 end
 
