@@ -1761,13 +1761,19 @@ P.unitframe = {
 		healthclass = false,
 		healthBreak = {
 			enabled = false,
-			high = 0.75,
+			high = 0.7,
 			low = 0.3,
-			onlyLow = false,
+			multiplier = 0,
+			onlyFriendly = false,
 			colorBackdrop = false,
-			good = { r = 0, g = 1, b = 0 },
-			neutral = { r = 1, g = 1, b = 0 },
-			bad = { r = 1, g = 0, b = 0 },
+			good = {r = 0.2, g = 0.8, b = 0.2},
+			neutral = {r = 0.85, g = 0.85, b = 0.15},
+			bad = {r = 0.8, g = 0.2, b = 0.2},
+			threshold = {
+				bad = true,
+				neutral = true,
+				good = true
+			},
 		},
 		--healththreat = false,
 		healthselection = false,
@@ -1869,8 +1875,8 @@ P.unitframe = {
 		},
 		powerPrediction = {
 			enable = false,
-			additional = {r = 1, g = 1, b = 1, a = 1},
-			color = {r = 1, g = 1, b = 1, a = 1},
+			additional = {r = 1, g = 0.2, b = 0.4, a = 1},
+			color = {r = 1, g = 0.2, b = 0.2, a = 1},
 		},
 		frameGlow = {
 			mainGlow = {

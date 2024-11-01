@@ -198,8 +198,7 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 
 StyleFilters.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
-StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
-StyleFilters.selectFilter.sortByValue = true
+StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end, nil, nil, true)
 StyleFilters.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil exportList[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
 StyleFilters.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
@@ -359,10 +358,7 @@ for index = 1, _G.MAX_CLASSES do
 	end
 end
 
-StyleFilters.triggers.args.slots = ACH:Group(L["Slots"], nil, 13, nil, nil, nil, DisabledFilter)
-StyleFilters.triggers.args.slots.args.types = ACH:MultiSelect(L["Equipped"], nil, 1, nil, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.slots[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.slots[key] = value or nil NP:ConfigureAll() end)
-StyleFilters.triggers.args.slots.args.types.sortByValue = true
-StyleFilters.triggers.args.slots.args.types.values = {
+local EquippedValues = {
 	[_G.INVSLOT_AMMO] = L["INVTYPE_AMMO"], -- 0
 	[_G.INVSLOT_HEAD] = L["INVTYPE_HEAD"], -- 1
 	[_G.INVSLOT_NECK] = L["INVTYPE_NECK"], -- 2
@@ -384,6 +380,9 @@ StyleFilters.triggers.args.slots.args.types.values = {
 	[_G.INVSLOT_RANGED] = L["INVTYPE_RANGED"], -- 18
 	[_G.INVSLOT_TABARD] = L["INVTYPE_TABARD"], -- 19
 }
+
+StyleFilters.triggers.args.slots = ACH:Group(L["Slots"], nil, 13, nil, nil, nil, DisabledFilter)
+StyleFilters.triggers.args.slots.args.types = ACH:MultiSelect(L["Equipped"], nil, 1, EquippedValues, nil, nil, function(_, key) local triggers = GetFilter(true) return triggers.slots[key] end, function(_, key, value) local triggers = GetFilter(true) triggers.slots[key] = value or nil NP:ConfigureAll() end, nil, nil, true)
 
 StyleFilters.triggers.args.items = ACH:Group(L["Items"], nil, 14, nil, nil, nil, DisabledFilter)
 StyleFilters.triggers.args.items.args.addItem = ACH:Input(L["Add Item Name or ID"], L["Add a Item Name or ID to the list."], 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.items[value] = true UpdateFilterList('items', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
@@ -859,9 +858,7 @@ do
 	end
 
 	StyleFilters.export = ACH:Group(L["Export"], nil, 20)
-	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set)
-	StyleFilters.export.args.filters.sortByValue = true
-
+	StyleFilters.export.args.filters = ACH:MultiSelect(L["Filters"], nil, 2, GetFilters, nil, nil, Filters_Get, Filters_Set, nil, nil, true)
 	StyleFilters.export.args.exportButton = ACH:Execute(L["Export"], nil, 3, function() Export('text') end, nil, nil, 120)
 	StyleFilters.export.args.exportDecode = ACH:Execute(L["Table"], nil, 4, function() Export('luaTable') end, nil, nil, 120)
 	StyleFilters.export.args.exportPlugin = ACH:Execute(L["Plugin"], nil, 5, function() Export('luaPlugin') end, nil, nil, 120)

@@ -1454,6 +1454,18 @@ function E:DBConvertTWW()
 end
 
 function E:DBConvertDev()
+	local healthBreak = E.db.unitframe.colors.healthBreak
+	local onlyLow = healthBreak.onlyLow
+	if onlyLow ~= nil then
+		healthBreak.onlyLow = nil
+
+		if onlyLow then
+			healthBreak.threshold.bad = true
+			healthBreak.threshold.neutral = false
+			healthBreak.threshold.good = false
+		end
+	end
+
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
