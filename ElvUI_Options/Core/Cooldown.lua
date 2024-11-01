@@ -24,14 +24,14 @@ local function group(order, db, label)
 
 	local seconds = ACH:Group(L["Text Threshold"], nil, 10, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, function() return not (profile(db)).checkSeconds end)
 	seconds.inline = true
-	seconds.args.checkSeconds = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1, nil, nil, nil, nil, nil, false)
+	seconds.args.checkSeconds = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1)
 	seconds.args.mmssThreshold = ACH:Range(L["MM:SS Threshold"], L["Threshold (in seconds) before text is shown in the MM:SS format. Set to -1 to never change to this format."], 2, { min = -1, max = 10800, step = 1 })
 	seconds.args.hhmmThreshold = ACH:Range(L["HH:MM Threshold"], L["Threshold (in minutes) before text is shown in the HH:MM format. Set to -1 to never change to this format."], 3, { min = -1, max = 1440, step = 1 })
 	mainArgs.secondsGroup = seconds
 
 	local fonts = ACH:Group(L["Fonts"], nil, 11, nil, function(info) return (profile(db)).fonts[info[#info]] end, function(info, value) (profile(db)).fonts[info[#info]] = value; E:UpdateCooldownSettings(db); end, function() return not (profile(db)).fonts.enable end)
 	fonts.inline = true
-	fonts.args.enable = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1, nil, nil, nil, nil, nil, false)
+	fonts.args.enable = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1)
 	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 2)
 	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, { min = 10, max = 50, step = 1 })
 	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 4)
@@ -39,7 +39,7 @@ local function group(order, db, label)
 
 	local colors = ACH:Group(L["Color Override"], nil, 12, nil, nil, nil, function() return not (profile(db)).override end)
 	colors.inline = true
-	colors.args.override = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, false)
+	colors.args.override = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 1, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 	colors.args.threshold = ACH:Range(L["Low Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 2, { min = -1, max = 20, step = 1 }, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 	mainArgs.colorGroup = colors
 
@@ -55,7 +55,7 @@ local function group(order, db, label)
 	mainArgs.colorGroup.args.timeColors = tColors
 
 	local iColors = ACH:Group(L["Time Indicator Colors"], nil, 4, nil, nil, nil, function() return not (profile(db)).useIndicatorColor end)
-	iColors.args.useIndicatorColor = ACH:Toggle(L["Use Indicator Color"], nil, 0, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end, false)
+	iColors.args.useIndicatorColor = ACH:Toggle(L["Use Indicator Color"], nil, 0, nil, nil, nil, function(info) return (profile(db))[info[#info]] end, function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end)
 	iColors.args.expireIndicator = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 3)
 	iColors.args.secondsIndicator = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 4)
 	iColors.args.minutesIndicator = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 5)

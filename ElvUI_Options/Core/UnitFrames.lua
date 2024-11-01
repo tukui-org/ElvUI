@@ -390,24 +390,24 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.textGroup.args.textSettings = ACH:Group(L["Text"], nil, 3, nil, function(info) return E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value updateFunc(UF, groupName, numUnits) end, function() return not E.db.unitframe.units[groupName].castbar.customTextFont.enable end)
 	config.args.textGroup.args.textSettings.inline = true
-	config.args.textGroup.args.textSettings.args.enable = ACH:Toggle(L["Custom Font"], nil, 1, nil, nil, nil, nil, nil, false)
-	config.args.textGroup.args.textSettings.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	config.args.textGroup.args.textSettings.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-	config.args.textGroup.args.textSettings.args.fontStyle = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
-	config.args.textGroup.args.textSettings.args.xOffsetText = ACH:Range(L["X-Offset"], nil, 4, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
-	config.args.textGroup.args.textSettings.args.yOffsetText = ACH:Range(L["Y-Offset"], nil, 5, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
+	config.args.textGroup.args.textSettings.args.enable = ACH:Toggle(L["Custom Font"], nil, 1)
+	config.args.textGroup.args.textSettings.args.font = ACH:SharedMediaFont(L["Font"], nil, 2)
+	config.args.textGroup.args.textSettings.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+	config.args.textGroup.args.textSettings.args.fontStyle = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 4)
+	config.args.textGroup.args.textSettings.args.xOffsetText = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.textGroup.args.textSettings.args.yOffsetText = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
 	config.args.textGroup.args.timeSettings = ACH:Group(L["Time Options"], nil, 4, nil, function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value updateFunc(UF, groupName, numUnits) end, function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end)
 	config.args.textGroup.args.timeSettings.inline = true
-	config.args.textGroup.args.timeSettings.args.enable = ACH:Toggle(L["Custom Font"], nil, 1, nil, nil, nil, nil, nil, false)
+	config.args.textGroup.args.timeSettings.args.enable = ACH:Toggle(L["Custom Font"], nil, 1)
 	config.args.textGroup.args.timeSettings.args.font = ACH:SharedMediaFont(L["Font"], nil, 2)
 	config.args.textGroup.args.timeSettings.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 	config.args.textGroup.args.timeSettings.args.fontStyle = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 4)
-	config.args.textGroup.args.timeSettings.args.xOffsetTime = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
-	config.args.textGroup.args.timeSettings.args.yOffsetTime = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
+	config.args.textGroup.args.timeSettings.args.xOffsetTime = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.textGroup.args.timeSettings.args.yOffsetTime = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
 	config.args.iconSettings = ACH:Group(L["Icon"], nil, 17, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.iconSettings.args.icon = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
+	config.args.iconSettings.args.icon = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.iconSettings.args.iconAttached = ACH:Toggle(L["Icon Inside Castbar"], L["Display the castbar icon inside the castbar."], 2, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.icon end)
 	config.args.iconSettings.args.iconSize = ACH:Range(L["Icon Size"], L["This dictates the size of the icon when it is not attached to the castbar."], 3, { min = 8, max = 150, step = 1 })
 	config.args.iconSettings.args.iconAttachedTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, { Frame = L["Frame"], Castbar = L["Cast Bar"] })
@@ -1216,7 +1216,7 @@ for i in next, P.unitframe.colors.empoweredCast do
 	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
-Colors.auras = ACH:Group(L["Auras"], nil, nil)
+Colors.auras = ACH:Group(L["Auras"])
 Colors.auras.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 1)
 Colors.auras.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 2)
 
@@ -1358,28 +1358,28 @@ end
 UnitFrame.frameGlowGroup = ACH:Group(L["Frame Glow"], nil, 25, 'tree', nil, nil, function() return not E.UnitFrames.Initialized end)
 UnitFrame.frameGlowGroup.args.mainGlow = ACH:Group(L["Mouseover Glow"], nil, 1, nil, function(info) local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.mainGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.mainGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.mainGlow.enable end)
 UnitFrame.frameGlowGroup.args.mainGlow.inline = true
-UnitFrame.frameGlowGroup.args.mainGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
+UnitFrame.frameGlowGroup.args.mainGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 UnitFrame.frameGlowGroup.args.mainGlow.args.spacer = ACH:Spacer(2)
 UnitFrame.frameGlowGroup.args.mainGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 3)
 UnitFrame.frameGlowGroup.args.mainGlow.args.color = ACH:Color(L["COLOR"], nil, 4, true)
 
 UnitFrame.frameGlowGroup.args.targetGlow = ACH:Group(L["Targeted Glow"], nil, 2, nil, function(info) local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.targetGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.targetGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.targetGlow.enable end)
 UnitFrame.frameGlowGroup.args.targetGlow.inline = true
-UnitFrame.frameGlowGroup.args.targetGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
+UnitFrame.frameGlowGroup.args.targetGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 UnitFrame.frameGlowGroup.args.targetGlow.args.spacer = ACH:Spacer(2)
 UnitFrame.frameGlowGroup.args.targetGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 3)
 UnitFrame.frameGlowGroup.args.targetGlow.args.color = ACH:Color(L["COLOR"], nil, 4, true)
 
 UnitFrame.frameGlowGroup.args.focusGlow = ACH:Group(L["Focused Glow"], nil, 2, nil, function(info) local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.focusGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.focusGlow.enable end, E.Classic)
 UnitFrame.frameGlowGroup.args.focusGlow.inline = true
-UnitFrame.frameGlowGroup.args.focusGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
+UnitFrame.frameGlowGroup.args.focusGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 UnitFrame.frameGlowGroup.args.focusGlow.args.spacer = ACH:Spacer(2)
 UnitFrame.frameGlowGroup.args.focusGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 3)
 UnitFrame.frameGlowGroup.args.focusGlow.args.color = ACH:Color(L["COLOR"], nil, 4, true)
 
 UnitFrame.frameGlowGroup.args.mouseoverGlow = ACH:Group(L["Mouseover Highlight"], nil, 2, nil, function(info) local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] if info.type == 'color' then local d = P.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return t end end, function(info, ...) if info.type == 'color' then local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] t.r, t.g, t.b, t.a = ... else E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]] = ... end UF:FrameGlow_UpdateFrames() end, function() return not E.db.unitframe.colors.frameGlow.mouseoverGlow.enable end)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.inline = true
-UnitFrame.frameGlowGroup.args.mouseoverGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
+UnitFrame.frameGlowGroup.args.mouseoverGlow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.spacer = ACH:Spacer(3)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 4)

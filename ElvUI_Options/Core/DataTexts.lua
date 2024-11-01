@@ -80,7 +80,7 @@ function DT:SetupPanelOptions(name, data)
 			options.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(name) end, nil, true, 'full')
 
 			options.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return custom.fonts[info[#info]] end, function(info, value) custom.fonts[info[#info]] = value DT:UpdatePanelAttributes(name, custom) end, function() return not custom.fonts.enable end)
-			options.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, false)
+			options.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 			options.args.panelOptions.args.fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 			options.args.panelOptions.args.fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
 			options.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
