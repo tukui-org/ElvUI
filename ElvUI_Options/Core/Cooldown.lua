@@ -89,8 +89,8 @@ local function group(order, db, label)
 		auraGroup.args.spacer = ACH:Spacer(5)
 		auraGroup.args.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 6, nil, 125)
 		auraGroup.args.expiringAuraColor = ACH:Color(L["Target Aura Expiring"], L["Color of the Targets Aura time when expiring."], 7, nil, 175)
-		auraGroup.args.targetAuraIndicator = ACH:Color(L["Indicator"], L["Color of the Targets Aura time."], 10, nil, 125, nil, nil, false)
-		auraGroup.args.expiringAuraIndicator = ACH:Color(L["Indicator Expiring"], L["Color of the Targets Aura time when expiring."], 11, nil, 175, nil, nil, false)
+		auraGroup.args.targetAuraIndicator = ACH:Color(L["Indicator"], L["Color of the Targets Aura time."], 10, nil, 125)
+		auraGroup.args.expiringAuraIndicator = ACH:Color(L["Indicator Expiring"], L["Color of the Targets Aura time when expiring."], 11, nil, 175)
 		auraGroup.inline = true
 
 		mainArgs.auraGroup = auraGroup
