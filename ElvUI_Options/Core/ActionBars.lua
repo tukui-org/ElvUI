@@ -61,7 +61,7 @@ SharedBarOptions.strataAndLevel.args.frameStrata = ACH:Select(L["Frame Strata"],
 SharedBarOptions.strataAndLevel.args.frameLevel = ACH:Range(L["Frame Level"], nil, 4, { min = 1, max = 256, step = 1 })
 
 local hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 40, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
-hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0)
+hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0, nil, nil, nil, nil, nil, nil, false)
 hotkeyTextGroup.args.useHotkeyColor = ACH:Toggle(L["Custom Color"], nil, 1)
 hotkeyTextGroup.args.hotkeyColor = ACH:Color('', nil, 2, nil, nil, getTextColor, setTextColor, nil, function(info) return not E.db.actionbar[info[#info-2]].useHotkeyColor or not E.db.actionbar[info[#info-2]].hotkeytext end)
 hotkeyTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
@@ -75,7 +75,7 @@ hotkeyTextGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 10, C.Value
 SharedBarOptions.hotkeyTextGroup = hotkeyTextGroup
 
 local countTextGroup = ACH:Group(L["Count Text"], nil, 50, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
-countTextGroup.args.counttext = ACH:Toggle(L["Enable"], nil, 0)
+countTextGroup.args.counttext = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, false)
 countTextGroup.args.useCountColor = ACH:Toggle(L["Custom Color"], nil, 1)
 countTextGroup.args.countColor = ACH:Color('', nil, 2, nil, nil, getTextColor, setTextColor, nil, function(info) return not E.db.actionbar[info[#info-2]].useCountColor or not E.db.actionbar[info[#info-2]].counttext end)
 countTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
@@ -89,7 +89,7 @@ countTextGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 10, C.Values.
 SharedBarOptions.countTextGroup = countTextGroup
 
 local macroTextGroup = ACH:Group(L["Macro Text"], nil, 60, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
-macroTextGroup.args.macrotext = ACH:Toggle(L["Enable"], L["Display macro names on action buttons."], 0)
+macroTextGroup.args.macrotext = ACH:Toggle(L["Enable"], L["Display macro names on action buttons."], 0, nil, nil, nil, nil, nil, nil, false)
 macroTextGroup.args.useMacroColor = ACH:Toggle(L["Custom Color"], nil, 1)
 macroTextGroup.args.macroColor = ACH:Color('', nil, 2, nil, nil, getTextColor, setTextColor, nil, function(info) return not E.db.actionbar[info[#info-2]].useMacroColor or not E.db.actionbar[info[#info-2]].macrotext end)
 macroTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
@@ -103,7 +103,7 @@ macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 10)
 SharedBarOptions.macroTextGroup = macroTextGroup
 
 local professionQuality = ACH:Group(L["Profession Quality"], nil, 70, nil, function(info) return E.db.actionbar[info[#info-2]].professionQuality[info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]].professionQuality[info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
-professionQuality.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+professionQuality.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, false)
 professionQuality.args.spacer1 = ACH:Spacer(3, 'full')
 professionQuality.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true })
 professionQuality.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.1, max = 2, step = 0.01, isPercent = true })
@@ -311,7 +311,7 @@ ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButton
 
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 40, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateExtraBindings() end)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.inline = true
-ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0)
+ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0, nil, nil, nil, nil, nil, nil, false)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.useHotkeyColor = ACH:Toggle(L["Custom Color"], nil, 1)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeyColor = ACH:Color('', nil, 2, nil, nil, function(info) local t = E.db.actionbar[info[#info-2]][info[#info]] local d = P.actionbar[info[#info-2]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info-2]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateExtraBindings() end, nil, function(info) return not E.db.actionbar[info[#info-2]].useHotkeyColor or not E.db.actionbar[info[#info-2]].hotkeytext end)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
