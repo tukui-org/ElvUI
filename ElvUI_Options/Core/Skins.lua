@@ -101,7 +101,7 @@ if E.Retail then
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
-	toggles.perks = L["Perks"]
+	toggles.perks = L["Trading Post"]
 	toggles.petbattleui = L["Pet Battle"]
 	toggles.playerChoice = L["Player Choice Frame"]
 	toggles.runeforge = L["Runeforge"]
