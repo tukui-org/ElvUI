@@ -1,5 +1,5 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 12
+local MAJOR, MINOR = 'LibAceConfigHelper', 13
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -73,8 +73,8 @@ function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidd
 	return optionTable
 end
 
-function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden }
+function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden, sortByValue)
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden, sortByValue = sortByValue }
 
 	if width then insertWidth(optionTable, width) end
 	if confirm then insertConfirm(optionTable, confirm) end
@@ -82,8 +82,8 @@ function ACH:Select(name, desc, order, values, confirm, width, get, set, disable
 	return optionTable
 end
 
-function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden }
+function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden, sortByValue)
+	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden, sortByValue = sortByValue }
 
 	if width then insertWidth(optionTable, width) end
 	if confirm then insertConfirm(optionTable, confirm) end
