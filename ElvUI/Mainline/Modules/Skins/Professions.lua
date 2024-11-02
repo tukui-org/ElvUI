@@ -387,6 +387,7 @@ function S:Blizzard_Professions()
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)
+	S:HandleButton(OrderInfo.SocialDropdown)
 	S:HandleEditBox(OrderInfo.NoteBox)
 	if OrderInfo.NoteBox.backdrop then
 		OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
