@@ -13,7 +13,7 @@ local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
+local GetNumSpecializationsForClassID = C_SpecializationInfo and C_SpecializationInfo.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
 
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
