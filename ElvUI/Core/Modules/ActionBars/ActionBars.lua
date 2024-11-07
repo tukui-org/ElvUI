@@ -1017,6 +1017,8 @@ function AB:SpellButtonOnEnter(_, tt)
 	local slotBank = self.spellBank or (_G.SpellBookFrame and _G.SpellBookFrame.bookType)
 	if not (slotIndex and slotBank) then return end -- huh?
 
+	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank) -- need this here when its GameTooltip
+
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
 		local color = _G.LIGHTBLUE_FONT_COLOR
@@ -1024,7 +1026,6 @@ function AB:SpellButtonOnEnter(_, tt)
 	end
 
 	if tt == E.SpellBookTooltip then
-		local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
