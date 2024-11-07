@@ -1024,7 +1024,8 @@ function AB:SpellButtonOnEnter(_, tt)
 	end
 
 	if tt == E.SpellBookTooltip then
-		tt:SetScript('OnUpdate', (tt.UpdateTooltip and AB.SpellBookTooltipOnUpdate) or nil)
+		local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
+		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
 	if not E.Cata then -- Cata Flyout one will error cause its not updated
