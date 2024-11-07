@@ -1029,7 +1029,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
-	if not E.Cata then -- Cata Flyout one will error cause its not updated
+	if E.Retail then
 		ClearOnBarHighlightMarks()
 		ClearPetActionHighlightMarks()
 
@@ -1037,7 +1037,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		if slotType == 'SPELL' then
 			UpdateOnBarHighlightMarksBySpell(actionID)
 		elseif slotType == 'FLYOUT' then
-			UpdateOnBarHighlightMarksByFlyout(actionID)
+			UpdateOnBarHighlightMarksByFlyout(actionID) -- Cata Flyout one will error cause its not updated
 		elseif slotType == 'PETACTION' then
 			UpdateOnBarHighlightMarksByPetAction(actionID)
 
