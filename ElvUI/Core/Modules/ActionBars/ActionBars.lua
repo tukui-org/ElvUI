@@ -1013,29 +1013,9 @@ function AB:SpellButtonOnEnter(_, tt)
 		return
 	end
 
-	local slotIndex = (E.Classic and FindSpellBookSlotForSpell(self)) or self.slotIndex
-	local slotBank = (E.Classic and _G.SpellBookFrame.bookType) or self.spellBank
+	local slotIndex = self.slotIndex or (FindSpellBookSlotForSpell and FindSpellBookSlotForSpell(self))
+	local slotBank = self.spellBank or (_G.SpellBookFrame and _G.SpellBookFrame.bookType)
 	if not (slotIndex and slotBank) then return end -- huh?
-
-	local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
-
-	ClearOnBarHighlightMarks()
-	ClearPetActionHighlightMarks()
-
-	local slotType, actionID = GetSpellBookItemInfo(slotIndex, slotBank)
-	if slotType == 'SPELL' then
-		UpdateOnBarHighlightMarksBySpell(actionID)
-	elseif slotType == 'FLYOUT' then
-		UpdateOnBarHighlightMarksByFlyout(actionID)
-	elseif slotType == 'PETACTION' then
-		UpdateOnBarHighlightMarksByPetAction(actionID)
-
-		if UpdatePetActionHighlightMarks then
-			UpdatePetActionHighlightMarks(actionID)
-		else
-			_G.PetActionBar:UpdatePetActionHighlightMarks(actionID)
-		end
-	end
 
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
@@ -1044,11 +1024,32 @@ function AB:SpellButtonOnEnter(_, tt)
 	end
 
 	if tt == E.SpellBookTooltip then
+		local needsUpdate = tt:SetSpellBookItem(slotIndex, slotBank)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
-	if ActionBarController_UpdateAllSpellHighlights then
-		ActionBarController_UpdateAllSpellHighlights()
+	if not E.Classic then -- Cata Flyout one will error cause its not updated
+		ClearOnBarHighlightMarks()
+		ClearPetActionHighlightMarks()
+
+		local slotType, actionID = GetSpellBookItemInfo(slotIndex, slotBank)
+		if slotType == 'SPELL' then
+			UpdateOnBarHighlightMarksBySpell(actionID)
+		elseif slotType == 'FLYOUT' then
+			UpdateOnBarHighlightMarksByFlyout(actionID)
+		elseif slotType == 'PETACTION' then
+			UpdateOnBarHighlightMarksByPetAction(actionID)
+
+			if UpdatePetActionHighlightMarks then
+				UpdatePetActionHighlightMarks(actionID)
+			else
+				_G.PetActionBar:UpdatePetActionHighlightMarks(actionID)
+			end
+		end
+
+		if ActionBarController_UpdateAllSpellHighlights then
+			ActionBarController_UpdateAllSpellHighlights()
+		end
 	end
 
 	tt:Show()
