@@ -89,16 +89,6 @@ tinsert(menuList, {
 	microOffset = 'MainMenuMicroButton',
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
-			if E.Cata then
-				if _G.VideoOptionsFrame:IsShown() then
-					_G.VideoOptionsFrameCancel:Click()
-				elseif _G.AudioOptionsFrame:IsShown() then
-					_G.AudioOptionsFrameCancel:Click()
-				elseif _G.InterfaceOptionsFrame:IsShown() then
-					_G.InterfaceOptionsFrameCancel:Click()
-				end
-			end
-
 			CloseMenus()
 			CloseAllWindows()
 			PlaySound(850) --IG_MAINMENU_OPEN

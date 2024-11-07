@@ -12,6 +12,7 @@ local UnitClass = UnitClass
 local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsCharmed = UnitIsCharmed
+local UnitIsFriend = UnitIsFriend
 local UnitIsEnemy = UnitIsEnemy
 local UnitInPartyIsAI = UnitInPartyIsAI
 
@@ -273,21 +274,19 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
-			elseif healthBreak and healthBreak.enabled then
+			elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
 				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
-				local onlyLow = healthBreak.onlyLow
+				local threshold = healthBreak.threshold
 
-				if breakPoint <= healthBreak.low then
+				if threshold.bad and (breakPoint <= healthBreak.low) then
 					color = healthBreak.bad
-				elseif breakPoint >= healthBreak.high and breakPoint ~= 1 and not onlyLow then
+				elseif threshold.good and (breakPoint >= healthBreak.high and breakPoint ~= 1) then
 					color = healthBreak.good
-				elseif breakPoint >= healthBreak.low and breakPoint < healthBreak.high and not onlyLow then
+				elseif threshold.neutral and (breakPoint >= healthBreak.low and breakPoint < healthBreak.high) then
 					color = colors.healthBreak.neutral
 				end
 
-				if color and healthBreak.colorBackdrop then
-					healthbreakBackdrop = true
-				end
+				healthbreakBackdrop = color and healthBreak.colorBackdrop
 			end
 		end
 	end
@@ -306,6 +305,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			mult = 1 -- custom backdrop (dead)
 		elseif healthbreakBackdrop then
 			bgc = color
+			mult = (healthBreak.multiplier > 0 and healthBreak.multiplier) or BACKDROP_MULT
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)

@@ -840,12 +840,12 @@ function TT:MODIFIER_STATE_CHANGED()
 			end
 		else
 			local parent = owner and owner:GetParent()
-			if E.Retail then
-				if parent and parent.slotIndex then
+			if parent then
+				if parent.slotIndex then
 					AB.SpellButtonOnEnter(parent, nil, GameTooltip)
+				elseif parent == _G.SpellBookSpellIconsFrame then
+					AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 				end
-			elseif parent and parent == _G.SpellBookSpellIconsFrame then
-				AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 			end
 		end
 	end
