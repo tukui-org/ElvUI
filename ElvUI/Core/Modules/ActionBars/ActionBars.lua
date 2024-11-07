@@ -1028,7 +1028,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
-	if not E.Classic then -- Cata Flyout one will error cause its not updated
+	if not E.Cata then -- Cata Flyout one will error cause its not updated
 		ClearOnBarHighlightMarks()
 		ClearPetActionHighlightMarks()
 
