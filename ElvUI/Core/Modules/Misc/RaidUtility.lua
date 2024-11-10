@@ -41,7 +41,8 @@ local RestrictPingsTo = Enum.RestrictPingsTo
 
 local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
-local NUM_RAID_GROUPS = NUM_RAID_GROUPS
+local NUM_RAID_GROUPS = NUM_RAID_GROUPS or 8
+local NUM_RAID_ICONS = NUM_RAID_ICONS or 8
 local PANEL_HEIGHT = E.Retail and 180 or 124
 local PANEL_WIDTH = 250
 local BUTTON_HEIGHT = 20
@@ -360,7 +361,7 @@ function RU:CreateTargetIcons()
 	TargetIcons:SetTemplate('Transparent')
 	TargetIcons.icons = {}
 
-	local num, previous = _G.NUM_RAID_ICONS + 1 -- include clear
+	local num, previous = NUM_RAID_ICONS + 1 -- include clear
 	for i = 1, num do
 		local id = num - i
 		local button = CreateFrame('Button', '$parent_TargetIcon'..i, TargetIcons, 'SecureActionButtonTemplate')
