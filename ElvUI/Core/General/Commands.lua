@@ -135,7 +135,10 @@ do
 		local switch = lower(msg)
 		if switch ~= '' then
 			if switch == 'e' then
-				E:SortProfilerData('E', E.profiler.data[E])
+				local data = E.profiler.data[E]
+				if data then
+					E:SortProfilerData('E', data)
+				end
 			else
 				for key, module in next, E.modules do
 					local data = switch == lower(key) and E.profiler.data[module]
@@ -147,12 +150,15 @@ do
 				end
 			end
 		else
-			E:SortProfilerData('E', E.profiler.data[E])
+			local data = E.profiler.data[E]
+			if data then
+				E:SortProfilerData('E', data)
+			end
 
 			for key, module in next, E.modules do
-				local data = E.profiler.data[module]
-				if data then
-					E:SortProfilerData(key, data)
+				local info = E.profiler.data[module]
+				if info then
+					E:SortProfilerData(key, info)
 				end
 			end
 		end
