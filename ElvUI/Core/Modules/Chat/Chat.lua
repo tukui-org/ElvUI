@@ -3302,7 +3302,7 @@ end
 
 function CH:BuildCopyChatFrame()
 	local frame = CreateFrame('Frame', 'ElvUI_CopyChatFrame', E.UIParent)
-	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
+	tinsert(_G.UISpecialFrames, 'ElvUI_CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
@@ -3370,7 +3370,7 @@ function CH:BuildCopyChatFrame()
 	editBox:Width(scrollFrame:GetWidth())
 	S:HandleScrollBar(scrollFrame.ScrollBar)
 
-	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton')
+	local close = CreateFrame('Button', 'ElvUI_CopyChatFrameCloseButton', frame, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)

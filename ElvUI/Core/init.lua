@@ -30,11 +30,90 @@ local SetCVar = C_CVar.SetCVar
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
+local ProfilerData, Profiler = {}
+do -- not finished
+	local rawset = rawset
+	local unpack = unpack
+	local getmetatable = getmetatable
+	local setmetatable = setmetatable
+	local debugprofilestop = debugprofilestop
+
+	local active = false -- active profiler
+	local function Generate(object, key, func)
+		-- print('Generate', object, key, func)
+
+		return function(...)
+			local start = debugprofilestop()
+			local args = { func(...) }
+			local finish = debugprofilestop() - start
+
+			local info = ProfilerData[object]
+			if not info then
+				info = {}
+				ProfilerData[object] = info
+			end
+
+			local data = info[key]
+			if data then
+				data.count = data.count + 1
+
+				if data.finish > data.high then
+					data.high = data.finish
+				end
+
+				if data.finish < data.low then
+					data.low = data.finish
+				end
+
+				data.total = data.total + finish
+				data.average = data.total / data.count
+			else
+				data = { high = finish, low = finish, total = 0, count = 1 }
+				ProfilerData[object][key] = data
+			end
+
+			data.start = start
+			data.finish = finish
+
+			return unpack(args)
+		end
+	end
+
+	local function Generator(object, key, value)
+		-- print('Generator', key, value)
+
+		if type(value) == 'function' then
+			local func = Generate(object, key, value)
+			rawset(object, key, func)
+		else
+			rawset(object, key, value)
+		end
+	end
+
+	Profiler = function(tbl, ...)
+		-- print('Profiler', tbl)
+
+		if not active then
+			return tbl, ...
+		else
+			local t = getmetatable(tbl)
+			if t then
+				t.__newindex = Generator
+
+				return tbl, ...
+			else
+				return setmetatable(tbl, { __newindex = Generator }), ...
+			end
+		end
+	end
+end
+
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
-local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
+local E = Profiler(AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0'))
+E.profiler = {func = Profiler, data = ProfilerData} -- ElvUI_CPU knock off by Simpy
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree', get = E.noop, name = ''}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
@@ -51,30 +130,30 @@ _G.ElvUI = Engine
 E.oUF = _G.ElvUF
 assert(E.oUF, 'ElvUI was unable to locate oUF.')
 
-E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
-E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
-E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
-E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
-E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
-E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
-E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-E.EditorMode = E:NewModule('EditorMode','AceEvent-3.0')
-E.Layout = E:NewModule('Layout','AceEvent-3.0')
-E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0')
-E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.PluginInstaller = E:NewModule('PluginInstaller')
-E.PrivateAuras = E:NewModule('PrivateAuras')
-E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
-E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.TotemTracker = E:NewModule('TotemTracker','AceEvent-3.0')
-E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
-E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.ActionBars = Profiler(E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0'))
+E.AFK = Profiler(E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0'))
+E.Auras = Profiler(E:NewModule('Auras','AceHook-3.0','AceEvent-3.0'))
+E.Bags = Profiler(E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
+E.Blizzard = Profiler(E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0'))
+E.Chat = Profiler(E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
+E.DataBars = Profiler(E:NewModule('DataBars','AceEvent-3.0'))
+E.DataTexts = Profiler(E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
+E.DebugTools = Profiler(E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0'))
+E.Distributor = Profiler(E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0'))
+E.EditorMode = Profiler(E:NewModule('EditorMode','AceEvent-3.0'))
+E.Layout = Profiler(E:NewModule('Layout','AceEvent-3.0'))
+E.Minimap = Profiler(E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
+E.Misc = Profiler(E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0'))
+E.ModuleCopy = Profiler(E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0'))
+E.NamePlates = Profiler(E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
+E.PluginInstaller = Profiler(E:NewModule('PluginInstaller'))
+E.PrivateAuras = Profiler(E:NewModule('PrivateAuras'))
+E.RaidUtility = Profiler(E:NewModule('RaidUtility','AceEvent-3.0'))
+E.Skins = Profiler(E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
+E.Tooltip = Profiler(E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
+E.TotemTracker = Profiler(E:NewModule('TotemTracker','AceEvent-3.0'))
+E.UnitFrames = Profiler(E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0'))
+E.WorldMap = Profiler(E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
 
 E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
