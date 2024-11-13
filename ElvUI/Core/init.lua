@@ -30,7 +30,7 @@ local SetCVar = C_CVar.SetCVar
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-local ProfilerData, Profiler = {}
+local ProfilerData, Profiler = { _all = { total = 0, count = 0 } }
 do -- not finished
 	local rawset = rawset
 	local unpack = unpack
@@ -47,13 +47,14 @@ do -- not finished
 			local args = { func(...) }
 			local finish = debugprofilestop() - start
 
-			local info = ProfilerData[object]
-			if not info then
-				info = {}
-				ProfilerData[object] = info
+			local obj = ProfilerData[object]
+			if not obj then
+				obj = { _module = { total = 0, count = 0 } }
+
+				ProfilerData[object] = obj
 			end
 
-			local data = info[key]
+			local data = obj[key]
 			if data then
 				data.count = data.count + 1
 
@@ -69,11 +70,26 @@ do -- not finished
 				data.average = data.total / data.count
 			else
 				data = { high = finish, low = finish, total = 0, count = 1 }
-				ProfilerData[object][key] = data
+				obj[key] = data
 			end
 
+			-- update data
 			data.start = start
 			data.finish = finish
+
+			local module = obj._module
+			if module then -- module totals
+				module.total = module.total + finish
+				module.count = module.count + 1
+				module.average = module.total / module.count
+			end
+
+			local all = ProfilerData._all
+			if all then -- overall totals
+				all.total = all.total + finish
+				all.count = all.count + 1
+				all.average = all.total / all.count
+			end
 
 			return unpack(args)
 		end

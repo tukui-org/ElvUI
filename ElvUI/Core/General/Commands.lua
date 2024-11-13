@@ -78,10 +78,29 @@ do
 	local list = {}
 	local text = ''
 
-	function E:ShowProfilerData(data)
-		for _, info in ipairs(data) do
-			text = text .. format('%s - count: %d, avg: %0.3f, high: %0.3f, total: %0.3f\n', info.name, info.count or 0, info.average or 0, info.high or 0, info.total or 0)
+	function E:BuildProfilerText(tbl, data)
+		for _, info in ipairs(tbl) do
+			if info.key == '_module' then
+				local all = E.profiler.data._all
+				if all then
+					local total = info.total or 0
+					local percent = (total / all.total) * 100
+					text = format('%s%s > count: %d | total: %0.2fms (addon %0.2f%%)\n', text, info.module or '', info.count or 0, total, percent)
+				end
+			else
+				local total = info.total or 0
+				local modulePercent = (total / data._module.total) * 100
+
+				local all, allPercent = E.profiler.data._all
+				if all then
+					allPercent = (total / all.total) * 100
+				end
+
+				text = format('%s%s:%s > count: %d | avg: %0.4fms | high: %0.4fms | total: %0.2fms (module %0.2f%% | addon %0.2f%%)\n', text, info.module or '', info.key or '', info.count or 0, info.average or 0, info.high or 0, total, modulePercent, allPercent or 0)
+			end
 		end
+
+		text = format('%s\n', text)
 
 		wipe(temp)
 		wipe(list)
@@ -101,15 +120,25 @@ do
 
 	function E:SortProfilerData(module, data)
 		for key, value in next, data do
-			local clean = CopyTable(value)
-			clean.name = module..':'..key
+			local info = CopyTable(value)
+			info.module = module
+			info.key = key
 
-			tinsert(temp, clean)
+			tinsert(temp, info)
 		end
 
 		sort(temp, E.ProfilerSort)
 
-		E:ShowProfilerData(temp)
+		E:BuildProfilerText(temp, data)
+	end
+
+	function E:ShowProfilerText()
+		if text ~= '' then
+			CH.CopyChatFrameEditBox:SetText(text)
+			CH.CopyChatFrame:Show()
+		end
+
+		text = ''
 	end
 
 	function E:GetProfilerData(msg)
@@ -163,12 +192,7 @@ do
 			end
 		end
 
-		if text ~= '' then
-			CH.CopyChatFrameEditBox:SetText(text)
-			CH.CopyChatFrame:Show()
-		end
-
-		text = ''
+		E:ShowProfilerText()
 	end
 end
 
