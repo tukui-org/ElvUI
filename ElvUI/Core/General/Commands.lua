@@ -78,7 +78,7 @@ do
 	local list = {}
 	local text = ''
 
-	function E:BuildProfilerText(tbl, data)
+	function E:BuildProfilerText(tbl, data, overall)
 		for _, info in ipairs(tbl) do
 			if info.key == '_module' then
 				local all = E.profiler.data._all
@@ -87,7 +87,7 @@ do
 					local percent = (total / all.total) * 100
 					text = format('%s%s > count: %d | total: %0.2fms (addon %0.2f%%)\n', text, info.module or '', info.count or 0, total, percent)
 				end
-			else
+			elseif not overall then
 				local total = info.total or 0
 				local modulePercent = (total / data._module.total) * 100
 
@@ -100,7 +100,9 @@ do
 			end
 		end
 
-		text = format('%s\n', text)
+		if not overall then
+			text = format('%s\n', text)
+		end
 
 		wipe(temp)
 		wipe(list)
@@ -118,7 +120,7 @@ do
 		return self.total > second.total
 	end
 
-	function E:SortProfilerData(module, data)
+	function E:SortProfilerData(module, data, overall)
 		for key, value in next, data do
 			local info = CopyTable(value)
 			info.module = module
@@ -129,7 +131,7 @@ do
 
 		sort(temp, E.ProfilerSort)
 
-		E:BuildProfilerText(temp, data)
+		E:BuildProfilerText(temp, data, overall)
 	end
 
 	function E:ShowProfilerText()
@@ -160,6 +162,20 @@ do
 		end
 	end
 
+	local function FetchAll(overall)
+		local data = E.profiler.data[E]
+		if data then
+			E:SortProfilerData('E', data, overall)
+		end
+
+		for key, module in next, E.modules do
+			local info = E.profiler.data[module]
+			if info then
+				E:SortProfilerData(key, info, overall)
+			end
+		end
+	end
+
 	function E:FetchProfilerData(msg)
 		local switch = lower(msg)
 		if switch ~= '' then
@@ -167,6 +183,8 @@ do
 				E.profiler.reset()
 
 				return E:Print('Reset profiler.')
+			elseif switch == 'all' then
+				FetchAll(true)
 			elseif switch == 'e' then
 				local data = E.profiler.data[E]
 				if data then
@@ -183,17 +201,7 @@ do
 				end
 			end
 		else
-			local data = E.profiler.data[E]
-			if data then
-				E:SortProfilerData('E', data)
-			end
-
-			for key, module in next, E.modules do
-				local info = E.profiler.data[module]
-				if info then
-					E:SortProfilerData(key, info)
-				end
-			end
+			FetchAll()
 		end
 
 		E:ShowProfilerText()
