@@ -163,7 +163,11 @@ do
 	function E:FetchProfilerData(msg)
 		local switch = lower(msg)
 		if switch ~= '' then
-			if switch == 'e' then
+			if switch == 'reset' then
+				E.profiler.reset()
+
+				return E:Print('Reset profiler.')
+			elseif switch == 'e' then
 				local data = E.profiler.data[E]
 				if data then
 					E:SortProfilerData('E', data)

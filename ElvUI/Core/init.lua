@@ -5,7 +5,7 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next, type = gsub, tinsert, next, type
+local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
@@ -30,7 +30,7 @@ local SetCVar = C_CVar.SetCVar
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-local ProfilerData, Profiler = { _all = { total = 0, count = 0 } }
+local ProfilerData, ProfilerReset, Profiler = {}
 do -- not finished
 	local rawset = rawset
 	local unpack = unpack
@@ -106,6 +106,14 @@ do -- not finished
 		end
 	end
 
+	ProfilerReset = function()
+		wipe(ProfilerData)
+
+		ProfilerData._all = { total = 0, count = 0 }
+	end
+
+	ProfilerReset() -- set up the data
+
 	Profiler = function(tbl, ...)
 		-- print('Profiler', tbl)
 
@@ -129,7 +137,7 @@ local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
 local E = Profiler(AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0'))
-E.profiler = {func = Profiler, data = ProfilerData} -- ElvUI_CPU knock off by Simpy
+E.profiler = {func = Profiler, data = ProfilerData, reset = ProfilerReset} -- ElvUI_CPU knock off by Simpy
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree', get = E.noop, name = ''}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
