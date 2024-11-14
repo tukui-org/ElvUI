@@ -289,6 +289,7 @@ function S:FriendsFrame()
 	_G.GuildFrameColumnHeader2:ClearAllPoints()
 	_G.GuildFrameColumnHeader2:Point('LEFT', _G.GuildFrameColumnHeader1, 'RIGHT', -2, -0)
 	_G.GuildFrameColumnHeader2:Width(127)
+
 	for i = 1, _G.GUILDMEMBERS_TO_DISPLAY do
 		local button = _G['GuildFrameButton'..i]
 		local level = _G['GuildFrameButton'..i..'Level']
@@ -312,6 +313,7 @@ function S:FriendsFrame()
 		statusName:ClearAllPoints()
 		statusName:SetPoint('LEFT', 10, 0)
 	end
+
 	hooksecurefunc('GuildStatus_Update', function()
 		if FriendsFrame.playerStatusFrame then
 			local playerZone = E.MapInfo.realZoneText
@@ -347,21 +349,26 @@ function S:FriendsFrame()
 			end
 		end
 	end)
+
 	S:HandleFrame(_G.GuildFrameLFGFrame, true)
 	S:HandleCheckBox(_G.GuildFrameLFGButton)
+
 	for i = 1, 4 do
 		_G['GuildFrameColumnHeader'..i]:StripTextures()
 		_G['GuildFrameColumnHeader'..i]:StyleButton()
 		_G['GuildFrameGuildStatusColumnHeader'..i]:StripTextures()
 		_G['GuildFrameGuildStatusColumnHeader'..i]:StyleButton()
 	end
+
 	_G.GuildListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.GuildListScrollFrameScrollBar)
+
 	S:HandleNextPrevButton(_G.GuildFrameGuildListToggleButton, 'left')
 	S:HandleButton(_G.GuildFrameGuildInformationButton)
 	_G.GuildFrameGuildInformationButton:Point('BOTTOMLEFT', -1, 4)
 	S:HandleButton(_G.GuildFrameAddMemberButton)
 	S:HandleButton(_G.GuildFrameControlButton)
+
 	if _G.GuildFrameImpeachButton then
 		S:HandleButton(_G.GuildFrameImpeachButton)
 	end
@@ -374,6 +381,7 @@ function S:FriendsFrame()
 	_G.GuildMemberRemoveButton:Point('BOTTOMLEFT', 3, 3)
 	S:HandleButton(_G.GuildMemberGroupInviteButton)
 	_G.GuildMemberGroupInviteButton:Point('BOTTOMRIGHT', -3, 3)
+
 	-- Not the reason of the taint
 	S:HandleNextPrevButton(_G.GuildFramePromoteButton, 'up')
 	_G.GuildFramePromoteButton:SetHitRectInsets(0, 0, 0, 0)
@@ -397,6 +405,7 @@ function S:FriendsFrame()
 	_G.GuildMOTDEditButton.backdrop:Point('TOPLEFT', -7, 3)
 	_G.GuildMOTDEditButton.backdrop:Point('BOTTOMRIGHT', 7, -2)
 	_G.GuildMOTDEditButton:SetHitRectInsets(-7, -7, -3, -2)
+
 	-- Info Frame
 	_G.GuildInfoFrame:StripTextures()
 	_G.GuildInfoFrame:CreateBackdrop('Transparent')
@@ -412,6 +421,28 @@ function S:FriendsFrame()
 	_G.GuildInfoCancelButton:Point('BOTTOMRIGHT', _G.GuildInfoFrame, -10, 8)
 	_G.GuildInfoSaveButton:ClearAllPoints()
 	_G.GuildInfoSaveButton:Point('RIGHT', _G.GuildInfoCancelButton, 'LEFT', -4, 0)
+
+	-- Guild Control Frame (Guild Master Only)
+	_G.GuildControlPopupFrame:StripTextures()
+	_G.GuildControlPopupFrame:CreateBackdrop('Transparent')
+	_G.GuildControlPopupFrame.backdrop:Point('TOPLEFT', 3, 0)
+	S:HandleDropDownBox(_G.GuildControlPopupFrameDropdown, 170)
+	-- _G.GuildControlPopupFrameDropdownButton:Size(18)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameAddRankButton, nil, true)
+	_G.GuildControlPopupFrameAddRankButton:Point('LEFT', _G.GuildControlPopupFrameDropdown, 'RIGHT', -2, 3)
+	S:HandleCollapseTexture(_G.GuildControlPopupFrameRemoveRankButton, nil, true)
+	_G.GuildControlPopupFrameRemoveRankButton:Point('LEFT', _G.GuildControlPopupFrameAddRankButton, 'RIGHT', 2, 0)
+	_G.GuildControlPopupFrameEditBox:StripTextures()
+	S:HandleEditBox(_G.GuildControlPopupFrameEditBox)
+	_G.GuildControlPopupFrameEditBox.backdrop:Point('TOPLEFT', 0, -5)
+	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
+	for _, CheckBox in pairs({ _G.GuildControlPopupFrameCheckboxes:GetChildren()}) do
+		if CheckBox:IsObjectType('CheckButton') then
+			S:HandleCheckBox(CheckBox)
+		end
+	end
+	S:HandleButton(_G.GuildControlPopupAcceptButton)
+	S:HandleButton(_G.GuildControlPopupFrameCancelButton)
 
 	-- Raid Frame
 	S:HandleButton(_G.RaidFrameConvertToRaidButton)
