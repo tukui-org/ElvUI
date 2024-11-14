@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
+local CH = E:GetModule('Chat')
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local type, pairs, tonumber = type, pairs, tonumber
+local type, pairs, sort, tonumber = type, pairs, sort, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
+local ipairs, format, tinsert = ipairs, format, tinsert
 
+local CopyTable = CopyTable
 local ReloadUI = ReloadUI
 
 local DisableAddOn = C_AddOns.DisableAddOn
@@ -67,6 +70,141 @@ function E:LuaError(msg)
 		end
 	else
 		E:Print('/edebug on - /edebug off')
+	end
+end
+
+do
+	local temp = {}
+	local list = {}
+	local text = ''
+
+	function E:BuildProfilerText(tbl, data, overall)
+		for _, info in ipairs(tbl) do
+			if info.key == '_module' then
+				local all = E.profiler.data._all
+				if all then
+					local total = info.total or 0
+					local percent = (total / all.total) * 100
+					text = format('%s%s > count: %d | total: %0.2fms (addon %0.2f%%)\n', text, info.module or '', info.count or 0, total, percent)
+				end
+			elseif not overall then
+				local total = info.total or 0
+				local modulePercent = (total / data._module.total) * 100
+
+				local all, allPercent = E.profiler.data._all
+				if all then
+					allPercent = (total / all.total) * 100
+				end
+
+				text = format('%s%s:%s > count: %d | avg: %0.4fms | high: %0.4fms | total: %0.2fms (module %0.2f%% | addon %0.2f%%)\n', text, info.module or '', info.key or '', info.count or 0, info.average or 0, info.high or 0, total, modulePercent, allPercent or 0)
+			end
+		end
+
+		if not overall then
+			text = format('%s\n', text)
+		end
+
+		wipe(temp)
+		wipe(list)
+	end
+
+	function E:ProfilerSort(second)
+		if self.total == second.total and self.high == self.high then
+			return self.count > second.count
+		end
+
+		if self.total == second.total then
+			return self.high > second.high
+		end
+
+		return self.total > second.total
+	end
+
+	function E:SortProfilerData(module, data, overall)
+		for key, value in next, data do
+			local info = CopyTable(value)
+			info.module = module
+			info.key = key
+
+			tinsert(temp, info)
+		end
+
+		sort(temp, E.ProfilerSort)
+
+		E:BuildProfilerText(temp, data, overall)
+	end
+
+	function E:ShowProfilerText()
+		if text ~= '' then
+			CH.CopyChatFrameEditBox:SetText(text)
+			CH.CopyChatFrame:Show()
+		end
+
+		text = ''
+	end
+
+	function E:GetProfilerData(msg)
+		local switch = lower(msg)
+		if switch ~= '' then
+			if switch == 'e' then
+				local data = E.profiler.data[E]
+				if data then
+					E:Dump(data, true)
+				end
+			else
+				for key, module in next, E.modules do
+					local data = switch == lower(key) and E.profiler.data[module]
+					if data then
+						E:Dump(data, true)
+					end
+				end
+			end
+		end
+	end
+
+	local function FetchAll(overall)
+		local data = E.profiler.data[E]
+		if data then
+			E:SortProfilerData('E', data, overall)
+		end
+
+		for key, module in next, E.modules do
+			local info = E.profiler.data[module]
+			if info then
+				E:SortProfilerData(key, info, overall)
+			end
+		end
+	end
+
+	function E:FetchProfilerData(msg)
+		local switch = lower(msg)
+		if switch ~= '' then
+			if switch == 'reset' then
+				E.profiler.reset()
+
+				return E:Print('Reset profiler.')
+			elseif switch == 'all' then
+				FetchAll(true)
+			elseif switch == 'e' then
+				local data = E.profiler.data[E]
+				if data then
+					E:SortProfilerData('E', data)
+				end
+			else
+				for key, module in next, E.modules do
+					local data = switch == lower(key) and E.profiler.data[module]
+					if data then
+						E:SortProfilerData(key, data)
+
+						break
+					end
+				end
+			end
+		else
+			FetchAll()
+		end
+
+		E:ShowProfilerText()
 	end
 end
 
@@ -251,25 +389,28 @@ end
 
 function E:LoadCommands()
 	if E.private.actionbar.enable then
-		self:RegisterChatCommand('kb', AB.ActivateBindMode)
+		E:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 
-	self:RegisterChatCommand('ec', 'ToggleOptions')
-	self:RegisterChatCommand('elvui', 'ToggleOptions')
+	E:RegisterChatCommand('ec', 'ToggleOptions')
+	E:RegisterChatCommand('elvui', 'ToggleOptions')
 
-	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
+	E:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
 
-	self:RegisterChatCommand('moveui', 'ToggleMoveMode')
-	self:RegisterChatCommand('resetui', 'ResetUI')
+	E:RegisterChatCommand('moveui', 'ToggleMoveMode')
+	E:RegisterChatCommand('resetui', 'ResetUI')
 
-	self:RegisterChatCommand('emove', 'ToggleMoveMode')
-	self:RegisterChatCommand('ereset', 'ResetUI')
-	self:RegisterChatCommand('edebug', 'LuaError')
+	E:RegisterChatCommand('emove', 'ToggleMoveMode')
+	E:RegisterChatCommand('ereset', 'ResetUI')
+	E:RegisterChatCommand('edebug', 'LuaError')
 
-	self:RegisterChatCommand('ehelp', 'DisplayCommands')
-	self:RegisterChatCommand('ecommands', 'DisplayCommands')
-	self:RegisterChatCommand('eblizzard', 'EnableBlizzardAddOns')
-	self:RegisterChatCommand('estatus', 'ShowStatusReport')
-	self:RegisterChatCommand('efixdb', 'DBConvertProfile')
-	self:RegisterChatCommand('egrid', 'Grid')
+	E:RegisterChatCommand('eprofile', 'GetProfilerData') -- temp until we make display window
+	E:RegisterChatCommand('eprofiler', 'FetchProfilerData') -- temp until we make display window
+
+	E:RegisterChatCommand('ehelp', 'DisplayCommands')
+	E:RegisterChatCommand('ecommands', 'DisplayCommands')
+	E:RegisterChatCommand('eblizzard', 'EnableBlizzardAddOns')
+	E:RegisterChatCommand('estatus', 'ShowStatusReport')
+	E:RegisterChatCommand('efixdb', 'DBConvertProfile')
+	E:RegisterChatCommand('egrid', 'Grid')
 end
