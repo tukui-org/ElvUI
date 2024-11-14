@@ -36,6 +36,10 @@ local function BattleNetFrame_OnLeave(button)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
+local function BattleNetFrame_OnClick()
+	_G.FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame()
+end
+
 local function RAFRewardQuality(button)
 	local color = button.item and button.item:GetItemQualityColor()
 	if color and button.Icon then
@@ -276,12 +280,11 @@ function S:FriendsFrame()
 	BattlenetFrame:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
 	BattlenetFrame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
-	BattlenetFrame:SetScript('OnClick', function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
+	BattlenetFrame:SetScript('OnClick', BattleNetFrame_OnClick)
 	BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
 	BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
-
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture(nil)
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetTemplate('Transparent')
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
