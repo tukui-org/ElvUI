@@ -12,11 +12,84 @@ local hooksecurefunc = hooksecurefunc
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
 
-local function skinFriendRequest(frame)
+local function SkinFriendRequest(frame)
 	if frame.IsSkinned then return end
+
 	S:HandleButton(frame.DeclineButton, nil, true)
 	S:HandleButton(frame.AcceptButton)
+
 	frame.IsSkinned = true
+end
+
+local function CheckBattlenetStatus()
+	if BNFeaturesEnabled() then
+		_G.FriendsFrameBattlenetFrame.BroadcastButton:Hide()
+
+		if BNConnected() then
+			_G.FriendsFrameBattlenetFrame:Hide()
+			_G.FriendsFrameBroadcastInput:Show()
+			_G.FriendsFrameBroadcastInput_UpdateDisplay()
+		end
+	end
+end
+
+local function UpdateFriendsFrame()
+	if _G.FriendsFrame.selectedTab == 1 and _G.FriendsTabHeader.selectedTab == 1 and _G.FriendsFrameBattlenetFrame.Tag:IsShown() then
+		_G.FriendsFrameTitleText:Hide()
+	else
+		_G.FriendsFrameTitleText:Show()
+	end
+end
+
+local function AcquireInvitePool(pool)
+	if pool.activeObjects then
+		for object in pairs(pool.activeObjects) do
+			SkinFriendRequest(object)
+		end
+	end
+end
+
+local function UpdateWhoList()
+	local numWhos = C_FriendList_GetNumWhoResults()
+	if numWhos == 0 then return end
+
+	if numWhos > _G.WHOS_TO_DISPLAY then
+		numWhos = _G.WHOS_TO_DISPLAY
+	end
+
+	local playerZone = E.MapInfo.realZoneText
+	for i = 1, numWhos do
+		local button = _G['WhoFrameButton'..i]
+		if button and button.whoIndex then
+			local info = C_FriendList_GetWhoInfo(button.whoIndex)
+			if info.filename then
+				local classTextColor = E:ClassColor(info.filename)
+				_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+
+				button.icon:Show()
+				button.icon:SetTexCoord(E:GetClassCoords(info.filename))
+			else
+				local classTextColor = _G.HIGHLIGHT_FONT_COLOR
+				_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+
+				button.icon:Hide()
+			end
+
+			local levelTextColor = GetQuestDifficultyColor(info.level)
+			_G['WhoFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
+			_G['WhoFrameButton'..i..'Class']:SetTextColor(1, 1, 1)
+
+			if info.area == playerZone then
+				_G['WhoFrameButton'..i..'Variable']:SetTextColor(0, 1, 0)
+			else
+				_G['WhoFrameButton'..i..'Variable']:SetTextColor(1, 1, 1)
+			end
+		end
+	end
+end
+
+local function RaidInfoFrame_OnShow()
+	_G.RaidInfoFrame:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', 0, 0)
 end
 
 function S:FriendsFrame()
@@ -91,27 +164,11 @@ function S:FriendsFrame()
 	_G.FriendsFrameBroadcastInputRight:Kill()
 	_G.FriendsFrameBroadcastInputMiddle:Kill()
 
-	hooksecurefunc('FriendsFrame_CheckBattlenetStatus', function()
-		if BNFeaturesEnabled() then
-			FriendsFrameBattlenetFrame.BroadcastButton:Hide()
-
-			if BNConnected() then
-				FriendsFrameBattlenetFrame:Hide()
-				_G.FriendsFrameBroadcastInput:Show()
-				_G.FriendsFrameBroadcastInput_UpdateDisplay()
-			end
-		end
-	end)
+	hooksecurefunc('FriendsFrame_CheckBattlenetStatus', CheckBattlenetStatus)
 
 	_G.FriendsFrame_CheckBattlenetStatus()
 
-	hooksecurefunc('FriendsFrame_Update', function()
-		if FriendsFrame.selectedTab == 1 and _G.FriendsTabHeader.selectedTab == 1 and _G.FriendsFrameBattlenetFrame.Tag:IsShown() then
-			_G.FriendsFrameTitleText:Hide()
-		else
-			_G.FriendsFrameTitleText:Show()
-		end
-	end)
+	hooksecurefunc('FriendsFrame_Update', UpdateFriendsFrame)
 
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
@@ -129,16 +186,9 @@ function S:FriendsFrame()
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetPoint('LEFT', 11, 0)
 	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetPoint('TOPLEFT', 8, -10)
 
-	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', function(pool)
-		if pool.activeObjects then
-			for object in pairs(pool.activeObjects) do
-				skinFriendRequest(object)
-			end
-		end
-	end)
+	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', AcquireInvitePool)
 
 	S:HandleFrame(_G.FriendsFriendsFrame, true)
-
 	_G.FriendsFriendsList:StripTextures()
 	_G.IgnoreListFrame:StripTextures()
 
@@ -221,44 +271,7 @@ function S:FriendsFrame()
 		className:Hide()
 	end
 
-	hooksecurefunc('WhoList_Update', function()
-		local numWhos = C_FriendList_GetNumWhoResults()
-		if numWhos == 0 then return end
-
-		if numWhos > _G.WHOS_TO_DISPLAY then
-			numWhos = _G.WHOS_TO_DISPLAY
-		end
-
-		local playerZone = E.MapInfo.realZoneText
-		for i = 1, numWhos do
-			local button = _G['WhoFrameButton'..i]
-			if button and button.whoIndex then
-				local info = C_FriendList_GetWhoInfo(button.whoIndex)
-				if info.filename then
-					local classTextColor = E:ClassColor(info.filename)
-					_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-
-					button.icon:Show()
-					button.icon:SetTexCoord(E:GetClassCoords(info.filename))
-				else
-					local classTextColor = _G.HIGHLIGHT_FONT_COLOR
-					_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-
-					button.icon:Hide()
-				end
-
-				local levelTextColor = GetQuestDifficultyColor(info.level)
-				_G['WhoFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
-				_G['WhoFrameButton'..i..'Class']:SetTextColor(1, 1, 1)
-
-				if info.area == playerZone then
-					_G['WhoFrameButton'..i..'Variable']:SetTextColor(0, 1, 0)
-				else
-					_G['WhoFrameButton'..i..'Variable']:SetTextColor(1, 1, 1)
-				end
-			end
-		end
-	end)
+	hooksecurefunc('WhoList_Update', UpdateWhoList)
 
 	-- Raid Tab
 	S:HandleButton(_G.RaidFrameRaidInfoButton)
@@ -268,9 +281,7 @@ function S:FriendsFrame()
 	-- Raid Info Frame
 	_G.RaidInfoFrame:StripTextures(true)
 	_G.RaidInfoFrame:CreateBackdrop('Transparent')
-	_G.RaidInfoFrame:HookScript('OnShow', function()
-		_G.RaidInfoFrame:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', 0, 0)
-	end)
+	_G.RaidInfoFrame:HookScript('OnShow', RaidInfoFrame_OnShow)
 
 	_G.RaidInfoScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
