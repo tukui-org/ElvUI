@@ -181,14 +181,13 @@ E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
--- Expansions
-E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
-E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
-E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
-E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+do -- Expansions
+	E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
+	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
-do
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
 	E.ClassicSOD = season == 2 -- Season of Discovery
