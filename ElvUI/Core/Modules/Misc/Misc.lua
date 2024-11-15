@@ -373,6 +373,10 @@ function M:Initialize()
 	M:ZoneTextToggle()
 	M:ToggleInterrupt()
 
+	if not E.ClassicAnniv then -- it uses Blizzard_GroupFinder_VanillaStyle
+		M:LoadQueueStatus()
+	end
+
 	M:RegisterEvent('MERCHANT_SHOW')
 	M:RegisterEvent('RESURRECT_REQUEST')
 	M:RegisterEvent('PLAYER_REGEN_DISABLED', 'ErrorFrameToggle')
@@ -385,10 +389,6 @@ function M:Initialize()
 	M:RegisterEvent('COMBAT_TEXT_UPDATE')
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
-
-	if not E.ClassicAnniv then
-		M:LoadQueueStatus()
-	end
 
 	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.ClassicAnniv and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
