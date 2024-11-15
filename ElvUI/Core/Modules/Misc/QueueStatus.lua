@@ -145,7 +145,7 @@ function M:HandleQueueStatus(creation)
 end
 
 function M:GetQueueStatusButton()
-	return _G.QueueStatusButton or _G.MiniMapLFGFrame
+	return _G.QueueStatusButton or _G.MiniMapLFGFrame or _G.LFGMinimapFrame
 end
 
 function M:LoadQueueStatus()

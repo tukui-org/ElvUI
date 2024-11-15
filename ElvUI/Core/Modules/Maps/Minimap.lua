@@ -611,6 +611,17 @@ function M:ClusterPoint(_, anchor)
 	end
 end
 
+function M:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+	if initLogin or isReload then
+		local LFGIconBorder = _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder or _G.LFGMinimapFrameBorder
+		if LFGIconBorder then
+			LFGIconBorder:Hide()
+		end
+	end
+
+	M:Update_ZoneText()
+end
+
 function M:Initialize()
 	if E.private.general.minimap.enable then
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
@@ -711,7 +722,7 @@ function M:Initialize()
 	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
 	M:SetScale(Minimap.location, 1)
 
-	M:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update_ZoneText')
+	M:RegisterEvent('PLAYER_ENTERING_WORLD')
 	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
@@ -767,10 +778,6 @@ function M:Initialize()
 
 	if _G.HybridMinimap then
 		M:SetupHybridMinimap()
-	end
-
-	if _G.MiniMapLFGFrame then
-		(E.Cata and _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder):Hide()
 	end
 
 	M:RegisterEvent('ADDON_LOADED')
