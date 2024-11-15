@@ -300,6 +300,8 @@ function M:ADDON_LOADED(_, addon)
 		M:SetupInspectPageInfo()
 	elseif addon == 'Blizzard_PTRFeedback' then
 		KillFeedback(_G.PTR_IssueReporter)
+	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
+		M:LoadQueueStatus()
 	end
 end
 
@@ -368,7 +370,6 @@ function M:Initialize()
 	M:LoadChatBubbles()
 	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
-	M:LoadQueueStatus()
 	M:ZoneTextToggle()
 	M:ToggleInterrupt()
 
@@ -385,7 +386,11 @@ function M:Initialize()
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 
-	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback' } do
+	if not E.ClassicAnniv then
+		M:LoadQueueStatus()
+	end
+
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.ClassicAnniv and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
 			M:ADDON_LOADED(nil, addon)
 		end

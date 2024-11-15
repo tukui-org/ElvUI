@@ -190,8 +190,13 @@ E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
-E.ClassicHC = IsHardcoreActive and IsHardcoreActive()
-E.ClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
+do
+	local season = C_Seasons and C_Seasons.GetActiveSeason()
+	E.ClassicHC = season == 3 -- Hardcore
+	E.ClassicSOD = season == 2 -- Season of Discovery
+	E.ClassicAnniv = season == 11 -- Anniversary
+	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
+end
 
 -- Item Qualitiy stuff, also used by MerathilisUI
 E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
