@@ -9,9 +9,38 @@ local hooksecurefunc = hooksecurefunc
 local function LFGTabs()
 	_G.LFGParentFrameTab1:ClearAllPoints()
 	_G.LFGParentFrameTab1:Point('TOPLEFT', _G.LFGParentFrame, 'BOTTOMLEFT', 1, 72)
+
 	_G.LFGParentFrameTab2:ClearAllPoints()
-	_G.LFGParentFrameTab2:Point('LEFT', _G.LFGParentFrameTab1, 'RIGHT', -19
-	, 0)
+	_G.LFGParentFrameTab2:Point('LEFT', _G.LFGParentFrameTab1, 'RIGHT', -19, 0)
+end
+
+local function InitActivityButton(button, data)
+	local checkButton = button.CheckButton
+	if checkButton then
+		if not checkButton.IsSkinned then
+			S:HandleCheckBox(checkButton, nil, true)
+		end
+
+		if data and data.activityID then
+			checkButton:SetChecked(_G.LFGListingFrame:IsActivitySelected(data.activityID))
+			checkButton:SetCheckedTexture([[Interface\Buttons\UI-CheckBox-Check]])
+		end
+	end
+end
+
+local function InitActivityGroupButton(button, _, isCollapsed)
+	if button.ExpandOrCollapseButton then
+		if isCollapsed then
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
+		else
+			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
+		end
+	end
+
+	local checkButton = button.CheckButton
+	if checkButton and not checkButton.IsSkinned then
+		S:HandleCheckBox(button.CheckButton, nil, true)
+	end
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
@@ -28,10 +57,9 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	LFGListingFrame:HookScript('OnShow', LFGTabs)
 
 	local LFGBrowseFrame = _G.LFGBrowseFrame
+	S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar)
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
-
-	S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar)
 
 	-- Mouseover Tooltip
 	if E.private.skins.blizzard.tooltip then
@@ -74,7 +102,6 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	end
 
 	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
-
 	S:HandleEditBox(_G.LFGListingComment)
 
 	-- DropDowns
@@ -115,30 +142,18 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	end
 
 	for _, child in next, { _G.LFGParentFrame:GetChildren() } do
-		if not child.IsSkinned and child:GetObjectType() == 'Button' then
+		if child:IsObjectType('Button') and not child.IsSkinned then
+			child.IsSkinned = true
+
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)
 
 			S:HandleCloseButton(child)
-			child.IsSkinned = true
 		end
 	end
 
-	hooksecurefunc('LFGListingActivityView_InitActivityButton', function(button, elementData)
-		S:HandleCheckBox(button.CheckButton, nil, true)
-		button.CheckButton:SetChecked(LFGListingFrame:IsActivitySelected(elementData.activityID))
-		button.CheckButton:SetCheckedTexture([[Interface\Buttons\UI-CheckBox-Check]])
-	end)
-
-	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', function(button, _, isCollapsed)
-		if isCollapsed then
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-
-		S:HandleCheckBox(button.CheckButton, nil, true)
-	end)
+	hooksecurefunc('LFGListingActivityView_InitActivityButton', InitActivityButton)
+	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', InitActivityGroupButton)
 end
 
 S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
