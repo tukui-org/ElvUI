@@ -143,12 +143,11 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 
 	for _, child in next, { _G.LFGParentFrame:GetChildren() } do
 		if child:IsObjectType('Button') and not child.IsSkinned then
-			child.IsSkinned = true
+			S:HandleCloseButton(child)
 
 			child:ClearAllPoints()
 			child:Point('TOPRIGHT', -26, -6)
-
-			S:HandleCloseButton(child)
+			child.IsSkinned = true
 		end
 	end
 
