@@ -1157,8 +1157,12 @@ function S:HandleDropDownBox(frame, width, template, old)
 	end
 
 	if not old then
-		if frame.Arrow then
+		if frame.Arrow then -- most dropdowns
 			frame.Arrow:SetAlpha(0)
+		end
+
+		if frame.Button then -- Classic Anniversary LFG dropdown
+			frame.Button:SetAlpha(0)
 		end
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
