@@ -194,6 +194,12 @@ do
 	E.ClassicSOD = season == 2 -- Season of Discovery
 	E.ClassicAnniv = season == 11 -- Anniversary
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
+
+	local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
+
+	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
+	E.IsEngravingEnabled = IsEngravingEnabled and IsEngravingEnabled()
 end
 
 -- Item Qualitiy stuff, also used by MerathilisUI
