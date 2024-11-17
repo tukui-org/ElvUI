@@ -44,6 +44,7 @@ function S:GarrisonShipyardTooltip()
 	StyleTooltip(_G.GarrisonBuildingFrame and _G.GarrisonBuildingFrame.BuildingLevelTooltip)
 	StyleTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
 	StyleTooltip(_G.GarrisonMissionMechanicTooltip)
+	StyleTooltip(_G.GarrisonBonusAreaTooltip)
 end
 
 function S:GarrisonTooltip()
