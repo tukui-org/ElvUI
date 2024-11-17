@@ -1298,17 +1298,17 @@ function lib:CVAR_UPDATE(_, cvar)
 end
 
 do
-  local chestSlotItem, legSlotItem
   local ChestSlotID = GetInventorySlotInfo("CHESTSLOT")
   local LegSlotID = GetInventorySlotInfo("LEGSSLOT")
 
+  local chestSlotItem, legSlotItem -- local cache of the items
   function lib:UNIT_INVENTORY_CHANGED(event, unit) -- limited to Mages only currently
-    self.chestSlotItem = GetInventoryItemLink("player", ChestSlotID) -- Mage: Regeneration
-    self.legSlotItem = GetInventoryItemLink("player", LegSlotID) -- Mage: Mass Regeneration
+    local ChestItem = GetInventoryItemLink("player", ChestSlotID) -- Mage: Regeneration
+    local LegItem = GetInventoryItemLink("player", LegSlotID) -- Mage: Mass Regeneration
 
-    if self.initialized and unit == "player" and (chestSlotItem ~= self.chestSlotItem or legSlotItem ~= self.legSlotItem) then
-      chestSlotItem = self.chestSlotID
-      legSlotItem = self.legSlotID
+    if self.initialized and unit == "player" and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+      chestSlotItem = ChestItem
+      legSlotItem = LegItem
 
       self:scheduleInit()
     end
