@@ -115,7 +115,7 @@ function DT:SetupPanelOptions(name, data)
 
 		local idx = tostring(i)
 		local hasPoint = i <= (custom and custom.numPoints or db.numPoints or 3)
-		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList) or nil
+		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList, nil, 'double') or nil
 
 		if data and data.battleground ~= nil then
 			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1)
@@ -125,7 +125,7 @@ function DT:SetupPanelOptions(name, data)
 				options.args.battledts.inline = true
 			end
 
-			options.args.battledts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList) or nil
+			options.args.battledts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList, nil, 'double') or nil
 		end
 	end
 end
