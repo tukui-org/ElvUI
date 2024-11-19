@@ -1,3 +1,12 @@
+### Version 13.81 [ November 19th 2024 ]
+*   Blacklisted Auras: Well-Honed Instincts
+*   Unitframe color options added to set Health Breakpoint, only for Friendly units, and Color Backdrop. (Thanks BeeVa)
+*   Chat would error when attempting to move it.
+*   Attempted a fix for old Dropdowns from other addons causing a Skin error.
+*   Minimap Right Click for Tracking works on Cataclysm.
+*   Mover selection uses the new dropdown on Cataclysm.
+*   Spellbook Tooltips not working on Cataclysm.
+
 ### Version 13.80 [ October 29th 2024 ]
 *   Currency Transfer skin updated.
 *   Blacklisted Auras: Flight Style, Call of the Elder Druid, DK Blood Draw, WoW's Anniversary, and Warband Mentored Leveling.
