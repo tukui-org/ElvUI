@@ -20,7 +20,6 @@ function UF:Construct_RaidFrames()
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 	self.AuraHighlight = UF:Construct_AuraHighlight(self)
-	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 	self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.PhaseIndicator = UF:Construct_PhaseIcon(self)
@@ -38,6 +37,7 @@ function UF:Construct_RaidFrames()
 
 	if not E.Classic then
 		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
+		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
 		self.ClassBar = 'AlternativePower'
 	end
