@@ -1451,9 +1451,7 @@ function E:DBConvertTWW()
 
 		E.db.tooltip.itemCount = db
 	end
-end
 
-function E:DBConvertDev()
 	local healthBreak = E.db.unitframe.colors.healthBreak
 	local onlyLow = healthBreak.onlyLow
 	if onlyLow ~= nil then
@@ -1465,7 +1463,9 @@ function E:DBConvertDev()
 			healthBreak.threshold.good = false
 		end
 	end
+end
 
+function E:DBConvertDev()
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
