@@ -1332,10 +1332,10 @@ do
 		end
 
 		if iconRoles[which] then
-			UF:Configure_RoleIcon(frame)
 			UF:Configure_ReadyCheckIcon(frame)
 
 			if not E.Classic then
+				UF:Configure_RoleIcon(frame)
 				UF:Configure_SummonIcon(frame)
 				UF:Configure_AltPowerBar(frame)
 			end

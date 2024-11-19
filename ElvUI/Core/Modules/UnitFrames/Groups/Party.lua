@@ -31,7 +31,6 @@ function UF:Construct_PartyFrames()
 		self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 		self.SummonIndicator = UF:Construct_SummonIcon(self)
 		self.CombatIndicator = UF:Construct_CombatIndicator(self)
-		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 		self.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(self)
 		self.MouseGlow = UF:Construct_MouseGlow(self)
 		self.PhaseIndicator = UF:Construct_PhaseIcon(self)
@@ -44,6 +43,7 @@ function UF:Construct_PartyFrames()
 
 		if not E.Classic then
 			self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
+			self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end

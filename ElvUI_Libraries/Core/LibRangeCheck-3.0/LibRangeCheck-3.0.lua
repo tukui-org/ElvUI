@@ -40,7 +40,7 @@ License: MIT
 -- @class file
 -- @name LibRangeCheck-3.0
 local MAJOR_VERSION = "LibRangeCheck-3.0-ElvUI"
-local MINOR_VERSION = 24 -- based off real minor version: 26
+local MINOR_VERSION = 25 -- based off real minor version: 26
 
 -- GLOBALS: LibStub, CreateFrame
 
@@ -66,7 +66,7 @@ local setmetatable = setmetatable
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local CheckInteractDistance = CheckInteractDistance
 local GetInventoryItemLink = GetInventoryItemLink
-local GetTime = GetTime
+local GetInventorySlotInfo = GetInventorySlotInfo
 local InCombatLockdown = InCombatLockdown
 local UnitCanAssist = UnitCanAssist
 local UnitCanAttack = UnitCanAttack
@@ -77,6 +77,7 @@ local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitRace = UnitRace
+local GetTime = GetTime
 
 local GetItemInfo = C_Item.GetItemInfo
 local IsItemInRange = C_Item.IsItemInRange
@@ -140,8 +141,6 @@ end or _G.GetSpellTabInfo
 
 local C_Timer = C_Timer
 local Item = Item
-
-local HandSlotId = GetInventorySlotInfo("HANDSSLOT")
 
 local isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
@@ -1062,7 +1061,6 @@ function lib:init(forced)
   local _, playerRace = UnitRace("player")
 
   local interactList = InteractLists[playerRace] or DefaultInteractList
-  self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
 
   local changed = false
   if updateCheckers(self.friendRC, self.friendRCInCombat, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
@@ -1299,9 +1297,21 @@ function lib:CVAR_UPDATE(_, cvar)
   end
 end
 
-function lib:UNIT_INVENTORY_CHANGED(event, unit)
-  if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
-    self:scheduleInit()
+do
+  local ChestSlotID = GetInventorySlotInfo("CHESTSLOT")
+  local LegSlotID = GetInventorySlotInfo("LEGSSLOT")
+
+  local chestSlotItem, legSlotItem -- local cache of the items
+  function lib:UNIT_INVENTORY_CHANGED(event, unit) -- limited to Mages only currently
+    local ChestItem = GetInventoryItemLink("player", ChestSlotID) -- Mage: Regeneration
+    local LegItem = GetInventoryItemLink("player", LegSlotID) -- Mage: Mass Regeneration
+
+    if self.initialized and unit == "player" and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+      chestSlotItem = ChestItem
+      legSlotItem = LegItem
+
+      self:scheduleInit()
+    end
   end
 end
 
@@ -1432,8 +1442,7 @@ function lib:activate()
     end
 
     local _, playerClass = UnitClass("player")
-    if playerClass == "MAGE" or playerClass == "SHAMAN" then
-      -- Mage and Shaman gladiator gloves modify spell ranges
+    if playerClass == "MAGE" then
       frame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
     end
   end
