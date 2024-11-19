@@ -26,6 +26,7 @@ local toggles = {
 	guildregistrar = L["Guild Registrar"],
 	help = L["Help Frame"],
 	inspect = L["Inspect"],
+	lfg = L["LFG_TITLE"],
 	loot = L["Loot Frame"],
 	macro = L["MACROS"],
 	mail = L["Mail Frame"],
@@ -61,7 +62,6 @@ if E.Cata or E.Retail then
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.gbank = L["Guild Bank"]
 	toggles.pvp = L["PvP Frames"]
-	toggles.lfg = L["LFG_TITLE"]
 end
 
 if not E.Retail then
