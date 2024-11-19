@@ -7,6 +7,8 @@ local UnitAffectingCombat = UnitAffectingCombat
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 function UF:Construct_RoleIcon(frame)
+	if E.Classic then return end
+
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
 	tex:Size(17)
 	tex:Point('BOTTOM', frame.Health, 'BOTTOM', 0, 2)
