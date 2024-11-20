@@ -43,7 +43,7 @@ local oUF = ns.oUF
 local UnitGUID = UnitGUID
 local UnitIsConnected = UnitIsConnected
 local UnitIsVisible = UnitIsVisible
-local UnitClassBase = UnitClassBase
+local UnitClass = UnitClass
 -- end block
 
 local function Update(self, event)
@@ -90,9 +90,12 @@ local function Update(self, event)
 				element:SetUnit(unit)
 			end
 		elseif element.useClassBase then
-			local classBase = UnitClassBase(unit)
-			if classBase then
-				element:SetAtlas('classicon-' .. classBase)
+			-- BUG: UnitClassBase can't be trusted
+			--      https://github.com/Stanzilla/WoWUIBugs/issues/621
+
+			local _, className = UnitClass(unit)
+			if className then
+				element:SetAtlas('classicon-' .. className)
 			end
 		end
 	end
