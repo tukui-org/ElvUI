@@ -16,6 +16,7 @@ local object = CreateFrame('Frame')
 local pooler = { frame = object }
 oUF.Pooler = Profiler(pooler)
 
+object.tracked = {}
 object.events = {}
 object.times = {}
 
@@ -73,8 +74,13 @@ pooler.execute = function(event, pool, instant, arg1, ...)
 end
 
 pooler.update = function()
-	for event, pool in pairs(object.events) do
-		pooler.execute(event, pool)
+	for event in pairs(object.tracked) do
+		local pool = object.events[event]
+		if pool then
+			pooler.execute(event, pool)
+		end
+
+		object.tracked[event] = nil
 	end
 end
 
@@ -90,13 +96,17 @@ pooler.tracker = function(frame, event, arg1, ...)
 		elseif arg1 ~= nil then -- require arg1, no unitless
 			local pooled = pool[frame]
 			if pooled then
+				if not object.tracked[event] then
+					object.tracked[event] = true
+				end
+
 				local eventData = pooled.data[event]
 				if not eventData then
 					eventData = {}
 					pooled.data[event] = eventData
 				end
 
-				tinsert(eventData, {arg1, ...})
+				tinsert(eventData, { arg1, ... })
 			end
 		end
 
@@ -126,7 +136,7 @@ function oUF:RegisterEvent(frame, event, func)
 
 	local framePool = eventPool[frame]
 	if not framePool then
-		framePool = {functions = {}, data = {}}
+		framePool = { functions = {}, data = {} }
 		eventPool[frame] = framePool
 	end
 
