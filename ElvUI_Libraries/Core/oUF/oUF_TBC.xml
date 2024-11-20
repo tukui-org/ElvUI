@@ -1,5 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file="init.lua"/>
+	<Script file="simpy/profiler.lua"/>
+	<Script file="simpy/pooler.lua"/>
+	<Script file="simpy/auraskip.lua"/>
 	<Script file="private.lua"/>
 	<Script file="ouf.lua"/>
 	<Script file="events.lua"/>

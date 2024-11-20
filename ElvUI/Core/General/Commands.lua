@@ -6,6 +6,7 @@ local AB = E:GetModule('ActionBars')
 local type, pairs, sort, tonumber = type, pairs, sort, tonumber
 local lower, wipe, next, print = strlower, wipe, next, print
 local ipairs, format, tinsert = ipairs, format, tinsert
+local strmatch, gsub = strmatch, gsub
 
 local CopyTable = CopyTable
 local ReloadUI = ReloadUI
@@ -79,19 +80,20 @@ do
 	local text = ''
 
 	function E:BuildProfilerText(tbl, data, overall)
+		local full = not overall or overall == 2
 		for _, info in ipairs(tbl) do
 			if info.key == '_module' then
-				local all = E.profiler.data._all
+				local all = E.Profiler.data._all
 				if all then
 					local total = info.total or 0
 					local percent = (total / all.total) * 100
 					text = format('%s%s > count: %d | total: %0.2fms (addon %0.2f%%)\n', text, info.module or '', info.count or 0, total, percent)
 				end
-			elseif not overall then
+			elseif full then
 				local total = info.total or 0
 				local modulePercent = (total / data._module.total) * 100
 
-				local all, allPercent = E.profiler.data._all
+				local all, allPercent = E.Profiler.data._all
 				if all then
 					allPercent = (total / all.total) * 100
 				end
@@ -100,7 +102,7 @@ do
 			end
 		end
 
-		if not overall then
+		if full then
 			text = format('%s\n', text)
 		end
 
@@ -145,33 +147,78 @@ do
 
 	function E:GetProfilerData(msg)
 		local switch = lower(msg)
-		if switch ~= '' then
-			if switch == 'e' then
-				local data = E.profiler.data[E]
+		if switch == '' then return end
+
+		local ouf = switch == 'ouf'
+		if ouf or switch == 'e' then
+			local data = E.Profiler.data[ouf and E.oUF or E]
+			if data then
+				E:Dump(data, true)
+			end
+		elseif switch == 'pooler' then
+			local data = E.Profiler.data[E.oUF.Pooler]
+			if data then
+				E:Dump(data, true)
+			end
+		elseif strmatch(switch, '^ouf%s+') then
+			local element = gsub(switch, '^ouf%s+', '')
+			if element == '' then return end
+
+			for key, module in next, E.oUF.elements do
+				local data = element == lower(key) and E.Profiler.data[module]
 				if data then
 					E:Dump(data, true)
 				end
-			else
-				for key, module in next, E.modules do
-					local data = switch == lower(key) and E.profiler.data[module]
-					if data then
-						E:Dump(data, true)
-					end
+			end
+		else
+			for key, module in next, E.modules do
+				local data = switch == lower(key) and E.Profiler.data[module]
+				if data then
+					E:Dump(data, true)
 				end
 			end
 		end
 	end
 
 	local function FetchAll(overall)
-		local data = E.profiler.data[E]
-		if data then
-			E:SortProfilerData('E', data, overall)
-		end
+		if overall == 2 then
+			local ouf = E.Profiler.data[E.oUF]
+			if ouf then
+				E:SortProfilerData('oUF', ouf, overall)
+			end
 
-		for key, module in next, E.modules do
-			local info = E.profiler.data[module]
-			if info then
-				E:SortProfilerData(key, info, overall)
+			local private = E.Profiler.oUF_Private -- this is special
+			if private then
+				E:SortProfilerData('oUF.Private', private, overall)
+			end
+
+			local pooler = E.Profiler.data[E.oUF.Pooler]
+			if pooler then
+				E:SortProfilerData('oUF.Pooler', pooler, overall)
+			end
+
+			for key, module in next, E.oUF.elements do
+				local info = E.Profiler.data[module]
+				if info then
+					E:SortProfilerData(key, info, overall)
+				end
+			end
+		else
+			local data = E.Profiler.data[E]
+			if data then
+				E:SortProfilerData('E', data, overall)
+			end
+
+			local ouf = overall and E.Profiler.data[E.oUF]
+			if ouf then
+				E:SortProfilerData('oUF', ouf, overall)
+			end
+
+			for key, module in next, E.modules do
+				local info = E.Profiler.data[module]
+				if info then
+					E:SortProfilerData(key, info, overall)
+				end
 			end
 		end
 	end
@@ -180,19 +227,43 @@ do
 		local switch = lower(msg)
 		if switch ~= '' then
 			if switch == 'reset' then
-				E.profiler.reset()
+				E.Profiler.reset()
 
 				return E:Print('Reset profiler.')
 			elseif switch == 'all' then
-				FetchAll(true)
+				FetchAll(1)
+			elseif switch == 'ouf' then
+				FetchAll(2)
 			elseif switch == 'e' then
-				local data = E.profiler.data[E]
+				local data = E.Profiler.data[E]
 				if data then
 					E:SortProfilerData('E', data)
 				end
+			elseif switch == 'ouf' then
+				local data = E.Profiler.data[E.oUF]
+				if data then
+					E:SortProfilerData('oUF', data)
+				end
+			elseif switch == 'pooler' then
+				local data = E.Profiler.data[E.oUF.Pooler]
+				if data then
+					E:SortProfilerData('oUF.Pooler', data)
+				end
+			elseif strmatch(switch, '^ouf%s+') then
+				local element = gsub(switch, '^ouf%s+', '')
+				if element ~= '' then
+					for key, module in next, E.oUF.elements do
+						local data = element == lower(key) and E.Profiler.data[module]
+						if data then
+							E:SortProfilerData(key, data)
+
+							break
+						end
+					end
+				end
 			else
 				for key, module in next, E.modules do
-					local data = switch == lower(key) and E.profiler.data[module]
+					local data = switch == lower(key) and E.Profiler.data[module]
 					if data then
 						E:SortProfilerData(key, data)
 
