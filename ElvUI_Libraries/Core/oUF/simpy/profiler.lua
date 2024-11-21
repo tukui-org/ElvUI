@@ -15,7 +15,7 @@ local debugprofilestop = debugprofilestop
 
 -- cpu timing stuff
 local _default = { total = 0, average = 0, count = 0 }
-local _data, _info, _fps = { _all = CopyTable(_default) }, {}, { _overall = CopyTable(_default), _current = CopyTable(_default) }
+local _info, _data, _fps = {}, { _all = CopyTable(_default) }, { _all = CopyTable(_default) }
 
 local Collect = function(object, key, func, ...)
 	local start = debugprofilestop()
@@ -106,9 +106,7 @@ _info.reset = function()
 	_info.oUF_Private = nil
 
 	_data._all = CopyTable(_default)
-
-	_fps._overall = CopyTable(_default)
-	_fps._current = CopyTable(_default)
+	_fps._all = CopyTable(_default)
 end
 
 _info.state = function(value)
@@ -131,46 +129,22 @@ end
 oUF.Profiler = _info
 
 -- lets collect some FPS info
-local CurrentRate = function(rate)
-	local cur = _fps._current
-	cur.rate = rate
-	cur.count = (cur.count or 0) + 1
+local CollectRate = function(rate)
+	local all = _fps._all
+	if all then -- overall rate
+		all.count = (all.count or 0) + 1
+		all.total = (all.total or 0) + rate
 
-	-- keep them fresh
-	if cur.count >= 10 then
-		cur.total = rate
-		cur.high = rate
-		cur.low = rate
-		cur.count = 1
-	else
-		cur.total = (cur.total or 0) + rate
-	end
+		all.rate = rate
+		all.average = all.total / all.count
 
-	cur.average = cur.total / cur.count
+		if not all.high or (rate > all.high) then
+			all.high = rate
+		end
 
-	if not cur.high or (rate > cur.high) then
-		cur.high = rate
-	end
-
-	if not cur.low or (rate < cur.low) then
-		cur.low = rate
-	end
-end
-
-local OverallRate = function(rate)
-	local all = _fps._overall
-	all.rate = rate
-	all.count = (all.count or 0) + 1
-	all.total = (all.total or 0) + rate
-
-	all.average = all.total / all.count
-
-	if not all.high or (rate > all.high) then
-		all.high = rate
-	end
-
-	if not all.low or (rate < all.low) then
-		all.low = rate
+		if not all.low or (rate < all.low) then
+			all.low = rate
+		end
 	end
 end
 
@@ -185,8 +159,7 @@ local TrackFramerate = function(_, elapsed)
 		if ignore then -- ignore the first update
 			ignore = false
 		else
-			CurrentRate(rate)
-			OverallRate(rate)
+			CollectRate(rate)
 		end
 
 		rate = 0 -- ok reset it

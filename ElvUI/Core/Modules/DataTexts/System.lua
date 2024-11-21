@@ -112,7 +112,7 @@ local function OnEnter(_, slow)
 
 	local isShiftDown = IsShiftKeyDown()
 	if isShiftDown then
-		local fps = E.Profiler.fps._overall
+		local fps = E.Profiler.fps._all
 		if fps.rate then
 			DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
 			DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
@@ -286,8 +286,8 @@ local function OnUpdate(self, elapsed)
 		wait = 0
 
 		local _, _, homePing, worldPing = GetNetStats()
-		local latency = db.latency == 'HOME' and homePing or worldPing
-		local fps = E.Profiler.fps._overall.rate or 0
+		local latency = (db.latency == 'HOME' and homePing) or worldPing
+		local fps = E.Profiler.fps._all.rate or 0
 
 		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColor(fps), fps, statusColor(nil, latency), latency)
 
