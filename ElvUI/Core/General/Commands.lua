@@ -111,11 +111,7 @@ do
 	end
 
 	function E:ProfilerSort(second)
-		if self.count == second.count then
-			return self.total > second.total
-		end
-
-		return self.count > second.count
+		return self.total > second.total
 	end
 
 	function E:SortProfilerData(module, data, overall)
