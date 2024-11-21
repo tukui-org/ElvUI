@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local collectgarbage = collectgarbage
 local tremove, tinsert, sort, wipe, type = tremove, tinsert, sort, wipe, type
-local ipairs, pairs, floor, format, strmatch = ipairs, pairs, floor, format, strmatch
+local ipairs, pairs, format, strmatch = ipairs, pairs, format, strmatch
 
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage
@@ -11,7 +11,6 @@ local GetAvailableBandwidth = GetAvailableBandwidth
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
 local GetDownloadedPercentage = GetDownloadedPercentage
 local GetFileStreamingStatus = GetFileStreamingStatus
-local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
 local GetNetStats = GetNetStats
 local InCombatLockdown = InCombatLockdown
@@ -23,7 +22,6 @@ local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
 
 local GetCVarBool = C_CVar.GetCVarBool
-
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 local GetNumAddOns = C_AddOns.GetNumAddOns
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -253,30 +251,32 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-local wait, count = 10, 0 -- initial delay for update (let the ui load)
+local wait, rate, delay = 10, 0, 0 -- initial delay for update (let the ui load)
 local function OnUpdate(self, elapsed)
 	wait = wait - elapsed
+	rate = rate + 1
 
 	if wait < 0 then
 		wait = 1
 
-		local framerate = floor(GetFramerate())
 		local _, _, homePing, worldPing = GetNetStats()
 		local latency = db.latency == 'HOME' and homePing or worldPing
 
-		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
+		local fps = rate >= 30 and 1 or (rate >= 20 and rate < 30) and 2 or (rate >= 10 and rate < 20) and 3 or 4
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
-		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], rate, statusColors[ping], latency)
 
-		if not enteredFrame then return end
+		rate = 0 -- ok reset it
 
-		if InCombatLockdown() then
-			if count > 3 then
+		if not enteredFrame then
+			return
+		elseif InCombatLockdown() then
+			if delay > 3 then
 				OnEnter(self)
-				count = 0
+				delay = 0
 			else
-				OnEnter(self, count)
-				count = count + 1
+				OnEnter(self, delay)
+				delay = delay + 1
 			end
 		else
 			OnEnter(self)
