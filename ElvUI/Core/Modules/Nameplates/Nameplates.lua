@@ -829,6 +829,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer
 		if nameplate.widgetContainer then
 			nameplate.widgetContainer:SetParent(nameplate)
+			nameplate.widgetContainer:SetIgnoreParentAlpha(true)
 			nameplate.widgetContainer:ClearAllPoints()
 
 			local db = NP.db.widgets
@@ -887,6 +888,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
 			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
+			nameplate.widgetContainer:SetIgnoreParentAlpha(false)
 			nameplate.widgetContainer:ClearAllPoints()
 			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
 		end
