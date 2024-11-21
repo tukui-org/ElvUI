@@ -62,22 +62,16 @@ local function formatMem(memory)
 	end
 end
 
-local infoTable = {}
-DT.SystemInfo = infoTable
-
-local function BuildAddonList()
-	local addOnCount = GetNumAddOns()
-	if addOnCount == #infoTable then return end
-
-	wipe(infoTable)
-
-	for i = 1, addOnCount do
-		local name, title, _, loadable, reason = GetAddOnInfo(i)
-		if loadable or reason == 'DEMAND_LOADED' then
-			tinsert(infoTable, {name = name, index = i, title = title})
-		end
+local function statusColor(fps, ping)
+	if fps then
+		return statusColors[fps >= 30 and 1 or (fps >= 20 and fps < 30) and 2 or (fps >= 10 and fps < 20) and 3 or 4]
+	else
+		return statusColors[ping < 150 and 1 or (ping >= 150 and ping < 300) and 2 or (ping >= 300 and ping < 500) and 3 or 4]
 	end
 end
+
+local infoTable = {}
+DT.SystemInfo = infoTable
 
 local function OnClick()
 	local shiftDown, ctrlDown = IsShiftKeyDown(), IsControlKeyDown()
@@ -115,6 +109,17 @@ local function OnEnter(_, slow)
 
 	DT.tooltip:ClearLines()
 	enteredFrame = true
+
+	local isShiftDown = IsShiftKeyDown()
+	if isShiftDown then
+		local fps = E.Profiler.fps._overall
+		if fps.rate then
+			DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
+			DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
+			DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
+			DT.tooltip:AddLine(' ')
+		end
+	end
 
 	local _, _, homePing, worldPing = GetNetStats()
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), .69, .31, .31, .84, .75, .65)
@@ -170,12 +175,16 @@ local function OnEnter(_, slow)
 		end
 	end
 
-	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMEM), .69, .31, .31, .84, .75, .65)
-	if cpuProfiling then
-		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
+	if isShiftDown then
+		DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMEM), .69, .31, .31, .84, .75, .65)
+
+		if cpuProfiling then
+			DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
+		end
 	end
 
 	DT.tooltip:AddLine(' ')
+
 	if not db.ShowOthers then
 		displayData(infoTable.ElvUI, totalMEM, totalCPU)
 		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
@@ -251,22 +260,36 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-local wait, rate, delay = 10, 0, 0 -- initial delay for update (let the ui load)
-local function OnUpdate(self, elapsed)
-	wait = wait - elapsed
-	rate = rate + 1
+local function OnEvent(self, event)
+	if event == 'MODIFIER_STATE_CHANGED' then
+		OnEnter(self)
+	else
+		local addOnCount = GetNumAddOns()
+		if addOnCount == #infoTable then return end
 
-	if wait < 0 then
-		wait = 1
+		wipe(infoTable)
+
+		for i = 1, addOnCount do
+			local name, title, _, loadable, reason = GetAddOnInfo(i)
+			if loadable or reason == 'DEMAND_LOADED' then
+				tinsert(infoTable, {name = name, index = i, title = title})
+			end
+		end
+	end
+end
+
+local wait, delay = 0, 0
+local function OnUpdate(self, elapsed)
+	if wait < 1 then
+		wait = wait + elapsed
+	else
+		wait = 0
 
 		local _, _, homePing, worldPing = GetNetStats()
 		local latency = db.latency == 'HOME' and homePing or worldPing
+		local fps = E.Profiler.fps._overall.rate or 0
 
-		local fps = rate >= 30 and 1 or (rate >= 20 and rate < 30) and 2 or (rate >= 10 and rate < 20) and 3 or 4
-		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
-		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColors[fps], rate, statusColors[ping], latency)
-
-		rate = 0 -- ok reset it
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColor(fps), fps, statusColor(nil, latency), latency)
 
 		if not enteredFrame then
 			return
@@ -290,4 +313,4 @@ local function ApplySettings(self)
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"], nil, ApplySettings)
+DT:RegisterDatatext('System', nil, 'MODIFIER_STATE_CHANGED', OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["System"], nil, ApplySettings)

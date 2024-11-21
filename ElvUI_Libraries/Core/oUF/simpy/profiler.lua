@@ -13,8 +13,9 @@ local getmetatable = getmetatable
 local setmetatable = setmetatable
 local debugprofilestop = debugprofilestop
 
+-- cpu timing stuff
 local _default = { total = 0, average = 0, count = 0 }
-local _data, _info = { _all = CopyTable(_default) }, {}
+local _data, _info, _fps = { _all = CopyTable(_default) }, {}, { _overall = CopyTable(_default), _current = CopyTable(_default) }
 
 local Collect = function(object, key, func, ...)
 	local start = debugprofilestop()
@@ -96,13 +97,18 @@ local Generator = function(object, key, value)
 end
 
 _info.data = _data
+_info.fps = _fps
 
 _info.reset = function()
 	wipe(_data)
+	wipe(_fps)
 
 	_info.oUF_Private = nil
 
 	_data._all = CopyTable(_default)
+
+	_fps._overall = CopyTable(_default)
+	_fps._current = CopyTable(_default)
 end
 
 _info.state = function(value)
@@ -123,3 +129,68 @@ _info.func = function(tbl, ...)
 end
 
 oUF.Profiler = _info
+
+-- lets collect some FPS info
+local CurrentRate = function(rate)
+	local cur = _fps._current
+	cur.rate = rate
+	cur.count = (cur.count or 0) + 1
+
+	-- keep them fresh
+	if cur.count >= 10 then
+		cur.total = rate
+		cur.high = rate
+		cur.low = rate
+		cur.count = 1
+	else
+		cur.total = (cur.total or 0) + rate
+	end
+
+	cur.average = cur.total / cur.count
+
+	if not cur.high or (rate > cur.high) then
+		cur.high = rate
+	end
+
+	if not cur.low or (rate < cur.low) then
+		cur.low = rate
+	end
+end
+
+local OverallRate = function(rate)
+	local all = _fps._overall
+	all.rate = rate
+	all.count = (all.count or 0) + 1
+	all.total = (all.total or 0) + rate
+
+	all.average = all.total / all.count
+
+	if not all.high or (rate > all.high) then
+		all.high = rate
+	end
+
+	if not all.low or (rate < all.low) then
+		all.low = rate
+	end
+end
+
+local frame, ignore, wait, rate = CreateFrame('Frame'), true, 0, 0
+local TrackFramerate = function(_, elapsed)
+	if wait < 1 then
+		wait = wait + elapsed
+		rate = rate + 1
+	else
+		wait = 0
+
+		if ignore then -- ignore the first update
+			ignore = false
+		else
+			CurrentRate(rate)
+			OverallRate(rate)
+		end
+
+		rate = 0 -- ok reset it
+	end
+end
+
+frame:SetScript('OnUpdate', TrackFramerate)
