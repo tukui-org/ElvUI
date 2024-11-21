@@ -24,7 +24,7 @@ local Generate = function(object, key, func)
 
 		local obj = _data[object]
 		if not obj then
-			obj = { _module = { total = 0, count = 0 } }
+			obj = { _module = { total = 0, average = 0, count = 0 } }
 
 			if object == Private then
 				_info.oUF_Private = obj -- only export timing data
@@ -48,7 +48,7 @@ local Generate = function(object, key, func)
 			data.total = data.total + finish
 			data.average = data.total / data.count
 		else
-			data = { high = finish, low = finish, total = 0, count = 1 }
+			data = { high = finish, low = finish, total = finish, average = finish, count = 1 }
 			obj[key] = data
 		end
 
