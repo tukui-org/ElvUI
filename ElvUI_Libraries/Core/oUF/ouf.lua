@@ -4,7 +4,8 @@ local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = 'devel'
 
 local oUF = ns.oUF
-local Private = oUF.Private
+local Profiler = oUF.Profiler.func
+local Private = Profiler(oUF).Private
 
 local argcheck = Private.argcheck
 local error = Private.error
@@ -17,13 +18,14 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
+oUF.elements = elements -- for the Profiler
+
 -- ElvUI
 local _G = _G
 local assert, setmetatable = assert, setmetatable
-local unpack, tinsert, tremove = unpack, tinsert, tremove
-local next, time, wipe, type = next, time, wipe, type
-local select, pairs, ipairs = select, pairs, ipairs
+local next, type, select = next, type, select
 local strupper, strsplit = strupper, strsplit
+local tinsert, tremove = tinsert, tremove
 local hooksecurefunc = hooksecurefunc
 
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -907,12 +909,15 @@ function oUF:AddElement(name, update, enable, disable)
 	argcheck(enable, 4, 'function')
 	argcheck(disable, 5, 'function')
 
-	if(elements[name]) then return error('Element [%s] is already registered.', name) end
-	elements[name] = {
-		update = update;
-		enable = enable;
-		disable = disable;
-	}
+	if(elements[name]) then
+		return error('Element [%s] is already registered.', name)
+	end
+
+	local module = Profiler({})
+	module.update = update
+	module.enable = enable
+	module.disable = disable
+	elements[name] = module
 end
 
 function oUF:GetAuraData(unitToken, index, filter)
@@ -957,251 +962,5 @@ if(global) then
 		error('%s is setting its global to an existing name "%s".', parent, global)
 	else
 		_G[global] = oUF
-	end
-end
-
-do -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
-	local SpellGetVisibilityInfo = SpellGetVisibilityInfo
-	local SpellIsPriorityAura = SpellIsPriorityAura
-	local UnitAffectingCombat = UnitAffectingCombat
-
-	local hasValidPlayer = false
-	local cachedVisibility = {}
-	local cachedPriority = {}
-
-	local eventFrame = CreateFrame('Frame')
-	eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
-	eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
-	eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-	eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
-
-	if oUF.isRetail then
-		eventFrame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
-	end
-
-	eventFrame:SetScript('OnEvent', function(_, event)
-		if event == 'PLAYER_ENTERING_WORLD' then
-			hasValidPlayer = true
-		elseif event == 'PLAYER_LEAVING_WORLD' then
-			hasValidPlayer = false
-		elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
-			wipe(cachedVisibility)
-		elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
-			wipe(cachedVisibility)
-			wipe(cachedPriority)
-		end
-	end)
-
-	local function VisibilityInfo(spellId)
-		return SpellGetVisibilityInfo(spellId, UnitAffectingCombat('player') and 'RAID_INCOMBAT' or 'RAID_OUTOFCOMBAT')
-	end
-
-	local function CachedVisibility(spellId)
-		if cachedVisibility[spellId] == nil then
-			if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
-				return VisibilityInfo(spellId)
-			else
-				cachedVisibility[spellId] = {VisibilityInfo(spellId)}
-			end
-		end
-
-		return unpack(cachedVisibility[spellId])
-	end
-
-	local function AllowAura(spellId)
-		local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-		return (not hasCustom) or alwaysShowMine or showForMySpec
-	end
-
-	local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
-		[335904] = true -- Doom Winds: Unable to gain effects of Doom Winds
-	}
-
-	local function AuraIsPriority(spellId)
-		if AlwaysAllow[spellId] then
-			return true
-		end
-
-		if cachedPriority[spellId] == nil then
-			cachedPriority[spellId] = SpellIsPriorityAura(spellId)
-		end
-
-		return cachedPriority[spellId]
-	end
-
-	local function CouldDisplayAura(frame, event, unit, auraInfo)
-		if auraInfo.isNameplateOnly then
-			return frame.isNamePlate
-		elseif auraInfo.isBossAura or AuraIsPriority(auraInfo.spellId) then
-			return true
-		elseif auraInfo.isHarmful or auraInfo.isHelpful then
-			return AllowAura(auraInfo.spellId)
-		end
-
-		return false
-	end
-
-	local function ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc, ...)
-		if fullUpdate or fullUpdate == nil then
-			return false
-		elseif updatedAuras and relevantFunc then
-			for _, auraInfo in ipairs(updatedAuras) do
-				if relevantFunc(frame, event, unit, auraInfo, ...) then
-					return false
-				end
-			end
-
-			return true
-		end
-	end
-
-	function oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras, relevantFunc)
-		return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, fullUpdate, updatedAuras, relevantFunc or CouldDisplayAura)
-	end
-end
-
-do -- Event Pooler by Simpy
-	local pooler = CreateFrame('Frame')
-	pooler.events = {}
-	pooler.times = {}
-
-	pooler.delay = 0.1 -- update check rate
-	pooler.instant = 1 -- seconds since last event
-
-	local function run(funcs, frame, event, ...)
-		for i = 1, #funcs do
-			funcs[i](frame, event, ...)
-		end
-	end
-
-	local function execute(event, pool, instant, arg1, ...)
-		for frame, info in pairs(pool) do
-			local funcs = info.functions
-			if instant and funcs then
-				if event == 'UNIT_AURA' and oUF.isRetail then
-					local fullUpdate, updatedAuras = ...
-					if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, fullUpdate, updatedAuras) then
-						run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
-					end
-				else
-					run(funcs, frame, event, arg1, ...)
-				end
-			else
-				local data = funcs and info.data[event]
-				if data then
-					if event == 'UNIT_AURA' and oUF.isRetail then
-						local allowUnit = false
-						for i = 1, #data do
-							local args = data[i]
-							local unit, fullUpdate, updatedAuras = unpack(args)
-							if not oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras) then
-								allowUnit = unit
-								break
-							end
-						end
-
-						if allowUnit then
-							run(funcs, frame, event, allowUnit)
-						end
-					else
-						local count = #data
-						local args = count and data[count]
-						if args then
-							-- if count > 1 then print(frame:GetDebugName(), event, count, unpack(args)) end
-							run(funcs, frame, event, unpack(args))
-						end
-					end
-
-					wipe(data)
-				end
-			end
-		end
-	end
-
-	local function update()
-		for event, pool in pairs(pooler.events) do
-			execute(event, pool)
-		end
-	end
-
-	local function tracker(frame, event, arg1, ...)
-		-- print('tracker', frame, event, arg1, ...)
-		local pool = pooler.events[event]
-		if pool then
-			local now = time()
-			local last = pooler.times[event]
-			if last and (last + pooler.instant) < now then
-				execute(event, pool, true, arg1, ...)
-				-- print('instant', frame:GetDebugName(), event, arg1)
-			elseif arg1 ~= nil then -- require arg1, no unitless
-				local pooled = pool[frame]
-				if pooled then
-					local eventData = pooled.data[event]
-					if not eventData then
-						eventData = {}
-						pooled.data[event] = eventData
-					end
-
-					tinsert(eventData, {arg1, ...})
-				end
-			end
-
-			pooler.times[event] = now
-		end
-	end
-
-	local function onUpdate(self, elapsed)
-		local elapsedTime = self.elapsed or 0
-		if elapsedTime > pooler.delay then
-			update()
-			self.elapsed = 0
-		else
-			self.elapsed = elapsedTime + elapsed
-		end
-	end
-
-	pooler:SetScript('OnUpdate', onUpdate)
-
-	function oUF:RegisterEvent(frame, event, func)
-		-- print('RegisterEvent', frame, event, func)
-		local eventPool = pooler.events[event]
-		if not eventPool then
-			eventPool = {}
-			pooler.events[event] = eventPool
-		end
-
-		local framePool = eventPool[frame]
-		if not framePool then
-			framePool = {functions = {}, data = {}}
-			eventPool[frame] = framePool
-		end
-
-		frame:RegisterEvent(event, tracker)
-		tinsert(framePool.functions, func)
-	end
-
-	function oUF:UnregisterEvent(frame, event, func)
-		-- print('UnregisterEvent', frame, event, func)
-		local pool = pooler.events[event]
-		if pool then
-			local pooled = pool[frame]
-			if pooled then
-				local funcs = pooled.functions
-				for i = #funcs, 1, -1 do
-					if funcs[i] == func then
-						tremove(funcs, i)
-					end
-				end
-
-				if not next(funcs) then
-					pool[frame] = nil
-				end
-			end
-
-			if not next(pool) then
-				pooler.events[event] = nil
-				frame:UnregisterEvent(event, tracker)
-			end
-		end
 	end
 end

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
+local ElvUF = E.oUF
 
 local next = next
 local wipe = wipe
@@ -15,7 +16,6 @@ local UnitIsUnit = UnitIsUnit
 local UnitClass = UnitClass
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
--- GLOBALS: ElvUF
 
 local tankStatus = {[0] = 3, 2, 1, 0}
 

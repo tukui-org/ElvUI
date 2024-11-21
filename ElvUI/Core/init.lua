@@ -28,119 +28,22 @@ local SetCVar = C_CVar.SetCVar
 
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
-local ProfilerData, ProfilerReset, Profiler = {}
-do -- not finished
-	local rawset = rawset
-	local unpack = unpack
-	local getmetatable = getmetatable
-	local setmetatable = setmetatable
-	local debugprofilestop = debugprofilestop
-
-	local active = false -- active profiler
-	local function Generate(object, key, func)
-		-- print('Generate', object, key, func)
-
-		return function(...)
-			local start = debugprofilestop()
-			local args = { func(...) }
-			local finish = debugprofilestop() - start
-
-			local obj = ProfilerData[object]
-			if not obj then
-				obj = { _module = { total = 0, count = 0 } }
-
-				ProfilerData[object] = obj
-			end
-
-			local data = obj[key]
-			if data then
-				data.count = data.count + 1
-
-				if data.finish > data.high then
-					data.high = data.finish
-				end
-
-				if data.finish < data.low then
-					data.low = data.finish
-				end
-
-				data.total = data.total + finish
-				data.average = data.total / data.count
-			else
-				data = { high = finish, low = finish, total = 0, count = 1 }
-				obj[key] = data
-			end
-
-			-- update data
-			data.start = start
-			data.finish = finish
-
-			local module = obj._module
-			if module then -- module totals
-				module.total = module.total + finish
-				module.count = module.count + 1
-				module.average = module.total / module.count
-			end
-
-			local all = ProfilerData._all
-			if all then -- overall totals
-				all.total = all.total + finish
-				all.count = all.count + 1
-				all.average = all.total / all.count
-			end
-
-			return unpack(args)
-		end
-	end
-
-	local function Generator(object, key, value)
-		-- print('Generator', key, value)
-
-		if type(value) == 'function' then
-			local func = Generate(object, key, value)
-			rawset(object, key, func)
-		else
-			rawset(object, key, value)
-		end
-	end
-
-	ProfilerReset = function()
-		wipe(ProfilerData)
-
-		ProfilerData._all = { total = 0, count = 0 }
-	end
-
-	ProfilerReset() -- set up the data
-
-	Profiler = function(tbl, ...)
-		-- print('Profiler', tbl)
-
-		if not active then
-			return tbl, ...
-		else
-			local t = getmetatable(tbl)
-			if t then
-				t.__newindex = Generator
-
-				return tbl, ...
-			else
-				return setmetatable(tbl, { __newindex = Generator }), ...
-			end
-		end
-	end
-end
+local oUF = _G.ElvUF
+assert(oUF, 'ElvUI was unable to locate oUF.')
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
+local Profiler = oUF.Profiler.func -- ElvUI_CPU knock off by Simpy
 local E = Profiler(AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0'))
-E.profiler = {func = Profiler, data = ProfilerData, reset = ProfilerReset} -- ElvUI_CPU knock off by Simpy
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree', get = E.noop, name = ''}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
 E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
+E.Profiler = oUF.Profiler
+E.oUF = oUF
 
 Engine[1] = E
 Engine[2] = {}
@@ -148,9 +51,6 @@ Engine[3] = E.privateVars.profile
 Engine[4] = E.DF.profile
 Engine[5] = E.DF.global
 _G.ElvUI = Engine
-
-E.oUF = _G.ElvUF
-assert(E.oUF, 'ElvUI was unable to locate oUF.')
 
 E.ActionBars = Profiler(E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0'))
 E.AFK = Profiler(E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0'))

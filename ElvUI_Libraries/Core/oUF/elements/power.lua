@@ -194,9 +194,10 @@ local function UpdateColor(self, event, unit)
 	* r    - the red component of the used color (number)[0-1]
 	* g    - the green component of the used color (number)[0-1]
 	* b    - the blue component of the used color (number)[0-1]
+	* atlas - the atlas used instead of color (string)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(unit, r, g, b, atlas)
 	end
 end
 

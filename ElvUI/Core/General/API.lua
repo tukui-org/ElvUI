@@ -4,6 +4,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local LCS = E.Libs.LCS
+local ElvUF = E.oUF
 
 local _G = _G
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
@@ -70,7 +71,7 @@ local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
 local UIErrorsFrame = UIErrorsFrame
--- GLOBALS: ElvDB, ElvUF
+-- GLOBALS: ElvDB
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 

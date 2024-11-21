@@ -49,14 +49,12 @@ local function Update(self, event)
 	-- true for the instance leader.
 	local isInLFGInstance = oUF.isRetail and HasLFGRestrictions()
 
-	-- ElvUI changed block
 	local isLeader
 	if IsInInstance() then
 		isLeader = UnitIsGroupLeader(unit)
 	else
 		isLeader = UnitLeadsAnyGroup(unit)
 	end
-	-- end block
 
 	if element.combatHide and UnitAffectingCombat(unit) then
 		element:Hide()
