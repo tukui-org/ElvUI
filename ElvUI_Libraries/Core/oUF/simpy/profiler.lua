@@ -17,6 +17,11 @@ local debugprofilestop = debugprofilestop
 local _default = { total = 0, average = 0, count = 0 }
 local _info, _data, _fps = {}, { _all = CopyTable(_default) }, { _all = CopyTable(_default) }
 
+oUF.Profiler = _info
+
+_info.data = _data
+_info.fps = _fps
+
 local Collect = function(object, key, func, ...)
 	local start = debugprofilestop()
 	local args = { func(...) }
@@ -96,17 +101,17 @@ local Generator = function(object, key, value)
 	end
 end
 
-_info.data = _data
-_info.fps = _fps
+_info.clear = function(object)
+	wipe(object)
+
+	object._all = CopyTable(_default)
+end
 
 _info.reset = function()
-	wipe(_data)
-	wipe(_fps)
+	_info.clear(_data)
+	_info.clear(_fps)
 
 	_info.oUF_Private = nil
-
-	_data._all = CopyTable(_default)
-	_fps._all = CopyTable(_default)
 end
 
 _info.state = function(value)
@@ -125,8 +130,6 @@ _info.func = function(tbl, ...)
 		return setmetatable(tbl, { __newindex = Generator }), ...
 	end
 end
-
-oUF.Profiler = _info
 
 -- lets collect some FPS info
 local CollectRate = function(rate)
@@ -166,4 +169,12 @@ local TrackFramerate = function(_, elapsed)
 	end
 end
 
+local ResetFramerate = function()
+	_info.clear(_fps)
+
+	ignore = true -- ignore the first again
+end
+
 frame:SetScript('OnUpdate', TrackFramerate)
+frame:SetScript('OnEvent', ResetFramerate)
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
