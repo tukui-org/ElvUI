@@ -2057,7 +2057,7 @@ function E:Initialize()
 		E:StaticPopup_Show('UPDATE_REQUEST')
 	end
 
-	if GetCVarBool('scriptProfile') and not E:IsAddOnEnabled('ElvUI_CPU') then
+	if GetCVarBool('scriptProfile') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end
 

@@ -1,19 +1,16 @@
-local print, strmatch, strlower = print, strmatch, strlower
-local _G, UNKNOWN, format, type, next = _G, UNKNOWN, format, type, next
+local _G, UNKNOWN = _G, UNKNOWN
+local print, type, next = print, type, next
+local strmatch = strmatch
 
 local SlashCmdList = SlashCmdList
 local UIParentLoadAddOn = UIParentLoadAddOn
-
-local GetAddOnInfo = C_AddOns.GetAddOnInfo
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local LoadAddOn = C_AddOns.LoadAddOn
 
 local GetMouseFocus = GetMouseFocus or function()
 	local frames = _G.GetMouseFoci()
 	return frames and frames[1]
 end
 
--- GLOBALS: ElvUI_CPU, ElvUI
+-- GLOBALS: ElvUI
 
 local function GetName(frame, text)
 	if frame.GetDebugName then
@@ -121,29 +118,5 @@ AddCommand('FRAMELIST', '/framelist', function(arg)
 
 	if not wasShown then
 		_G.FrameStackTooltip_Toggle()
-	end
-end)
-
-AddCommand('ECPU', '/ecpu', function()
-	if not IsAddOnLoaded('ElvUI_CPU') then
-		local _, _, _, loadable, reason = GetAddOnInfo('ElvUI_CPU')
-		if not loadable then
-			if reason == 'MISSING' then
-				print('ElvUI_CPU addon is missing.')
-			elseif reason == 'DISABLED' then
-				print('ElvUI_CPU addon is disabled.')
-			elseif reason == 'DEMAND_LOADED' then
-				local loaded, rsn = LoadAddOn('ElvUI_CPU')
-				if loaded then
-					ElvUI_CPU:ToggleFrame()
-				else
-					print(format('ElvUI_CPU addon cannot be loaded: %s.', strlower(rsn)))
-				end
-			end
-		end
-	elseif not ElvUI_CPU.frame:IsShown() then
-		ElvUI_CPU.frame:Show()
-	else
-		ElvUI_CPU.frame:Hide()
 	end
 end)

@@ -33,8 +33,7 @@ end
 local AddOns = {
 	ElvUI = true,
 	ElvUI_Options = true,
-	ElvUI_Libraries = true,
-	ElvUI_CPU = true -- debug tool located at https://github.com/Resike/ElvUI_CPU
+	ElvUI_Libraries = true
 }
 
 function E:LuaError(msg)
@@ -55,10 +54,6 @@ function E:LuaError(msg)
 			E:SetCVar('scriptProfile', 0)
 			E:SetCVar('scriptErrors', 0)
 			E:Print('Lua errors off.')
-
-			if E:IsAddOnEnabled('ElvUI_CPU') then
-				DisableAddOn('ElvUI_CPU')
-			end
 		end
 
 		if next(ElvDB.DisabledAddOns) then
@@ -218,10 +213,18 @@ do
 	function E:FetchProfilerData(msg)
 		local switch = lower(msg)
 		if switch ~= '' then
-			if switch == 'reset' then
+			if switch == 'on' then
+				E.Profiler.state(true)
+
+				return E:Print('Profiler: Enabled')
+			elseif switch == 'off' then
+				E.Profiler.state(false)
+
+				return E:Print('Profiler: Disabled')
+			elseif switch == 'reset' then
 				E.Profiler.reset()
 
-				return E:Print('Reset profiler.')
+				return E:Print('Profiler: Reset')
 			elseif switch == 'all' then
 				FetchAll(1)
 			elseif switch == 'ouf' then
