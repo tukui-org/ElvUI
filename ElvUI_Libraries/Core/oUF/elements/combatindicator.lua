@@ -70,19 +70,14 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
-local function Enable(self, unit)
+local function Enable(self)
 	local element = self.CombatIndicator
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if(unit == 'player') then
-			self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
-			self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
-		else
-			self:RegisterEvent('UNIT_COMBAT', Path)
-			self:RegisterEvent('UNIT_FLAGS', Path)
-		end
+		self:RegisterEvent('UNIT_COMBAT', Path)
+		self:RegisterEvent('UNIT_FLAGS', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\CharacterFrame\UI-StateIcon]])
@@ -98,13 +93,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if(self.unit == 'player') then
-			self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
-			self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
-		else
-			self:UnregisterEvent('UNIT_COMBAT', Path)
-			self:UnregisterEvent('UNIT_FLAGS', Path)
-		end
+		self:UnregisterEvent('UNIT_COMBAT', Path)
+		self:UnregisterEvent('UNIT_FLAGS', Path)
 	end
 end
 

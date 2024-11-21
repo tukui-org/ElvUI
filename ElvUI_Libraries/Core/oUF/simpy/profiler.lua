@@ -13,8 +13,14 @@ local getmetatable = getmetatable
 local setmetatable = setmetatable
 local debugprofilestop = debugprofilestop
 
+-- cpu timing stuff
 local _default = { total = 0, average = 0, count = 0 }
-local _data, _info = { _all = CopyTable(_default) }, {}
+local _info, _data, _fps = {}, { _all = CopyTable(_default) }, { _all = CopyTable(_default) }
+
+oUF.Profiler = _info
+
+_info.data = _data
+_info.fps = _fps
 
 local Collect = function(object, key, func, ...)
 	local start = debugprofilestop()
@@ -95,14 +101,17 @@ local Generator = function(object, key, value)
 	end
 end
 
-_info.data = _data
+_info.clear = function(object)
+	wipe(object)
+
+	object._all = CopyTable(_default)
+end
 
 _info.reset = function()
-	wipe(_data)
+	_info.clear(_data)
+	_info.clear(_fps)
 
 	_info.oUF_Private = nil
-
-	_data._all = CopyTable(_default)
 end
 
 _info.state = function(value)
@@ -122,4 +131,50 @@ _info.func = function(tbl, ...)
 	end
 end
 
-oUF.Profiler = _info
+-- lets collect some FPS info
+local CollectRate = function(rate)
+	local all = _fps._all
+	if all then -- overall rate
+		all.count = (all.count or 0) + 1
+		all.total = (all.total or 0) + rate
+
+		all.rate = rate
+		all.average = all.total / all.count
+
+		if not all.high or (rate > all.high) then
+			all.high = rate
+		end
+
+		if not all.low or (rate < all.low) then
+			all.low = rate
+		end
+	end
+end
+
+local frame, ignore, wait, rate = CreateFrame('Frame'), true, 0, 0
+local TrackFramerate = function(_, elapsed)
+	if wait < 1 then
+		wait = wait + elapsed
+		rate = rate + 1
+	else
+		wait = 0
+
+		if ignore then -- ignore the first update
+			ignore = false
+		else
+			CollectRate(rate)
+		end
+
+		rate = 0 -- ok reset it
+	end
+end
+
+local ResetFramerate = function()
+	_info.clear(_fps)
+
+	ignore = true -- ignore the first again
+end
+
+frame:SetScript('OnUpdate', TrackFramerate)
+frame:SetScript('OnEvent', ResetFramerate)
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
