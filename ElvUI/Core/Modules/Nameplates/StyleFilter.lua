@@ -9,10 +9,10 @@ local ipairs, next, pairs = ipairs, next, pairs
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
+local GetTime = GetTime
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetTime = GetTime
 local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
@@ -1634,24 +1634,26 @@ function NP:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local pooler = CreateFrame('Frame')
-	pooler.delay = 0.1 -- update check rate
-	pooler.active = true -- off is always instant
-	pooler.tracked = {}
+	local object = CreateFrame('Frame')
+	object.delay = 0.1 -- update check rate
+	object.instant = 0.5 -- seconds since last event
+	object.active = true -- off is always instant
+	object.tracked = {}
+	object.times = {}
 
-	ElvUF.Pooler.StyleFilter = pooler
+	ElvUF.Pooler.StyleFilter = object
 
 	function NP:StyleFilterPoolerRun()
-		for frame in pairs(pooler.tracked) do
+		for frame in pairs(object.tracked) do
 			NP:StyleFilterUpdate(frame, 'PoolerUpdate')
 		end
 
-		wipe(pooler.tracked) -- clear it out
+		wipe(object.tracked) -- clear it out
 	end
 
 	local wait = 0
 	function NP:StyleFilterPoolerOnUpdate(elapsed)
-		if wait > pooler.delay then
+		if wait > object.delay then
 			NP:StyleFilterPoolerRun()
 
 			wait = 0
@@ -1660,8 +1662,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 	end
 
-	pooler:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
-	pooler:Hide()
+	object:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
+	object:Hide()
 
 	function NP:StyleFilterPoolerTrack(event, arg1, arg2, arg3, ...)
 		local eventFunc = NP.StyleFilterEventFunctions[event]
@@ -1679,15 +1681,23 @@ do -- oUF style filter inject watch functions without actually registering any e
 		if trigger == 2 and (self.unit ~= arg1) then
 			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
 		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)) then
-			if pooler.active then
-				pooler.tracked[self] = true
+			if object.active then
+				local now = GetTime()
+				local last = object.times[event]
+				if last and (last + object.instant) < now then
+					NP:StyleFilterUpdate(self, 'PoolerUpdate')
+				else
+					object.tracked[self] = true
 
-				if not pooler:IsShown() then
-					pooler:Show()
+					if not object:IsShown() then
+						object:Show()
+					end
 				end
+
+				object.times[event] = now
 			else
-				if pooler:IsShown() then
-					pooler:Hide()
+				if object:IsShown() then
+					object:Hide()
 				end
 
 				NP:StyleFilterUpdate(self, 'PoolerUpdate')
