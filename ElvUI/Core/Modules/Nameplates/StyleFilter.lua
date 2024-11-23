@@ -1636,16 +1636,17 @@ end
 do -- oUF style filter inject watch functions without actually registering any events
 	local pooler = CreateFrame('Frame')
 	pooler.delay = 0.1 -- update check rate
-	pooler.frames = {}
+	pooler.active = true -- off is always instant
+	pooler.tracked = {}
 
 	ElvUF.Pooler.StyleFilter = pooler
 
 	function NP:StyleFilterPoolerRun()
-		for frame in pairs(pooler.frames) do
+		for frame in pairs(pooler.tracked) do
 			NP:StyleFilterUpdate(frame, 'PoolerUpdate')
 		end
 
-		wipe(pooler.frames) -- clear it out
+		wipe(pooler.tracked) -- clear it out
 	end
 
 	function NP:StyleFilterPoolerOnUpdate(elapsed)
@@ -1676,7 +1677,11 @@ do -- oUF style filter inject watch functions without actually registering any e
 		if trigger == 2 and (self.unit ~= arg1) then
 			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
 		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)) then
-			pooler.frames[self] = true
+			if pooler.active then
+				pooler.tracked[self] = true
+			else
+				NP:StyleFilterUpdate(self, 'PoolerUpdate')
+			end
 		end
 	end
 

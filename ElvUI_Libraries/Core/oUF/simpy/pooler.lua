@@ -22,6 +22,7 @@ object.times = {}
 
 object.delay = 0.1 -- update check rate
 object.instant = 1 -- seconds since last event
+object.active = true -- off is always instant
 
 pooler.run = function(funcs, frame, event, ...)
 	for i = 1, #funcs do
@@ -87,7 +88,9 @@ end
 pooler.tracker = function(frame, event, arg1, ...)
 	-- print('tracker', frame, event, arg1, ...)
 	local pool = object.events[event]
-	if pool then
+	if not pool then return end
+
+	if object.active then
 		local now = time()
 		local last = object.times[event]
 		if last and (last + object.instant) < now then
@@ -111,6 +114,8 @@ pooler.tracker = function(frame, event, arg1, ...)
 		end
 
 		object.times[event] = now
+	else
+		pooler.execute(event, pool, true, arg1, ...)
 	end
 end
 
