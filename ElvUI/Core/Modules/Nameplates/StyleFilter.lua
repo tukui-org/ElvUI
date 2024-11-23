@@ -1635,10 +1635,10 @@ end
 
 do -- oUF style filter inject watch functions without actually registering any events
 	local pooler = CreateFrame('Frame')
-	pooler.frames = {}
 	pooler.delay = 0.1 -- update check rate
+	pooler.frames = {}
 
-	pooler.update = function()
+	function NP:StyleFilterPoolerRun()
 		for frame in pairs(pooler.frames) do
 			NP:StyleFilterUpdate(frame, 'PoolerUpdate')
 		end
@@ -1646,52 +1646,52 @@ do -- oUF style filter inject watch functions without actually registering any e
 		wipe(pooler.frames) -- clear it out
 	end
 
-	pooler.onUpdate = function(self, elapsed)
-		if self.elapsed and self.elapsed > pooler.delay then
-			pooler.update()
+	function NP:StyleFilterPoolerOnUpdate(elapsed)
+		if pooler.elapsed and pooler.elapsed > pooler.delay then
+			NP:StyleFilterPoolerRun()
 
-			self.elapsed = 0
+			pooler.elapsed = 0
 		else
-			self.elapsed = (self.elapsed or 0) + elapsed
+			pooler.elapsed = (pooler.elapsed or 0) + elapsed
 		end
 	end
 
-	pooler:SetScript('OnUpdate', pooler.onUpdate)
+	pooler:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
 
-	local update = function(frame, event, arg1, arg2, arg3, ...)
+	function NP:StyleFilterPoolerTrack(event, arg1, arg2, arg3, ...)
 		local eventFunc = NP.StyleFilterEventFunctions[event]
 		if eventFunc then
-			eventFunc(frame, event, arg1, arg2, arg3, ...)
+			eventFunc(self, event, arg1, arg2, arg3, ...)
 		end
 
 		local auraEvent = event == 'UNIT_AURA'
-		if auraEvent and E.Retail and ElvUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2, arg3) then
+		if auraEvent and E.Retail and ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2, arg3) then
 			return
 		end
 
 		-- Trigger Event and (auraEvent or unitless or verifiedUnit); auraEvent is already unit verified by ShouldSkipAuraUpdate
 		local trigger = NP.StyleFilterTriggerEvents[event]
-		if trigger == 2 and (frame.unit ~= arg1) then
+		if trigger == 2 and (self.unit ~= arg1) then
 			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
-		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == frame.unit)) then
-			pooler.frames[frame] = true
+		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)) then
+			pooler.frames[self] = true
 		end
 	end
 
-	local oUF_event_metatable = {
-		__call = function(funcs, frame, ...)
-			for _, func in next, funcs do
-				func(frame, ...)
-			end
-		end,
-	}
+	local update = NP.StyleFilterPoolerTrack
+	function NP:StyleFilterPoolerCall(frame, ...)
+		for _, func in next, self do
+			func(frame, ...)
+		end
+	end
 
-	local oUF_fake_register = function(frame, event, remove)
+	local metatable = { __call = NP.StyleFilterPoolerCall }
+	function NP:StyleFilterFakeRegister(frame, event, remove)
 		local curev = frame[event]
 		if curev then
 			local kind = type(curev)
 			if kind == 'function' and curev ~= update then
-				frame[event] = setmetatable({curev, update}, oUF_event_metatable)
+				frame[event] = setmetatable({curev, update}, metatable)
 			elseif kind == 'table' then
 				for index, infunc in next, curev do
 					if infunc == update then
@@ -1709,7 +1709,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 		end
 	end
 
-	local styleFilterIsWatching = function(frame, event)
+	function NP:StyleFilterIsWatching(frame, event)
 		local curev = frame[event]
 		if curev then
 			local kind = type(curev)
@@ -1727,17 +1727,17 @@ do -- oUF style filter inject watch functions without actually registering any e
 		if frame == _G.ElvNP_Test then return end
 
 		for event in pairs(NP.StyleFilterDefaultEvents) do
-			local holdsEvent = styleFilterIsWatching(frame, event)
+			local holdsEvent = NP:StyleFilterIsWatching(frame, event)
 			if disable then
 				if holdsEvent then
-					oUF_fake_register(frame, event, true)
+					NP:StyleFilterFakeRegister(frame, event, true)
 				end
 			elseif NP.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
-					oUF_fake_register(frame, event)
+					NP:StyleFilterFakeRegister(frame, event)
 				end
 			elseif holdsEvent then
-				oUF_fake_register(frame, event, true)
+				NP:StyleFilterFakeRegister(frame, event, true)
 	end end end
 
 	function NP:StyleFilterRegister(nameplate, event, unitless, func, objectEvent)
