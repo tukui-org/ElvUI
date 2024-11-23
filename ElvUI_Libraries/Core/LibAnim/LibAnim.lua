@@ -82,9 +82,9 @@ local InOutQuadratic = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return c / 2 * (t ^ 2) + b
+		return (c * 0.5) * (t ^ 2) + b
 	else
-		return -c / 2 * ((t - 1) * (t - 3) - 1) + b
+		return -(c * 0.5) * ((t - 1) * (t - 3) - 1) + b
 	end
 end
 
@@ -105,11 +105,11 @@ local InOutCubic = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return c / 2 * (t ^ 3) + b
+		return (c * 0.5) * (t ^ 3) + b
 	else
 		t = t - 2
 
-		return c / 2 * (t ^ 3 + 2) + b
+		return (c * 0.5) * (t ^ 3 + 2) + b
 	end
 end
 
@@ -130,11 +130,11 @@ local InOutQuartic = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return c / 2 * t ^ 4 + b
+		return (c * 0.5) * t ^ 4 + b
 	else
 		t = t - 2
 
-		return -c / 2 * (t ^ 4 - 2) + b
+		return -(c * 0.5) * (t ^ 4 - 2) + b
 	end
 end
 
@@ -155,25 +155,25 @@ local InOutQuintic = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return c / 2 * t ^ 5 + b
+		return (c * 0.5) * t ^ 5 + b
 	else
 		t = t - 2
 
-		return c / 2 * (t ^ 5 + 2) + b
+		return (c * 0.5) * (t ^ 5 + 2) + b
 	end
 end
 
 -- Sinusoidal
 local InSinusoidal = function(t, b, c, d)
-	return -c * cos(t / d * (pi / 2)) + c + b
+	return -c * cos(t / d * (pi * 0.5)) + c + b
 end
 
 local OutSinusoidal = function(t, b, c, d)
-	return c * sin(t / d * (pi / 2)) + b
+	return c * sin(t / d * (pi * 0.5)) + b
 end
 
 local InOutSinusoidal = function(t, b, c, d)
-	return -c / 2 * (cos(pi * t / d) - 1) + b
+	return -(c * 0.5) * (cos(pi * t / d) - 1) + b
 end
 
 -- Exponential
@@ -205,11 +205,11 @@ local InOutExponential = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return c / 2 * (2 ^ (10 * (t - 1))) + b - c * 0.0005
+		return (c * 0.5) * (2 ^ (10 * (t - 1))) + b - c * 0.0005
 	else
 		t = t - 1
 
-		return c / 2 * 1.0005 * (-(2 ^ (-10 * t)) + 2) + b
+		return (c * 0.5) * 1.0005 * (-(2 ^ (-10 * t)) + 2) + b
 	end
 end
 
@@ -230,11 +230,11 @@ local InOutCircular = function(t, b, c, d)
 	t = t / d * 2
 
 	if t < 1 then
-		return -c / 2 * (sqrt(1 - t * t) - 1) + b
+		return -(c * 0.5) * (sqrt(1 - t * t) - 1) + b
 	else
 		t = t - 2
 
-		return c / 2 * (sqrt(1 - t * t) + 1) + b
+		return (c * 0.5) * (sqrt(1 - t * t) + 1) + b
 	end
 end
 
@@ -242,18 +242,18 @@ end
 local OutBounce = function(t, b, c, d)
 	t = t / d
 
-	if t < (1 / 2.75) then
+	if t < 0.36 then -- 1 / 2.75
 		return c * (7.5625 * t * t) + b
-	elseif t < (2 / 2.75) then
-		t = t - (1.5 / 2.75)
+	elseif t < 0.73 then -- 2 / 2.75
+		t = t - 0.55 -- 1.5 / 2.75
 
 		return c * (7.5625 * t * t + 0.75) + b
-	elseif t < (2.5 / 2.75) then
-		t = t - (2.25 / 2.75)
+	elseif t < 0.91 then -- 2.5 / 2.75
+		t = t - 0.82 -- 2.25 / 2.75
 
 		return c * (7.5625 * t * t + 0.9375) + b
 	else
-		t = t - (2.625 / 2.75)
+		t = t - 0.95 -- 2.625 / 2.75
 
 		return c * (7.5625 * t * t + 0.984375) + b
 	end
@@ -264,7 +264,7 @@ local InBounce = function(t, b, c, d)
 end
 
 local InOutBounce = function(t, b, c, d)
-	if t < d / 2 then
+	if t < d * 0.5 then
 		return InBounce(t * 2, 0, c, d) * 0.5 + b
 	else
 		return OutBounce(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b
@@ -285,7 +285,7 @@ local InElastic = function(t, b, c, d)
 
 	local a = c
 	local p = d * 0.3
-	local s = p / 4
+	local s = p * 0.25
 
 	t = t - 1
 
@@ -305,7 +305,7 @@ local OutElastic = function(t, b, c, d)
 
 	local a = c
 	local p = d * 0.3
-	local s = p / 4
+	local s = p * 0.25
 
 	return a * 2 ^ (-10 * t) * sin((t * d - s) * (2 * pi) / p) + c + b
 end
@@ -323,7 +323,7 @@ local InOutElastic = function(t, b, c, d)
 
 	local a = c
 	local p = d * (0.3 * 1.5)
-	local s = p / 4
+	local s = p * 0.25
 
 	if t < 1 then
 		t = t - 1
