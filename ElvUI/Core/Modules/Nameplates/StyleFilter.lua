@@ -1660,6 +1660,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end
 
 	pooler:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
+	pooler:Hide()
 
 	function NP:StyleFilterPoolerTrack(event, arg1, arg2, arg3, ...)
 		local eventFunc = NP.StyleFilterEventFunctions[event]
@@ -1679,7 +1680,15 @@ do -- oUF style filter inject watch functions without actually registering any e
 		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)) then
 			if pooler.active then
 				pooler.tracked[self] = true
+
+				if not pooler:IsShown() then
+					pooler:Show()
+				end
 			else
+				if pooler:IsShown() then
+					pooler:Hide()
+				end
+
 				NP:StyleFilterUpdate(self, 'PoolerUpdate')
 			end
 		end

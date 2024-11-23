@@ -113,8 +113,16 @@ pooler.tracker = function(frame, event, arg1, ...)
 			end
 		end
 
+		if not object:IsShown() then
+			object:Show()
+		end
+
 		object.times[event] = now
 	else
+		if object:IsShown() then
+			object:Hide()
+		end
+
 		pooler.execute(event, pool, true, arg1, ...)
 	end
 end
@@ -130,6 +138,7 @@ pooler.onUpdate = function(self, elapsed)
 end
 
 object:SetScript('OnUpdate', pooler.onUpdate)
+object:Hide()
 
 function oUF:RegisterEvent(frame, event, func)
 	-- print('RegisterEvent', frame, event, func)
