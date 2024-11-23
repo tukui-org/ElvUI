@@ -1638,6 +1638,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 	pooler.delay = 0.1 -- update check rate
 	pooler.frames = {}
 
+	ElvUF.Pooler.StyleFilter = pooler
+
 	function NP:StyleFilterPoolerRun()
 		for frame in pairs(pooler.frames) do
 			NP:StyleFilterUpdate(frame, 'PoolerUpdate')
