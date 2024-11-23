@@ -127,13 +127,14 @@ pooler.tracker = function(frame, event, arg1, ...)
 	end
 end
 
-pooler.onUpdate = function(self, elapsed)
-	local elapsedTime = self.elapsed or 0
-	if elapsedTime > object.delay then
+local wait = 0
+pooler.onUpdate = function(_, elapsed)
+	if wait > object.delay then
 		pooler.update()
-		self.elapsed = 0
+
+		wait = 0
 	else
-		self.elapsed = elapsedTime + elapsed
+		wait = wait + elapsed
 	end
 end
 

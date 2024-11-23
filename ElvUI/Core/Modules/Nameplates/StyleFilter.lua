@@ -1649,13 +1649,14 @@ do -- oUF style filter inject watch functions without actually registering any e
 		wipe(pooler.tracked) -- clear it out
 	end
 
+	local wait = 0
 	function NP:StyleFilterPoolerOnUpdate(elapsed)
-		if pooler.elapsed and pooler.elapsed > pooler.delay then
+		if wait > pooler.delay then
 			NP:StyleFilterPoolerRun()
 
-			pooler.elapsed = 0
+			wait = 0
 		else
-			pooler.elapsed = (pooler.elapsed or 0) + elapsed
+			wait = wait + elapsed
 		end
 	end
 
