@@ -17,6 +17,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 local BleedList = E.Libs.Dispel:GetBleedList()
 local BadDispels = E.Libs.Dispel:GetBadList()
 
@@ -443,10 +444,10 @@ function UF:PostUpdateAura(_, button)
 			if enemy and db.auraByType then
 				r, g, b = enemy.r, enemy.g, enemy.b
 			end
-		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and E:IsDispellableByMe(button.debuffType) then
+		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and DispelTypes[button.debuffType] then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
-			local bleed = not button.debuffType and BleedList[button.spellID] and E:IsDispellableByMe('Bleed') and DebuffColors.Bleed
+			local bleed = not button.debuffType and BleedList[button.spellID] and DispelTypes.Bleed and DebuffColors.Bleed
 			if bleed then
 				r, g, b = bleed.r, bleed.g, bleed.b
 			else
@@ -623,9 +624,8 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	--- button.isDebuff = isDebuff
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
-	local dispel = self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType)
-
-	local bleed = not dispel and not debuffType and E:IsDispellableByMe('Bleed')
+	local dispel = self.type == 'debuffs' and debuffType and DispelTypes[debuffType]
+	local bleed = not dispel and not debuffType and DispelTypes.Bleed
 	if bleed then dispel = BleedList[spellID] end
 
 	button.canDesaturate = db.desaturate

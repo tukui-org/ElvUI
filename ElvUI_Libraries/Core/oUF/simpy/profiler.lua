@@ -36,6 +36,11 @@ local Update = function(data, finish)
 	return count, (finish > data.high) and finish, (finish < data.low) and finish, data.total + finish, data.total / count
 end
 
+local Total = function(data, finish)
+	local count = data.count + 1
+	return count, data.total + finish, data.total / count
+end
+
 local Save = function(data, start, finish)
 	local count, high, low, total, average = Update(data, finish)
 
@@ -47,11 +52,6 @@ local Save = function(data, start, finish)
 	data.start = start
 	data.finish = finish
 	data.average = average
-end
-
-local Total = function(data, finish)
-	local count = data.count + 1
-	return count, data.total + finish, data.total / count
 end
 
 local Single = function(func, ...)

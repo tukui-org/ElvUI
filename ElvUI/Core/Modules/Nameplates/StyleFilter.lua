@@ -50,6 +50,7 @@ local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local BleedList = E.Libs.Dispel:GetBleedList()
+local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 local FallbackColor = {r=1, b=1, g=1}
 
@@ -366,9 +367,9 @@ function NP:StyleFilterDispelCheck(frame, filter)
 			if isStealable then
 				return true
 			end
-		elseif auraType and E:IsDispellableByMe(auraType) then
+		elseif auraType and DispelTypes[auraType] then
 			return true
-		elseif not auraType and BleedList[spellID] and E:IsDispellableByMe('Bleed') then
+		elseif not auraType and BleedList[spellID] and DispelTypes.Bleed then
 			return true
 		end
 
