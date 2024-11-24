@@ -21,7 +21,7 @@ object.events = {}
 object.times = {}
 
 object.delay = 0.1 -- update check rate
-object.instant = 0.5 -- seconds since last event
+object.instant = 0.3 -- seconds since last event
 object.active = true -- off is always instant
 
 pooler.run = function(funcs, frame, event, ...)

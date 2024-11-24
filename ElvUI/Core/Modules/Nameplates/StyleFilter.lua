@@ -1636,7 +1636,7 @@ end
 do -- oUF style filter inject watch functions without actually registering any events
 	local object = CreateFrame('Frame')
 	object.delay = 0.1 -- update check rate
-	object.instant = 0.5 -- seconds since last event
+	object.instant = 0.3 -- seconds since last event
 	object.active = true -- off is always instant
 	object.tracked = {}
 	object.times = {}
