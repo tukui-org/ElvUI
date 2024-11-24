@@ -31,13 +31,13 @@ local Profile = function(func, ...)
 	return start, finish, args
 end
 
-local Store = function(data, finish)
+local Update = function(data, finish)
 	local count = data.count + 1
 	return count, (finish > data.high) and finish, (finish < data.low) and finish, data.total + finish, data.total / count
 end
 
 local Save = function(data, start, finish)
-	local count, high, low, total, average = Store(data, finish)
+	local count, high, low, total, average = Update(data, finish)
 
 	if high then data.high = high end
 	if low then data.low = low end
