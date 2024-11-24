@@ -15,17 +15,69 @@ local debugprofilestop = debugprofilestop
 
 -- cpu timing stuff
 local _default = { total = 0, average = 0, count = 0 }
-local _info, _data, _fps = {}, { _all = CopyTable(_default) }, { _all = CopyTable(_default) }
+local _info, _funcs, _data, _fps = {}, {}, { _all = CopyTable(_default) }, { _all = CopyTable(_default) }
 
 oUF.Profiler = _info
 
+_info.funcs = _funcs
 _info.data = _data
 _info.fps = _fps
 
-local Collect = function(object, key, func, ...)
+local Profile = function(func, ...)
 	local start = debugprofilestop()
 	local args = { func(...) }
 	local finish = debugprofilestop() - start
+
+	return start, finish, args
+end
+
+local Store = function(data, finish)
+	local count = data.count + 1
+	return count, (finish > data.high) and finish, (finish < data.low) and finish, data.total + finish, data.total / count
+end
+
+local Save = function(data, start, finish)
+	local count, high, low, total, average = Store(data, finish)
+
+	if high then data.high = high end
+	if low then data.low = low end
+
+	data.count = count
+	data.total = total
+	data.start = start
+	data.finish = finish
+	data.average = average
+end
+
+local Total = function(data, finish)
+	local count = data.count + 1
+	return count, data.total + finish, data.total / count
+end
+
+local Single = function(func, ...)
+	local data = _funcs[func]
+	if not data then
+		return func(...)
+	end
+
+	local start, finish, args = Profile(func, ...)
+	if not data.count then
+		data.high = finish
+		data.low = finish
+		data.total = finish
+		data.average = finish
+		data.finish = finish
+		data.start = start
+		data.count = 1
+	else
+		Save(data, finish)
+	end
+
+	return unpack(args)
+end
+
+local Several = function(object, key, func, ...)
+	local start, finish, args = Profile(func, ...)
 
 	local obj = _data[object]
 	if not obj then
@@ -40,40 +92,17 @@ local Collect = function(object, key, func, ...)
 
 	local data = obj[key]
 	if data then
-		data.count = data.count + 1
-
-		if data.finish > data.high then
-			data.high = data.finish
-		end
-
-		if data.finish < data.low then
-			data.low = data.finish
-		end
-
-		data.total = data.total + finish
-		data.average = data.total / data.count
+		Save(data, start, finish)
 	else
-		data = { high = finish, low = finish, total = finish, average = finish, count = 1 }
+		data = { start = start, finish = finish, high = finish, low = finish, total = finish, average = finish, count = 1 }
 		obj[key] = data
 	end
 
-	-- update data
-	data.start = start
-	data.finish = finish
+	local module = obj._module -- module totals
+	if module then module.count, module.total, module.average = Total(module, finish) end
 
-	local module = obj._module
-	if module then -- module totals
-		module.total = module.total + finish
-		module.count = module.count + 1
-		module.average = module.total / module.count
-	end
-
-	local all = _data._all
-	if all then -- overall totals
-		all.total = all.total + finish
-		all.count = all.count + 1
-		all.average = all.total / all.count
-	end
+	local all = _data._all -- overall totals
+	if all then all.count, all.total, all.average = Total(all, finish) end
 
 	return unpack(args)
 end
@@ -81,11 +110,21 @@ end
 local Generate = function(object, key, func)
 	-- print('Generate', object, key, func)
 
-	return function(...)
-		if _info._enabled then
-			return Collect(object, key, func, ...)
-		else
-			return func(...)
+	if object then
+		return function(...)
+			if _info._enabled then
+				return Several(object, key, func, ...)
+			else
+				return func(...)
+			end
+		end
+	else
+		return function(...)
+			if _info._enabled then
+				return Single(func, ...)
+			else
+				return func(...)
+			end
 		end
 	end
 end
@@ -101,6 +140,14 @@ local Generator = function(object, key, value)
 	end
 end
 
+_info.add = function(func)
+	if not _funcs[func] then
+		_funcs[func] = {}
+
+		return Generate(nil, nil, func)
+	end
+end
+
 _info.clear = function(object)
 	wipe(object)
 
@@ -110,6 +157,10 @@ end
 _info.reset = function()
 	_info.clear(_data)
 	_info.clear(_fps)
+
+	for _, obj in next, _funcs do
+		wipe(obj)
+	end
 
 	_info.oUF_Private = nil
 end
