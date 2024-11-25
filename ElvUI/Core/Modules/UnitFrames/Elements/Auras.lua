@@ -4,7 +4,7 @@ local NP = E:GetModule('NamePlates')
 local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
-local format, strlower = format, strlower
+local format, strlower, strfind = format, strlower, strfind
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
 
@@ -17,6 +17,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 local BleedList = E.Libs.Dispel:GetBleedList()
 local BadDispels = E.Libs.Dispel:GetBadList()
 
@@ -244,7 +245,7 @@ function UF:UpdateAuraSettings(button)
 	if db then
 		local point = db.countPosition or 'CENTER'
 		button.Count:ClearAllPoints()
-		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.Count:SetJustifyH(strfind(point, 'RIGHT', nil, true) and 'RIGHT' or 'LEFT')
 		button.Count:Point(point, db.countXOffset, db.countYOffset)
 		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
@@ -277,7 +278,7 @@ function UF:UpdateAuraCooldownPosition(button)
 	if point == 'CENTER' then
 		button.Cooldown.timer.text:Point(point, 1, 0)
 	else
-		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		local bottom, right = strfind(point, 'BOTTOM', nil, true), strfind(point, 'RIGHT', nil, true)
 		button.Cooldown.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
@@ -433,20 +434,19 @@ function UF:PreUpdateAura()
 end
 
 function UF:PostUpdateAura(_, button)
-	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
+	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal, bad, enemy = DebuffColors.Stealable, DebuffColors.BadDispel, DebuffColors.EnemyNPC
-	local r, g, b
 
 	if button.isDebuff then
 		if enemyNPC then
 			if enemy and db.auraByType then
 				r, g, b = enemy.r, enemy.g, enemy.b
 			end
-		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and E:IsDispellableByMe(button.debuffType) then
+		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and DispelTypes[button.debuffType] then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
-			local bleed = not button.debuffType and BleedList[button.spellID] and E:IsDispellableByMe('Bleed') and DebuffColors.Bleed
+			local bleed = not button.debuffType and BleedList[button.spellID] and DispelTypes.Bleed and DebuffColors.Bleed
 			if bleed then
 				r, g, b = bleed.r, bleed.g, bleed.b
 			else
@@ -529,7 +529,7 @@ function UF:ConvertFilters(auras, priority)
 	end
 end
 
-function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, isMount, castByPlayer, nameplateShowSelf, nameplateShowAll, filterList)
+function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, noDuration, castByPlayer, blizzardNameplate, isMount, filterList)
 	for i = 1, #filterList do
 		local data = filterList[i]
 		local status = data.status
@@ -542,40 +542,33 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 				if which and list and next(list) then
 					local spell = list[spellID] or list[spellName]
 					if spell and spell.enable then
-						if which == 'Blacklist' then
-							return false
-						elseif allowDuration then
-							return true, spell.priority
-						end
+						return which ~= 'Blacklist', spell.priority
 					end
 				end
 			-- Special Filters
 			else
-				-- Whitelists
 				local name = data.name
-				local found = (allowDuration and ((name == 'Personal' and isPlayer)
-					or (name == 'nonPersonal' and not isPlayer)
-					or (name == 'Mount' and isMount)
-					or (name == 'Boss' and isBossDebuff)
-					or (name == 'MyPet' and myPet)
-					or (name == 'OtherPet' and otherPet)
-					or (name == 'CastByUnit' and source and unitIsCaster)
-					or (name == 'notCastByUnit' and source and not unitIsCaster)
-					or (name == 'Dispellable' and canDispel)
-					or (name == 'notDispellable' and not canDispel)
-					or (name == 'CastByNPC' and not castByPlayer)
-					or (name == 'CastByPlayers' and castByPlayer)
-					or (name == 'BlizzardNameplate' and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))))
-				-- Blacklists
-				or ((name == 'blockCastByPlayers' and castByPlayer)
+				if (name == 'blockCastByPlayers' and castByPlayer)
 				or (name == 'blockNoDuration' and noDuration)
 				or (name == 'blockMount' and isMount)
 				or (name == 'blockNonPersonal' and not isPlayer)
 				or (name == 'blockDispellable' and canDispel)
-				or (name == 'blockNotDispellable' and not canDispel)) and 0
-
-				if found then
-					return found ~= 0
+				or (name == 'blockNotDispellable' and not canDispel) then
+					return false -- Blacklists
+				elseif (name == 'Personal' and isPlayer)
+				or (name == 'nonPersonal' and not isPlayer)
+				or (name == 'Mount' and isMount)
+				or (name == 'Boss' and isBossDebuff)
+				or (name == 'MyPet' and myPet)
+				or (name == 'OtherPet' and otherPet)
+				or (name == 'CastByUnit' and source and unitIsCaster)
+				or (name == 'notCastByUnit' and source and not unitIsCaster)
+				or (name == 'Dispellable' and canDispel)
+				or (name == 'notDispellable' and not canDispel)
+				or (name == 'CastByNPC' and not castByPlayer)
+				or (name == 'CastByPlayers' and castByPlayer)
+				or (name == 'BlizzardNameplate' and blizzardNameplate) then
+					return true -- Whitelists
 				end
 			end
 		end
@@ -590,72 +583,100 @@ function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration
 	end
 end
 
-function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
-	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
-
-	local db = button.db or self.db
-	if not db then return true end
-
+function UF:AuraStacks(db, auras, button, name, icon, count, spellID, source, castByPlayer)
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
-		local stack = self.stacks[matching]
+		local stack = auras.stacks[matching]
 		if not stack then
-			self.stacks[matching] = button
+			auras.stacks[matching] = button
 			button.matches = amount
 		elseif stack.texture == icon then
 			stack.matches = (stack.matches or 1) + amount
 			stack.Count:SetText(stack.matches)
 
-			return false
+			return true -- its stacking
 		end
 	elseif button.matches then
 		button.matches = nil -- stackAuras
 	end
+end
 
-	if UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
-		return button.filterPass
+function UF:AuraDispellable(debuffType, spellID)
+	if debuffType then
+		return DispelTypes[debuffType]
+	else
+		return DispelTypes.Bleed and BleedList[spellID]
 	end
+end
 
+function UF:AuraDuration(db, duration)
+	local dno, dmax, dmin = not duration or duration == 0, db.maxDuration, db.minDuration
+	return dno, dno or (duration and duration > 0 and (not dmax or dmax == 0 or duration <= dmax) and (not dmin or dmin == 0 or duration >= dmin))
+end
+
+function UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	-- already set by oUF:
 	--- button.caster = source
 	--- button.filter = filter
 	--- button.isDebuff = isDebuff
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
-	local dispel = self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType)
+	local myPet = source == 'pet'
+	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
+	local canDispel = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
+	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
+	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 
-	local bleed = not dispel and not debuffType and E:IsDispellableByMe('Bleed')
-	if bleed then dispel = BleedList[spellID] end
-
-	button.canDesaturate = db.desaturate
-	button.myPet = source == 'pet'
-	button.otherPet = source and not UnitIsUnit('pet', source) and strmatch(source, 'pet%d+')
-	button.isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
-	button.unitIsCaster = unit and source and UnitIsUnit(unit, source)
-	button.canDispel = dispel or (self.type == 'buffs' and isStealable)
-	button.isStealable = isStealable
+	-- straight from the args
 	button.debuffType = debuffType
 	button.duration = duration
 	button.expiration = expiration
-	button.noTime = duration == 0 and expiration == 0
+	button.isStealable = isStealable
 	button.stackCount = count
-	button.texture = icon
 	button.spellID = spellID
+	button.texture = icon
 	button.name = name
-	button.priority = 0
 
-	local isMount = E.MountIDs[spellID]
-	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
+	-- from locals
+	button.myPet = myPet
+	button.otherPet = otherPet
+	button.canDispel = canDispel
+	button.isFriend = isFriend
+	button.unitIsCaster = unitIsCaster
 
-	if self.filterList then
-		local filterCheck, spellPriority = UF:CheckFilter(source, name, spellID, button.canDispel, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, isMount, castByPlayer, nameplateShowPersonal, nameplateShowAll, self.filterList)
-		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
-		button.filterPass = filterCheck
-		return filterCheck
-	else
-		button.filterPass = allowDuration
+	-- used elsewhere
+	button.canDesaturate = db.desaturate
+	button.noTime = duration == 0 and expiration == 0
+
+	return myPet, otherPet, canDispel, isFriend, unitIsCaster
+end
+
+function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
+
+	local db = self.db
+	if not db then
+		return true -- no database huh
+	elseif UF:AuraStacks(db, self, button, name, icon, count, spellID, source, castByPlayer) then
+		return false -- stacking so dont allow it
+	end
+
+	local noDuration, allowDuration = UF:AuraDuration(db, duration)
+	if not allowDuration or not self.filterList then
+		button.filterPass = nil
+		button.priority = 0
+
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
+	elseif UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
+		return button.filterPass
+	else
+		local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
+		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
+
+		button.filterPass = pass
+		button.priority = priority or 0 -- This is the only difference from auarbars code
+
+		return pass
 	end
 end

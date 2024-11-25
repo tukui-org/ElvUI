@@ -387,6 +387,8 @@ do --this can save some main file locals
 		end
 	elseif portal == 'EU' then
 		if E.Classic then
+			-- Luckyone Anniversary (6112: Spineshatter EU)
+			z['Player-6112-028A3A6D']	= ElvGreen -- [Horde] Hunter
 			-- Luckyone Seasonal (5827: Living Flame EU)
 			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
 			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin

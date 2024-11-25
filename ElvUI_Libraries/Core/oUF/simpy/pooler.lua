@@ -5,12 +5,12 @@ local Profiler = oUF.Profiler.func
 -- Event Pooler by Simpy
 
 local next = next
-local time = time
 local wipe = wipe
 local pairs = pairs
 local unpack = unpack
 local tinsert = tinsert
 local tremove = tremove
+local GetTime = GetTime
 
 local object = CreateFrame('Frame')
 local pooler = { frame = object }
@@ -21,7 +21,8 @@ object.events = {}
 object.times = {}
 
 object.delay = 0.1 -- update check rate
-object.instant = 1 -- seconds since last event
+object.instant = 0.3 -- seconds since last event
+object.active = true -- off is always instant
 
 pooler.run = function(funcs, frame, event, ...)
 	for i = 1, #funcs do
@@ -87,8 +88,10 @@ end
 pooler.tracker = function(frame, event, arg1, ...)
 	-- print('tracker', frame, event, arg1, ...)
 	local pool = object.events[event]
-	if pool then
-		local now = time()
+	if not pool then return end
+
+	if object.active then
+		local now = GetTime()
 		local last = object.times[event]
 		if last and (last + object.instant) < now then
 			pooler.execute(event, pool, true, arg1, ...)
@@ -110,21 +113,33 @@ pooler.tracker = function(frame, event, arg1, ...)
 			end
 		end
 
+		if not object:IsShown() then
+			object:Show()
+		end
+
 		object.times[event] = now
+	else
+		if object:IsShown() then
+			object:Hide()
+		end
+
+		pooler.execute(event, pool, true, arg1, ...)
 	end
 end
 
-pooler.onUpdate = function(self, elapsed)
-	local elapsedTime = self.elapsed or 0
-	if elapsedTime > object.delay then
+local wait = 0
+pooler.onUpdate = function(_, elapsed)
+	if wait > object.delay then
 		pooler.update()
-		self.elapsed = 0
+
+		wait = 0
 	else
-		self.elapsed = elapsedTime + elapsed
+		wait = wait + elapsed
 	end
 end
 
 object:SetScript('OnUpdate', pooler.onUpdate)
+object:Hide()
 
 function oUF:RegisterEvent(frame, event, func)
 	-- print('RegisterEvent', frame, event, func)

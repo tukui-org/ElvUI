@@ -74,6 +74,7 @@ local UIErrorsFrame = UIErrorsFrame
 -- GLOBALS: ElvDB
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
+local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 E.MountIDs = {}
 E.MountText = {}
@@ -425,7 +426,7 @@ function E:CheckRole()
 end
 
 function E:IsDispellableByMe(debuffType)
-	return E.Libs.Dispel:IsDispellableByMe(debuffType)
+	return DispelTypes[debuffType]
 end
 
 function E:UpdateDispelColors()
