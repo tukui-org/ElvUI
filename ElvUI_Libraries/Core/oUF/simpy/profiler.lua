@@ -24,7 +24,7 @@ _info.data = _data
 _info.fps = _fps
 
 local depth = 0
-local debug = function(num, start)
+local Debug = function(num, start)
 	depth = depth + num
 
 	if num == -1 and (depth % 2 == 1) then
@@ -35,9 +35,9 @@ local debug = function(num, start)
 end
 
 local Profile = function(func, ...)
-	local start = debug(1)
+	local start = Debug(1)
 	local args = { func(...) }
-	local finish = debug(-1, start) - start
+	local finish = Debug(-1, start) - start
 
 	return start, finish, args
 end
@@ -151,6 +151,20 @@ local Generator = function(object, key, value)
 	end
 end
 
+local meta = { __newindex = Generator }
+_info.func = function(tbl, ...)
+	-- print('Profiler', tbl)
+
+	local t = getmetatable(tbl)
+	if t then
+		t.__newindex = Generator
+
+		return tbl, ...
+	else
+		return setmetatable(tbl, meta), ...
+	end
+end
+
 _info.add = function(func)
 	if not _funcs[func] then
 		_funcs[func] = {}
@@ -178,20 +192,6 @@ end
 
 _info.state = function(value)
 	_info._enabled = value
-end
-
-local meta = { __newindex = Generator }
-_info.func = function(tbl, ...)
-	-- print('Profiler', tbl)
-
-	local t = getmetatable(tbl)
-	if t then
-		t.__newindex = Generator
-
-		return tbl, ...
-	else
-		return setmetatable(tbl, meta), ...
-	end
 end
 
 -- lets collect some FPS info
