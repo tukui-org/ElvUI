@@ -446,7 +446,7 @@ function UF:PostUpdateAura(_, button)
 		elseif bad and db.auraByDispels and BadDispels[button.spellID] and button.debuffType and DispelTypes[button.debuffType] then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
-			local bleed = not button.debuffType and BleedList[button.spellID] and DispelTypes.Bleed and DebuffColors.Bleed
+			local bleed = not button.debuffType and DispelTypes.Bleed and BleedList[button.spellID] and DebuffColors.Bleed
 			if bleed then
 				r, g, b = bleed.r, bleed.g, bleed.b
 			else
