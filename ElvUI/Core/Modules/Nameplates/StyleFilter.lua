@@ -369,7 +369,7 @@ function NP:StyleFilterDispelCheck(frame, filter)
 			end
 		elseif auraType and DispelTypes[auraType] then
 			return true
-		elseif not auraType and BleedList[spellID] and DispelTypes.Bleed then
+		elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
 			return true
 		end
 

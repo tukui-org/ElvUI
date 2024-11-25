@@ -4,7 +4,7 @@ local NP = E:GetModule('NamePlates')
 local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
-local format, strlower = format, strlower
+local format, strlower, strfind = format, strlower, strfind
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
 
@@ -245,7 +245,7 @@ function UF:UpdateAuraSettings(button)
 	if db then
 		local point = db.countPosition or 'CENTER'
 		button.Count:ClearAllPoints()
-		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.Count:SetJustifyH(strfind(point, 'RIGHT', nil, true) and 'RIGHT' or 'LEFT')
 		button.Count:Point(point, db.countXOffset, db.countYOffset)
 		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
@@ -278,7 +278,7 @@ function UF:UpdateAuraCooldownPosition(button)
 	if point == 'CENTER' then
 		button.Cooldown.timer.text:Point(point, 1, 0)
 	else
-		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
+		local bottom, right = strfind(point, 'BOTTOM', nil, true), strfind(point, 'RIGHT', nil, true)
 		button.Cooldown.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
@@ -591,27 +591,48 @@ function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration
 	end
 end
 
-function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
-	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
-
-	local db = button.db or self.db
-	if not db then return true end
-
+function UF:AuraStacks(db, auras, button, name, icon, count, spellID, source, castByPlayer)
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
-		local stack = self.stacks[matching]
+		local stack = auras.stacks[matching]
 		if not stack then
-			self.stacks[matching] = button
+			auras.stacks[matching] = button
 			button.matches = amount
 		elseif stack.texture == icon then
 			stack.matches = (stack.matches or 1) + amount
 			stack.Count:SetText(stack.matches)
 
-			return false
+			return true -- its stacking
 		end
 	elseif button.matches then
 		button.matches = nil -- stackAuras
+	end
+end
+
+function UF:AuraDispellable(debuffType, spellID)
+	if debuffType then
+		return DispelTypes[debuffType]
+	else
+		return DispelTypes.Bleed and BleedList[spellID]
+	end
+end
+
+function UF:AuraDuration(db, duration)
+	local noDuration = (not duration or duration == 0)
+	return noDuration, noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
+end
+
+function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
+	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
+
+	local db = self.db
+	if not db then
+		return true -- no database huh
+	end
+
+	if UF:AuraStacks(db, self, button, name, icon, count, spellID, source, castByPlayer) then
+		return false -- stacking so dont allow it
 	end
 
 	if UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
@@ -624,33 +645,27 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	--- button.isDebuff = isDebuff
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
-	local dispel = self.type == 'debuffs' and debuffType and DispelTypes[debuffType]
-	local bleed = not dispel and not debuffType and DispelTypes.Bleed
-	if bleed then dispel = BleedList[spellID] end
-
-	button.canDesaturate = db.desaturate
-	button.myPet = source == 'pet'
-	button.otherPet = source and not UnitIsUnit('pet', source) and strmatch(source, 'pet%d+')
-	button.isFriend = unit and UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
-	button.unitIsCaster = unit and source and UnitIsUnit(unit, source)
-	button.canDispel = dispel or (self.type == 'buffs' and isStealable)
-	button.isStealable = isStealable
 	button.debuffType = debuffType
 	button.duration = duration
 	button.expiration = expiration
-	button.noTime = duration == 0 and expiration == 0
+	button.isStealable = isStealable
 	button.stackCount = count
-	button.texture = icon
 	button.spellID = spellID
+	button.texture = icon
 	button.name = name
+
+	button.myPet = source == 'pet'
+	button.otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
+	button.canDispel = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
+	button.isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
+	button.unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
+	button.canDesaturate = db.desaturate
+	button.noTime = duration == 0 and expiration == 0
 	button.priority = 0
 
-	local isMount = E.MountIDs[spellID]
-	local noDuration = (not duration or duration == 0)
-	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
-
+	local noDuration, allowDuration = UF:AuraDuration(db, duration)
 	if self.filterList then
-		local filterCheck, spellPriority = UF:CheckFilter(source, name, spellID, button.canDispel, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, isMount, castByPlayer, nameplateShowPersonal, nameplateShowAll, self.filterList)
+		local filterCheck, spellPriority = UF:CheckFilter(source, name, spellID, button.canDispel, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, E.MountIDs[spellID], castByPlayer, nameplateShowPersonal, nameplateShowAll, self.filterList)
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 		button.filterPass = filterCheck
 		return filterCheck
