@@ -169,6 +169,7 @@ _info.state = function(value)
 	_info._enabled = value
 end
 
+local meta = { __newindex = Generator }
 _info.func = function(tbl, ...)
 	-- print('Profiler', tbl)
 
@@ -178,7 +179,7 @@ _info.func = function(tbl, ...)
 
 		return tbl, ...
 	else
-		return setmetatable(tbl, { __newindex = Generator }), ...
+		return setmetatable(tbl, meta), ...
 	end
 end
 
