@@ -434,10 +434,9 @@ function UF:PreUpdateAura()
 end
 
 function UF:PostUpdateAura(_, button)
-	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
+	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal, bad, enemy = DebuffColors.Stealable, DebuffColors.BadDispel, DebuffColors.EnemyNPC
-	local r, g, b
 
 	if button.isDebuff then
 		if enemyNPC then
