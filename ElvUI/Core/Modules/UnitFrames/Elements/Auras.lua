@@ -611,8 +611,8 @@ function UF:AuraDispellable(debuffType, spellID)
 end
 
 function UF:AuraDuration(db, duration)
-	local noDuration = (not duration or duration == 0)
-	return noDuration, noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
+	local dno, dmax, dmin = not duration or duration == 0, db.maxDuration, db.minDuration
+	return dno, dno or (duration and duration > 0 and (not dmax or dmax == 0 or duration <= dmax) and (not dmin or dmin == 0 or duration >= dmin))
 end
 
 function UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
