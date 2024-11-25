@@ -269,6 +269,8 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[45182]		= List(), -- Cheating Death
 		[199027]	= List(), -- Veil of Midnight
 	-- Shaman
+		[114893]	= List(), -- Stone Bulwark
+		[462844]	= List(), -- Stone Bulwark (additional)
 		[325174]	= List(), -- Spirit Link
 		[974]		= List(), -- Earth Shield
 		[207654]	= List(), -- Servant of the Queen
@@ -585,6 +587,8 @@ G.unitframe.aurafilters.Whitelist = {
 		[2983]		= List(), -- Sprint
 		[202665]	= List(), -- Curse of the Dreadblades (Self Debuff)
 	-- Shaman
+		[114893]	= List(), -- Stone Bulwark
+		[462844]	= List(), -- Stone Bulwark (additional)
 		[325174]	= List(), -- Spirit Link
 		[974]		= List(), -- Earth Shield
 		[207654]	= List(), -- Servant of the Queen
