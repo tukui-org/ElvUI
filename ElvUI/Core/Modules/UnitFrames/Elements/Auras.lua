@@ -660,18 +660,18 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 		return true -- no database huh
 	elseif UF:AuraStacks(db, self, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
+	elseif UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
+		return button.filterPass
 	end
 
 	local noDuration, allowDuration = UF:AuraDuration(db, duration)
+	local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	if not allowDuration or not self.filterList then
-		button.filterPass = nil
+		button.filterPass = allowDuration
 		button.priority = 0
 
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
-	elseif UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
-		return button.filterPass
 	else
-		local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
 
 		button.filterPass = pass
