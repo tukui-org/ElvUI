@@ -103,12 +103,11 @@ local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame
 local wipe = wipe
 local next = next
 local select = select
+local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local UnitIsUnit = UnitIsUnit
-local GetTime = GetTime
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 
@@ -116,13 +115,13 @@ local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 -- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
-local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
-	local castbar = self.Castbar
-	castbar.curTarget = (target and target ~= "") and target or nil
-
-	if castbar.isTradeSkill then
-		castbar.tradeSkillCastId = castID
-	end
+local specialCast = {} -- ms duration
+if oUF.isClassic then
+	specialCast[2643] = 500 -- Multishot
+	specialCast[14288] = 500 -- Multishot
+	specialCast[14289] = 500 -- Multishot
+	specialCast[14290] = 500 -- Multishot
+	specialCast[19434] = 3000 -- Aimed Shot
 end
 -- end block
 
@@ -230,7 +229,7 @@ local function ShouldShow(element, unit)
 	return element.__owner.unit == unit
 end
 
-local function CastStart(self, real, unit, castGUID)
+local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
@@ -238,14 +237,28 @@ local function CastStart(self, real, unit, castGUID)
 		return
 	end
 
-	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local event, numStages, castDuration = 'UNIT_SPELLCAST_START'
+	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
+	if spellID and real == 'UNIT_SPELLCAST_SENT' then
+		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
-	local numStages, _
-	local event = 'UNIT_SPELLCAST_START'
-	if not name then
-		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+		if name then
+			if castDuration and castDuration ~= 0 then
+				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
+			end
 
-		event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
+			castID = castGUID
+			startTime = GetTime() * 1000
+			endTime = startTime + castTime
+		end
+	else
+		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+
+		if not name then
+			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+
+			event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
+		end
 	end
 
 	if not name or (isTradeSkill and element.hideTradeSkills) then
@@ -263,8 +276,8 @@ local function CastStart(self, real, unit, castGUID)
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
 	end
 
-	endTime = endTime / 1000
-	startTime = startTime / 1000
+	endTime = endTime * 0.001
+	startTime = startTime * 0.001
 
 	element.max = endTime - startTime
 	element.startTime = startTime
@@ -274,7 +287,12 @@ local function CastStart(self, real, unit, castGUID)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
-	element.spellName = name -- ElvUI
+
+	-- ElvUI block
+	element.spellName = name
+	element.isTradeSkill = isTradeSkill
+	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	-- end block
 
 	if element.channeling then
 		element.duration = endTime - GetTime()
@@ -283,14 +301,12 @@ local function CastStart(self, real, unit, castGUID)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player") then
+	if mergeTradeskill and isTradeSkill and unit == 'player' then
 		element.duration = element.duration + (element.max * tradeskillCurrent)
 		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
 
-		if unit == 'player' then
-			tradeskillCurrent = tradeskillCurrent + 1;
-		end
+		tradeskillCurrent = tradeskillCurrent + 1
 	end
 	-- end block
 
@@ -317,7 +333,7 @@ local function CastStart(self, real, unit, castGUID)
 			safeZone:SetPoint(element:GetReverseFill() and (isHoriz and 'LEFT' or 'BOTTOM') or (isHoriz and 'RIGHT' or 'TOP'))
 		end
 
-		local ratio = (select(4, GetNetStats()) / 1000) / element.max
+		local ratio = (select(4, GetNetStats()) * 0.001) / element.max
 		if(ratio > 1) then
 			ratio = 1
 		end
@@ -371,8 +387,8 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
 	end
 
-	endTime = endTime / 1000
-	startTime = startTime / 1000
+	endTime = endTime * 0.001
+	startTime = startTime * 0.001
 
 	local delta
 	if(element.channeling) then
@@ -418,10 +434,9 @@ local function CastStop(self, event, unit, castID, spellID)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and UnitIsUnit(unit, "player") then
-		if tradeskillCurrent == tradeskillTotal then
-			mergeTradeskill = false
-		end
+	if mergeTradeskill and (tradeskillCurrent == tradeskillTotal) and unit == 'player' then
+		mergeTradeskill = false
+		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -458,9 +473,9 @@ local function CastFail(self, event, unit, castID, spellID)
 	element.holdTime = element.timeToHold or 0
 
 	-- ElvUI block
-	if mergeTradeskill and UnitIsUnit(unit, "player") then
+	if mergeTradeskill and unit == 'player' then
 		mergeTradeskill = false
-		element.tradeSkillCastId = nil
+		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -501,6 +516,17 @@ local function CastInterruptible(self, event, unit)
 		return element:PostCastInterruptible(unit)
 	end
 end
+
+-- ElvUI block
+local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
+	self.Castbar.curTarget = (target and target ~= "") and target or nil
+
+	local castTime = specialCast[spellID]
+	if castTime then
+		CastStart(self, event, unit, castID, spellID, castTime)
+	end
+end
+-- ElvUI block
 
 local function OnUpdateStage(element)
 	if element.UpdatePipStep then

@@ -2034,7 +2034,7 @@ function E:Initialize()
 		E:Tutorials()
 	end
 
-	if E.Retail or E.Cata or E.ClassicSOD then
+	if E.Retail or E.Cata or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 

@@ -1,9 +1,15 @@
 local _, ns = ...
-ns.oUF = {}
-ns.oUF.Private = {}
+local oUF = { Private = {} }
+ns.oUF = oUF
 
-ns.oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-ns.oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-ns.oUF.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-ns.oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
-ns.oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+oUF.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
+oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
+local season = C_Seasons and C_Seasons.GetActiveSeason()
+oUF.isClassicHC = season == 3 -- Hardcore
+oUF.isClassicSOD = season == 2 -- Season of Discovery
+oUF.isClassicAnniv = season == 11 -- Anniversary
+oUF.isClassicAnnivHC = season == 12 -- Anniversary Hardcore

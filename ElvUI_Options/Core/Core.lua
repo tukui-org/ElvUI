@@ -312,7 +312,7 @@ E.Options.args.profiles.args.private.order = 2
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 
-if E.Retail or E.Cata or E.ClassicSOD then
+if E.Retail or E.Cata or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 end
 
