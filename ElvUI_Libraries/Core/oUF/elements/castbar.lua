@@ -241,13 +241,15 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	if spellID and real == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
-		if castDuration and castDuration ~= 0 then
-			castTime = castDuration -- prefer a real duration time, otherwise use the static duration
-		end
+		if name then
+			if castDuration and castDuration ~= 0 then
+				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
+			end
 
-		castID = castGUID
-		startTime = GetTime() * 1000
-		endTime = startTime + castTime
+			castID = castGUID
+			startTime = GetTime() * 1000
+			endTime = startTime + castTime
+		end
 	else
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
