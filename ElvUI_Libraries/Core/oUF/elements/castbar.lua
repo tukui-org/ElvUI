@@ -115,13 +115,14 @@ local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 -- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
-local specialCast = { -- ms duration
-	[2643] = 500, -- Multishot
-	[14288] = 500, -- Multishot
-	[14289] = 500, -- Multishot
-	[14290] = 500, -- Multishot
-	[19434] = 3000, -- Aimed Shot
-}
+local specialCast = {} -- ms duration
+if oUF.isClassic then
+	specialCast[2643] = 500 -- Multishot
+	specialCast[14288] = 500 -- Multishot
+	specialCast[14289] = 500 -- Multishot
+	specialCast[14290] = 500 -- Multishot
+	specialCast[19434] = 3000 -- Aimed Shot
+end
 -- end block
 
 local function resetAttributes(self)
