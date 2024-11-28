@@ -107,7 +107,6 @@ local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
@@ -117,12 +116,7 @@ local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
-	local castbar = self.Castbar
-	castbar.curTarget = (target and target ~= "") and target or nil
-
-	if castbar.isTradeSkill then
-		castbar.tradeSkillCastId = castID
-	end
+	self.Castbar.curTarget = (target and target ~= "") and target or nil
 end
 -- end block
 
@@ -263,8 +257,8 @@ local function CastStart(self, real, unit, castGUID)
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
 	end
 
-	endTime = endTime / 1000
-	startTime = startTime / 1000
+	endTime = endTime * 0.001
+	startTime = startTime * 0.001
 
 	element.max = endTime - startTime
 	element.startTime = startTime
@@ -274,7 +268,12 @@ local function CastStart(self, real, unit, castGUID)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
-	element.spellName = name -- ElvUI
+
+	-- ElvUI block
+	element.spellName = name
+	element.isTradeSkill = isTradeSkill
+	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	-- end block
 
 	if element.channeling then
 		element.duration = endTime - GetTime()
@@ -283,14 +282,12 @@ local function CastStart(self, real, unit, castGUID)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and isTradeSkill and UnitIsUnit(unit, "player") then
+	if mergeTradeskill and isTradeSkill and unit == 'player' then
 		element.duration = element.duration + (element.max * tradeskillCurrent)
 		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
 
-		if unit == 'player' then
-			tradeskillCurrent = tradeskillCurrent + 1;
-		end
+		tradeskillCurrent = tradeskillCurrent + 1
 	end
 	-- end block
 
@@ -317,7 +314,7 @@ local function CastStart(self, real, unit, castGUID)
 			safeZone:SetPoint(element:GetReverseFill() and (isHoriz and 'LEFT' or 'BOTTOM') or (isHoriz and 'RIGHT' or 'TOP'))
 		end
 
-		local ratio = (select(4, GetNetStats()) / 1000) / element.max
+		local ratio = (select(4, GetNetStats()) * 0.001) / element.max
 		if(ratio > 1) then
 			ratio = 1
 		end
@@ -371,8 +368,8 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
 	end
 
-	endTime = endTime / 1000
-	startTime = startTime / 1000
+	endTime = endTime * 0.001
+	startTime = startTime * 0.001
 
 	local delta
 	if(element.channeling) then
@@ -418,10 +415,9 @@ local function CastStop(self, event, unit, castID, spellID)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and UnitIsUnit(unit, "player") then
-		if tradeskillCurrent == tradeskillTotal then
-			mergeTradeskill = false
-		end
+	if mergeTradeskill and (tradeskillCurrent == tradeskillTotal) and unit == 'player' then
+		mergeTradeskill = false
+		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -458,9 +454,9 @@ local function CastFail(self, event, unit, castID, spellID)
 	element.holdTime = element.timeToHold or 0
 
 	-- ElvUI block
-	if mergeTradeskill and UnitIsUnit(unit, "player") then
+	if mergeTradeskill and unit == 'player' then
 		mergeTradeskill = false
-		element.tradeSkillCastId = nil
+		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -621,7 +617,7 @@ local function Enable(self, unit)
 		end
 
 		-- ElvUI block
-		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
+		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT)
 		-- end block
 
 		element.holdTime = 0
