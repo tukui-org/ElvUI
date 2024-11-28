@@ -117,11 +117,15 @@ local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialCast = {} -- ms duration
 if oUF.isClassic then
-	specialCast[2643] = 500 -- Multishot
-	specialCast[14288] = 500 -- Multishot
-	specialCast[14289] = 500 -- Multishot
-	specialCast[14290] = 500 -- Multishot
-	specialCast[19434] = 3000 -- Aimed Shot
+	specialCast[2643] = 500 -- Multishot R1
+	specialCast[14288] = 500 -- Multishot R2
+	specialCast[14289] = 500 -- Multishot R3
+	specialCast[14290] = 500 -- Multishot R4
+	specialCast[19434] = 3000 -- Aimed Shot R1
+	specialCast[20900] = 3000 -- Aimed Shot R2
+	specialCast[20901] = 3000 -- Aimed Shot R3
+	specialCast[20902] = 3000 -- Aimed Shot R4
+	specialCast[20903] = 3000 -- Aimed Shot R5
 end
 -- end block
 
