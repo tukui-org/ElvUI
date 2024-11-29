@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 -- Credit: ls- (lightspark)
+
 local abs, next, Lerp = abs, next, Lerp
 local tonumber, assert = tonumber, assert
 local activeObjects = {}
@@ -8,9 +9,10 @@ local handledObjects = {}
 local TARGET_FPS = 60
 local AMOUNT = 0.33
 
-local function clamp(v, min, max)
-	min = min or 0
-	max = max or 1
+local frame = CreateFrame('Frame')
+function E:Smoothing_Clamp(v, min, max)
+	if not min then min = 0 end
+	if not max then max = 1 end
 
 	if v > max then
 		return max
@@ -21,7 +23,7 @@ local function clamp(v, min, max)
 	return v
 end
 
-local function isCloseEnough(new, target, range)
+function E:Smoothing_IsCloseEnough(new, target, range)
 	if range > 0 then
 		return abs((new - target) / range) <= 0.001
 	end
@@ -29,12 +31,12 @@ local function isCloseEnough(new, target, range)
 	return true
 end
 
-local frame = CreateFrame('Frame')
-local function onUpdate(_, elapsed)
+function E:Smoothing_OnUpdate(elapsed)
 	for object, target in next, activeObjects do
-		local new = Lerp(object._value, target, clamp(AMOUNT * elapsed * TARGET_FPS))
-		if isCloseEnough(new, target, object._max - object._min) then
+		local new = Lerp(object._value, target, E:Smoothing_Clamp(AMOUNT * elapsed * TARGET_FPS))
+		if E:Smoothing_IsCloseEnough(new, target, object._max - object._min) then
 			new = target
+
 			activeObjects[object] = nil
 		end
 
@@ -43,16 +45,16 @@ local function onUpdate(_, elapsed)
 	end
 end
 
-local function bar_SetSmoothedValue(self, value)
+function E:Smoothing_SetSmoothedValue(value)
 	value = tonumber(value)
 
 	assert(value, 'bar_SetSmoothedValue requires (value) to be a number.')
 
 	self._value = self:GetValue()
-	activeObjects[self] = clamp(value, self._min, self._max)
+	activeObjects[self] = E:Smoothing_Clamp(value, self._min, self._max)
 end
 
-local function bar_SetSmoothedMinMaxValues(self, min, max)
+function E:Smoothing_SetSmoothedMinMaxValues(min, max)
 	min, max = tonumber(min), tonumber(max)
 
 	assert(min and max, 'bar_SetSmoothedMinMaxValues requires (min and max) to be a number.')
@@ -81,27 +83,27 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 	self._max = max
 end
 
-local function SmoothBar(bar)
+function E:Smoothing_Enable(bar)
 	bar._min, bar._max = bar:GetMinMaxValues()
 	bar._value = bar:GetValue()
 
 	if not bar.SetValue_ then
 		bar.SetValue_ = bar.SetValue
-		bar.SetValue = bar_SetSmoothedValue
+		bar.SetValue = E.Smoothing_SetSmoothedValue
 	end
 	if not bar.SetMinMaxValues_ then
 		bar.SetMinMaxValues_ = bar.SetMinMaxValues
-		bar.SetMinMaxValues = bar_SetSmoothedMinMaxValues
+		bar.SetMinMaxValues = E.Smoothing_SetSmoothedMinMaxValues
 	end
 
 	if not frame:GetScript('OnUpdate') then
-		frame:SetScript('OnUpdate', onUpdate)
+		frame:SetScript('OnUpdate', E.Smoothing_OnUpdate)
 	end
 
 	handledObjects[bar] = true
 end
 
-local function DesmoothBar(bar)
+function E:Smoothing_Disable(bar)
 	if activeObjects[bar] then
 		bar:SetValue_(activeObjects[bar])
 		activeObjects[bar] = nil
@@ -126,13 +128,13 @@ local function DesmoothBar(bar)
 end
 
 function E:SetSmoothingAmount(amount)
-	AMOUNT = clamp(amount, 0.2, 0.8)
+	AMOUNT = E:Smoothing_Clamp(amount, 0.2, 0.8)
 end
 
 function E:SetSmoothing(bar, enable)
 	if enable then
-		SmoothBar(bar)
+		E:Smoothing_Enable(bar)
 	else
-		DesmoothBar(bar)
+		E:Smoothing_Disable(bar)
 	end
 end
