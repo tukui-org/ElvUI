@@ -14,11 +14,13 @@ local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:AddLine('Equipment Sets')
-	DT.tooltip:AddLine(' ')
 
-	for _, set in ipairs(sets) do
+	for i, set in ipairs(sets) do
+		if i == 1 then
+			DT.tooltip:AddLine(' ')
+		end
+
 		DT.tooltip:AddLine(set.text, set.isEquipped and .2 or 1, set.isEquipped and 1 or .2, .2)
 	end
 
