@@ -1,26 +1,26 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local ipairs = ipairs
 local format = format
-local tinsert = tinsert
 local strjoin = strjoin
-local pairs = pairs
-local wipe = wipe
 
 local C_EquipmentSet_GetEquipmentSetIDs = C_EquipmentSet.GetEquipmentSetIDs
 local C_EquipmentSet_GetEquipmentSetInfo = C_EquipmentSet.GetEquipmentSetInfo
 local C_EquipmentSet_UseEquipmentSet = C_EquipmentSet.UseEquipmentSet
 
-local eqSets = {}
+local sets = {}
 local displayString, db = ''
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:AddLine('Equipment Sets')
-	DT.tooltip:AddLine(' ')
 
-	for _, set in pairs(eqSets) do
+	for i, set in ipairs(sets) do
+		if i == 1 then
+			DT.tooltip:AddLine(' ')
+		end
+
 		DT.tooltip:AddLine(set.text, set.isEquipped and .2 or 1, set.isEquipped and 1 or .2, .2)
 	end
 
@@ -29,29 +29,41 @@ end
 
 local function OnClick(self)
 	E:SetEasyMenuAnchor(E.EasyMenu, self)
-	E:ComplicatedMenu(eqSets, E.EasyMenu, nil, nil, nil, 'MENU')
+	E:ComplicatedMenu(sets, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
-local function OnEvent(self, event)
-	if event == 'ELVUI_FORCE_UPDATE' or event == 'EQUIPMENT_SETS_CHANGED' then
-		wipe(eqSets)
-	end
+local function OnEvent(self)
+	local activeIndex
+	local all = C_EquipmentSet_GetEquipmentSetIDs()
+	for i, setID in ipairs(all) do
+		local set = sets[i]
+		if not set then
+			set = {
+				checked = function(list) return list.isEquipped end,
+				func = function(_, arg1) C_EquipmentSet_UseEquipmentSet(arg1) DT:CloseMenus() end
+			}
 
-	local activeSetIndex
-	for i, setID in pairs(C_EquipmentSet_GetEquipmentSetIDs()) do
+			sets[i] = set
+		end
+
 		local name, iconFileID, _, isEquipped = C_EquipmentSet_GetEquipmentSetInfo(setID)
-
-		if event == 'ELVUI_FORCE_UPDATE' or event == 'EQUIPMENT_SETS_CHANGED' then
-			tinsert(eqSets, { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', iconFileID, name), checked = isEquipped, func = function() C_EquipmentSet_UseEquipmentSet(setID) end, setID = setID, name = name, iconFileID = iconFileID, isEquipped = isEquipped })
-		end
-
 		if isEquipped then
-			activeSetIndex = i
+			activeIndex = i
 		end
+
+		set.name = name
+		set.arg1 = setID
+		set.iconFileID = iconFileID
+		set.isEquipped = isEquipped
+		set.text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', iconFileID, name)
 	end
 
-	local set = eqSets[activeSetIndex]
-	if not activeSetIndex then
+	for i = #all + 1, #sets do
+		sets[i] = nil
+	end
+
+	local set = sets[activeIndex]
+	if not activeIndex then
 		self.text:SetText('No Set Equipped')
 	elseif set then
 		if db.NoLabel then
@@ -70,4 +82,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', '%s', hex, '%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
 end
 
-DT:RegisterDatatext('Equipment Sets', nil, { 'EQUIPMENT_SETS_CHANGED', 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, nil, nil, ApplySettings)
+DT:RegisterDatatext('Equipment Sets', nil, { 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SETS_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, nil, nil, ApplySettings)

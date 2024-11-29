@@ -1245,7 +1245,7 @@ do
 	local auraHighlight = { assist = true, boss = true, focus = true, party = true, pet = true, player = true, raid = true, raidpet = true, tank = true, target = true }
 	local castBar = { arena = true, boss = true, focus = true, party = true, pet = true, player = true, target = true }
 	local classBar = { party = true, player = true, raid = true }
-	local iconCombat = { focus = true, party = true, player = true, target = true }
+	local iconCombat = { party = true, raid = true, player = true, target = true, focus = true }
 	local iconPhase = { party = true, raid = true, target = true }
 	local iconPVP = { player = true, target = true }
 	local iconRaid = { party = true, player = true, raid = true, target = true }
