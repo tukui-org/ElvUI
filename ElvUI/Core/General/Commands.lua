@@ -82,7 +82,7 @@ do
 				if all then
 					local total = info.total or 0
 					local percent = (total / all.total) * 100
-					text = format('%s%s [count: %d] total: %0.3f (addon %0.2f%%)\n', text, info.module or '', info.count or 0, total, percent)
+					text = format('%s%s total: %0.3f count: %d profiler: %0.2f%%\n', text, info.module or '', total, info.count or 0, percent)
 				end
 			elseif full then
 				local total = info.total or 0
@@ -93,7 +93,7 @@ do
 					allPercent = (total / all.total) * 100
 				end
 
-				text = format('%s%s:%s [count %d] time %0.3f avg %0.3f total %0.3f (module %0.2f%% addon %0.2f%%)\n', text, info.module or '', info.key or '', info.count or 0, info.finish or 0, info.average or 0, total, modulePercent, allPercent or 0)
+				text = format('%s%s:%s time %0.3f avg %0.3f total %0.3f (count: %d module: %0.2f%% profiler: %0.2f%%)\n', text, info.module or '', info.key or '', info.finish or 0, info.average or 0, total, info.count or 0, modulePercent, allPercent or 0)
 			end
 		end
 
