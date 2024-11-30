@@ -141,7 +141,7 @@ end
 object:SetScript('OnUpdate', pooler.onUpdate)
 object:Hide()
 
-function oUF:RegisterEvent(frame, event, func)
+function oUF:RegisterEvent(frame, event, func, unitless)
 	-- print('RegisterEvent', frame, event, func)
 	local eventPool = object.events[event]
 	if not eventPool then
@@ -155,7 +155,7 @@ function oUF:RegisterEvent(frame, event, func)
 		eventPool[frame] = framePool
 	end
 
-	frame:RegisterEvent(event, pooler.tracker)
+	frame:RegisterEvent(event, pooler.tracker, unitless)
 	tinsert(framePool.functions, func)
 end
 
