@@ -109,8 +109,8 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
+		oUF:RegisterEvent(self, 'UNIT_THREAT_SITUATION_UPDATE', Path)
+		oUF:RegisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\RAIDFRAME\UI-RaidFrame-Threat]])
@@ -125,8 +125,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
-		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
+		oUF:UnregisterEvent(self, 'UNIT_THREAT_SITUATION_UPDATE', Path)
+		oUF:UnregisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', Path)
 	end
 end
 

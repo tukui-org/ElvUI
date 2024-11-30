@@ -210,20 +210,19 @@ local function Visibility(self, event, unit)
 
 	local barID = UnitPowerBarID(unit)
 	local barInfo = GetUnitPowerBarInfoByID(barID)
+
 	element.__barID = barID
 	element.__barInfo = barInfo
-	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))
-		or not barInfo.hideFromOthers
-		or UnitIsUnit(unit, 'player')))
-	then
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
+
+	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers or UnitIsUnit(unit, 'player'))) then
+		oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
+		oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
 
 		element:Show()
 		Path(self, event, unit, ALTERNATE_POWER_NAME)
 	else
-		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		oUF:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
+		oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
 
 		element:Hide()
 		Path(self, event, unit, ALTERNATE_POWER_NAME)
@@ -251,8 +250,8 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
-		self:RegisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
+		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_SHOW', VisibilityPath)
+		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -292,8 +291,8 @@ local function Disable(self, unit)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
-		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
+		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_SHOW', VisibilityPath)
+		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(unit == 'player') then
 			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')

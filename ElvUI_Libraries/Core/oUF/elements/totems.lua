@@ -198,7 +198,8 @@ local function Enable(self)
 		end
 
 		element:Show()
-		self:RegisterEvent('PLAYER_TOTEM_UPDATE', Path, true)
+
+		oUF:RegisterEvent(self, 'PLAYER_TOTEM_UPDATE', Path, true)
 
 		return true
 	end
@@ -212,7 +213,8 @@ local function Disable(self)
 		end
 
 		element:Hide()
-		self:UnregisterEvent('PLAYER_TOTEM_UPDATE', Path)
+
+		oUF:UnregisterEvent(self, 'PLAYER_TOTEM_UPDATE', Path)
 	end
 end
 

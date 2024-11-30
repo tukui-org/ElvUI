@@ -173,11 +173,10 @@ end
 local function ElementEnable(self)
 	local element = self.AdditionalPower
 
-	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-	self:RegisterEvent('UNIT_MAXPOWER', Path)
+	oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
+	oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
 
 	element:Show()
-
 	element.__isEnabled = true
 
 	Path(self, 'ElementEnable', 'player', POWER_NAME)
@@ -186,12 +185,12 @@ end
 local function ElementDisable(self)
 	local element = self.AdditionalPower
 
-	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-	self:UnregisterEvent('UNIT_MAXPOWER', Path)
+	oUF:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
+	oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
 
 	element:Hide()
-
 	element.__isEnabled = false
+
 	Path(self, 'ElementDisable', 'player', POWER_NAME)
 end
 

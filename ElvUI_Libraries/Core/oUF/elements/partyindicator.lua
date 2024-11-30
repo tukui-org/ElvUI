@@ -62,8 +62,8 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UPDATE_CHAT_COLOR', Path, true)
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
+		oUF:RegisterEvent(self, 'UPDATE_CHAT_COLOR', Path, true)
+		oUF:RegisterEvent(self, 'GROUP_ROSTER_UPDATE', Path, true)
 
 		if(element.HomeIcon and element.HomeIcon:IsObjectType('Texture') and not element.HomeIcon:GetTexture()) then
 			element.HomeIcon:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
@@ -82,8 +82,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UPDATE_CHAT_COLOR', Path)
-		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
+		oUF:UnregisterEvent(self, 'UPDATE_CHAT_COLOR', Path)
+		oUF:UnregisterEvent(self, 'GROUP_ROSTER_UPDATE', Path)
 	end
 end
 

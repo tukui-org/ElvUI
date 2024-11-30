@@ -78,7 +78,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
+		oUF:RegisterEvent(self, 'UNIT_CLASSIFICATION_CHANGED', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\TargetingFrame\PortraitQuestBadge]])
@@ -93,7 +93,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
+		oUF:UnregisterEvent(self, 'UNIT_CLASSIFICATION_CHANGED', Path)
 	end
 end
 
