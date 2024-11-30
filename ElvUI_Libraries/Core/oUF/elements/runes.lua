@@ -273,12 +273,12 @@ local function Enable(self, unit)
 		-- end block
 
 		if oUF.isRetail then
-			self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+			oUF:RegisterEvent(self, 'PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		else
-			self:RegisterEvent('RUNE_TYPE_UPDATE', ColorPath, true)
+			oUF:RegisterEvent(self, 'RUNE_TYPE_UPDATE', ColorPath, true)
 		end
 
-		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
+		oUF:RegisterEvent(self, 'RUNE_POWER_UPDATE', Path, true)
 
 		return true
 	end
@@ -298,12 +298,12 @@ local function Disable(self)
 		-- end block
 
 		if oUF.isRetail then
-			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+			oUF:UnregisterEvent(self, 'PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		else
-			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
+			oUF:UnregisterEvent(self, 'RUNE_TYPE_UPDATE', ColorPath)
 		end
 
-		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
+		oUF:UnregisterEvent(self, 'RUNE_POWER_UPDATE', Path)
 	end
 end
 

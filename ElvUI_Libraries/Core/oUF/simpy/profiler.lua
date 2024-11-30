@@ -23,21 +23,10 @@ _info.funcs = _funcs
 _info.data = _data
 _info.fps = _fps
 
-local depth = 0
-local Debug = function(num, start)
-	depth = depth + num
-
-	if num == -1 and (depth % 2 == 1) then
-		return start
-	else
-		return debugprofilestop()
-	end
-end
-
 local Profile = function(func, ...)
-	local start = Debug(1)
+	local start = debugprofilestop()
 	local args = { func(...) }
-	local finish = Debug(-1, start) - start
+	local finish = debugprofilestop() - start
 
 	return start, finish, args
 end

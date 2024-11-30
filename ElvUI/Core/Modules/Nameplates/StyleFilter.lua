@@ -1376,6 +1376,7 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_CONNECTION = false,
 	UNIT_DISPLAYPOWER = false,
 	UNIT_MAXHEALTH = false,
+	UNIT_HEALTH = false,
 	UNIT_NAME_UPDATE = false,
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
@@ -1406,8 +1407,6 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 
 if E.Classic then
 	NP.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
-else
-	NP.StyleFilterDefaultEvents.UNIT_HEALTH = false
 end
 
 NP.StyleFilterCastEvents = {
@@ -1494,11 +1493,10 @@ function NP:StyleFilterConfigure()
 
 				if t.healthThreshold then
 					events.UNIT_MAXHEALTH = 1
+					events.UNIT_HEALTH = 1
 
 					if E.Classic then
 						events.UNIT_HEALTH_FREQUENT = 1
-					else
-						events.UNIT_HEALTH = 1
 					end
 				end
 

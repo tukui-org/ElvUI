@@ -163,7 +163,6 @@ function NP:Construct_HealthPrediction(nameplate)
 	HealthPrediction.healAbsorbBar:SetReverseFill(true)
 
 	HealthPrediction.maxOverflow = 1
-	HealthPrediction.frequentUpdates = true
 
 	return HealthPrediction
 end

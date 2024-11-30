@@ -126,7 +126,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_PHASE', Path)
+		oUF:RegisterEvent(self, 'UNIT_PHASE', Path)
 
 		local icon = (element.Icon or element)
 		if(icon:IsObjectType('Texture') and not icon:GetTexture()) then
@@ -154,7 +154,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_PHASE', Path)
+		oUF:UnregisterEvent(self, 'UNIT_PHASE', Path)
 	end
 end
 

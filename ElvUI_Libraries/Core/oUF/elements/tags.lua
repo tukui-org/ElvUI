@@ -513,15 +513,14 @@ local vars = setmetatable({}, {
 
 _ENV._VARS = vars
 
--- ElvUI switches to UNIT_POWER_FREQUENT for regen powers
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arenaspec']           = 'ARENA_PREP_OPPONENT_SPECIALIZATIONS',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
-	['cpoints']             = 'UNIT_POWER_UPDATE PLAYER_TARGET_CHANGED',
+	['cpoints']             = 'UNIT_POWER_FREQUENT PLAYER_TARGET_CHANGED',
 	['curhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['curmana']             = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
-	['curpp']               = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
+	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
+	['curpp']               = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['dead']                = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['deficit:name']        = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE',
 	['difficulty']          = 'UNIT_FACTION',
@@ -534,11 +533,11 @@ local tagEvents = {
 	['maxmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['maxpp']               = 'UNIT_MAXPOWER',
 	['missinghp']           = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_FREQUENT',
+	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['name']                = 'UNIT_NAME_UPDATE',
 	['offline']             = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['perhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_FREQUENT',
+	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
 	['plus']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['powercolor']          = 'UNIT_DISPLAYPOWER',
 	['pvp']                 = 'UNIT_FACTION',
@@ -547,7 +546,7 @@ local tagEvents = {
 	['runes']               = 'RUNE_POWER_UPDATE',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
 	['smartlevel']          = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED',
-	['soulshards']          = 'UNIT_POWER_UPDATE',
+	['soulshards']          = 'UNIT_POWER_FREQUENT',
 	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['threat']              = 'UNIT_THREAT_SITUATION_UPDATE',
 	['threatcolor']         = 'UNIT_THREAT_SITUATION_UPDATE',
@@ -566,9 +565,9 @@ local unitlessEvents = {
 }
 
 if oUF.isRetail then
-	tagEvents['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
-	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
-	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents['arcanecharges']       = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
+	tagEvents['chi']                 = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
+	tagEvents['holypower']           = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 elseif oUF.isCata then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
