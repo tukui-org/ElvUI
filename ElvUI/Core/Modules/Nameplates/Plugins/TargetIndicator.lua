@@ -130,10 +130,9 @@ local function Enable(self)
 
 		if E.Classic then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		else
-			self:RegisterEvent('UNIT_HEALTH', Path)
 		end
 
+		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 
@@ -148,10 +147,9 @@ local function Disable(self)
 
 		if E.Classic then
 			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		else
-			self:UnregisterEvent('UNIT_HEALTH', Path)
 		end
 
+		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
 	end

@@ -18,7 +18,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.frequentUpdates - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the bar (boolean)
 .displayPairs    - Use to override display pairs. (table)
 .smoothGradient  - 9 color values to be used with the .colorSmooth option (table)
 
@@ -174,12 +173,7 @@ end
 local function ElementEnable(self)
 	local element = self.AdditionalPower
 
-	if(element.frequentUpdates) then
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-	else
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-	end
-
+	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Show()
@@ -192,9 +186,8 @@ end
 local function ElementDisable(self)
 	local element = self.AdditionalPower
 
-	self:UnregisterEvent('UNIT_MAXPOWER', Path)
-	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Hide()
 
@@ -253,32 +246,11 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
---[[ Power:SetFrequentUpdates(state, isForced)
-Used to toggle frequent updates.
-
-* self  - the Power element
-* state - the desired state (boolean)
-* isForced - forces the event update even if the state wasn't changed (boolean)
---]]
-local function SetFrequentUpdates(element, state, isForced)
-	if(element.frequentUpdates ~= state or isForced) then
-		element.frequentUpdates = state
-		if(state) then
-			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
-			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
-		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
-			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
-		end
-	end
-end
-
 local function Enable(self, unit)
 	local element = self.AdditionalPower
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		element.SetFrequentUpdates = SetFrequentUpdates
 
 		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 

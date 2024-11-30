@@ -15,7 +15,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
-	frame.Power.frequentUpdates = true
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')

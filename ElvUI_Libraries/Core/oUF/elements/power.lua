@@ -17,8 +17,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.frequentUpdates                  - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the
-                                    bar (boolean)
 .displayAltPower                  - Use this to let the widget display alternative power, if the unit has one.
                                     By default, it does so only for raid and party units. If none, the display will fall
                                     back to the primary power (boolean)
@@ -74,7 +72,6 @@ The following options are listed by priority. The first check that returns true 
     Background:SetTexture(1, 1, 1, .5)
 
     -- Options
-    Power.frequentUpdates = true
     Power.colorTapping = true
     Power.colorDisconnected = true
     Power.colorPower = true
@@ -353,26 +350,6 @@ local function SetColorThreat(element, state, isForced)
 	end
 end
 
---[[ Power:SetFrequentUpdates(state, isForced)
-Used to toggle frequent updates.
-
-* self     - the Power element
-* state    - the desired state (boolean)
-* isForced - forces the event update even if the state wasn't changed (boolean)
---]]
-local function SetFrequentUpdates(element, state, isForced)
-	if(element.frequentUpdates ~= state or isForced) then
-		element.frequentUpdates = state
-		if(state) then
-			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
-			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
-		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_POWER_FREQUENT', Path)
-			oUF:RegisterEvent(element.__owner, 'UNIT_POWER_UPDATE', Path)
-		end
-	end
-end
-
 local function Enable(self)
 	local element = self.Power
 	if(element) then
@@ -382,13 +359,8 @@ local function Enable(self)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
-		element.SetFrequentUpdates = SetFrequentUpdates
 
-		if(element.frequentUpdates) then
-			oUF:RegisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
-		else
-			oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
-		end
+		oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
 
 		if(element.colorDisconnected) then
 			oUF:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
@@ -434,7 +406,6 @@ local function Disable(self)
 		oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
 		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_HIDE', Path)
 		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_SHOW', Path)
-		oUF:UnregisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
 		oUF:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
 		oUF:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
 		oUF:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)

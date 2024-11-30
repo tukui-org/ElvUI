@@ -10,7 +10,6 @@ function UF:Construct_TargetFrame(frame)
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
-	frame.Power.frequentUpdates = true
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')

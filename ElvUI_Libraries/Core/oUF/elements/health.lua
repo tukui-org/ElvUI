@@ -355,15 +355,12 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 
 		oUF:RegisterEvent(self, 'UNIT_MAXHEALTH', Path)
+		oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 
 		if oUF.isRetail then
 			oUF:RegisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end
-
-		if oUF.isClassic then
+		elseif oUF.isClassic then
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-		else
-			oUF:RegisterEvent(self, 'UNIT_HEALTH', Path)
 		end
 
 		if(element.colorDisconnected) then
@@ -414,14 +411,11 @@ local function Disable(self)
 
 		if oUF.isRetail then
 			oUF:UnregisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
-		end
-
-		if oUF.isClassic then
+		elseif oUF.isClassic then
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
-		else
-			oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		end
 
+		oUF:UnregisterEvent(self, 'UNIT_HEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_MAXHEALTH', Path)
 		oUF:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
 		oUF:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)

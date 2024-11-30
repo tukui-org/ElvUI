@@ -520,7 +520,6 @@ end
 function UF:Construct_AdditionalPowerBar(frame)
 	local additionalPower = CreateFrame('StatusBar', '$parent_AdditionalPowerBar', frame)
 	additionalPower.colorPower = true
-	additionalPower.frequentUpdates = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateColor = UF.PostColorAdditionalPower
 	additionalPower.PostVisibility = UF.PostVisibilityAdditionalPower
