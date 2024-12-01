@@ -56,7 +56,7 @@ local function EclipseDirectionPath(self, ...)
 end
 
 local function ElementEnable(self)
-	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Show()
 	EclipseDirectionPath(self, 'ElementEnable', GetEclipseDirection())
@@ -71,7 +71,7 @@ local function ElementEnable(self)
 end
 
 local function ElementDisable(self)
-	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Hide()
 
