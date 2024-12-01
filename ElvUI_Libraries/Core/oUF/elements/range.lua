@@ -111,7 +111,7 @@ local function Enable(self)
 		element.outsideAlpha = element.outsideAlpha or 0.55
 
 		if oUF.isRetail then
-			oUF:RegisterEvent(self, 'UNIT_IN_RANGE_UPDATE', Path)
+			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			if not OnRangeFrame then
 				OnRangeFrame = CreateFrame('Frame')
@@ -132,7 +132,7 @@ local function Disable(self)
 		self:SetAlpha(element.insideAlpha)
 
 		if oUF.isRetail then
-			oUF:UnregisterEvent(self, 'UNIT_IN_RANGE_UPDATE', Path)
+			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			for index, frame in next, _FRAMES do
 				if frame == self then
