@@ -21,6 +21,7 @@ local SharedOptions = {
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 9, { min = -5, max = 50, step = 1 }),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 10, { min = -1, max = 30, step = 1 }),
 	showDuration = ACH:Toggle(L["Duration Enable"], nil, 11),
+	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 12),
 
 	statusBar = ACH:Group(L["Statusbar"], nil, -3),
 	timeGroup = ACH:Group(L["Time Text"], nil, -2),

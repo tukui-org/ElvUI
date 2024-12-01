@@ -90,7 +90,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		E:SetSmoothing(power, UF.db.smoothbars)
+		E:SetSmoothing(power, db.power.smoothbars)
 
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo or 'Health', true)

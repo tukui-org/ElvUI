@@ -182,8 +182,6 @@ function A:CreateIcon(button)
 	A:Update_CooldownOptions(button)
 	A:UpdateIcon(button)
 
-	E:SetSmoothing(button.statusBar)
-
 	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
@@ -202,6 +200,8 @@ function A:UpdateIcon(button, update)
 
 	if update then
 		button:Size(db.size)
+
+		E:SetSmoothing(button.statusBar, db.smoothbars)
 	end
 
 	button.count:ClearAllPoints()

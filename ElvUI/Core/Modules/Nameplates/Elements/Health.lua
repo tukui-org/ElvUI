@@ -117,7 +117,7 @@ function NP:Update_Health(nameplate, skipUpdate)
 		nameplate.Health:Point('LEFT')
 		nameplate.Health:Point('RIGHT')
 
-		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
+		E:SetSmoothing(nameplate.Health, db.health.smoothbars)
 	elseif nameplate:IsElementEnabled('Health') then
 		nameplate:DisableElement('Health')
 	end
