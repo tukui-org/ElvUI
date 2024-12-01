@@ -220,11 +220,13 @@ function NP:Update_Castbar(nameplate)
 		castbar.timeToHold = db.timeToHold
 		castbar.castTimeFormat = db.castTimeFormat
 		castbar.channelTimeFormat = db.channelTimeFormat
+		castbar.pipColor = NP.db.colors.empoweredCast
 
 		castbar:Size(db.width, db.height)
 		castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
 
-		castbar.pipColor = NP.db.colors.empoweredCast
+		E:SetSmoothing(castbar, db.smoothbars)
+
 		for stage, pip in next, castbar.Pips do
 			UF:CastBar_UpdatePip(castbar, pip, stage)
 		end

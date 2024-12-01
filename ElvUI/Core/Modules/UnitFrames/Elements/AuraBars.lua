@@ -53,6 +53,8 @@ function UF:AuraBars_UpdateBar(bar)
 		bar.auraInfo = {}
 	end
 
+	E:SetSmoothing(bar, bars.db.smoothbars)
+
 	bar:SetReverseFill(not not bars.reverseFill)
 	bar.spark:ClearAllPoints()
 	bar.spark:Point(bars.reverseFill and 'LEFT' or 'RIGHT', bar:GetStatusBarTexture())

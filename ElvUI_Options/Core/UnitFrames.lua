@@ -151,6 +151,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.generalGroup.args.enemyAuraType = ACH:Select(L["Enemy Aura Type"], L["Set the type of auras to show when a unit is a foe."], 14, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] }, nil, nil, nil, nil, nil, groupName == 'player')
 	config.args.generalGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 15, { min = 0, max = 100, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end)
 	config.args.generalGroup.args.spacing = ACH:Range(L["Spacing"], nil, 16, spacingNormal)
+	config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
 
 	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
@@ -375,6 +376,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
 	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
 	config.args.spellRename = ACH:Toggle(E.NewSign..L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
+	config.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = 50, max = ceil(E.screenWidth), step = 1 })
@@ -667,6 +669,7 @@ end
 local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUnits)
 	local config = ACH:Group(L["Health"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].health[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
+	config.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 2)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
 	config.args.colorOverride = ACH:Select(L["Class Color Override"], L["Override the default class color setting."], 5, colorOverrideValues, nil, nil, function(info) return E.db.unitframe.units[groupName][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 6, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
@@ -759,6 +762,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.generalGroup.args.offset = ACH:Range(L["Offset"], L["Offset of the powerbar to the healthbar, set to 0 to disable."], 8, { min = 0, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.width ~= 'offset' end)
 	config.args.generalGroup.args.powerPrediction = ACH:Toggle(L["Power Prediction"], nil, 9)
 	config.args.generalGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 10)
+	config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 11)
 
 	config.args.configureButton = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 20, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 
@@ -933,7 +937,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 1, { min = 2, max = 30, step = 1 })
-	config.args.generalGroup.args.fill = ACH:Select(L["Style"], nil, 3, { fill = L["Filled"], spaced = L["Spaced"] })
+	config.args.generalGroup.args.fill = ACH:Select(L["Style"], nil, 2, { fill = L["Filled"], spaced = L["Spaced"] })
 
 	if groupName == 'party' or strmatch(groupName, '^raid(%d)') then
 		config.args.generalGroup.args.altPowerColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t, d = E.db.unitframe.units[groupName].classbar[info[#info]], P.unitframe.units[groupName].classbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.units[groupName].classbar[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
@@ -941,6 +945,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	elseif groupName == 'player' then
 		config.args.generalGroup.args.height.max = function() return E.db.unitframe.units.player.classbar.detachFromFrame and 300 or 30 end
 		config.args.generalGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
+		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
 		config.args.generalGroup.args.altManaGroup = ACH:Group(L["Display Mana"], nil, 20, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return E.myclass ~= 'DRUID' end end)
@@ -1110,8 +1115,7 @@ UnitFrame.borderOptions = ACH:Execute(L["Border Options"], nil, 4, function() AC
 UnitFrame.generalOptionsGroup = ACH:Group(L["General"], nil, 5, 'tree')
 UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
 UnitFrame.generalOptionsGroup.args.targetSound = ACH:Toggle(L["Targeting Sound"], L["Enable a sound if you select a unit."], 3)
-UnitFrame.generalOptionsGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
-UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 5, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end)
+UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end)
 
 UnitFrame.generalOptionsGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 10, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_FontStrings() end)
 UnitFrame.generalOptionsGroup.args.fontGroup.inline = true

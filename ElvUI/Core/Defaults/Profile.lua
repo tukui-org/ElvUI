@@ -555,9 +555,10 @@ local NP_Auras = {
 
 local NP_Health = {
 	enable = true,
-	healPrediction = true,
 	height = 10,
+	healPrediction = true,
 	useClassColor = true,
+	smoothbars = false,
 	text = {
 		enable = true,
 		format = '[health:percent]',
@@ -573,6 +574,7 @@ local NP_Health = {
 
 local NP_Power = {
 	enable = false,
+	smoothbars = false,
 	useClassColor = false,
 	hideWhenEmpty = false,
 	costPrediction = true,
@@ -662,6 +664,7 @@ local NP_Castbar = {
 	displayTarget = false,
 	hideSpellName = false,
 	hideTime = false,
+	smoothbars = false,
 	spellRename = true,
 	sourceInterrupt = true,
 	sourceInterruptClassColor = true,
@@ -744,7 +747,6 @@ P.nameplates = {
 	overlapV = 1.1,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
-	smoothbars = false,
 	statusbar = 'ElvUI Norm',
 	thinBorders = true,
 	clickThrough = {
@@ -1097,6 +1099,7 @@ local TopAuras = {
 	sortMethod = 'TIME',
 	verticalSpacing = 16,
 	wrapAfter = 12,
+	smoothbars = false,
 }
 
 --Auras
@@ -1367,10 +1370,10 @@ local UF_DebuffHighlight = {
 }
 
 local UF_AuraBars = {
+	enable = true,
 	anchorPoint = 'ABOVE',
 	attachTo = 'DEBUFFS',
 	detachedWidth = 270,
-	enable = true,
 	enemyAuraType = 'HARMFUL',
 	friendlyAuraType = 'HELPFUL',
 	height = 20,
@@ -1385,6 +1388,7 @@ local UF_AuraBars = {
 	clickThrough = false,
 	reverseFill = false,
 	abbrevName = false,
+	smoothbars = false,
 }
 
 local UF_AuraWatch = {
@@ -1437,6 +1441,7 @@ local UF_Castbar = {
 	insideInfoPanel = true,
 	overlayOnFrame = 'None',
 	displayTarget = false,
+	smoothbars = false,
 	reverse = false,
 	spark = true,
 	textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
@@ -1483,6 +1488,7 @@ local UF_Health = {
 	orientation = 'HORIZONTAL',
 	position = 'RIGHT',
 	reverseFill = false,
+	smoothbars = false,
 	text_format = '',
 	xOffset = -2,
 	yOffset = 0,
@@ -1589,6 +1595,7 @@ local UF_Power = {
 	width = 'fill',
 	xOffset = 2,
 	yOffset = 0,
+	smoothbars = false,
 	displayAltPower = false,
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 	useAtlas = false,
@@ -1716,6 +1723,7 @@ local UF_ClassBar = {
 	fill = 'fill',
 	height = 10,
 	autoHide = false,
+	smoothbars = false,
 	sortDirection = 'asc',
 	altPowerColor = { r = 0.2, g = 0.4, b = 0.8 },
 	altPowerTextFormat = E.Retail and '[altpower:current]' or '',
@@ -1736,7 +1744,6 @@ UF_PrivateAuras.duration.enable = false
 
 --UnitFrame
 P.unitframe = {
-	smoothbars = false,
 	statusbar = 'ElvUI Norm',
 	font = 'Homespun',
 	fontSize = 10,

@@ -58,7 +58,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 
 	health:SetColorTapping(true)
 	health:SetColorDisconnected(true)
-	E:SetSmoothing(health, UF.db.smoothbars)
+	E:SetSmoothing(health, db.health and db.health.smoothbars)
 
 	-- Text
 	if db.health and health.value then
