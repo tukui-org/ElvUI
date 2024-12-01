@@ -216,7 +216,8 @@ local function Enable(self)
 		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
 		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
 		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
-		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
+
+		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 
 		if(element.mainBar) then
 			if(element.mainBar:IsObjectType('StatusBar') and not element.mainBar:GetStatusBarTexture()) then
@@ -249,7 +250,8 @@ local function Disable(self)
 		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
 		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
 		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
-		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', Path)
+
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 	end
 end
 

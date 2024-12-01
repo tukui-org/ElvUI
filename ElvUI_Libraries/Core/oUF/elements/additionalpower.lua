@@ -250,7 +250,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(not element.displayPairs) then
 			element.displayPairs = CopyTable(ALT_POWER_INFO)
@@ -269,7 +269,7 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
-		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
 
