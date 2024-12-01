@@ -173,7 +173,7 @@ end
 local function ElementEnable(self)
 	local element = self.AdditionalPower
 
-	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Show()
@@ -185,7 +185,7 @@ end
 local function ElementDisable(self)
 	local element = self.AdditionalPower
 
-	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Hide()
