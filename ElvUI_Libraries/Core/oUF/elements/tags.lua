@@ -517,7 +517,7 @@ local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arenaspec']           = 'ARENA_PREP_OPPONENT_SPECIALIZATIONS',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
-	['cpoints']             = 'UNIT_POWER_FREQUENT PLAYER_TARGET_CHANGED',
+	['cpoints']             = 'UNIT_POWER_UPDATE PLAYER_TARGET_CHANGED',
 	['curhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
 	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['curpp']               = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
@@ -546,7 +546,7 @@ local tagEvents = {
 	['runes']               = 'RUNE_POWER_UPDATE',
 	['shortclassification'] = 'UNIT_CLASSIFICATION_CHANGED',
 	['smartlevel']          = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED',
-	['soulshards']          = 'UNIT_POWER_FREQUENT',
+	['soulshards']          = 'UNIT_POWER_UPDATE',
 	['status']              = 'UNIT_HEALTH PLAYER_UPDATE_RESTING UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['threat']              = 'UNIT_THREAT_SITUATION_UPDATE',
 	['threatcolor']         = 'UNIT_THREAT_SITUATION_UPDATE',
@@ -565,9 +565,9 @@ local unitlessEvents = {
 }
 
 if oUF.isRetail then
-	tagEvents['arcanecharges']       = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
-	tagEvents['chi']                 = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
-	tagEvents['holypower']           = 'UNIT_POWER_FREQUENT PLAYER_TALENT_UPDATE'
+	tagEvents['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 elseif oUF.isCata then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true

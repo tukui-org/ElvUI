@@ -56,7 +56,7 @@ local function EclipseDirectionPath(self, ...)
 end
 
 local function ElementEnable(self)
-	oUF:RegisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
+	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 
 	self.EclipseBar:Show()
 	EclipseDirectionPath(self, 'ElementEnable', GetEclipseDirection())
@@ -71,7 +71,7 @@ local function ElementEnable(self)
 end
 
 local function ElementDisable(self)
-	oUF:UnregisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
+	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 
 	self.EclipseBar:Hide()
 
@@ -118,7 +118,8 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
+		self:RegisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
+
 		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		oUF:RegisterEvent(self, 'UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 
@@ -138,7 +139,8 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
-		oUF:UnregisterEvent(self, 'ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
+		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
+
 		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
 		oUF:UnregisterEvent(self, 'UPDATE_SHAPESHIFT_FORM', VisibilityPath)
 	end

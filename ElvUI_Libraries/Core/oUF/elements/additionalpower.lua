@@ -173,8 +173,8 @@ end
 local function ElementEnable(self)
 	local element = self.AdditionalPower
 
-	oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
-	oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
+	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Show()
 	element.__isEnabled = true
@@ -185,8 +185,8 @@ end
 local function ElementDisable(self)
 	local element = self.AdditionalPower
 
-	oUF:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
-	oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
+	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Hide()
 	element.__isEnabled = false
@@ -206,7 +206,6 @@ local function Visibility(self, event, unit)
 	end
 
 	local isEnabled = element.__isEnabled
-
 	if(shouldEnable and not isEnabled) then
 		ElementEnable(self)
 
