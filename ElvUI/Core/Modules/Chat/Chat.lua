@@ -1651,11 +1651,11 @@ end
 
 function CH:GetBNFriendColor(name, id, useBTag)
 	local info = C_BattleNet_GetAccountInfoByID(id)
-	local BATTLE_TAG = info.battleTag and strmatch(info.battleTag,'([^#]+)')
-	local TAG = (useBTag or CH.db.useBTagName) and BATTLE_TAG
+	local BNET_TAG = info and info.isBattleTagFriend and info.battleTag and strmatch(info.battleTag,'([^#]+)')
+	local TAG = (useBTag or CH.db.useBTagName) and BNET_TAG
 
 	local Class
-	local gameInfo = info.gameAccountID and C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
+	local gameInfo = info and info.gameAccountID and C_BattleNet_GetGameAccountInfoByID(info.gameAccountID)
 	if gameInfo and gameInfo.className then
 		Class = E:UnlocalizedClassName(gameInfo.className)
 	else
@@ -1663,12 +1663,12 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		if firstToonClass then
 			Class = E:UnlocalizedClassName(firstToonClass)
 		else
-			return TAG or name, info.isBattleTagFriend and BATTLE_TAG
+			return TAG or name, BNET_TAG
 		end
 	end
 
 	local Color = Class and E:ClassColor(Class)
-	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, info.isBattleTagFriend and BATTLE_TAG
+	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, BNET_TAG
 end
 
 local PluginIconsCalls = {}
@@ -2219,7 +2219,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				message = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
 				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
-				local gameInfo = accountInfo.gameAccountInfo
+				local gameInfo = accountInfo and accountInfo.gameAccountInfo
 				if gameInfo and gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
 					if GetTitleIconTexture then
 						GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
