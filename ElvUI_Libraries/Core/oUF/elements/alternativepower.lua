@@ -250,8 +250,8 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_SHOW', VisibilityPath)
-		oUF:RegisterEvent(self, 'UNIT_POWER_BAR_HIDE', VisibilityPath)
+		self:RegisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
+		self:RegisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -291,8 +291,8 @@ local function Disable(self, unit)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_SHOW', VisibilityPath)
-		oUF:UnregisterEvent(self, 'UNIT_POWER_BAR_HIDE', VisibilityPath)
+		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
+		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(unit == 'player') then
 			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')

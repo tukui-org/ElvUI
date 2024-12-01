@@ -208,8 +208,9 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
+
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -228,8 +229,9 @@ local function Disable(self)
 		element:Hide()
 
 		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		oUF:UnregisterEvent(self, 'UNIT_DISPLAYPOWER', VisibilityPath)
 		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
 

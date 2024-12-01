@@ -274,7 +274,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
 	end)
 
-	E:AddTag(format('power:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_UPDATE UNIT_MAXPOWER', function(unit)
+	E:AddTag(format('power:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local min = UnitPower(unit, powerType)
 		if min ~= 0 then
@@ -282,7 +282,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 		if min and min ~= 0 then
@@ -290,14 +290,14 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end, not E.Retail)
 
-	E:AddTag(format('mana:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('mana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local min = UnitPower(unit, POWERTYPE_MANA)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end)
 
-	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 		local min, max = GetClassPower(unit)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
@@ -328,7 +328,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			return E:GetFormattedText(textFormat, min, max, nil, true)
 		end)
 
-		E:AddTag(format('power:%s:shortvalue', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_UPDATE UNIT_MAXPOWER', function(unit)
+		E:AddTag(format('power:%s:shortvalue', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 			local powerType = UnitPowerType(unit)
 			local min = UnitPower(unit, powerType)
 			if min ~= 0 and tagFormat ~= 'deficit' then
@@ -336,11 +336,11 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end)
 
-		E:AddTag(format('mana:%s:shortvalue', tagFormat), 'UNIT_POWER_UPDATE UNIT_MAXPOWER', function(unit)
+		E:AddTag(format('mana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 		end)
 
-		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_UPDATE UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 			if min and min ~= 0 and tagFormat ~= 'deficit' then
@@ -348,7 +348,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end, not E.Retail)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function(unit)
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 			local min, max = GetClassPower(unit)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
@@ -720,12 +720,12 @@ E:AddTag('pvptimer', 1, function(unit)
 	end
 end)
 
-E:AddTag('classpowercolor', 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
+E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
 	local _, _, r, g, b = GetClassPower(unit)
 	return Hex(r, g, b)
 end, E.Classic)
 
-E:AddTag('permana', 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function(unit)
+E:AddTag('permana', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 	local m = UnitPowerMax(unit)
 	if m == 0 then
 		return 0
@@ -734,7 +734,7 @@ E:AddTag('permana', 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function(unit)
 	end
 end)
 
-E:AddTag('manacolor', 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function()
+E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local color = ElvUF.colors.power.MANA
 	return Hex(color.r, color.g, color.b)
 end)

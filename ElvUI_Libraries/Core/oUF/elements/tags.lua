@@ -513,14 +513,15 @@ local vars = setmetatable({}, {
 
 _ENV._VARS = vars
 
+-- ElvUI switches to UNIT_POWER_FREQUENT for regen powers
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arenaspec']           = 'ARENA_PREP_OPPONENT_SPECIALIZATIONS',
 	['classification']      = 'UNIT_CLASSIFICATION_CHANGED',
 	['cpoints']             = 'UNIT_POWER_UPDATE PLAYER_TARGET_CHANGED',
 	['curhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['curmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
-	['curpp']               = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
+	['curmana']             = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
+	['curpp']               = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
 	['dead']                = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['deficit:name']        = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE',
 	['difficulty']          = 'UNIT_FACTION',
@@ -533,11 +534,11 @@ local tagEvents = {
 	['maxmana']             = 'UNIT_POWER_UPDATE UNIT_MAXPOWER',
 	['maxpp']               = 'UNIT_MAXPOWER',
 	['missinghp']           = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
+	['missingpp']           = 'UNIT_MAXPOWER UNIT_POWER_FREQUENT',
 	['name']                = 'UNIT_NAME_UPDATE',
 	['offline']             = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
 	['perhp']               = 'UNIT_HEALTH UNIT_MAXHEALTH',
-	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_UPDATE',
+	['perpp']               = 'UNIT_MAXPOWER UNIT_POWER_FREQUENT',
 	['plus']                = 'UNIT_CLASSIFICATION_CHANGED',
 	['powercolor']          = 'UNIT_DISPLAYPOWER',
 	['pvp']                 = 'UNIT_FACTION',
