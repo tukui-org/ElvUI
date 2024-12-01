@@ -115,7 +115,9 @@ local function BuildGuildTable()
 		local members = guildClubID and GetAndSortMemberInfo(guildClubID)
 		if members then
 			for _, data in next, members do
-				clubTable[data.guid] = data
+				if data.guid then
+					clubTable[data.guid] = data
+				end
 			end
 		end
 	end
