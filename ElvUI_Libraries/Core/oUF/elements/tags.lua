@@ -513,6 +513,7 @@ local vars = setmetatable({}, {
 
 _ENV._VARS = vars
 
+-- ElvUI switches to UNIT_POWER_FREQUENT for regen powers
 local tagEvents = {
 	['affix']               = 'UNIT_CLASSIFICATION_CHANGED',
 	['arenaspec']           = 'ARENA_PREP_OPPONENT_SPECIALIZATIONS',
