@@ -215,14 +215,14 @@ local function Visibility(self, event, unit)
 	element.__barInfo = barInfo
 
 	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers or UnitIsUnit(unit, 'player'))) then
-		oUF:RegisterEvent(self, 'UNIT_POWER_UPDATE', Path)
-		oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		element:Show()
 		Path(self, event, unit, ALTERNATE_POWER_NAME)
 	else
-		oUF:UnregisterEvent(self, 'UNIT_POWER_UPDATE', Path)
-		oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		element:Hide()
 		Path(self, event, unit, ALTERNATE_POWER_NAME)

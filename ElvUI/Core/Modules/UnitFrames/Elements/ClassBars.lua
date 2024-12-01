@@ -261,17 +261,18 @@ function UF:Configure_ClassBar(frame)
 		bars:SetParent(frame)
 	end
 
-	if frame.USE_CLASSBAR then
-		for _, powerType in pairs(ClassPowerTypes) do
-			if frame[powerType] then
+	for _, powerType in pairs(ClassPowerTypes) do
+		if frame[powerType] then
+			if frame.USE_CLASSBAR then
 				if powerType == 'AdditionalPower' then
-					local altMana, displayMana = E.db.unitframe.altManaPowers[E.myclass], frame.AdditionalPower.displayPairs[E.myclass]
+					local displayMana = frame.AdditionalPower.displayPairs[E.myclass]
 					wipe(displayMana)
 
+					local altMana = E.db.unitframe.altManaPowers[E.myclass]
 					if altMana then
 						for name, value in pairs(altMana) do
-							local altType = AltManaTypes[name]
-							if altType and value then
+							local altType = value and AltManaTypes[name]
+							if altType then
 								displayMana[altType] = value
 							end
 						end
@@ -287,11 +288,7 @@ function UF:Configure_ClassBar(frame)
 				elseif not frame:IsElementEnabled(powerType) then
 					frame:EnableElement(powerType)
 				end
-			end
-		end
-	else
-		for _, powerType in pairs(ClassPowerTypes) do
-			if frame[powerType] and frame:IsElementEnabled(powerType) then
+			elseif frame:IsElementEnabled(powerType) then
 				frame:DisableElement(powerType)
 			end
 		end

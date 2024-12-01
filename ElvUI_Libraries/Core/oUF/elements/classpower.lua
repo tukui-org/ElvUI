@@ -258,8 +258,8 @@ end
 
 do
 	function ClassPowerEnable(self)
-		oUF:RegisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
-		oUF:RegisterEvent(self, 'UNIT_MAXPOWER', Path)
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
 			oUF:RegisterEvent(self, 'UNIT_POWER_POINT_CHARGE', Path)
@@ -277,8 +277,8 @@ do
 	end
 
 	function ClassPowerDisable(self)
-		oUF:UnregisterEvent(self, 'UNIT_POWER_FREQUENT', Path)
-		oUF:UnregisterEvent(self, 'UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		if oUF.isRetail then
 			oUF:UnregisterEvent(self, 'UNIT_POWER_POINT_CHARGE', Path)
