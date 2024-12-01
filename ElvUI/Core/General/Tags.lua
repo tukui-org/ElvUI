@@ -348,7 +348,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end, not E.Retail)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_UPDATE UNIT_DISPLAYPOWER', function(unit)
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 			local min, max = GetClassPower(unit)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
