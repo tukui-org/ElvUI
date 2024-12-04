@@ -49,11 +49,18 @@ function UF:UpdateRangeSpells()
 end
 
 function UF:UnitSpellRange(unit, spells)
+	local failed
 	for spell in next, spells do
 		local range = IsSpellInRange(spell, unit)
-		if range ~= nil then
-			return range
+		if range then
+			return true
+		elseif range ~= nil then
+			failed = true -- oh no
 		end
+	end
+
+	if failed then
+		return false
 	end
 end
 
