@@ -125,8 +125,8 @@ G.datatexts = {
 G.nameplates = {}
 
 G.unitframe = {
-	aurafilters = {},
 	aurawatch = {},
+	aurafilters = {},
 	raidDebuffIndicator = {
 		instanceFilter = 'RaidDebuffs',
 		otherFilter = 'CCDebuffs'
@@ -140,6 +140,119 @@ G.unitframe = {
 		yOffset = 0,
 		justifyH = 'CENTER',
 		attachTextTo = 'Health'
+	},
+	rangeCheck = {
+		FRIENDLY = {
+			DEATHKNIGHT = {},
+			DEMONHUNTER = {},
+			DRUID = {
+				['8936'] = 'Regrowth'
+			},
+			EVOKER = {
+				['355913'] = 'Emerald Blossom'
+			},
+			HUNTER = {},
+			MAGE = {
+				['1459'] = 'Arcane Intellect'
+			},
+			MONK = {
+				['116670'] = 'Vivify'
+			},
+			PALADIN = {
+				['85673'] = 'Word of Glory'
+			},
+			PRIEST = {
+				['17'] = E.Retail and 'Power Word: Shield' or nil,
+				['2050'] = not E.Retail and 'Lesser Heal' or nil
+			},
+			ROGUE = {
+				['36554'] = E.Retail and 'Shadowstep' or nil,
+				['921'] = E.Retail and 'Pick Pocket' or nil
+			},
+			SHAMAN = {
+				['8004'] = 'Healing Surge'
+			},
+			WARLOCK = {
+				['5697'] = 'Unending Breath'
+			},
+			WARRIOR = {}
+		},
+		ENEMY = {
+			DEATHKNIGHT = {
+				['49576'] = 'Death Grip'
+			},
+			DEMONHUNTER = {
+				['278326'] = 'Consume Magic'
+			},
+			DRUID = {
+				['8921'] = 'Moonfire'
+			},
+			EVOKER = {
+				['362969'] = 'Azure Strike'
+			},
+			HUNTER = {
+				['75'] = 'Auto Shot'
+			},
+			MAGE = {
+				['2139'] = 'Counterspell'
+			},
+			MONK = {
+				['115546'] = 'Provoke'
+			},
+			PALADIN = {
+				['20473'] = 'Holy Shock',
+				['20271'] = 'Judgement'
+			},
+			PRIEST = {
+				['589'] = 'Shadow Word: Pain'
+			},
+			ROGUE = {
+				['36554'] = 'Shadowstep'
+			},
+			SHAMAN = {
+				['8042'] = 'Earth Shock',
+				['188196'] = E.Retail and 'Lightning Bolt' or nil,
+				['403'] = not E.Retail and 'Lightning Bolt' or nil
+			},
+			WARLOCK = {
+				['234153'] = E.Retail and 'Drain Life' or nil,
+				['348'] = not E.Retail and 'Immolate' or nil,
+			},
+			WARRIOR = {
+				['355'] = 'Taunt'
+			}
+		},
+		RESURRECT = {
+			DEATHKNIGHT = {
+				['61999'] = 'Raise Ally'
+			},
+			DEMONHUNTER = {},
+			DRUID = {
+				['50769'] = 'Revive'
+			},
+			EVOKER = {
+				['361227'] = 'Return'
+			},
+			HUNTER = {},
+			MAGE = {},
+			MONK = {
+				['115178'] = 'Resuscitate'
+			},
+			PALADIN = {
+				['7328'] = 'Redemption'
+			},
+			PRIEST = {
+				['2006'] = 'Resurrection'
+			},
+			ROGUE = {},
+			SHAMAN = {
+				['2008'] = 'Ancestral Spirit'
+			},
+			WARLOCK = {
+				['20707'] = not E.Classic and 'Soulstone' or nil
+			},
+			WARRIOR = {}
+		}
 	}
 }
 

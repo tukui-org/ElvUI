@@ -74,20 +74,6 @@ local function Update(self, event, unit)
 		return
 	end
 
-	-- Instance Difficulty is enabled and we haven't checked yet
-	if element.InstanceDifficulty and not element.InstancedCached then
-		updateInstanceDifficulty(element)
-	end
-
-	-- stuff for Skyriding
-	if oUF.isRetail then
-		if event == 'ForceUpdate' then
-			isGliding = C_PlayerInfo_GetGlidingInfo()
-		elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
-			isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
-		end
-	end
-
 	-- try to get the unit from the parent
 	if not unit then
 		unit = self.unit
@@ -104,6 +90,20 @@ local function Update(self, event, unit)
 		end
 
 		return
+	end
+
+	-- Instance Difficulty is enabled and we haven't checked yet
+	if element.InstanceDifficulty and not element.InstancedCached then
+		updateInstanceDifficulty(element)
+	end
+
+	-- stuff for Skyriding
+	if oUF.isRetail then
+		if event == 'ForceUpdate' then
+			isGliding = C_PlayerInfo_GetGlidingInfo()
+		elseif event == 'PLAYER_IS_GLIDING_CHANGED' then
+			isGliding = unit -- unit is true/false with the event being PLAYER_IS_GLIDING_CHANGED
+		end
 	end
 
 	-- normal fader
