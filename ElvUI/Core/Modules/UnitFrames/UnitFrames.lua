@@ -1024,6 +1024,7 @@ end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
+	UF:UpdateRangeSpells()
 
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'raid' then

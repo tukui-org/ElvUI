@@ -27,7 +27,6 @@
 	<Script file='..\Classic\LibQuestXP\LibQuestXP.lua'/>
 	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
-	<Script file='..\Core\LibRangeCheck-3.0\LibRangeCheck-3.0.lua'/>
 	<Script file='..\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='..\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='..\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>

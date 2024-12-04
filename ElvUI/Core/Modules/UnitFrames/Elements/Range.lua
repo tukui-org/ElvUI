@@ -1,54 +1,121 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
-local RangeCheck = E.Libs.RangeCheck
 
-local UnitCanAttack = UnitCanAttack
-local UnitInRange = UnitInRange
-local UnitIsConnected = UnitIsConnected
-local UnitIsPlayer = UnitIsPlayer
-local UnitIsUnit = UnitIsUnit
+local next = next
+local tonumber = tonumber
+
 local UnitInPhase = UnitInPhase
+local UnitInRange = UnitInRange
+local UnitIsPlayer = UnitIsPlayer
+local UnitCanAttack = UnitCanAttack
+local UnitIsConnected = UnitIsConnected
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
+
+local IsSpellInRange = C_Spell.IsSpellInRange
 local UnitPhaseReason = UnitPhaseReason
 
-local function getMaxRange(unit)
-	local minRange, maxRange = RangeCheck:GetRange(unit, true, true)
-	return (not minRange) or maxRange
-end
+local list = {}
+UF.RangeSpells = list
 
-local function friendlyIsInRange(realUnit)
-	local unit = E:GetGroupUnit(realUnit) or realUnit
+function UF:UpdateRangeList(db)
+	local spells = {}
+	for spell, value in next, db do
+		if value then
+			local id = tonumber(spell)
+			if not id then -- support spells by name
+				local _, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
+				if spellID then
+					id = spellID
+				end
+			end
 
-	if UnitIsPlayer(unit) and (E.Retail and UnitPhaseReason(unit) or not E.Retail and not UnitInPhase(unit)) then
-		return false -- is not in same phase
+			if id and IsSpellKnownOrOverridesKnown(id) then
+				spells[id] = true
+			end
+		end
 	end
 
-	local inRange, checkedRange = UnitInRange(unit)
-	if checkedRange and not inRange then
+	return spells
+end
+
+function UF:UpdateRangeSpells()
+	local db = E.global.unitframe.rangeCheck
+	if db then
+		list[1] = UF:UpdateRangeList(db.RESURRECT[E.myclass])
+		list[2] = UF:UpdateRangeList(db.ENEMY[E.myclass])
+		list[3] = UF:UpdateRangeList(db.FRIENDLY[E.myclass])
+	end
+end
+
+function UF:UnitSpellRange(unit, spells)
+	local failed
+	for spell in next, spells do
+		local range = IsSpellInRange(spell, unit)
+		if range then
+			return true
+		elseif range ~= nil then
+			failed = true -- oh no
+		end
+	end
+
+	if failed then
+		return false
+	end
+end
+
+function UF:UnitInSpellsRange(unit, which)
+	local spells = list[which]
+	local range = next(spells) and UF:UnitSpellRange(unit, spells)
+	if range ~= nil then
+		return range
+	end
+
+	return true -- no spells assume range is maxed
+end
+
+function UF:FriendlyInRange(realUnit)
+	local unit = E:GetGroupUnit(realUnit) or realUnit
+
+	if UnitIsPlayer(unit) then
+		if E.Retail then
+			if UnitPhaseReason(unit) then
+				return false
+			end
+		elseif not UnitInPhase(unit) then
+			return false
+		end
+	end
+
+	local range, checked = UnitInRange(unit)
+	if checked and not range then
 		return false -- blizz checked and said the unit is out of range
 	end
 
-	return getMaxRange(unit)
+	return UF:UnitInSpellsRange(unit, 3)
 end
 
 function UF:UpdateRange(unit)
-	if not self.Fader then return end
-	local alpha
+	local element = self.Fader
+	if not element then return end
 
-	unit = unit or self.unit
-
-	if self.forceInRange or unit == 'player' then
-		alpha = self.Fader.MaxAlpha
-	elseif self.forceNotInRange then
-		alpha = self.Fader.MinAlpha
-	elseif unit then
-		if UnitCanAttack('player', unit) or UnitIsUnit(unit, 'pet') then
-			alpha = (getMaxRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
-		else
-			alpha = (UnitIsConnected(unit) and friendlyIsInRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha
-		end
-	else
-		alpha = self.Fader.MaxAlpha
+	if not unit then
+		unit = self.unit
 	end
 
-	self.Fader.RangeAlpha = alpha
+	if self.forceInRange or unit == 'player' then
+		element.RangeAlpha = element.MaxAlpha
+	elseif self.forceNotInRange then
+		element.RangeAlpha = element.MinAlpha
+	elseif unit then
+		if UnitIsDeadOrGhost(unit) then
+			element.RangeAlpha = UF:UnitInSpellsRange(unit, 1) and element.MaxAlpha or element.MinAlpha
+		elseif UnitCanAttack('player', unit) then
+			element.RangeAlpha = UF:UnitInSpellsRange(unit, 2) and element.MaxAlpha or element.MinAlpha
+		elseif UnitIsConnected(unit) then
+			element.RangeAlpha = UF:FriendlyInRange(unit) and element.MaxAlpha or element.MinAlpha
+		end
+	else
+		element.RangeAlpha = element.MaxAlpha
+	end
 end

@@ -3,7 +3,6 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
-local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
 
@@ -238,26 +237,6 @@ end
 ------------------------------------------------------------------------
 --	Looping
 ------------------------------------------------------------------------
-
-for _, vars in ipairs({'',':min',':max'}) do
-	E:AddTag(format('range%s', vars), 0.1, function(unit)
-		if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-			local minRange, maxRange = RangeCheck:GetRange(unit, true)
-
-			if vars == ':min' then
-				if minRange then
-					return format('%d', minRange)
-				end
-			elseif vars == ':max' then
-				if maxRange then
-					return format('%d', maxRange)
-				end
-			elseif minRange or maxRange then
-				return format('%s - %s', minRange or '??', maxRange or '??')
-			end
-		end
-	end)
-end
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
@@ -1658,9 +1637,6 @@ E.TagInfo = {
 		['quest:full'] = { category = 'Quest', description = "Quest full" },
 		['quest:text'] = { category = 'Quest', description = "Quest text" },
 	-- Range
-		['range'] = { category = 'Range', description = "Displays the range" },
-		['range:min'] = { category = 'Range', description = "Displays the min range" },
-		['range:max'] = { category = 'Range', description = "Displays the max range" },
 		['distance'] = { category = 'Range', description = "Displays the distance" },
 		['nearbyplayers:4'] = { category = 'Range', description = "Displays all players within 4 yards" },
 		['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
