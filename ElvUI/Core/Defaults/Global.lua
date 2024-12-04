@@ -143,7 +143,9 @@ G.unitframe = {
 	},
 	rangeCheck = {
 		FRIENDLY = {
-			DEATHKNIGHT = {},
+			DEATHKNIGHT = {
+				['47541'] = 'Death Coil'
+			},
 			DEMONHUNTER = {},
 			DRUID = {
 				['8936'] = 'Regrowth'
@@ -151,7 +153,9 @@ G.unitframe = {
 			EVOKER = {
 				['355913'] = 'Emerald Blossom'
 			},
-			HUNTER = {},
+			HUNTER = {
+				['136'] = 'Mend Pet'
+			},
 			MAGE = {
 				['1459'] = 'Arcane Intellect'
 			},
@@ -191,7 +195,7 @@ G.unitframe = {
 				['362969'] = 'Azure Strike'
 			},
 			HUNTER = {
-				['75'] = 'Auto Shot'
+				['75'] = E.Retail and 'Auto Shot' or nil
 			},
 			MAGE = {
 				['2139'] = 'Counterspell'
