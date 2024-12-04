@@ -583,7 +583,20 @@ function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration
 	end
 end
 
-function UF:AuraStacks(db, auras, button, name, icon, count, spellID, source, castByPlayer)
+function UF:AuraDispellable(debuffType, spellID)
+	if debuffType then
+		return DispelTypes[debuffType]
+	else
+		return DispelTypes.Bleed and BleedList[spellID]
+	end
+end
+
+function UF:AuraDuration(db, duration)
+	local dno, dmax, dmin = not duration or duration == 0, db.maxDuration, db.minDuration
+	return dno, dno or (duration and duration > 0 and (not dmax or dmax == 0 or duration <= dmax) and (not dmin or dmin == 0 or duration >= dmin))
+end
+
+function UF:AuraStacks(auras, db, button, name, icon, count, spellID, source, castByPlayer)
 	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
@@ -602,20 +615,7 @@ function UF:AuraStacks(db, auras, button, name, icon, count, spellID, source, ca
 	end
 end
 
-function UF:AuraDispellable(debuffType, spellID)
-	if debuffType then
-		return DispelTypes[debuffType]
-	else
-		return DispelTypes.Bleed and BleedList[spellID]
-	end
-end
-
-function UF:AuraDuration(db, duration)
-	local dno, dmax, dmin = not duration or duration == 0, db.maxDuration, db.minDuration
-	return dno, dno or (duration and duration > 0 and (not dmax or dmax == 0 or duration <= dmax) and (not dmin or dmin == 0 or duration >= dmin))
-end
-
-function UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
+function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	-- already set by oUF:
 	--- button.caster = source
 	--- button.filter = filter
@@ -624,7 +624,7 @@ function UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, durati
 
 	local myPet = source == 'pet'
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
-	local canDispel = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
+	local canDispel = (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
 	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
 	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 
@@ -658,14 +658,14 @@ function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, ex
 	local db = self.db
 	if not db then
 		return true -- no database huh
-	elseif UF:AuraStacks(db, self, button, name, icon, count, spellID, source, castByPlayer) then
+	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	elseif UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
 		return button.filterPass
 	end
 
 	local noDuration, allowDuration = UF:AuraDuration(db, duration)
-	local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
+	local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(self, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	if not allowDuration or not self.filterList then
 		button.filterPass = allowDuration
 		button.priority = 0

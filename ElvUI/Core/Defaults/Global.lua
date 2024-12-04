@@ -143,7 +143,9 @@ G.unitframe = {
 	},
 	rangeCheck = {
 		FRIENDLY = {
-			DEATHKNIGHT = {},
+			DEATHKNIGHT = {
+				['47541'] = 'Death Coil'
+			},
 			DEMONHUNTER = {},
 			DRUID = {
 				['8936'] = 'Regrowth'
@@ -191,6 +193,7 @@ G.unitframe = {
 				['362969'] = 'Azure Strike'
 			},
 			HUNTER = {
+				['2974'] = not E.Retail and 'Wing Clip' or nil,
 				['75'] = 'Auto Shot'
 			},
 			MAGE = {
@@ -250,6 +253,27 @@ G.unitframe = {
 			},
 			WARLOCK = {
 				['20707'] = not E.Classic and 'Soulstone' or nil
+			},
+			WARRIOR = {}
+		},
+		PET = {
+			DEATHKNIGHT = {
+				['47541'] = 'Death Coil'
+			},
+			DEMONHUNTER = {},
+			DRUID = {},
+			EVOKER = {},
+			HUNTER = {
+				['136'] = 'Mend Pet'
+			},
+			MAGE = {},
+			MONK = {},
+			PALADIN = {},
+			PRIEST = {},
+			ROGUE = {},
+			SHAMAN = {},
+			WARLOCK = {
+				['755'] = 'Health Funnel'
 			},
 			WARRIOR = {}
 		}
