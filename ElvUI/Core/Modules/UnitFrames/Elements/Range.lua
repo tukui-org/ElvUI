@@ -4,6 +4,7 @@ local UF = E:GetModule('UnitFrames')
 local next = next
 local tonumber = tonumber
 
+local UnitIsUnit = UnitIsUnit
 local UnitInPhase = UnitInPhase
 local UnitInRange = UnitInRange
 local UnitIsPlayer = UnitIsPlayer
@@ -42,9 +43,10 @@ end
 function UF:UpdateRangeSpells()
 	local db = E.global.unitframe.rangeCheck
 	if db then
-		list[1] = UF:UpdateRangeList(db.RESURRECT[E.myclass])
-		list[2] = UF:UpdateRangeList(db.ENEMY[E.myclass])
-		list[3] = UF:UpdateRangeList(db.FRIENDLY[E.myclass])
+		list[1] = UF:UpdateRangeList(db.ENEMY[E.myclass])
+		list[2] = UF:UpdateRangeList(db.FRIENDLY[E.myclass])
+		list[3] = UF:UpdateRangeList(db.RESURRECT[E.myclass])
+		list[4] = UF:UpdateRangeList(db.PET[E.myclass])
 	end
 end
 
@@ -71,7 +73,7 @@ function UF:UnitInSpellsRange(unit, which)
 		return range
 	end
 
-	return true -- no spells assume range is maxed
+	return 1 -- no spells checked
 end
 
 function UF:FriendlyInRange(realUnit)
@@ -89,10 +91,10 @@ function UF:FriendlyInRange(realUnit)
 
 	local range, checked = UnitInRange(unit)
 	if checked and not range then
-		return false -- blizz checked and said the unit is out of range
+		return false -- blizz checked and unit is out of range
 	end
 
-	return UF:UnitInSpellsRange(unit, 3)
+	return UF:UnitInSpellsRange(unit, 2)
 end
 
 function UF:UpdateRange(unit)
@@ -109,11 +111,15 @@ function UF:UpdateRange(unit)
 		element.RangeAlpha = element.MinAlpha
 	elseif unit then
 		if UnitIsDeadOrGhost(unit) then
-			element.RangeAlpha = UF:UnitInSpellsRange(unit, 1) and element.MaxAlpha or element.MinAlpha
+			element.RangeAlpha = UF:UnitInSpellsRange(unit, 3) == true and element.MaxAlpha or element.MinAlpha
 		elseif UnitCanAttack('player', unit) then
-			element.RangeAlpha = UF:UnitInSpellsRange(unit, 2) and element.MaxAlpha or element.MinAlpha
+			element.RangeAlpha = UF:UnitInSpellsRange(unit, 1) and element.MaxAlpha or element.MinAlpha
+		elseif UnitIsUnit('pet', unit) then
+			element.RangeAlpha = UF:UnitInSpellsRange(unit, 4) and element.MaxAlpha or element.MinAlpha
 		elseif UnitIsConnected(unit) then
 			element.RangeAlpha = UF:FriendlyInRange(unit) and element.MaxAlpha or element.MinAlpha
+		else
+			element.RangeAlpha = element.MinAlpha
 		end
 	else
 		element.RangeAlpha = element.MaxAlpha
