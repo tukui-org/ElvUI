@@ -193,6 +193,7 @@ G.unitframe = {
 				['362969'] = 'Azure Strike'
 			},
 			HUNTER = {
+				['19503'] = not E.Retail and 'Scatter Shot' or nil,
 				['2974'] = not E.Retail and 'Wing Clip' or nil,
 				['75'] = 'Auto Shot'
 			},
