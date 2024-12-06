@@ -300,7 +300,7 @@ blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font O
 blizz.addonCompartment.args.fontGroup.inline = true
 
 blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 70, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
-blizz.queueStatus.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.queueStatus end, function(_, value) E.private.general.queueStatus = value E.ShowPopup = true end, nil, function() return not E.Retail or E.private.actionbar.enable end)
+blizz.queueStatus.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.queueStatus end, function(_, value) E.private.general.queueStatus = value E.ShowPopup = true end, function() return (E.Retail and not E.private.actionbar.enable) or (not E.Retail and not E.private.general.minimap.enable) end)
 blizz.queueStatus.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.3, max = 1, step = 0.05 })
 blizz.queueStatus.args.frameLevel = ACH:Range(L["Frame Level"], nil, 3, { min = 2, max = 128, step = 1 })
 blizz.queueStatus.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 4, C.Values.Strata)

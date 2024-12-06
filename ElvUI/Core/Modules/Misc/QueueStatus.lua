@@ -149,7 +149,7 @@ function M:GetQueueStatusButton()
 end
 
 function M:LoadQueueStatus()
-	if (E.Retail and not E.private.actionbar.enable) and not E.private.general.queueStatus then return end
+	if (E.Retail and not E.private.actionbar.enable) or (not E.Retail and not E.private.general.minimap.enable) then return end
 
 	M.QueueStatus = CreateFrame('Frame', 'ElvUIQueueStatus', E.UIParent)
 	M.QueueStatus:Point('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMRIGHT', -5, 25)
