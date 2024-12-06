@@ -23,7 +23,7 @@ local GetSpecializationInfoForClassID = (not E.Retail and LCS.GetSpecializationI
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
-local filters = {}
+local filters, sortedFilters = {},{}
 local exportList = {}
 local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
 local sortedClasses = E:CopyTable({}, CLASS_SORT_ORDER)
@@ -198,7 +198,8 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 
 StyleFilters.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
-StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end, nil, nil, true)
+StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end, nil, nil)
+StyleFilters.selectFilter.sorting = function() wipe(sortedFilters) local list = E.global.nameplates.filters for filter in next, list do tinsert(sortedFilters, filter) end sort(sortedFilters, function(a, b) return list[a].triggers.priority < list[b].triggers.priority end) return sortedFilters end
 StyleFilters.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil exportList[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
 StyleFilters.triggers = ACH:Group(L["Triggers"], nil, 5, nil, nil, nil, function() return not C.StyleFilterSelected end)
