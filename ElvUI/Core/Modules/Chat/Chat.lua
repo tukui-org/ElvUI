@@ -769,7 +769,7 @@ function CH:PositionButtonFrame(chat)
 	if not chat.buttonFrame then return end
 
 	chat.buttonFrame:ClearAllPoints()
-	chat.buttonFrame:SetPoint('TOP', chat, 'BOTTOM', 0, -5000)
+	chat.buttonFrame:SetPoint('TOP', chat, 'BOTTOM', 0, -90000)
 end
 
 function CH:StyleChat(frame)
