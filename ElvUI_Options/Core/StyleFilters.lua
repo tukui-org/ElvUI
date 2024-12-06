@@ -206,7 +206,7 @@ local function validateCreateFilter(_, value) return not (strmatch(value, '^[%s%
 local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 
 StyleFilters.addFilter = ACH:Input(L["Create Filter"], nil, 1, nil, nil, nil, function(_, value) E.global.nameplates.filters[value] = NP:StyleFilterCopyDefaults() C:StyleFilterSetConfig(value) end, nil, nil, validateCreateFilter)
-StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end, nil, nil)
+StyleFilters.selectFilter = ACH:Select(L["Select Filter"], nil, 2, GetFilters, nil, nil, function() return C.StyleFilterSelected end, function(_, value) C:StyleFilterSetConfig(value) end)
 StyleFilters.selectFilter.sorting = function() wipe(sortedFilters) for filter in next, E.global.nameplates.filters do tinsert(sortedFilters, filter) end sort(sortedFilters, sortFilters) return sortedFilters end
 StyleFilters.removeFilter = ACH:Select(L["Delete Filter"], L["Delete a created filter, you cannot delete pre-existing filters, only custom ones."], 3, function() wipe(filters) for filterName in next, E.global.nameplates.filters do if not G.nameplates.filters[filterName] then filters[filterName] = filterName end end return filters end, true, nil, nil, function(_, value) for profile in pairs(E.data.profiles) do if E.data.profiles[profile].nameplates and E.data.profiles[profile].nameplates.filters then E.data.profiles[profile].nameplates.filters[value] = nil end end E.global.nameplates.filters[value] = nil exportList[value] = nil NP:ConfigureAll() C:StyleFilterSetConfig() end)
 
