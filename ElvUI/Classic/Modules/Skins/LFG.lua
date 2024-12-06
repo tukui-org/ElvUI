@@ -58,6 +58,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 
 	local LFGBrowseFrame = _G.LFGBrowseFrame
 	S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar)
+	S:HandleTrimScrollBar(_G.LFGBrowseFrameScrollBar)
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)
 
@@ -87,7 +88,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
 	_G.LFGBrowseFrameActivityDropDown.ResetButton:ClearAllPoints()
-	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', 0, 12)
+	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', 0, 16)
 
 	-- CheckBoxes
 	local checkBoxes = {
