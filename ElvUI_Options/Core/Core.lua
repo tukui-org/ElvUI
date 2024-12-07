@@ -29,6 +29,9 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
+local GetClassInfo = GetClassInfo
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local NUM_CLASSES = #CLASS_SORT_ORDER
 
 C.Values = {
 	GrowthDirection = {
@@ -41,6 +44,8 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
+	MAX_BOSS_FRAMES = 8,
+	NUM_CLASSES = NUM_CLASSES,
 	FontFlags = ACH.FontValues,
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
@@ -59,6 +64,17 @@ C.Values = {
 		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
 	}
 }
+
+do
+	C.ClassTable = {}
+
+	for i = 1, NUM_CLASSES do
+		local name, tag = GetClassInfo(i)
+		if tag then
+			C.ClassTable[tag] = name
+		end
+	end
+end
 
 do
 	C.StateSwitchGetText = function(_, TEXT)

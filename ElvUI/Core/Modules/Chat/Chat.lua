@@ -389,6 +389,7 @@ do --this can save some main file locals
 		if E.Classic then
 			-- Luckyone Anniversary (6112: Spineshatter EU)
 			z['Player-6112-028A3A6D']	= ElvGreen -- [Horde] Hunter
+			z['Player-6112-02A2F754']	= ElvGreen -- [Horde] Priest
 			-- Luckyone Seasonal (5827: Living Flame EU)
 			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
 			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin

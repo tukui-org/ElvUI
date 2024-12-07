@@ -12,6 +12,7 @@ local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, tim
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local hooksecurefunc = hooksecurefunc
 
+local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetClassInfo = GetClassInfo
@@ -429,6 +430,18 @@ function E:IsDispellableByMe(debuffType)
 	return DispelTypes[debuffType]
 end
 
+function E:UpdateDispelColor(debuffType, r, g, b)
+	local color = DebuffColors[debuffType]
+	if color then
+		color.r, color.g, color.b = r, g, b
+	end
+
+	local db = E.db.general.debuffColors[debuffType]
+	if db then
+		db.r, db.g, db.b = r, g, b
+	end
+end
+
 function E:UpdateDispelColors()
 	local colors = E.db.general.debuffColors
 	for debuffType, db in next, colors do
@@ -440,15 +453,68 @@ function E:UpdateDispelColors()
 	end
 end
 
-function E:UpdateDispelColor(debuffType, r, g, b)
-	local color = DebuffColors[debuffType]
-	if color then
-		color.r, color.g, color.b = r, g, b
+do
+	local callbacks = {}
+	function E:CustomClassColorUpdate()
+		for func in next, callbacks do
+			func()
+		end
 	end
 
-	local db = E.db.general.debuffColors[debuffType]
-	if db then
-		db.r, db.g, db.b = r, g, b
+	function E:CustomClassColorRegister(func)
+		callbacks[func] = true
+	end
+
+	function E:CustomClassColorUnregister(func)
+		callbacks[func] = nil
+	end
+
+	local meta = {
+		__index = {
+			RegisterCallback = E.CustomClassColorRegister,
+			UnregisterCallback = E.CustomClassColorUnregister
+		}
+	}
+
+	function E:SetupCustomClassColors()
+		local object = CopyTable(_G.RAID_CLASS_COLORS)
+
+		_G.CUSTOM_CLASS_COLORS = setmetatable(object, meta)
+
+		return object
+	end
+
+	function E:UpdateCustomClassColor(classTag, r, g, b)
+		local colors = _G.CUSTOM_CLASS_COLORS
+		local color = colors and colors[classTag]
+		if color then
+			color.r, color.g, color.b = r, g, b
+			color.colorStr = E:RGBToHex(r, g, b, 'ff')
+		end
+
+		local db = E.db.general.classColors[classTag]
+		if db then
+			db.r, db.g, db.b = r, g, b
+		end
+
+		E:CustomClassColorUpdate()
+	end
+
+	function E:UpdateCustomClassColors()
+		if not E.private.general.classColors then return end
+
+		local custom = _G.CUSTOM_CLASS_COLORS or E:SetupCustomClassColors()
+		local colors = E.db.general.classColors
+
+		for classTag, db in next, colors do
+			local color = custom[classTag]
+			if color then
+				E:UpdateClassColor(db)
+
+				color.r, color.g, color.b = db.r, db.g, db.b
+				color.colorStr = E:RGBToHex(db.r, db.g, db.b, 'ff')
+			end
+		end
 	end
 end
 

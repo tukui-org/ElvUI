@@ -178,6 +178,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[357170]	= List(), -- Time Dilation
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
+		[49039]		= List(), -- Lichborne
 		[81256]		= List(), -- Dancing Rune Weapon
 		[55233]		= List(), -- Vampiric Blood
 		[193320]	= List(), -- Umbilicus Eternus
@@ -213,6 +214,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[186265]	= List(), -- Aspect of the Turtle
 		[53480]		= List(), -- Roar of Sacrifice
 		[202748]	= List(), -- Survival Tactics
+		[264735]	= List(), -- Survival of the Fittest
 	-- Mage
 		[414658]	= List(), -- Ice Cold
 		[45438]		= List(), -- Ice Block

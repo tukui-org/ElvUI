@@ -5,16 +5,12 @@ local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
-local wipe, next, pairs, ipairs = wipe, next, pairs, ipairs
-local format, strmatch, strsplit = format, strmatch, strsplit
-local tinsert, tonumber, gsub, ceil = tinsert, tonumber, gsub, ceil
+local wipe, next, pairs, ipairs, gsub = wipe, next, pairs, ipairs, gsub
+local format, strmatch, strsplit, ceil = format, strmatch, strsplit, ceil
+local tinsert, tonumber, tostring = tinsert, tonumber, tostring
 
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
-local GetClassInfo = GetClassInfo
 local CopyTable = CopyTable
-
-local NUM_CLASSES = #CLASS_SORT_ORDER
-local MAX_BOSS_FRAMES = 8
 
 local petTypes = {
 	pet = true,
@@ -67,14 +63,6 @@ local blendModeValues = {
 
 local CUSTOMTEXT_CONFIGS, filters = {}, {}
 local carryFilterFrom, carryFilterTo
-
-local classTable = {}
-for i = 1, _G.MAX_CLASSES do
-	local classDisplayName, classTag = GetClassInfo(i)
-	if classTag then
-		classTable[classTag] = classDisplayName
-	end
-end
 
 local roles = { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] }
 local offsetShort = { softMin = -100, min = -1000, softMax = 100, max = 1000, step = 1 }
@@ -1146,8 +1134,8 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 500, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
 		config.args.sortingGroup.args.classSetup.inline = true
 
-		for i = 1, NUM_CLASSES do
-			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, classTable)
+		for i = 1, C.Values.NUM_CLASSES do
+			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, C.ClassTable)
 		end
 	else
 		config.args.positionsGroup.inline = true -- inline for others
@@ -1697,14 +1685,14 @@ PetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet
 UnitFrame.groupUnits = ACH:Group(L["Group Units"], nil, 16, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local GroupUnits = UnitFrame.groupUnits.args
 
-GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', MAX_BOSS_FRAMES) end, nil, not (E.Retail or E.Cata))
-GroupUnits.boss.args = GetUnitSettings('boss', UF.CreateAndUpdateUFGroup, MAX_BOSS_FRAMES)
+GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', C.Values.MAX_BOSS_FRAMES) end, nil, not (E.Retail or E.Cata))
+GroupUnits.boss.args = GetUnitSettings('boss', UF.CreateAndUpdateUFGroup, C.Values.MAX_BOSS_FRAMES)
 local Boss = GroupUnits.boss.args
 
-Boss.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('boss', MAX_BOSS_FRAMES) end)
+Boss.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('boss', C.Values.MAX_BOSS_FRAMES) end)
 Boss.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end)
 Boss.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { arena = L["Arena"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'boss') E:RefreshGUI() end)
-Boss.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', MAX_BOSS_FRAMES)
+Boss.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', C.Values.MAX_BOSS_FRAMES)
 
 GroupUnits.arena = ACH:Group(L["Arena"], nil, nil, nil, function(info) return E.db.unitframe.units.arena[info[#info]] end, function(info, value) E.db.unitframe.units.arena[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end, nil, E.Classic)
 GroupUnits.arena.args = GetUnitSettings('arena', UF.CreateAndUpdateUFGroup, 5)
