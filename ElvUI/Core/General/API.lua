@@ -511,7 +511,7 @@ do
 			db.r, db.g, db.b = r, g, b
 		end
 
-		E:CustomClassColorUpdate()
+		E:CustomClassColorNotify()
 	end
 
 	function E:UpdateCustomClassColors()
