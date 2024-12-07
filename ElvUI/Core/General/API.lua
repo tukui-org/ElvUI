@@ -7,10 +7,11 @@ local LCS = E.Libs.LCS
 local ElvUF = E.oUF
 
 local _G = _G
+local setmetatable = setmetatable
+local hooksecurefunc = hooksecurefunc
 local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
-local hooksecurefunc = hooksecurefunc
 
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
@@ -469,10 +470,23 @@ do
 		callbacks[func] = nil
 	end
 
+	function E:CustomClassColorNotify()
+		local changed = E:UpdateCustomClassColors()
+		if changed then
+			E:CustomClassColorUpdate()
+		end
+	end
+
+	function E:CustomClassColorClassToken(className)
+		return E:UnlocalizedClassName(className)
+	end
+
 	local meta = {
 		__index = {
 			RegisterCallback = E.CustomClassColorRegister,
-			UnregisterCallback = E.CustomClassColorUnregister
+			UnregisterCallback = E.CustomClassColorUnregister,
+			NotifyChanges = E.CustomClassColorNotify,
+			GetClassToken = E.CustomClassColorClassToken
 		}
 	}
 
@@ -504,17 +518,23 @@ do
 		if not E.private.general.classColors then return end
 
 		local custom = _G.CUSTOM_CLASS_COLORS or E:SetupCustomClassColors()
-		local colors = E.db.general.classColors
+		local colors, changed = E.db.general.classColors
 
 		for classTag, db in next, colors do
 			local color = custom[classTag]
 			if color then
 				E:UpdateClassColor(db)
 
-				color.r, color.g, color.b = db.r, db.g, db.b
-				color.colorStr = E:RGBToHex(db.r, db.g, db.b, 'ff')
+				if color.r ~= db.r or color.g ~= db.g or color.b ~= db.b then
+					color.r, color.g, color.b = db.r, db.g, db.b
+					color.colorStr = E:RGBToHex(db.r, db.g, db.b, 'ff')
+
+					changed = true
+				end
 			end
 		end
+
+		return changed
 	end
 end
 
