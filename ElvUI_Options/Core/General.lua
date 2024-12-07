@@ -337,7 +337,7 @@ for tag, name in next, C.ClassTable do
 	blizz.classColors.args[tag] = ACH:Color(name, nil, nil, nil, 120)
 end
 
-blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 80, nil, function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
+blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 80, 'tab', function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
 blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Cata)
 
 blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 10)
@@ -355,7 +355,6 @@ blizz.guildBank.args.ilvlGroup.args.positionGroup.inline = true
 blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, C.Values.TextPositions, nil, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
 blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelxOffset = ACH:Range(L["X-Offset"], nil, 11, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
 blizz.guildBank.args.ilvlGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.general.guildBank.itemLevel end)
-blizz.guildBank.args.ilvlGroup.inline = true
 
 blizz.guildBank.args.countGroup = ACH:Group(L["Item Count"], nil, 20)
 blizz.guildBank.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.guildBank[info[#info]] local d = P.general.guildBank[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.guildBank[info[#info]] t.r, t.g, t.b = r, g, b BL:GuildBank_Update() end)
@@ -369,7 +368,6 @@ blizz.guildBank.args.countGroup.args.positionGroup.inline = true
 blizz.guildBank.args.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.TextPositions)
 blizz.guildBank.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
 blizz.guildBank.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
-blizz.guildBank.args.countGroup.inline = true
 
 General.alternativePowerGroup = ACH:Group(L["Alternative Power"], nil, 50, nil, function(info) return E.db.general.altPowerBar[info[#info]] end, function(info, value) E.db.general.altPowerBar[info[#info]] = value if BL.AltPowerBar then BL:UpdateAltPowerBarSettings() end end, nil, E.Classic)
 General.alternativePowerGroup.args.enable = ACH:Toggle(L["Enable"], L["Replace Blizzard's Alternative Power Bar"], 1, nil, nil, nil, nil, function(info, value) E.db.general.altPowerBar[info[#info]] = value E.ShowPopup = true end)
