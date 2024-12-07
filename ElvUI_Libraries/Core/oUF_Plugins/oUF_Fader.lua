@@ -77,7 +77,7 @@ local function Update(self, event, unit)
 	end
 
 	-- try to get the unit from the parent
-	if not unit then
+	if not unit or type(unit) ~= 'string' then
 		unit = self.unit
 	end
 
