@@ -469,15 +469,17 @@ do
 		callbacks[func] = nil
 	end
 
-	E.CustomClassColorMeta = {
-		RegisterCallback = E.CustomClassColorRegister,
-		UnregisterCallback = E.CustomClassColorUnregister
+	local meta = {
+		__index = {
+			RegisterCallback = E.CustomClassColorRegister,
+			UnregisterCallback = E.CustomClassColorUnregister
+		}
 	}
 
 	function E:SetupCustomClassColors()
 		local object = CopyTable(_G.RAID_CLASS_COLORS)
 
-		_G.CUSTOM_CLASS_COLORS = setmetatable(object, { __index = E.CustomClassColorMeta })
+		_G.CUSTOM_CLASS_COLORS = setmetatable(object, meta)
 
 		return object
 	end
