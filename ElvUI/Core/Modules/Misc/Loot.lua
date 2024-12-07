@@ -376,7 +376,7 @@ function M:LoadLoot()
 	M:RegisterEvent('OPEN_MASTER_LOOT_LIST')
 	M:RegisterEvent('UPDATE_MASTER_LOOT_LIST')
 
-	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
 	_G.LootFrame:UnregisterAllEvents()
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')

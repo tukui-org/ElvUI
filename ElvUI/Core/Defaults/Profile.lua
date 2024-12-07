@@ -80,6 +80,21 @@ P.general = {
 		talkingtitle = { enable = false, font = 'Expressway', size = 20, outline = 'SHADOW' },
 		talkingtext = { enable = false, font = 'Expressway', size = 18, outline = 'SHADOW' }
 	},
+	classColors = {
+		HUNTER = { b = 0.44, g = 0.82, r = 0.66 },
+		WARRIOR = { b = 0.42, g = 0.60, r = 0.77 },
+		ROGUE = { b = 0.40, g = 0.95, r = 1 },
+		MAGE = { b = 0.92, g = 0.78, r = 0.24 },
+		PRIEST = { b = 1, g = 1, r = 1 },
+		EVOKER = { b = 0.49, g = 0.57, r = 0.20 },
+		SHAMAN = { b = 0.86, g = 0.43, r = 0 },
+		WARLOCK = { b = 0.93, g = 0.53, r = 0.52 },
+		DEMONHUNTER = { b = 0.78, g = 0.18, r = 0.63 },
+		DEATHKNIGHT = { b = 0.22, g = 0.11, r = 0.76 },
+		DRUID = { b = 0.03, g = 0.48, r = 1 },
+		MONK = { b = 0.59, g = 1, r = 0 },
+		PALADIN = { b = 0.72, g = 0.54, r = 0.95 }
+	},
 	debuffColors = { -- handle colors of LibDispel
 		none = { r = 0.8, g = 0, b = 0 },
 		Magic = { r = 0.2, g = 0.6, b = 1 },
@@ -88,9 +103,9 @@ P.general = {
 		Poison = { r = 0, g = 0.6, b = 0 },
 
 		-- These dont exist in Blizzards color table
+		Bleed = { r = 1, g = 0.2, b = 0.6 },
 		EnemyNPC = { r = 0.9, g = 0.1, b = 0.1 },
 		BadDispel = { r = 0.05, g = 0.85, b = 0.94 },
-		Bleed = { r = 1, g = 0.2, b = 0.6 },
 		Stealable = { r = 0.93, g = 0.91, b = 0.55 },
 	},
 	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize

@@ -1506,6 +1506,7 @@ end
 function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
 	E:UpdateDispelColors()
+	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 
@@ -2027,6 +2028,7 @@ function E:Initialize()
 	E:LoadMovers()
 	E:UpdateMedia()
 	E:UpdateDispelColors()
+	E:UpdateCustomClassColors()
 	E:UpdateCooldownSettings('all')
 	E:Contruct_StaticPopups()
 

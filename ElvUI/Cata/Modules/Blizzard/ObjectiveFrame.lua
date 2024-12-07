@@ -36,7 +36,7 @@ function BL:ObjectiveTracker_Setup()
 	holder:Point('TOPRIGHT', E.UIParent, -135, -300)
 	holder:Size(130, 22)
 
-	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	-- prevent it from being moved by blizzard (the hook below will most likely do nothing now)
