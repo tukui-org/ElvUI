@@ -574,7 +574,8 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 			color = QuestDifficultyColors.difficult
 		end
 	else
-		color = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
+		local level = UnitEffectiveLevel(unit)
+		color = GetCreatureDifficultyColor((level > 0) and level or 999)
 	end
 
 	return Hex(color.r, color.g, color.b)
