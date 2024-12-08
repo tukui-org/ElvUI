@@ -109,6 +109,9 @@ local colors = {
 -- We do this because people edit the vars directly, and changing the default
 -- globals makes SPICE FLOW!
 local function customClassColors()
+	-- in classic era, shamans default to paladin pink. this forces it to blue.
+	colors.class["SHAMAN"] = oUF:CreateColor(0.0, 0.44, 0.87)
+
 	if(_G.CUSTOM_CLASS_COLORS) then
 		local function updateColors()
 			for classToken, color in next, _G.CUSTOM_CLASS_COLORS do

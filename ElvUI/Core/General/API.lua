@@ -194,7 +194,10 @@ end
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
-	local color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]) or _G.RAID_CLASS_COLORS[class]
+	-- previously this grabbed directly from _G.CUSTOM_CLASS_COLORS but that already gets
+	-- iterated in colors.lua and writes the values to colors.class so it should be
+	-- safe to grab directly from colors instead?
+	local color = ElvUF.colors.class[class] or _G.RAID_CLASS_COLORS[class]
 	if type(color) ~= 'table' then return end
 
 	if not color.colorStr then
