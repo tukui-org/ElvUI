@@ -19,8 +19,10 @@ local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local GetInstanceInfo = GetInstanceInfo
-local RegisterStateDriver = RegisterStateDriver
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetInventoryItemLink = GetInventoryItemLink
 local UnregisterStateDriver = UnregisterStateDriver
+local RegisterStateDriver = RegisterStateDriver
 
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
@@ -1022,8 +1024,22 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 	end
 end
 
-function UF:UNIT_INVENTORY_CHANGED()
-	UF:UpdateRangeSpells()
+do
+	local ChestSlotID = GetInventorySlotInfo('CHESTSLOT')
+	local LegSlotID = GetInventorySlotInfo('LEGSSLOT')
+
+	local chestSlotItem, legSlotItem -- local cache of the items
+	function UF:UNIT_INVENTORY_CHANGED(_, unit) -- limited to Mages only currently
+		local ChestItem = GetInventoryItemLink('player', ChestSlotID) -- Mage: Regeneration
+		local LegItem = GetInventoryItemLink('player', LegSlotID) -- Mage: Mass Regeneration
+
+		if unit == 'player' and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+			chestSlotItem = ChestItem
+			legSlotItem = LegItem
+
+			UF:UpdateRangeSpells()
+		end
+	end
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
