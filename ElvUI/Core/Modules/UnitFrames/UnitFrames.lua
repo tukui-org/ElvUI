@@ -1022,6 +1022,10 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 	end
 end
 
+function UF:UNIT_INVENTORY_CHANGED()
+	UF:UpdateRangeSpells()
+end
+
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 	UF:UpdateRangeSpells()
@@ -2112,10 +2116,22 @@ function UF:Initialize()
 	ElvUF:Factory(UF.Setup)
 
 	UF:UpdateColors()
+
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
+
+	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
+	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
+	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
+
+	if E.Retail or E.Cata then
+		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
+	elseif E.ClassicSOD and E.myclass == 'MAGE' then
+		UF:RegisterUnitEvent('UNIT_INVENTORY_CHANGED', 'player')
+	end
+
 	UF:DisableBlizzard()
 
 	hooksecurefunc('CompactRaidGroup_InitializeForGroup', UF.DisableBlizzard_InitializeForGroup)
@@ -2127,10 +2143,11 @@ function UF:Initialize()
 	end
 
 	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
-	if not ORD then return end
-	ORD.ShowDispellableDebuff = true
-	ORD.FilterDispellableDebuff = true
-	ORD.MatchBySpellName = false
+	if ORD then
+		ORD.ShowDispellableDebuff = true
+		ORD.FilterDispellableDebuff = true
+		ORD.MatchBySpellName = false
+	end
 end
 
 E:RegisterInitialModule(UF:GetName())

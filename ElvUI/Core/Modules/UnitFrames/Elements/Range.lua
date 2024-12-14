@@ -40,7 +40,11 @@ function UF:UpdateRangeList(db)
 	return spells
 end
 
-function UF:UpdateRangeSpells()
+function UF:UpdateRangeSpells(event, arg1)
+	if event == 'CHARACTER_POINTS_CHANGED' and (not arg1 or arg1 > 0) then
+		return -- Not interested in gained points from leveling
+	end
+
 	local db = E.global.unitframe.rangeCheck
 	if db then
 		list[1] = UF:UpdateRangeList(db.ENEMY[E.myclass])
