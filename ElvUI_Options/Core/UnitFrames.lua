@@ -1196,7 +1196,7 @@ UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { castbar = L["Cast Bar"], player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = (E.Retail or E.Cata) and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
 
-UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 10, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
+UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 40, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
 local Colors = UnitFrame.allColorsGroup.args
 
 Colors.healthGroup = ACH:Group(L["Health"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors[info[#info]] = value end UF:Update_AllFrames() end)
@@ -1445,7 +1445,7 @@ UnitFrame.frameGlowGroup.args.mouseoverGlow.args.spacer = ACH:Spacer(3)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.class = ACH:Toggle(L["Use Class Color"], L["Alpha channel is taken from the color option."], 4)
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.color = ACH:Color(L["COLOR"], nil, 5, true)
 
-UnitFrame.rangeGroup = ACH:Group(L["Range"], nil, 40)
+UnitFrame.rangeGroup = ACH:Group(L["Range"], nil, 50)
 UnitFrame.rangeGroup.args.rangeReset = ACH:Execute(L["Reset Spells"], nil, 4, function() ResetRangeSpells(UnitFrame.rangeGroup.args) end, nil, true)
 
 UnitFrame.rangeGroup.args.rangeEnemy = ACH:Group(L["Enemy Spells"], nil, 10)
@@ -1481,7 +1481,7 @@ UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeFriendly, E.global.unitframe.ra
 UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeResurrect, E.global.unitframe.rangeCheck.RESURRECT[E.myclass], nil, true)
 UpdateRangeSpells(UnitFrame.rangeGroup.args.rangePet, E.global.unitframe.rangeCheck.PET[E.myclass], nil, true)
 
-UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 15, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
+UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 10, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local IndividualUnits = UnitFrame.individualUnits.args
 
 local SingleCopyFrom = {}
@@ -1684,7 +1684,7 @@ PetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy setting
 PetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pettarget')
 
 -- Group
-UnitFrame.groupUnits = ACH:Group(L["Group Units"], nil, 16, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
+UnitFrame.groupUnits = ACH:Group(L["Group Units"], nil, 20, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local GroupUnits = UnitFrame.groupUnits.args
 
 GroupUnits.boss = ACH:Group(L["Boss"], nil, nil, nil, function(info) return E.db.unitframe.units.boss[info[#info]] end, function(info, value) E.db.unitframe.units.boss[info[#info]] = value UF:CreateAndUpdateUFGroup('boss', C.Values.MAX_BOSS_FRAMES) end, nil, not (E.Retail or E.Cata))
