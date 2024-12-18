@@ -19,8 +19,10 @@ local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local GetInstanceInfo = GetInstanceInfo
-local RegisterStateDriver = RegisterStateDriver
+local GetInventorySlotInfo = GetInventorySlotInfo
+local GetInventoryItemLink = GetInventoryItemLink
 local UnregisterStateDriver = UnregisterStateDriver
+local RegisterStateDriver = RegisterStateDriver
 
 local UnitFrame_OnEnter = UnitFrame_OnEnter
 local UnitFrame_OnLeave = UnitFrame_OnLeave
@@ -1019,6 +1021,24 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 
 	if event then
 		UF:UnregisterEvent(event)
+	end
+end
+
+do
+	local ChestSlotID = GetInventorySlotInfo('CHESTSLOT')
+	local LegSlotID = GetInventorySlotInfo('LEGSSLOT')
+
+	local chestSlotItem, legSlotItem -- local cache of the items
+	function UF:UNIT_INVENTORY_CHANGED(_, unit) -- limited to Mages only currently
+		local ChestItem = GetInventoryItemLink('player', ChestSlotID) -- Mage: Regeneration
+		local LegItem = GetInventoryItemLink('player', LegSlotID) -- Mage: Mass Regeneration
+
+		if unit == 'player' and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+			chestSlotItem = ChestItem
+			legSlotItem = LegItem
+
+			UF:UpdateRangeSpells()
+		end
 	end
 end
 
@@ -2112,10 +2132,22 @@ function UF:Initialize()
 	ElvUF:Factory(UF.Setup)
 
 	UF:UpdateColors()
+
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
+
+	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
+	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
+	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
+
+	if E.Retail or E.Cata then
+		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
+	elseif E.ClassicSOD and E.myclass == 'MAGE' then
+		UF:RegisterUnitEvent('UNIT_INVENTORY_CHANGED', 'player')
+	end
+
 	UF:DisableBlizzard()
 
 	hooksecurefunc('CompactRaidGroup_InitializeForGroup', UF.DisableBlizzard_InitializeForGroup)
@@ -2127,10 +2159,11 @@ function UF:Initialize()
 	end
 
 	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
-	if not ORD then return end
-	ORD.ShowDispellableDebuff = true
-	ORD.FilterDispellableDebuff = true
-	ORD.MatchBySpellName = false
+	if ORD then
+		ORD.ShowDispellableDebuff = true
+		ORD.FilterDispellableDebuff = true
+		ORD.MatchBySpellName = false
+	end
 end
 
 E:RegisterInitialModule(UF:GetName())
