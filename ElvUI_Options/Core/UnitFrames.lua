@@ -606,7 +606,7 @@ local function GetRangeSpell(spell)
 	return spell, spellDescription
 end
 
-local function UpdateRangeSpells(list, db, value, add)
+local function UpdateRangeList(list, db, value, add)
 	local setting = list.args.spells
 	if not value then -- initialized
 		setting.args = {}
@@ -643,16 +643,16 @@ local function UpdateRangeSpells(list, db, value, add)
 	setting.hidden = not next(setting.args)
 end
 
-local function ResetRangeSpells(list)
+local function ResetRangeList(list)
 	E.global.unitframe.rangeCheck.ENEMY[E.myclass] = CopyTable(G.unitframe.rangeCheck.ENEMY[E.myclass])
 	E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] = CopyTable(G.unitframe.rangeCheck.FRIENDLY[E.myclass])
 	E.global.unitframe.rangeCheck.RESURRECT[E.myclass] = CopyTable(G.unitframe.rangeCheck.RESURRECT[E.myclass])
 	E.global.unitframe.rangeCheck.PET[E.myclass] = CopyTable(G.unitframe.rangeCheck.PET[E.myclass])
 
-	UpdateRangeSpells(list.rangeEnemy, E.global.unitframe.rangeCheck.ENEMY[E.myclass], nil, true)
-	UpdateRangeSpells(list.rangeFriendly, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass], nil, true)
-	UpdateRangeSpells(list.rangeResurrect, E.global.unitframe.rangeCheck.RESURRECT[E.myclass], nil, true)
-	UpdateRangeSpells(list.rangePet, E.global.unitframe.rangeCheck.PET[E.myclass], nil, true)
+	UpdateRangeList(list.rangeEnemy, E.global.unitframe.rangeCheck.ENEMY[E.myclass], nil, true)
+	UpdateRangeList(list.rangeFriendly, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass], nil, true)
+	UpdateRangeList(list.rangeResurrect, E.global.unitframe.rangeCheck.RESURRECT[E.myclass], nil, true)
+	UpdateRangeList(list.rangePet, E.global.unitframe.rangeCheck.PET[E.myclass], nil, true)
 
 	UF:UpdateRangeSpells()
 end
@@ -1446,40 +1446,40 @@ UnitFrame.frameGlowGroup.args.mouseoverGlow.args.class = ACH:Toggle(L["Use Class
 UnitFrame.frameGlowGroup.args.mouseoverGlow.args.color = ACH:Color(L["COLOR"], nil, 5, true)
 
 UnitFrame.rangeGroup = ACH:Group(L["Range"], nil, 50)
-UnitFrame.rangeGroup.args.rangeReset = ACH:Execute(L["Reset Spells"], nil, 4, function() ResetRangeSpells(UnitFrame.rangeGroup.args) end, nil, true)
+UnitFrame.rangeGroup.args.rangeReset = ACH:Execute(L["Reset Spells"], nil, 4, function() ResetRangeList(UnitFrame.rangeGroup.args) end, nil, true)
 
 UnitFrame.rangeGroup.args.rangeEnemy = ACH:Group(L["Enemy Spells"], nil, 10)
-UnitFrame.rangeGroup.args.rangeEnemy.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] list[value] = true UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeEnemy, list, value, true) end)
-UnitFrame.rangeGroup.args.rangeEnemy.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.ENEMY[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] list[value] = nil UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeEnemy, list, value) end)
+UnitFrame.rangeGroup.args.rangeEnemy.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] list[value] = true UpdateRangeList(UnitFrame.rangeGroup.args.rangeEnemy, list, value, true) end)
+UnitFrame.rangeGroup.args.rangeEnemy.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.ENEMY[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] list[value] = nil UpdateRangeList(UnitFrame.rangeGroup.args.rangeEnemy, list, value) end)
 
 UnitFrame.rangeGroup.args.rangeEnemy.args.spells = ACH:Group('', nil, 11, nil, function(info) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] local value = info[#info] return list[value] end, function(info, value) local list = E.global.unitframe.rangeCheck.ENEMY[E.myclass] list[info[#info]] = value UF:UpdateRangeSpells() end, nil, true)
 UnitFrame.rangeGroup.args.rangeEnemy.args.spells.inline = true
 
 UnitFrame.rangeGroup.args.rangeFriendly = ACH:Group(L["Friendly Spells"], nil, 20)
-UnitFrame.rangeGroup.args.rangeFriendly.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] list[value] = true UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeFriendly, list, value, true) end)
-UnitFrame.rangeGroup.args.rangeFriendly.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] list[value] = nil UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeFriendly, list, value) end)
+UnitFrame.rangeGroup.args.rangeFriendly.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] list[value] = true UpdateRangeList(UnitFrame.rangeGroup.args.rangeFriendly, list, value, true) end)
+UnitFrame.rangeGroup.args.rangeFriendly.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] list[value] = nil UpdateRangeList(UnitFrame.rangeGroup.args.rangeFriendly, list, value) end)
 
 UnitFrame.rangeGroup.args.rangeFriendly.args.spells = ACH:Group('', nil, 11, nil, function(info) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] local value = info[#info] return list[value] end, function(info, value) local list = E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] list[info[#info]] = value UF:UpdateRangeSpells() end, nil, true)
 UnitFrame.rangeGroup.args.rangeFriendly.args.spells.inline = true
 
 UnitFrame.rangeGroup.args.rangeResurrect = ACH:Group(L["Resurrect Spells"], nil, 30)
-UnitFrame.rangeGroup.args.rangeResurrect.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] list[value] = true UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeResurrect, list, value, true) end)
-UnitFrame.rangeGroup.args.rangeResurrect.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.RESURRECT[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] list[value] = nil UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeResurrect, list, value) end)
+UnitFrame.rangeGroup.args.rangeResurrect.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] list[value] = true UpdateRangeList(UnitFrame.rangeGroup.args.rangeResurrect, list, value, true) end)
+UnitFrame.rangeGroup.args.rangeResurrect.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.RESURRECT[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] list[value] = nil UpdateRangeList(UnitFrame.rangeGroup.args.rangeResurrect, list, value) end)
 
 UnitFrame.rangeGroup.args.rangeResurrect.args.spells = ACH:Group('', nil, 11, nil, function(info) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] local value = info[#info] return list[value] end, function(info, value) local list = E.global.unitframe.rangeCheck.RESURRECT[E.myclass] list[info[#info]] = value UF:UpdateRangeSpells() end, nil, true)
 UnitFrame.rangeGroup.args.rangeResurrect.args.spells.inline = true
 
 UnitFrame.rangeGroup.args.rangePet = ACH:Group(L["Pet Spells"], nil, 40)
-UnitFrame.rangeGroup.args.rangePet.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.PET[E.myclass] list[value] = true UpdateRangeSpells(UnitFrame.rangeGroup.args.rangePet, list, value, true) end)
-UnitFrame.rangeGroup.args.rangePet.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.PET[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.PET[E.myclass] list[value] = nil UpdateRangeSpells(UnitFrame.rangeGroup.args.rangePet, list, value) end)
+UnitFrame.rangeGroup.args.rangePet.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.PET[E.myclass] list[value] = true UpdateRangeList(UnitFrame.rangeGroup.args.rangePet, list, value, true) end)
+UnitFrame.rangeGroup.args.rangePet.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local values, list = {}, E.global.unitframe.rangeCheck.PET[E.myclass] for spell in next, list do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local list = E.global.unitframe.rangeCheck.PET[E.myclass] list[value] = nil UpdateRangeList(UnitFrame.rangeGroup.args.rangePet, list, value) end)
 
 UnitFrame.rangeGroup.args.rangePet.args.spells = ACH:Group('', nil, 11, nil, function(info) local list = E.global.unitframe.rangeCheck.PET[E.myclass] local value = info[#info] return list[value] end, function(info, value) local list = E.global.unitframe.rangeCheck.PET[E.myclass] list[info[#info]] = value UF:UpdateRangeSpells() end, nil, true)
 UnitFrame.rangeGroup.args.rangePet.args.spells.inline = true
 
-UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeEnemy, E.global.unitframe.rangeCheck.ENEMY[E.myclass], nil, true)
-UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeFriendly, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass], nil, true)
-UpdateRangeSpells(UnitFrame.rangeGroup.args.rangeResurrect, E.global.unitframe.rangeCheck.RESURRECT[E.myclass], nil, true)
-UpdateRangeSpells(UnitFrame.rangeGroup.args.rangePet, E.global.unitframe.rangeCheck.PET[E.myclass], nil, true)
+UpdateRangeList(UnitFrame.rangeGroup.args.rangeEnemy, E.global.unitframe.rangeCheck.ENEMY[E.myclass], nil, true)
+UpdateRangeList(UnitFrame.rangeGroup.args.rangeFriendly, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass], nil, true)
+UpdateRangeList(UnitFrame.rangeGroup.args.rangeResurrect, E.global.unitframe.rangeCheck.RESURRECT[E.myclass], nil, true)
+UpdateRangeList(UnitFrame.rangeGroup.args.rangePet, E.global.unitframe.rangeCheck.PET[E.myclass], nil, true)
 
 UnitFrame.individualUnits = ACH:Group(L["Individual Units"], nil, 10, 'tab', nil, nil, function() return not E.UnitFrames.Initialized end)
 local IndividualUnits = UnitFrame.individualUnits.args
