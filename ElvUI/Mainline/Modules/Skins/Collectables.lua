@@ -684,7 +684,20 @@ local function SkinTransmogFrames()
 		end
 	end
 
-	S:HandleButton(WardrobeTransmogFrame.SpecDropdown)
+	local specButton = WardrobeTransmogFrame.SpecDropdown
+	if specButton then
+		S:HandleButton(specButton)
+		if specButton.Arrow then specButton.Arrow:SetAlpha(0) end
+		specButton:SetPoint('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -3, 0)
+
+		if not specButton.CustomArrow then
+			local tex = specButton:CreateTexture(nil, 'ARTWORK')
+			tex:SetAllPoints()
+			tex:SetTexture(E.Media.Textures.ArrowUp)
+			tex:SetRotation(S.ArrowRotation.down)
+		end
+	end
+
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
