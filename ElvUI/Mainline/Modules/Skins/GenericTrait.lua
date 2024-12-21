@@ -19,6 +19,7 @@ function S:Blizzard_GenericTraitUI()
 	local unspentCount = GenericTrait.Currency.UnspentPointsCount
 	if unspentCount then
 		S.ReplaceIconString(unspentCount)
+
 		hooksecurefunc(unspentCount, 'SetText', S.ReplaceIconString)
 	end
 end
