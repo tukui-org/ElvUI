@@ -21,12 +21,22 @@ end
 
 local function HandleRewardButton(box)
 	local container = box.ContentsContainer
-	if container and not container.IsSkinned then
-		container.IsSkinned = true
+	if not container then return end
 
+	local icon = container.Icon
+	if icon then
 		S:HandleIcon(container.Icon)
-		S.ReplaceIconString(container.Price)
-		hooksecurefunc(container.Price, 'SetText', S.ReplaceIconString)
+	end
+
+	local price = container.Price
+	if price then
+		S.ReplaceIconString(price)
+
+		if not price.IsSkinned then
+			price.IsSkinned = true
+
+			hooksecurefunc(price, 'SetText', S.ReplaceIconString)
+		end
 	end
 end
 

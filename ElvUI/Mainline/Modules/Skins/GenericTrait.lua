@@ -16,8 +16,12 @@ function S:Blizzard_GenericTraitUI()
 	GenericTrait:SetTemplate('Transparent')
 	S:HandleCloseButton(GenericTrait.CloseButton)
 
-	S.ReplaceIconString(GenericTrait.Currency.UnspentPointsCount)
-	hooksecurefunc(GenericTrait.Currency.UnspentPointsCount, 'SetText', S.ReplaceIconString)
+	local unspentCount = GenericTrait.Currency.UnspentPointsCount
+	if unspentCount then
+		S.ReplaceIconString(unspentCount)
+
+		hooksecurefunc(unspentCount, 'SetText', S.ReplaceIconString)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_GenericTraitUI')
