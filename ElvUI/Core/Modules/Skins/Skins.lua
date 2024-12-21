@@ -744,6 +744,7 @@ do
 	function S:HandleModelSceneControlButtons(frame)
 		if not frame.IsSkinned then
 			frame.IsSkinned = true
+
 			hooksecurefunc(frame, 'UpdateLayout', UpdateLayout)
 		end
 	end

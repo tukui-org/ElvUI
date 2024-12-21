@@ -55,20 +55,8 @@ function S:Blizzard_StableUI()
 		end
 
 		local petInfo = modelScene.PetInfo
-		if petInfo then
-			if petInfo.Type then
-				hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
-			end
-
-			--[[ this sucks need something better; pushed also broke
-			local editButton = petInfo.NameBox.EditButton
-			if editButton then
-				local icon = editButton.Icon:GetAtlas()
-				S:HandleButton(editButton)
-				editButton.Icon:SetAtlas(icon)
-				editButton.Icon:SetTexCoord(.22, .8, .22, .8)
-			end
-			]]
+		if petInfo and petInfo.Type then
+			hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
 		end
 	end
 
