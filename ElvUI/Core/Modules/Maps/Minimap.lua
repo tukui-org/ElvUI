@@ -625,6 +625,8 @@ end
 function M:Initialize()
 	if E.private.general.minimap.enable then
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+		SetCVar("rotateMinimap", 0) --Impossible to turn off in ElvUI if its on.
+		Minimap:GetParent():SetScale(1) --Another setting that could get set in Blizzard Edit Mode
 	else
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 
