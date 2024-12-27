@@ -800,16 +800,19 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	if initLogin or isReload then
 		E:CheckIncompatible()
+
+		if E.Retail then
+			if E.private.general.minimap.enable then
+				E:SetCVar('rotateMinimap', 0) -- Impossible to turn off in ElvUI if its on
+			end
+		elseif E.db.general.lockCameraDistanceMax then
+			E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax) -- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+		end
 	end
 
 	if not E.MediaUpdated then
 		E:UpdateMedia()
 		E.MediaUpdated = true
-	end
-
-	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
-	if not E.Retail and E.db.general.lockCameraDistanceMax then
-		E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
 	end
 
 	local _, instanceType = GetInstanceInfo()
