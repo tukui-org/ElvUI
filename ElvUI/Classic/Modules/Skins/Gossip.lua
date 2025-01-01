@@ -120,6 +120,12 @@ function S:GossipFrame()
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 
+		-- need to make this better
+		_G.ItemTextMaterialBotLeft:SetAlpha(0)
+		_G.ItemTextMaterialBotRight:SetAlpha(0)
+		_G.ItemTextMaterialTopLeft:SetAlpha(0)
+		_G.ItemTextMaterialTopRight:SetAlpha(0)
+
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 
