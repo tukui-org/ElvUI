@@ -409,7 +409,7 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local role = (E.Retail or E.Cata) and UnitGroupRolesAssigned('player') or 'NONE'
+	local role = E.allowRoles and UnitGroupRolesAssigned('player') or 'NONE'
 	return (role ~= 'NONE' and role) or E.myspecRole or 'NONE'
 end
 
