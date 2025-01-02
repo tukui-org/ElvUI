@@ -71,6 +71,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
+E.allowRoles = E.Retail or E.Cata or E.ClassicAnniv or E.ClassicAnnivHC
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -129,7 +130,7 @@ E.InverseAnchors = {
 -- Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
--- Socket Type info from 10.0.7
+-- Socket Type info from 11.0.7
 E.GemTypeInfo = {
 	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
 	Red				= { r = 1.00, g = 0.47, b = 0.47 },
@@ -145,6 +146,10 @@ E.GemTypeInfo = {
 	Cypher			= { r = 1.00, g = 0.80, b = 0.00 },
 	Tinker			= { r = 1.00, g = 0.47, b = 0.47 },
 	Primordial		= { r = 1.00, g = 0.00, b = 1.00 },
+	Fragrance		= { r = 1.00, g = 1.00, b = 1.00 },
+	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29 },
+	SingingSea		= { r = 0.47, g = 0.67, b = 1.00 },
+	SingingWind		= { r = 1.00, g = 0.47, b = 0.47 },
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.

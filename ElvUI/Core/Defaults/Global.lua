@@ -195,6 +195,7 @@ G.unitframe = {
 			HUNTER = {
 				['19503'] = not E.Retail and 'Scatter Shot' or nil,
 				['2974'] = not E.Retail and 'Wing Clip' or nil,
+				['2973'] = E.Cata and 'Raptor Strike' or nil,
 				['75'] = 'Auto Shot'
 			},
 			MAGE = {

@@ -115,7 +115,6 @@ function S:GossipFrame()
 		if GossipFrame.Background then
 			GossipFrame.Background:Hide()
 		end
-
 	else
 		local pageBG = _G.ItemTextFramePageBg:GetTexture()
 		_G.ItemTextFrame:StripTextures()

@@ -809,21 +809,21 @@ function RU:Initialize()
 				close:SetPoint('TOPRIGHT', utility, 'BOTTOMRIGHT', -x, -y)
 			end
 		end
-	]=], E.Classic and 0 or E:Scale(1), E:Scale(30), E.Classic and 1 or 0))
+	]=], E.allowRoles and E:Scale(1) or 0, E:Scale(30), E.allowRoles and 0 or 1))
 	ShowButton:SetScript('OnDragStart', RU.DragStart_ShowButton)
 	ShowButton:SetScript('OnDragStop', RU.DragStop_ShowButton)
 	E.FrameLocks.RaidUtility_ShowButton = true
 
 	RU:CreateTargetIcons()
 
-	local CloseButton = RU:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'SecureHandlerClickTemplate', PANEL_WIDTH * 0.6, BUTTON_HEIGHT + (E.Classic and 0 or 8), 'TOP', RaidUtilityPanel, 'BOTTOM', 0, 0, _G.CLOSE, nil, nil, nil, RU.OnClick_CloseButton)
+	local CloseButton = RU:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'SecureHandlerClickTemplate', PANEL_WIDTH * 0.6, BUTTON_HEIGHT + (E.allowRoles and 8 or 0), 'TOP', RaidUtilityPanel, 'BOTTOM', 0, 0, _G.CLOSE, nil, nil, nil, RU.OnClick_CloseButton)
 	SecureHandlerSetFrameRef(CloseButton, 'RaidUtility_ShowButton', ShowButton)
 	CloseButton:SetAttribute('_onclick', [=[self:GetParent():Hide(); self:GetFrameRef('RaidUtility_ShowButton'):Show()]=])
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
 	local BUTTON_WIDTH = PANEL_WIDTH - 20
 	local RaidControlButton = RU:CreateUtilButton('RaidUtility_RaidControlButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', RaidUtilityPanel, 'TOPLEFT', 5, -4, L["Raid Menu"], nil, nil, nil, RU.OnClick_RaidControlButton)
-	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * (E.Classic and 1 or 0.5), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK, nil, buttonEvents, RU.OnEvent_ReadyCheckButton, RU.OnClick_ReadyCheckButton)
+	local ReadyCheckButton = RU:CreateUtilButton('RaidUtility_ReadyCheckButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.allowRoles and 0.5 or 1)) + (E.allowRoles and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK, nil, buttonEvents, RU.OnEvent_ReadyCheckButton, RU.OnClick_ReadyCheckButton)
 	RU:CreateUtilButton('RaidUtility_DisbandRaidButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', RaidControlButton, 'TOPRIGHT', 5, 0, L["Disband Group"], nil, nil, nil, RU.OnClick_DisbandRaidButton)
 
 	local MainTankButton = RU:CreateUtilButton('RaidUtility_MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate', BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'BOTTOMLEFT', 0, -5, _G.MAINTANK, nil, buttonEvents, RU.OnEvent_MainTankButton)
@@ -840,13 +840,15 @@ function RU:Initialize()
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, BUTTON_WIDTH * (E.Retail and 0.5 or 0.8), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * ((E.Retail or E.Cata) and 0.8 or 1)) + ((E.Retail or E.Cata) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+	end
+
+	if E.allowRoles then
+		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 5, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
+		RU:CreateRoleIcons()
 	end
 
 	if not E.Classic then
-		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 5, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
-		RU:CreateRoleIcons()
-
 		if _G.CompactRaidFrameManager then
 			-- Reposition/Resize and Reuse the World Marker Button
 			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton

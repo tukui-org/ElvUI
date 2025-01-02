@@ -1008,7 +1008,7 @@ end
 function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 
-	if UF.db.maxAllowedGroups then
+	if E.Retail and UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else

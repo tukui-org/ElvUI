@@ -2801,7 +2801,7 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	if not E.Retail or not CH.db.lfgIcons or not IsInGroup() then return end
+	if not E.allowRoles or not CH.db.lfgIcons or not IsInGroup() then return end
 
 	wipe(lfgRoles)
 
@@ -2999,6 +2999,7 @@ function CH:DefaultSmileys()
 	CH:AddSmiley(':scream:', E:TextureString(E.Media.ChatEmojis.Scream,x))
 	CH:AddSmiley(':scream_cat:', E:TextureString(E.Media.ChatEmojis.ScreamCat,x))
 	CH:AddSmiley(':slight_frown:', E:TextureString(E.Media.ChatEmojis.SlightFrown,x))
+	CH:AddSmiley(':slight_smile:', E:TextureString(E.Media.ChatEmojis.SlightSmile,x))
 	CH:AddSmiley(':smile:', E:TextureString(E.Media.ChatEmojis.Smile,x))
 	CH:AddSmiley(':smirk:', E:TextureString(E.Media.ChatEmojis.Smirk,x))
 	CH:AddSmiley(':sob:', E:TextureString(E.Media.ChatEmojis.Sob,x))
@@ -3033,10 +3034,10 @@ function CH:DefaultSmileys()
 	-- old keys
 	CH:AddSmiley(':%-@', E:TextureString(E.Media.ChatEmojis.Angry,x))
 	CH:AddSmiley(':@', E:TextureString(E.Media.ChatEmojis.Angry,x))
-	CH:AddSmiley(':%-%)', E:TextureString(E.Media.ChatEmojis.Smile,x))
-	CH:AddSmiley(':%)', E:TextureString(E.Media.ChatEmojis.Smile,x))
-	CH:AddSmiley(':D', E:TextureString(E.Media.ChatEmojis.Grin,x))
-	CH:AddSmiley(':%-D', E:TextureString(E.Media.ChatEmojis.Grin,x))
+	CH:AddSmiley(':%-%)', E:TextureString(E.Media.ChatEmojis.SlightSmile,x))
+	CH:AddSmiley(':%)', E:TextureString(E.Media.ChatEmojis.SlightSmile,x))
+	CH:AddSmiley(':D', E:TextureString(E.Media.ChatEmojis.Smile,x))
+	CH:AddSmiley(':%-D', E:TextureString(E.Media.ChatEmojis.Smile,x))
 	CH:AddSmiley(';%-D', E:TextureString(E.Media.ChatEmojis.Grin,x))
 	CH:AddSmiley(';D', E:TextureString(E.Media.ChatEmojis.Grin,x))
 	CH:AddSmiley('=D', E:TextureString(E.Media.ChatEmojis.Grin,x))

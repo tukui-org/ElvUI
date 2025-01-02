@@ -409,7 +409,7 @@ function E:GetThreatStatusColor(status, nothreat)
 end
 
 function E:GetPlayerRole()
-	local role = (E.Retail or E.Cata) and UnitGroupRolesAssigned('player') or 'NONE'
+	local role = E.allowRoles and UnitGroupRolesAssigned('player') or 'NONE'
 	return (role ~= 'NONE' and role) or E.myspecRole or 'NONE'
 end
 
@@ -800,16 +800,21 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	if initLogin or isReload then
 		E:CheckIncompatible()
+
+		-- Force this on when the minimap is enabled
+		if E.private.general.minimap.enable then
+			E:SetCVar('rotateMinimap', 0)
+		end
+
+		-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
+		if not E.Retail and E.db.general.lockCameraDistanceMax then
+			E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
+		end
 	end
 
 	if not E.MediaUpdated then
 		E:UpdateMedia()
 		E.MediaUpdated = true
-	end
-
-	-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
-	if not E.Retail and E.db.general.lockCameraDistanceMax then
-		E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
 	end
 
 	local _, instanceType = GetInstanceInfo()

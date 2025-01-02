@@ -611,6 +611,12 @@ function M:ClusterPoint(_, anchor)
 	end
 end
 
+function M:ContainerScale(scale)
+	if scale ~= 1 then
+		self:SetScale(1)
+	end
+end
+
 function M:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if initLogin or isReload then
 		local LFGIconBorder = _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder or _G.LFGMinimapFrameBorder
@@ -625,6 +631,13 @@ end
 function M:Initialize()
 	if E.private.general.minimap.enable then
 		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+
+		local container = MinimapCluster.MinimapContainer
+		if container then
+			container:SetScale(1) -- Setting that could get set in Blizzard Edit Mode
+
+			hooksecurefunc(container, 'SetScale', M.ContainerScale)
+		end
 	else
 		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
 
