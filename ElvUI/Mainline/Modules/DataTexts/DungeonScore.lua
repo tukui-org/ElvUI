@@ -1,38 +1,51 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local ipairs = ipairs
 local format = format
+
+local UNKNOWN = UNKNOWN
+local HIGHLIGHT_FONT_COLOR = HIGHLIGHT_FONT_COLOR
+local DUNGEON_SCORE_LINK_RATING = DUNGEON_SCORE_LINK_RATING:gsub('%%s', '')
+
+local GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+local GetOverallDungeonScore = C_ChallengeMode.GetOverallDungeonScore
+local GetDungeonScoreRarityColor = C_ChallengeMode.GetDungeonScoreRarityColor
+local GetSpecificDungeonOverallScoreRarityColor = C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor
+local GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local playerName = UnitName('player')
-	local className, classFileName = UnitClass('player')
-	local classColor = C_ClassColor.GetClassColor(classFileName)
-	local dungeonScore = C_ChallengeMode.GetOverallDungeonScore()
-	local summary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary('player')
+	local score = GetOverallDungeonScore()
+	local color = GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
 
-	DT.tooltip:AddLine(classColor:WrapTextInColorCode(playerName), className, nil, nil, nil, true)
-	DT.tooltip:AddLine(className, 1, 1, 1, true)
-	local color = C_ChallengeMode.GetDungeonScoreRarityColor(dungeonScore) or HIGHLIGHT_FONT_COLOR
-	DT.tooltip:AddLine(DUNGEON_SCORE_LINK_RATING:format(color:WrapTextInColorCode(dungeonScore)))
+	local classColor = E:ClassColor(E.myclass)
+	DT.tooltip:AddLine(format('|c%s%s|r', classColor.colorStr, E.myname), E.myLocalizedClass, 1, 1, 1, true)
+	DT.tooltip:AddLine(E.myLocalizedClass, 1, 1, 1, true)
+	DT.tooltip:AddLine(format('%s|c%s%s|r', DUNGEON_SCORE_LINK_RATING, E:RGBToHex(color.r, color.g, color.b, 'ff'), score))
 
-	DT.tooltip:AddLine(' ')
+	local summary = GetPlayerMythicPlusRatingSummary('player')
+	if summary and summary.runs then
+		for i, v in ipairs(summary.runs) do
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+			end
 
-	for _, v in ipairs(summary.runs) do
-		local mapName = C_ChallengeMode.GetMapUIInfo(v.challengeModeID)
-		local finishedSuccess = v.finishedSuccess
-		local mapScore = v.mapScore
-		local bestRunLevel = v.bestRunLevel
-		DT.tooltip:AddDoubleLine(mapName, format("%d (%s%d)", mapScore, finishedSuccess and '+' or '-', bestRunLevel), 1, 1, 1, C_ChallengeMode.GetSpecificDungeonOverallScoreRarityColor(mapScore):GetRGB())
+			local mapName = GetMapUIInfo(v.challengeModeID) or UNKNOWN
+			local scoreColor = GetSpecificDungeonOverallScoreRarityColor(v.mapScore) or HIGHLIGHT_FONT_COLOR
+			DT.tooltip:AddDoubleLine(mapName, format('%d (%s%d)', v.mapScore, v.finishedSuccess and '+' or '-', v.bestRunLevel), 1, 1, 1, scoreColor.r, scoreColor.g, scoreColor.b)
+		end
 	end
 
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
-	local score = C_ChallengeMode.GetOverallDungeonScore()
-	self.text:SetText(C_ChallengeMode.GetDungeonScoreRarityColor(score):WrapTextInColorCode(score))
+	local score = GetOverallDungeonScore()
+	local color = GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
+
+	self.text:SetFormattedText('|c%s%s|r', E:RGBToHex(color.r, color.g, color.b, 'ff'), score)
 end
 
-DT:RegisterDatatext('DungeonScore', nil, {'CHALLENGE_MODE_COMPLETED'}, OnEvent, nil, nil, OnEnter, nil, DUNGEON_SCORE)
+DT:RegisterDatatext('DungeonScore', nil, {'CHALLENGE_MODE_COMPLETED'}, OnEvent, nil, nil, OnEnter, nil, _G.DUNGEON_SCORE)
