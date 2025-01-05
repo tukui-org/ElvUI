@@ -571,10 +571,81 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
+function NP:ToggleNameplates(friendly, enabled)
+    if friendly then
+        SetCVar("nameplateShowFriends", enabled and 1 or 0)
+    else
+        SetCVar("nameplateShowEnemies", enabled and 1 or 0)
+    end
+end
+
+
+function NP:ToggleStackingNameplates(enabled)
+    SetCVar("nameplateMotion", enabled and 1 or 0)
+end
+
+function NP:EnviromentConditionals()
+    local inInstance, instanceType = IsInInstance()
+    local isResting = IsResting()
+	local db = self.db.enviromentConditions
+    -- Handle friendly nameplates
+    if db.friendlyEnabled then
+        if inInstance and instanceType == "party" then
+            self:ToggleNameplates(true, db.friendly.dungeons)
+        elseif inInstance and instanceType == "raid" then
+            self:ToggleNameplates(true, db.friendly.raids)
+        elseif inInstance and instanceType == "arena" then
+            self:ToggleNameplates(true, db.friendly.arena)
+        elseif inInstance and instanceType == "pvp" then
+            self:ToggleNameplates(true, db.friendly.battleground)
+        elseif isResting then
+            self:ToggleNameplates(true, db.friendly.resting)
+        else
+            self:ToggleNameplates(true, db.friendly.world)
+        end
+    end
+
+    -- Handle enemy nameplates
+    if db.enemyEnabled then
+        if inInstance and instanceType == "party" then
+            self:ToggleNameplates(false, db.enemy.dungeons)
+        elseif inInstance and instanceType == "raid" then
+            self:ToggleNameplates(false, db.enemy.raids)
+        elseif inInstance and instanceType == "arena" then
+            self:ToggleNameplates(false, db.enemy.arena)
+        elseif inInstance and instanceType == "pvp" then
+            self:ToggleNameplates(false, db.enemy.battleground)
+        elseif isResting then
+            self:ToggleNameplates(false, db.enemy.resting)
+        else
+            self:ToggleNameplates(false, db.enemy.world)
+        end
+    end
+
+    -- Handle stacking nameplates
+    if db.stackingEnabled then
+        if inInstance and instanceType == "party" then
+            self:ToggleStackingNameplates(db.stackingNameplates.dungeons)
+        elseif inInstance and instanceType == "raid" then
+            self:ToggleStackingNameplates(db.stackingNameplates.raids)
+        elseif inInstance and instanceType == "arena" then
+            self:ToggleStackingNameplates(db.stackingNameplates.arena)
+        elseif inInstance and instanceType == "pvp" then
+            self:ToggleStackingNameplates(db.stackingNameplates.battleground)
+        elseif isResting then
+            self:ToggleStackingNameplates(db.stackingNameplates.resting)
+        else
+            self:ToggleStackingNameplates(db.stackingNameplates.world)
+        end
+    end
+end
+
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
 	end
+
+	self:EnviromentConditionals()
 end
 
 function NP:ToggleStaticPlate()
@@ -1038,6 +1109,8 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent("ZONE_CHANGED_NEW_AREA", "EnviromentConditionals")
+	NP:RegisterEvent("PLAYER_UPDATE_RESTING", "EnviromentConditionals")	
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
 	NP:RegisterEvent('GROUP_LEFT')
