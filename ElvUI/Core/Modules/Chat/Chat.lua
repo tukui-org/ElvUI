@@ -2801,7 +2801,7 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	if not E.Retail or not CH.db.lfgIcons or not IsInGroup() then return end
+	if not E.allowRoles or not CH.db.lfgIcons or not IsInGroup() then return end
 
 	wipe(lfgRoles)
 

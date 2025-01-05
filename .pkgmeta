@@ -50,7 +50,6 @@ plain-copy:
   - ElvUI_Libraries/Core/LibAnim
   - ElvUI_Libraries/Core/LibDeflate
   - ElvUI_Libraries/Core/LibElvUIPlugin-1.0
-  - ElvUI_Libraries/Core/LibRangeCheck-3.0
   - ElvUI_Libraries/Core/LibSimpleSticky
   - ElvUI_Libraries/Core/oUF
   - ElvUI_Libraries/Core/oUF_Plugins

@@ -571,11 +571,11 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		TT:AddTargetInfo(self, unit)
 	end
 
-	if E.Retail then
-		if TT.db.role then
-			TT:AddRoleInfo(self, unit)
-		end
+	if TT.db.role and E.allowRoles then
+		TT:AddRoleInfo(self, unit)
+	end
 
+	if E.Retail then
 		if not InCombatLockdown() then
 			if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount and E.Retail then
 				TT:AddMountInfo(self, unit)

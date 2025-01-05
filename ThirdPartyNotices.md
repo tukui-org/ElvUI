@@ -254,7 +254,7 @@ freely, subject to the following restrictions:
 ```
 MIT License
 
-Copyright (c) 2024 Tukui.org
+Copyright (c) 2025 Tukui.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

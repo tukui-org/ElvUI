@@ -71,6 +71,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
+E.allowRoles = E.Retail or E.Cata or E.ClassicAnniv or E.ClassicAnnivHC
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?

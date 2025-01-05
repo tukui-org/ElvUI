@@ -120,6 +120,11 @@ function S:GossipFrame()
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 
+		_G.ItemTextMaterialBotLeft:SetAlpha(0)
+		_G.ItemTextMaterialBotRight:SetAlpha(0)
+		_G.ItemTextMaterialTopLeft:SetAlpha(0)
+		_G.ItemTextMaterialTopRight:SetAlpha(0)
+
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 
@@ -127,6 +132,11 @@ function S:GossipFrame()
 			GossipFrame.Background:Hide()
 		end
 	else
+		_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialTopLeft:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialTopRight:SetDrawLayer('ARTWORK', 1)
+
 		local spellTex = createParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
 		GreetingPanel.spellTex = spellTex

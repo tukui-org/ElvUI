@@ -560,7 +560,7 @@ function NP:GROUP_ROSTER_UPDATE()
 		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
 			local unit = group..i
 			if UnitExists(unit) then
-				NP.GroupRoles[UnitName(unit)] = not E.Retail and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
+				NP.GroupRoles[UnitName(unit)] = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
 			end
 		end
 	end

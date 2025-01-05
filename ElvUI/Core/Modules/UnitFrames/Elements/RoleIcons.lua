@@ -27,7 +27,7 @@ function UF:GetRoleIcon(frame)
 		local rnd = random(1, 3)
 		return (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
 	else
-		return (E.Retail or E.Cata) and UnitGroupRolesAssigned(frame.unit)
+		return E.allowRoles and UnitGroupRolesAssigned(frame.unit)
 	end
 end
 

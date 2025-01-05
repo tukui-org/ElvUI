@@ -965,7 +965,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Unit Role
-	if E.Retail and trigger.unitRole and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
+	if E.allowRoles and trigger.unitRole and (trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager) then
 		local role = UnitGroupRolesAssigned(frame.unit)
 		if trigger.unitRole[NP.TriggerConditions.roles[role]] then passed = true else return end
 	end
