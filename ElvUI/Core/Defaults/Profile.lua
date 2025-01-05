@@ -973,7 +973,7 @@ P.nameplates = {
 		},		
 	},
 	enviromentConditions = {
-		enemyEnabled = true,
+		enemyEnabled = false,
 		enemy = {
 			dungeons = true,
 			raids = true,
@@ -982,7 +982,7 @@ P.nameplates = {
 			resting = true,
 			world = true,		
 		},
-		friendlyEnabled = true,
+		friendlyEnabled = false,
 		friendly = {
 			dungeons = false,
 			raids = false,
@@ -991,7 +991,7 @@ P.nameplates = {
 			resting = true,
 			world = true,		
 		},
-		stackingEnabled = true,
+		stackingEnabled = false,
 		stackingNameplates = {
 			dungeons = true,
 			raids = true,
