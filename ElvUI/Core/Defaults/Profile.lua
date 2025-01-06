@@ -943,6 +943,35 @@ P.nameplates = {
 			totems = false,
 		},
 	},
+	enviromentConditions = {
+		enemyEnabled = false,
+		enemy = {
+			party = true,
+			raid = true,
+			arena = true,
+			pvp = true,
+			resting = true,
+			world = true,
+		},
+		friendlyEnabled = false,
+		friendly = {
+			party = false,
+			raid = false,
+			arena = false,
+			pvp = false,
+			resting = true,
+			world = true,
+		},
+		stackingEnabled = false,
+		stackingNameplates = {
+			party = true,
+			raid = true,
+			arena = true,
+			pvp = true,
+			resting = false,
+			world = true,
+		},
+	},
 	cutaway = {
 		health = {
 			enabled = false,

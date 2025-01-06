@@ -14,7 +14,9 @@ local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetPartyAssignment = GetPartyAssignment
 local InCombatLockdown = InCombatLockdown
 local IsInGroup = IsInGroup
+local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
+local IsResting = IsResting
 local UIParent = UIParent
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
@@ -147,8 +149,22 @@ function NP:CVarReset()
 	end
 end
 
+function NP:ToggleCVar(cvar, enabled)
+	E:SetCVar(cvar, enabled and 1 or 0)
+end
+
+function NP:CombatCVar(cvar, option, switch)
+	if option == 'TOGGLE_ON' then
+		E:SetCVar(cvar, switch and 1 or 0)
+	elseif option == 'TOGGLE_OFF' then
+		E:SetCVar(cvar, switch and 0 or 1)
+	end
+end
+
 function NP:SetCVars()
-	if NP.db.clampToScreen then
+	local db = NP.db
+
+	if db.clampToScreen then
 		E:SetCVar('nameplateOtherTopInset', 0.08)
 		E:SetCVar('nameplateOtherBottomInset', 0.1)
 
@@ -164,66 +180,56 @@ function NP:SetCVars()
 		end
 	end
 
-	E:SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
-
 	if E.Cata then
-		E:SetCVar('nameplateMaxDistance', NP.db.loadDistance)
+		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
-	E:SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
-	E:SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
-	E:SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-	E:SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.alphaDelay)
-	E:SetCVar('NameplatePersonalHideDelaySeconds', NP.db.units.PLAYER.visibility.hideDelay)
-
 	-- the order of these is important !!
-	E:SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
-	E:SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
-	E:SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
-	E:SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
-	E:SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minus and 1 or 0)
-	E:SetCVar('nameplateShowEnemyPets', NP.db.visibility.enemy.pets and 1 or 0)
-	E:SetCVar('nameplateShowEnemyTotems', NP.db.visibility.enemy.totems and 1 or 0)
-	E:SetCVar('nameplateShowFriendlyMinions', NP.db.visibility.friendly.minions and 1 or 0)
-	E:SetCVar('nameplateShowFriendlyGuardians', NP.db.visibility.friendly.guardians and 1 or 0)
-	E:SetCVar('nameplateShowFriendlyNPCs', NP.db.visibility.friendly.npcs and 1 or 0)
-	E:SetCVar('nameplateShowFriendlyPets', NP.db.visibility.friendly.pets and 1 or 0)
-	E:SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
+	local visibility = db.visibility
+	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
+	NP:ToggleCVar('nameplateShowOnlyNames', visibility.nameplateShowOnlyNames)
+
+	local enemyVisibility = visibility.enemy
+	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
+	NP:ToggleCVar('nameplateShowEnemyGuardians', enemyVisibility.guardians)
+	NP:ToggleCVar('nameplateShowEnemyMinus', enemyVisibility.minus)
+	NP:ToggleCVar('nameplateShowEnemyPets', enemyVisibility.pets)
+	NP:ToggleCVar('nameplateShowEnemyTotems', enemyVisibility.totems)
+
+	local friendlyVisibility = visibility.friendly
+	NP:ToggleCVar('nameplateShowFriendlyMinions', friendlyVisibility.minions)
+	NP:ToggleCVar('nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
+	NP:ToggleCVar('nameplateShowFriendlyNPCs', friendlyVisibility.npcs)
+	NP:ToggleCVar('nameplateShowFriendlyPets', friendlyVisibility.pets)
+	NP:ToggleCVar('nameplateShowFriendlyTotems', friendlyVisibility.totems)
+
+	local playerDB = db.units.PLAYER
+	local playerVisibility = playerDB.visibility
+	E:SetCVar('NameplatePersonalHideDelayAlpha', playerVisibility.alphaDelay)
+	E:SetCVar('NameplatePersonalHideDelaySeconds', playerVisibility.hideDelay)
+
+	NP:ToggleCVar('NameplatePersonalShowAlways', playerVisibility.showAlways)
+	NP:ToggleCVar('NameplatePersonalShowInCombat', playerVisibility.showInCombat)
+	NP:ToggleCVar('NameplatePersonalShowWithTarget', playerVisibility.showWithTarget)
+
+	NP:ToggleCVar('nameplateShowSelf', not (playerDB.useStaticPosition or not playerDB.enable))
 
 	-- Blizzard bug resets them after reload
-	E:SetCVar('nameplateOverlapH', NP.db.overlapH)
-	E:SetCVar('nameplateOverlapV', NP.db.overlapV)
+	E:SetCVar('nameplateOverlapH', db.overlapH)
+	E:SetCVar('nameplateOverlapV', db.overlapV)
 
 	-- 10.1 things
 	E:SetCVar('nameplatePlayerMaxDistance', 60)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowFriends', 1)
-	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowFriends', 0)
-	end
-
-	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowEnemies', 1)
-	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowEnemies', 0)
-	end
+	NP:CombatCVar('nameplateShowFriends', NP.db.showFriendlyCombat, true)
+	NP:CombatCVar('nameplateShowEnemies', NP.db.showEnemyCombat, true)
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowFriends', 0)
-	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowFriends', 1)
-	end
-
-	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowEnemies', 0)
-	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowEnemies', 1)
-	end
+	NP:CombatCVar('nameplateShowFriends', NP.db.showFriendlyCombat)
+	NP:CombatCVar('nameplateShowEnemies', NP.db.showEnemyCombat)
 end
 
 function NP:Style(unit)
@@ -568,13 +574,41 @@ end
 
 function NP:GROUP_LEFT()
 	NP.IsInGroup = IsInRaid() or IsInGroup()
+
 	wipe(NP.GroupRoles)
 end
 
-function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+function NP:EnviromentConditionals()
+	local db = NP.db
+	local env = db and db.enviromentConditions
+
+	local inInstance, instanceType = IsInInstance()
+	local value = (inInstance and instanceType) or (IsResting() and 'resting') or 'world'
+
+	-- Handle friendly nameplates if friendly combat toggle is not set
+	if env.friendlyEnabled and db.showFriendlyCombat == 'DISABLED' then
+		NP:ToggleCVar('nameplateShowFriends', env.friendly[value])
+	end
+
+	-- Handle enemy nameplates if enemy combat toggle is not set
+	if env.enemyEnabled and db.showEnemyCombat == 'DISABLED' then
+		NP:ToggleCVar('nameplateShowEnemies', env.enemy[value])
+	end
+
+	-- Handle stacking nameplates
+	if env.stackingEnabled then
+		NP:ToggleCVar('nameplateMotion', env.stackingNameplates[value])
+	else
+		NP:ToggleCVar('nameplateMotion', db.motionType == 'STACKED')
+	end
+end
+
+function NP:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
 	end
+
+	NP:EnviromentConditionals(event)
 end
 
 function NP:ToggleStaticPlate()
@@ -966,8 +1000,6 @@ function NP:Initialize()
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
-	E:SetCVar('nameplateShowOnlyNames', NP.db.visibility.nameplateShowOnlyNames and 1 or 0)
-
 	NP.Plates = {}
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
@@ -1038,6 +1070,8 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
+	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
 	NP:RegisterEvent('GROUP_LEFT')
