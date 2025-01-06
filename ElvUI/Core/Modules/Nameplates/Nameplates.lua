@@ -153,6 +153,14 @@ function NP:ToggleCVar(cvar, enabled)
 	E:SetCVar(cvar, enabled and 1 or 0)
 end
 
+function NP:CombatCVar(cvar, option, switch)
+	if option == 'TOGGLE_ON' then
+		E:SetCVar(cvar, switch and 1 or 0)
+	elseif option == 'TOGGLE_OFF' then
+		E:SetCVar(cvar, switch and 0 or 1)
+	end
+end
+
 function NP:SetCVars()
 	local db = NP.db
 
@@ -212,14 +220,6 @@ function NP:SetCVars()
 
 	-- 10.1 things
 	E:SetCVar('nameplatePlayerMaxDistance', 60)
-end
-
-function NP:CombatCVar(cvar, option, switch)
-	if option == 'TOGGLE_ON' then
-		E:SetCVar(cvar, switch and 1 or 0)
-	elseif option == 'TOGGLE_OFF' then
-		E:SetCVar(cvar, switch and 0 or 1)
-	end
 end
 
 function NP:PLAYER_REGEN_DISABLED()
