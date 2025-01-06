@@ -214,32 +214,22 @@ function NP:SetCVars()
 	E:SetCVar('nameplatePlayerMaxDistance', 60)
 end
 
-function NP:PLAYER_REGEN_DISABLED()
-	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowFriends', 1)
-	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowFriends', 0)
-	end
-
-	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowEnemies', 1)
-	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowEnemies', 0)
+function NP:CombatToggle(cvar, option, switch)
+	if option == 'TOGGLE_ON' then
+		E:SetCVar(cvar, switch and 1 or 0)
+	elseif option == 'TOGGLE_OFF' then
+		E:SetCVar(cvar, switch and 0 or 1)
 	end
 end
 
-function NP:PLAYER_REGEN_ENABLED()
-	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowFriends', 0)
-	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowFriends', 1)
-	end
+function NP:PLAYER_REGEN_DISABLED()
+	NP:CombatToggle('nameplateShowFriends', NP.db.showFriendlyCombat, true)
+	NP:CombatToggle('nameplateShowEnemies', NP.db.showEnemyCombat, true)
+end
 
-	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		E:SetCVar('nameplateShowEnemies', 0)
-	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		E:SetCVar('nameplateShowEnemies', 1)
-	end
+function NP:PLAYER_REGEN_ENABLED()
+	NP:CombatToggle('nameplateShowFriends', NP.db.showFriendlyCombat)
+	NP:CombatToggle('nameplateShowEnemies', NP.db.showEnemyCombat)
 end
 
 function NP:Style(unit)
@@ -589,20 +579,24 @@ function NP:GROUP_LEFT()
 end
 
 function NP:EnviromentConditionals()
+	local db = NP.db
+	local env = db and db.enviromentConditions
+
 	local inInstance, instanceType = IsInInstance()
 	local value = (inInstance and instanceType) or (IsResting() and 'resting') or 'world'
 
-	local db = NP.db
-	local env = db.enviromentConditions
-	if env.friendlyEnabled then -- Handle friendly nameplates
+	-- Handle friendly nameplates if friendly combat toggle is not set
+	if env.friendlyEnabled and (not db.showFriendlyCombat or db.showFriendlyCombat == 'DISABLED') then
 		NP:ToggleCVar('nameplateShowFriends', env.friendly[value])
 	end
 
-	if env.enemyEnabled then -- Handle enemy nameplates
+	-- Handle enemy nameplates if enemy combat toggle is not set
+	if env.enemyEnabled and (not db.showEnemyCombat or db.showEnemyCombat == 'DISABLED') then
 		NP:ToggleCVar('nameplateShowEnemies', env.enemy[value])
 	end
 
-	if env.stackingEnabled then -- Handle stacking nameplates
+	-- Handle stacking nameplates
+	if env.stackingEnabled then
 		NP:ToggleCVar('nameplateMotion', env.stackingNameplates[value])
 	else
 		NP:ToggleCVar('nameplateMotion', db.motionType == 'STACKED')
