@@ -586,12 +586,12 @@ function NP:EnviromentConditionals()
 	local value = (inInstance and instanceType) or (IsResting() and 'resting') or 'world'
 
 	-- Handle friendly nameplates if friendly combat toggle is not set
-	if env.friendlyEnabled and (not db.showFriendlyCombat or db.showFriendlyCombat == 'DISABLED') then
+	if env.friendlyEnabled and db.showFriendlyCombat == 'DISABLED' then
 		NP:ToggleCVar('nameplateShowFriends', env.friendly[value])
 	end
 
 	-- Handle enemy nameplates if enemy combat toggle is not set
-	if env.enemyEnabled and (not db.showEnemyCombat or db.showEnemyCombat == 'DISABLED') then
+	if env.enemyEnabled and db.showEnemyCombat == 'DISABLED' then
 		NP:ToggleCVar('nameplateShowEnemies', env.enemy[value])
 	end
 
