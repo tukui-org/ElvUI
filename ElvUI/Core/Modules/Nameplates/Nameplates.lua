@@ -214,7 +214,7 @@ function NP:SetCVars()
 	E:SetCVar('nameplatePlayerMaxDistance', 60)
 end
 
-function NP:CombatToggle(cvar, option, switch)
+function NP:CombatCVar(cvar, option, switch)
 	if option == 'TOGGLE_ON' then
 		E:SetCVar(cvar, switch and 1 or 0)
 	elseif option == 'TOGGLE_OFF' then
@@ -223,13 +223,13 @@ function NP:CombatToggle(cvar, option, switch)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	NP:CombatToggle('nameplateShowFriends', NP.db.showFriendlyCombat, true)
-	NP:CombatToggle('nameplateShowEnemies', NP.db.showEnemyCombat, true)
+	NP:CombatCVar('nameplateShowFriends', NP.db.showFriendlyCombat, true)
+	NP:CombatCVar('nameplateShowEnemies', NP.db.showEnemyCombat, true)
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	NP:CombatToggle('nameplateShowFriends', NP.db.showFriendlyCombat)
-	NP:CombatToggle('nameplateShowEnemies', NP.db.showEnemyCombat)
+	NP:CombatCVar('nameplateShowFriends', NP.db.showFriendlyCombat)
+	NP:CombatCVar('nameplateShowEnemies', NP.db.showEnemyCombat)
 end
 
 function NP:Style(unit)
