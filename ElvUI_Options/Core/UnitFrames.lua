@@ -364,7 +364,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
 	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
-	config.args.spellRename = ACH:Toggle(E.NewSign..L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
+	config.args.spellRename = ACH:Toggle(L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
 	config.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
@@ -1050,7 +1050,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if P.unitframe.units[groupName].debuffHighlight then
-		config.args.debuffHighlightEnable = ACH:Toggle(E.NewSign..L["Aura Highlight"], nil, 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[groupName].debuffHighlight.enable = value updateFunc(UF, groupName, numUnits) end)
+		config.args.debuffHighlightEnable = ACH:Toggle(L["Aura Highlight"], nil, 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[groupName].debuffHighlight.enable = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	if groupName == 'arena' then
@@ -1221,8 +1221,8 @@ Colors.healthGroup.args.healthBackdrop.args.health_backdrop_dead = ACH:Color(L["
 
 Colors.healthBreak = ACH:Group(L["Health Breakpoint"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.healthBreak[info[#info]], P.unitframe.colors.healthBreak[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors.healthBreak[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.healthBreak[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors.healthBreak[info[#info]] = value end UF:Update_AllFrames() end)
 Colors.healthBreak.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
-Colors.healthBreak.args.onlyFriendly = ACH:Toggle(E.NewSign..L["Only Friendly"], nil, 2)
-Colors.healthBreak.args.colorBackdrop = ACH:Toggle(E.NewSign..L["Color Backdrop"], nil, 3)
+Colors.healthBreak.args.onlyFriendly = ACH:Toggle(L["Only Friendly"], nil, 2)
+Colors.healthBreak.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 3)
 Colors.healthBreak.args.bad = ACH:Color(L["Bad"], nil, 4)
 Colors.healthBreak.args.good = ACH:Color(L["Good"], nil, 5)
 Colors.healthBreak.args.neutral = ACH:Color(L["Neutral"], nil, 6)
