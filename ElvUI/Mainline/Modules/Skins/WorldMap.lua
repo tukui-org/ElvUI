@@ -249,7 +249,6 @@ function S:WorldMapFrame()
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
 
 	local MapLegend = QuestMapFrame.MapLegend
-	S:HandleButton(MapLegend.BackButton)
 	MapLegend.TitleText:FontTemplate(nil, 16)
 	MapLegend.BorderFrame:SetAlpha(0)
 
@@ -259,7 +258,14 @@ function S:WorldMapFrame()
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 
 	-- 11.1 Stuff
+	local EventsFrame = QuestMapFrame.EventsFrame
+	EventsFrame.TitleText:FontTemplate(nil, 16)
+	EventsFrame.BorderFrame:SetAlpha(0)
 
+	local EventsFrameScroll = EventsFrame.ScrollBox
+	EventsFrameScroll:StripTextures()
+	EventsFrameScroll:SetTemplate()
+	S:HandleTrimScrollBar(EventsFrame.ScrollBar)
 end
 
 S:AddCallback('WorldMapFrame')
