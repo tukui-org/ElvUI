@@ -77,6 +77,7 @@ if E.Retail then
 	toggles.azeriteEssence = L["Azerite Essence"]
 	toggles.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
 	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
+	toggles.campsites = L["Campsite"]
 	toggles.chromieTime = L["Chromie Time Frame"]
 	toggles.contribution = L["Contribution"]
 	toggles.covenantPreview = L["Covenant Preview"]
