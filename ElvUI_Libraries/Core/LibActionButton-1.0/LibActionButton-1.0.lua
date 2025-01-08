@@ -2558,7 +2558,6 @@ if ActionButton_UpdateFlyout then
 	end
 else
 	function UpdateFlyout(self, isButtonDownOverride)
-		self.FlyoutBorderShadow:Hide()
 		if self._state_type == "action" then
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
@@ -2618,8 +2617,6 @@ else
 				return
 			end
 		end
-
-		self.FlyoutArrowContainer:Hide()
 	end
 end
 Generic.UpdateFlyout = UpdateFlyout

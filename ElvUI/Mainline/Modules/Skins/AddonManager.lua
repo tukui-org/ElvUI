@@ -7,7 +7,10 @@ local hooksecurefunc = hooksecurefunc
 
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
-local function HandleButton(entry, addonIndex)
+local function HandleButton(entry, treeNode)
+	local addonIndex = treeNode:GetData().addonIndex
+	local name, title, notes, _, _, security = GetAddOnInfo(addonIndex)
+
 	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
 		S:HandleButton(entry.LoadAddonButton)
@@ -53,10 +56,10 @@ function S:AddonList()
 	S:HandleButton(AddonList.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleDropDownBox(_G.AddonList.Dropdown, 165)
 	S:HandleTrimScrollBar(_G.AddonList.ScrollBar)
-	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:Size(26)
+	S:HandleCheckBox(_G.AddonList.ForceLoad)
+	_G.AddonList.ForceLoad:Size(26)
 
-	hooksecurefunc('AddonList_InitButton', HandleButton)
+	hooksecurefunc('AddonList_InitAddon', HandleButton)
 end
 
 S:AddCallback('AddonList')

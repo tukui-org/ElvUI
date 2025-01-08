@@ -187,10 +187,6 @@ function S:WorldMapFrame()
 	QuestScrollBar:Point('TOPLEFT', _G.QuestDetailFrame, 'TOPRIGHT', 4, -15)
 	QuestScrollBar:Point('BOTTOMLEFT', _G.QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
 
-	local CampaignOverview = QuestMapFrame.CampaignOverview
-	SkinHeaders(CampaignOverview.Header)
-	CampaignOverview.BorderFrame.Border:SetAlpha(0)
-
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
 	end
@@ -261,6 +257,9 @@ function S:WorldMapFrame()
 	MapLegendScroll:StripTextures()
 	MapLegendScroll:SetTemplate()
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
+
+	-- 11.1 Stuff
+
 end
 
 S:AddCallback('WorldMapFrame')
