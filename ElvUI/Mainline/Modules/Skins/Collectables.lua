@@ -310,11 +310,12 @@ local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
-	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton.popup.OpenDynamicFlightSkillTreeButton, 2)
-	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton.popup.DynamicFlightModeButton, 3)
+	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 3)
 
-	_G.MountJournal.ToggleDynamicFlightFlyoutButton.popup.Background:Hide()
+	local Flyout = _G.MountJournal.ToggleDynamicFlightFlyoutButton.popup
+	if Flyout then
+		Flyout.Background:Hide()
+	end
 
 	_G.MountJournal.FilterDropdown:ClearAllPoints()
 	_G.MountJournal.FilterDropdown:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
@@ -764,14 +765,19 @@ local function SkinCampsitesFrame()
 	if IconsFrame then
 		IconsFrame:StripTextures()
 		IconsFrame.NineSlice:SetTemplate('Transparent')
-		IconsFrame.BackgroundTile:SetAlpha(0)
 
-		IconsFrame.Icons.Controls.ShowOwned.Checkbox:Size(24)
-		S:HandleCheckBox(IconsFrame.Icons.Controls.ShowOwned.Checkbox)
-
-		S:HandleNextPrevButton(IconsFrame.Icons.Controls.PagingControls.PrevPageButton, nil, nil, true)
-		S:HandleNextPrevButton(IconsFrame.Icons.Controls.PagingControls.NextPageButton, nil, nil, true)
-
+		local Controls = IconsFrame.Icons and IconsFrame.Icons.Controls
+		if Controls then
+			local CheckBox = Controls and Controls.ShowOwned and Controls.ShowOwned.Checkbox
+			if CheckBox then
+				CheckBox:Size(28)
+				S:HandleCheckBox(CheckBox)
+			end
+			if Controls.PagingControls then
+				S:HandleNextPrevButton(Controls.PagingControls.PrevPageButton, nil, nil, true)
+				S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)
+			end
+		end
 		--[[ TODO 11.1 Make the position pretty
 			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:ClearAllPoints()
 			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:Point('RIGHT', IconsFrame.Icons.Controls.PagingControls.PageText, 'LEFT', 0, 0)
