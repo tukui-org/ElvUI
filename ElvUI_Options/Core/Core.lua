@@ -29,7 +29,7 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
-local GetClassInfo = GetClassInfo
+
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local NUM_CLASSES = #CLASS_SORT_ORDER
 
@@ -68,11 +68,8 @@ C.Values = {
 do
 	C.ClassTable = {}
 
-	for i = 1, NUM_CLASSES do
-		local name, tag = GetClassInfo(i)
-		if tag then
-			C.ClassTable[tag] = name
-		end
+	for _, info in next, E.ClassInfoByID do
+		C.ClassTable[info.classFile] = info.className
 	end
 end
 
