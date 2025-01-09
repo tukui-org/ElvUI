@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 58 -- the real minor version is 117
+local MINOR_VERSION = 58 -- the real minor version is 119
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -24,6 +24,8 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+
+local noop = function() end
 
 local GetSpellInfo
 do	-- backwards compatibility for GetSpellInfo
@@ -284,13 +286,16 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT) -- FlyoutPopupButtonTemplate
 	button:RegisterForDrag("LeftButton", "RightButton")
 	if WoWRetail then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
 	end
+
+	button.popup = CreateFrame('Frame')
+	button.popup.AttachToButton = noop
 
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -1068,8 +1073,9 @@ if UseCustomFlyout then
 	end
 
 	local function FlyoutOnShowHide(self)
-		if self:GetParent() and self:GetParent().UpdateFlyout then
-			self:GetParent():UpdateFlyout()
+		local parent = self:GetParent()
+		if parent and parent.UpdateFlyout then
+			parent:UpdateFlyout()
 		end
 	end
 
@@ -1118,9 +1124,9 @@ if UseCustomFlyout then
 		for flyoutID, info in pairs(lib.FlyoutInfo) do
 			if info.isKnown then
 				local numSlots = 0
-				data = data .. ("LAB_FlyoutInfo[%d] = newtable();LAB_FlyoutInfo[%d].slots = newtable();\n"):format(flyoutID, flyoutID)
+				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("LAB_FlyoutInfo[%d].slots[%d] = newtable();LAB_FlyoutInfo[%d].slots[%d].spellID = %d;LAB_FlyoutInfo[%d].slots[%d].isKnown = %s;\n"):format(flyoutID, slotID, flyoutID, slotID, slotInfo.spellID, flyoutID, slotID, slotInfo.isKnown and "true" or "nil")
+					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
 					numSlots = numSlots + 1
 				end
 
@@ -1136,8 +1142,14 @@ if UseCustomFlyout then
 		if maxNumSlots > #lib.FlyoutButtons then
 			for i = #lib.FlyoutButtons + 1, maxNumSlots do
 				local button = lib:CreateButton(i, "LABFlyoutButton" .. i, lib.flyoutHandler, nil)
+
+				button.popup = CreateFrame('Frame')
+				button.popup.AttachToButton = noop
+
 				button:SetScale(0.8)
 				button:Hide()
+
+				button.isFlyout = true
 
 				-- disable drag and drop
 				button:SetAttribute("LABdisableDragNDrop", true)
@@ -1215,6 +1227,8 @@ if UseCustomFlyout then
 			end
 		end
 
+		lib.callbacks:Fire("OnFlyoutSpells")
+
 		SyncFlyoutInfoToHandler()
 	end
 end
@@ -1267,6 +1281,11 @@ function Generic:OnEnter()
 		FlyoutButtonMixin.OnEnter(self)
 	else
 		UpdateFlyout(self)
+	end
+
+	if not WoWRetail then
+		Generic.OnButtonEvent(self, 'OnEnter')
+		self:RegisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
@@ -2571,6 +2590,8 @@ elseif FlyoutButtonMixin and UseCustomFlyout then
 
 	function UpdateFlyout(self, isButtonDownOverride)
 		self.BorderShadow:Hide()
+		self.Arrow:Hide()
+
 		if self._state_type == "action" then
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
@@ -2583,15 +2604,13 @@ elseif FlyoutButtonMixin and UseCustomFlyout then
 				return
 			end
 		end
-
-		self.Arrow:Hide()
 	end
 else
 	function UpdateFlyout(self, isButtonDownOverride)
-		if not self.FlyoutArrowContainer then return end
 		if self.FlyoutBorderShadow then
 			self.FlyoutBorderShadow:Hide()
 		end
+
 		if self._state_type == "action" then
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
@@ -2645,10 +2664,13 @@ else
 					flyoutArrowTexture:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 				end
 
+				lib.callbacks:Fire("OnFlyoutUpdate", self, flyoutArrowTexture)
+
 				-- return here, otherwise flyout is hidden
 				return
 			end
 		end
+
 		self.FlyoutArrowContainer:Hide()
 	end
 end
