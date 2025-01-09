@@ -10,7 +10,6 @@ local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
 local next, sort, tinsert, tonumber, format = next, sort, tinsert, tonumber, format
 
-local GetClassInfo = GetClassInfo
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetRealZoneText = GetRealZoneText
@@ -346,25 +345,24 @@ StyleFilters.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutr
 
 StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 12, nil, nil, nil, DisabledFilter)
 
-for index = 1, C.Values.NUM_CLASSES do
-	local className, classTag, classID = GetClassInfo(index)
-	if classTag then
-		local coloredName = E:ClassColor(classTag)
-		coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
-		StyleFilters.triggers.args.class.args[classTag] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortedClasses, classTag), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger then triggers.class[classTag] = {} end if value then triggers.class[classTag].enabled = value else triggers.class[classTag] = nil end NP:ConfigureAll() end)
+for classID, info in next, E.ClassInfoByID do
+	local className, classFile = info.className, info.classFile
 
-		local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classTag) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return not tagTrigger or not tagTrigger.enabled end)
-		group.inline = true
+	local coloredName = E:ClassColor(classFile)
+	coloredName = (coloredName and coloredName.colorStr) or 'ff666666'
+	StyleFilters.triggers.args.class.args[classFile] = ACH:Toggle(format('|c%s%s|r', coloredName, className), nil, tIndexOf(sortedClasses, classFile), nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.enabled end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger then triggers.class[classFile] = {} end if value then triggers.class[classFile].enabled = value else triggers.class[classFile] = nil end NP:ConfigureAll() end)
 
-		for k = 1, GetNumSpecializationsForClassID(classID) do
-			local specID, name = GetSpecializationInfoForClassID(classID, k)
+	local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classFile) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return not tagTrigger or not tagTrigger.enabled end)
+	group.inline = true
 
-			local tagID = format('%s%s', classTag, specID)
-			group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classTag] if not tagTrigger.specs then triggers.class[classTag].specs = {} end triggers.class[classTag].specs[specID] = value or nil if not next(triggers.class[classTag].specs) then triggers.class[classTag].specs = nil end NP:ConfigureAll() end)
-		end
+	for k = 1, GetNumSpecializationsForClassID(classID) do
+		local specID, name = GetSpecializationInfoForClassID(classID, k)
 
-		StyleFilters.triggers.args.class.args[format('%s%s', classTag, 'spec')] = group
+		local tagID = format('%s%s', classFile, specID)
+		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
+
+	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group
 end
 
 local EquippedValues = {

@@ -16,7 +16,6 @@ local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
-local GetClassInfo = GetClassInfo
 local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -42,6 +41,7 @@ local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
+local UnitSex = UnitSex
 
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
@@ -55,6 +55,7 @@ local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInf
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
+local GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
 local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
@@ -222,6 +223,26 @@ function E:InverseClassColor(class, usePriestColor, forceCap)
 	return color
 end
 
+do
+	local classByID = {}
+	local classByFile = {}
+
+	E.ClassInfoByID = classByID
+	E.ClassInfoByFile = classByFile
+
+	for index = 1, 15 do -- really blizzard, whats up with this on anniversary?
+		local info = GetClassInfo(index)
+		if info then
+			classByID[info.classID] = info
+			classByFile[info.classFile] = info
+		end
+	end
+
+	function E:GetClassInfo(value) -- classFile or classID
+		return classByFile[value] or classByID[value]
+	end
+end
+
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
@@ -229,6 +250,15 @@ do -- other non-english locales require this
 
 	function E:UnlocalizedClassName(className)
 		return E.UnlocalizedClasses[className]
+	end
+
+	function E:LocalizedClassName(className, unit)
+		local gender = (not unit and E.mygender) or UnitSex(unit)
+		if gender == 3 then
+			return _G.LOCALIZED_CLASS_NAMES_FEMALE[className]
+		else
+			return _G.LOCALIZED_CLASS_NAMES_MALE[className]
+		end
 	end
 end
 
@@ -1178,33 +1208,31 @@ function E:LoadAPI()
 			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
 			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
 
-			local i = 1
-			local className, classFile, classID = GetClassInfo(i)
-			local male, female = MALE[classFile], FEMALE[classFile]
-			while classID do
-				for index, id in next, E.SpecByClass[classFile] do
-					local info = {
+			for _, info in next, E.ClassInfoByID do
+				local male, female = MALE[info.classFile], FEMALE[info.classFile]
+				for index, id in next, E.SpecByClass[info.classFile] do
+					local data = {
 						id = id,
 						index = index,
-						classFile = classFile,
-						className = className,
+						classFile = info.classFile,
+						className = info.className,
 						englishName = E.SpecName[id]
 					}
 
-					E.SpecInfoBySpecID[id] = info
+					E.SpecInfoBySpecID[id] = data
 
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
 
 						if x == 1 then -- SpecInfoBySpecID
-							info.name = name
-							info.desc = desc
-							info.icon = icon
-							info.role = role
+							data.name = name
+							data.desc = desc
+							data.icon = icon
+							data.role = role
 
-							E.SpecInfoBySpecClass[name..' '..className] = info
+							E.SpecInfoBySpecClass[name..' '..info.className] = data
 						else
-							local copy = E:CopyTable({}, info)
+							local copy = E:CopyTable({}, data)
 							copy.name = name
 							copy.desc = desc
 							copy.icon = icon
@@ -1219,10 +1247,6 @@ function E:LoadAPI()
 						end
 					end
 				end
-
-				i = i + 1
-				className, classFile, classID = GetClassInfo(i)
-				male, female = MALE[classFile], FEMALE[classFile]
 			end
 		end
 

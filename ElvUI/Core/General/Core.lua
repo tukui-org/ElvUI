@@ -61,6 +61,7 @@ E.version, E.versionString, E.versionDev, E.versionGit = E:ParseVersionString('E
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
+E.mygender = UnitSex('player')
 E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
