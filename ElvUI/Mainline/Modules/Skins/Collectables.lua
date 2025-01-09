@@ -773,6 +773,7 @@ local function SkinCampsitesFrame()
 				CheckBox:Size(28)
 				S:HandleCheckBox(CheckBox)
 			end
+
 			if Controls.PagingControls then
 				S:HandleNextPrevButton(Controls.PagingControls.PrevPageButton, nil, nil, true)
 				S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)

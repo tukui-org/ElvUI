@@ -8,8 +8,8 @@ local hooksecurefunc = hooksecurefunc
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, treeNode)
-	local addonIndex = treeNode:GetData().addonIndex
-	local name, title, notes, _, _, security = GetAddOnInfo(addonIndex)
+	local data = treeNode:GetData()
+	local _, _, _, _, reason = GetAddOnInfo(data.addonIndex)
 
 	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
@@ -24,14 +24,13 @@ local function HandleButton(entry, treeNode)
 		entry.IsSkinned = true
 	end
 
-	local checkstate = E:GetAddOnEnableState(addonIndex)
+	local checkstate = E:GetAddOnEnableState(data.addonIndex)
 	if checkstate == 2 then
 		entry.Status:SetTextColor(0.7, 0.7, 0.7)
 	else
 		entry.Status:SetTextColor(0.4, 0.4, 0.4)
 	end
 
-	local _, _, _, _, reason = GetAddOnInfo(addonIndex)
 	local checktex = entry.Enabled:GetCheckedTexture()
 	if reason == 'DEP_DISABLED' then
 		checktex:SetVertexColor(0.6, 0.6, 0.6)
