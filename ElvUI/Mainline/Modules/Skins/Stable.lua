@@ -55,8 +55,13 @@ function S:Blizzard_StableUI()
 		end
 
 		local petInfo = modelScene.PetInfo
-		if petInfo and petInfo.Type then
-			hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
+		if petInfo then
+			if petInfo.Type then
+				hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
+			end
+			if petInfo.Specialization then
+				S:HandleDropDownBox(petInfo.Specialization)
+			end
 		end
 	end
 
