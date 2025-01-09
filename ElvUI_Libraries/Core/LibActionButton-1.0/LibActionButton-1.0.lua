@@ -49,7 +49,7 @@ end
 -- local WoWClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
 
 -- Enable custom flyouts for WoW Retail
-local UseCustomFlyout = WoWRetail
+local UseCustomFlyout = WoWRetail or FlyoutButtonMixin
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -284,7 +284,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate, FlyoutPopupButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	if WoWRetail then
 		button:RegisterForClicks("AnyDown", "AnyUp")
@@ -337,6 +337,12 @@ function lib:CreateButton(id, name, header, config)
 	UpdateHotkeys(button)
 
 	button:SetAttribute("LABUseCustomFlyout", UseCustomFlyout)
+
+	-- nil out inherited functions from the flyout mixin, we override these in a metatable
+	if UseCustomFlyout then
+		button.GetPopupDirection = nil
+		button.IsPopupOpen = nil
+	end
 
 	-- initialize events
 	if InitializeEvents then
@@ -1062,9 +1068,8 @@ if UseCustomFlyout then
 	end
 
 	local function FlyoutOnShowHide(self)
-		local parent = self:GetParent()
-		if parent and parent.UpdateFlyout then
-			parent:UpdateFlyout()
+		if self:GetParent() and self:GetParent().UpdateFlyout then
+			self:GetParent():UpdateFlyout()
 		end
 	end
 
@@ -1113,9 +1118,9 @@ if UseCustomFlyout then
 		for flyoutID, info in pairs(lib.FlyoutInfo) do
 			if info.isKnown then
 				local numSlots = 0
-				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
+				data = data .. ("LAB_FlyoutInfo[%d] = newtable();LAB_FlyoutInfo[%d].slots = newtable();\n"):format(flyoutID, flyoutID)
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
+					data = data .. ("LAB_FlyoutInfo[%d].slots[%d] = newtable();LAB_FlyoutInfo[%d].slots[%d].spellID = %d;LAB_FlyoutInfo[%d].slots[%d].isKnown = %s;\n"):format(flyoutID, slotID, flyoutID, slotID, slotInfo.spellID, flyoutID, slotID, slotInfo.isKnown and "true" or "nil")
 					numSlots = numSlots + 1
 				end
 
@@ -1133,8 +1138,6 @@ if UseCustomFlyout then
 				local button = lib:CreateButton(i, "LABFlyoutButton" .. i, lib.flyoutHandler, nil)
 				button:SetScale(0.8)
 				button:Hide()
-
-				button.isFlyout = true
 
 				-- disable drag and drop
 				button:SetAttribute("LABdisableDragNDrop", true)
@@ -1212,8 +1215,6 @@ if UseCustomFlyout then
 			end
 		end
 
-		lib.callbacks:Fire("OnFlyoutSpells")
-
 		SyncFlyoutInfoToHandler()
 	end
 end
@@ -1237,7 +1238,7 @@ local function PickupAny(kind, target, detail, ...)
 	elseif kind == 'petaction' then
 		PickupPetAction(target)
 	elseif kind == 'spell' then
-		if C_Spell.PickupSpell then
+		if C_Spell and C_Spell.PickupSpell then
 			C_Spell.PickupSpell(target)
 		else
 			PickupSpell(target)
@@ -1262,14 +1263,19 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
+	if FlyoutButtonMixin then
+		FlyoutButtonMixin.OnEnter(self)
+	else
+		UpdateFlyout(self)
 	end
 end
 
 function Generic:OnLeave()
-	UpdateFlyout(self)
+	if FlyoutButtonMixin then
+		FlyoutButtonMixin.OnLeave(self)
+	else
+		UpdateFlyout(self)
+	end
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
@@ -1518,7 +1524,7 @@ function OnEvent(frame, event, arg1, ...)
 		if UseCustomFlyout then
 			DiscoverFlyoutSpells()
 		end
-	elseif event == "SPELLS_CHANGED" then
+	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
@@ -1532,10 +1538,6 @@ function OnEvent(frame, event, arg1, ...)
 
 		if AURA_COOLDOWNS_ENABLED then
 			UpdateAuraCooldowns(event)
-		end
-	elseif event == "SPELL_FLYOUT_UPDATE" then
-		if UseCustomFlyout then
-			UpdateFlyoutSpells()
 		end
 	elseif event == "UNIT_INVENTORY_CHANGED" or event == "LEARNED_SPELL_IN_TAB" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
@@ -2558,6 +2560,32 @@ if ActionButton_UpdateFlyout then
 		end
 		self.FlyoutArrow:Hide()
 	end
+elseif FlyoutButtonMixin and UseCustomFlyout then
+	function Generic:GetPopupDirection()
+		return self:GetAttribute("flyoutDirection") or "UP"
+	end
+
+	function Generic:IsPopupOpen()
+		return (lib.flyoutHandler and lib.flyoutHandler:IsShown() and lib.flyoutHandler:GetParent() == self)
+	end
+
+	function UpdateFlyout(self, isButtonDownOverride)
+		self.BorderShadow:Hide()
+		if self._state_type == "action" then
+			-- based on ActionButton_UpdateFlyout in ActionButton.lua
+			local actionType = GetActionInfo(self._state_action)
+			if actionType == "flyout" then
+				self.Arrow:Show()
+				self:UpdateArrowTexture()
+				self:UpdateArrowRotation()
+				self:UpdateArrowPosition()
+				-- return here, otherwise flyout is hidden
+				return
+			end
+		end
+
+		self.Arrow:Hide()
+	end
 else
 	function UpdateFlyout(self, isButtonDownOverride)
 		if not self.FlyoutArrowContainer then return end
@@ -2617,12 +2645,11 @@ else
 					flyoutArrowTexture:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 				end
 
-				lib.callbacks:Fire("OnFlyoutUpdate", self, flyoutArrowTexture)
-
 				-- return here, otherwise flyout is hidden
 				return
 			end
 		end
+		self.FlyoutArrowContainer:Hide()
 	end
 end
 Generic.UpdateFlyout = UpdateFlyout
