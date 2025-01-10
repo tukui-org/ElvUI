@@ -671,7 +671,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Stonevault (Season 1)
+	-- The Stonevault
 		[427329] = List(), -- Void Corruption
 		[435813] = List(), -- Void Empowerment
 		[423572] = List(), -- Void Empowerment
@@ -691,7 +691,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[429999] = List(), -- Flaming Scrap
 		[429545] = List(), -- Censoring Gear
 		[428819] = List(), -- Exhaust Vents
-	-- City of Threads (Season 1)
+	-- City of Threads
 		[434722] = List(), -- Subjugate
 		[439341] = List(), -- Splice
 		[440437] = List(), -- Shadow Shunpo
@@ -727,7 +727,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[446718] = List(), -- Umbral Weave
 		[450055] = List(), -- Gutburst
 		[450783] = List(), -- Perfume Toss
-	-- The Dawnbreaker (Season 1)
+	-- The Dawnbreaker
 		[463428] = List(), -- Lingering Erosion
 		[426736] = List(), -- Shadow Shroud
 		[434096] = List(), -- Sticky Webs
@@ -758,7 +758,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[431494] = List(), -- Black Edge
 		[451115] = List(), -- Terrifying Slam
 		[432448] = List(), -- Stygian Seed
-	-- Ara-Kara, City of Echoes (Season 1)
+	-- Ara-Kara, City of Echoes
 		[461487] = List(), -- Cultivated Poisons
 		[432227] = List(), -- Venom Volley
 		[432119] = List(), -- Faded
@@ -775,83 +775,28 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[436322] = List(), -- Poison Bolt
 		[434083] = List(), -- Ambush
 		[433843] = List(), -- Erupting Webs
-	-- The Rookery (Season 2)
-	-- Priory of the Sacred Flame (Season 2)
-	-- Cinderbrew Meadery (Season 2)
-	-- Darkflame Cleft (Season 2)
+	-- The Rookery
+	-- Priory of the Sacred Flame
+	-- Cinderbrew Meadery
+	-- Darkflame Cleft
+	-- Operation: Floodgate
 	----------------------------------------------------------
-	--------------- The War Within (Season 1) ----------------
+	--------------- The War Within (Season 2) ----------------
 	----------------------------------------------------------
-	-- Mists of Tirna Scithe
-		[325027] = List(), -- Bramble Burst
-		[323043] = List(), -- Bloodletting
-		[322557] = List(), -- Soul Split
-		[331172] = List(), -- Mind Link
-		[322563] = List(), -- Marked Prey
-		[322487] = List(), -- Overgrowth 1
-		[322486] = List(), -- Overgrowth 2
-		[328756] = List(), -- Repulsive Visage
-		[325021] = List(), -- Mistveil Tear
-		[321891] = List(), -- Freeze Tag Fixation
-		[325224] = List(), -- Anima Injection
-		[326092] = List(), -- Debilitating Poison
-		[325418] = List(), -- Volatile Acid
-	-- The Necrotic Wake
-		[321821] = List(), -- Disgusting Guts
-		[323365] = List(), -- Clinging Darkness
-		[338353] = List(), -- Goresplatter
-		[333485] = List(), -- Disease Cloud
-		[338357] = List(), -- Tenderize
-		[328181] = List(), -- Frigid Cold
-		[320170] = List(), -- Necrotic Bolt
-		[323464] = List(), -- Dark Ichor
-		[323198] = List(), -- Dark Exile
-		[343504] = List(), -- Dark Grasp
-		[343556] = List(), -- Morbid Fixation 1
-		[338606] = List(), -- Morbid Fixation 2
-		[324381] = List(), -- Chill Scythe
-		[320573] = List(), -- Shadow Well
-		[333492] = List(), -- Necrotic Ichor
-		[334748] = List(), -- Drain Fluids
-		[333489] = List(), -- Necrotic Breath
-		[320717] = List(), -- Blood Hunger
-	-- Siege of Boralus
-		[257168] = List(), -- Cursed Slash
-		[272588] = List(), -- Rotting Wounds
-		[272571] = List(), -- Choking Waters
-		[274991] = List(), -- Putrid Waters
-		[275835] = List(), -- Stinging Venom Coating
-		[273930] = List(), -- Hindering Cut
-		[257292] = List(), -- Heavy Slash
-		[261428] = List(), -- Hangman's Noose
-		[256897] = List(), -- Clamping Jaws
-		[272874] = List(), -- Trample
-		[273470] = List(), -- Gut Shot
-		[272834] = List(), -- Viscous Slobber
-		[257169] = List(), -- Terrifying Roar
-		[272713] = List(), -- Crushing Slam
-		[257459] = List(), -- On the Hook
-		[463182] = List(), -- Fiery Ricochet
-	-- Grim Batol
-		[449885] = List(), -- Shadow Gale 1
-		[461513] = List(), -- Shadow Gale 2
-		[449474] = List(), -- Molten Spark
-		[456773] = List(), -- Twilight Wind
-		[448953] = List(), -- Rumbling Earth
-		[447268] = List(), -- Skullsplitter
-		[449536] = List(), -- Molten Pool
-		[450095] = List(), -- Curse of Entropy
-		[448057] = List(), -- Abyssal Corruption
-		[451871] = List(), -- Mass Temor
-		[451613] = List(), -- Twilight Flame
-		[451378] = List(), -- Rive
-		[76711] = List(), -- Sear Mind
-		[462220] = List(), -- Blazing Shadowflame
-		[451395] = List(), -- Corrupt
-		[82850] = List(), -- Flaming Fixate
-		[451241] = List(), -- Shadowflame Slash
-		[451965] = List(), -- Molten Wake
-		[451224] = List(), -- Enveloping Shadowflame
+	-- The MOTHERLODE
+	-- Theater of Pain
+	-- Operation Mechagon: Workshop
+	---------------------------------------------------------
+	--------------- Liberation of Undermine -----------------
+	---------------------------------------------------------
+	-- Vexie and the Geargrinders
+	-- Cauldron of Carnage
+	-- Rik Reverb
+	-- Stix Bunkjunker
+	-- Sprocketmonger Lockenstock
+	-- The One-Armed Bandit
+	-- Mug'Zee, Heads of Security
+	-- Chrome King Gallywix
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
@@ -909,7 +854,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Stonevault (Season 1)
+	-- The Stonevault
 		[445541] = List(), -- Activate Ventilation
 		[423228] = List(), -- Crumbling Shell 1
 		[445409] = List(), -- Crumbling Shell 2
@@ -929,7 +874,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[423324] = List(), -- Void Discharge 2
 		[426771] = List(), -- Void Outburst
 		[427315] = List(), -- Void Rift
-	-- City of Threads (Season 1)
+	-- City of Threads
 		[450047] = List(), -- Gorged
 		[439518] = List(), -- Twin Fangs
 		[434829] = List(), -- Vociferous Indoctrination
@@ -941,7 +886,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[445813] = List(), -- Dark Barrage
 		[441395] = List(), -- Dark Pulse
 		[446726] = List(), -- Shadow Shield
-	-- The Dawnbreaker (Season 1)
+	-- The Dawnbreaker
 		[431493] = List(), -- Darkblade
 		[448888] = List(), -- Erosive Spray
 		[426787] = List(), -- Shadowy Decay
@@ -959,7 +904,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[451102] = List(), -- Shadowy Decay
 		[446615] = List(), -- Usher Reinforcements
 		[452502] = List(), -- Dark Fervor
-	-- Ara-Kara, City of Echoes (Season 1)
+	-- Ara-Kara, City of Echoes
 		[431985] = List(), -- Black Blood 1
 		[433656] = List(), -- Black Blood 2
 		[439333] = List(), -- Hunger
@@ -969,32 +914,28 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[434254] = List(), -- Intensity
 		[438494] = List(), -- Alerting Shrill
 		[434793] = List(), -- Resonant Barrage
-	-- The Rookery (Season 2)
-	-- Priory of the Sacred Flame (Season 2)
-	-- Cinderbrew Meadery (Season 2)
-	-- Darkflame Cleft (Season 2)
+	-- The Rookery
+	-- Priory of the Sacred Flame
+	-- Cinderbrew Meadery
+	-- Darkflame Cleft
+	-- Operation: Floodgate
 	----------------------------------------------------------
-	--------------- The War Within (Season 1) ----------------
+	--------------- The War Within (Season 2) ----------------
 	----------------------------------------------------------
-	-- Mists of Tirna Scithe
-		[336499] = List(), -- Guessing Game
-	-- The Necrotic Wake
-		[321754] = List(), -- Icebound Aegis
-		[343558] = List(), -- Morbid Fixation
-		[343470] = List(), -- Boneshatter Shield
-	-- Siege of Boralus
-		[272471] = List(), -- Evasive
-		[256867] = List(), -- Heavy Hitter
-		[268752] = List(), -- Withdraw
-		[275835] = List(), -- Stinging Venom Coating
-		[272888] = List(), -- Ferocity
-		[275826] = List(), -- Bolstering Shout
-	-- Grim Batol
-		[75328] = List(), -- Twilight Shift
-		[449687] = List(), -- Molten Mace
-		[447261] = List(), -- Skullsplitter
-		[450088] = List(), -- Void Infusion
-		[451387] = List(), -- Ascension
+	-- The MOTHERLODE
+	-- Theater of Pain
+	-- Operation Mechagon: Workshop
+	---------------------------------------------------------
+	--------------- Liberation of Undermine -----------------
+	---------------------------------------------------------
+	-- Vexie and the Geargrinders
+	-- Cauldron of Carnage
+	-- Rik Reverb
+	-- Stix Bunkjunker
+	-- Sprocketmonger Lockenstock
+	-- The One-Armed Bandit
+	-- Mug'Zee, Heads of Security
+	-- Chrome King Gallywix
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
