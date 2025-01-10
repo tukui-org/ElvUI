@@ -1208,41 +1208,44 @@ function E:LoadAPI()
 			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
 			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
 
-			for _, info in next, E.ClassInfoByID do
-				local male, female = MALE[info.classFile], FEMALE[info.classFile]
-				for index, id in next, E.SpecByClass[info.classFile] do
-					local data = {
-						id = id,
-						index = index,
-						classFile = info.classFile,
-						className = info.className,
-						englishName = E.SpecName[id]
-					}
+			for classFile, info in next, E.ClassInfoByFile do
+				local male, female = MALE[classFile], FEMALE[classFile]
+				local spec = E.SpecByClass[classFile]
+				if spec then
+					for index, id in next, E.SpecByClass[classFile] do
+						local data = {
+							id = id,
+							index = index,
+							classFile = classFile,
+							className = info.className,
+							englishName = E.SpecName[id]
+						}
 
-					E.SpecInfoBySpecID[id] = data
+						E.SpecInfoBySpecID[id] = data
 
-					for x = 3, 1, -1 do
-						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+						for x = 3, 1, -1 do
+							local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
 
-						if x == 1 then -- SpecInfoBySpecID
-							data.name = name
-							data.desc = desc
-							data.icon = icon
-							data.role = role
+							if x == 1 then -- SpecInfoBySpecID
+								data.name = name
+								data.desc = desc
+								data.icon = icon
+								data.role = role
 
-							E.SpecInfoBySpecClass[name..' '..info.className] = data
-						else
-							local copy = E:CopyTable({}, data)
-							copy.name = name
-							copy.desc = desc
-							copy.icon = icon
-							copy.role = role
+								E.SpecInfoBySpecClass[name..' '..info.className] = data
+							else
+								local copy = E:CopyTable({}, data)
+								copy.name = name
+								copy.desc = desc
+								copy.icon = icon
+								copy.role = role
 
-							local localized = (x == 3 and female) or male
-							copy.className = localized
+								local localized = (x == 3 and female) or male
+								copy.className = localized
 
-							if localized then
-								E.SpecInfoBySpecClass[name..' '..localized] = copy
+								if localized then
+									E.SpecInfoBySpecClass[name..' '..localized] = copy
+								end
 							end
 						end
 					end
