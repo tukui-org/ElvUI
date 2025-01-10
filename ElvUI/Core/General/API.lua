@@ -230,7 +230,9 @@ do
 	E.ClassInfoByID = classByID
 	E.ClassInfoByFile = classByFile
 
-	for index = 1, 15 do -- really blizzard, whats up with this on anniversary?
+	for index = 1, 13 do -- really blizzard, whats up with this?
+		-- 1) _G.GetClassInfo gives SHAMAN for 6 and 7 on anniversary
+		-- 2) 14 is Adventurer on Retail ?
 		local info = GetClassInfo(index)
 		if info then
 			classByID[info.classID] = info
