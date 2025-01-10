@@ -793,6 +793,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Cauldron of Carnage
 	-- Rik Reverb
 	-- Stix Bunkjunker
+		[461536] = List(), -- Rolling Rubbish
+		[1217954] = List(), -- Meltdown
+		[465346] = List(), -- Sorted
 	-- Sprocketmonger Lockenstock
 	-- The One-Armed Bandit
 	-- Mug'Zee, Heads of Security
@@ -932,6 +935,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Cauldron of Carnage
 	-- Rik Reverb
 	-- Stix Bunkjunker
+		[473115] = List(), -- Short Fuse
+		[467117] = List(), -- Overdrive
 	-- Sprocketmonger Lockenstock
 	-- The One-Armed Bandit
 	-- Mug'Zee, Heads of Security
