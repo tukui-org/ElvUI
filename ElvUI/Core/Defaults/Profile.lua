@@ -952,6 +952,7 @@ P.nameplates = {
 			pvp = true,
 			resting = true,
 			world = true,
+			scenario = true,
 		},
 		friendlyEnabled = false,
 		friendly = {
@@ -961,6 +962,7 @@ P.nameplates = {
 			pvp = false,
 			resting = true,
 			world = true,
+			scenario = true,
 		},
 		stackingEnabled = false,
 		stackingNameplates = {
@@ -970,6 +972,7 @@ P.nameplates = {
 			pvp = true,
 			resting = false,
 			world = true,
+			scenario = true,
 		},
 	},
 	cutaway = {

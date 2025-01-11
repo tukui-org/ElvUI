@@ -591,6 +591,7 @@ function NP:EnviromentConditionals()
 	end
 
 	-- Handle enemy nameplates if enemy combat toggle is not set
+	print(env.enemyEnabled, db.showEnemyCombat, value, env.enemy[value])
 	if env.enemyEnabled and db.showEnemyCombat == 'DISABLED' then
 		NP:ToggleCVar('nameplateShowEnemies', env.enemy[value])
 	end
