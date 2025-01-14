@@ -553,16 +553,12 @@ do
 		local colors, changed = E.db.general.classColors
 
 		for classTag, db in next, colors do
-			local color = custom[classTag]
-			if color then
-				E:UpdateClassColor(db)
+			local color, r, g, b = custom[classTag], db.r, db.g, db.b
+			if color and (color.r ~= r or color.g ~= g or color.b ~= b) then
+				color.r, color.g, color.b = r, g, b
+				color.colorStr = E:RGBToHex(r, g, b, 'ff')
 
-				if color.r ~= db.r or color.g ~= db.g or color.b ~= db.b then
-					color.r, color.g, color.b = db.r, db.g, db.b
-					color.colorStr = E:RGBToHex(db.r, db.g, db.b, 'ff')
-
-					changed = true
-				end
+				changed = true
 			end
 		end
 
