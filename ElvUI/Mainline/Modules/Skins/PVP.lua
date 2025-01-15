@@ -61,6 +61,10 @@ function S:Blizzard_PVPUI()
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
 
+	-- Plunderstorm
+	S:HandleButton(_G.PlunderstormFrame.StartQueue)
+	S:HandleButton(_G.PVPQueueFrame.HonorInset.PlunderstormPanel.PlunderstoreButton)
+
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
 	HonorFrame:StripTextures()
