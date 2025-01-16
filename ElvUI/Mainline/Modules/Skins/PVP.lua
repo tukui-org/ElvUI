@@ -47,8 +47,8 @@ function S:Blizzard_PVPUI()
 	end
 
 	local PVPQueueFrame = _G.PVPQueueFrame
-	--PVPQueueFrame.HonorInset:StripTextures()
-	--PVPQueueFrame.HonorInset.Background:Hide()
+	PVPQueueFrame.HonorInset:StripTextures()
+	PVPQueueFrame.HonorInset.Background:Hide()
 
 	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
 	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
