@@ -797,6 +797,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1217954] = List(), -- Meltdown
 		[465346] = List(), -- Sorted
 	-- Sprocketmonger Lockenstock
+		[1218342] = List(), -- Unstable Shrapnel
+		[465917] = List(), -- Gravi-Gunk
 	-- The One-Armed Bandit
 	-- Mug'Zee, Heads of Security
 	-- Chrome King Gallywix
