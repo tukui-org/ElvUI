@@ -803,6 +803,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[471927] = List(), -- Withering Flames
 		[460420] = List(), -- Crushed!
 	-- Mug'Zee, Heads of Security
+		[4664769] = List(), -- Frostshatter Boots
 	-- Chrome King Gallywix
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
@@ -945,6 +946,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- The One-Armed Bandit
 		[472718] = List(), -- Up the Ante
 	-- Mug'Zee, Heads of Security
+		[466385] = List(), -- Moxie
 	-- Chrome King Gallywix
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
