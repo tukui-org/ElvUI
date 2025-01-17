@@ -34,7 +34,7 @@ function S:Blizzard_PVPUI()
 		S:HandleTab(_G['PVPUIFrameTab'..i])
 	end
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		local bu = _G['PVPQueueFrameCategoryButton'..i]
 		bu.Ring:Kill()
 		bu.Background:Kill()
@@ -47,8 +47,7 @@ function S:Blizzard_PVPUI()
 	end
 
 	local PVPQueueFrame = _G.PVPQueueFrame
-	PVPQueueFrame.HonorInset:StripTextures()
-	PVPQueueFrame.HonorInset.Background:Hide()
+	PVPQueueFrame.HonorInset.NineSlice:Hide()
 
 	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
 	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
@@ -60,6 +59,12 @@ function S:Blizzard_PVPUI()
 	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
+
+	-- Plunderstorm
+	local PlunderstormFrame = _G.PlunderstormFrame
+	PlunderstormFrame.Inset:StripTextures()
+	S:HandleButton(PlunderstormFrame.StartQueue)
+	S:HandleButton(_G.PVPQueueFrame.HonorInset.PlunderstormPanel.PlunderstoreButton)
 
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
