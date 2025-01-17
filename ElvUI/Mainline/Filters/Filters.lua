@@ -800,6 +800,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1218342] = List(), -- Unstable Shrapnel
 		[465917] = List(), -- Gravi-Gunk
 	-- The One-Armed Bandit
+		[471927] = List(), -- Withering Flames
+		[460420] = List(), -- Crushed!
 	-- Mug'Zee, Heads of Security
 	-- Chrome King Gallywix
 	---------------------------------------------------------
@@ -941,6 +943,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[467117] = List(), -- Overdrive
 	-- Sprocketmonger Lockenstock
 	-- The One-Armed Bandit
+		[472718] = List(), -- Up the Ante
 	-- Mug'Zee, Heads of Security
 	-- Chrome King Gallywix
 	---------------------------------------------------------
