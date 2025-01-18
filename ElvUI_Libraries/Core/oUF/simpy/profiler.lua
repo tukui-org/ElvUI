@@ -5,6 +5,7 @@ local Private = oUF.Private
 -- ElvUI_CPU knock off by Simpy (STILL UNFINISHED)
 
 local type = type
+local next = next
 local wipe = wipe
 local rawset = rawset
 local unpack = unpack

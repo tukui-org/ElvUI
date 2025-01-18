@@ -18,9 +18,12 @@ local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 local ChatTabInfo = {}
 local function GetChatWindowInfo()
 	wipe(ChatTabInfo)
-	for i = 1, FCF_GetNumActiveChatFrames() do
+
+	local numActive = FCF_GetNumActiveChatFrames() or 0
+	for i = 1, numActive do
 		ChatTabInfo['ChatFrame'..i] = _G['ChatFrame'..i..'Tab']:GetText()
 	end
+
 	return ChatTabInfo
 end
 
