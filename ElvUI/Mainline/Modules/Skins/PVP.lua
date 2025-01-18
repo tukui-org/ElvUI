@@ -36,14 +36,16 @@ function S:Blizzard_PVPUI()
 
 	for i = 1, 4 do
 		local bu = _G['PVPQueueFrameCategoryButton'..i]
-		bu.Ring:Kill()
-		bu.Background:Kill()
-		S:HandleButton(bu)
+		if bu then
+			bu.Ring:Kill()
+			bu.Background:Kill()
+			S:HandleButton(bu)
 
-		bu.Icon:Size(45)
-		bu.Icon:ClearAllPoints()
-		bu.Icon:Point('LEFT', 10, 0)
-		S:HandleIcon(bu.Icon, true)
+			bu.Icon:Size(45)
+			bu.Icon:ClearAllPoints()
+			bu.Icon:Point('LEFT', 10, 0)
+			S:HandleIcon(bu.Icon, true)
+		end
 	end
 
 	local PVPQueueFrame = _G.PVPQueueFrame
@@ -62,9 +64,11 @@ function S:Blizzard_PVPUI()
 
 	-- Plunderstorm
 	local PlunderstormFrame = _G.PlunderstormFrame
-	PlunderstormFrame.Inset:StripTextures()
-	S:HandleButton(PlunderstormFrame.StartQueue)
-	S:HandleButton(_G.PVPQueueFrame.HonorInset.PlunderstormPanel.PlunderstoreButton)
+	if PlunderstormFrame then
+		PlunderstormFrame.Inset:StripTextures()
+		S:HandleButton(PlunderstormFrame.StartQueue)
+		S:HandleButton(_G.PVPQueueFrame.HonorInset.PlunderstormPanel.PlunderstoreButton)
+	end
 
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
