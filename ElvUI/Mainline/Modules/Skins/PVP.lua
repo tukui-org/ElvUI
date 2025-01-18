@@ -49,26 +49,31 @@ function S:Blizzard_PVPUI()
 	end
 
 	local PVPQueueFrame = _G.PVPQueueFrame
-	PVPQueueFrame.HonorInset.NineSlice:Hide()
-
-	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
-	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
-	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
-
-	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
-	SeasonReward:CreateBackdrop()
-	SeasonReward.Icon:SetInside(SeasonReward.backdrop)
-	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
-	SeasonReward.CircleMask:Hide()
-	SeasonReward.Ring:Hide()
+	local HonorInset = PVPQueueFrame.HonorInset
+	HonorInset.NineSlice:Hide()
 
 	-- Plunderstorm
 	local PlunderstormFrame = _G.PlunderstormFrame
 	if PlunderstormFrame then
 		PlunderstormFrame.Inset:StripTextures()
 		S:HandleButton(PlunderstormFrame.StartQueue)
-		S:HandleButton(_G.PVPQueueFrame.HonorInset.PlunderstormPanel.PlunderstoreButton)
 	end
+
+	local PlunderstormPanel = HonorInset.PlunderstormPanel
+	if PlunderstormPanel then
+		S:HandleButton(PlunderstormPanel.PlunderstoreButton)
+	end
+
+	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
+	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
+	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
+
+	local SeasonReward = HonorInset.RatedPanel.SeasonRewardFrame
+	SeasonReward:CreateBackdrop()
+	SeasonReward.Icon:SetInside(SeasonReward.backdrop)
+	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
+	SeasonReward.CircleMask:Hide()
+	SeasonReward.Ring:Hide()
 
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
