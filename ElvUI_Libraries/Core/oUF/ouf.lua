@@ -9,7 +9,7 @@ local Private = Profiler(oUF).Private
 
 local argcheck = Private.argcheck
 local error = Private.error
-local print = Private.print --luacheck: no unused
+local print = Private.print -- luacheck: no unused
 local unitExists = Private.unitExists
 
 local styles, style = {}

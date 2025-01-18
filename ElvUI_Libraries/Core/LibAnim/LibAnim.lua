@@ -1,5 +1,5 @@
 -- LibAnim by Hydra
-local Version = 2.902 -- based on 2.03
+local Version = 2.903 -- based on 2.03
 
 -- Note, deprecated items will be removed next version.
 -- Please update your usage accordingly. (ctrl + f - "Deprecated")
