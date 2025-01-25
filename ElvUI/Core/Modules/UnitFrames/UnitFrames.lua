@@ -2145,7 +2145,7 @@ function UF:Initialize()
 	if E.Retail or E.Cata then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
-		UF:RegisterUnitEvent('UNIT_INVENTORY_CHANGED', 'player')
+		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')
 	end
 
 	UF:DisableBlizzard()
