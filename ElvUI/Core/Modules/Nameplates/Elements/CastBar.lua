@@ -102,10 +102,9 @@ function NP:Castbar_PostCastStart(unit)
 					self.Text:SetText(spellName..' > '..self.curTarget)
 				end
 			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
-				-- local target = self.curTarget or UnitName(unit..'target')
-				local target = UnitName(unit..'target')
+				local target = self.curTarget or UnitName(unit..'target')
 				if target and target ~= '' and target ~= plate.unitName then
-					self.Text:SetText(spellName..' > '..target:sub(1, db.castbar.textAbbreviation))
+					self.Text:SetText(spellName..' > '..target)
 				end
 			end
 		elseif spellRename then

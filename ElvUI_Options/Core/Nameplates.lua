@@ -133,7 +133,6 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.textGroup.args.text = ACH:Group(L["Text Options"], nil, 11)
 	group.args.castGroup.args.textGroup.args.text.args.textXOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	group.args.castGroup.args.textGroup.args.text.args.textYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
-	group.args.castGroup.args.textGroup.args.text.args.textAbbreviation = ACH:Range(L["Text Abbreviation"], L["Set number of characters shown of target's name."], 10, { min = 1, max = 15, step = 1 })
 	group.args.castGroup.args.textGroup.args.text.inline = true
 
 	group.args.castGroup.args.textGroup.args.fontGroup = ACH:Group(L["Font"], nil, 30)
