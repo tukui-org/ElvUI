@@ -698,6 +698,7 @@ local NP_Castbar = {
 	timeYOffset = 0,
 	textYOffset = 0,
 	textXOffset = 0,
+	textAbbreviation = 1,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
 	fontSize = 11,

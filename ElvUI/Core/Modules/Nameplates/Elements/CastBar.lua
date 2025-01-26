@@ -102,9 +102,17 @@ function NP:Castbar_PostCastStart(unit)
 					self.Text:SetText(spellName..' > '..self.curTarget)
 				end
 			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
-				local target = self.curTarget or UnitName(unit..'target')
-				if target and target ~= '' and target ~= plate.unitName then
-					self.Text:SetText(spellName..' > '..target)
+				local target, targetID = UnitName(unit..'target'), unit..'target'
+				local targetGUID = UnitGUID(targetID)
+				if UnitIsPlayer(target) then
+					local data = CH:GetPlayerInfoByGUID(targetGUID)
+					local classColor = NP.PlateGUID[targetGUID]
+					if data and data.classColor then
+						classColor = data.classColor.colorStr
+					end
+					if target and target ~= '' and target ~= plate.unitName then
+						plate.Castbar.Text:SetFormattedText('%s > %s', spellName, classColor and strjoin('', '|c', classColor ..target:sub(1, db.castbar.textAbbreviation)))
+					end
 				end
 			end
 		elseif spellRename then
