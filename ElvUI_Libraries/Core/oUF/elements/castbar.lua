@@ -714,6 +714,10 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
 
+		-- ElvUI block
+		self:UnregisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT)
+		-- end block
+
 		element:SetScript('OnUpdate', nil)
 	end
 end
