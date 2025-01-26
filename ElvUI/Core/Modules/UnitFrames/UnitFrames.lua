@@ -1030,10 +1030,12 @@ do
 
 	local chestSlotItem, legSlotItem -- local cache of the items
 	function UF:UNIT_INVENTORY_CHANGED(_, unit) -- limited to Mages only currently
+		if unit ~= 'player' then return end
+
 		local ChestItem = GetInventoryItemLink('player', ChestSlotID) -- Mage: Regeneration
 		local LegItem = GetInventoryItemLink('player', LegSlotID) -- Mage: Mass Regeneration
 
-		if unit == 'player' and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+		if chestSlotItem ~= ChestItem or legSlotItem ~= LegItem then
 			chestSlotItem = ChestItem
 			legSlotItem = LegItem
 
@@ -2145,7 +2147,7 @@ function UF:Initialize()
 	if E.Retail or E.Cata then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
-		UF:RegisterUnitEvent('UNIT_INVENTORY_CHANGED', 'player')
+		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')
 	end
 
 	UF:DisableBlizzard()

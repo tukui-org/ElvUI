@@ -1,3 +1,22 @@
+### Version 13.82 [ January 25th 2025 ]
+*   Working on something to profile the performance of ElvUI and oUF functions.
+*   Optimized part of the framework and aura filtering for Unitframes and Nameplates.
+*   Range of Unitframes uses a new system; you can now select which spells determine range in options.
+*   Range Tags removed because we no longer use the library that provided the range distancing.
+*   System Datatext uses a new method to track FPS and holding Shift will show Average FPS, along with Lowest and Highest FPS.
+*   Smooth Bar toggles for Top Aura status bars as well as Health, Power, Castbar, Classbar, Aurabars for Unitframe and Nameplates.
+*   Multishot and Aimed Shot cast time added to Castbars (for Classic).
+*   Stone Bulwark added to Whitelist and Turtle Buff filters.
+*   Combat Indicator allowed on raid frames.
+*   Equipment Datatext was broken.
+*   Chat having a silly little pixel at the bottom center should be gone.
+*   Support for CUSTOM_CLASS_COLORS directly, under Blizzard Improvements.
+*   Unitframe option Max Allowed Groups is now Retail only.
+*   Role icon support for Classic Anniversary realms.
+*   Datatext added to track Mythic+ score. (Thanks Rubgrsch)
+*   Nameplates can be toggled by conditions (Instance Type or if Resting) for Friendly, Enemy; this also can override the nameplate stacking setting.
+*   Dual Spec profiles can be enabled for Classic Anniversary realms.
+
 ### Version 13.81 [ November 19th 2024 ]
 *   Blacklisted Auras: Well-Honed Instincts
 *   Unitframe color options added to set Health Breakpoint, only for Friendly units, and Color Backdrop. (Thanks BeeVa)
