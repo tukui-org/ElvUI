@@ -1030,10 +1030,12 @@ do
 
 	local chestSlotItem, legSlotItem -- local cache of the items
 	function UF:UNIT_INVENTORY_CHANGED(_, unit) -- limited to Mages only currently
+		if unit ~= 'player' then return end
+
 		local ChestItem = GetInventoryItemLink('player', ChestSlotID) -- Mage: Regeneration
 		local LegItem = GetInventoryItemLink('player', LegSlotID) -- Mage: Mass Regeneration
 
-		if unit == 'player' and (chestSlotItem ~= ChestItem or legSlotItem ~= LegItem) then
+		if chestSlotItem ~= ChestItem or legSlotItem ~= LegItem then
 			chestSlotItem = ChestItem
 			legSlotItem = LegItem
 
