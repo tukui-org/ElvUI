@@ -1420,7 +1420,7 @@ function CH:PositionChats()
 
 	LO:RepositionChatDataPanels()
 
-	-- dont proceed when chat is disabled
+	-- don't proceed when chat is disabled
 	if not E.private.chat.enable then return end
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
@@ -1444,6 +1444,9 @@ function CH:Panels_ColorUpdate()
 end
 
 function CH:UpdateChatTabColors()
+	-- don't proceed when chat is disabled
+	if not E.private.chat.enable then return end
+
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local tab = CH:GetTab(_G[name])
 		CH:FCFTab_UpdateColors(tab, tab.selected)
