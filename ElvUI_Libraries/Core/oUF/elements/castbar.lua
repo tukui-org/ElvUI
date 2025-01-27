@@ -137,17 +137,21 @@ end
 local function SpecialActive(unit, filter)
 	if not next(specialAuras) then return end
 
-	local index = 1
+	local index, speed = 1
 	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	while name do
-		local speedMod = specialAuras[spellID]
-		if speedMod then
-			return speedMod
+
+		if speed == 0.6 then
+			return speed -- fastest speed
+		else
+			speed = specialAuras[spellID]
 		end
 
 		index = index + 1
 		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	end
+
+	return speed
 end
 -- end block
 
