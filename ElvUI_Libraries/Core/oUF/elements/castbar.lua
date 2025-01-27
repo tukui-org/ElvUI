@@ -131,22 +131,26 @@ if oUF.isClassic then
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
 	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
+	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
 end
 
 local function SpecialActive(unit, filter)
 	if not next(specialAuras) then return end
 
-	local index = 1
+	local index, speed = 1
 	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	while name do
-		local speedMod = specialAuras[spellID]
-		if speedMod then
-			return speedMod
+		if speed == 0.6 then
+			return speed -- fastest speed
+		else -- we have to check the entire table otherwise just to see if a faster one is available
+			speed = specialAuras[spellID]
 		end
 
 		index = index + 1
 		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	end
+
+	return speed
 end
 -- end block
 

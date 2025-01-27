@@ -184,14 +184,14 @@ Cosmetic.cosmeticBottomPanel.inline = true
 Cosmetic.cosmeticBottomPanel.args.bottomPanel = ACH:Toggle(L["Enable"], L["Display a panel across the bottom of the screen. This is for cosmetic only."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value LO:UpdateBottomPanel() end)
 Cosmetic.cosmeticBottomPanel.args.bottomPanelTransparent = ACH:Toggle(L["Transparent"], nil, 2, nil, nil, nil, function() return E.db.general.bottomPanelSettings.transparent end, function(_, value) E.db.general.bottomPanelSettings.transparent = value LO:UpdateBottomPanel() end, function() return not E.db.general.bottomPanel end)
 Cosmetic.cosmeticBottomPanel.args.bottomPanelWidth = ACH:Range(L["Width"], nil, 3, { min = 0, max = ceil(E.screenWidth), step = 1 }, nil, function() return E.db.general.bottomPanelSettings.width end, function(_, value) E.db.general.bottomPanelSettings.width = value LO:UpdateBottomPanel() end, function() return not E.db.general.bottomPanel end)
-Cosmetic.cosmeticBottomPanel.args.bottomPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 128, step = 1 }, nil, function() return E.db.general.bottomPanelSettings.height end, function(_, value) E.db.general.bottomPanelSettings.height = value LO:UpdateBottomPanel() end, function() return not E.db.general.bottomPanel end)
+Cosmetic.cosmeticBottomPanel.args.bottomPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 256, step = 1 }, nil, function() return E.db.general.bottomPanelSettings.height end, function(_, value) E.db.general.bottomPanelSettings.height = value LO:UpdateBottomPanel() end, function() return not E.db.general.bottomPanel end)
 
 Cosmetic.cosmeticTopPanel = ACH:Group(L["Top Panel"], nil, 25)
 Cosmetic.cosmeticTopPanel.inline = true
 Cosmetic.cosmeticTopPanel.args.topPanel = ACH:Toggle(L["Enable"], L["Display a panel across the top of the screen. This is for cosmetic only."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value LO:UpdateTopPanel() end)
 Cosmetic.cosmeticTopPanel.args.topPanelTransparent = ACH:Toggle(L["Transparent"], nil, 2, nil, nil, nil, function() return E.db.general.topPanelSettings.transparent end, function(_, value) E.db.general.topPanelSettings.transparent = value LO:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 Cosmetic.cosmeticTopPanel.args.topPanelWidth = ACH:Range(L["Width"], nil, 3, { min = 0, max = ceil(E.screenWidth), step = 1 }, nil, function() return E.db.general.topPanelSettings.width end, function(_, value) E.db.general.topPanelSettings.width = value LO:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
-Cosmetic.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 128, step = 1 }, nil, function() return E.db.general.topPanelSettings.height end, function(_, value) E.db.general.topPanelSettings.height = value LO:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
+Cosmetic.cosmeticTopPanel.args.topPanelHeight = ACH:Range(L["Height"], nil, 4, { min = 5, max = 256, step = 1 }, nil, function() return E.db.general.topPanelSettings.height end, function(_, value) E.db.general.topPanelSettings.height = value LO:UpdateTopPanel() end, function() return not E.db.general.topPanel end)
 
 Cosmetic.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
 Cosmetic.afkGroup.inline = true
