@@ -133,11 +133,11 @@ if oUF.isClassic then
 	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
 end
 
-local function SpecialActive(frame, filter)
+local function SpecialActive(unit, filter)
 	if not next(specialAuras) then return end
 
 	local index = 1
-	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(frame.unit, index, filter)
+	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	while name do
 		local speedMod = specialAuras[spellID]
 		if speedMod then
@@ -145,7 +145,7 @@ local function SpecialActive(frame, filter)
 		end
 
 		index = index + 1
-		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(frame.unit, index, filter)
+		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
 	end
 end
 -- end block
@@ -272,7 +272,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, 'HELPFUL')
+			local speedMod = SpecialActive(unit, 'HELPFUL')
 			if speedMod then
 				castTime = castTime * speedMod
 			end
