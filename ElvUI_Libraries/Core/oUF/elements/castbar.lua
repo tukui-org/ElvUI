@@ -131,6 +131,7 @@ if oUF.isClassic then
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
 	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
+	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
 end
 
 local function SpecialActive(unit, filter)
