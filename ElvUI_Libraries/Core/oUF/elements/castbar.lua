@@ -115,6 +115,7 @@ local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 -- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
 if oUF.isClassic then
 	specialCast[2643] = 500 -- Multishot R1
@@ -128,6 +129,24 @@ if oUF.isClassic then
 	specialCast[20902] = 3000 -- Aimed Shot R4
 	specialCast[20903] = 3000 -- Aimed Shot R5
 	specialCast[20904] = 3000 -- Aimed Shot R6
+
+	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
+end
+
+local function SpecialActive(unit, filter)
+	if not next(specialAuras) then return end
+
+	local index = 1
+	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
+	while name do
+		local speedMod = specialAuras[spellID]
+		if speedMod then
+			return speedMod
+		end
+
+		index = index + 1
+		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
+	end
 end
 -- end block
 
@@ -251,6 +270,11 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 		if name then
 			if castDuration and castDuration ~= 0 then
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
+			end
+
+			local speedMod = SpecialActive(unit, 'HELPFUL')
+			if speedMod then
+				castTime = castTime * speedMod
 			end
 
 			castID = castGUID
@@ -713,6 +737,10 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
+
+		-- ElvUI block
+		self:UnregisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT)
+		-- end block
 
 		element:SetScript('OnUpdate', nil)
 	end

@@ -1124,7 +1124,7 @@ G.unitframe.ChannelTicks = {
 	[120360]	= 15, -- Barrage
 	[257044]	= 7, -- Rapid Fire
 	-- Monk
-	[113656]	= 5, -- Fists of Fury
+	[113656]	= 4, -- Fists of Fury
 }
 
 -- Spells that chain, second step
