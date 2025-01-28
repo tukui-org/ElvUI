@@ -87,45 +87,49 @@ function S:Blizzard_RaidUI()
 
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			local rp = _G['RaidPullout'..i]
-			if rp and not rp.backdrop then
-				S:HandleFrame(rp, true, nil, 9, -17, -7, 10)
+			local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
+			if backdrop and backdrop.NineSlice then
+				backdrop.NineSlice:SetTemplate('Transparent')
 			end
 		end
 	end)
 
 	local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
 	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
-		local pfName = pullOutFrame:GetName()
-		local pfBName, pfBObj, pfTot
-
+		local frameName = pullOutFrame:GetName()
 		for i = 1, pullOutFrame.numPulloutButtons do
-			pfBName = pfName..'Button'..i
-			pfBObj = _G[pfBName]
-			pfTot = _G[pfBName..'TargetTargetFrame']
+			local name = frameName..'Button'..i
+			local object = _G[name]
+			if object then
+				if not object.backdrop then
+					for _, v in ipairs(bars) do
+						local bar = _G[name..v]
+						if bar then
+							bar:StripTextures()
+							bar:SetStatusBarTexture(E.media.normTex)
+						end
+					end
 
-			if not pfBObj.backdrop then
-				local sBar
+					local manabar = object.manabar
+					if manabar then
+						manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
+					end
 
-				for _, v in ipairs(bars) do
-					sBar = _G[pfBName..v]
-					sBar:StripTextures()
-					sBar:SetStatusBarTexture(E.media.normTex)
+					local target = _G[name..'Target']
+					if target and manabar then
+						target:Point('TOP', manabar, 'BOTTOM', 0, -1)
+					end
+
+					object:CreateBackdrop('Transparent')
+
+					object.backdrop:NudgePoint(nil, -10)
+					object.backdrop:NudgePoint(nil, 1, nil, 2)
 				end
 
-				_G[pfBName..'ManaBar']:Point('TOP', '$parentHealthBar', 'BOTTOM', 0, 0)
-				_G[pfBName..'Target']:Point('TOP', '$parentManaBar', 'BOTTOM', 0, -1)
-
-				pfBObj:CreateBackdrop()
-				pfBObj.backdrop:Point('TOPLEFT', E.PixelMode and 0 or -1, -(E.PixelMode and 10 or 9))
-				pfBObj.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 0 or 1, E.PixelMode and 1 or 0)
-			end
-
-			if not pfTot.backdrop then
-				pfTot:StripTextures()
-				pfTot:CreateBackdrop()
-				pfTot.backdrop:Point('TOPLEFT', E.PixelMode and 10 or 9, -(E.PixelMode and 15 or 14))
-				pfTot.backdrop:Point('BOTTOMRIGHT', -(E.PixelMode and 10 or 9), E.PixelMode and 8 or 7)
+				local targettarget = _G[name..'TargetTargetFrame']
+				if targettarget and targettarget.NineSlice then
+					targettarget.NineSlice:SetTemplate('Transparent')
+				end
 			end
 		end
 	end)
