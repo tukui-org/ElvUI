@@ -454,21 +454,6 @@ function S:FriendsFrame()
 
 	S:HandleButton(_G.GuildControlPopupAcceptButton)
 	S:HandleButton(_G.GuildControlPopupFrameCancelButton)
-
-	-- Raid Frame
-	S:HandleButton(_G.RaidFrameConvertToRaidButton)
-	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
-	S:HandleButton(_G.RaidFrameRaidInfoButton)
-	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
-
-	-- Raid Info Frame
-	_G.RaidInfoFrame:StripTextures(true)
-	_G.RaidInfoFrame:CreateBackdrop('Transparent')
-	_G.RaidInfoFrame:HookScript('OnShow', RaidInfoFrame_OnShow)
-
-	_G.RaidInfoScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
-	S:HandleCloseButton(_G.RaidInfoCloseButton, _G.RaidInfoFrame)
 end
 
 S:AddCallback('FriendsFrame')

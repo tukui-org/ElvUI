@@ -30,6 +30,7 @@
 	<Script file='Merchant.lua'/>
 	<Script file='MirrorTimers.lua'/>
 	<Script file='Misc.lua'/>
+	<Script file='NonRaid.lua'/>
 	<Script file='Petition.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='QuestTimers.lua'/>

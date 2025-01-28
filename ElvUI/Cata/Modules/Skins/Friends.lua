@@ -272,24 +272,6 @@ function S:FriendsFrame()
 	end
 
 	hooksecurefunc('WhoList_Update', UpdateWhoList)
-
-	-- Raid Tab
-	S:HandleButton(_G.RaidFrameRaidInfoButton)
-	S:HandleButton(_G.RaidFrameConvertToRaidButton)
-	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
-
-	-- Raid Info Frame
-	_G.RaidInfoFrame:StripTextures(true)
-	_G.RaidInfoFrame:CreateBackdrop('Transparent')
-	_G.RaidInfoFrame:HookScript('OnShow', RaidInfoFrame_OnShow)
-
-	_G.RaidInfoScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)
-	S:HandleCloseButton(_G.RaidInfoCloseButton, _G.RaidInfoFrame)
-
-	_G.RaidInfoInstanceLabel:SetTemplate()
-	_G.RaidInfoIDLabel:SetTemplate()
-	S:HandleButton(_G.RaidInfoCancelButton)
 end
 
 S:AddCallback('FriendsFrame')
