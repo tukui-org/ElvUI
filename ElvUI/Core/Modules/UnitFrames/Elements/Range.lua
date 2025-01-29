@@ -73,21 +73,14 @@ function UF:UnitSpellRange(unit, spells)
 end
 
 function UF:UnitInSpellsRange(unit, which)
-	local spells, range = list[which]
+	local spells = list[which]
+	local range = (not next(spells) and 1) or UF:UnitSpellRange(unit, spells)
 
-	if next(spells) then -- try to check a spell if any are listed
-		range = UF:UnitSpellRange(unit, spells)
-	end
-
-	if (not range and which == 2) and not InCombatLockdown() then
+	if (not range or range == 1) and which == 2 and not InCombatLockdown() then
 		return CheckInteractDistance(unit, 4) -- friendly check follow interact when not in combat
+	else
+		return (range == nil and 1) or range -- nil: various reason it cant be checked; ie: cant be cast on the unit
 	end
-
-	if range ~= nil then -- various reason it cant be checked; ie: cant be cast on the unit
-		return range
-	end
-
-	return 1 -- no spells checked
 end
 
 function UF:FriendlyInRange(realUnit)
