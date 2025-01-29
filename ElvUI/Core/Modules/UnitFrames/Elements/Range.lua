@@ -79,8 +79,9 @@ function UF:UnitInSpellsRange(unit, which)
 		return range
 	end
 
-	if which == 2 then -- friendly check follow interact when not in combat
-		return not InCombatLockdown() and CheckInteractDistance(unit, 4)
+	-- friendly check follow interact when not in combat
+	if which == 2 and not InCombatLockdown() then
+		return CheckInteractDistance(unit, 4)
 	end
 
 	return 1 -- no spells checked
