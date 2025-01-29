@@ -1,3 +1,12 @@
+### Version 13.83 [ January 29th 2025 ]
+*   Fists of Fury ticks changed to 4 on Castbars.
+*   Roles can be enabled in Tooltip on anniversary realms.
+*   Mages receiving an error RegisterUnitEvent on Classic SoD.
+*   Aimed Shot and Multishot cause Castbar to appear when disabled.
+*   Rapid Fire not adjusting cast time for Aimed Shot and Multishot.
+*   Increased the maximum heights for top and bottom cosmetic panels. (Thanks silverwind)
+*   Chat Tabs being colored when Chat was disabled. (Thanks silverwind)
+
 ### Version 13.82 [ January 25th 2025 ]
 *   Working on something to profile the performance of ElvUI and oUF functions.
 *   Optimized part of the framework and aura filtering for Unitframes and Nameplates.
