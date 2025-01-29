@@ -12,6 +12,8 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
+local CheckInteractDistance = CheckInteractDistance
+local InCombatLockdown = InCombatLockdown
 
 local IsSpellInRange = C_Spell.IsSpellInRange
 local UnitPhaseReason = UnitPhaseReason
@@ -75,6 +77,10 @@ function UF:UnitInSpellsRange(unit, which)
 	local range = next(spells) and UF:UnitSpellRange(unit, spells)
 	if range ~= nil then
 		return range
+	end
+
+	if which == 2 then -- friendly check follow interact when not in combat
+		return not InCombatLockdown() and CheckInteractDistance(unit, 4)
 	end
 
 	return 1 -- no spells checked
