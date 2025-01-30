@@ -16,8 +16,8 @@ function S:RaidInfoFrame()
 	end
 
 	for _, texture in next, {
-		_G.RaidInfoScrollFrameScrollBarBG,
-		_G.RaidInfoScrollFrameScrollBarMiddle,
+		_G.RaidInfoScrollFrameBottom,
+		_G.RaidInfoScrollFrameTop,
 	} do
 		texture:Kill()
 	end
