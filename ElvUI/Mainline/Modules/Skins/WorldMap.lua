@@ -262,10 +262,50 @@ function S:WorldMapFrame()
 	EventsFrame.TitleText:FontTemplate(nil, 16)
 	EventsFrame.BorderFrame:SetAlpha(0)
 
+	--[[
+		TO DO: Fill the inlay with some love
+	]]
+
 	local EventsFrameScroll = EventsFrame.ScrollBox
 	EventsFrameScroll:StripTextures()
 	EventsFrameScroll:SetTemplate()
 	S:HandleTrimScrollBar(EventsFrame.ScrollBar)
+
+	-- New Side Tabs
+	local tabs = {
+		QuestMapFrame.QuestsTab,
+		QuestMapFrame.EventsTab,
+		QuestMapFrame.MapLegendTab
+	}
+
+	for _, tab in pairs(tabs) do
+		tab.Background:SetAlpha(0)
+		tab:Size(34, 44)
+
+		tab:CreateBackdrop()
+		tab.backdrop:Point('TOPLEFT', 2, -2)
+		tab.backdrop:Point('BOTTOMRIGHT', -2, 2)
+
+		tab.SelectedTexture:SetDrawLayer('ARTWORK')
+		tab.SelectedTexture:ClearAllPoints()
+		tab.SelectedTexture:SetAllPoints()
+		tab.SelectedTexture:SetPoint('TOPLEFT', 4, -4)
+		tab.SelectedTexture:SetPoint('BOTTOMRIGHT', -4, 4)
+		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+
+		for _, region in next, {tab:GetRegions()} do
+			if region:IsObjectType('Texture') then
+				if region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+					region:Point('TOPLEFT', 4, -4)
+					region:Point('BOTTOMRIGHT', -4, 4)
+					region:SetColorTexture(1, 1, 1, 0.3)
+				end
+			end
+		end
+	end
+
+	QuestMapFrame.QuestsTab:ClearAllPoints()
+	QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
 end
 
 S:AddCallback('WorldMapFrame')
