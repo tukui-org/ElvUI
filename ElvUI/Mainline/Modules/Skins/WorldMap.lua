@@ -288,7 +288,6 @@ function S:WorldMapFrame()
 
 		tab.SelectedTexture:SetDrawLayer('ARTWORK')
 		tab.SelectedTexture:ClearAllPoints()
-		tab.SelectedTexture:SetAllPoints()
 		tab.SelectedTexture:SetPoint('TOPLEFT', 4, -4)
 		tab.SelectedTexture:SetPoint('BOTTOMRIGHT', -4, 4)
 		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
