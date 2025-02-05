@@ -345,7 +345,12 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	-- end block
 
 	element:SetMinMaxValues(0, element.max)
-	element:SetValue(element.duration)
+
+	if element.SetValue_ then
+		element:SetValue_(element.duration)
+	else
+		element:SetValue(element.duration)
+	end
 
 	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then element.Shield:SetShown(notInterruptible) end
