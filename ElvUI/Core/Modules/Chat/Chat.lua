@@ -405,6 +405,7 @@ do --this can save some main file locals
 			z['Player-6112-028A3A6D']	= ElvGreen -- [Horde] Hunter
 			z['Player-6112-02A2F754']	= ElvGreen -- [Horde] Priest
 			z['Player-6112-02A39E0E']	= ElvGreen -- [Horde] Warlock
+			z['Player-6112-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 			-- Luckyone Seasonal (5827: Living Flame EU)
 			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
 			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin

@@ -4,9 +4,9 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local mod = mod
 local wipe = wipe
 local pcall = pcall
-local floor = floor
 local unpack = unpack
 local tinsert = tinsert
 local infinity = math.huge
@@ -20,18 +20,26 @@ local GameTooltip = GameTooltip
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
-local DAY, HOUR, MINUTE = 86400, 3600, 60
-local function FormatTime(s)
-	if s == infinity then return end
+local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
+local function FormatTime(sec)
+	if sec == infinity then
+		return
+	end
 
-	if s < MINUTE then
-		return '%.1fs', s
-	elseif s < HOUR then
-		return '%dm %ds', s/60%60, s%60
-	elseif s < DAY then
-		return '%dh %dm', s/(60*60), s/60%60
+	if sec < MINUTE then
+		return '%.1fs', sec
+	elseif sec < HOUR then
+		local mins = mod(sec, HOUR) / MINUTE
+		local secs = mod(sec, MINUTE)
+		return '%dm %ds', mins, secs
+	elseif sec < DAY then
+		local hrs = mod(sec, DAY) / HOUR
+		local mins = mod(sec, HOUR) / MINUTE
+		return '%dh %dm', hrs, mins
 	else
-		return '%dd %dh', s/DAY, (s / HOUR) - (floor(s/DAY) * 24)
+		local days = mod(sec, YEAR) / DAY
+		local hrs = mod(sec, DAY) / HOUR
+		return '%dd %dh', days, hrs
 	end
 end
 
@@ -48,13 +56,23 @@ local function onLeave()
 	GameTooltip:Hide()
 end
 
+local function updateValue(bar, start)
+	local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
+
+	if start and bar.SetValue_ then
+		bar:SetValue_(remain / bar.duration)
+	else
+		bar:SetValue(remain / bar.duration)
+	end
+
+	bar.timeText:SetFormattedText(FormatTime(remain))
+end
+
 local function onUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
 
 	if bar.elapsed > 0.01 then
-		local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
-		bar:SetValue(remain / bar.duration)
-		bar.timeText:SetFormattedText(FormatTime(remain))
+		updateValue(bar)
 
 		bar.elapsed = 0
 	end
@@ -140,7 +158,7 @@ local function updateBar(element, bar)
 	end
 end
 
-local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
+local function auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
 	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
 
 	if not name then return end
@@ -178,7 +196,13 @@ local function updateAura(element, unit, index, offset, filter, isDebuff, visibl
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
 	updateBar(element, bar)
-	bar:SetScript('OnUpdate', not bar.noTime and onUpdate or nil)
+
+	if bar.noTime then
+		bar:SetScript('OnUpdate', nil)
+	else
+		updateValue(bar, true)
+		bar:SetScript('OnUpdate', onUpdate)
+	end
 
 	return show and VISIBLE or HIDDEN
 end
@@ -210,7 +234,7 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 	local visible = 0
 	local hidden = 0
 	while(visible < limit) do
-		local result = updateAura(element, unit, index, offset, filter, isDebuff, visible)
+		local result = auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
 		elseif(result == VISIBLE) then
