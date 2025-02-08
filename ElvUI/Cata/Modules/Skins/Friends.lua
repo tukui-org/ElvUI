@@ -39,6 +39,7 @@ local function UpdateFriendsFrame()
 	else
 		_G.FriendsFrameTitleText:Show()
 	end
+	_G.FriendsFrame.TitleText:Hide()
 end
 
 local function AcquireInvitePool(pool)
