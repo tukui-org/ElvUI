@@ -332,13 +332,6 @@ E.PopupDialogs.RESET_PRIVATE_PROFILE_PROMPT = {
 	OnAccept = function() E:ResetPrivateProfile() end,
 }
 
-E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
-	text = L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."],
-	button1 = OKAY,
-	hideOnEscape = false,
-	OnAccept = function() EnableAddOn('Blizzard_CompactRaidFrames'); ReloadUI() end,
-}
-
 E.PopupDialogs.APPLY_FONT_WARNING = {
 	text = L["Are you sure you want to apply this font to all ElvUI elements?"],
 	OnAccept = function() E:GeneralMedia_ApplyToAll() end,

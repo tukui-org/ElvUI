@@ -1652,9 +1652,7 @@ do
 				_G.CompactRaidFrameManager:SetParent(E.HiddenFrame)
 			end
 
-			if not CompactRaidFrameManager_SetSetting then
-				E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
-			else
+			if CompactRaidFrameManager_SetSetting then
 				CompactRaidFrameManager_SetSetting('IsShown', '0')
 			end
 		end
