@@ -95,7 +95,8 @@ G.datatexts = {
 		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
 		Dodge = { decimalLength = 1 },
 		Parry = { decimalLength = 1 },
-		Block = { decimalLength = 1 }
+		Block = { decimalLength = 1 },
+		['Mana Regen'] = { Label = '', NoLabel = false, decimalLength = 1 }
 	},
 	newPanelInfo = {
 		growth = 'HORIZONTAL',
