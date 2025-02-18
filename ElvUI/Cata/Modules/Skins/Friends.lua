@@ -39,6 +39,11 @@ local function UpdateFriendsFrame()
 	else
 		_G.FriendsFrameTitleText:Show()
 	end
+
+	-- this is showing twice atm
+	if _G.FriendsFrame.TitleText then
+		_G.FriendsFrame.TitleText:Hide()
+	end
 end
 
 local function AcquireInvitePool(pool)
@@ -112,7 +117,10 @@ function S:FriendsFrame()
 	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -19, 0)
 	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
-	_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab4, 'TOPRIGHT', -19, 0)
+
+	if _G.FriendsFrameTab5 then
+		_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab4, 'TOPRIGHT', -19, 0)
+	end
 
 	-- Friends List Frame
 	for i = 1, _G.FRIEND_HEADER_TAB_IGNORE do

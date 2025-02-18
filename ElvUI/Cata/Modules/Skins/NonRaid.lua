@@ -35,7 +35,7 @@ function S:RaidInfoFrame()
 	RaidInfoFrame:SetTemplate('Transparent')
 
 	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
-	S:HandleScrollBar(_G.RaidInfoScrollFrame.ScrollBar)
+	S:HandleScrollBar(_G.RaidInfoFrame.ScrollBar)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 
