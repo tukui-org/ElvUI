@@ -13,11 +13,12 @@ local displayString, db = ''
 
 local function OnEvent(self)
 	local baseMR, castingMR = GetManaRegen()
+	local manaRegen = (InCombatLockdown() and castingMR or baseMR) * 5
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, (InCombatLockdown() and castingMR or baseMR) * 5)
+		self.text:SetFormattedText(displayString, manaRegen)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or MANA_REGEN..': ', (InCombatLockdown() and castingMR or baseMR) * 5)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or MANA_REGEN..': ', manaRegen)
 	end
 end
 
