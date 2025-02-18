@@ -93,10 +93,6 @@ local function UpdateWhoList()
 	end
 end
 
-local function RaidInfoFrame_OnShow()
-	_G.RaidInfoFrame:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', 0, 0)
-end
-
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 

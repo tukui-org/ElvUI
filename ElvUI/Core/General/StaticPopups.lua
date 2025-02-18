@@ -22,7 +22,6 @@ local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
 
 local DisableAddOn = C_AddOns.DisableAddOn
-local EnableAddOn = C_AddOns.EnableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT

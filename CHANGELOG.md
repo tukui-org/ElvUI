@@ -1,3 +1,9 @@
+### Version 13.84 [ February 18th 2025 ]
+*   Fallback checking for Range of Unitframes slightly adjusted (should help Hunters and Rogues).
+*   Datatexts Mana Regen and Heal Power have a label option now.
+*   Castbar won't snap (rubberband) when using Smoothing.
+*   Skin errors on Cataclysm.
+
 ### Version 13.83 [ January 29th 2025 ]
 *   Fists of Fury ticks changed to 4 on Castbars.
 *   Roles can be enabled in Tooltip on anniversary realms.
