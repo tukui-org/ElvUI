@@ -840,7 +840,7 @@ function RU:Initialize()
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * ((E.Retail or E.Cata) and 0.8 or 1)) + ((E.Retail or E.Cata) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or E.Cata and 0.8 or 1)) + ((E.Retail or E.Cata) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
 	if E.allowRoles then
@@ -848,31 +848,25 @@ function RU:Initialize()
 		RU:CreateRoleIcons()
 	end
 
-	if not E.Classic then
-		if _G.CompactRaidFrameManager then
-			-- Reposition/Resize and Reuse the World Marker Button
-			local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-			if marker then
-				marker:SetParent(RaidUtilityPanel)
-				marker:ClearAllPoints()
-				marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 4, 0)
-				marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-				marker:HookScript('OnEnter', RU.OnEnter_Button)
-				marker:HookScript('OnLeave', RU.OnLeave_Button)
-				RU:CleanButton(marker)
-				RU.MarkerButton = marker
+	-- Reposition/Resize and Reuse the World Marker Button
+	local marker = E.Cata and _G.CompactRaidFrameManager and _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
+	if marker then
+		marker:SetParent(RaidUtilityPanel)
+		marker:ClearAllPoints()
+		marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 4, 0)
+		marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
+		marker:HookScript('OnEnter', RU.OnEnter_Button)
+		marker:HookScript('OnLeave', RU.OnLeave_Button)
+		RU:CleanButton(marker)
+		RU.MarkerButton = marker
 
-				-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
-				local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-				if readyCheck then
-					readyCheck:ClearAllPoints()
-					readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-					readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-					RU.ReadyCheck = readyCheck
-				end
-			end
-		else
-			E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
+		-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
+		local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
+		if readyCheck then
+			readyCheck:ClearAllPoints()
+			readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
+			readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
+			RU.ReadyCheck = readyCheck
 		end
 	end
 
