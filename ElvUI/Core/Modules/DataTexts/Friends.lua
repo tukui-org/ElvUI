@@ -290,7 +290,7 @@ local function BuildBNTable(total)
 
 	for i = 1, total do
 		local accountInfo = GetFriendAccountInfo(i)
-		local gameInfo = accountInfo.gameAccountInfo
+		local gameInfo = accountInfo and accountInfo.gameAccountInfo
 		if gameInfo and gameInfo.isOnline then
 			local numGameAccounts = GetFriendNumGameAccounts(i)
 			if numGameAccounts and numGameAccounts > 0 then
