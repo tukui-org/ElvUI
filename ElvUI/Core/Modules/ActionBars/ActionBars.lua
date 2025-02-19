@@ -1813,7 +1813,7 @@ function AB:Initialize()
 	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
 	if E.Retail or E.Cata then
-		AB:SetupExtraButton()
+		AB:SetupExtraButtons()
 	end
 
 	if (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then

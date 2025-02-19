@@ -84,12 +84,6 @@ function AB:ExtraButtons_BossAlpha(button)
 	end
 end
 
-function AB:ExtraButtons_BossParent(parent)
-	if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
-		AB:ExtraButtons_Reparent()
-	end
-end
-
 function AB:ExtraButtons_ZoneAlpha()
 	local zoneAlpha = E.db.actionbar.zoneActionButton.alpha
 	_G.ZoneAbilityFrame.Style:SetAlpha(not E.db.actionbar.zoneActionButton.clean and zoneAlpha or 0)
@@ -168,6 +162,12 @@ function AB:ExtraButtons_ZoneScale()
 	end
 end
 
+function AB:ExtraButtons_BossParent(parent)
+	if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+		AB:ExtraButtons_Reparent()
+	end
+end
+
 function AB:ExtraButtons_ZoneParent(parent)
 	if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
 		AB:ExtraButtons_Reparent()
@@ -192,7 +192,7 @@ function AB:ExtraButtons_Reparent()
 	end
 end
 
-function AB:HandleExtraButton()
+function AB:ExtraButtons_SetupBoss()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
 	if not ExtraActionBarFrame then return end
 
@@ -207,7 +207,7 @@ function AB:HandleExtraButton()
 	ExtraActionBarFrame.ignoreInLayout = true
 end
 
-function AB:HandleZoneAbility()
+function AB:ExtraButtons_SetupZone()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 	if not ZoneAbilityFrame then return end
 
@@ -232,7 +232,7 @@ function AB:HandleZoneAbility()
 	end
 end
 
-function AB:HandleExtraAbility()
+function AB:ExtraButtons_SetupAbility()
 	local ExtraAbilityContainer = _G.ExtraAbilityContainer
 	if not ExtraAbilityContainer then return end
 
@@ -252,7 +252,7 @@ end
 
 function AB:CreateExtraHolders()
 	if not ExtraActionBarHolder then
-		ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
+		ExtraActionBarHolder = CreateFrame('Frame', 'ElvUI_ExtraActionBarHolder', E.UIParent)
 		ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
 		E.FrameLocks[ExtraActionBarHolder] = true
 
@@ -260,7 +260,7 @@ function AB:CreateExtraHolders()
 	end
 
 	if not ZoneAbilityHolder then
-		ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
+		ZoneAbilityHolder = CreateFrame('Frame', 'ElvUI_ZoneAbilityHolder', E.UIParent)
 		ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
 		E.FrameLocks[ZoneAbilityHolder] = true
 
@@ -268,20 +268,13 @@ function AB:CreateExtraHolders()
 	end
 end
 
-function AB:SetupExtraButton()
-	AB:CreateExtraHolders()
-
-	if _G.ZoneAbilityFrame then
-		AB:HandleZoneAbility()
-	end
-
-	if _G.ExtraAbilityContainer then
-		AB:HandleExtraAbility()
-	end
-
-	AB:HandleExtraButton()
-	AB:UpdateExtraButtons()
-	AB:ExtraButtons_Reparent()
+function AB:SetupExtraButtons()
+	AB:CreateExtraHolders()			-- make the holders
+	AB:ExtraButtons_Reparent()		-- reparent to the holders (keep before setup)
+	AB:ExtraButtons_SetupBoss()		-- attach boss
+	AB:ExtraButtons_SetupZone()		-- attach zone
+	AB:ExtraButtons_SetupAbility()	-- attach abilities
+	AB:UpdateExtraButtons()			-- update the settings
 end
 
 function AB:UpdateExtraButtons()
