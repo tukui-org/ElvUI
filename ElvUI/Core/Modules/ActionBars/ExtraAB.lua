@@ -5,20 +5,25 @@ local _G = _G
 local pairs = pairs
 local unpack = unpack
 local tinsert = tinsert
+
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
-local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local hooksecurefunc = hooksecurefunc
+
 local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
 
-local ExtraActionBarHolder, ZoneAbilityHolder
-local ExtraButtons = {}
+local extraBtns, extraHooked, ExtraActionBarHolder, ZoneAbilityHolder = {}, {}
 
 function AB:ExtraButtons_BossStyle(frame)
 	local button = frame.button
 	if button and not button.IsSkinned then
 		AB:StyleButton(button, true) -- registers cooldown too
-		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
+
+		-- the cooldown is already fired sometimes?
+		if ActionButton_UpdateCooldown then
+			ActionButton_UpdateCooldown(button)
+		end
 
 		button.icon:SetDrawLayer('ARTWORK', -1)
 		button:SetTemplate()
@@ -28,12 +33,13 @@ function AB:ExtraButtons_BossStyle(frame)
 		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 		button.HotKey:SetText(GetBindingKey(button.commandName))
+
 		AB:FixKeybindText(button)
 		AB:FixKeybindColor(button)
 
 		AB:ExtraButtons_BossAlpha(button)
 
-		tinsert(ExtraButtons, button)
+		tinsert(extraBtns, button)
 
 		button.IsSkinned = true
 	end
@@ -71,10 +77,16 @@ end
 
 function AB:ExtraButtons_BossAlpha(button)
 	local bossAlpha = E.db.actionbar.extraActionButton.alpha
-	button:SetAlpha(bossAlpha)
+	button:SetAlpha(bossAlpha or 1)
 
 	if button.style then
 		button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and bossAlpha or 0)
+	end
+end
+
+function AB:ExtraButtons_BossParent(parent)
+	if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+		AB:ExtraButtons_Reparent()
 	end
 end
 
@@ -102,114 +114,165 @@ function AB:ExtraButtons_OnLeave()
 end
 
 function AB:ExtraButtons_GlobalFade()
-	ExtraActionBarHolder:SetParent(E.db.actionbar.extraActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
-	ZoneAbilityHolder:SetParent(E.db.actionbar.zoneActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	if ExtraActionBarHolder then
+		ExtraActionBarHolder:SetParent(E.db.actionbar.extraActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	end
+
+	if ZoneAbilityHolder then
+		ZoneAbilityHolder:SetParent(E.db.actionbar.zoneActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	end
 end
 
 function AB:ExtraButtons_UpdateAlpha()
 	if not E.private.actionbar.enable then return end
 
-	for _, button in pairs(ExtraButtons) do
+	for _, button in pairs(extraBtns) do
 		AB:ExtraButtons_BossAlpha(button)
 	end
 
-	local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
-	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
-		button:SetAlpha(zoneAlpha)
+	if _G.ZoneAbilityFrame then
+		local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
+		for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
+			button:SetAlpha(zoneAlpha)
+		end
 	end
 end
 
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
-	AB:ExtraButtons_ZoneScale()
+	if _G.ZoneAbilityFrame then
+		AB:ExtraButtons_ZoneScale()
+	end
 
-	local scale = E.db.actionbar.extraActionButton.scale
-	_G.ExtraActionBarFrame:SetScale(scale * E.uiscale)
-	_G.ExtraActionBarFrame:SetIgnoreParentScale(true)
+	if _G.ExtraActionBarFrame then
+		local scale = E.db.actionbar.extraActionButton.scale
+		_G.ExtraActionBarFrame:SetScale(scale * E.uiscale)
+		_G.ExtraActionBarFrame:SetIgnoreParentScale(true)
 
-	local width, height = _G.ExtraActionBarFrame.button:GetSize()
-	ExtraActionBarHolder:SetSize(width * scale, height * scale)
+		local width, height = _G.ExtraActionBarFrame.button:GetSize()
+		ExtraActionBarHolder:SetSize(width * scale, height * scale)
+	end
 end
 
 function AB:ExtraButtons_ZoneScale()
 	if not E.private.actionbar.enable then return end
 
-	local scale = E.db.actionbar.zoneActionButton.scale
-	_G.ZoneAbilityFrame.Style:SetScale(scale)
-	_G.ZoneAbilityFrame.SpellButtonContainer:SetScale(scale)
+	if _G.ZoneAbilityFrame then
+		local scale = E.db.actionbar.zoneActionButton.scale
+		_G.ZoneAbilityFrame.Style:SetScale(scale)
+		_G.ZoneAbilityFrame.SpellButtonContainer:SetScale(scale)
 
-	local width, height = _G.ZoneAbilityFrame.SpellButtonContainer:GetSize()
-	ZoneAbilityHolder:SetSize(width * scale, height * scale)
+		local width, height = _G.ZoneAbilityFrame.SpellButtonContainer:GetSize()
+		ZoneAbilityHolder:SetSize(width * scale, height * scale)
+	end
+end
+
+function AB:ExtraButtons_ZoneParent(parent)
+	if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
+		AB:ExtraButtons_Reparent()
+	end
 end
 
 function AB:ExtraButtons_Reparent()
 	if InCombatLockdown() then
 		AB.NeedsReparentExtraButtons = true
+
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+
 		return
 	end
 
-	_G.ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
-	_G.ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+	if _G.ZoneAbilityFrame then
+		_G.ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	end
+
+	if _G.ExtraActionBarFrame then
+		_G.ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+	end
 end
 
-function AB:SetupExtraButton()
-	local ExtraAbilityContainer = _G.ExtraAbilityContainer
+function AB:HandleExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	if not ExtraActionBarFrame then return end
+
+	if not extraHooked[ExtraActionBarFrame] then
+		hooksecurefunc(ExtraActionBarFrame, 'SetParent', AB.ExtraButtons_BossParent)
+
+		extraHooked[ExtraActionBarFrame] = true
+	end
+
+	ExtraActionBarFrame:ClearAllPoints()
+	ExtraActionBarFrame:SetAllPoints()
+	ExtraActionBarFrame.ignoreInLayout = true
+end
+
+function AB:HandleZoneAbility()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
+	if not ZoneAbilityFrame then return end
 
-	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
-	E.FrameLocks[ExtraActionBarHolder] = true
+	if not extraHooked[ZoneAbilityFrame] then
+		ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
+		ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
+		E.FrameLocks[ZoneAbilityHolder] = true
 
-	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
-	E.FrameLocks[ZoneAbilityHolder] = true
+		E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
 
-	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
-	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+		ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
+		ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+		ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
-	AB:ExtraButtons_Reparent()
+		hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
+		hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
+		hooksecurefunc(ZoneAbilityFrame, 'SetParent', AB.ExtraButtons_ZoneParent)
+
+		extraHooked[ZoneAbilityFrame] = true
+	end
 
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
 
-	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:SetAllPoints()
-	ExtraActionBarFrame.ignoreInLayout = true
-
-	-- try to shutdown the container movement and taints
-	ExtraAbilityContainer:KillEditMode()
-	ExtraAbilityContainer:SetScript('OnShow', nil)
-	ExtraAbilityContainer:SetScript('OnUpdate', nil)
-	ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
-	ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
-
-	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
-	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
-	hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
-
-	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(_, parent)
-		if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
-			AB:ExtraButtons_Reparent()
-		end
-	end)
-	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(_, parent)
-		if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
-			AB:ExtraButtons_Reparent()
-		end
-	end)
-
-	AB:UpdateExtraButtons()
-
-	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
-	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
-
 	-- Spawn the mover before its available.
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
+end
+
+function AB:HandleExtraAbility()
+	local ExtraAbilityContainer = _G.ExtraAbilityContainer
+	if not ExtraAbilityContainer then return end
+
+	if not extraHooked[ExtraAbilityContainer] then
+		ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
+		ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
+		E.FrameLocks[ExtraActionBarHolder] = true
+
+		E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+
+		-- try to shutdown the container movement and taints
+		ExtraAbilityContainer:KillEditMode()
+		ExtraAbilityContainer:SetScript('OnShow', nil)
+		ExtraAbilityContainer:SetScript('OnUpdate', nil)
+		ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
+		ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
+
+		hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
+
+		extraHooked[ExtraAbilityContainer] = true
+	end
+end
+
+function AB:SetupExtraButton()
+	if _G.ZoneAbilityFrame then
+		AB:HandleZoneAbility()
+	end
+
+	if _G.ExtraAbilityContainer then
+		AB:HandleExtraAbility()
+	end
+
+	AB:HandleExtraButton()
+	AB:UpdateExtraButtons()
+	AB:ExtraButtons_Reparent()
 end
 
 function AB:UpdateExtraButtons()
@@ -221,7 +284,7 @@ end
 function AB:UpdateExtraBindings()
 	_G.ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
 
-	for _, button in pairs(ExtraButtons) do
+	for _, button in pairs(extraBtns) do
 		button.HotKey:SetText(GetBindingKey(button.commandName))
 		AB:FixKeybindText(button)
 		AB:FixKeybindColor(button)

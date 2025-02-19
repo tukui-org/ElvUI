@@ -1773,6 +1773,9 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
+
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
 	if E.Retail or E.Cata then
@@ -1809,11 +1812,8 @@ function AB:Initialize()
 
 	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
-	if E.Retail then
+	if E.Retail or E.Cata then
 		AB:SetupExtraButton()
-
-		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
-		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
 	if (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
