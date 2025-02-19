@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox-ElvUI", 30
+local Type, Version = "EditBox-ElvUI", 31
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -93,19 +93,21 @@ local function EditBox_OnEnterPressed(frame)
 end
 
 local function EditBox_OnReceiveDrag(frame)
-	local self = frame.obj
-	local type, id, info = GetCursorInfo()
-	local name
+	local self, name = frame.obj
+	local type, id, info, spellID = GetCursorInfo()
+
 	if type == "item" then
 		name = info
 	elseif type == "spell" then
-		name = GetSpellInfo(id, info)
+		name = GetSpellInfo(spellID, info)
 	elseif type == "macro" then
 		name = GetMacroInfo(id)
 	end
+
 	if name then
-		self:SetText(name)
-		self:Fire("OnEnterPressed", name)
+		local text = (self.preferSpellID and spellID and tostring(spellID)) or name
+		self:SetText(text)
+		self:Fire("OnEnterPressed", text)
 		ClearCursor()
 		HideButton(self)
 		AceGUI:ClearFocus()
