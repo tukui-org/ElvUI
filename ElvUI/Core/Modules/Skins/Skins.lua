@@ -241,15 +241,17 @@ function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
 	local name = frame and frame.GetName and frame:GetName()
 
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
-	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
+	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
+	local portraitFrameAlt = frame.portrait  -- blizzard uses the same global name on two frames
 
 	if not noStrip then
 		frame:StripTextures()
 
 		if portraitFrame then portraitFrame:SetAlpha(0) end
 		if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
+		if portraitFrameAlt then portraitFrameAlt:SetAlpha(0) end
 		if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
 
 		if insetFrame then
