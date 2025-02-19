@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 MultiLineEditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "MultiLineEditBox-ElvUI", 34
+local Type, Version = "MultiLineEditBox-ElvUI", 35
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -116,20 +116,24 @@ local function OnMouseUp(self)                                                  
 end
 
 local function OnReceiveDrag(self)                                               -- EditBox / ScrollFrame
-	local type, id, info = GetCursorInfo()
+	local type, _, info, spellID = GetCursorInfo()
 	if type == "spell" then
-		info = GetSpellInfo(id, info)
+		info = GetSpellInfo(spellID, info)
 	elseif type ~= "item" then
 		return
 	end
+
 	ClearCursor()
 	self = self.obj
+
 	local editBox = self.editBox
 	if not editBox:HasFocus() then
 		editBox:SetFocus()
 		editBox:SetCursorPosition(editBox:GetNumLetters())
 	end
-	editBox:Insert(info)
+
+	local text = (self.preferSpellID and spellID and tostring(spellID)) or info
+	editBox:Insert(text)
 	self.button:Enable()
 end
 

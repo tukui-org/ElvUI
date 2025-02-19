@@ -1538,7 +1538,7 @@ function E:UpdateActionBars(skipCallback)
 	ActionBars:UpdateMicroButtons()
 	ActionBars:UpdatePetCooldownSettings()
 
-	if E.Retail then
+	if E.Retail or E.Cata then
 		ActionBars:UpdateExtraButtons()
 	end
 

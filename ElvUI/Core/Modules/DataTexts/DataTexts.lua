@@ -12,10 +12,9 @@ local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, s
 local tostring, strfind, strsplit = tostring, strfind, strsplit
 local hooksecurefunc = hooksecurefunc
 
+local GetCurrencyListInfo = GetCurrencyListInfo
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
-local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local InCombatLockdown = InCombatLockdown
@@ -32,14 +31,14 @@ local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
-
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
-local BNInviteFriend = BNInviteFriend
-local BNRequestInviteFriend = BNRequestInviteFriend
 local InviteUnit = C_PartyInfo.InviteUnit
+
 local GetDisplayedInviteType = GetDisplayedInviteType
-local SetItemRef = SetItemRef
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
+local BNRequestInviteFriend = BNRequestInviteFriend
+local BNInviteFriend = BNInviteFriend
+local SetItemRef = SetItemRef
 
 local MISCELLANEOUS = MISCELLANEOUS
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
@@ -869,11 +868,7 @@ function DT:CurrencyListInfo(index)
 end
 
 function DT:CurrencyInfo(id)
-	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
-
-	if E.Cata then
-		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(id)
-	end
+	local info = C_CurrencyInfo_GetCurrencyInfo(id) or {}
 
 	return info, info and info.name, format(iconString, info and info.iconFileID or '136012')
 end

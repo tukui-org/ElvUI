@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 90 -- based off 87
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 91 -- based off 87
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -1237,6 +1237,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:DisableButton(true)
 					end
 
+					control.preferSpellID = v.preferSpellID
 					control.textChanged = v.textChanged
 					control.focusSelect = v.focusSelect
 					-- End ElvUI block

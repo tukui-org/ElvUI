@@ -252,6 +252,7 @@ StyleFilters.triggers.args.casting.args.removeSpell = ACH:Select(L["Remove Spell
 StyleFilters.triggers.args.casting.args.notSpell = ACH:Toggle(L["Not Spell"], L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."], 4)
 StyleFilters.triggers.args.casting.args.description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10)
 StyleFilters.triggers.args.casting.args.description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11)
+StyleFilters.triggers.args.casting.args.addSpell.preferSpellID = true
 
 StyleFilters.triggers.args.casting.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.casting.spells and triggers.casting.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.casting.spells then triggers.casting.spells = {} end triggers.casting.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFilters.triggers.args.casting.args.spells.inline = true
@@ -264,6 +265,7 @@ StyleFilters.triggers.args.known.args.types.args.playerSpell = ACH:Toggle(L["Pla
 
 StyleFilters.triggers.args.known.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.known.spells[value] = true UpdateFilterList('known', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
 StyleFilters.triggers.args.known.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.known.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.known.spells[value] = nil UpdateFilterList('known', nil, value) NP:ConfigureAll() end)
+StyleFilters.triggers.args.known.args.addSpell.preferSpellID = true
 
 StyleFilters.triggers.args.known.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.known.spells and triggers.known.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.known.spells then triggers.known.spells = {} end triggers.known.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFilters.triggers.args.known.args.spells.inline = true
@@ -480,6 +482,7 @@ do
 		option.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterList(auraType, nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
 		option.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil UpdateFilterList(auraType, nil, value) end)
 		option.changeList.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."], 3, { min = 1, max = 250, softMax = 100, step = 1 }, nil, function() return stackThreshold or 1 end, function(_, value) stackThreshold = (value > 1 and value) or nil end)
+		option.changeList.args.addSpell.preferSpellID = true
 
 		option.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers[auraType].names and triggers[auraType].names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers[auraType].names[info[#info]] = value NP:ConfigureAll() end, nil, true)
 		option.names.inline = true
@@ -495,6 +498,8 @@ StyleFilters.triggers.args.cooldowns = ACH:Group(L["Cooldowns"], nil, 23, nil, n
 StyleFilters.triggers.args.cooldowns.args.addCooldown = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = 'ONCD' UpdateFilterList('cooldowns', nil, value, true) NP:ConfigureAll() end, nil, nil, validateString)
 StyleFilters.triggers.args.cooldowns.args.removeCooldown = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local values = {} local triggers = GetFilter(true) for item in next, triggers.cooldowns.names do values[item] = item end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.names[value] = nil UpdateFilterList('cooldowns', nil, value) NP:ConfigureAll() end)
 StyleFilters.triggers.args.cooldowns.args.mustHaveAll = ACH:Toggle(L["Require All"], L["If enabled then it will require all cooldowns to activate the filter. Otherwise it will only require any one of the cooldowns to activate it."], 3, nil, nil, nil, function() local triggers = GetFilter(true) return triggers.cooldowns and triggers.cooldowns.mustHaveAll end, function(_, value) local triggers = GetFilter(true) triggers.cooldowns.mustHaveAll = value NP:ConfigureAll() end, DisabledFilter)
+StyleFilters.triggers.args.cooldowns.args.addCooldown.preferSpellID = true
+
 StyleFilters.triggers.args.cooldowns.args.names = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.cooldowns.names and triggers.cooldowns.names[info[#info]] end, function(info, value) local triggers = GetFilter(true) triggers.cooldowns.names[info[#info]] = value NP:ConfigureAll() end)
 StyleFilters.triggers.args.cooldowns.args.names.inline = true
 
