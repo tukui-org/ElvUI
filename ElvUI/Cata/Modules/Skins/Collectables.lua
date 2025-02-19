@@ -287,6 +287,12 @@ local function SkinPetFrame()
 	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
+	_G.PetJournalPetCard:StripTextures()
+	_G.PetJournalPetCard.ShadowOverlay:StripTextures()
+
+	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateLeftButton)
+	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateRightButton)
+
 	_G.PetJournalPetCardPetInfo:CreateBackdrop()
 	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfo.backdrop:SetOutside(_G.PetJournalPetCardPetInfoIcon)
