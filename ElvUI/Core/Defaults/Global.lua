@@ -97,7 +97,8 @@ G.datatexts = {
 		Parry = { decimalLength = 1 },
 		Block = { decimalLength = 1 },
 		['Mana Regen'] = { Label = '', NoLabel = false, decimalLength = 1 },
-		HealPower = { Label = '', NoLabel = false }
+		HealPower = { Label = '', NoLabel = false },
+		['Spell Hit'] = { Label = '', NoLabel = false, decimalLength = 0 }
 	},
 	newPanelInfo = {
 		growth = 'HORIZONTAL',
