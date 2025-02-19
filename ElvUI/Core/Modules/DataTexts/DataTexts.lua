@@ -14,8 +14,6 @@ local hooksecurefunc = hooksecurefunc
 
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
-local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local InCombatLockdown = InCombatLockdown
@@ -32,14 +30,14 @@ local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
 local GetCurrencyListSize = GetCurrencyListSize or C_CurrencyInfo.GetCurrencyListSize
-
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
-local BNInviteFriend = BNInviteFriend
-local BNRequestInviteFriend = BNRequestInviteFriend
 local InviteUnit = C_PartyInfo.InviteUnit
+
 local GetDisplayedInviteType = GetDisplayedInviteType
-local SetItemRef = SetItemRef
 local ChatFrame_SendBNetTell = ChatFrame_SendBNetTell
+local BNRequestInviteFriend = BNRequestInviteFriend
+local BNInviteFriend = BNInviteFriend
+local SetItemRef = SetItemRef
 
 local MISCELLANEOUS = MISCELLANEOUS
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
@@ -859,31 +857,17 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 end
 
 function DT:CurrencyListInfo(index)
-	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
-
-	if E.Cata then
-		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
-	end
-
-	return info
+	return C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 end
 
 function DT:CurrencyInfo(id)
-	local info = E.Retail and C_CurrencyInfo_GetCurrencyInfo(id) or {}
-
-	if E.Cata then
-		info.name, info.quantity, info.iconFileID, info.earnedThisWeek, info.weeklyMax, info.maxQuantity, info.isDiscovered = GetCurrencyInfo(id)
-	end
+	local info = C_CurrencyInfo_GetCurrencyInfo(id) or {}
 
 	return info, info and info.name, format(iconString, info and info.iconFileID or '136012')
 end
 
 function DT:BackpackCurrencyInfo(index)
-	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
-
-	if E.Cata then
-		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
-	end
+	local info = GetBackpackCurrencyInfo(index) or {}
 
 	return info, info and info.name
 end
