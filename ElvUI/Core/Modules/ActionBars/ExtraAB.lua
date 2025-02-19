@@ -212,12 +212,6 @@ function AB:HandleZoneAbility()
 	if not ZoneAbilityFrame then return end
 
 	if not extraHooked[ZoneAbilityFrame] then
-		ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-		ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
-		E.FrameLocks[ZoneAbilityHolder] = true
-
-		E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
-
 		ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
 		ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 		ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
@@ -233,8 +227,9 @@ function AB:HandleZoneAbility()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
 
-	-- Spawn the mover before its available.
-	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
+	if ZoneAbilityHolder then
+		ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
+	end
 end
 
 function AB:HandleExtraAbility()
@@ -242,12 +237,6 @@ function AB:HandleExtraAbility()
 	if not ExtraAbilityContainer then return end
 
 	if not extraHooked[ExtraAbilityContainer] then
-		ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-		ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
-		E.FrameLocks[ExtraActionBarHolder] = true
-
-		E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
-
 		-- try to shutdown the container movement and taints
 		ExtraAbilityContainer:KillEditMode()
 		ExtraAbilityContainer:SetScript('OnShow', nil)
@@ -261,7 +250,27 @@ function AB:HandleExtraAbility()
 	end
 end
 
+function AB:CreateExtraHolders()
+	if not ExtraActionBarHolder then
+		ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
+		ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
+		E.FrameLocks[ExtraActionBarHolder] = true
+
+		E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+	end
+
+	if not ZoneAbilityHolder then
+		ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
+		ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
+		E.FrameLocks[ZoneAbilityHolder] = true
+
+		E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+	end
+end
+
 function AB:SetupExtraButton()
+	AB:CreateExtraHolders()
+
 	if _G.ZoneAbilityFrame then
 		AB:HandleZoneAbility()
 	end
@@ -286,6 +295,7 @@ function AB:UpdateExtraBindings()
 
 	for _, button in pairs(extraBtns) do
 		button.HotKey:SetText(GetBindingKey(button.commandName))
+
 		AB:FixKeybindText(button)
 		AB:FixKeybindColor(button)
 	end
