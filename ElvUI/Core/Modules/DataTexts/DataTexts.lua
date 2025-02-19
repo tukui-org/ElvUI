@@ -12,6 +12,7 @@ local tinsert, ipairs, pairs, wipe, sort, gsub = tinsert, ipairs, pairs, wipe, s
 local tostring, strfind, strsplit = tostring, strfind, strsplit
 local hooksecurefunc = hooksecurefunc
 
+local GetCurrencyListInfo = GetCurrencyListInfo
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local GetNumSpecializations = GetNumSpecializations
@@ -857,7 +858,13 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 end
 
 function DT:CurrencyListInfo(index)
-	return C_CurrencyInfo_GetCurrencyListInfo(index) or {}
+	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
+
+	if E.Cata then
+		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
+	end
+
+	return info
 end
 
 function DT:CurrencyInfo(id)
@@ -867,7 +874,11 @@ function DT:CurrencyInfo(id)
 end
 
 function DT:BackpackCurrencyInfo(index)
-	local info = GetBackpackCurrencyInfo(index) or {}
+	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
+
+	if E.Cata then
+		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+	end
 
 	return info, info and info.name
 end
