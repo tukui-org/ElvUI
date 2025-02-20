@@ -2,19 +2,19 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
+local _G = _G
 local random = random
 local strmatch = strmatch
+
 local CreateFrame = CreateFrame
+local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitIsCharmed = UnitIsCharmed
+local UnitIsEnemy = UnitIsEnemy
+local UnitIsFriend = UnitIsFriend
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
-local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
-local UnitIsConnected = UnitIsConnected
-local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitIsCharmed = UnitIsCharmed
-local UnitIsFriend = UnitIsFriend
-local UnitIsEnemy = UnitIsEnemy
-local UnitInPartyIsAI = UnitInPartyIsAI
 
 local BACKDROP_MULT = 0.35
 
@@ -252,9 +252,10 @@ local HOSTILE_REACTION = 2
 function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
+	local env = (parent.isForced and UF.ConfigEnv) or _G
 
 	local isTapped = UnitIsTapDenied(unit)
-	local isDeadOrGhost = UnitIsDeadOrGhost(unit)
+	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
 	local color -- main bar
@@ -262,9 +263,14 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		r, g, b = colors.health.r, colors.health.g, colors.health.b
 	end
 
+	-- Recheck offline status when forced
+	if parent.isForced and self.colorDisconnected and not env.UnitIsConnected(unit) then
+		color = parent.colors.disconnected
+	end
+
 	-- Charmed player should have hostile color
 	if unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+')) then
-		if not isDeadOrGhost and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy('player', unit) then
+		if not isDeadOrGhost and env.UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy('player', unit) then
 			color = parent.colors.reaction[HOSTILE_REACTION]
 		end
 	end
@@ -339,14 +345,11 @@ end
 function UF:PostUpdateHealth(_, cur)
 	local parent = self:GetParent()
 	if parent.isForced then
-		cur = random(1, 100)
-		local max = 100
+		self.cur = random(1, 100)
+		self.max = 100
 
-		self.cur = cur
-		self.max = max
-
-		self:SetMinMaxValues(0, max)
-		self:SetValue(cur)
+		self:SetMinMaxValues(0, self.max)
+		self:SetValue(self.cur)
 	elseif parent.ResurrectIndicator then
 		parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
 	end
