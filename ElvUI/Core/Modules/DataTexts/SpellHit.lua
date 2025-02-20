@@ -8,14 +8,24 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_SPELL = CR_HIT_SPELL
 
-local displayString = ''
+local displayString, db = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0)
+	local spellHit = E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0
+
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, spellHit)
+	else
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Spell Hit"]..': ', spellHit)
+	end
 end
 
-local function ApplySettings(_, hex)
-	displayString = strjoin('', L["Spell Hit"], ': ', hex, '%.2f%%|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
 DT:RegisterDatatext('Spell Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, nil, nil, L["Spell Hit"], nil, ApplySettings)

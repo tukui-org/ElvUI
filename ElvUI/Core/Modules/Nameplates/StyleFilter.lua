@@ -998,8 +998,8 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- My Role
-	if trigger.role and (trigger.role.tank or trigger.role.healer or trigger.role.damager) then
-		if trigger.role[NP.TriggerConditions.roles[E.myrole]] then passed = true else return end
+	if trigger.myRole and (trigger.myRole.tank or trigger.myRole.healer or trigger.myRole.damager) then
+		if trigger.myRole[NP.TriggerConditions.roles[E.myrole]] then passed = true else return end
 	end
 
 	-- Unit Type

@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local _G = _G
-local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
+local _G, getfenv, setfenv = _G, getfenv, setfenv
+local setmetatable, rawget, rawset = setmetatable, rawget, rawset
 local type, pairs, min, random, strfind, next = type, pairs, min, random, strfind, next
 
 local UnitName = UnitName
@@ -35,11 +35,22 @@ local attributeBlacklist = {
 	showSolo = true
 }
 
-local colorTags = {
+local allowTags = {
+	dead = true,
+	ghost = true,
+	status = true,
+	resting = true,
+	offline = true,
 	healthcolor = true,
 	powercolor = true,
 	classcolor = true,
 	namecolor = true
+}
+
+local statusChanceDefault = 10
+local statusChance = {
+	UnitIsConnected = 15, -- less likely
+	UnitIsDeadOrGhost = 5 -- more likely
 }
 
 local PowerType = Enum.PowerType
@@ -76,10 +87,30 @@ local function envUnit(arg1)
 	end
 end
 
+local function generateStatusFunc(tag)
+	return function(arg1)
+		local unit, real = envUnit(arg1)
+		if real then
+			return _G[tag](unit)
+		end
+
+		local chance = random(1, statusChance[tag] or statusChanceDefault)
+		if tag == 'UnitIsConnected' then
+			return chance ~= 1
+		else
+			return chance == 1
+		end
+	end
+end
+
 local function createConfigEnv()
 	if configEnv then return end
 
-	configEnv = setmetatable({
+	UF.ConfigEnv = {
+		Env = ElvUF.Tags.Env,
+		_VARS = ElvUF.Tags.Vars,
+		_COLORS = ElvUF.colors,
+		ColorGradient = ElvUF.ColorGradient,
 		UnitPower = function(arg1, displayType)
 			local unit, real = envUnit(arg1)
 			if real then
@@ -128,27 +159,29 @@ local function createConfigEnv()
 
 			local classToken = CLASS_SORT_ORDER[random(1, NUM_CLASS_ORDER)]
 			return LOCALIZED_CLASS_NAMES_MALE[classToken], classToken
-		end,
-		Env = ElvUF.Tags.Env,
-		_VARS = ElvUF.Tags.Vars,
-		_COLORS = ElvUF.colors,
-		ColorGradient = ElvUF.ColorGradient,
-	}, {
+		end
+	}
+
+	for _, name in next, { 'IsResting', 'UnitIsDead', 'UnitIsGhost', 'UnitIsDeadOrGhost', 'UnitIsConnected' } do
+		UF.ConfigEnv[name] = generateStatusFunc(name)
+	end
+
+	configEnv = setmetatable(UF.ConfigEnv, {
 		__index = function(obj, key)
 			local envValue = ElvUF.Tags.Env[key]
 			if envValue ~= nil then
 				return envValue
 			end
 
-			return obj[key]
+			return rawget(obj, key)
 		end,
-		__newindex = function(_, key, value)
-			_G[key] = value
+		__newindex = function(obj, key, value)
+			rawset(obj, key, value)
 		end,
 	})
 
 	for tag, func in next, ElvUF.Tags.Methods do
-		if colorTags[tag] or UF.overrideTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
+		if allowTags[tag] or UF.overrideTags[tag] or (strfind(tag, '^name:') or strfind(tag, '^health:') or strfind(tag, '^power:')) then
 			overrideFuncs[tag] = func
 		end
 	end
