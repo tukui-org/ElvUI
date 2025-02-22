@@ -135,9 +135,9 @@ do	-- We do this because people edit the vars directly, and changing the default
 		local eventHandler = CreateFrame('Frame')
 		eventHandler:RegisterEvent('ADDON_LOADED')
 		eventHandler:RegisterEvent('PLAYER_ENTERING_WORLD')
-		eventHandler:SetScript('OnEvent', function(self)
+		eventHandler:SetScript('OnEvent', function(frame)
 			if customClassColors() then
-				self:UnregisterAllEvents()
+				frame:UnregisterAllEvents()
 			end
 		end)
 	end
