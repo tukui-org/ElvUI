@@ -102,7 +102,7 @@ function NP:Construct_Power(nameplate)
 	local Power = CreateFrame('StatusBar', nameplate.frameName..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
-	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
 	NP.StatusBars[Power] = true
 

@@ -20,14 +20,20 @@ local function SkinFrame(frame)
 	end
 end
 
-local function OpenMenu(manager, region, menuDescription)
+function S:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	local menu = manager:GetOpenMenu()
-	if menu then
-		-- Initial context menu
-		SkinFrame(menu)
-		-- SubMenus
-		menuDescription:AddMenuAcquiredCallback(SkinFrame)
-	end
+	if not menu then return end
+
+	SkinFrame(menu) -- Initial context menu
+	menuDescription:AddMenuAcquiredCallback(SkinFrame) -- SubMenus
+end
+
+function S:OpenMenu(ownerRegion, menuDescription, anchor)
+	S:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager (Menu.GetManager)
+end
+
+function S:OpenContextMenu(ownerRegion, menuDescription)
+	S:SkinMenu(self, ownerRegion, menuDescription) -- self is manager (Menu.GetManager)
 end
 
 function S:Blizzard_Menu()
@@ -35,8 +41,8 @@ function S:Blizzard_Menu()
 
 	local manager = _G.Menu.GetManager()
 	if manager then
-		hooksecurefunc(manager, 'OpenMenu', OpenMenu)
-		hooksecurefunc(manager, 'OpenContextMenu', OpenMenu)
+		hooksecurefunc(manager, 'OpenMenu', S.OpenMenu)
+		hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
 	end
 end
 
