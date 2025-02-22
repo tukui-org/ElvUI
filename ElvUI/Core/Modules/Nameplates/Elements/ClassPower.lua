@@ -77,7 +77,7 @@ end
 function NP:Construct_ClassPower(nameplate)
 	local containerName = nameplate.frameName..'ClassPower'
 	local ClassPower = CreateFrame('Frame', containerName, nameplate)
-	ClassPower:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	ClassPower:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
@@ -214,7 +214,7 @@ function NP:Construct_Runes(nameplate)
 	local Runes = CreateFrame('Frame', containerName, nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
-	Runes:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	Runes:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Runes:Hide()
 
 	Runes.PostUpdate = NP.Runes_PostUpdate
@@ -295,7 +295,7 @@ function NP:Construct_Stagger(nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
 	Stagger:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Stagger:Hide()
 
 	NP.StatusBars[Stagger] = true

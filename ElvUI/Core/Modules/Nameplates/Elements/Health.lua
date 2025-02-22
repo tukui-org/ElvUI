@@ -64,7 +64,7 @@ function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate.frameName..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
-	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
+	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 	Health.considerSelectionInCombatHostile = true
 	Health.UpdateColor = NP.Health_UpdateColor
