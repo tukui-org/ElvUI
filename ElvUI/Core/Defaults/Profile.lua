@@ -956,7 +956,7 @@ P.nameplates = {
 		},
 		friendlyEnabled = false,
 		friendly = {
-			party = true,
+			party = false,
 			raid = false,
 			arena = true,
 			pvp = false,
