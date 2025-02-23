@@ -765,15 +765,15 @@ function CH:UpdateEditboxFont(chatFrame)
 	end
 
 	local id = chatFrame:GetID()
-	local font = LSM:Fetch('font', CH.db.font)
+	local font, outline = LSM:Fetch('font', CH.db.font), CH.db.fontOutline
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
-	editbox:FontTemplate(font, fontSize, 'SHADOW')
-	editbox.header:FontTemplate(font, fontSize, 'SHADOW')
+	editbox:FontTemplate(font, fontSize, outline)
+	editbox.header:FontTemplate(font, fontSize, outline)
 
 	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, fontSize, 'SHADOW')
+		editbox.characterCount:FontTemplate(font, fontSize, outline)
 	end
 
 	-- the header and text will not update the placement without focus
