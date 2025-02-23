@@ -141,9 +141,6 @@ local function Enable(self, unit)
 		-- The quest log uses PARTY_MEMBER_{ENABLE,DISABLE} to handle updating of
 		-- party members overlapping quests. This will probably be enough to handle
 		-- model updating.
-		--
-		-- DISABLE isn't used as it fires when we most likely don't have the
-		-- information we want.
 		if unit == 'party' or unit == 'target' then
 			oUF:RegisterEvent(self, 'PARTY_MEMBER_ENABLE', Path)
 			oUF:RegisterEvent(self, 'PARTY_MEMBER_DISABLE', Path)
