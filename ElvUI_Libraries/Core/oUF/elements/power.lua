@@ -290,8 +290,12 @@ local function SetColorDisconnected(element, state, isForced)
 		element.colorDisconnected = state
 		if(state) then
 			oUF:RegisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
+			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
 		else
 			oUF:UnregisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
+			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
 		end
 	end
 end
