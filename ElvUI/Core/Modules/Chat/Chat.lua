@@ -770,7 +770,10 @@ function CH:UpdateEditboxFont(chatFrame)
 
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
 	editbox:FontTemplate(font, fontSize, outline)
-	editbox.header:FontTemplate(font, fontSize, outline)
+
+	if editbox.header then
+		editbox.header:FontTemplate(font, fontSize, outline)
+	end
 
 	if editbox.characterCount then
 		editbox.characterCount:FontTemplate(font, fontSize, outline)
