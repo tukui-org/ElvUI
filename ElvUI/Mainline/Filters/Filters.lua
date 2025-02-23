@@ -988,6 +988,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	-- The MOTHERLODE
 	-- Theater of Pain
+		[331510] = List(), -- Death Wish
+		[333241] = List(), -- Raging Tantrum
+		[326892] = List(), -- Fixate
+		[330545] = List(), -- Commanding Presences
 	-- Operation Mechagon: Workshop
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
