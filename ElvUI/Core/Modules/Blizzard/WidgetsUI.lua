@@ -50,16 +50,16 @@ function BL:UIWidgetTemplateStatusBar()
 	end
 end
 
-function BL:CaptureBar_PVP()
+function BL:BelowMinimap_CaptureBar()
 	self.LeftLine:SetAlpha(0)
 	self.RightLine:SetAlpha(0)
 	self.BarBackground:SetAlpha(0)
 	self.SparkNeutral:SetAlpha(0)
 
+	self.GlowPulseAnim:Stop()
 	self.Glow1:SetAlpha(0)
 	self.Glow2:SetAlpha(0)
 	self.Glow3:SetAlpha(0)
-	self.GlowPulseAnim:Stop()
 
 	self.LeftBar:SetVertexColor(0.2, 0.6, 1.0)
 	self.RightBar:SetVertexColor(0.9, 0.2, 0.2)
@@ -80,41 +80,39 @@ function BL:CaptureBar_PVP()
 	end
 end
 
-function BL:CaptureBar_EmberCourt() end
+function BL:BelowMinimap_EmberCourt() end
 
 local captureBarSkins = {
-	[2] = BL.CaptureBar_PVP,
-	[252] = BL.CaptureBar_EmberCourt
+	[2] = BL.BelowMinimap_CaptureBar,
+	[252] = BL.BelowMinimap_EmberCourt
 }
 
-function BL:WidgetCaptureBar_Update(_, container)
+function BL:BelowMinimap_UpdateBar(_, container)
 	if self:IsForbidden() or not container then return end
 
 	local skinFunc = captureBarSkins[container.widgetSetID]
 	if skinFunc then skinFunc(self) end
 end
 
-function BL:WidgetCaptureBar_ProcessWidget(widgetID, widgetType)
+function BL:UIWidgetTemplateCaptureBar(widgetInfo, container)
+	if container == _G.UIWidgetBelowMinimapContainerFrame then return end -- handled by ProcessWidget
+
+	BL.BelowMinimap_UpdateBar(self, widgetInfo, container)
+end
+
+function BL:BelowMinimap_ProcessWidget(widgetID)
 	if not self or not self.widgetFrames then return end
 
 	if widgetID then
 		local bar = self.widgetFrames[widgetID]
-		if bar then
-			BL.WidgetCaptureBar_Update(bar, nil, self)
+		if bar then -- excuse me?
+			BL.BelowMinimap_UpdateBar(bar, nil, self)
 		end
-	else
+	else -- we reloading?
 		for _, bar in next, self.widgetFrames do
-			BL.WidgetCaptureBar_Update(bar, nil, self)
+			BL.BelowMinimap_UpdateBar(bar, nil, self)
 		end
 	end
-end
-
-function BL:WidgetCaptureBar_ApplyEffectToFrame(widgetInfo, widgetContainer, frame)
-	BL.WidgetCaptureBar_Update(self, widgetInfo, widgetContainer, frame)
-end
-
-function BL:WidgetCaptureBar_Setup(widgetInfo, widgetContainer)
-	BL.WidgetCaptureBar_Update(self, widgetInfo, widgetContainer)
 end
 
 local function UpdatePosition(frame, _, anchor)
@@ -169,9 +167,9 @@ function BL:HandleWidgets()
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', BL.UIWidgetTemplateStatusBar)
+	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', BL.UIWidgetTemplateCaptureBar)
 
-	--hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', BL.WidgetCaptureBar_Setup)
-	--hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'ApplyEffectToFrame', BL.WidgetCaptureBar_ApplyEffectToFrame)
-	hooksecurefunc(_G.UIWidgetBelowMinimapContainerFrame, 'ProcessWidget', BL.WidgetCaptureBar_ProcessWidget)
-	BL.WidgetCaptureBar_ProcessWidget(_G.UIWidgetBelowMinimapContainerFrame) -- finds any pre-existing capture bars
+	-- Below Minimap Widgets
+	hooksecurefunc(_G.UIWidgetBelowMinimapContainerFrame, 'ProcessWidget', BL.BelowMinimap_ProcessWidget)
+	BL.BelowMinimap_ProcessWidget(_G.UIWidgetBelowMinimapContainerFrame) -- finds any pre-existing capture bars
 end
