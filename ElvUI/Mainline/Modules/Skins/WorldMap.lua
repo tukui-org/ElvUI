@@ -179,6 +179,7 @@ function S:WorldMapFrame()
 	QuestScrollFrame.BorderFrame:SetAlpha(0)
 	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator:SetAlpha(0)
+	QuestScrollFrame:SetTemplate()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
