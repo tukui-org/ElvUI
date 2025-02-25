@@ -666,6 +666,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	-- Misc
 		[160029] = List(), -- Resurrecting (Pending CR)
+		[225080] = List(), -- Reincarnation (Ankh ready)
+		[255234] = List(), -- Totemic Revival
 	-- Affixes
 		[440313] = List(), -- Void Rift
 	----------------------------------------------------------
