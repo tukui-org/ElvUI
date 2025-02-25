@@ -954,6 +954,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
 	-- Vexie and the Geargrinders
+		[465865] = List(), -- Tank Buster
+		[459669] = List(), -- Spew Oil
 	-- Cauldron of Carnage
 	-- Rik Reverb
 	-- Stix Bunkjunker
