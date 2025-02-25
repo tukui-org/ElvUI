@@ -1,3 +1,17 @@
+### Version 13.85 [ February 25th 2025 ]
+*   **Cataclysm fixes:**
+    *   Boss Button
+    *   Currency Datatext
+*   Range options can now accept a dragged spell from the spellbook as the input.
+*   Boss unitframe castbar has positioning options similar to party now.
+*   Datatext Spell Hit now has a label option.
+*   Testing Unitframes with the Show Frames button can now show the dead backdrop and some status tags.
+*   Custom Class Colors not working properly when no other addons are enabled.
+*   Nameplate Style Filter trigger for Player Role now works again.
+*   PVP Capture widget should be skinned correctly again.
+*   Nameplate friendly environment condition settings can be changed without exploding.
+*   Chat editbox outline will now match the Chat font outline setting.
+
 ### Version 13.84 [ February 18th 2025 ]
 *   Fallback checking for Range of Unitframes slightly adjusted (should help Hunters and Rogues).
 *   Datatexts Mana Regen and Heal Power have a label option now.
