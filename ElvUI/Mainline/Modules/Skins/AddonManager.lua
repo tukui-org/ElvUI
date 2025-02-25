@@ -9,7 +9,7 @@ local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, treeNode)
 	local data = treeNode:GetData()
-	local _, _, _, _, reason = GetAddOnInfo(data.addonIndex)
+	if not data then return end
 
 	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
@@ -31,6 +31,7 @@ local function HandleButton(entry, treeNode)
 		entry.Status:SetTextColor(0.4, 0.4, 0.4)
 	end
 
+	local _, _, _, _, reason = GetAddOnInfo(data.addonIndex)
 	local checktex = entry.Enabled:GetCheckedTexture()
 	if reason == 'DEP_DISABLED' then
 		checktex:SetVertexColor(0.6, 0.6, 0.6)
