@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -179,6 +180,7 @@ function S:WorldMapFrame()
 	QuestScrollFrame.BorderFrame:SetAlpha(0)
 	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator:SetAlpha(0)
+
 	QuestScrollFrame:SetTemplate()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
@@ -258,54 +260,56 @@ function S:WorldMapFrame()
 	MapLegendScroll:SetTemplate()
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 
-	-- 11.1 Stuff
-	local EventsFrame = QuestMapFrame.EventsFrame
-	EventsFrame.TitleText:FontTemplate(nil, 16)
-	EventsFrame.BorderFrame:SetAlpha(0)
-
-	--[[
-		TO DO: Fill the inlay with some love
-	]]
-
-	local EventsFrameScroll = EventsFrame.ScrollBox
-	EventsFrameScroll:StripTextures()
-	EventsFrameScroll:SetTemplate()
-	S:HandleTrimScrollBar(EventsFrame.ScrollBar)
-
-	-- New Side Tabs
+	-- 11.1 New Side Tabs
 	local tabs = {
 		QuestMapFrame.QuestsTab,
 		QuestMapFrame.EventsTab,
 		QuestMapFrame.MapLegendTab
 	}
 
-	for _, tab in pairs(tabs) do
-		tab.Background:SetAlpha(0)
+	for _, tab in next, tabs do
 		tab:Size(34, 44)
-
 		tab:CreateBackdrop()
 		tab.backdrop:Point('TOPLEFT', 2, -2)
 		tab.backdrop:Point('BOTTOMRIGHT', -2, 2)
 
-		tab.SelectedTexture:SetDrawLayer('ARTWORK')
-		tab.SelectedTexture:ClearAllPoints()
-		tab.SelectedTexture:SetPoint('TOPLEFT', 4, -4)
-		tab.SelectedTexture:SetPoint('BOTTOMRIGHT', -4, 4)
-		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+		if tab.Background then
+			tab.Background:SetAlpha(0)
+		end
 
-		for _, region in next, {tab:GetRegions()} do
-			if region:IsObjectType('Texture') then
-				if region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-					region:Point('TOPLEFT', 4, -4)
-					region:Point('BOTTOMRIGHT', -4, 4)
-					region:SetColorTexture(1, 1, 1, 0.3)
-				end
+		if tab.SelectedTexture then
+			tab.SelectedTexture:SetDrawLayer('ARTWORK')
+			tab.SelectedTexture:ClearAllPoints()
+			tab.SelectedTexture:SetPoint('TOPLEFT', 4, -4)
+			tab.SelectedTexture:SetPoint('BOTTOMRIGHT', -4, 4)
+			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+		end
+
+		for _, region in next, { tab:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+				region:SetColorTexture(1, 1, 1, 0.3)
+				region:Point('TOPLEFT', 4, -4)
+				region:Point('BOTTOMRIGHT', -4, 4)
 			end
 		end
 	end
 
-	QuestMapFrame.QuestsTab:ClearAllPoints()
-	QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
+	if QuestMapFrame.QuestsTab then
+		QuestMapFrame.QuestsTab:ClearAllPoints()
+		QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
+	end
+
+	local EventsFrame = QuestMapFrame.EventsFrame
+	if EventsFrame then
+		EventsFrame.TitleText:FontTemplate(nil, 16)
+		EventsFrame.BorderFrame:SetAlpha(0)
+
+		local EventsFrameScrollBox = EventsFrame.ScrollBox
+		EventsFrameScrollBox:StripTextures()
+		EventsFrameScrollBox:SetTemplate()
+
+		S:HandleTrimScrollBar(EventsFrame.ScrollBar)
+	end
 end
 
 S:AddCallback('WorldMapFrame')

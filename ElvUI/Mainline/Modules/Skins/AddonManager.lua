@@ -8,9 +8,6 @@ local hooksecurefunc = hooksecurefunc
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
 local function HandleButton(entry, treeNode)
-	local data = treeNode:GetData()
-	local _, _, _, _, reason = GetAddOnInfo(data.addonIndex)
-
 	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
 		S:HandleButton(entry.LoadAddonButton)
@@ -24,23 +21,27 @@ local function HandleButton(entry, treeNode)
 		entry.IsSkinned = true
 	end
 
-	local checkstate = E:GetAddOnEnableState(data.addonIndex)
-	if checkstate == 2 then
-		entry.Status:SetTextColor(0.7, 0.7, 0.7)
-	else
-		entry.Status:SetTextColor(0.4, 0.4, 0.4)
-	end
+	local data = treeNode:GetData()
+	if data then
+		local checkstate = E:GetAddOnEnableState(data.addonIndex)
+		if checkstate == 2 then
+			entry.Status:SetTextColor(0.7, 0.7, 0.7)
+		else
+			entry.Status:SetTextColor(0.4, 0.4, 0.4)
+		end
 
-	local checktex = entry.Enabled:GetCheckedTexture()
-	if reason == 'DEP_DISABLED' then
-		checktex:SetVertexColor(0.6, 0.6, 0.6)
-		checktex:SetDesaturated(true)
-	elseif checkstate == 1 then
-		checktex:SetVertexColor(1, 0.8, 0.1)
-		checktex:SetDesaturated(false)
-	elseif checkstate == 2 then
-		checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
-		checktex:SetDesaturated(false)
+		local _, _, _, _, reason = GetAddOnInfo(data.addonIndex)
+		local checktex = entry.Enabled:GetCheckedTexture()
+		if reason == 'DEP_DISABLED' then
+			checktex:SetVertexColor(0.6, 0.6, 0.6)
+			checktex:SetDesaturated(true)
+		elseif checkstate == 1 then
+			checktex:SetVertexColor(1, 0.8, 0.1)
+			checktex:SetDesaturated(false)
+		elseif checkstate == 2 then
+			checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			checktex:SetDesaturated(false)
+		end
 	end
 end
 

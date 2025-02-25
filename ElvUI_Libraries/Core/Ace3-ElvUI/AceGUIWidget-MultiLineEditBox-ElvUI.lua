@@ -5,7 +5,8 @@ local Type, Version = "MultiLineEditBox-ElvUI", 35
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
-local _G, pairs = _G, pairs
+local _G = _G
+local tostring, pairs = tostring, pairs
 local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
 local ACCEPT = ACCEPT
