@@ -179,6 +179,7 @@ function S:WorldMapFrame()
 	QuestScrollFrame.BorderFrame:SetAlpha(0)
 	QuestScrollFrame.Background:SetAlpha(0)
 	QuestScrollFrame.Contents.Separator:SetAlpha(0)
+	QuestScrollFrame:SetTemplate()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
@@ -186,10 +187,6 @@ function S:WorldMapFrame()
 	S:HandleTrimScrollBar(QuestScrollBar)
 	QuestScrollBar:Point('TOPLEFT', _G.QuestDetailFrame, 'TOPRIGHT', 4, -15)
 	QuestScrollBar:Point('BOTTOMLEFT', _G.QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
-
-	local CampaignOverview = QuestMapFrame.CampaignOverview
-	SkinHeaders(CampaignOverview.Header)
-	CampaignOverview.BorderFrame.Border:SetAlpha(0)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
@@ -253,7 +250,6 @@ function S:WorldMapFrame()
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
 
 	local MapLegend = QuestMapFrame.MapLegend
-	S:HandleButton(MapLegend.BackButton)
 	MapLegend.TitleText:FontTemplate(nil, 16)
 	MapLegend.BorderFrame:SetAlpha(0)
 
@@ -261,6 +257,55 @@ function S:WorldMapFrame()
 	MapLegendScroll:StripTextures()
 	MapLegendScroll:SetTemplate()
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
+
+	-- 11.1 Stuff
+	local EventsFrame = QuestMapFrame.EventsFrame
+	EventsFrame.TitleText:FontTemplate(nil, 16)
+	EventsFrame.BorderFrame:SetAlpha(0)
+
+	--[[
+		TO DO: Fill the inlay with some love
+	]]
+
+	local EventsFrameScroll = EventsFrame.ScrollBox
+	EventsFrameScroll:StripTextures()
+	EventsFrameScroll:SetTemplate()
+	S:HandleTrimScrollBar(EventsFrame.ScrollBar)
+
+	-- New Side Tabs
+	local tabs = {
+		QuestMapFrame.QuestsTab,
+		QuestMapFrame.EventsTab,
+		QuestMapFrame.MapLegendTab
+	}
+
+	for _, tab in pairs(tabs) do
+		tab.Background:SetAlpha(0)
+		tab:Size(34, 44)
+
+		tab:CreateBackdrop()
+		tab.backdrop:Point('TOPLEFT', 2, -2)
+		tab.backdrop:Point('BOTTOMRIGHT', -2, 2)
+
+		tab.SelectedTexture:SetDrawLayer('ARTWORK')
+		tab.SelectedTexture:ClearAllPoints()
+		tab.SelectedTexture:SetPoint('TOPLEFT', 4, -4)
+		tab.SelectedTexture:SetPoint('BOTTOMRIGHT', -4, 4)
+		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+
+		for _, region in next, {tab:GetRegions()} do
+			if region:IsObjectType('Texture') then
+				if region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+					region:Point('TOPLEFT', 4, -4)
+					region:Point('BOTTOMRIGHT', -4, 4)
+					region:SetColorTexture(1, 1, 1, 0.3)
+				end
+			end
+		end
+	end
+
+	QuestMapFrame.QuestsTab:ClearAllPoints()
+	QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
 end
 
 S:AddCallback('WorldMapFrame')

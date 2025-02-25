@@ -310,12 +310,12 @@ local function SkinMountFrame()
 	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
 	S:HandleButton(_G.MountJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-	local Flyout = _G.MountJournal.DynamicFlightFlyout
-	Flyout.Background:Hide()
+	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 3)
 
-	HandleDynamicFlightButton(Flyout.DynamicFlightModeButton, 4)
-	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
-	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 1)
+	local Flyout = _G.MountJournal.ToggleDynamicFlightFlyoutButton.popup
+	if Flyout then
+		Flyout.Background:Hide()
+	end
 
 	_G.MountJournal.FilterDropdown:ClearAllPoints()
 	_G.MountJournal.FilterDropdown:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
@@ -758,10 +758,39 @@ local function SkinCollectionsFrames()
 	SkinHeirloomFrame()
 end
 
+local function SkinCampsitesFrame()
+	local Frame = _G.WarbandSceneJournal
+
+	local IconsFrame = Frame.IconsFrame
+	if IconsFrame then
+		IconsFrame:StripTextures()
+		IconsFrame.NineSlice:SetTemplate('Transparent')
+
+		local Controls = IconsFrame.Icons and IconsFrame.Icons.Controls
+		if Controls then
+			local CheckBox = Controls and Controls.ShowOwned and Controls.ShowOwned.Checkbox
+			if CheckBox then
+				CheckBox:Size(28)
+				S:HandleCheckBox(CheckBox)
+			end
+
+			if Controls.PagingControls then
+				S:HandleNextPrevButton(Controls.PagingControls.PrevPageButton, nil, nil, true)
+				S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)
+			end
+		end
+		--[[ TODO 11.1 Make the position pretty
+			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:ClearAllPoints()
+			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:Point('RIGHT', IconsFrame.Icons.Controls.PagingControls.PageText, 'LEFT', 0, 0)
+		]]
+	end
+end
+
 function S:Blizzard_Collections()
 	if not E.private.skins.blizzard.enable then return end
 	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
 	if E.private.skins.blizzard.transmogrify then SkinTransmogFrames() end
+	if E.private.skins.blizzard.campsites then SkinCampsitesFrame() end
 end
 
 S:AddCallbackForAddon('Blizzard_Collections')

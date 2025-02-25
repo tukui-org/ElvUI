@@ -182,6 +182,7 @@ V.skins = {
 		majorFactions = true,
 		genericTrait = true,
 		editor = true,
+		campsites = true,
 	}
 }
 

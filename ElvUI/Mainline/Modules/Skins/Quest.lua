@@ -262,7 +262,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
-		_G.QuestInfoAccountCompletedNotice:SetTextColor(0, 0.9, 0.6)
 
 		if _G.QuestInfoRewardsFrame.SpellLearnText then
 			_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
