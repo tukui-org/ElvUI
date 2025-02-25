@@ -95,7 +95,9 @@ function BL:BelowMinimap_UpdateBar(_, container)
 end
 
 function BL:UIWidgetTemplateCaptureBar(widgetInfo, container)
-	if container == _G.UIWidgetBelowMinimapContainerFrame then return end -- handled by ProcessWidget
+	if container == _G.UIWidgetBelowMinimapContainerFrame and container.ProcessWidget then
+		return -- handled by ProcessWidget hook instead
+	end
 
 	BL.BelowMinimap_UpdateBar(self, widgetInfo, container)
 end
@@ -142,8 +144,9 @@ function BL:UpdateDurabilityScale()
 end
 
 function BL:HandleWidgets()
+	local BelowMinimapContainer = _G.UIWidgetBelowMinimapContainerFrame
 	BL:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', 'CENTER', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,WIDGETS')
-	BL:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
+	BL:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], BelowMinimapContainer, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
 	BL:BuildWidgetHolder(nil, 'GMMover', 'TOP', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
 
 	if E.Retail then
@@ -155,9 +158,7 @@ function BL:HandleWidgets()
 		for _, widget in pairs(_G.UIWidgetPowerBarContainerFrame.widgetFrames) do
 			BL.UIWidgetTemplateStatusBar(widget)
 		end
-	end
-
-	if not E.Retail then
+	else
 		local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
 		_G.DurabilityFrame:SetFrameStrata('HIGH')
 
@@ -170,6 +171,9 @@ function BL:HandleWidgets()
 	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', BL.UIWidgetTemplateCaptureBar)
 
 	-- Below Minimap Widgets
-	hooksecurefunc(_G.UIWidgetBelowMinimapContainerFrame, 'ProcessWidget', BL.BelowMinimap_ProcessWidget)
-	BL.BelowMinimap_ProcessWidget(_G.UIWidgetBelowMinimapContainerFrame) -- finds any pre-existing capture bars
+	if BelowMinimapContainer.ProcessWidget then
+		hooksecurefunc(BelowMinimapContainer, 'ProcessWidget', BL.BelowMinimap_ProcessWidget)
+	end
+
+	BL.BelowMinimap_ProcessWidget(BelowMinimapContainer) -- finds any pre-existing capture bars
 end
