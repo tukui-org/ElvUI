@@ -957,7 +957,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[465865] = List(), -- Tank Buster
 		[459669] = List(), -- Spew Oil
 	-- Cauldron of Carnage
+		[1213690] = List(), -- Molten Phlegm
 	-- Rik Reverb
+		[1217122] = List(), -- Lingering Voltage
 	-- Stix Bunkjunker
 		[461536] = List(), -- Rolling Rubbish
 		[1217954] = List(), -- Meltdown
