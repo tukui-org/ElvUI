@@ -14,6 +14,7 @@ local crests = {
 		id = 3008,
 		color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor()
 	},
+	-- TWW Season 1
 	{ -- Weathered Harbinger Crest
 		id = 2914,
 		color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor()
@@ -28,6 +29,23 @@ local crests = {
 	},
 	{ -- Gilded Harbinger Crest
 		id = 2917,
+		color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor()
+	},
+	-- TWW Season 2
+	{ -- Weathered Undermine Crest
+		id = 3107,
+		color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor()
+	},
+	{ -- Carved Undermine Crest
+		id = 3108,
+		color = _G.RARE_BLUE_COLOR:GenerateHexColor()
+	},
+	{ -- Runed Undermine Crest
+		id = 3109,
+		color = _G.EPIC_PURPLE_COLOR:GenerateHexColor()
+	},
+	{ -- Gilded Undermine Crest
+		id = 3110,
 		color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor()
 	}
 }
