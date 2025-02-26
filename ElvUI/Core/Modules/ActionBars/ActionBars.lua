@@ -1551,7 +1551,7 @@ function AB:StyleFlyout(button, arrow)
 	local ownerName = owner and owner:GetName()
 
 	local btn = (ownerName == 'SpellBookSpellIconsFrame' and parent) or button
-	if not arrow then arrow = btn.Arrow or btn.FlyoutArrow or (btn.FlyoutArrowContainer and btn.FlyoutArrowContainer.FlyoutArrowNormal) end
+	if not arrow then arrow = btn.FlyoutArrow or (btn.GetArrowRotation and btn.Arrow) or (btn.FlyoutArrowContainer and btn.FlyoutArrowContainer.FlyoutArrowNormal) end
 	if not arrow then return end
 
 	if barName == 'SpellBookSpellIconsFrame' or ownerName == 'SpellBookSpellIconsFrame' then
