@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 60 -- the real minor version is 119
+local MINOR_VERSION = 60 -- the real minor version is 120
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2585,6 +2585,7 @@ if ActionButton_UpdateFlyout then
 				return
 			end
 		end
+
 		self.FlyoutArrow:Hide()
 	end
 elseif FlyoutButtonMixin and UseCustomFlyout then
