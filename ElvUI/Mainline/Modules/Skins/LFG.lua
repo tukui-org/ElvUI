@@ -378,7 +378,6 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
-	
 
 	local EntryCreation = LFGListFrame.EntryCreation
 	EntryCreation.Inset:StripTextures()
@@ -434,29 +433,28 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 
-	local dumbbutton = LFGListFrame.SearchPanel.ScrollBox.StartGroupButton
-	local fu = CreateFrame("Frame", "DumbButton", E.UIParent)
-	fu:SetFrameLevel(10)
-	fu:SetFrameStrata("HIGH")
-	fu:Size(135,22)
-	fu:SetTemplate()
-	fu:SetPoint(dumbbutton:GetPoint())
-	fu.biatch = fu:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-	fu.biatch:SetPoint("CENTER")
-	fu.biatch:FontTemplate()
-	fu.biatch:SetText(_G.START_A_GROUP)
-	fu:Hide()
+	-- Monitor this button, this seems NOT to taint. But who knows
+	local StartGroupButton = LFGListFrame.SearchPanel.ScrollBox.StartGroupButton
+	local bu = CreateFrame("Frame", "StartGroupButton", E.UIParent)
+	bu:SetFrameLevel(10)
+	bu:SetFrameStrata("HIGH")
+	bu:Size(135,22)
+	bu:SetTemplate()
+	bu:SetPoint(StartGroupButton:GetPoint())
+	bu.text = bu:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+	bu.text:SetPoint("CENTER")
+	bu.text:FontTemplate()
+	bu.text:SetText(_G.START_A_GROUP)
+	bu:Hide()
 
-	dumbbutton:HookScript("OnHide", function()
-		fu:Hide()
+	StartGroupButton:HookScript("OnHide", function()
+		bu:Hide()
 	end)
-	dumbbutton:HookScript("OnShow", function()
-		fu:ClearAllPoints()
-		fu:SetPoint(dumbbutton:GetPoint())		
-		fu:Show()
+	StartGroupButton:HookScript("OnShow", function()
+		bu:ClearAllPoints()
+		bu:SetPoint(StartGroupButton:GetPoint())
+		bu:Show()
 	end)
-
-
 
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
