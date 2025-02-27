@@ -22,6 +22,7 @@
 ## Category-koKR: UI 개편
 ## Category-zhCN: UI重构
 ## Category-zhTW: UI重構
+## Group: ElvUI
 
 Core\Load.xml
 
