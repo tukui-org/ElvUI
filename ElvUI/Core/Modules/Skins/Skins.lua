@@ -781,12 +781,18 @@ do
 		overlay:Show()
 	end
 
-	local function OverlayOnEnter(overlay)
+	local function OverlayOnEnter(button)
+		local overlay = overlays[button]
+		if not overlay then return end
+
 		overlay.text:SetTextColor(1, 1, 1)
 		S:SetBackdropBorderColor(overlay, 'OnEnter')
 	end
 
-	local function OverlayOnLeave(overlay)
+	local function OverlayOnLeave(button)
+		local overlay = overlays[button]
+		if not overlay then return end
+
 		overlay.text:SetTextColor(1, 0.81, 0)
 		S:SetBackdropBorderColor(overlay, 'OnLeave')
 	end
@@ -810,9 +816,8 @@ do
 		txt:SetTextColor(1, 0.81, 0)
 		overlay.text = txt
 
-		overlay:SetScript('OnEnter', OverlayOnEnter)
-		overlay:SetScript('OnLeave', OverlayOnLeave)
-
+		button:HookScript('OnEnter', OverlayOnEnter)
+		button:HookScript('OnLeave', OverlayOnLeave)
 		button:HookScript('OnHide', OverlayHide)
 		button:HookScript('OnShow', OverlayShow)
 
