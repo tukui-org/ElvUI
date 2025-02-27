@@ -797,12 +797,11 @@ do
 		S:SetBackdropBorderColor(overlay, 'OnLeave')
 	end
 
-	function S:OverlayButton(button, name, text, textLayer, level, strata)
+	function S:OverlayButton(button, name, width, height, text, textLayer, level, strata)
 		if overlays[button] then return end -- already exists
 
-		local width, height = button:GetSize()
 		local overlay = CreateFrame('Frame', 'ElvUI_OverlayButton_'..name, E.UIParent)
-		overlay:Size(width, height)
+		overlay:Size(width or 120, height or 22) -- dont use GetSize it can taint the owner
 		overlay:SetTemplate(nil, true)
 		overlay:SetPoint(button:GetPoint())
 		overlay:SetFrameLevel(level or 10)

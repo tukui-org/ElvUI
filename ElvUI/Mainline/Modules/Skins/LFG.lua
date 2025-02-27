@@ -433,8 +433,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 
-	-- Monitor this button, this seems NOT to taint. But who knows
-	S:OverlayButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton, 'StartGroupButton', _G.START_A_GROUP, nil, nil, 'HIGH')
+	S:OverlayButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton, 'StartGroupButton', 135, 22, _G.START_A_GROUP, nil, nil, 'HIGH')
 
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
