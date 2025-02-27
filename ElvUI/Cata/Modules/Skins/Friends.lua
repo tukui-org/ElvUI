@@ -39,11 +39,6 @@ local function UpdateFriendsFrame()
 	else
 		_G.FriendsFrameTitleText:Show()
 	end
-
-	-- this is showing twice atm
-	if _G.FriendsFrame.TitleText then
-		_G.FriendsFrame.TitleText:Hide()
-	end
 end
 
 local function AcquireInvitePool(pool)
