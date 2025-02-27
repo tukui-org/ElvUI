@@ -270,6 +270,16 @@ local DefaultConfig = {
 	},
 }
 
+-- Helper function to prevent calls on Blizzards side
+local function CreateDummyPopup(frame)
+	local popup = frame or CreateFrame('Frame')
+
+	popup.AttachToButton = noop
+	popup.DetatchFromButton = noop
+
+	return popup
+end
+
 --- Create a new action button.
 -- @param id Internal id of the button (not used by LibActionButton-1.0, only for tracking inside the calling addon)
 -- @param name Name of the button frame to be created (not used by LibActionButton-1.0 aside from naming the frame)
@@ -294,8 +304,7 @@ function lib:CreateButton(id, name, header, config)
 		button:RegisterForClicks("AnyUp")
 	end
 
-	button.popup = CreateFrame('Frame')
-	button.popup.AttachToButton = noop
+	button.popup = CreateDummyPopup()
 
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -1143,8 +1152,7 @@ if UseCustomFlyout then
 			for i = #lib.FlyoutButtons + 1, maxNumSlots do
 				local button = lib:CreateButton(i, "LABFlyoutButton" .. i, lib.flyoutHandler, nil)
 
-				button.popup = CreateFrame('Frame')
-				button.popup.AttachToButton = noop
+				button.popup = CreateDummyPopup()
 
 				button:SetScale(0.8)
 				button:Hide()
