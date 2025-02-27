@@ -433,7 +433,7 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
-	S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
+
 
 	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis = CreateFrame("Frame", nil, LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis:SetAllPoints(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
