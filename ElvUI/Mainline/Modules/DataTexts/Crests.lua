@@ -12,17 +12,17 @@ local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 local crests = {
 	{ id = 3008, color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor() },		-- Valorstones
 
-	-- TWW Season 1
-	{ id = 2914, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered Harbinger Crest
-	{ id = 2915, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved Harbinger Crest
-	{ id = 2916, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed Harbinger Crest
-	{ id = 2917, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() },	-- Gilded Harbinger Crest
+	-- TWW Season 1: Harbinger
+	{ id = 2914, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered
+	{ id = 2915, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved
+	{ id = 2916, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed
+	{ id = 2917, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() },	-- Gilded
 
-	-- TWW Season 2
-	{ id = 3107, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered Undermine Crest
-	{ id = 3108, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved Undermine Crest
-	{ id = 3109, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed Undermine Crest
-	{ id = 3110, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }		-- Gilded Undermine Crest
+	-- TWW Season 2: Undermine
+	{ id = 3107, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered
+	{ id = 3108, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved
+	{ id = 3109, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed
+	{ id = 3110, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }		-- Gilded
 }
 
 local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
