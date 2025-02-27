@@ -944,8 +944,13 @@ do
 			button.OnIconEnter = AB.SpellButtonOnEnter
 			button.OnIconLeave = AB.SpellButtonOnLeave
 
-			if button.Button then -- the icon enter
-				button.Button:HookScript('OnEnter', BindOnEnter)
+			local spellButton = button.Button
+			if spellButton then -- actual spell button
+				if spellButton.BorderShadow then
+					spellButton.BorderShadow:SetAlpha(0)
+				end
+
+				spellButton:HookScript('OnEnter', BindOnEnter)
 			end
 		else
 			if button.OnEnter == AB.SpellButtonOnEnter then
@@ -1502,10 +1507,13 @@ function AB:SpellFlyout_OnLeave()
 end
 
 function AB:UpdateFlyoutButtons()
-	if _G.LABFlyoutHandlerFrame then _G.LABFlyoutHandlerFrame.Background:Hide() end
+	if _G.LABFlyoutHandlerFrame then
+		_G.LABFlyoutHandlerFrame.Background:Hide()
+	end
 
-	local isShown = _G.SpellFlyout:IsShown()
-	local btn, i = _G['SpellFlyoutButton1'], 1
+	local isShown, i = _G.SpellFlyout:IsShown(), 1
+	local flyoutName = E.Retail and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
+	local btn = _G[flyoutName..i]
 	while btn do
 		if isShown then
 			AB:SetupFlyoutButton(btn)
@@ -1518,13 +1526,21 @@ function AB:UpdateFlyoutButtons()
 		end
 
 		i = i + 1
-		btn = _G['SpellFlyoutButton'..i]
+		btn = _G[flyoutName..i]
 	end
+end
+
+function AB:HideFlyoutShadow(button)
+	if button.BorderShadow then button.BorderShadow:SetAlpha(0) end
+	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
+	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
 end
 
 function AB:SetupFlyoutButton(button)
 	if not AB.handledbuttons[button] then
 		AB:StyleButton(button, nil, FlyoutMasqueGroup and E.private.actionbar.masque.actionbars)
+		AB:HideFlyoutShadow(button)
+
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end
@@ -1540,9 +1556,6 @@ function AB:SetupFlyoutButton(button)
 end
 
 function AB:StyleFlyout(button, arrow)
-	if button.FlyoutBorder then button.FlyoutBorder:SetAlpha(0) end
-	if button.FlyoutBorderShadow then button.FlyoutBorderShadow:SetAlpha(0) end
-
 	local bar = button:GetParent()
 	local barName = bar:GetName()
 
@@ -1553,6 +1566,8 @@ function AB:StyleFlyout(button, arrow)
 	local btn = (ownerName == 'SpellBookSpellIconsFrame' and parent) or button
 	if not arrow then arrow = btn.FlyoutArrow or (btn.GetArrowRotation and btn.Arrow) or (btn.FlyoutArrowContainer and btn.FlyoutArrowContainer.FlyoutArrowNormal) end
 	if not arrow then return end
+
+	AB:HideFlyoutShadow(button)
 
 	if barName == 'SpellBookSpellIconsFrame' or ownerName == 'SpellBookSpellIconsFrame' then
 		local distance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == parent) and 7 or 4
