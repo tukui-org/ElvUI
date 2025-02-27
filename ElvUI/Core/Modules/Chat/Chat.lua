@@ -569,26 +569,29 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr
 end
 
+function CH:OpenChatMenu(chatMenu, buttonMenu)
+	if chatMenu then
+		chatMenu:ClearAllPoints()
+
+		local point = E:GetScreenQuadrant(self)
+		if strfind(point, 'LEFT') then
+			chatMenu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+		else
+			chatMenu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+		end
+
+		ToggleFrame(chatMenu)
+	elseif buttonMenu then
+		buttonMenu:ClearAllPoints()
+		buttonMenu:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
+		buttonMenu:OpenMenu()
+	end
+end
+
 function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
-		local menu = _G.ChatMenu
-		if menu then
-			menu:ClearAllPoints()
-
-			local point = E:GetScreenQuadrant(self)
-			if strfind(point, 'LEFT') then
-				menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
-			else
-				menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
-			end
-
-			ToggleFrame(menu)
-		else
-			_G.ChatFrameMenuButton:ClearAllPoints()
-			_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
-			_G.ChatFrameMenuButton:OpenMenu()
-		end
+		CH:OpenChatMenu(_G.ChatMenu, _G.ChatFrameMenuButton)
 	else
 		CH:CopyChat(chat)
 	end
@@ -790,6 +793,7 @@ function CH:PositionButtonFrame(chat)
 
 	chat.buttonFrame:ClearAllPoints()
 	chat.buttonFrame:SetPoint('TOP', chat, 'BOTTOM', 0, -90000)
+	chat.buttonFrame:SetClipsChildren(true)
 end
 
 function CH:StyleChat(frame)
