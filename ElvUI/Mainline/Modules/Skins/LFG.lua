@@ -443,7 +443,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis.shit = LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
 	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis.shit:SetPoint("CENTER")
 	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis.shit:FontTemplate()
-	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis.shit:SetText("Start Group")
+	LFGListFrame.SearchPanel.ScrollBox.StartGroupButton.fuckthis.shit:SetText(_G.START_A_GROUP)
 
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
