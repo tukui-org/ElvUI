@@ -437,6 +437,9 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
+
+	-- we cant skin this button because it breaks reporting groups currently
+	-- S:HandleButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton)
 	S:HandleTrimScrollBar(LFGListFrame.SearchPanel.ScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
