@@ -762,6 +762,64 @@ do
 	end
 end
 
+do
+	local overlays = {}
+
+	local function OverlayHide(button)
+		local overlay = overlays[button]
+		if not overlay then return end
+
+		overlay:Hide()
+	end
+
+	local function OverlayShow(button)
+		local overlay = overlays[button]
+		if not overlay then return end
+
+		overlay:ClearAllPoints()
+		overlay:SetPoint(button:GetPoint())
+		overlay:Show()
+	end
+
+	local function OverlayOnEnter(overlay)
+		overlay.text:SetTextColor(1, 1, 1)
+		S:SetBackdropBorderColor(overlay, 'OnEnter')
+	end
+
+	local function OverlayOnLeave(overlay)
+		overlay.text:SetTextColor(1, 0.81, 0)
+		S:SetBackdropBorderColor(overlay, 'OnLeave')
+	end
+
+	function S:OverlayButton(button, name, text, textLayer, level, strata)
+		if overlays[button] then return end -- already exists
+
+		local width, height = button:GetSize()
+		local overlay = CreateFrame('Frame', 'ElvUI_OverlayButton_'..name, E.UIParent)
+		overlay:Size(width, height)
+		overlay:SetTemplate(nil, true)
+		overlay:SetPoint(button:GetPoint())
+		overlay:SetFrameLevel(level or 10)
+		overlay:SetFrameStrata(strata or 'MEDIUM')
+		overlay:Hide()
+
+		local txt = overlay:CreateFontString(nil, textLayer or 'OVERLAY')
+		txt:SetPoint('CENTER')
+		txt:FontTemplate()
+		txt:SetText(text)
+		txt:SetTextColor(1, 0.81, 0)
+		overlay.text = txt
+
+		overlay:SetScript('OnEnter', OverlayOnEnter)
+		overlay:SetScript('OnLeave', OverlayOnLeave)
+
+		button:HookScript('OnHide', OverlayHide)
+		button:HookScript('OnShow', OverlayShow)
+
+		overlays[button] = overlay
+	end
+end
+
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
 	assert(button, 'doesn\'t exist!')
 

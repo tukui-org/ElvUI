@@ -434,27 +434,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 
 	-- Monitor this button, this seems NOT to taint. But who knows
-	local StartGroupButton = LFGListFrame.SearchPanel.ScrollBox.StartGroupButton
-	local bu = CreateFrame("Frame", "StartGroupButton", E.UIParent)
-	bu:SetFrameLevel(10)
-	bu:SetFrameStrata("HIGH")
-	bu:Size(135,22)
-	bu:SetTemplate()
-	bu:SetPoint(StartGroupButton:GetPoint())
-	bu.text = bu:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-	bu.text:SetPoint("CENTER")
-	bu.text:FontTemplate()
-	bu.text:SetText(_G.START_A_GROUP)
-	bu:Hide()
-
-	StartGroupButton:HookScript("OnHide", function()
-		bu:Hide()
-	end)
-	StartGroupButton:HookScript("OnShow", function()
-		bu:ClearAllPoints()
-		bu:SetPoint(StartGroupButton:GetPoint())
-		bu:Show()
-	end)
+	S:OverlayButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton, 'StartGroupButton', _G.START_A_GROUP, nil, nil, 'HIGH')
 
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
