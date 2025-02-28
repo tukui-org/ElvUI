@@ -170,7 +170,6 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('threatWarning', 3)
 	E:SetCVar('alwaysShowActionBars', 1)
 	E:SetCVar('lockActionBars', 1)
-	E:SetCVar('rotateMinimap', 0)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
