@@ -563,11 +563,11 @@ function M:UpdateSettings()
 		Minimap.backdrop:Hide()
 
 		if compass then
-			compass:SetScale(classicBorder and 1.35 or 1.1)
+			compass:SetScale(classicBorder and 1.35 or 1.09)
 			compass:Show()
 
 			if not classicBorder then
-				compass:Size(M.db.size, M.db.size + 10)
+				compass:Size(M.db.size, M.db.size * 1.05)
 			else
 				compass:Size(M.db.size)
 			end
