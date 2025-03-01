@@ -111,6 +111,39 @@ local function QuestLogQuests()
 	end
 end
 
+local function EventsFrameEvents(...)
+	local _, element, elementData, new
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+
+	if _G.select("#", ...) == 2 then
+		element, elementData = ...
+	elseif _G.select("#", ...) == 3 then
+		element, elementData, new = ...
+	else
+		_, element, elementData, new = ...
+	end
+
+	if new ~= false then
+		if elementData.data.entryType == 1 then -- OngoingHeader
+			element.Background:StripTextures()
+			element.Background:CreateBackdrop('Transparent')
+		elseif elementData.data.entryType == 2 then -- OngoingEvent
+			element.Background:SetAlpha(0)
+		elseif elementData.data.entryType == 3 then -- ScheduledHeader
+			element.Background:StripTextures()
+			element.Background:CreateBackdrop('Transparent')
+		elseif elementData.data.entryType == 4 then -- ScheduledEvent
+			_G.nop()
+		elseif elementData.data.entryType == 5 then -- Date
+			_G.nop()
+		elseif elementData.data.entryType == 6 then -- HiddenEventsLabel
+			_G.nop()
+		elseif elementData.data.entryType == 7 then -- NoEventsLabel
+			_G.nop()
+		end
+	end
+end
+
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
 function S:WorldMap_QuestMapHide()
 	local QuestModelScene = _G.QuestModelScene
@@ -309,6 +342,9 @@ function S:WorldMapFrame()
 		EventsFrameScrollBox:SetTemplate()
 
 		S:HandleTrimScrollBar(EventsFrame.ScrollBar)
+
+		-- Blizz new function for AddOns to access items on a ScrollBox. See Interface\AddOns\Blizzard_SharedXML\Shared\Scroll\ScrollUtil.lua
+		_G.ScrollUtil.AddAcquiredFrameCallback(EventsFrameScrollBox, EventsFrameEvents, self, true)
 	end
 end
 
