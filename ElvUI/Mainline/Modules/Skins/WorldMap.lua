@@ -4,6 +4,7 @@ local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local next = next
+local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -113,11 +114,10 @@ end
 
 local function EventsFrameEvents(...)
 	local _, element, elementData, new
-	local r, g, b = unpack(E.media.rgbvaluecolor)
 
-	if _G.select("#", ...) == 2 then
+	if select("#", ...) == 2 then
 		element, elementData = ...
-	elseif _G.select("#", ...) == 3 then
+	elseif select("#", ...) == 3 then
 		element, elementData, new = ...
 	else
 		_, element, elementData, new = ...
@@ -133,13 +133,13 @@ local function EventsFrameEvents(...)
 			element.Background:StripTextures()
 			element.Background:CreateBackdrop('Transparent')
 		elseif elementData.data.entryType == 4 then -- ScheduledEvent
-			_G.nop()
+			E.noop()
 		elseif elementData.data.entryType == 5 then -- Date
-			_G.nop()
+			E.noop()
 		elseif elementData.data.entryType == 6 then -- HiddenEventsLabel
-			_G.nop()
+			E.noop()
 		elseif elementData.data.entryType == 7 then -- NoEventsLabel
-			_G.nop()
+			E.noop()
 		end
 	end
 end
