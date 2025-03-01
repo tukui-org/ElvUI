@@ -124,12 +124,7 @@ do
 		end
 	end
 
-	function S:HandleNavBarButtons()
-		local func = NavBarCheck[self:GetParent():GetName()]
-		if func and not func() then return end
-
-		local total = #self.navList
-		local button = self.navList[total]
+	function S:SkinNavBarButton(button, index)
 		if button and not button.IsSkinned then
 			S:HandleButton(button, true)
 			button:GetFontString():SetTextColor(1, 1, 1)
@@ -147,12 +142,26 @@ do
 			end
 
 			-- setting the xoffset will cause a taint, use the hook below instead to lock the xoffset to 1
-			if total > 1 then
+			if index > 1 then
 				NavButtonXOffset(button, button:GetPoint())
 				hooksecurefunc(button, 'SetPoint', NavButtonXOffset)
 			end
 
 			button.IsSkinned = true
+		end
+	end
+
+	function S:HandleNavBarButtons(data)
+		local func = NavBarCheck[self:GetParent():GetName()]
+		if func and not func() then return end
+
+		if not data then -- init call
+			for index, nav in next, self.navList do
+				S:SkinNavBarButton(nav, index)
+			end
+		else
+			local lastIndex = #self.navList
+			S:SkinNavBarButton(self.navList[lastIndex], lastIndex)
 		end
 	end
 end
