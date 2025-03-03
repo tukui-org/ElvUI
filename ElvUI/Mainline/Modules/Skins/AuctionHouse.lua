@@ -370,8 +370,6 @@ local function LoadSkin()
 	HandleSellList(BidsList, true, true)
 	BidsList.ResultsText:SetParent(BidsList.ScrollFrame)
 	S:HandleButton(BidsList.RefreshFrame.RefreshButton)
-	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameGold)
-	S:HandleEditBox(_G.AuctionHouseFrameAuctionsFrameSilver)
 	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
 
 	--[[ ProgressBars ]]--

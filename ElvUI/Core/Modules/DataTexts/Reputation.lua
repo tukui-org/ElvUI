@@ -70,7 +70,7 @@ local function OnEvent(self)
 
 		currentReactionThreshold, nextReactionThreshold = 0, majorFactionData.renownLevelThreshold
 		currentStanding = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-		standing = E:RGBToHex(color.r, color.g, color.b, nil, RENOWN_LEVEL_LABEL..' '..majorFactionData.renownLevel..'|r')
+		standing = E:RGBToHex(color.r, color.g, color.b, nil, format(RENOWN_LEVEL_LABEL..'|r', majorFactionData.renownLevel))
 	end
 
 	if not standing then
@@ -141,7 +141,7 @@ local function OnEnter()
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 			currentStanding = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
 			nextReactionThreshold = majorFactionData.renownLevelThreshold
-			DT.tooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
+			DT.tooltip:AddDoubleLine(format(RENOWN_LEVEL_LABEL, majorFactionData.renownLevel), format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
 		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and nextReactionThreshold ~= huge then
 			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)), 1, 1, 1)
 		end

@@ -221,7 +221,7 @@ function M:Minimap_OnLeave()
 end
 
 function M:Minimap_EnterLeave(minimap, show)
-	if E.db.general.minimap.locationText == 'MOUSEOVER' and (not E.Retail or E.db.general.minimap.clusterDisable) then
+	if M.db.locationText == 'MOUSEOVER' and (not E.Retail or M.db.clusterDisable) then
 		minimap.location:SetShown(show)
 	end
 end
@@ -296,7 +296,7 @@ function M:GetLocTextColor()
 end
 
 function M:Update_ZoneText()
-	if E.db.general.minimap.locationText == 'HIDE' then return end
+	if M.db.locationText == 'HIDE' then return end
 
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
@@ -317,10 +317,10 @@ do
 	end
 
 	local function SetupZoomReset()
-		if E.db.general.minimap.resetZoom.enable and not isResetting then
+		if M.db.resetZoom.enable and not isResetting then
 			isResetting = true
 
-			E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
+			E:Delay(M.db.resetZoom.time, ResetZoom)
 		end
 	end
 
@@ -329,7 +329,7 @@ end
 
 function M:GetIconSettings(button)
 	local defaults = P.general.minimap.icons[button]
-	local profile = E.db.general.minimap.icons[button]
+	local profile = M.db.icons[button]
 
 	return profile.scale or defaults.scale, profile.position or defaults.position, profile.xOffset or defaults.xOffset, profile.yOffset or defaults.yOffset
 end
@@ -401,7 +401,7 @@ function M:UpdateIcons()
 		end
 	end
 
-	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
+	local noCluster = not E.Retail or M.db.clusterDisable
 	if not noCluster then
 		if M.ClusterHolder then
 			E:EnableMover(M.ClusterHolder.mover.name)
@@ -490,8 +490,8 @@ end
 function M:UpdateSettings()
 	if not M.Initialized then return end
 
-	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
-	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
+	local noCluster = not E.Retail or M.db.clusterDisable
+	E.MinimapSize = M.db.size or Minimap:GetWidth()
 
 	local indicator = MinimapCluster.IndicatorFrame
 	if indicator then
@@ -528,7 +528,7 @@ function M:UpdateSettings()
 	M:SetScale(panel, 1)
 
 	local mmOffset = E.PixelMode and 1 or 3
-	local mmScale = E.db.general.minimap.scale
+	local mmScale = M.db.scale
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', holder, -mmOffset / mmScale, -mmOffset / mmScale)
 	Minimap:Size(E.MinimapSize)
@@ -539,15 +539,58 @@ function M:UpdateSettings()
 	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
 	holder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
-	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline
+	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', M.db.locationFont), M.db.locationFontSize, M.db.locationFontOutline
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)
-		Minimap.location:SetShown(E.db.general.minimap.locationText == 'SHOW' and noCluster)
+		Minimap.location:SetShown(M.db.locationText == 'SHOW' and noCluster)
 	end
 
-	_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[E.db.general.minimap.icons.mail.texture] or E.Media.MailIcons.Mail3)
-	_G.MiniMapMailIcon:Size(20)
+	local classicBorder = _G.MinimapBorder
+	local compassBorder = _G.MinimapCompassTexture
+	if classicBorder then
+		classicBorder:ClearAllPoints()
+		classicBorder:SetPoint('TOPRIGHT', Minimap, 0, 0)
+		classicBorder:SetTexCoord(0.165, 0.945, 0.125, 0.90)
+
+		if compassBorder then
+			compassBorder:SetAlpha(0)
+		end
+	end
+
+	local compass = classicBorder or compassBorder
+	if M.db.circle then
+		Minimap.backdrop:Hide()
+
+		if compass then
+			compass:SetScale(classicBorder and 1.35 or 1.09)
+			compass:Show()
+
+			if not classicBorder then
+				compass:Size(M.db.size, M.db.size * 1.05)
+			else
+				compass:Size(M.db.size)
+			end
+		end
+	else
+		Minimap.backdrop:Show()
+
+		if compass then
+			compass:SetScale(1)
+			compass:Hide()
+
+			if not classicBorder then
+				compass:Size(215, 226)
+			else
+				compass:Size(192, 192)
+			end
+		end
+	end
+
+	if _G.MiniMapMailIcon then
+		_G.MiniMapMailIcon:SetTexture(E.Media.MailIcons[M.db.icons.mail.texture] or E.Media.MailIcons.Mail3)
+		_G.MiniMapMailIcon:Size(20)
+	end
 
 	if not E.Retail then
 		Minimap:SetScale(mmScale)
@@ -558,10 +601,10 @@ function M:UpdateSettings()
 		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
 		M.ClusterHolder:SetSize(width, height)
 		M.ClusterBackdrop:SetSize(width, height)
-		M.ClusterBackdrop:SetShown(E.db.general.minimap.clusterBackdrop and not noCluster)
+		M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
 
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', E.db.general.minimap.timeFont),E.db.general.minimap.timeFontSize,E.db.general.minimap.timeFontOutline)
+		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', M.db.timeFont), M.db.timeFontSize, M.db.timeFontOutline)
 
 		if noCluster then
 			MinimapCluster.ZoneTextButton:Kill()
@@ -584,16 +627,6 @@ function M:Minimap_PostDrag()
 	_G.MinimapBackdrop:SetAllPoints(Minimap)
 end
 
-function M:GetMinimapShape()
-	return 'SQUARE'
-end
-
-function M:SetGetMinimapShape()
-	GetMinimapShape = M.GetMinimapShape
-
-	Minimap:Size(E.db.general.minimap.size)
-end
-
 function M:ClusterSize(width, height)
 	local holder = M.ClusterHolder
 	if holder and (width ~= holder.savedWidth or height ~= holder.savedHeight) then
@@ -602,7 +635,7 @@ function M:ClusterSize(width, height)
 end
 
 function M:ClusterPoint(_, anchor)
-	local noCluster = not E.Retail or E.db.general.minimap.clusterDisable
+	local noCluster = not E.Retail or M.db.clusterDisable
 	local frame = (noCluster and UIParent) or M.ClusterHolder
 
 	if anchor ~= frame then
@@ -617,20 +650,46 @@ function M:ContainerScale(scale)
 	end
 end
 
+function M:SetMinimapMask(square)
+	if square then
+		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+	else
+		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+	end
+end
+
+function M:SetMinimapRotate()
+	E:SetCVar('rotateMinimap', M.db.rotate and 1 or 0)
+end
+
 function M:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if initLogin or isReload then
 		local LFGIconBorder = _G.MiniMapLFGFrameBorder or _G.MiniMapLFGBorder or _G.LFGMinimapFrameBorder
 		if LFGIconBorder then
 			LFGIconBorder:Hide()
 		end
+
+		M:SetMinimapRotate()
 	end
 
 	M:Update_ZoneText()
 end
 
+function M:GetMinimapShape()
+	return (M.db.circle and 'ROUND') or 'SQUARE'
+end
+
+function M:SetGetMinimapShape()
+	GetMinimapShape = M.GetMinimapShape
+end
+
 function M:Initialize()
-	if E.private.general.minimap.enable then
-		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+	if not E.private.general.minimap.enable then
+		M:SetMinimapMask(false)
+
+		return
+	else
+		M:SetGetMinimapShape() -- this is just to support for other mods
 
 		local container = MinimapCluster.MinimapContainer
 		if container then
@@ -638,11 +697,9 @@ function M:Initialize()
 
 			hooksecurefunc(container, 'SetScale', M.ContainerScale)
 		end
-	else
-		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
-
-		return
 	end
+
+	M.Initialized = true
 
 	local useIcons = E.db.actionbar.microbar.useIcons
 	for _, menu in ipairs(menuList) do
@@ -675,8 +732,6 @@ function M:Initialize()
 			menu.cropIcon = nil
 		end
 	end
-
-	M.Initialized = true
 
 	menuFrame:SetTemplate('Transparent')
 
@@ -728,12 +783,13 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
+	Minimap.location = MinimapCluster:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:Point('TOP', Minimap, 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
 	M:SetScale(Minimap.location, 1)
+	M:SetMinimapMask(not M.db.circle)
 
 	M:RegisterEvent('PLAYER_ENTERING_WORLD')
 	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
@@ -751,9 +807,7 @@ function M:Initialize()
 	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
 
 	local killFrames = {
-		_G.MinimapBorder,
 		_G.MinimapBorderTop,
-		_G.MinimapCompassTexture,
 		_G.MiniMapMailBorder,
 		_G.MinimapNorthTag,
 		_G.MiniMapWorldMapButton,

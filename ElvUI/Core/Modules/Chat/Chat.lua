@@ -569,26 +569,29 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr
 end
 
+function CH:OpenChatMenu(chatMenu, buttonMenu)
+	if chatMenu then
+		chatMenu:ClearAllPoints()
+
+		local point = E:GetScreenQuadrant(self)
+		if strfind(point, 'LEFT') then
+			chatMenu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
+		else
+			chatMenu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
+		end
+
+		ToggleFrame(chatMenu)
+	elseif buttonMenu then
+		buttonMenu:ClearAllPoints()
+		buttonMenu:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
+		buttonMenu:OpenMenu()
+	end
+end
+
 function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == 'RightButton' and chat:GetID() == 1 then
-		local menu = _G.ChatMenu
-		if menu then
-			menu:ClearAllPoints()
-
-			local point = E:GetScreenQuadrant(self)
-			if strfind(point, 'LEFT') then
-				menu:SetPoint('BOTTOMLEFT', self, 'TOPRIGHT')
-			else
-				menu:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT')
-			end
-
-			ToggleFrame(menu)
-		else
-			_G.ChatFrameMenuButton:ClearAllPoints()
-			_G.ChatFrameMenuButton:SetPoint('TOPLEFT', _G.ChatFrame1.copyButton, 'TOPRIGHT')
-			_G.ChatFrameMenuButton:OpenMenu()
-		end
+		CH:OpenChatMenu(_G.ChatMenu, _G.ChatFrameMenuButton)
 	else
 		CH:CopyChat(chat)
 	end
@@ -790,6 +793,7 @@ function CH:PositionButtonFrame(chat)
 
 	chat.buttonFrame:ClearAllPoints()
 	chat.buttonFrame:SetPoint('TOP', chat, 'BOTTOM', 0, -90000)
+	chat.buttonFrame:SetClipsChildren(true)
 end
 
 function CH:StyleChat(frame)
@@ -2067,10 +2071,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
 
-		if chatType == 'VOICE_TEXT' then -- the code here looks weird but its how blizzard has it ~Simpy
-			local leader = UnitIsGroupLeader(arg2)
-			infoType, chatType = _G.VoiceTranscription_DetermineChatTypeVoiceTranscription_DetermineChatType(leader)
-			info = _G.ChatTypeInfo[infoType]
+		if chatType == 'VOICE_TEXT' and not GetCVarBool('speechToText') then
+			return
 		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
 				local _, popup = _G.StaticPopup_Visible('CHAT_CHANNEL_PASSWORD')
@@ -2326,6 +2328,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		return true
+	elseif event == 'VOICE_CHAT_CHANNEL_TRANSCRIBING_CHANGED' then
+		if not frame.isTranscribing and arg2 then -- arg1 is channelID, arg2 is isNowTranscribing
+			local info = _G.ChatTypeInfo.SYSTEM
+			frame:AddMessage(_G.SPEECH_TO_TEXT_STARTED, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+		end
+
+		frame.isTranscribing = arg2
 	end
 end
 

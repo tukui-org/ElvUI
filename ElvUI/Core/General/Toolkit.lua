@@ -244,7 +244,10 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 	if not frame.SetBackdrop then
 		_G.Mixin(frame, _G.BackdropTemplateMixin)
-		frame:HookScript('OnSizeChanged', frame.OnBackdropSizeChanged)
+
+		if frame.OnSizeChanged then
+			frame:HookScript('OnSizeChanged', frame.OnBackdropSizeChanged)
+		end
 	end
 
 	if template == 'NoBackdrop' then

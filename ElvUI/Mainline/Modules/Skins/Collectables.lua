@@ -584,7 +584,7 @@ local function SkinTransmogFrames()
 					if region:IsObjectType('Texture') then -- check for hover glow
 						local texture, regionName = region:GetTexture(), region:GetDebugName() -- find transmogrify.blp (sets:1569530 or items:1116940)
 						if texture == 1569530 or (texture == 1116940 and not strfind(regionName, 'SlotInvalidTexture') and not strfind(regionName, 'DisabledOverlay')) then
-							region:SetColorTexture(1, 1, 1, 0.3)
+							region:SetColorTexture(1, 1, 1, .25)
 							region:SetBlendMode('ADD')
 							region:SetAllPoints(Model)
 						end
@@ -758,6 +758,26 @@ local function SkinCollectionsFrames()
 	SkinHeirloomFrame()
 end
 
+local function UpdateWarbandSceneData(frame)
+	if frame and frame.warbandSceneInfo and not frame.artBackdrop then
+		frame.artBackdrop = CreateFrame('Frame', nil, frame)
+		frame.artBackdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
+		frame.artBackdrop:SetOutside(frame.Icon, -5, -5)
+		frame.artBackdrop:SetTemplate()
+
+		frame.Border:SetAlpha(0)
+		S:HandleIcon(frame.Icon)
+
+		if frame.SetHighlightTexture then
+			local highlight = frame:CreateTexture()
+			highlight:SetColorTexture(1, 1, 1, .25)
+			highlight:SetAllPoints(frame.Icon)
+
+			frame:SetHighlightTexture(highlight)
+		end
+	end
+end
+
 local function SkinCampsitesFrame()
 	local Frame = _G.WarbandSceneJournal
 
@@ -779,11 +799,9 @@ local function SkinCampsitesFrame()
 				S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)
 			end
 		end
-		--[[ TODO 11.1 Make the position pretty
-			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:ClearAllPoints()
-			IconsFrame.Icons.Controls.PagingControls.PrevPageButton:Point('RIGHT', IconsFrame.Icons.Controls.PagingControls.PageText, 'LEFT', 0, 0)
-		]]
 	end
+
+	hooksecurefunc(_G.WarbandSceneEntryMixin, 'UpdateWarbandSceneData', UpdateWarbandSceneData)
 end
 
 function S:Blizzard_Collections()

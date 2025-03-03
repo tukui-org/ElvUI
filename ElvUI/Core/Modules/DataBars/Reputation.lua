@@ -75,11 +75,10 @@ function DB:ReputationBar_Update()
 	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 		local renownColor = DB.db.colors.factionColors[10]
-		local renownHex = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b)
 
 		reaction, currentReactionThreshold, nextReactionThreshold = 10, 0, majorFactionData.renownLevelThreshold
 		currentStanding = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
-		standing = format('%s%s %s|r', renownHex, RENOWN_LEVEL_LABEL, majorFactionData.renownLevel)
+		standing = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b, nil, format(RENOWN_LEVEL_LABEL..'|r', majorFactionData.renownLevel))
 
 		DB:ReputationBar_QuestRep(factionID)
 	end
@@ -186,7 +185,7 @@ function DB:ReputationBar_OnEnter()
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 			currentStanding = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
 			nextReactionThreshold = majorFactionData.renownLevelThreshold
-			GameTooltip:AddDoubleLine(RENOWN_LEVEL_LABEL .. majorFactionData.renownLevel, format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
+			GameTooltip:AddDoubleLine(format(RENOWN_LEVEL_LABEL, majorFactionData.renownLevel), format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
 
 			local current, _, percent = GetValues(QuestRep, 0, nextReactionThreshold)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)

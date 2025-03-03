@@ -15,6 +15,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
+local IsPlayerSpell = IsPlayerSpell
+local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 
 do
 	local pipMapColor = {4, 1, 2, 3, 5}
@@ -453,11 +455,6 @@ function UF:SetCastTicks(frame, numTicks)
 	end
 end
 
-function UF:GetTalentTicks(info)
-	local _, _, _, selected = GetTalentInfo(info.tier, info.column, 1)
-	return selected and info.ticks
-end
-
 function UF:GetInterruptColor(db, unit)
 	local colors = ElvUF.colors
 	local customColor = db and db.castbar and db.castbar.customColor
@@ -517,9 +514,13 @@ function UF:PostCastStart(unit)
 
 		-- Separate group, so they can be effected by haste or size if needed
 		local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
-		local selectedTicks = talentTicks and UF:GetTalentTicks(talentTicks)
-		if selectedTicks then
-			baseTicks = selectedTicks
+		if talentTicks then
+			for auraID, tickCount in next, talentTicks do
+				if IsSpellKnownOrOverridesKnown(auraID) or IsPlayerSpell(auraID) then
+					baseTicks = tickCount
+					break -- found one so stop
+				end
+			end
 		end
 
 		-- Base ticks upgraded by another aura
@@ -541,7 +542,7 @@ function UF:PostCastStart(unit)
 			local match = seconds and self.chainTime and self.chainTick == spellID
 
 			if match and (now - seconds) < self.chainTime then
-				baseTicks = chainTicks
+				baseTicks = baseTicks + chainTicks
 			end
 
 			self.chainTime = now

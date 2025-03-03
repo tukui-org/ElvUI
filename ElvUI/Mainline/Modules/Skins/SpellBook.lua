@@ -10,6 +10,8 @@ local GetProfessionInfo = GetProfessionInfo
 local C_SpellBook_GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo
 local SpellBookSpellBank = Enum.SpellBookSpellBank
 
+local barColor = { 0, .86, 0 }
+
 local function clearBackdrop(self)
 	self:SetBackdropColor(0, 0, 0, 1)
 end
@@ -66,6 +68,7 @@ end
 
 local function HandleSkillButton(button)
 	if not button then return end
+
 	button:SetCheckedTexture(E.media.normTex)
 	button:GetCheckedTexture():SetColorTexture(1, 1, 1, .25)
 	button:SetPushedTexture(E.media.normTex)
@@ -96,7 +99,6 @@ function S:Blizzard_ProfessionsBook()
 	end
 
 	--Profession Tab
-	local barColor = {0, .86, 0}
 	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3 } do
 		button.missingHeader:SetTextColor(1, 1, 0)
 		button.missingText:SetTextColor(1, 1, 1)

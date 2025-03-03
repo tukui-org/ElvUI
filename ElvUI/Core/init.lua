@@ -333,6 +333,7 @@ do
 			end
 		end
 
+		E.Minimap.db = E.db.general.minimap
 		E.TotemTracker.db = E.db.general.totems
 		E.Skins.db = E.private.skins
 	end
@@ -383,10 +384,6 @@ function E:OnInitialize()
 	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()
-
-	if E.private.general.minimap.enable then
-		E.Minimap:SetGetMinimapShape() -- This is just to support for other mods, keep below UIMult
-	end
 
 	if E:IsAddOnEnabled('Tukui') then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')

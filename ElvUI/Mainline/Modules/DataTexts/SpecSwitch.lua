@@ -13,7 +13,7 @@ local GetSpecializationInfo = GetSpecializationInfo
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
-local SetSpecialization = SetSpecialization
+local SetSpecialization = C_SpecializationInfo and C_SpecializationInfo.SetSpecialization or SetSpecialization
 local TogglePlayerSpellsFrame = TogglePlayerSpellsFrame
 
 local LoadAddOn = C_AddOns.LoadAddOn
