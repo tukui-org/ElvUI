@@ -542,7 +542,7 @@ function UF:PostCastStart(unit)
 			local match = seconds and self.chainTime and self.chainTick == spellID
 
 			if match and (now - seconds) < self.chainTime then
-				baseTicks = chainTicks
+				baseTicks = baseTicks + chainTicks
 			end
 
 			self.chainTime = now

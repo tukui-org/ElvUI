@@ -1301,10 +1301,10 @@ G.unitframe.ChannelTicks = {
 	[113656]	= 4, -- Fists of Fury
 }
 
--- Spells that chain, second step
+-- Spells that chain, ticks to add
 G.unitframe.ChainChannelTicks = {
 	-- Evoker
-	[356995]	= 4, -- Disintegrate
+	[356995]	= 1, -- Disintegrate
 }
 
 -- Window to chain time (in seconds); usually the channel duration
