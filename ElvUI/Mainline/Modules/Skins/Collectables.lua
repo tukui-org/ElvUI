@@ -758,6 +758,26 @@ local function SkinCollectionsFrames()
 	SkinHeirloomFrame()
 end
 
+local function UpdateWarbandSceneData(frame)
+	if frame and frame.warbandSceneInfo and not frame.artBackdrop then
+		frame.artBackdrop = CreateFrame('Frame', nil, frame)
+		frame.artBackdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
+		frame.artBackdrop:SetOutside(frame.Icon, -5, -5)
+		frame.artBackdrop:SetTemplate()
+
+		frame.Border:SetAlpha(0)
+		S:HandleIcon(frame.Icon)
+
+		if frame.SetHighlightTexture then
+			local highlight = frame:CreateTexture()
+			highlight:SetColorTexture(1, 1, 1, .25)
+			highlight:SetAllPoints(frame.Icon)
+
+			frame:SetHighlightTexture(highlight)
+		end
+	end
+end
+
 local function SkinCampsitesFrame()
 	local Frame = _G.WarbandSceneJournal
 
@@ -781,23 +801,7 @@ local function SkinCampsitesFrame()
 		end
 	end
 
-	hooksecurefunc(WarbandSceneEntryMixin, 'UpdateWarbandSceneData', function(frame)
-		if frame and frame.warbandSceneInfo and not frame.ArtBackdrop then
-			frame.ArtBackdrop = CreateFrame('Frame', nil, frame)
-			frame.ArtBackdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
-			frame.ArtBackdrop:SetOutside(frame.Icon, -5, -5)
-			frame.ArtBackdrop:SetTemplate()
-			S:HandleIcon(frame.Icon)
-			frame.Border:SetAlpha(0)
-
-			if frame.SetHighlightTexture then
-				local highlight = frame:CreateTexture()
-				highlight:SetColorTexture(1, 1, 1, .25)
-				highlight:SetAllPoints(frame.Icon)
-				frame:SetHighlightTexture(highlight)
-			end
-		end
-	end)
+	hooksecurefunc(_G.WarbandSceneEntryMixin, 'UpdateWarbandSceneData', UpdateWarbandSceneData)
 end
 
 function S:Blizzard_Collections()
