@@ -51,13 +51,13 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	_G.LFGListingFrameActivityViewBarLeft:StripTextures()
 	_G.LFGListingFrameActivityViewBarMiddle:StripTextures()
 	_G.LFGListingFrameActivityViewBarRight:StripTextures()
+	-- S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar) -- confirmed to taint
 
 	local LFGListingFrame = _G.LFGListingFrame
 	S:HandleFrame(LFGListingFrame, true, nil, 11, -12, -30, 72)
 	LFGListingFrame:HookScript('OnShow', LFGTabs)
 
 	local LFGBrowseFrame = _G.LFGBrowseFrame
-	--S:HandleTrimScrollBar(_G.LFGListingFrameActivityViewScrollBar) -- Testing, cause it can cause a Taint
 	S:HandleTrimScrollBar(_G.LFGBrowseFrameScrollBar)
 	S:HandleFrame(LFGBrowseFrame, true, nil, 11, -12, -30, 72)
 	LFGBrowseFrame:HookScript('OnShow', LFGTabs)

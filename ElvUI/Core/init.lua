@@ -5,7 +5,7 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
+local gsub, tinsert, next, type = gsub, tinsert, next, type
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
