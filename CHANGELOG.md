@@ -1,3 +1,15 @@
+### Version 13.86 [ March 4th 2025 ]
+*   Auction house skin error.
+*   Actionbar Flyout direction not correct.
+*   Spellbook Flyouts are skinned again.
+*   Datatext Specialization erroring.
+*   Renown labels fixed in Databars and Datatexts.
+*   Circle Minimap is now a setting.
+*   Rotate Minimap can now be set in settings.
+*   Start Group Button skinned again finally _(and shouldn't break reporting groups this time)_.
+*   Evoker Disintegrate to have 4 ticks when using Azure Celerity.
+*   Worldmap skin updated.
+
 ### Version 13.85 [ February 25th 2025 ]
 *   **Cataclysm fixes:**
     *   Boss Button
