@@ -365,6 +365,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[426790]	= List(), -- Call of the Elder Druid
 		[430191]	= List(), -- Warband Mentored Leveling
 		[455020]	= List(), -- WoW's Anniversary
+		[1219312]	= List(), -- Mmm, Tacos...
 	},
 }
 
