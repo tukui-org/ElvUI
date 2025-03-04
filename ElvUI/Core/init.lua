@@ -5,7 +5,7 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
+local gsub, tinsert, next, type = gsub, tinsert, next, type
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
@@ -127,7 +127,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 13.85, '13.85-git', nil, true
+		return 13.86, '13.86-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''

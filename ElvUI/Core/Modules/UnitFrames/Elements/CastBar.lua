@@ -6,16 +6,15 @@ local ElvUF = E.oUF
 local abs, next = abs, next
 local unpack = unpack
 
-local GetTime = GetTime
 local CreateFrame = CreateFrame
-local GetTalentInfo = GetTalentInfo
+local GetTime = GetTime
+local IsPlayerSpell = IsPlayerSpell
 local UnitCanAttack = UnitCanAttack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
-local IsPlayerSpell = IsPlayerSpell
 local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 
 do
