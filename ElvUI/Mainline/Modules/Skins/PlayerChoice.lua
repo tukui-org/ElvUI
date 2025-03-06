@@ -11,6 +11,8 @@ function S:PlayerChoice_SetupButtons(buttons)
 		for buttonFrame in buttons.buttonFramePool:EnumerateActive() do
 			if not buttonFrame.IsSkinned then
 				S:HandleButton(buttonFrame.Button, true)
+
+				buttonFrame.IsSkinned = true
 			end
 		end
 	end
