@@ -682,7 +682,9 @@ end
 function M:SetGetMinimapShape()
 	GetMinimapShape = M.GetMinimapShape
 
-	Minimap:Size(M.db.size)
+	if M.db.size then
+		Minimap:Size(M.db.size)
+	end
 end
 
 function M:Initialize()
