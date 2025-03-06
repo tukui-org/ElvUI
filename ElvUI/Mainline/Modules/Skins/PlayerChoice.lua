@@ -8,9 +8,9 @@ local hooksecurefunc = hooksecurefunc
 
 function S:PlayerChoice_SetupButtons(buttons)
 	if buttons and buttons.buttonFramePool then
-		for button in buttons.buttonFramePool:EnumerateActive() do
-			if not button.IsSkinned then
-				S:HandleButton(button, true)
+		for buttonFrame in buttons.buttonFramePool:EnumerateActive() do
+			if not buttonFrame.IsSkinned then
+				S:HandleButton(buttonFrame.Button, true)
 			end
 		end
 	end
