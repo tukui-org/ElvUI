@@ -911,6 +911,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[260829] = List(), -- Homing Missle (travelling)
 		[260838] = List(), -- Homing Missle (exploded)
 		[263637] = List(), -- Clothesline
+		[262347] = List(), -- Static Pulse
 	-- Theater of Pain
 		[333299] = List(), -- Curse of Desolation 1
 		[333301] = List(), -- Curse of Desolation 2
