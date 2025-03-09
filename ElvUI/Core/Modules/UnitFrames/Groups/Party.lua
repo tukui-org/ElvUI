@@ -41,9 +41,12 @@ function UF:Construct_PartyFrames()
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
 
+		if E.allowRoles then
+			self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
+		end
+
 		if not E.Classic then
 			self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
-			self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 			self.AlternativePower = UF:Construct_AltPowerBar(self)
 			self.ClassBar = 'AlternativePower'
 		end
