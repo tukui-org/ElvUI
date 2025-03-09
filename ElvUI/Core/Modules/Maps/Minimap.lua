@@ -681,6 +681,10 @@ end
 
 function M:SetGetMinimapShape()
 	GetMinimapShape = M.GetMinimapShape
+
+	if M.db.size then
+		Minimap:Size(M.db.size)
+	end
 end
 
 function M:Initialize()
@@ -689,8 +693,6 @@ function M:Initialize()
 
 		return
 	else
-		M:SetGetMinimapShape() -- this is just to support for other mods
-
 		local container = MinimapCluster.MinimapContainer
 		if container then
 			container:SetScale(1) -- Setting that could get set in Blizzard Edit Mode
