@@ -386,7 +386,7 @@ function E:OnInitialize()
 	E:InitializeInitialModules()
 
 	if E.private.general.minimap.enable then
-		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods
+		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
 
 	if E:IsAddOnEnabled('Tukui') then
