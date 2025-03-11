@@ -962,21 +962,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[459669] = List(), -- Spew Oil
 	-- Cauldron of Carnage
 		[1213690] = List(), -- Molten Phlegm
+		[1214009] = List(), -- Voltaic Image
 	-- Rik Reverb
 		[1217122] = List(), -- Lingering Voltage
+		[468119] = List(), -- Resonant Echoes
+		[467044] = List(), -- Faulty Zap
 	-- Stix Bunkjunker
 		[461536] = List(), -- Rolling Rubbish
 		[1217954] = List(), -- Meltdown
 		[465346] = List(), -- Sorted
+		[466748] = List(), -- Infected Bite
 	-- Sprocketmonger Lockenstock
 		[1218342] = List(), -- Unstable Shrapnel
 		[465917] = List(), -- Gravi-Gunk
+		[471308] = List(), -- Blisterizer Mk. II
 	-- The One-Armed Bandit
 		[471927] = List(), -- Withering Flames
 		[460420] = List(), -- Crushed!
 	-- Mug'Zee, Heads of Security
 		[4664769] = List(), -- Frostshatter Boots
+		[466509] = List(), -- Stormfury Finger Gun
+		[1215488] = List(), -- Disintegration Beam (Actually getting beamed)
 	-- Chrome King Gallywix
+		[466154] = List(4), -- Blast Burns
+		[466834] = List(6), -- Shock Barrage
+		[469362] = List(6), -- Charged Giga Bomb (Carrying)
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
