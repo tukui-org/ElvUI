@@ -306,7 +306,7 @@ local function LoadSkin()
 	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
 	ItemBuyFrame.BidFrame.BidButton:Point('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
 
-	-- Did blizz did a whoopsi with this names?
+	-- Did blizz do a whoopsi with this names?
 	S:HandleEditBox(_G.BidAmountGold)
 	S:HandleEditBox(_G.BidAmountSilver)
 
