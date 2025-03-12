@@ -165,6 +165,7 @@ function BL:AlertMovers()
 		/run MoneyWonAlertSystem:AddAlert(81500)
 		/run NewRecipeLearnedAlertSystem:AddAlert(204)
 		/run NewCosmeticAlertFrameSystem:AddAlert(204)
+		/run NewWarbandSceneAlertSystem:AddAlert(1)
 
 		--Simple Alerts
 		/run GuildChallengeAlertSystem:AddAlert(3, 2, 5)

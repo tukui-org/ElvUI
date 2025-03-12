@@ -911,6 +911,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[260829] = List(), -- Homing Missle (travelling)
 		[260838] = List(), -- Homing Missle (exploded)
 		[263637] = List(), -- Clothesline
+		[262347] = List(), -- Static Pulse
 	-- Theater of Pain
 		[333299] = List(), -- Curse of Desolation 1
 		[333301] = List(), -- Curse of Desolation 2
@@ -928,6 +929,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[319626] = List(), -- Phantasmal Parasite
 		[324449] = List(), -- Manifest Death
 		[341949] = List(), -- Withering Blight
+		[1223804] = List(), -- Well of Darkness
 	-- Operation Mechagon: Workshop
 		[291928] = List(), -- Giga-Zap
 		[292267] = List(), -- Giga-Zap
@@ -961,21 +963,31 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[459669] = List(), -- Spew Oil
 	-- Cauldron of Carnage
 		[1213690] = List(), -- Molten Phlegm
+		[1214009] = List(), -- Voltaic Image
 	-- Rik Reverb
 		[1217122] = List(), -- Lingering Voltage
+		[468119] = List(), -- Resonant Echoes
+		[467044] = List(), -- Faulty Zap
 	-- Stix Bunkjunker
 		[461536] = List(), -- Rolling Rubbish
 		[1217954] = List(), -- Meltdown
 		[465346] = List(), -- Sorted
+		[466748] = List(), -- Infected Bite
 	-- Sprocketmonger Lockenstock
 		[1218342] = List(), -- Unstable Shrapnel
 		[465917] = List(), -- Gravi-Gunk
+		[471308] = List(), -- Blisterizer Mk. II
 	-- The One-Armed Bandit
 		[471927] = List(), -- Withering Flames
 		[460420] = List(), -- Crushed!
 	-- Mug'Zee, Heads of Security
 		[4664769] = List(), -- Frostshatter Boots
+		[466509] = List(), -- Stormfury Finger Gun
+		[1215488] = List(), -- Disintegration Beam (Actually getting beamed)
 	-- Chrome King Gallywix
+		[466154] = List(4), -- Blast Burns
+		[466834] = List(6), -- Shock Barrage
+		[469362] = List(6), -- Charged Giga Bomb (Carrying)
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------

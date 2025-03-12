@@ -757,7 +757,7 @@ local function SkinNewRecipeLearnedAlert(frame)
 	end
 end
 
-local function SkinNewPetAlert(frame)
+local function SkinMiscAlerts(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
@@ -826,13 +826,16 @@ function S:AlertSystem()
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
 
-	-- Pets/Mounts
-	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinNewPetAlert)
-	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinNewPetAlert)
-	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
+	-- Pets/Mounts/Toys
+	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinMiscAlerts)
+	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinMiscAlerts)
+	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinMiscAlerts)
 
 	-- Cosmetics
-	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinNewPetAlert)
+	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinMiscAlerts)
+
+	-- Warband
+	hooksecurefunc(_G.NewWarbandSceneAlertSystem, 'setUpFunction', SkinMiscAlerts)
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame

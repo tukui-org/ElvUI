@@ -36,9 +36,12 @@ function UF:Construct_RaidFrames()
 	self.Cutaway = UF:Construct_Cutaway(self)
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 
+	if E.allowRoles then
+		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
+	end
+
 	if not E.Classic then
 		self.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(self) -- Cart / Flag / Orb / Assassin Bounty
-		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
 		self.AlternativePower = UF:Construct_AltPowerBar(self)
 		self.ClassBar = 'AlternativePower'
 	end
