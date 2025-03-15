@@ -1,3 +1,10 @@
+### Version 13.87 [ March 14th 2025 ]
+*   Crest datatext to no longer show season 1.
+*   Player choice skin updated.
+*   Minimap icons were in a circle.
+*   Role icons not displaying in Unit Frames in SoD/Anniv/AnnivHC. (Thanks skywardpixel)
+*   Updated bleed list in Lib Dispel for Evoker and to hopefully fix the Aura Highlight issue, when other addons use a newer version.
+
 ### Version 13.86 [ March 4th 2025 ]
 *   Auction house skin error.
 *   Actionbar Flyout direction not correct.
