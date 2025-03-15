@@ -218,7 +218,7 @@ function DT:BuildPanelFunctions(name, obj)
 	local function OnEnter(dt)
 		if obj.tooltip then
 			obj.tooltip:ClearAllPoints()
-			obj.tooltip:SetOwner(DT:SetupTooltip(self))
+			obj.tooltip:SetOwner(DT:SetupTooltip(dt))
 			obj.tooltip:Show()
 		else
 			DT.tooltip:ClearLines()
