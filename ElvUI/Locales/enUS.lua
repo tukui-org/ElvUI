@@ -211,6 +211,7 @@ L["KEY_SPACE"] = "SpB"
 L["Layout Set"] = true
 L["Layout"] = true
 L["Left Chat"] = true
+L["Right Click:"] = true
 L["Left Click:"] = true
 L["Level %d"] = true
 L["Level"] = true

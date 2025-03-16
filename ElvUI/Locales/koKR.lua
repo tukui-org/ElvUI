@@ -210,6 +210,7 @@ L["KEY_SPACE"] = "Spc"
 L["Layout Set"] = "레이아웃 설정"
 L["Layout"] = "레이아웃"
 L["Left Chat"] = "왼쪽 패널"
+L["Right Click:"] = true
 L["Left Click:"] = "왼 클릭 :"
 L["Level %d"] = "레벨 %d"
 L["Level"] = "레벨"

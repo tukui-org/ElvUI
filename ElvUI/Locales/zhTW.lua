@@ -214,6 +214,7 @@ L["KEY_SPACE"] = "SpB"
 L["Layout Set"] = "版面配置設定"
 L["Layout"] = "介面佈局"
 L["Left Chat"] = "左側對話框"
+L["Right Click:"] = true
 L["Left Click:"] = "滑鼠左鍵："
 L["Level %d"] = "等級 %d"
 L["Level"] = "等級"
