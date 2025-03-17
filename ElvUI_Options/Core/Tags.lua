@@ -23,28 +23,26 @@ TagGroup.args.Names.args.nameHealthInfo5 = ACH:Input('|cFF666666[5/5]|r Name tex
 local getTag = function(info) return format('[%s]', info[#info]) end
 local groups = {}
 
-for _, which in pairs({'Events','OnUpdateThrottle'}) do
-	for Tag in next, ElvUF.Tags[which] do
-		local info = E.TagInfo[Tag] or E:AddTagInfo(Tag, 'Miscellaneous')
+for tag in next, ElvUF.Tags.Methods do
+	local info = E.TagInfo[tag] or E:AddTagInfo(tag, 'Miscellaneous')
 
-		local group = TagGroup.args[info.category]
-		if not group then
-			group = { name = info.category, type = 'group', args = {} }
-			TagGroup.args[info.category] = group
-			groups[info.category] = group
-		end
-
-		local input = group.args[Tag] or {}
-		input.name = info.description ~= '' and info.description or getTag
-		input.order = info.order or nil
-		input.width = 'full'
-		input.type = 'input'
-		input.focusSelect = true
-		input.hidden = info.hidden
-		input.get = getTag
-
-		group.args[Tag] = input
+	local group = TagGroup.args[info.category]
+	if not group then
+		group = { name = info.category, type = 'group', args = {} }
+		TagGroup.args[info.category] = group
+		groups[info.category] = group
 	end
+
+	local input = group.args[tag] or {}
+	input.name = info.description ~= '' and info.description or getTag
+	input.order = info.order or nil
+	input.width = 'full'
+	input.type = 'input'
+	input.focusSelect = true
+	input.hidden = info.hidden
+	input.get = getTag
+
+	group.args[tag] = input
 end
 
 -- hide groups when all their inputs are hidden

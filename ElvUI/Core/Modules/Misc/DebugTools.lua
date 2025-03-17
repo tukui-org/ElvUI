@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('DebugTools')
 
 local _G = _G
-local format = format
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
+local CreateFrame = CreateFrame
 local UIParent = UIParent
 
 local StaticPopup_Hide = StaticPopup_Hide
@@ -89,21 +88,18 @@ function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
 	if keepHidden or D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
+
 	D.MessagePrinted = true
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	_G.ScriptErrorsFrame:SetParent(UIParent)
+
 	D.MessagePrinted = nil
 end
 
 function D:PLAYER_REGEN_DISABLED()
 	_G.ScriptErrorsFrame:SetParent(D.HideFrame)
-end
-
-function D:TaintError(event, addonName, addonFunc)
-	if not E.db.general.taintLog or not GetCVarBool('scriptErrors') then return end
-	_G.ScriptErrorsFrame:OnError(format(L["%s: %s tried to call the protected function '%s'."], event, addonName or '<name>', addonFunc or '<func>'), false, false)
 end
 
 function D:StaticPopup_Show(name)
@@ -124,8 +120,6 @@ function D:Initialize()
 
 	D:RegisterEvent('PLAYER_REGEN_DISABLED')
 	D:RegisterEvent('PLAYER_REGEN_ENABLED')
-	D:RegisterEvent('ADDON_ACTION_BLOCKED', 'TaintError')
-	D:RegisterEvent('ADDON_ACTION_FORBIDDEN', 'TaintError')
 end
 
 E:RegisterModule(D:GetName())

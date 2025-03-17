@@ -16,7 +16,6 @@ L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to 
 L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"] = "%s versucht das Profil (%s) mit dir zu teilen. Möchtest du die Anfrage annehmen?"
-L["%s: %s tried to call the protected function '%s'."] = "%s: %s versucht die geschützte Funktion aufrufen '%s'."
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(Ctrl & Shift Click) CPU-Profiling umschalten"
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
 L["(Shift Click) Collect Garbage"] = "(Shift gedrückt) Müll sammeln"
@@ -211,6 +210,7 @@ L["KEY_SPACE"] = "SpB"
 L["Layout Set"] = "Layout gesetzt"
 L["Layout"] = "Layout"
 L["Left Chat"] = "Linker Chat"
+L["Right Click:"] = "Rechtsklick:"
 L["Left Click:"] = "Linksklick:"
 L["Level %d"] = "Stufe %d"
 L["Level"] = "Stufe"

@@ -1479,7 +1479,6 @@ L["Selector Color"] = true
 L["Selector Style"] = true
 L["Self Cast Key"] = true
 L["Sell Interval"] = true
-L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = true
 L["Sends your current profile to your target."] = true
 L["Sends your filter settings to your target."] = true
 L["Separate Panel Sizes"] = true

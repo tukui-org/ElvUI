@@ -1481,7 +1481,6 @@ L["Selector Color"] = "Secici Renk"
 L["Selector Style"] = "Secici Stili"
 L["Self Cast Key"] = true
 L["Sell Interval"] = "Satis Araligi"
-L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "ADDON_ACTION_BLOCKED hatalarini Lua Error cercevesine gonder. Bu hatalar cogu durumda daha az onemlidir ve oyun performansinizi etkilemez. Ayrica bu hatalarin cogu duzeltilemez. Lutfen bu hatalari yalnizca oyunda bir Kusur fark ederseniz bildirin."
 L["Sends your current profile to your target."] = "Mevcut profilinizi hedefinize gonderir."
 L["Sends your filter settings to your target."] = "Filtre ayarlarinizi hedefinize gonderir."
 L["Separate Panel Sizes"] = "Ayri Panel Boyutlari"
