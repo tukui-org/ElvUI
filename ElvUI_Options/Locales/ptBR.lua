@@ -1480,7 +1480,10 @@ L["Selector Color"] = "Cor de Seletor"
 L["Selector Style"] = "Estilo de Seletor"
 L["Self Cast Key"] = "Tecla para Autolançamento"
 L["Sell Interval"] = "Intervalo de Venda"
-L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Mandar os erros de AÇÃO do ADDON BLOQUEADA para o quadro de erros de Lua. Estes erros são, na maioria das vezes, pouco importantes e não irão afetar o seu desempenho de jogo. Muitos destes erros nao podem ser reparados. Por favor denuncie estes erros apenas se notar problemas no desempenho do jogo."
+
+L["|cffFF3333Send ADDON_ACTION_BLOCKED errors to the Lua Error frame.|r"] = "|cffFF3333Mandar os erros de AÇÃO do ADDON BLOQUEADA para o quadro de erros de Lua.|r"
+L["These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a defect in gameplay."] = "Estes erros são, na maioria das vezes, pouco importantes e não irão afetar o seu desempenho de jogo. Muitos destes erros nao podem ser reparados. Por favor denuncie estes erros apenas se notar problemas no desempenho do jogo."
+
 L["Sends your current profile to your target."] = "Envia seu perfil atual para seu alvo."
 L["Sends your filter settings to your target."] = "Envia as configurações de filtro para seu alvo."
 L["Separate Panel Sizes"] = "Tamanhos de Paineis Separados"

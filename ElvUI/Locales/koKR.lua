@@ -16,7 +16,7 @@ L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to 
 L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"] = "%s 유저가 ElvUI 설정을 (%s) 전송하려 합니다. 받으시겠습니까?"
-L["%s: %s tried to call the protected function '%s'."] = "%s: %s 기능이 사용할 수 없는 %s 함수를 사용하려 합니다."
+L["%s tried to call the protected function '%s'."] = "%s 기능이 사용할 수 없는 %s 함수를 사용하려 합니다."
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(CTRL & Shift 클릭) CPU 프로파일링 전환"
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
 L["(Shift Click) Collect Garbage"] = "(Shift Click) 메모리를 정리/회수합니다."

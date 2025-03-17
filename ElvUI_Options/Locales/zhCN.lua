@@ -1532,7 +1532,10 @@ L["Selector Color"] = "选择器颜色"
 L["Selector Style"] = "选择器风格"
 L["Self Cast Key"] = "自我施法键"
 L["Sell Interval"] = "售卖周期"
-L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "发送ADDON_ACTION_BLOCKED错误至Lua错误框, 这些错误并不重要, 不会影响你的游戏体验. 并且很多这类错误无法被修复. 请只将影响游戏体验的错误发送给我们"
+
+L["|cffFF3333Send ADDON_ACTION_BLOCKED errors to the Lua Error frame.|r"] = "|cffFF3333发送ADDON_ACTION_BLOCKED错误至Lua错误框.|r"
+L["These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a defect in gameplay."] = "这些错误并不重要, 不会影响你的游戏体验. 并且很多这类错误无法被修复. 请只将影响游戏体验的错误发送给我们"
+
 L["Sends your current profile to your target."] = "发送你的配置文件到当前目标"
 L["Sends your filter settings to your target."] = "发送你的过滤器配置到当前目标"
 L["Separate Panel Sizes"] = "分离框体尺寸"

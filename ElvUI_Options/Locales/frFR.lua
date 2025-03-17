@@ -1477,7 +1477,10 @@ L["Selector Color"] = "Couleur du sélecteur"
 L["Selector Style"] = "Style du sélecteur"
 L["Self Cast Key"] = "Touche d'auto-ciblage"
 L["Sell Interval"] = "Intervalle de vente"
-L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."] = "Envoyer les ADDON_ACTION_BLOCKED dans la fenêtre d'erreur LUA. Ces erreurs sont minimes dans la plupart des cas et n'affecteront pas votre expérience de jeu. Tenez compte que nombreuses de celles-ci ne peuvent être fixé. Signalez-les uniquement si cela affecte grandement le jeu."
+
+L["|cffFF3333Send ADDON_ACTION_BLOCKED errors to the Lua Error frame.|r"] = "|cffFF3333Envoyer les ADDON_ACTION_BLOCKED dans la fenêtre d'erreur LUA.|r"
+L["These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a defect in gameplay."] = "Ces erreurs sont minimes dans la plupart des cas et n'affecteront pas votre expérience de jeu. Tenez compte que nombreuses de celles-ci ne peuvent être fixé. Signalez-les uniquement si cela affecte grandement le jeu."
+
 L["Sends your current profile to your target."] = "Envoi votre profil actuel à votre cible."
 L["Sends your filter settings to your target."] = "Envoi vos paramètres de filtre à votre cible."
 L["Separate Panel Sizes"] = "Séparer la taille des fenêtres de discussion."

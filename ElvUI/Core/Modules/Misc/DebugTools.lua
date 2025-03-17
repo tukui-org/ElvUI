@@ -89,11 +89,13 @@ function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
 	if keepHidden or D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
+
 	D.MessagePrinted = true
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	_G.ScriptErrorsFrame:SetParent(UIParent)
+
 	D.MessagePrinted = nil
 end
 
@@ -103,7 +105,11 @@ end
 
 function D:TaintError(event, addonName, addonFunc)
 	if not E.db.general.taintLog or not GetCVarBool('scriptErrors') then return end
-	_G.ScriptErrorsFrame:OnError(format(L["%s: %s tried to call the protected function '%s'."], event, addonName or '<name>', addonFunc or '<func>'), false, false)
+
+	local taintMsg = format(L["%s tried to call the protected function '%s'."], addonName or '<name>', addonFunc or '<func>')
+	local infoMsg = format('%s\n%s', L["These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a defect in gameplay."], L["You can disable Taint Logging in /ec - General - Log Taints."])
+
+	_G.ScriptErrorsFrame:OnError(taintMsg, false, false, event, infoMsg)
 end
 
 function D:StaticPopup_Show(name)
