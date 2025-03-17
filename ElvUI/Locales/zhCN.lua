@@ -16,7 +16,6 @@ L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to 
 L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = "%s 试图与你分享个人配置文件（%s）。你是否接受？"
 L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = "%s 试图与你分享全局配置文件（%s）。你是否接受？"
 L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"] = "%s 试图与你分享配置文件（%s）。你是否接受？"
-L["%s tried to call the protected function '%s'."] = "%s 尝试调用保护函数 '%s'."
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "（Ctrl 和 Shift + 单击）切换 CPU 分析"
 L["(Hold Shift) Memory Usage"] = "（按住Shift）内存占用"
 L["(Shift Click) Collect Garbage"] = "（Shift + 点击）回收垃圾"

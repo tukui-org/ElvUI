@@ -16,7 +16,6 @@ L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to 
 L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = true
 L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"] = true
-L["%s tried to call the protected function '%s'."] = true
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = true
 L["(Hold Shift) Memory Usage"] = true
 L["(Shift Click) Collect Garbage"] = true
