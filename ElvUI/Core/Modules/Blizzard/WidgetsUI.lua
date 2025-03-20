@@ -107,16 +107,18 @@ function BL:UIWidgetTemplateCaptureBar(widgetInfo, container)
 end
 
 function BL:BelowMinimap_ProcessWidget(widgetID)
-	if not self or not self.widgetFrames or ignoreWidgetID[widgetID] then return end
+	if not self or not self.widgetFrames then return end
 
 	if widgetID then
-		local bar = self.widgetFrames[widgetID]
+		local bar = not ignoreWidgetID[widgetID] and self.widgetFrames[widgetID]
 		if bar then -- excuse me?
 			BL.BelowMinimap_UpdateBar(bar, nil, self)
 		end
 	else -- we reloading?
-		for _, bar in next, self.widgetFrames do
-			BL.BelowMinimap_UpdateBar(bar, nil, self)
+		for wgtID, bar in next, self.widgetFrames do
+			if not ignoreWidgetID[wgtID] then
+				BL.BelowMinimap_UpdateBar(bar, nil, self)
+			end
 		end
 	end
 end
