@@ -366,7 +366,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[430191]	= List(), -- Warband Mentored Leveling
 		[455020]	= List(), -- WoW's Anniversary
 		[1219312]	= List(), -- Mmm, Tacos...
-		[264689]	= List(), -- Fatigued (New Bloodlust)
+		[264689]	= List(), -- Fatigued (11.1 Bloodlust)
 	},
 }
 
