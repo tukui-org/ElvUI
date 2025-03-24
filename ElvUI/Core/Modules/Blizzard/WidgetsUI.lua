@@ -9,7 +9,7 @@ local strmatch = strmatch
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local ignoreWidgets = {
+local ignoreWidgetSetID = {
 	[283] = true -- Cosmic Energy
 }
 
@@ -20,7 +20,7 @@ function BL:UIWidgetTemplateStatusBar()
 	if forbidden and bar then
 		if bar.tooltip then bar.tooltip = nil end -- EmbeddedItemTooltip is tainted just block the tooltip
 		return
-	elseif forbidden or ignoreWidgets[self.widgetSetID] or not bar then
+	elseif forbidden or ignoreWidgetSetID[self.widgetSetID] or not bar then
 		return -- we don't want to handle these widgets
 	end
 
@@ -51,6 +51,8 @@ function BL:UIWidgetTemplateStatusBar()
 end
 
 function BL:BelowMinimap_CaptureBar()
+	if not self.LeftLine or not self.LeftBar then return end
+
 	self.LeftLine:SetAlpha(0)
 	self.RightLine:SetAlpha(0)
 	self.BarBackground:SetAlpha(0)

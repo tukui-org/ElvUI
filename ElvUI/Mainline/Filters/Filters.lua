@@ -366,6 +366,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[430191]	= List(), -- Warband Mentored Leveling
 		[455020]	= List(), -- WoW's Anniversary
 		[1219312]	= List(), -- Mmm, Tacos...
+		[264689]	= List(), -- Fatigued (11.1 Bloodlust)
 	},
 }
 
@@ -912,6 +913,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[260838] = List(), -- Homing Missle (exploded)
 		[263637] = List(), -- Clothesline
 		[262347] = List(), -- Static Pulse
+		[1213141] = List(), -- Heavy Slash
 	-- Theater of Pain
 		[333299] = List(), -- Curse of Desolation 1
 		[333301] = List(), -- Curse of Desolation 2
