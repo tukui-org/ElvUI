@@ -13,10 +13,6 @@ local ignoreWidgetSetID = {
 	[283] = true -- Cosmic Energy
 }
 
-local ignoreWidgetID = {
-	[2043] = true -- Queen Azshara, Eternal Palace
-}
-
 function BL:UIWidgetTemplateStatusBar()
 	local forbidden = self:IsForbidden()
 	local bar = self.Bar
@@ -55,6 +51,8 @@ function BL:UIWidgetTemplateStatusBar()
 end
 
 function BL:BelowMinimap_CaptureBar()
+	if not self.LeftLine or not self.LeftBar then return end
+
 	self.LeftLine:SetAlpha(0)
 	self.RightLine:SetAlpha(0)
 	self.BarBackground:SetAlpha(0)
@@ -110,15 +108,13 @@ function BL:BelowMinimap_ProcessWidget(widgetID)
 	if not self or not self.widgetFrames then return end
 
 	if widgetID then
-		local bar = not ignoreWidgetID[widgetID] and self.widgetFrames[widgetID]
+		local bar = self.widgetFrames[widgetID]
 		if bar then -- excuse me?
 			BL.BelowMinimap_UpdateBar(bar, nil, self)
 		end
 	else -- we reloading?
-		for wgtID, bar in next, self.widgetFrames do
-			if not ignoreWidgetID[wgtID] then
-				BL.BelowMinimap_UpdateBar(bar, nil, self)
-			end
+		for _, bar in next, self.widgetFrames do
+			BL.BelowMinimap_UpdateBar(bar, nil, self)
 		end
 	end
 end
