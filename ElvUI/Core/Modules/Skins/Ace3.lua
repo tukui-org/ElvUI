@@ -161,7 +161,9 @@ end
 function S:Ace3_SkinTab(tab)
 	if not tab.backdrop then
 		tab:StripTextures()
-		tab.text:Point('LEFT', 14, -1)
+		if tab and tab.Point then
+		    tab:Point("LEFT", 14, -1)
+		end
 
 		tab:CreateBackdrop(nil, true, true)
 		tab.backdrop:Point('TOPLEFT', 10, -3)
