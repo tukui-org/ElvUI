@@ -142,6 +142,10 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 	else
 		element:Hide()
 	end
+
+	if element.PostUpdate then
+		element:PostUpdate(name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, modRate)
+	end
 end
 
 local function Update(self, event, unit, isFullUpdate, updatedAuras)
@@ -182,8 +186,8 @@ local function Update(self, event, unit, isFullUpdate, updatedAuras)
 			end
 
 			-- handle from the list
-			local debuff = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
-			local priority = debuff and debuff.priority
+			local data = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
+			local priority = data and data.priority
 			if priority and (priority > _priority) then
 				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 			end
