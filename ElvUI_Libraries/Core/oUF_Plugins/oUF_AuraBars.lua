@@ -23,7 +23,7 @@ local DebuffColors = LibDispel:GetDebuffTypeColor()
 local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
 local function FormatTime(sec)
 	if sec == infinity then
-		return
+		return '%d', 0
 	end
 
 	if sec < MINUTE then
