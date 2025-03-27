@@ -9,7 +9,6 @@ local wipe = wipe
 local pcall = pcall
 local unpack = unpack
 local tinsert = tinsert
-local infinity = math.huge
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -22,10 +21,6 @@ local DebuffColors = LibDispel:GetDebuffTypeColor()
 
 local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
 local function FormatTime(sec)
-	if sec == infinity then
-		return '%d', 0
-	end
-
 	if sec < MINUTE then
 		return '%.1fs', sec
 	elseif sec < HOUR then
