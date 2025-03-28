@@ -48,6 +48,8 @@ E.ConfigModeLocalizedStrings = {
 	WIDGETS = L["Blizzard Widgets"]
 }
 
+local statusTextHooked = {}
+
 function E:ConfigMode_AddGroup(layoutName, localizedName)
 	if E.ConfigModeLocalizedStrings[layoutName] then return end
 
@@ -1078,11 +1080,33 @@ function E:Config_WindowClosed()
 		E:Config_RestoreOldPosition(self.obj.content)
 		E:Config_RestoreOldPosition(self.obj.titlebg)
 
+		local statusParent = self.statusText and self.statusText.parent
+		if statusParent then
+			statusParent:Show()
+
+			E:Config_RestoreOldPosition(statusParent)
+		end
+
 		if E.ShowPopup then
 			E:StaticPopup_Show('CONFIG_RL')
 			E.ShowPopup = nil
 		end
 	end
+end
+
+function E:Config_ContentPlacement(frame, content, unskinned, statusShown)
+	content:ClearAllPoints()
+	content:Point('TOPLEFT', frame, 'TOPLEFT', unskinned and 13 or 7, -(frame.bottomHolder:GetHeight() + (unskinned and 46 or 41)))
+	content:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -(unskinned and 18 or 8), (statusShown and (unskinned and 32 or 25)) or (unskinned and 12) or 2)
+end
+
+function E:Config_SetStatusText(text)
+	if not ConfigLogoTop or not self.parent then return end
+
+	local shown = text and text ~= ''
+	self.parent:SetShown(shown)
+
+	E:Config_ContentPlacement(self.frame, self.content, not E.private.skins.ace3Enable, shown)
 end
 
 function E:Config_WindowOpened(frame)
@@ -1108,15 +1132,22 @@ function E:Config_WindowOpened(frame)
 
 		local content = frame.obj.content
 		E:Config_SaveOldPosition(content)
-		content:ClearAllPoints()
-		content:Point('TOPLEFT', frame, 'TOPLEFT', unskinned and 13 or 7, -(frame.bottomHolder:GetHeight() + (unskinned and 46 or 41)))
-		content:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -(unskinned and 18 or 8), unskinned and 12 or 2)
+		E:Config_ContentPlacement(frame, content, unskinned)
 
 		local titlebg = frame.obj.titlebg
 		E:Config_SaveOldPosition(titlebg)
 		titlebg:ClearAllPoints()
 		titlebg:SetPoint('TOPLEFT', frame)
 		titlebg:SetPoint('TOPRIGHT', frame)
+
+		local statusParent = frame.statusText and frame.statusText.parent
+		if statusParent then
+			E:Config_SaveOldPosition(statusParent)
+
+			statusParent:ClearAllPoints()
+			statusParent:Point('TOPLEFT', frame.leftHolder, 'BOTTOMRIGHT', unskinned and 11 or 1, unskinned and 38 or 22)
+			statusParent:Point('BOTTOMRIGHT', frame, -2, 2)
+		end
 	end
 end
 
@@ -1402,6 +1433,21 @@ function E:ToggleOptions(msg)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 
+			local statusText = frame.obj.statustext
+			if statusText then
+				frame.statusText = statusText
+
+				statusText.parent = statusText:GetParent()
+				statusText.content = frame.obj.content
+				statusText.frame = frame
+
+				if not statusTextHooked[statusText] then
+					statusTextHooked[statusText] = true
+
+					hooksecurefunc(statusText, 'SetText', E.Config_SetStatusText)
+				end
+			end
+
 			local left = CreateFrame('Frame', nil, frame)
 			left:Point('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
 			left:Point('BOTTOMRIGHT', frame, 'BOTTOMLEFT', 182, 2)
@@ -1476,9 +1522,16 @@ function E:ToggleOptions(msg)
 			thumbHolder.texture = thumbTexture
 
 			if not unskinned then
+				local statusParent = statusText and statusText.parent
+				if statusParent then
+					statusParent:Hide()
+					statusParent:SetTemplate('Transparent')
+				end
+
 				bottom:SetTemplate('Transparent')
 				left:SetTemplate('Transparent')
 				top:SetTemplate('Transparent')
+
 				E.Skins:HandleCloseButton(close)
 			else
 				for _, region in next, { frame:GetRegions() } do
