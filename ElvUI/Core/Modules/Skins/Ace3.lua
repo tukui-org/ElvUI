@@ -279,13 +279,11 @@ function S:Ace3_RegisterAsWidget(widget)
 			else
 				S:HandleNextPrevButton(button, nil, nextPrevColor)
 
-				if TYPE == 'LSM30_Sound' then
-					local soundbutton = widget.soundbutton
-					if soundbutton then
-						soundbutton:SetParent(frame.backdrop)
-						soundbutton:ClearAllPoints()
-						soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
-					end
+				local soundbutton = TYPE == 'LSM30_Sound' and widget.soundbutton
+				if soundbutton then
+					soundbutton:SetParent(frame.backdrop)
+					soundbutton:ClearAllPoints()
+					soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
 				end
 			end
 
