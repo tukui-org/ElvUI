@@ -258,12 +258,6 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		local button = frame.dropButton
 		if button then
-			button:ClearAllPoints()
-			button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
-			button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
-			button:SetParent(frame.backdrop)
-			button:HookScript('OnClick', S.Ace3_SkinDropdown)
-
 			local text = frame.text
 			if text then
 				text:ClearAllPoints()
@@ -272,16 +266,9 @@ function S:Ace3_RegisterAsWidget(widget)
 				text:SetParent(frame.backdrop)
 			end
 
-			if TYPE == 'LSM30_Sound' then
-				local soundbutton = widget.soundbutton
-				if soundbutton then
-					soundbutton:SetParent(frame.backdrop)
-					soundbutton:ClearAllPoints()
-					soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
-				end
+			if TYPE == 'LSM30_Statusbar' then
+				S:HandleNextPrevButton(button, nil, nextPrevColor, true)
 
-				S:HandleNextPrevButton(button, nil, nextPrevColor)
-			elseif TYPE == 'LSM30_Statusbar' then
 				local bar = widget.bar
 				if bar then
 					bar:SetParent(frame.backdrop)
@@ -289,11 +276,24 @@ function S:Ace3_RegisterAsWidget(widget)
 					bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 1, -1)
 					bar:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -1, 1)
 				end
-
-				S:HandleNextPrevButton(button, nil, nextPrevColor, true)
 			else
 				S:HandleNextPrevButton(button, nil, nextPrevColor)
+
+				if TYPE == 'LSM30_Sound' then
+					local soundbutton = widget.soundbutton
+					if soundbutton then
+						soundbutton:SetParent(frame.backdrop)
+						soundbutton:ClearAllPoints()
+						soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
+					end
+				end
 			end
+
+			button:ClearAllPoints()
+			button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
+			button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
+			button:SetParent(frame.backdrop)
+			button:HookScript('OnClick', S.Ace3_SkinDropdown)
 		end
 	elseif TYPE == 'EditBox' or TYPE == 'EditBox-ElvUI' then
 		S:Ace3_SkinEditBox(widget.editbox, widget.button)
