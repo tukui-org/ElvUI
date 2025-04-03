@@ -367,6 +367,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[455020]	= List(), -- WoW's Anniversary
 		[1219312]	= List(), -- Mmm, Tacos...
 		[264689]	= List(), -- Fatigued (11.1 Bloodlust)
+		[1226677]	= List(), -- Cartel Jumper Cables
 	},
 }
 
