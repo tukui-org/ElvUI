@@ -751,7 +751,7 @@ local function HandleTabs()
 		tab:ClearAllPoints()
 
 		if index == 1 then
-			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 2)
+			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
 		else
 			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
 			lastTab = tab
@@ -760,6 +760,11 @@ local function HandleTabs()
 		index = index + 1
 		tab = _G['CollectionsJournalTab'..index]
 	end
+
+	-- Blizzard clears points on the wardrobe tab
+	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', function()
+		_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+	end)
 end
 
 local function SkinCollectionsFrames()

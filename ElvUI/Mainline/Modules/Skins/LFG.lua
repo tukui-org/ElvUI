@@ -12,11 +12,12 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local GetItemInfo = C_Item.GetItemInfo
 
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
+local C_DelvesUI_GetDelvesMinRequiredLevel = C_DelvesUI.GetDelvesMinRequiredLevel
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
-local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
-local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
@@ -293,11 +294,15 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:ClearAllPoints()
 	_G.PVEFrameTab2:ClearAllPoints()
 	_G.PVEFrameTab3:ClearAllPoints()
-	_G.PVEFrameTab4:ClearAllPoints()
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
-	_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
+
+	if E.mylevel >= C_DelvesUI_GetDelvesMinRequiredLevel() then
+		hooksecurefunc('PVEFrame_ShowFrame', function()
+			_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
+		end)
+	end
 
 	-- Scenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
