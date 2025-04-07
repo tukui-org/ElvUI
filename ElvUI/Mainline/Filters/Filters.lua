@@ -988,6 +988,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[4664769] = List(), -- Frostshatter Boots
 		[466509] = List(), -- Stormfury Finger Gun
 		[1215488] = List(), -- Disintegration Beam (Actually getting beamed)
+		[469391] = List(6), -- Perforating Wound
 	-- Chrome King Gallywix
 		[466154] = List(4), -- Blast Burns
 		[466834] = List(6), -- Shock Barrage
