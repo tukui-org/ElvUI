@@ -48,9 +48,6 @@ end
 -- local WoWClassicHC = IsHardcoreActive and IsHardcoreActive()
 -- local WoWClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
 
--- Enable custom flyouts for WoW Retail
-local UseCustomFlyout = WoWRetail or FlyoutButtonMixin
-
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
@@ -336,10 +333,10 @@ function lib:CreateButton(id, name, header, config)
 	button:UpdateAction()
 	UpdateHotkeys(button)
 
-	button:SetAttribute("LABUseCustomFlyout", UseCustomFlyout)
-
 	-- nil out inherited functions from the flyout mixin, we override these in a metatable
-	if UseCustomFlyout then
+	if FlyoutButtonMixin then
+		button:SetAttribute("LABUseCustomFlyout", true)
+
 		button.GetPopupDirection = nil
 		button.IsPopupOpen = nil
 	end
@@ -532,7 +529,7 @@ function SetupSecureSnippets(button)
 		self:RunAttribute("UpdateState", self:GetAttribute("state"))
 	]])
 
-	if UseCustomFlyout then
+	if FlyoutButtonMixin then
 		button.header:SetFrameRef("flyoutHandler", GetFlyoutHandler())
 	end
 end
@@ -664,6 +661,10 @@ function Generic:OnButtonEvent(event, key, down, spellID)
 			UpdateRegisterClicks(self)
 		end
 	end
+end
+
+function Generic:OnButtonStateChanged()
+
 end
 
 -----------------------------------------------------------
@@ -866,7 +867,7 @@ end
 
 local DiscoverFlyoutSpells, UpdateFlyoutSpells, UpdateFlyoutHandlerScripts, FlyoutUpdateQueued
 
-if UseCustomFlyout then
+if FlyoutButtonMixin then
 	-- params: self, flyoutID
 	local FlyoutHandleFunc = [[
 		local SPELLFLYOUT_DEFAULT_SPACING = 4
@@ -1520,23 +1521,23 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	if UseCustomFlyout then
+	if FlyoutButtonMixin then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
-	end
 
-	if UseCustomFlyout and IsLoggedIn() then
-		DiscoverFlyoutSpells()
+		if IsLoggedIn() then
+			DiscoverFlyoutSpells()
+		end
 	end
 end
 
 function OnEvent(frame, event, arg1, ...)
 	if event == "PLAYER_LOGIN" then
-		if UseCustomFlyout then
+		if FlyoutButtonMixin then
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
-		if UseCustomFlyout then
+		if FlyoutButtonMixin then
 			UpdateFlyoutSpells()
 		end
 	elseif event == "UNIT_MODEL_CHANGED" then
@@ -1657,7 +1658,7 @@ function OnEvent(frame, event, arg1, ...)
 			end
 		end
 
-		if UseCustomFlyout and FlyoutUpdateQueued then
+		if FlyoutButtonMixin and FlyoutUpdateQueued then
 			UpdateFlyoutSpells()
 			FlyoutUpdateQueued = nil
 		end
@@ -1676,7 +1677,7 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "PET_STABLE_UPDATE" or event == "PET_STABLE_SHOW" then
 		ForAllButtons(Update, nil, event)
 
-		if event == "PET_STABLE_UPDATE" and UseCustomFlyout then
+		if event == "PET_STABLE_UPDATE" and FlyoutButtonMixin then
 			UpdateFlyoutSpells()
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
@@ -2525,7 +2526,7 @@ function UpdateSpellHighlight(self)
 end
 
 -- Hook UpdateFlyout so we can use the blizzy templates
-if ActionButton_UpdateFlyout then
+if ActionButton_UpdateFlyout then -- on Classic only?
 	hooksecurefunc("ActionButton_UpdateFlyout", function(self, ...)
 		if ButtonRegistry[self] then
 			UpdateFlyout(self)
@@ -2571,7 +2572,7 @@ if ActionButton_UpdateFlyout then
 		end
 		self.FlyoutArrow:Hide()
 	end
-elseif FlyoutButtonMixin and UseCustomFlyout then
+elseif FlyoutButtonMixin then -- on Retail and Classic
 	function Generic:GetPopupDirection()
 		return self:GetAttribute("flyoutDirection") or "UP"
 	end
@@ -2597,7 +2598,7 @@ elseif FlyoutButtonMixin and UseCustomFlyout then
 			end
 		end
 	end
-else
+else -- for cata right now
 	function UpdateFlyout(self, isButtonDownOverride)
 		if self.FlyoutBorderShadow then
 			self.FlyoutBorderShadow:Hide()
