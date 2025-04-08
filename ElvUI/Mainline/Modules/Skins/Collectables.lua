@@ -763,7 +763,9 @@ local function HandleTabs()
 
 	-- Blizzard clears points on the wardrobe tab
 	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', function()
-		_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+		if _G.CollectionsJournalTab5 then
+			_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+		end
 	end)
 end
 
