@@ -298,11 +298,11 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
-	if E.mylevel >= C_DelvesUI_GetDelvesMinRequiredLevel() then
-		hooksecurefunc('PVEFrame_ShowFrame', function()
+	hooksecurefunc('PVEFrame_ShowFrame', function()
+		if _G.PVEFrameTab4 and (E.mylevel >= C_DelvesUI_GetDelvesMinRequiredLevel()) then
 			_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
-		end)
-	end
+		end
+	end)
 
 	-- Scenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
