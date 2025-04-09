@@ -17,9 +17,9 @@ function S:TradeFrame()
 	S:HandleButton(_G.TradeFrameTradeButton, true)
 	S:HandleButton(_G.TradeFrameCancelButton, true)
 
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameGold)
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameSilver)
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameCopper)
+	--S:HandleEditBox(_G.TradePlayerInputMoneyFrameGold)
+	--S:HandleEditBox(_G.TradePlayerInputMoneyFrameSilver)
+	--S:HandleEditBox(_G.TradePlayerInputMoneyFrameCopper)
 
 	_G.TradeRecipientItemsInset:Kill()
 	_G.TradePlayerItemsInset:Kill()
