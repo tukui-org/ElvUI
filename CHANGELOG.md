@@ -1,3 +1,14 @@
+### Version 13.88 [ April 10th 2025 ]
+*   Issue with SetupTooltip parameter for LDB plugins with custom tooltip. (Thanks exochron)
+*   Removed Log Taints option (BugGrabber is a better alternative for this).
+*   Config Datatext button triggers changed.
+*   Available Tags can display oUF tags now as well.
+*   Classic spell cast interruption display will include spell link.
+*   Various older raids causing a below Minimap widget error.
+*   Raid Debuffs had a few blocked Cataclysm spells which were removed and the code was updated a bit.
+*   Changed the default Role Icons on frames.
+*   Classic patch caused an error about OnButtonStateChanged.
+
 ### Version 13.87 [ March 14th 2025 ]
 *   Crest datatext to no longer show season 1.
 *   Player choice skin updated.
