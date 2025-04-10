@@ -84,8 +84,8 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	end
 end
 
-function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
-	if keepHidden or D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
+function D:ScriptErrorsFrame_OnError()
+	if D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
 
