@@ -9,7 +9,6 @@ local CreateFrame = CreateFrame
 local UIParent = UIParent
 
 local StaticPopup_Hide = StaticPopup_Hide
-
 local GetCVarBool = C_CVar.GetCVarBool
 
 local BUTTON_WIDTH = 75
