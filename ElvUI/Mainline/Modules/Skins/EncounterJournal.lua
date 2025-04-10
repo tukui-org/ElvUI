@@ -217,11 +217,17 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalMonthlyActivitiesTab:ClearAllPoints()
 	_G.EncounterJournalMonthlyActivitiesTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
 
-	_G.EncounterJournalSuggestTab:ClearAllPoints()
-	_G.EncounterJournalSuggestTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT', -5, 0)
+	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', function()
+		_G.EncounterJournalSuggestTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT', -5, 0)
+	end)
 
-	_G.EncounterJournalDungeonTab:ClearAllPoints()
-	_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalSuggestTab, 'RIGHT', -5, 0)
+	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', function()
+		if E.TimerunningID then
+			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT')
+		else
+			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalSuggestTab, 'RIGHT', -5, 0)
+		end
+	end)
 
 	_G.EncounterJournalRaidTab:ClearAllPoints()
 	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -5, 0)
@@ -229,7 +235,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalLootJournalTab:ClearAllPoints()
 	_G.EncounterJournalLootJournalTab:Point('LEFT', _G.EncounterJournalRaidTab, 'RIGHT', -5, 0)
 
-	--Encounter Info Frame
+	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
 	EncounterInfo:SetTemplate('Transparent')
 

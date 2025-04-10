@@ -1235,6 +1235,8 @@ end
 
 do
 	local highestVersion = E.version
+	local blueTextureString = E:TextureString(E.Media.ChatLogos.ElvBlue,':13:25')
+	local redTextureString = E:TextureString(E.Media.ChatLogos.ElvRed,':13:25')	
 	E:AddTag('ElvUI-Users', 20, function(unit)
 		if E.UserList and next(E.UserList) then
 			local name, realm = UnitName(unit)
@@ -1246,7 +1248,7 @@ do
 						highestVersion = userVersion
 					end
 
-					return (userVersion < highestVersion) and '|cffFF3333E|r' or '|cff3366ffE|r'
+					return (userVersion < highestVersion) and redTextureString or blueTextureString
 				end
 			end
 		end

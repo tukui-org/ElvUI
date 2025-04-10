@@ -367,6 +367,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[455020]	= List(), -- WoW's Anniversary
 		[1219312]	= List(), -- Mmm, Tacos...
 		[264689]	= List(), -- Fatigued (11.1 Bloodlust)
+		[1226677]	= List(), -- Cartel Jumper Cables
 	},
 }
 
@@ -987,6 +988,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[4664769] = List(), -- Frostshatter Boots
 		[466509] = List(), -- Stormfury Finger Gun
 		[1215488] = List(), -- Disintegration Beam (Actually getting beamed)
+		[469391] = List(6), -- Perforating Wound
 	-- Chrome King Gallywix
 		[466154] = List(4), -- Blast Burns
 		[466834] = List(6), -- Shock Barrage
