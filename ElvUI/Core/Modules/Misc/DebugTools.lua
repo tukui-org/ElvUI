@@ -28,7 +28,7 @@ local function FirstButton_OnClick(button)
 end
 
 local function LastButton_OnClick(button)
-	button.frame.index = #button.frame.order
+	button.frame.index = #button.frame.errorData
 	button.frame:Update()
 end
 
@@ -75,7 +75,7 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	local frame = _G.ScriptErrorsFrame
 	if not frame.firstButton then return end
 
-	if frame.index == 0 or #frame.order == 1 then
+	if frame.index == 0 or #frame.errorData == 1 then
 		frame.lastButton:Disable()
 		frame.firstButton:Disable()
 	else
