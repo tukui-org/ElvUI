@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 61 -- the real minor version is 119
+local MINOR_VERSION = 61 -- the real minor version is 121
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -48,8 +48,8 @@ end
 -- local WoWClassicHC = IsHardcoreActive and IsHardcoreActive()
 -- local WoWClassicSOD = IsEngravingEnabled and IsEngravingEnabled()
 
--- Enable custom flyouts for WoW Retail
-local UseCustomFlyout = WoWRetail or FlyoutButtonMixin
+-- Enable custom flyouts
+local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -1269,7 +1269,7 @@ function Generic:OnEnter()
 		UpdateNewAction(self)
 	end
 
-	if FlyoutButtonMixin then
+	if FlyoutButtonMixin and UseCustomFlyout then
 		FlyoutButtonMixin.OnEnter(self)
 	else
 		UpdateFlyout(self)
@@ -1282,7 +1282,7 @@ function Generic:OnEnter()
 end
 
 function Generic:OnLeave()
-	if FlyoutButtonMixin then
+	if FlyoutButtonMixin and UseCustomFlyout then
 		FlyoutButtonMixin.OnLeave(self)
 	else
 		UpdateFlyout(self)
@@ -1523,10 +1523,10 @@ function InitializeEventHandler()
 	if UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
-	end
 
-	if UseCustomFlyout and IsLoggedIn() then
-		DiscoverFlyoutSpells()
+		if IsLoggedIn() then
+			DiscoverFlyoutSpells()
+		end
 	end
 end
 
@@ -2525,7 +2525,7 @@ function UpdateSpellHighlight(self)
 end
 
 -- Hook UpdateFlyout so we can use the blizzy templates
-if ActionButton_UpdateFlyout then
+if ActionButton_UpdateFlyout then -- on Classic only?
 	hooksecurefunc("ActionButton_UpdateFlyout", function(self, ...)
 		if ButtonRegistry[self] then
 			UpdateFlyout(self)
@@ -2571,7 +2571,7 @@ if ActionButton_UpdateFlyout then
 		end
 		self.FlyoutArrow:Hide()
 	end
-elseif FlyoutButtonMixin and UseCustomFlyout then
+elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
 	function Generic:GetPopupDirection()
 		return self:GetAttribute("flyoutDirection") or "UP"
 	end
@@ -2597,7 +2597,7 @@ elseif FlyoutButtonMixin and UseCustomFlyout then
 			end
 		end
 	end
-else
+else -- for cata right now
 	function UpdateFlyout(self, isButtonDownOverride)
 		if self.FlyoutBorderShadow then
 			self.FlyoutBorderShadow:Hide()
