@@ -88,6 +88,12 @@ function E:AddTag(tagName, eventsOrSeconds, func, block)
 		Tags.Events[tagName] = (E.Classic and gsub(eventsOrSeconds, 'UNIT_HEALTH([^%s_]?)', 'UNIT_HEALTH_FREQUENT%1')) or gsub(eventsOrSeconds, 'UNIT_HEALTH_FREQUENT', 'UNIT_HEALTH')
 	end
 
+	-- we need to trigger the newindex on oUF side to set the env
+	if Tags.Methods[tagName] then
+		Tags.Methods[tagName] = nil
+	end
+
+	-- when we set these the env will be from oUF
 	Tags.Methods[tagName] = func
 
 	if RefreshNewTags then
