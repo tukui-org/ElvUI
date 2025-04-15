@@ -263,6 +263,17 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
+	E:AddTag(format('power:%s:healeronly', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+		local role = UnitGroupRolesAssigned(unit)
+		if role ~= 'HEALER' then return end
+
+		local powerType = UnitPowerType(unit)
+		local min = UnitPower(unit, powerType)
+		if min ~= 0 then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
+		end
+	end)
+
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
@@ -272,6 +283,16 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	end, not E.Retail)
 
 	E:AddTag(format('mana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+		local min = UnitPower(unit, POWERTYPE_MANA)
+		if min ~= 0 then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
+		end
+	end)
+
+	E:AddTag(format('mana:%s:healeronly', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+		local role = UnitGroupRolesAssigned(unit)
+		if role ~= 'HEALER' then return end
+
 		local min = UnitPower(unit, POWERTYPE_MANA)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
@@ -317,7 +338,24 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end)
 
+		E:AddTag(format('power:%s:shortvalue:healeronly', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+			local role = UnitGroupRolesAssigned(unit)
+			if role ~= 'HEALER' then return end
+
+			local min = UnitPower(unit, powerType)
+			if min ~= 0 and tagFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType), nil, true)
+			end
+		end)
+
 		E:AddTag(format('mana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
+		end)
+
+		E:AddTag(format('mana:%s:shortvalue:healeronly', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+			local role = UnitGroupRolesAssigned(unit)
+			if role ~= 'HEALER' then return end
+
 			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 		end)
 
@@ -552,6 +590,16 @@ E:AddTag('power:max', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end)
 
+E:AddTag('power:max:healeronly', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+	local role = UnitGroupRolesAssigned(unit)
+	if role ~= 'HEALER' then return end
+
+	local powerType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, powerType)
+
+	return E:GetFormattedText('CURRENT', max, max)
+end)
+
 E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 	local pType = UnitPowerType(unit)
 	local max = UnitPowerMax(unit, pType)
@@ -559,7 +607,26 @@ E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(uni
 	return E:GetFormattedText('CURRENT', max, max, nil, true)
 end)
 
+E:AddTag('power:max:shortvalue:healeronly', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+	local role = UnitGroupRolesAssigned(unit)
+	if role ~= 'HEALER' then return end
+
+	local pType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, pType)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end)
+
 E:AddTag('mana:max:shortvalue', 'UNIT_MAXPOWER', function(unit)
+	local max = UnitPowerMax(unit, POWERTYPE_MANA)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end)
+
+E:AddTag('mana:max:shortvalue:healeronly', 'UNIT_MAXPOWER', function(unit)
+	local role = UnitGroupRolesAssigned(unit)
+	if role ~= 'HEALER' then return end
+
 	local max = UnitPowerMax(unit, POWERTYPE_MANA)
 
 	return E:GetFormattedText('CURRENT', max, max, nil, true)
@@ -1563,18 +1630,30 @@ E.TagInfo = {
 		['permana'] = { category = 'Mana', description = "Displays the unit's mana percentage without decimals" },
 		['curmana'] = { category = 'Mana', description = "Displays the unit's current mana" },
 		['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
+		['mana:current-max-percent:healeronly'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full) if their role is set to healer" },
 		['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
+		['mana:current-max:healeronly'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash if their role is set to healer" },
 		['mana:current-percent'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full" },
+		['mana:current-percent:healeronly'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full if their role is set to healer" },
 		['mana:current'] = { category = 'Mana', description = "Displays the unit's current mana" },
+		['mana:current:healeronly'] = { category = 'Mana', description = "Displays the unit's current mana if their role is set to healer" },
 		['mana:deficit'] = { category = 'Mana', description = "Displays the player's mana as a deficit" },
+		['mana:deficit:healeronly'] = { category = 'Mana', description = "Displays the player's mana as a deficit if their role is set to healer" },
 		['mana:percent'] = { category = 'Mana', description = "Displays the player's mana as a percentage" },
+		['mana:percent:healeronly'] = { category = 'Mana', description = "Displays the player's mana as a percentage if their role is set to healer" },
 		['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
 		['mana:current-max-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current-max-percent:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 		['mana:current-max:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current-max:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 		['mana:current-percent:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current-percent:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 		['mana:current:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:current:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 		['mana:deficit:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:deficit:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 		['mana:max:shortvalue'] = { category = 'Mana', description = "" },
+		['mana:max:shortvalue:healeronly'] = { category = 'Mana', description = "" },
 	-- Miscellaneous
 		['race'] = { category = 'Miscellaneous', description = "Displays the race" },
 	-- Names
@@ -1613,18 +1692,30 @@ E.TagInfo = {
 		['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
 		['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals" },
 		['power:current-max-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" },
+		['power:current-max-percent:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash (% when not full power) if their role is set to healer" },
 		['power:current-max-percent'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power)" },
+		['power:current-max-percent:healeronly'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash (% when not full power) if their role is set to healer" },
 		['power:current-max:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash" },
+		['power:current-max:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the current power and max power, separated by a dash if their role is set to healer" },
 		['power:current-max'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash" },
+		['power:current-max:healeronly'] = { category = 'Power', description = "Displays the current power and max power, separated by a dash if their role is set to healer" },
 		['power:current-percent:shortvalue'] = { category = 'Power', description = "Shortvalue of the current power and power as a percentage, separated by a dash" },
+		['power:current-percent:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the current power and power as a percentage, separated by a dash if their role is set to healer" },
 		['power:current-percent'] = { category = 'Power', description = "Displays the current power and power as a percentage, separated by a dash" },
+		['power:current-percent:healeronly'] = { category = 'Power', description = "Displays the current power and power as a percentage, separated by a dash if their role is set to healer" },
 		['power:current:shortvalue'] = { category = 'Power', description = "Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000)" },
+		['power:current:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000) if their role is set to healer" },
 		['power:current'] = { category = 'Power', description = "Displays the unit's current amount of power" },
+		['power:current:healeronly'] = { category = 'Power', description = "Displays the unit's current amount of power if their role is set to healer" },
 		['power:deficit:shortvalue'] = { category = 'Power', description = "Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit)" },
+		['power:deficit:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer" },
 		['power:deficit'] = { category = 'Power', description = "Displays the power as a deficit (Total Power - Current Power = -Deficit)" },
+		['power:deficit:healeronly'] = { category = 'Power', description = "Displays the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer" },
 		['power:max:shortvalue'] = { category = 'Power', description = "Shortvalue of the unit's maximum power" },
+		['power:max:shortvalue:healeronly'] = { category = 'Power', description = "Shortvalue of the unit's maximum power if their role is set to healer" },
 		['power:max'] = { category = 'Power', description = "Displays the unit's maximum power" },
 		['power:percent'] = { category = 'Power', description = "Displays the unit's power as a percentage" },
+		['power:percent:healeronly'] = { category = 'Power', description = "Displays the unit's power as a percentage if their role is set to healer" },
 	-- PvP
 		['arena:number'] = { category = 'PvP', description = "Displays the arena number 1-5" },
 		['arenaspec'] = { category = 'PvP', description = "Displays the area spec of an unit" },
