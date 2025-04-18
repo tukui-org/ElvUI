@@ -1872,8 +1872,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		showLink = nil
 
 		-- fix blizzard formatting errors from localization strings
-		arg1 = gsub(arg1, '(%d%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
-		arg1 = gsub(arg1, '(%d%%)$', '%1%%') -- escape percentages on the end
+		arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
+		arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
 		arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
 	else
 		arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
@@ -3333,6 +3333,55 @@ function CH:SetupQuickJoin(holder)
 	hooksecurefunc(Button, 'HideToast', function() Button.Toast.backdrop:Hide() end)
 end
 
+function CH:CopyChat_OnMouseDown(button)
+	if button == 'LeftButton' and not self.isMoving then
+		self:StartMoving()
+		self.isMoving = true
+	elseif button == 'RightButton' and not self.isSizing then
+		self:StartSizing()
+		self.isSizing = true
+	end
+end
+
+function CH:CopyChat_OnMouseUp(button)
+	if button == 'LeftButton' and self.isMoving then
+		self:StopMovingOrSizing()
+		self.isMoving = false
+	elseif button == 'RightButton' and self.isSizing then
+		self:StopMovingOrSizing()
+		self.isSizing = false
+	end
+end
+
+function CH:CopyChat_OnHide()
+	if self.isMoving or self.isSizing then
+		self:StopMovingOrSizing()
+		self.isMoving = false
+		self.isSizing = false
+	end
+end
+
+function CH:CopyChatEditBox_OnEscapePressed()
+	CH.CopyChatFrame:Hide()
+end
+
+function CH:CopyChatEditBox_OnTextChanged(userInput)
+	if userInput then return end
+
+	local _, maxValue = CH.CopyChatScrollFrame.ScrollBar:GetMinMaxValues()
+	for _ = 1, maxValue do
+		_G.ScrollFrameTemplate_OnMouseWheel(CH.CopyChatScrollFrame, -1)
+	end
+end
+
+function CH:CopyChatScrolFrame_OnSizeChanged(width, height)
+	CH.CopyChatFrameEditBox:Size(width, height)
+end
+
+function CH:CopyChatScrolFrame_OnVerticalScroll(offset)
+	CH.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (CH.CopyChatFrameEditBox:GetHeight() - offset - self:GetHeight()))
+end
+
 function CH:BuildCopyChatFrame()
 	local frame = CreateFrame('Frame', 'ElvUI_CopyChatFrame', E.UIParent)
 	tinsert(_G.UISpecialFrames, 'ElvUI_CopyChatFrame')
@@ -3343,32 +3392,10 @@ function CH:BuildCopyChatFrame()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	frame:SetScript('OnMouseDown', function(copyChat, button)
-		if button == 'LeftButton' and not copyChat.isMoving then
-			copyChat:StartMoving()
-			copyChat.isMoving = true
-		elseif button == 'RightButton' and not copyChat.isSizing then
-			copyChat:StartSizing()
-			copyChat.isSizing = true
-		end
-	end)
-	frame:SetScript('OnMouseUp', function(copyChat, button)
-		if button == 'LeftButton' and copyChat.isMoving then
-			copyChat:StopMovingOrSizing()
-			copyChat.isMoving = false
-		elseif button == 'RightButton' and copyChat.isSizing then
-			copyChat:StopMovingOrSizing()
-			copyChat.isSizing = false
-		end
-	end)
-	frame:SetScript('OnHide', function(copyChat)
-		if copyChat.isMoving or copyChat.isSizing then
-			copyChat:StopMovingOrSizing()
-			copyChat.isMoving = false
-			copyChat.isSizing = false
-		end
-	end)
 	frame:SetFrameStrata('DIALOG')
+	frame:SetScript('OnMouseDown', CH.CopyChat_OnMouseDown)
+	frame:SetScript('OnMouseUp', CH.CopyChat_OnMouseUp)
+	frame:SetScript('OnHide', CH.CopyChat_OnHide)
 	CH.CopyChatFrame = frame
 
 	local editBox = CreateFrame('EditBox', 'ElvUI_CopyChatFrameEditBox', frame)
@@ -3378,25 +3405,15 @@ function CH:BuildCopyChatFrame()
 	editBox:EnableMouse(true)
 	editBox:SetAutoFocus(false)
 	editBox:SetFontObject('ChatFontNormal')
-	editBox:SetScript('OnEscapePressed', function() CH.CopyChatFrame:Hide() end)
-	editBox:SetScript('OnTextChanged', function(_, userInput)
-		if userInput then return end
-		local _, maxValue = CH.CopyChatScrollFrame.ScrollBar:GetMinMaxValues()
-		for _ = 1, maxValue do
-			_G.ScrollFrameTemplate_OnMouseWheel(CH.CopyChatScrollFrame, -1)
-		end
-	end)
+	editBox:SetScript('OnEscapePressed', CH.CopyChatEditBox_OnEscapePressed)
+	editBox:SetScript('OnTextChanged', CH.CopyChatEditBox_OnTextChanged)
 	CH.CopyChatFrameEditBox = editBox
 
-	local scrollFrame = CreateFrame('ScrollFrame', 'ElvUI_CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
+	local scrollFrame = CreateFrame('ScrollFrame', 'ElvUI_CopyChatFrameScrollFrame', frame, 'UIPanelScrollFrameTemplate')
 	scrollFrame:Point('TOPLEFT', frame, 'TOPLEFT', 8, -30)
 	scrollFrame:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
-	scrollFrame:SetScript('OnSizeChanged', function(_, width, height)
-		CH.CopyChatFrameEditBox:Size(width, height)
-	end)
-	scrollFrame:HookScript('OnVerticalScroll', function(scroll, offset)
-		CH.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (CH.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
-	end)
+	scrollFrame:SetScript('OnSizeChanged', CH.CopyChatScrolFrame_OnSizeChanged)
+	scrollFrame:HookScript('OnVerticalScroll', CH.CopyChatScrolFrame_OnVerticalScroll)
 	CH.CopyChatScrollFrame = scrollFrame
 
 	scrollFrame:SetScrollChild(editBox)
@@ -3747,6 +3764,7 @@ function CH:Initialize()
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
 	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
+	CH:BuildCopyChatFrame() -- Currently use this to display profiler information
 
 	if not E.private.chat.enable then
 		-- if the chat module is off we still need to spawn the dts for the panels
@@ -3832,7 +3850,6 @@ function CH:Initialize()
 	end
 
 	if CH.db.chatHistory then CH:DisplayChatHistory() end
-	CH:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
 	hooksecurefunc('ChatEdit_UpdateHeader', function(editbox)
