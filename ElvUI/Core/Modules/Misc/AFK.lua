@@ -54,6 +54,7 @@ end
 local afk = CreateFrame('Frame', 'ElvUIAFKFrame')
 local chat = CreateFrame('ScrollingMessageFrame', 'ElvUIAFKChat', afk)
 local bottom = CreateFrame('Frame', nil, afk)
+chat:UnregisterAllEvents()
 chat:SetMovable(true)
 
 AFK.AFKMode = afk
