@@ -136,39 +136,35 @@ function S:CooldownManager_HideGlowEvent(spellID)
 	LCG.HideOverlayGlow(self)
 end
 
-function S:CooldownManager_SkinItemFrame(frame)
-	if frame.Cooldown then
-		frame.Cooldown:SetSwipeTexture(E.media.blankTex)
+do
+	local hookFunctions = {
+		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo,
+		OnSpellActivationOverlayGlowShowEvent = S.CooldownManager_ShowGlowEvent,
+		OnSpellActivationOverlayGlowHideEvent = S.CooldownManager_HideGlowEvent,
+		RefreshOverlayGlow = S.CooldownManager_RefreshOverlayGlow,
+		SetTimerShown = S.CooldownManager_SetTimerShown
+	}
 
-		if not frame.Cooldown.isRegisteredCooldown then
-			E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+	function S:CooldownManager_SkinItemFrame(frame)
+		if frame.Cooldown then
+			frame.Cooldown:SetSwipeTexture(E.media.blankTex)
 
-			if frame.OnSpellActivationOverlayGlowShowEvent then
-				hooksecurefunc(frame, 'OnSpellActivationOverlayGlowShowEvent', S.CooldownManager_ShowGlowEvent)
-			end
+			if not frame.Cooldown.isRegisteredCooldown then
+				E:RegisterCooldown(frame.Cooldown, 'cdmanager')
 
-			if frame.OnSpellActivationOverlayGlowHideEvent then
-				hooksecurefunc(frame, 'OnSpellActivationOverlayGlowHideEvent', S.CooldownManager_HideGlowEvent)
-			end
-
-			if frame.RefreshOverlayGlow then
-				hooksecurefunc(frame, 'RefreshOverlayGlow', S.CooldownManager_RefreshOverlayGlow)
-			end
-
-			if frame.SetTimerShown then
-				hooksecurefunc(frame, 'SetTimerShown', S.CooldownManager_SetTimerShown)
-			end
-
-			if frame.RefreshSpellCooldownInfo then
-				hooksecurefunc(frame, 'RefreshSpellCooldownInfo', S.CooldownManager_RefreshSpellCooldownInfo)
+				for key, func in next, hookFunctions do
+					if frame[key] then
+						hooksecurefunc(frame, key, func)
+					end
+				end
 			end
 		end
-	end
 
-	if frame.Bar then
-		S:CooldownManager_SkinBar(frame, frame.Bar)
-	elseif frame.Icon then
-		S:CooldownManager_SkinIcon(frame, frame.Icon)
+		if frame.Bar then
+			S:CooldownManager_SkinBar(frame, frame.Bar)
+		elseif frame.Icon then
+			S:CooldownManager_SkinIcon(frame, frame.Icon)
+		end
 	end
 end
 
