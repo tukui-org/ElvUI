@@ -102,12 +102,22 @@ function S:CooldownManager_UpdateSwipeColor(frame)
 	S.CooldownManager_RefreshSpellCooldownInfo(frame)
 end
 
+function S:CooldownManager_SetTimerShown()
+	if self.Cooldown then
+		E:ToggleBlizzardCooldownText(self.Cooldown, self.Cooldown.timer)
+	end
+end
+
 function S:CooldownManager_SkinItemFrame(frame)
 	if frame.Cooldown then
 		frame.Cooldown:SetSwipeTexture(E.media.blankTex)
 
 		if not frame.Cooldown.isRegisteredCooldown then
 			E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+
+			if frame.SetTimerShown then
+				hooksecurefunc(frame, 'SetTimerShown', S.CooldownManager_SetTimerShown)
+			end
 
 			if frame.RefreshSpellCooldownInfo then
 				hooksecurefunc(frame, 'RefreshSpellCooldownInfo', S.CooldownManager_RefreshSpellCooldownInfo)
