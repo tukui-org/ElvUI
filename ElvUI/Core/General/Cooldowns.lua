@@ -135,40 +135,41 @@ function E:Cooldown_TimerStop(timer)
 	timer:Hide()
 end
 
-function E:Cooldown_Options(timer, db, parent)
+function E:Cooldown_Options(timer, opt, parent)
 	local threshold, colors, icolors, hhmm, mmss, fonts
-	if parent and db.override then
-		threshold = db.threshold
-		icolors = db.useIndicatorColor and E.TimeIndicatorColors[parent.CooldownOverride]
+	if parent and opt.override then
+		threshold = opt.threshold
+		icolors = opt.useIndicatorColor and E.TimeIndicatorColors[parent.CooldownOverride]
 		colors = E.TimeColors[parent.CooldownOverride]
 	end
 
-	if db.checkSeconds then
-		hhmm, mmss = db.hhmmThreshold, db.mmssThreshold
+	if opt.checkSeconds then
+		hhmm, mmss = opt.hhmmThreshold, opt.mmssThreshold
 	end
 
+	local db = E.db.cooldown
 	timer.timeColors = colors or E.TimeColors
-	timer.threshold = threshold or E.db.cooldown.threshold or E.TimeThreshold
-	timer.textColors = icolors or (E.db.cooldown.useIndicatorColor and E.TimeIndicatorColors)
-	timer.hhmmThreshold = hhmm or (E.db.cooldown.checkSeconds and E.db.cooldown.hhmmThreshold)
-	timer.mmssThreshold = mmss or (E.db.cooldown.checkSeconds and E.db.cooldown.mmssThreshold)
-	timer.targetAura = E.db.cooldown.targetAura and parent.targetAura
-	timer.hideBlizzard = db.hideBlizzard or E.db.cooldown.hideBlizzard
-	timer.roundTime = E.db.cooldown.roundTime
-	timer.showModRate = db.showModRate
+	timer.threshold = threshold or db.threshold or E.TimeThreshold
+	timer.textColors = icolors or (db.useIndicatorColor and E.TimeIndicatorColors)
+	timer.hhmmThreshold = hhmm or (db.checkSeconds and db.hhmmThreshold)
+	timer.mmssThreshold = mmss or (db.checkSeconds and db.mmssThreshold)
+	timer.targetAura = db.targetAura and parent.targetAura
+	timer.hideBlizzard = opt.hideBlizzard or db.hideBlizzard
+	timer.roundTime = db.roundTime
+	timer.showModRate = opt.showModRate
 
-	if db.reverse ~= nil then
+	if opt.reverse ~= nil then
 		local enabled = E:CooldownEnabled()
-		timer.reverseToggle = (enabled and not db.reverse) or (db.reverse and not enabled)
+		timer.reverseToggle = (enabled and not opt.reverse) or (opt.reverse and not enabled)
 	else
 		timer.reverseToggle = nil
 	end
 
 	if timer.CooldownOverride ~= 'auras' then
-		if (db ~= E.db.cooldown) and db.fonts and db.fonts.enable then
-			fonts = db.fonts -- custom fonts override default fonts
-		elseif E.db.cooldown.fonts and E.db.cooldown.fonts.enable then
-			fonts = E.db.cooldown.fonts -- default global font override
+		if (opt ~= db) and opt.fonts and opt.fonts.enable then
+			fonts = opt.fonts -- custom fonts override default fonts
+		elseif db.fonts and db.fonts.enable then
+			fonts = db.fonts -- default global font override
 		end
 
 		if fonts and fonts.enable then
@@ -489,6 +490,7 @@ function E:UpdateCooldownSettings(module)
 		E:UpdateCooldownSettings('nameplates')
 		E:UpdateCooldownSettings('actionbar')
 		E:UpdateCooldownSettings('unitframe')
+		E:UpdateCooldownSettings('cdmanager')
 		E:UpdateCooldownSettings('auras')
 
 		if IsAddOnLoaded('WeakAuras') then

@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 function S:Blizzard_GarrisonTemplates()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall or not E.private.skins.blizzard.garrison then return end
@@ -18,12 +17,12 @@ function S:Blizzard_GarrisonTemplates()
 			s.PortraitFrameStyled = true
 		end
 
-		local color = followerInfo.quality and ITEM_QUALITY_COLORS[followerInfo.quality]
-		if color then
-			if s.PortraitFrame.backdrop then
-				s.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			end
-			s.Name:SetVertexColor(color.r, color.g, color.b)
+		local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
+
+		s.Name:SetVertexColor(r, g, b)
+
+		if s.PortraitFrame.backdrop then
+			s.PortraitFrame.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 
 		s.XPBar:ClearAllPoints()

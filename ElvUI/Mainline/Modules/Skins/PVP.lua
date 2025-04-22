@@ -7,7 +7,6 @@ local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = C_Item.GetItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
@@ -188,9 +187,10 @@ function S:Blizzard_PVPUI()
 		end
 
 		if rewardTexture then
-			local r, g, b = GetItemQualityColor(rewardQuaility)
 			rewardFrame.Icon:SetTexture(rewardTexture)
+
 			if rewardFrame.Icon.backdrop then
+				local r, g, b = E:GetItemQualityColor(rewardQuaility)
 				rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end

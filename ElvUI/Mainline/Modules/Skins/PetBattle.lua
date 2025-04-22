@@ -8,7 +8,7 @@ local unpack = unpack
 local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
@@ -226,11 +226,9 @@ function S:PetBattleFrame()
 		s.Icon:SetTexCoord(unpack(E.TexCoords))
 
 		if s.petOwner and s.petIndex and (s.Icon.backdrop and s.Icon.backdrop:IsShown()) then
-			local rarity = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
-			if rarity then
-				local color = ITEM_QUALITY_COLORS[rarity]
-				s.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			end
+			local quality = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
+			local r, g, b = E:GetItemQualityColor(quality)
+			s.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 
@@ -250,7 +248,7 @@ function S:PetBattleFrame()
 			local tt = _G.BattlePetTooltip
 			if not tt then return end
 
-			local quality = TT.db.itemQuality and rarity and rarity > 1 and ITEM_QUALITY_COLORS[rarity]
+			local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
 			if quality then
 				tt.NineSlice:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 				tt.qualityChanged = true

@@ -14,8 +14,8 @@ end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
 	if self.Portrait.backdrop then
-		local color = E.QualityColors[info.quality or 1]
-		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		local r, g, b = E:GetItemQualityColor(info.quality)
+		self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -260,8 +260,8 @@ function S:Blizzard_GarrisonUI()
 			portraitFrame.IsSkinned = true
 		end
 
-		local color = _G.ITEM_QUALITY_COLORS[followerInfo.quality]
-		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 		portraitFrame.Portrait.backdrop:Show()
 	end)
 

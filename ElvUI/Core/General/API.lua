@@ -46,6 +46,7 @@ local UnitSex = UnitSex
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
 
+local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
@@ -208,6 +209,27 @@ function E:ClassColor(class, usePriestColor)
 		return E.PriestColors
 	else
 		return color
+	end
+end
+
+function E:GetQualityColor(quality)
+	if GetColorDataForItemQuality then
+		return GetColorDataForItemQuality(quality)
+	else
+		return _G.ITEM_QUALITY_COLORS[quality]
+	end
+end
+
+function E:GetItemQualityColor(quality)
+	if quality == -1 then
+		return 0, 0, 0
+	end
+
+	local color = quality and E:GetQualityColor(quality)
+	if color then
+		return color.r, color.g, color.b
+	else
+		return unpack(E.media.bordercolor)
 	end
 end
 

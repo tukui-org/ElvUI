@@ -23,6 +23,7 @@
 	<Script file='ChatConfig.lua'/>
 	<Script file='ChromieTime.lua'/>
 	<Script file='Collectables.lua'/>
+	<Script file='CooldownManager.lua'/>
 	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>
 	<Script file='Contribution.lua'/>

@@ -10,7 +10,7 @@ local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
 local GetContainerItemLink = C_Container.GetContainerItemLink
 local GetInventoryItemLink = C_Container.GetInventoryItemLink or GetInventoryItemLink
-local GetItemQualityColor = C_Item.GetItemQualityColor
+
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetInventoryItemID = GetInventoryItemID
@@ -126,7 +126,7 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					item:SetBackdropBorderColor(r, g, b)
 					item.ignoreBorderColors = true
 				else
@@ -193,7 +193,7 @@ function S:ContainerFrame()
 			if link then
 				local quality = GetItemQualityByID(link)
 				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else
@@ -222,7 +222,7 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else

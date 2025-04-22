@@ -10,8 +10,6 @@ local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
@@ -350,12 +348,8 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.IsSkinned = true
 	end
 
-	local color = ITEM_QUALITY_COLORS[quality]
-	if color then
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
-	end
+	local r, g, b = E:GetItemQualityColor(quality)
+	frame.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
 end
 
 local function SkinGarrisonShipFollowerAlert(frame)
@@ -495,12 +489,8 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 	end
 
 	if frame.PortraitFrame and frame.PortraitFrame.squareBG then
-		local color = quality and ITEM_QUALITY_COLORS[quality]
-		if color then
-			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
-		end
+		local r, g, b = E:GetItemQualityColor(quality)
+		frame.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -534,12 +524,8 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 	end
 
 	local itemRarity = GetItemQualityByID(itemLink)
-	local color = itemRarity and ITEM_QUALITY_COLORS[itemRarity]
-	if color then
-		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
-	end
+	local r, g, b = E:GetItemQualityColor(itemRarity)
+	frame.Icon.b:SetBackdropBorderColor(r, g, b)
 end
 
 local function SkinLootWonAlert(frame)

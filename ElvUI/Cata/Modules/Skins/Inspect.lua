@@ -5,7 +5,6 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
@@ -13,13 +12,9 @@ local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
 	local quality = unit and GetInventoryItemQuality(unit, button:GetID())
-	if quality and quality > 1 then
-		local r, g, b = GetItemQualityColor(quality)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
-		return
-	end
 
-	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+	button.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 function S:Blizzard_InspectUI()

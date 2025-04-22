@@ -17,7 +17,6 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
@@ -36,15 +35,10 @@ local function UpdateLoots()
 			frame.Icon:SetParent(frame.backdrop)
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
-			if itemLink then
-				local itemRarity = GetItemQualityByID(itemLink)
-				if itemRarity then
-					local color = ITEM_QUALITY_COLORS[itemRarity]
-
-					if color then
-						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-					end
-				end
+			local itemRarity = itemLink and GetItemQualityByID(itemLink)
+			if itemRarity then
+				local r, g, b = E:GetItemQualityColor(itemRarity)
+				frame.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 
 			frame.IsSkinned = true
@@ -89,7 +83,6 @@ function S:LootFrame()
 		if item then
 			local icon = item.Icon
 			local texture = icon:GetTexture()
-			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
 			if item.IconBorder then
 				item.IconBorder:SetAlpha(0)
@@ -104,7 +97,8 @@ function S:LootFrame()
 				item.backdrop:SetOutside(icon)
 			end
 
-			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality)
+			item.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 

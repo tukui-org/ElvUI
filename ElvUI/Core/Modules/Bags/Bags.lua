@@ -76,7 +76,6 @@ local C_Item_IsBound = C_Item.IsBound
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemSpell = C_Item.GetItemSpell
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local SetCurrencyBackpack = C_CurrencyInfo.SetCurrencyBackpack or SetCurrencyBackpack
 
 local SortBags = C_Container.SortBags
@@ -449,7 +448,7 @@ function B:UpdateItemDisplay()
 				if B.db.itemLevelCustomColorEnable then
 					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
 				else
-					local r, g, b = B:GetItemQualityColor(slot.rarity)
+					local r, g, b = E:GetItemQualityColor(slot.rarity)
 					slot.itemLevel:SetTextColor(r, g, b)
 				end
 
@@ -562,17 +561,9 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
-function B:GetItemQualityColor(rarity)
-	if rarity then
-		return GetItemQualityColor(rarity)
-	else
-		return 1, 1, 1
-	end
-end
-
 function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
 	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
-	local qR, qG, qB = B:GetItemQualityColor(slot.rarity)
+	local qR, qG, qB = E:GetItemQualityColor(slot.rarity)
 
 	if slot.itemLevel then
 		if B.db.itemLevelCustomColorEnable then

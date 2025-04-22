@@ -12,7 +12,6 @@ local GetBagName = C_Container.GetBagName
 local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
 local GetContainerNumSlots = C_Container.GetContainerNumSlots
 local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
@@ -79,8 +78,9 @@ local function OnEnter()
 
 			if i > 0 then
 				local id = ContainerIDToInventoryID(i)
-				r, g, b = GetItemQualityColor(GetInventoryItemQuality('player', id) or 1)
 				icon = GetInventoryItemTexture('player', id)
+
+				r, g, b = E:GetItemQualityColor(GetInventoryItemQuality('player', id) or 1)
 			end
 
 			DT.tooltip:AddDoubleLine(format(iconString, icon or E.Media.Textures.Backpack, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)

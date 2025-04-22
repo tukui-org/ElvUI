@@ -11,7 +11,6 @@ local GetInboxNumItems = GetInboxNumItems
 local GetSendMailItem = GetSendMailItem
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function MailFrameSkin()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
@@ -25,12 +24,8 @@ local function MailFrameSkin()
 		local name = GetSendMailItem(i)
 		if name then
 			local quality = GetItemQualityByID(name)
-			if quality and quality > 1 then
-				local r, g, b = GetItemQualityColor(quality)
-				button:SetBackdropBorderColor(r, g, b)
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
+			local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+			button:SetBackdropBorderColor(r, g, b)
 
 			local icon = button:GetNormalTexture()
 			if icon then
@@ -91,12 +86,8 @@ function S:MailFrame()
 					local itemlink = GetInboxItemLink(index, 1)
 					if itemlink then
 						local quality = GetItemQualityByID(itemlink)
-						if quality and quality > 1 then
-							local r, g, b = GetItemQualityColor(quality)
-							mail.backdrop:SetBackdropBorderColor(r, g, b)
-						else
-							mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end
+						local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+						mail.backdrop:SetBackdropBorderColor(r, g, b)
 					end
 				elseif isGM then
 					mail.backdrop:SetBackdropBorderColor(0, 0.56, 0.94)
@@ -208,12 +199,8 @@ function S:MailFrame()
 
 			if itemLink then
 				local quality = GetItemQualityByID(itemLink)
-				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
+				local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+				button:SetBackdropBorderColor(r, g, b)
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end

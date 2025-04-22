@@ -12,8 +12,6 @@ local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
-local GetItemQualityColor = C_Item.GetItemQualityColor
-
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 
@@ -47,12 +45,8 @@ local function PaperDollItemSlotButtonUpdate(frame)
 
 	local id = frame:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
-	if rarity and rarity > 1 then
-		local r, g, b = GetItemQualityColor(rarity)
-		frame:SetBackdropBorderColor(r, g, b)
-	else
-		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
+	frame:SetBackdropBorderColor(r, g, b)
 end
 
 local function HandleTabs()

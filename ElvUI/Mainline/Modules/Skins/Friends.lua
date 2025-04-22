@@ -41,10 +41,11 @@ local function BattleNetFrame_OnClick()
 end
 
 local function RAFRewardQuality(button)
-	local color = button.item and button.item:GetItemQualityColor()
-	if color and button.Icon then
-		button.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-	end
+	if not button.Icon or not button.item then return end
+
+	local quality = button.item:GetItemQuality()
+	local r, g, b = E:GetItemQualityColor(quality)
+	button.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 local function RAFRewards()

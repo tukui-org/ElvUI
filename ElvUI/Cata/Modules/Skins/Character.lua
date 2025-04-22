@@ -7,7 +7,6 @@ local unpack, next = unpack, next
 
 local hooksecurefunc = hooksecurefunc
 local UnitResistance = UnitResistance
-local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local HasPetUI = HasPetUI
@@ -55,12 +54,8 @@ local function TitleManagerPane_Update(frame)
 end
 
 local function HandleItemButtonQuality(button, rarity)
-	if rarity and rarity > 1 then
-		local r, g, b = GetItemQualityColor(rarity)
-		button:SetBackdropBorderColor(r, g, b)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
+	button:SetBackdropBorderColor(r, g, b)
 end
 
 local function PaperDollItemButtonQuality(button)

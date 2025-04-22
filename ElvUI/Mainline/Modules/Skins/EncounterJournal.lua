@@ -7,7 +7,6 @@ local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -127,12 +126,8 @@ local function ItemSetsItemBorder(border, atlas)
 	local parent = border:GetParent()
 	local backdrop = parent and parent.Icon and parent.Icon.backdrop
 	if backdrop then
-		local color = E.QualityColors[lootQuality[atlas]]
-		if color then
-			backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
+		local r, g, b = E:GetItemQualityColor(lootQuality[atlas])
+		backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -438,13 +433,9 @@ function S:Blizzard_EncounterJournal()
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
 				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
 
-				local r, g, b = unpack(E.media.bordercolor)
-				if rewardData.itemID then
-					local quality = GetItemQualityByID(rewardData.itemID)
-					if quality and quality > 1 then
-						r, g, b = GetItemQualityColor(quality)
-					end
-				end
+				local quality = rewardData.itemID and GetItemQualityByID(rewardData.itemID)
+				local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+
 				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)

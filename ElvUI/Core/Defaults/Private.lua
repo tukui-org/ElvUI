@@ -103,6 +103,7 @@ V.skins = {
 		channels = true,
 		character = true,
 		chromieTime = true,
+		cooldownManager = true,
 		collections = true,
 		communities = true,
 		contribution = true,

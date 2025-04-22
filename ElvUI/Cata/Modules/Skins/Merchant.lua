@@ -9,7 +9,6 @@ local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function merchantItemPoint()
 	_G.MerchantItem1:PointXY(6, -40)
@@ -140,7 +139,7 @@ function S:MerchantFrame()
 				if button.link then
 					local quality = GetItemQualityByID(button.link)
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
+						local r, g, b = E:GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
 						name:SetTextColor(r, g, b)
 					else
@@ -157,7 +156,7 @@ function S:MerchantFrame()
 			if itemName then
 				local quality = GetItemQualityByID(itemName)
 				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
 					_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
 				else
@@ -186,7 +185,7 @@ function S:MerchantFrame()
 					local quality = GetItemQualityByID(itemName)
 
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
+						local r, g, b = E:GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
 						name:SetTextColor(r, g, b)
 					else

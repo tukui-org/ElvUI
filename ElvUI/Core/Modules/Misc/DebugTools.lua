@@ -27,7 +27,7 @@ local function FirstButton_OnClick(button)
 end
 
 local function LastButton_OnClick(button)
-	button.frame.index = #button.frame.order
+	button.frame.index = #button.frame.errorData
 	button.frame:Update()
 end
 
@@ -74,7 +74,7 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	local frame = _G.ScriptErrorsFrame
 	if not frame.firstButton then return end
 
-	if frame.index == 0 or #frame.order == 1 then
+	if frame.index == 0 or #frame.errorData == 1 then
 		frame.lastButton:Disable()
 		frame.firstButton:Disable()
 	else
@@ -83,8 +83,8 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	end
 end
 
-function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
-	if keepHidden or D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
+function D:ScriptErrorsFrame_OnError()
+	if D.MessagePrinted or not InCombatLockdown() or not GetCVarBool('scriptErrors') then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
 
@@ -114,7 +114,7 @@ function D:Initialize()
 	local frame = _G.ScriptErrorsFrame
 	D:SecureHookScript(frame, 'OnShow', D.ModifyErrorFrame)
 	D:SecureHook(frame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
-	D:SecureHook(frame, 'OnError', D.ScriptErrorsFrame_OnError)
+	D:SecureHook(frame, 'DisplayMessageInternal', D.ScriptErrorsFrame_OnError) -- We need to verify that 'DisplayMessageInternal' is the new way
 	D:SecureHook('StaticPopup_Show')
 
 	D:RegisterEvent('PLAYER_REGEN_DISABLED')

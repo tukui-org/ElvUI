@@ -310,13 +310,9 @@ function S:LookingForGroupFrames()
 		ScenarioQueueFrame:StripTextures()
 		_G.ScenarioFinderFrameInset:StripTextures()
 		_G.ScenarioQueueFrameBackground:SetAlpha(0)
-		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown)
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
-
 		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
-		S:HandleScrollBar(_G.ScenarioQueueFrameSpecificScrollFrame.ScrollBar)
-
 		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
 			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
 		end
