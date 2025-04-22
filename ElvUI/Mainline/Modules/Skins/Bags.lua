@@ -26,7 +26,7 @@ local function UpdateBorderColors(button)
 	if button.type and button.type == QUESTS_LABEL then
 		button:SetBackdropBorderColor(1, 0.2, 0.2)
 	else
-		local r, g, b = E:GetQualityColor(button.quality and button.quality > 1 and button.quality)
+		local r, g, b = E:GetItemQualityColor(button.quality and button.quality > 1 and button.quality)
 		button:SetBackdropBorderColor(r, g, b)
 	end
 end

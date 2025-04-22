@@ -1774,7 +1774,7 @@ do
 				end
 
 				if portrait.backdrop then
-					local r, g, b = E:GetQualityColor(portrait.quality or (follower.info and follower.info.quality))
+					local r, g, b = E:GetItemQualityColor(portrait.quality or (follower.info and follower.info.quality))
 					portrait.backdrop:SetBackdropBorderColor(r, g, b)
 				end
 			end

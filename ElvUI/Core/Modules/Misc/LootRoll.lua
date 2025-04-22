@@ -316,7 +316,7 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
 
 	local db = E.db.general.lootRoll
-	local r, g, b = E:GetQualityColor(quality)
+	local r, g, b = E:GetItemQualityColor(quality)
 
 	wipe(bar.rolls)
 

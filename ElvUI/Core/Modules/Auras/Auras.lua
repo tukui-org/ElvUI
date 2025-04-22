@@ -301,7 +301,7 @@ function A:UpdateTempEnchant(button, index, expiration)
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
-		local r, g, b = E:GetQualityColor(quality and quality > 1 and quality)
+		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
 
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)

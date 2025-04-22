@@ -37,7 +37,7 @@ local function UpdateLoots()
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
 			local itemRarity = itemLink and GetItemQualityByID(itemLink)
 			if itemRarity then
-				local r, g, b = E:GetQualityColor(itemRarity)
+				local r, g, b = E:GetItemQualityColor(itemRarity)
 				frame.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 

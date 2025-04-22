@@ -316,7 +316,7 @@ function M:LOOT_OPENED(_, autoloot)
 		end
 	else
 		local slot = lootFrame.slots[1] or CreateSlot(1)
-		local r, g, b = E:GetQualityColor(0)
+		local r, g, b = E:GetItemQualityColor(0)
 
 		slot.name:SetText(L["No Loot"])
 		slot.name:SetTextColor(r, g, b)
@@ -332,7 +332,7 @@ function M:LOOT_OPENED(_, autoloot)
 
 	AnchorSlots(lootFrame)
 
-	local r, g, b = E:GetQualityColor(max_quality)
+	local r, g, b = E:GetItemQualityColor(max_quality)
 	lootFrame:SetBackdropBorderColor(r, g, b, 0.8)
 	lootFrame:Width(max(max_width + 60, lootFrame.title:GetStringWidth() + 5))
 end
