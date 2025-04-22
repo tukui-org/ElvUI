@@ -90,12 +90,22 @@ function S:CooldownManager_SkinBar(frame, bar)
 	end
 end
 
+function S:CooldownManager_RefreshSpellCooldownInfo()
+	if self.Cooldown then
+		self.Cooldown:SetSwipeColor(0, 0, 0, 0.7)
+	end
+end
+
 function S:CooldownManager_SkinItemFrame(frame)
 	if frame.Cooldown then
 		frame.Cooldown:SetSwipeTexture(E.media.blankTex)
 
 		if not frame.Cooldown.isRegisteredCooldown then
 			E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+
+			if frame.RefreshSpellCooldownInfo then
+				hooksecurefunc(frame, 'RefreshSpellCooldownInfo', S.CooldownManager_RefreshSpellCooldownInfo)
+			end
 		end
 	end
 
