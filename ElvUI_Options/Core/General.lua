@@ -302,11 +302,14 @@ blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], 
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
 
-blizz.cooldownManager = ACH:Group(E.NewSign..L["Cooldown Manager"], nil, 70, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateTexts() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
+blizz.cooldownManager = ACH:Group(E.NewSign..L["Cooldown Manager"], nil, 70, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateViewers() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
 local cdManager = blizz.cooldownManager.args
 
+cdManager.swipeColorSpell = ACH:Color(L["Swipe: Spell"], nil, 1, true, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a S:CooldownManager_UpdateViewers() end)
+cdManager.swipeColorAura = ACH:Color(L["Swipe: Aura"], nil, 2, true, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a S:CooldownManager_UpdateViewers() end)
+
 cdManager.nameGroup = ACH:Group(L["Name"], nil, 10)
-cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateViewers() end)
 
 cdManager.nameGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
 cdManager.nameGroup.args.fontGroup.inline = true
@@ -321,7 +324,7 @@ cdManager.nameGroup.args.positionGroup.args.namexOffset = ACH:Range(L["X-Offset"
 cdManager.nameGroup.args.positionGroup.args.nameyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
 cdManager.durationGroup = ACH:Group(L["Duration"], nil, 20)
-cdManager.durationGroup.args.durationFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+cdManager.durationGroup.args.durationFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateViewers() end)
 
 cdManager.durationGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
 cdManager.durationGroup.args.fontGroup.inline = true
@@ -336,7 +339,7 @@ cdManager.durationGroup.args.positionGroup.args.durationxOffset = ACH:Range(L["X
 cdManager.durationGroup.args.positionGroup.args.durationyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
 cdManager.countGroup = ACH:Group(L["Count"], nil, 30)
-cdManager.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+cdManager.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateViewers() end)
 
 cdManager.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
 cdManager.countGroup.args.fontGroup.inline = true
