@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
+local IsSpellOverlayed = IsSpellOverlayed
+local ActionButton_HideOverlayGlow = ActionButton_HideOverlayGlow
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
@@ -108,12 +111,49 @@ function S:CooldownManager_SetTimerShown()
 	end
 end
 
+function S:CooldownManager_RefreshOverlayGlow()
+	ActionButton_HideOverlayGlow(self) -- hide blizzards
+
+	local spellID = self:GetSpellID()
+	if spellID and IsSpellOverlayed(spellID) then
+		LCG.ShowOverlayGlow(self)
+	else
+		LCG.HideOverlayGlow(self)
+	end
+end
+
+function S:CooldownManager_ShowGlowEvent(spellID)
+	if not self:NeedSpellActivationUpdate(spellID) then return end
+
+	ActionButton_HideOverlayGlow(self) -- hide blizzards
+	LCG.ShowOverlayGlow(self)
+end
+
+function S:CooldownManager_HideGlowEvent(spellID)
+	if not self:NeedSpellActivationUpdate(spellID) then return end
+
+	ActionButton_HideOverlayGlow(self)
+	LCG.HideOverlayGlow(self)
+end
+
 function S:CooldownManager_SkinItemFrame(frame)
 	if frame.Cooldown then
 		frame.Cooldown:SetSwipeTexture(E.media.blankTex)
 
 		if not frame.Cooldown.isRegisteredCooldown then
 			E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+
+			if frame.OnSpellActivationOverlayGlowShowEvent then
+				hooksecurefunc(frame, 'OnSpellActivationOverlayGlowShowEvent', S.CooldownManager_ShowGlowEvent)
+			end
+
+			if frame.OnSpellActivationOverlayGlowHideEvent then
+				hooksecurefunc(frame, 'OnSpellActivationOverlayGlowHideEvent', S.CooldownManager_HideGlowEvent)
+			end
+
+			if frame.RefreshOverlayGlow then
+				hooksecurefunc(frame, 'RefreshOverlayGlow', S.CooldownManager_RefreshOverlayGlow)
+			end
 
 			if frame.SetTimerShown then
 				hooksecurefunc(frame, 'SetTimerShown', S.CooldownManager_SetTimerShown)
