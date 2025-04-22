@@ -221,6 +221,10 @@ function E:GetQualityColor(quality)
 end
 
 function E:GetItemQualityColor(quality)
+	if quality == -1 then
+		return 0, 0, 0
+	end
+
 	local color = quality and E:GetQualityColor(quality)
 	if color then
 		return color.r, color.g, color.b
