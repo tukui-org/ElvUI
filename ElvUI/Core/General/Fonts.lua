@@ -31,7 +31,7 @@ local FontMap = {
 if E.Retail then
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
-	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont } } -- not _G.ObjectiveTrackerHeaderFont ?
+	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont, _G.ObjectiveTrackerHeaderFont } }
 
 	for i = 12, 22 do
 		tinsert(FontMap.objective.objects, _G['ObjectiveTrackerFont'..i])
