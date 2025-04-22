@@ -617,27 +617,26 @@ function S:SkinReadyDialog(dialog, bottom)
 end
 
 do
-	local quality = Enum.ItemQuality
+	local ITEMQUALITY = Enum.ItemQuality
 	local iconColors = {
-		['auctionhouse-itemicon-border-gray']		= E.QualityColors[quality.Poor],
-		['auctionhouse-itemicon-border-white']		= E.QualityColors[quality.Common],
-		['auctionhouse-itemicon-border-green']		= E.QualityColors[quality.Uncommon],
-		['auctionhouse-itemicon-border-blue']		= E.QualityColors[quality.Rare],
-		['auctionhouse-itemicon-border-purple']		= E.QualityColors[quality.Epic],
-		['auctionhouse-itemicon-border-orange']		= E.QualityColors[quality.Legendary],
-		['auctionhouse-itemicon-border-artifact']	= E.QualityColors[quality.Artifact],
-		['auctionhouse-itemicon-border-account']	= E.QualityColors[quality.Heirloom]
+		['auctionhouse-itemicon-border-gray']		= ITEMQUALITY.Poor,
+		['auctionhouse-itemicon-border-white']		= ITEMQUALITY.Common,
+		['auctionhouse-itemicon-border-green']		= ITEMQUALITY.Uncommon,
+		['auctionhouse-itemicon-border-blue']		= ITEMQUALITY.Rare,
+		['auctionhouse-itemicon-border-purple']		= ITEMQUALITY.Epic,
+		['auctionhouse-itemicon-border-orange']		= ITEMQUALITY.Legendary,
+		['auctionhouse-itemicon-border-artifact']	= ITEMQUALITY.Artifact,
+		['auctionhouse-itemicon-border-account']	= ITEMQUALITY.Heirloom
 	}
 
 	local function colorAtlas(border, atlas)
-		local color = iconColors[atlas]
-		if not color then return end
+		local r, g, b = E:GetItemQualityColor(iconColors[atlas])
 
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
-			border.customFunc(border, color.r, color.g, color.b, 1, br, bg, bb)
+			border.customFunc(border, r, g, b, 1, br, bg, bb)
 		elseif border.customBackdrop then
-			border.customBackdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			border.customBackdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 
@@ -1710,10 +1709,8 @@ function S:HandleShipFollowerPage(followerTab)
 end
 
 local function UpdateFollowerQuality(self, followerInfo)
-	if followerInfo then
-		local color = E.QualityColors[followerInfo.quality or 1]
-		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-	end
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+	self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 do

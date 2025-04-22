@@ -126,12 +126,8 @@ local function ItemSetsItemBorder(border, atlas)
 	local parent = border:GetParent()
 	local backdrop = parent and parent.Icon and parent.Icon.backdrop
 	if backdrop then
-		local color = E.QualityColors[lootQuality[atlas]]
-		if color then
-			backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		else
-			backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
+		local r, g, b = E:GetItemQualityColor(lootQuality[atlas])
+		backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 

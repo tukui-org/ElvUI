@@ -5,16 +5,19 @@ local _G = _G
 local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
+local ITEMQUALITY_EPIC = Enum.ItemQuality.Epic or 4
+
 -- Credits Siweia | AuroraClassic
 
-local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
 local function SkinRewardIcon(itemFrame)
 	if not itemFrame.IsSkinned then
+		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_EPIC)
+
 		itemFrame:CreateBackdrop('Transparent')
 		itemFrame:DisableDrawLayer('BORDER')
 		itemFrame.Icon:Point('LEFT', 6, 0)
 		S:HandleIcon(itemFrame.Icon, true)
-		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
+		itemFrame.backdrop:SetBackdropBorderColor(r, g, b)
 		itemFrame.IsSkinned = true
 	end
 end

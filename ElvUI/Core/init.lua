@@ -101,11 +101,11 @@ do -- Expansions
 	E.IsEngravingEnabled = IsEngravingEnabled and IsEngravingEnabled()
 end
 
--- Item Qualitiy stuff, also used by MerathilisUI
+-- DONT USE: Deprecated
 E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
-E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
+E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 
 do
 	function E:AddonCompartmentFunc()

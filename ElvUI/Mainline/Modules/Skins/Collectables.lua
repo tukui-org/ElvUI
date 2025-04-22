@@ -15,6 +15,8 @@ local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
+
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
@@ -219,7 +221,7 @@ local function HeirloomsJournalUpdateButton(_, button)
 	button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
 	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
-		local r, g, b = E:GetItemQualityColor(7)
+		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_HEIRLOOM)
 		button.name:SetTextColor(0.9, 0.9, 0.9)
 		button.level:SetTextColor(0.9, 0.9, 0.9)
 		button.special:SetTextColor(1, .82, 0)
@@ -271,14 +273,9 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 		itemFrame.IconBorder:Hide()
 	end
 
-	if itemFrame.collected then
-		local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
-		local color = _G.BAG_ITEM_QUALITY_COLORS[quality or 1]
-		icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		local r, g, b = unpack(E.media.bordercolor)
-		icon.backdrop:SetBackdropBorderColor(r, g, b)
-	end
+	local source = itemFrame.collected and itemFrame.sourceID and C_TransmogCollection_GetSourceInfo(itemFrame.sourceID)
+	local r, g, b = E:GetItemQualityColor(source and source.quality)
+	icon.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 local function HandleDynamicFlightTexture(button, index)

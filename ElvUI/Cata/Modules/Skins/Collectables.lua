@@ -12,6 +12,8 @@ local hooksecurefunc = hooksecurefunc
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 
+local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
+
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
@@ -212,7 +214,7 @@ local function HeirloomsJournalUpdateButton(_, button)
 	button.name:Point('LEFT', button, 'RIGHT', 4, 8)
 
 	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
-		local r, g, b = E:GetItemQualityColor(7)
+		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_HEIRLOOM)
 		button.name:SetTextColor(0.9, 0.9, 0.9)
 		button.special:SetTextColor(1, .82, 0)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
