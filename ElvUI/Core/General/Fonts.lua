@@ -31,7 +31,7 @@ local FontMap = {
 if E.Retail then
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
-	FontMap.objective = { objects = { _G.ObjectiveFont } } -- not _G.ObjectiveTrackerHeaderFont ?
+	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont } } -- not _G.ObjectiveTrackerHeaderFont ?
 
 	for i = 12, 22 do
 		tinsert(FontMap.objective.objects, _G['ObjectiveTrackerFont'..i])
@@ -212,6 +212,7 @@ function E:UpdateBlizzardFonts()
 
 		-- objective fonts
 		E:SetFont(_G.ObjectiveTrackerHeaderFont,			NORMAL, (blizz and 14) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.ObjectiveTrackerLineFont,				NORMAL, (blizz and 12) or unscale or size)
 		E:SetFont(_G.ObjectiveTrackerFont12,				NORMAL, (blizz and 12) or unscale or size)
 		E:SetFont(_G.ObjectiveTrackerFont13,				NORMAL, (blizz and 13) or unscale or medium)
 		E:SetFont(_G.ObjectiveTrackerFont14,				NORMAL, (blizz and 14) or unscale or medium)
