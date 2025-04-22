@@ -24,7 +24,6 @@ local GetItemInfo = C_Item.GetItemInfo
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local TRANSMOGRIFY, ROLL_DISENCHANT = TRANSMOGRIFY, ROLL_DISENCHANT
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
@@ -315,7 +314,9 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 	local itemLink = GetLootRollItemLink(rollID)
 	local _, _, _, itemLevel, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-	local db, color = E.db.general.lootRoll, ITEM_QUALITY_COLORS[quality]
+
+	local db = E.db.general.lootRoll
+	local color = E:GetQualityColor(quality)
 
 	wipe(bar.rolls)
 

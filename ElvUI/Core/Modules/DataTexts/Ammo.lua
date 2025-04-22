@@ -11,7 +11,6 @@ local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemInfoInstant = C_Item.GetItemInfoInstant
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 local GetContainerNumSlots = C_Container.GetContainerNumSlots
 local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
@@ -99,7 +98,8 @@ local function OnEnter()
 					local name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(info.hyperlink)
 					local count = GetItemCount(info.itemID)
 					if equipLoc == 'INVTYPE_AMMO' or equipLoc == 'INVTYPE_THROWN' then
-						DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), ' ', name), count, GetItemQualityColor(quality))
+						local color = E:GetQualityColor(quality)
+						DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), ' ', name), count, color.r, color.g, color.b)
 						itemCount[info.itemID] = count
 					end
 				end
@@ -114,11 +114,12 @@ local function OnEnter()
 		if itemID then
 			local name, _, quality, _, _, _, itemSubType, _, _, texture, itemClassID, itemSubClassID = GetItemInfo(itemID)
 			if itemSubClassID == LE_ITEM_CLASS_QUIVER or itemClassID == LE_ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
+				local color = E:GetQualityColor(quality)
 				local free, total = GetContainerNumFreeSlots(i), GetContainerNumSlots(i)
 				local used = total - free
 
 				DT.tooltip:AddLine(itemSubType)
-				DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), '  ', name), format('%d / %d', used, total), GetItemQualityColor(quality))
+				DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), '  ', name), format('%d / %d', used, total), color.r, color.g, color.b)
 			end
 		end
 	end

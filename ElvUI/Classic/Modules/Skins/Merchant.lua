@@ -11,7 +11,6 @@ local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 
@@ -156,9 +155,9 @@ function S:MerchantFrame()
 				if button.link then
 					local quality = GetItemQualityByID(button.link)
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
-						button:SetBackdropBorderColor(r, g, b)
-						name:SetTextColor(r, g, b)
+						local color = E:GetQualityColor(quality)
+						button:SetBackdropBorderColor(color.r, color.g, color.b)
+						name:SetTextColor(color.r, color.g, color.b)
 					else
 						button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						name:SetTextColor(1, 1, 1)
@@ -173,9 +172,9 @@ function S:MerchantFrame()
 			if itemName then
 				local quality = GetItemQualityByID(itemName)
 				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
-					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
-					_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
+					local color = E:GetQualityColor(quality)
+					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(color.r, color.g, color.b)
+					_G.MerchantBuyBackItemName:SetTextColor(color.r, color.g, color.b)
 				else
 					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					_G.MerchantBuyBackItemName:SetTextColor(1, 1, 1)
@@ -202,9 +201,9 @@ function S:MerchantFrame()
 					local name = _G['MerchantItem'..i..'Name']
 					local quality = GetItemQualityByID(itemName)
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
-						button:SetBackdropBorderColor(r, g, b)
-						name:SetTextColor(r, g, b)
+						local color = E:GetQualityColor(quality)
+						button:SetBackdropBorderColor(color.r, color.g, color.b)
+						name:SetTextColor(color.r, color.g, color.b)
 					else
 						button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						name:SetTextColor(1, 1, 1)

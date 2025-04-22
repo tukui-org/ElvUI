@@ -9,11 +9,8 @@ local ipairs, pairs = ipairs, pairs
 local CreateFrame = CreateFrame
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc
-local GetItemQualityColor = GetItemQualityColor
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
-
-local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
 
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
@@ -191,8 +188,8 @@ local function ToySpellButtonUpdateButton(button)
 	if button.itemID and PlayerHasToy(button.itemID) then
 		local quality = GetItemQualityByID(button.itemID)
 		if quality then
-			local r, g, b = GetItemQualityColor(quality)
-			button.backdrop:SetBackdropBorderColor(r, g, b)
+			local color = E:GetQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
 		end
@@ -224,9 +221,10 @@ local function HeirloomsJournalUpdateButton(_, button)
 	button.name:Point('LEFT', button, 'RIGHT', 4, 8)
 
 	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
+		local color = E:GetQualityColor(7)
 		button.name:SetTextColor(0.9, 0.9, 0.9)
 		button.special:SetTextColor(1, .82, 0)
-		button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
+		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		button.name:SetTextColor(0.4, 0.4, 0.4)
 		button.special:SetTextColor(0.4, 0.4, 0.4)

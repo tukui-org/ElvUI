@@ -7,7 +7,6 @@ local unpack, next = unpack, next
 
 local hooksecurefunc = hooksecurefunc
 local UnitResistance = UnitResistance
-local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local HasPetUI = HasPetUI
@@ -56,8 +55,8 @@ end
 
 local function HandleItemButtonQuality(button, rarity)
 	if rarity and rarity > 1 then
-		local r, g, b = GetItemQualityColor(rarity)
-		button:SetBackdropBorderColor(r, g, b)
+		local color = E:GetQualityColor(rarity)
+		button:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end

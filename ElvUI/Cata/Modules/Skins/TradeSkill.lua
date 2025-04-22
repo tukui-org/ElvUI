@@ -11,7 +11,6 @@ local GetTradeSkillItemLink = GetTradeSkillItemLink
 local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
@@ -133,15 +132,13 @@ function S:Blizzard_TradeSkillUI()
 		end
 
 		local skillLink = GetTradeSkillItemLink(id)
-		local r, g, b
-
 		if skillLink then
 			local quality = GetItemQualityByID(skillLink)
 			if quality and quality > 1 then
-				r, g, b = GetItemQualityColor(quality)
+				local color = E:GetQualityColor(quality)
 
-				_G.TradeSkillSkillIcon.backdrop:SetBackdropBorderColor(r, g, b)
-				_G.TradeSkillSkillName:SetTextColor(r, g, b)
+				_G.TradeSkillSkillIcon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				_G.TradeSkillSkillName:SetTextColor(color.r, color.g, color.b)
 			else
 				_G.TradeSkillSkillIcon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				_G.TradeSkillSkillName:SetTextColor(1, 1, 1)
@@ -158,14 +155,14 @@ function S:Blizzard_TradeSkillUI()
 
 				if quality and quality > 1 then
 					local name = _G['TradeSkillReagent'..i..'Name']
-					r, g, b = GetItemQualityColor(quality)
+					local color = E:GetQualityColor(quality)
 
-					icon.backdrop:SetBackdropBorderColor(r, g, b)
+					icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 					if playerReagentCount < reagentCount then
 						name:SetTextColor(0.5, 0.5, 0.5)
 					else
-						name:SetTextColor(r, g, b)
+						name:SetTextColor(color.r, color.g, color.b)
 					end
 				else
 					icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))

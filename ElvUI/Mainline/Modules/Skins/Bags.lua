@@ -15,7 +15,6 @@ local hooksecurefunc = hooksecurefunc
 
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetContainerItemCooldown = C_Container.GetContainerItemCooldown
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
@@ -27,8 +26,8 @@ local function UpdateBorderColors(button)
 	if button.type and button.type == QUESTS_LABEL then
 		button:SetBackdropBorderColor(1, 0.2, 0.2)
 	elseif button.quality and button.quality > 1 then
-		local r, g, b = GetItemQualityColor(button.quality)
-		button:SetBackdropBorderColor(r, g, b)
+		local color = E:GetQualityColor(button.quality)
+		button:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end

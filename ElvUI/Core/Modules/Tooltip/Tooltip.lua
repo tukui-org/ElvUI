@@ -71,7 +71,6 @@ local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTool
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetItemCount = C_Item.GetItemCount
 local GetItemInfo = C_Item.GetItemInfo
 
@@ -724,11 +723,11 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 		if TT.db.itemQuality then
 			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
-				local r, g, b = GetItemQualityColor(quality)
+				local color = E:GetQualityColor(quality)
 				if self.NineSlice then
-					self.NineSlice:SetBorderColor(r, g, b)
+					self.NineSlice:SetBorderColor(color.r, color.g, color.b)
 				else
-					self:SetBackdropBorderColor(r, g, b)
+					self:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 
 				self.qualityChanged = true

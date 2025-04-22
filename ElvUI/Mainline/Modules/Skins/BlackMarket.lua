@@ -6,7 +6,6 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)
@@ -78,8 +77,8 @@ function S:Blizzard_BlackMarketUI()
 		local link = deal and deal.Name and deal:IsShown() and deal.itemLink
 		if link then
 			local quality = GetItemQualityByID(link)
-			local r, g, b = GetItemQualityColor(quality)
-			deal.Name:SetTextColor(r, g, b)
+			local color = E:GetQualityColor(quality)
+			deal.Name:SetTextColor(color.r, color.g, color.b)
 		end
 	end)
 end

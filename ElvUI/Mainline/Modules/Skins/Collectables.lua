@@ -13,11 +13,7 @@ local PlayerHasToy = PlayerHasToy
 
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetItemQualityByID = C_Item.GetItemQualityByID
-
-local QUALITY_7_R, QUALITY_7_G, QUALITY_7_B = GetItemQualityColor(7)
-local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
@@ -196,8 +192,8 @@ local function ToySpellButtonUpdateButton(button)
 	if button.itemID and PlayerHasToy(button.itemID) then
 		local quality = GetItemQualityByID(button.itemID)
 		if quality then
-			local r, g, b = GetItemQualityColor(quality)
-			button.backdrop:SetBackdropBorderColor(r, g, b)
+			local color = E:GetQualityColor(quality)
+			button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
 		end
@@ -232,10 +228,11 @@ local function HeirloomsJournalUpdateButton(_, button)
 	button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
 	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
+		local color = E:GetQualityColor(7)
 		button.name:SetTextColor(0.9, 0.9, 0.9)
 		button.level:SetTextColor(0.9, 0.9, 0.9)
 		button.special:SetTextColor(1, .82, 0)
-		button.backdrop:SetBackdropBorderColor(QUALITY_7_R, QUALITY_7_G, QUALITY_7_B)
+		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		button.name:SetTextColor(0.4, 0.4, 0.4)
 		button.level:SetTextColor(0.4, 0.4, 0.4)
@@ -285,7 +282,7 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 
 	if itemFrame.collected then
 		local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
-		local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
+		local color = _G.BAG_ITEM_QUALITY_COLORS[quality or 1]
 		icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		local r, g, b = unpack(E.media.bordercolor)

@@ -8,8 +8,6 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
@@ -191,7 +189,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 	end
 
 	local itemRarity = GetItemQualityByID(itemLink)
-	local color = itemRarity and ITEM_QUALITY_COLORS[itemRarity]
+	local color = itemRarity and E:GetQualityColor(itemRarity)
 	if color then
 		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
 	else

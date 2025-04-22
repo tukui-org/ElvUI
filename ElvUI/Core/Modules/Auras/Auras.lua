@@ -19,8 +19,6 @@ local CreateFrame = CreateFrame
 local UIParent = UIParent
 local GetTime = GetTime
 
-local GetItemQualityColor = C_Item.GetItemQualityColor
-
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
 local MasqueGroupDebuffs = Masque and Masque:Group('ElvUI', 'Debuffs')
@@ -302,9 +300,11 @@ function A:UpdateTempEnchant(button, index, expiration)
 	if expiration then
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
-		local quality, r, g, b = A.db.colorEnchants and GetInventoryItemQuality('player', index)
+		local r, g, b
+		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
 		if quality and quality > 1 then
-			r, g, b = GetItemQualityColor(quality)
+			local color = E:GetQualityColor(quality)
+			r, g, b = color.r, color.g, color.b
 		else
 			r, g, b = unpack(E.media.bordercolor)
 		end

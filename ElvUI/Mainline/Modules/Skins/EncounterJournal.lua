@@ -7,7 +7,6 @@ local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
@@ -442,9 +441,11 @@ function S:Blizzard_EncounterJournal()
 				if rewardData.itemID then
 					local quality = GetItemQualityByID(rewardData.itemID)
 					if quality and quality > 1 then
-						r, g, b = GetItemQualityColor(quality)
+						local color = E:GetQualityColor(quality)
+						r, g, b = color.r, color.g, color.b
 					end
 				end
+
 				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)

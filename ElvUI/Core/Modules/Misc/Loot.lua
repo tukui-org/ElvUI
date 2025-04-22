@@ -53,7 +53,6 @@ local StaticPopup_Hide = StaticPopup_Hide
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemReagentQualityByItemInfo = C_TradeSkillUI and C_TradeSkillUI.GetItemReagentQualityByItemInfo
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT
 
@@ -82,7 +81,7 @@ end
 
 local function SlotLeave(slot)
 	if slot.quality and (slot.quality > 1) then
-		local color = ITEM_QUALITY_COLORS[slot.quality]
+		local color = E:GetQualityColor(slot.quality)
 		slot.drop:SetVertexColor(color.r, color.g, color.b)
 	else
 		slot.drop:Hide()
@@ -263,7 +262,7 @@ function M:LOOT_OPENED(_, autoloot)
 		for i = 1, numItems do
 			local slot = lootFrame.slots[i] or CreateSlot(i)
 			local textureID, item, count, _, quality, _, isQuestItem, questId, isActive = GetLootSlotInfo(i)
-			local color = ITEM_QUALITY_COLORS[quality or 0]
+			local color = E:GetQualityColor(quality or 0)
 			local itemLink = GetLootSlotLink(i)
 
 			if coinTextureIDs[textureID] then
@@ -317,7 +316,7 @@ function M:LOOT_OPENED(_, autoloot)
 		end
 	else
 		local slot = lootFrame.slots[1] or CreateSlot(1)
-		local color = ITEM_QUALITY_COLORS[0]
+		local color = E:GetQualityColor(0)
 
 		slot.name:SetText(L["No Loot"])
 		slot.name:SetTextColor(color.r, color.g, color.b)
@@ -333,7 +332,7 @@ function M:LOOT_OPENED(_, autoloot)
 
 	AnchorSlots(lootFrame)
 
-	local color = ITEM_QUALITY_COLORS[max_quality]
+	local color = E:GetQualityColor(max_quality)
 	lootFrame:SetBackdropBorderColor(color.r, color.g, color.b, .8)
 	lootFrame:Width(max(max_width + 60, lootFrame.title:GetStringWidth() + 5))
 end

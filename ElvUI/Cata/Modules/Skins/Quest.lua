@@ -17,7 +17,6 @@ local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS
@@ -121,10 +120,10 @@ local function questQualityColors(frame, text, link)
 
 	local quality = GetItemQualityByID(link or 0)
 	if quality and quality > 1 then
-		local r, g, b = GetItemQualityColor(quality)
+		local color = E:GetQualityColor(quality)
 
-		text:SetTextColor(r, g, b)
-		frame:SetBackdropBorderColor(r, g, b)
+		text:SetTextColor(color.r, color.g, color.b)
+		frame:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
 		text:SetTextColor(1, 1, 1)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))

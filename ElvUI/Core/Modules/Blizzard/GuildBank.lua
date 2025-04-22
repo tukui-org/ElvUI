@@ -9,7 +9,6 @@ local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemLink = GetGuildBankItemLink
 
 local GetItemInfo = C_Item.GetItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor
 local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
@@ -27,14 +26,15 @@ function BL:GuildBank_ItemLevel(button)
 	button.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
 	button.itemLevel:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
 
-	local r, g, b, ilvl
+	local ilvl, r, g, b
 	local tab = db.itemLevel and GetCurrentGuildBankTab()
 	local itemlink = tab and GetGuildBankItemLink(tab, button:GetID())
 	if itemlink then
 		local _, _, rarity, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemlink)
 		if not E.Retail then
 			if rarity then
-				r, g, b = GetItemQualityColor(rarity)
+				local color = E:GetQualityColor(rarity)
+				r, g, b = color.r, color.g, color.b
 			end
 
 			if rarity and db.itemQuality then
@@ -47,11 +47,12 @@ function BL:GuildBank_ItemLevel(button)
 
 		local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(classID, subclassID, itemEquipLoc, rarity)
 		if canShowItemLevel then
-			local color = db.itemLevelCustomColorEnable and db.itemLevelCustomColor
-			if color then
-				r, g, b = color.r, color.g, color.b
+			local custom = db.itemLevelCustomColorEnable and db.itemLevelCustomColor
+			if custom then
+				r, g, b = custom.r, custom.g, custom.b
 			elseif E.Retail and rarity then -- we already do this above otherwise
-				r, g, b = GetItemQualityColor(rarity)
+				local color = E:GetQualityColor(rarity)
+				r, g, b = color.r, color.g, color.b
 			end
 
 			ilvl = GetDetailedItemLevelInfo(itemlink)

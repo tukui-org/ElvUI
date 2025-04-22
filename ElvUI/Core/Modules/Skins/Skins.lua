@@ -10,8 +10,6 @@ local unpack, assert, type, gsub, rad, strfind = unpack, assert, type, gsub, rad
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-
 S.allowBypass = {}
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
@@ -1778,7 +1776,7 @@ do
 				end
 
 				local quality = portrait.quality or (follower.info and follower.info.quality)
-				local color = portrait.backdrop and ITEM_QUALITY_COLORS[quality]
+				local color = portrait.backdrop and E:GetQualityColor(quality)
 				if color then -- sometimes it doesn't have this data since DF
 					portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end

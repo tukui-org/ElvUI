@@ -11,7 +11,6 @@ local GetCraftReagentInfo = GetCraftReagentInfo
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 function S:SkinCraft()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
@@ -108,9 +107,9 @@ function S:SkinCraft()
 		if skillLink then
 			local quality = GetItemQualityByID(skillLink)
 			if quality and quality > 1 then
-				local r, g, b = GetItemQualityColor(quality)
-				CraftIcon.backdrop:SetBackdropBorderColor(r, g, b)
-				_G.CraftName:SetTextColor(GetItemQualityColor(quality))
+				local color = E:GetQualityColor(quality)
+				CraftIcon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				_G.CraftName:SetTextColor(color.r, color.g, color.b)
 			else
 				CraftIcon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				_G.CraftName:SetTextColor(1, 1, 1)
@@ -127,15 +126,14 @@ function S:SkinCraft()
 			if reagentLink then
 				local quality = GetItemQualityByID(reagentLink)
 				if quality and quality > 1 then
-					if playerReagentCount < reagentCount then
-						name:SetTextColor(0.5, 0.5, 0.5)
+					local color = E:GetQualityColor(quality)
+					if playerReagentCount > reagentCount then
+						name:SetTextColor(color.r, color.g, color.b)
 					else
-						local r, g, b = GetItemQualityColor(quality)
-						name:SetTextColor(r, g, b)
+						name:SetTextColor(0.5, 0.5, 0.5)
 					end
 
-					local r, g, b = GetItemQualityColor(quality)
-					icon.backdrop:SetBackdropBorderColor(r, g, b)
+					icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				else
 					icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end

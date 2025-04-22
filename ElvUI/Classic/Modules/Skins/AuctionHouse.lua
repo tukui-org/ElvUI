@@ -8,7 +8,6 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
-local GetItemQualityColor = C_Item.GetItemQualityColor
 
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
@@ -218,8 +217,8 @@ function S:Blizzard_AuctionUI()
 
 			local _, _, _, quality = GetAuctionSellItemInfo()
 			if quality and quality > 1 then
-				local r, g, b = GetItemQualityColor(quality)
-				button:SetBackdropBorderColor(r, g, b)
+				local color = E:GetQualityColor(quality)
+				button:SetBackdropBorderColor(color.r, color.g, color.b)
 			else
 				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
