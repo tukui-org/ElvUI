@@ -306,6 +306,29 @@ P.general = {
 		countPosition = 'BOTTOMRIGHT',
 		countxOffset = 0,
 		countyOffset = 2,
+	},
+	cooldownManager = {
+		nameFont = 'Expressway',
+		nameFontSize = 14,
+		nameFontOutline = 'OUTLINE',
+		nameFontColor = { r = 1, g = 1, b = 1 },
+		namePosition = 'LEFT',
+		namexOffset = 4,
+		nameyOffset = 0,
+		durationFont = 'Expressway',
+		durationFontSize = 14,
+		durationFontOutline = 'OUTLINE',
+		durationFontColor = { r = 1, g = 1, b = 1 },
+		durationPosition = 'RIGHT',
+		durationxOffset = -3,
+		durationyOffset = 0,
+		countFont = 'Expressway',
+		countFontSize = 11,
+		countFontOutline = 'OUTLINE',
+		countFontColor = { r = 1, g = 1, b = 1 },
+		countPosition = 'BOTTOMRIGHT',
+		countxOffset = 0,
+		countyOffset = 0,
 	}
 }
 
@@ -2991,11 +3014,15 @@ do -- cooldown stuff
 	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
 	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
 
+	P.cdmanager = {} -- Blizzard's Cooldown Manager
+	P.cdmanager.cooldown = CopyTable(P.actionbar.cooldown)
+
 	P.WeakAuras = {} -- native cooldown support with our module
 	P.WeakAuras.cooldown = CopyTable(P.actionbar.cooldown)
-	P.WeakAuras.cooldown.override = false
 
 	-- color override
+	P.WeakAuras.cooldown.override = false
+	P.cdmanager.cooldown.override = false
 	P.auras.cooldown.override = false
 	P.bags.cooldown.override = false
 	P.actionbar.cooldown.override = true

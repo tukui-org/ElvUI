@@ -4,6 +4,7 @@ local AFK = E:GetModule('AFK')
 local BL = E:GetModule('Blizzard')
 local LO = E:GetModule('Layout')
 local M = E:GetModule('Misc')
+local S = E:GetModule('Skins')
 local NP = E:GetModule('NamePlates')
 local TM = E:GetModule('TotemTracker')
 local UF = E:GetModule('UnitFrames')
@@ -239,6 +240,54 @@ blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["
 blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Cata)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 blizz.objectiveFrameGroup.inline = true
+
+blizz.cooldownManager = ACH:Group(L["Cooldown Manager"], nil, 20, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateTexts() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
+local cdManager = blizz.cooldownManager.args
+
+cdManager.nameGroup = ACH:Group(L["Name"], nil, 10)
+cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.nameGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.nameGroup.args.fontGroup.inline = true
+cdManager.nameGroup.args.fontGroup.args.nameFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.nameGroup.args.fontGroup.args.nameFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.nameGroup.args.fontGroup.args.nameFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.nameGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.nameGroup.args.positionGroup.inline = true
+cdManager.nameGroup.args.positionGroup.args.namePosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.nameGroup.args.positionGroup.args.namexOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.nameGroup.args.positionGroup.args.nameyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
+
+cdManager.durationGroup = ACH:Group(L["Duration"], nil, 20)
+cdManager.durationGroup.args.durationFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.durationGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.durationGroup.args.fontGroup.inline = true
+cdManager.durationGroup.args.fontGroup.args.durationFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.durationGroup.args.fontGroup.args.durationFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.durationGroup.args.fontGroup.args.durationFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.durationGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.durationGroup.args.positionGroup.inline = true
+cdManager.durationGroup.args.positionGroup.args.durationPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.durationGroup.args.positionGroup.args.durationxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.durationGroup.args.positionGroup.args.durationyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
+
+cdManager.countGroup = ACH:Group(L["Count"], nil, 30)
+cdManager.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.countGroup.args.fontGroup.inline = true
+cdManager.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.countGroup.args.fontGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.countGroup.args.positionGroup.inline = true
+cdManager.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
 blizz.raidControl = ACH:Group(L["RAID_CONTROL"], nil, 30, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value RU:TargetIcons_Update() end)
 blizz.raidControl.args.raidUtility = ACH:Toggle(L["Enable"], L["Enables the ElvUI Raid Control panel."], 1, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
