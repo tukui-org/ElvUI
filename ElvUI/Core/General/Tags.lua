@@ -34,14 +34,15 @@ local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
-local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
+local UnitInPartyIsAI = UnitInPartyIsAI
 local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsDND = UnitIsDND
@@ -59,7 +60,7 @@ local UnitPVPRank = UnitPVPRank
 local UnitReaction = UnitReaction
 local UnitSex = UnitSex
 local UnitStagger = UnitStagger
-local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
@@ -342,6 +343,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			local role = UnitGroupRolesAssigned(unit)
 			if role ~= 'HEALER' then return end
 
+			local powerType = UnitPowerType(unit)
 			local min = UnitPower(unit, powerType)
 			if min ~= 0 and tagFormat ~= 'deficit' then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType), nil, true)
