@@ -260,8 +260,8 @@ function S:Blizzard_GarrisonUI()
 			portraitFrame.IsSkinned = true
 		end
 
-		local color = E:GetQualityColor(followerInfo.quality or 1)
-		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 		portraitFrame.Portrait.backdrop:Show()
 	end)
 

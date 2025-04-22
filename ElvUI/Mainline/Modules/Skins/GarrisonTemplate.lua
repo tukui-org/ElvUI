@@ -17,13 +17,12 @@ function S:Blizzard_GarrisonTemplates()
 			s.PortraitFrameStyled = true
 		end
 
-		local color = E:GetQualityColor(followerInfo.quality or 1)
-		if color then
-			if s.PortraitFrame.backdrop then
-				s.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			end
+		local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
 
-			s.Name:SetVertexColor(color.r, color.g, color.b)
+		s.Name:SetVertexColor(r, g, b)
+
+		if s.PortraitFrame.backdrop then
+			s.PortraitFrame.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 
 		s.XPBar:ClearAllPoints()

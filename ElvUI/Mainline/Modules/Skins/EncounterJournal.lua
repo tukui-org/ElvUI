@@ -437,14 +437,8 @@ function S:Blizzard_EncounterJournal()
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
 				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
 
-				local r, g, b = unpack(E.media.bordercolor)
-				if rewardData.itemID then
-					local quality = GetItemQualityByID(rewardData.itemID)
-					if quality and quality > 1 then
-						local color = E:GetQualityColor(quality)
-						r, g, b = color.r, color.g, color.b
-					end
-				end
+				local quality = rewardData.itemID and GetItemQualityByID(rewardData.itemID)
+				local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
 
 				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end

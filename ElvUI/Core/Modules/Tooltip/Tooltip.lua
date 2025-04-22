@@ -723,11 +723,11 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 		if TT.db.itemQuality then
 			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
-				local color = E:GetQualityColor(quality)
+				local r, g, b = E:GetItemQualityColor(quality)
 				if self.NineSlice then
-					self.NineSlice:SetBorderColor(color.r, color.g, color.b)
+					self.NineSlice:SetBorderColor(r, g, b)
 				else
-					self:SetBackdropBorderColor(color.r, color.g, color.b)
+					self:SetBackdropBorderColor(r, g, b)
 				end
 
 				self.qualityChanged = true

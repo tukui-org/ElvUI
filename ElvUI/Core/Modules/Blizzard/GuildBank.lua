@@ -33,8 +33,7 @@ function BL:GuildBank_ItemLevel(button)
 		local _, _, rarity, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemlink)
 		if not E.Retail then
 			if rarity then
-				local color = E:GetQualityColor(rarity)
-				r, g, b = color.r, color.g, color.b
+				r, g, b = E:GetItemQualityColor(rarity)
 			end
 
 			if rarity and db.itemQuality then
@@ -51,8 +50,7 @@ function BL:GuildBank_ItemLevel(button)
 			if custom then
 				r, g, b = custom.r, custom.g, custom.b
 			elseif E.Retail and rarity then -- we already do this above otherwise
-				local color = E:GetQualityColor(rarity)
-				r, g, b = color.r, color.g, color.b
+				r, g, b = E:GetItemQualityColor(rarity)
 			end
 
 			ilvl = GetDetailedItemLevelInfo(itemlink)

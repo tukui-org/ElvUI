@@ -14,13 +14,8 @@ local function ReforgingFrameUpdate()
 	_G.ReforgingFrameItemButtonIconTexture:SetTexture(texture)
 	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 
-	if quality then
-		local color = E:GetQualityColor(quality)
-		_G.ReforgingFrameItemButton:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		local r, g, b = unpack(E.media.bordercolor)
-		_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
-	end
+	local r, g, b = E:GetItemQualityColor(quality)
+	_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
 end
 
 function S:Blizzard_ReforgingUI()

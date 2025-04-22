@@ -98,8 +98,8 @@ local function OnEnter()
 					local name, _, quality, _, _, _, _, _, equipLoc, texture = GetItemInfo(info.hyperlink)
 					local count = GetItemCount(info.itemID)
 					if equipLoc == 'INVTYPE_AMMO' or equipLoc == 'INVTYPE_THROWN' then
-						local color = E:GetQualityColor(quality)
-						DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), ' ', name), count, color.r, color.g, color.b)
+						local r, g, b = E:GetItemQualityColor(quality)
+						DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), ' ', name), count, r, g, b)
 						itemCount[info.itemID] = count
 					end
 				end
@@ -114,12 +114,12 @@ local function OnEnter()
 		if itemID then
 			local name, _, quality, _, _, _, itemSubType, _, _, texture, itemClassID, itemSubClassID = GetItemInfo(itemID)
 			if itemSubClassID == LE_ITEM_CLASS_QUIVER or itemClassID == LE_ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
-				local color = E:GetQualityColor(quality)
+				local r, g, b = E:GetItemQualityColor(quality)
 				local free, total = GetContainerNumFreeSlots(i), GetContainerNumSlots(i)
 				local used = total - free
 
 				DT.tooltip:AddLine(itemSubType)
-				DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), '  ', name), format('%d / %d', used, total), color.r, color.g, color.b)
+				DT.tooltip:AddDoubleLine(strjoin('', format(iconString, texture), '  ', name), format('%d / %d', used, total), r, g, b)
 			end
 		end
 	end

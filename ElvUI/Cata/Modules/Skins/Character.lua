@@ -54,12 +54,8 @@ local function TitleManagerPane_Update(frame)
 end
 
 local function HandleItemButtonQuality(button, rarity)
-	if rarity and rarity > 1 then
-		local color = E:GetQualityColor(rarity)
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
+	button:SetBackdropBorderColor(r, g, b)
 end
 
 local function PaperDollItemButtonQuality(button)

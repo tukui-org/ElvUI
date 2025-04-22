@@ -189,12 +189,8 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 	end
 
 	local itemRarity = GetItemQualityByID(itemLink)
-	local color = itemRarity and E:GetQualityColor(itemRarity)
-	if color then
-		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
-	end
+	local r, g, b = E:GetItemQualityColor(itemRarity)
+	frame.Icon.b:SetBackdropBorderColor(r, g, b)
 end
 
 local function SkinLootWonAlert(frame)

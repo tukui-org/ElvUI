@@ -45,12 +45,8 @@ local function PaperDollItemSlotButtonUpdate(frame)
 
 	local id = frame:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
-	if rarity and rarity > 1 then
-		local color = E:GetQualityColor(rarity)
-		frame:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	local r, g, b = E:GetQualityColor(rarity and rarity > 1 and rarity)
+	frame:SetBackdropBorderColor(r, g, b)
 end
 
 local function HandleTabs()

@@ -226,11 +226,9 @@ function S:PetBattleFrame()
 		s.Icon:SetTexCoord(unpack(E.TexCoords))
 
 		if s.petOwner and s.petIndex and (s.Icon.backdrop and s.Icon.backdrop:IsShown()) then
-			local rarity = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
-			if rarity then
-				local color = E:GetQualityColor(rarity)
-				s.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-			end
+			local quality = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
+			local r, g, b = E:GetItemQualityColor(quality)
+			s.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 

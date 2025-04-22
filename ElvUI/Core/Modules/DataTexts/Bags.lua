@@ -80,8 +80,7 @@ local function OnEnter()
 				local id = ContainerIDToInventoryID(i)
 				icon = GetInventoryItemTexture('player', id)
 
-				local color = E:GetQualityColor(GetInventoryItemQuality('player', id) or 1)
-				r, g, b = color.r, color.g, color.b
+				r, g, b = E:GetItemQualityColor(GetInventoryItemQuality('player', id) or 1)
 			end
 
 			DT.tooltip:AddDoubleLine(format(iconString, icon or E.Media.Textures.Backpack, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)

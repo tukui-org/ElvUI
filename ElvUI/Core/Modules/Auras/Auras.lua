@@ -300,14 +300,8 @@ function A:UpdateTempEnchant(button, index, expiration)
 	if expiration then
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
-		local r, g, b
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
-		if quality and quality > 1 then
-			local color = E:GetQualityColor(quality)
-			r, g, b = color.r, color.g, color.b
-		else
-			r, g, b = unpack(E.media.bordercolor)
-		end
+		local r, g, b = E:GetQualityColor(quality and quality > 1 and quality)
 
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)

@@ -1775,10 +1775,9 @@ do
 					follower.PortraitFrameStyled = true
 				end
 
-				local quality = portrait.quality or (follower.info and follower.info.quality)
-				local color = portrait.backdrop and E:GetQualityColor(quality)
-				if color then -- sometimes it doesn't have this data since DF
-					portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if portrait.backdrop then
+					local r, g, b = E:GetQualityColor(portrait.quality or (follower.info and follower.info.quality))
+					portrait.backdrop:SetBackdropBorderColor(r, g, b)
 				end
 			end
 

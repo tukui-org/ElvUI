@@ -72,14 +72,14 @@ function S:Blizzard_BlackMarketUI()
 	S:HandleItemButton(BlackMarketFrame.HotDeal.Item, true)
 	S:HandleIconBorder(BlackMarketFrame.HotDeal.Item.IconBorder)
 
-	hooksecurefunc('BlackMarketFrame_UpdateHotItem', function(s)
-		local deal = s.HotDeal
+	hooksecurefunc('BlackMarketFrame_UpdateHotItem', function(item)
+		local deal = item.HotDeal
 		local link = deal and deal.Name and deal:IsShown() and deal.itemLink
-		if link then
-			local quality = GetItemQualityByID(link)
-			local color = E:GetQualityColor(quality)
-			deal.Name:SetTextColor(color.r, color.g, color.b)
-		end
+		if not link then return end
+
+		local quality = GetItemQualityByID(link)
+		local r, g, b = E:GetItemQualityColor(quality)
+		deal.Name:SetTextColor(r, g, b)
 	end)
 end
 

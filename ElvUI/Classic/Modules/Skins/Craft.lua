@@ -107,9 +107,9 @@ function S:SkinCraft()
 		if skillLink then
 			local quality = GetItemQualityByID(skillLink)
 			if quality and quality > 1 then
-				local color = E:GetQualityColor(quality)
-				CraftIcon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-				_G.CraftName:SetTextColor(color.r, color.g, color.b)
+				local r, g, b = E:GetItemQualityColor(quality)
+				CraftIcon.backdrop:SetBackdropBorderColor(r, g, b)
+				_G.CraftName:SetTextColor(r, g, b)
 			else
 				CraftIcon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				_G.CraftName:SetTextColor(1, 1, 1)
@@ -126,14 +126,14 @@ function S:SkinCraft()
 			if reagentLink then
 				local quality = GetItemQualityByID(reagentLink)
 				if quality and quality > 1 then
-					local color = E:GetQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					if playerReagentCount > reagentCount then
-						name:SetTextColor(color.r, color.g, color.b)
+						name:SetTextColor(r, g, b)
 					else
 						name:SetTextColor(0.5, 0.5, 0.5)
 					end
 
-					icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					icon.backdrop:SetBackdropBorderColor(r, g, b)
 				else
 					icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end

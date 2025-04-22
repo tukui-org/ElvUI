@@ -81,9 +81,9 @@ local function questQualityColors(frame, text, link)
 
 	local quality = GetItemQualityByID(link or 0)
 	if quality and quality > 1 then
-		local color = E:GetQualityColor(quality)
-		text:SetTextColor(color.r, color.g, color.b)
-		frame:SetBackdropBorderColor(color.r, color.g, color.b)
+		local r, g, b = E:GetItemQualityColor(quality)
+		text:SetTextColor(r, g, b)
+		frame:SetBackdropBorderColor(r, g, b)
 	else
 		text:SetTextColor(1, 1, 1)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
