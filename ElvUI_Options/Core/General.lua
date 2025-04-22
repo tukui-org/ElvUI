@@ -241,54 +241,6 @@ blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Fra
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 blizz.objectiveFrameGroup.inline = true
 
-blizz.cooldownManager = ACH:Group(L["Cooldown Manager"], nil, 20, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateTexts() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
-local cdManager = blizz.cooldownManager.args
-
-cdManager.nameGroup = ACH:Group(L["Name"], nil, 10)
-cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
-
-cdManager.nameGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
-cdManager.nameGroup.args.fontGroup.inline = true
-cdManager.nameGroup.args.fontGroup.args.nameFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-cdManager.nameGroup.args.fontGroup.args.nameFont = ACH:SharedMediaFont(L["Font"], nil, 4)
-cdManager.nameGroup.args.fontGroup.args.nameFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
-
-cdManager.nameGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
-cdManager.nameGroup.args.positionGroup.inline = true
-cdManager.nameGroup.args.positionGroup.args.namePosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
-cdManager.nameGroup.args.positionGroup.args.namexOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
-cdManager.nameGroup.args.positionGroup.args.nameyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
-
-cdManager.durationGroup = ACH:Group(L["Duration"], nil, 20)
-cdManager.durationGroup.args.durationFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
-
-cdManager.durationGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
-cdManager.durationGroup.args.fontGroup.inline = true
-cdManager.durationGroup.args.fontGroup.args.durationFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-cdManager.durationGroup.args.fontGroup.args.durationFont = ACH:SharedMediaFont(L["Font"], nil, 4)
-cdManager.durationGroup.args.fontGroup.args.durationFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
-
-cdManager.durationGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
-cdManager.durationGroup.args.positionGroup.inline = true
-cdManager.durationGroup.args.positionGroup.args.durationPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
-cdManager.durationGroup.args.positionGroup.args.durationxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
-cdManager.durationGroup.args.positionGroup.args.durationyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
-
-cdManager.countGroup = ACH:Group(L["Count"], nil, 30)
-cdManager.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
-
-cdManager.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
-cdManager.countGroup.args.fontGroup.inline = true
-cdManager.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-cdManager.countGroup.args.fontGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 4)
-cdManager.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
-
-cdManager.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
-cdManager.countGroup.args.positionGroup.inline = true
-cdManager.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
-cdManager.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
-cdManager.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
-
 blizz.raidControl = ACH:Group(L["RAID_CONTROL"], nil, 30, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value RU:TargetIcons_Update() end)
 blizz.raidControl.args.raidUtility = ACH:Toggle(L["Enable"], L["Enables the ElvUI Raid Control panel."], 1, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.raidControl.args.modifier = ACH:Select(L["Modifier"], nil, 2, modifierValues)
@@ -350,7 +302,55 @@ blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], 
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
 
-blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 70, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
+blizz.cooldownManager = ACH:Group(E.NewSign..L["Cooldown Manager"], nil, 70, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateTexts() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
+local cdManager = blizz.cooldownManager.args
+
+cdManager.nameGroup = ACH:Group(L["Name"], nil, 10)
+cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.nameGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.nameGroup.args.fontGroup.inline = true
+cdManager.nameGroup.args.fontGroup.args.nameFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.nameGroup.args.fontGroup.args.nameFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.nameGroup.args.fontGroup.args.nameFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.nameGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.nameGroup.args.positionGroup.inline = true
+cdManager.nameGroup.args.positionGroup.args.namePosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.nameGroup.args.positionGroup.args.namexOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.nameGroup.args.positionGroup.args.nameyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
+
+cdManager.durationGroup = ACH:Group(L["Duration"], nil, 20)
+cdManager.durationGroup.args.durationFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.durationGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.durationGroup.args.fontGroup.inline = true
+cdManager.durationGroup.args.fontGroup.args.durationFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.durationGroup.args.fontGroup.args.durationFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.durationGroup.args.fontGroup.args.durationFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.durationGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.durationGroup.args.positionGroup.inline = true
+cdManager.durationGroup.args.positionGroup.args.durationPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.durationGroup.args.positionGroup.args.durationxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.durationGroup.args.positionGroup.args.durationyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
+
+cdManager.countGroup = ACH:Group(L["Count"], nil, 30)
+cdManager.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateTexts() end)
+
+cdManager.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+cdManager.countGroup.args.fontGroup.inline = true
+cdManager.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+cdManager.countGroup.args.fontGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+cdManager.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+
+cdManager.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+cdManager.countGroup.args.positionGroup.inline = true
+cdManager.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+cdManager.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+cdManager.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
+
+blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 80, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
 blizz.queueStatus.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.queueStatus end, function(_, value) E.private.general.queueStatus = value E.ShowPopup = true end, function() return (E.Retail and not E.private.actionbar.enable) or (not E.Retail and not E.private.general.minimap.enable) end)
 blizz.queueStatus.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.3, max = 1, step = 0.05 })
 blizz.queueStatus.args.frameLevel = ACH:Range(L["Frame Level"], nil, 3, { min = 2, max = 128, step = 1 })
@@ -368,7 +368,7 @@ blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
 
-blizz.totems = ACH:Group(L["Totem Tracker"], nil, 40, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TM:PositionAndSize() end)
+blizz.totems = ACH:Group(L["Totem Tracker"], nil, 90, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TM:PositionAndSize() end)
 blizz.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemTracker end, function(_, value) E.private.general.totemTracker = value; E.ShowPopup = true end)
 blizz.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 2, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 blizz.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 3, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
@@ -380,7 +380,7 @@ blizz.totems.args.size.name = function() return E.db.general.totems.keepSizeRati
 blizz.totems.args.size.desc = function() return E.db.general.totems.keepSizeRatio and L["The size of the Totem buttons."] or L["The width of the totem buttons."] end
 blizz.totems.args.height.hidden = function() return E.db.general.totems.keepSizeRatio end
 
-blizz.classColors = ACH:Group(L["Custom Class Colors"], nil, 50, nil, function(info) local t, d = E.db.general.classColors[info[#info]], P.general.classColors[info[#info]] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) E:UpdateCustomClassColor(info[#info], r, g, b) end)
+blizz.classColors = ACH:Group(L["Custom Class Colors"], nil, 100, nil, function(info) local t, d = E.db.general.classColors[info[#info]], P.general.classColors[info[#info]] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) E:UpdateCustomClassColor(info[#info], r, g, b) end)
 blizz.classColors.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.classColors end, function(_, value) E.private.general.classColors = value; E.ShowPopup = true end)
 blizz.classColors.args.spacer1 = ACH:Spacer(10, 'full')
 
