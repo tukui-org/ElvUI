@@ -76,7 +76,6 @@ local C_Item_IsBound = C_Item.IsBound
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemSpell = C_Item.GetItemSpell
-local SetCurrencyBackpack = C_CurrencyInfo.SetCurrencyBackpack or SetCurrencyBackpack
 
 local SortBags = C_Container.SortBags
 local SortBankBags = C_Container.SortBankBags
