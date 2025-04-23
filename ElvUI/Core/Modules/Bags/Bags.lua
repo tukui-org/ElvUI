@@ -779,7 +779,7 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
-function B:Slot_OnEvent(event)
+function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
@@ -790,7 +790,9 @@ function B:Slot_OnEvent(event)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
 		E:Delay(0.1, B.UpdateSlotColors, B, self, self.isQuestItem, self.QuestID, self.isActiveQuest)
 	elseif event == 'COLOR_OVERRIDE_UPDATED' then
-		B:UpdateSlotColors(self, self.isQuestItem, self.QuestID, self.isActiveQuest)
+		if self.rarity == arg1 then
+			B:UpdateSlotColors(self, self.isQuestItem, self.QuestID, self.isActiveQuest)
+		end
 	end
 end
 
