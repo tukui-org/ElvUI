@@ -932,7 +932,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[319626] = List(), -- Phantasmal Parasite
 		[324449] = List(), -- Manifest Death
 		[341949] = List(), -- Withering Blight
-		[1223804] = List(), -- Well of Darkness
+		[473576] = List(), -- Well of Darkness (application)
+		[1223804] = List(), -- Well of Darkness (being targeted)
+		[333231] = List(), -- Searing Death
+		[323406] = List(), -- Jagged Gash
+		[330810] = List(), -- Bind Soul
 	-- Operation Mechagon: Workshop
 		[291928] = List(), -- Giga-Zap
 		[292267] = List(), -- Giga-Zap
