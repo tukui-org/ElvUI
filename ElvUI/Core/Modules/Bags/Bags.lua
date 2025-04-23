@@ -560,8 +560,8 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
-function B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
-	local questColors, r, g, b, a = B.db.qualityColors and (questId or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+function B:UpdateSlotColors(slot, isQuestItem, QuestID, isActiveQuest)
+	local questColors, r, g, b, a = B.db.qualityColors and (QuestID or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
 	local qR, qG, qB = E:GetItemQualityColor(slot.rarity)
 
 	if slot.itemLevel then
@@ -651,6 +651,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local info = B:GetContainerItemInfo(bagID, slotID)
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
+	slot.isQuestItem, slot.QuestID, slot.isActiveQuest = nil, nil, nil
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
 	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 	slot.hasItem = (info.iconFileID and 1) or nil -- used for ShowInspectCursor
@@ -669,7 +670,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.keyringTexture:SetShown(not info.iconFileID)
 	end
 
-	local isQuestItem, questId, isActiveQuest
 	if slot.itemLink then
 		local _, spellID = GetItemSpell(slot.itemLink)
 		local name, _, _, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(slot.itemLink)
@@ -677,10 +677,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if E.Classic then
 			slot.isBound = C_Item_IsBound(slot.itemLocation)
-			isQuestItem, isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
+			slot.isQuestItem, slot.isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
 		else
 			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
-			isQuestItem, questId, isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
+			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.QuestID, questInfo.isActive
 		end
 
 		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
@@ -692,9 +692,19 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.centerText:SetText(mult * info.stackCount)
 		end
 
+		if E.Retail then
+			slot:RegisterEvent('COLOR_OVERRIDES_RESET')
+			slot:RegisterEvent('COLOR_OVERRIDE_UPDATED')
+		end
+
 		slot:RegisterEvent('INVENTORY_SEARCH_UPDATE')
 		slot.searchOverlay:SetShown(info.isFiltered)
 	else
+		if E.Retail then
+			slot:UnregisterEvent('COLOR_OVERRIDES_RESET')
+			slot:UnregisterEvent('COLOR_OVERRIDE_UPDATED')
+		end
+
 		slot:UnregisterEvent('INVENTORY_SEARCH_UPDATE')
 		slot.searchOverlay:SetShown(false)
 	end
@@ -716,9 +726,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	B:UpdateItemLevel(slot)
-	B:UpdateSlotColors(slot, isQuestItem, questId, isActiveQuest)
+	B:UpdateSlotColors(slot, slot.isQuestItem, slot.QuestID, slot.isActiveQuest)
 
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and isQuestItem or questId) and not isActiveQuest)) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
@@ -727,7 +737,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if not frame.isBank then
-		B.QuestSlots[slot] = questId or nil
+		B.QuestSlots[slot] = slot.QuestID or nil
 	end
 
 	if not slot.hasItem and not GameTooltip:IsForbidden() and GameTooltip:GetOwner() == slot then
@@ -777,6 +787,10 @@ function B:Slot_OnEvent(event)
 			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
 			self.searchOverlay:SetShown(info.isFiltered)
 		end
+	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
+		E:Delay(0.1, B.UpdateSlotColors, B, self, self.isQuestItem, self.QuestID, self.isActiveQuest)
+	elseif event == 'COLOR_OVERRIDE_UPDATED' then
+		B:UpdateSlotColors(self, self.isQuestItem, self.QuestID, self.isActiveQuest)
 	end
 end
 
