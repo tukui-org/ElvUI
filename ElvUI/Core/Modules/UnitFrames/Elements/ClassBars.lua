@@ -246,7 +246,7 @@ function UF:Configure_ClassBar(frame)
 		end
 
 		bars:SetFrameStrata('LOW')
-		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
+		bars:OffsetFrameLevel(10, frame.Health) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
 			E:DisableMover(bars.Holder.mover.name)
@@ -589,7 +589,7 @@ function UF:Construct_DruidEclipseBar(frame)
 	UF.statusbars[eclipseBar.SolarBar] = true
 
 	eclipseBar.RaisedElementParent = CreateFrame('Frame', nil, eclipseBar)
-	eclipseBar.RaisedElementParent:SetFrameLevel(eclipseBar:GetFrameLevel() + 100)
+	eclipseBar.RaisedElementParent:OffsetFrameLevel(100, eclipseBar)
 	eclipseBar.RaisedElementParent:SetAllPoints()
 
 	eclipseBar.Arrow = eclipseBar.LunarBar:CreateTexture(nil, 'OVERLAY')

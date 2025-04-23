@@ -234,7 +234,7 @@ function S:Blizzard_GarrisonUI()
 
 			if not reward.Icon.backdrop then
 				S:HandleIcon(reward.Icon, true)
-				reward.Icon.backdrop:SetFrameLevel(reward:GetFrameLevel())
+				reward.Icon.backdrop:OffsetFrameLevel(nil, reward)
 			end
 
 			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
@@ -355,7 +355,7 @@ function S:Blizzard_GarrisonUI()
 	MissionList:DisableDrawLayer('BORDER')
 	S:HandleTrimScrollBar(_G.GarrisonMissionFrameMissions.ScrollBar)
 	S:HandleCloseButton(MissionPage.CloseButton)
-	MissionPage.CloseButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
+	MissionPage.CloseButton:OffsetFrameLevel(2, MissionPage)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
 	S:HandleButton(MissionPage.StartMissionButton)
@@ -388,7 +388,7 @@ function S:Blizzard_GarrisonUI()
 			tab.Text:Point('CENTER')
 
 			local bg = CreateFrame('Frame', nil, tab)
-			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
+			bg:OffsetFrameLevel(-1, tab)
 			bg:SetTemplate('Transparent')
 
 			local selectedTex = bg:CreateTexture(nil, 'BACKGROUND')
@@ -500,7 +500,7 @@ function S:Blizzard_GarrisonUI()
 	-- ShipYard: Mission
 	MissionPage = MissionTab.MissionPage
 	S:HandleCloseButton(MissionPage.CloseButton)
-	MissionPage.CloseButton:SetFrameLevel(MissionPage.CloseButton:GetFrameLevel() + 2)
+	MissionPage.CloseButton:OffsetFrameLevel(2)
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(GarrisonShipyardFrame.MissionComplete.NextMissionButton)
 	MissionList.CompleteDialog:SetAllPoints(MissionList.MapTexture)

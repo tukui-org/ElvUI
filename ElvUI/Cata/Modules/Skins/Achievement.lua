@@ -22,7 +22,7 @@ end
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.IsSkinned then return end
 
-	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
+	Achievement:OffsetFrameLevel(2)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
@@ -296,7 +296,7 @@ function S:Blizzard_AchievementUI()
 	-- Tabs
 	for i = 1, 3 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
-		_G['AchievementFrameTab'..i]:SetFrameLevel(_G['AchievementFrameTab'..i]:GetFrameLevel() + 2)
+		_G['AchievementFrameTab'..i]:OffsetFrameLevel(2)
 	end
 
 	-- Reposition Tabs
@@ -369,7 +369,7 @@ function S:Blizzard_AchievementUI()
 
 			frame:SetStatusBarColor(0.02, 0.70, 0.12)
 			frame:CreateBackdrop('Transparent')
-			frame:SetFrameLevel(frame:GetFrameLevel() + 3)
+			frame:OffsetFrameLevel(3)
 			frame:Height(frame:GetHeight() - 2)
 
 			frame.text:ClearAllPoints()

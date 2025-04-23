@@ -104,7 +104,7 @@ function S:Blizzard_InspectUI()
 			if not Slot.icon then return end
 
 			S:HandleIcon(Slot.icon, true)
-			Slot.icon.backdrop:SetFrameLevel(Slot:GetFrameLevel())
+			Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
 			Slot.icon:SetInside()
 			Slot:StripTextures()
 			Slot:StyleButton()

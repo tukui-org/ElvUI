@@ -101,7 +101,7 @@ local function SkinAbilitiesInfo()
 			header.button.bg = CreateFrame('Frame', nil, header.button)
 			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
-			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
+			header.button.bg:OffsetFrameLevel(-1)
 			header.button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
 
 			header.IsSkinned = true

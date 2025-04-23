@@ -431,7 +431,7 @@ function M:UpdateIcons()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
 				gameTime:SetParent(Minimap)
-				gameTime:SetFrameLevel(_G.MinimapBackdrop:GetFrameLevel() + 2)
+				gameTime:OffsetFrameLevel(2, _G.MinimapBackdrop)
 				M:SetIconParent(gameTime)
 				M:SetScale(gameTime, scale)
 			end

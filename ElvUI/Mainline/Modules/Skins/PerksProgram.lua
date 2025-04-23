@@ -144,6 +144,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 
 	if products then
 		S:HandleButton(products.PerksProgramFilter)
+
 		if products.PerksProgramFilter.ResetButton then
 			S:HandleCloseButton(products.PerksProgramFilter.ResetButton)
 		end
@@ -159,7 +160,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 		if details then
 			details.Border:Hide()
 			details:CreateBackdrop('Transparent')
-			details.backdrop:SetFrameLevel(details.Border:GetFrameLevel() - 10)
+			details.backdrop:OffsetFrameLevel(-10, details.Border)
 
 			local container = details.SetDetailsScrollBoxContainer
 			if container then
@@ -179,7 +180,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 		if container then
 			container:StripTextures()
 			container:CreateBackdrop('Transparent')
-			container.backdrop:SetFrameLevel(container.Border:GetFrameLevel() - 10)
+			container.backdrop:OffsetFrameLevel(-10, container.Border)
 
 			S:HandleTrimScrollBar(container.ScrollBar)
 
@@ -201,7 +202,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 			shoppingCart:StripTextures()
 			shoppingCart:CreateBackdrop('Transparent')
 			S:HandleCloseButton(shoppingCart.CloseButton)
-			shoppingCart.CloseButton:SetFrameLevel(shoppingCart.backdrop:GetFrameLevel() + 1)
+			shoppingCart.CloseButton:OffsetFrameLevel(1, shoppingCart.backdrop)
 
 			local itemList = shoppingCart.ItemList
 			S:HandleTrimScrollBar(itemList.ScrollBar)

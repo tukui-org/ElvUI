@@ -6,7 +6,7 @@ local CreateFrame = CreateFrame
 function UF:Construct_EnergyManaRegen(frame)
 	local element = CreateFrame('StatusBar', nil, frame.Power)
 	element:SetStatusBarTexture(E.media.blankTex)
-	element:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
+	element:OffsetFrameLevel(3, frame.Power)
 	element:SetMinMaxValues(0, 2)
 	element:SetAllPoints()
 
@@ -32,7 +32,7 @@ function UF:Configure_EnergyManaRegen(frame)
 		end
 
 		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
-		frame.EnergyManaRegen:SetFrameLevel(frame.Power:GetFrameLevel() + 3)
+		frame.EnergyManaRegen:OffsetFrameLevel(3, frame.Power)
 	elseif frame:IsElementEnabled('EnergyManaRegen') then
 		frame:DisableElement('EnergyManaRegen')
 	end

@@ -94,7 +94,7 @@ function S:Blizzard_GuildUI()
 	_G.GuildMemberDetailFrame:SetTemplate('Transparent')
 	_G.GuildMemberNoteBackground.NineSlice:SetTemplate('Transparent')
 	_G.GuildMemberOfficerNoteBackground.NineSlice:SetTemplate('Transparent')
-	_G.GuildMemberRankDropdown:SetFrameLevel(_G.GuildMemberRankDropdown:GetFrameLevel() + 5)
+	_G.GuildMemberRankDropdown:OffsetFrameLevel(5)
 	S:HandleDropDownBox(_G.GuildMemberRankDropdown, 175)
 
 	--Increase height of GuildMemberDetailFrame by changing global variables
@@ -140,19 +140,19 @@ function S:Blizzard_GuildUI()
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
 	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop1:SetTemplate('Transparent')
-	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
+	backdrop1:OffsetFrameLevel(-1, GuildInfoFrameInfo)
 	backdrop1:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -22)
 	backdrop1:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 200)
 
 	local backdrop2 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop2:SetTemplate('Transparent')
-	backdrop2:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
+	backdrop2:OffsetFrameLevel(-1, GuildInfoFrameInfo)
 	backdrop2:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -158)
 	backdrop2:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 118)
 
 	local backdrop3 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop3:SetTemplate('Transparent')
-	backdrop3:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
+	backdrop3:OffsetFrameLevel(-1, GuildInfoFrameInfo)
 	backdrop3:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -233)
 	backdrop3:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 3)
 

@@ -243,7 +243,7 @@ function S:Blizzard_Communities()
 		ClubFinderCommunityOptionsList.DpsRoleFrame.Checkbox
 	} do
 		S:HandleCheckBox(checkButton)
-		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 1)
+		checkButton:OffsetFrameLevel(1)
 	end
 
 	S:HandleDropDownBox(ClubFinderCommunityOptionsList.ClubFilterDropdown, 120)
@@ -348,7 +348,7 @@ function S:Blizzard_Communities()
 	E:RegisterStatusBar(StatusBar)
 
 	local ProgressBarBG = CreateFrame('Frame', nil, StatusBar)
-	ProgressBarBG:SetFrameLevel(StatusBar:GetFrameLevel())
+	ProgressBarBG:OffsetFrameLevel(nil, StatusBar)
 	ProgressBarBG:SetTemplate()
 	ProgressBarBG:Point('TOPLEFT')
 	ProgressBarBG:Point('BOTTOMRIGHT')
@@ -389,28 +389,28 @@ function S:Blizzard_Communities()
 		local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
 		local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		backdrop1:SetTemplate('Transparent')
-		backdrop1:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop1:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
 		backdrop1:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -22)
 		backdrop1:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 200)
 
 		-- Guild MOTD Background
 		local backdrop2 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		backdrop2:SetTemplate('Transparent')
-		backdrop2:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop2:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
 		backdrop2:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -158)
 		backdrop2:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 118)
 
 		-- Guild Information Background
 		local backdrop3 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		backdrop3:SetTemplate('Transparent')
-		backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop3:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
 		backdrop3:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
 		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
 
 		-- Guild News Background
 		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		backdrop4:SetTemplate('Transparent')
-		backdrop4:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
+		backdrop4:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
 		backdrop4:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 591, -22)
 		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
 	end

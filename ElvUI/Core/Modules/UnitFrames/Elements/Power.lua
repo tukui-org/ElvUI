@@ -183,7 +183,7 @@ function UF:Configure_Power(frame, healthUpdate)
 				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -POWERBAR_OFFSET, -POWERBAR_OFFSET)
 			end
-			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
+			power:OffsetFrameLevel(-5, frame.Health) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
 			power:Height(POWERBAR_HEIGHT - DOUBLE_SPACING)
 			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', UF.BORDER + DOUBLE_BORDER, UF.BORDER + DOUBLE_BORDER)
@@ -212,7 +212,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER, -UF.SPACING*3)
 			power:Height(POWERBAR_HEIGHT - DOUBLE_SPACING)
 
-			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
+			power:OffsetFrameLevel(5, frame.Health) --Health uses 10
 		end
 
 		--Hide mover until we detach again
@@ -226,7 +226,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
 		end
 
-		power.backdrop:SetFrameLevel(power:GetFrameLevel() - 1)
+		power.backdrop:OffsetFrameLevel(-1, power)
 
 		if frame.POWERBAR_DETACHED and db.power.parent == 'UIPARENT' then
 			E.FrameLocks[power] = true

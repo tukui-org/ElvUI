@@ -94,7 +94,7 @@ function S:Blizzard_GuildBankUI()
 	GuildBankFrame.bg:SetTemplate()
 	GuildBankFrame.bg:Point('TOPLEFT', 24, -64)
 	GuildBankFrame.bg:Point('BOTTOMRIGHT', -18, 62)
-	GuildBankFrame.bg:SetFrameLevel(GuildBankFrame:GetFrameLevel())
+	GuildBankFrame.bg:OffsetFrameLevel(nil, GuildBankFrame)
 
 	_G.GuildBankLimitLabel:Point('CENTER', GuildBankFrame.TabLimitBG, 'CENTER', -40, -5)
 

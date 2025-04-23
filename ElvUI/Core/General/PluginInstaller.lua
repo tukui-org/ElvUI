@@ -280,7 +280,7 @@ function PI:CreateFrame()
 	S:HandleButton(f.Prev)
 
 	f.Status = CreateFrame('StatusBar', 'PluginInstallStatus', f)
-	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
+	f.Status:OffsetFrameLevel(2)
 	f.Status:CreateBackdrop(nil, true)
 	f.Status:SetStatusBarTexture(E.media.normTex)
 	f.Status:SetStatusBarColor(unpack(E.media.rgbvaluecolor))

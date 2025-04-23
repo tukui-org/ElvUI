@@ -147,7 +147,7 @@ function A:CreateIcon(button)
 	button.highlight:SetInside()
 
 	button.statusBar = CreateFrame('StatusBar', nil, button)
-	button.statusBar:SetFrameLevel(button:GetFrameLevel())
+	button.statusBar:OffsetFrameLevel(nil, button)
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:SetMinMaxValues(0, 1)
 	button.statusBar:SetValue(0)

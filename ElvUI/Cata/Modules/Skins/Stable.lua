@@ -28,7 +28,7 @@ local function PetButtons(btn, p)
 		icon:Point('TOPLEFT', p, -p)
 		icon:Point('BOTTOMRIGHT', -p, p)
 
-		button:SetFrameLevel(button:GetFrameLevel() + 2)
+		button:OffsetFrameLevel(2)
 		button:SetTemplate(nil, true)
 	end
 end

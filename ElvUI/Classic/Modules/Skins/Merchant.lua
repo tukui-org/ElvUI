@@ -71,7 +71,7 @@ function S:MerchantFrame()
 
 			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
 			currencyIcon.backdrop:SetTemplate()
-			currencyIcon.backdrop:SetFrameLevel(currencyItem:GetFrameLevel())
+			currencyIcon.backdrop:OffsetFrameLevel(nil, currencyItem)
 			currencyIcon.backdrop:SetOutside(currencyIcon)
 
 			currencyIcon:SetTexCoord(unpack(E.TexCoords))

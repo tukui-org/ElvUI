@@ -255,7 +255,7 @@ function S:LootFrame()
 
 		local BonusPrompt = BonusRollFrame.PromptFrame
 		BonusPrompt.IconBackdrop = CreateFrame('Frame', nil, BonusPrompt)
-		BonusPrompt.IconBackdrop:SetFrameLevel(BonusPrompt.IconBackdrop:GetFrameLevel() - 1)
+		BonusPrompt.IconBackdrop:OffsetFrameLevel(-1)
 		BonusPrompt.IconBackdrop:SetOutside(BonusPrompt.Icon)
 		BonusPrompt.IconBackdrop:SetTemplate()
 		BonusPrompt.Icon:SetTexCoord(unpack(E.TexCoords))

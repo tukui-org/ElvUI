@@ -188,7 +188,7 @@ function M:LootRoll_Create(index)
 	end
 
 	local status = CreateFrame('StatusBar', nil, bar)
-	status:SetFrameLevel(bar:GetFrameLevel())
+	status:OffsetFrameLevel(nil, bar)
 	status:SetFrameStrata(bar:GetFrameStrata())
 	status:CreateBackdrop()
 	status:SetScript('OnUpdate', StatusUpdate)

@@ -104,7 +104,7 @@ function S:SkinPVPFrame()
 	for _, checkButton in next, checkButtons do
 		S:HandleCheckBox(checkButton)
 		checkButton:Size(22)
-		checkButton:SetFrameLevel(checkButton:GetFrameLevel() + 2)
+		checkButton:OffsetFrameLevel(2)
 	end
 
 	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(1, 1, 1)
@@ -118,7 +118,7 @@ function S:SkinPVPFrame()
 	PVPConquestFrameNoWeekly:CreateBackdrop()
 	PVPConquestFrameNoWeekly.backdrop:Point('TOPLEFT', -5, 5)
 	PVPConquestFrameNoWeekly.backdrop:Point('BOTTOMRIGHT', 8, -5)
-	PVPConquestFrameNoWeekly.backdrop:SetFrameLevel(PVPConquestFrameNoWeekly:GetFrameLevel())
+	PVPConquestFrameNoWeekly.backdrop:OffsetFrameLevel(nil, PVPConquestFrameNoWeekly)
 
 	-- Conquest Bar
 	local PVPFrameConquestBar = _G.PVPFrameConquestBar
@@ -254,7 +254,7 @@ function S:SkinPVPFrame()
 	S:HandleButton(PVPBannerFrameCancelButton)
 	PVPBannerFrameCancelButton.backdrop = CreateFrame('Frame', nil, PVPBannerFrameCancelButton)
 	PVPBannerFrameCancelButton.backdrop:SetTemplate(nil, true)
-	PVPBannerFrameCancelButton.backdrop:SetFrameLevel(PVPBannerFrameCancelButton:GetFrameLevel() - 2)
+	PVPBannerFrameCancelButton.backdrop:OffsetFrameLevel(-2, PVPBannerFrameCancelButton)
 	PVPBannerFrameCancelButton.backdrop:Point('TOPLEFT', _G.PVPBannerFrameAcceptButton, 248, 0)
 	PVPBannerFrameCancelButton.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameAcceptButton, 248, 0)
 

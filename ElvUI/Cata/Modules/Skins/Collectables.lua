@@ -458,7 +458,7 @@ local function SkinTransmogFrames()
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
-		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
+		slotButton:OffsetFrameLevel(2)
 		slotButton:StripTextures()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()

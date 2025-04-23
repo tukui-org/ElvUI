@@ -28,7 +28,7 @@ local function SkinOnShow()
 
 	ScriptErrorsFrame.ScrollFrame:SetTemplate()
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
+	ScriptErrorsFrame.ScrollFrame:OffsetFrameLevel(2)
 
 	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)

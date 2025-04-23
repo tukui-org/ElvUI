@@ -1154,7 +1154,7 @@ function E:Contruct_StaticPopups()
 
 		for i = 1, 4 do
 			local button = _G['ElvUI_StaticPopup'..index..'Button'..i]
-			button:SetFrameLevel(button:GetFrameLevel() + 1)
+			button:OffsetFrameLevel(1)
 			button:SetScript('OnClick', E.StaticPopup_ButtonOnClick)
 			S:HandleButton(button)
 		end
@@ -1163,7 +1163,7 @@ function E:Contruct_StaticPopups()
 		editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
 		editbox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		editbox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
-		editbox:SetFrameLevel(editbox:GetFrameLevel() + 1)
+		editbox:OffsetFrameLevel(1)
 
 		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameGold'])
 		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameSilver'])

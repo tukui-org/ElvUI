@@ -122,7 +122,7 @@ function S:PetBattleFrame()
 
 		infoBar.PetType:ClearAllPoints()
 		infoBar.PetType:SetAllPoints(infoBar.PetTypeFrame)
-		infoBar.PetType:SetFrameLevel(infoBar.PetTypeFrame:GetFrameLevel() + 2)
+		infoBar.PetType:OffsetFrameLevel(2, infoBar.PetTypeFrame)
 		infoBar.PetType:SetAlpha(0)
 
 		infoBar.LevelUnderlay:SetAlpha(0)
