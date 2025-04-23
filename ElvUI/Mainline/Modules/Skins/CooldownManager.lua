@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
+local IsSpellOverlayed = IsSpellOverlayed
+local ActionButton_HideOverlayGlow = ActionButton_HideOverlayGlow
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
@@ -90,19 +93,78 @@ function S:CooldownManager_SkinBar(frame, bar)
 	end
 end
 
-function S:CooldownManager_SkinItemFrame(frame)
-	if frame.Cooldown then
-		frame.Cooldown:SetSwipeTexture(E.media.blankTex)
+function S:CooldownManager_RefreshSpellCooldownInfo()
+	if not self.Cooldown then return end
 
-		if not frame.Cooldown.isRegisteredCooldown then
-			E:RegisterCooldown(frame.Cooldown, 'cdmanager')
-		end
+	local db = E.db.general.cooldownManager
+	local color = (self.cooldownUseAuraDisplayTime and db.swipeColorAura) or db.swipeColorSpell
+	self.Cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+end
+
+function S:CooldownManager_UpdateSwipeColor(frame)
+	S.CooldownManager_RefreshSpellCooldownInfo(frame)
+end
+
+function S:CooldownManager_SetTimerShown()
+	if self.Cooldown then
+		E:ToggleBlizzardCooldownText(self.Cooldown, self.Cooldown.timer)
 	end
+end
 
-	if frame.Bar then
-		S:CooldownManager_SkinBar(frame, frame.Bar)
-	elseif frame.Icon then
-		S:CooldownManager_SkinIcon(frame, frame.Icon)
+function S:CooldownManager_RefreshOverlayGlow()
+	ActionButton_HideOverlayGlow(self) -- hide blizzards
+
+	local spellID = self:GetSpellID()
+	if spellID and IsSpellOverlayed(spellID) then
+		LCG.ShowOverlayGlow(self)
+	else
+		LCG.HideOverlayGlow(self)
+	end
+end
+
+function S:CooldownManager_ShowGlowEvent(spellID)
+	if not self:NeedSpellActivationUpdate(spellID) then return end
+
+	ActionButton_HideOverlayGlow(self) -- hide blizzards
+	LCG.ShowOverlayGlow(self)
+end
+
+function S:CooldownManager_HideGlowEvent(spellID)
+	if not self:NeedSpellActivationUpdate(spellID) then return end
+
+	ActionButton_HideOverlayGlow(self)
+	LCG.HideOverlayGlow(self)
+end
+
+do
+	local hookFunctions = {
+		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo,
+		OnSpellActivationOverlayGlowShowEvent = S.CooldownManager_ShowGlowEvent,
+		OnSpellActivationOverlayGlowHideEvent = S.CooldownManager_HideGlowEvent,
+		RefreshOverlayGlow = S.CooldownManager_RefreshOverlayGlow,
+		SetTimerShown = S.CooldownManager_SetTimerShown
+	}
+
+	function S:CooldownManager_SkinItemFrame(frame)
+		if frame.Cooldown then
+			frame.Cooldown:SetSwipeTexture(E.media.blankTex)
+
+			if not frame.Cooldown.isRegisteredCooldown then
+				E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+
+				for key, func in next, hookFunctions do
+					if frame[key] then
+						hooksecurefunc(frame, key, func)
+					end
+				end
+			end
+		end
+
+		if frame.Bar then
+			S:CooldownManager_SkinBar(frame, frame.Bar)
+		elseif frame.Icon then
+			S:CooldownManager_SkinIcon(frame, frame.Icon)
+		end
 	end
 end
 
@@ -123,13 +185,15 @@ function S:CooldownManager_UpdateViewer(element)
 		if frame.Bar then
 			S:CooldownManager_UpdateTextBar(frame.Bar)
 			S:CooldownManager_UpdateTextContainer(frame)
+			S:CooldownManager_UpdateSwipeColor(frame)
 		elseif frame.Icon then
 			S:CooldownManager_UpdateTextContainer(frame)
+			S:CooldownManager_UpdateSwipeColor(frame)
 		end
 	end
 end
 
-function S:CooldownManager_UpdateTexts()
+function S:CooldownManager_UpdateViewers()
 	S:CooldownManager_UpdateViewer(_G.UtilityCooldownViewer)
 	S:CooldownManager_UpdateViewer(_G.BuffBarCooldownViewer)
 	S:CooldownManager_UpdateViewer(_G.BuffIconCooldownViewer)
@@ -138,6 +202,13 @@ end
 
 function S:Blizzard_CooldownViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
+
+	local db = E.db.general.cooldownManager
+	E:UpdateClassColor(db.swipeColorSpell)
+	E:UpdateClassColor(db.swipeColorAura)
+	E:UpdateClassColor(db.nameFontColor)
+	E:UpdateClassColor(db.durationFontColor)
+	E:UpdateClassColor(db.countFontColor)
 
 	S:CooldownManager_HandleViewer(_G.UtilityCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)

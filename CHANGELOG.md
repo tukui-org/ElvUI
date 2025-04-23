@@ -1,3 +1,9 @@
+### Version 13.89 [ April 22nd 2025 ]
+*   Fixed an issue where tags failed to call the global Hex function. Added healer-only power and mana tags.
+*   Fixed a chat format error that occurred when playing in French.
+*   Objective Tracker text is now customizable.
+*   Cooldown Manager skin added, with a dedicated section in Cooldowns and Blizzard Improvements for further customization. Other settings are managed in Blizzard's Edit Mode.
+
 ### Version 13.88 [ April 10th 2025 ]
 *   Issue with SetupTooltip parameter for LDB plugins with custom tooltip. (Thanks exochron)
 *   Removed Log Taints option (BugGrabber is a better alternative for this).
