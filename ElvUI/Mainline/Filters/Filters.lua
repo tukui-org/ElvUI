@@ -927,7 +927,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[330608] = List(), -- Vile Eruption
 		[330868] = List(), -- Necrotic Bolt Volley
 		[323750] = List(), -- Vile Gas
-		[323406] = List(), -- Jagged Gash
 		[330700] = List(), -- Decaying Blight
 		[319626] = List(), -- Phantasmal Parasite
 		[324449] = List(), -- Manifest Death
