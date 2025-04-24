@@ -50,53 +50,55 @@ local function ReskinSlotButton(button)
 	end
 end
 
-local function HandleOutputButtons(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			local itemContainer = child.ItemContainer
-			if itemContainer then
-				local item = itemContainer.Item
-				item:SetNormalTexture(E.ClearTexture)
-				item:SetPushedTexture(E.ClearTexture)
-				item:SetHighlightTexture(E.ClearTexture)
-
-				local icon = item:GetRegions()
-				S:HandleIcon(icon, true)
-				S:HandleIconBorder(item.IconBorder, icon.backdrop)
-
-				itemContainer.CritFrame:SetAlpha(0)
-				itemContainer.NameFrame:Hide()
-				itemContainer.BorderFrame:Hide()
-				itemContainer.HighlightNameFrame:SetAlpha(0)
-				itemContainer.PushedNameFrame:SetAlpha(0)
-				itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
-			end
-
-			local bonus = child.CreationBonus
-			if bonus then
-				local item = bonus.Item
-				item:StripTextures()
-				local icon = item:GetRegions()
-				S:HandleIcon(icon)
-			end
-
-			child.IsSkinned = true
-		end
-
+local function HandleOutputButton(child)
+	if not child.IsSkinned then
 		local itemContainer = child.ItemContainer
 		if itemContainer then
-			itemContainer.Item.IconBorder:SetAlpha(0)
+			local item = itemContainer.Item
+			item:SetNormalTexture(E.ClearTexture)
+			item:SetPushedTexture(E.ClearTexture)
+			item:SetHighlightTexture(E.ClearTexture)
 
-			local itemBG = itemContainer.backdrop
-			if itemBG then
-				if itemContainer.CritFrame:IsShown() then
-					itemBG:SetBackdropBorderColor(1, .8, 0)
-				else
-					itemBG:SetBackdropBorderColor(0, 0, 0)
-				end
+			local icon = item:GetRegions()
+			S:HandleIcon(icon, true)
+			S:HandleIconBorder(item.IconBorder, icon.backdrop)
+
+			itemContainer.CritFrame:SetAlpha(0)
+			itemContainer.NameFrame:Hide()
+			itemContainer.BorderFrame:Hide()
+			itemContainer.HighlightNameFrame:SetAlpha(0)
+			itemContainer.PushedNameFrame:SetAlpha(0)
+			itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
+		end
+
+		local bonus = child.CreationBonus
+		if bonus then
+			local item = bonus.Item
+			item:StripTextures()
+			local icon = item:GetRegions()
+			S:HandleIcon(icon)
+		end
+
+		child.IsSkinned = true
+	end
+
+	local itemContainer = child.ItemContainer
+	if itemContainer then
+		itemContainer.Item.IconBorder:SetAlpha(0)
+
+		local itemBG = itemContainer.backdrop
+		if itemBG then
+			if itemContainer.CritFrame:IsShown() then
+				itemBG:SetBackdropBorderColor(1, .8, 0)
+			else
+				itemBG:SetBackdropBorderColor(0, 0, 0)
 			end
 		end
 	end
+end
+
+local function HandleOutputButtons(frame)
+	frame:ForEachFrame(HandleOutputButton)
 end
 
 local function ReskinOutputLog(outputlog)

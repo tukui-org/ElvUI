@@ -51,27 +51,29 @@ local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
 	end
 end
 
-local function GreetingPanel_Update(frame)
-	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		if not button.IsSkinned then
-			if button.GreetingText then
-				button.GreetingText:SetTextColor(1, 1, 1)
-				hooksecurefunc(button.GreetingText, 'SetTextColor', Gossip_SetTextColor)
-			end
-
-			local fontString = button.GetFontString and button:GetFontString()
-			if fontString then
-				fontString:SetTextColor(1, 1, 1)
-				hooksecurefunc(fontString, 'SetTextColor', Gossip_SetTextColor)
-
-				Gossip_SetText(button, button:GetText())
-				hooksecurefunc(button, 'SetText', Gossip_SetText)
-				hooksecurefunc(button, 'SetFormattedText', Gossip_SetFormattedText)
-			end
-
-			button.IsSkinned = true
+local function GreetingPanel_UpdateChild(button)
+	if not button.IsSkinned then
+		if button.GreetingText then
+			button.GreetingText:SetTextColor(1, 1, 1)
+			hooksecurefunc(button.GreetingText, 'SetTextColor', Gossip_SetTextColor)
 		end
+
+		local fontString = button.GetFontString and button:GetFontString()
+		if fontString then
+			fontString:SetTextColor(1, 1, 1)
+			hooksecurefunc(fontString, 'SetTextColor', Gossip_SetTextColor)
+
+			Gossip_SetText(button, button:GetText())
+			hooksecurefunc(button, 'SetText', Gossip_SetText)
+			hooksecurefunc(button, 'SetFormattedText', Gossip_SetFormattedText)
+		end
+
+		button.IsSkinned = true
 	end
+end
+
+local function GreetingPanel_Update(frame)
+	frame:ForEachFrame(GreetingPanel_UpdateChild)
 end
 
 local function GossipFrame_SetAtlas(frame)

@@ -271,10 +271,12 @@ do
 		AB:BindUpdate(button, 'MACRO')
 	end
 
+	local function MacroFrame_FirstUpdateChild(button)
+		button:HookScript('OnEnter', OnEnter)
+	end
+
 	local function MacroFrame_FirstUpdate(frame)
-		for _, button in next, { frame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
-			button:HookScript('OnEnter', OnEnter)
-		end
+		frame:ForEachFrame(MacroFrame_FirstUpdateChild)
 
 		AB:Unhook(frame, 'Update')
 	end
@@ -305,17 +307,19 @@ do
 		HideUIPanel(_G.SettingsPanel)
 	end
 
-	local function UpdateScrollBox(scrollBox)
-		for _, element in next, { scrollBox.ScrollTarget:GetChildren() } do
-			local data = element and element.data
-			if data and data.buttonText == QUICK_KEYBIND_MODE then
-				local button = element.Button
-				if button and button:GetScript('OnClick') ~= keybindButtonClick then
-					button:SetScript('OnClick', keybindButtonClick)
-					button:SetFormattedText('%s Keybind', E.title)
-				end
+	local function UpdateScrollBoxChild(element)
+		local data = element.data
+		if data and data.buttonText == QUICK_KEYBIND_MODE then
+			local button = element.Button
+			if button and button:GetScript('OnClick') ~= keybindButtonClick then
+				button:SetScript('OnClick', keybindButtonClick)
+				button:SetFormattedText('%s Keybind', E.title)
 			end
 		end
+	end
+
+	local function UpdateScrollBox(scrollBox)
+		scrollBox:ForEachFrame(UpdateScrollBoxChild)
 	end
 
 	function AB:SettingsDisplayCategory(category)

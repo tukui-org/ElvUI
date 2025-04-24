@@ -109,6 +109,107 @@ local function HandleCompareCategory(button)
 	S:HandleIcon(button.Icon.texture)
 end
 
+local function ResultScrollUpdateChild(child)
+	if not child.IsSkinned then
+		child:StripTextures()
+		S:HandleIcon(child.Icon)
+		child:CreateBackdrop('Transparent')
+		child.backdrop:SetInside()
+		SetupButtonHighlight(child, child.backdrop)
+
+		child.IsSkinned = true
+	end
+end
+
+local function ResultScrollUpdate(frame)
+	frame:ForEachFrame(ResultScrollUpdateChild)
+end
+
+local function AchievementFrameCategoriesScrollUpdateChild(child)
+	local button = child.Button
+	if button and not button.IsSkinned then
+		S:HandleFrame(button, true, nil, 0, -1)
+		button.Background:Hide()
+		SetupButtonHighlight(button, button.backdrop)
+
+		button.IsSkinned = true
+	end
+end
+
+local function AchievementFrameCategoriesScrollUpdate(frame)
+	frame:ForEachFrame(AchievementFrameCategoriesScrollUpdateChild)
+end
+
+local function AchievementFrameStatsScrollUpdateChild(child)
+	if not child.IsSkinned then
+		S:HandleFrame(child, true, nil, 2, -E.mult, 4, E.mult)
+		SetupButtonHighlight(child, child.backdrop)
+
+		child.IsSkinned = true
+	end
+end
+
+local function AchievementFrameStatsScrollUpdate(frame)
+	frame:ForEachFrame(AchievementFrameStatsScrollUpdateChild)
+end
+
+local function ComparisonContainerScrollUpdateChild(child)
+	if not child.IsSkinned then
+		HandleCompareCategory(child.Player)
+		child.Player.Description:SetTextColor(.9, .9, .9)
+		child.Player.Description.SetTextColor = E.noop
+		HandleCompareCategory(child.Friend)
+
+		child.IsSkinned = true
+	end
+end
+
+local function ComparisonContainerScrollUpdate(frame)
+	frame:ForEachFrame(ComparisonContainerScrollUpdateChild)
+end
+
+local function ComparisonStatContainerScrollUpdateChild(child)
+	if not child.IsSkinned then
+		S:HandleFrame(child, true, nil, 2, -E.mult, 6, E.mult)
+
+		child.IsSkinned = true
+	end
+end
+
+local function ComparisonStatContainerScrollUpdate(frame)
+	frame:ForEachFrame(ComparisonStatContainerScrollUpdateChild)
+end
+
+local function AchievementFrameAchievementsScrollUpdateChild(child)
+	if not child.IsSkinned then
+		child:StripTextures(true)
+		child.Background:SetAlpha(0)
+		child.Highlight:SetAlpha(0)
+		child.Icon.frame:Hide()
+		child.Description:SetTextColor(.9, .9, .9)
+		child.Description.SetTextColor = E.noop
+
+		child:CreateBackdrop('Transparent')
+		child.backdrop:Point('TOPLEFT', 1, -1)
+		child.backdrop:Point('BOTTOMRIGHT', 0, 2)
+		S:HandleIcon(child.Icon.texture, true)
+
+		S:HandleCheckBox(child.Tracked)
+		child.Tracked:SetSize(20, 20)
+		child.Check:SetAlpha(0)
+
+		hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
+		hooksecurefunc(child, 'DisplayObjectives', UpdateDisplayObjectives)
+
+		child.IsSkinned = true
+	end
+
+end
+
+local function AchievementFrameAchievementsScrollUpdate(frame)
+	frame:ForEachFrame(AchievementFrameAchievementsScrollUpdateChild)
+end
+
 function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
@@ -157,19 +258,7 @@ function S:Blizzard_AchievementUI()
 	S:HandleFrame(Result, true, nil, -8)
 	S:HandleTrimScrollBar(Result.ScrollBar)
 
-	hooksecurefunc(Result.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures()
-				S:HandleIcon(child.Icon)
-				child:CreateBackdrop('Transparent')
-				child.backdrop:SetInside()
-				SetupButtonHighlight(child, child.backdrop)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(Result.ScrollBox, 'Update', ResultScrollUpdate)
 
 	S:HandleTrimScrollBar(_G.AchievementFrameCategories.ScrollBar)
 	S:HandleTrimScrollBar(_G.AchievementFrameAchievements.ScrollBar)
@@ -226,59 +315,20 @@ function S:Blizzard_AchievementUI()
 		_G.AchievementFrameSummary:StripTextures()
 		_G.AchievementFrameSummary:GetChildren():Hide()
 
-		hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', function(frame)
-			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				local button = child.Button
-				if button and not button.IsSkinned then
-					S:HandleFrame(button, true, nil, 0, -1)
-					button.Background:Hide()
-					SetupButtonHighlight(button, button.backdrop)
-
-					button.IsSkinned = true
-				end
-			end
-		end)
+		hooksecurefunc(_G.AchievementFrameCategories.ScrollBox, 'Update', AchievementFrameCategoriesScrollUpdate)
 
 		_G.AchievementFrameStatsBG:Hide()
 
 		select(4, _G.AchievementFrameStats:GetChildren()):Hide()
-		hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', function(frame)
-			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.IsSkinned then
-					S:HandleFrame(child, true, nil, 2, -E.mult, 4, E.mult)
-					SetupButtonHighlight(child, child.backdrop)
-
-					child.IsSkinned = true
-				end
-			end
-		end)
+		hooksecurefunc(_G.AchievementFrameStats.ScrollBox, 'Update', AchievementFrameStatsScrollUpdate)
 
 		local Comparison = _G.AchievementFrameComparison
-		hooksecurefunc(Comparison.AchievementContainer.ScrollBox, 'Update', function(frame)
-			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.IsSkinned then
-					HandleCompareCategory(child.Player)
-					child.Player.Description:SetTextColor(.9, .9, .9)
-					child.Player.Description.SetTextColor = E.noop
-					HandleCompareCategory(child.Friend)
-
-					child.IsSkinned = true
-				end
-			end
-		end)
+		hooksecurefunc(Comparison.AchievementContainer.ScrollBox, 'Update', ComparisonContainerScrollUpdate)
 
 		Comparison:StripTextures()
 		select(5, Comparison:GetChildren()):Hide()
 
-		hooksecurefunc(Comparison.StatContainer.ScrollBox, 'Update', function(frame)
-			for _, child in next, { frame.ScrollTarget:GetChildren() } do
-				if not child.IsSkinned then
-					S:HandleFrame(child, true, nil, 2, -E.mult, 6, E.mult)
-
-					child.IsSkinned = true
-				end
-			end
-		end)
+		hooksecurefunc(Comparison.StatContainer.ScrollBox, 'Update', ComparisonStatContainerScrollUpdate)
 	end
 
 	for i = 1, 12 do
@@ -295,32 +345,7 @@ function S:Blizzard_AchievementUI()
 		_G[name..'ButtonHighlight']:SetAlpha(0)
 	end
 
-	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures(true)
-				child.Background:SetAlpha(0)
-				child.Highlight:SetAlpha(0)
-				child.Icon.frame:Hide()
-				child.Description:SetTextColor(.9, .9, .9)
-				child.Description.SetTextColor = E.noop
-
-				child:CreateBackdrop('Transparent')
-				child.backdrop:Point('TOPLEFT', 1, -1)
-				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
-				S:HandleIcon(child.Icon.texture, true)
-
-				S:HandleCheckBox(child.Tracked)
-				child.Tracked:SetSize(20, 20)
-				child.Check:SetAlpha(0)
-
-				hooksecurefunc(child, 'UpdatePlusMinusTexture', UpdateAccountString)
-				hooksecurefunc(child, 'DisplayObjectives', UpdateDisplayObjectives)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', AchievementFrameAchievementsScrollUpdate)
 
 	hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
 		local numCriteria = GetAchievementNumCriteria(id)

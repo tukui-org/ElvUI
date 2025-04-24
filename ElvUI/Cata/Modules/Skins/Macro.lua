@@ -6,6 +6,16 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local function MacroSelectorScrollUpdateChild(button)
+	if button.Icon and not button.IsSkinned then
+		S:HandleItemButton(button, true)
+	end
+end
+
+local function MacroSelectorScrollUpdate(frame)
+	frame:ForEachFrame(MacroSelectorScrollUpdateChild)
+end
+
 function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
@@ -61,13 +71,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton.Icon:SetTexCoord(unpack(E.TexCoords))
 
 	-- handle the macro buttons
-	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', function()
-		for _, button in next, { MacroFrame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
-			if button.Icon and not button.IsSkinned then
-				S:HandleItemButton(button, true)
-			end
-		end
-	end)
+	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', MacroSelectorScrollUpdate)
 
 	-- New icon selection
 	_G.MacroPopupFrame:HookScript('OnShow', function(frame)

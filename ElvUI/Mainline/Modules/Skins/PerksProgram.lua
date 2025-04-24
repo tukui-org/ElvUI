@@ -74,9 +74,7 @@ local function HandleRewardButton(child)
 end
 
 local function HandleRewards(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		HandleRewardButton(child)
-	end
+	frame:ForEachFrame(HandleRewardButton)
 end
 
 local function HandleSortLabel(button)
@@ -140,8 +138,8 @@ local function GlowEmitterFactory_Hide(frame, target)
 	GlowEmitterFactory_Toggle(frame, target)
 end
 
-local function DetailsScrollBoxUpdate(box)
-	box:ForEachFrame(HandleSetButtons)
+local function DetailsScrollBoxUpdate(frame)
+	frame:ForEachFrame(HandleSetButtons)
 end
 
 local function HandleShoppingCardButtons(button)
@@ -187,10 +185,8 @@ local function HandleShoppingCardButtons(button)
 	end
 end
 
-local function ShoppingCartScrollBoxUpdate(box)
-	for _, child in next, { box.ScrollTarget:GetChildren() } do
-		HandleShoppingCardButtons(child)
-	end
+local function ShoppingCartScrollBoxUpdate(frame)
+	frame:ForEachFrame(HandleShoppingCardButtons)
 end
 
 local function HandleCheckbox(box)

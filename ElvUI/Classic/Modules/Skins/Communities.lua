@@ -11,7 +11,7 @@ local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 
-local function HandleCommunitiesButtons(button)
+local function HandleCommunitiesButton(button)
 	button.Background:Hide()
 	button.CircleMask:Hide()
 	button.IconRing:Hide()
@@ -61,37 +61,44 @@ do
 	end
 end
 
-local function HandleCommunityCards(frame)
-	if not frame then return end
+local function HandleCommunityCardsChild(child)
+	if not child.IsSkinned then
+		child.CircleMask:Hide()
+		child.LogoBorder:Hide()
+		child.Background:Hide()
+		S:HandleIcon(child.CommunityLogo)
+		S:HandleButton(child)
 
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			child.CircleMask:Hide()
-			child.LogoBorder:Hide()
-			child.Background:Hide()
-			S:HandleIcon(child.CommunityLogo)
-			S:HandleButton(child)
-
-			child.IsSkinned = true
-		end
+		child.IsSkinned = true
 	end
 end
 
-local function HandleRewardButton(button)
-	for _, child in next, { button.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			S:HandleIcon(child.Icon, true)
-			child:StripTextures()
+local function HandleCommunityCards(frame)
+	frame:ForEachFrame(HandleCommunityCardsChild)
+end
 
-			child:CreateBackdrop('Transparent')
-			child.backdrop:ClearAllPoints()
-			child.backdrop:Point('TOPLEFT', child.Icon.backdrop)
-			child.backdrop:Point('BOTTOMLEFT', child.Icon.backdrop)
-			child.backdrop:SetWidth(child:GetWidth() - 5)
+local function HandleRewardButton(child)
+	if not child.IsSkinned then
+		S:HandleIcon(child.Icon, true)
+		child:StripTextures()
 
-			child.IsSkinned = true
-		end
+		child:CreateBackdrop('Transparent')
+		child.backdrop:ClearAllPoints()
+		child.backdrop:Point('TOPLEFT', child.Icon.backdrop)
+		child.backdrop:Point('BOTTOMLEFT', child.Icon.backdrop)
+		child.backdrop:SetWidth(child:GetWidth() - 5)
+
+		child.IsSkinned = true
 	end
+
+end
+
+local function HandleRewardButtons(button)
+	button:ForEachFrame(HandleRewardButton)
+end
+
+local function CommunitiesListScrollUpdate(frame)
+	frame:ForEachFrame(HandleCommunitiesButton)
 end
 
 function S:Blizzard_Communities()
@@ -113,16 +120,10 @@ function S:Blizzard_Communities()
 	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropdown)
 
-	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			HandleCommunitiesButtons(child)
-		end
-	end)
-
-	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', HandleCommunitiesButtons)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', HandleCommunitiesButtons)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', HandleCommunitiesButtons)
+	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', CommunitiesListScrollUpdate)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', HandleCommunitiesButton)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', HandleCommunitiesButton)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', HandleCommunitiesButton)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:Point('TOPLEFT', nil, 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
@@ -331,8 +332,8 @@ function S:Blizzard_Communities()
 		GuildBenefitsFrame.Perks:StripTextures()
 		GuildBenefitsFrame.Rewards.Bg:Hide()
 
-		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBox, 'Update', HandleRewardButton)
-		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButton)
+		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Perks.ScrollBox, 'Update', HandleRewardButtons)
+		hooksecurefunc(CommunitiesFrame.GuildBenefitsFrame.Rewards.ScrollBox, 'Update', HandleRewardButtons)
 	end
 
 	local StatusBar = CommunitiesFrame.GuildBenefitsFrame.FactionFrame.Bar
