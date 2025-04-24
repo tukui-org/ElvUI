@@ -382,7 +382,9 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 
-		_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont.ScrollBox:ForEachFrame(LoreScrollingFontChild)
+		for _, child in next, { _G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont.ScrollBox.ScrollTarget:GetChildren() } do
+			LoreScrollingFontChild(child)
+		end
 	end
 end
 
