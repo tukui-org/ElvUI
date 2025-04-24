@@ -76,17 +76,19 @@ local function ReskinSlotButton(button)
 	if not icon then return end
 
 	if button.CropFrame then button.CropFrame:SetAlpha(0) end
-	if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
 	if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
-	if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
 
 	local hl = button:GetHighlightTexture()
 	hl:SetColorTexture(1, 1, 1, .25)
 	hl:SetOutside(button)
 
+	local nt = button:GetNormalTexture()
+	local greenPlus = nt and (nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon')
+	nt:SetAlpha(greenPlus and 1 or 0)
+	nt:SetOutside(button)
+
 	local ps = button:GetPushedTexture()
-	ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-	ps:SetBlendMode('ADD')
+	ps:SetAlpha(greenPlus and 1 or 0)
 	ps:SetOutside(button)
 
 	if not button.IsSkinned then
