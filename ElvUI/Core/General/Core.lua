@@ -155,7 +155,7 @@ E.GemTypeInfo = {
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
-E.UIParent:OffsetFrameLevel(nil, UIParent)
+E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
