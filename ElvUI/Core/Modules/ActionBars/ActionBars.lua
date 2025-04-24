@@ -733,10 +733,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		shine:SetAllPoints()
 	end
 
-	if not ignoreNormal then -- stance buttons dont need this
-		button.FlyoutUpdateFunc = AB.StyleFlyout
-	end
-
 	if button.SpellHighlightTexture then
 		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
 		button.SpellHighlightTexture:SetAllPoints()
@@ -1515,6 +1511,7 @@ function AB:UpdateFlyoutButtons()
 		_G.LABFlyoutHandlerFrame.Background:Hide()
 	end
 
+	-- spellbook flyouts
 	local isShown, i = _G.SpellFlyout:IsShown(), 1
 	local flyoutName = E.Retail and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
 	local btn = _G[flyoutName..i]
@@ -1577,7 +1574,7 @@ function AB:StyleFlyout(button, arrow)
 		local distance = (_G.SpellFlyout and _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == parent) and 7 or 4
 		arrow:ClearAllPoints()
 		arrow:Point('RIGHT', btn, 'RIGHT', distance, 0)
-	elseif bar and AB.handledbuttons[button] then -- Change arrow direction depending on what bar the button is on
+	elseif bar and button.isFlyoutButton then -- Change arrow direction depending on what bar the button is on
 		local direction = (bar.db and bar.db.flyoutDirection) or 'AUTOMATIC'
 		local point = direction == 'AUTOMATIC' and E:GetScreenQuadrant(bar)
 		if point == 'UNKNOWN' then return end
@@ -1667,8 +1664,8 @@ function AB:SetButtonDesaturation(button, duration)
 	end
 end
 
-function AB:LAB_FlyoutUpdate(btn, arrow)
-	AB:StyleFlyout(btn, arrow)
+function AB:LAB_FlyoutUpdate(btn)
+	AB:StyleFlyout(btn)
 end
 
 function AB:LAB_FlyoutSpells()
