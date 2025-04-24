@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, strmatch, unpack = gsub, strmatch, unpack
 local next, pairs = next, pairs
+local gsub, strmatch, unpack = gsub, strmatch, unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetMoney = GetMoney

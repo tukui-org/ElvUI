@@ -5,6 +5,7 @@ local _G = _G
 local CreateFrame = CreateFrame
 local DISABLE = DISABLE
 local HIDE = HIDE
+
 -- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
