@@ -13,7 +13,9 @@ local function MacroSelectorScrollUpdateChild(button)
 end
 
 local function MacroSelectorScrollUpdate(frame)
-	frame:ForEachFrame(MacroSelectorScrollUpdateChild)
+	for _, button in next, { frame.ScrollTarget:GetChildren() } do
+		MacroSelectorScrollUpdateChild(button)
+	end
 end
 
 function S:Blizzard_MacroUI()

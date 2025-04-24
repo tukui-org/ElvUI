@@ -271,12 +271,16 @@ do
 		AB:BindUpdate(button, 'MACRO')
 	end
 
-	local function MacroFrame_FirstUpdateChild(button)
+	local function MacroSelectorScrollUpdateChild(button)
 		button:HookScript('OnEnter', OnEnter)
 	end
 
-	local function MacroFrame_FirstUpdate(frame)
-		frame:ForEachFrame(MacroFrame_FirstUpdateChild)
+	local function MacroSelectorScrollUpdate(frame)
+		if frame.MacroSelector then
+			for _, button in next, { frame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
+				MacroSelectorScrollUpdateChild(button)
+			end
+		end
 
 		AB:Unhook(frame, 'Update')
 	end
@@ -284,7 +288,7 @@ do
 	function AB:ADDON_LOADED(_, addon)
 		if addon == 'Blizzard_MacroUI' then
 			if _G.MacroFrame.Update then
-				AB:SecureHook(_G.MacroFrame, 'Update', MacroFrame_FirstUpdate)
+				AB:SecureHook(_G.MacroFrame, 'Update', MacroSelectorScrollUpdate)
 			else
 				for i = 1, MAX_ACCOUNT_MACROS do
 					_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)

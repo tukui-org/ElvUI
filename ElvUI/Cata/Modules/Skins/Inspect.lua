@@ -6,7 +6,6 @@ local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemQuality = GetInventoryItemQuality
-
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 
 local function Update_InspectPaperDollItemSlotButton(button)
