@@ -222,6 +222,8 @@ function S:Blizzard_PerksProgram() -- Trading Post
 			S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.AddToCartButton, nil, nil, nil, true, nil, nil, nil, true)
+			S:HandleButton(footer.RemoveFromCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
 			purchase:HookScript('OnEnter', PurchaseButton_OnEnter)
 			purchase:HookScript('OnLeave', PurchaseButton_OnLeave)
