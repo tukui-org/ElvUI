@@ -626,10 +626,19 @@ do
 		['auctionhouse-itemicon-border-purple']		= ITEMQUALITY.Epic,
 		['auctionhouse-itemicon-border-orange']		= ITEMQUALITY.Legendary,
 		['auctionhouse-itemicon-border-artifact']	= ITEMQUALITY.Artifact,
-		['auctionhouse-itemicon-border-account']	= ITEMQUALITY.Heirloom
+		['auctionhouse-itemicon-border-account']	= ITEMQUALITY.Heirloom,
+
+		['Professions-Slot-Frame']					= ITEMQUALITY.Common,
+		['Professions-Slot-Frame-Green']			= ITEMQUALITY.Uncommon,
+		['Professions-Slot-Frame-Blue']				= ITEMQUALITY.Rare,
+		['Professions-Slot-Frame-Epic']				= ITEMQUALITY.Epic,
+		['Professions-Slot-Frame-Legendary']		= ITEMQUALITY.Legendary
 	}
 
 	local function colorAtlas(border, atlas)
+		local quality = iconColors[atlas]
+		if not quality then return end
+
 		local r, g, b = E:GetItemQualityColor(iconColors[atlas])
 
 		if border.customFunc then
@@ -641,6 +650,9 @@ do
 	end
 
 	local function colorVertex(border, r, g, b, a)
+		local quality = iconColors[border:GetAtlas()]
+		if quality then return end
+
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
@@ -680,8 +692,8 @@ do
 		end
 
 		local r, g, b, a = border:GetVertexColor()
-		local atlasQuality = iconColors[border.GetAtlas and border:GetAtlas()]
-		local atlas = atlasQuality and E:GetQualityColor(atlasQuality)
+		local quality = iconColors[border:GetAtlas()]
+		local atlas = quality and E:GetQualityColor(quality)
 		if customFunc then
 			border.customFunc = customFunc
 			local br, bg, bb = unpack(E.media.bordercolor)

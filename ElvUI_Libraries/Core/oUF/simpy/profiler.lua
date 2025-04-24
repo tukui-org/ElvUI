@@ -155,6 +155,8 @@ _info.func = function(tbl, ...)
 	end
 end
 
+_info.func(oUF) -- soon as possible
+
 _info.add = function(func)
 	if not _funcs[func] then
 		_funcs[func] = {}

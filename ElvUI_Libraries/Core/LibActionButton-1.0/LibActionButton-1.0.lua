@@ -2533,6 +2533,8 @@ if ActionButton_UpdateFlyout then -- on Classic only?
 	end)
 
 	function UpdateFlyout(self)
+		local hideArrow = true
+
 		-- disabled FlyoutBorder/BorderShadow, those are not handled by LBF and look terrible
 		if self.FlyoutBorder then
 			self.FlyoutBorder:Hide()
@@ -2540,6 +2542,7 @@ if ActionButton_UpdateFlyout then -- on Classic only?
 		if self.FlyoutBorderShadow then
 			self.FlyoutBorderShadow:Hide()
 		end
+
 		if self._state_type == "action" then
 			-- based on ActionButton_UpdateFlyout in ActionButton.lua
 			local actionType = GetActionInfo(self._state_action)
@@ -2565,11 +2568,15 @@ if ActionButton_UpdateFlyout then -- on Classic only?
 					SetClampedTextureRotation(self.FlyoutArrow, isFlyoutShown and 180 or 0)
 				end
 
-				-- return here, otherwise flyout is hidden
-				return
+				hideArrow = false
 			end
 		end
-		self.FlyoutArrow:Hide()
+
+		if hideArrow then
+			self.FlyoutArrow:Hide()
+		end
+
+		lib.callbacks:Fire("OnFlyoutUpdate", self)
 	end
 elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
 	function Generic:GetPopupDirection()
@@ -2592,13 +2599,15 @@ elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
 				self:UpdateArrowTexture()
 				self:UpdateArrowRotation()
 				self:UpdateArrowPosition()
-				-- return here, otherwise flyout is hidden
-				return
 			end
 		end
+
+		lib.callbacks:Fire("OnFlyoutUpdate", self)
 	end
 else -- for cata right now
 	function UpdateFlyout(self, isButtonDownOverride)
+		local hideArrow = true
+
 		if self.FlyoutBorderShadow then
 			self.FlyoutBorderShadow:Hide()
 		end
@@ -2656,14 +2665,15 @@ else -- for cata right now
 					flyoutArrowTexture:SetPoint("TOP", self, "TOP", 0, arrowDistance)
 				end
 
-				lib.callbacks:Fire("OnFlyoutUpdate", self, flyoutArrowTexture)
-
-				-- return here, otherwise flyout is hidden
-				return
+				hideArrow = false
 			end
 		end
 
-		self.FlyoutArrowContainer:Hide()
+		if hideArrow then
+			self.FlyoutArrowContainer:Hide()
+		end
+
+		lib.callbacks:Fire("OnFlyoutUpdate", self)
 	end
 end
 Generic.UpdateFlyout = UpdateFlyout

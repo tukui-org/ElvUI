@@ -23,22 +23,72 @@ local function ReskinQualityContainer(container)
 	HandleInputBox(container.EditBox)
 end
 
+local function HandleSalvageItem(item)
+	if item.NormalTexture then
+		item.NormalTexture:SetAlpha(0)
+		item.PushedTexture:SetAlpha(0)
+	end
+
+	if not item.IsSkinned then
+		S:HandleIcon(item.icon, true)
+		S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
+
+		local hl = item:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(item)
+
+		item.IsSkinned = true
+	end
+end
+
+local function HandleItemFlyoutContents(child)
+	child.NineSlice:SetTemplate('Transparent')
+
+	if child.ScrollBar then
+		S:HandleTrimScrollBar(child.ScrollBar)
+	end
+
+	if child.HideUnownedCheckbox then
+		S:HandleCheckBox(child.HideUnownedCheckbox)
+		child.HideUnownedCheckbox:Size(24)
+	end
+
+	child.ScrollBox:ForEachFrame(HandleSalvageItem)
+end
+
+local professionFlyoutHooks = {}
+local function HandleProfessionsItemFlyout()
+	local CraftingPage = _G.ProfessionsFrame.CraftingPage
+	local SchematicForm = CraftingPage and CraftingPage.SchematicForm
+	if not SchematicForm then return end
+
+	for _, child in next, { SchematicForm:GetChildren() } do
+		if child.InitializeContents and not professionFlyoutHooks[child] then
+			E:Delay(0.05, HandleItemFlyoutContents, child)
+
+			hooksecurefunc(child, 'InitializeContents', HandleItemFlyoutContents)
+		end
+	end
+end
+
 local function ReskinSlotButton(button)
 	local icon = button and button.Icon
 	if not icon then return end
 
 	if button.CropFrame then button.CropFrame:SetAlpha(0) end
-	if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
 	if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
-	if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
 
 	local hl = button:GetHighlightTexture()
 	hl:SetColorTexture(1, 1, 1, .25)
 	hl:SetOutside(button)
 
+	local nt = button:GetNormalTexture()
+	local greenPlus = nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon'
+	nt:SetAlpha(greenPlus and 1 or 0)
+	nt:SetOutside(button)
+
 	local ps = button:GetPushedTexture()
-	ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-	ps:SetBlendMode('ADD')
+	ps:SetAlpha(greenPlus and 1 or 0)
 	ps:SetOutside(button)
 
 	if not button.IsSkinned then
@@ -219,6 +269,7 @@ function S:Blizzard_Professions()
 	SchematicForm.backdrop:SetInside()
 	SchematicForm.Background:SetInside(SchematicForm.backdrop)
 
+	hooksecurefunc('ToggleProfessionsItemFlyout', HandleProfessionsItemFlyout)
 	hooksecurefunc(SchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)

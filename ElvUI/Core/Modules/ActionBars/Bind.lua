@@ -90,14 +90,11 @@ function AB:BindListener(key)
 		return
 	end
 
-	--Check if this button can open a flyout menu
-	local hasArrow = bind.button.FlyoutArrow or (bind.button.FlyoutArrowContainer and bind.button.FlyoutArrowContainer.FlyoutArrowNormal)
-	local isFlyout = (hasArrow and hasArrow:IsShown())
-
 	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL'
 	or key == 'LALT' or key == 'RALT' or key == 'UNKNOWN' then return end
 
 	--Redirect LeftButton click to open flyout
+	local isFlyout = bind.button.isFlyout or bind.button.isFlyoutButton
 	if key == 'LeftButton' and isFlyout then
 		SecureActionButton_OnClick(bind.button)
 	end
@@ -163,7 +160,8 @@ function AB:BindTooltip(trigger)
 end
 
 function AB:BindUpdate(button, spellmacro)
-	if not bind.active or InCombatLockdown() then return end
+	if not bind.active or InCombatLockdown() or button.isFlyout or button.isFlyoutButton then return end
+
 	local trigger = false
 
 	bind.button = button
@@ -362,7 +360,7 @@ function AB:LoadKeyBinder()
 
 	local function buttonOnEnter(b) AB:BindUpdate(b) end
 	for b in next, self.handledbuttons do
-		if b:IsProtected() and b:IsObjectType('CheckButton') and not b.isFlyout then
+		if b:IsProtected() and b:IsObjectType('CheckButton') then
 			b:HookScript('OnEnter', buttonOnEnter)
 		end
 	end
