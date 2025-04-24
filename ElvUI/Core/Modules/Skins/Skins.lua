@@ -641,6 +641,8 @@ do
 	end
 
 	local function colorVertex(border, r, g, b, a)
+		if border:GetAtlas() then return end
+
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
@@ -680,8 +682,8 @@ do
 		end
 
 		local r, g, b, a = border:GetVertexColor()
-		local atlasQuality = iconColors[border.GetAtlas and border:GetAtlas()]
-		local atlas = atlasQuality and E:GetQualityColor(atlasQuality)
+		local quality = iconColors[border:GetAtlas()]
+		local atlas = quality and E:GetQualityColor(quality)
 		if customFunc then
 			border.customFunc = customFunc
 			local br, bg, bb = unpack(E.media.bordercolor)
