@@ -64,7 +64,7 @@ local function HandleProfessionsItemFlyout()
 
 	for _, child in next, { SchematicForm:GetChildren() } do
 		if child.InitializeContents and not professionFlyoutHooks[child] then
-			HandleItemFlyoutContents(child)
+			E:Delay(0.05, HandleItemFlyoutContents, child)
 
 			hooksecurefunc(child, 'InitializeContents', HandleItemFlyoutContents)
 		end
