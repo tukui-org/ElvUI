@@ -27,15 +27,15 @@ local function HandleSalvageItem(item)
 	if item.NormalTexture then
 		item.NormalTexture:SetAlpha(0)
 		item.PushedTexture:SetAlpha(0)
-
-		local hl = item:GetHighlightTexture()
-		hl:SetColorTexture(1, 1, 1, .25)
-		hl:SetOutside(item)
 	end
 
 	if not item.IsSkinned then
 		S:HandleIcon(item.icon, true)
 		S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
+
+		local hl = item:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(item)
 
 		item.IsSkinned = true
 	end
@@ -64,6 +64,8 @@ local function HandleProfessionsItemFlyout()
 
 	for _, child in next, { SchematicForm:GetChildren() } do
 		if child.InitializeContents and not professionFlyoutHooks[child] then
+			HandleItemFlyoutContents(child)
+
 			hooksecurefunc(child, 'InitializeContents', HandleItemFlyoutContents)
 		end
 	end
