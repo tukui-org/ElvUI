@@ -23,6 +23,52 @@ local function ReskinQualityContainer(container)
 	HandleInputBox(container.EditBox)
 end
 
+local function HandleSalvageItem(item)
+	if item.NormalTexture then
+		item.NormalTexture:SetAlpha(0)
+		item.PushedTexture:SetAlpha(0)
+
+		local hl = item:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(item)
+	end
+
+	if not item.IsSkinned then
+		S:HandleIcon(item.icon, true)
+		S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
+
+		item.IsSkinned = true
+	end
+end
+
+local function HandleItemFlyoutContents(child)
+	child.NineSlice:SetTemplate('Transparent')
+
+	if child.ScrollBar then
+		S:HandleTrimScrollBar(child.ScrollBar)
+	end
+
+	if child.HideUnownedCheckbox then
+		S:HandleCheckBox(child.HideUnownedCheckbox)
+		child.HideUnownedCheckbox:Size(24)
+	end
+
+	child.ScrollBox:ForEachFrame(HandleSalvageItem)
+end
+
+local professionFlyoutHooks = {}
+local function HandleProfessionsItemFlyout()
+	local CraftingPage = _G.ProfessionsFrame.CraftingPage
+	local SchematicForm = CraftingPage and CraftingPage.SchematicForm
+	if not SchematicForm then return end
+
+	for _, child in next, { SchematicForm:GetChildren() } do
+		if child.InitializeContents and not professionFlyoutHooks[child] then
+			hooksecurefunc(child, 'InitializeContents', HandleItemFlyoutContents)
+		end
+	end
+end
+
 local function ReskinSlotButton(button)
 	local icon = button and button.Icon
 	if not icon then return end
@@ -219,6 +265,7 @@ function S:Blizzard_Professions()
 	SchematicForm.backdrop:SetInside()
 	SchematicForm.Background:SetInside(SchematicForm.backdrop)
 
+	hooksecurefunc('ToggleProfessionsItemFlyout', HandleProfessionsItemFlyout)
 	hooksecurefunc(SchematicForm, 'Init', function(frame)
 		for slot in frame.reagentSlotPool:EnumerateActive() do
 			ReskinSlotButton(slot.Button)
