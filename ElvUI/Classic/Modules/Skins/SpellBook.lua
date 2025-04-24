@@ -88,7 +88,6 @@ function S:SpellBookFrame()
 		end
 
 		button:CreateBackdrop(nil, true)
-		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel())
 
 		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
@@ -97,7 +96,7 @@ function S:SpellBookFrame()
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
-		button.bg:SetFrameLevel(button:GetFrameLevel() - 1)
+		button.bg:OffsetFrameLevel(-1, button)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 

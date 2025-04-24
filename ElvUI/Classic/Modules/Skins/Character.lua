@@ -191,7 +191,7 @@ function S:CharacterFrame()
 	local PetPaperDollPetInfo = _G.PetPaperDollPetInfo
 	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
 	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetPaperDollPetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
+	PetPaperDollPetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
 	PetPaperDollPetInfo:CreateBackdrop()
 	PetPaperDollPetInfo:Size(24)
 

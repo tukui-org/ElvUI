@@ -40,7 +40,7 @@ function S:Blizzard_InspectUI()
 		slot:StripTextures()
 		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
-		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
+		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -62,7 +62,7 @@ function S:Blizzard_InspectUI()
 	-- Honor Frame
 	local InspectHonorFrame = _G.InspectHonorFrame
 	S:HandleFrame(InspectHonorFrame, true, nil, 18, -105, -39, 83)
-	InspectHonorFrame.backdrop:SetFrameLevel(InspectHonorFrame:GetFrameLevel())
+	InspectHonorFrame.backdrop:OffsetFrameLevel(nil, InspectHonorFrame)
 
 	_G.InspectHonorFrameProgressButton:CreateBackdrop('Transparent')
 

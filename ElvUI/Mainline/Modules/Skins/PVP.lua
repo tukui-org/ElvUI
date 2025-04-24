@@ -14,7 +14,7 @@ local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton
-	checkbox:SetFrameLevel(checkbox:GetFrameLevel() + 1)
+	checkbox:OffsetFrameLevel(1)
 	S:HandleCheckBox(checkbox)
 
 	button:Size(40)

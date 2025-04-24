@@ -13,8 +13,14 @@ local function HandleSetButtons(button)
 	end
 
 	button.BackgroundTexture:SetAlpha(0)
-	button.SelectedTexture:SetColorTexture(1, .8, 0, .25)
-	button.SelectedTexture:SetInside()
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+	button.HighlightTexture:SetInside()
+end
+
+local function HandleShoppingCardButtons(button)
+	if not button then return end
+
+	button.BackgroundTexture:SetAlpha(0)
 	button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
 	button.HighlightTexture:SetInside()
 end
@@ -111,6 +117,12 @@ local function DetailsScrollBoxUpdate(box)
 	box:ForEachFrame(HandleSetButtons)
 end
 
+local function ShoppingCartScrollBoxUpdate(box)
+	if box then
+		box:ForEachFrame(HandleShoppingCardButtons)
+	end
+end
+
 local function HandleCheckbox(box)
 	S:HandleCheckBox(box)
 
@@ -133,6 +145,10 @@ function S:Blizzard_PerksProgram() -- Trading Post
 	if products then
 		S:HandleButton(products.PerksProgramFilter)
 
+		if products.PerksProgramFilter.ResetButton then
+			S:HandleCloseButton(products.PerksProgramFilter.ResetButton)
+		end
+
 		local currency = products.PerksProgramCurrencyFrame
 		if currency then
 			S:HandleIcon(currency.Icon, true)
@@ -144,7 +160,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 		if details then
 			details.Border:Hide()
 			details:CreateBackdrop('Transparent')
-			details.backdrop:SetFrameLevel(details.Border:GetFrameLevel() - 10)
+			details.backdrop:OffsetFrameLevel(-10, details.Border)
 
 			local container = details.SetDetailsScrollBoxContainer
 			if container then
@@ -164,7 +180,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 		if container then
 			container:StripTextures()
 			container:CreateBackdrop('Transparent')
-			container.backdrop:SetFrameLevel(container.Border:GetFrameLevel() - 10)
+			container.backdrop:OffsetFrameLevel(-10, container.Border)
 
 			S:HandleTrimScrollBar(container.ScrollBar)
 
@@ -179,6 +195,18 @@ function S:Blizzard_PerksProgram() -- Trading Post
 			HandleSortLabel(container.PriceSortButton)
 
 			hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
+		end
+
+		local shoppingCart = products.PerksProgramShoppingCartFrame
+		if shoppingCart then
+			shoppingCart:StripTextures()
+			shoppingCart:CreateBackdrop('Transparent')
+			S:HandleCloseButton(shoppingCart.CloseButton)
+			shoppingCart.CloseButton:OffsetFrameLevel(1, shoppingCart.backdrop)
+
+			local itemList = shoppingCart.ItemList
+			S:HandleTrimScrollBar(itemList.ScrollBar)
+			--hooksecurefunc(itemList.ScrollBox, 'Update', ShoppingCartScrollBoxUpdate)
 		end
 	end
 

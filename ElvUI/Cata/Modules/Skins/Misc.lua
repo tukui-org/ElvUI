@@ -166,7 +166,7 @@ function S:BlizzardMiscFrames()
 			anim2:SetTarget(button.shadow)
 		end
 
-		_G['StaticPopup'..i..'EditBox']:SetFrameLevel(_G['StaticPopup'..i..'EditBox']:GetFrameLevel()+1)
+		_G['StaticPopup'..i..'EditBox']:OffsetFrameLevel(1)
 		S:HandleEditBox(_G['StaticPopup'..i..'EditBox'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
@@ -234,7 +234,7 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame.bg1:SetTemplate('Transparent')
 	StackSplitFrame.bg1:Point('TOPLEFT', 10, -15)
 	StackSplitFrame.bg1:Point('BOTTOMRIGHT', -10, 55)
-	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
+	StackSplitFrame.bg1:OffsetFrameLevel(-1)
 
 	S:HandleButton(_G.StackSplitOkayButton)
 	S:HandleButton(_G.StackSplitCancelButton)

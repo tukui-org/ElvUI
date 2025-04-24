@@ -41,7 +41,7 @@ function S:Blizzard_CombatLog()
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:ClearAllPoints()
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', bar, 'TOPRIGHT', -2, -2)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets(0,0,0,0)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetFrameLevel(bar:GetFrameLevel() + 3)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:OffsetFrameLevel(3, bar)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end

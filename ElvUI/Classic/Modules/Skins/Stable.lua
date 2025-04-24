@@ -29,7 +29,7 @@ function S:PetStableFrame()
 
 	local PetStablePetInfo = _G.PetStablePetInfo
 	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetStablePetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
 	PetStablePetInfo:CreateBackdrop()
 	PetStablePetInfo:Size(24)
 

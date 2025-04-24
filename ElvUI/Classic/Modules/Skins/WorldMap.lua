@@ -34,7 +34,7 @@ function S:WorldMapFrame()
 	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 10, 1)
 	_G.WorldMapZoomOutButton:Height(23)
 	_G.WorldMapZoomOutButton:Width(100)
-	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
+	_G.WorldMapZoomOutButton:OffsetFrameLevel(2, _G.WorldMapFrame.BlackoutFrame)
 
 	S:HandleButton(_G.WorldMapZoomOutButton)
 	S:HandleSliderFrame(_G.OpacityFrameSlider)
@@ -44,7 +44,7 @@ function S:WorldMapFrame()
 	end
 
 	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
-	_G.WorldMapFrameCloseButton:SetFrameLevel(_G.WorldMapFrameCloseButton:GetFrameLevel() + 2)
+	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 
 S:AddCallback('WorldMapFrame')

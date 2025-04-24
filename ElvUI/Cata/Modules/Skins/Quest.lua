@@ -68,7 +68,7 @@ local function handleItemButton(item)
 	if item then
 		item:SetTemplate()
 		item:Size(143, 40)
-		item:SetFrameLevel(item:GetFrameLevel() + 2)
+		item:OffsetFrameLevel(2)
 	end
 
 	if item.Icon then

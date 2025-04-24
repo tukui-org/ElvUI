@@ -62,7 +62,7 @@ function M:SetSmallWorldMap()
 		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:SetScale(smallerMapScale)
 
-		_G.WorldMapTooltip:SetFrameLevel(WorldMapFrame.ScrollContainer:GetFrameLevel() + 100)
+		_G.WorldMapTooltip:OffsetFrameLevel(100, WorldMapFrame.ScrollContainer)
 	elseif not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)

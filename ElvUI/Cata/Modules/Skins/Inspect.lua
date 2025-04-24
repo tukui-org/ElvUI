@@ -43,7 +43,7 @@ function S:Blizzard_InspectUI()
 		slot:StripTextures()
 		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
-		slot:SetFrameLevel(slot:GetFrameLevel() + 2)
+		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
 		icon:SetTexCoord(unpack(E.TexCoords))

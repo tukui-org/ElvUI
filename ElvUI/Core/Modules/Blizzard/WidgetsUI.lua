@@ -78,7 +78,7 @@ function BL:BelowMinimap_CaptureBar()
 		self.backdrop:Point('TOPLEFT', self.LeftBar, -x, x)
 		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, x, -x)
 	else
-		self.backdrop:SetFrameLevel(self:GetFrameLevel() - 1)
+		self.backdrop:OffsetFrameLevel(-1, self)
 	end
 end
 

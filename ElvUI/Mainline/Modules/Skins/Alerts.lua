@@ -333,7 +333,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		level:Point('BOTTOM', frame.PortraitFrame, 0, 12)
 
 		local squareBG = CreateFrame('Frame', nil, frame.PortraitFrame)
-		squareBG:SetFrameLevel(frame.PortraitFrame:GetFrameLevel()-1)
+		squareBG:OffsetFrameLevel(-1, frame.PortraitFrame)
 		squareBG:Point('TOPLEFT', 3, -3)
 		squareBG:Point('BOTTOMRIGHT', -3, 11)
 		squareBG:SetTemplate()

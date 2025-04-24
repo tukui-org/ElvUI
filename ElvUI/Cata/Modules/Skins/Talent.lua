@@ -127,7 +127,7 @@ function S:Blizzard_TalentUI()
 
 		panel.Summary:StripTextures()
 		panel.Summary:CreateBackdrop()
-		panel.Summary:SetFrameLevel(panel.Summary:GetFrameLevel() + 2)
+		panel.Summary:OffsetFrameLevel(2)
 
 		panel.Summary.Icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -137,7 +137,7 @@ function S:Blizzard_TalentUI()
 		panel.HeaderIcon:StripTextures()
 		panel.HeaderIcon:CreateBackdrop()
 		panel.HeaderIcon.backdrop:SetOutside(panel.HeaderIcon.Icon)
-		panel.HeaderIcon:SetFrameLevel(panel.HeaderIcon:GetFrameLevel() + 1)
+		panel.HeaderIcon:OffsetFrameLevel(1)
 		panel.HeaderIcon:Point('TOPLEFT', 4, -4)
 
 		panel.HeaderIcon.Icon:Size(E.PixelMode and 34 or 30)
@@ -149,7 +149,7 @@ function S:Blizzard_TalentUI()
 
 		local arrow = _G[panelName..'Arrow']
 		if arrow then
-			arrow:SetFrameLevel(arrow:GetFrameLevel() + 2)
+			arrow:OffsetFrameLevel(2)
 		end
 
 		local activeBonus = _G[panelName..'SummaryActiveBonus1']
@@ -157,7 +157,7 @@ function S:Blizzard_TalentUI()
 			activeBonus:StripTextures()
 			activeBonus:CreateBackdrop()
 			activeBonus.backdrop:SetOutside(activeBonus.Icon)
-			activeBonus:SetFrameLevel(activeBonus:GetFrameLevel() + 1)
+			activeBonus:OffsetFrameLevel(1)
 			activeBonus.Icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
@@ -167,7 +167,7 @@ function S:Blizzard_TalentUI()
 				bonus:StripTextures()
 				bonus:CreateBackdrop()
 				bonus.backdrop:SetOutside(bonus.Icon)
-				bonus:SetFrameLevel(bonus:GetFrameLevel() + 1)
+				bonus:OffsetFrameLevel(1)
 
 				bonus.Icon:SetTexCoord(unpack(E.TexCoords))
 			end
@@ -204,7 +204,7 @@ function S:Blizzard_TalentUI()
 		local selectTree = _G[panelName..'SelectTreeButton']
 		if selectTree then
 			S:HandleButton(selectTree)
-			selectTree:SetFrameLevel(selectTree:GetFrameLevel() + 2)
+			selectTree:OffsetFrameLevel(2)
 		end
 	end
 
@@ -301,7 +301,7 @@ function S:Blizzard_GlyphUI()
 	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local frame = _G['GlyphFrameGlyph'..i]
 		frame:SetTemplate('Transparent')
-		frame:SetFrameLevel(frame:GetFrameLevel() + 5)
+		frame:OffsetFrameLevel(5)
 		frame:StyleButton(nil, true)
 
 		if i == 1 or i == 4 or i == 6 then -- Major Glyphs

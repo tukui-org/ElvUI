@@ -259,7 +259,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	local f = CreateFrame('Button', name, UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
-	f:SetFrameLevel(parent:GetFrameLevel() + 1)
+	f:OffsetFrameLevel(1, parent)
 	f:SetFrameStrata(overlay)
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)

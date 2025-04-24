@@ -114,7 +114,7 @@ function D:Initialize()
 	local frame = _G.ScriptErrorsFrame
 	D:SecureHookScript(frame, 'OnShow', D.ModifyErrorFrame)
 	D:SecureHook(frame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
-	D:SecureHook(frame, 'DisplayMessageInternal', D.ScriptErrorsFrame_OnError) -- We need to verify that 'DisplayMessageInternal' is the new way
+	D:SecureHook(frame, 'DisplayMessageInternal', D.ScriptErrorsFrame_OnError)
 	D:SecureHook('StaticPopup_Show')
 
 	D:RegisterEvent('PLAYER_REGEN_DISABLED')

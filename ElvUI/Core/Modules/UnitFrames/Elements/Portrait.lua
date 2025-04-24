@@ -23,7 +23,7 @@ function UF:Construct_Portrait(frame, which)
 		portrait = frame:CreateTexture(nil, 'OVERLAY')
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)
-		backdrop:SetFrameLevel(frame:GetFrameLevel())
+		backdrop:OffsetFrameLevel(nil, frame)
 		backdrop:SetTemplate(nil, nil, nil, nil, true)
 		portrait.backdrop = backdrop
 		portrait.useClassBase = true
@@ -68,7 +68,7 @@ function UF:Configure_Portrait(frame)
 		end
 
 		if portrait.db.style == '3D' then
-			portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+			portrait:OffsetFrameLevel(nil, frame.Health)
 		else
 			portrait:SetParent(frame.USE_PORTRAIT_OVERLAY and frame.Health or frame)
 		end

@@ -267,7 +267,7 @@ local function UpdateBankItem(button)
 	end
 
 	if not button.levelAdjusted then
-		button:SetFrameLevel(button:GetFrameLevel() + 1)
+		button:OffsetFrameLevel(1)
 		button.levelAdjusted = true
 	end
 

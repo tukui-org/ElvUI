@@ -427,7 +427,7 @@ local function LoadSkin()
 
 	-- progressBar already has a backdrop for itself
 	progressBar.IconBackdrop = CreateFrame('Frame', '$parentIconBackdrop', progressBar)
-	progressBar.IconBackdrop:SetFrameLevel(progressBar:GetFrameLevel())
+	progressBar.IconBackdrop:OffsetFrameLevel(nil, progressBar)
 	progressBar.IconBackdrop:SetOutside(progressBar.Icon)
 	progressBar.IconBackdrop:SetTemplate()
 end

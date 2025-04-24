@@ -862,7 +862,7 @@ function E:Install()
 		S:HandleButton(f.Prev, true)
 
 		f.Status = CreateFrame('StatusBar', 'InstallStatus', f)
-		f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
+		f.Status:OffsetFrameLevel(2)
 		f.Status:CreateBackdrop()
 		f.Status:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(f.Status)

@@ -13,7 +13,7 @@ function S:LossOfControlFrame()
 	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame)
 	IconBackdrop:SetTemplate()
 	IconBackdrop:SetOutside(LossOfControlFrame.Icon)
-	IconBackdrop:SetFrameLevel(LossOfControlFrame:GetFrameLevel() - 1)
+	IconBackdrop:OffsetFrameLevel(-1, LossOfControlFrame)
 
 	LossOfControlFrame.Icon:SetTexCoord(.1, .9, .1, .9)
 	LossOfControlFrame:StripTextures()

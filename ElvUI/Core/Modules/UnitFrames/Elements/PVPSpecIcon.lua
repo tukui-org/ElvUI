@@ -9,7 +9,7 @@ function UF:Construct_PVPSpecIcon(frame)
 
 	specIcon.bg = CreateFrame('Frame', nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, nil, true)
-	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
+	specIcon.bg:OffsetFrameLevel(-1, specIcon)
 	specIcon:SetInside(specIcon.bg)
 
 	return specIcon

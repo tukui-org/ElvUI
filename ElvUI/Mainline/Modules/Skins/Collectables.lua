@@ -403,7 +403,7 @@ local function SkinPetFrame()
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
-		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
+		petButton.dragButton:OffsetFrameLevel(1, _G['PetJournalLoadoutPet'..i].dragButton)
 
 		petButton.hover = true
 		petButton.pushed = true
@@ -420,7 +420,7 @@ local function SkinPetFrame()
 		petButtonXPBar:CreateBackdrop()
 		petButtonXPBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(petButtonXPBar)
-		petButtonXPBar:SetFrameLevel(petButtonXPBar:GetFrameLevel() + 2)
+		petButtonXPBar:OffsetFrameLevel(2)
 
 		for index = 1, 3 do
 			local f = _G['PetJournalLoadoutPet'..i..'Spell'..index]
@@ -457,7 +457,7 @@ local function SkinPetFrame()
 
 	for i=1, 6 do
 		local frame = _G['PetJournalPetCardSpell'..i]
-		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
+		frame:OffsetFrameLevel(2)
 		frame:DisableDrawLayer('BACKGROUND')
 		frame:SetTemplate()
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
@@ -662,7 +662,7 @@ local function SkinTransmogFrames()
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
-		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
+		slotButton:OffsetFrameLevel(2)
 		slotButton:StripTextures()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
@@ -768,7 +768,7 @@ end
 local function UpdateWarbandSceneData(frame)
 	if frame and frame.warbandSceneInfo and not frame.artBackdrop then
 		frame.artBackdrop = CreateFrame('Frame', nil, frame)
-		frame.artBackdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
+		frame.artBackdrop:OffsetFrameLevel(-1, frame)
 		frame.artBackdrop:SetOutside(frame.Icon, -5, -5)
 		frame.artBackdrop:SetTemplate()
 
