@@ -5,7 +5,7 @@ local _VERSION = 'devel'
 
 local oUF = ns.oUF
 local Profiler = oUF.Profiler.func
-local Private = Profiler(oUF).Private
+local Private = oUF.Private
 
 local argcheck = Private.argcheck
 local error = Private.error
