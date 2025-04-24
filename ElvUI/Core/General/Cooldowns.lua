@@ -336,7 +336,9 @@ function E:ToggleBlizzardCooldownText(cd, timer, request)
 		if request then
 			return forceHide or E:Cooldown_TimerEnabled(timer)
 		else
-			cd:SetHideCountdownNumbers(forceHide or E:Cooldown_TimerEnabled(timer))
+			local hideCooldownText = forceHide or E:Cooldown_TimerEnabled(timer)
+			cd:SetHideCountdownNumbers(hideCooldownText)
+			cd:GetRegions():SetAlpha(hideCooldownText and 0 or 1) -- Default CD timer is region #1
 		end
 	end
 end
@@ -360,6 +362,7 @@ function E:UpdateCooldownOverride(module)
 				E:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 
 				E:ToggleBlizzardCooldownText(parent, cd)
+
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
 					blizzText = true
 				end

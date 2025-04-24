@@ -33,55 +33,62 @@ local function updateCollapse(texture, atlas)
 	end
 end
 
-local function UpdateTokenSkins(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			if child.Right then
-				child:StripTextures()
-				child:CreateBackdrop('Transparent')
-				child.backdrop:SetInside(child)
+local function UpdateTokenSkinsChild(child)
+	if not child.IsSkinned then
+		if child.Right then
+			child:StripTextures()
+			child:CreateBackdrop('Transparent')
+			child.backdrop:SetInside(child)
 
-				updateCollapse(child.Right)
-				updateCollapse(child.HighlightRight)
+			updateCollapse(child.Right)
+			updateCollapse(child.HighlightRight)
 
-				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
-				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
-			end
-
-			local icon = child.Content and child.Content.CurrencyIcon
-			if icon then
-				S:HandleIcon(icon)
-			end
-
-			child.IsSkinned = true
+			hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+			hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
 		end
+
+		local icon = child.Content and child.Content.CurrencyIcon
+		if icon then
+			S:HandleIcon(icon)
+		end
+
+		child.IsSkinned = true
+	end
+
+end
+
+local function UpdateTokenSkins(frame)
+	frame:ForEachFrame(UpdateTokenSkinsChild)
+end
+
+local function EquipmentManagerPane_UpdateChild(child)
+	if child.icon and not child.IsSkinned then
+		child.BgTop:SetTexture(E.ClearTexture)
+		child.BgMiddle:SetTexture(E.ClearTexture)
+		child.BgBottom:SetTexture(E.ClearTexture)
+		S:HandleIcon(child.icon)
+		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
+		child.HighlightBar:SetDrawLayer('BACKGROUND')
+		child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
+		child.SelectedBar:SetDrawLayer('BACKGROUND')
+
+		child.IsSkinned = true
 	end
 end
 
 local function EquipmentManagerPane_Update(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.icon and not child.IsSkinned then
-			child.BgTop:SetTexture(E.ClearTexture)
-			child.BgMiddle:SetTexture(E.ClearTexture)
-			child.BgBottom:SetTexture(E.ClearTexture)
-			S:HandleIcon(child.icon)
-			child.HighlightBar:SetColorTexture(1, 1, 1, .25)
-			child.HighlightBar:SetDrawLayer('BACKGROUND')
-			child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
-			child.SelectedBar:SetDrawLayer('BACKGROUND')
+	frame:ForEachFrame(EquipmentManagerPane_UpdateChild)
+end
 
-			child.IsSkinned = true
-		end
+local function TitleManagerPane_UpdateChild(child)
+	if not child.IsSkinned then
+		child:DisableDrawLayer('BACKGROUND')
+		child.IsSkinned = true
 	end
 end
 
 local function TitleManagerPane_Update(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			child:DisableDrawLayer('BACKGROUND')
-			child.IsSkinned = true
-		end
-	end
+	frame:ForEachFrame(TitleManagerPane_UpdateChild)
 end
 
 local function PaperDollItemSlotButtonUpdate(slot)
@@ -229,35 +236,37 @@ local function FixSidebarTabCoords()
 	end
 end
 
-local function UpdateFactionSkins(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			if child.Right then
-				child:StripTextures()
-				child:CreateBackdrop('Transparent')
-				child.backdrop:SetInside(child)
+local function UpdateFactionSkinsChild(child)
+	if not child.IsSkinned then
+		if child.Right then
+			child:StripTextures()
+			child:CreateBackdrop('Transparent')
+			child.backdrop:SetInside(child)
 
-				updateCollapse(child.Right)
-				updateCollapse(child.HighlightRight)
+			updateCollapse(child.Right)
+			updateCollapse(child.HighlightRight)
 
-				hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
-				hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
-			end
-
-			local ReputationBar = child.Content and child.Content.ReputationBar
-			if ReputationBar then
-				ReputationBar:StripTextures()
-				ReputationBar:SetStatusBarTexture(E.media.normTex)
-
-				if not ReputationBar.backdrop then
-					ReputationBar:CreateBackdrop()
-					E:RegisterStatusBar(ReputationBar)
-				end
-			end
-
-			child.IsSkinned = true
+			hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
+			hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
 		end
+
+		local ReputationBar = child.Content and child.Content.ReputationBar
+		if ReputationBar then
+			ReputationBar:StripTextures()
+			ReputationBar:SetStatusBarTexture(E.media.normTex)
+
+			if not ReputationBar.backdrop then
+				ReputationBar:CreateBackdrop()
+				E:RegisterStatusBar(ReputationBar)
+			end
+		end
+
+		child.IsSkinned = true
 	end
+end
+
+local function UpdateFactionSkins(frame)
+	frame:ForEachFrame(UpdateFactionSkinsChild)
 end
 
 local function PaperDollUpdateStats()

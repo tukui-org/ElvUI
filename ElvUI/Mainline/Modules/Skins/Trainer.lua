@@ -5,6 +5,34 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
+local function ClassTrainerScrollUpdateChild(button)
+	if not button.IsSkinned then
+		S:HandleIcon(button.icon, true)
+		button:CreateBackdrop('Transparent')
+		button.backdrop:Point('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
+		button.backdrop:Point('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
+
+		button.name:SetParent(button.backdrop)
+		button.name:Point('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
+		button.subText:SetParent(button.backdrop)
+		button.money:SetParent(button.backdrop)
+		button.money:Point('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
+
+		button:SetNormalTexture(E.Media.Textures.Invisible)
+		button:SetHighlightTexture(E.Media.Textures.Invisible)
+		button.disabledBG:SetTexture()
+		button.selectedTex:SetInside(button.backdrop)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		button.selectedTex:SetColorTexture(r, g, b, .25)
+
+		button.IsSkinned = true
+	end
+end
+
+local function ClassTrainerScrollUpdate(frame)
+	frame:ForEachFrame(ClassTrainerScrollUpdateChild)
+end
+
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
@@ -34,31 +62,7 @@ function S:Blizzard_TrainerUI()
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)
 
-	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', function(frame)
-		for _, button in next, { frame.ScrollTarget:GetChildren() } do
-			if not button.IsSkinned then
-				S:HandleIcon(button.icon, true)
-				button:CreateBackdrop('Transparent')
-				button.backdrop:Point('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
-				button.backdrop:Point('BOTTOMRIGHT', button.icon, 'BOTTOMRIGHT', 253, 0)
-
-				button.name:SetParent(button.backdrop)
-				button.name:Point('TOPLEFT', button.icon, 'TOPRIGHT', 6, -2)
-				button.subText:SetParent(button.backdrop)
-				button.money:SetParent(button.backdrop)
-				button.money:Point('TOPRIGHT', button, 'TOPRIGHT', 5, -8)
-
-				button:SetNormalTexture(E.Media.Textures.Invisible)
-				button:SetHighlightTexture(E.Media.Textures.Invisible)
-				button.disabledBG:SetTexture()
-				button.selectedTex:SetInside(button.backdrop)
-				local r, g, b = unpack(E.media.rgbvaluecolor)
-				button.selectedTex:SetColorTexture(r, g, b, .25)
-
-				button.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', ClassTrainerScrollUpdate)
 
 	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
 	S:HandleButton(_G.ClassTrainerFrame.FilterDropdown)

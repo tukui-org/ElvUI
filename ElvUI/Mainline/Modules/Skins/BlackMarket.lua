@@ -15,6 +15,24 @@ local function SkinTab(tab)
 	tab.Right:SetAlpha(0)
 end
 
+local function BlackMarketScrollUpdateChild(button)
+	if not button.skinned then
+		S:HandleItemButton(button.Item)
+		S:HandleIconBorder(button.Item.IconBorder)
+
+		button:StripTextures()
+		button:StyleButton(nil, true)
+
+		button.Selection:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+
+		button.skinned = true
+	end
+end
+
+local function BlackMarketScrollUpdate(frame)
+	frame:ForEachFrame(BlackMarketScrollUpdateChild)
+end
+
 function S:Blizzard_BlackMarketUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
 
@@ -43,21 +61,7 @@ function S:Blizzard_BlackMarketUI()
 	BlackMarketFrame.ColumnName:ClearAllPoints()
 	BlackMarketFrame.ColumnName:Point('TOPLEFT', BlackMarketFrame.TopLeftCorner, 25, -50)
 
-	hooksecurefunc('BlackMarketScrollFrame_Update', function()
-		for _, button in next, { BlackMarketFrame.ScrollBox.ScrollTarget:GetChildren() } do
-			if not button.skinned then
-				S:HandleItemButton(button.Item)
-				S:HandleIconBorder(button.Item.IconBorder)
-
-				button:StripTextures()
-				button:StyleButton(nil, true)
-
-				button.Selection:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-
-				button.skinned = true
-			end
-		end
-	end)
+	hooksecurefunc('BlackMarketScrollFrame_Update', BlackMarketScrollUpdate)
 
 	for _, region in next, { BlackMarketFrame:GetRegions() } do
 		if region:IsObjectType('FontString') and region:GetText() == _G.BLACK_MARKET_TITLE then

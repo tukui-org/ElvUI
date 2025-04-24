@@ -105,6 +105,120 @@ local function HandleControlTab(tab)
 	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
 end
 
+local function CategoryListScrollUpdateChild(child)
+	if not child.IsSkinned then
+		if child.Background then
+			child.Background:SetAlpha(0)
+			child.Background:CreateBackdrop('Transparent')
+			child.Background.backdrop:Point('TOPLEFT', 5, -5)
+			child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
+		end
+
+		local toggle = child.Toggle
+		if toggle then
+			toggle:GetPushedTexture():SetAlpha(0)
+		end
+
+		child.IsSkinned = true
+	end
+end
+
+local function CategoryListScrollUpdate(frame)
+	frame:ForEachFrame(CategoryListScrollUpdateChild)
+end
+
+local function SettingsListScrollUpdateChild(child)
+	if not child.IsSkinned then
+		if child.NineSlice then
+			child.NineSlice:SetAlpha(0)
+			child:CreateBackdrop('Transparent')
+			child.backdrop:Point('TOPLEFT', 15, -30)
+			child.backdrop:Point('BOTTOMRIGHT', -30, -5)
+		end
+		if child.Checkbox then
+			HandleCheckbox(child.Checkbox)
+		end
+		if child.Dropdown then
+			HandleOptionDropDown(child.Dropdown)
+		end
+		if child.Control then
+			HandleDropdown(child.Control)
+		end
+		if child.ColorBlindFilterDropDown then
+			HandleOptionDropDown(child.ColorBlindFilterDropDown)
+		end
+		if child.Button then
+			if child.Button:GetWidth() < 250 then
+				S:HandleButton(child.Button)
+			else
+				child.Button:StripTextures()
+				child.Button.Right:SetAlpha(0)
+				child.Button:CreateBackdrop('Transparent')
+				child.Button.backdrop:Point('TOPLEFT', 2, -1)
+				child.Button.backdrop:Point('BOTTOMRIGHT', -2, 3)
+
+				child.Button.hl = child.Button:CreateTexture(nil, 'HIGHLIGHT')
+				child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
+				child.Button.hl:SetInside(child.Button.backdrop)
+				child.Button.hl:SetBlendMode('ADD')
+
+				child.collapseTex = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
+				child.collapseTex:Point('RIGHT', -10, 0)
+
+				UpdateHeaderExpand(child, false)
+				hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
+			end
+		end
+		if child.ToggleTest then
+			S:HandleButton(child.ToggleTest)
+			child.VUMeter:StripTextures()
+			child.VUMeter.NineSlice:Hide()
+			child.VUMeter:CreateBackdrop()
+			child.VUMeter.backdrop:SetInside(nil, 4, 4)
+			child.VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+			child.VUMeter.Status:SetInside(child.VUMeter.backdrop)
+			E:RegisterStatusBar(child.VUMeter.Status)
+		end
+		if child.PushToTalkKeybindButton then
+			S:HandleButton(child.PushToTalkKeybindButton)
+		end
+		if child.SliderWithSteppers then
+			S:HandleStepSlider(child.SliderWithSteppers)
+		end
+		if child.Button1 and child.Button2 then
+			S:HandleButton(child.Button1)
+			S:HandleButton(child.Button2)
+		end
+		if child.Controls then
+			for i = 1, #child.Controls do
+				local control = child.Controls[i]
+				if control.SliderWithSteppers then
+					S:HandleStepSlider(control.SliderWithSteppers)
+				end
+			end
+		end
+		if child.BaseTab then
+			HandleControlTab(child.BaseTab)
+		end
+		if child.RaidTab then
+			HandleControlTab(child.RaidTab)
+		end
+		if child.BaseQualityControls then
+			HandleControlGroup(child.BaseQualityControls)
+		end
+		if child.RaidQualityControls then
+			HandleControlGroup(child.RaidQualityControls)
+		end
+
+		child.IsSkinned = true
+	end
+
+end
+
+local function SettingsListScrollUpdate(frame)
+	frame:ForEachFrame(SettingsListScrollUpdateChild)
+end
+
 function S:SettingsPanel()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -126,119 +240,14 @@ function S:SettingsPanel()
 
 	S:HandleTrimScrollBar(SettingsPanel.CategoryList.ScrollBar)
 
-	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				if child.Background then
-					child.Background:SetAlpha(0)
-					child.Background:CreateBackdrop('Transparent')
-					child.Background.backdrop:Point('TOPLEFT', 5, -5)
-					child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
-				end
-
-				local toggle = child.Toggle
-				if toggle then
-					toggle:GetPushedTexture():SetAlpha(0)
-				end
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(SettingsPanel.CategoryList.ScrollBox, 'Update', CategoryListScrollUpdate)
 
 	SettingsPanel.Container:CreateBackdrop('Transparent')
 	SettingsPanel.Container.backdrop:SetInside()
 	S:HandleButton(SettingsPanel.Container.SettingsList.Header.DefaultsButton)
 	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 
-	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
-		for _, child in next, { frame.ScrollTarget:GetChildren() } do
-			if not child.IsSkinned then
-				if child.NineSlice then
-					child.NineSlice:SetAlpha(0)
-					child:CreateBackdrop('Transparent')
-					child.backdrop:Point('TOPLEFT', 15, -30)
-					child.backdrop:Point('BOTTOMRIGHT', -30, -5)
-				end
-				if child.Checkbox then
-					HandleCheckbox(child.Checkbox)
-				end
-				if child.Dropdown then
-					HandleOptionDropDown(child.Dropdown)
-				end
-				if child.Control then
-					HandleDropdown(child.Control)
-				end
-				if child.ColorBlindFilterDropDown then
-					HandleOptionDropDown(child.ColorBlindFilterDropDown)
-				end
-				if child.Button then
-					if child.Button:GetWidth() < 250 then
-						S:HandleButton(child.Button)
-					else
-						child.Button:StripTextures()
-						child.Button.Right:SetAlpha(0)
-						child.Button:CreateBackdrop('Transparent')
-						child.Button.backdrop:Point('TOPLEFT', 2, -1)
-						child.Button.backdrop:Point('BOTTOMRIGHT', -2, 3)
-
-						child.Button.hl = child.Button:CreateTexture(nil, 'HIGHLIGHT')
-						child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
-						child.Button.hl:SetInside(child.Button.backdrop)
-						child.Button.hl:SetBlendMode('ADD')
-
-						child.collapseTex = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
-						child.collapseTex:Point('RIGHT', -10, 0)
-
-						UpdateHeaderExpand(child, false)
-						hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
-					end
-				end
-				if child.ToggleTest then
-					S:HandleButton(child.ToggleTest)
-					child.VUMeter:StripTextures()
-					child.VUMeter.NineSlice:Hide()
-					child.VUMeter:CreateBackdrop()
-					child.VUMeter.backdrop:SetInside(nil, 4, 4)
-					child.VUMeter.Status:SetStatusBarTexture(E.media.normTex)
-					child.VUMeter.Status:SetInside(child.VUMeter.backdrop)
-					E:RegisterStatusBar(child.VUMeter.Status)
-				end
-				if child.PushToTalkKeybindButton then
-					S:HandleButton(child.PushToTalkKeybindButton)
-				end
-				if child.SliderWithSteppers then
-					S:HandleStepSlider(child.SliderWithSteppers)
-				end
-				if child.Button1 and child.Button2 then
-					S:HandleButton(child.Button1)
-					S:HandleButton(child.Button2)
-				end
-				if child.Controls then
-					for i = 1, #child.Controls do
-						local control = child.Controls[i]
-						if control.SliderWithSteppers then
-							S:HandleStepSlider(control.SliderWithSteppers)
-						end
-					end
-				end
-				if child.BaseTab then
-					HandleControlTab(child.BaseTab)
-				end
-				if child.RaidTab then
-					HandleControlTab(child.RaidTab)
-				end
-				if child.BaseQualityControls then
-					HandleControlGroup(child.BaseQualityControls)
-				end
-				if child.RaidQualityControls then
-					HandleControlGroup(child.RaidQualityControls)
-				end
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
 
 	for _, frame in next, { _G.CompactUnitFrameProfiles, _G.CompactUnitFrameProfilesGeneralOptionsFrame } do
 		for _, child in next, { frame:GetChildren() } do

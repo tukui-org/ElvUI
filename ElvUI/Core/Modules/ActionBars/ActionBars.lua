@@ -1149,6 +1149,24 @@ do
 		frame:UnregisterEvent(event)
 	end)
 
+	local function SettingsListScrollUpdateChild(child)
+		local option = child.data and child.data.setting
+		local variable = option and option.variable
+		if variable and strsub(variable, 0, -3) == 'PROXY_SHOW_ACTIONBAR' then
+			local num = tonumber(strsub(variable, 22))
+			if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
+				child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
+			else
+				child.Checkbox:SetEnabled(false)
+				child:DisplayEnabled(false)
+			end
+		end
+	end
+
+	local function SettingsListScrollUpdate(frame)
+		frame:ForEachFrame(SettingsListScrollUpdateChild)
+	end
+
 	function AB:DisableBlizzard()
 		for name in next, untaint do
 			if not E.Retail then
@@ -1207,21 +1225,7 @@ do
 			end
 
 			-- change the text of the remove paging
-			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', function(frame)
-				for _, child in next, { frame.ScrollTarget:GetChildren() } do
-					local option = child.data and child.data.setting
-					local variable = option and option.variable
-					if variable and strsub(variable, 0, -3) == 'PROXY_SHOW_ACTIONBAR' then
-						local num = tonumber(strsub(variable, 22))
-						if num and num <= 5 then -- NUM_ACTIONBAR_PAGES - 1
-							child.Text:SetFormattedText(L["Remove Bar %d Action Page"], num)
-						else
-							child.Checkbox:SetEnabled(false)
-							child:DisplayEnabled(false)
-						end
-					end
-				end
-			end)
+			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
 		else
 			AB:SetNoopsi(_G.MainMenuBarArtFrame)
 			AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)

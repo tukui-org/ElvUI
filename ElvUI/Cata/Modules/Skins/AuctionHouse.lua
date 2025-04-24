@@ -45,20 +45,22 @@ local function HandleListIcon(frame)
 	end
 end
 
-local function HandleSummaryIcons(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.Icon then
-			if not child.IsSkinned then
-				S:HandleIcon(child.Icon)
+local function HandleSummaryIcon(child)
+	if child.Icon then
+		if not child.IsSkinned then
+			S:HandleIcon(child.Icon)
 
-				if child.IconBorder then
-					child.IconBorder:Kill()
-				end
-
-				child.IsSkinned = true
+			if child.IconBorder then
+				child.IconBorder:Kill()
 			end
+
+			child.IsSkinned = true
 		end
 	end
+end
+
+local function HandleSummaryIcons(frame)
+	frame:ForEachFrame(HandleSummaryIcon)
 end
 
 local function SkinItemDisplay(frame)

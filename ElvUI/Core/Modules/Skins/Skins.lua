@@ -1991,9 +1991,7 @@ do
 		else
 			S:HandleTrimScrollBar(frame.IconSelector.ScrollBar)
 
-			for _, button in next, { frame.IconSelector.ScrollBox.ScrollTarget:GetChildren() } do
-				handleButton(button)
-			end
+			frame.IconSelector.ScrollBox:ForEachFrame(handleButton)
 		end
 
 		frame.IsSkinned = true

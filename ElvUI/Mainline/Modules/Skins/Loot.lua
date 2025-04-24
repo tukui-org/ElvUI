@@ -37,44 +37,45 @@ local function LootHistoryElements(button)
 	button.IsSkinned = true
 end
 
-local function HandleScrollElements(box)
-	if box then
-		box:ForEachFrame(LootHistoryElements)
+local function HandleScrollElements(frame)
+	frame:ForEachFrame(LootHistoryElements)
+end
+
+local function LootFrameUpdateChild(button)
+	local item = button.Item
+	if item then
+		if not item.backdrop then
+			item:StyleButton()
+			item.icon:SetInside(item)
+
+			S:HandleIcon(item.icon, true)
+		end
+
+		if item.NormalTexture then item.NormalTexture:SetAlpha(0) end
+		if item.IconBorder then item.IconBorder:SetAlpha(0) end
+
+		if button.Text then -- icon border isn't updated for white/grey so pull color from the name
+			local r, g, b = button.Text:GetVertexColor()
+			item.icon.backdrop:SetBackdropBorderColor(r, g, b)
+		end
 	end
+
+	if button.NameFrame and not button.NameFrame.backdrop then
+		button.NameFrame:StripTextures()
+		button.NameFrame:CreateBackdrop('Transparent')
+		button.NameFrame.backdrop:SetAllPoints()
+		button.NameFrame.backdrop:SetFrameLevel(2)
+	end
+
+	if button.IconQuestTexture then button.IconQuestTexture:SetAlpha(0) end
+	if button.BorderFrame then button.BorderFrame:SetAlpha(0) end
+	if button.HighlightNameFrame then button.HighlightNameFrame:SetAlpha(0) end
+	if button.PushedNameFrame then button.PushedNameFrame:SetAlpha(0) end
+
 end
 
 local function LootFrameUpdate(frame)
-	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		local item = button.Item
-		if item then
-			if not item.backdrop then
-				item:StyleButton()
-				item.icon:SetInside(item)
-
-				S:HandleIcon(item.icon, true)
-			end
-
-			if item.NormalTexture then item.NormalTexture:SetAlpha(0) end
-			if item.IconBorder then item.IconBorder:SetAlpha(0) end
-
-			if button.Text then -- icon border isn't updated for white/grey so pull color from the name
-				local r, g, b = button.Text:GetVertexColor()
-				item.icon.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		end
-
-		if button.NameFrame and not button.NameFrame.backdrop then
-			button.NameFrame:StripTextures()
-			button.NameFrame:CreateBackdrop('Transparent')
-			button.NameFrame.backdrop:SetAllPoints()
-			button.NameFrame.backdrop:SetFrameLevel(2)
-		end
-
-		if button.IconQuestTexture then button.IconQuestTexture:SetAlpha(0) end
-		if button.BorderFrame then button.BorderFrame:SetAlpha(0) end
-		if button.HighlightNameFrame then button.HighlightNameFrame:SetAlpha(0) end
-		if button.PushedNameFrame then button.PushedNameFrame:SetAlpha(0) end
-	end
+	frame:ForEachFrame(LootFrameUpdateChild)
 end
 
 local function MasterLooterShow()

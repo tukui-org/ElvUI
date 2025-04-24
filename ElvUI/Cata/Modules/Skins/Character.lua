@@ -27,30 +27,34 @@ local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
-local function EquipmentManagerPane_Update(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if child.icon and not child.IsSkinned then
-			child.BgTop:SetTexture(E.ClearTexture)
-			child.BgMiddle:SetTexture(E.ClearTexture)
-			child.BgBottom:SetTexture(E.ClearTexture)
-			S:HandleIcon(child.icon)
-			child.HighlightBar:SetColorTexture(1, 1, 1, .25)
-			child.HighlightBar:SetDrawLayer('BACKGROUND')
-			child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
-			child.SelectedBar:SetDrawLayer('BACKGROUND')
+local function EquipmentManagerPane_UpdateChild(child)
+	if child.icon and not child.IsSkinned then
+		child.BgTop:SetTexture(E.ClearTexture)
+		child.BgMiddle:SetTexture(E.ClearTexture)
+		child.BgBottom:SetTexture(E.ClearTexture)
+		S:HandleIcon(child.icon)
+		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
+		child.HighlightBar:SetDrawLayer('BACKGROUND')
+		child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
+		child.SelectedBar:SetDrawLayer('BACKGROUND')
 
-			child.IsSkinned = true
-		end
+		child.IsSkinned = true
+	end
+end
+
+local function EquipmentManagerPane_Update(frame)
+	frame:ForEachFrame(EquipmentManagerPane_UpdateChild)
+end
+
+local function TitleManagerPane_UpdateChild(child)
+	if not child.IsSkinned then
+		child:DisableDrawLayer('BACKGROUND')
+		child.IsSkinned = true
 	end
 end
 
 local function TitleManagerPane_Update(frame)
-	for _, child in next, { frame.ScrollTarget:GetChildren() } do
-		if not child.IsSkinned then
-			child:DisableDrawLayer('BACKGROUND')
-			child.IsSkinned = true
-		end
-	end
+	frame:ForEachFrame(TitleManagerPane_UpdateChild)
 end
 
 local function HandleItemButtonQuality(button, rarity)

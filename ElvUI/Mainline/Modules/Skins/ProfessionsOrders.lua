@@ -8,19 +8,21 @@ local CreateFrame = CreateFrame
 
 -- Custom Orders (Credits: siweia - NDUI)
 
-local function RefreshFlyoutButtons(box)
-	for _, button in next, { box.ScrollTarget:GetChildren() } do
-		if button.IconBorder and not button.IsSkinned then
-			S:HandleIcon(button.icon, true)
-			S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
+local function RefreshFlyoutButton(button)
+	if button.IconBorder and not button.IsSkinned then
+		S:HandleIcon(button.icon, true)
+		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
-			button:SetNormalTexture(0)
-			button:SetPushedTexture(0)
-			button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+		button:SetNormalTexture(0)
+		button:SetPushedTexture(0)
+		button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 
-			button.IsSkinned = true
-		end
+		button.IsSkinned = true
 	end
+end
+
+local function RefreshFlyoutButtons(frame)
+	frame:ForEachFrame(RefreshFlyoutButton)
 end
 
 local function HideCategoryButton(button)
@@ -151,16 +153,18 @@ local function OpenItemFlyout(frame)
 	end
 end
 
-local function BrowseOrdersUpdate(box)
-	for _, child in next, { box.ScrollTarget:GetChildren() } do
-		if child.Text and not child.IsSkinned then
-			HideCategoryButton(child)
+local function BrowseOrdersUpdateChild(child)
+	if child.Text and not child.IsSkinned then
+		HideCategoryButton(child)
 
-			hooksecurefunc(child, 'Init', HideCategoryButton)
+		hooksecurefunc(child, 'Init', HideCategoryButton)
 
-			child.IsSkinned = true
-		end
+		child.IsSkinned = true
 	end
+end
+
+local function BrowseOrdersUpdate(frame)
+	frame:ForEachFrame(BrowseOrdersUpdateChild)
 end
 
 local function HandleInputBox(box)

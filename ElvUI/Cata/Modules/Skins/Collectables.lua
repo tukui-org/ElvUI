@@ -111,79 +111,79 @@ local function buttonOnLeave(button)
 	button.hovered = nil
 end
 
-local function JournalScrollButtons(frame)
-	if not frame then return end
+local function SkinJournalScrollButton(bu)
+	if not bu.IsSkinned then
+		local icon = bu.icon or bu.Icon
+		local savedIconTexture = icon:GetTexture()
+		icon:Size(40)
+		icon:Point('LEFT', -43, 0)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:CreateBackdrop('Transparent', nil, nil, true)
 
-	for _, bu in next, { frame.ScrollTarget:GetChildren() } do
-		if not bu.IsSkinned then
-			local icon = bu.icon or bu.Icon
-			local savedIconTexture = icon:GetTexture()
-			icon:Size(40)
-			icon:Point('LEFT', -43, 0)
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:CreateBackdrop('Transparent', nil, nil, true)
+		local savedPetTypeTexture = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
+		local savedFactionAtlas = bu.factionIcon and bu.factionIcon:GetAtlas()
 
-			local savedPetTypeTexture = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
-			local savedFactionAtlas = bu.factionIcon and bu.factionIcon:GetAtlas()
+		bu:StripTextures()
+		bu:CreateBackdrop('Transparent', nil, nil, true)
+		bu.backdrop:ClearAllPoints()
+		bu.backdrop:Point('TOPLEFT', bu, 0, -2)
+		bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
+		icon:SetTexture(savedIconTexture) -- restore the texture
 
-			bu:StripTextures()
-			bu:CreateBackdrop('Transparent', nil, nil, true)
-			bu.backdrop:ClearAllPoints()
-			bu.backdrop:Point('TOPLEFT', bu, 0, -2)
-			bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
-			icon:SetTexture(savedIconTexture) -- restore the texture
+		bu:HookScript('OnEnter', buttonOnEnter)
+		bu:HookScript('OnLeave', buttonOnLeave)
 
-			bu:HookScript('OnEnter', buttonOnEnter)
-			bu:HookScript('OnLeave', buttonOnLeave)
-
-			if bu.ProgressBar then
-				bu.ProgressBar:SetTexture(E.media.normTex)
-				bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
-			end
-
-			local parent = frame:GetParent()
-			if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
-				bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
-				bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
-
-				hooksecurefunc(bu.SelectedTexture, 'SetShown', selectedTextureSetShown)
-			else
-				bu.selectedTexture:SetTexture()
-				hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
-				hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
-
-				if parent == _G.PetJournal then
-					bu.petList = true
-					bu.petTypeIcon:SetTexture(savedPetTypeTexture)
-					bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
-					bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
-
-					bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
-					bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
-
-					S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
-				elseif parent == _G.MountJournal then
-					bu.mountList = true
-					bu.factionIcon:SetAtlas(savedFactionAtlas)
-					bu.factionIcon:SetDrawLayer('OVERLAY')
-					bu.factionIcon:Point('TOPRIGHT', -1, -1)
-					bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
-
-					bu.DragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
-					bu.DragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
-
-					bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
-					bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
-					bu.favorite:Size(32)
-
-					hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
-					hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)
-				end
-			end
-
-			bu.IsSkinned = true
+		if bu.ProgressBar then
+			bu.ProgressBar:SetTexture(E.media.normTex)
+			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 		end
+
+		local parent = bu:GetParent():GetParent()
+		if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
+			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
+			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
+
+			hooksecurefunc(bu.SelectedTexture, 'SetShown', selectedTextureSetShown)
+		else
+			bu.selectedTexture:SetTexture()
+			hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
+			hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
+
+			if parent == _G.PetJournal then
+				bu.petList = true
+				bu.petTypeIcon:SetTexture(savedPetTypeTexture)
+				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
+				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
+
+				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
+				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+
+				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
+			elseif parent == _G.MountJournal then
+				bu.mountList = true
+				bu.factionIcon:SetAtlas(savedFactionAtlas)
+				bu.factionIcon:SetDrawLayer('OVERLAY')
+				bu.factionIcon:Point('TOPRIGHT', -1, -1)
+				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
+
+				bu.DragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
+				bu.DragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+
+				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
+				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
+				bu.favorite:Size(32)
+
+				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
+				hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)
+			end
+		end
+
+		bu.IsSkinned = true
 	end
+end
+
+local function JournalScrollButtons(frame)
+	frame:ForEachFrame(SkinJournalScrollButton)
 end
 
 local function ToySpellButtonUpdateButton(button)

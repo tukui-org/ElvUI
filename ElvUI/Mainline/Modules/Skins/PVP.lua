@@ -24,6 +24,31 @@ local function HandleRoleButton(button)
 	if button.shortageBorder then button.shortageBorder:Size(40) end
 end
 
+local function HonorSpecificScrollUpdateChild(bu)
+	if not bu.IsSkinned then
+		bu.Bg:Hide()
+		bu.Border:Hide()
+
+		bu:StripTextures()
+		bu:CreateBackdrop()
+		bu.backdrop:Point('TOPLEFT', 2, 0)
+		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
+		bu:StyleButton(nil, true)
+
+		bu.SelectedTexture:SetInside(bu.backdrop)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
+		bu.Icon:Point('TOPLEFT', 5, -3)
+
+		bu.IsSkinned = true
+	end
+end
+
+local function HonorSpecificScrollUpdate(frame)
+	frame:ForEachFrame(HonorSpecificScrollUpdateChild)
+end
+
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -111,28 +136,7 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- Honor Frame Specific Buttons
-	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', function (box)
-		for _, bu in next, { box.ScrollTarget:GetChildren() } do
-			if not bu.IsSkinned then
-				bu.Bg:Hide()
-				bu.Border:Hide()
-
-				bu:StripTextures()
-				bu:CreateBackdrop()
-				bu.backdrop:Point('TOPLEFT', 2, 0)
-				bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
-				bu:StyleButton(nil, true)
-
-				bu.SelectedTexture:SetInside(bu.backdrop)
-				bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-
-				bu.Icon:SetTexCoord(unpack(E.TexCoords))
-				bu.Icon:Point('TOPLEFT', 5, -3)
-
-				bu.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', HonorSpecificScrollUpdate)
 
 	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
 		if s.bg then s.bg:SetDesaturated(true) end

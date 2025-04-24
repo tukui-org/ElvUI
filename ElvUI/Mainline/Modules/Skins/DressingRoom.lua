@@ -59,9 +59,7 @@ local function HandleSetButtons(button)
 end
 
 local function SetSelection_Update(box)
-	if box then
-		box:ForEachFrame(HandleSetButtons)
-	end
+	box:ForEachFrame(HandleSetButtons)
 end
 
 function S:DressUpFrame()
