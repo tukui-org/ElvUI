@@ -360,6 +360,7 @@ function E:UpdateCooldownOverride(module)
 				E:Cooldown_OnSizeChanged(cd, parent:GetWidth(), true)
 
 				E:ToggleBlizzardCooldownText(parent, cd)
+
 				if (not blizzText) and parent.CooldownOverride == 'actionbar' then
 					blizzText = true
 				end
