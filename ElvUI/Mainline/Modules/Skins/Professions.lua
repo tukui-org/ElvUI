@@ -83,7 +83,7 @@ local function ReskinSlotButton(button)
 	hl:SetOutside(button)
 
 	local nt = button:GetNormalTexture()
-	local greenPlus = nt and (nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon')
+	local greenPlus = nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon'
 	nt:SetAlpha(greenPlus and 1 or 0)
 	nt:SetOutside(button)
 
