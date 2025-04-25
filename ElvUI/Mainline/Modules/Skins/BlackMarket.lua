@@ -15,22 +15,20 @@ local function SkinTab(tab)
 	tab.Right:SetAlpha(0)
 end
 
-local function BlackMarketScrollUpdateChild(button)
-	if not button.skinned then
-		S:HandleItemButton(button.Item)
-		S:HandleIconBorder(button.Item.IconBorder)
+local function BlackMarketScrollUpdate(button)
+	for _, button in next, { BlackMarketFrame.ScrollBox.ScrollTarget:GetChildren() } do
+		if not button.skinned then
+			S:HandleItemButton(button.Item)
+			S:HandleIconBorder(button.Item.IconBorder)
 
-		button:StripTextures()
-		button:StyleButton(nil, true)
+			button:StripTextures()
+			button:StyleButton(nil, true)
 
-		button.Selection:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+			button.Selection:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
-		button.skinned = true
+			button.skinned = true
+		end
 	end
-end
-
-local function BlackMarketScrollUpdate(frame)
-	frame:ForEachFrame(BlackMarketScrollUpdateChild)
 end
 
 function S:Blizzard_BlackMarketUI()
