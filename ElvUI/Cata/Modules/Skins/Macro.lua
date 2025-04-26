@@ -13,8 +13,8 @@ local function MacroSelectorScrollUpdateChild(button)
 end
 
 local function MacroSelectorScrollUpdate(frame)
-	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		MacroSelectorScrollUpdateChild(button)
+	if frame.view then
+		frame:ForEachFrame(MacroSelectorScrollUpdateChild)
 	end
 end
 
