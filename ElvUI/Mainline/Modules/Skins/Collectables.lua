@@ -66,18 +66,15 @@ local function selectedTextureSetShown(texture, shown) -- used sets list
 	local icon = parent.icon or parent.Icon
 	if shown then
 		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
-		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
 		parent.backdrop:SetBackdropBorderColor(r, g, b)
-		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
 local function selectedTextureShow(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
-	parent.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 end
 
 local function selectedTextureHide(texture) -- used for pets/mounts
@@ -85,11 +82,6 @@ local function selectedTextureHide(texture) -- used for pets/mounts
 	if not parent.hovered then
 		local r, g, b = unpack(E.media.bordercolor)
 		parent.backdrop:SetBackdropBorderColor(r, g, b)
-		parent.icon.backdrop:SetBackdropBorderColor(r, g, b)
-	end
-
-	if parent.petList then
-		petNameColor(parent.iconBorder, parent.iconBorder:GetVertexColor())
 	end
 end
 
@@ -97,7 +89,6 @@ local function buttonOnEnter(button)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	local icon = button.icon or button.Icon
 	button.backdrop:SetBackdropBorderColor(r, g, b)
-	icon.backdrop:SetBackdropBorderColor(r, g, b)
 	button.hovered = true
 end
 
@@ -105,11 +96,9 @@ local function buttonOnLeave(button)
 	local icon = button.icon or button.Icon
 	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
 		button.backdrop:SetBackdropBorderColor(1, .8, .1)
-		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
-		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 	button.hovered = nil
 end
@@ -120,8 +109,8 @@ local function SkinJournalScrollButton(bu)
 		local savedIconTexture = icon:GetTexture()
 		icon:Size(40)
 		icon:Point('LEFT', -43, 0)
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:CreateBackdrop('Transparent', nil, nil, true)
+		S:HandleIcon(icon, true)
+		S:HandleIconBorder(bu.iconBorder, icon.backdrop)
 
 		local savedPetTypeTexture = bu.petTypeIcon and bu.petTypeIcon:GetTexture()
 		local savedFactionAtlas = bu.factionIcon and bu.factionIcon:GetAtlas()
@@ -168,8 +157,6 @@ local function SkinJournalScrollButton(bu)
 				hl:SetTexture(E.media.blankTex)
 				hl:SetVertexColor(1, 1, 1, .25)
 				hl:SetAllPoints(bu.icon)
-
-				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 			elseif parent == _G.MountJournal then
 				bu.mountList = true
 				bu.factionIcon:SetAtlas(savedFactionAtlas)
