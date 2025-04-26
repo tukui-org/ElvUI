@@ -275,9 +275,7 @@ do
 
 	local function MacroSelectorScrollUpdate(frame)
 		if frame.MacroSelector then
-			for _, button in next, { frame.MacroSelector.ScrollBox.ScrollTarget:GetChildren() } do
-				MacroSelectorScrollUpdateChild(button)
-			end
+			frame.MacroSelector.ScrollBox:ForEachFrame(MacroSelectorScrollUpdateChild)
 		end
 
 		AB:Unhook(frame, 'Update')

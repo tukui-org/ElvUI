@@ -35,7 +35,7 @@ local function petNameColor(iconBorder, r, g, b)
 
 	if parent.isDead and parent.isDead:IsShown() then
 		parent.name:SetTextColor(0.9, 0.3, 0.3)
-	elseif r and parent.owned then
+	elseif r and (parent.owned or parent.healthFrame) then
 		parent.name:SetTextColor(r, g, b)
 	else
 		parent.name:SetTextColor(0.4, 0.4, 0.4)
@@ -141,7 +141,7 @@ local function SkinJournalScrollButton(bu)
 			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 		end
 
-		local parent = bu:GetParent():GetParent()
+		local parent = bu:GetParent():GetParent():GetParent()
 		if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
@@ -160,7 +160,14 @@ local function SkinJournalScrollButton(bu)
 
 				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+
 				bu.dragButton.levelBG:SetTexture()
+				bu.dragButton.level:FontTemplate(nil, 12)
+
+				local hl = bu.dragButton:GetHighlightTexture()
+				hl:SetTexture(E.media.blankTex)
+				hl:SetVertexColor(1, 1, 1, .25)
+				hl:SetAllPoints(bu.icon)
 
 				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 			elseif parent == _G.MountJournal then
@@ -362,11 +369,6 @@ local function SkinPetFrame()
 	E:RegisterCooldown(_G.PetJournalSummonRandomFavoritePetButtonCooldown)
 	_G.PetJournalSummonRandomFavoritePetButtonCooldown:SetAllPoints(_G.PetJournalSummonRandomFavoritePetButtonIconTexture)
 
-	for i = 1, 3 do
-		local f = _G['PetJournalLoadoutPet'..i..'HelpFrame']
-		f:StripTextures()
-	end
-
 	if E.global.general.disableTutorialButtons then
 		_G.PetJournalTutorialButton:Kill()
 	end
@@ -395,14 +397,23 @@ local function SkinPetFrame()
 	_G.PetJournalHealPetButtonCooldown:SetAllPoints(_G.PetJournalHealPetButtonIconTexture)
 	_G.PetJournalHealPetButtonIconTexture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
+	_G.PetJournalSpellSelect:StripTextures()
 
 	for i = 1, 3 do
 		local petButton = _G['PetJournalLoadoutPet'..i]
+		local petButtonHighlight = _G['PetJournalLoadoutPet'..i..'Highlight']
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
 		petButton:StripTextures()
 		petButton:SetTemplate()
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
+
+		petButtonHighlight:SetTexture(E.media.blankTex)
+		petButtonHighlight:SetVertexColor(1, 1, 1, .25)
+		petButtonHighlight:SetAllPoints(petButton.icon)
+
+		local helpFrame = _G['PetJournalLoadoutPet'..i..'HelpFrame']
+		helpFrame:StripTextures()
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		petButton.dragButton:OffsetFrameLevel(1, _G['PetJournalLoadoutPet'..i].dragButton)
@@ -411,7 +422,10 @@ local function SkinPetFrame()
 		petButton.pushed = true
 		petButton.checked = true
 		S:HandleItemButton(petButton)
-		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
+		S:HandleIconBorder(petButton.qualityBorder, nil, petNameColor)
+
+		petButton.levelBG:SetTexture()
+		petButton.level:FontTemplate(nil, 12)
 
 		petButton.setButton:StripTextures()
 		petButtonHealthFrame.healthBar:StripTextures()
@@ -432,26 +446,28 @@ local function SkinPetFrame()
 		end
 	end
 
-	_G.PetJournalSpellSelect:StripTextures()
-
-	for i=1, 2 do
+	for i = 1, 2 do
 		local btn = _G['PetJournalSpellSelectSpell'..i]
 		S:HandleItemButton(btn)
 
-		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetInside(btn)
-		_G['PetJournalSpellSelectSpell'..i..'Icon']:SetDrawLayer('BORDER')
+		local icon = _G['PetJournalSpellSelectSpell'..i..'Icon']
+		icon:SetInside(btn)
+		icon:SetDrawLayer('BORDER')
 	end
 
 	_G.PetJournalPetCard:StripTextures()
 	_G.PetJournalPetCard:SetTemplate('Transparent')
 	_G.PetJournalPetCardInset:StripTextures()
-	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
 	_G.PetJournalPetCardPetInfo:CreateBackdrop()
-	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfo.backdrop:SetOutside(_G.PetJournalPetCardPetInfoIcon)
+	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
+	_G.PetJournalPetCardPetInfo.level:FontTemplate(nil, 12)
+	_G.PetJournalPetCardPetInfo.levelBG:SetTexture()
+
 	_G.PetJournalPetCardPetInfoIcon:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
+	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.PetJournalPrimaryAbilityTooltip)

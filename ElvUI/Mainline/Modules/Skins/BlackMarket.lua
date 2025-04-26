@@ -29,8 +29,8 @@ local function BlackMarketScrollUpdateChild(button)
 	end
 end
 
-local function BlackMarketScrollUpdate(frame)
-	frame:ForEachFrame(BlackMarketScrollUpdateChild)
+local function BlackMarketScrollUpdate()
+	_G.BlackMarketFrame.ScrollBox:ForEachFrame(BlackMarketScrollUpdateChild)
 end
 
 function S:Blizzard_BlackMarketUI()
