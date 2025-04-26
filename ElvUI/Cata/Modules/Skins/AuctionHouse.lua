@@ -391,7 +391,7 @@ local function LoadSkin()
 	S:HandleIcon(ItemButton.Icon, true)
 	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
 	ItemButton:GetHighlightTexture():Hide()
-	ItemButton.IconBorder:Kill()
+	ItemButton.IconBorder:SetAlpha(0)
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial
