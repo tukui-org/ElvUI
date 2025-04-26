@@ -32,7 +32,7 @@ local function petNameColor(iconBorder, r, g, b)
 
 	if parent.isDead and parent.isDead:IsShown() then
 		parent.name:SetTextColor(0.9, 0.3, 0.3)
-	elseif r and parent.owned then
+	elseif r and (parent.owned or parent.healthFrame) then
 		parent.name:SetTextColor(r, g, b)
 	else
 		parent.name:SetTextColor(0.4, 0.4, 0.4)
@@ -138,7 +138,7 @@ local function SkinJournalScrollButton(bu)
 			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 		end
 
-		local parent = bu:GetParent():GetParent()
+		local parent = bu:GetParent():GetParent():GetParent()
 		if parent == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
@@ -157,6 +157,11 @@ local function SkinJournalScrollButton(bu)
 
 				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+
+				local hl = bu.dragButton:GetHighlightTexture()
+				hl:SetTexture(E.media.blankTex)
+				hl:SetVertexColor(1, 1, 1, .25)
+				hl:SetAllPoints(bu.icon)
 
 				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 			elseif parent == _G.MountJournal then
@@ -285,8 +290,9 @@ local function SkinPetFrame()
 	S:HandleRotateButton(_G.PetJournalPetCard.modelScene.RotateRightButton)
 
 	_G.PetJournalPetCardPetInfo:CreateBackdrop()
-	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfo.backdrop:SetOutside(_G.PetJournalPetCardPetInfoIcon)
+	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
+
 	_G.PetJournalPetCardPetInfoIcon:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 end
