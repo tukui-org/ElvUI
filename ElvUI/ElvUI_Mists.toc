@@ -1,4 +1,4 @@
-## Title: |cff1784d1ElvUI|r |cfd9b9b9bCataclysm|r
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bMists|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
 ## Version: @project-version@
@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 40402
+## Interface: 50500
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 
