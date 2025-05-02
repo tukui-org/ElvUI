@@ -99,7 +99,7 @@ function M:SkinBubble(frame, holder)
 
 	if not frame.Name then
 		local name = holder:CreateFontString(nil, 'BORDER')
-		name:Height(10) --Width set in M:AddChatBubbleName()
+		name:Height(10) -- width set in M:AddChatBubbleName()
 		name:Point('BOTTOM', frame, 'TOP', 0, yOffset)
 		name:SetFontObject('ChatBubbleFont')
 		name:SetJustifyH('LEFT')
