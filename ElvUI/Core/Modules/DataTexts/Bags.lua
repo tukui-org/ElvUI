@@ -87,7 +87,7 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		for i = 1, MAX_WATCHED_TOKENS do
 			local info, name = DT:BackpackCurrencyInfo(i)
 			if not name then break end

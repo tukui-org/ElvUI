@@ -23,7 +23,7 @@ local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
 local db
 
 local function OnEvent(self)
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
 
 		if E.Retail then
@@ -41,7 +41,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	if not (E.Retail or E.Cata) then return end
+	if not (E.Retail or E.Mists) then return end
 
 	DT.tooltip:ClearLines()
 

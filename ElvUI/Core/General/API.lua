@@ -51,8 +51,8 @@ local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
 
-local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecialization = (E.Classic or E.Mists) and LCS.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = (E.Classic or E.Mists) and LCS.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
@@ -781,7 +781,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if (E.Retail or E.Cata) and UnitHasVehicleUI('player') then
+	if (E.Retail or E.Mists) and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -1282,7 +1282,7 @@ function E:LoadAPI()
 	E.ScanTooltip.GetHyperlinkInfo = E.ScanTooltip_HyperlinkInfo
 	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else

@@ -2142,7 +2142,7 @@ function UF:Initialize()
 	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
 		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')

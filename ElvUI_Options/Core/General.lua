@@ -223,8 +223,8 @@ blizz.general.args.resurrectSound = ACH:Toggle(L["Resurrect Sound"], L["Enable t
 blizz.general.args.loot = ACH:Toggle(L["Loot Frame"], L["Enable/Disable the loot frame."], 7, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.hideZoneText = ACH:Toggle(L["Hide Zone Text"], L["Enable/Disable the on-screen zone text when you change zones."], 8, nil, nil, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value; M:ZoneTextToggle() end)
 blizz.general.args.spacer1 = ACH:Spacer(14, 'full')
-blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateVehicleFrame() end, nil, not E.Cata)
-blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, not E.Cata)
+blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateVehicleFrame() end, nil, not E.Mists)
+blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, not E.Mists)
 blizz.general.inline = true
 
 blizz.quest = ACH:Group(L["Quests"], nil, 10)
@@ -234,10 +234,10 @@ blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"]
 blizz.quest.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 4, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 blizz.quest.inline = true
 
-blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Cata))
-blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_AutoHide() end, nil, not (E.Retail or E.Cata))
+blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Mists))
+blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_AutoHide() end, nil, not (E.Retail or E.Mists))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or not E.db.general.objectiveFrameAutoHide end)
-blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Cata)
+blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Mists)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 blizz.objectiveFrameGroup.inline = true
 
@@ -392,7 +392,7 @@ for tag, name in next, C.ClassTable do
 end
 
 blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 80, 'tab', function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
-blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Cata)
+blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Mists)
 
 blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 10)
 blizz.guildBank.args.ilvlGroup.args.itemLevel = ACH:Toggle(L["Display Item Level"], L["Displays item level on equippable items."], 1)

@@ -49,7 +49,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 
-	if E.Cata and E.myclass == 'DRUID' then
+	if E.Mists and E.myclass == 'DRUID' then
 		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 	end
 

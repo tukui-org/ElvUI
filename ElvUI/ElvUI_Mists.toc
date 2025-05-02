@@ -12,4 +12,4 @@
 
 Core\Load.xml
 
-Cata\Load.xml
+Mists\Load.xml

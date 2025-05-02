@@ -87,7 +87,7 @@ function BL:PositionAltPowerBar()
 		bar:SetDontSavePosition(true)
 	end
 
-	if E.Cata then -- Blizzard adjusts this in UnitPowerBarAlt_SetUp when it has isPlayerBar
+	if E.Mists then -- Blizzard adjusts this in UnitPowerBarAlt_SetUp when it has isPlayerBar
 		hooksecurefunc('UnitPowerBarAlt_SetUp', BL.SetUpUnitPowerBarAlt)
 	end
 

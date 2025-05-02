@@ -235,7 +235,7 @@ P.general = {
 	},
 	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		sortDirection = (E.Cata and 'DESCENDING') or 'ASCENDING',
+		sortDirection = (E.Mists and 'DESCENDING') or 'ASCENDING',
 		size = 40,
 		height = 40,
 		spacing = 4,
@@ -2862,7 +2862,7 @@ P.actionbar = {
 if E.Retail then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
-elseif E.Cata then
+elseif E.Mists then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 else
@@ -2937,7 +2937,7 @@ for i = 1, 15 do
 
 		if E.Retail then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
-		elseif E.Cata then
+		elseif E.Mists then
 			P.actionbar[barN].visibility = '[vehicleui][overridebar] hide; show'
 		else
 			P.actionbar[barN].visibility = '[overridebar] hide; show'
@@ -2978,8 +2978,8 @@ end
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = E.Retail and '[petbattle] hide; show' or 'show'
 
-P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Cata and ' [bonusbar:2] 8;' or '')
-P.actionbar.bar1.paging.WARLOCK = E.Cata and '[form:1] 7;' or nil
+P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Mists and ' [bonusbar:2] 8;' or '')
+P.actionbar.bar1.paging.WARLOCK = E.Mists and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'

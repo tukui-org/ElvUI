@@ -27,7 +27,7 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local masteryBonus
-	if E.Cata then
+	if E.Mists then
 		masteryBonus = GetCombatRatingBonus(CR_MASTERY) or 0
 
 		local primaryTalentTree = IsSpellKnown(_G.CLASS_MASTERY_SPELLS[E.myclass]) and GetPrimaryTalentTree()
@@ -75,7 +75,7 @@ local function OnEnter()
 end
 
 local function OnEvent(self)
-	local masteryRating = (E.Cata and GetMastery()) or GetMasteryEffect()
+	local masteryRating = (E.Mists and GetMastery()) or GetMasteryEffect()
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
 	else
@@ -91,4 +91,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {E.Cata and 'COMBAT_RATING_UPDATE' or 'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ApplySettings)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {E.Mists and 'COMBAT_RATING_UPDATE' or 'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ApplySettings)

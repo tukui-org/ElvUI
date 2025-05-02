@@ -30,7 +30,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	if E.Cata then
+	if E.Mists then
 		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus))
 	else
 		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))

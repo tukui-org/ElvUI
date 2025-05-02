@@ -948,13 +948,13 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Player Vehicle
-	if (E.Retail or E.Cata) and (trigger.inVehicle or trigger.outOfVehicle) then
+	if (E.Retail or E.Mists) and (trigger.inVehicle or trigger.outOfVehicle) then
 		local inVehicle = UnitInVehicle('player')
 		if (trigger.inVehicle and inVehicle) or (trigger.outOfVehicle and not inVehicle) then passed = true else return end
 	end
 
 	-- Unit Vehicle
-	if (E.Retail or E.Cata) and (trigger.inVehicleUnit or trigger.outOfVehicleUnit) then
+	if (E.Retail or E.Mists) and (trigger.inVehicleUnit or trigger.outOfVehicleUnit) then
 		if (trigger.inVehicleUnit and frame.inVehicle) or (trigger.outOfVehicleUnit and not frame.inVehicle) then passed = true else return end
 	end
 
@@ -1315,7 +1315,7 @@ end
 
 function NP:StyleFilterVehicleFunction(_, unit)
 	unit = unit or self.unit
-	self.inVehicle = (E.Retail or E.Cata) and UnitInVehicle(unit) or nil
+	self.inVehicle = (E.Retail or E.Mists) and UnitInVehicle(unit) or nil
 end
 
 function NP:StyleFilterTargetFunction(_, unit)

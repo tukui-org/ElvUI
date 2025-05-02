@@ -256,7 +256,7 @@ do --this can save some main file locals
 		if E.Classic then
 			-- Simpy (5099: Myzrael)
 			z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
-		elseif E.Cata then
+		elseif E.Mists then
 			-- Simpy (4373: Myzrael)
 			z['Player-4373-011657A7']	= itsSimpy -- Paladin:		Cutepally
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:		Kalline
@@ -423,7 +423,7 @@ do --this can save some main file locals
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
-		elseif E.Cata then
+		elseif E.Mists then
 			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
 			z['Player-4467-04540395']	= ElvGreen -- [Alliance] Druid
 			z['Player-4467-04542B4A']	= ElvGreen -- [Alliance] Priest

@@ -229,7 +229,7 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 	end
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		local index = 1
 		local info, name = DT:BackpackCurrencyInfo(index)
 

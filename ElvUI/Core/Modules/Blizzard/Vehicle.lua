@@ -51,7 +51,7 @@ end
 
 function BL:PositionVehicleFrame()
 	local indicator = _G.VehicleSeatIndicator
-	if E.Cata then
+	if E.Mists then
 		if not indicator.PositionVehicleFrameHooked then
 			hooksecurefunc(indicator, 'SetPoint', BL.SetVehiclePosition)
 			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', BL.SetUpVehicle)

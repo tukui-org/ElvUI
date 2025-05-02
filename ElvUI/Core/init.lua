@@ -85,6 +85,7 @@ do -- Expansions
 	E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+	E.Mists = WOW_PROJECT_ID == 19
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
@@ -170,7 +171,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Cata or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 

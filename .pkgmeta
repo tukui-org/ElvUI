@@ -41,7 +41,7 @@ plain-copy:
   - ElvUI/Core
   - ElvUI/Locales
   - ElvUI/Mainline
-  - ElvUI/Cata
+  - ElvUI/Mists
   - ElvUI_Libraries/Classic/LibClassicSpecs
   - ElvUI_Libraries/Core/Ace3
   - ElvUI_Libraries/Core/Ace3-ElvUI
@@ -54,7 +54,7 @@ plain-copy:
   - ElvUI_Libraries/Core/oUF
   - ElvUI_Libraries/Core/oUF_Plugins
   - ElvUI_Libraries/Mainline
-  - ElvUI_Libraries/Cata
+  - ElvUI_Libraries/Mists
   - ElvUI_Options/Core
   - ElvUI_Options/Locales
 

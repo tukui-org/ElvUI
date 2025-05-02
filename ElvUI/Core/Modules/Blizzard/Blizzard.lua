@@ -109,14 +109,14 @@ function BL:ObjectiveTracker_Expand(frame)
 end
 
 function BL:ObjectiveTracker_AutoHideOnShow()
-	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if tracker and BL:ObjectiveTracker_IsCollapsed(tracker) then
 		BL:ObjectiveTracker_Expand(tracker)
 	end
 end
 
 function BL:ObjectiveTracker_AutoHide()
-	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if not tracker then return end
 
 	if not AutoHider then

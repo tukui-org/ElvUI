@@ -236,7 +236,7 @@ ActionBar.args.microbar.args.visibilityGroup.args.visibility.set = function(_, v
 ActionBar.args.microbar.args.visibilityGroup.args.defaults.func = function() E.db.actionbar.microbar.visibility = P.actionbar.microbar.visibility AB:UpdateMicroButtons() end
 ActionBar.args.microbar.args.visibilityGroup.args.defaults.desc = function() return P.actionbar.microbar.visibility end
 
-ActionBar.args.totemBar = ACH:Group(L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Cata)
+ActionBar.args.totemBar = ACH:Group(L["Totem Bar"], nil, 16, nil, function(info) return E.db.actionbar.totemBar[info[#info]] end, function(info, value) E.db.actionbar.totemBar[info[#info]] = value AB:PositionAndSizeTotemBar() end, function() return not E.ActionBars.Initialized end, not E.Mists)
 ActionBar.args.totemBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.totemBar[info[#info]] = value E.ShowPopup = true end)
 ActionBar.args.totemBar.args.mouseover = ACH:Toggle(L["Mouseover"], nil, 2)
 ActionBar.args.totemBar.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
