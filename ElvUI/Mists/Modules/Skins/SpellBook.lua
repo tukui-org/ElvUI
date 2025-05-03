@@ -157,6 +157,8 @@ function S:SpellBookFrame()
 		tab:StyleButton(nil, true)
 	end
 
+	-- TODO: MISTS BETA
+	--[[
 	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
 		for i = 1, 8 do
 			local tex = _G['SpellBookSkillLineTab'..i]:GetNormalTexture()
@@ -166,6 +168,7 @@ function S:SpellBookFrame()
 			end
 		end
 	end)
+	]]
 
 	--Profession Tab
 	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3, _G.SecondaryProfession4 } do
@@ -262,6 +265,8 @@ function S:SpellBookFrame()
 		S:HandleTab(_G['SpellBookFrameTabButton'..i])
 	end
 
+	-- TODO: MISTS BETA
+	--[[
 	-- Reposition Tabs
 	hooksecurefunc('SpellBookFrame_Update', function()
 		local tab = _G.SpellBookFrameTabButton1
@@ -280,6 +285,7 @@ function S:SpellBookFrame()
 			tab = _G['SpellBookFrameTabButton'..index]
 		end
 	end)
+	]]
 end
 
 S:AddCallback('SpellBookFrame')
