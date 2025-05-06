@@ -988,7 +988,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[471927] = List(), -- Withering Flames
 		[460420] = List(), -- Crushed!
 	-- Mug'Zee, Heads of Security
-		[4664769] = List(), -- Frostshatter Boots
 		[466509] = List(), -- Stormfury Finger Gun
 		[1215488] = List(), -- Disintegration Beam (Actually getting beamed)
 		[469391] = List(6), -- Perforating Wound
