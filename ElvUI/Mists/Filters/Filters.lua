@@ -75,6 +75,17 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[20511] = List(2),	-- Intimidating Shout
 		[85388] = List(2),	-- Throwdown
 		[46968] = List(2),	-- Shockwave
+	-- Monk
+		[116706] = List(),	-- Disable
+		[117368] = List(),	-- Grapple Weapon
+		[115078] = List(),	-- Paralysis
+		[122242] = List(),	-- Clash
+		[119392] = List(),	-- Charging Ox Wave
+		[119381] = List(),	-- Leg Sweep
+		[120086] = List(),	-- Fists of Fury
+		[116709] = List(),	-- Spear Hand Strike
+		[123407] = List(),	-- Spinning Fire Blossom
+		[140023] = List(),	-- Ring of Peace
 	-- Racial
 		[20549]	= List(2), -- War Stomp
 		[28730]	= List(2), -- Arcane Torrent (Mana)
@@ -130,6 +141,13 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[12976] = List(),	-- Last Stand
 		[55694] = List(),	-- Enraged Regeneration
 		[97463] = List(),	-- Rallying Cry
+	-- Monk
+		[120954] = List(),	-- Fortifying Brew
+		[131523] = List(),	-- Zen Meditation
+		[122783] = List(),	-- Diffuse Magic
+		[122278] = List(),	-- Dampen Harm
+		[115213] = List(),	-- Avert Harm
+		[116849] = List(),	-- Life Cocoon
 	},
 }
 
@@ -270,6 +288,15 @@ G.unitframe.aurafilters.Whitelist = {
 		[55694] = List(),	-- Enraged Regeneration
 		[85730] = List(),	-- Deadly Calm
 		[97463] = List(),	-- Rallying Cry
+	-- Monk
+		[120954] = List(),	-- Fortifying Brew
+		[131523] = List(),	-- Zen Meditation
+		[122783] = List(),	-- Diffuse Magic
+		[122278] = List(),	-- Dampen Harm
+		[115213] = List(),	-- Avert Harm
+		[116849] = List(),	-- Life Cocoon
+		[125174] = List(),	-- Touch of Karma
+		[116841] = List(),	-- Tiger's Lust
 	-- Racial
 		[20572] = List(),	-- Blood Fury
 		[20594] = List(),	-- Stoneform
@@ -541,6 +568,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 
 G.unitframe.aurawatch = {
 	GLOBAL = {},
+	MONK = {
+		[119611] = Aura(119611, nil, 'TOPLEFT', {0.8, 0.4, 0.8}), -- Renewing Mist
+		[116849] = Aura(116849, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Life Cocoon
+		[124081] = Aura(124081, nil, 'BOTTOMRIGHT', {0.7, 0.4, 0}), -- Zen Sphere
+		[132120] = Aura(132120, nil, 'BOTTOMLEFT', {0.4, 0.8, 0.2}) -- Enveloping Mist
+	},
 	DEATHKNIGHT = {
 		[49016] = Aura(49016, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Unholy Frenzy
 	},
