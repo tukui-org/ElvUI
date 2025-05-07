@@ -285,161 +285,23 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-------------------------------------------------
 	-------------------- Dungeons -------------------
 	-------------------------------------------------
-	-- Blackrock Caverns
-	-- Throne of the Tides
-	-- The Stonecore
-	-- The Vortex Pinnacle
-	-- Grim Batol
-	-- Halls of Origination
-	-- Deadmines
-	-- Shadowfang Keep
-	-- Lost City of the Tol'vir
+	-- Scholomance
+	-- Scarlet Halls
+	-- Mogu'shan Palace
+	-- Stormstout Brewery
+	-- Siege of Niuzao Temple
+	-- Scarlet Monastery
+	-- Temple of the Jade Serpent
+	-- Gate of the Setting Sun
+	-- Shado-Pan Monastery
 	-------------------------------------------------
-	-------------------- Phase 1 --------------------
+	--------------------- Raids ---------------------
 	-------------------------------------------------
-	-- Baradin Hold
-		[95173] = List(),	-- Consuming Darkness
-		[96913] = List(),	-- Searing Shadows
-		[104936] = List(),	-- Skewer
-		[105067] = List(),	-- Seething Hate
-	-- Blackwing Descent
-		[91911] = List(),	-- Constricting Chains
-		[94679] = List(),	-- Parasitic Infection
-		[94617] = List(),	-- Mangle
-		[78199] = List(),	-- Sweltering Armor
-		[91433] = List(),	-- Lightning Conductor
-		[91521] = List(),	-- Incineration Security Measure
-		[80094] = List(),	-- Fixate
-		[91535] = List(),	-- Flamethrower
-		[80161] = List(),	-- Chemical Cloud
-		[92035] = List(),	-- Acquiring Target
-		[79835] = List(),	-- Poison Soaked Shell
-		[91555] = List(),	-- Power Generator
-		[92048] = List(),	-- Shadow Infusion
-		[92053] = List(),	-- Shadow Conductor
-		[77699] = List(),	-- Flash Freeze
-		[77760] = List(),	-- Biting Chill
-		[92754] = List(),	-- Engulfing Darkness
-		[92971] = List(),	-- Consuming Flames
-		[92989] = List(),	-- Rend
-		[92423] = List(),	-- Searing Flame
-		[92485] = List(),	-- Roaring Flame
-		[92407] = List(),	-- Sonic Breath
-		[78092] = List(),	-- Tracking
-		[82881] = List(),	-- Break
-		[89084] = List(),	-- Low Health
-		[81114] = List(),	-- Magma
-		[94128] = List(),	-- Tail Lash
-		[79339] = List(),	-- Explosive Cinders
-		[79318] = List(),	-- Dominion
-	-- The Bastion of Twilight
-		[39171] = List(),	-- Malevolent Strikes
-		[83710] = List(),	-- Furious Roar
-		[92878] = List(),	-- Blackout
-		[86840] = List(),	-- Devouring Flames
-		[95639] = List(),	-- Engulfing Magic
-		[92886] = List(),	-- Twilight Zone
-		[88518] = List(),	-- Twilight Meteorite
-		[86505] = List(),	-- Fabulous Flames
-		[93051] = List(),	-- Twilight Shift
-		[92511] = List(),	-- Hydro Lance
-		[82762] = List(),	-- Waterlogged
-		[92505] = List(),	-- Frozen
-		[92518] = List(),	-- Flame Torrent
-		[83099] = List(),	-- Lightning Rod
-		[92075] = List(),	-- Gravity Core
-		[92488] = List(),	-- Gravity Crush
-		[82660] = List(),	-- Burning Blood
-		[82665] = List(),	-- Heart of Ice
-		[83500] = List(),	-- Swirling Winds
-		[83581] = List(),	-- Grounded
-		[92067] = List(),	-- Static Overload
-		[86028] = List(),	-- Cho's Blast
-		[86029] = List(),	-- Gall's Blast
-		[93187] = List(),	-- Corrupted Blood
-		[82125] = List(),	-- Corruption: Malformation
-		[82170] = List(),	-- Corruption: Absolute
-		[93200] = List(),	-- Corruption: Sickness
-		[82411] = List(),	-- Debilitating Beam
-		[91317] = List(),	-- Worshipping
-		[92956] = List(),	-- Wrack
-	-- Throne of the Four Winds
-		[93131] = List(),	-- Ice Patch
-		[86206] = List(),	-- Soothing Breeze
-		[93122] = List(),	-- Toxic Spores
-		[93058] = List(),	-- Slicing Gale
-		[93260] = List(),	-- Ice Storm
-		[93295] = List(),	-- Lightning Rod
-		[87873] = List(),	-- Static Shock
-		[87856] = List(),	-- Squall Line
-		[88427] = List(),	-- Electrocute
-	-------------------------------------------------
-	-------------------- Phase 3 --------------------
-	-------------------------------------------------
-	-- Zul'Aman (Dungeon)
-	-- Zul'Gurub (Dungeon)
-	-- Firelands
-		[99506] = List(),	-- Widows Kiss
-		[97202] = List(),	-- Fiery Web Spin
-		[49026] = List(),	-- Fixate
-		[97079] = List(),	-- Seeping Venom
-		[99389] = List(),	-- Imprinted
-		[101296] = List(),	-- Fiero Blast
-		[100723] = List(),	-- Gushing Wound
-		[101729] = List(),	-- Blazing Claw
-		[100640] = List(),	-- Harsh Winds
-		[100555] = List(),	-- Smouldering Roots
-		[99837] = List(),	-- Crystal Prison
-		[99937] = List(),	-- Jagged Tear
-		[99403] = List(),	-- Tormented
-		[99256] = List(),	-- Torment
-		[99252] = List(),	-- Blaze of Glory
-		[99516] = List(),	-- Countdown
-		[98450] = List(),	-- Searing Seeds
-		[98565] = List(),	-- Burning Orb
-		[98313] = List(),	-- Magma Blast
-		[99145] = List(),	-- Blazing Heat
-		[99399] = List(),	-- Burning Wound
-		[99613] = List(),	-- Molten Blast
-		[100293] = List(),	-- Lava Wave
-		[100675] = List(),	-- Dreadflame
-		[100249] = List(),	-- Combustion
-		[99532] = List(),	-- Melt Armor
-	-------------------------------------------------
-	-------------------- Phase 4 --------------------
-	-------------------------------------------------
-	-- Dragon Soul
-		[103541] = List(),	-- Safe
-		[103536] = List(),	-- Warning
-		[103534] = List(),	-- Danger
-		[103687] = List(),	-- Crush Armor
-		[108570] = List(),	-- Black Blood of the Earth
-		[103434] = List(),	-- Disrupting Shadows
-		[105171] = List(),	-- Deep Corruption
-		[105465] = List(),	-- Lighting Storm
-		[104451] = List(),	-- Ice Tomb
-		[109325] = List(),	-- Frostflake
-		[105289] = List(),	-- Shattered Ice
-		[105285] = List(),	-- Target
-		[105259] = List(),	-- Watery Entrenchment
-		[107061] = List(),	-- Ice Lance
-		[109075] = List(),	-- Fading Light
-		[108043] = List(),	-- Sunder Armor
-		[107558] = List(),	-- Degeneration
-		[107567] = List(),	-- Brutal Strike
-		[108046] = List(),	-- Shockwave
-		[110214] = List(),	-- Shockwave
-		[105479] = List(),	-- Searing Plasma
-		[105490] = List(),	-- Fiery Grip
-		[105563] = List(),	-- Grasping Tendrils
-		[106199] = List(),	-- Blood Corruption: Death
-		[105841] = List(),	-- Degenerative Bite
-		[106385] = List(),	-- Crush
-		[106730] = List(),	-- Tetanus
-		[106444] = List(),	-- Impale
-		[106794] = List(),	-- Shrapnel (Target)
-		[105445] = List(),	-- Blistering Heat
-		[108649] = List()	-- Corrupting Parasite
+	-- Mogu'shan Vaults
+	-- Heart of Fear
+	-- Terrace of Endless Spring
+	-- Throne of Thunder
+	-- Siege of Orgrimmar
 	},
 }
 
@@ -450,161 +312,23 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-------------------------------------------------
 	-------------------- Dungeons -------------------
 	-------------------------------------------------
-	-- Blackrock Caverns
-	-- Throne of the Tides
-	-- The Stonecore
-	-- The Vortex Pinnacle
-	-- Grim Batol
-	-- Halls of Origination
-	-- Deadmines
-	-- Shadowfang Keep
-	-- Lost City of the Tol'vir
+	-- Scholomance
+	-- Scarlet Halls
+	-- Mogu'shan Palace
+	-- Stormstout Brewery
+	-- Siege of Niuzao Temple
+	-- Scarlet Monastery
+	-- Temple of the Jade Serpent
+	-- Gate of the Setting Sun
+	-- Shado-Pan Monastery
 	-------------------------------------------------
-	-------------------- Phase 1 --------------------
+	--------------------- Raids ---------------------
 	-------------------------------------------------
-	-- Baradin Hold
-		[95173] = List(),	-- Consuming Darkness
-		[96913] = List(),	-- Searing Shadows
-		[104936] = List(),	-- Skewer
-		[105067] = List(),	-- Seething Hate
-	-- Blackwing Descent
-		[91911] = List(),	-- Constricting Chains
-		[94679] = List(),	-- Parasitic Infection
-		[94617] = List(),	-- Mangle
-		[78199] = List(),	-- Sweltering Armor
-		[91433] = List(),	-- Lightning Conductor
-		[91521] = List(),	-- Incineration Security Measure
-		[80094] = List(),	-- Fixate
-		[91535] = List(),	-- Flamethrower
-		[80161] = List(),	-- Chemical Cloud
-		[92035] = List(),	-- Acquiring Target
-		[79835] = List(),	-- Poison Soaked Shell
-		[91555] = List(),	-- Power Generator
-		[92048] = List(),	-- Shadow Infusion
-		[92053] = List(),	-- Shadow Conductor
-		[77699] = List(),	-- Flash Freeze
-		[77760] = List(),	-- Biting Chill
-		[92754] = List(),	-- Engulfing Darkness
-		[92971] = List(),	-- Consuming Flames
-		[92989] = List(),	-- Rend
-		[92423] = List(),	-- Searing Flame
-		[92485] = List(),	-- Roaring Flame
-		[92407] = List(),	-- Sonic Breath
-		[78092] = List(),	-- Tracking
-		[82881] = List(),	-- Break
-		[89084] = List(),	-- Low Health
-		[81114] = List(),	-- Magma
-		[94128] = List(),	-- Tail Lash
-		[79339] = List(),	-- Explosive Cinders
-		[79318] = List(),	-- Dominion
-	-- The Bastion of Twilight
-		[39171] = List(),	-- Malevolent Strikes
-		[83710] = List(),	-- Furious Roar
-		[92878] = List(),	-- Blackout
-		[86840] = List(),	-- Devouring Flames
-		[95639] = List(),	-- Engulfing Magic
-		[92886] = List(),	-- Twilight Zone
-		[88518] = List(),	-- Twilight Meteorite
-		[86505] = List(),	-- Fabulous Flames
-		[93051] = List(),	-- Twilight Shift
-		[92511] = List(),	-- Hydro Lance
-		[82762] = List(),	-- Waterlogged
-		[92505] = List(),	-- Frozen
-		[92518] = List(),	-- Flame Torrent
-		[83099] = List(),	-- Lightning Rod
-		[92075] = List(),	-- Gravity Core
-		[92488] = List(),	-- Gravity Crush
-		[82660] = List(),	-- Burning Blood
-		[82665] = List(),	-- Heart of Ice
-		[83500] = List(),	-- Swirling Winds
-		[83581] = List(),	-- Grounded
-		[92067] = List(),	-- Static Overload
-		[86028] = List(),	-- Cho's Blast
-		[86029] = List(),	-- Gall's Blast
-		[93187] = List(),	-- Corrupted Blood
-		[82125] = List(),	-- Corruption: Malformation
-		[82170] = List(),	-- Corruption: Absolute
-		[93200] = List(),	-- Corruption: Sickness
-		[82411] = List(),	-- Debilitating Beam
-		[91317] = List(),	-- Worshipping
-		[92956] = List(),	-- Wrack
-	-- Throne of the Four Winds
-		[93131] = List(),	-- Ice Patch
-		[86206] = List(),	-- Soothing Breeze
-		[93122] = List(),	-- Toxic Spores
-		[93058] = List(),	-- Slicing Gale
-		[93260] = List(),	-- Ice Storm
-		[93295] = List(),	-- Lightning Rod
-		[87873] = List(),	-- Static Shock
-		[87856] = List(),	-- Squall Line
-		[88427] = List(),	-- Electrocute
-	-------------------------------------------------
-	-------------------- Phase 3 --------------------
-	-------------------------------------------------
-	-- Zul'Aman (Dungeon)
-	-- Zul'Gurub (Dungeon)
-	-- Firelands
-		[99506] = List(),	-- Widows Kiss
-		[97202] = List(),	-- Fiery Web Spin
-		[49026] = List(),	-- Fixate
-		[97079] = List(),	-- Seeping Venom
-		[99389] = List(),	-- Imprinted
-		[101296] = List(),	-- Fiero Blast
-		[100723] = List(),	-- Gushing Wound
-		[101729] = List(),	-- Blazing Claw
-		[100640] = List(),	-- Harsh Winds
-		[100555] = List(),	-- Smouldering Roots
-		[99837] = List(),	-- Crystal Prison
-		[99937] = List(),	-- Jagged Tear
-		[99403] = List(),	-- Tormented
-		[99256] = List(),	-- Torment
-		[99252] = List(),	-- Blaze of Glory
-		[99516] = List(),	-- Countdown
-		[98450] = List(),	-- Searing Seeds
-		[98565] = List(),	-- Burning Orb
-		[98313] = List(),	-- Magma Blast
-		[99145] = List(),	-- Blazing Heat
-		[99399] = List(),	-- Burning Wound
-		[99613] = List(),	-- Molten Blast
-		[100293] = List(),	-- Lava Wave
-		[100675] = List(),	-- Dreadflame
-		[100249] = List(),	-- Combustion
-		[99532] = List(),	-- Melt Armor
-	-------------------------------------------------
-	-------------------- Phase 4 --------------------
-	-------------------------------------------------
-	-- Dragon Soul
-		[103541] = List(),	-- Safe
-		[103536] = List(),	-- Warning
-		[103534] = List(),	-- Danger
-		[103687] = List(),	-- Crush Armor
-		[108570] = List(),	-- Black Blood of the Earth
-		[103434] = List(),	-- Disrupting Shadows
-		[105171] = List(),	-- Deep Corruption
-		[105465] = List(),	-- Lighting Storm
-		[104451] = List(),	-- Ice Tomb
-		[109325] = List(),	-- Frostflake
-		[105289] = List(),	-- Shattered Ice
-		[105285] = List(),	-- Target
-		[105259] = List(),	-- Watery Entrenchment
-		[107061] = List(),	-- Ice Lance
-		[109075] = List(),	-- Fading Light
-		[108043] = List(),	-- Sunder Armor
-		[107558] = List(),	-- Degeneration
-		[107567] = List(),	-- Brutal Strike
-		[108046] = List(),	-- Shockwave
-		[110214] = List(),	-- Shockwave
-		[105479] = List(),	-- Searing Plasma
-		[105490] = List(),	-- Fiery Grip
-		[105563] = List(),	-- Grasping Tendrils
-		[106199] = List(),	-- Blood Corruption: Death
-		[105841] = List(),	-- Degenerative Bite
-		[106385] = List(),	-- Crush
-		[106730] = List(),	-- Tetanus
-		[106444] = List(),	-- Impale
-		[106794] = List(),	-- Shrapnel (Target)
-		[105445] = List(),	-- Blistering Heat
-		[108649] = List()	-- Corrupting Parasite
+	-- Mogu'shan Vaults
+	-- Heart of Fear
+	-- Terrace of Endless Spring
+	-- Throne of Thunder
+	-- Siege of Orgrimmar
 	},
 }
 
