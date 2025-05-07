@@ -485,6 +485,12 @@ do --this can save some main file locals
 			z['Player-3713-08FC8520']	= Gem
 			z['Player-3713-0AD1682D']	= Gem
 		end
+	elseif portal == 'test' then
+		-- Lucky
+		-- (4618: Classic Beta PvE)
+		z['Player-4618-003506AE'] = ElvGreen -- [A] Monk
+		z['Player-4618-003506A9'] = ElvGreen -- [A] Druid
+		z['Player-4618-003506A7'] = ElvGreen -- [A] Priest
 	end
 end
 
