@@ -211,7 +211,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
