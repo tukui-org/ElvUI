@@ -298,10 +298,217 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	--------------------- Raids ---------------------
 	-------------------------------------------------
 	-- Mogu'shan Vaults
+		-- The Stone Guard
+		[125206] = List(),	-- Rend Flesh
+		[130395] = List(),	-- Jasper Chains
+		[116281] = List(),	-- Cobalt Mine Blast
+		-- Feng the Accursed
+		[131788] = List(),	-- Lightning Lash
+		[116942] = List(),	-- Flaming Spear
+		[131790] = List(),	-- Arcane Shock
+		[131792] = List(),	-- Shadowburn
+		[116374] = List(),	-- Lightning Charge
+		[116784] = List(),	-- Wildfire Spark
+		[116417] = List(),	-- Arcane Resonance
+		-- Gara'jal the Spiritbinder
+		[122151] = List(),	-- Voodoo Doll
+		[116161] = List(),	-- Crossed Over
+		[117723] = List(),	-- Frail Soul
+		-- The Spirit Kings
+		[117708] = List(),	-- Maddening Shout
+		[118303] = List(),	-- Fixate
+		[118048] = List(),	-- Pillaged
+		[118135] = List(),	-- Pinned Down
+		[118163] = List(),	-- Robbed Blind
+		-- Elegon
+		[117878] = List(),	-- Overcharged
+		[117949] = List(),	-- Closed Circuit
+		[132222] = List(),	-- Destabilizing Energies
+		-- Will of the Emperor
+		[116835] = List(),	-- Devastating Arc
+		[116778] = List(),	-- Focused Defense
+		[116525] = List(),	-- Focused Assault
 	-- Heart of Fear
+		-- Imperial Vizier Zor'lok
+		[122761] = List(),	-- Exhale
+		[122760] = List(),	-- Exhale
+		[122740] = List(),	-- Convert
+		[123812] = List(),	-- Pheromones of Zeal
+		-- Blade Lord Ta'yak
+		[123180] = List(),	-- Wind Step
+		[123474] = List(),	-- Overwhelming Assault
+		-- Garalon
+		[122835] = List(),	-- Pheromones
+		[123081] = List(),	-- Pungency
+		-- Wind Lord Mel'jarak
+		[129078] = List(),	-- Amber Prison
+		[122055] = List(),	-- Residue
+		[122064] = List(),	-- Corrosive Resin
+		[123963] = List(),	-- Kor'thik Strike
+		-- Amber-Shaper Un'sok
+		[121949] = List(),	-- Parasitic Growth
+		[122370] = List(),	-- Reshape Life
 	-- Terrace of Endless Spring
+		-- Protectors of the Endless
+		[117436] = List(),	-- Lightning Prison
+		[118091] = List(),	-- Defiled Ground
+		[117519] = List(),	-- Touch of Sha
+		-- Tsulong
+		[122752] = List(),	-- Shadow Breath
+		[123011] = List(),	-- Terrorize
+		[116161] = List(),	-- Crossed Over
+		[122777] = List(),	-- Nightmares
+		[123036] = List(),	-- Fright
+		-- Lei Shi
+		[123121] = List(),	-- Spray
+		[123705] = List(),	-- Scary Fog
+		-- Sha of Fear
+		[119985] = List(),	-- Dread Spray
+		[119086] = List(),	-- Penetrating Bolt
+		[119775] = List(),	-- Reaching Attack
+		[122151] = List(),	-- Voodoo Doll
+		[120669] = List(),	-- Naked and Afraid
+		[120629] = List(),	-- Huddle in Terror
 	-- Throne of Thunder
+		-- Trash
+		[138349] = List(),	-- Static Wound
+		[137371] = List(),	-- Thundering Throw
+		-- Jin'rokh the Breaker
+		[137162] = List(),	-- Static Burst
+		[138349] = List(),	-- Static Wound
+		[137371] = List(),	-- Thundering Throw
+		[138732] = List(),	-- Ionization
+		[137422] = List(),	-- Focused Lightning
+		-- Horridon
+		[136767] = List(),	-- Triple Puncture
+		[136708] = List(),	-- Stone Gaze
+		[136654] = List(),	-- Rending Charge
+		[136719] = List(),	-- Blazing Sunlight
+		[136587] = List(),	-- Venom Bolt Volley
+		[136710] = List(),	-- Deadly Plague
+		[136512] = List(),	-- Hex of Confusion
+		-- Council of Elders
+		[137641] = List(),	-- Soul Fragment
+		[137359] = List(),	-- Shadowed Loa Spirit Fixate
+		[137972] = List(),	-- Twisted Fate
+		[136903] = List(),	-- Frigid Assault
+		[136922] = List(),	-- Frostbite
+		[136992] = List(),	-- Biting Cold
+		[136857] = List(),	-- Entrapped
+		-- Tortos
+		[136753] = List(),	-- Slashing Talons
+		[137633] = List(),	-- Crystal Shell
+		[140701] = List(),	-- Crystal Shell: Full Capacity! (Heroic)
+		-- Megaera
+		[137731] = List(),	-- Ignite Flesh
+		[139843] = List(),	-- Arctic Freeze
+		[139840] = List(),	-- Rot Armor
+		[134391] = List(),	-- Cinder
+		[139857] = List(),	-- Torrent of Ice
+		[140179] = List(),	-- Suppression (Heroic)
+		-- Ji-Kun
+		[134366] = List(),	-- Talon Rake
+		[140092] = List(),	-- Infected Talons
+		[134256] = List(),	-- Slimed
+		-- Durumu the Forgotten
+		[133767] = List(),	-- Serious Wound
+		[133768] = List(),	-- Arterial Cut
+		[133798] = List(),	-- Life Drain
+		[133597] = List(),	-- Dark Parasite (Heroic)
+		-- Primordius
+		[136050] = List(),	-- Malformed Blood
+		[136228] = List(),	-- Volatile Pathogen
+		-- Dark Animus
+		[138569] = List(),	-- Explosive Slam
+		[138609] = List(),	-- Matter Swap
+		[138659] = List(),	-- Touch of the Animus
+		-- Iron Qon
+		[134691] = List(),	-- Impale
+		[136192] = List(),	-- Lightning Storm
+		[136193] = List(),	-- Arcing Lightning
+		-- Twin Consorts
+		[137440] = List(),	-- Icy Shadows
+		[137408] = List(),	-- Fan of Flames
+		[137360] = List(),	-- Corrupted Healing
+		[136722] = List(),	-- Slumber Spores
+		[137341] = List(),	-- Beast of Nightmares
+		-- Lei Shen
+		[135000] = List(),	-- Decapitate
+		[136478] = List(),	-- Fusion Slash
+		[136914] = List(),	-- Electrical Shock
+		[135695] = List(),	-- Static Shock
+		[136295] = List(),	-- Overcharged
+		[139011] = List(),	-- Helm of Command (Heroic)
+		-- Ra-den
+		[138297] = List(),	-- Unstable Vita
+		[138329] = List(),	-- Unleashed Anima
+		[138372] = List(),	-- Vita Sensitivity
 	-- Siege of Orgrimmar
+		-- Immerseus
+		[143436] = List(),	-- Corrosive Blast
+		[143579] = List(),	-- Sha Corruption(Heroic)
+		-- Fallen Protectors
+		[143434] = List(),	-- Shadow Word: Bane
+		[143198] = List(),	-- Garrote
+		[143840] = List(),	-- Mark of Anguish
+		[147383] = List(),	-- Debilitation
+		-- Norushen
+		[146124] = List(),	-- Self Doubt
+		[144851] = List(),	-- Test of Confidence
+		[144514] = List(),	-- Lingering Corruption
+		-- Sha of Pride
+		[144358] = List(),	-- Wounded Pride
+		[144774] = List(),	-- Reaching Attacks
+		[147207] = List(),	-- Weakened Resolve(Heroic)
+		[144351] = List(),	-- Mark of Arrogance
+		[146594] = List(),	-- Gift of the Titans
+		-- Galakras
+		[147029] = List(),	-- Flames of Galakrond
+		[146902] = List(),	-- Poison-Tipped Blades
+		-- Iron Juggernaut
+		[144467] = List(),	-- Ignite Armor
+		[144459] = List(),	-- Laser Burn
+		-- Kor'kron Dark Shaman
+		[144215] = List(),	-- Froststorm Strike
+		[143990] = List(),	-- Foul Geyser
+		[144330] = List(),	-- Iron Prison(Heroic)
+		[144089] = List(),	-- Toxic Mist
+		-- General Nazgrim
+		[143494] = List(),	-- Sundering Blow
+		[143638] = List(),	-- Bonecracker
+		[143431] = List(),	-- Magistrike
+		[143480] = List(),	-- Assassin's Mark
+		-- Malkorok
+		[142990] = List(),	-- Fatal Strike
+		[143919] = List(),	-- Languish(Heroic)
+		[142864] = List(),	-- Ancient Barrier
+		[142865] = List(),	-- Strong Ancient Barrier
+		[142913] = List(),	-- Displaced Energy
+		-- Spoils of Pandaria
+		[145218] = List(),	-- Harden Flesh
+		[146235] = List(),	-- Breath of Fire
+		-- Thok the Bloodthirsty
+		[143766] = List(),	-- Panic
+		[143773] = List(),	-- Freezing Breath
+		[146589] = List(),	-- Skeleton Key
+		[143777] = List(),	-- Frozen Solid
+		[143780] = List(),	-- Acid Breath
+		[143800] = List(),	-- Icy Blood
+		[143767] = List(),	-- Scorching Breath
+		[143791] = List(),	-- Corrosive Blood
+		-- Siegecrafter Blackfuse
+		[143385] = List(),	-- Electrostatic Charge
+		[144236] = List(),	-- Pattern Recognition
+		-- Paragons of the Klaxxi
+		[143974] = List(),	-- Shield Bash
+		[142315] = List(),	-- Caustic Blood
+		[143701] = List(),	-- Whirling
+		[142948] = List(),	-- Aim
+		-- Garrosh Hellscream
+		[145183] = List(),	-- Gripping Despair
+		[145195] = List(),	-- Empowered Gripping Despair
+		[145065] = List(),	-- Touch of Y'Shaarj
+		[145171] = List(),	-- Empowered Touch of Y'Shaarj
 	},
 }
 
