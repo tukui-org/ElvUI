@@ -2,389 +2,293 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-local unpack = unpack
-local tinsert = tinsert
-local strfind = strfind
+local pairs, select, unpack = pairs, select, unpack
 local hooksecurefunc = hooksecurefunc
-
 local CreateFrame = CreateFrame
-local GetNumTalents = GetNumTalents
-local HasPetUI = HasPetUI
 
-local function GlyphFrame_Update()
-	local glyphFrame = _G.GlyphFrame
-	if glyphFrame then
-		glyphFrame.levelOverlayText1:SetTextColor(1, 1, 1)
-		glyphFrame.levelOverlayText2:SetTextColor(1, 1, 1)
-	end
+local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
+local C_SpecializationInfo_GetSpecialization = C_SpecializationInfo.GetSpecialization
+local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
+local GetNumSpecializations = GetNumSpecializations
+local GetPvpTalentInfoByID = GetPvpTalentInfoByID
+local GetSpecializationSpells = GetSpecializationSpells
 
-	local talentFrame = _G.PlayerTalentFrame
-	local talentGroup = talentFrame and talentFrame.talentGroup
-	if talentGroup then
-		local l, r, t, b = unpack(E.TexCoords)
-		for i = 1, _G.NUM_GLYPH_SLOTS do
-			local glyph = _G['GlyphFrameGlyph'..i]
-			if glyph and glyph.icon then
-				local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
-				if iconFilename then
-					glyph.icon:SetTexture(iconFilename)
-					glyph.icon:SetTexCoord(l, r, t, b)
-				else
-					glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
-					glyph.icon:SetTexCoord(0, 1, 0, 1)
-				end
+local GetSpellTexture = GetSpellTexture
+local UnitSex = UnitSex
 
-				_G.GlyphFrameGlyph_UpdateSlot(glyph)
-			end
-		end
-	end
-end
-
-local function GlyphFrameGlyph_OnUpdate(updater)
-	local frame = updater.owner
-	if not frame then return end
-
-	local glyphTexture = frame.icon and frame.icon:GetTexture()
-	local glyphIcon = glyphTexture and strfind(glyphTexture, [[Interface\Spellbook\UI%-Glyph%-Rune]])
-
-	local alpha = frame.highlight:GetAlpha()
-	if alpha == 0 then
-		local r, g, b = unpack(E.media.bordercolor)
-		frame:SetBackdropBorderColor(r, g, b)
-		frame:SetAlpha(1)
-
-		if glyphIcon then
-			frame.icon:SetVertexColor(1, 1, 1, 1)
-			frame.icon:SetAlpha(1)
-		end
-	else
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		frame:SetBackdropBorderColor(r, g, b)
-		frame:SetAlpha(alpha)
-
-		if glyphIcon then
-			frame.icon:SetVertexColor(r, g, b)
-			frame.icon:SetAlpha(alpha)
-		end
-	end
-end
-
-local TalentTabs = {}
-local function HandleTabs()
-	local lastTab
-	for index, tab in next, TalentTabs do
-		if index ~= 2 or HasPetUI() then
-			tab:ClearAllPoints()
-
-			if index == 1 then
-				tab:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
-			else
-				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
-			end
-
-			lastTab = tab
-		end
-	end
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
 end
 
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	local PlayerTalentFrame = _G.PlayerTalentFrame
-	S:HandleFrame(PlayerTalentFrame, true, nil, 0, 0, 0, 0)
-	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, PlayerTalentFrame.backdrop)
+	S:HandlePortraitFrame(PlayerTalentFrame)
 
-	_G.PlayerTalentFrameHeaderFrame:StripTextures()
-	S:HandleButton(_G.PlayerTalentFrameToggleSummariesButton)
+	_G.PlayerTalentFrameTalents:StripTextures()
 
-	S:HandleButton(_G.PlayerTalentFrameLearnButton)
-	_G.PlayerTalentFrameLearnButton:ClearAllPoints()
-	_G.PlayerTalentFrameLearnButton:Point('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMLEFT', 18, 4)
-
-	S:HandleButton(_G.PlayerTalentFrameResetButton)
-	_G.PlayerTalentFrameResetButton:ClearAllPoints()
-	_G.PlayerTalentFrameResetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 4)
-
-	if _G.PlayerTalentFrameActivateButton then
-		S:HandleButton(_G.PlayerTalentFrameActivateButton)
+	local disableTutorialButtons = E.global.general.disableTutorialButtons
+	if disableTutorialButtons then
+		_G.PlayerTalentFrameTalentsTutorialButton:Kill()
 	end
 
-	if _G.PlayerTalentFrameStatusFrame then
-		_G.PlayerTalentFrameStatusFrame:StripTextures()
+	local buttons = {
+		_G.PlayerTalentFrameSpecializationLearnButton,
+		_G.PlayerTalentFrameTalentsLearnButton,
+		_G.PlayerTalentFramePetSpecializationLearnButton
+	}
+
+	S:HandleButton(_G.PlayerTalentFrameActivateButton)
+
+	for _, button in pairs(buttons) do
+		S:HandleButton(button)
 	end
 
 	for i = 1, 3 do
-		local panelName = 'PlayerTalentFramePanel'..i
-		local panel = _G[panelName]
+		S:HandleTab(_G['PlayerTalentFrameTab'..i])
+	end
 
-		panel:StripTextures()
-		panel:CreateBackdrop('Transparent')
-		panel.backdrop:Point('TOPLEFT', 5, -5)
-		panel.backdrop:Point('BOTTOMRIGHT', -5, 5)
+	-- Reposition Tabs
+	_G.PlayerTalentFrameTab1:ClearAllPoints()
+	_G.PlayerTalentFrameTab1:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
+	_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
 
-		panel.InactiveShadow:Kill()
+	for _, Frame in pairs({ _G.PlayerTalentFrameSpecialization, _G.PlayerTalentFramePetSpecialization }) do
+		Frame:StripTextures()
 
-		panel.Summary:StripTextures()
-		panel.Summary:CreateBackdrop()
-		panel.Summary:OffsetFrameLevel(2)
-
-		panel.Summary.Icon:SetTexCoord(unpack(E.TexCoords))
-
-		panel.Summary.RoleIcon:Kill()
-		panel.Summary.RoleIcon2:Kill()
-
-		panel.HeaderIcon:StripTextures()
-		panel.HeaderIcon:CreateBackdrop()
-		panel.HeaderIcon.backdrop:SetOutside(panel.HeaderIcon.Icon)
-		panel.HeaderIcon:OffsetFrameLevel(1)
-		panel.HeaderIcon:Point('TOPLEFT', 4, -4)
-
-		panel.HeaderIcon.Icon:Size(E.PixelMode and 34 or 30)
-		panel.HeaderIcon.Icon:SetTexCoord(unpack(E.TexCoords))
-		panel.HeaderIcon.Icon:Point('TOPLEFT', E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
-
-		panel.HeaderIcon.PointsSpent:FontTemplate(nil, 13, 'OUTLINE')
-		panel.HeaderIcon.PointsSpent:Point('BOTTOMRIGHT', 125, 11)
-
-		local arrow = _G[panelName..'Arrow']
-		if arrow then
-			arrow:OffsetFrameLevel(2)
+		if disableTutorialButtons then
+			Frame.MainHelpButton:Kill()
 		end
 
-		local activeBonus = _G[panelName..'SummaryActiveBonus1']
-		if activeBonus then
-			activeBonus:StripTextures()
-			activeBonus:CreateBackdrop()
-			activeBonus.backdrop:SetOutside(activeBonus.Icon)
-			activeBonus:OffsetFrameLevel(1)
-			activeBonus.Icon:SetTexCoord(unpack(E.TexCoords))
-		end
-
-		for j = 1, 5 do
-			local bonus = _G[panelName..'SummaryBonus'..j]
-			if bonus then
-				bonus:StripTextures()
-				bonus:CreateBackdrop()
-				bonus.backdrop:SetOutside(bonus.Icon)
-				bonus:OffsetFrameLevel(1)
-
-				bonus.Icon:SetTexCoord(unpack(E.TexCoords))
+		for _, Child in pairs({Frame:GetChildren()}) do
+			if Child:IsObjectType('Frame') and not Child:GetName() then
+				Child:StripTextures()
 			end
 		end
 
-		for j = 1, _G.MAX_NUM_BRANCH_TEXTURES do
-			local branch = _G[panelName..'Branch'..j]
-			if branch then
-				branch:SetTexture(136962) -- Interface\\TalentFrame\\UI-TalentBranches
+		for i = 1, 4 do
+			local Button = Frame['specButton'..i]
+			local _, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(i, false, Frame.isPet)
+
+			_G['PlayerTalentFrameSpecializationSpecButton'..i..'Glow']:Kill()
+
+			Button:CreateBackdrop()
+			if Button.backdrop then
+				Button.backdrop:Point('TOPLEFT', 8, 2)
+				Button.backdrop:Point('BOTTOMRIGHT', 10, -2)
+			end
+
+			Button.specIcon:Size(50, 50)
+			Button.specIcon:Point('LEFT', Button, 'LEFT', 15, 0)
+			Button.specIcon:SetDrawLayer('ARTWORK', 2)
+			Button.roleIcon:SetDrawLayer('ARTWORK', 2)
+
+			Button.bg:SetAlpha(0)
+			Button.ring:SetAlpha(0)
+			Button.learnedTex:SetAlpha(0)
+			Button.selectedTex:SetAlpha(0)
+			Button.specIcon:SetTexture(icon)
+			S:HandleIcon(Button.specIcon, true, nil, nil, nil, nil, nil, nil, Button:GetFrameLevel() + 1)
+			if Button.specIcon.backdrop then
+				Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
+				Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
+			end
+			Button:SetHighlightTexture(E.ClearTexture)
+
+			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
+			Button.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+		end
+
+		Frame.spellsScroll.child.gradient:Kill()
+		Frame.spellsScroll.child.scrollwork_topleft:SetAlpha(0)
+		Frame.spellsScroll.child.scrollwork_topright:SetAlpha(0)
+		Frame.spellsScroll.child.scrollwork_bottomleft:SetAlpha(0)
+		Frame.spellsScroll.child.scrollwork_bottomright:SetAlpha(0)
+		Frame.spellsScroll.child.ring:SetAlpha(0)
+		Frame.spellsScroll.child.Seperator:SetAlpha(0)
+
+		S:HandleIcon(Frame.spellsScroll.child.specIcon, true)
+	end
+
+	do
+		local onFinished = function(s)
+			local r, g, b = s:GetChange()
+			local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
+			defaultR = E:Round(defaultR, 2)
+			defaultG = E:Round(defaultG, 2)
+			defaultB = E:Round(defaultB, 2)
+
+			if r == defaultR and g == defaultG and b == defaultB then
+				s:SetChange(unpack(E.media.rgbvaluecolor))
+			else
+				s:SetChange(defaultR, defaultG, defaultB)
 			end
 		end
 
-		for j = 1, _G.MAX_NUM_TALENTS do
-			local talent = _G[panelName..'Talent'..j]
-			if talent then
-				talent:StripTextures()
-				talent:SetTemplate()
-				talent:StyleButton()
-
-				local icon = _G[panelName..'Talent'..j..'IconTexture']
-				if icon then
-					icon:SetInside()
-					icon:SetTexCoord(unpack(E.TexCoords))
-					icon:SetDrawLayer('ARTWORK')
+		local onShow = function(s)
+			local parent = s:GetParent()
+			if not parent.transition:IsPlaying() then
+				for _, child in pairs(parent.transition.color.children) do
+					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 
-				local rank = _G[panelName..'Talent'..j..'Rank']
-				if rank then
-					rank:FontTemplate(nil, 12, 'OUTLINE')
+				parent.transition:Play()
+			end
+		end
+
+		local onHide = function(s)
+			local parent = s:GetParent()
+			if parent.transition:IsPlaying() then
+				parent.transition:Stop()
+
+				for _, child in pairs(parent.transition.color.children) do
+					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end
 		end
 
-		local selectTree = _G[panelName..'SelectTreeButton']
-		if selectTree then
-			S:HandleButton(selectTree)
-			selectTree:OffsetFrameLevel(2)
-		end
-	end
+		for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
+			local row = _G['PlayerTalentFrameTalentsTalentRow'..i]
 
-	-- Pet
-	_G.PlayerTalentFramePetPanel:StripTextures()
-	_G.PlayerTalentFramePetPanel:CreateBackdrop('Transparent')
-	_G.PlayerTalentFramePetPanel.backdrop:Point('TOPLEFT', 4, -4)
-	_G.PlayerTalentFramePetPanel.backdrop:Point('BOTTOMRIGHT', -4, 4)
+			if row then
+				row:StripTextures()
 
-	_G.PlayerTalentFramePetShadowOverlay:Kill()
-	_G.PlayerTalentFramePetTalents:StripTextures()
+				row.TopLine:Point('TOP', 0, 4)
+				row.BottomLine:Point('BOTTOM', 0, -4)
 
-	_G.PlayerTalentFramePetModel:SetTemplate('Transparent')
-	_G.PlayerTalentFramePetModel:Height(319)
+				row.transition = _G.CreateAnimationGroup(row)
+				row.transition:SetLooping(true)
 
-	S:HandleRotateButton(_G.PlayerTalentFramePetModelRotateLeftButton)
-	S:HandleRotateButton(_G.PlayerTalentFramePetModelRotateRightButton)
+				row.transition.color = row.transition:CreateAnimation('Color')
+				row.transition.color:SetDuration(0.7)
+				row.transition.color:SetColorType('border')
+				row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
+				row.transition.color:SetScript('OnFinished', onFinished)
 
-	_G.PlayerTalentFramePetIconBorder:Kill()
-	S:HandleIcon(_G.PlayerTalentFramePetIcon)
-	_G.PlayerTalentFramePetPanelHeaderIconBorder:Kill()
-	S:HandleIcon(_G.PlayerTalentFramePetPanelHeaderIconIcon)
-
-	for i = 1, GetNumTalents(1, false, true) do
-		local talent = _G['PlayerTalentFramePetPanelTalent'..i]
-		if talent then
-			talent:StripTextures()
-			talent:SetTemplate()
-			talent:StyleButton()
-
-			local icon = _G['PlayerTalentFramePetPanelTalent'..i..'IconTexture']
-			if icon then
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetDrawLayer('ARTWORK')
+				-- row.GlowFrame:StripTextures()
+				-- row.GlowFrame:HookScript('OnShow', onShow)
+				-- row.GlowFrame:HookScript('OnHide', onHide)
 			end
 
-			local rank = _G['PlayerTalentFramePetPanelTalent'..i..'Rank']
-			if rank then
-				rank:FontTemplate(nil, 12, 'OUTLINE')
+			for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
+				local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+
+				if bu then
+					bu:StripTextures()
+					bu:SetFrameLevel(bu:GetFrameLevel() + 5)
+					bu.knownSelection:SetAlpha(0)
+					bu.icon:SetDrawLayer('ARTWORK', 1)
+					S:HandleIcon(bu.icon, true)
+
+					bu.bg = CreateFrame('Frame', nil, bu)
+					bu.bg:SetTemplate()
+					bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
+					bu.bg:Point('TOPLEFT', 15, 2)
+					bu.bg:Point('BOTTOMRIGHT', -10, -2)
+
+					row.transition.color:AddChild(bu.bg)
+
+					-- bu.GlowFrame:Kill()
+
+					bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
+					bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+					bu.bg.SelectedTexture:SetInside(bu.bg)
+
+					bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
+					bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
+				end
 			end
 		end
 	end
 
-	-- Tabs
-	for i = 1, 3 do
-		local tab = _G['PlayerTalentFrameTab'..i]
-		tinsert(TalentTabs, tab)
-		S:HandleTab(tab)
-	end
+	hooksecurefunc('TalentFrame_Update', function(s)
+		for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
+			for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
+				local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+				if bu and bu.bg and bu.knownSelection then
+					if bu.knownSelection:IsShown() then
+						bu.bg.SelectedTexture:Show()
+						bu.ShadowedTexture:Hide()
+					else
+						bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
+						bu.bg.SelectedTexture:Hide()
+						bu.ShadowedTexture:Show()
+						bu.icon:SetDesaturated(false)
+					end
+				end
+			end
+		end
+	end)
 
-	for i = 1, 2 do
-		local tab = _G['PlayerSpecTab'..i]
-		tab:GetRegions():Hide()
-		tab:SetTemplate()
-		tab:StyleButton(nil, true)
+	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', function(s, spec)
+		local playerTalentSpec = C_SpecializationInfo_GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
+		local shownSpec = spec or playerTalentSpec or 1
+		local numSpecs = GetNumSpecializations(nil, s.isPet)
+		local sex = s.isPet and UnitSex('pet') or UnitSex('player')
+		local id, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
+		if not id then return end
 
-		local normal = tab:GetNormalTexture()
-		normal:SetInside()
-		normal:SetTexCoord(unpack(E.TexCoords))
-	end
-
-	hooksecurefunc('PlayerTalentFrame_UpdateTabs', HandleTabs)
-end
-
-function S:Blizzard_GlyphUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
-
-	-- Glyph Tab
-	local GlyphFrame = _G.GlyphFrame
-	GlyphFrame:SetTemplate('Transparent')
-	GlyphFrame.sideInset:StripTextures()
-
-	if E.private.skins.parchmentRemoverEnable then
-		_G.GlyphFrameBackground:SetAlpha(0)
-		GlyphFrame.levelOverlay1:SetAlpha(0)
-		GlyphFrame.levelOverlay2:SetAlpha(0)
-	else
-		_G.GlyphFrameBackground:SetInside()
-		_G.GlyphFrameBackground:SetDrawLayer('ARTWORK')
-		GlyphFrame.levelOverlayText1:SetDrawLayer('OVERLAY', 2)
-		GlyphFrame.levelOverlayText2:SetDrawLayer('OVERLAY', 2)
-	end
-
-	GlyphFrame.levelOverlayText1:FontTemplate(nil, 18, 'SHADOW')
-	GlyphFrame.levelOverlayText2:FontTemplate(nil, 18, 'SHADOW')
-
-	S:HandleEditBox(_G.GlyphFrameSearchBox)
-	_G.GlyphFrameSearchBox:Point('TOPLEFT', _G.GlyphFrameSideInset, 5, 54)
-
-	S:HandleDropDownBox(_G.GlyphFrame.FilterDropdown, 180, 'Transparent')
-	_G.GlyphFrame.FilterDropdown:Point('TOPLEFT', _G.GlyphFrameSearchBox, 'BOTTOMLEFT', 0, -3)
-
-	for i = 1, _G.NUM_GLYPH_SLOTS do
-		local frame = _G['GlyphFrameGlyph'..i]
-		frame:SetTemplate('Transparent')
-		frame:OffsetFrameLevel(5)
-		frame:StyleButton(nil, true)
-
-		if i == 1 or i == 4 or i == 6 then -- Major Glyphs
-			frame:Size(42)
-		elseif i == 2 or i == 3 or i == 5 then -- Minor Glyphs
-			frame:Size(28)
-		else -- Prime Glyphs
-			frame:Size(62)
+		local scrollBar = s.spellsScroll.ScrollBar
+		if scrollBar and not scrollBar.backdrop then
+			S:HandleScrollBar(scrollBar)
 		end
 
-		frame.highlight:SetTexture(nil)
-		frame.ring:Hide()
+		local scrollChild = s.spellsScroll.child
+		scrollChild.specIcon:SetTexture(icon)
+		scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 
-		hooksecurefunc(frame.glyph, 'Show', frame.glyph.Hide)
-
-		if not frame.icon then
-			frame.icon = frame:CreateTexture(nil, 'OVERLAY')
-			frame.icon:SetInside()
+		local index = 1
+		local bonuses
+		local bonusesIncrement = 1
+		if s.isPet then
+			bonuses = {GetSpecializationSpells(shownSpec, nil, s.isPet, true)}
+			bonusesIncrement = 2
 		end
 
-		if not frame.onUpdate then
-			frame.onUpdate = CreateFrame('Frame', nil, frame)
-			frame.onUpdate:SetScript('OnUpdate', GlyphFrameGlyph_OnUpdate)
-			frame.onUpdate.owner = frame
-		end
-	end
-
-	hooksecurefunc('GlyphFrame_Update', GlyphFrame_Update)
-
-	-- Scroll Frame
-	_G.GlyphFrameScrollFrameScrollChild:StripTextures()
-
-	_G.GlyphFrameScrollFrame:StripTextures()
-	_G.GlyphFrameScrollFrame:CreateBackdrop('Transparent')
-	_G.GlyphFrameScrollFrame.backdrop:SetAllPoints(_G.GlyphFrameSideInset)
-
-	S:HandleScrollBar(_G.GlyphFrameScrollFrameScrollBar)
-	_G.GlyphFrameScrollFrameScrollBar:ClearAllPoints()
-	_G.GlyphFrameScrollFrameScrollBar:Point('TOPRIGHT', _G.GlyphFrameScrollFrame, 20, -15)
-	_G.GlyphFrameScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.GlyphFrameScrollFrame, 0, 14)
-
-	for i = 1, 3 do
-		local header = _G['GlyphFrameHeader'..i]
-		if header then
-			header:StripTextures()
-			header:StyleButton()
-		end
-	end
-
-	for i = 1, 10 do
-		local button = _G['GlyphFrameScrollFrameButton'..i]
-		if button and not button.IsSkinned then
-			S:HandleButton(button, nil, nil, nil, true, 'Transparent')
-			button.backdrop:SetInside()
-
-			local icon = _G['GlyphFrameScrollFrameButton'..i..'Icon']
-			if icon then
-				S:HandleIcon(icon)
-				icon:ClearAllPoints()
-				icon:Point('LEFT', 2, 0)
-				icon:Size(36)
+		for i = 1, numSpecs do
+			local bu = s['specButton'..i]
+			if bu.backdrop then
+				bu.SelectedTexture:SetInside(bu.backdrop)
 			end
 
-			local disabledBG = button.disabledBG
-			if disabledBG then
-				disabledBG:SetAlpha(0)
+			if bu.selected then
+				bu.SelectedTexture:Show()
+			else
+				bu.SelectedTexture:Hide()
 			end
-
-			button.IsSkinned = true
 		end
-	end
 
-	-- Clear Info
-	GlyphFrame.clearInfo:CreateBackdrop()
-	GlyphFrame.clearInfo.backdrop:SetAllPoints()
-	GlyphFrame.clearInfo:StyleButton()
-	GlyphFrame.clearInfo:Size(28)
-	GlyphFrame.clearInfo:Point('BOTTOMLEFT', GlyphFrame, 'BOTTOMRIGHT', 8, -1)
+		if bonuses then
+			for i = 1, #bonuses, bonusesIncrement do
+				local frame = scrollChild['abilityButton'..index]
+				if frame then
+					local _, spellTex = GetSpellTexture(bonuses[i])
+					if spellTex then
+						frame.icon:SetTexture(spellTex)
+					end
 
-	GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
-	GlyphFrame.clearInfo.icon:ClearAllPoints()
-	GlyphFrame.clearInfo.icon:SetInside()
+					frame.subText:SetTextColor(.6, .6, .6)
+
+					if not frame.backdrop then
+						frame.ring:Hide()
+						frame.icon:SetTexCoord(unpack(E.TexCoords))
+						frame.icon:SetInside(frame, 8, 8)
+
+						frame:CreateBackdrop()
+						frame.backdrop:SetOutside(frame.icon)
+					end
+				end
+
+				index = index + 1
+			end
+		end
+
+		-- Hide the default flash anim
+		s.learnButton.Flash:Hide()
+		s.learnButton.FlashAnim:Stop()
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_TalentUI')
-S:AddCallbackForAddon('Blizzard_GlyphUI')
