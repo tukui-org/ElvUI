@@ -51,8 +51,8 @@ local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
 
-local GetSpecialization = (E.Classic or E.Mists) and LCS.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = (E.Classic or E.Mists) and LCS.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecialization = (E.Classic and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = (E.Classic and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
