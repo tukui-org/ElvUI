@@ -462,11 +462,11 @@ do --this can save some main file locals
 			-- Luckyone (1598: LaughingSkull)
 			z['Player-1598-0F5E4639']	= ElvGreen -- [Alliance] Druid: Luckyone
 			z['Player-1598-0F3E51B0']	= ElvGreen -- [Alliance] Druid: Luckydruid
+			z['Player-1598-0FB03F89']	= ElvGreen -- [Alliance] Monk
 			z['Player-1598-0F46FF5A']	= ElvGreen -- [Horde] Evoker
 			z['Player-1598-0F92E2B9']	= ElvGreen -- [Horde] Evoker 2
 			z['Player-1598-0BFF3341']	= ElvGreen -- [Horde] DH
 			z['Player-1598-0BD22704']	= ElvGreen -- [Horde] Priest
-			z['Player-1598-0BEFA545']	= ElvGreen -- [Horde] Monk
 			z['Player-1598-0E1A06DE']	= ElvGreen -- [Horde] Rogue
 			z['Player-1598-0BF2E377']	= ElvGreen -- [Horde] Hunter
 			z['Player-1598-0BF18248']	= ElvGreen -- [Horde] DK
