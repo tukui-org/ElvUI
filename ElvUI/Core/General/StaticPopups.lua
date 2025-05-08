@@ -1186,7 +1186,7 @@ function E:Contruct_StaticPopups()
 			E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
 		end
 
-		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ButtonExtraButton'])
+		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ExtraButton'])
 
 		local editbox = _G['ElvUI_StaticPopup'..index..'EditBox']
 		editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
