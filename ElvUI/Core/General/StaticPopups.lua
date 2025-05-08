@@ -696,7 +696,9 @@ function E:StaticPopup_Resize(dialog, which)
 	local maxHeightSoFar, maxWidthSoFar = (dialog.maxHeightSoFar or 0), (dialog.maxWidthSoFar or 0)
 	local width = 320
 
-	if dialog.numButtons == 3 then
+	if dialog.numButtons == 4 then
+		width = 574
+	elseif dialog.numButtons == 3 then
 		width = 440
 	elseif info.showAlert or info.showAlertGear or info.closeButton then
 		-- Widen
@@ -962,7 +964,9 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		local numButtons = #tempButtonLocs
 		dialog.numButtons = numButtons
 
-		if numButtons == 3 then
+		if numButtons == 4 then
+			tempButtonLocs[1]:SetPoint('BOTTOMRIGHT', dialog, 'BOTTOM', -139, 16);
+		elseif numButtons == 3 then
 			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -72, 16)
 		elseif numButtons == 2 then
 			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -6, 16)
