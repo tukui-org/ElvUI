@@ -585,23 +585,23 @@ function E:StaticPopup_OnClick(index)
 	if not info then return end
 
 	if info.selectCallbackByIndex then
-		local func;
+		local func
 		if index == 1 then
-			func = info.OnAccept or info.OnButton1;
+			func = info.OnAccept or info.OnButton1
 		elseif index == 2 then
-			func = info.OnCancel or info.OnButton2;
+			func = info.OnCancel or info.OnButton2
 		elseif index == 3 then
-			func = info.OnButton3;
+			func = info.OnButton3
 		elseif index == 4 then
-			func = info.OnButton4;
+			func = info.OnButton4
 		elseif index == 5 then
-			func = info.OnExtraButton;
+			func = info.OnExtraButton
 		end
 
 		if func then
-			local keepOpen = func(self, self.data, 'clicked');
+			local keepOpen = func(self, self.data, 'clicked')
 			if not keepOpen and which == self.which then
-				self:Hide();
+				self:Hide()
 			end
 		end
 	else
@@ -612,7 +612,7 @@ function E:StaticPopup_OnClick(index)
 				hide = not OnAccept(self, self.data, self.data2)
 			end
 		elseif index == 3 then
-			local OnAlt = info.OnAlt or info.OnButton2;
+			local OnAlt = info.OnAlt or info.OnButton2
 			if OnAlt then
 				OnAlt(self, self.data, 'clicked')
 			end
@@ -1186,7 +1186,7 @@ function E:Contruct_StaticPopups()
 			E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
 		end
 
-		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ButtonExtraButton']);
+		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ButtonExtraButton'])
 
 		local editbox = _G['ElvUI_StaticPopup'..index..'EditBox']
 		editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
