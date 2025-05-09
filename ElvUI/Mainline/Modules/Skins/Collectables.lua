@@ -29,19 +29,6 @@ local function toyTextColor(text, r, g, b)
 	end
 end
 
-local function petNameColor(iconBorder, r, g, b)
-	local parent = iconBorder:GetParent()
-	if not parent.name then return end
-
-	if parent.isDead and parent.isDead:IsShown() then
-		parent.name:SetTextColor(0.9, 0.3, 0.3)
-	elseif r and (parent.owned or parent.healthFrame) then
-		parent.name:SetTextColor(r, g, b)
-	else
-		parent.name:SetTextColor(0.4, 0.4, 0.4)
-	end
-end
-
 local function mountNameColor(object)
 	local button = object:GetParent()
 	local name = button.name
@@ -63,7 +50,6 @@ end
 
 local function selectedTextureSetShown(texture, shown) -- used sets list
 	local parent = texture:GetParent()
-	local icon = parent.icon or parent.Icon
 	if shown then
 		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
@@ -87,19 +73,19 @@ end
 
 local function buttonOnEnter(button)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
-	local icon = button.icon or button.Icon
 	button.backdrop:SetBackdropBorderColor(r, g, b)
+
 	button.hovered = true
 end
 
 local function buttonOnLeave(button)
-	local icon = button.icon or button.Icon
 	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
 		button.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
 	end
+
 	button.hovered = nil
 end
 
