@@ -1,3 +1,9 @@
+### Version 13.90 [ May 25th 2025 ]
+*   Raid Debuffs updated for Theater of Pain.
+*   Cooldown module option to Force Hide Blizzard Text is always available now.
+*   Flyouts called from the Spellbook were causing an error.
+*   Trading Post, Auctionhouse, Pet Journal, and Professions skins updated.
+
 ### Version 13.89 [ April 22nd 2025 ]
 *   Fixed an issue where tags failed to call the global Hex function. Added healer-only power and mana tags.
 *   Fixed a chat format error that occurred when playing in French.
