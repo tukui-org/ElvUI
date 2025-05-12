@@ -1,4 +1,4 @@
-### Version 13.90 [ May 25th 2025 ]
+### Version 13.90 [ May 9th 2025 ]
 *   Raid Debuffs updated for Theater of Pain.
 *   Cooldown module option to Force Hide Blizzard Text is always available now.
 *   Flyouts called from the Spellbook were causing an error.
