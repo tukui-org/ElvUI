@@ -157,18 +157,14 @@ function S:SpellBookFrame()
 		tab:StyleButton(nil, true)
 	end
 
-	-- TODO: MISTS BETA
-	--[[
-	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
-		for i = 1, 8 do
-			local tex = _G['SpellBookSkillLineTab'..i]:GetNormalTexture()
-			if tex then
-				S:HandleIcon(tex)
-				tex:SetInside()
-			end
+	-- Skill tabs on the right side
+	for i = 1, 8 do
+		local tex = _G['SpellBookSkillLineTab'..i]:GetNormalTexture()
+		if tex then
+			S:HandleIcon(tex)
+			tex:SetInside()
 		end
-	end)
-	]]
+	end
 
 	--Profession Tab
 	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3, _G.SecondaryProfession4 } do
@@ -265,27 +261,22 @@ function S:SpellBookFrame()
 		S:HandleTab(_G['SpellBookFrameTabButton'..i])
 	end
 
-	-- TODO: MISTS BETA
-	--[[
 	-- Reposition Tabs
-	hooksecurefunc('SpellBookFrame_Update', function()
-		local tab = _G.SpellBookFrameTabButton1
-		local index, lastTab = 1, tab
-		while tab do
-			tab:ClearAllPoints()
+	local tab = _G.SpellBookFrameTabButton1
+	local index, lastTab = 1, tab
+	while tab do
+		tab:ClearAllPoints()
 
-			if index == 1 then
-				tab:Point('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -10, 0)
-			else
-				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
-				lastTab = tab
-			end
-
-			index = index + 1
-			tab = _G['SpellBookFrameTabButton'..index]
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.SpellBookFrame, 'BOTTOMLEFT', -10, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			lastTab = tab
 		end
-	end)
-	]]
+
+		index = index + 1
+		tab = _G['SpellBookFrameTabButton'..index]
+	end
 end
 
 S:AddCallback('SpellBookFrame')
