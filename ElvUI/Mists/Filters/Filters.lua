@@ -339,7 +339,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[116417] = List(),	-- Arcane Resonance
 		-- Gara'jal the Spiritbinder
 		[122151] = List(),	-- Voodoo Doll
-		[116161] = List(),	-- Crossed Over
 		[117723] = List(),	-- Frail Soul
 		-- The Spirit Kings
 		[117708] = List(),	-- Maddening Shout
@@ -393,7 +392,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[119985] = List(),	-- Dread Spray
 		[119086] = List(),	-- Penetrating Bolt
 		[119775] = List(),	-- Reaching Attack
-		[122151] = List(),	-- Voodoo Doll
 		[120669] = List(),	-- Naked and Afraid
 		[120629] = List(),	-- Huddle in Terror
 	-- Throne of Thunder
@@ -402,8 +400,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[137371] = List(),	-- Thundering Throw
 		-- Jin'rokh the Breaker
 		[137162] = List(),	-- Static Burst
-		[138349] = List(),	-- Static Wound
-		[137371] = List(),	-- Thundering Throw
 		[138732] = List(),	-- Ionization
 		[137422] = List(),	-- Focused Lightning
 		-- Horridon
