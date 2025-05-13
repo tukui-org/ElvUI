@@ -84,6 +84,42 @@ local function GlyphFrameGlyph_OnUpdate(updater)
 	end
 end
 
+local function Transition_OnFinished(s)
+	local r, g, b = s:GetChange()
+	local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
+	defaultR = E:Round(defaultR, 2)
+	defaultG = E:Round(defaultG, 2)
+	defaultB = E:Round(defaultB, 2)
+
+	if r == defaultR and g == defaultG and b == defaultB then
+		s:SetChange(unpack(E.media.rgbvaluecolor))
+	else
+		s:SetChange(defaultR, defaultG, defaultB)
+	end
+end
+
+local function Transition_OnShow(s)
+	local parent = s:GetParent()
+	if not parent.transition:IsPlaying() then
+		for _, child in pairs(parent.transition.color.children) do
+			child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+
+		parent.transition:Play()
+	end
+end
+
+local function Transition_OnHide(s)
+	local parent = s:GetParent()
+	if parent.transition:IsPlaying() then
+		parent.transition:Stop()
+
+		for _, child in pairs(parent.transition.color.children) do
+			child:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
+end
+
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -174,93 +210,56 @@ function S:Blizzard_TalentUI()
 		S:HandleIcon(Frame.spellsScroll.child.specIcon, true)
 	end
 
-	do
-		local onFinished = function(s)
-			local r, g, b = s:GetChange()
-			local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
-			defaultR = E:Round(defaultR, 2)
-			defaultG = E:Round(defaultG, 2)
-			defaultB = E:Round(defaultB, 2)
+	for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
+		local row = _G['PlayerTalentFrameTalentsTalentRow'..i]
 
-			if r == defaultR and g == defaultG and b == defaultB then
-				s:SetChange(unpack(E.media.rgbvaluecolor))
-			else
-				s:SetChange(defaultR, defaultG, defaultB)
-			end
+		if row then
+			row:StripTextures()
+
+			row.TopLine:Point('TOP', 0, 4)
+			row.BottomLine:Point('BOTTOM', 0, -4)
+
+			row.transition = _G.CreateAnimationGroup(row)
+			row.transition:SetLooping(true)
+
+			row.transition.color = row.transition:CreateAnimation('Color')
+			row.transition.color:SetDuration(0.7)
+			row.transition.color:SetColorType('border')
+			row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
+			row.transition.color:SetScript('OnFinished', Transition_OnFinished)
+
+			-- unused?
+			-- row.GlowFrame:StripTextures()
+			-- row.GlowFrame:HookScript('OnShow', Transition_OnShow)
+			-- row.GlowFrame:HookScript('OnHide', Transition_OnHide)
 		end
 
-		local onShow = function(s)
-			local parent = s:GetParent()
-			if not parent.transition:IsPlaying() then
-				for _, child in pairs(parent.transition.color.children) do
-					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
+		for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
+			local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
 
-				parent.transition:Play()
-			end
-		end
+			if bu then
+				bu:StripTextures()
+				bu:SetFrameLevel(bu:GetFrameLevel() + 5)
+				bu.knownSelection:SetAlpha(0)
+				bu.icon:SetDrawLayer('ARTWORK', 1)
+				S:HandleIcon(bu.icon, true)
 
-		local onHide = function(s)
-			local parent = s:GetParent()
-			if parent.transition:IsPlaying() then
-				parent.transition:Stop()
+				bu.bg = CreateFrame('Frame', nil, bu)
+				bu.bg:SetTemplate()
+				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
+				bu.bg:Point('TOPLEFT', 15, 2)
+				bu.bg:Point('BOTTOMRIGHT', -10, -2)
 
-				for _, child in pairs(parent.transition.color.children) do
-					child:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			end
-		end
+				row.transition.color:AddChild(bu.bg)
 
-		for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
-			local row = _G['PlayerTalentFrameTalentsTalentRow'..i]
+				-- bu.GlowFrame:Kill()
 
-			if row then
-				row:StripTextures()
+				bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
+				bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				bu.bg.SelectedTexture:SetInside(bu.bg)
 
-				row.TopLine:Point('TOP', 0, 4)
-				row.BottomLine:Point('BOTTOM', 0, -4)
-
-				row.transition = _G.CreateAnimationGroup(row)
-				row.transition:SetLooping(true)
-
-				row.transition.color = row.transition:CreateAnimation('Color')
-				row.transition.color:SetDuration(0.7)
-				row.transition.color:SetColorType('border')
-				row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
-				row.transition.color:SetScript('OnFinished', onFinished)
-
-				-- row.GlowFrame:StripTextures()
-				-- row.GlowFrame:HookScript('OnShow', onShow)
-				-- row.GlowFrame:HookScript('OnHide', onHide)
-			end
-
-			for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
-				local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
-
-				if bu then
-					bu:StripTextures()
-					bu:SetFrameLevel(bu:GetFrameLevel() + 5)
-					bu.knownSelection:SetAlpha(0)
-					bu.icon:SetDrawLayer('ARTWORK', 1)
-					S:HandleIcon(bu.icon, true)
-
-					bu.bg = CreateFrame('Frame', nil, bu)
-					bu.bg:SetTemplate()
-					bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
-					bu.bg:Point('TOPLEFT', 15, 2)
-					bu.bg:Point('BOTTOMRIGHT', -10, -2)
-
-					row.transition.color:AddChild(bu.bg)
-
-					-- bu.GlowFrame:Kill()
-
-					bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
-					bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
-					bu.bg.SelectedTexture:SetInside(bu.bg)
-
-					bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
-					bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
-				end
+				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
+				bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 			end
 		end
 	end
