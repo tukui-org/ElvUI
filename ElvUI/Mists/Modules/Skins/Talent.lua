@@ -2,15 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local strfind = strfind
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpecialization = C_SpecializationInfo.GetSpecialization
 local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 local GetNumSpecializations = GetNumSpecializations
-local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpecializationSpells = GetSpecializationSpells
 
 local GetSpellTexture = GetSpellTexture
