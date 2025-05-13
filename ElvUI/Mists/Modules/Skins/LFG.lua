@@ -122,6 +122,10 @@ function S:LookingForGroupFrames()
 		_G.LFDQueueFrameRoleButtonDPS,
 		_G.LFDQueueFrameRoleButtonLeader,
 		_G.LFDQueueFrameRoleButtonTank,
+		_G.RaidFinderQueueFrameRoleButtonHealer,
+		_G.RaidFinderQueueFrameRoleButtonDPS,
+		_G.RaidFinderQueueFrameRoleButtonLeader,
+		_G.RaidFinderQueueFrameRoleButtonTank,
 		_G.LFGInvitePopupRoleButtonTank,
 		_G.LFGInvitePopupRoleButtonHealer,
 		_G.LFGInvitePopupRoleButtonDPS,
@@ -247,6 +251,19 @@ function S:LookingForGroupFrames()
 	end)
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown, 200)
+
+	-- Raid Finder
+	_G.RaidFinderFrame:StripTextures()
+	_G.RaidFinderFrameRoleInset:StripTextures()
+	_G.RaidFinderQueueFrame:StripTextures(true)
+
+	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropdown, 200)
+
+	S:HandleTrimScrollBar(_G.RaidFinderQueueFrameScrollFrame.ScrollBar)
+	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
+
+	_G.RaidFinderFrameFindRaidButton:StripTextures()
+	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
@@ -403,7 +420,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
-	--ApplicationViewer (Custom Groups)
+	-- ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.InfoBackground:Hide() -- even the ugly borders are now an atlas on the texutre? wtf????
 	LFGListFrame.ApplicationViewer.InfoBackground:CreateBackdrop('Transparent')
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -482,6 +499,21 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
+
+	-- Scenario Tab
+	local ScenarioQueueFrame = _G.ScenarioQueueFrame
+	if ScenarioQueueFrame then
+		ScenarioQueueFrame:StripTextures()
+		_G.ScenarioFinderFrameInset:StripTextures()
+		_G.ScenarioQueueFrameBackground:SetAlpha(0)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown, 190)
+		S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
+		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
+			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+		end
+	end
 end
 
 S:AddCallback('LookingForGroupFrames')
