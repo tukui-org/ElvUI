@@ -234,11 +234,6 @@ do
 				if data then
 					E:SortProfilerData('E', data)
 				end
-			elseif switch == 'ouf' then
-				local data = E.Profiler.data[E.oUF]
-				if data then
-					E:SortProfilerData('oUF', data)
-				end
 			elseif switch == 'pooler' then
 				local data = E.Profiler.data[E.oUF.Pooler]
 				if data then
