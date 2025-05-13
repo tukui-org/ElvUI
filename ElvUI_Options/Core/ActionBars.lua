@@ -279,18 +279,21 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.hotkeyTextGroup = nil
 		options.macroTextGroup = nil
 		options.professionQuality = nil
+		options.pagingGroup = nil
 	elseif name == 'stanceBar' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[name][info[#info]] = value AB:UpdateStanceBindings() end
 		options.hotkeyTextGroup.args.hotkeyColor.set = function(info, r, g, b, a) local t = E.db.actionbar[name][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateStanceBindings() end
 		options.macroTextGroup = nil
 		options.professionQuality = nil
+		options.pagingGroup = nil
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[name][info[#info]] = value AB:UpdatePetBindings() end
 		options.hotkeyTextGroup.args.hotkeyColor.set = function(info, r, g, b, a) local t = E.db.actionbar[name][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdatePetBindings() end
 		options.macroTextGroup = nil
 		options.professionQuality = nil
+		options.pagingGroup = nil
 	end
 end
 
