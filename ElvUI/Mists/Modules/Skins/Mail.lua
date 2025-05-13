@@ -95,6 +95,10 @@ function S:MailFrame()
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
 	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
+	_G.MailEditBox.ScrollBox:ClearAllPoints()
+	_G.MailEditBox.ScrollBox:Point('TOPLEFT', _G.MailEditBox, 'TOPLEFT', -13, 6)
+	_G.MailEditBox.ScrollBox:Point('BOTTOMRIGHT', _G.MailEditBox, 'BOTTOMRIGHT', 8, -6)
+
 	_G.SendStationeryBackgroundLeft:StripTextures(true)
 	_G.SendStationeryBackgroundRight:StripTextures(true)
 
