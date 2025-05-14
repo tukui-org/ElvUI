@@ -11,8 +11,8 @@ local IsPassiveSpell = IsPassiveSpell
 
 local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
 
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 1)
+local function clearBackdrop(backdrop)
+	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
 
 local function spellButtonHighlight(button, texture)

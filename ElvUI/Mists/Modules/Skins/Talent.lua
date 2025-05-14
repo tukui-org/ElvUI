@@ -15,8 +15,8 @@ local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
 local UnitSex = UnitSex
 
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 0)
+local function clearBackdrop(backdrop)
+	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
 local function PositionTabs()
@@ -84,22 +84,109 @@ local function GlyphFrameGlyph_OnUpdate(updater)
 	end
 end
 
-local function Transition_OnFinished(s)
-	local r, g, b = s:GetChange()
+local function TalentFrame_Update()
+	for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
+		for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
+			local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+			if bu and bu.bg and bu.knownSelection then
+				if bu.knownSelection:IsShown() then
+					bu.bg.SelectedTexture:Show()
+					bu.ShadowedTexture:Hide()
+				else
+					bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
+					bu.bg.SelectedTexture:Hide()
+					bu.ShadowedTexture:Show()
+					bu.icon:SetDesaturated(false)
+				end
+			end
+		end
+	end
+end
+
+local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
+	local playerTalentSpec = C_SpecializationInfo_GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
+	local shownSpec = spec or playerTalentSpec or 1
+	local numSpecs = GetNumSpecializations(nil, s.isPet)
+	local sex = s.isPet and UnitSex('pet') or UnitSex('player')
+	local id, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
+	if not id then return end
+
+	local scrollBar = s.spellsScroll.ScrollBar
+	if scrollBar and not scrollBar.backdrop then
+		S:HandleScrollBar(scrollBar)
+	end
+
+	local scrollChild = s.spellsScroll.child
+	scrollChild.specIcon:SetTexture(icon)
+	scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
+
+	local index = 1
+	local bonuses
+	local bonusesIncrement = 1
+	if s.isPet then
+		bonuses = {GetSpecializationSpells(shownSpec, nil, s.isPet, true)}
+		bonusesIncrement = 2
+	end
+
+	for i = 1, numSpecs do
+		local bu = s['specButton'..i]
+		if bu.backdrop then
+			bu.SelectedTexture:SetInside(bu.backdrop)
+		end
+
+		if bu.selected then
+			bu.SelectedTexture:Show()
+		else
+			bu.SelectedTexture:Hide()
+		end
+	end
+
+	if bonuses then
+		for i = 1, #bonuses, bonusesIncrement do
+			local frame = scrollChild['abilityButton'..index]
+			if frame then
+				local _, spellTex = GetSpellTexture(bonuses[i])
+				if spellTex then
+					frame.icon:SetTexture(spellTex)
+				end
+
+				frame.subText:SetTextColor(.6, .6, .6)
+
+				if not frame.backdrop then
+					frame.ring:Hide()
+					frame.icon:SetTexCoord(unpack(E.TexCoords))
+					frame.icon:SetInside(frame, 8, 8)
+
+					frame:CreateBackdrop()
+					frame.backdrop:SetOutside(frame.icon)
+				end
+			end
+
+			index = index + 1
+		end
+	end
+
+	-- Hide the default flash anim
+	s.learnButton.Flash:Hide()
+	s.learnButton.FlashAnim:Stop()
+end
+
+local function Transition_OnFinished(frame)
+	local r, g, b = frame:GetChange()
 	local defaultR, defaultG, defaultB = unpack(E.media.bordercolor)
 	defaultR = E:Round(defaultR, 2)
 	defaultG = E:Round(defaultG, 2)
 	defaultB = E:Round(defaultB, 2)
 
 	if r == defaultR and g == defaultG and b == defaultB then
-		s:SetChange(unpack(E.media.rgbvaluecolor))
+		frame:SetChange(unpack(E.media.rgbvaluecolor))
 	else
-		s:SetChange(defaultR, defaultG, defaultB)
+		frame:SetChange(defaultR, defaultG, defaultB)
 	end
 end
 
-local function Transition_OnShow(s)
-	local parent = s:GetParent()
+local function Transition_OnShow(frame)
+	local parent = frame:GetParent()
 	if not parent.transition:IsPlaying() then
 		for _, child in pairs(parent.transition.color.children) do
 			child:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -109,8 +196,8 @@ local function Transition_OnShow(s)
 	end
 end
 
-local function Transition_OnHide(s)
-	local parent = s:GetParent()
+local function Transition_OnHide(frame)
+	local parent = frame:GetParent()
 	if parent.transition:IsPlaying() then
 		parent.transition:Stop()
 
@@ -264,92 +351,8 @@ function S:Blizzard_TalentUI()
 		end
 	end
 
-	hooksecurefunc('TalentFrame_Update', function(s)
-		for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
-			for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
-				local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
-				if bu and bu.bg and bu.knownSelection then
-					if bu.knownSelection:IsShown() then
-						bu.bg.SelectedTexture:Show()
-						bu.ShadowedTexture:Hide()
-					else
-						bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
-						bu.bg.SelectedTexture:Hide()
-						bu.ShadowedTexture:Show()
-						bu.icon:SetDesaturated(false)
-					end
-				end
-			end
-		end
-	end)
-
-	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', function(s, spec)
-		local playerTalentSpec = C_SpecializationInfo_GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
-		local shownSpec = spec or playerTalentSpec or 1
-		local numSpecs = GetNumSpecializations(nil, s.isPet)
-		local sex = s.isPet and UnitSex('pet') or UnitSex('player')
-		local id, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
-		if not id then return end
-
-		local scrollBar = s.spellsScroll.ScrollBar
-		if scrollBar and not scrollBar.backdrop then
-			S:HandleScrollBar(scrollBar)
-		end
-
-		local scrollChild = s.spellsScroll.child
-		scrollChild.specIcon:SetTexture(icon)
-		scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
-
-		local index = 1
-		local bonuses
-		local bonusesIncrement = 1
-		if s.isPet then
-			bonuses = {GetSpecializationSpells(shownSpec, nil, s.isPet, true)}
-			bonusesIncrement = 2
-		end
-
-		for i = 1, numSpecs do
-			local bu = s['specButton'..i]
-			if bu.backdrop then
-				bu.SelectedTexture:SetInside(bu.backdrop)
-			end
-
-			if bu.selected then
-				bu.SelectedTexture:Show()
-			else
-				bu.SelectedTexture:Hide()
-			end
-		end
-
-		if bonuses then
-			for i = 1, #bonuses, bonusesIncrement do
-				local frame = scrollChild['abilityButton'..index]
-				if frame then
-					local _, spellTex = GetSpellTexture(bonuses[i])
-					if spellTex then
-						frame.icon:SetTexture(spellTex)
-					end
-
-					frame.subText:SetTextColor(.6, .6, .6)
-
-					if not frame.backdrop then
-						frame.ring:Hide()
-						frame.icon:SetTexCoord(unpack(E.TexCoords))
-						frame.icon:SetInside(frame, 8, 8)
-
-						frame:CreateBackdrop()
-						frame.backdrop:SetOutside(frame.icon)
-					end
-				end
-
-				index = index + 1
-			end
-		end
-
-		-- Hide the default flash anim
-		s.learnButton.Flash:Hide()
-		s.learnButton.FlashAnim:Stop()
-	end)
+	hooksecurefunc('TalentFrame_Update', TalentFrame_Update)
+	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', PlayerTalentFrame_UpdateSpecFrame)
 end
 
 function S:Blizzard_GlyphUI()
