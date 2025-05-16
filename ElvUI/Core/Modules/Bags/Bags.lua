@@ -680,7 +680,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.isQuestItem, slot.isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
 		else
 			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
-			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.QuestID, questInfo.isActive
+			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
 		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
