@@ -3,7 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: @project-version@
 ## Interface: 40402
-## OptionalDeps: BigWigs, LibHealComm-4.0
+## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
 Cata\Libs.xml
