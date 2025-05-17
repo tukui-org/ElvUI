@@ -4,6 +4,7 @@
 ## Version: @project-version@
 ## Interface: 40402
 ## RequiredDeps: ElvUI
+## OptionalDeps: BigWigs
 ## LoadOnDemand: 1
 
 Core\Load.xml

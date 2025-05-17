@@ -3,6 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: @project-version@
 ## Interface: 110105
+## OptionalDeps: BigWigs
 ## X-oUF: ElvUF
 ## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul

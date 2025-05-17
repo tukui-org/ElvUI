@@ -3,7 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: @project-version@
 ## Interface: 11507
-## OptionalDeps: LibHealComm-4.0
+## OptionalDeps: BigWigs, LibHealComm-4.0
 ## X-oUF: ElvUF
 
 Classic\Libs.xml
