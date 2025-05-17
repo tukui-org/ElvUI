@@ -561,7 +561,7 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 end
 
 function B:UpdateSlotColors(slot, isQuestItem, QuestID, isActiveQuest)
-	local questColors, r, g, b, a = B.db.qualityColors and (QuestID or isQuestItem) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	local questColors, r, g, b, a = B.db.qualityColors and (isQuestItem or QuestID) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
 	local qR, qG, qB = E:GetItemQualityColor(slot.rarity)
 
 	if slot.itemLevel then
@@ -680,7 +680,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.isQuestItem, slot.isActiveQuest = B:GetItemQuestInfo(slot.itemLink, bindType, itemClassID)
 		else
 			local questInfo = B:GetContainerItemQuestInfo(bagID, slotID)
-			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.QuestID, questInfo.isActive
+			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
 		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
@@ -728,7 +728,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	B:UpdateItemLevel(slot)
 	B:UpdateSlotColors(slot, slot.isQuestItem, slot.QuestID, slot.isActiveQuest)
 
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((not E.Retail and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
+	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((E.Classic and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
