@@ -145,7 +145,7 @@ function TM:Initialize()
 		TM:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'Update')
 	end
 
-	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,totems')
+	E:CreateMover(bar, 'TotemTrackerMover', L["Totem Tracker"], nil, nil, nil, nil, nil, 'general,blizzardImprovements,totems')
 end
 
 E:RegisterModule(TM:GetName())
