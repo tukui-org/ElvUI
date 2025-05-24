@@ -558,7 +558,7 @@ if oUF.isRetail then
 	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
-elseif oUF.isCata then
+elseif oUF.isMists then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 end
 
