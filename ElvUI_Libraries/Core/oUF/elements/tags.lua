@@ -272,7 +272,7 @@ end
 
 tagFunctions.level = function(u)
 	local l = (UnitEffectiveLevel or UnitLevel)(u)
-	if C_PetBattles and (UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
+	if oUF.isRetail and (UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
 		l = UnitBattlePetLevel(u)
 	end
 
