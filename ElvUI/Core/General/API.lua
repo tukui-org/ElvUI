@@ -1209,10 +1209,7 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
-	-- TODO: MISTS BETA
-	if not E.Mists then
-		E:SetupGameMenu()
-	end
+	E:SetupGameMenu()
 
 	if E.Retail then
 		for _, mountID in next, C_MountJournal_GetMountIDs() do
