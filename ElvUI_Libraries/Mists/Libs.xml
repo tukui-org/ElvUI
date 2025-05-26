@@ -34,6 +34,6 @@
 	<Script file='..\Core\LibAnim\LibAnim.lua'/>
 
 	<Script file='..\Core\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
-	<Include file='..\Core\oUF\oUF_Wrath.xml'/>
+	<Include file='..\Core\oUF\oUF_Mists.xml'/>
 	<Include file='..\Core\oUF_Plugins\oUF_Plugins.xml'/>
 </Ui>
