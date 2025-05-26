@@ -181,11 +181,14 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	end
 
 	button:SetParent(bar)
-	button:ClearAllPoints()
 	button:SetAttribute('showgrid', 1)
 	button:EnableMouse(not db.clickThrough)
 	button:Size(buttonWidth, buttonHeight)
-	button:Point(point, relativeFrame, relativePoint, x, y)
+
+	if button ~= _G.StoreMicroButton then
+		button:ClearAllPoints()
+		button:Point(point, relativeFrame, relativePoint, x, y)
+	end
 
 	if index == 1 then
 		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
