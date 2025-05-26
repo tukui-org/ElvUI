@@ -303,7 +303,7 @@ do
 		ClassPowerID = SPELL_POWER_CHI
 		ClassPowerType = 'CHI'
 		RequireSpec = SPEC_MONK_WINDWALKER
-		RequireSpecAlt = SPEC_MONK_MISTWEAVER
+		RequireSpecAlt = oUF.isMists and SPEC_MONK_MISTWEAVER
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = SPELL_POWER_HOLY_POWER
 		ClassPowerType = 'HOLY_POWER'
