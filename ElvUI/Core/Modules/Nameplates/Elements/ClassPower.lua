@@ -18,7 +18,8 @@ local MAX_POINTS = { -- match to UF.classMaxResourceBar
 	MAGE		= max(4, MAX_COMBO_POINTS),
 	ROGUE		= max(7, MAX_COMBO_POINTS),
 	EVOKER		= max(6, MAX_COMBO_POINTS),
-	DRUID		= max(5, MAX_COMBO_POINTS)
+	DRUID		= max(5, MAX_COMBO_POINTS),
+	PRIEST		= max(3, MAX_COMBO_POINTS),
 }
 
 function NP:ClassPower_SetBarColor(bar, r, g, b)

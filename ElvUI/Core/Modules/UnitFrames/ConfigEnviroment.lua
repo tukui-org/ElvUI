@@ -64,6 +64,7 @@ local classPowers = {
 if E.Mists then -- also handled in Elements/Power
 	classPowers[4] = PowerType.RunicPower
 	classPowers[26] = PowerType.Balance
+	classPowers[28] = PowerType.ShadowOrbs or 28
 elseif E.Retail then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[5] = PowerType.PAIN

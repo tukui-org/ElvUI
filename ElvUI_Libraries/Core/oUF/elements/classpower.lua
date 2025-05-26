@@ -63,6 +63,7 @@ local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower or 9
 local SPELL_POWER_CHI = Enum.PowerType.Chi or 12
 local SPELL_POWER_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local SPELL_POWER_ESSENCE = Enum.PowerType.Essence or 19
+local SPELL_POWER_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
@@ -304,6 +305,9 @@ do
 		ClassPowerType = 'CHI'
 		RequireSpec = SPEC_MONK_WINDWALKER
 		RequireSpecAlt = oUF.isMists and SPEC_MONK_MISTWEAVER
+	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
+		ClassPowerID = SPELL_POWER_SHADOW_ORBS
+		ClassPowerType = 'SHADOW_ORBS'
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = SPELL_POWER_HOLY_POWER
 		ClassPowerType = 'HOLY_POWER'

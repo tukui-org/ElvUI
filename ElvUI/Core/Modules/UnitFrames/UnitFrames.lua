@@ -71,7 +71,8 @@ UF.classMaxResourceBar = { -- match to NP ClassPower MAX_POINTS
 	MONK = 6,
 	MAGE = 4,
 	ROGUE = 7,
-	DRUID = 5
+	DRUID = 5,
+	PRIEST = 3
 }
 
 UF.SortAuraFuncs = {
@@ -440,6 +441,7 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FURY = E:SetColorTable(ElvUF.colors.power.FURY, db.power.FURY)
 	ElvUF.colors.power.LUNAR_POWER = E:SetColorTable(ElvUF.colors.power.LUNAR_POWER, db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
+	ElvUF.colors.power.SHADOW_ORBS = E:SetColorTable(ElvUF.colors.power.SHADOW_ORBS, db.power.SHADOW_ORBS)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
 	ElvUF.colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(ElvUF.colors.power[POWERTYPE_ALTERNATE], db.power.ALT_POWER)
 	ElvUF.colors.chargedComboPoint = E:SetColorTable(ElvUF.colors.chargedComboPoint, db.classResources.chargedComboPoint)
