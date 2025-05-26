@@ -89,7 +89,7 @@ local function Visibility(self)
 
 	if not UnitHasVehicleUI('player') then
 		local form = GetShapeshiftFormID()
-		local ptt = GetPrimaryTalentTree()
+		local ptt = C_SpecializationInfo.GetSpecialization()
 
 		if ptt and ptt == 1 and (form == MOONKIN_FORM or not form) then
 			shouldEnable = true
