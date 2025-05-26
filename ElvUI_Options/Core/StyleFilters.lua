@@ -17,8 +17,8 @@ local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local GetNumSpecializationsForClassID = (not E.Retail and not E.Mists and LCS.GetNumSpecializationsForClassID) or C_SpecializationInfo.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = (not E.Retail and not E.Mists and LCS.GetSpecializationInfoForClassID) or C_SpecializationInfo.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
+local GetNumSpecializationsForClassID = (LCS and LCS.GetNumSpecializationsForClassID) or C_SpecializationInfo.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
+local GetSpecializationInfoForClassID = (LCS and LCS.GetSpecializationInfoForClassID) or C_SpecializationInfo.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 

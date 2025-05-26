@@ -175,7 +175,7 @@ do
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 
-	if (not E.Retail) and (not E.Mists) then
+	if not (E.Retail or E.Mists) then
 		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
 	end
 
