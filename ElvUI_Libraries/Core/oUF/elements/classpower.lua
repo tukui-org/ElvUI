@@ -52,6 +52,7 @@ local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
+local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 
@@ -63,10 +64,12 @@ local SPELL_POWER_CHI = Enum.PowerType.Chi or 12
 local SPELL_POWER_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local SPELL_POWER_ESSENCE = Enum.PowerType.Essence or 19
 
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
 local ClassPowerEnable, ClassPowerDisable
-local RequireSpec, RequirePower, RequireSpell
+local RequireSpec, RequireSpecAlt, RequirePower, RequireSpell
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -127,7 +130,7 @@ local function Update(self, event, unit, powerType)
 
 		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			cur = 0
-		elseif oUF.isRetail and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+		elseif (oUF.isRetail or oUF.isMists) and (ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			cur = UnitPower(unit, powerID, true) / mod
 		else
 			cur = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID)
@@ -191,7 +194,8 @@ local function Visibility(self, event, unit)
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == SPELL_POWER_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then
-		if(not RequireSpec or oUF.isRetail and (RequireSpec == GetSpecialization())) then
+		local curSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
+		if not RequireSpec or (RequireSpec == curSpec or RequireSpecAlt == curSpec) then
 			-- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if(not RequirePower or RequirePower == UnitPowerType('player')) then
 				if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
@@ -299,6 +303,7 @@ do
 		ClassPowerID = SPELL_POWER_CHI
 		ClassPowerType = 'CHI'
 		RequireSpec = SPEC_MONK_WINDWALKER
+		RequireSpecAlt = SPEC_MONK_MISTWEAVER
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = SPELL_POWER_HOLY_POWER
 		ClassPowerType = 'HOLY_POWER'
