@@ -349,6 +349,17 @@ function S:Blizzard_TalentUI()
 				bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 			end
 		end
+
+		for i = 1, 2 do
+			local tab = _G['PlayerSpecTab'..i]
+			tab:GetRegions():Hide()
+			tab:SetTemplate()
+			tab:StyleButton(nil, true)
+
+			local normal = tab:GetNormalTexture()
+			normal:SetInside()
+			normal:SetTexCoord(unpack(E.TexCoords))
+		end
 	end
 
 	hooksecurefunc('TalentFrame_Update', TalentFrame_Update)
@@ -367,6 +378,7 @@ function S:Blizzard_GlyphUI()
 		_G.GlyphFrameBackground:SetAlpha(0)
 		GlyphFrame.levelOverlay1:SetAlpha(0)
 		GlyphFrame.levelOverlay2:SetAlpha(0)
+		GlyphFrameSpecRing:SetAlpha(0)
 	else
 		_G.GlyphFrameBackground:SetInside()
 		_G.GlyphFrameBackground:SetDrawLayer('ARTWORK')
@@ -389,9 +401,9 @@ function S:Blizzard_GlyphUI()
 		frame:OffsetFrameLevel(5)
 		frame:StyleButton(nil, true)
 
-		if i == 1 or i == 4 or i == 6 then -- Major Glyphs
+		if i == 2 or i == 4 or i == 6 then -- Major Glyphs
 			frame:Size(42)
-		elseif i == 2 or i == 3 or i == 5 then -- Minor Glyphs
+		elseif i == 1 or i == 3 or i == 5 then -- Minor Glyphs
 			frame:Size(28)
 		else -- Prime Glyphs
 			frame:Size(62)
