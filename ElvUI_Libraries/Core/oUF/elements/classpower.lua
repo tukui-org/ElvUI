@@ -85,7 +85,7 @@ local ClassPowerType, ClassPowerID = {
 
 -- Holds the class specific stuff.
 local ClassPowerEnable, ClassPowerDisable
-local RequireSpec, RequireSpecAlt, RequirePower, RequireSpell
+local RequireSpec, RequirePower, RequireSpell = {}
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -216,7 +216,7 @@ local function Visibility(self, event, unit)
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID and (not RequireSpec or (RequireSpec == currentSpec or RequireSpecAlt == currentSpec)) then
+	elseif ClassPowerID and RequireSpec[currentSpec] then
 		if not RequirePower or RequirePower == UnitPowerType('player') then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if not RequireSpell or IsPlayerSpell(RequireSpell) then
 				oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
@@ -321,8 +321,8 @@ do
 	if(PlayerClass == 'MONK') then
 		ClassPowerID = POWERTYPE_CHI
 
-		RequireSpec = SPEC_MONK_WINDWALKER
-		RequireSpecAlt = oUF.isMists and SPEC_MONK_MISTWEAVER
+		RequireSpec[SPEC_MONK_WINDWALKER] = true
+		RequireSpec[SPEC_MONK_MISTWEAVER] = true
 	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
 		ClassPowerID = POWERTYPE_SHADOW_ORBS
 	elseif(PlayerClass == 'PALADIN') then
@@ -337,7 +337,7 @@ do
 	elseif(PlayerClass == 'MAGE') then
 		ClassPowerID = POWERTYPE_ARCANE_CHARGES
 
-		RequireSpec = SPEC_MAGE_ARCANE
+		RequireSpec[SPEC_MAGE_ARCANE] = true
 	elseif(PlayerClass == 'EVOKER') then
 		ClassPowerID = POWERTYPE_ESSENCE
 	end
@@ -354,7 +354,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		end
 
-		if(oUF.isRetail or oUF.isMists) and (RequireSpec or RequireSpell) then
+		local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
+		if currentSpec and (RequireSpec[currentSpec] or RequireSpell) then
 			oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
