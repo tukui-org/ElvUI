@@ -14,8 +14,8 @@ local displayString, db = ''
 local function OnEvent(self)
 	local spellHit = E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0
 
-	if IsPlayerSpell(28878) then -- Heroic Presence
-		spellHit = spellHit + (spellHit * 0.01)
+	if IsPlayerSpell(28878) then
+		spellHit = spellHit + 1 -- Heroic Presence
 	end
 
 	if db.NoLabel then
