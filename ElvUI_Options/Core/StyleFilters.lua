@@ -16,7 +16,6 @@ local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local GetSpecializationInfoByID = C_SpecializationInfo.GetSpecializationInfoByID or GetSpecializationInfoByID
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
@@ -356,9 +355,8 @@ for classID, info in next, E.ClassInfoByID do
 	group.inline = true
 
 	for specIndex, specID in next, E.SpecByClass[classFile] do
-		local _, name = GetSpecializationInfoByID(specID)
 		local tagID = format('%s%s', classFile, specID)
-		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
+		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
 
 	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group
