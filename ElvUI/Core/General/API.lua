@@ -20,7 +20,7 @@ local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetServerTime = GetServerTime
-local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
+local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInfoForSpecID or GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsInRaid = IsInRaid
@@ -1211,21 +1211,14 @@ function E:LoadAPI()
 
 	E:SetupGameMenu()
 
-	if E.Retail then
-		for _, mountID in next, C_MountJournal_GetMountIDs() do
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
-			E.MountIDs[spellID] = mountID
-			E.MountText[mountID] = sourceText
-		end
+	if E.Retail or E.Mists then -- fill the spec info tables
+		local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+		local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
 
-		do -- fill the spec info tables
-			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
-			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
-
-			for classFile, specData in next, E.SpecByClass do
+		for classFile, specData in next, E.SpecByClass do
+			local info = E.ClassInfoByFile[classFile]
+			if info then -- exclude evoker on mists
 				local male, female = MALE[classFile], FEMALE[classFile]
-				local info = E.ClassInfoByFile[classFile]
 
 				for index, id in next, specData do
 					local data = {
@@ -1240,31 +1233,41 @@ function E:LoadAPI()
 
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+						if name then
+							if x == 1 then -- SpecInfoBySpecID
+								data.name = name
+								data.desc = desc
+								data.icon = icon
+								data.role = role
 
-						if x == 1 then -- SpecInfoBySpecID
-							data.name = name
-							data.desc = desc
-							data.icon = icon
-							data.role = role
+								E.SpecInfoBySpecClass[name..' '..info.className] = data
+							else
+								local copy = E:CopyTable({}, data)
+								copy.name = name
+								copy.desc = desc
+								copy.icon = icon
+								copy.role = role
 
-							E.SpecInfoBySpecClass[name..' '..info.className] = data
-						else
-							local copy = E:CopyTable({}, data)
-							copy.name = name
-							copy.desc = desc
-							copy.icon = icon
-							copy.role = role
+								local localized = (x == 3 and female) or male
+								copy.className = localized
 
-							local localized = (x == 3 and female) or male
-							copy.className = localized
-
-							if localized then
-								E.SpecInfoBySpecClass[name..' '..localized] = copy
+								if localized then
+									E.SpecInfoBySpecClass[name..' '..localized] = copy
+								end
 							end
 						end
 					end
 				end
 			end
+		end
+	end
+
+	if E.Retail then
+		for _, mountID in next, C_MountJournal_GetMountIDs() do
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+			E.MountIDs[spellID] = mountID
+			E.MountText[mountID] = sourceText
 		end
 
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
