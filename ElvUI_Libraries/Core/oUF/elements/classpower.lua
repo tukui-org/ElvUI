@@ -362,13 +362,12 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if(RequirePower) then
+		if RequirePower then
 			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		end
 
-		local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
-		if currentSpec and (RequireSpec[currentSpec] or RequireSpell) then
-			oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
+		if ClassPowerID and (oUF.isRetail or oUF.isMists) then
+			oUF:RegisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
 		element.ClassPowerEnable = ClassPowerEnable
@@ -397,8 +396,8 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
-		if oUF.isRetail or oUF.isMists then
-			oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+		if ClassPowerID and (oUF.isRetail or oUF.isMists) then
+			oUF:UnregisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath)
 		end
 	end
 end
