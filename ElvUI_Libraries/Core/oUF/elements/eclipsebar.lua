@@ -6,15 +6,16 @@ local oUF = ns.oUF
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetShapeshiftFormID = GetShapeshiftFormID
+local GetShapeshiftForm = GetShapeshiftForm
 local GetPrimaryTalentTree = GetPrimaryTalentTree
 local GetEclipseDirection = GetEclipseDirection
 
+local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
-local MOONKIN_FORM = MOONKIN_FORM
+local MOONKIN_FORM = 5
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or (event == 'UNIT_POWER' and powerType ~= 'ECLIPSE')) then return end
+	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'ECLIPSE')) then return end
 
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
@@ -87,13 +88,10 @@ end
 local function Visibility(self)
 	local shouldEnable
 
-	if not UnitHasVehicleUI('player') then
-		local form = GetShapeshiftFormID()
-		local ptt = C_SpecializationInfo.GetSpecialization()
+	if not UnitHasVehicleUI('player') and C_SpecializationInfo.GetSpecialization() == SPEC_DRUID_BALANCE then
+		local form = GetShapeshiftForm()
 
-		if ptt and ptt == 1 and (form == MOONKIN_FORM or not form) then
-			shouldEnable = true
-		end
+		shouldEnable = form == 0 or form == MOONKIN_FORM
 	end
 
 	if(shouldEnable) then
@@ -119,9 +117,9 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
+		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 
 		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
-		oUF:RegisterEvent(self, 'UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 
 		if(element.LunarBar and element.LunarBar:IsObjectType('StatusBar') and not element.LunarBar:GetStatusBarTexture()) then
 			element.LunarBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -140,9 +138,9 @@ local function Disable(self)
 		ElementDisable(self)
 
 		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
+		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
 
 		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
-		oUF:UnregisterEvent(self, 'UPDATE_SHAPESHIFT_FORM', VisibilityPath)
 	end
 end
 

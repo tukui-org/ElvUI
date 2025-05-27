@@ -220,7 +220,7 @@ local function Visibility(self, event, unit)
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID and not next(RequireSpec) or RequireSpec[currentSpec] then
+	elseif ClassPowerID and (not next(RequireSpec) or RequireSpec[currentSpec]) then
 		if not RequirePower or RequirePower == UnitPowerType('player') then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if not RequireSpell or IsPlayerSpell(RequireSpell) then
 				oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
