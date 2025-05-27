@@ -16,13 +16,13 @@ local GetCurrencyListInfo = GetCurrencyListInfo
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local GetNumSpecializations = GetNumSpecializations
-local GetSpecializationInfo = GetSpecializationInfo
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
+local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
@@ -836,7 +836,7 @@ function DT:PopulateData(currencyOnly)
 		wipe(Collapsed)
 	end
 
-	if E.Retail and not currencyOnly then
+	if (E.Retail or E.Mists) and not currencyOnly then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon, _, statID = GetSpecializationInfo(index)
 
@@ -908,7 +908,7 @@ function DT:BuildTables()
 end
 
 function DT:CloseMenus()
-	if E.Retail then
+	if E.Retail or E.Mists then
 		local manager = _G.Menu.GetManager()
 		if manager then
 			manager:CloseMenus()
