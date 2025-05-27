@@ -4,7 +4,6 @@ local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
 local LibDeflate = E.Libs.Deflate
 local ACH = E.Libs.ACH
-local LCS = E.Libs.LCS
 
 local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
@@ -17,8 +16,7 @@ local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local GetNumSpecializationsForClassID = (LCS and LCS.GetNumSpecializationsForClassID) or C_SpecializationInfo.GetNumSpecializationsForClassID or GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = (LCS and LCS.GetSpecializationInfoForClassID) or C_SpecializationInfo.GetSpecializationInfoForClassID or GetSpecializationInfoForClassID
+local GetSpecializationInfoByID = C_SpecializationInfo.GetSpecializationInfoByID or GetSpecializationInfoByID
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
@@ -357,12 +355,10 @@ for classID, info in next, E.ClassInfoByID do
 	local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classFile) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return not tagTrigger or not tagTrigger.enabled end)
 	group.inline = true
 
-	for k = 1, GetNumSpecializationsForClassID(classID) do
-		local specID, name = GetSpecializationInfoForClassID(classID, k)
-		if specID then
-			local tagID = format('%s%s', classFile, specID)
-			group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
-		end
+	for specIndex, specID in next, E.SpecByClass[classFile] do
+		local _, name = GetSpecializationInfoByID(specID)
+		local tagID = format('%s%s', classFile, specID)
+		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
 
 	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group
