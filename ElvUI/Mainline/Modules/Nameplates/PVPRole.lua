@@ -11,9 +11,6 @@ local GetBattlefieldScore = GetBattlefieldScore
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
-local GetSpecializationInfoByID = GetSpecializationInfoByID
-local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
-local GetNumSpecializationsForClassID = GetNumSpecializationsForClassID
 
 local UNKNOWN = UNKNOWN
 
@@ -27,25 +24,20 @@ NP.PVPRole = {
 	TankSpecs = TankSpecs
 }
 
-for classID in next, E.ClassInfoByID do
-	for specIndex = 1, GetNumSpecializationsForClassID(classID) do
-		local _, mName, _, _, role = GetSpecializationInfoForClassID(classID, specIndex, 2)
-		local _, fName = GetSpecializationInfoForClassID(classID, specIndex, 3)
-
-		if role == 'HEALER' then
-			HealerSpecs[mName] = true
-			HealerSpecs[fName] = true
-		elseif role == 'TANK' then
-			TankSpecs[mName] = true
-			TankSpecs[fName] = true
-		end
-	end
-end
-
-local function Event(_, event)
+local function Event(_, event, initLogin, isReload)
 	if event == 'PLAYER_ENTERING_WORLD' then
-		wipe(Healers)
-		wipe(Tanks)
+		if initLogin or isReload then
+			for _, specInfo in next, E.SpecInfoBySpecClass do
+				if specInfo.role == 'HEALER' then
+					HealerSpecs[specInfo.name] = true
+				elseif specInfo.role == 'TANK' then
+					TankSpecs[specInfo.name] = true
+				end
+			end
+		else
+			wipe(Healers)
+			wipe(Tanks)
+		end
 	end
 
 	if not E.private.nameplates.enable then return end
@@ -55,17 +47,18 @@ local function Event(_, event)
 		local numOpps = GetNumArenaOpponentSpecs()
 		if numOpps == 0 then
 			for i = 1, GetNumBattlefieldScores() do
-				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i)
+				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(i)
 				name = name and name ~= UNKNOWN and E:StripMyRealm(name)
 
 				if name then
-					if HealerSpecs[talentSpec] then
-						Healers[name] = talentSpec
+					if HealerSpecs[specName] then
+						Healers[name] = specName
 					elseif Healers[name] then
 						Healers[name] = nil
 					end
-					if TankSpecs[talentSpec] then
-						Tanks[name] = talentSpec
+
+					if TankSpecs[specName] then
+						Tanks[name] = specName
 					elseif Tanks[name] then
 						Tanks[name] = nil
 					end
@@ -79,20 +72,16 @@ local function Event(_, event)
 
 					if realm then name = name..'-'..realm end
 
-					local _, talentSpec = nil, UNKNOWN
-					local spec = GetArenaOpponentSpec(i)
-					if spec and spec > 0 then
-						_, talentSpec = GetSpecializationInfoByID(spec)
+					local specID = GetArenaOpponentSpec(i)
+					local specInfo = E.SpecInfoBySpecID[specID]
+					local specName = specInfo and specInfo.name
+
+					if HealerSpecs[specName] then
+						Healers[name] = specName
 					end
 
-					if talentSpec and talentSpec ~= UNKNOWN then
-						if HealerSpecs[talentSpec] then
-							Healers[name] = talentSpec
-						end
-
-						if TankSpecs[talentSpec] then
-							Tanks[name] = talentSpec
-						end
+					if TankSpecs[specName] then
+						Tanks[name] = specName
 					end
 				end
 			end
