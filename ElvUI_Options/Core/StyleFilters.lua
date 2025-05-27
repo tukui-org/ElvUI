@@ -354,9 +354,8 @@ for classID, info in next, E.ClassInfoByID do
 	local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classFile) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return not tagTrigger or not tagTrigger.enabled end)
 	group.inline = true
 
-	for specIndex, specID in next, E.SpecByClass[classFile] do
-		local tagID = format('%s%s', classFile, specID)
-		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
+	for _, specID in next, E.SpecByClass[classFile] do
+		group.args[format('%s%s', classFile, specID)] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
 
 	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group
