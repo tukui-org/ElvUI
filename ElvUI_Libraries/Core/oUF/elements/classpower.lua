@@ -116,6 +116,7 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
+	if event == 'UNIT_AURA' then powerType = 'ARCANE_CHARGES' end
 	if not (powerType and unit and UnitIsUnit(unit, 'player')) then return end
 
 	local currentType = ClassPowerType[ClassPowerID]
@@ -149,6 +150,9 @@ local function Update(self, event, unit, powerType)
 
 		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			cur = 0
+		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
+			local info = C_UnitAuras.GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
+			cur = (info and info.isHarmful and info.applications) or 0
 		else
 			local current = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
 			cur = warlockDest and (current * 0.1) or warlockDemo and (current * 0.001) or current
@@ -290,6 +294,10 @@ do
 			oUF:RegisterEvent(self, 'PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
+		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
+			oUF:RegisterEvent(self, 'UNIT_AURA', Path)
+		end
+
 		self.ClassPower.__isEnabled = true
 
 		if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
@@ -307,6 +315,10 @@ do
 			oUF:UnregisterEvent(self, 'UNIT_POWER_POINT_CHARGE', Path)
 		else
 			oUF:UnregisterEvent(self, 'PLAYER_TARGET_CHANGED', VisibilityPath)
+		end
+
+		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
+			oUF:UnregisterEvent(self, 'UNIT_AURA')
 		end
 
 		local element = self.ClassPower
