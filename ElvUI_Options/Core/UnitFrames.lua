@@ -1362,15 +1362,11 @@ Colors.classResourceGroup.args.powerGroup.args.INSANITY = ACH:Color(L["INSANITY"
 Colors.classResourceGroup.args.powerGroup.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 11, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.powerGroup.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 12, nil, nil, nil, nil, nil, not E.Retail)
 
-do
-	local classPowers = { PALADIN = true, WARLOCK = true, MAGE = true, DRUID = true }
-	Colors.classResourceGroup.args.class = ACH:Group(L["Class Resources"], nil, 15, nil, nil, nil, nil, E.Classic or not classPowers[E.myclass])
-end
-
-Colors.classResourceGroup.args.class.inline = true
+Colors.classResourceGroup.args.class = ACH:Group(L["Class Resources"], nil, 15, nil, nil, nil, nil, E.Classic)
 Colors.classResourceGroup.args.class.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, E.Classic)
 Colors.classResourceGroup.args.class.args.MAGE = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.class.args.PRIEST = ACH:Color(L["SHADOW_ORBS"], nil, 10, nil, nil, nil, nil, nil, not E.Mists)
+Colors.classResourceGroup.args.class.inline = true
 
 Colors.classResourceGroup.args.class.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 10, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Mists)
 Colors.classResourceGroup.args.class.args.DEMONIC_FURY = ACH:Color(L["DEMONIC_FURY"], nil, 10, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Mists)
