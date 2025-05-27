@@ -366,7 +366,7 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		end
 
-		if ClassPowerID and (oUF.isRetail or oUF.isMists) then
+		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
 			oUF:RegisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
@@ -396,7 +396,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
-		if ClassPowerID and (oUF.isRetail or oUF.isMists) then
+		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
 			oUF:UnregisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath)
 		end
 	end
