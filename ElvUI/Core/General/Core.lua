@@ -1622,8 +1622,6 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
-	elseif E.Mists then
-		ActionBars:PositionAndSizeTotemBar()
 	end
 
 	if not skipCallback then

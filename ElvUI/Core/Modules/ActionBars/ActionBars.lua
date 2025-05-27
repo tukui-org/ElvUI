@@ -464,17 +464,6 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
-	if E.Mists then
-		if AB.NeedsPositionAndSizeTotemBar then
-			AB:PositionAndSizeTotemBar()
-			AB.NeedsPositionAndSizeTotemBar = nil
-		end
-		if AB.NeedsRecallButtonUpdate then
-			AB:MultiCastRecallSpellButton_Update()
-			AB.NeedsRecallButtonUpdate = nil
-		end
-	end
-
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -664,8 +653,6 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Mists and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-			AB:PositionAndSizeTotemBar()
 		end
 	end
 end
@@ -1138,10 +1125,6 @@ do
 		OverrideActionBarButton = E.Mists or nil
 	}
 
-	if E.Mists then -- Wrath TotemBar needs to be handled by us
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
-	end
-
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
 		HideUIPanel(_G.SettingsPanel)
@@ -1194,8 +1177,8 @@ do
 		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 
-		-- used for ExtraActionButton and TotemBar (on wrath)
-		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show and Totems to swap
+		-- used for ExtraActionButton
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		if E.Retail then
@@ -1741,11 +1724,6 @@ end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
-
-	if (initLogin or isReload) and (E.Mists and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
-		AB:PositionAndSizeTotemBar()
-	end
 end
 
 function AB:Initialize()
@@ -1833,10 +1811,6 @@ function AB:Initialize()
 
 	if E.Retail or E.Mists then
 		AB:SetupExtraButtons()
-	end
-
-	if (E.Mists and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-		AB:CreateTotemBar()
 	end
 
 	if _G.MacroFrame then
