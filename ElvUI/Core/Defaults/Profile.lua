@@ -874,7 +874,6 @@ P.nameplates = {
 			FOCUS = {r = 1, g = 0.50, b = 0.25},
 			FURY = {r = 0.788, g = 0.259, b = 0.992, atlas = '_DemonHunter-DemonicFuryBar'},
 			INSANITY = {r = 0.4, g = 0, b = 0.8, atlas = '_Priest-InsanityBar'},
-			SHADOW_ORBS = {r = 0.4, g = 0, b = 0.8},
 			LUNAR_POWER = {r = 0.3, g = 0.52, b = 0.9, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},
@@ -945,11 +944,21 @@ P.nameplates = {
 				{r = .19, g = .48, b = .60}, -- water
 				{r = .42, g = .18, b = .74}, -- air
 			},
-			WARLOCK = {r = 0.58, g = 0.51, b = 0.79},
+			PRIEST = {r = 0.40, g = 0.00, b = 0.80}, -- shadow orbs
+			WARLOCK = {
+				SOUL_SHARDS = {r = 0.58, g = 0.51, b = 0.79},
+				DEMONIC_FURY = {r = 0.788, g = 0.259, b = 0.992},
+				BURNING_EMBERS = {
+					{r = 1.00, g = 0.60, b = 0.20},
+					{r = 1.00, g = 0.46, b = 0.20},
+					{r = 1.00, g = 0.33, b = 0.20},
+					{r = 1.00, g = 0.20, b = 0.20}
+				},
+			},
 			DRUID = {
 				{r = 0.30, g = 0.52, b = 0.90}, -- negative/lunar
 				{r = 0.80, g = 0.82, b = 0.60}, -- positive/solar
-			},
+			}
 		},
 	},
 	visibility = {
@@ -1909,7 +1918,6 @@ P.unitframe = {
 			FOCUS = {r = 1, g = 0.50, b = 0.25},
 			FURY = {r = 0.788, g = 0.259, b = 0.992, atlas = '_DemonHunter-DemonicFuryBar'},
 			INSANITY = {r = 0.4, g = 0, b = 0.8, atlas = '_Priest-InsanityBar'},
-			SHADOW_ORBS = {r = 0.4, g = 0, b = 0.8},
 			LUNAR_POWER = {r = 0.3, g = 0.52, b = 0.9, atlas = '_Druid-LunarBar'},
 			MAELSTROM = {r = 0, g = 0.5, b = 1, atlas = '_Shaman-MaelstromBar'},
 			MANA = {r = 0.31, g = 0.45, b = 0.63},

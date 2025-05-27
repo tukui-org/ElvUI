@@ -14,6 +14,7 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local AltManaTypes = { Rage = 1 }
 local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
+local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
 
 if E.Retail then
 	AltManaTypes.LunarPower = 8
@@ -64,7 +65,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	local isRunes = powerType == 'RUNES'
 
 	local colors = UF.db.colors.classResources
-	local fallback = UF.db.colors.power[powerType]
+	local fallback = UF.db.colors.power[powerType] or UF.db.colors.power.MANA
 
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
@@ -72,10 +73,14 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local classColor = (isRunes and colors.DEATHKNIGHT) or (powerType == 'COMBO_POINTS' and colors.comboPoints) or (powerType == 'ESSENCE' and colors.EVOKER) or (powerType == 'CHI' and colors.MONK) or (powerType == 'Totems' and colors.SHAMAN)
+		local classColor = colors[E.myclass][powerType] or colors[E.myclass] or ClassPowerColors[powerType]
 		for i, bar in ipairs(self) do
-			local color = (isRunes and classColor[bar.runeType or 0]) or (classColor and classColor[i]) or colors[E.myclass] or fallback
-			UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+			local color = (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or classColor[i] or classColor
+			if not color or not color.r then
+				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
+			else
+				UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+			end
 		end
 	end
 end

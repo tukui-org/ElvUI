@@ -441,7 +441,6 @@ function UF:UpdateColors()
 	ElvUF.colors.power.FURY = E:SetColorTable(ElvUF.colors.power.FURY, db.power.FURY)
 	ElvUF.colors.power.LUNAR_POWER = E:SetColorTable(ElvUF.colors.power.LUNAR_POWER, db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
-	ElvUF.colors.power.SHADOW_ORBS = E:SetColorTable(ElvUF.colors.power.SHADOW_ORBS, db.power.SHADOW_ORBS)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
 	ElvUF.colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(ElvUF.colors.power[POWERTYPE_ALTERNATE], db.power.ALT_POWER)
 	ElvUF.colors.chargedComboPoint = E:SetColorTable(ElvUF.colors.chargedComboPoint, db.classResources.chargedComboPoint)
@@ -481,13 +480,22 @@ function UF:UpdateColors()
 	if not ElvUF.colors.ClassBars then ElvUF.colors.ClassBars = {} end
 	ElvUF.colors.ClassBars.PALADIN = E:SetColorTable(ElvUF.colors.ClassBars.PALADIN, db.classResources.PALADIN)
 	ElvUF.colors.ClassBars.MAGE = E:SetColorTable(ElvUF.colors.ClassBars.MAGE, db.classResources.MAGE)
-	ElvUF.colors.ClassBars.WARLOCK = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK, db.classResources.WARLOCK)
+	ElvUF.colors.ClassBars.PRIEST = E:SetColorTable(ElvUF.colors.ClassBars.PRIEST, db.classResources.PRIEST)
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
 	for i = 1, 6 do
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
+	end
+
+	if not ElvUF.colors.ClassBars.WARLOCK then ElvUF.colors.ClassBars.WARLOCK = {} end
+	ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS, db.classResources.WARLOCK.SOUL_SHARDS)
+	ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY, db.classResources.WARLOCK.DEMONIC_FURY)
+
+	if not ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS then ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS = {} end
+	for i = 1, 4 do
+		ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS[i] = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS[i], db.classResources.WARLOCK.BURNING_EMBERS[i])
 	end
 
 	if not ElvUF.colors.ClassBars.DEATHKNIGHT then ElvUF.colors.ClassBars.DEATHKNIGHT = {} end
