@@ -56,14 +56,14 @@ local function EclipseDirectionPath(self, ...)
 	return (self.EclipseBar.OverrideEclipseDirection or EclipseDirection) (self, ...)
 end
 
-local function ElementEnable(self)
+local function ElementEnable(self, form)
 	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Show()
 	EclipseDirectionPath(self, 'ElementEnable', GetEclipseDirection())
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(true, not self.EclipseBar.isEnabled)
+		self.EclipseBar:PostUpdateVisibility(true, not self.EclipseBar.isEnabled, form)
 	end
 
 	self.EclipseBar.isEnabled = true
@@ -71,13 +71,13 @@ local function ElementEnable(self)
 	Path(self, 'ElementEnable', 'player', POWERTYPE_BALANCE)
 end
 
-local function ElementDisable(self)
+local function ElementDisable(self, form)
 	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Hide()
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(false, self.EclipseBar.isEnabled)
+		self.EclipseBar:PostUpdateVisibility(false, self.EclipseBar.isEnabled, form)
 	end
 
 	self.EclipseBar.isEnabled = nil
@@ -88,16 +88,15 @@ end
 local function Visibility(self)
 	local shouldEnable
 
-	if not UnitHasVehicleUI('player') and C_SpecializationInfo.GetSpecialization() == SPEC_DRUID_BALANCE then
-		local form = GetShapeshiftForm()
-
-		shouldEnable = form == 0 or form == MOONKIN_FORM
+	local form = GetShapeshiftForm()
+	if  form == 0 or form == MOONKIN_FORM then
+		shouldEnable = not UnitHasVehicleUI('player') and C_SpecializationInfo.GetSpecialization() == SPEC_DRUID_BALANCE
 	end
 
 	if(shouldEnable) then
-		ElementEnable(self)
+		ElementEnable(self, form)
 	else
-		ElementDisable(self)
+		ElementDisable(self, form)
 	end
 end
 

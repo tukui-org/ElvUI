@@ -11,6 +11,7 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local CAT_FORM = 3
 
 local AltManaTypes = { Rage = 1 }
 local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
@@ -625,10 +626,10 @@ function UF:EclipsePostDirectionChange(direction)
 	end
 end
 
-function UF:EclipsePostUpdateVisibility(enabled, stateChanged)
+function UF:EclipsePostUpdateVisibility(enabled, stateChanged, shapeshiftForm)
 	local frame = self.origParent or self:GetParent()
 
-	frame.ClassBar = enabled and 'EclipseBar' or 'AdditionalPower'
+	frame.ClassBar = (enabled and 'EclipseBar') or (shapeshiftForm == CAT_FORM and 'ClassPower') or 'AdditionalPower'
 
 	UF:PostVisibility_ClassBars(frame, stateChanged)
 end
