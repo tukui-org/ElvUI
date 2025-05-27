@@ -73,7 +73,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local classColor = colors[E.myclass][powerType] or colors[E.myclass] or ClassPowerColors[powerType]
+		local classColor = colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass]
 		for i, bar in ipairs(self) do
 			local color = (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or classColor[i] or classColor
 			if not color or not color.r then

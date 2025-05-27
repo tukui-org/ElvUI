@@ -45,7 +45,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
-		local classColor = not classPower and (colors[E.myclass][powerType] or colors[E.myclass] or ClassPowerColors[powerType])
+		local classColor = not classPower and (colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
 		for i, bar in ipairs(self) do
 			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or classColor[i] or classColor
 			if not color or not color.r then
