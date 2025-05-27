@@ -185,7 +185,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	button:EnableMouse(not db.clickThrough)
 	button:Size(buttonWidth, buttonHeight)
 
-	if button ~= _G.StoreMicroButton then
+	if E.Mists and button ~= _G.StoreMicroButton then
 		button:ClearAllPoints()
 		button:Point(point, relativeFrame, relativePoint, x, y)
 	end
