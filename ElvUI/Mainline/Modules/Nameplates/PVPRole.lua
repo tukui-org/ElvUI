@@ -45,26 +45,7 @@ local function Event(_, event, initLogin, isReload)
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
-		if numOpps == 0 then
-			for i = 1, GetNumBattlefieldScores() do
-				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(i)
-				name = name and name ~= UNKNOWN and E:StripMyRealm(name)
-
-				if name then
-					if HealerSpecs[specName] then
-						Healers[name] = specName
-					elseif Healers[name] then
-						Healers[name] = nil
-					end
-
-					if TankSpecs[specName] then
-						Tanks[name] = specName
-					elseif Tanks[name] then
-						Tanks[name] = nil
-					end
-				end
-			end
-		elseif numOpps >= 1 then
+		if numOpps >= 1 then
 			for i = 1, numOpps do
 				local name, realm = UnitName(format('arena%d', i))
 				if name and name ~= UNKNOWN then
@@ -82,6 +63,25 @@ local function Event(_, event, initLogin, isReload)
 
 					if TankSpecs[specName] then
 						Tanks[name] = specName
+					end
+				end
+			end
+		else
+			for i = 1, GetNumBattlefieldScores() do
+				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(i)
+				name = name and name ~= UNKNOWN and E:StripMyRealm(name)
+
+				if name then
+					if HealerSpecs[specName] then
+						Healers[name] = specName
+					elseif Healers[name] then
+						Healers[name] = nil
+					end
+
+					if TankSpecs[specName] then
+						Tanks[name] = specName
+					elseif Tanks[name] then
+						Tanks[name] = nil
 					end
 				end
 			end
