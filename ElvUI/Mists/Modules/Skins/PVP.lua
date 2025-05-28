@@ -3,14 +3,8 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
-
-local GetItemInfo = C_Item.GetItemInfo
-
-local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
-local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton
