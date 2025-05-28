@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local next, pairs, unpack = next, pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 local function HandleRoleButton(button)
@@ -110,10 +110,10 @@ function S:Blizzard_PVPUI()
 	end
 
 	S:HandleButton(_G.HonorQueueFrameSoloQueueButton)
-	_G['HonorQueueFrameSoloQueueButton_RightSeparator']:StripTextures()
+	_G.HonorQueueFrameSoloQueueButton_RightSeparator:StripTextures()
 
 	S:HandleButton(_G.HonorQueueFrameGroupQueueButton)
-	_G['HonorQueueFrameGroupQueueButton_LeftSeparator']:StripTextures()
+	_G.HonorQueueFrameGroupQueueButton_LeftSeparator:StripTextures()
 
 	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
 		if s.bg then s.bg:SetDesaturated(true) end
@@ -151,7 +151,23 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- War Games Tab
-	-- TODO: Skin it
+	_G.WarGamesQueueFrame:StripTextures()
+	S:HandleScrollBar(_G.WarGamesQueueFrameScrollFrameScrollBar)
+	S:HandleScrollBar(_G.WarGamesQueueFrameInfoScrollFrameScrollBar)
+	_G.WarGamesQueueFrameDescription:SetTextColor(1, 1, 1)
+
+	local textures = {
+		_G.WarGamesQueueFrame.HorizontalBar,
+		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar,
+		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Back.Texture,
+		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Forward.Texture,
+		_G.WarGameStartButton_LeftSeparator,
+		_G.WarGameStartButton_RightSeparato
+	}
+
+	for _, name in next, textures do
+		name:Kill()
+	end
 end
 
 function S:PVPReadyDialog()
