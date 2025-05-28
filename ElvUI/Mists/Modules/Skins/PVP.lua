@@ -1,290 +1,187 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local next = next
-local unpack = unpack
+local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 
-local pvpRewards = { 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward', 'PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoLossReward', 'PVPConquestFrameWinReward' }
+local GetItemInfo = C_Item.GetItemInfo
 
-local honorTexture = [[Interface\Icons\PVPCurrency-Honor-]]..E.myfaction
-local conquestTexture = [[Interface\Icons\PVPCurrency-Conquest-]]..E.myfaction
-local function PVPFrameTabClicked()
-	_G.PVPFrameCurrencyIcon:SetTexture(honorTexture)
+local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
+local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
-	for _, name in next, pvpRewards do
-		local honor = (_G[name] ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
-		if honor then
-			honor:SetTexture(honorTexture)
-		end
+local function HandleRoleButton(button)
+	local checkbox = button.checkButton
+	checkbox:OffsetFrameLevel(1)
+	S:HandleCheckBox(checkbox)
 
-		local conquest = _G[name..'ArenaSymbol']
-		if conquest then
-			conquest:SetTexture(conquestTexture)
-		end
+	button:Size(40)
+
+	if button.IconPulse then button.IconPulse:Size(40) end
+	if button.EdgePulse then button.EdgePulse:Size(40) end
+	if button.shortageBorder then button.shortageBorder:Size(40) end
+end
+
+local function HonorSpecificScrollUpdateChild(bu)
+	if not bu.IsSkinned then
+		bu.Bg:Hide()
+		bu.Border:Hide()
+
+		bu:StripTextures()
+		bu:CreateBackdrop()
+		bu.backdrop:Point('TOPLEFT', 2, 0)
+		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
+		bu:StyleButton(nil, true)
+
+		bu.SelectedTexture:SetInside(bu.backdrop)
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
+		bu.Icon:SetTexCoord(unpack(E.TexCoords))
+		bu.Icon:Point('TOPLEFT', 5, -3)
+
+		bu.IsSkinned = true
 	end
 end
 
-function S:SkinPVPFrame()
-	-- Honor, Conquest, War Games Frame
-	local PVPFrame = _G.PVPFrame
-	S:HandleFrame(PVPFrame)
-	PVPFrame:StripTextures()
-	PVPFrame:SetTemplate('Transparent')
-
-	local buttons = {
-		'PVPFrameLeftButton',
-		'PVPFrameRightButton',
-		'PVPColorPickerButton1',
-		'PVPColorPickerButton2',
-		'PVPColorPickerButton3',
-		'PVPBannerFrameAcceptButton'
-	}
-
-	for _, name in next, buttons do
-		local button = _G[name]
-		if button then
-			button:StripTextures()
-			S:HandleButton(button)
-		end
-	end
-
-	local stripTextures = {
-		'PVPFrameInset',
-		'PVPHonorFrame',
-		'PVPFrameTopInset',
-		'PVPConquestFrame'
-	}
-
-	for _, name in next, stripTextures do
-		local button = _G[name]
-		if button then
-			button:StripTextures()
-		end
-	end
-
-	-- Tons of leftover texture crap
-	local killTextures = {
-		'PVPBannerFramePortrait',
-		'PVPConquestFrameInfoButtonInfoBG',
-		'PVPConquestFrameInfoButtonInfoBGOff',
-		'PVPFrameConquestBarBG',
-		'PVPFrameConquestBarLeft',
-		'PVPFrameConquestBarMiddle',
-		'PVPFrameConquestBarRight',
-		'PVPFrameConquestBarShadow',
-		'PVPFrameRightButton_LeftSeparator',
-		'PVPHonorFrameBGTex',
-		'PVPHonorFrameInfoScrollFrameScrollBar',
-		'PVPTeamManagementFrameBackground',
-		'WarGamesFrameInfoScrollFrameScrollBar',
-		'WarGameStartButton_RightSeparator'
-	}
-
-	for _, name in next, killTextures do
-		local button = _G[name]
-		if button then
-			button:Kill()
-		end
-	end
-
-	S:HandleTrimScrollBar(_G.PVPHonorFrame.bgTypeScrollBar)
-	S:HandleTrimScrollBar(_G.WarGamesFrame.scrollBar)
-	S:HandleScrollBar(_G.PVPHonorFrameInfoScrollFrame.ScrollBar)
-	S:HandleScrollBar(_G.WarGamesFrameInfoScrollFrame.ScrollBar)
-
-	local checkButtons = {
-		_G.PVPFrame.TankIcon.checkButton,
-		_G.PVPFrame.HealerIcon.checkButton,
-		_G.PVPFrame.DPSIcon.checkButton
-	}
-
-	for _, checkButton in next, checkButtons do
-		S:HandleCheckBox(checkButton)
-		checkButton:Size(22)
-		checkButton:OffsetFrameLevel(2)
-	end
-
-	_G.PVPHonorFrameInfoScrollFrameChildFrameDescription:SetTextColor(1, 1, 1)
-	_G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfo.description:SetTextColor(1, 1, 1)
-
-	S:HandleButtonHighlight(_G.PVPConquestFrameConquestButtonArena)
-	S:HandleButtonHighlight(_G.PVPConquestFrameConquestButtonRated)
-
-	local PVPConquestFrameNoWeekly = _G.PVPConquestFrameNoWeekly
-	PVPConquestFrameNoWeekly:StripTextures()
-	PVPConquestFrameNoWeekly:CreateBackdrop()
-	PVPConquestFrameNoWeekly.backdrop:Point('TOPLEFT', -5, 5)
-	PVPConquestFrameNoWeekly.backdrop:Point('BOTTOMRIGHT', 8, -5)
-	PVPConquestFrameNoWeekly.backdrop:OffsetFrameLevel(nil, PVPConquestFrameNoWeekly)
-
-	-- Conquest Bar
-	local PVPFrameConquestBar = _G.PVPFrameConquestBar
-	PVPFrameConquestBar:StripTextures()
-	PVPFrameConquestBar:CreateBackdrop()
-	PVPFrameConquestBar.backdrop:Point('TOPLEFT', PVPFrameConquestBar.progress, -1, 1)
-	PVPFrameConquestBar.backdrop:Point('BOTTOMRIGHT', PVPFrameConquestBar, 3, 2)
-	PVPFrameConquestBar:Point('LEFT', 40, 0)
-
-	PVPFrameConquestBar.progress:SetTexture(E.media.normTex)
-	PVPFrameConquestBar.progress:Point('LEFT')
-
-	for i = 1, 2 do
-		_G['PVPFrameConquestBarCap'..i]:SetTexture(E.media.normTex)
-		_G['PVPFrameConquestBarCap'..i..'Marker']:Size(4, E.PixelMode and 14 or 12)
-		_G['PVPFrameConquestBarCap'..i..'MarkerTexture']:SetTexture(1, 1, 1, 0.40)
-	end
-
-	PVPFrame:StripTextures()
-	PVPFrame:SetTemplate('Transparent')
-
-	local PVPFrameLowLevelFrame = _G.PVPFrameLowLevelFrame
-	PVPFrameLowLevelFrame:StripTextures()
-	PVPFrameLowLevelFrame:CreateBackdrop()
-	PVPFrameLowLevelFrame.backdrop:Point('TOPLEFT', -2, -40)
-	PVPFrameLowLevelFrame.backdrop:Point('BOTTOMRIGHT', 5, 80)
-
-	-- PvP Icon
-	if _G.PVPFrameCurrency then
-		local PVPFrameCurrency = _G.PVPFrameCurrency
-		PVPFrameCurrency:CreateBackdrop()
-		PVPFrameCurrency:Size(32)
-		PVPFrameCurrency:Point('TOP', 0, -26)
-
-		local PVPFrameCurrencyIcon = _G.PVPFrameCurrencyIcon
-		PVPFrameCurrencyIcon:SetTexture(honorTexture)
-		PVPFrameCurrencyIcon:SetTexCoord(unpack(E.TexCoords))
-		PVPFrameCurrencyIcon:SetInside(PVPFrameCurrency.backdrop)
-
-		_G.PVPFrameCurrencyLabel:Hide()
-		_G.PVPFrameCurrencyValue:Point('LEFT', PVPFrameCurrencyIcon, 'RIGHT', 6, 0)
-	end
-
-	-- Rewards
-	for _, name in next, pvpRewards do
-		local frame = _G[name]
-
-		local background = frame:GetRegions()
-		background:SetTexture(E.Media.Textures.Highlight)
-
-		if (frame == _G.PVPHonorFrameInfoScrollFrameChildFrameRewardsInfoWinReward) or (frame == _G.PVPConquestFrameWinReward) then
-			background:SetVertexColor(0, 0.439, 0, 0.5)
-		else
-			background:SetVertexColor(0.5608, 0, 0, 0.5)
-		end
-
-		local honor = (frame ~= _G.PVPConquestFrameWinReward) and _G[name..'HonorSymbol']
-		if honor then
-			honor:SetTexture(honorTexture)
-			honor:SetTexCoord(unpack(E.TexCoords))
-			honor:Size(30)
-		end
-
-		local conquest = _G[name..'ArenaSymbol']
-		if conquest then
-			conquest:SetTexture(conquestTexture)
-			conquest:SetTexCoord(unpack(E.TexCoords))
-			conquest:Size(30)
-		end
-	end
-
-	hooksecurefunc('PVPFrame_TabClicked', PVPFrameTabClicked)
-
-	-- Team Management
-	for i = 1, 3 do
-		local top = _G['PVPTeam'..i..'Top']
-		local bottom = _G['PVPTeam'..i..'Bottom']
-		local left = _G['PVPTeam'..i..'Left']
-		local right = _G['PVPTeam'..i..'Right']
-
-		top:StripTextures()
-		bottom:StripTextures()
-		left:StripTextures()
-		right:StripTextures()
-	end
-
-	_G.PVPTeamManagementFrameWeeklyDisplay:StripTextures()
-	_G.PVPTeamManagementFrameWeeklyDisplay:SetTemplate('Transparent')
-
-	-- War Games
-	_G.WarGamesFrame:StripTextures()
-	_G.WarGamesFrameDescription:SetTextColor(1, 1, 1)
-
-	-- Create Arena Team
-	local PVPBannerFrame = _G.PVPBannerFrame
-	PVPBannerFrame:StripTextures()
-	PVPBannerFrame:SetTemplate('Transparent')
-
-	_G.PVPBannerFrameCustomizationFrame:StripTextures()
-
-	local PVPBannerFrameCustomization1 = _G.PVPBannerFrameCustomization1
-	PVPBannerFrameCustomization1:StripTextures()
-	PVPBannerFrameCustomization1:CreateBackdrop()
-	PVPBannerFrameCustomization1.backdrop:Point('TOPLEFT', _G.PVPBannerFrameCustomization1LeftButton, 'TOPRIGHT', 2, 0)
-	PVPBannerFrameCustomization1.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameCustomization1RightButton, 'BOTTOMLEFT', -2, 0)
-
-	local PVPBannerFrameCustomization2 = _G.PVPBannerFrameCustomization2
-	PVPBannerFrameCustomization2:StripTextures()
-	PVPBannerFrameCustomization2:CreateBackdrop()
-	PVPBannerFrameCustomization2.backdrop:Point('TOPLEFT', _G.PVPBannerFrameCustomization2LeftButton, 'TOPRIGHT', 2, 0)
-	PVPBannerFrameCustomization2.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameCustomization2RightButton, 'BOTTOMLEFT', -2, 0)
-
-	S:HandleCloseButton(_G.PVPBannerFrameCloseButton, PVPBannerFrame)
-	S:HandleCloseButton(_G.PVPFrameCloseButton, PVPFrame)
-
-	S:HandleNextPrevButton(_G.PVPBannerFrameCustomization1LeftButton)
-	_G.PVPBannerFrameCustomization1LeftButton:Height(20)
-
-	S:HandleNextPrevButton(_G.PVPBannerFrameCustomization1RightButton)
-	_G.PVPBannerFrameCustomization1RightButton:Height(20)
-
-	S:HandleNextPrevButton(_G.PVPBannerFrameCustomization2LeftButton)
-	_G.PVPBannerFrameCustomization2LeftButton:Height(20)
-
-	S:HandleNextPrevButton(_G.PVPBannerFrameCustomization2RightButton)
-	_G.PVPBannerFrameCustomization2RightButton:Height(20)
-
-	_G.PVPColorPickerButton1:Height(20)
-	_G.PVPColorPickerButton2:Height(20)
-	_G.PVPColorPickerButton3:Height(20)
-
-	local PVPBannerFrameCancelButton = _G.PVPBannerFrameCancelButton
-	S:HandleButton(PVPBannerFrameCancelButton)
-	PVPBannerFrameCancelButton.backdrop = CreateFrame('Frame', nil, PVPBannerFrameCancelButton)
-	PVPBannerFrameCancelButton.backdrop:SetTemplate(nil, true)
-	PVPBannerFrameCancelButton.backdrop:OffsetFrameLevel(-2, PVPBannerFrameCancelButton)
-	PVPBannerFrameCancelButton.backdrop:Point('TOPLEFT', _G.PVPBannerFrameAcceptButton, 248, 0)
-	PVPBannerFrameCancelButton.backdrop:Point('BOTTOMRIGHT', _G.PVPBannerFrameAcceptButton, 248, 0)
-
-	-- Skin Tabs
-	S:HandleTab(_G.PVPFrameTab1)
-	S:HandleTab(_G.PVPFrameTab2)
-	S:HandleTab(_G.PVPFrameTab3)
-	S:HandleTab(_G.PVPFrameTab4)
-
-	-- Reposition Tabs
-	_G.PVPFrameTab1:ClearAllPoints()
-	_G.PVPFrameTab1:Point('TOPLEFT', PVPFrame, 'BOTTOMLEFT', -10, 0)
-	_G.PVPFrameTab2:Point('TOPLEFT', _G.PVPFrameTab1, 'TOPRIGHT', -19, 0)
-	_G.PVPFrameTab3:Point('TOPLEFT', _G.PVPFrameTab2, 'TOPRIGHT', -19, 0)
-	_G.PVPFrameTab4:Point('TOPLEFT', _G.PVPFrameTab3, 'TOPRIGHT', -19, 0)
+local function HonorSpecificScrollUpdate(frame)
+	frame:ForEachFrame(HonorSpecificScrollUpdateChild)
 end
 
-function S:SkinPVPReadyDialog()
-	-- PvP Queue Popup
-	_G.PVPReadyDialog:StripTextures()
-	_G.PVPReadyDialog:SetTemplate('Transparent')
-	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
-	S:HandleButton(_G.PVPReadyDialogHideButton)
-end
-
-function S:SkinPVP()
+function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
-	S:SkinPVPFrame()
-	S:SkinPVPReadyDialog()
+	for i = 1, 4 do
+		local bu = _G['PVPQueueFrameCategoryButton'..i]
+		if bu then
+			bu.Ring:Kill()
+			bu.Background:Kill()
+			S:HandleButton(bu)
+
+			bu.Icon:Size(45)
+			bu.Icon:ClearAllPoints()
+			bu.Icon:Point('LEFT', 10, 0)
+			S:HandleIcon(bu.Icon, true)
+		end
+	end
+
+	local PVPQueueFrame = _G.PVPQueueFrame
+
+	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
+	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
+	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
+
+	-- Casual Tab
+	local HonorFrame = _G.HonorQueueFrame
+	HonorFrame:StripTextures()
+
+	_G.HonorQueueFrame.RoleInset.NineSlice:StripTextures()
+	S:HandleScrollBar(_G.HonorQueueFrameSpecificFrameScrollBar)
+
+	local BonusFrame = HonorFrame.BonusFrame
+	BonusFrame:StripTextures()
+	BonusFrame.ShadowOverlay:Hide()
+	BonusFrame.WorldBattlesTexture:Hide()
+
+	-- TODO: This is a fake dropdown
+	-- S:HandleDropDownBox(_G.HonorQueueFrameTypeDropDown)
+
+	for _, bonusButton in pairs({'RandomBGButton', 'CallToArmsButton', 'WorldPVP1Button', 'WorldPVP2Button'}) do
+		local bu = BonusFrame[bonusButton]
+		local reward = bu.Reward
+
+		if bu then
+			S:HandleButton(bu)
+			bu.SelectedTexture:SetInside()
+			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		end
+
+		if reward then
+			reward.Border:Hide()
+			reward.CircleMask:Hide()
+			S:HandleIcon(reward.Icon, true)
+
+			reward.EnlistmentBonus:StripTextures()
+			reward.EnlistmentBonus:SetTemplate()
+			reward.EnlistmentBonus:Size(20)
+			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+
+			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		end
+	end
+
+	S:HandleButton(_G.HonorQueueFrameSoloQueueButton)
+	_G['HonorQueueFrameSoloQueueButton_RightSeparator']:StripTextures()
+
+	S:HandleButton(_G.HonorQueueFrameGroupQueueButton)
+	_G['HonorQueueFrameGroupQueueButton_LeftSeparator']:StripTextures()
+
+	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
+		if s.bg then s.bg:SetDesaturated(true) end
+	end)
+
+	HandleRoleButton(HonorFrame.RoleInset.TankIcon)
+	HandleRoleButton(HonorFrame.RoleInset.HealerIcon)
+	HandleRoleButton(HonorFrame.RoleInset.DPSIcon)
+
+	-- Rated Tab
+	local ConquestFrame = _G.ConquestQueueFrame
+	ConquestFrame:StripTextures()
+	ConquestFrame.ShadowOverlay:Hide()
+
+	S:HandleButton(_G.ConquestJoinButton)
+
+	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.Arena5v5, ConquestFrame.RatedBG}) do
+		local reward = bu.Reward
+		S:HandleButton(bu)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
+		if reward then
+			reward.Border:Hide()
+			reward.CircleMask:Hide()
+			S:HandleIcon(reward.Icon, true)
+		end
+	end
+
+	ConquestFrame.Arena3v3:Point('TOP', ConquestFrame.Arena2v2, 'BOTTOM', 0, -2)
+	ConquestFrame.Arena5v5:Point('TOP', ConquestFrame.Arena3v3, 'BOTTOM', 0, -2)
+
+	if E.private.skins.blizzard.tooltip then
+		TT:SetStyle(_G.ConquestTooltip)
+	end
+
+	-- War Games Tab
+	-- TODO: Skin it
 end
 
-S:AddCallback('SkinPVP')
+function S:PVPReadyDialog()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
+
+	S:SkinReadyDialog(_G.PVPReadyDialog, 54)
+
+	hooksecurefunc('PVPReadyDialog_Display', function(dialog, _, _, isRated, queueType)
+		dialog.enterButton:ClearAllPoints()
+
+		if dialog.leaveButton:IsShown() then
+			dialog.enterButton:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -7, 16)
+
+			dialog.leaveButton:ClearAllPoints()
+			dialog.leaveButton:Point('BOTTOMLEFT', dialog, 'BOTTOM', 7, 16)
+		else
+			dialog.enterButton:Point('BOTTOM', 0, 16)
+		end
+
+		if queueType == 'BATTLEGROUND' and not isRated then
+			dialog.background:SetTexCoord(0, 1, 0.01, 1)
+		end
+	end)
+end
+
+S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_PVPUI')
