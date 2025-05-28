@@ -3,15 +3,28 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local min, next = min, next
-local unpack, pairs = unpack, pairs
+local next = next
+local min, select = min, select
+local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
+local GetItemInfo = C_Item.GetItemInfo
+
+local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
+local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
+local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
+local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+
+local groupButtonIcons = {
+	133076, -- interface\icons\inv_helmet_08.blp
+	133074, -- interface\icons\inv_helmet_06.blp
+	464820 -- interface\icons\achievement_general_stayclassy.blp
+}
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LCG.ShowOverlayGlow(self:GetParent().checkButton)
@@ -75,6 +88,39 @@ local function SkinItemButton(parentFrame, _, index)
 	end
 end
 
+local function HandleAffixIcons(self)
+	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
+
+	if MapID then
+		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
+
+		if Name and PowerLevel then
+			self.DungeonName:SetText(Name.. ' |cffffffff-|r (' .. PowerLevel .. ')')
+		end
+
+		self.PowerLevel:SetText('')
+	end
+
+	local list = self.AffixesContainer and self.AffixesContainer.Affixes or self.Affixes
+	if not list then return end
+
+	for _, frame in ipairs(list) do
+		frame.Border:SetTexture()
+		frame.Portrait:SetTexture()
+
+		if frame.info then
+			frame.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
+		elseif frame.affixID then
+			local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
+			frame.Portrait:SetTexture(filedataid)
+		end
+
+		S:HandleIcon(frame.Portrait, true)
+
+		frame.Percent:FontTemplate(E.media.normFont, 16, 'OUTLINE')
+	end
+end
+
 function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -86,10 +132,6 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
-
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface\icons\inv_helmet_08.blp
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
 
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
@@ -215,23 +257,58 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 4 do
-		local bu = _G.GroupFinderFrame['groupButton'..i]
-		bu.ring:Kill()
-		bu.bg:Kill()
-		S:HandleButton(bu)
+	do
+		local index = 1
+		local button = _G.GroupFinderFrame['groupButton'..index]
+		while button do
+			button.ring:Hide()
+			button.bg:Kill()
+			S:HandleButton(button)
 
-		bu.icon:Size(45)
-		bu.icon:ClearAllPoints()
-		bu.icon:Point('LEFT', 10, 0)
-		S:HandleIcon(bu.icon, true)
+			local texture = groupButtonIcons[index]
+			if texture then
+				button.icon:SetTexture(texture)
+			end
+
+			button.icon:Size(45)
+			button.icon:ClearAllPoints()
+			button.icon:Point('LEFT', 10, 0)
+			S:HandleIcon(button.icon, true)
+
+			index = index + 1
+			button = _G.GroupFinderFrame['groupButton'..index]
+		end
 	end
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 
-	-- Raid finder
+	-- Reposition Tabs
+	_G.PVEFrameTab1:ClearAllPoints()
+	_G.PVEFrameTab2:ClearAllPoints()
+	_G.PVEFrameTab3:ClearAllPoints()
+	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -10, -32)
+	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -19, 0)
+
+	-- Scenario Tab [[New in 10.2.7]]
+	local ScenarioQueueFrame = _G.ScenarioQueueFrame
+	if ScenarioQueueFrame then
+		ScenarioQueueFrame:StripTextures()
+		_G.ScenarioFinderFrameInset:StripTextures()
+		_G.ScenarioQueueFrameBackground:SetAlpha(0)
+		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown, 190)
+		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
+		S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
+		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
+			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+		end
+	end
+
+	-- Dungeon finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameRandomScrollFrame.ScrollBar)
 
@@ -268,6 +345,11 @@ function S:LookingForGroupFrames()
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
 
+	--[[
+		LFGInvitePopup_Update('Elvz', true, true, true)
+		StaticPopupSpecial_Show(LFGInvitePopup)
+	]]
+
 	_G.LFGInvitePopup:StripTextures()
 	_G.LFGInvitePopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
@@ -275,21 +357,10 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
+	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
+	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
-	local RoleDialog = _G.LFGListCreateRoleDialog
-	if RoleDialog then
-		RoleDialog:StripTextures()
-		RoleDialog:SetTemplate('Transparent')
-		S:HandleButton(RoleDialog.SignUpButton)
-		S:HandleButton(RoleDialog.CancelButton)
-
-		S:HandleCheckBox(RoleDialog.DamagerButton.CheckButton)
-		S:HandleCheckBox(RoleDialog.TankButton.CheckButton)
-		S:HandleCheckBox(RoleDialog.HealerButton.CheckButton)
-	end
-
-	-- LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
@@ -301,42 +372,43 @@ function S:LookingForGroupFrames()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.CategorySelection.FindGroupButton.LeftSeparator:StripTextures()
 
-	LFGListFrame.EntryCreation.Inset:StripTextures()
-	S:HandleButton(LFGListFrame.EntryCreation.CancelButton)
-	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton)
-	LFGListFrame.EntryCreation.CancelButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
-	LFGListFrame.EntryCreation.CancelButton.RightSeparator:StripTextures()
-	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
-	LFGListFrame.EntryCreation.ListGroupButton.LeftSeparator:StripTextures()
-	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
+	local EntryCreation = LFGListFrame.EntryCreation
+	EntryCreation.Inset:StripTextures()
+	S:HandleButton(EntryCreation.CancelButton)
+	S:HandleButton(EntryCreation.ListGroupButton)
+	EntryCreation.CancelButton:ClearAllPoints()
+	EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
+	EntryCreation.ListGroupButton:ClearAllPoints()
+	EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
+	S:HandleEditBox(EntryCreation.Description)
 
-	S:HandleEditBox(LFGListFrame.EntryCreation.ItemLevel.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.PVPRating.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.PvpItemLevel.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.VoiceChat.EditBox)
-	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
+	S:HandleDropDownBox(EntryCreation.GroupDropdown)
+	S:HandleDropDownBox(EntryCreation.ActivityDropdown, 120)
+	S:HandleDropDownBox(EntryCreation.PlayStyleDropdown)
 
-	S:HandleCheckBox(LFGListFrame.EntryCreation.ItemLevel.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PvpItemLevel.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.PVPRating.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.VoiceChat.CheckButton)
-	S:HandleCheckBox(LFGListFrame.EntryCreation.CrossFactionGroup.CheckButton)
+	S:HandleEditBox(EntryCreation.ItemLevel.EditBox)
+	S:HandleEditBox(EntryCreation.MythicPlusRating.EditBox)
+	S:HandleEditBox(EntryCreation.PVPRating.EditBox)
+	S:HandleEditBox(EntryCreation.PvpItemLevel.EditBox)
+	S:HandleEditBox(EntryCreation.VoiceChat.EditBox)
+	S:HandleEditBox(EntryCreation.Name)
 
-	S:HandleDropDownBox(_G.LFGListEntryCreationActivityDropdown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationGroupDropdown)
-	S:HandleDropDownBox(_G.LFGListEntryCreationPlayStyleDropdown)
+	S:HandleCheckBox(EntryCreation.ItemLevel.CheckButton)
+	S:HandleCheckBox(EntryCreation.MythicPlusRating.CheckButton)
+	S:HandleCheckBox(EntryCreation.PrivateGroup.CheckButton)
+	S:HandleCheckBox(EntryCreation.PvpItemLevel.CheckButton)
+	S:HandleCheckBox(EntryCreation.PVPRating.CheckButton)
+	S:HandleCheckBox(EntryCreation.VoiceChat.CheckButton)
+	S:HandleCheckBox(EntryCreation.CrossFactionGroup.CheckButton)
 
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
+	EntryCreation.ActivityFinder.Dialog:StripTextures()
+	EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
+	EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
+	EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
 
-	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
-	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.SelectButton)
-	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
+	S:HandleEditBox(EntryCreation.ActivityFinder.Dialog.EntryBox)
+	S:HandleButton(EntryCreation.ActivityFinder.Dialog.SelectButton)
+	S:HandleButton(EntryCreation.ActivityFinder.Dialog.CancelButton)
 
 	_G.LFGListApplicationDialog:StripTextures()
 	_G.LFGListApplicationDialog:SetTemplate('Transparent')
@@ -353,6 +425,9 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
+
+	S:OverlayButton(LFGListFrame.SearchPanel.ScrollBox.StartGroupButton, 'StartGroupButton', 135, 22, _G.START_A_GROUP, nil, nil, 'HIGH')
+
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.BackButton.RightSeparator:StripTextures()
@@ -360,8 +435,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.SignUpButton.LeftSeparator:StripTextures()
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
-
-	S:HandleTrimScrollBar(_G.LFGListFrame.SearchPanel.ScrollBar)
+	S:HandleTrimScrollBar(LFGListFrame.SearchPanel.ScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
@@ -369,6 +443,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
+	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetButton)
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
@@ -420,7 +495,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
-	-- ApplicationViewer (Custom Groups)
+	--ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.InfoBackground:Hide() -- even the ugly borders are now an atlas on the texutre? wtf????
 	LFGListFrame.ApplicationViewer.InfoBackground:CreateBackdrop('Transparent')
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -499,21 +574,91 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
+end
 
-	-- Scenario Tab
-	local ScenarioQueueFrame = _G.ScenarioQueueFrame
-	if ScenarioQueueFrame then
-		ScenarioQueueFrame:StripTextures()
-		_G.ScenarioFinderFrameInset:StripTextures()
-		_G.ScenarioQueueFrameBackground:SetAlpha(0)
-		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown, 190)
-		S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
-		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
-		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
-		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
-			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
+function S:Blizzard_ChallengesUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
+
+	local ChallengesFrame = _G.ChallengesFrame
+	ChallengesFrame:DisableDrawLayer('BACKGROUND')
+	_G.ChallengesFrameInset:StripTextures()
+
+	-- Mythic+ KeyStoneFrame
+	local KeyStoneFrame = _G.ChallengesKeystoneFrame
+	KeyStoneFrame:SetTemplate('Transparent')
+	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 26, 'OUTLINE')
+	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 20, 'OUTLINE')
+
+	S:HandleButton(KeyStoneFrame.StartButton)
+	S:HandleCloseButton(KeyStoneFrame.CloseButton)
+	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
+
+	KeyStoneFrame.KeystoneSlot:HookScript('OnEvent', function(frame, event, itemID)
+		if event == 'CHALLENGE_MODE_KEYSTONE_SLOTTED' and frame.Texture then
+			local texture = select(10, GetItemInfo(itemID))
+			if texture then
+				frame.Texture:SetTexture(texture)
+			end
 		end
-	end
+	end)
+
+	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
+
+	hooksecurefunc(ChallengesFrame, 'Update', function(frame)
+		for _, child in ipairs(frame.DungeonIcons) do
+			if not child.template then
+				child:GetRegions():SetAlpha(0)
+				child:SetTemplate()
+				child.Icon:SetInside()
+				S:HandleIcon(child.Icon)
+			end
+
+			child.Center:SetDrawLayer('BACKGROUND', -1)
+		end
+	end)
+
+	hooksecurefunc(_G.ChallengesFrameWeeklyInfoMixin, 'SetUp', function(info)
+		if C_MythicPlus_GetCurrentAffixes() then
+			HandleAffixIcons(info.Child)
+		end
+	end)
+
+	hooksecurefunc(KeyStoneFrame, 'Reset', function(frame)
+		frame:GetRegions():SetAlpha(0)
+		frame.InstructionBackground:SetAlpha(0)
+		frame.KeystoneSlotGlow:Hide()
+		frame.SlotBG:Hide()
+		frame.KeystoneFrame:Hide()
+		frame.Divider:Hide()
+	end)
+
+	-- New Season Frame
+	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
+	S:HandleButton(NoticeFrame.Leave)
+	NoticeFrame:StripTextures()
+	NoticeFrame:SetTemplate()
+	NoticeFrame.Center:SetInside()
+	NoticeFrame.Center:SetDrawLayer('ARTWORK', 2)
+	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
+	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)
+	NoticeFrame.SeasonDescription:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription2:SetTextColor(1, 1, 1)
+	NoticeFrame.SeasonDescription2:SetShadowOffset(1, -1)
+	NoticeFrame.SeasonDescription3:SetTextColor(1, .8, 0)
+	NoticeFrame.SeasonDescription3:SetShadowOffset(1, -1)
+
+	local affix = NoticeFrame.Affix
+	affix.AffixBorder:Hide()
+	affix.Portrait:SetTexCoord(unpack(E.TexCoords))
+
+	hooksecurefunc(affix, 'SetUp', function(_, affixID)
+		local _, _, texture = C_ChallengeMode_GetAffixInfo(affixID)
+		if texture then
+			affix.Portrait:SetTexture(texture)
+		end
+	end)
 end
 
 S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_ChallengesUI')
