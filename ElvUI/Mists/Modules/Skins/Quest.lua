@@ -473,7 +473,7 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
 
-	_G.QuestLogFrameCancelButton:PointXY(true, nil, 0, 5)
+	-- _G.QuestLogFrameCancelButton:PointXY(0, 5)
 	_G.QuestFramePushQuestButton:PointXY(1)
 	_G.QuestFrameAcceptButton:PointXY(15, 70)
 	_G.QuestFrameDeclineButton:PointXY(-36, 70)
