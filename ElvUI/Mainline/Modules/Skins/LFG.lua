@@ -202,7 +202,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for _, checkButton in pairs({ --Fix issue with role buttons overlapping each other (Blizzard bug)
+	for _, checkButton in pairs({ -- Fix issue with role buttons overlapping each other (Blizzard bug)
 		_G.LFGListApplicationDialog.TankButton.CheckButton,
 		_G.LFGListApplicationDialog.HealerButton.CheckButton,
 		_G.LFGListApplicationDialog.DamagerButton.CheckButton,
@@ -211,7 +211,7 @@ function S:LookingForGroupFrames()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
 
-	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) --Copy from Blizzard, we just fix position
+	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) -- Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
 		local avail1, avail2
@@ -312,7 +312,9 @@ function S:LookingForGroupFrames()
 		_G.ScenarioQueueFrameBackground:SetAlpha(0)
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+
 		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+
 		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
 			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
 		end
@@ -354,11 +356,6 @@ function S:LookingForGroupFrames()
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	--[[
-		LFGInvitePopup_Update('Elvz', true, true, true)
-		StaticPopupSpecial_Show(LFGInvitePopup)
-	]]
 
 	_G.LFGInvitePopup:StripTextures()
 	_G.LFGInvitePopup:SetTemplate('Transparent')
@@ -501,7 +498,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
-	--ApplicationViewer (Custom Groups)
+	-- ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.InfoBackground:Hide() -- even the ugly borders are now an atlas on the texutre? wtf????
 	LFGListFrame.ApplicationViewer.InfoBackground:CreateBackdrop('Transparent')
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -566,7 +563,7 @@ function S:LookingForGroupFrames()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
 
-				--Fix issue with labels not following changes to GameFontNormal as they should
+				-- Fix issue with labels not following changes to GameFontNormal as they should
 				button.Label:SetFontObject('GameFontNormal')
 				button.IsSkinned = true
 			end

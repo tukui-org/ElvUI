@@ -196,7 +196,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for _, checkButton in pairs({ --Fix issue with role buttons overlapping each other (Blizzard bug)
+	for _, checkButton in pairs({ -- Fix issue with role buttons overlapping each other (Blizzard bug)
 		_G.LFGListApplicationDialog.TankButton.CheckButton,
 		_G.LFGListApplicationDialog.HealerButton.CheckButton,
 		_G.LFGListApplicationDialog.DamagerButton.CheckButton,
@@ -205,7 +205,7 @@ function S:LookingForGroupFrames()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
 
-	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) --Copy from Blizzard, we just fix position
+	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) -- Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
 		local avail1, avail2
@@ -302,7 +302,9 @@ function S:LookingForGroupFrames()
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
 		S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
 		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+
 		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+
 		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
 			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
 		end
@@ -344,11 +346,6 @@ function S:LookingForGroupFrames()
 
 	-- Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	--[[
-		LFGInvitePopup_Update('Elvz', true, true, true)
-		StaticPopupSpecial_Show(LFGInvitePopup)
-	]]
 
 	_G.LFGInvitePopup:StripTextures()
 	_G.LFGInvitePopup:SetTemplate('Transparent')
@@ -639,13 +636,13 @@ function S:Blizzard_ChallengesUI()
 	NoticeFrame:SetTemplate()
 	NoticeFrame.Center:SetInside()
 	NoticeFrame.Center:SetDrawLayer('ARTWORK', 2)
-	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
+	NoticeFrame.NewSeason:SetTextColor(1, 0.8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
 	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)
 	NoticeFrame.SeasonDescription:SetShadowOffset(1, -1)
 	NoticeFrame.SeasonDescription2:SetTextColor(1, 1, 1)
 	NoticeFrame.SeasonDescription2:SetShadowOffset(1, -1)
-	NoticeFrame.SeasonDescription3:SetTextColor(1, .8, 0)
+	NoticeFrame.SeasonDescription3:SetTextColor(1, 0.8, 0)
 	NoticeFrame.SeasonDescription3:SetShadowOffset(1, -1)
 
 	local affix = NoticeFrame.Affix
