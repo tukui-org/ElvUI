@@ -62,6 +62,7 @@ if E.Mists or E.Retail then
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.gbank = L["Guild Bank"]
 	toggles.pvp = L["PvP Frames"]
+	toggles.petbattleui = L["Pet Battle"]
 end
 
 if not E.Retail then
@@ -104,7 +105,6 @@ if E.Retail then
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
 	toggles.perks = L["Trading Post"]
-	toggles.petbattleui = L["Pet Battle"]
 	toggles.playerChoice = L["Player Choice Frame"]
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]

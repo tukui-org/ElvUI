@@ -852,7 +852,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- In Pet Battle
-	if E.Retail and (trigger.inPetBattle or trigger.notPetBattle) then
+	if (E.Retail or E.Mists) and (trigger.inPetBattle or trigger.notPetBattle) then
 		local inBattle = C_PetBattles_IsInBattle()
 		if (trigger.inPetBattle and inBattle) or (trigger.notPetBattle and not inBattle) then passed = true else return end
 	end

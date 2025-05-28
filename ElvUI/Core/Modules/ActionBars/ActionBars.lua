@@ -1809,15 +1809,15 @@ function AB:Initialize()
 
 	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
-	if E.Retail or E.Mists then
-		AB:SetupExtraButtons()
-	end
-
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if E.Retail and IsInBattle() then
+	if E.Retail or E.Mists then
+		AB:SetupExtraButtons()
+	end
+
+	if (E.Retail or E.Mists) and IsInBattle() then
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()
