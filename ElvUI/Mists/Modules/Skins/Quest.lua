@@ -473,7 +473,9 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
 
-	-- _G.QuestLogFrameCancelButton:PointXY(0, 5)
+	_G.QuestLogFrameCancelButton:ClearAllPoints()
+	_G.QuestLogFrameCancelButton:Point('BOTTOMRIGHT', _G.QuestLogFrame, 'BOTTOMRIGHT', -4, 4)
+	_G.QuestLogFrameCancelButton.SetPoint = E.noop -- Special Treatment for that button, Simpy will go over it in the future!
 	_G.QuestFramePushQuestButton:PointXY(1)
 	_G.QuestFrameAcceptButton:PointXY(15, 70)
 	_G.QuestFrameDeclineButton:PointXY(-36, 70)
