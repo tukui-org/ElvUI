@@ -280,7 +280,7 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	for i = 1, 4 do
+	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
 
@@ -292,7 +292,7 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -19, 0)
 
-	-- Scenario Tab [[New in 10.2.7]]
+	-- Scenario Tab
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
 	if ScenarioQueueFrame then
 		ScenarioQueueFrame:StripTextures()
@@ -495,7 +495,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
 	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
-	--ApplicationViewer (Custom Groups)
+	-- ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.InfoBackground:Hide() -- even the ugly borders are now an atlas on the texutre? wtf????
 	LFGListFrame.ApplicationViewer.InfoBackground:CreateBackdrop('Transparent')
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -560,7 +560,7 @@ function S:LookingForGroupFrames()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
 
-				--Fix issue with labels not following changes to GameFontNormal as they should
+				-- Fix issue with labels not following changes to GameFontNormal as they should
 				button.Label:SetFontObject('GameFontNormal')
 				button.IsSkinned = true
 			end
