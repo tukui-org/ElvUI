@@ -636,7 +636,7 @@ end)
 
 E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	local color
-	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
+	if (E.Retail or E.Mists) and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		local level = UnitBattlePetLevel(unit)
 		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
@@ -684,7 +684,7 @@ end)
 
 E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 	local level = UnitEffectiveLevel(unit)
-	if E.Retail and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
+	if (E.Retail or E.Mists) and (UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit)) then
 		return UnitBattlePetLevel(unit)
 	elseif level == UnitEffectiveLevel('player') then
 		return nil
