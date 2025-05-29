@@ -146,12 +146,13 @@ function S:ContainerFrame()
 	-- BankFrame
 	local BankFrame = _G.BankFrame
 	BankFrame:StripTextures(true)
-	S:HandleFrame(BankFrame, true, nil, 12, 0, 10, 80)
-
-	S:HandleCloseButton(_G.BankCloseButton, BankFrame.backdrop)
+	S:HandleFrame(BankFrame, true, nil, 6)
+	S:HandleCloseButton(_G.BankFrameCloseButton, BankFrame.backdrop)
+	S:HandleEditBox(_G.BankItemSearchBox)
 
 	_G.BankSlotsFrame:StripTextures()
 
+	_G.BankFrameMoneyFrame:StripTextures()
 	_G.BankFrameMoneyFrame:Point('RIGHT', 0, 0)
 
 	for i = 1, _G.NUM_BANKGENERIC_SLOTS do
