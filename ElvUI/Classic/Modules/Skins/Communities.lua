@@ -139,11 +139,11 @@ function S:Blizzard_Communities()
 
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropdown)
 
-	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(s)
-		s.ShowNotificationsButton:Size(20, 20)
-		s.HideNotificationsButton:Size(20, 20)
-		S:HandleCheckBox(s.ShowNotificationsButton)
-		S:HandleCheckBox(s.HideNotificationsButton)
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(frame)
+		frame.ShowNotificationsButton:Size(20, 20)
+		frame.HideNotificationsButton:Size(20, 20)
+		S:HandleCheckBox(frame.ShowNotificationsButton)
+		S:HandleCheckBox(frame.HideNotificationsButton)
 	end)
 
 	-- Chat Tab
@@ -180,8 +180,8 @@ function S:Blizzard_Communities()
 				requestFrame:StripTextures()
 				requestFrame:SetTemplate('Transparent')
 
-				hooksecurefunc(requestFrame, 'Initialize', function(s)
-					for button in s.SpecsPool:EnumerateActive() do
+				hooksecurefunc(requestFrame, 'Initialize', function(frame)
+					for button in frame.SpecsPool:EnumerateActive() do
 						if button.Checkbox then
 							S:HandleCheckBox(button.Checkbox)
 							button.Checkbox:Size(26)

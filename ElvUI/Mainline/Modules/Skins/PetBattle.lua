@@ -157,24 +157,24 @@ function S:PetBattleFrame()
 	end)
 
 	-- PETS UNITFRAMES PET TYPE UPDATE
-	hooksecurefunc('PetBattleUnitFrame_UpdatePetType', function(s)
-		if s.PetType then
-			local petType = C_PetBattles_GetPetType(s.petOwner, s.petIndex)
-			if s.PetTypeFrame and petType then
-				s.PetTypeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
+	hooksecurefunc('PetBattleUnitFrame_UpdatePetType', function(frame)
+		if frame.PetType then
+			local petType = C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)
+			if frame.PetTypeFrame and petType then
+				frame.PetTypeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
 			end
 		end
 	end)
 
 	-- PETS UNITFRAMES AURA SKINS
-	hooksecurefunc('PetBattleAuraHolder_Update', function(s)
-		if not (s.petOwner and s.petIndex) then return end
+	hooksecurefunc('PetBattleAuraHolder_Update', function(holder)
+		if not (holder.petOwner and holder.petIndex) then return end
 
 		local nextFrame = 1
-		for i=1, C_PetBattles_GetNumAuras(s.petOwner, s.petIndex) do
-			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(s.petOwner, s.petIndex, i)
-			if (isBuff and s.displayBuffs) or (not isBuff and s.displayDebuffs) then
-				local frame = s.frames[nextFrame]
+		for i=1, C_PetBattles_GetNumAuras(holder.petOwner, holder.petIndex) do
+			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(holder.petOwner, holder.petIndex, i)
+			if (isBuff and holder.displayBuffs) or (not isBuff and holder.displayDebuffs) then
+				local frame = holder.frames[nextFrame]
 
 				-- always hide the border
 				frame.DebuffBorder:Hide()
@@ -205,30 +205,30 @@ function S:PetBattleFrame()
 	end)
 
 	-- WEATHER
-	hooksecurefunc('PetBattleWeatherFrame_Update', function(s)
+	hooksecurefunc('PetBattleWeatherFrame_Update', function(frame)
 		local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
-			s.Icon:Hide()
-			s.BackgroundArt:ClearAllPoints()
-			s.BackgroundArt:Point('TOP', s, 'TOP', 0, 14)
-			s.BackgroundArt:Size(200, 100)
-			s.Name:Hide()
-			s.DurationShadow:Hide()
-			s.Label:Hide()
-			s.Duration:ClearAllPoints()
-			s.Duration:Point('TOP', s, 'TOP', 0, 10)
-			s:ClearAllPoints()
-			s:Point('TOP', E.UIParent, 0, -15)
+			frame.Icon:Hide()
+			frame.BackgroundArt:ClearAllPoints()
+			frame.BackgroundArt:Point('TOP', frame, 'TOP', 0, 14)
+			frame.BackgroundArt:Size(200, 100)
+			frame.Name:Hide()
+			frame.DurationShadow:Hide()
+			frame.Label:Hide()
+			frame.Duration:ClearAllPoints()
+			frame.Duration:Point('TOP', frame, 'TOP', 0, 10)
+			frame:ClearAllPoints()
+			frame:Point('TOP', E.UIParent, 0, -15)
 		end
 	end)
 
-	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(s)
-		s.Icon:SetTexCoord(unpack(E.TexCoords))
+	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(frame)
+		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 
-		if s.petOwner and s.petIndex and (s.Icon.backdrop and s.Icon.backdrop:IsShown()) then
-			local quality = C_PetBattles_GetBreedQuality(s.petOwner, s.petIndex)
+		if frame.petOwner and frame.petIndex and (frame.Icon.backdrop and frame.Icon.backdrop:IsShown()) then
+			local quality = C_PetBattles_GetBreedQuality(frame.petOwner, frame.petIndex)
 			local r, g, b = E:GetItemQualityColor(quality)
-			s.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			frame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 
@@ -360,9 +360,9 @@ function S:PetBattleFrame()
 	bf.xpBar:ClearAllPoints()
 	bf.xpBar:Point('BOTTOMLEFT', turnTimer.SkipButton, 'TOPLEFT', E.Border, XPOffset)
 	bf.xpBar:Point('BOTTOMRIGHT', turnTimer.SkipButton, 'TOPRIGHT', -E.Border, XPOffset)
-	bf.xpBar:SetScript('OnShow', function(s)
-		s:StripTextures()
-		s:SetStatusBarTexture(E.media.normTex)
+	bf.xpBar:SetScript('OnShow', function(frame)
+		frame:StripTextures()
+		frame:SetStatusBarTexture(E.media.normTex)
 	end)
 
 	-- PETS SELECTION SKIN

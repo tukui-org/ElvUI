@@ -138,8 +138,8 @@ function S:Blizzard_PVPUI()
 	-- Honor Frame Specific Buttons
 	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', HonorSpecificScrollUpdate)
 
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
-		if s.bg then s.bg:SetDesaturated(true) end
+	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
+		if button.bg then button.bg:SetDesaturated(true) end
 	end)
 
 	HandleRoleButton(HonorFrame.TankIcon)

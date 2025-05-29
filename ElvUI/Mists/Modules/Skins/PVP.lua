@@ -115,8 +115,10 @@ function S:Blizzard_PVPUI()
 	S:HandleButton(_G.HonorQueueFrameGroupQueueButton)
 	_G.HonorQueueFrameGroupQueueButton_LeftSeparator:StripTextures()
 
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(s)
-		if s.bg then s.bg:SetDesaturated(true) end
+	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
+		if button.bg then
+			button.bg:SetDesaturated(true)
+		end
 	end)
 
 	HandleRoleButton(HonorFrame.RoleInset.TankIcon)
