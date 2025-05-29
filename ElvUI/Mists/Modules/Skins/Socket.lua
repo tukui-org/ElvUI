@@ -13,13 +13,12 @@ function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
-	S:HandleFrame(ItemSocketingFrame, true, nil, 10, -12, -2, 2)
+	S:HandleFrame(ItemSocketingFrame)
 
 	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
 	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
 	_G.ItemSocketingScrollFrame:CreateBackdrop('Transparent')
-	S:HandleScrollBar(_G.ItemSocketingScrollFrameScrollBar, 2)
 
 	for i = 1, _G.MAX_NUM_SOCKETS do
 		local button = _G[format('ItemSocketingSocket%d', i)]
@@ -45,7 +44,7 @@ function S:Blizzard_ItemSocketingUI()
 		end
 	end)
 
-	S:HandleCloseButton(_G.ItemSocketingCloseButton)
+	S:HandleCloseButton(_G.ItemSocketingFrameCloseButton)
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
