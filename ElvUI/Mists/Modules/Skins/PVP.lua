@@ -164,7 +164,7 @@ function S:Blizzard_PVPUI()
 		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Back.Texture,
 		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Forward.Texture,
 		_G.WarGameStartButton_LeftSeparator,
-		_G.WarGameStartButton_RightSeparato
+		_G.WarGameStartButton_RightSeparator
 	}
 
 	for _, name in next, textures do
