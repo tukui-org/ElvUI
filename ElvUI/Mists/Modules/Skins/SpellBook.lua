@@ -8,8 +8,10 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell
+local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
 
 local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
+local WHAT_HAS_CHANGED_DISPLAY = WHAT_HAS_CHANGED_DISPLAY
 
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
@@ -221,6 +223,7 @@ function S:SpellBookFrame()
 	end
 
 	-- Core Abilities Frame
+	local SpellBookCoreAbilitiesFrame = _G.SpellBookCoreAbilitiesFrame
 	SpellBookCoreAbilitiesFrame:Point('TOPLEFT', -80, 5)
 
 	local classTextColor = E:ClassColor(E.myclass)
@@ -309,7 +312,7 @@ function S:SpellBookFrame()
 
 			frame:StripTextures()
 			frame.Number:SetTextColor(1, 1, 1)
-			frame.Number:Point('TOPLEFT', -15, 18)
+			frame.Number:Point('TOPLEFT', -15, 16)
 			frame.Title:SetTextColor(1, 1, 1)
 		end
 	end
