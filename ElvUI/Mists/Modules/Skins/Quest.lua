@@ -461,7 +461,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestFramePushQuestButton:Point('RIGHT', _G.QuestLogFrameTrackButton, 'LEFT', -1, 0)
 
 	local QuestLogDetailFrame = _G.QuestLogDetailFrame
-	S:HandleFrame(QuestLogDetailFrame, true, nil, 8, -8, 8)
+	S:HandleFrame(QuestLogDetailFrame, true)
 
 	S:HandleFrame(_G.QuestFrame)
 	S:HandleFrame(_G.QuestLogCount)
