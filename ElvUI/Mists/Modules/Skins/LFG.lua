@@ -576,85 +576,60 @@ end
 function S:Blizzard_ChallengesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
-	local ChallengesFrame = _G.ChallengesFrame
-	ChallengesFrame:DisableDrawLayer('BACKGROUND')
-	_G.ChallengesFrameInset:StripTextures()
+	_G.ChallengesFrameInset:StripTextures(true)
 
-	-- Mythic+ KeyStoneFrame
-	local KeyStoneFrame = _G.ChallengesKeystoneFrame
-	KeyStoneFrame:SetTemplate('Transparent')
-	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 26, 'OUTLINE')
-	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 20, 'OUTLINE')
+	local DetailsFrame = _G.ChallengesFrameDetails
+	local _, a, _, _, _, _, _, _, b, c, d = DetailsFrame:GetRegions()
+	a:Hide() b:Hide() c:Hide() d:Hide()
+	DetailsFrame.bg:Hide()
 
-	S:HandleButton(KeyStoneFrame.StartButton)
-	S:HandleCloseButton(KeyStoneFrame.CloseButton)
-	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
+	DetailsFrame.MapName:ClearAllPoints()
+	DetailsFrame.MapName:Point('TOP', 0, -20)
 
-	KeyStoneFrame.KeystoneSlot:HookScript('OnEvent', function(frame, event, itemID)
-		if event == 'CHALLENGE_MODE_KEYSTONE_SLOTTED' and frame.Texture then
-			local texture = select(10, GetItemInfo(itemID))
-			if texture then
-				frame.Texture:SetTexture(texture)
-			end
+	for i = 1, 9 do
+		local button = _G.ChallengesFrame['button'..i]
+
+		button:CreateBackdrop('Transparent')
+
+		if i == 1 then
+			button:Point('TOPLEFT', ChallengesFrame, 6, -40)
+		else
+			button:Point('TOP', ChallengesFrame['button'..i - 1], 'BOTTOM', 0, -8)
 		end
-	end)
 
-	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
+		local highlight = button:GetHighlightTexture()
+		highlight:SetTexture(E.Media.Textures.Highlight)
+		highlight:SetVertexColor(1, 1, 1, 0.35)
+		highlight:SetAllPoints()
 
-	hooksecurefunc(ChallengesFrame, 'Update', function(frame)
-		for _, child in ipairs(frame.DungeonIcons) do
-			if not child.template then
-				child:GetRegions():SetAlpha(0)
-				child:SetTemplate()
-				child.Icon:SetInside()
-				S:HandleIcon(child.Icon)
-			end
+		button.selectedTex:SetTexture(E.Media.Textures.Highlight)
+		button.selectedTex:SetVertexColor(0, 0.7, 1, 0.35)
+		button.selectedTex:SetAllPoints()
+	end
 
-			child.Center:SetDrawLayer('BACKGROUND', -1)
+	for i = 1, 3 do
+		local rewardsRow = _G.ChallengesFrame['RewardRow'..i]
+
+		rewardsRow.Bg:SetTexture(E.Media.Textures.Highlight)
+
+		if i == 1 then
+			rewardsRow.Bg:SetVertexColor(0.859, 0.545, 0.204, 0.3)
+		elseif i == 2 then
+			rewardsRow.Bg:SetVertexColor(0.780, 0.722, 0.741, 0.3)
+		else
+			rewardsRow.Bg:SetVertexColor(0.945, 0.882, 0.337, 0.3)
 		end
-	end)
 
-	hooksecurefunc(_G.ChallengesFrameWeeklyInfoMixin, 'SetUp', function(info)
-		if C_MythicPlus_GetCurrentAffixes() then
-			HandleAffixIcons(info.Child)
+		for j = 1, 2 do
+			local button = rewardsRow['Reward'..j]
+
+			button:CreateBackdrop()
+
+			button.Icon:SetTexCoord(unpack(E.TexCoords))
 		end
-	end)
+	end
 
-	hooksecurefunc(KeyStoneFrame, 'Reset', function(frame)
-		frame:GetRegions():SetAlpha(0)
-		frame.InstructionBackground:SetAlpha(0)
-		frame.KeystoneSlotGlow:Hide()
-		frame.SlotBG:Hide()
-		frame.KeystoneFrame:Hide()
-		frame.Divider:Hide()
-	end)
-
-	-- New Season Frame
-	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
-	S:HandleButton(NoticeFrame.Leave)
-	NoticeFrame:StripTextures()
-	NoticeFrame:SetTemplate()
-	NoticeFrame.Center:SetInside()
-	NoticeFrame.Center:SetDrawLayer('ARTWORK', 2)
-	NoticeFrame.NewSeason:SetTextColor(1, 0.8, 0)
-	NoticeFrame.NewSeason:SetShadowOffset(1, -1)
-	NoticeFrame.SeasonDescription:SetTextColor(1, 1, 1)
-	NoticeFrame.SeasonDescription:SetShadowOffset(1, -1)
-	NoticeFrame.SeasonDescription2:SetTextColor(1, 1, 1)
-	NoticeFrame.SeasonDescription2:SetShadowOffset(1, -1)
-	NoticeFrame.SeasonDescription3:SetTextColor(1, 0.8, 0)
-	NoticeFrame.SeasonDescription3:SetShadowOffset(1, -1)
-
-	local affix = NoticeFrame.Affix
-	affix.AffixBorder:Hide()
-	affix.Portrait:SetTexCoord(unpack(E.TexCoords))
-
-	hooksecurefunc(affix, 'SetUp', function(_, affixID)
-		local _, _, texture = C_ChallengeMode_GetAffixInfo(affixID)
-		if texture then
-			affix.Portrait:SetTexture(texture)
-		end
-	end)
+	S:HandleButton(_G.ChallengesFrameLeaderboard)
 end
 
 S:AddCallback('LookingForGroupFrames')
