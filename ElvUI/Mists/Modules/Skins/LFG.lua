@@ -540,6 +540,7 @@ function S:Blizzard_ChallengesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	_G.ChallengesFrameInset:StripTextures(true)
+	_G.ChallengesFrameLeaderboard:StripTextures()
 
 	local DetailsFrame = _G.ChallengesFrameDetails
 	local _, a, _, _, _, _, _, _, b, c, d = DetailsFrame:GetRegions()
