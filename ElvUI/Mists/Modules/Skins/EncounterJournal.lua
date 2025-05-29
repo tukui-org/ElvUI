@@ -299,7 +299,7 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:Point('CENTER', 0, 40)
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point('TOP', 0, -105)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:Point('TOP', 0, -26)
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:Point('LEFT', 55, -56)
 
