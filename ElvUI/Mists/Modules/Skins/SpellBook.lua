@@ -166,7 +166,7 @@ function S:SpellBookFrame()
 		end
 	end
 
-	--Profession Tab
+	-- Profession Tab
 	for _, button in next, { _G.PrimaryProfession1, _G.PrimaryProfession2, _G.SecondaryProfession1, _G.SecondaryProfession2, _G.SecondaryProfession3, _G.SecondaryProfession4 } do
 		button.missingHeader:SetTextColor(1, 1, 0)
 
@@ -217,6 +217,100 @@ function S:SpellBookFrame()
 
 		if button.iconTexture then
 			S:HandleIcon(button.iconTexture, true)
+		end
+	end
+
+	-- Core Abilities Frame
+	SpellBookCoreAbilitiesFrame:Point('TOPLEFT', -80, 5)
+
+	local classTextColor = E:ClassColor(E.myclass)
+	SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+	SpellBookCoreAbilitiesFrame.SpecName:Point('TOP', 37, -30)
+
+	hooksecurefunc('SpellBook_UpdateCoreAbilitiesTab', function()
+		local buttons = SpellBookCoreAbilitiesFrame.Abilities
+		for i = 1, #buttons do
+			local button = buttons[i]
+			if not button then return end
+
+			if not button.isSkinned then
+				button:CreateBackdrop()
+				button.backdrop:SetAllPoints()
+				button:StyleButton()
+
+				button.EmptySlot:SetAlpha(0)
+				button.ActiveTexture:SetAlpha(0)
+				button.FutureTexture:SetAlpha(0)
+
+				button.iconTexture:SetTexCoord(unpack(E.TexCoords))
+				button.iconTexture:SetInside()
+
+				button.Name:Point('TOPLEFT', 50, 0)
+
+				if button.highlightTexture then
+					hooksecurefunc(button.highlightTexture, 'SetTexture', function(_, texOrR)
+						if texOrR == [[Interface\Buttons\ButtonHilight-Square]] then
+							button.highlightTexture:SetTexture(1, 1, 1, 0.3)
+							button.highlightTexture:SetInside()
+						end
+					end)
+				end
+
+				button.isSkinned = true
+			end
+
+			if button.FutureTexture:IsShown() then
+				button.iconTexture:SetDesaturated(true)
+
+				button.Name:SetTextColor(0.6, 0.6, 0.6)
+				button.InfoText:SetTextColor(0.6, 0.6, 0.6)
+				button.RequiredLevel:SetTextColor(0.6, 0.6, 0.6)
+			else
+				button.iconTexture:SetDesaturated(false)
+
+				button.Name:SetTextColor(1, 0.80, 0.10)
+				button.InfoText:SetTextColor(1, 1, 1)
+				button.RequiredLevel:SetTextColor(0.8, 0.8, 0.8)
+			end
+		end
+
+		local tabs = SpellBookCoreAbilitiesFrame.SpecTabs
+		for i = 1, #tabs do
+			local tab = tabs[i]
+
+			if tab and not tab.isSkinned then
+				tab:GetRegions():Hide()
+				tab:SetTemplate()
+				tab:StyleButton(nil, true)
+
+				if i == 1 then
+					tab:Point('TOPLEFT', SpellBookFrame, 'TOPRIGHT', E.PixelMode and -1 or 1, -75)
+				end
+
+				local normal = tab:GetNormalTexture()
+				normal:SetInside()
+				normal:SetTexCoord(unpack(E.TexCoords))
+
+				tab.isSkinned = true
+			end
+		end
+	end)
+
+	-- What Has Changed Frame
+	SpellBookWhatHasChanged:Point('TOPLEFT', -80, 5)
+
+	SpellBookWhatHasChanged.ClassName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+	SpellBookWhatHasChanged.ClassName:Point('TOP', 37, -30)
+
+	local changedList = WHAT_HAS_CHANGED_DISPLAY[E.myclass]
+	if changedList then
+		for i = 1, #changedList do
+			local frame = SpellBook_GetWhatChangedItem(i)
+
+			frame:StripTextures()
+			frame.Number:SetTextColor(1, 1, 1)
+			frame.Number:Point('TOPLEFT', -15, 18)
+			frame.Title:SetTextColor(1, 1, 1)
 		end
 	end
 
