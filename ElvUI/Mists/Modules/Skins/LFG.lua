@@ -11,12 +11,8 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsGroupLeader = UnitIsGroupLeader
 local GetItemInfo = C_Item.GetItemInfo
 
-local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
-local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
-local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
-local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
@@ -85,39 +81,6 @@ local function SkinItemButton(parentFrame, _, index)
 		item.roleIcon2:SetParent(item.backdrop)
 
 		S:HandleIconBorder(item.IconBorder)
-	end
-end
-
-local function HandleAffixIcons(self)
-	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
-
-	if MapID then
-		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
-
-		if Name and PowerLevel then
-			self.DungeonName:SetText(Name.. ' |cffffffff-|r (' .. PowerLevel .. ')')
-		end
-
-		self.PowerLevel:SetText('')
-	end
-
-	local list = self.AffixesContainer and self.AffixesContainer.Affixes or self.Affixes
-	if not list then return end
-
-	for _, frame in ipairs(list) do
-		frame.Border:SetTexture()
-		frame.Portrait:SetTexture()
-
-		if frame.info then
-			frame.Portrait:SetTexture(_G.CHALLENGE_MODE_EXTRA_AFFIX_INFO[frame.info.key].texture)
-		elseif frame.affixID then
-			local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
-			frame.Portrait:SetTexture(filedataid)
-		end
-
-		S:HandleIcon(frame.Portrait, true)
-
-		frame.Percent:FontTemplate(E.media.normFont, 16, 'OUTLINE')
 	end
 end
 
