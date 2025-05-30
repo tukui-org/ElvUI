@@ -550,25 +550,29 @@ function S:Blizzard_ChallengesUI()
 	DetailsFrame.MapName:ClearAllPoints()
 	DetailsFrame.MapName:Point('TOP', 0, -20)
 
+	local ChallengesFrame = _G.ChallengesFrame
 	for i = 1, 9 do
-		local button = _G.ChallengesFrame['button'..i]
+		local button = ChallengesFrame['button'..i]
+		if button then
+			button:CreateBackdrop('Transparent')
 
-		button:CreateBackdrop('Transparent')
+			if i == 1 then
+				button:Point('TOPLEFT', ChallengesFrame, 6, -40)
+			else
+				button:Point('TOP', ChallengesFrame['button'..i - 1], 'BOTTOM', 0, -8)
+			end
 
-		if i == 1 then
-			button:Point('TOPLEFT', ChallengesFrame, 6, -40)
-		else
-			button:Point('TOP', ChallengesFrame['button'..i - 1], 'BOTTOM', 0, -8)
+			button.selectedTex:SetTexture(E.Media.Textures.Highlight)
+			button.selectedTex:SetVertexColor(0, 0.7, 1, 0.35)
+			button.selectedTex:SetAllPoints()
+
+			local highlight = button:GetHighlightTexture()
+			if highlight then
+				highlight:SetTexture(E.Media.Textures.Highlight)
+				highlight:SetVertexColor(1, 1, 1, 0.35)
+				highlight:SetAllPoints()
+			end
 		end
-
-		local highlight = button:GetHighlightTexture()
-		highlight:SetTexture(E.Media.Textures.Highlight)
-		highlight:SetVertexColor(1, 1, 1, 0.35)
-		highlight:SetAllPoints()
-
-		button.selectedTex:SetTexture(E.Media.Textures.Highlight)
-		button.selectedTex:SetVertexColor(0, 0.7, 1, 0.35)
-		button.selectedTex:SetAllPoints()
 	end
 
 	for i = 1, 3 do

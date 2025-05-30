@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local unpack = unpack
 local next, select = next, select
 local hooksecurefunc = hooksecurefunc
 
@@ -9,9 +10,6 @@ local CreateFrame = CreateFrame
 local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell
 local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
-
-local BOOKTYPE_PROFESSION = BOOKTYPE_PROFESSION
-local WHAT_HAS_CHANGED_DISPLAY = WHAT_HAS_CHANGED_DISPLAY
 
 local function clearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
@@ -24,7 +22,7 @@ local function spellButtonHighlight(button, texture)
 end
 
 local function UpdateButton()
-	if _G.SpellBookFrame.bookType == BOOKTYPE_PROFESSION then
+	if _G.SpellBookFrame.bookType == _G.BOOKTYPE_PROFESSION then
 		return
 	end
 
@@ -300,20 +298,20 @@ function S:SpellBookFrame()
 	end)
 
 	-- What Has Changed Frame
-	SpellBookWhatHasChanged:Point('TOPLEFT', -80, 5)
+	_G.SpellBookWhatHasChanged:Point('TOPLEFT', -80, 5)
+	_G.SpellBookWhatHasChanged.ClassName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+	_G.SpellBookWhatHasChanged.ClassName:Point('TOP', 37, -30)
 
-	SpellBookWhatHasChanged.ClassName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-	SpellBookWhatHasChanged.ClassName:Point('TOP', 37, -30)
-
-	local changedList = WHAT_HAS_CHANGED_DISPLAY[E.myclass]
+	local changedList = _G.WHAT_HAS_CHANGED_DISPLAY[E.myclass]
 	if changedList then
 		for i = 1, #changedList do
 			local frame = SpellBook_GetWhatChangedItem(i)
-
-			frame:StripTextures()
-			frame.Number:SetTextColor(1, 1, 1)
-			frame.Number:Point('TOPLEFT', -15, 16)
-			frame.Title:SetTextColor(1, 1, 1)
+			if frame then
+				frame:StripTextures()
+				frame.Number:SetTextColor(1, 1, 1)
+				frame.Number:Point('TOPLEFT', -15, 16)
+				frame.Title:SetTextColor(1, 1, 1)
+			end
 		end
 	end
 
