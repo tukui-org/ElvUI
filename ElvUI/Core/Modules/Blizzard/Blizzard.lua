@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
+local ipairs, format, wipe = ipairs, format, wipe
 local _G = _G
 local UIParent = UIParent
 local UnitXP = UnitXP
@@ -18,6 +19,30 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local hooksecurefunc = hooksecurefunc
 
 local AutoHider
+
+--------------------------------------------------------------------
+-- Guild Finder Helper
+--------------------------------------------------------------------
+-- Stores guild data from the most recent search.
+E.guilds = {}
+
+function BL:CLUB_FINDER_CLUB_LIST_RETURNED()
+	-- Always start with a fresh table.
+	wipe(E.guilds)
+	-- Make sure the UI is loaded before we try to read from it.
+	if ClubFinderGuildFinderFrame and ClubFinderGuildFinderFrame.GuildCards and ClubFinderGuildFinderFrame.GuildCards.CardList then
+		for _, guildCardData in ipairs(ClubFinderGuildFinderFrame.GuildCards.CardList) do
+			if guildCardData and guildCardData.clubFinderGUID then
+				E.guilds[guildCardData.clubFinderGUID] = {
+					clubFinderGUID = guildCardData.clubFinderGUID,
+					name = guildCardData.name,
+					numActiveMembers = guildCardData.numActiveMembers,
+				}
+			end
+		end
+		E:Print(format("Found %d guilds. Try /guildlist <minActivePlayers> or /guildapply <applicationMsg> to apply to the top five most active guilds in the list.", #ClubFinderGuildFinderFrame.GuildCards.CardList))
+	end
+end
 
 --This changes the growth direction of the toast frame depending on position of the mover
 local function PostMove(mover)
@@ -155,6 +180,7 @@ function BL:Initialize()
 	BL:PositionCaptureBar()
 
 	BL:RegisterEvent('ADDON_LOADED')
+	self:RegisterEvent("CLUB_FINDER_CLUB_LIST_RETURNED") -- Register event here
 
 	BL:SkinBlizzTimers()
 
