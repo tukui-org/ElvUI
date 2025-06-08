@@ -513,7 +513,7 @@ local function HandleTabs()
 end
 
 local function SkinCollectionsFrames()
-	S:HandlePortraitFrame(_G.CollectionsJournal)
+	S:HandlePortraitFrame(_G.CollectionsJournal, true)
 
 	HandleTabs()
 
