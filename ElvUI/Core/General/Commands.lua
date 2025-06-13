@@ -581,9 +581,7 @@ function E:ListGuilds(msg)
 		tinsert(guildList, guildData)
 	end
 
-	sort(guildList, function(a, b)
-		return a.numActiveMembers > b.numActiveMembers
-	end)
+	sort(guildList, E.GuildListSort)
 
 	E:Print('|cff00BFFF--- Sorted Guild List ---|r')
 
