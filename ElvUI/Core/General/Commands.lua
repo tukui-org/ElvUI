@@ -571,7 +571,7 @@ function E:GuildListSort(second)
 end
 
 function E:ListGuilds(msg)
-	if next(E.guilds) == nil then
+	if not next(E.guilds) then
 		E:Print('Error: No guilds found. Open Guild Finder and search first.')
 		return
 	end
@@ -607,7 +607,7 @@ do
 			local timeLeft = ceil(APPLY_COOLDOWN - (currentTime - lastApplyTime))
 			E:Print(format('|cffff0000Guild apply is on cooldown. Please wait %d more seconds.|r', timeLeft))
 			return
-		elseif next(E.guilds) == nil then
+		elseif not next(E.guilds) then
 			E:Print('Error: No guilds found. Open Guild Finder and search first.')
 			return
 		end
