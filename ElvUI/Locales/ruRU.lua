@@ -443,4 +443,6 @@ L["EHELP_COMMANDS"] = ([=[Ниже представлен список всех 
  */egrid|r ^64|r или ^128|r или ^256|r  -  Вкл/выкл экранную сетку.
  */edebug|r ^on|r или ^off|r  -  Отключить все аддоны, кроме ElvUI.
   ВАЖНО: */edebug|r ^off|r включит обратно все отключенные В ДАННОЙ СЕССИИ (без /rl) командой */edebug|r ^on|r аддоны.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

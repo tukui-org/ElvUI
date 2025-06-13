@@ -445,4 +445,6 @@ L["EHELP_COMMANDS"] = ([=[*ElvUI의 주요 명령어 목록입니다.|r 명령�
  */egrid|r ^64|r or ^128|r or ^256|r  -  픽셀 격자를 변경합니다.
  */edebug|r ^on|r or ^off|r  -  ElvUI를 제외한 모든 애드온을 비활성화합니다.
  참고: */edebug|r ^off\r 명령어는 */edebug|r ^on|r 명령어를 통해 비활성화된 애드온을 다시 활성화합니다.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

@@ -444,4 +444,6 @@ L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do
  */edebug|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
   NOTA: */edebug|r ^off|r irá reabilitar os addons desabilitados por ter
   usar */edebug|r ^on|r nesta sessão.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

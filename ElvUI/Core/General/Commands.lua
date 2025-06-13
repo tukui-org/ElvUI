@@ -3,10 +3,10 @@ local CH = E:GetModule('Chat')
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
-local type, pairs, sort, tonumber, time, ceil = type, pairs, sort, tonumber, time, math.ceil
-local lower, wipe, next = strlower, wipe, next
+local pairs, sort, tonumber, time = pairs, sort, tonumber, time
+local type, lower, wipe, next = type, strlower, wipe, next
 local ipairs, format, tinsert = ipairs, format, tinsert
-local strmatch, gsub = strmatch, gsub
+local strmatch, gsub, ceil = strmatch, gsub, math.ceil
 
 local CopyTable = CopyTable
 local ReloadUI = ReloadUI
@@ -16,30 +16,11 @@ local EnableAddOn = C_AddOns.EnableAddOn
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 local GetNumAddOns = C_AddOns.GetNumAddOns
 
+local PlayerClubRequestStatusNone = Enum.PlayerClubRequestStatus.None
+local RequestMembershipToClub = C_ClubFinder.RequestMembershipToClub
+local GetPlayerClubApplicationStatus = C_ClubFinder.GetPlayerClubApplicationStatus
+
 -- GLOBALS: ElvUIGrid, ElvDB
-
---------------------------------------------------------------------
--- GUILD APPLY HELPER LOGIC
---------------------------------------------------------------------
--- Tracks guilds we've applied to in the current session.
--- This list resets on every reload.
-local appliedGUIDs = {}
--- Tracks the last time /guildapply was used to enforce a cooldown.
-local lastApplyTime = 0
-local APPLY_COOLDOWN = 120 -- 2 minutes
-
--- Get the player's spec IDs for the application.
-local function GetPlayerSpecIds()
-	local playerSpecs = {};
-	local classID = select(3, UnitClass("player"));
-	for i = 1, C_SpecializationInfo.GetNumSpecializationsForClassID(classID) do
-		local specID = GetSpecializationInfoForClassID(classID, i);
-		if (specID) then
-			tinsert(playerSpecs, specID);
-		end
-	end
-	return playerSpecs;
-end
 
 --------------------------------------------------------------------
 -- ELVUI COMMAND FUNCTIONS
@@ -297,9 +278,7 @@ do
 end
 
 function E:DisplayCommands()
-	E:Print(L["EHELP_COMMANDS"])
-	E:Print("/guildlist [minPlayers] - Dumps the sorted list of guilds from the finder.")
-	E:Print("/guildapply \"message\" - Applies to the top 5 new guilds with an optional message.")
+	print(L["EHELP_COMMANDS"])
 end
 
 local BLIZZARD_DEPRECATED = {
@@ -587,13 +566,16 @@ end
 --------------------------------------------------------------------
 -- GUILD APPLY COMMANDS
 --------------------------------------------------------------------
+function E:GuildListSort(second)
+	return self.numActiveMembers > second.numActiveMembers
+end
+
 function E:ListGuilds(msg)
 	if next(E.guilds) == nil then
-		E:Print("Error: No guilds found. Open Guild Finder and search first.")
+		E:Print('Error: No guilds found. Open Guild Finder and search first.')
 		return
 	end
 
-	local cutoff = tonumber(msg)
 	local guildList = {}
 	for _, guildData in pairs(E.guilds) do
 		tinsert(guildList, guildData)
@@ -603,68 +585,68 @@ function E:ListGuilds(msg)
 		return a.numActiveMembers > b.numActiveMembers
 	end)
 
-	E:Print("|cff00BFFF--- Sorted Guild List ---|r")
+	E:Print('|cff00BFFF--- Sorted Guild List ---|r')
+
+	local cutoff = tonumber(msg)
 	for _, guildData in ipairs(guildList) do
 		if not cutoff or guildData.numActiveMembers >= cutoff then
-			E:Print(format("Guild: %s, Active Members: %d", guildData.name, guildData.numActiveMembers))
+			E:Print(format('Guild: %s, Active Members: %d', guildData.name, guildData.numActiveMembers))
 		end
 	end
-	E:Print("|cff00BFFF-------------------------|r")
+
+	E:Print('|cff00BFFF-------------------------|r')
 end
 
-function E:SmartApply(msg)
-	local currentTime = time()
-	if currentTime - lastApplyTime < APPLY_COOLDOWN then
-		local timeLeft = ceil(APPLY_COOLDOWN - (currentTime - lastApplyTime))
-		E:Print(format("|cffff0000Guild apply is on cooldown. Please wait %d more seconds.|r", timeLeft))
-		return
-	end
-
-	if next(E.guilds) == nil then
-		E:Print("Error: No guilds found. Open Guild Finder and search first.")
-		return
-	end
-
-	-- The message is the only argument, in quotes.
-	local appMessage = strmatch(msg, "^\"(.-)\"$") or "Hello, I am interested in joining your guild!"
-	local playerSpecs = GetPlayerSpecIds()
-	if not playerSpecs or #playerSpecs == 0 then
-		E:Print("Error: Could not retrieve player specializations.")
-		return
-	end
-
-	-- Create a sortable list from the scraped guilds.
+do
 	local sortedGuilds = {}
-	for guid, guildData in pairs(E.guilds) do
-		tinsert(sortedGuilds, guildData)
-	end
+	local appliedGUIDs = {} -- This list resets on every reload.
+	local lastApplyTime = 0 -- Tracks the last time /guildapply was used to enforce a cooldown.
+	local APPLY_COOLDOWN = 120 -- 2 minutes
 
-	-- Sort the list by member count, descending.
-	sort(sortedGuilds, function(a, b)
-		return a.numActiveMembers > b.numActiveMembers
-	end)
+	function E:ApplyGuilds(msg)
+		local currentTime = time()
+		if currentTime - lastApplyTime < APPLY_COOLDOWN then
+			local timeLeft = ceil(APPLY_COOLDOWN - (currentTime - lastApplyTime))
+			E:Print(format('|cffff0000Guild apply is on cooldown. Please wait %d more seconds.|r', timeLeft))
+			return
+		elseif next(E.guilds) == nil then
+			E:Print('Error: No guilds found. Open Guild Finder and search first.')
+			return
+		end
 
-	E:Print("Beginning smart apply...")
-	E:Print(format("Using application message: \"%s\"", appMessage))
+		-- The message is the only argument, in quotes.
+		local playerSpecs = E.SpecByClass[E.myclass]
+		if not playerSpecs or #playerSpecs == 0 then
+			E:Print('Error: Could not retrieve player specializations.')
+			return
+		end
 
-	local appliedCount = 0
-	local maxApplications = 5
+		-- Sortable list from the scraped guilds.
+		wipe(sortedGuilds)
 
-	-- Loop through the sorted list and apply to new guilds.
-	for _, guildData in ipairs(sortedGuilds) do
-		local guid = guildData.clubFinderGUID
+		for _, guildData in next, E.guilds do
+			tinsert(sortedGuilds, guildData)
+		end
 
-		-- Check our session table to see if we've already applied.
-		if appliedGUIDs[guid] then
-			-- We already sent one this session, skip it.
-		else
-			-- Check the live status from the API.
-			local status = C_ClubFinder.GetPlayerClubApplicationStatus(guid)
-			if status == Enum.PlayerClubRequestStatus.None then
-				-- This is a new guild we can apply to!
-				E:Print(format("|cffffff00Applying to '%s' (%d members)...|r", guildData.name, guildData.numActiveMembers))
+		-- Sort the list by member count, descending.
+		sort(sortedGuilds, E.GuildListSort)
 
-				C_ClubFinder.RequestMembershipToClub(guid, appMessage, playerSpecs)
+		local applyMessage = strmatch(msg, '^"(.-)"$') or 'Hello, I am interested in joining your guild!'
+
+		E:Print('Beginning smart apply...')
+		E:Print(format('Using application message: "%s"', applyMessage))
+
+		local appliedCount = 0
+		local maxApplications = 5
+
+		-- Loop through the sorted list and apply to new guilds.
+		for _, guildData in ipairs(sortedGuilds) do
+			local guid = guildData.clubFinderGUID
+			local status = (guid and not appliedGUIDs[guid]) and GetPlayerClubApplicationStatus(guid)
+			if status == PlayerClubRequestStatusNone then -- This is a new guild we can apply to!
+				E:Print(format('|cffffff00Applying to "%s" (%d members)...|r', guildData.name, guildData.numActiveMembers))
+
+				RequestMembershipToClub(guid, applyMessage, playerSpecs)
 
 				-- Record the GUID in our session table so we don't apply again.
 				appliedGUIDs[guid] = true
@@ -672,22 +654,22 @@ function E:SmartApply(msg)
 
 				-- Stop if we've hit our limit.
 				if appliedCount >= maxApplications then
-					E:Print("Application limit of 5 reached for this session.")
+					E:Print('Application limit of 5 reached for this session.')
 					break
 				end
 			end
 		end
-	end
 
-	if appliedCount > 0 then
 		-- Only set the cooldown if we actually sent an application.
-		lastApplyTime = currentTime
-	end
+		if appliedCount > 0 then
+			lastApplyTime = currentTime
+		end
 
-	if appliedCount == 0 then
-		E:Print("|cff00ff00Smart apply complete. No new guilds to apply to in the current list.|r")
-	else
-		E:Print(format("|cff00ff00Smart apply complete. Sent %d new applications.|r", appliedCount))
+		if appliedCount == 0 then
+			E:Print('|cff00ff00Smart apply complete. No new guilds to apply to in the current list.|r')
+		else
+			E:Print(format('|cff00ff00Smart apply complete. Sent %d new applications.|r', appliedCount))
+		end
 	end
 end
 
@@ -723,5 +705,5 @@ function E:LoadCommands()
 
 	-- Register Guild Apply Commands
 	E:RegisterChatCommand('guildlist', 'ListGuilds')
-	E:RegisterChatCommand('guildapply', 'SmartApply')
+	E:RegisterChatCommand('guildapply', 'ApplyGuilds')
 end

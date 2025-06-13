@@ -23,24 +23,25 @@ local AutoHider
 --------------------------------------------------------------------
 -- Guild Finder Helper
 --------------------------------------------------------------------
--- Stores guild data from the most recent search.
-E.guilds = {}
+E.guilds = {} -- Stores guild data from the most recent search.
 
 function BL:CLUB_FINDER_CLUB_LIST_RETURNED()
-	-- Always start with a fresh table.
-	wipe(E.guilds)
-	-- Make sure the UI is loaded before we try to read from it.
-	if ClubFinderGuildFinderFrame and ClubFinderGuildFinderFrame.GuildCards and ClubFinderGuildFinderFrame.GuildCards.CardList then
-		for _, guildCardData in ipairs(ClubFinderGuildFinderFrame.GuildCards.CardList) do
-			if guildCardData and guildCardData.clubFinderGUID then
-				E.guilds[guildCardData.clubFinderGUID] = {
-					clubFinderGUID = guildCardData.clubFinderGUID,
-					name = guildCardData.name,
-					numActiveMembers = guildCardData.numActiveMembers,
+	wipe(E.guilds) -- Always start with a fresh table.
+
+	local frame = _G.ClubFinderGuildFinderFrame
+	local cardList = frame and frame.GuildCards and frame.GuildCards.CardList
+	if cardList then -- Make sure the UI is loaded before we try to read from it.
+		for _, data in ipairs(cardList) do
+			if data and data.clubFinderGUID then
+				E.guilds[data.clubFinderGUID] = {
+					name = data.name,
+					clubFinderGUID = data.clubFinderGUID,
+					numActiveMembers = data.numActiveMembers,
 				}
 			end
 		end
-		E:Print(format("Found %d guilds. Try /guildlist <minActivePlayers> or /guildapply <applicationMsg> to apply to the top five most active guilds in the list.", #ClubFinderGuildFinderFrame.GuildCards.CardList))
+
+		E:Print(format('Found %d guilds. Try /guildlist <minActivePlayers> or /guildapply <applicationMsg> to apply to the top five most active guilds in the list.', #cardList))
 	end
 end
 
@@ -180,7 +181,7 @@ function BL:Initialize()
 	BL:PositionCaptureBar()
 
 	BL:RegisterEvent('ADDON_LOADED')
-	self:RegisterEvent("CLUB_FINDER_CLUB_LIST_RETURNED") -- Register event here
+	BL:RegisterEvent('CLUB_FINDER_CLUB_LIST_RETURNED')
 
 	BL:SkinBlizzTimers()
 

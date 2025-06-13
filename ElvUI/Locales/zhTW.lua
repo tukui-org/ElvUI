@@ -448,4 +448,6 @@ L["EHELP_COMMANDS"] = ([=[一些重要的 *ElvUI|r 命令:
  */edebug|r ^on|r 或 ^off|r  -  禁用 ElvUI 以外的全部插件.
   注意: 在不登出游戲的情況下, */edebug|r ^off|r 將會重新打開
   之前使用 */edebug|r ^on|r 禁用的插件.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

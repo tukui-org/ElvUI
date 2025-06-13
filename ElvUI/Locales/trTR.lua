@@ -446,4 +446,6 @@ L["EHELP_COMMANDS"] = ([=[Tum onemli *ElvUI|r komutlarinin listesi:
  */edebug|r ^on|r yada ^off|r  -  ElvUI disindaki tum Eklentileri devre disi birakin.
   NOTE: */edebug|r ^off|r devre disi birakilan eklentileri yeniden etkinlestirecek
   using */edebug|r ^on|r o oturumun icinde.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
