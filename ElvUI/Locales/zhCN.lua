@@ -452,6 +452,7 @@ L["EHELP_COMMANDS"] = ([=[这里列出了重要的 *ElvUI|r 命令：
  */estatus|r  -  需要支持方面问题的重要信息。
  */egrid|r ^64|r or ^128|r or ^256|r  -  切换像素网格。
  */edebug|r ^on|r or ^off|r  -  禁用除 ElvUI 之外的所有插件。
-  注意：*/edebug|r ^off|r 将重新启用从使用
-  */edebug|r ^on|r 之前的会话中禁用的插件。
+  注意：*/edebug|r ^off|r 将重新启用从使用 */edebug|r ^on|r 之前的会话中禁用的插件。
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

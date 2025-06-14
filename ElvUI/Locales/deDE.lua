@@ -443,6 +443,7 @@ L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos
  */estatus|r  -  Wichtige Informationen für Supportfragen.
  */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
  */edebug|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
-  PS: */edebug|r ^off|r aktiviert wieder alle AddOns,
-  die durch */edebug|r ^on|r während der Sitzung deaktiviert wurden.
+  PS: */edebug|r ^off|r aktiviert wieder alle AddOns, die durch */edebug|r ^on|r während der Sitzung deaktiviert wurden.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
