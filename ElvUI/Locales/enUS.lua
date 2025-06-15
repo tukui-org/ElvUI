@@ -444,6 +444,7 @@ L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */estatus|r  -  Important informations for support questions.
  */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
  */edebug|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
-  NOTE: */edebug|r ^off|r will re-enable the addons disabled from
-  using */edebug|r ^on|r within that session.
+  NOTE: */edebug|r ^off|r will re-enable the addons disabled from using */edebug|r ^on|r within that session.
+ */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
+ */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

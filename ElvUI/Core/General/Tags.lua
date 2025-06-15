@@ -981,6 +981,15 @@ E:AddTag('name:last', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', functio
 	return name
 end)
 
+E:AddTag('name:first', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	local name = UnitName(unit)
+	if name and strfind(name, '%s') then
+		name = strmatch(name, '^(%S+)')
+	end
+
+	return name
+end)
+
 E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
@@ -1664,6 +1673,7 @@ E.TagInfo = {
 		['name:abbrev:short'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 10 letters)" },
 		['name:abbrev:veryshort'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 5 letters)" },
 		['name:abbrev'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" },
+		['name:first'] = { category = 'Names', description = "Displays the first word of the unit's name" },
 		['name:last'] = { category = 'Names', description = "Displays the last word of the unit's name" },
 		['name:long:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" },
 		['name:long:translit'] = { category = 'Names', description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 20 letters)" },

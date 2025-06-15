@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
+local ipairs, format, wipe = ipairs, format, wipe
 local _G = _G
 local UIParent = UIParent
 local UnitXP = UnitXP
@@ -18,6 +19,31 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local hooksecurefunc = hooksecurefunc
 
 local AutoHider
+
+--------------------------------------------------------------------
+-- Guild Finder Helper
+--------------------------------------------------------------------
+E.guilds = {} -- Stores guild data from the most recent search.
+
+function BL:CLUB_FINDER_CLUB_LIST_RETURNED()
+	wipe(E.guilds) -- Always start with a fresh table.
+
+	local frame = _G.ClubFinderGuildFinderFrame
+	local cardList = frame and frame.GuildCards and frame.GuildCards.CardList
+	if cardList then -- Make sure the UI is loaded before we try to read from it.
+		for _, data in ipairs(cardList) do
+			if data and data.clubFinderGUID then
+				E.guilds[data.clubFinderGUID] = {
+					name = data.name,
+					clubFinderGUID = data.clubFinderGUID,
+					numActiveMembers = data.numActiveMembers,
+				}
+			end
+		end
+
+		E:Print(format('Found %d guilds. Try /guildlist <minActivePlayers> or /guildapply <applicationMsg> to apply to the top five most active guilds in the list.', #cardList))
+	end
+end
 
 --This changes the growth direction of the toast frame depending on position of the mover
 local function PostMove(mover)
@@ -93,7 +119,7 @@ function BL:HandleAddonCompartment()
 end
 
 function BL:ObjectiveTracker_HasQuestTracker()
-	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
+	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('BigWigs')
 end
 
 function BL:ObjectiveTracker_IsCollapsed(frame)
@@ -155,6 +181,7 @@ function BL:Initialize()
 	BL:PositionCaptureBar()
 
 	BL:RegisterEvent('ADDON_LOADED')
+	BL:RegisterEvent('CLUB_FINDER_CLUB_LIST_RETURNED')
 
 	BL:SkinBlizzTimers()
 
