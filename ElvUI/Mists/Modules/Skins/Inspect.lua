@@ -20,7 +20,7 @@ function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
 	local InspectFrame = _G.InspectFrame
-	S:HandleFrame(InspectFrame, true, nil, 11, -12, -32, 76)
+	S:HandleFrame(InspectFrame)
 	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
 
 	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
@@ -29,9 +29,10 @@ function S:Blizzard_InspectUI()
 
 	-- Reposition Tabs
 	_G.InspectFrameTab1:ClearAllPoints()
-	_G.InspectFrameTab1:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', 1, 76)
+	_G.InspectFrameTab1:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -10, 0)
 	_G.InspectFrameTab2:Point('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.InspectFrameTab3:Point('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.InspectFrameTab4:Point('TOPLEFT', _G.InspectFrameTab3, 'TOPRIGHT', -19, 0)
 
 	_G.InspectPaperDollFrame:StripTextures()
 
@@ -71,62 +72,6 @@ function S:Blizzard_InspectUI()
 
 	-- Talents
 	S:HandleFrame(_G.InspectTalentFrame, true, nil, 11, -12, -32, 76)
-	S:HandleCloseButton(_G.InspectTalentFrameCloseButton, _G.InspectTalentFrame.backdrop)
-
-	-- HandleTab looks weird
-	for i = 1, 3 do
-		local tab = _G['InspectTalentFrameTab'..i]
-		tab:StripTextures()
-		tab:Height(24)
-		S:HandleButton(tab)
-	end
-
-	_G.InspectTalentFramePointsBar:StripTextures()
-
-	_G.InspectTalentFrameSpentPointsText:Point('LEFT', _G.InspectTalentFramePointsBar, 'LEFT', 12, -1)
-	_G.InspectTalentFrameTalentPointsText:Point('RIGHT', _G.InspectTalentFramePointsBar, 'RIGHT', -12, -1)
-
-	_G.InspectTalentFrameScrollFrame:StripTextures()
-	_G.InspectTalentFrameScrollFrame:CreateBackdrop()
-
-	S:HandleScrollBar(_G.InspectTalentFrameScrollFrameScrollBar)
-	_G.InspectTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.InspectTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
-
-	for i = 1, _G.MAX_NUM_TALENTS do
-		local talent = _G['InspectTalentFrameTalent'..i]
-		local icon = _G['InspectTalentFrameTalent'..i..'IconTexture']
-		local rank = _G['InspectTalentFrameTalent'..i..'Rank']
-
-		if talent then
-			talent:StripTextures()
-			talent:SetTemplate()
-			talent:StyleButton()
-
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetDrawLayer('ARTWORK')
-
-			rank:FontTemplate(nil, 12, 'OUTLINE')
-		end
-	end
-
-	-- Honor/Arena/PvP Tab
-	local InspectPVPFrame = _G.InspectPVPFrame
-	InspectPVPFrame:StripTextures(true)
-
-	for i = 1, MAX_ARENA_TEAMS do
-		local inspectpvpTeam = _G['InspectPVPTeam'..i]
-
-		inspectpvpTeam:StripTextures()
-		inspectpvpTeam:CreateBackdrop()
-		inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
-		inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
-
-		inspectpvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
-		inspectpvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
-
-		_G['InspectPVPTeam'..i..'Highlight']:Kill()
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
