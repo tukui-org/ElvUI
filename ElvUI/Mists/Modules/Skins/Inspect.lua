@@ -11,9 +11,6 @@ local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetSpecializationRoleByID = GetSpecializationRoleByID
-local InspectGlyphFrameGlyph_UpdateGlyphs = InspectGlyphFrameGlyph_UpdateGlyphs
-
-local INSPECTED_UNIT = INSPECTED_UNIT
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
