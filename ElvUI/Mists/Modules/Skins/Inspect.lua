@@ -2,15 +2,27 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
 local CreateFrame = CreateFrame
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetGlyphSocketInfo = GetGlyphSocketInfo
-local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemQuality = GetInventoryItemQuality
+local GetInspectSpecialization = GetInspectSpecialization
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetSpecializationRoleByID = GetSpecializationRoleByID
+
+local function FrameBackdrop_OnEnter(frame)
+	if not frame.backdrop then return end
+
+	frame.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+end
+
+local function FrameBackdrop_OnLeave(frame)
+	if not frame.backdrop then return end
+
+	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
@@ -41,18 +53,20 @@ function S:Blizzard_InspectUI()
 	_G.InspectPaperDollFrame:StripTextures()
 
 	for _, slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
-		local icon = _G[slot:GetName()..'IconTexture']
-		local cooldown = _G[slot:GetName()..'Cooldown']
-
 		slot:StripTextures()
 		slot:CreateBackdrop()
 		slot.backdrop:SetAllPoints()
 		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
+		local name = slot:GetName()
+		local icon = _G[name..'IconTexture']
+		if icon then
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetInside()
+		end
 
+		local cooldown = _G[name..'Cooldown']
 		if cooldown then
 			E:RegisterCooldown(cooldown)
 		end
@@ -75,26 +89,25 @@ function S:Blizzard_InspectUI()
 	_G.InspectModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
 
 	-- PvP Tab
-	InspectPVPFrame:StripTextures()
+	_G.InspectPVPFrame:StripTextures()
 
-	for _, Section in pairs({'RatedBG', 'Arena2v2', 'Arena3v3', 'Arena5v5'}) do
-		local Frame = InspectPVPFrame[Section]
-		Frame:CreateBackdrop('Transparent')
-		Frame.backdrop:Point('TOPLEFT', 0, -1)
-		Frame.backdrop:Point('BOTTOMRIGHT', 0, 1)
-		Frame:EnableMouse(true)
+	for _, name in next, { 'RatedBG', 'Arena2v2', 'Arena3v3', 'Arena5v5' } do
+		local section = _G.InspectPVPFrame[name]
+		if section then
+			section:CreateBackdrop('Transparent')
+			section.backdrop:Point('TOPLEFT', 0, -1)
+			section.backdrop:Point('BOTTOMRIGHT', 0, 1)
+			section:EnableMouse(true)
 
-		Frame:HookScript('OnEnter', function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		end)
-		Frame:HookScript('OnLeave', function(self)
-			self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+			section:HookScript('OnEnter', FrameBackdrop_OnEnter)
+			section:HookScript('OnLeave', FrameBackdrop_OnLeave)
+		end
 	end
 
 	-- Talent Tab
 	_G.InspectTalentFrame:StripTextures()
 
+	local Specialization = _G.Specialization
 	Specialization:CreateBackdrop('Transparent')
 	Specialization.backdrop:Point('TOPLEFT', 18, -16)
 	Specialization.backdrop:Point('BOTTOMRIGHT', 20, 12)
@@ -108,45 +121,34 @@ function S:Blizzard_InspectUI()
 	Specialization.specIcon.backdrop:SetOutside(Specialization.specIcon)
 	Specialization.specIcon:SetParent(Specialization.specIcon.backdrop)
 
-	Specialization:HookScript('OnShow', function(self)
-		local spec = nil
-		self.tooltip = nil
+	Specialization:HookScript('OnShow', function(frame)
+		frame.tooltip = nil
 
-		if INSPECTED_UNIT ~= nil then
-			spec = GetInspectSpecialization(INSPECTED_UNIT)
-		end
+		local spec = _G.INSPECTED_UNIT and GetInspectSpecialization(_G.INSPECTED_UNIT)
+		local role = spec and spec > 0 and GetSpecializationRoleByID(spec)
+		if role then
+			local _, _, description, icon = GetSpecializationInfoByID(spec)
 
-		local _, role, description, icon
-		if spec ~= nil and spec > 0 then
-			role = GetSpecializationRoleByID(spec)
-
-			if role ~= nil then
-				_, _, description, icon = GetSpecializationInfoByID(spec)
-
-				self.specIcon:SetTexture(icon)
-				self.tooltip = description
-
-				if role == 'DAMAGER' then
-					self.roleIcon:SetTexture(E.Media.Textures.DPS)
-					self.roleIcon:Size(19)
-				elseif role == 'TANK' then
-					self.roleIcon:SetTexture(E.Media.Textures.Tank)
-					self.roleIcon:Size(20)
-				elseif role == 'HEALER' then
-					self.roleIcon:SetTexture(E.Media.Textures.Healer)
-					self.roleIcon:Size(20)
-				end
-				self.roleIcon:SetTexCoord(unpack(E.TexCoords))
-
-				self.roleName:SetTextColor(1, 1, 1)
+			if role == 'DAMAGER' then
+				frame.roleIcon:SetTexture(E.Media.Textures.DPS)
+			elseif role == 'TANK' then
+				frame.roleIcon:SetTexture(E.Media.Textures.Tank)
+			elseif role == 'HEALER' then
+				frame.roleIcon:SetTexture(E.Media.Textures.Healer)
 			end
+
+			frame.tooltip = description
+
+			frame.roleIcon:Size(20)
+			frame.roleIcon:SetTexCoord(unpack(E.TexCoords))
+			frame.roleName:SetTextColor(1, 1, 1)
+			frame.specIcon:SetTexture(icon)
 		end
 	end)
 
 	for i = 1, 6 do
 		for j = 1, 3 do
 			local button = _G['TalentsTalentRow'..i..'Talent'..j]
-
 			if button then
 				button:StripTextures()
 				button:CreateBackdrop()
@@ -154,27 +156,27 @@ function S:Blizzard_InspectUI()
 				button:StyleButton(nil, true)
 				button:GetHighlightTexture():SetInside(button.backdrop)
 
-				button.icon:SetTexCoord(unpack(E.TexCoords))
-				button.icon:SetInside(button.backdrop)
+				if button.icon then
+					button.icon:SetTexCoord(unpack(E.TexCoords))
+					button.icon:SetInside(button.backdrop)
+				end
 
-				hooksecurefunc(button.border, 'Show', function()
-					button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-				end)
-
-				hooksecurefunc(button.border, 'Hide', function()
-					button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end)
+				if button.border then
+					hooksecurefunc(button.border, 'Show', FrameBackdrop_OnEnter)
+					hooksecurefunc(button.border, 'Hide', FrameBackdrop_OnLeave)
+				end
 			end
 		end
 	end
 
 	_G.TalentsTalentRow1:Point('TOPLEFT', 20, -142)
 
-	_G.InspectTalentFrame:HookScript('OnShow', function(self)
-		if self.isSkinned then return end
+	_G.InspectTalentFrame:HookScript('OnShow', function(frame)
+		if frame.isSkinned then return end
 
+		local InspectGlyphs = _G.InspectGlyphs
 		for i = 1, 6 do
-			local Glyph = _G.InspectGlyphs['Glyph'..i]
+			local Glyph = InspectGlyphs['Glyph'..i]
 
 			Glyph:SetTemplate('Default', true)
 			Glyph:StyleButton(nil, true)
@@ -202,21 +204,18 @@ function S:Blizzard_InspectUI()
 		InspectGlyphs.Glyph5:Point('TOPLEFT', 90, -187)
 		InspectGlyphs.Glyph6:Point('TOPLEFT', 15, -180)
 
-		InspectGlyphFrameGlyph_UpdateGlyphs(self.InspectGlyphs, false)
+		_G.InspectGlyphFrameGlyph_UpdateGlyphs(frame.InspectGlyphs, false)
 
-		self.isSkinned = true
+		frame.isSkinned = true
 	end)
 
-	hooksecurefunc('InspectGlyphFrameGlyph_UpdateSlot', function(self)
-		local id = self:GetID()
-		local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup
-		local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(id, talentGroup, true, INSPECTED_UNIT)
-
-		if self.icon then
+	hooksecurefunc('InspectGlyphFrameGlyph_UpdateSlot', function(frame)
+		local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup, true, _G.INSPECTED_UNIT)
+		if frame.icon then
 			if glyphType and iconFilename then
-				self.icon:SetTexture(iconFilename)
+				frame.icon:SetTexture(iconFilename)
 			else
-				self.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune1]])
+				frame.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune1]])
 			end
 		end
 	end)
