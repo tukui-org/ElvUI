@@ -485,7 +485,6 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameNpcNameText:PointXY(-1, 0)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
-	_G.QuestLogDetailInset:Kill()
 
 	_G.QuestLogListScrollFrame:Width(303)
 	_G.QuestLogDetailScrollFrame:Width(303)
