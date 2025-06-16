@@ -73,7 +73,7 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectPaperDollFrame:StripTextures()
 
-	S:HandleBlizzardRegions(_G.InspectModelFrame)
+	S:HandleBlizzardRegions(_G.InspectModelFrame, true)
 
 	for _, slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 		slot:StripTextures()
