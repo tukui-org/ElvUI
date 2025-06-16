@@ -298,9 +298,30 @@ function S:SpellBookFrame()
 	end)
 
 	-- What Has Changed Frame
-	_G.SpellBookWhatHasChanged:Point('TOPLEFT', -80, 5)
-	_G.SpellBookWhatHasChanged.ClassName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-	_G.SpellBookWhatHasChanged.ClassName:Point('TOP', 37, -30)
+	local SpellBookWhatHasChanged = _G.SpellBookWhatHasChanged
+	SpellBookWhatHasChanged:Point('TOPLEFT', -80, 5)
+	SpellBookWhatHasChanged.ClassName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+	SpellBookWhatHasChanged.ClassName:Point('TOP', 37, -30)
+
+	hooksecurefunc('SpellBook_UpdateWhatHasChangedTab', function()
+		if not SpellBookWhatHasChanged.ChangedItems then return end
+
+		local index = 1
+		local frame = SpellBookWhatHasChanged.ChangedItems[index]
+		while frame do
+			local mainText = select(5, frame:GetRegions())
+			if mainText and mainText.SetVertexColor then
+				if E.private.skins.parchmentRemoverEnable then
+					mainText:SetVertexColor(1, 1, 1)
+				else
+					mainText:SetVertexColor(0, 0, 0)
+				end
+			end
+
+			index = index + 1
+			frame = SpellBookWhatHasChanged.ChangedItems[index]
+		end
+	end)
 
 	local changedList = _G.WHAT_HAS_CHANGED_DISPLAY[E.myclass]
 	if changedList then
