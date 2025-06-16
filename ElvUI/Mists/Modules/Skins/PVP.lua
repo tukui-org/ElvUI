@@ -153,22 +153,30 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- War Games Tab
-	_G.WarGamesQueueFrame:StripTextures()
+	local WarGamesQueueFrame = _G.WarGamesQueueFrame
+	WarGamesQueueFrame:StripTextures()
 	S:HandleScrollBar(_G.WarGamesQueueFrameScrollFrameScrollBar)
 	S:HandleScrollBar(_G.WarGamesQueueFrameInfoScrollFrameScrollBar)
 	_G.WarGamesQueueFrameDescription:SetTextColor(1, 1, 1)
 
 	local textures = {
-		_G.WarGamesQueueFrame.HorizontalBar,
+		WarGamesQueueFrame.HorizontalBar,
 		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar,
 		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Back.Texture,
-		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Forward.Texture,
-		_G.WarGameStartButton_LeftSeparator,
-		_G.WarGameStartButton_RightSeparator
+		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Forward.Texture
 	}
 
 	for _, name in next, textures do
 		name:Kill()
+	end
+
+	for _, child in next, { WarGamesQueueFrame:GetChildren() } do
+		if child:GetName() == 'WarGameStartButton' then
+			S:HandleButton(child)
+
+			child.LeftSeparator:Kill()
+			child.RightSeparator:Kill()
+		end
 	end
 end
 
