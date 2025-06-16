@@ -102,10 +102,7 @@ function S:GossipFrame()
 
 	local ItemTextFrame = _G.ItemTextFrame
 	ItemTextFrame:StripTextures()
-	ItemTextFrame:CreateBackdrop('Transparent')
-	ItemTextFrame.backdrop:ClearAllPoints()
-	ItemTextFrame.backdrop:Point('TOPLEFT', ItemTextFrame, 5, -10)
-	ItemTextFrame.backdrop:Point('BOTTOMRIGHT', ItemTextFrame, -25, 45)
+	ItemTextFrame:SetTemplate('Transparent')
 
 	local ItemTextScrollFrame = _G.ItemTextScrollFrame
 	ItemTextScrollFrame:DisableDrawLayer('ARTWORK')
