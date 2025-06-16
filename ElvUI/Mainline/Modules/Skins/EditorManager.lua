@@ -5,25 +5,25 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local function HandleCheckBoxMini(checkbox, region)
+	if region:GetTexture() == 130751 then
+		if E.private.skins.checkBoxSkin then
+			region:SetTexture(E.Media.Textures.Melli)
+
+			local checkedTexture = checkbox:GetCheckedTexture()
+			checkedTexture:SetVertexColor(1, .82, 0, 0.8)
+			checkedTexture:SetInside(checkbox.backdrop)
+		end
+	else
+		region:SetTexture(E.ClearTexture)
+	end
+end
+
 local function HandleCheckBox(checkbox)
 	checkbox:CreateBackdrop()
 	checkbox.backdrop:SetInside(nil, 4, 4)
 
-	for _, region in next, { checkbox:GetRegions() } do
-		if region:IsObjectType('Texture') then
-			if region:GetTexture() == 130751 then
-				if E.private.skins.checkBoxSkin then
-					region:SetTexture(E.Media.Textures.Melli)
-
-					local checkedTexture = checkbox:GetCheckedTexture()
-					checkedTexture:SetVertexColor(1, .82, 0, 0.8)
-					checkedTexture:SetInside(checkbox.backdrop)
-				end
-			else
-				region:SetTexture(E.ClearTexture)
-			end
-		end
-	end
+	S:ForEachCheckboxTextureRegion(checkbox, HandleCheckBoxMini)
 end
 
 local function HandleDialogs()
