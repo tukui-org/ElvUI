@@ -345,7 +345,7 @@ function S:Blizzard_TalentUI()
 
 				button.bg = CreateFrame('Frame', nil, button)
 				button.bg:SetTemplate()
-				button.bg:OffsetFrameLevel(-4)
+				button.bg:OffsetFrameLevel(-4, button)
 				button.bg:Point('TOPLEFT', 15, 2)
 				button.bg:Point('BOTTOMRIGHT', -10, -2)
 
