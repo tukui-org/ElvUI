@@ -338,14 +338,14 @@ function S:Blizzard_TalentUI()
 			local button = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
 			if button then
 				button:StripTextures()
-				button:SetFrameLevel(button:GetFrameLevel() + 5)
+				button:OffsetFrameLevel(5)
 				button.knownSelection:SetAlpha(0)
 				button.icon:SetDrawLayer('ARTWORK', 1)
 				S:HandleIcon(button.icon, true)
 
 				button.bg = CreateFrame('Frame', nil, button)
 				button.bg:SetTemplate()
-				button.bg:SetFrameLevel(button:GetFrameLevel() - 4)
+				button.bg:OffsetFrameLevel(-4)
 				button.bg:Point('TOPLEFT', 15, 2)
 				button.bg:Point('BOTTOMRIGHT', -10, -2)
 
