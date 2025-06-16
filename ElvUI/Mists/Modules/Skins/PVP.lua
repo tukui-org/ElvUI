@@ -80,6 +80,7 @@ function S:Blizzard_PVPUI()
 
 	-- TODO: This is a fake dropdown
 	-- S:HandleDropDownBox(_G.HonorQueueFrameTypeDropDown)
+	_G.HonorQueueFrameTypeDropDown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
 
 	for _, bonusButton in pairs({'RandomBGButton', 'CallToArmsButton', 'WorldPVP1Button', 'WorldPVP2Button'}) do
 		local bu = BonusFrame[bonusButton]
@@ -176,6 +177,8 @@ function S:Blizzard_PVPUI()
 
 			child.LeftSeparator:Kill()
 			child.RightSeparator:Kill()
+
+			break -- no need to continue
 		end
 	end
 end
