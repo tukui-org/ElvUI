@@ -84,7 +84,7 @@ local function QuestLogQuests()
 		if not button.IsSkinned then
 			--FIX ME 11.0; Use the actual ElvUI Check Skin thing
 			if button.Checkbox then
-				button.Checkbox:StripTextures(2)
+				button.Checkbox:StripTextures(true)
 				button.Checkbox:CreateBackdrop()
 			end
 
