@@ -9,7 +9,7 @@ local ElvUF = E.oUF
 local _G = _G
 local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
-local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local type, ipairs, pairs, unpack, strmatch = type, ipairs, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
@@ -173,6 +173,10 @@ E.SpecName = { -- english locale
 	[72]	= 'Fury',
 	[73]	= 'Protection',
 }
+
+function E:GetCurrencyIDFromLink(link)
+	return link and tonumber(strmatch(link, 'currency:(%d+)'))
+end
 
 function E:GetDateTime(localTime, unix)
 	if not localTime then -- try to properly handle realm time

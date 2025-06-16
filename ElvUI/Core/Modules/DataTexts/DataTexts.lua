@@ -25,7 +25,7 @@ local UnregisterStateDriver = UnregisterStateDriver
 local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
-local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
+local C_CurrencyInfo_GetCurrencyInfoFromLink = C_CurrencyInfo.GetCurrencyInfoFromLink
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
@@ -794,7 +794,7 @@ function DT:PopulateData(currencyOnly)
 		local info = DT:CurrencyListInfo(i)
 
 		if info.isHeader then
-			if E.Retail and not info.isHeaderExpanded then
+			if not E.Classic and not info.isHeaderExpanded then
 				C_CurrencyInfo_ExpandCurrencyList(i, true)
 				Collapsed[info.name] = true
 
@@ -806,8 +806,8 @@ function DT:PopulateData(currencyOnly)
 
 			headerIndex = i
 		elseif info.name then
-			local currencyLink = E.Retail and C_CurrencyInfo_GetCurrencyListLink(i)
-			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
+			local currencyLink = not E.Classic and C_CurrencyInfo_GetCurrencyListLink(i)
+			local currencyID = E:GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
 				if DT.CurrencyList then
 					DT.CurrencyList[tostring(currencyID)] = info.name
@@ -823,7 +823,7 @@ function DT:PopulateData(currencyOnly)
 		i = i + 1
 	end
 
-	if E.Retail then
+	if not E.Classic then
 		for k = 1, listSize do
 			local info = DT:CurrencyListInfo(k)
 			if not info.name then
@@ -834,15 +834,15 @@ function DT:PopulateData(currencyOnly)
 		end
 
 		wipe(Collapsed)
-	end
 
-	if (E.Retail or E.Mists) and not currencyOnly then
-		for index = 1, GetNumSpecializations() do
-			local id, name, _, icon, _, statID = GetSpecializationInfo(index)
+		if not currencyOnly then
+			for index = 1, GetNumSpecializations() do
+				local id, name, _, icon, _, statID = GetSpecializationInfo(index)
 
-			if id then
-				DT.SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon, statID = statID }
-				DT.SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
+				if id then
+					DT.SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon, statID = statID }
+					DT.SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
+				end
 			end
 		end
 	end
