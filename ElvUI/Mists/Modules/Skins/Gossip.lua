@@ -94,6 +94,7 @@ function S:GossipFrame()
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
 	GreetingPanel:StripTextures()
 	GreetingPanel:CreateBackdrop('Transparent')
