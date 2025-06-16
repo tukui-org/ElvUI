@@ -73,14 +73,7 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectPaperDollFrame:StripTextures()
 
-	_G.InspectModelFrameBorderTopLeft:Kill()
-	_G.InspectModelFrameBorderTopRight:Kill()
-	_G.InspectModelFrameBorderTop:Kill()
-	_G.InspectModelFrameBorderLeft:Kill()
-	_G.InspectModelFrameBorderRight:Kill()
-	_G.InspectModelFrameBorderBottomLeft:Kill()
-	_G.InspectModelFrameBorderBottomRight:Kill()
-	_G.InspectModelFrameBorderBottom:Kill()
+	S:HandleBlizzardRegions(_G.InspectModelFrame)
 
 	for _, slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 		slot:StripTextures()
