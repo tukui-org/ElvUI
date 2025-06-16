@@ -1292,6 +1292,14 @@ function S:HandleStatusBar(frame, color, template)
 	E:RegisterStatusBar(frame)
 end
 
+function S:ForEachCheckboxTextureRegion(checkbox, func)
+	for _, region in next, { checkbox:GetRegions() } do
+		if region:IsObjectType('Texture') then
+			func(checkbox, region)
+		end
+	end
+end
+
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
