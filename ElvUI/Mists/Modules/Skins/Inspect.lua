@@ -30,6 +30,13 @@ local function Update_InspectPaperDollItemSlotButton(button)
 	button.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
+local function InspectTalentIconDesaturated(icon, desaturate)
+	local parent = icon:GetParent()
+	if parent.ShadowedTexture then
+		parent.ShadowedTexture:SetShown(desaturate)
+	end
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -155,6 +162,12 @@ function S:Blizzard_InspectUI()
 				if button.icon then
 					button.icon:SetTexCoord(unpack(E.TexCoords))
 					button.icon:SetInside(button.backdrop)
+
+					button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
+					button.ShadowedTexture:SetAllPoints(button.icon)
+					button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
+
+					hooksecurefunc(button.icon, 'SetDesaturated', InspectTalentIconDesaturated)
 				end
 
 				if button.border then
