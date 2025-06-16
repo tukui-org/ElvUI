@@ -37,6 +37,26 @@ local function InspectTalentIconDesaturated(icon, desaturate)
 	end
 end
 
+local function HandleTabs()
+	local tab = _G.InspectFrameTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -10, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['InspectFrameTab'..index]
+	end
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -44,18 +64,23 @@ function S:Blizzard_InspectUI()
 	S:HandleFrame(InspectFrame)
 	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
 
+	-- Tabs
+	HandleTabs()
+
 	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
 		S:HandleTab(_G['InspectFrameTab'..i])
 	end
 
-	-- Reposition Tabs
-	_G.InspectFrameTab1:ClearAllPoints()
-	_G.InspectFrameTab1:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -10, 0)
-	_G.InspectFrameTab2:Point('TOPLEFT', _G.InspectFrameTab1, 'TOPRIGHT', -19, 0)
-	_G.InspectFrameTab3:Point('TOPLEFT', _G.InspectFrameTab2, 'TOPRIGHT', -19, 0)
-	_G.InspectFrameTab4:Point('TOPLEFT', _G.InspectFrameTab3, 'TOPRIGHT', -19, 0)
-
 	_G.InspectPaperDollFrame:StripTextures()
+
+	_G.InspectModelFrameBorderTopLeft:Kill()
+	_G.InspectModelFrameBorderTopRight:Kill()
+	_G.InspectModelFrameBorderTop:Kill()
+	_G.InspectModelFrameBorderLeft:Kill()
+	_G.InspectModelFrameBorderRight:Kill()
+	_G.InspectModelFrameBorderBottomLeft:Kill()
+	_G.InspectModelFrameBorderBottomRight:Kill()
+	_G.InspectModelFrameBorderBottom:Kill()
 
 	for _, slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 		slot:StripTextures()
