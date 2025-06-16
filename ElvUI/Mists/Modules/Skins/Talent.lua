@@ -7,10 +7,10 @@ local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local C_SpecializationInfo_GetSpecialization = C_SpecializationInfo.GetSpecialization
-local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationSpells = GetSpecializationSpells
+local C_SpecializationInfo_GetSpecialization = C_SpecializationInfo.GetSpecialization
+local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 
 local GetSpellTexture = GetSpellTexture
 local UnitSex = UnitSex
@@ -87,16 +87,30 @@ end
 local function TalentFrame_Update()
 	for i = 1, 7 do -- MAX_TALENT_TIERS currently 7
 		for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
-			local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
-			if bu and bu.bg and bu.knownSelection then
-				if bu.knownSelection:IsShown() then
-					bu.bg.SelectedTexture:Show()
-					bu.ShadowedTexture:Hide()
-				else
-					bu.ShadowedTexture:SetAllPoints(bu.bg.SelectedTexture)
-					bu.bg.SelectedTexture:Hide()
-					bu.ShadowedTexture:Show()
-					bu.icon:SetDesaturated(false)
+			local button = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+			if button and button.bg then
+				if button.knownSelection then
+					button.icon:SetDesaturated(false)
+
+					if button.knownSelection:IsShown() then
+						button.bg.SelectedTexture:Show()
+						button.ShadowedTexture:Hide()
+					else
+						button.bg.SelectedTexture:Hide()
+						button.ShadowedTexture:Show()
+					end
+				end
+
+				if button.learnSelection then
+					if button.learnSelection:IsShown() then
+						button.ShadowedTexture:Hide()
+
+						local r, g, b = unpack(E.media.rgbvaluecolor)
+						button.bg:SetBackdropBorderColor(r, g, b)
+					else
+						local r, g, b = unpack(E.media.bordercolor)
+						button.bg:SetBackdropBorderColor(r, g, b)
+					end
 				end
 			end
 		end
@@ -104,11 +118,10 @@ local function TalentFrame_Update()
 end
 
 local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
-	local playerTalentSpec = C_SpecializationInfo_GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
-	local shownSpec = spec or playerTalentSpec or 1
-	local numSpecs = GetNumSpecializations(nil, s.isPet)
-	local sex = s.isPet and UnitSex('pet') or UnitSex('player')
-	local id, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
+	local playerSpec = C_SpecializationInfo_GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
+	local shownSpec = spec or playerSpec or 1
+
+	local id, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(shownSpec, nil, s.isPet, nil, s.isPet and UnitSex('pet') or E.mygender)
 	if not id then return end
 
 	local scrollBar = s.spellsScroll.ScrollBar
@@ -120,25 +133,23 @@ local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
 	scrollChild.specIcon:SetTexture(icon)
 	scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 
-	local index = 1
-	local bonuses
-	local bonusesIncrement = 1
-	if s.isPet then
-		bonuses = {GetSpecializationSpells(shownSpec, nil, s.isPet, true)}
-		bonusesIncrement = 2
+	local numSpecs = GetNumSpecializations(nil, s.isPet)
+	for i = 1, numSpecs do
+		local button = s['specButton'..i]
+		if button then
+			button.SelectedTexture:SetShown(button.selected)
+
+			if button.backdrop then
+				button.SelectedTexture:SetInside(button.backdrop)
+			end
+		end
 	end
 
-	for i = 1, numSpecs do
-		local bu = s['specButton'..i]
-		if bu.backdrop then
-			bu.SelectedTexture:SetInside(bu.backdrop)
-		end
-
-		if bu.selected then
-			bu.SelectedTexture:Show()
-		else
-			bu.SelectedTexture:Hide()
-		end
+	local index, bonuses = 1
+	local bonusesIncrement = 1
+	if s.isPet then
+		bonuses = { GetSpecializationSpells(shownSpec, nil, s.isPet, true) }
+		bonusesIncrement = 2
 	end
 
 	if bonuses then
@@ -150,7 +161,9 @@ local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
 					frame.icon:SetTexture(spellTex)
 				end
 
-				frame.subText:SetTextColor(.6, .6, .6)
+				if frame.subText then
+					frame.subText:SetTextColor(.6, .6, .6)
+				end
 
 				if not frame.backdrop then
 					frame.ring:Hide()
@@ -322,31 +335,36 @@ function S:Blizzard_TalentUI()
 		end
 
 		for j = 1, 3 do -- NUM_TALENT_COLUMNS currently 3
-			local bu = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+			local button = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
+			if button then
+				button:StripTextures()
+				button:SetFrameLevel(button:GetFrameLevel() + 5)
+				button.knownSelection:SetAlpha(0)
+				button.icon:SetDrawLayer('ARTWORK', 1)
+				S:HandleIcon(button.icon, true)
 
-			if bu then
-				bu:StripTextures()
-				bu:SetFrameLevel(bu:GetFrameLevel() + 5)
-				bu.knownSelection:SetAlpha(0)
-				bu.icon:SetDrawLayer('ARTWORK', 1)
-				S:HandleIcon(bu.icon, true)
+				button.bg = CreateFrame('Frame', nil, button)
+				button.bg:SetTemplate()
+				button.bg:SetFrameLevel(button:GetFrameLevel() - 4)
+				button.bg:Point('TOPLEFT', 15, 2)
+				button.bg:Point('BOTTOMRIGHT', -10, -2)
 
-				bu.bg = CreateFrame('Frame', nil, bu)
-				bu.bg:SetTemplate()
-				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
-				bu.bg:Point('TOPLEFT', 15, 2)
-				bu.bg:Point('BOTTOMRIGHT', -10, -2)
+				row.transition.color:AddChild(button.bg)
 
-				row.transition.color:AddChild(bu.bg)
+				-- button.GlowFrame:Kill()
 
-				-- bu.GlowFrame:Kill()
+				button:SetHighlightTexture(E.media.blankTex)
+				local highlight = button:GetHighlightTexture()
+				highlight:SetColorTexture(1, 1, 1, 0.2)
+				highlight:SetInside(button.bg)
 
-				bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
-				bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
-				bu.bg.SelectedTexture:SetInside(bu.bg)
+				button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
+				button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				button.bg.SelectedTexture:SetInside(button.bg)
 
-				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
-				bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
+				button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
+				button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
+				button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 			end
 		end
 
@@ -378,7 +396,7 @@ function S:Blizzard_GlyphUI()
 		_G.GlyphFrameBackground:SetAlpha(0)
 		GlyphFrame.levelOverlay1:SetAlpha(0)
 		GlyphFrame.levelOverlay2:SetAlpha(0)
-		GlyphFrameSpecRing:SetAlpha(0)
+		_G.GlyphFrameSpecRing:SetAlpha(0)
 	else
 		_G.GlyphFrameBackground:SetInside()
 		_G.GlyphFrameBackground:SetDrawLayer('ARTWORK')
