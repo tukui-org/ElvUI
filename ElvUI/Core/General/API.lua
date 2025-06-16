@@ -20,6 +20,7 @@ local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetServerTime = GetServerTime
+local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInfoForSpecID or GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
@@ -1234,13 +1235,15 @@ function E:LoadAPI()
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
 						if name then
+
 							if x == 1 then -- SpecInfoBySpecID
 								data.name = name
 								data.desc = desc
 								data.icon = icon
 								data.role = role
 
-								E.SpecInfoBySpecClass[name..' '..info.className] = data
+								local specClass = name..' '..info.className
+								E.SpecInfoBySpecClass[specClass] = data
 							else
 								local copy = E:CopyTable({}, data)
 								copy.name = name
@@ -1252,9 +1255,24 @@ function E:LoadAPI()
 								copy.className = localized
 
 								if localized then
-									E.SpecInfoBySpecClass[name..' '..localized] = copy
+									local specClassLocalized = name..' '..localized
+									E.SpecInfoBySpecClass[specClassLocalized] = copy
 								end
 							end
+						end
+					end
+
+					-- fallback for mop
+					local _, name, desc, icon, role = GetSpecializationInfoByID(id)
+					if name then
+						local specClass = name..' '..info.className
+						if not E.SpecInfoBySpecClass[specClass] then
+							data.name = name
+							data.desc = desc
+							data.icon = icon
+							data.role = role
+
+							E.SpecInfoBySpecClass[specClass] = data
 						end
 					end
 				end

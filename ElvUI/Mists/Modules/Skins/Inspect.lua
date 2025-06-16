@@ -9,8 +9,6 @@ local hooksecurefunc = hooksecurefunc
 local GetGlyphSocketInfo = GetGlyphSocketInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInspectSpecialization = GetInspectSpecialization
-local GetSpecializationInfoByID = GetSpecializationInfoByID
-local GetSpecializationRoleByID = GetSpecializationRoleByID
 
 local function FrameBackdrop_OnEnter(frame)
 	if not frame.backdrop then return end
@@ -125,24 +123,22 @@ function S:Blizzard_InspectUI()
 		frame.tooltip = nil
 
 		local spec = _G.INSPECTED_UNIT and GetInspectSpecialization(_G.INSPECTED_UNIT)
-		local role = spec and spec > 0 and GetSpecializationRoleByID(spec)
-		if role then
-			local _, _, description, icon = GetSpecializationInfoByID(spec)
-
-			if role == 'DAMAGER' then
+		local data = spec and E.SpecInfoBySpecID[spec]
+		if data and data.role then
+			if data.role == 'DAMAGER' then
 				frame.roleIcon:SetTexture(E.Media.Textures.DPS)
-			elseif role == 'TANK' then
+			elseif data.role == 'TANK' then
 				frame.roleIcon:SetTexture(E.Media.Textures.Tank)
-			elseif role == 'HEALER' then
+			elseif data.role == 'HEALER' then
 				frame.roleIcon:SetTexture(E.Media.Textures.Healer)
 			end
 
-			frame.tooltip = description
+			frame.tooltip = data.desc
 
 			frame.roleIcon:Size(20)
 			frame.roleIcon:SetTexCoord(unpack(E.TexCoords))
 			frame.roleName:SetTextColor(1, 1, 1)
-			frame.specIcon:SetTexture(icon)
+			frame.specIcon:SetTexture(data.icon)
 		end
 	end)
 
@@ -174,26 +170,26 @@ function S:Blizzard_InspectUI()
 	_G.InspectTalentFrame:HookScript('OnShow', function(frame)
 		if frame.isSkinned then return end
 
+		frame.isSkinned = true
+
 		local InspectGlyphs = _G.InspectGlyphs
 		for i = 1, 6 do
-			local Glyph = InspectGlyphs['Glyph'..i]
+			local glyph = InspectGlyphs['Glyph'..i]
 
-			Glyph:SetTemplate('Default', true)
-			Glyph:StyleButton(nil, true)
-			Glyph:SetFrameLevel(Glyph:GetFrameLevel() + 5)
+			glyph:SetTemplate('Transparent')
+			glyph:StyleButton(nil, true)
+			glyph:OffsetFrameLevel(5)
 
-			Glyph.highlight:SetTexture(nil)
-			Glyph.glyph:Kill()
-			Glyph.ring:Kill()
+			glyph.highlight:SetTexture(nil)
+			glyph.glyph:Kill()
+			glyph.ring:Kill()
 
-			Glyph.icon = Glyph:CreateTexture(nil, 'OVERLAY')
-			Glyph.icon:SetInside()
-			Glyph.icon:SetTexCoord(unpack(E.TexCoords))
+			glyph:Size(i % 2 == 1 and 40 or 60)
 
-			if i % 2 == 1 then
-				Glyph:Size(40)
-			else
-				Glyph:Size(60)
+			if not glyph.texture then
+				glyph.texture = glyph:CreateTexture(nil, 'OVERLAY')
+				glyph.texture:SetTexCoord(unpack(E.TexCoords))
+				glyph.texture:SetInside()
 			end
 		end
 
@@ -205,18 +201,12 @@ function S:Blizzard_InspectUI()
 		InspectGlyphs.Glyph6:Point('TOPLEFT', 15, -180)
 
 		_G.InspectGlyphFrameGlyph_UpdateGlyphs(frame.InspectGlyphs, false)
-
-		frame.isSkinned = true
 	end)
 
 	hooksecurefunc('InspectGlyphFrameGlyph_UpdateSlot', function(frame)
 		local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup, true, _G.INSPECTED_UNIT)
-		if frame.icon then
-			if glyphType and iconFilename then
-				frame.icon:SetTexture(iconFilename)
-			else
-				frame.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune1]])
-			end
+		if frame.texture then
+			frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
 		end
 	end)
 
