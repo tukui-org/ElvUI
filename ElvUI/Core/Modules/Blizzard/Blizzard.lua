@@ -119,7 +119,7 @@ function BL:HandleAddonCompartment()
 end
 
 function BL:ObjectiveTracker_HasQuestTracker()
-	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
+	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('BigWigs')
 end
 
 function BL:ObjectiveTracker_IsCollapsed(frame)

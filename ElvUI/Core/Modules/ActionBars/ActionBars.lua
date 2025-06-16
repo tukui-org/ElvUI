@@ -1174,6 +1174,8 @@ do
 
 		-- shut down some events for things we dont use
 		_G.ActionBarController:UnregisterAllEvents()
+		_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
+
 		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 
@@ -1183,7 +1185,6 @@ do
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:Kill()
-			_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 			-- take encounter bar out of edit mode
