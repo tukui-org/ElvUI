@@ -122,6 +122,40 @@ local function HandleAffixIcons(self)
 	end
 end
 
+local function LFDCheckboxMini_SetTexture(region, texture)
+	if texture ~= E.Media.Textures.Melli then
+		region:SetTexture(E.Media.Textures.Melli)
+	end
+end
+
+local hookedMiniCheckbox = {}
+local function LFDCheckboxMini_HookTexture(_, region)
+	if region:GetTexture() == 130751 then
+		if E.private.skins.checkBoxSkin then
+			region:SetTexture(E.Media.Textures.Melli) -- set the initial texture
+			if hookedMiniCheckbox[region] then return end -- dont rehook
+			hooksecurefunc(region, 'SetTexture', LFDCheckboxMini_SetTexture)
+			hookedMiniCheckbox[region] = true
+		end
+	else
+		region:SetTexture(E.ClearTexture)
+	end
+end
+
+local function LFDQueueFrameSpecificUpdateChild(child)
+	S:ForEachCheckboxTextureRegion(child.enableButton, LFDCheckboxMini_HookTexture)
+
+	if not child.IsSkinned then
+		S:HandleCheckBox(child.enableButton)
+
+		child.IsSkinned = true
+	end
+end
+
+local function LFDQueueFrameSpecificUpdate(frame)
+	frame:ForEachFrame(LFDQueueFrameSpecificUpdateChild)
+end
+
 function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -371,6 +405,8 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
+	hooksecurefunc(_G.LFDQueueFrameSpecific.ScrollBox, 'Update', LFDQueueFrameSpecificUpdate)
+
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
@@ -580,6 +616,9 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
+
+	-- Follower Dungeons
+	hooksecurefunc(_G.LFDQueueFrameFollower.ScrollBox, 'Update', LFDQueueFrameSpecificUpdate)
 end
 
 function S:Blizzard_ChallengesUI()
