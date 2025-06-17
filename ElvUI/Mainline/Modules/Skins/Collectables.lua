@@ -342,7 +342,7 @@ local function SkinPetFrame()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(PetJournal.SummonRandomPetSpellFrame.Button, true)
 	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
-	PetJournal.SummonRandomPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.SummonRandomPetSpellFrame.ButtonIconTexture)
+	PetJournal.SummonRandomPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.SummonRandomPetSpellFrame.Button.Icon)
 
 	if E.global.general.disableTutorialButtons then
 		_G.PetJournalTutorialButton:Kill()
