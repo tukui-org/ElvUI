@@ -1450,7 +1450,7 @@ function S:HandleIcon(icon, backdrop)
 end
 
 function S:HandleItemButton(b, setInside)
-	if not b or b.IsSkinned then return end
+	if b.IsSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))
