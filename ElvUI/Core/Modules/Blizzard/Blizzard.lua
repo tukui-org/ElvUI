@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
-local ipairs, format, wipe = ipairs, format, wipe
 local _G = _G
+local ipairs, format, wipe = ipairs, format, wipe
+
 local UIParent = UIParent
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax

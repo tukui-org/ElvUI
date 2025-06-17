@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
 local pairs, sort, tonumber, time = pairs, sort, tonumber, time
-local type, lower, wipe, next = type, strlower, wipe, next
+local type, lower, wipe, next, print = type, strlower, wipe, next, print
 local ipairs, format, tinsert = ipairs, format, tinsert
 local strmatch, gsub, ceil = strmatch, gsub, math.ceil
 
