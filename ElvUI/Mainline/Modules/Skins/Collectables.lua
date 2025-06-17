@@ -279,7 +279,7 @@ local function HandleDynamicFlightButton(button, index)
 end
 
 local function SkinMountFrame()
-	S:HandleItemButton(_G.MountJournalSummonRandomFavoriteButton)
+	S:HandleItemButton(_G.MountJournal.SummonRandomFavoriteSpellFrame.Button)
 	S:HandleButton(_G.MountJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 3)
@@ -332,43 +332,44 @@ local function SkinMountFrame()
 end
 
 local function SkinPetFrame()
+	local PetJournal = _G.PetJournal
+
 	_G.PetJournalSummonButton:StripTextures()
 	_G.PetJournalFindBattle:StripTextures()
 	S:HandleButton(_G.PetJournalSummonButton)
 	S:HandleButton(_G.PetJournalFindBattle)
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
-	S:HandleItemButton(_G.PetJournalSummonRandomFavoritePetButton, true)
-	E:RegisterCooldown(_G.PetJournalSummonRandomFavoritePetButtonCooldown)
-	_G.PetJournalSummonRandomFavoritePetButtonCooldown:SetAllPoints(_G.PetJournalSummonRandomFavoritePetButtonIconTexture)
+	S:HandleItemButton(PetJournal.SummonRandomPetSpellFrame.Button, true)
+	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
+	PetJournal.SummonRandomPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.SummonRandomPetSpellFrame.ButtonIconTexture)
 
 	if E.global.general.disableTutorialButtons then
 		_G.PetJournalTutorialButton:Kill()
 	end
 
-	local PetJournal = _G.PetJournal
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
 
-	S:HandleButton(_G.PetJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
-	_G.PetJournal.FilterDropdown:Height(E.PixelMode and 22 or 24)
-	_G.PetJournal.FilterDropdown:ClearAllPoints()
-	_G.PetJournal.FilterDropdown:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
-	S:HandleCloseButton(_G._G.PetJournal.FilterDropdown.ResetButton)
-	_G.PetJournal.FilterDropdown.ResetButton:ClearAllPoints()
-	_G.PetJournal.FilterDropdown.ResetButton:Point('CENTER', _G.PetJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
+	S:HandleButton(PetJournal.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	PetJournal.FilterDropdown:Height(E.PixelMode and 22 or 24)
+	PetJournal.FilterDropdown:ClearAllPoints()
+	PetJournal.FilterDropdown:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
+	S:HandleCloseButton(PetJournal.FilterDropdown.ResetButton)
+	PetJournal.FilterDropdown.ResetButton:ClearAllPoints()
+	PetJournal.FilterDropdown.ResetButton:Point('CENTER', PetJournal.FilterDropdown, 'TOPRIGHT', 0, 0)
 
-	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
+	S:HandleTrimScrollBar(PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
 
-	S:HandleItemButton(_G.PetJournalHealPetButton, true)
-	E:RegisterCooldown(_G.PetJournalHealPetButtonCooldown)
-	_G.PetJournalHealPetButtonCooldown:SetAllPoints(_G.PetJournalHealPetButtonIconTexture)
-	_G.PetJournalHealPetButtonIconTexture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
+	S:HandleItemButton(PetJournal.HealPetSpellFrame.Button, true)
+	E:RegisterCooldown(PetJournal.HealPetSpellFrame.Button.Cooldown)
+	PetJournal.HealPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.HealPetSpellFrame.Button.Icon)
+	PetJournal.HealPetSpellFrame.Button.Icon:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
 	_G.PetJournalSpellSelect:StripTextures()
 
