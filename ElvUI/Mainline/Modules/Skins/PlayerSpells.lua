@@ -164,7 +164,6 @@ function S:Blizzard_PlayerSpells()
 		SpellBookFrame.BookCornerFlipbook:Hide()
 		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 		S:HandleEditBox(SpellBookFrame.SearchBox)
-		S:HandleCheckBox(SpellBookFrame.HidePassivesCheckButton.Button)
 
 		if E.global.general.disableTutorialButtons then
 			SpellBookFrame.HelpPlateButton:Kill()

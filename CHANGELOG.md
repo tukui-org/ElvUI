@@ -1,4 +1,4 @@
-### Version 13.91 [ June 17th 2025 ]
+### Version 13.92 [ June 17th 2025 ]
 *   Updated LibActionButton, which resolves a taint with flyouts.
 *   Quest icon not working properly in bags.
 *   Tag added [name:first] (Thanks Zazou89)
