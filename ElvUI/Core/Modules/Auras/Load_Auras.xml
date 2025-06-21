@@ -1,5 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true' framelevel='4' registerForClicks='RightButtonUp'>
+	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true' framelevel='4' registerForClicks='RightButtonUp, RightButtonDown'>
 		<Scripts><OnLoad>ElvUI[1]:GetModule('Auras'):CreateIcon(self)</OnLoad></Scripts>
 		<Attributes><Attribute name='type' value='cancelaura'/></Attributes>
 	</Button> <!-- framelevel 4 for Masque support -->
