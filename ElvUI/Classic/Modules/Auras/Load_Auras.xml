@@ -1,5 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Button name='ElvUIAuraTemplate' inherits='ElvUIAuraIconTemplate' virtual='true' registerForClicks='RightButtonDown'></Button>
+	<Button name='ElvUIAuraTemplate' inherits='ElvUIAuraIconTemplate' virtual='true' registerForClicks='RightButtonUp'></Button>
 
 	<!-- Theres gotta be a better way to do this -->
 	<Button name='ElvUIAuraTemplate10' inherits='ElvUIAuraTemplate' virtual='true'><Size x='10' y='10'/></Button>
