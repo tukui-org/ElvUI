@@ -48,6 +48,10 @@ local PANEL_WIDTH = 250
 local BUTTON_HEIGHT = 20
 local TARGET_SIZE = 22
 
+local CWM = _G.SLASH_CLEAR_WORLD_MARKER1
+local TM = _G.SLASH_TARGET_MARKER4
+local WM = _G.SLASH_WORLD_MARKER1
+
 -- GLOBALS: C_PartyInfo
 
 local raidMarkers = {}
@@ -345,8 +349,9 @@ do
 
 		local id = ground[i]
 		local world = modType == 'world'
-		local tm = format('/tm %d', i)
-		local wm = format(i == 0 and '/cwm 0' or '/cwm %d\n/wm %d', id, id)
+		local tm = format('%s %d', TM, i)
+		local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
+
 		button:SetAttribute('macrotext', world and wm or tm)
 		button:SetAttribute('macrotext1', world and tm or wm)
 		button:SetAttribute('macrotext2', world and tm or wm)
