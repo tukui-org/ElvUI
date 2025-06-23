@@ -120,7 +120,7 @@ function BL:HandleAddonCompartment()
 end
 
 function BL:ObjectiveTracker_HasQuestTracker()
-	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('BigWigs')
+	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
 end
 
 function BL:ObjectiveTracker_IsCollapsed(frame)
@@ -143,6 +143,8 @@ function BL:ObjectiveTracker_AutoHideOnShow()
 end
 
 function BL:ObjectiveTracker_AutoHide()
+	if E:IsAddOnEnabled('BigWigs') then return end
+
 	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if not tracker then return end
 
