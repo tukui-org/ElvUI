@@ -66,6 +66,8 @@ function S:Blizzard_DelvesDifficultyPicker()
 	DifficultyPickerFrame:SetTemplate('Transparent')
 
 	S:HandleCloseButton(DifficultyPickerFrame.CloseButton)
+	DifficultyPickerFrame.CloseButton:ClearAllPoints()
+	DifficultyPickerFrame.CloseButton:Point('TOPRIGHT', DifficultyPickerFrame, 'TOPRIGHT', -3, -3)
 	S:HandleDropDownBox(DifficultyPickerFrame.Dropdown)
 	S:HandleButton(DifficultyPickerFrame.EnterDelveButton)
 
