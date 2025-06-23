@@ -2906,7 +2906,13 @@ if oldversion and next(lib.buttonRegistry) then
 		if oldversion < 23 then
 			if button.overlay then
 				button.overlay:Hide()
-				ActionButton_HideOverlayGlow(button)
+
+				if ActionButtonSpellAlertManager then
+					ActionButtonSpellAlertManager:HideAlert(button)
+				else
+					ActionButton_HideOverlayGlow(button)
+				end
+
 				button.overlay = nil
 				UpdateOverlayGlow(button)
 			end
