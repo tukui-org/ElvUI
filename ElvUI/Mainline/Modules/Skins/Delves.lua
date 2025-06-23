@@ -38,6 +38,10 @@ local function SetRewards(rewardFrame)
 	end
 end
 
+local function DifficultyPickerFrame_Update(frame)
+	frame:ForEachFrame(SetRewards)
+end
+
 function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -71,9 +75,7 @@ function S:Blizzard_DelvesDifficultyPicker()
 	S:HandleDropDownBox(DifficultyPickerFrame.Dropdown)
 	S:HandleButton(DifficultyPickerFrame.EnterDelveButton)
 
-	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame.ScrollBox, 'Update', function(self)
-		self:ForEachFrame(SetRewards)
-	end)
+	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame.ScrollBox, 'Update', DifficultyPickerFrame_Update)
 end
 
 S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')
