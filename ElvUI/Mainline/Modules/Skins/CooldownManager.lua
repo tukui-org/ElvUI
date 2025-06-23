@@ -7,7 +7,6 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 local IsSpellOverlayed = IsSpellOverlayed
-local ActionButton_HideOverlayGlow = ActionButton_HideOverlayGlow
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
@@ -112,7 +111,7 @@ function S:CooldownManager_SetTimerShown()
 end
 
 function S:CooldownManager_RefreshOverlayGlow()
-	ActionButton_HideOverlayGlow(self) -- hide blizzards
+	_G.ActionButtonSpellAlertManager:HideAlert(self) -- hide blizzards
 
 	local spellID = self:GetSpellID()
 	if spellID and IsSpellOverlayed(spellID) then
@@ -125,14 +124,14 @@ end
 function S:CooldownManager_ShowGlowEvent(spellID)
 	if not self:NeedSpellActivationUpdate(spellID) then return end
 
-	ActionButton_HideOverlayGlow(self) -- hide blizzards
+	_G.ActionButtonSpellAlertManager:HideAlert(self) -- hide blizzards
 	LCG.ShowOverlayGlow(self)
 end
 
 function S:CooldownManager_HideGlowEvent(spellID)
 	if not self:NeedSpellActivationUpdate(spellID) then return end
 
-	ActionButton_HideOverlayGlow(self)
+	_G.ActionButtonSpellAlertManager:HideAlert(self)
 	LCG.HideOverlayGlow(self)
 end
 
