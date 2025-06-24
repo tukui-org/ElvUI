@@ -19,8 +19,6 @@ local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local hooksecurefunc = hooksecurefunc
 
-local AutoHider
-
 --------------------------------------------------------------------
 -- Guild Finder Helper
 --------------------------------------------------------------------
@@ -120,7 +118,7 @@ function BL:HandleAddonCompartment()
 end
 
 function BL:ObjectiveTracker_HasQuestTracker()
-	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('BigWigs')
+	return E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')
 end
 
 function BL:ObjectiveTracker_IsCollapsed(frame)
@@ -142,22 +140,27 @@ function BL:ObjectiveTracker_AutoHideOnShow()
 	end
 end
 
-function BL:ObjectiveTracker_AutoHide()
-	local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
-	if not tracker then return end
+do
+	local AutoHider
+	function BL:ObjectiveTracker_AutoHide()
+		if E:IsAddOnEnabled('BigWigs') then return end
 
-	if not AutoHider then
-		AutoHider = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
-		AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-		AutoHider:SetScript('OnHide', BL.ObjectiveTracker_AutoHideOnHide)
-		AutoHider:SetScript('OnShow', BL.ObjectiveTracker_AutoHideOnShow)
-	end
+		local tracker = (E.Cata and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+		if not tracker then return end
 
-	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
-	else
-		UnregisterStateDriver(AutoHider, 'objectiveHider')
-		BL:ObjectiveTracker_AutoHideOnShow() -- reshow it when needed
+		if not AutoHider then
+			AutoHider = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
+			AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+			AutoHider:SetScript('OnHide', BL.ObjectiveTracker_AutoHideOnHide)
+			AutoHider:SetScript('OnShow', BL.ObjectiveTracker_AutoHideOnShow)
+		end
+
+		if E.db.general.objectiveFrameAutoHide then
+			RegisterStateDriver(AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists][@boss5,exists] 1;0')
+		else
+			UnregisterStateDriver(AutoHider, 'objectiveHider')
+			BL:ObjectiveTracker_AutoHideOnShow() -- reshow it when needed
+		end
 	end
 end
 
