@@ -572,7 +572,7 @@ function E:StaticPopup_OnUpdate(elapsed)
 		end
 	end
 
-	if info.OnUpdate then
+	if info and info.OnUpdate then
 		info.OnUpdate(self, elapsed)
 	end
 end
@@ -1180,10 +1180,13 @@ function E:Contruct_StaticPopups()
 		checkbuttontext:SetTextColor(1,0.17,0.26)
 		checkbuttontext:Point('LEFT', checkbutton, 'RIGHT', 4, 1)
 
-		--Skin
+		-- Skin
+		-- TODO: 11.2.0
+		--[[
 		if E.Retail then
 			popup.Border:StripTextures()
 		end
+		]]
 		popup:SetTemplate('Transparent')
 
 		for i = 1, 4 do
@@ -1228,5 +1231,6 @@ function E:Contruct_StaticPopups()
 	end
 
 	E:SecureHook('StaticPopup_SetUpPosition')
-	E:SecureHook('StaticPopup_CollapseTable')
+	-- TODO: 11.2.0
+	-- E:SecureHook('StaticPopup_CollapseTable')
 end
