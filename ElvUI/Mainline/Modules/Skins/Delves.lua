@@ -46,6 +46,8 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local CompanionConfigurationFrame = _G.DelvesCompanionConfigurationFrame
+	CompanionConfigurationFrame.CloseButton:ClearAllPoints()
+	CompanionConfigurationFrame.CloseButton:Point('TOPRIGHT', CompanionConfigurationFrame, 'TOPRIGHT', -3, -3)
 	S:HandlePortraitFrame(CompanionConfigurationFrame)
 	S:HandleButton(CompanionConfigurationFrame.CompanionConfigShowAbilitiesButton)
 
