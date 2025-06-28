@@ -43,6 +43,8 @@ end
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
+	S:HandleEditBox(_G.BagItemSearchBox)
+
 	-- ContainerFrame
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		local frame = _G['ContainerFrame'..i]
