@@ -172,6 +172,16 @@ function S:BlizzardMiscFrames()
 	-- reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
+		local ItemFrame = _G['StaticPopup'..i..'ItemFrame']
+		local ItemNameFrame = _G['StaticPopup'..i..'ItemNameFrame']
+		local IconTexture = _G['StaticPopup'..i..'ItemFrameIconTexture']
+		local CloseButton = _G['StaticPopup'..i..'CloseButton']
+
+		local EditBox = _G['StaticPopup'..i..'EditBox']
+		local Gold = _G['StaticPopup'..i..'MoneyInputFrameGold']
+		local Silver = _G['StaticPopup'..i..'MoneyInputFrameSilver']
+		local Copper = _G['StaticPopup'..i..'MoneyInputFrameCopper']
+
 		StaticPopup:StripTextures()
 		StaticPopup:SetTemplate('Transparent')
 		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
@@ -182,7 +192,7 @@ function S:BlizzardMiscFrames()
 		end)
 
 		for j = 1, 4 do
-			local button = StaticPopup['button'..j]
+			local button = _G["StaticPopup"..i.."Button"..j]
 			S:HandleButton(button)
 
 			button:OffsetFrameLevel(1)
@@ -196,28 +206,32 @@ function S:BlizzardMiscFrames()
 			anim2:SetTarget(button.shadow)
 		end
 
-		local editbox = _G['StaticPopup'..i..'EditBox']
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
-		S:HandleEditBox(editbox)
-		editbox:OffsetFrameLevel(1)
-		editbox.backdrop:Point('TOPLEFT', -2, -4)
-		editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+		S:HandleEditBox(Gold)
+		S:HandleEditBox(Silver)
+		S:HandleEditBox(Copper)
+		S:HandleEditBox(EditBox)
+		EditBox:OffsetFrameLevel(1)
+		EditBox.backdrop:Point('TOPLEFT', -2, -4)
+		EditBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 
-		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
-		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
-		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
+		S:HandleCloseButton(CloseButton)
 
-		local itemFrame = _G['StaticPopup'..i..'ItemFrame']
-		itemFrame:SetTemplate()
-		itemFrame:StyleButton()
-		S:HandleIconBorder(itemFrame.IconBorder)
+		if ItemNameFrame then
+			ItenNameFrame:Hide()
+		end
 
-		local normTex = itemFrame:GetNormalTexture()
-		if normTex then
-			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
+		if ItemFrame then
+			ItemFrame:SetTemplate()
+			ItemFrame:StyleButton()
+
+			S:HandleIcon(IconTexture)
+			S:HandleIconBorder(ItemFrame.IconBorder)
+
+			local normTex = ItemFrame:GetNormalTexture()
+			if normTex then
+				normTex:SetTexture()
+				hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
+			end
 		end
 	end
 
