@@ -27,18 +27,18 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillFrameBottomRightTexture:Kill()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
-	TradeSkillRankFrame:Size(322, 14)
-	TradeSkillRankFrame:Point('TOPLEFT', 23, -37)
+	TradeSkillRankFrame:Size(314, 16)
+	TradeSkillRankFrame:Point('TOPLEFT', 25, -44)
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
 	E:RegisterStatusBar(TradeSkillRankFrame)
 
-	local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
-	S:HandleEditBox(TradeSkillFrameEditBox)
-	TradeSkillFrameEditBox:ClearAllPoints()
-	TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 23, -16)
-	TradeSkillFrameEditBox:Size(122, 18)
+	local TradeSkillFrameSearchBox = _G.TradeSkillFrameSearchBox
+	S:HandleEditBox(TradeSkillFrameSearchBox)
+	TradeSkillFrameSearchBox:ClearAllPoints()
+	TradeSkillFrameSearchBox:Point('TOPLEFT', _G.TradeSkillRankFrame, 'TOPLEFT', 60, -28)
+	TradeSkillFrameSearchBox:Size(122, 18)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 
@@ -55,20 +55,10 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetDisabledTexture():Size(15)
 	TradeSkillCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 120)
-	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
-	_G.TradeSkillInvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
-
-	S:HandleDropDownBox(_G.TradeSkillSubClassDropdown, 120)
-	_G.TradeSkillSubClassDropdown:ClearAllPoints()
-	_G.TradeSkillSubClassDropdown:Point('RIGHT', _G.TradeSkillInvSlotDropdown, 'RIGHT', -120, 0)
+	S:HandleDropDownBox(_G.TradeSkillFrame.FilterDropdown)
 
 	_G.TradeSkillFrameTitleText:ClearAllPoints()
 	_G.TradeSkillFrameTitleText:Point('TOP', TradeSkillFrame, 'TOP', 0, -18)
-
-	local TradeSkillFrameAvailableFilterCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
-	S:HandleCheckBox(TradeSkillFrameAvailableFilterCheckButton)
-	TradeSkillFrameAvailableFilterCheckButton:Point('TOPLEFT', 18, -50)
 
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
