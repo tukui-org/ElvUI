@@ -124,8 +124,8 @@ local function Update(self, event, unit)
 	local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 	local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
 	local overTimeHeals = not oUF.isRetail and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
-	local absorb = oUF.isRetail and UnitGetTotalAbsorbs(unit) or 0
-	local healAbsorb = oUF.isRetail and UnitGetTotalHealAbsorbs(unit) or 0
+	local absorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalAbsorbs(unit) or 0
+	local healAbsorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalHealAbsorbs(unit) or 0
 	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 	local otherIncomingHeal = 0
 	local hasOverHealAbsorb = false
@@ -333,7 +333,7 @@ local function Enable(self)
 			oUF:RegisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isMists then
 			oUF:RegisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:RegisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
@@ -422,7 +422,7 @@ local function Disable(self)
 			oUF:UnregisterEvent(self, 'UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isMists then
 			oUF:UnregisterEvent(self, 'UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			oUF:UnregisterEvent(self, 'UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
