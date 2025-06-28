@@ -17,11 +17,14 @@ function S:Blizzard_GuildBankUI()
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
 	GuildBankFrame:CreateBackdrop('Transparent')
-	GuildBankFrame.backdrop:Point('TOPLEFT', 8, -11)
-	GuildBankFrame.backdrop:Point('BOTTOMRIGHT', 0, 6)
+	GuildBankFrame.backdrop:Point('TOPLEFT', 4, 0)
+	GuildBankFrame.backdrop:Point('BOTTOMRIGHT', 0, 0)
 	GuildBankFrame:Width(770)
 	GuildBankFrame:Height(450)
 	GuildBankFrame.Emblem:Kill()
+
+	S:HandleEditBox(_G.GuildItemSearchBox)
+	_G.GuildBankFrame.MoneyFrameBG:StripTextures()
 
 	for _, child in next, { GuildBankFrame:GetChildren() } do
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
@@ -76,7 +79,7 @@ function S:Blizzard_GuildBankUI()
 
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)
 	_G.GuildBankInfoScrollFrameScrollBar:ClearAllPoints()
-	_G.GuildBankInfoScrollFrameScrollBar:Point('TOPRIGHT', GuildBankInfoScrollFrame, 'TOPRIGHT', 29, -12)
+	_G.GuildBankInfoScrollFrameScrollBar:Point('TOPRIGHT', GuildBankInfoScrollFrame, 'TOPRIGHT', 38, -28)
 	_G.GuildBankInfoScrollFrameScrollBar:Point('BOTTOMRIGHT', GuildBankInfoScrollFrame, 'BOTTOMRIGHT', 0, 17)
 
 	local GuildBankTabInfoEditBox = _G.GuildBankTabInfoEditBox
@@ -105,7 +108,7 @@ function S:Blizzard_GuildBankUI()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', GuildBankFrame, 'BOTTOMLEFT', -2, -26)
+			tab:Point('BOTTOMLEFT', GuildBankFrame, 'BOTTOMLEFT', -6, -32)
 		end
 	end
 
