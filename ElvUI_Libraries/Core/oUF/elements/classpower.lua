@@ -55,6 +55,7 @@ local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
+local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
@@ -145,7 +146,6 @@ local function Update(self, event, unit, powerType)
 
 		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS
-		local isMistWarlock = warlockDemo or warlockDest
 
 		max = (warlockDemo and 1) or (warlockDest and 4) or UnitPowerMax(unit, powerID, warlockDest)
 
@@ -216,8 +216,14 @@ local function Visibility(self, event, unit)
 	local shouldEnable
 
 	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
-	if PlayerClass == 'WARLOCK' then
-		ClassPowerID = oUF.isMists and ((currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
+	if PlayerClass == 'MONK' then
+		ClassPowerID = (currentSpec == SPEC_MONK_WINDWALKER or currentSpec == SPEC_MONK_MISTWEAVER) and POWERTYPE_CHI or -1
+	elseif oUF.isMists and PlayerClass == 'WARLOCK' then
+		ClassPowerID = (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
+	elseif oUF.isMists and PlayerClass == 'PRIEST' then
+		ClassPowerID = (currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
+	elseif oUF.isMists and PlayerClass == 'MAGE' then
+		ClassPowerID = (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	end
 
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
@@ -340,6 +346,8 @@ do
 		RequireSpec[SPEC_MONK_MISTWEAVER] = true
 	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
 		ClassPowerID = POWERTYPE_SHADOW_ORBS
+
+		RequireSpec[SPEC_PRIEST_SHADOW] = true
 	elseif(PlayerClass == 'PALADIN') then
 		ClassPowerID = POWERTYPE_HOLY_POWER
 	elseif(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then

@@ -38,6 +38,7 @@ local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
+
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 -- GLOBALS: Arena_LoadUI
@@ -442,6 +443,11 @@ function UF:UpdateColors()
 	ElvUF.colors.power.LUNAR_POWER = E:SetColorTable(ElvUF.colors.power.LUNAR_POWER, db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
+
+	ElvUF.colors.power.ARCANE_CHARGES = E:SetColorTable(ElvUF.colors.power.ARCANE_CHARGES, db.classResources.MAGE)
+	ElvUF.colors.power.SHADOW_ORBS = E:SetColorTable(ElvUF.colors.power.SHADOW_ORBS, db.classResources.PRIEST)
+	ElvUF.colors.power.HOLY_POWER = E:SetColorTable(ElvUF.colors.power.HOLY_POWER, db.classResources.PALADIN)
+
 	ElvUF.colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(ElvUF.colors.power[POWERTYPE_ALTERNATE], db.power.ALT_POWER)
 	ElvUF.colors.chargedComboPoint = E:SetColorTable(ElvUF.colors.chargedComboPoint, db.classResources.chargedComboPoint)
 

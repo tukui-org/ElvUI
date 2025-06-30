@@ -131,10 +131,13 @@ local function SkinJournalScrollButton(bu)
 			local isMount = parent == _G.MountJournal
 
 			if isPet or isMount then
-				local hl = bu.dragButton:GetHighlightTexture()
-				hl:SetTexture(E.media.blankTex)
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetAllPoints(bu.icon)
+				local dragBtn = bu.dragButton or bu.DragButton
+				if dragBtn then
+					local hl = dragBtn:GetHighlightTexture()
+					hl:SetTexture(E.media.blankTex)
+					hl:SetVertexColor(1, 1, 1, .25)
+					hl:SetAllPoints(bu.icon)
+				end
 			end
 
 			if isPet then
