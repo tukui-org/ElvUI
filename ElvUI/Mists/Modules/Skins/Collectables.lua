@@ -127,7 +127,17 @@ local function SkinJournalScrollButton(bu)
 			hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
 			hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
 
-			if parent == _G.PetJournal then
+			local isPet = parent == _G.PetJournal
+			local isMount = parent == _G.MountJournal
+
+			if isPet or isMount then
+				local hl = bu.dragButton:GetHighlightTexture()
+				hl:SetTexture(E.media.blankTex)
+				hl:SetVertexColor(1, 1, 1, .25)
+				hl:SetAllPoints(bu.icon)
+			end
+
+			if isPet then
 				bu.petList = true
 				bu.petTypeIcon:SetTexture(savedPetTypeTexture)
 				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
@@ -138,12 +148,7 @@ local function SkinJournalScrollButton(bu)
 
 				bu.dragButton.levelBG:SetTexture()
 				bu.dragButton.level:FontTemplate(nil, 12)
-
-				local hl = bu.dragButton:GetHighlightTexture()
-				hl:SetTexture(E.media.blankTex)
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetAllPoints(bu.icon)
-			elseif parent == _G.MountJournal then
+			elseif isMount then
 				bu.mountList = true
 				bu.factionIcon:SetAtlas(savedFactionAtlas)
 				bu.factionIcon:SetDrawLayer('OVERLAY')
@@ -151,13 +156,9 @@ local function SkinJournalScrollButton(bu)
 				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
 
 				icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+
 				bu.DragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.DragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
-
-				local hl = bu.DragButton:GetHighlightTexture()
-				hl:SetTexture(E.media.blankTex)
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetAllPoints(bu.icon)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
