@@ -533,10 +533,6 @@ function AB:ReassignBindings(event)
 		if E.Retail then
 			AB:UpdateExtraBindings()
 		end
-
-		if E.Mists and E.myclass == 'SHAMAN' then
-			AB:UpdateTotemBindings()
-		end
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')

@@ -1552,10 +1552,6 @@ function E:UpdateActionBars(skipCallback)
 		ActionBars:UpdateExtraButtons()
 	end
 
-	if E.Mists and E.myclass == 'SHAMAN' then
-		ActionBars:UpdateTotemBindings()
-	end
-
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
 	end
