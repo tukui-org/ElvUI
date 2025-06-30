@@ -262,7 +262,7 @@ function NP:Construct_ClassPowerTwo(nameplate)
 	if nameplate ~= _G.ElvNP_Test then
 		if E.myclass == 'DEATHKNIGHT' then
 			nameplate.Runes = NP:Construct_Runes(nameplate)
-		elseif E.myclass == 'MONK' then
+		elseif E.myclass == 'MONK' and E.Retail then
 			nameplate.Stagger = NP:Construct_Stagger(nameplate)
 		end
 	end

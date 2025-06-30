@@ -1020,7 +1020,8 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 
 		if E.myclass == 'DRUID' then
 			config.args.generalGroup.args.altManaGroup.args.Rage = ACH:Toggle(L["RAGE"], nil, 1)
-			config.args.generalGroup.args.altManaGroup.args.LunarPower = ACH:Toggle(L["LUNAR_POWER"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
+			config.args.generalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+			config.args.generalGroup.args.altManaGroup.args.LunarPower = ACH:Toggle(L["LUNAR_POWER"], nil, 3, nil, nil, nil, nil, nil, nil, not E.Retail)
 		elseif E.myclass == 'SHAMAN' then
 			config.args.generalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["MAELSTROM"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Retail)
 		elseif E.myclass == 'PRIEST' then

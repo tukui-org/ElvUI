@@ -22,9 +22,13 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
-	--Create a holder frame all 'classbars' can be positioned into
+	-- Create a holder frame all 'classbars' can be positioned into
 	frame.ClassBarHolder = CreateFrame('Frame', nil, frame)
 	frame.ClassBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+
+	-- Druid Mana and Monk Stagger
+	frame.AdditionalPowerHolder = CreateFrame('Frame', nil, frame)
+	frame.AdditionalPowerHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	UF:GetClassPower_Construct(frame)
 

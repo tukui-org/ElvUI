@@ -56,6 +56,7 @@ local _, PlayerClass = UnitClass('player')
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
+local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
 local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
@@ -217,7 +218,7 @@ local function Visibility(self, event, unit)
 
 	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 	if PlayerClass == 'MONK' then
-		ClassPowerID = (currentSpec == SPEC_MONK_WINDWALKER or currentSpec == SPEC_MONK_MISTWEAVER) and POWERTYPE_CHI or -1
+		ClassPowerID = ((currentSpec == SPEC_MONK_WINDWALKER or currentSpec == SPEC_MONK_MISTWEAVER) or (oUF.isMists and currentSpec == SPEC_MONK_BREWMASTER)) and POWERTYPE_CHI or -1
 	elseif PlayerClass == 'WARLOCK' then
 		ClassPowerID = oUF.isMists and ((currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
@@ -344,6 +345,7 @@ do
 
 		RequireSpec[SPEC_MONK_WINDWALKER] = true
 		RequireSpec[SPEC_MONK_MISTWEAVER] = true
+		RequireSpec[SPEC_MONK_BREWMASTER] = oUF.isMists or nil
 	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
 		ClassPowerID = POWERTYPE_SHADOW_ORBS
 
