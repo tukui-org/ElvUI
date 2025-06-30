@@ -24,6 +24,7 @@ local function PositionTabs()
 	_G.PlayerTalentFrameTab1:Point('TOPLEFT', _G.PlayerTalentFrame, 'BOTTOMLEFT', -10, 0)
 	_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
+	_G.PlayerTalentFrameTab4:Point('TOPLEFT', _G.PlayerTalentFrameTab3, 'TOPRIGHT', -19, 0)
 end
 
 local function GlyphFrame_Update()
@@ -245,7 +246,7 @@ function S:Blizzard_TalentUI()
 		S:HandleButton(button)
 	end
 
-	for i = 1, 3 do
+	for i = 1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
 	end
 
