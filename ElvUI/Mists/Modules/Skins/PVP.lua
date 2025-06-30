@@ -18,6 +18,20 @@ local function HandleRoleButton(button)
 	if button.shortageBorder then button.shortageBorder:Size(40) end
 end
 
+local function HandleHonorDropdown(dropdown)
+	dropdown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
+
+	dropdown.Left:Kill()
+	dropdown.Middle:Kill()
+	dropdown.Right:Kill()
+
+	dropdown:CreateBackdrop()
+	dropdown.backdrop:Point('TOPLEFT', -30, 0)
+	dropdown.backdrop:Point('BOTTOMRIGHT', -10, 7)
+
+	S:HandleNextPrevButton(dropdown.Button, 'down')
+end
+
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -54,8 +68,7 @@ function S:Blizzard_PVPUI()
 	BonusFrame.WorldBattlesTexture:Hide()
 
 	-- TODO: This is a fake dropdown
-	-- S:HandleDropDownBox(_G.HonorQueueFrameTypeDropDown)
-	_G.HonorQueueFrameTypeDropDown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
+	HandleHonorDropdown(_G.HonorQueueFrameTypeDropDown)
 
 	for _, bonusButton in pairs({'RandomBGButton', 'CallToArmsButton', 'WorldPVP1Button', 'WorldPVP2Button'}) do
 		local bu = BonusFrame[bonusButton]
