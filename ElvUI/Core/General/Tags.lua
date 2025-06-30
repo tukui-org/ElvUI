@@ -179,7 +179,7 @@ local ClassPowers = {
 Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
 
-	local spec, unitClass
+	local spec, unitClass, barType, Min, Max, r, g, b
 	if isme then
 		spec = E.myspec
 		unitClass = E.myclass
@@ -191,8 +191,17 @@ Tags.Env.GetClassPower = function(unit)
 		end
 	end
 
-	local barType, Min, Max, r, g, b
-	if E.Mists and spec == SPEC_MAGE_ARCANE then -- mists arcane charges is weird
+	local mage = unitClass == 'MAGE'
+	local monk = unitClass == 'MONK'
+	local priest = unitClass == 'PRIEST'
+	local warlock = unitClass == 'WARLOCK'
+
+	local mistWarlock = E.Mists and warlock
+	local mistPriest = E.Mists and priest
+	local mistMage = E.Mists and mage
+
+	-- mists arcane charges is weird
+	if mistMage and spec == SPEC_MAGE_ARCANE then
 		local info = GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
 		Min = (info and info.isHarmful and info.applications) or 0
 		Max = UnitPowerMax(unit, POWERTYPE_ARCANE_CHARGES)
@@ -201,70 +210,65 @@ Tags.Env.GetClassPower = function(unit)
 		r, g, b = color.r, color.g, color.b
 
 		return Min or 0, Max or 0, r or 1, g or 1, b or 1
-	else
-		local monk = unitClass == 'MONK'
-		local priest = unitClass == 'PRIEST'
-		local warlock = unitClass == 'WARLOCK'
-		local mistWarlock = E.Mists and warlock
-		local mistPriest = E.Mists and priest
+	end
 
-		if monk and spec == SPEC_MONK_BREWMASTER then -- try stagger
-			Min = UnitStagger(unit) or 0
-			Max = UnitHealthMax(unit)
+	-- try to handle others
+	if monk and spec == SPEC_MONK_BREWMASTER then
+		Min = UnitStagger(unit) or 0
+		Max = UnitHealthMax(unit)
 
-			local staggerRatio = Min / Max
-			local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
-			local color = ElvUF.colors.power.STAGGER[staggerIndex]
-			r, g, b = color.r, color.g, color.b
-		elseif mistWarlock then -- little gremlins
-			barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
-		elseif mistPriest then
-			if spec == SPEC_PRIEST_SHADOW then
-				barType = ClassPowers[unitClass]
-			end
-		else -- try special powers or combo points
+		local staggerRatio = Min / Max
+		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
+		local color = ElvUF.colors.power.STAGGER[staggerIndex]
+		r, g, b = color.r, color.g, color.b
+	elseif mistWarlock then -- little gremlins
+		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
+	elseif mistPriest then -- only shadow orbs
+		if spec == SPEC_PRIEST_SHADOW then
 			barType = ClassPowers[unitClass]
 		end
+	else -- try special powers or combo points
+		barType = ClassPowers[unitClass]
+	end
 
-		if barType then
-			local dk = unitClass == 'DEATHKNIGHT'
-			Min = (dk and 0) or UnitPower(unit, barType)
-			Max = (dk and 6) or UnitPowerMax(unit, barType)
+	if barType then
+		local dk = unitClass == 'DEATHKNIGHT'
+		Min = (dk and 0) or UnitPower(unit, barType)
+		Max = (dk and 6) or UnitPowerMax(unit, barType)
 
-			if dk and isme then
-				for i = 1, Max do
-					local _, _, runeReady = GetRuneCooldown(i)
-					if runeReady then
-						Min = Min + 1
-					end
+		if dk and isme then
+			for i = 1, Max do
+				local _, _, runeReady = GetRuneCooldown(i)
+				if runeReady then
+					Min = Min + 1
 				end
 			end
-
-			local power = ElvUF.colors.ClassBars[unitClass]
-			local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
-			local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
-			r, g, b = color.r, color.g, color.b
-		elseif not r then
-			Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
-			Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
-
-			local combo = ElvUF.colors.ComboPoints
-			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 		end
 
-		-- try additional mana
-		local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
-		if altIndex and altIndex[UnitPowerType(unit)] then
-			Min = UnitPower(unit, POWERTYPE_MANA)
-			Max = UnitPowerMax(unit, POWERTYPE_MANA)
+		local power = ElvUF.colors.ClassBars[unitClass]
+		local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
+		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+		r, g, b = color.r, color.g, color.b
+	elseif not r then
+		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
+		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
 
-			local mana = ElvUF.colors.power.MANA
-			r, g, b = mana.r, mana.g, mana.b
-		end
-
-		return Min or 0, Max or 0, r or 1, g or 1, b or 1
+		local combo = ElvUF.colors.ComboPoints
+		local c1, c2, c3 = combo[1], combo[2], combo[3]
+		r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 	end
+
+	-- try additional mana
+	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+	if altIndex and altIndex[UnitPowerType(unit)] then
+		Min = UnitPower(unit, POWERTYPE_MANA)
+		Max = UnitPowerMax(unit, POWERTYPE_MANA)
+
+		local mana = ElvUF.colors.power.MANA
+		r, g, b = mana.r, mana.g, mana.b
+	end
+
+	return Min or 0, Max or 0, r or 1, g or 1, b or 1
 end
 
 ------------------------------------------------------------------------
