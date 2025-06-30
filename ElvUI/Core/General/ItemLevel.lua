@@ -65,14 +65,11 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 	end
 
 	-- handle encahants
-	local r, g, b = line:GetTextColor()
-	local allow = not E.Mists or ((r == 0 and g == 1 and b == 0) and not strfind(lineText, ITEM_SPELL_TRIGGER_ONEQUIP, nil, true) and not strfind(lineText, AZERITE_RESPEC_BUTTON[E.locale or 'enUS'], nil, true) and not strfind(lineText, '%(%d+ min%)'))
-	if not allow then return end
-
-	local enchant = (not E.Mists and strmatch(lineText, MATCH_ENCHANT)) or (E.Mists and strfind(lineText, '^%+') and not strfind(lineText, BONUS_ARMOR, nil, true) and not strfind(lineText, STAT_MASTERY, nil, true) and lineText)
+	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
 		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+		local r, g, b = line:GetTextColor()
 
 		local shortStrip = gsub(text, '[&+] ?', '')
 		local shortAbbrev = E.db.general.itemLevel.enchantAbbrev and gsub(shortStrip, '(%w%w%w)%w+', '%1')
