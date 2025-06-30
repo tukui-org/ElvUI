@@ -1471,18 +1471,20 @@ function E:DBConvertTWW()
 	end
 end
 
-function E:DBConvertDev()
-	if not ElvCharacterDB.ConvertKeybindings then
-		E:ConvertActionBarKeybinds()
-		ElvCharacterDB.ConvertKeybindings = true
-	end
-
+function E:DBConvertMists()
 	-- soulshard convert
 	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
 		if data.r or data.g or data.b then
 			data.SOUL_SHARDS.r, data.SOUL_SHARDS.g, data.SOUL_SHARDS.b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
 		end
+	end
+end
+
+function E:DBConvertDev()
+	if not ElvCharacterDB.ConvertKeybindings then
+		E:ConvertActionBarKeybinds()
+		ElvCharacterDB.ConvertKeybindings = true
 	end
 end
 
@@ -1956,6 +1958,7 @@ function E:DBConversions()
 		E:DBConvertSL()
 		E:DBConvertDF()
 		E:DBConvertTWW()
+		E:DBConvertMists()
 	end
 
 	-- development convert always
