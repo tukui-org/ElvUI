@@ -218,8 +218,8 @@ local function Visibility(self, event, unit)
 	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 	if PlayerClass == 'MONK' then
 		ClassPowerID = (currentSpec == SPEC_MONK_WINDWALKER or currentSpec == SPEC_MONK_MISTWEAVER) and POWERTYPE_CHI or -1
-	elseif oUF.isMists and PlayerClass == 'WARLOCK' then
-		ClassPowerID = (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
+	elseif PlayerClass == 'WARLOCK' then
+		ClassPowerID = oUF.isMists and ((currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
 		ClassPowerID = (currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
 	elseif oUF.isMists and PlayerClass == 'MAGE' then
