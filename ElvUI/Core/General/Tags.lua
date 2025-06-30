@@ -179,7 +179,7 @@ local ClassPowers = {
 Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
 
-	local spec, unitClass, barType, Min, Max, r, g, b
+	local spec, unitClass
 	if isme then
 		spec = E.myspec
 		unitClass = E.myclass
@@ -191,8 +191,8 @@ Tags.Env.GetClassPower = function(unit)
 		end
 	end
 
-	-- mists arcane charges is weird
-	if E.Mists and spec == SPEC_MAGE_ARCANE then
+	local barType, Min, Max, r, g, b
+	if E.Mists and spec == SPEC_MAGE_ARCANE then -- mists arcane charges is weird
 		local info = GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
 		Min = (info and info.isHarmful and info.applications) or 0
 		Max = UnitPowerMax(unit, POWERTYPE_ARCANE_CHARGES)
