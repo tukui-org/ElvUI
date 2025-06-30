@@ -179,7 +179,7 @@ local ClassPowers = {
 Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
 
-	local spec, unitClass, barType, Min, Max, r, g, b
+	local spec, unitClass, barType, Min, Max
 	if isme then
 		spec = E.myspec
 		unitClass = E.myclass
@@ -191,46 +191,44 @@ Tags.Env.GetClassPower = function(unit)
 		end
 	end
 
-	local mage = unitClass == 'MAGE'
-	local monk = unitClass == 'MONK'
-	local priest = unitClass == 'PRIEST'
-	local warlock = unitClass == 'WARLOCK'
+	local monk = unitClass == 'MONK' -- checking brewmaster
+	local mistWarlock = E.Mists and unitClass == 'WARLOCK'
+	local mistPriest = E.Mists and unitClass == 'PRIEST'
+	local mistMage = E.Mists and unitClass == 'MAGE'
 
-	local mistWarlock = E.Mists and warlock
-	local mistPriest = E.Mists and priest
-	local mistMage = E.Mists and mage
-
-	-- mists arcane charges is weird
-	if mistMage and spec == SPEC_MAGE_ARCANE then
+	if mistMage and spec == SPEC_MAGE_ARCANE then -- mists arcane charges is weird
 		local info = GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
 		Min = (info and info.isHarmful and info.applications) or 0
 		Max = UnitPowerMax(unit, POWERTYPE_ARCANE_CHARGES)
 
 		local color = ElvUF.colors.power[POWERTYPE_ARCANE_CHARGES]
-		r, g, b = color.r, color.g, color.b
+		local r, g, b = color.r, color.g, color.b
 
 		return Min or 0, Max or 0, r or 1, g or 1, b or 1
-	end
-
-	-- try to handle others
-	if monk and spec == SPEC_MONK_BREWMASTER then
+	elseif monk and spec == SPEC_MONK_BREWMASTER then -- try to handle others
 		Min = UnitStagger(unit) or 0
 		Max = UnitHealthMax(unit)
 
 		local staggerRatio = Min / Max
 		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
 		local color = ElvUF.colors.power.STAGGER[staggerIndex]
-		r, g, b = color.r, color.g, color.b
-	elseif mistWarlock then -- little gremlins
+		local r, g, b = color.r, color.g, color.b
+
+		return Min or 0, Max or 0, r or 1, g or 1, b or 1
+	end
+
+	-- try special powers or combo points
+	if mistWarlock then -- little gremlins
 		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
 	elseif mistPriest then -- only shadow orbs
 		if spec == SPEC_PRIEST_SHADOW then
 			barType = ClassPowers[unitClass]
 		end
-	else -- try special powers or combo points
+	else
 		barType = ClassPowers[unitClass]
 	end
 
+	local r, g, b
 	if barType then
 		local dk = unitClass == 'DEATHKNIGHT'
 		Min = (dk and 0) or UnitPower(unit, barType)
@@ -249,7 +247,7 @@ Tags.Env.GetClassPower = function(unit)
 		local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
 		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 		r, g, b = color.r, color.g, color.b
-	elseif not r then
+	else
 		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
 		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
 
