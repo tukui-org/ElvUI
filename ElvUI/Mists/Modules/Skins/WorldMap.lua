@@ -20,10 +20,9 @@ function S:WorldMapFrame()
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapContinentDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
-	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
+	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapFrame.WorldMapOptionsDropDown, 160)
 
-	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
-	S:HandleCheckBox(_G.WorldMapShowDigsites)
 	S:HandleCheckBox(_G.WorldMapTrackQuest)
 
 	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
