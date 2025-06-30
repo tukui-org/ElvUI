@@ -221,7 +221,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
 
-	if bars.AdditionalHolder and (E.myclass == 'DRUID' or E.myclass == 'MONK') then
+	if bars.AdditionalHolder and (E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) then
 		if not bars.AdditionalHolder.mover then
 			E:CreateMover(bars.AdditionalHolder, 'AdditionalPowerMover', L["Additional Class Power"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
@@ -690,11 +690,13 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostUpdateVisibilityStagger(_, _, isShown, stateChanged)
-	-- self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
+	if not E.Retail then return end
 
-	-- if stateChanged then
-	-- 	UF:PostVisibility_ClassBars(self)
-	-- end
+	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
+
+	if stateChanged then
+		UF:PostVisibility_ClassBars(self)
+	end
 end
 
 -----------------------------------------------------------
