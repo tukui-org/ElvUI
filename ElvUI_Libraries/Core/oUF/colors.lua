@@ -170,7 +170,7 @@ for power, color in next, PowerBarColor do
 			colors.power[power] = {}
 
 			for name, color_ in next, color do
-				local index = staggerIndices[name] or name
+				local index = (oUF.isRetail and staggerIndices[name]) or (not oUF.isRetail and name)
 				if(index) then
 					colors.power[power][index] = oUF:CreateColor(color_.r, color_.g, color_.b)
 
