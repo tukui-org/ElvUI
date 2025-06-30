@@ -33,8 +33,8 @@ function S:Blizzard_AlliedRacesUI()
 	S:HandleTrimScrollBar(AlliedScrollFrame.ScrollBar)
 	S:HandleModelSceneControlButtons(AlliedRacesFrame.ModelScene.ControlFrame)
 
-	AlliedRacesFrame:HookScript('OnShow', function(s)
-		for button in s.abilityPool:EnumerateActive() do
+	AlliedRacesFrame:HookScript('OnShow', function(frame)
+		for button in frame.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
 			S:HandleIcon(button.Icon, true)
 

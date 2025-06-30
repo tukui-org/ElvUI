@@ -35,13 +35,13 @@ local DispelPriority = {
 	Poison  = 1,
 }
 
-local function formatTime(s)
-	if s > 60 then
-		return '%dm', s / 60
-	elseif s < 1 then
-		return '%.1f', s
+local function formatTime(sec)
+	if sec > 60 then
+		return '%dm', sec / 60
+	elseif sec < 1 then
+		return '%.1f', sec
 	else
-		return '%d', s
+		return '%d', sec
 	end
 end
 

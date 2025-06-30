@@ -845,7 +845,7 @@ function RU:Initialize()
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or E.Cata and 0.8 or 1)) + ((E.Retail or E.Cata) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or E.Mists and 0.8 or 1)) + ((E.Retail or E.Mists) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
 	if E.allowRoles then
@@ -854,7 +854,7 @@ function RU:Initialize()
 	end
 
 	-- Reposition/Resize and Reuse the World Marker Button
-	local marker = E.Cata and _G.CompactRaidFrameManager and _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
+	local marker = E.Mists and _G.CompactRaidFrameManager and _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 	if marker then
 		marker:SetParent(RaidUtilityPanel)
 		marker:ClearAllPoints()

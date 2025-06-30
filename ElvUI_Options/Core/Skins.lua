@@ -52,7 +52,7 @@ local toggles = {
 	worldmap = L["WORLD_MAP"]
 }
 
-if E.Cata or E.Retail then
+if E.Mists or E.Retail then
 	toggles.achievement = L["ACHIEVEMENTS"]
 	toggles.alertframes = L["Alert Frames"]
 	toggles.archaeology = L["Archaeology Frame"]
@@ -62,6 +62,7 @@ if E.Cata or E.Retail then
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.gbank = L["Guild Bank"]
 	toggles.pvp = L["PvP Frames"]
+	toggles.petbattleui = L["Pet Battle"]
 end
 
 if not E.Retail then
@@ -104,7 +105,6 @@ if E.Retail then
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
 	toggles.perks = L["Trading Post"]
-	toggles.petbattleui = L["Pet Battle"]
 	toggles.playerChoice = L["Player Choice Frame"]
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]
@@ -114,7 +114,7 @@ if E.Retail then
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 	toggles.voidstorage = L["VOID_STORAGE"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
-elseif E.Cata then
+elseif E.Mists then
 	toggles.arenaRegistrar = L["Arena Registrar"]
 	toggles.reforge = L["Reforge"]
 elseif E.Classic then

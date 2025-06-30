@@ -12,8 +12,8 @@ local SpellBookSpellBank = Enum.SpellBookSpellBank
 
 local barColor = { 0, .86, 0 }
 
-local function clearBackdrop(self)
-	self:SetBackdropColor(0, 0, 0, 1)
+local function clearBackdrop(backdrop)
+	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
 
 local function FormatProfessionHook(frame, id)

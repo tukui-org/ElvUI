@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 
+local IsPlayerSpell = IsPlayerSpell
 local GetSpellHitModifier = GetSpellHitModifier
 local GetCombatRatingBonus = GetCombatRatingBonus
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
@@ -12,6 +13,10 @@ local displayString, db = ''
 
 local function OnEvent(self)
 	local spellHit = E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0
+
+	if IsPlayerSpell(28878) then
+		spellHit = spellHit + 1 -- Heroic Presence
+	end
 
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, spellHit)

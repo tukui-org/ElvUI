@@ -72,15 +72,7 @@ function S:Blizzard_InspectUI()
 		_G.InspectPVPFrame.BG:Kill()
 	end
 
-	_G.InspectModelFrameBorderTopLeft:Kill()
-	_G.InspectModelFrameBorderTopRight:Kill()
-	_G.InspectModelFrameBorderTop:Kill()
-	_G.InspectModelFrameBorderLeft:Kill()
-	_G.InspectModelFrameBorderRight:Kill()
-	_G.InspectModelFrameBorderBottomLeft:Kill()
-	_G.InspectModelFrameBorderBottomRight:Kill()
-	_G.InspectModelFrameBorderBottom:Kill()
-	_G.InspectModelFrameBorderBottom2:Kill()
+	S:HandleBlizzardRegions(_G.InspectModelFrame, true)
 
 	-- Re-add the overlay texture which was removed via StripTextures
 	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)

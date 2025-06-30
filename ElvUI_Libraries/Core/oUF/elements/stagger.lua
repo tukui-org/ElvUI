@@ -35,7 +35,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- ElvUI block
-local GetSpecialization = GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit

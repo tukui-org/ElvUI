@@ -25,7 +25,7 @@ local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 local UnitGUID = UnitGUID
 
-local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
+local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = C_AddOns.DisableAddOn
@@ -72,7 +72,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
-E.allowRoles = E.Retail or E.Cata or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
+E.allowRoles = E.Retail or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -1476,6 +1476,14 @@ function E:DBConvertDev()
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
 	end
+
+	-- soulshard convert
+	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
+		if data.r or data.g or data.b then
+			data.SOUL_SHARDS.r, data.SOUL_SHARDS.g, data.SOUL_SHARDS.b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end
 end
 
 function E:UpdateDB()
@@ -1538,11 +1546,11 @@ function E:UpdateActionBars(skipCallback)
 	ActionBars:UpdateMicroButtons()
 	ActionBars:UpdatePetCooldownSettings()
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
 
-	if E.Cata and E.myclass == 'SHAMAN' then
+	if E.Mists and E.myclass == 'SHAMAN' then
 		ActionBars:UpdateTotemBindings()
 	end
 
@@ -1622,8 +1630,6 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
-	elseif E.Cata then
-		ActionBars:PositionAndSizeTotemBar()
 	end
 
 	if not skipCallback then
@@ -2042,7 +2048,7 @@ function E:Initialize()
 		E:Tutorials()
 	end
 
-	if E.Retail or E.Cata or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 

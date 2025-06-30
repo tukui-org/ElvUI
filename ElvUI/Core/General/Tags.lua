@@ -128,7 +128,7 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
@@ -210,7 +210,7 @@ Tags.Env.GetClassPower = function(unit)
 
 		if Min > 0 then
 			local power = ElvUF.colors.ClassBars[unitClass]
-			local color = (monk and power[Min]) or (dk and (E.Cata and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+			local color = (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 			r, g, b = color.r, color.g, color.b
 		end
 	elseif not r then
@@ -526,14 +526,14 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	if absorb ~= 0 then
 		return E:ShortValue(absorb)
 	end
-end, not E.Retail)
+end, not (E.Retail or E.Mists))
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 	if healAbsorb ~= 0 then
 		return E:ShortValue(healAbsorb)
 	end
-end, not E.Retail)
+end, not (E.Retail or E.Mists))
 
 E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
@@ -549,7 +549,7 @@ E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not E.Retail)
+end, not (E.Retail or E.Mists))
 
 E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
@@ -559,7 +559,7 @@ E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNI
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not E.Retail)
+end, not (E.Retail or E.Mists))
 
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)

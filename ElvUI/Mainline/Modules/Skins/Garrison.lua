@@ -7,8 +7,8 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function showFollower(s)
-	S:HandleFollowerAbilities(s)
+local function showFollower(frame)
+	S:HandleFollowerAbilities(frame)
 end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
@@ -232,11 +232,11 @@ function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-	hooksecurefunc('GarrisonMissionButton_SetRewards', function(s)
+	hooksecurefunc('GarrisonMissionButton_SetRewards', function(frame)
 		--Set border color according to rarity of item
 		local firstRegion, r, g, b
 		local index = 0
-		for _, reward in pairs(s.Rewards) do
+		for _, reward in pairs(frame.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
 
@@ -313,8 +313,8 @@ function S:Blizzard_GarrisonUI()
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata('MEDIUM')
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
-	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(s)
-		for _, Reagent in ipairs(s.CapacitiveDisplay.Reagents) do
+	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(frame)
+		for _, Reagent in ipairs(frame.CapacitiveDisplay.Reagents) do
 			if not Reagent.template then
 				Reagent:SetTemplate()
 				Reagent.NameFrame:SetTexture()
@@ -429,19 +429,19 @@ function S:Blizzard_GarrisonUI()
 	GarrisonLandingPage:SetTemplate('Transparent') -- keep below parchmentRemover
 	GarrisonLandingPage.Center:SetDrawLayer('BACKGROUND', -2)
 
-	hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
+	hooksecurefunc('GarrisonLandingPageReport_SetTab', function(frame)
 		local unselectedTab = Report.unselectedTab
 		unselectedTab:Height(36)
 		unselectedTab:SetNormalTexture(E.ClearTexture)
 
-		s:SetNormalTexture(E.ClearTexture)
+		frame:SetNormalTexture(E.ClearTexture)
 
 		if unselectedTab.selectedTex then
 			unselectedTab.selectedTex:Hide()
 		end
 
-		if s.selectedTex then
-			s.selectedTex:Show()
+		if frame.selectedTex then
+			frame.selectedTex:Show()
 		end
 	end)
 
@@ -463,8 +463,8 @@ function S:Blizzard_GarrisonUI()
 	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
-	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
-		local ability = s.Abilities[index]
+	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(frame, index)
+		local ability = frame.Abilities[index]
 		if not ability.IsSkinned then
 			S:HandleIcon(ability.Icon, ability)
 			ability.IsSkinned = true

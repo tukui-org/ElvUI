@@ -44,7 +44,7 @@ function BL:START_TIMER()
 end
 
 function BL:SkinBlizzTimers()
-	if E.Cata then
+	if E.Mists then
 		hooksecurefunc('TimerTracker_StartTimerOfType', BL.START_TIMER)
 	else
 		BL:RegisterEvent('START_TIMER')

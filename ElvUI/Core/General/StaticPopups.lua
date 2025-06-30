@@ -1098,8 +1098,8 @@ end
 
 -- Static popup secure buttons
 local SecureButtons = {}
-local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
-local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.2, 0.2) end
+local SecureOnEnter = function(frame) frame.text:SetTextColor(1, 1, 1) end
+local SecureOnLeave = function(frame) frame.text:SetTextColor(1, 0.2, 0.2) end
 function E:StaticPopup_CreateSecureButton(popup, button, text, attributes)
 	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
 	btn:RegisterForClicks('AnyUp', 'AnyDown')
