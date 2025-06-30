@@ -1014,7 +1014,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.generalGroup.args.altManaGroup = ACH:Group(L["Display Mana"], nil, 20, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return E.myclass ~= 'DRUID' end end)
+		config.args.generalGroup.args.altManaGroup = ACH:Group(L["Display Mana"], nil, 20, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return not (E.myclass == 'DRUID' or E.myclass == 'MONK') end end)
 		config.args.generalGroup.args.altManaGroup.args.info = ACH:Description(L["Will display mana when main power is:"], 0)
 		config.args.generalGroup.args.altManaGroup.inline = true
 
@@ -1026,6 +1026,8 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			config.args.generalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["MAELSTROM"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Retail)
 		elseif E.myclass == 'PRIEST' then
 			config.args.generalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["INSANITY"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Retail)
+		elseif E.myclass == 'MONK' then
+			config.args.generalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
 		end
 
 		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')

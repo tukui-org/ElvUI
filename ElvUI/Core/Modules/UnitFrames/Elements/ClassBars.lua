@@ -682,10 +682,12 @@ function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if not frame.USE_CLASSBAR or (stagger == 0 and db.classbar.autoHide) then
-		self:Hide()
+	local autohide = stagger == 0 and db.classbar.autoHide
+	if E.Retail then
+		self:SetShown(frame.USE_CLASSBAR and not autohide)
 	else
-		self:Show()
+		local altPower = E.db.unitframe.altManaPowers[E.myclass]
+		self:SetShown(altPower and altPower.Stagger and not autohide)
 	end
 end
 
