@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 64 -- the real minor version is 124
+local MINOR_VERSION = 65 -- the real minor version is 124
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -24,6 +24,7 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
 
 local GetSpellInfo
 do	-- backwards compatibility for GetSpellInfo
@@ -1464,7 +1465,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
 	if not WoWClassic and not WoWBCC then
-		if not WoWCata then
+		if not WoWMists then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
@@ -2589,7 +2590,7 @@ elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
 
 		lib.callbacks:Fire("OnFlyoutUpdate", self)
 	end
-else -- for cata right now
+else -- for mists right now
 	function UpdateFlyout(self, isButtonDownOverride)
 		local hideArrow = true
 
@@ -2888,7 +2889,7 @@ Custom.RunCustom               = function(self, unit, button) return self._state
 Custom.GetPassiveCooldownSpellID = function(self) return nil end
 
 --- WoW Classic overrides
-if not WoWRetail and not WoWCata then
+if not WoWRetail and not WoWMists then
 	UpdateOverlayGlow = function() end
 end
 
