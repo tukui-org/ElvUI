@@ -526,14 +526,14 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	if absorb ~= 0 then
 		return E:ShortValue(absorb)
 	end
-end, not (E.Retail or E.Mists))
+end, E.Classic)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 	if healAbsorb ~= 0 then
 		return E:ShortValue(healAbsorb)
 	end
-end, not (E.Retail or E.Mists))
+end, E.Classic)
 
 E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
@@ -549,7 +549,7 @@ E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not (E.Retail or E.Mists))
+end, E.Classic)
 
 E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
@@ -559,7 +559,7 @@ E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNI
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not (E.Retail or E.Mists))
+end, E.Classic)
 
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)

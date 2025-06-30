@@ -41,7 +41,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	if not (E.Retail or E.Mists) then return end
+	if E.Classic then return end
 
 	DT.tooltip:ClearLines()
 
