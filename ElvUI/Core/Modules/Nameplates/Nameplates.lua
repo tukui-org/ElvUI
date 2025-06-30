@@ -272,7 +272,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 	if nameplate ~= _G.ElvNP_Test then
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
-		elseif E.myclass == 'MONK' then
+		elseif E.myclass == 'MONK' and E.Retail then
 			NP:Update_Stagger(nameplate)
 		end
 	end
