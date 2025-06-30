@@ -424,6 +424,8 @@ function AB:SetupMicroBar()
 				hooksecurefunc(button, 'SetPushed', AB.HandleCharacterPortrait)
 				hooksecurefunc(button, 'SetNormal', AB.HandleCharacterPortrait)
 			end
+		elseif name == 'TalentMicroButton' and E.global.general.disableTutorialButtons and _G.TalentMicroButtonAlert then
+			_G.TalentMicroButtonAlert:Kill()
 		end
 	end
 
