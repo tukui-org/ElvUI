@@ -572,7 +572,7 @@ function E:StaticPopup_OnUpdate(elapsed)
 		end
 	end
 
-	if info.OnUpdate then
+	if info and info.OnUpdate then
 		info.OnUpdate(self, elapsed)
 	end
 end
