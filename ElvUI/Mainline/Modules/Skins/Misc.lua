@@ -217,7 +217,7 @@ function S:BlizzardMiscFrames()
 		S:HandleCloseButton(CloseButton)
 
 		if ItemNameFrame then
-			ItenNameFrame:Hide()
+			ItemNameFrame:Hide()
 		end
 
 		if ItemFrame then

@@ -3,13 +3,11 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local next = next
-local min, select = min, select
-local unpack, ipairs, pairs = unpack, ipairs, pairs
+local next, min = next, min
+local unpack, pairs = unpack, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
-local GetItemInfo = C_Item.GetItemInfo
 
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles

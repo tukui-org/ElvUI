@@ -3,6 +3,7 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
 local wipe = wipe
+local next = next
 local format = format
 
 local UnitName = UnitName

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local next, pairs, unpack = next, pairs, unpack
+local next, pairs = next, pairs
 local hooksecurefunc = hooksecurefunc
 
 local function HandleRoleButton(button)
@@ -16,31 +16,6 @@ local function HandleRoleButton(button)
 	if button.IconPulse then button.IconPulse:Size(40) end
 	if button.EdgePulse then button.EdgePulse:Size(40) end
 	if button.shortageBorder then button.shortageBorder:Size(40) end
-end
-
-local function HonorSpecificScrollUpdateChild(bu)
-	if not bu.IsSkinned then
-		bu.Bg:Hide()
-		bu.Border:Hide()
-
-		bu:StripTextures()
-		bu:CreateBackdrop()
-		bu.backdrop:Point('TOPLEFT', 2, 0)
-		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
-		bu:StyleButton(nil, true)
-
-		bu.SelectedTexture:SetInside(bu.backdrop)
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point('TOPLEFT', 5, -3)
-
-		bu.IsSkinned = true
-	end
-end
-
-local function HonorSpecificScrollUpdate(frame)
-	frame:ForEachFrame(HonorSpecificScrollUpdateChild)
 end
 
 function S:Blizzard_PVPUI()

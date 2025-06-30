@@ -7,7 +7,7 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetShapeshiftForm = GetShapeshiftForm
-local GetPrimaryTalentTree = GetPrimaryTalentTree
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetEclipseDirection = GetEclipseDirection
 
 local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
@@ -90,7 +90,7 @@ local function Visibility(self)
 
 	local form = GetShapeshiftForm()
 	if  form == 0 or form == MOONKIN_FORM then
-		shouldEnable = not UnitHasVehicleUI('player') and C_SpecializationInfo.GetSpecialization() == SPEC_DRUID_BALANCE
+		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
 	end
 
 	if(shouldEnable) then

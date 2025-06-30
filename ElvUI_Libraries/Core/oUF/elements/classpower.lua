@@ -48,6 +48,9 @@ Supported class powers:
 local _, ns = ...
 local oUF = ns.oUF
 
+local next = next
+local floor = floor
+
 local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
