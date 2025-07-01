@@ -11,6 +11,26 @@ local NUM_GUILDBANK_ICONS_PER_ROW = 10
 local NUM_GUILDBANK_ICON_ROWS = 9
 local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
 
+local function HandleTabs()
+	local tab = _G.GuildBankFrameTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('BOTTOMLEFT', _G.GuildBankFrame, 'BOTTOMLEFT', -6, -32)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['GuildBankFrameTab'..index]
+	end
+end
+
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
@@ -101,17 +121,10 @@ function S:Blizzard_GuildBankUI()
 
 	_G.GuildBankLimitLabel:Point('CENTER', GuildBankFrame.TabLimitBG, 'CENTER', -40, -5)
 
-	for i = 1, 4 do
-		local tab = _G['GuildBankFrameTab'..i]
+	-- Bottom Tabs
+	HandleTabs()
 
-		S:HandleTab(tab)
-
-		if i == 1 then
-			tab:ClearAllPoints()
-			tab:Point('BOTTOMLEFT', GuildBankFrame, 'BOTTOMLEFT', -6, -32)
-		end
-	end
-
+	-- Right Side Tabs
 	_G.GuildBankTab1:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
 	_G.GuildBankTab2:Point('TOPLEFT', _G.GuildBankTab1, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab3:Point('TOPLEFT', _G.GuildBankTab2, 'BOTTOMLEFT', 0, 7)
