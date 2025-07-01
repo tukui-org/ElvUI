@@ -1839,6 +1839,13 @@ P.unitframe = {
 		CTRL = 'NONE',
 		ALT = 'NONE',
 	},
+	classAdditionalBar = {
+		width = 260,
+		height = 12,
+		orientation = 'HORIZONTAL',
+		frameStrata = 'LOW',
+		frameLevel = 1,
+	},
 	altManaPowers = {
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
 		SHAMAN = { Maelstrom = true },

@@ -27,8 +27,8 @@ function UF:Construct_PlayerFrame(frame)
 	frame.ClassBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	-- Druid Mana and Monk Stagger
-	frame.AdditionalPowerHolder = CreateFrame('Frame', nil, frame)
-	frame.AdditionalPowerHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+	frame.ClassAdditionalHolder = CreateFrame('Frame', nil, frame)
+	frame.ClassAdditionalHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	UF:GetClassPower_Construct(frame)
 
