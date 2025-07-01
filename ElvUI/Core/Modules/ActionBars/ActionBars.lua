@@ -1729,12 +1729,12 @@ do
 	function AB:AssistedUpdate(nextSpell)
 		for button in pairs(LAB.activeButtons) do
 			local spellID = button:GetSpellId()
-			local nextcast, alertActive = nextSpell and spellID == nextSpell, LAB.activeAlerts[spellID]
+			local nextcast, alertActive = spellID and spellID == nextSpell, LAB.activeAlerts[spellID]
 			if nextcast or (alertActive and _G.AssistedCombatManager:IsRotationSpell(spellID)) then
 				AB.AssistGlowOptions.color = (nextcast and AB.AssistGlowNextCast) or AB.AssistGlowAlternative
 				LCG.ShowOverlayGlow(button, AB.AssistGlowOptions)
 				LAB.activeAssist[spellID] = true
-			elseif not alertActive then
+			elseif spellID and not alertActive then
 				LCG.HideOverlayGlow(button)
 
 				if LAB.activeAssist[spellID] then
