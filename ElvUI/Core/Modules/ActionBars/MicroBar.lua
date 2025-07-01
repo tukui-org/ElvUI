@@ -311,28 +311,25 @@ function AB:UpdateMicroButtons()
 	local lastButton, anchorRowButton = microBar
 	for i, name in next, btns do
 		local button = _G[name]
-		if button:IsEnabled() then
-			local columnIndex = i - buttonsPerRow
-			local columnName = btns[columnIndex]
-			local columnButton = _G[columnName]
 
-			if not E.Retail then
-				button.commandName = commandKeys[name] -- to support KB like retail
-			end
+		local columnIndex = i - buttonsPerRow
+		local columnName = btns[columnIndex]
+		local columnButton = _G[columnName]
 
-			button.db = db
-
-			if i == 1 or i == buttonsPerRow then
-				anchorRowButton = button
-			end
-
-			button.handleBackdrop = true -- keep over HandleButton
-			AB:HandleButton(microBar, button, i, lastButton, columnButton)
-
-			lastButton = button
-		else -- when its enabled the HandleButton will reparent
-			button:SetParent(E.HiddenFrame)
+		if not E.Retail then
+			button.commandName = commandKeys[name] -- to support KB like retail
 		end
+
+		button.db = db
+
+		if i == 1 or i == buttonsPerRow then
+			anchorRowButton = button
+		end
+
+		button.handleBackdrop = true -- keep over HandleButton
+		AB:HandleButton(microBar, button, i, lastButton, columnButton)
+
+		lastButton = button
 	end
 
 	microBar:SetAlpha((db.mouseover and not microBar.IsMouseOvered and 0) or db.alpha)
