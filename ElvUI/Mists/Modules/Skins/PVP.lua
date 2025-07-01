@@ -19,8 +19,6 @@ local function HandleRoleButton(button)
 end
 
 local function HandleHonorDropdown(dropdown)
-	dropdown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
-
 	dropdown.Left:Kill()
 	dropdown.Middle:Kill()
 	dropdown.Right:Kill()
@@ -29,6 +27,11 @@ local function HandleHonorDropdown(dropdown)
 	dropdown.backdrop:Point('TOPLEFT', 14, 0)
 	dropdown.backdrop:Point('BOTTOMRIGHT', -6, 8)
 
+	dropdown:Width(220)
+	dropdown:ClearAllPoints()
+	dropdown:Point('TOPRIGHT', _G.HonorQueueFrame.RoleInset, 'TOPRIGHT', 6, -70)
+
+	dropdown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
 	S:HandleNextPrevButton(dropdown.Button, 'down')
 end
 
@@ -68,11 +71,7 @@ function S:Blizzard_PVPUI()
 	BonusFrame.WorldBattlesTexture:Hide()
 
 	-- TODO: This is a fake dropdown
-	local HonorQueueFrameTypeDropDown = _G.HonorQueueFrameTypeDropDown
-	HandleHonorDropdown(HonorQueueFrameTypeDropDown)
-	HonorQueueFrameTypeDropDown:Width(220)
-	HonorQueueFrameTypeDropDown:ClearAllPoints()
-	HonorQueueFrameTypeDropDown:Point('TOPRIGHT', _G.HonorQueueFrame.RoleInset, 'TOPRIGHT', 6, -70)
+	HandleHonorDropdown(_G.HonorQueueFrameTypeDropDown)
 
 	for _, bonusButton in pairs({'RandomBGButton', 'CallToArmsButton', 'WorldPVP1Button', 'WorldPVP2Button'}) do
 		local bu = BonusFrame[bonusButton]
