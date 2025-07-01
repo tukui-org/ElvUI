@@ -1150,6 +1150,32 @@ do
 		frame:ForEachFrame(SettingsListScrollUpdateChild)
 	end
 
+	function AB:SettingsPanel_OnHide()
+		self:Flush()
+		self:ClearActiveCategoryTutorial()
+
+		UpdateMicroButtons()
+
+		if not InCombatLockdown() then
+			local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
+			local bindingSet = checked and BINDING_SET.Character or BINDING_SET.Account
+			SaveBindings(bindingSet)
+		end
+
+		if not E.Classic then
+			_G.EventRegistry:TriggerEvent('SettingsPanel.OnHide')
+		end
+	end
+
+	function AB:SettingsPanel_TransitionBackOpeningPanel()
+		if InCombatLockdown() then
+			settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
+			self:SetScale(0.00001)
+		else
+			HideUIPanel(self)
+		end
+	end
+
 	function AB:DisableBlizzard()
 		for name in next, untaint do
 			if not E.Retail then
@@ -1185,22 +1211,7 @@ do
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
 		-- modified to fix a taint when closing the options while in combat
-		_G.SettingsPanel:SetScript('OnHide', function(frame)
-			frame:Flush()
-			frame:ClearActiveCategoryTutorial()
-
-			UpdateMicroButtons()
-
-			if not InCombatLockdown() then
-				local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
-				local bindingSet = checked and BINDING_SET.Character or BINDING_SET.Account
-				SaveBindings(bindingSet)
-			end
-
-			if not E.Classic then
-				_G.EventRegistry:TriggerEvent('SettingsPanel.OnHide')
-			end
-		end)
+		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:Kill()
@@ -1217,14 +1228,7 @@ do
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
 			-- dont reopen game menu and fix settings panel not being able to close during combat
-			_G.SettingsPanel.TransitionBackOpeningPanel = function(frame)
-				if InCombatLockdown() then
-					settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
-					frame:SetScale(0.00001)
-				else
-					HideUIPanel(frame)
-				end
-			end
+			_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
