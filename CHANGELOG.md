@@ -1,4 +1,4 @@
-### Version 13.93 [ June 17th 2025 ]
+### Version 13.93 [ July 1st 2025 ]
 *   Mists of Pandaria support.
 *   Blizzards One Button Assist and Assisted Highlight now supported (you can toggle spells off in General > Blizzard Improvements > Assisted Highlight and adjust colors in General > Cosmetic > Custom Glow).
 *   World and Target markers fixed for non-english language clients.
