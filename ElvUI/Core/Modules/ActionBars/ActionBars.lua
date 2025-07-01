@@ -1783,6 +1783,8 @@ do
 
 	function AB:RotationSpellsAdjust(value)
 		local rotations = _G.AssistedCombatManager.rotationSpells -- Blizzards table
+		if not next(rotations) then return end
+
 		local spells = E.db.general.rotationAssist.spells[E.myclass] -- our table for toggling
 		for spellID, active in next, spells do
 			if rotations[spellID] ~= nil then
@@ -1908,11 +1910,9 @@ function AB:Initialize()
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 
-		-- AB:RotationSpellsAdjust()
-		hooksecurefunc(_G.AssistedCombatManager, 'OnSpellsChanged', AB.RotationUpdate)
-
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
+		_G.EventRegistry:RegisterCallback('AssistedCombatManager.RotationSpellsUpdated', AB.RotationUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
