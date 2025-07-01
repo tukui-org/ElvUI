@@ -47,8 +47,8 @@ do
 		LFGMicroButton			= 6.00 / meep, -- Classic
 		EJMicroButton			= 7.00 / meep,
 		CollectionsMicroButton	= 8.00 / meep,
-		MainMenuMicroButton		= (E.Retail and 9 or 10) / meep, -- flip these
-		HelpMicroButton			= (E.Retail and 10 or 9) / meep, -- on classic
+		MainMenuMicroButton		= (E.Classic and 10 or 9) / meep, -- flip these
+		HelpMicroButton			= (E.Classic and 9 or 10) / meep, -- on classic
 		StoreMicroButton		= 10.0 / meep
 	}
 end
