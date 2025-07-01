@@ -1690,21 +1690,11 @@ function AB:LAB_ButtonCreated(button)
 	button:HookScript('OnMouseDown', AB.LAB_MouseDown)
 end
 
-function AB:LAB_ButtonBorder(button, which)
-	if button.SetBackdropBorderColor then
-		if which == 'next' then
-			button:SetBackdropBorderColor(0.2, 0.2, 1)
-		elseif which == 'downgrade' then
-			button:SetBackdropBorderColor(1, 1, 0.2)
-		else
-			local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-			button:SetBackdropBorderColor(border.r, border.g, border.b)
-		end
-	end
-end
-
 function AB:LAB_ButtonUpdate(button)
-	AB:LAB_ButtonBorder(button)
+	if button.SetBackdropBorderColor then
+		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
+		button:SetBackdropBorderColor(border.r, border.g, border.b)
+	end
 
 	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
