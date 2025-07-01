@@ -32,11 +32,13 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UpdateMicroButtons = UpdateMicroButtons
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
 local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+local SaveBindings = SaveBindings
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
@@ -44,6 +46,7 @@ local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
+local BINDING_SET = Enum.BindingSet
 
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
@@ -1180,6 +1183,24 @@ do
 		-- used for ExtraActionButton
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
+
+		-- modified to fix a taint when closing the options while in combat
+		_G.SettingsPanel:SetScript('OnHide', function(frame)
+			frame:Flush()
+			frame:ClearActiveCategoryTutorial()
+
+			UpdateMicroButtons()
+
+			if not InCombatLockdown() then
+				local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
+				local bindingSet = checked and BINDING_SET.Character or BINDING_SET.Account
+				SaveBindings(bindingSet)
+			end
+
+			if not E.Classic then
+				_G.EventRegistry:TriggerEvent('SettingsPanel.OnHide')
+			end
+		end)
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:Kill()
