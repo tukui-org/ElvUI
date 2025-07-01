@@ -185,8 +185,8 @@ function AB:HandleMicroTextures(button, name)
 			pushed:SetAlpha(0.25)
 		end
 
-		normal:SetInside(button.backdrop)
-		pushed:SetInside(button.backdrop)
+		normal:SetInside(button)
+		pushed:SetInside(button)
 
 		local color = E.media.rgbvaluecolor
 		if color then
@@ -197,11 +197,11 @@ function AB:HandleMicroTextures(button, name)
 		if disabled then
 			disabled:SetTexture(texture)
 			disabled:SetDesaturated(true)
-			disabled:SetInside(button.backdrop)
+			disabled:SetInside(button)
 		end
 
 		if button.FlashBorder then
-			button.FlashBorder:SetInside(button.backdrop)
+			button.FlashBorder:SetInside(button)
 
 			if icons then
 				button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
@@ -226,7 +226,6 @@ function AB:HandleMicroButton(button, name)
 	assert(button, 'Invalid micro button name.')
 
 	button:SetTemplate()
-	button:SetParent(microBar)
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
