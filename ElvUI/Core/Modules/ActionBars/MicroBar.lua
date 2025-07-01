@@ -15,6 +15,7 @@ local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
 AB.MICRO_CLASSIC = {}
+AB.MICRO_NAMES = {}
 AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
@@ -229,6 +230,8 @@ function AB:HandleMicroButton(button, name)
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
+
+	AB.MICRO_NAMES[button] = name
 
 	if not E.Retail then
 		AB.MICRO_CLASSIC[name] = {
