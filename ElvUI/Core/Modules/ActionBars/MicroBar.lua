@@ -439,6 +439,7 @@ function AB:SetupMicroBar()
 
 	local microMenu = AB:HasTicketButton()
 	if microMenu then
+		microMenu.UpdateHelpTicketButtonAnchor = E.noop -- prevent layout erroring
 		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
 	end
 

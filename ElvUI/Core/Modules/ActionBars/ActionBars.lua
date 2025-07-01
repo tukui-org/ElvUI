@@ -187,10 +187,10 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	button:EnableMouse(not db.clickThrough)
 	button:Size(buttonWidth, buttonHeight)
 
-	if not E.Mists or button ~= _G.StoreMicroButton then
-		button:ClearAllPoints()
-		button:Point(point, relativeFrame, relativePoint, x, y)
-	end
+	button.SetPoint = nil -- ok we want to move it
+	button:ClearAllPoints()
+	button:Point(point, relativeFrame, relativePoint, x, y)
+	button.SetPoint = E.noop -- so we can avoid an error
 
 	if index == 1 then
 		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
