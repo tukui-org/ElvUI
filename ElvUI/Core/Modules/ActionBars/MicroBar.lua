@@ -15,7 +15,7 @@ local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
 AB.MICRO_CLASSIC = {}
-AB.MICRO_NAMES = {}
+AB.MICRO_NAMES = {} -- key: button, value: name
 AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
