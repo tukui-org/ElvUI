@@ -24,7 +24,7 @@ local UnregisterStateDriver = UnregisterStateDriver
 
 local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
-local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
+local ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList or ExpandCurrencyList
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
@@ -794,7 +794,7 @@ function DT:PopulateData(currencyOnly)
 
 		if info.isHeader then
 			if not E.Classic and not info.isHeaderExpanded then
-				C_CurrencyInfo_ExpandCurrencyList(i, true)
+				ExpandCurrencyList(i, true)
 				Collapsed[info.name] = true
 
 				listSize = GetCurrencyListSize()
@@ -828,7 +828,7 @@ function DT:PopulateData(currencyOnly)
 			if not info.name then
 				break
 			elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
-				C_CurrencyInfo_ExpandCurrencyList(k, false)
+				ExpandCurrencyList(k, false)
 			end
 		end
 
