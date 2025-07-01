@@ -24,12 +24,12 @@ local function HandleHonorDropdown(dropdown)
 	dropdown.Right:Kill()
 
 	dropdown:CreateBackdrop()
-	dropdown.backdrop:Point('TOPLEFT', 14, 0)
-	dropdown.backdrop:Point('BOTTOMRIGHT', -6, 8)
+	dropdown.backdrop:Point('TOPLEFT', 14, -2)
+	dropdown.backdrop:Point('BOTTOMRIGHT', -6, 10)
 
 	dropdown:Width(220)
 	dropdown:ClearAllPoints()
-	dropdown:Point('TOPRIGHT', _G.HonorQueueFrame.RoleInset, 'TOPRIGHT', 6, -70)
+	dropdown:Point('TOPRIGHT', _G.HonorQueueFrame.RoleInset, 'TOPRIGHT', 6, -72)
 
 	dropdown.Button:SetHitRectInsets(-150, 1, 1, 1) -- stupid but ok
 	S:HandleNextPrevButton(dropdown.Button, 'down')
