@@ -1819,6 +1819,14 @@ local UF_ClassBar = {
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 }
 
+local UF_ClassAdditional = {
+	width = 260,
+	height = 12,
+	orientation = 'HORIZONTAL',
+	frameStrata = 'LOW',
+	frameLevel = 1,
+}
+
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
 UF_PrivateAuras.icon.size = 24
@@ -1838,13 +1846,6 @@ P.unitframe = {
 		SHIFT = 'NONE',
 		CTRL = 'NONE',
 		ALT = 'NONE',
-	},
-	classAdditionalBar = {
-		width = 260,
-		height = 12,
-		orientation = 'HORIZONTAL',
-		frameStrata = 'LOW',
-		frameLevel = 1,
 	},
 	altManaPowers = {
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
@@ -2041,6 +2042,7 @@ P.unitframe = {
 			},
 			CombatIcon = CopyTable(UF_CombatIcon),
 			classbar = CopyTable(UF_ClassBar),
+			classAdditional = CopyTable(UF_ClassAdditional),
 			stagger = {
 				enable = true,
 				width = 10,

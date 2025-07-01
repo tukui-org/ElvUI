@@ -222,8 +222,7 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	if bars.AdditionalHolder and (E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) then
-		local barDB = UF.db.classAdditionalBar
-		bars.AdditionalHolder:Size(barDB.width, barDB.height)
+		bars.AdditionalHolder:Size(db.classAdditional.width, db.classAdditional.height)
 
 		if not bars.AdditionalHolder.mover then
 			E:CreateMover(bars.AdditionalHolder, 'AdditionalPowerMover', L["Additional Class Power"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
@@ -234,19 +233,19 @@ function UF:Configure_ClassBar(frame)
 		if frame.Stagger then
 			frame.Stagger:ClearAllPoints()
 			frame.Stagger:Point('BOTTOMLEFT', bars.AdditionalHolder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
-			frame.Stagger:Size(barDB.width - SPACING, barDB.height - SPACING)
-			frame.Stagger:SetFrameLevel(barDB.frameLevel)
-			frame.Stagger:SetFrameStrata(barDB.frameStrata)
-			frame.Stagger:SetOrientation(barDB.orientation)
+			frame.Stagger:Size(db.classAdditional.width - SPACING, db.classAdditional.height - SPACING)
+			frame.Stagger:SetFrameLevel(db.classAdditional.frameLevel)
+			frame.Stagger:SetFrameStrata(db.classAdditional.frameStrata)
+			frame.Stagger:SetOrientation(db.classAdditional.orientation)
 		end
 
 		if frame.AdditionalPower then
 			frame.AdditionalPower:ClearAllPoints()
 			frame.AdditionalPower:Point('BOTTOMLEFT', bars.AdditionalHolder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
-			frame.AdditionalPower:Size(barDB.width - SPACING, barDB.height - SPACING)
-			frame.AdditionalPower:SetFrameLevel(barDB.frameLevel)
-			frame.AdditionalPower:SetFrameStrata(barDB.frameStrata)
-			frame.AdditionalPower:SetOrientation(barDB.orientation)
+			frame.AdditionalPower:Size(db.classAdditional.width - SPACING, db.classAdditional.height - SPACING)
+			frame.AdditionalPower:SetFrameLevel(db.classAdditional.frameLevel)
+			frame.AdditionalPower:SetFrameStrata(db.classAdditional.frameStrata)
+			frame.AdditionalPower:SetOrientation(db.classAdditional.orientation)
 		end
 	end
 
