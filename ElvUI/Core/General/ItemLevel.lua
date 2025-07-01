@@ -14,8 +14,6 @@ local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
 local UIParent = UIParent
 
-local BONUS_ARMOR = BONUS_ARMOR
-local STAT_MASTERY = STAT_MASTERY
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 
@@ -28,19 +26,6 @@ local GetCVarBool = C_CVar.GetCVarBool
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
-local AZERITE_RESPEC_BUTTON = { -- use this to find Reforge (taken from retail)
-	enUS = 'Reforge',
-	frFR = 'Retouche',
-	deDE = 'Umschmieden',
-	koKR = '재연마',
-	ruRU = 'Перековать',
-	zhCN = '重铸',
-	zhTW = '重鑄',
-	esES = 'Reforjar',
-	esMX = 'Reforjar',
-	ptBR = 'Reforjar',
-	itIT = 'Riforgia'
-}
 
 local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_2HWEAPON = true,
