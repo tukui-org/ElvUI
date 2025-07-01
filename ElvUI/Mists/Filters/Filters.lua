@@ -574,7 +574,6 @@ G.unitframe.aurawatch = {
 		[49016] = Aura(49016, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Unholy Frenzy
 	},
 	DRUID = {
-		[467]	= Aura(467, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true), -- Thorns
 		[774]	= Aura(774, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
 		[8936]	= Aura(8936, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
 		[29166]	= Aura(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
@@ -586,7 +585,6 @@ G.unitframe.aurawatch = {
 	},
 	MAGE = {
 		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
-		[54646] = Aura(54646, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Focus Magic
 	},
 	PALADIN = {
 		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}, true), -- Hand of Freedom
@@ -608,7 +606,6 @@ G.unitframe.aurawatch = {
 		[57933] = Aura(57933, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
 	},
 	SHAMAN = {
-		[16177]	= Aura(16177, {16236,16237}, 'RIGHT', {0.2, 0.2, 1}), -- Ancestral Fortitude
 		[974]	= Aura(974, nil, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
 		[61295] = Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
 		[51945] = Aura(51945, nil, 'LEFT', {0.7, 0.3, 0.7}) -- Earthliving
