@@ -300,6 +300,8 @@ function S:LookingForGroupFrames()
 
 		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
 
+		_G.ScenarioQueueFrameRandomScrollFrameChildFrameMoneyRewardNameFrame:StripTextures()
+
 		hooksecurefunc(_G.ScenarioQueueFrameSpecificScrollFrame, 'Update', LFDQueueFrameSpecificUpdate)
 
 		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
