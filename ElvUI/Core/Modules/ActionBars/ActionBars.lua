@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
-local _G = _G
+local _G, wipe = _G, wipe
 local ipairs, pairs, strmatch, next, unpack, tonumber = ipairs, pairs, strmatch, next, unpack, tonumber
 local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
@@ -1726,12 +1726,15 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 end
 
 do
+	-- some functions to show the rotation assisted highlighting
 	function AB:AssistedUpdate(nextSpell)
 		for button in pairs(LAB.activeButtons) do
 			local spellID = button:GetSpellId()
 			local nextcast, alertActive = spellID and spellID == nextSpell, LAB.activeAlerts[spellID]
-			if nextcast or (alertActive and _G.AssistedCombatManager:IsRotationSpell(spellID)) then
+			if (nextcast or alertActive) and _G.AssistedCombatManager:IsRotationSpell(spellID) then
 				AB.AssistGlowOptions.color = (nextcast and AB.AssistGlowNextCast) or AB.AssistGlowAlternative
+				AB.AssistGlowOptions.useColor = true
+
 				LCG.ShowOverlayGlow(button, AB.AssistGlowOptions)
 				LAB.activeAssist[spellID] = true
 			elseif spellID and not alertActive then
@@ -1766,6 +1769,34 @@ do
 				-- EventRegistry:TriggerEvent('AssistedCombatManager.OnAssistedHighlightSpellChange')
 			end
 		end
+	end
+
+	-- a few functions to modify what spells are rotation assisted
+	function AB:RotationUpdate()
+		AB:RotationSpellsAdjust()
+	end
+
+	function AB:RotationSpellsClear()
+		AB:RotationSpellsAdjust(true) -- set them back to true
+		wipe(E.db.general.rotationAssist.spells[E.myclass]) -- clear our table now
+	end
+
+	function AB:RotationSpellsAdjust(value)
+		local rotations = _G.AssistedCombatManager.rotationSpells -- Blizzards table
+		local spells = E.db.general.rotationAssist.spells[E.myclass] -- our table for toggling
+		for spellID, active in next, spells do
+			if rotations[spellID] ~= nil then
+				if value ~= nil then
+					rotations[spellID] = value
+				else
+					rotations[spellID] = active
+				end
+			else -- remove old ones
+				spells[spellID] = nil
+			end
+		end
+
+		_G.AssistedCombatManager:ForceUpdateAtEndOfFrame()
 	end
 end
 
@@ -1877,9 +1908,12 @@ function AB:Initialize()
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 
+		-- AB:RotationSpellsAdjust()
+		hooksecurefunc(_G.AssistedCombatManager, 'OnSpellsChanged', AB.RotationUpdate)
+
 		AB:AssistedGlowUpdate()
-		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
+		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
 	if not E.Classic then
