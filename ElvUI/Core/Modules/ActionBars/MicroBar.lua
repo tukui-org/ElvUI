@@ -15,6 +15,7 @@ local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
 AB.MICRO_CLASSIC = {}
+AB.MICRO_NAMES = {} -- key: button, value: name
 AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
@@ -46,8 +47,8 @@ do
 		LFGMicroButton			= 6.00 / meep, -- Classic
 		EJMicroButton			= 7.00 / meep,
 		CollectionsMicroButton	= 8.00 / meep,
-		MainMenuMicroButton		= (E.Retail and 9 or 10) / meep, -- flip these
-		HelpMicroButton			= (E.Retail and 10 or 9) / meep, -- on classic
+		MainMenuMicroButton		= (E.Classic and 10 or 9) / meep, -- flip these
+		HelpMicroButton			= (E.Classic and 9 or 10) / meep, -- on classic
 		StoreMicroButton		= 10.0 / meep
 	}
 end
@@ -185,8 +186,8 @@ function AB:HandleMicroTextures(button, name)
 			pushed:SetAlpha(0.25)
 		end
 
-		normal:SetInside(button.backdrop)
-		pushed:SetInside(button.backdrop)
+		normal:SetInside(button)
+		pushed:SetInside(button)
 
 		local color = E.media.rgbvaluecolor
 		if color then
@@ -197,11 +198,11 @@ function AB:HandleMicroTextures(button, name)
 		if disabled then
 			disabled:SetTexture(texture)
 			disabled:SetDesaturated(true)
-			disabled:SetInside(button.backdrop)
+			disabled:SetInside(button)
 		end
 
 		if button.FlashBorder then
-			button.FlashBorder:SetInside(button.backdrop)
+			button.FlashBorder:SetInside(button)
 
 			if icons then
 				button.FlashBorder:SetTexture(stock and (faction or stock.normal) or texture or character or nil)
@@ -226,10 +227,11 @@ function AB:HandleMicroButton(button, name)
 	assert(button, 'Invalid micro button name.')
 
 	button:SetTemplate()
-	button:SetParent(microBar)
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
+
+	AB.MICRO_NAMES[button] = name
 
 	if not E.Retail then
 		AB.MICRO_CLASSIC[name] = {
@@ -424,6 +426,8 @@ function AB:SetupMicroBar()
 				hooksecurefunc(button, 'SetPushed', AB.HandleCharacterPortrait)
 				hooksecurefunc(button, 'SetNormal', AB.HandleCharacterPortrait)
 			end
+		elseif name == 'TalentMicroButton' and E.global.general.disableTutorialButtons and _G.TalentMicroButtonAlert then
+			_G.TalentMicroButtonAlert:Kill()
 		end
 	end
 
@@ -438,6 +442,7 @@ function AB:SetupMicroBar()
 
 	local microMenu = AB:HasTicketButton()
 	if microMenu then
+		microMenu.UpdateHelpTicketButtonAnchor = E.noop -- prevent layout erroring
 		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
 	end
 

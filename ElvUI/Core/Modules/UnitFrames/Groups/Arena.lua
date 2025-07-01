@@ -4,7 +4,6 @@ local ElvUF = E.oUF
 
 local unpack = unpack
 local CreateFrame = CreateFrame
-local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
@@ -41,12 +40,8 @@ function UF:PostUpdateArenaFrame(event)
 end
 
 function UF:PostUpdateArenaPreparation(_, specID)
-	local _, specName, specTexture, specClass
-	if specID and specID > 0 then
-		_, specName, _, specTexture, _, specClass = GetSpecializationInfoByID(specID)
-	end
-
-	UF:ToggleArenaPreparationInfo(self and self.__owner, specClass and specName, specName, specTexture, specClass)
+	local specInfo = E.SpecInfoBySpecID[specID]
+	UF:ToggleArenaPreparationInfo(self and self.__owner, specInfo.classFile and specInfo.name, specInfo.name, specInfo.icon, specInfo.classFile)
 end
 
 function UF:Construct_ArenaFrames(frame)

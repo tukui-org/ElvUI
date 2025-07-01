@@ -41,7 +41,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local inVehicle, role = (oUF.isRetail or oUF.isCata) and UnitHasVehicleUI(unit)
+	local inVehicle, role = (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI(unit)
 	if(UnitInRaid(unit) and not inVehicle) then
 		if(GetPartyAssignment('MAINTANK', unit)) then
 			role = 'MAINTANK'

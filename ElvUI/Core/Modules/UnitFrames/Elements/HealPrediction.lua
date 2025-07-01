@@ -214,7 +214,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	UF:SetSize_HealComm(frame)
 
 	-- absorbs is set to none so hide both and kill code execution
-	if not E.Retail or db.absorbStyle == 'NONE' then
+	if E.Classic or db.absorbStyle == 'NONE' then
 		healAbsorbBar:Hide()
 		absorbBar:Hide()
 		return

@@ -104,15 +104,15 @@ function S:BlizzardMiscFrames()
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
-		if s and s.closeDialog and not s.closeDialog.template then
-			s.closeDialog:StripTextures()
-			s.closeDialog:SetTemplate('Transparent')
-			s:SetScale(E.uiscale)
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(frame)
+		if frame and frame.closeDialog and not frame.closeDialog.template then
+			frame.closeDialog:StripTextures()
+			frame.closeDialog:SetTemplate('Transparent')
+			frame:SetScale(E.uiscale)
 
-			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
-			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
-			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+			local dialogName = frame.closeDialog.GetName and frame.closeDialog:GetName()
+			local closeButton = frame.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			local resumeButton = frame.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
 			if closeButton then S:HandleButton(closeButton) end
 			if resumeButton then S:HandleButton(resumeButton) end
 		end
@@ -121,26 +121,26 @@ function S:BlizzardMiscFrames()
 	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
 	-- cant be hooked directly so we can just use this
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
-	hooksecurefunc('MovieFrame_PlayMovie', function(s)
-		if s and s.CloseDialog and not s.CloseDialog.template then
-			s:SetScale(E.uiscale)
-			s.CloseDialog:StripTextures()
-			s.CloseDialog:SetTemplate('Transparent')
-			S:HandleButton(s.CloseDialog.ConfirmButton)
-			S:HandleButton(s.CloseDialog.ResumeButton)
+	hooksecurefunc('MovieFrame_PlayMovie', function(frame)
+		if frame and frame.CloseDialog and not frame.CloseDialog.template then
+			frame:SetScale(E.uiscale)
+			frame.CloseDialog:StripTextures()
+			frame.CloseDialog:SetTemplate('Transparent')
+			S:HandleButton(frame.CloseDialog.ConfirmButton)
+			S:HandleButton(frame.CloseDialog.ResumeButton)
 		end
 	end)
 
 	do
-		local menuBackdrop = function(s)
-			s:SetTemplate('Transparent')
+		local menuBackdrop = function(frame)
+			frame:SetTemplate('Transparent')
 		end
 
-		local chatMenuBackdrop = function(s)
-			s:SetTemplate('Transparent')
+		local chatMenuBackdrop = function(frame)
+			frame:SetTemplate('Transparent')
 
-			s:ClearAllPoints()
-			s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
+			frame:ClearAllPoints()
+			frame:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
 		end
 
 		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
@@ -217,7 +217,7 @@ function S:BlizzardMiscFrames()
 		S:HandleCloseButton(CloseButton)
 
 		if ItemNameFrame then
-			ItenNameFrame:Hide()
+			ItemNameFrame:Hide()
 		end
 
 		if ItemFrame then

@@ -9,7 +9,7 @@ local ElvUF = E.oUF
 local _G = _G
 local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
-local type, ipairs, pairs, unpack = type, ipairs, pairs, unpack
+local type, ipairs, pairs, unpack, strmatch = type, ipairs, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
 
@@ -20,7 +20,8 @@ local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetServerTime = GetServerTime
-local GetSpecializationInfoForSpecID = GetSpecializationInfoForSpecID
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInfoForSpecID or GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsInRaid = IsInRaid
@@ -51,8 +52,8 @@ local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura
 
-local GetSpecialization = (E.Classic or E.Cata) and LCS.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = (E.Classic or E.Cata) and LCS.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
@@ -172,6 +173,10 @@ E.SpecName = { -- english locale
 	[72]	= 'Fury',
 	[73]	= 'Protection',
 }
+
+function E:GetCurrencyIDFromLink(link)
+	return link and tonumber(strmatch(link, 'currency:(%d+)'))
+end
 
 function E:GetDateTime(localTime, unix)
 	if not localTime then -- try to properly handle realm time
@@ -729,7 +734,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 	object = _G[object] or object
 
 	--If already doing pokemon
-	if E.Retail and C_PetBattles_IsInBattle() then
+	if (E.Retail or E.Mists) and C_PetBattles_IsInBattle() then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -781,7 +786,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if (E.Retail or E.Cata) and UnitHasVehicleUI('player') then
+	if (E.Retail or E.Mists) and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -1211,21 +1216,14 @@ function E:LoadAPI()
 
 	E:SetupGameMenu()
 
-	if E.Retail then
-		for _, mountID in next, C_MountJournal_GetMountIDs() do
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
-			E.MountIDs[spellID] = mountID
-			E.MountText[mountID] = sourceText
-		end
+	if E.Retail or E.Mists then -- fill the spec info tables
+		local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
+		local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
 
-		do -- fill the spec info tables
-			local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
-			local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
-
-			for classFile, specData in next, E.SpecByClass do
+		for classFile, specData in next, E.SpecByClass do
+			local info = E.ClassInfoByFile[classFile]
+			if info then -- exclude evoker on mists
 				local male, female = MALE[classFile], FEMALE[classFile]
-				local info = E.ClassInfoByFile[classFile]
 
 				for index, id in next, specData do
 					local data = {
@@ -1240,36 +1238,61 @@ function E:LoadAPI()
 
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+						if name then
 
-						if x == 1 then -- SpecInfoBySpecID
+							if x == 1 then -- SpecInfoBySpecID
+								data.name = name
+								data.desc = desc
+								data.icon = icon
+								data.role = role
+
+								local specClass = name..' '..info.className
+								E.SpecInfoBySpecClass[specClass] = data
+							else
+								local copy = E:CopyTable({}, data)
+								copy.name = name
+								copy.desc = desc
+								copy.icon = icon
+								copy.role = role
+
+								local localized = (x == 3 and female) or male
+								copy.className = localized
+
+								if localized then
+									local specClassLocalized = name..' '..localized
+									E.SpecInfoBySpecClass[specClassLocalized] = copy
+								end
+							end
+						end
+					end
+
+					-- fallback for mop
+					local _, name, desc, icon, role = GetSpecializationInfoByID(id)
+					if name then
+						local specClass = name..' '..info.className
+						if not E.SpecInfoBySpecClass[specClass] then
 							data.name = name
 							data.desc = desc
 							data.icon = icon
 							data.role = role
 
-							E.SpecInfoBySpecClass[name..' '..info.className] = data
-						else
-							local copy = E:CopyTable({}, data)
-							copy.name = name
-							copy.desc = desc
-							copy.icon = icon
-							copy.role = role
-
-							local localized = (x == 3 and female) or male
-							copy.className = localized
-
-							if localized then
-								E.SpecInfoBySpecClass[name..' '..localized] = copy
-							end
+							E.SpecInfoBySpecClass[specClass] = data
 						end
 					end
 				end
 			end
 		end
+	end
+
+	if E.Retail then
+		for _, mountID in next, C_MountJournal_GetMountIDs() do
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+			E.MountIDs[spellID] = mountID
+			E.MountText[mountID] = sourceText
+		end
 
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
-		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
-		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 	else
 		E:CompatibleTooltip(E.ScanTooltip)
@@ -1282,7 +1305,9 @@ function E:LoadAPI()
 	E.ScanTooltip.GetHyperlinkInfo = E.ScanTooltip_HyperlinkInfo
 	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
+		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
+		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else

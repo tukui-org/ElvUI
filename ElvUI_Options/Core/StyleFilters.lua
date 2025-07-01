@@ -4,7 +4,6 @@ local D = E:GetModule('Distributor')
 local NP = E:GetModule('NamePlates')
 local LibDeflate = E.Libs.Deflate
 local ACH = E.Libs.ACH
-local LCS = E.Libs.LCS
 
 local _G = _G
 local wipe, pairs, strmatch, strsplit, tostring = wipe, pairs, strmatch, strsplit, tostring
@@ -17,8 +16,6 @@ local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local GetNumSpecializationsForClassID = (not E.Retail and LCS.GetNumSpecializationsForClassID) or GetNumSpecializationsForClassID
-local GetSpecializationInfoForClassID = (not E.Retail and LCS.GetSpecializationInfoForClassID) or GetSpecializationInfoForClassID
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
@@ -285,8 +282,8 @@ StyleFilters.triggers.args.combat.args.playerGroup.args.isResting = ACH:Toggle(L
 StyleFilters.triggers.args.combat.args.playerGroup.args.notResting = ACH:Toggle(L["Not Resting"], nil, 6)
 StyleFilters.triggers.args.combat.args.playerGroup.args.playerCanAttack = ACH:Toggle(L["Can Attack"], L["If enabled then the filter will only activate when the unit can be attacked by the active player."], 7)
 StyleFilters.triggers.args.combat.args.playerGroup.args.playerCanNotAttack = ACH:Toggle(L["Can Not Attack"], L["If enabled then the filter will only activate when the unit can not be attacked by the active player."], 8)
-StyleFilters.triggers.args.combat.args.playerGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 9, nil, nil, nil, nil, nil, nil, not E.Retail)
-StyleFilters.triggers.args.combat.args.playerGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 10, nil, nil, nil, nil, nil, nil, not E.Retail)
+StyleFilters.triggers.args.combat.args.playerGroup.args.inPetBattle = ACH:Toggle(L["In Pet Battle"], nil, 9, nil, nil, nil, nil, nil, nil, E.Classic)
+StyleFilters.triggers.args.combat.args.playerGroup.args.notPetBattle = ACH:Toggle(L["Not Pet Battle"], nil, 10, nil, nil, nil, nil, nil, nil, E.Classic)
 
 StyleFilters.triggers.args.combat.args.unitGroup = ACH:Group(L["Unit"], nil, 20)
 StyleFilters.triggers.args.combat.args.unitGroup.inline = true
@@ -357,11 +354,8 @@ for classID, info in next, E.ClassInfoByID do
 	local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classFile) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return not tagTrigger or not tagTrigger.enabled end)
 	group.inline = true
 
-	for k = 1, GetNumSpecializationsForClassID(classID) do
-		local specID, name = GetSpecializationInfoForClassID(classID, k)
-
-		local tagID = format('%s%s', classFile, specID)
-		group.args[tagID] = ACH:Toggle(format('|c%s%s|r', coloredName, name), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
+	for _, specID in next, E.SpecByClass[classFile] do
+		group.args[format('%s%s', classFile, specID)] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
 
 	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group

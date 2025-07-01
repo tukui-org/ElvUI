@@ -22,9 +22,13 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
-	--Create a holder frame all 'classbars' can be positioned into
+	-- Create a holder frame all 'classbars' can be positioned into
 	frame.ClassBarHolder = CreateFrame('Frame', nil, frame)
 	frame.ClassBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+
+	-- Druid Mana and Monk Stagger
+	frame.ClassAdditionalHolder = CreateFrame('Frame', nil, frame)
+	frame.ClassAdditionalHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	UF:GetClassPower_Construct(frame)
 
@@ -49,7 +53,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 
-	if E.Cata and E.myclass == 'DRUID' then
+	if E.Mists and E.myclass == 'DRUID' then
 		frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 	end
 

@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 64 -- the real minor version is 124
+local MINOR_VERSION = 65 -- the real minor version is 124
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -24,6 +24,7 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWBCC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
+local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
 
 local GetSpellInfo
 do	-- backwards compatibility for GetSpellInfo
@@ -88,6 +89,8 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
+lib.activeAlerts = lib.activeAlerts or {}
+lib.activeAssist = lib.activeAssist or {}
 
 -- usable state for retail using slot
 lib.slotByButton = lib.slotByButton or {}
@@ -688,6 +691,35 @@ end
 
 -----------------------------------------------------------
 --- utility
+
+local function UpdateAbilityInfo(self)
+	local isTypeAction = self._state_type == 'action'
+	if isTypeAction then
+		local actionType, actionID, subType = GetActionInfo(self._state_action)
+		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
+		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
+		local spellID = (actionSpell and actionID) or macroSpell
+		local spellName = spellID and GetSpellInfo(spellID) or nil
+
+		self.isFlyoutButton = actionFlyout
+		self.abilityName = spellName
+		self.abilityID = spellID
+
+		AuraButtons.buttons[self] = spellName
+
+		if spellName then
+			if not AuraButtons.auras[spellName] then
+				AuraButtons.auras[spellName] = {}
+			end
+
+			tinsert(AuraButtons.auras[spellName], self)
+		end
+	else
+		self.isFlyoutButton = nil
+		self.abilityName = nil
+		self.abilityID = nil
+	end
+end
 
 function lib:GetAllButtons()
 	local buttons = {}
@@ -1464,7 +1496,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
 	if not WoWClassic and not WoWBCC then
-		if not WoWCata then
+		if not WoWMists then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
@@ -1511,6 +1543,8 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "CVAR_UPDATE" then
 		if arg1 == "countdownForCooldowns" then
 			ForAllButtons(UpdateCooldownNumberHidden)
+		elseif arg1 == "assistedCombatHighlight" then
+			wipe(lib.activeAssist)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
@@ -1657,29 +1691,37 @@ function OnEvent(frame, event, arg1, ...)
 			UpdateFlyoutSpells()
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
+		lib.activeAlerts[arg1] = true
+
 		for button in next, ActiveButtons do
 			local spellId = button:GetSpellId()
-			if spellId and spellId == arg1 then
-				ShowOverlayGlow(button)
-			else
-				if button._state_type == "action" then
-					local actionType, id = GetActionInfo(button._state_action)
-					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-						ShowOverlayGlow(button)
+			if not lib.activeAssist[spellId] then
+				if spellId and spellId == arg1 then
+					ShowOverlayGlow(button)
+				else
+					if button._state_type == "action" then
+						local actionType, id = GetActionInfo(button._state_action)
+						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+							ShowOverlayGlow(button)
+						end
 					end
 				end
 			end
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_HIDE" then
+		lib.activeAlerts[arg1] = nil
+
 		for button in next, ActiveButtons do
 			local spellId = button:GetSpellId()
-			if spellId and spellId == arg1 then
-				HideOverlayGlow(button)
-			else
-				if button._state_type == "action" then
-					local actionType, id = GetActionInfo(button._state_action)
-					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-						HideOverlayGlow(button)
+			if not lib.activeAssist[spellId] then
+				if spellId and spellId == arg1 then
+					HideOverlayGlow(button)
+				else
+					if button._state_type == "action" then
+						local actionType, id = GetActionInfo(button._state_action)
+						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+							HideOverlayGlow(button)
+						end
 					end
 				end
 			end
@@ -2040,34 +2082,9 @@ function Update(self, which)
 		end
 	end
 
-	local isTypeAction = self._state_type == 'action'
-	if isTypeAction then
-		local actionType, actionID, subType = GetActionInfo(self._state_action)
-		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
-		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
-		local spellID = (actionSpell and actionID) or macroSpell
-		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		self.isFlyoutButton = actionFlyout
-		self.abilityName = spellName
-		self.abilityID = spellID
-
-		AuraButtons.buttons[self] = spellName
-
-		if spellName then
-			if not AuraButtons.auras[spellName] then
-				AuraButtons.auras[spellName] = {}
-			end
-
-			tinsert(AuraButtons.auras[spellName], self)
-		end
-	else
-		self.isFlyoutButton = nil
-		self.abilityName = nil
-		self.abilityID = nil
-	end
-
 	self:UpdateLocal()
+
+	UpdateAbilityInfo(self)
 
 	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
 
@@ -2120,6 +2137,21 @@ function UpdateButtonState(self)
 		self:SetChecked(true)
 	else
 		self:SetChecked(false)
+	end
+
+	-- one punch button ~Simpy
+	local actionID = WoWRetail and self._state_type == "action" and tonumber(self._state_action)
+	if actionID and C_ActionBar.IsAssistedCombatAction(actionID) then
+		UpdateAbilityInfo(self) -- lets clean that up
+		UpdateCooldown(self) -- update cooldown
+
+		local texture = self:GetTexture()
+		if texture then
+			self.icon:SetTexture(texture)
+			self.icon:Show()
+		else
+			self.icon:Hide()
+		end
 	end
 
 	lib.callbacks:Fire("OnButtonState", self)
@@ -2409,7 +2441,9 @@ end
 
 function UpdateOverlayGlow(self)
 	local spellId = self.config.handleOverlay and self:GetSpellId()
-	if spellId and IsSpellOverlayed(spellId) then
+	if lib.activeAssist[spellId] then
+		-- lets not touch it
+	elseif spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
 	else
 		HideOverlayGlow(self)
@@ -2589,7 +2623,7 @@ elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
 
 		lib.callbacks:Fire("OnFlyoutUpdate", self)
 	end
-else -- for cata right now
+else -- for mists right now
 	function UpdateFlyout(self, isButtonDownOverride)
 		local hideArrow = true
 
@@ -2888,7 +2922,7 @@ Custom.RunCustom               = function(self, unit, button) return self._state
 Custom.GetPassiveCooldownSpellID = function(self) return nil end
 
 --- WoW Classic overrides
-if not WoWRetail and not WoWCata then
+if not WoWRetail and not WoWMists then
 	UpdateOverlayGlow = function() end
 end
 

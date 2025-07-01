@@ -14,8 +14,6 @@ local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
 local UIParent = UIParent
 
-local BONUS_ARMOR = BONUS_ARMOR
-local STAT_MASTERY = STAT_MASTERY
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
 
@@ -28,19 +26,6 @@ local GetCVarBool = C_CVar.GetCVarBool
 local MATCH_ITEM_LEVEL = ITEM_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
-local AZERITE_RESPEC_BUTTON = { -- use this to find Reforge (taken from retail)
-	enUS = 'Reforge',
-	frFR = 'Retouche',
-	deDE = 'Umschmieden',
-	koKR = '재연마',
-	ruRU = 'Перековать',
-	zhCN = '重铸',
-	zhTW = '重鑄',
-	esES = 'Reforjar',
-	esMX = 'Reforjar',
-	ptBR = 'Reforjar',
-	itIT = 'Riforgia'
-}
 
 local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_2HWEAPON = true,
@@ -48,7 +33,7 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_RANGED = true,
 }, {
 	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Cata and 18 or nil}
+}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Mists and 18 or nil}
 
 function E:InspectGearSlot(line, lineText, slotInfo)
 	if not lineText then return end
@@ -65,14 +50,11 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 	end
 
 	-- handle encahants
-	local r, g, b = line:GetTextColor()
-	local allow = not E.Cata or ((r == 0 and g == 1 and b == 0) and not strfind(lineText, ITEM_SPELL_TRIGGER_ONEQUIP, nil, true) and not strfind(lineText, AZERITE_RESPEC_BUTTON[E.locale or 'enUS'], nil, true) and not strfind(lineText, '%(%d+ min%)'))
-	if not allow then return end
-
-	local enchant = (not E.Cata and strmatch(lineText, MATCH_ENCHANT)) or (E.Cata and strfind(lineText, '^%+') and not strfind(lineText, BONUS_ARMOR, nil, true) and not strfind(lineText, STAT_MASTERY, nil, true) and lineText)
+	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
 		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+		local r, g, b = line:GetTextColor()
 
 		local shortStrip = gsub(text, '[&+] ?', '')
 		local shortAbbrev = E.db.general.itemLevel.enchantAbbrev and gsub(shortStrip, '(%w%w%w)%w+', '%1')
@@ -144,7 +126,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		end
 
 		local colorblind = GetCVarBool('colorblindmode')
-		local numLines = E.Cata and (colorblind and 21 or 20) or (colorblind and 4 or 3)
+		local numLines = E.Mists and (colorblind and 21 or 20) or (colorblind and 4 or 3)
 		for x = 2, numLines do
 			local line = info.lines[x]
 			if line then
@@ -219,7 +201,7 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		return
 	end
 
-	local numItems = E.Cata and 17 or 16
+	local numItems = E.Mists and 17 or 16
 	return E:Round(total / numItems, 2)
 end
 
@@ -247,7 +229,7 @@ do
 		if next(iLevelDB) then wipe(iLevelDB) end
 		if next(tryAgain) then wipe(tryAgain) end
 
-		for i = 1, E.Cata and 18 or 17 do
+		for i = 1, E.Mists and 18 or 17 do
 			if i ~= 4 then
 				local slotInfo = E:GetGearSlotInfo(unit, i)
 				if slotInfo == 'tooSoon' then

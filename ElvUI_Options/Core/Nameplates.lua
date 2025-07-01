@@ -588,7 +588,7 @@ NamePlates.colorsGroup.args.healPrediction.inline = true
 NamePlates.colorsGroup.args.healPrediction.args.personal = ACH:Color(L["Personal"], nil, 1, true)
 NamePlates.colorsGroup.args.healPrediction.args.others = ACH:Color(L["Others"], nil, 2, true)
 NamePlates.colorsGroup.args.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 3, true, nil, nil, nil, nil, not E.Retail)
-NamePlates.colorsGroup.args.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 4, true, nil, nil, nil, nil, not E.Retail)
+NamePlates.colorsGroup.args.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 4, true, nil, nil, nil, nil, E.Classic)
 
 NamePlates.colorsGroup.args.power = ACH:Group(L["Power Color"], nil, 7, nil, function(info) local t, d = E.db.nameplates.colors.power[info[#info]], P.nameplates.colors.power[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.power[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.power.inline = true
@@ -633,13 +633,13 @@ for i = 1, 7 do
 	NamePlates.colorsGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
-NamePlates.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.DEATHKNIGHT[i], P.nameplates.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not (E.Retail or E.Cata))
+NamePlates.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.DEATHKNIGHT[i], P.nameplates.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, E.Classic)
 NamePlates.colorsGroup.args.RUNES.inline = true
 
 do
 	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		NamePlates.colorsGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, function() return (E.Cata and i < 1) or (not E.Cata and i == 4) or (E.Retail and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Retail and not E.db.unitframe.colors.runeBySpec and i > 0) end)
+		NamePlates.colorsGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, function() return (E.Mists and i < 1) or (not E.Mists and i == 4) or (E.Retail and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Retail and not E.db.unitframe.colors.runeBySpec and i > 0) end)
 	end
 end
 

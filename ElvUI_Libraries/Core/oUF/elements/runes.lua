@@ -50,13 +50,13 @@ local oUF = ns.oUF
 local sort = sort
 local ipairs = ipairs
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetSpecialization = GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetRuneCooldown = GetRuneCooldown
 local GetRuneType = GetRuneType
 local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
-local runemap = oUF.isCata and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
+local runemap = oUF.isMists and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
 local hasSortOrder = false
 
 local function onUpdate(self, elapsed)
@@ -117,7 +117,7 @@ local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
 	local rune, specType
-	if oUF.isCata then -- runeID, alt
+	if oUF.isMists then -- runeID, alt
 		if runeID and event == 'RUNE_TYPE_UPDATE' then
 			rune = UpdateRuneType(element[runemap[runeID]], runeID, alt)
 		end
@@ -134,7 +134,7 @@ local function UpdateColor(self, event, runeID, alt)
 	else
 		for i = 1, #element do
 			local bar = element[i]
-			if oUF.isCata then
+			if oUF.isMists then
 				if not bar.runeType then
 					bar.runeType = GetRuneType(runemap[i])
 				end
@@ -177,7 +177,7 @@ end
 local function Update(self, event)
 	local element = self.Runes
 
-	if not oUF.isCata then
+	if not oUF.isMists then
 		if element.sortOrder == 'asc' then
 			sort(runemap, ascSort)
 			hasSortOrder = true

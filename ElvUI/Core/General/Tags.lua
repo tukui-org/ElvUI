@@ -63,6 +63,7 @@ local UnitStagger = UnitStagger
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
+local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 local GetCVarBool = C_CVar.GetCVarBool
 
@@ -72,7 +73,8 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 
-local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
+local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
+local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 local PVP = PVP
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
@@ -128,7 +130,7 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
@@ -149,26 +151,35 @@ Tags.Env.Abbrev = function(name)
 	return name
 end
 
--- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION or 0.3
 local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
--- table indices of bar colors
 local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
 local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
 local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
+local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
+local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
+local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION or 1
+local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
+
+local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
+local POWERTYPE_BURNING_EMBERS = Enum.PowerType.BurningEmbers or 14
+local POWERTYPE_DEMONIC_FURY = Enum.PowerType.DemonicFury or 15
+local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
+
 local ClassPowers = {
-	MONK		= Enum.PowerType.Chi,
-	MAGE		= Enum.PowerType.ArcaneCharges,
-	PALADIN		= Enum.PowerType.HolyPower,
-	DEATHKNIGHT	= Enum.PowerType.Runes,
-	WARLOCK		= Enum.PowerType.SoulShards
+	MONK		= Enum.PowerType.Chi or 12,
+	MAGE		= Enum.PowerType.ArcaneCharges or 16,
+	PALADIN		= Enum.PowerType.HolyPower or 9,
+	DEATHKNIGHT	= Enum.PowerType.Runes or 5,
+	PRIEST		= Enum.PowerType.ShadowOrbs or 28,
+	WARLOCK		= POWERTYPE_SOUL_SHARDS
 }
 
 Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
 
-	local spec, unitClass, Min, Max, r, g, b
+	local spec, unitClass, barType, Min, Max
 	if isme then
 		spec = E.myspec
 		unitClass = E.myclass
@@ -180,20 +191,44 @@ Tags.Env.GetClassPower = function(unit)
 		end
 	end
 
-	-- try stagger
-	local monk = unitClass == 'MONK'
-	if monk and spec == SPEC_MONK_BREWMASTER then
+	local monk = unitClass == 'MONK' -- checking brewmaster
+	local mistWarlock = E.Mists and unitClass == 'WARLOCK'
+	local mistPriest = E.Mists and unitClass == 'PRIEST'
+	local mistMage = E.Mists and unitClass == 'MAGE'
+
+	if mistMage and spec == SPEC_MAGE_ARCANE then -- mists arcane charges is weird
+		local info = GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
+		Min = (info and info.isHarmful and info.applications) or 0
+		Max = UnitPowerMax(unit, POWERTYPE_ARCANE_CHARGES)
+
+		local color = ElvUF.colors.power[POWERTYPE_ARCANE_CHARGES]
+		local r, g, b = color.r, color.g, color.b
+
+		return Min or 0, Max or 0, r or 1, g or 1, b or 1
+	elseif monk and spec == SPEC_MONK_BREWMASTER then -- try to handle others
 		Min = UnitStagger(unit) or 0
 		Max = UnitHealthMax(unit)
 
 		local staggerRatio = Min / Max
 		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
 		local color = ElvUF.colors.power.STAGGER[staggerIndex]
-		r, g, b = color.r, color.g, color.b
+		local r, g, b = color.r, color.g, color.b
+
+		return Min or 0, Max or 0, r or 1, g or 1, b or 1
 	end
 
 	-- try special powers or combo points
-	local barType = not r and ClassPowers[unitClass]
+	if mistWarlock then -- little gremlins
+		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
+	elseif mistPriest then -- only shadow orbs
+		if spec == SPEC_PRIEST_SHADOW then
+			barType = ClassPowers[unitClass]
+		end
+	else
+		barType = ClassPowers[unitClass]
+	end
+
+	local r, g, b
 	if barType then
 		local dk = unitClass == 'DEATHKNIGHT'
 		Min = (dk and 0) or UnitPower(unit, barType)
@@ -208,20 +243,17 @@ Tags.Env.GetClassPower = function(unit)
 			end
 		end
 
-		if Min > 0 then
-			local power = ElvUF.colors.ClassBars[unitClass]
-			local color = (monk and power[Min]) or (dk and (E.Cata and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
-			r, g, b = color.r, color.g, color.b
-		end
-	elseif not r then
+		local power = ElvUF.colors.ClassBars[unitClass]
+		local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
+		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+		r, g, b = color.r, color.g, color.b
+	else
 		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
 		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
 
-		if Min > 0 then
-			local combo = ElvUF.colors.ComboPoints
-			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
-		end
+		local combo = ElvUF.colors.ComboPoints
+		local c1, c2, c3 = combo[1], combo[2], combo[3]
+		r, g, b = ElvUF:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 	end
 
 	-- try additional mana
@@ -240,6 +272,8 @@ end
 ------------------------------------------------------------------------
 --	Looping
 ------------------------------------------------------------------------
+
+local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or ((E.myclass == 'MONK' or (E.Mists and E.myclass == 'MAGE')) and 'UNIT_AURA ') or ''
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
@@ -300,7 +334,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end)
 
-	E:AddTag(format('classpower:%s', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+	E:AddTag(format('classpower:%s', tagFormat), classSpecificEvents..'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 		local min, max = GetClassPower(unit)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
@@ -369,7 +403,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end, not E.Retail)
 
-		E:AddTag(format('classpower:%s:shortvalue', tagFormat), (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
+		E:AddTag(format('classpower:%s:shortvalue', tagFormat), classSpecificEvents..'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 			local min, max = GetClassPower(unit)
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
@@ -526,14 +560,14 @@ E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	if absorb ~= 0 then
 		return E:ShortValue(absorb)
 	end
-end, not E.Retail)
+end, E.Classic)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
 	if healAbsorb ~= 0 then
 		return E:ShortValue(healAbsorb)
 	end
-end, not E.Retail)
+end, E.Classic)
 
 E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
@@ -549,7 +583,7 @@ E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not E.Retail)
+end, E.Classic)
 
 E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
@@ -559,7 +593,7 @@ E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNI
 
 	local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
-end, not E.Retail)
+end, E.Classic)
 
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)

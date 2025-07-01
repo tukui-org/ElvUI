@@ -180,7 +180,7 @@ function NP:SetCVars()
 		end
 	end
 
-	if E.Cata then
+	if E.Mists then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
@@ -262,7 +262,7 @@ function NP:Construct_ClassPowerTwo(nameplate)
 	if nameplate ~= _G.ElvNP_Test then
 		if E.myclass == 'DEATHKNIGHT' then
 			nameplate.Runes = NP:Construct_Runes(nameplate)
-		elseif E.myclass == 'MONK' then
+		elseif E.myclass == 'MONK' and E.Retail then
 			nameplate.Stagger = NP:Construct_Stagger(nameplate)
 		end
 	end
@@ -272,7 +272,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 	if nameplate ~= _G.ElvNP_Test then
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
-		elseif E.myclass == 'MONK' then
+		elseif E.myclass == 'MONK' and E.Retail then
 			NP:Update_Stagger(nameplate)
 		end
 	end
@@ -951,7 +951,7 @@ local optionsTable = {
 	'ShowAll'
 }
 
-if E.Cata then
+if E.Mists then
 	tinsert(optionsTable, 'NameplateMaxDistanceSlider')
 end
 

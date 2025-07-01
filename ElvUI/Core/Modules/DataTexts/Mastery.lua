@@ -1,21 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local _G = _G
 local strjoin = strjoin
 local format = format
+local next = next
 
-local BreakUpLargeNumbers = BreakUpLargeNumbers
-local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetMasteryEffect = GetMasteryEffect
-local GetSpecialization = GetSpecialization
-local GetSpecializationMasterySpells = GetSpecializationMasterySpells
-local GetTalentTreeMasterySpells = GetTalentTreeMasterySpells
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecializationMasterySpells = C_SpecializationInfo.GetSpecializationMasterySpells or GetSpecializationMasterySpells
 local CreateBaseTooltipInfo = CreateBaseTooltipInfo
-local GetPrimaryTalentTree = GetPrimaryTalentTree
-local IsSpellKnown = IsSpellKnown
-local GetMastery = GetMastery
 
 local STAT_MASTERY = STAT_MASTERY
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
@@ -26,21 +20,32 @@ local displayString, db = ''
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local masteryBonus
-	if E.Cata then
-		masteryBonus = GetCombatRatingBonus(CR_MASTERY) or 0
+	local masteryRating, bonusCoeff = GetMasteryEffect()
+	local masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
 
-		local primaryTalentTree = IsSpellKnown(_G.CLASS_MASTERY_SPELLS[E.myclass]) and GetPrimaryTalentTree()
+	local title = format('|cffFFFFFF%s: %.2f%%|r', STAT_MASTERY, masteryRating)
+	if masteryBonus > 0 then
+		title = format('%s |cffFFFFFF(%.2f%%|r |cff33ff33+%.2f%%|r|cffFFFFFF)|r', title, masteryRating - masteryBonus, masteryBonus)
+	end
+
+	DT.tooltip:AddLine(title)
+	DT.tooltip:AddLine(' ')
+
+	if E.Mists then
+		local primaryTalentTree = GetSpecialization()
 		if primaryTalentTree then
-			local masterySpell = GetTalentTreeMasterySpells(primaryTalentTree)
-			if masterySpell then
+			local masterySpells = GetSpecializationMasterySpells(primaryTalentTree)
+			local hasAddedAnyMasterySpell = false
+			for _, masterySpell in next, masterySpells do
+				if hasAddedAnyMasterySpell then
+					DT.tooltip:AddLine(' ')
+				end
+
 				DT.tooltip:AddSpellByID(masterySpell)
+				hasAddedAnyMasterySpell = true
 			end
 		end
 	else
-		local _, bonusCoeff = GetMasteryEffect()
-		masteryBonus = (GetCombatRatingBonus(CR_MASTERY) or 0) * (bonusCoeff or 0)
-
 		local primaryTalentTree = GetSpecialization()
 		if primaryTalentTree then
 			local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
@@ -68,14 +73,11 @@ local function OnEnter()
 		end
 	end
 
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s [+%.2f%%]', STAT_MASTERY, BreakUpLargeNumbers(GetCombatRating(CR_MASTERY) or 0), masteryBonus))
-
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
-	local masteryRating = (E.Cata and GetMastery()) or GetMasteryEffect()
+	local masteryRating = GetMasteryEffect()
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
 	else
@@ -91,4 +93,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {E.Cata and 'COMBAT_RATING_UPDATE' or 'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ApplySettings)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {E.Mists and 'COMBAT_RATING_UPDATE' or 'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY, nil, ApplySettings)

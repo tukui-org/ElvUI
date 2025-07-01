@@ -77,10 +77,12 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local format, tinsert = format, tinsert
+local rawset, select, wipe = rawset, select, wipe
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
-local rawget, rawset, select, wipe = rawget, rawset, select, wipe
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
+
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 -- end block
 
 local _PATTERN = '%[..-%]+'
@@ -272,7 +274,7 @@ end
 
 tagFunctions.level = function(u)
 	local l = (UnitEffectiveLevel or UnitLevel)(u)
-	if C_PetBattles and (UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
+	if oUF.isRetail and (UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
 		l = UnitBattlePetLevel(u)
 	end
 
@@ -558,7 +560,7 @@ if oUF.isRetail then
 	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
-elseif oUF.isCata then
+elseif oUF.isMists then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 end
 

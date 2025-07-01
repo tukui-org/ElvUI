@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
-if not (E.Cata or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
+if not (E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
@@ -28,7 +28,7 @@ local function BuildTalentString(talentGroup)
 
 	for i = 1, MAX_TALENT_TABS do
 		local _, _, pointsEra, _, pointsInCata = GetTalentTabInfo(i, false, false, talentGroup)
-		local points = (E.Cata and pointsInCata) or pointsEra
+		local points = (E.Mists and pointsInCata) or pointsEra
 		str = (str == '' and points) or strjoin('/', str, points)
 	end
 

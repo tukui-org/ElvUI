@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
-local _G = _G
+local _G, wipe = _G, wipe
 local ipairs, pairs, strmatch, next, unpack, tonumber = ipairs, pairs, strmatch, next, unpack, tonumber
 local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
@@ -32,11 +32,13 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UpdateMicroButtons = UpdateMicroButtons
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
 local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+local SaveBindings = SaveBindings
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
@@ -44,7 +46,9 @@ local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
+local BINDING_SET = Enum.BindingSet
 
+local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 
@@ -58,6 +62,7 @@ local GetCVarBool = C_CVar.GetCVarBool
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 local Masque = E.Masque
 local FlyoutMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Flyouts')
 local VehicleMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Leave Vehicle')
@@ -93,7 +98,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Cata) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Mists) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -181,11 +186,14 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	end
 
 	button:SetParent(bar)
-	button:ClearAllPoints()
 	button:SetAttribute('showgrid', 1)
 	button:EnableMouse(not db.clickThrough)
 	button:Size(buttonWidth, buttonHeight)
+
+	button.SetPoint = nil -- ok we want to move it
+	button:ClearAllPoints()
 	button:Point(point, relativeFrame, relativePoint, x, y)
+	button.SetPoint = (AB.MICRO_NAMES[button] and E.noop) or nil -- so we can avoid an error
 
 	if index == 1 then
 		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
@@ -292,7 +300,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Retail or E.Cata) and GetVehicleBarIndex()
+	local vehicleIndex = (E.Retail or E.Mists) and GetVehicleBarIndex()
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -461,17 +469,6 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsReparentExtraButtons = nil
 	end
 
-	if E.Cata then
-		if AB.NeedsPositionAndSizeTotemBar then
-			AB:PositionAndSizeTotemBar()
-			AB.NeedsPositionAndSizeTotemBar = nil
-		end
-		if AB.NeedsRecallButtonUpdate then
-			AB:MultiCastRecallSpellButton_Update()
-			AB.NeedsRecallButtonUpdate = nil
-		end
-	end
-
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -540,10 +537,6 @@ function AB:ReassignBindings(event)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
-		end
-
-		if E.Cata and E.myclass == 'SHAMAN' then
-			AB:UpdateTotemBindings()
 		end
 	end
 
@@ -661,8 +654,6 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-			AB:PositionAndSizeTotemBar()
 		end
 	end
 end
@@ -1131,13 +1122,9 @@ do
 	}
 
 	local untaintButtons = {
-		MultiCastActionButton = (E.Cata and E.myclass ~= 'SHAMAN') or nil,
-		OverrideActionBarButton = E.Cata or nil
+		MultiCastActionButton = (E.Mists and E.myclass ~= 'SHAMAN') or nil,
+		OverrideActionBarButton = E.Mists or nil
 	}
-
-	if E.Cata then -- Wrath TotemBar needs to be handled by us
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
-	end
 
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
@@ -1161,6 +1148,32 @@ do
 
 	local function SettingsListScrollUpdate(frame)
 		frame:ForEachFrame(SettingsListScrollUpdateChild)
+	end
+
+	function AB:SettingsPanel_OnHide()
+		self:Flush()
+		self:ClearActiveCategoryTutorial()
+
+		UpdateMicroButtons()
+
+		if not InCombatLockdown() then
+			local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
+			local bindingSet = checked and BINDING_SET.Character or BINDING_SET.Account
+			SaveBindings(bindingSet)
+		end
+
+		if not E.Classic then
+			_G.EventRegistry:TriggerEvent('SettingsPanel.OnHide')
+		end
+	end
+
+	function AB:SettingsPanel_TransitionBackOpeningPanel()
+		if InCombatLockdown() then
+			settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
+			self:SetScale(0.00001)
+		else
+			HideUIPanel(self)
+		end
 	end
 
 	function AB:DisableBlizzard()
@@ -1193,9 +1206,12 @@ do
 		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 
-		-- used for ExtraActionButton and TotemBar (on wrath)
-		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show and Totems to swap
+		-- used for ExtraActionButton
+		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
+
+		-- modified to fix a taint when closing the options while in combat
+		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
 
 		if E.Retail then
 			_G.StatusTrackingBarManager:Kill()
@@ -1212,14 +1228,7 @@ do
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
 			-- dont reopen game menu and fix settings panel not being able to close during combat
-			_G.SettingsPanel.TransitionBackOpeningPanel = function(frame)
-				if InCombatLockdown() then
-					settingsHider:RegisterEvent('PLAYER_REGEN_ENABLED')
-					frame:SetScale(0.00001)
-				else
-					HideUIPanel(frame)
-				end
-			end
+			_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
@@ -1246,7 +1255,7 @@ do
 			end
 		end
 
-		if E.Retail or E.Cata then
+		if E.Retail or E.Mists then
 			if _G.PlayerTalentFrame then
 				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 			else
@@ -1739,10 +1748,82 @@ end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
+end
 
-	if (initLogin or isReload) and (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
-		AB:PositionAndSizeTotemBar()
+do
+	-- some functions to show the rotation assisted highlighting
+	function AB:AssistedUpdate(nextSpell)
+		for button in pairs(LAB.activeButtons) do
+			local spellID = button:GetSpellId()
+			local nextcast, alertActive = spellID and spellID == nextSpell, LAB.activeAlerts[spellID]
+			if (nextcast or alertActive) and _G.AssistedCombatManager:IsRotationSpell(spellID) then
+				AB.AssistGlowOptions.color = (nextcast and AB.AssistGlowNextCast) or AB.AssistGlowAlternative
+				AB.AssistGlowOptions.useColor = true
+
+				LCG.ShowOverlayGlow(button, AB.AssistGlowOptions)
+				LAB.activeAssist[spellID] = true
+			elseif spellID and not alertActive then
+				LCG.HideOverlayGlow(button)
+
+				if LAB.activeAssist[spellID] then
+					LAB.activeAssist[spellID] = nil
+				end
+			end
+		end
+	end
+
+	function AB:AssistedGlowUpdate()
+		AB.AssistGlowOptions = E:CopyTable({}, E.db.general.customGlow)
+		AB.AssistGlowNextCast = E:SetColorTable(AB.AssistGlowNextCast, E:UpdateClassColor(E.db.general.rotationAssist.nextcast))
+		AB.AssistGlowAlternative = E:SetColorTable(AB.AssistGlowAlternative, E:UpdateClassColor(E.db.general.rotationAssist.alternative))
+	end
+
+	local checkForVisibleButton = false -- we need this changed to function
+	function AB:AssistedOnUpdate(elapsed)
+		self.updateTimeLeft = self.updateTimeLeft - elapsed
+
+		if self.updateTimeLeft <= 0 then
+			self.updateTimeLeft = self:GetUpdateRate()
+
+			local spellID = GetNextCastSpell(checkForVisibleButton)
+			if spellID ~= self.lastNextCastSpellID then
+				self.lastNextCastSpellID = spellID
+				self:UpdateAllAssistedHighlightFramesForSpell(spellID)
+
+				-- we dont need this tho
+				-- EventRegistry:TriggerEvent('AssistedCombatManager.OnAssistedHighlightSpellChange')
+			end
+		end
+	end
+
+	-- a few functions to modify what spells are rotation assisted
+	function AB:RotationUpdate()
+		AB:RotationSpellsAdjust()
+	end
+
+	function AB:RotationSpellsClear()
+		AB:RotationSpellsAdjust(true) -- set them back to true
+		wipe(E.db.general.rotationAssist.spells[E.myclass]) -- clear our table now
+	end
+
+	function AB:RotationSpellsAdjust(value)
+		local rotations = _G.AssistedCombatManager.rotationSpells -- Blizzards table
+		if not next(rotations) then return end
+
+		local spells = E.db.general.rotationAssist.spells[E.myclass] -- our table for toggling
+		for spellID, active in next, spells do
+			if rotations[spellID] ~= nil then
+				if value ~= nil then
+					rotations[spellID] = value
+				else
+					rotations[spellID] = active
+				end
+			else -- remove old ones
+				spells[spellID] = nil
+			end
+		end
+
+		_G.AssistedCombatManager:ForceUpdateAtEndOfFrame()
 	end
 end
 
@@ -1790,15 +1871,15 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 		AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
-
-		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
-		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	end
 
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
@@ -1829,19 +1910,15 @@ function AB:Initialize()
 
 	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
 
-	if E.Retail or E.Cata then
-		AB:SetupExtraButtons()
-	end
-
-	if (E.Cata and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
-		AB:CreateTotemBar()
-	end
-
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if E.Retail and IsInBattle() then
+	if E.Retail or E.Mists then
+		AB:SetupExtraButtons()
+	end
+
+	if (E.Retail or E.Mists) and IsInBattle() then
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()
@@ -1857,6 +1934,11 @@ function AB:Initialize()
 
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
+
+		AB:AssistedGlowUpdate()
+		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
+		_G.EventRegistry:RegisterCallback('AssistedCombatManager.RotationSpellsUpdated', AB.RotationUpdate)
+		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
 	if not E.Classic then

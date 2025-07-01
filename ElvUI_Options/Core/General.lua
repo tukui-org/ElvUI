@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local AFK = E:GetModule('AFK')
+local AB = E:GetModule('ActionBars')
 local BL = E:GetModule('Blizzard')
 local LO = E:GetModule('Layout')
 local M = E:GetModule('Misc')
@@ -12,6 +13,7 @@ local RU = E:GetModule('RaidUtility')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local tonumber, format = tonumber, format
 local wipe, next, ceil = wipe, next, ceil
 local IsMouseButtonDown = IsMouseButtonDown
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
@@ -27,6 +29,28 @@ local function GetChatWindowInfo()
 	end
 
 	return ChatTabInfo
+end
+
+local function GetSpellText(spell)
+	local spellID = tonumber(spell)
+	if spellID then
+		local spellName = E:GetSpellInfo(spellID)
+		if spellName then
+			spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
+		end
+	end
+
+	return spell
+end
+
+local function RotationAssistSpells()
+	local info = {}
+
+	for spellID in next, _G.AssistedCombatManager.rotationSpells do
+		info[spellID] = GetSpellText(spellID)
+	end
+
+	return info
 end
 
 local modifierValues = { SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
@@ -168,7 +192,7 @@ Cosmetic.bordersGroup.args.ufThinBorders = ACH:Toggle(L["Unitframe Thin Borders"
 Cosmetic.bordersGroup.args.npThinBorders = ACH:Toggle(L["Nameplate Thin Borders"], L["Use thin borders on certain nameplate elements."], 3, nil, nil, nil, function() return E.db.nameplates.thinBorders end, function(_, value) E.db.nameplates.thinBorders = value E.ShowPopup = true end)
 Cosmetic.bordersGroup.args.cropIcon = ACH:Toggle(L["Crop Icons"], L["This is for Customized Icons in your Interface/Icons folder."], 4, true, nil, nil, function(info) local value = E.db.general[info[#info]] if value == 2 then return true elseif value == 1 then return nil else return false end end, function(info, value) E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0 E.ShowPopup = true end)
 
-Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value end)
+Cosmetic.customGlowGroup = ACH:Group(L["Custom Glow"], nil, 16, nil, function(info) return E.db.general.customGlow[info[#info]] end, function(info, value) E:StopAllCustomGlows() E.db.general.customGlow[info[#info]] = value AB:AssistedGlowUpdate() end)
 Cosmetic.customGlowGroup.inline = true
 Cosmetic.customGlowGroup.args.style = ACH:Select(L["Style"], nil, 1, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do tbl[name] = name end return tbl end)
 Cosmetic.customGlowGroup.args.speed = ACH:Range(L["SPEED"], nil, 2, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 }, nil, nil, nil, nil, function() return E.db.general.customGlow.style == 'Proc Glow' end)
@@ -178,7 +202,9 @@ Cosmetic.customGlowGroup.args.lines = ACH:Range(function() return E.db.general.c
 Cosmetic.customGlowGroup.args.startAnimation = ACH:Toggle(L["Start Animation"], nil, 5, nil, nil, nil, nil, nil, nil, function() return E.db.general.customGlow.style ~= 'Proc Glow' end)
 Cosmetic.customGlowGroup.args.spacer1 = ACH:Spacer(10, 'full', function() return E.db.general.customGlow.style == 'Action Button Glow' end)
 Cosmetic.customGlowGroup.args.useColor = ACH:Toggle(L["Custom Color"], nil, 11)
-Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() end, function() return not E.db.general.customGlow.useColor end)
+Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() AB:AssistedGlowUpdate() end, function() return not E.db.general.customGlow.useColor end)
+Cosmetic.customGlowGroup.args.nextcast = ACH:Color(L["Next Cast"], nil, 13, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Retail)
+Cosmetic.customGlowGroup.args.alternative = ACH:Color(L["Alternative"], nil, 14, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Retail)
 
 Cosmetic.cosmeticBottomPanel = ACH:Group(L["Bottom Panel"], nil, 20)
 Cosmetic.cosmeticBottomPanel.inline = true
@@ -224,8 +250,8 @@ blizz.general.args.resurrectSound = ACH:Toggle(L["Resurrect Sound"], L["Enable t
 blizz.general.args.loot = ACH:Toggle(L["Loot Frame"], L["Enable/Disable the loot frame."], 7, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.hideZoneText = ACH:Toggle(L["Hide Zone Text"], L["Enable/Disable the on-screen zone text when you change zones."], 8, nil, nil, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value; M:ZoneTextToggle() end)
 blizz.general.args.spacer1 = ACH:Spacer(14, 'full')
-blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateVehicleFrame() end, nil, not E.Cata)
-blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, not E.Cata)
+blizz.general.args.vehicleSeatIndicatorSize = ACH:Range(L["Vehicle Seat Indicator Size"], nil, 16, { min = 64, max = 128, step = 4 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateVehicleFrame() end, nil, not E.Mists)
+blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, not E.Mists)
 blizz.general.inline = true
 
 blizz.quest = ACH:Group(L["Quests"], nil, 10)
@@ -235,10 +261,10 @@ blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"]
 blizz.quest.args.commandBarSetting = ACH:Select(L["Order Hall Command Bar"], nil, 4, { DISABLED = L["Disable"], ENABLED = L["Enable"], ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"] }, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E.ShowPopup = true end, nil, not E.Retail)
 blizz.quest.inline = true
 
-blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, not (E.Retail or E.Cata))
+blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, E.Classic)
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_AutoHide() end, nil, E.Classic or IsAddOnLoaded('BigWigs'))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or IsAddOnLoaded('BigWigs') or not E.db.general.objectiveFrameAutoHide end)
-blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Cata)
+blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not E.Mists)
 blizz.objectiveFrameGroup.args.bonusObjectivePosition = ACH:Select(L["Bonus Reward Position"], L["Position of bonus quest reward frame relative to the objective tracker."], 4, { RIGHT = L["Right"], LEFT = L["Left"], AUTO = L["Automatic"] }, nil, nil, nil, nil, nil, not E.Retail)
 blizz.objectiveFrameGroup.inline = true
 
@@ -303,7 +329,13 @@ blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], 
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
 
-blizz.cooldownManager = ACH:Group(E.NewSign..L["Cooldown Manager"], nil, 70, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateViewers() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
+blizz.rotationAssist = ACH:Group(E.NewSign..L["Assisted Highlight"], nil, 70, nil, function(info) return E.db.general.rotationAssist[info[#info]] end, function(info, value) E.db.general.rotationAssist[info[#info]] = value end, nil, not E.Retail)
+blizz.rotationAssist.args.spellsDesc = ACH:Description(L["List of spells that will show when using Blizzard's assisted highlighting."], 1, 'medium')
+blizz.rotationAssist.args.resetSpells = ACH:Execute(L["Reset"], nil, 2, function() AB:RotationSpellsClear() end)
+blizz.rotationAssist.args.colorButton = ACH:Execute(L["Colors"], nil, 3, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'general', 'cosmetic') end)
+blizz.rotationAssist.args.spells = ACH:MultiSelect(L["Spells"], nil, 10, RotationAssistSpells, nil, nil, function(_, key) local t = E.db.general.rotationAssist.spells[E.myclass] return t[key] == nil or t[key] end, function(_, key, value) E.db.general.rotationAssist.spells[E.myclass][key] = value; AB:RotationSpellsAdjust() end)
+
+blizz.cooldownManager = ACH:Group(L["Cooldown Manager"], nil, 80, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateViewers() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
 local cdManager = blizz.cooldownManager.args
 
 cdManager.swipeColorSpell = ACH:Color(L["Swipe: Spell"], nil, 1, true, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a S:CooldownManager_UpdateViewers() end)
@@ -354,7 +386,7 @@ cdManager.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Posit
 cdManager.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
 cdManager.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
-blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 80, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
+blizz.queueStatus = ACH:Group(L["Queue Status"], nil, 90, nil, function(info) return E.db.general.queueStatus[info[#info]] end, function(info, value) E.db.general.queueStatus[info[#info]] = value M:HandleQueueStatus() end)
 blizz.queueStatus.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.queueStatus end, function(_, value) E.private.general.queueStatus = value E.ShowPopup = true end, function() return (E.Retail and not E.private.actionbar.enable) or (not E.Retail and not E.private.general.minimap.enable) end)
 blizz.queueStatus.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.3, max = 1, step = 0.05 })
 blizz.queueStatus.args.frameLevel = ACH:Range(L["Frame Level"], nil, 3, { min = 2, max = 128, step = 1 })
@@ -372,7 +404,7 @@ blizz.queueStatus.args.fontGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 12
 blizz.queueStatus.args.fontGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 13, { min = -30, max = 30, step = 1 })
 blizz.queueStatus.args.fontGroup.inline = true
 
-blizz.totems = ACH:Group(L["Totem Tracker"], nil, 90, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TM:PositionAndSize() end)
+blizz.totems = ACH:Group(L["Totem Tracker"], nil, 100, nil, function(info) return E.db.general.totems[info[#info]] end, function(info, value) E.db.general.totems[info[#info]] = value TM:PositionAndSize() end)
 blizz.totems.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.totemTracker end, function(_, value) E.private.general.totemTracker = value; E.ShowPopup = true end)
 blizz.totems.args.sortDirection = ACH:Select(L["Sort Direction"], nil, 2, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 blizz.totems.args.growthDirection = ACH:Select(L["Bar Direction"], nil, 3, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
@@ -392,8 +424,8 @@ for tag, name in next, C.ClassTable do
 	blizz.classColors.args[tag] = ACH:Color(name, nil, nil, nil, 120)
 end
 
-blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 80, 'tab', function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
-blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Cata)
+blizz.guildBank = ACH:Group(L["Guild Bank"], nil, 110, 'tab', function(info) return E.db.general.guildBank[info[#info]] end, function(info, value) E.db.general.guildBank[info[#info]] = value BL:GuildBank_Update() end, nil, E.Classic)
+blizz.guildBank.args.itemQuality = ACH:Toggle(L["Item Quality"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Mists)
 
 blizz.guildBank.args.ilvlGroup = ACH:Group(L["Item Level"], nil, 10)
 blizz.guildBank.args.ilvlGroup.args.itemLevel = ACH:Toggle(L["Display Item Level"], L["Displays item level on equippable items."], 1)

@@ -38,6 +38,7 @@ local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
+
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 -- GLOBALS: Arena_LoadUI
@@ -71,7 +72,8 @@ UF.classMaxResourceBar = { -- match to NP ClassPower MAX_POINTS
 	MONK = 6,
 	MAGE = 4,
 	ROGUE = 7,
-	DRUID = 5
+	DRUID = 5,
+	PRIEST = 3
 }
 
 UF.SortAuraFuncs = {
@@ -431,6 +433,7 @@ function UF:UpdateColors()
 	ElvUF.colors.tapped = E:SetColorTable(ElvUF.colors.tapped, db.tapped)
 	ElvUF.colors.disconnected = E:SetColorTable(ElvUF.colors.disconnected, db.disconnected)
 	ElvUF.colors.health = E:SetColorTable(ElvUF.colors.health, db.health)
+
 	ElvUF.colors.power.MANA = E:SetColorTable(ElvUF.colors.power.MANA, db.power.MANA)
 	ElvUF.colors.power.RAGE = E:SetColorTable(ElvUF.colors.power.RAGE, db.power.RAGE)
 	ElvUF.colors.power.FOCUS = E:SetColorTable(ElvUF.colors.power.FOCUS, db.power.FOCUS)
@@ -441,6 +444,11 @@ function UF:UpdateColors()
 	ElvUF.colors.power.LUNAR_POWER = E:SetColorTable(ElvUF.colors.power.LUNAR_POWER, db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
+
+	ElvUF.colors.power.ARCANE_CHARGES = E:SetColorTable(ElvUF.colors.power.ARCANE_CHARGES, db.classResources.MAGE)
+	ElvUF.colors.power.SHADOW_ORBS = E:SetColorTable(ElvUF.colors.power.SHADOW_ORBS, db.classResources.PRIEST)
+	ElvUF.colors.power.HOLY_POWER = E:SetColorTable(ElvUF.colors.power.HOLY_POWER, db.classResources.PALADIN)
+
 	ElvUF.colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(ElvUF.colors.power[POWERTYPE_ALTERNATE], db.power.ALT_POWER)
 	ElvUF.colors.chargedComboPoint = E:SetColorTable(ElvUF.colors.chargedComboPoint, db.classResources.chargedComboPoint)
 
@@ -479,13 +487,22 @@ function UF:UpdateColors()
 	if not ElvUF.colors.ClassBars then ElvUF.colors.ClassBars = {} end
 	ElvUF.colors.ClassBars.PALADIN = E:SetColorTable(ElvUF.colors.ClassBars.PALADIN, db.classResources.PALADIN)
 	ElvUF.colors.ClassBars.MAGE = E:SetColorTable(ElvUF.colors.ClassBars.MAGE, db.classResources.MAGE)
-	ElvUF.colors.ClassBars.WARLOCK = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK, db.classResources.WARLOCK)
+	ElvUF.colors.ClassBars.PRIEST = E:SetColorTable(ElvUF.colors.ClassBars.PRIEST, db.classResources.PRIEST)
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
 	for i = 1, 6 do
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
+	end
+
+	if not ElvUF.colors.ClassBars.WARLOCK then ElvUF.colors.ClassBars.WARLOCK = {} end
+	ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS, db.classResources.WARLOCK.SOUL_SHARDS)
+	ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY, db.classResources.WARLOCK.DEMONIC_FURY)
+
+	if not ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS then ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS = {} end
+	for i = 1, 4 do
+		ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS[i] = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.BURNING_EMBERS[i], db.classResources.WARLOCK.BURNING_EMBERS[i])
 	end
 
 	if not ElvUF.colors.ClassBars.DEATHKNIGHT then ElvUF.colors.ClassBars.DEATHKNIGHT = {} end
@@ -2142,7 +2159,7 @@ function UF:Initialize()
 	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 
-	if E.Retail or E.Cata then
+	if E.Retail or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
 		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')

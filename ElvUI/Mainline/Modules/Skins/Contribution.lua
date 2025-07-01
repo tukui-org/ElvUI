@@ -21,15 +21,15 @@ function S:Blizzard_Contribution()
 		TT:SetStyle(tt)
 	end
 
-	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(s)
+	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(frame)
 		-- Skin the Contribute Buttons
-		if not s.IsSkinned then
-			S:HandleButton(s.ContributeButton)
-			s.IsSkinned = true
+		if not frame.IsSkinned then
+			S:HandleButton(frame.ContributeButton)
+			frame.IsSkinned = true
 		end
 
 		-- Skin the StatusBar
-		local statusBar = s.Status
+		local statusBar = frame.Status
 		if statusBar and not statusBar.backdrop then
 			E:RegisterStatusBar(statusBar)
 			statusBar:StripTextures()
@@ -38,8 +38,8 @@ function S:Blizzard_Contribution()
 	end)
 
 	-- Skin the reward icons
-	hooksecurefunc(_G.ContributionMixin, 'AddReward', function(s, _, rewardID)
-		local reward = s:FindOrAcquireReward(rewardID)
+	hooksecurefunc(_G.ContributionMixin, 'AddReward', function(frame, _, rewardID)
+		local reward = frame:FindOrAcquireReward(rewardID)
 		if reward and not reward.backdrop then
 			reward:SetFrameLevel(5)
 			reward:CreateBackdrop()

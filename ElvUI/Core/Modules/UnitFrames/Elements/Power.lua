@@ -44,6 +44,36 @@ function UF:PowerBar_SetStatusBarColor(r, g, b)
 	end
 end
 
+function UF:PowerBar_CreateHolder(frame, power)
+	local holder = CreateFrame('Frame', nil, power)
+	holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
+
+	if frame.unitframeType then
+		local key = frame.unitframeType:gsub('t(arget)','T%1'):gsub('p(layer)','P%1'):gsub('f(ocus)','F%1'):gsub('p(et)','P%1')
+		E:CreateMover(holder, key..'PowerBarMover', L[key.." Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,'..frame.unitframeType..',power')
+	end
+
+	return holder
+end
+
+function UF:PowerBar_EnableHolder(frame, power, detached)
+	if not detached then return end -- dont enable it
+
+	if power.Holder and power.Holder.mover then
+		E:EnableMover(power.Holder.mover.name)
+	else
+		power.Holder = UF:PowerBar_CreateHolder(frame, power)
+	end
+end
+
+function UF:PowerBar_DisableHolder(frame, power, detached)
+	if detached then return end -- dont disable it
+
+	if power.Holder and power.Holder.mover then
+		E:DisableMover(power.Holder.mover.name)
+	end
+end
+
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
 	frame.POWERBAR_SHOWN = true -- we need this for autoHide
@@ -155,19 +185,10 @@ function UF:Configure_Power(frame, healthUpdate)
 		local DOUBLE_BORDER = UF.BORDER * 2
 		local DOUBLE_SPACING = BORDER_SPACING * 2
 
+		-- Create and Enable the holder when detached
+		UF:PowerBar_EnableHolder(frame, power, frame.POWERBAR_DETACHED)
+
 		if frame.POWERBAR_DETACHED then
-			if power.Holder and power.Holder.mover then
-				E:EnableMover(power.Holder.mover.name)
-			else
-				power.Holder = CreateFrame('Frame', nil, power)
-				power.Holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
-
-				if frame.unitframeType then
-					local key = frame.unitframeType:gsub('t(arget)','T%1'):gsub('p(layer)','P%1'):gsub('f(ocus)','F%1'):gsub('p(et)','P%1')
-					E:CreateMover(power.Holder, key..'PowerBarMover', L[key.." Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,'..frame.unitframeType..',power')
-				end
-			end
-
 			power.Holder:Size(POWERBAR_WIDTH, POWERBAR_HEIGHT)
 			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', BORDER_SPACING, BORDER_SPACING)
 			power:Size(POWERBAR_WIDTH - DOUBLE_SPACING, POWERBAR_HEIGHT - DOUBLE_SPACING)
@@ -215,10 +236,8 @@ function UF:Configure_Power(frame, healthUpdate)
 			power:OffsetFrameLevel(5, frame.Health) --Health uses 10
 		end
 
-		--Hide mover until we detach again
-		if not frame.POWERBAR_DETACHED and power.Holder and power.Holder.mover then
-			E:DisableMover(power.Holder.mover.name)
-		end
+		-- Hide holder until we detach again
+		UF:PowerBar_DisableHolder(frame, power, frame.POWERBAR_DETACHED)
 
 		power:SetFrameStrata(db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
 
@@ -266,7 +285,7 @@ end
 do
 	local classPowers = { [0] = 'MANA', 'RAGE', 'FOCUS', 'ENERGY' }
 
-	if E.Cata then -- also handled in ConfigEnviroment
+	if E.Mists then -- also handled in ConfigEnviroment
 		classPowers[4] = 'RUNIC_POWER'
 	elseif E.Retail then
 		classPowers[4] = 'RUNIC_POWER'

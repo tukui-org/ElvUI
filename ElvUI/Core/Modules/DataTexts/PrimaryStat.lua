@@ -5,7 +5,7 @@ local _G = _G
 local strjoin = strjoin
 
 local UnitStat = UnitStat
-local GetSpecialization = GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local PRIMARY_STAT = gsub(SPEC_FRAME_PRIMARY_STAT, '[:：%s]-%%s$', '')
