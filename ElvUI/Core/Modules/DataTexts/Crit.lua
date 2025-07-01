@@ -1,12 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local min = min
 local format = format
 local strjoin = strjoin
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
+local GetSpellCritChance = GetSpellCritChance
 local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
 
@@ -14,7 +16,9 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CRIT_ABBR = CRIT_ABBR
 
 local MELEE_CRIT_CHANCE = MELEE_CRIT_CHANCE
+local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
 local CR_CRIT_MELEE = CR_CRIT_MELEE
+local CR_CRIT_SPELL = CR_CRIT_SPELL
 local CR_CRIT_RANGED = CR_CRIT_RANGED
 local CR_CRIT_TOOLTIP = CR_CRIT_TOOLTIP
 
@@ -37,11 +41,23 @@ local function OnEnter()
 end
 
 local function OnEvent(self)
-	meleeCrit = GetCritChance()
-	rangedCrit = GetRangedCritChance()
+	local spellCrit, critChance
 
-	local critChance
-	if (rangedCrit > meleeCrit) then
+	local holySchool = 2 -- start at 2 to skip physical damage
+	local minCrit = GetSpellCritChance(holySchool)
+	for i = (holySchool + 1), MAX_SPELL_SCHOOLS do
+		spellCrit = GetSpellCritChance(i)
+		minCrit = min(minCrit, spellCrit)
+	end
+
+	spellCrit = minCrit
+	rangedCrit = GetRangedCritChance()
+	meleeCrit = GetCritChance()
+
+	if (spellCrit >= rangedCrit and spellCrit >= meleeCrit) then
+		critChance = spellCrit
+		ratingIndex = CR_CRIT_SPELL
+	elseif (rangedCrit >= meleeCrit) then
 		critChance = rangedCrit
 		ratingIndex = CR_CRIT_RANGED
 	else
