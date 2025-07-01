@@ -692,6 +692,35 @@ end
 -----------------------------------------------------------
 --- utility
 
+local function UpdateAbilityInfo(self)
+	local isTypeAction = self._state_type == 'action'
+	if isTypeAction then
+		local actionType, actionID, subType = GetActionInfo(self._state_action)
+		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
+		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
+		local spellID = (actionSpell and actionID) or macroSpell
+		local spellName = spellID and GetSpellInfo(spellID) or nil
+
+		self.isFlyoutButton = actionFlyout
+		self.abilityName = spellName
+		self.abilityID = spellID
+
+		AuraButtons.buttons[self] = spellName
+
+		if spellName then
+			if not AuraButtons.auras[spellName] then
+				AuraButtons.auras[spellName] = {}
+			end
+
+			tinsert(AuraButtons.auras[spellName], self)
+		end
+	else
+		self.isFlyoutButton = nil
+		self.abilityName = nil
+		self.abilityID = nil
+	end
+end
+
 function lib:GetAllButtons()
 	local buttons = {}
 	for button in next, ButtonRegistry do
@@ -2053,34 +2082,9 @@ function Update(self, which)
 		end
 	end
 
-	local isTypeAction = self._state_type == 'action'
-	if isTypeAction then
-		local actionType, actionID, subType = GetActionInfo(self._state_action)
-		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
-		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
-		local spellID = (actionSpell and actionID) or macroSpell
-		local spellName = spellID and GetSpellInfo(spellID) or nil
-
-		self.isFlyoutButton = actionFlyout
-		self.abilityName = spellName
-		self.abilityID = spellID
-
-		AuraButtons.buttons[self] = spellName
-
-		if spellName then
-			if not AuraButtons.auras[spellName] then
-				AuraButtons.auras[spellName] = {}
-			end
-
-			tinsert(AuraButtons.auras[spellName], self)
-		end
-	else
-		self.isFlyoutButton = nil
-		self.abilityName = nil
-		self.abilityID = nil
-	end
-
 	self:UpdateLocal()
+
+	UpdateAbilityInfo(self)
 
 	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
 
@@ -2133,6 +2137,21 @@ function UpdateButtonState(self)
 		self:SetChecked(true)
 	else
 		self:SetChecked(false)
+	end
+
+	-- one punch button ~Simpy
+	local actionID = WoWRetail and self._state_type == "action" and tonumber(self._state_action)
+	if actionID and C_ActionBar.IsAssistedCombatAction(actionID) then
+		UpdateAbilityInfo(self) -- lets clean that up
+		UpdateCooldown(self) -- update cooldown
+
+		local texture = self:GetTexture()
+		if texture then
+			self.icon:SetTexture(texture)
+			self.icon:Show()
+		else
+			self.icon:Hide()
+		end
 	end
 
 	lib.callbacks:Fire("OnButtonState", self)
