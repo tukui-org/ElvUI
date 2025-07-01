@@ -126,9 +126,13 @@ P.general = {
 		totalLevelFontSize = E.Retail and 20 or 18,
 		totalLevelFontOutline = 'OUTLINE',
 	},
+	rotationAssist = {
+		nextcast = { r = 0.20, g = 0.60, b = 0.95, a = 0.9 },
+		alternative = { r = 0.40, g = 0.99, b = 0.20, a = 0.9 },
+	},
 	customGlow = {
 		style = 'Pixel Glow',
-		color = { r = 0.09, g = 0.52, b = 0.82, a = 0.9 },
+		color = { r = 0.95, g = 0.95, b = 0, a = 0.9 },
 		startAnimation = true,
 		useColor = false,
 		duration = 1,

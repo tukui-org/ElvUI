@@ -89,6 +89,8 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
+lib.activeAlerts = lib.activeAlerts or {}
+lib.activeAssist = lib.activeAssist or {}
 
 -- usable state for retail using slot
 lib.slotByButton = lib.slotByButton or {}
@@ -1512,6 +1514,8 @@ function OnEvent(frame, event, arg1, ...)
 	elseif event == "CVAR_UPDATE" then
 		if arg1 == "countdownForCooldowns" then
 			ForAllButtons(UpdateCooldownNumberHidden)
+		elseif arg1 == "assistedCombatHighlight" then
+			wipe(lib.activeAssist)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
@@ -1658,29 +1662,37 @@ function OnEvent(frame, event, arg1, ...)
 			UpdateFlyoutSpells()
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
+		lib.activeAlerts[arg1] = true
+
 		for button in next, ActiveButtons do
 			local spellId = button:GetSpellId()
-			if spellId and spellId == arg1 then
-				ShowOverlayGlow(button)
-			else
-				if button._state_type == "action" then
-					local actionType, id = GetActionInfo(button._state_action)
-					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-						ShowOverlayGlow(button)
+			if not lib.activeAssist[spellId] then
+				if spellId and spellId == arg1 then
+					ShowOverlayGlow(button)
+				else
+					if button._state_type == "action" then
+						local actionType, id = GetActionInfo(button._state_action)
+						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+							ShowOverlayGlow(button)
+						end
 					end
 				end
 			end
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_HIDE" then
+		lib.activeAlerts[arg1] = nil
+
 		for button in next, ActiveButtons do
 			local spellId = button:GetSpellId()
-			if spellId and spellId == arg1 then
-				HideOverlayGlow(button)
-			else
-				if button._state_type == "action" then
-					local actionType, id = GetActionInfo(button._state_action)
-					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-						HideOverlayGlow(button)
+			if not lib.activeAssist[spellId] then
+				if spellId and spellId == arg1 then
+					HideOverlayGlow(button)
+				else
+					if button._state_type == "action" then
+						local actionType, id = GetActionInfo(button._state_action)
+						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+							HideOverlayGlow(button)
+						end
 					end
 				end
 			end
@@ -2410,7 +2422,9 @@ end
 
 function UpdateOverlayGlow(self)
 	local spellId = self.config.handleOverlay and self:GetSpellId()
-	if spellId and IsSpellOverlayed(spellId) then
+	if lib.activeAssist[spellId] then
+		-- lets not touch it
+	elseif spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
 	else
 		HideOverlayGlow(self)

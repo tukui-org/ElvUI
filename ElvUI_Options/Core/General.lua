@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local AFK = E:GetModule('AFK')
+local AB = E:GetModule('ActionBars')
 local BL = E:GetModule('Blizzard')
 local LO = E:GetModule('Layout')
 local M = E:GetModule('Misc')
@@ -179,6 +180,8 @@ Cosmetic.customGlowGroup.args.startAnimation = ACH:Toggle(L["Start Animation"], 
 Cosmetic.customGlowGroup.args.spacer1 = ACH:Spacer(10, 'full', function() return E.db.general.customGlow.style == 'Action Button Glow' end)
 Cosmetic.customGlowGroup.args.useColor = ACH:Toggle(L["Custom Color"], nil, 11)
 Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() end, function() return not E.db.general.customGlow.useColor end)
+Cosmetic.customGlowGroup.args.nextcast = ACH:Color(L["Next Cast"], nil, 13, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, not E.Retail)
+Cosmetic.customGlowGroup.args.alternative = ACH:Color(L["Alternative"], nil, 14, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, not E.Retail)
 
 Cosmetic.cosmeticBottomPanel = ACH:Group(L["Bottom Panel"], nil, 20)
 Cosmetic.cosmeticBottomPanel.inline = true

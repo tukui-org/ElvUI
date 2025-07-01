@@ -45,6 +45,7 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 
+local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 
@@ -58,6 +59,7 @@ local GetCVarBool = C_CVar.GetCVarBool
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
+local LCG = E.Libs.CustomGlow
 local Masque = E.Masque
 local FlyoutMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Flyouts')
 local VehicleMasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBar Leave Vehicle')
@@ -1688,11 +1690,21 @@ function AB:LAB_ButtonCreated(button)
 	button:HookScript('OnMouseDown', AB.LAB_MouseDown)
 end
 
-function AB:LAB_ButtonUpdate(button)
+function AB:LAB_ButtonBorder(button, which)
 	if button.SetBackdropBorderColor then
-		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-		button:SetBackdropBorderColor(border.r, border.g, border.b)
+		if which == 'next' then
+			button:SetBackdropBorderColor(0.2, 0.2, 1)
+		elseif which == 'downgrade' then
+			button:SetBackdropBorderColor(1, 1, 0.2)
+		else
+			local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
+			button:SetBackdropBorderColor(border.r, border.g, border.b)
+		end
 	end
+end
+
+function AB:LAB_ButtonUpdate(button)
+	AB:LAB_ButtonBorder(button)
 
 	if button.ProfessionQualityOverlayFrame then
 		AB:UpdateProfessionQuality(button)
@@ -1721,6 +1733,50 @@ end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
+end
+
+do
+	function AB:AssistedUpdate(nextSpell)
+		for button in pairs(LAB.activeButtons) do
+			local spellID = button:GetSpellId()
+			local nextcast, alertActive = nextSpell and spellID == nextSpell, LAB.activeAlerts[spellID]
+			if nextcast or (alertActive and _G.AssistedCombatManager:IsRotationSpell(spellID)) then
+				AB.AssistGlowOptions.color = (nextcast and AB.AssistGlowNextCast) or AB.AssistGlowAlternative
+				LCG.ShowOverlayGlow(button, AB.AssistGlowOptions)
+				LAB.activeAssist[spellID] = true
+			elseif not alertActive then
+				LCG.HideOverlayGlow(button)
+
+				if LAB.activeAssist[spellID] then
+					LAB.activeAssist[spellID] = nil
+				end
+			end
+		end
+	end
+
+	function AB:AssistedGlowUpdate()
+		AB.AssistGlowOptions = E:CopyTable({}, E.db.general.customGlow)
+		AB.AssistGlowNextCast = E:SetColorTable(AB.AssistGlowNextCast, E:UpdateClassColor(E.db.general.rotationAssist.nextcast))
+		AB.AssistGlowAlternative = E:SetColorTable(AB.AssistGlowAlternative, E:UpdateClassColor(E.db.general.rotationAssist.alternative))
+	end
+
+	local checkForVisibleButton = false -- we need this changed to function
+	function AB:AssistedOnUpdate(elapsed)
+		self.updateTimeLeft = self.updateTimeLeft - elapsed
+
+		if self.updateTimeLeft <= 0 then
+			self.updateTimeLeft = self:GetUpdateRate()
+
+			local spellID = GetNextCastSpell(checkForVisibleButton)
+			if spellID ~= self.lastNextCastSpellID then
+				self.lastNextCastSpellID = spellID
+				self:UpdateAllAssistedHighlightFramesForSpell(spellID)
+
+				-- we dont need this tho
+				-- EventRegistry:TriggerEvent('AssistedCombatManager.OnAssistedHighlightSpellChange')
+			end
+		end
+	end
 end
 
 function AB:Initialize()
@@ -1830,6 +1886,10 @@ function AB:Initialize()
 
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
+
+		AB:AssistedGlowUpdate()
+		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate
+		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
 	end
 
 	if not E.Classic then
