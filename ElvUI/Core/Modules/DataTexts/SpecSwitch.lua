@@ -222,7 +222,9 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
-	DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"])
+	if E.Retail then
+		DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"])
+	end
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 	DT.tooltip:Show()
@@ -242,7 +244,7 @@ local function OnClick(self, button)
 			if not E:AlertCombat() then
 				TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
 			end
-		else
+		elseif E.Retail then
 			menu = IsControlKeyDown() and loadoutList or specList
 		end
 	else
