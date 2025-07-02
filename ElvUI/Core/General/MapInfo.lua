@@ -126,10 +126,11 @@ local ZoneIDToContinentName = {
 	[107] = 'Outland',
 }
 local MapIdLookupTable = {
-	[101] = 'Outland',
+	[E.Mists and 987 or 101] = 'Outland',
 	[104] = 'Shadowmoon Valley',
 	[107] = 'Nagrand',
 }
+
 local function LocalizeZoneNames()
 	local mapInfo
 	for mapID, englishName in pairs(MapIdLookupTable) do
