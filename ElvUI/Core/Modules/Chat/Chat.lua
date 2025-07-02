@@ -437,7 +437,7 @@ do --this can save some main file locals
 			z['Player-4467-04571A98']	= ElvGreen -- [Alliance] Warrior
 			z['Player-4440-03AD654A']	= ElvGreen -- [Alliance] Rogue
 			z['Player-4440-03ADE2DF']	= ElvGreen -- [Alliance] Shaman
-			z['Luckymonk-Firemaw']		= ElvGreen -- [Alliance] Monk
+			z['Player-4467-0613ECA1']	= ElvGreen -- [Alliance] Monk
 			z['Player-4476-03BF41C9']	= ElvGreen -- [Horde] Hunter
 			z['Player-4476-049F4831']	= ElvGreen -- [Horde] DK
 			z['Player-4476-05C7B834']	= ElvGreen -- [Horde] Mage
