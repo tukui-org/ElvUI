@@ -146,4 +146,4 @@ local function OnClick(self, button)
 	end
 end
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_SPECIALIZATION_CHANGED', 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_SPECIALIZATION_CHANGED', 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED', 'CHAT_MSG_SYSTEM' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
