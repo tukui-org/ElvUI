@@ -109,7 +109,7 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	for i, info in ipairs(DT.SPECIALIZATION_CACHE) do
-		DT.tooltip:AddLine(strjoin(' ', format(displayString, info.name), AddTexture(info.icon), (i == active and activeString or inactiveString)), 1, 1, 1)
+		DT.tooltip:AddLine(strjoin(' ', format(displayString, info.name), AddTexture(info.icon), (i == GetSpecialization() and activeString or inactiveString)), 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
