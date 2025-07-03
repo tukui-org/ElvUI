@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local ipairs, tinsert, tremove = ipairs, tinsert, tremove
-local format, next, strjoin = format, next, strjoin
+local ipairs = ipairs
+local format, strjoin = format, strjoin
 
+local IsShiftKeyDown = IsShiftKeyDown
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
-local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
 local SetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.SetActiveSpecGroup
 local GetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.GetActiveSpecGroup
@@ -47,20 +47,21 @@ local function OnEvent(self)
 
 	if #menuList == 2 then
 		for index = 1, GetNumSpecializations() do
-			local id, name, _, icon = GetSpecializationInfo(index)
+			local id, name = GetSpecializationInfo(index)
 			if id then
 				menuList[index + 2] = { arg1 = id, text = name, checked = menu_checked, func = menu_func }
 			end
 		end
+
 		for index = 1, 2 do
-			local specGroup = C_SpecializationInfo.GetSpecialization(nil, nil, index)
-			local id, name, _, icon = C_SpecializationInfo.GetSpecializationInfo(specGroup)
-			name = name ~= '' and name or DEFAULT_TEXT
-			specList[index + 1] = { arg1 = index, text = format(listText, icon, name), checked = spec_checked, func = spec_func }
+			local specGroup = GetSpecialization(nil, nil, index)
+			local _, name, _, icon = GetSpecializationInfo(specGroup)
+			if icon then
+				specList[index + 1] = { arg1 = index, text = format(listText, icon, name ~= '' and name or DEFAULT_TEXT), checked = spec_checked, func = spec_func }
+			end
 		end
 	end
 
-	local specLoot = GetLootSpecialization()
 	local specIndex = GetSpecialization()
 	local info = DT.SPECIALIZATION_CACHE[specIndex]
 	local ID = info and info.id
@@ -72,8 +73,10 @@ local function OnEvent(self)
 
 	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
 	local size = db.iconSize or mainSize
-	local spec, text = format(mainIcon, info.icon, size, size)
+	local spec = format(mainIcon, info.icon, size, size)
 
+	local text
+	local specLoot = GetLootSpecialization()
 	if (specLoot == 0 or ID == specLoot) and not db.showBoth then
 		if db.iconOnly then
 			text = format('%s', spec)
@@ -94,6 +97,7 @@ end
 
 local function OnUpdate(self, elapsed)
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+
 	if self.timeSinceUpdate > 1 then
 		OnEvent(self)
 	end
@@ -106,14 +110,15 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
+	local currentSpec = GetSpecialization()
 	for i, info in ipairs(DT.SPECIALIZATION_CACHE) do
-		DT.tooltip:AddLine(strjoin(' ', format(displayString, info.name), AddTexture(info.icon), (i == GetSpecialization() and activeString or inactiveString)), 1, 1, 1)
+		DT.tooltip:AddLine(strjoin(' ', format(displayString, info.name), AddTexture(info.icon), i == currentSpec and activeString or inactiveString), 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
 
 	local specLoot = GetLootSpecialization()
-	local sameSpec = specLoot == 0 and GetSpecialization()
+	local sameSpec = specLoot == 0 and currentSpec
 	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specLoot]
 
 	local specName = (specIndex and specIndex.name ~= '' and specIndex.name) or DEFAULT_TEXT
