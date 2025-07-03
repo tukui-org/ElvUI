@@ -5,13 +5,13 @@
 	<Script file='..\..\..\Core\Modules\DataTexts\Mastery.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='..\..\..\Core\Modules\DataTexts\Speed.lua'/>
-	<Script file='..\..\..\Core\Modules\DataTexts\SpecSwitch.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='Crests.lua'/>
 	<Script file='DungeonScore.lua'/>
 	<Script file='Leech.lua'/>
 	<Script file='Missions.lua'/>
 	<Script file='Quickjoin.lua'/>
+	<Script file='SpecSwitch.lua'/>
 	<Script file='Versatility.lua'/>
 	<Script file='Warmode.lua'/>
 </Ui>

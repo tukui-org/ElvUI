@@ -794,7 +794,7 @@ function DT:PopulateData(currencyOnly)
 
 		if info.isHeader then
 			if not E.Classic and not info.isHeaderExpanded then
-				ExpandCurrencyList(i, true)
+				ExpandCurrencyList(i, E.Mists and 1 or true)
 				Collapsed[info.name] = true
 
 				listSize = GetCurrencyListSize()
@@ -828,7 +828,7 @@ function DT:PopulateData(currencyOnly)
 			if not info.name then
 				break
 			elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
-				ExpandCurrencyList(k, false)
+				ExpandCurrencyList(k, E.Mists and 0 or false)
 			end
 		end
 
