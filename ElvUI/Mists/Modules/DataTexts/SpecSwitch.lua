@@ -118,8 +118,8 @@ local function OnEnter()
 	local sameSpec = specLoot == 0 and GetSpecialization()
 	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specLoot]
 	if specIndex and specIndex.name then
-		local specName = specIndex.name ~= specIndex.name or DEFAULT_TEXT
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specIndex.name) or specIndex.name))
+		local specName = specIndex.name ~= '' and specIndex.name or DEFAULT_TEXT
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specName) or specName))
 	end
 
 	DT.tooltip:AddLine(' ')
