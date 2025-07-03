@@ -117,10 +117,9 @@ local function OnEnter()
 	local specLoot = GetLootSpecialization()
 	local sameSpec = specLoot == 0 and GetSpecialization()
 	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specLoot]
-	if specIndex and specIndex.name then
-		local specName = specIndex.name ~= '' and specIndex.name or DEFAULT_TEXT
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specName) or specName))
-	end
+
+	local specName = (specIndex and specIndex.name ~= '' and specIndex.name) or DEFAULT_TEXT
+	DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specName) or specName))
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
@@ -145,9 +144,8 @@ local function OnClick(self, button)
 		end
 	else
 		local _, specName = GetSpecializationInfo(specIndex)
-		-- print('specName', specName)
 		if specName then
-			menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
+			menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName ~= '' and specName or DEFAULT_TEXT)
 
 			menu = menuList
 		end
