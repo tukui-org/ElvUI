@@ -7,22 +7,14 @@ local format, next, strjoin = format, next, strjoin
 
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
-local GetPvpTalentInfoByID = GetPvpTalentInfoByID
-local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
 local SetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.SetActiveSpecGroup
 local GetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.GetActiveSpecGroup
 local GetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization
 local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo
-local SetSpecialization = C_SpecializationInfo and C_SpecializationInfo.SetSpecialization
-
-local LoadAddOn = C_AddOns.LoadAddOn
-local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 
 local LOOT = LOOT
-local UNKNOWN = UNKNOWN
-local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 
