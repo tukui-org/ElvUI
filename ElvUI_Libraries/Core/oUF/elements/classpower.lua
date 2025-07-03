@@ -343,9 +343,10 @@ do
 	if(PlayerClass == 'MONK') then
 		ClassPowerID = POWERTYPE_CHI
 
-		RequireSpec[SPEC_MONK_WINDWALKER] = true
-		RequireSpec[SPEC_MONK_MISTWEAVER] = true
-		RequireSpec[SPEC_MONK_BREWMASTER] = oUF.isMists or nil
+		if oUF.isRetail then
+			RequireSpec[SPEC_MONK_WINDWALKER] = true
+			RequireSpec[SPEC_MONK_MISTWEAVER] = true
+		end
 	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
 		ClassPowerID = POWERTYPE_SHADOW_ORBS
 
