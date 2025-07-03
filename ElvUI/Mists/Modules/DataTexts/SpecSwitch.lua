@@ -18,7 +18,7 @@ local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
 
-local displayString, active = '|cffFFFFFF%s:|r'
+local displayString = '|cffFFFFFF%s:|r'
 local activeString = strjoin('', '|cff00FF00' , _G.ACTIVE_PETS, '|r')
 local inactiveString = strjoin('', '|cffFF0000', _G.FACTION_INACTIVE, '|r')
 
@@ -67,8 +67,6 @@ local function OnEvent(self)
 		self.text:SetText(DEFAULT_TEXT)
 		return
 	end
-
-	active = specIndex
 
 	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
 	local size = db.iconSize or mainSize
