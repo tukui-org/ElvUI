@@ -8,11 +8,11 @@ local format, next, strjoin = format, next, strjoin
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
 local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SetLootSpecialization = SetLootSpecialization
-local GetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 local SetSpecialization = C_SpecializationInfo and C_SpecializationInfo.SetSpecialization or SetSpecialization
 local TogglePlayerSpellsFrame = TogglePlayerSpellsFrame
 
@@ -20,10 +20,10 @@ local LoadAddOn = C_AddOns.LoadAddOn
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local C_Traits_GetConfigInfo = C_Traits.GetConfigInfo
 
-local GetHasStarterBuild = C_ClassTalents and C_ClassTalents.GetHasStarterBuild
-local GetStarterBuildActive = C_ClassTalents and C_ClassTalents.GetStarterBuildActive
-local GetConfigIDsBySpecID = C_ClassTalents and C_ClassTalents.GetConfigIDsBySpecID
-local GetLastSelectedSavedConfigID = C_ClassTalents and C_ClassTalents.GetLastSelectedSavedConfigID
+local GetHasStarterBuild = C_ClassTalents.GetHasStarterBuild
+local GetStarterBuildActive = C_ClassTalents.GetStarterBuildActive
+local GetConfigIDsBySpecID = C_ClassTalents.GetConfigIDsBySpecID
+local GetLastSelectedSavedConfigID = C_ClassTalents.GetLastSelectedSavedConfigID
 local CanUseClassTalents = PlayerUtil.CanUseClassTalents
 
 local LOOT = LOOT
@@ -107,7 +107,7 @@ local function OnEvent(self, event, loadoutID)
 		return
 	end
 
-	if E.Retail and (event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED' or event == 'TRAIT_CONFIG_UPDATED') and CanUseClassTalents() then
+	if (event == 'CONFIG_COMMIT_FAILED' or event == 'ELVUI_FORCE_UPDATE' or event == 'TRAIT_CONFIG_DELETED' or event == 'TRAIT_CONFIG_UPDATED') and CanUseClassTalents() then
 		if not DT.ClassTalentsID then
 			DT.ClassTalentsID = (GetHasStarterBuild() and GetStarterBuildActive() and STARTER_ID) or GetLastSelectedSavedConfigID(ID)
 		end
@@ -166,7 +166,7 @@ local function OnEvent(self, event, loadoutID)
 		end
 	end
 
-	if E.Retail and (db.displayStyle == 'BOTH' or db.displayStyle == 'LOADOUT') then
+	if db.displayStyle == 'BOTH' or db.displayStyle == 'LOADOUT' then
 		text = strjoin('', text and text..(db.iconOnly and ' ' or ' / ') or '', activeLoadout)
 	end
 
@@ -193,38 +193,34 @@ local function OnEnter()
 		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specIndex.name) or specIndex.name))
 	end
 
-	if E.Retail then
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(L["Loadouts"], 0.69, 0.31, 0.31)
+	DT.tooltip:AddLine(' ')
+	DT.tooltip:AddLine(L["Loadouts"], 0.69, 0.31, 0.31)
 
-		for index, loadout in next, loadoutList do
-			if index > 1 then
-				local text = loadout:checked() and activeString or inactiveString
-				DT.tooltip:AddLine(strjoin(' - ', loadout.text, text), 1, 1, 1)
-			end
+	for index, loadout in next, loadoutList do
+		if index > 1 then
+			local text = loadout:checked() and activeString or inactiveString
+			DT.tooltip:AddLine(strjoin(' - ', loadout.text, text), 1, 1, 1)
 		end
+	end
 
-		local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
-		if next(pvpTalents) then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
+	local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
+	if next(pvpTalents) then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
 
-			for i, talentID in next, pvpTalents do
-				if i > 4 then break end
+		for i, talentID in next, pvpTalents do
+			if i > 4 then break end
 
-				local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
-				if name and unlocked then
-					DT.tooltip:AddLine(AddTexture(icon)..' '..name)
-				end
+			local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
+			if name and unlocked then
+				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
 			end
 		end
 	end
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
-	if E.Retail then
-		DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"])
-	end
+	DT.tooltip:AddLine(L["|cffFFFFFFControl + Left Click:|r Change Loadout"])
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
 	DT.tooltip:Show()
@@ -242,13 +238,9 @@ local function OnClick(self, button)
 
 		if IsShiftKeyDown() then
 			if not E:AlertCombat() then
-				if E.Retail then
-					TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
-				elseif E.Mists then
-					_G.ToggleTalentFrame()
-				end
+				TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
 			end
-		elseif E.Retail then
+		else
 			menu = IsControlKeyDown() and loadoutList or specList
 		end
 	else
@@ -266,4 +258,4 @@ local function OnClick(self, button)
 	end
 end
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { E.Mists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
