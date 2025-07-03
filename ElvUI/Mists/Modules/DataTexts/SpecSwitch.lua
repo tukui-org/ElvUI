@@ -50,7 +50,7 @@ local function menu_func(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() en
 local function spec_checked(data) return data and data.arg1 == GetActiveSpecGroup() end
 local function spec_func(_, arg1) SetActiveSpecGroup(arg1) DT:CloseMenus() end
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	if #menuList == 2 then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
@@ -130,7 +130,6 @@ end
 
 local function OnClick(self, button)
 	local specIndex = GetSpecialization()
-	-- print('specIndex', specIndex)
 	if not specIndex then return end
 
 	local menu
