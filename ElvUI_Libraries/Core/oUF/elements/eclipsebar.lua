@@ -56,14 +56,14 @@ local function EclipseDirectionPath(self, ...)
 	return (self.EclipseBar.OverrideEclipseDirection or EclipseDirection) (self, ...)
 end
 
-local function ElementEnable(self, form)
+local function ElementEnable(self)
 	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Show()
 	EclipseDirectionPath(self, 'ElementEnable', GetEclipseDirection())
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(true, not self.EclipseBar.isEnabled, form)
+		self.EclipseBar:PostUpdateVisibility(true, not self.EclipseBar.isEnabled)
 	end
 
 	self.EclipseBar.isEnabled = true
@@ -71,13 +71,13 @@ local function ElementEnable(self, form)
 	Path(self, 'ElementEnable', 'player', POWERTYPE_BALANCE)
 end
 
-local function ElementDisable(self, form)
+local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Hide()
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(false, self.EclipseBar.isEnabled, form)
+		self.EclipseBar:PostUpdateVisibility(false, self.EclipseBar.isEnabled)
 	end
 
 	self.EclipseBar.isEnabled = nil
@@ -94,9 +94,9 @@ local function Visibility(self)
 	end
 
 	if(shouldEnable) then
-		ElementEnable(self, form)
+		ElementEnable(self)
 	else
-		ElementDisable(self, form)
+		ElementDisable(self)
 	end
 end
 
