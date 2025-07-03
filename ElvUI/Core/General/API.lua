@@ -986,7 +986,9 @@ local gameMenuLastButtons = {
 
 function E:PositionGameMenuButton()
 	if E.Retail then
-		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
+			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		end
 
 		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
