@@ -43,6 +43,8 @@ local function spec_checked(data) return data and data.arg1 == GetActiveSpecGrou
 local function spec_func(_, arg1) SetActiveSpecGroup(arg1) DT:CloseMenus() end
 
 local function OnEvent(self)
+	self.timeSinceUpdate = 0
+
 	if #menuList == 2 then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
@@ -71,24 +73,30 @@ local function OnEvent(self)
 	local db = E.global.datatexts.settings["Talent/Loot Specialization"]
 	local size = db.iconSize or mainSize
 	local spec, text = format(mainIcon, info.icon, size, size)
-	if db.displayStyle == 'BOTH' or db.displayStyle == 'SPEC' then
-		if (specLoot == 0 or ID == specLoot) and not db.showBoth then
-			if db.iconOnly then
-				text = format('%s', spec)
-			else
-				text = format('%s %s', spec, info.name)
-			end
+
+	if (specLoot == 0 or ID == specLoot) and not db.showBoth then
+		if db.iconOnly then
+			text = format('%s', spec)
 		else
-			local cache = DT.SPECIALIZATION_CACHE[(specLoot == 0 and specIndex) or specLoot]
-			if db.iconOnly then
-				text = format('%s %s', spec, format(mainIcon, cache.icon, size, size))
-			else
-				text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, cache.icon, size, size))
-			end
+			text = format('%s %s', spec, info.name)
+		end
+	else
+		local cache = DT.SPECIALIZATION_CACHE[(specLoot == 0 and specIndex) or specLoot]
+		if db.iconOnly then
+			text = format('%s %s', spec, format(mainIcon, cache.icon, size, size))
+		else
+			text = format('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, cache.icon, size, size))
 		end
 	end
 
 	self.text:SetText(text)
+end
+
+local function OnUpdate(self, elapsed)
+	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+	if self.timeSinceUpdate > 1 then
+		OnEvent(self)
+	end
 end
 
 local function AddTexture(texture)
@@ -146,4 +154,4 @@ local function OnClick(self, button)
 	end
 end
 
-DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_SPECIALIZATION_CHANGED', 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED', 'CHAT_MSG_SYSTEM' }, OnEvent, nil, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
+DT:RegisterDatatext('Talent/Loot Specialization', nil, { 'PLAYER_SPECIALIZATION_CHANGED', 'PLAYER_TALENT_UPDATE', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_LOOT_SPEC_UPDATED', 'TRAIT_CONFIG_DELETED', 'TRAIT_CONFIG_UPDATED', 'CHAT_MSG_SYSTEM' }, OnEvent, OnUpdate, OnClick, OnEnter, nil, L["Talent/Loot Specialization"])
