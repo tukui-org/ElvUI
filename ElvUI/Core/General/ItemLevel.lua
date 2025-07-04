@@ -33,7 +33,7 @@ local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
 	INVTYPE_RANGED = true,
 }, {
 	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, E.Mists and 18 or nil}
+}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
 
 function E:InspectGearSlot(line, lineText, slotInfo)
 	if not lineText then return end
@@ -201,8 +201,7 @@ function E:CalculateAverageItemLevel(iLevelDB, unit)
 		return
 	end
 
-	local numItems = E.Mists and 17 or 16
-	return E:Round(total / numItems, 2)
+	return E:Round(total / 16, 2)
 end
 
 function E:ColorizeItemLevel(num)
@@ -229,7 +228,7 @@ do
 		if next(iLevelDB) then wipe(iLevelDB) end
 		if next(tryAgain) then wipe(tryAgain) end
 
-		for i = 1, E.Mists and 18 or 17 do
+		for i = 1, 17 do
 			if i ~= 4 then
 				local slotInfo = E:GetGearSlotInfo(unit, i)
 				if slotInfo == 'tooSoon' then
