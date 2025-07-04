@@ -89,7 +89,7 @@ local ClassPowerType, ClassPowerID = {
 }
 
 -- Holds the class specific stuff.
-local ClassPowerEnable, ClassPowerDisable
+local ClassPowerEnable, ClassPowerDisable, CurrentSpec
 local RequireSpec, RequirePower, RequireSpell = {}
 
 local function UpdateColor(element, powerType)
@@ -154,6 +154,8 @@ local function Update(self, event, unit, powerType)
 
 		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			cur = 0
+		elseif oUF.isRetail and CurrentSpec == SPEC_WARLOCK_DESTRUCTION then -- destro locks are special
+			cur = UnitPower(unit, powerID, true) / mod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
 			local info = C_UnitAuras.GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
 			cur = (info and info.isHarmful and info.applications) or 0
@@ -216,21 +218,22 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
+	CurrentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
+
 	if PlayerClass == 'MONK' then
-		ClassPowerID = ((currentSpec == SPEC_MONK_WINDWALKER or currentSpec == SPEC_MONK_MISTWEAVER) or (oUF.isMists and currentSpec == SPEC_MONK_BREWMASTER)) and POWERTYPE_CHI or -1
+		ClassPowerID = ((CurrentSpec == SPEC_MONK_WINDWALKER or CurrentSpec == SPEC_MONK_MISTWEAVER) or (oUF.isMists and CurrentSpec == SPEC_MONK_BREWMASTER)) and POWERTYPE_CHI or -1
 	elseif PlayerClass == 'WARLOCK' then
-		ClassPowerID = oUF.isMists and ((currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
+		ClassPowerID = oUF.isMists and ((CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
-		ClassPowerID = (currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
+		ClassPowerID = (CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
 	elseif oUF.isMists and PlayerClass == 'MAGE' then
-		ClassPowerID = (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
+		ClassPowerID = (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	end
 
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID and (not next(RequireSpec) or RequireSpec[currentSpec]) then
+	elseif ClassPowerID and (not next(RequireSpec) or RequireSpec[CurrentSpec]) then
 		if not RequirePower or RequirePower == UnitPowerType('player') then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 			if not RequireSpell or IsPlayerSpell(RequireSpell) then
 				oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
