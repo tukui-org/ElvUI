@@ -15,7 +15,7 @@ local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local MOONKIN_FORM = 5
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or (event == 'UNIT_POWER_UPDATE' and powerType ~= 'ECLIPSE')) then return end
+	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'ECLIPSE')) then return end
 
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
@@ -109,7 +109,7 @@ local function Enable(self, unit)
 
 		self:RegisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
 		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
@@ -131,7 +131,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
 		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
-		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
 	end
