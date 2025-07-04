@@ -63,6 +63,7 @@ if E.Mists or E.Retail then
 	toggles.gbank = L["Guild Bank"]
 	toggles.pvp = L["PvP Frames"]
 	toggles.petbattleui = L["Pet Battle"]
+	toggles.transmogrify = L["TRANSMOGRIFY"]
 end
 
 if not E.Retail then
@@ -111,7 +112,6 @@ if E.Retail then
 	toggles.soulbinds = L["Soulbinds"]
 	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
-	toggles.transmogrify = L["TRANSMOGRIFY"]
 	toggles.voidstorage = L["VOID_STORAGE"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Mists then

@@ -650,12 +650,12 @@ function UF:EclipsePostDirectionChange(direction)
 	end
 end
 
-function UF:EclipsePostUpdateVisibility(enabled, stateChanged)
+function UF:EclipsePostUpdateVisibility(enabled)
 	local frame = self.origParent or self:GetParent()
 
 	frame.ClassBar = (enabled and 'EclipseBar') or 'ClassPower'
 
-	UF:PostVisibility_ClassBars(frame, stateChanged)
+	UF:PostVisibility_ClassBars(frame)
 end
 
 -----------------------------------------------------------

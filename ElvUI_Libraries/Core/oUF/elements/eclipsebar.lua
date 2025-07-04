@@ -15,7 +15,7 @@ local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local MOONKIN_FORM = 5
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or (event == 'UNIT_POWER_UPDATE' and powerType ~= 'ECLIPSE')) then return end
+	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'BALANCE')) then return end
 
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
@@ -57,30 +57,26 @@ local function EclipseDirectionPath(self, ...)
 end
 
 local function ElementEnable(self)
-	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Show()
 	EclipseDirectionPath(self, 'ElementEnable', GetEclipseDirection())
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(true, not self.EclipseBar.isEnabled)
+		self.EclipseBar:PostUpdateVisibility(true)
 	end
-
-	self.EclipseBar.isEnabled = true
 
 	Path(self, 'ElementEnable', 'player', POWERTYPE_BALANCE)
 end
 
 local function ElementDisable(self)
-	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 
 	self.EclipseBar:Hide()
 
 	if self.EclipseBar.PostUpdateVisibility then
-		self.EclipseBar:PostUpdateVisibility(false, self.EclipseBar.isEnabled)
+		self.EclipseBar:PostUpdateVisibility(false)
 	end
-
-	self.EclipseBar.isEnabled = nil
 
 	Path(self, 'ElementDisable', 'player', POWERTYPE_BALANCE)
 end
