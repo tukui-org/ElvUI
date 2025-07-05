@@ -15,7 +15,6 @@ local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
 AB.MICRO_CLASSIC = {}
-AB.MICRO_NAMES = {} -- key: button, value: name
 AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
@@ -231,8 +230,6 @@ function AB:HandleMicroButton(button, name)
 	button:HookScript('OnLeave', onLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
-	AB.MICRO_NAMES[button] = name
-
 	if not E.Retail then
 		AB.MICRO_CLASSIC[name] = {
 			pushed = button:GetPushedTexture():GetTexture(),
@@ -287,7 +284,11 @@ do
 		for _, name in next, AB.MICRO_BUTTONS do
 			local button = _G[name]
 			if button and button:IsShown() then
-				tinsert(buttons, name)
+				if E.Mists and name == 'StoreMicroButton' then -- this is the safe way to fix glyph taint on mop
+					tinsert(buttons, 11, name) -- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
+				else
+					tinsert(buttons, name)
+				end
 			end
 		end
 
