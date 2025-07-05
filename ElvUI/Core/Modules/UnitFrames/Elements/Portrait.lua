@@ -120,7 +120,7 @@ function UF:Configure_Portrait(frame)
 	end
 end
 
-function UF:PortraitUpdate(unit, hasStateChanged)
+function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
 	if not hasStateChanged then return end
 
 	if self.playerModel then
@@ -141,7 +141,12 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation or 0)
 		self:SetPaused(db.paused or false)
-	elseif self.useClassBase and select(2, UnitClass(unit)) ~= 'MONK' then
-		self:SetTexCoord(unpack(E.TexCoords))
+	elseif self.useClassBase then
+		if texCoords then
+			local left, right, top, bottom = unpack(texCoords)
+			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
+		else
+			self:SetTexCoord(unpack(E.TexCoords))
+		end
 	end
 end
