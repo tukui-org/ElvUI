@@ -141,7 +141,7 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation or 0)
 		self:SetPaused(db.paused or false)
-	elseif self.useClassBase and E.myclass ~= 'MONK' then
+	elseif self.useClassBase and select(2, UnitClass(unit)) ~= 'MONK' then
 		self:SetTexCoord(unpack(E.TexCoords))
 	end
 end
