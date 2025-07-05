@@ -95,7 +95,12 @@ local function Update(self, event)
 
 			local _, className = UnitClass(unit)
 			if className then
-				element:SetAtlas('classicon-' .. className)
+				if className == 'MONK' then
+					element:SetTexture('Interface/WorldStateFrame/ICONS-CLASSES')
+					element:SetTexCoord(0.53, 0.72, 0.53, 0.72)
+				else
+					element:SetAtlas('classicon-' .. className)
+				end
 			end
 		end
 	end
