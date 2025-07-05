@@ -284,8 +284,10 @@ do
 		for _, name in next, AB.MICRO_BUTTONS do
 			local button = _G[name]
 			if button and button:IsShown() then
-				if E.Mists and name == 'StoreMicroButton' then -- this is the safe way to fix glyph taint on mop
-					tinsert(buttons, 11, name) -- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
+				if name == 'StoreMicroButton' then
+					-- order this as a safe way to fix glyph taint on mists, warning: adjusting this can lead to
+					-- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
+					tinsert(buttons, E.Retail and 10 or 11, name)
 				else
 					tinsert(buttons, name)
 				end
