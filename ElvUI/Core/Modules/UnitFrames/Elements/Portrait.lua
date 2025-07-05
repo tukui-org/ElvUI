@@ -143,5 +143,12 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetPaused(db.paused or false)
 	elseif self.useClassBase then
 		self:SetTexCoord(unpack(E.TexCoords))
+
+		if not E.Mists then return end
+		local _, className = UnitClass(unit)
+		if className and className == 'MONK' then			
+			self:SetTexture('Interface/WorldStateFrame/ICONS-CLASSES')
+			self:SetTexCoord(0.53, 0.72, 0.53, 0.72)
+		end
 	end
 end
