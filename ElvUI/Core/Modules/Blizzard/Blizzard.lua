@@ -39,8 +39,6 @@ function BL:CLUB_FINDER_CLUB_LIST_RETURNED()
 				}
 			end
 		end
-
-		E:Print(format('Found %d guilds. Try /guildlist <minActivePlayers> or /guildapply <applicationMsg> to apply to the top five most active guilds in the list.', #cardList))
 	end
 end
 
