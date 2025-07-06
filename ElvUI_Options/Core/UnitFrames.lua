@@ -1021,6 +1021,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 		config.args.additionalGroup.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 4, C.Values.Strata)
 		config.args.additionalGroup.args.frameLevel = ACH:Range(L["Frame Level"], nil, 5, { min = 2, max = 128, step = 1 })
+		config.args.additionalGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 6)
 
 		config.args.additionalGroup.args.altManaGroup = ACH:Group(L["Additional Power"], nil, 10, nil, function(info) return E.db.unitframe.altManaPowers[E.myclass][info[#info]] end, function(info, value) E.db.unitframe.altManaPowers[E.myclass][info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() if E.Retail then return not E.db.unitframe.altManaPowers[E.myclass] else return not (E.myclass == 'DRUID' or E.myclass == 'MONK') end end)
 		config.args.additionalGroup.args.altManaGroup.args.info = ACH:Description(E.myclass == 'MONK' and L["Will display as additional power:"] or L["Will display mana when main power is:"], 0)

@@ -591,7 +591,7 @@ function UF:PostUpdateAdditionalPower(CUR, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if frame.USE_CLASSBAR and event ~= 'ElementDisable' and (CUR ~= MAX or not db.classbar.autoHide) then
+	if frame.USE_CLASSBAR and event ~= 'ElementDisable' and (CUR ~= MAX or not db.classAdditional.autoHide) then
 		self:Show()
 	else
 		self:Hide()
@@ -680,10 +680,11 @@ function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	local autohide = stagger == 0 and db.classbar.autoHide
 	if E.Retail then
+		local autohide = stagger == 0 and db.classbar.autoHide
 		self:SetShown(frame.USE_CLASSBAR and not autohide)
 	else
+		local autohide = stagger == 0 and db.classAdditional.autoHide
 		local altPower = E.db.unitframe.altManaPowers[E.myclass]
 		self:SetShown(altPower and altPower.Stagger and not autohide)
 	end
