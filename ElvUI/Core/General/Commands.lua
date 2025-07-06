@@ -38,18 +38,15 @@ function E:Grid(msg)
 	end
 end
 
-local AddOns = {
-	ElvUI = true,
-	ElvUI_Options = true,
-	ElvUI_Libraries = true
-}
-
 function E:LuaError(msg)
 	local switch = lower(msg)
 	if switch == 'on' or switch == '1' then
-		for i=1, GetNumAddOns() do
+		local addon = E.Status_Addons
+		local bugsack = E.Status_Bugsack
+
+		for i = 1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
-			if not AddOns[name] and E:IsAddOnEnabled(name) then
+			if (not addon[name] and (switch == '1' or not bugsack[name])) and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
 				ElvDB.DisabledAddOns[name] = i
 			end

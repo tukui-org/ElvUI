@@ -2857,7 +2857,7 @@ function B:SelectBankTab(f, bagID)
 end
 
 do
-	local temp  = {}
+	local temp = {}
 	function B:Warband_FetchData()
 		wipe(temp)
 
