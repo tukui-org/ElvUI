@@ -1841,6 +1841,7 @@ local UF_ClassBar = {
 local UF_ClassAdditional = {
 	width = 260,
 	height = 12,
+	autoHide = false,
 	orientation = 'HORIZONTAL',
 	frameStrata = 'LOW',
 	frameLevel = 1,
