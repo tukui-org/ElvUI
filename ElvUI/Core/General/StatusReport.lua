@@ -13,17 +13,37 @@ local GetNumAddOns = C_AddOns.GetNumAddOns
 
 local UNKNOWN = UNKNOWN
 
+E.Status_Addons = {
+	ElvUI = true,
+	ElvUI_Options = true,
+	ElvUI_Libraries = true
+}
+
+E.Status_Bugsack = {
+	['!BugGrabber'] = true,
+	BugSack = true
+}
+
 function E:AreOtherAddOnsEnabled()
-	local EP, addons, plugins = E.Libs.EP.plugins
+	local EP, addons, bugs, plugins = E.Libs.EP.plugins
+
+	local addon = E.Status_Addons
+	local bugsack = E.Status_Bugsack
 
 	for i = 1, GetNumAddOns() do
 		local name = GetAddOnInfo(i)
-		if name ~= 'ElvUI' and name ~= 'ElvUI_Options' and name ~= 'ElvUI_Libraries' and E:IsAddOnEnabled(name) then
-			if EP[name] then plugins = true else addons = true end
+		if not addon[name] and E:IsAddOnEnabled(name) then
+			if EP[name] then
+				plugins = true
+			elseif bugsack[name] then
+				bugs = true
+			else
+				addons = true
+			end
 		end
 	end
 
-	return addons, plugins
+	return addons, bugs, plugins
 end
 
 function E:GetDisplayMode()
@@ -207,8 +227,8 @@ function E:UpdateStatusFrame()
 
 	StatusFrame.Section1.Content.Line1.Text:SetFormattedText('Version of ElvUI: |cff%s%s|r', (E.recievedOutOfDateMessage and 'ff3333') or (E.updateRequestTriggered and 'ff9933') or '33ff33', E.versionString)
 
-	local addons, plugins = E:AreOtherAddOnsEnabled()
-	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
+	local addons, bugs, plugins = E:AreOtherAddOnsEnabled()
+	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and not plugins and bugs and '33ff33Debug') or (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
 
 	if plugins then
 		wipe(pluginData)
