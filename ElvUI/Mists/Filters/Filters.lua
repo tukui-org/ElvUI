@@ -638,6 +638,7 @@ G.unitframe.ChannelTicks = {
 	[16914]	= 10, -- Hurricane
 	-- Priest
 	[15407]	= 3, -- Mind Flay
+	[129197] = 3, -- Mind Flay (Insanity)
 	[48045]	= 5, -- Mind Sear
 	[47540]	= 3, -- Penance
 	[64901]	= 4, -- Hymn of Hope
