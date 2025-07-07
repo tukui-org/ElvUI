@@ -34,6 +34,9 @@ local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
 local EXPANSION_NAME0 = EXPANSION_NAME0
 
+local WOW_PROJECT_MAINLINE = WOW_PROJECT_MAINLINE
+local WOW_PROJECT_ID = WOW_PROJECT_ID
+
 -- create a popup
 E.PopupDialogs.SET_BN_BROADCAST = {
 	text = _G.BN_BROADCAST_TOOLTIP,
@@ -78,7 +81,6 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString, db = ''
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,'|Hplayer:%%s|h%[%%s%]|h',''), gsub(_G.ERR_FRIEND_OFFLINE_S,'%%s','')
-local retailID = _G.WOW_PROJECT_MAINLINE
 local wowString = _G.BNET_CLIENT_WOW
 local dataValid = false
 local statusTable = {
@@ -214,7 +216,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		timerunningID = timerunningID	--20
 	}
 
-	if wowProjectID and wowProjectID ~= retailID then
+	if wowProjectID and wowProjectID ~= WOW_PROJECT_MAINLINE then
 		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
 
 		if obj.classicText and obj.classicText ~= '' and obj.classicText ~= EXPANSION_NAME0 then
@@ -381,7 +383,7 @@ local function Click(self, btn)
 						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
-						if info.wowProjectID == retailID then
+						if info.wowProjectID == WOW_PROJECT_ID then
 							menuCountInvites = menuCountInvites + 1
 							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName), arg1 = info.gameID, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 						end
