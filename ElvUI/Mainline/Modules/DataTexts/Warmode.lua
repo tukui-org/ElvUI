@@ -1,17 +1,15 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local _G = _G
 local format = format
-
-local UnitAffectingCombat = UnitAffectingCombat
 local IsResting = IsResting
-
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 local C_PvP_IsWarModeDesired = C_PvP.IsWarModeDesired
-local C_PvP_ToggleWarMode = C_PvP.ToggleWarMode
 local C_PvP_CanToggleWarMode = C_PvP.CanToggleWarMode
 local C_PvP_CanToggleWarModeInArea = C_PvP.CanToggleWarModeInArea
 local C_PvP_GetWarModeRewardBonus = C_PvP.GetWarModeRewardBonus
+local TogglePlayerSpellsFrame = TogglePlayerSpellsFrame
 
 local FACTION_HORDE = PLAYER_FACTION_GROUP[0]
 local RED_FONT_COLOR, GREEN_FONT_COLOR = RED_FONT_COLOR, GREEN_FONT_COLOR
@@ -41,7 +39,6 @@ local function OnEnter(self)
 
 	local warmodeErrorText
 	if not canToggleWarmode or not canToggleWarmodeOFF then
-
 		if not C_PvP_CanToggleWarModeInArea() then
 			if C_PvP_IsWarModeDesired() then
 				if not canToggleWarmodeOFF and not IsResting() then
@@ -59,8 +56,8 @@ local function OnEnter(self)
 end
 
 local function OnClick(_, button)
-	if button == 'LeftButton' and not UnitAffectingCombat('player') and C_PvP_CanToggleWarMode(not C_PvP_IsWarModeActive()) then
-		C_PvP_ToggleWarMode()
+	if button == 'LeftButton' and not E:AlertCombat() then
+		TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
 	end
 end
 
