@@ -562,6 +562,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
+	local isInCombat = InCombatLockdown()
 
 	local isPlayerUnit = UnitIsPlayer(unit)
 	local color = TT:SetUnitText(self, unit, isPlayerUnit)
@@ -574,19 +575,19 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		TT:AddRoleInfo(self, unit)
 	end
 
-	if E.Retail then
-		if not InCombatLockdown() then
-			if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount and E.Retail then
-				TT:AddMountInfo(self, unit)
-			end
-
-			if TT.db.mythicDataEnable then
-				TT:AddMythicInfo(self, unit)
-			end
+	if (E.Retail or E.Mists) and not isInCombat then
+		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+			TT:AddMountInfo(self, unit)
 		end
 	end
 
-	if (E.Retail or E.Mists) and isShiftKeyDown and isPlayerUnit and not InCombatLockdown() and TT.db.inspectDataEnable and not self.ItemLevelShown then
+	if E.Retail and not isInCombat then
+		if TT.db.mythicDataEnable then
+			TT:AddMythicInfo(self, unit)
+		end
+	end
+
+	if (E.Retail or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not self.ItemLevelShown then
 		if color then
 			TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
 		else

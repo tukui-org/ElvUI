@@ -30,6 +30,7 @@ function UF:GetClassPower_Construct(frame)
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame)
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
@@ -591,11 +592,7 @@ function UF:PostUpdateAdditionalPower(CUR, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if frame.USE_CLASSBAR and event ~= 'ElementDisable' and (CUR ~= MAX or not db.classAdditional.autoHide) then
-		self:Show()
-	else
-		self:Hide()
-	end
+	self:SetShown((frame.USE_CLASSBAR and event ~= 'ElementDisable') and (CUR ~= MAX or not db.classAdditional.autoHide) and (not E.Mists or (E.myclass == 'MONK' and E.myspec == 2)))
 end
 
 function UF:PostVisibilityAdditionalPower()
@@ -640,14 +637,9 @@ function UF:EclipsePostDirectionChange(direction)
 	local vertical = frame.CLASSBAR_DETACHED and frame.db.classbar.verticalOrientation
 	local r, g, b = unpack(ElvUF.colors.ClassBars.DRUID[direction == 'sun' and 1 or 2])
 
+	self.Arrow:SetShown(direction == 'sun' or direction == 'moon')
 	self.Arrow:SetRotation(direction == 'sun' and (vertical and 0 or -1.57) or (vertical and 3.14 or 1.57))
 	self.Arrow:SetVertexColor(r, g, b)
-
-	if direction == 'sun' or direction == 'moon' then
-		self.Arrow:Show()
-	else
-		self.Arrow:Hide()
-	end
 end
 
 function UF:EclipsePostUpdateVisibility(enabled)

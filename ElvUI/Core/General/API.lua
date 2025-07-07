@@ -1286,17 +1286,7 @@ function E:LoadAPI()
 		end
 	end
 
-	if E.Retail then
-		for _, mountID in next, C_MountJournal_GetMountIDs() do
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
-			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
-			E.MountIDs[spellID] = mountID
-			E.MountText[mountID] = sourceText
-		end
-
-		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
-		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-	else
+	if not E.Retail then
 		E:CompatibleTooltip(E.ScanTooltip)
 		E:CompatibleTooltip(E.ConfigTooltip)
 		E:CompatibleTooltip(E.SpellBookTooltip)
@@ -1308,6 +1298,15 @@ function E:LoadAPI()
 	E.ScanTooltip.GetInventoryInfo = E.ScanTooltip_InventoryInfo
 
 	if E.Retail or E.Mists then
+		for _, mountID in next, C_MountJournal_GetMountIDs() do
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(mountID)
+			local _, spellID = C_MountJournal_GetMountInfoByID(mountID)
+			E.MountIDs[spellID] = mountID
+			E.MountText[mountID] = sourceText
+		end
+
+		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
+		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
