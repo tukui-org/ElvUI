@@ -1,6 +1,7 @@
 local E, L, V, P, G, _ = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
+local _G = _G
 local format = format
 local IsResting = IsResting
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
@@ -8,6 +9,7 @@ local C_PvP_IsWarModeDesired = C_PvP.IsWarModeDesired
 local C_PvP_CanToggleWarMode = C_PvP.CanToggleWarMode
 local C_PvP_CanToggleWarModeInArea = C_PvP.CanToggleWarModeInArea
 local C_PvP_GetWarModeRewardBonus = C_PvP.GetWarModeRewardBonus
+local TogglePlayerSpellsFrame = TogglePlayerSpellsFrame
 
 local FACTION_HORDE = PLAYER_FACTION_GROUP[0]
 local RED_FONT_COLOR, GREEN_FONT_COLOR = RED_FONT_COLOR, GREEN_FONT_COLOR
@@ -53,6 +55,12 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
+local function OnClick(_, button)
+	if button == 'LeftButton' and not E:AlertCombat() then
+		TogglePlayerSpellsFrame(_G.PlayerSpellsMicroButton.suggestedTab)
+	end
+end
+
 local function OnEvent(self)
 	local wm = C_PvP_IsWarModeDesired()
 	local color, icon = wm and RED_FONT_COLOR or GREEN_FONT_COLOR, wm and [[|TInterface\Icons\ui_warmode:16:16|t]] or ''
@@ -60,4 +68,4 @@ local function OnEvent(self)
 	self.text:SetFormattedText(wm and '%s %s %s' or '%s%s%s', icon, E:RGBToHex(color.r, color.g, color.b, nil, PVP_LABEL_WAR_MODE or NOT_APPLICABLE), icon)
 end
 
-DT:RegisterDatatext('WarMode', nil, {'WAR_MODE_STATUS_UPDATE', 'PLAYER_FLAGS_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, PVP_LABEL_WAR_MODE)
+DT:RegisterDatatext('WarMode', nil, {'WAR_MODE_STATUS_UPDATE', 'PLAYER_FLAGS_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, PVP_LABEL_WAR_MODE)
