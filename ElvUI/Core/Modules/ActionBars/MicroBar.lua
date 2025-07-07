@@ -262,7 +262,8 @@ do
 	local sorting = {
 		-- order this as a safe way to fix glyph taint on mists, warning: adjusting this can lead to
 		-- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
-		StoreMicroButton = E.Retail and 10 or 11,
+		MainMenuMicroButton = E.Retail and 11 or 12,	-- important for note above
+		StoreMicroButton = E.Retail and 10 or 11,		-- important for note above
 		EJMicroButton = E.Retail and 9 or 10,
 		CollectionsMicroButton = E.Retail and 8 or 9
 	}
