@@ -1037,6 +1037,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["INSANITY"], nil, 1, nil, nil, nil, nil, nil, nil, not E.Retail)
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
+			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
 		end
 
 		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')

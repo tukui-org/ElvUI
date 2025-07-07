@@ -1869,9 +1869,9 @@ P.unitframe = {
 	},
 	altManaPowers = {
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
+		MONK = { Energy = true, Stagger = true },
 		SHAMAN = { Maelstrom = true },
-		PRIEST = { Insanity = true },
-		MONK = { Stagger = true }
+		PRIEST = { Insanity = true }
 	},
 	thinBorders = true,
 	targetSound = false,
