@@ -104,6 +104,6 @@ group( 9, 'nameplates',	L["Nameplates"])
 group(10, 'unitframe',	L["UnitFrames"])
 group(11, 'cdmanager',	L["Cooldown Manager"])
 
-if E:IsAddOnEnabled('WeakAuras') then
+if E.OtherAddons.WeakAuras then
 	group(20, 'WeakAuras',	L["WeakAuras"])
 end

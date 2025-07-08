@@ -267,6 +267,38 @@ do
 	end
 end
 
+do
+	local others = {} -- addons we check for
+	local addons = { -- a few are not exact matches
+		ArkInventory = true,
+		BigWigs = true,
+		ColorPickerPlus = true,
+		ColorTools = true,
+		DejaCharacterStats = true,
+		DugisGuideViewerZ = true,
+		OptionHouse = true,
+		Questie = true,
+		SimplePowerBar = true,
+		Tukui = true,
+		WeakAuras = true,
+		DBM = 'DBM-Core',
+		ConsolePort = 'ConsolePort_Menu',
+		KalielsTracker = '!KalielsTracker',
+	}
+
+	E.OtherAddons = others
+
+	function E:CheckAddons()
+		for key, value in next, addons do
+			if type(value) == 'string' then
+				others[key] = E:IsAddOnEnabled(value)
+			else
+				others[key] = E:IsAddOnEnabled(key)
+			end
+		end
+	end
+end
+
 function E:SetCVar(cvar, value, ...)
 	local valstr = ((type(value) == 'boolean') and (value and '1' or '0')) or tostring(value)
 	if GetCVar(cvar) ~= valstr then
@@ -381,6 +413,7 @@ function E:OnInitialize()
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
 
+	E:CheckAddons()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
@@ -390,7 +423,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
 
-	if E:IsAddOnEnabled('Tukui') then
+	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 end

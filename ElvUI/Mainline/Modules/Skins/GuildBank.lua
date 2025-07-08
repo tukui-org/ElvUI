@@ -90,7 +90,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:SetTemplate()
 
-	if not E:IsAddOnEnabled('ArkInventory') then
+	if not E.OtherAddons.ArkInventory then
 		_G.GuildBankPopupFrame:HookScript('OnShow', GuildBankOnShow)
 	end
 end

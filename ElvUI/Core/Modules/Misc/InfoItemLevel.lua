@@ -121,7 +121,7 @@ function M:ClearPageInfo(frame, which)
 end
 
 function M:CheckStatsItemLevel()
-	return E.Retail and not E:IsAddOnEnabled('DejaCharacterStats')
+	return E.Retail and not E.OtherAddons.DejaCharacterStats
 end
 
 function M:ToggleItemLevelInfo(setupCharacterPage, config)
@@ -264,7 +264,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 		avgItemLevel = E:CalculateAverageItemLevel(iLevelDB, frame.unit)
 	end
 
-	if avgItemLevel and (not charPage or not E:IsAddOnEnabled('DejaCharacterStats')) then
+	if avgItemLevel and (not charPage or not E.OtherAddons.DejaCharacterStats) then
 		if charPage then
 			frame.ItemLevelText:SetText(avgItemLevel)
 

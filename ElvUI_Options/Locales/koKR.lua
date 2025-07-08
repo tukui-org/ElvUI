@@ -2009,7 +2009,7 @@ L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"]
 L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*blockCastByPlayers|r-^플레이어의 주문을 숨김: 플레이어가 제어하는 유닛이 시전하는 모든 오라(버프/디버프)를 |r|cffFF0000차단|r^합니다. (NPC가 시전한 오라만 표시됨).|r"
 L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*blockNoDuration|r-^지속되는 버프는 제외:|r 지속 시간이 없는 모든 오라(버프/디버프)를 |cffFF0000차단|r합니다.|r"
 L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*blockNonPersonal|r-^내주문이 아닌것 제외: 자신이 시전하지 않은 오라를 |cffFF0000차단|r합니다.|r"
-L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = "|cffFF0000예  시|r\n\n*모든 오라(버프)를 보는법:|r ^'지속시간'을 '0'으로 모두 설정하고, 우선 순위 목록을 비워 두거나 (1) Personal | (2)nonPersonal 선택!"
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = "|cffFF0000예 시|r\n\n*모든 오라(버프)를 보는법:|r ^'지속시간'을 '0'으로 모두 설정하고, 우선 순위 목록을 비워 두거나 (1) Personal | (2)nonPersonal 선택!"
 L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = "*블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1)Blacklist| (2)Personal| (3)nonPersonal"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = "*지속 되는 오라 차단, 다른 모든 항목 표시 :|r ^(1) blockNoDuration | (2)Personal | (3)nonPersonal"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = "*지속 되는 오라 차단, 블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"
