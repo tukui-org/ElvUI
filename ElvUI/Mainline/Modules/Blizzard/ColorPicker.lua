@@ -172,7 +172,7 @@ local function onColorSelect(frame, r, g, b)
 end
 
 function BL:EnhanceColorPicker()
-	if E:IsAddOnEnabled('ColorPickerPlus') or E:IsAddOnEnabled('ColorTools') then return end
+	if E.OtherAddons.ColorPickerPlus or E.OtherAddons.ColorTools then return end
 
 	ColorPickerFrame.Border:Hide()
 

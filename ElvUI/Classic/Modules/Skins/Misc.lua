@@ -53,7 +53,7 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	if not E:IsAddOnEnabled('ConsolePort_Menu') then
+	if not E.OtherAddons.ConsolePort_Menu then
 		-- reskin all esc/menu buttons
 		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
 			if Button.IsObjectType and Button:IsObjectType('Button') then
@@ -68,7 +68,7 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrameHeader:Point('TOP', _G.GameMenuFrame, 0, 7)
 	end
 
-	if E:IsAddOnEnabled('OptionHouse') then
+	if E.OtherAddons.OptionHouse then
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 

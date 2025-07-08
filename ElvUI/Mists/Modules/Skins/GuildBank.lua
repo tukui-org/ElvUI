@@ -132,7 +132,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankTab5:Point('TOPLEFT', _G.GuildBankTab4, 'BOTTOMLEFT', 0, 7)
 	_G.GuildBankTab6:Point('TOPLEFT', _G.GuildBankTab5, 'BOTTOMLEFT', 0, 7)
 
-	if not E:IsAddOnEnabled('ArkInventory') then
+	if not E.OtherAddons.ArkInventory then
 		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
 	end
 end

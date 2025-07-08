@@ -108,6 +108,22 @@ E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 
+E.OtherAddons = { -- various addons we check for
+	ArkInventory = E:IsAddOnEnabled('ArkInventory'),
+	BigWigs = E:IsAddOnEnabled('BigWigs'),
+	ColorPickerPlus = E:IsAddOnEnabled('ColorPickerPlus'),
+	ColorTools = E:IsAddOnEnabled('ColorTools'),
+	ConsolePort_Menu = E:IsAddOnEnabled('ConsolePort_Menu'),
+	DejaCharacterStats = E:IsAddOnEnabled('DejaCharacterStats'),
+	DugisGuideViewerZ = E:IsAddOnEnabled('DugisGuideViewerZ'),
+	KalielsTracker = E:IsAddOnEnabled('!KalielsTracker'),
+	OptionHouse = E:IsAddOnEnabled('OptionHouse'),
+	Questie = E:IsAddOnEnabled('Questie'),
+	SimplePowerBar = E:IsAddOnEnabled('SimplePowerBar'),
+	Tukui = E:IsAddOnEnabled('Tukui'),
+	WeakAuras = E:IsAddOnEnabled('WeakAuras'),
+}
+
 do
 	function E:AddonCompartmentFunc()
 		E:ToggleOptions()
@@ -390,7 +406,7 @@ function E:OnInitialize()
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
 
-	if E:IsAddOnEnabled('Tukui') then
+	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 end

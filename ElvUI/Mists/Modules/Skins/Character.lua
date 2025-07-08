@@ -105,7 +105,7 @@ local function TabTextureCoords(tex, x1)
 end
 
 local function FixSidebarTabCoords()
-	local hasDejaCharacterStats = E:IsAddOnEnabled('DejaCharacterStats')
+	local hasDejaCharacterStats = E.OtherAddons.DejaCharacterStats
 
 	local index = 1
 	local tab = _G['PaperDollSidebarTab'..index]

@@ -44,7 +44,7 @@ function S:WorldMapFrame()
 	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.QuestScrollFrame.ScrollBar)
 
-	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
+	if E.OtherAddons.Questie and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)
 	end
 

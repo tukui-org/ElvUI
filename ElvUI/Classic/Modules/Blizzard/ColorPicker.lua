@@ -164,7 +164,7 @@ local function onColorSelect(frame, r, g, b)
 end
 
 function BL:EnhanceColorPicker()
-	if E:IsAddOnEnabled('ColorPickerPlus') then return end
+	if E.OtherAddons.ColorPickerPlus then return end
 
 	ColorPickerFrame.swatchFunc = E.noop -- REMOVE THIS LATER IF WE CAN? errors on Footer.OkayButton
 

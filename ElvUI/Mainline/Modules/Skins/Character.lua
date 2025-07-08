@@ -201,7 +201,7 @@ local function TabTextureCoords(tex, x1)
 end
 
 local function FixSidebarTabCoords()
-	local hasDejaCharacterStats = E:IsAddOnEnabled('DejaCharacterStats')
+	local hasDejaCharacterStats = E.OtherAddons.DejaCharacterStats
 
 	local index = 1
 	local tab = _G['PaperDollSidebarTab'..index]
@@ -335,7 +335,7 @@ function S:Blizzard_UIPanels_Game()
 	_G.CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
-	if not E:IsAddOnEnabled('DejaCharacterStats') then
+	if not E.OtherAddons.DejaCharacterStats then
 		hooksecurefunc('PaperDollFrame_UpdateStats', PaperDollUpdateStats)
 
 		StatsPane('EnhancementsCategory')
