@@ -667,11 +667,6 @@ do
 end
 
 function E:Dump(object, inspect)
-	if not E:IsAddOnEnabled('Blizzard_DebugTools') then
-		E:Print('Blizzard_DebugTools is disabled.')
-		return
-	end
-
 	local debugTools = IsAddOnLoaded('Blizzard_DebugTools')
 	if not debugTools then UIParentLoadAddOn('Blizzard_DebugTools') end
 
