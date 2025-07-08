@@ -85,7 +85,7 @@ local function Visibility(self)
 	local shouldEnable
 
 	local form = GetShapeshiftForm()
-	if  form == 0 or form == MOONKIN_FORM then
+	if form == 0 or form == MOONKIN_FORM then
 		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
 	end
 

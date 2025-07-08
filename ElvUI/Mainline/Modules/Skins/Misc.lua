@@ -64,7 +64,7 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
 	-- reskin all esc/menu buttons
-	if not E.OtherAddons.ConsolePort_Menu then
+	if not E.OtherAddons.ConsolePort then
 		local GameMenuFrame = _G.GameMenuFrame
 		GameMenuFrame:StripTextures()
 		GameMenuFrame:CreateBackdrop('Transparent')

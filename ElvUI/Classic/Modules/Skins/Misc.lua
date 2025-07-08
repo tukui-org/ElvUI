@@ -53,7 +53,7 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	if not E.OtherAddons.ConsolePort_Menu then
+	if not E.OtherAddons.ConsolePort then
 		-- reskin all esc/menu buttons
 		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
 			if Button.IsObjectType and Button:IsObjectType('Button') then
