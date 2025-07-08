@@ -108,23 +108,6 @@ E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 
-E.OtherAddons = { -- various addons we check for
-	ArkInventory = E:IsAddOnEnabled('ArkInventory'),
-	BigWigs = E:IsAddOnEnabled('BigWigs'),
-	ColorPickerPlus = E:IsAddOnEnabled('ColorPickerPlus'),
-	ColorTools = E:IsAddOnEnabled('ColorTools'),
-	ConsolePort = E:IsAddOnEnabled('ConsolePort_Menu'),
-	DBM = E:IsAddOnEnabled('DBM-Core'),
-	DejaCharacterStats = E:IsAddOnEnabled('DejaCharacterStats'),
-	DugisGuideViewerZ = E:IsAddOnEnabled('DugisGuideViewerZ'),
-	KalielsTracker = E:IsAddOnEnabled('!KalielsTracker'),
-	OptionHouse = E:IsAddOnEnabled('OptionHouse'),
-	Questie = E:IsAddOnEnabled('Questie'),
-	SimplePowerBar = E:IsAddOnEnabled('SimplePowerBar'),
-	Tukui = E:IsAddOnEnabled('Tukui'),
-	WeakAuras = E:IsAddOnEnabled('WeakAuras'),
-}
-
 do
 	function E:AddonCompartmentFunc()
 		E:ToggleOptions()
@@ -284,6 +267,38 @@ do
 	end
 end
 
+do
+	local others = {} -- addons we check for
+	local addons = { -- a few are not exact matches
+		ArkInventory = true,
+		BigWigs = true,
+		ColorPickerPlus = true,
+		ColorTools = true,
+		DejaCharacterStats = true,
+		DugisGuideViewerZ = true,
+		OptionHouse = true,
+		Questie = true,
+		SimplePowerBar = true,
+		Tukui = true,
+		WeakAuras = true,
+		DBM = 'DBM-Core',
+		ConsolePort = 'ConsolePort_Menu',
+		KalielsTracker = '!KalielsTracker',
+	}
+
+	E.OtherAddons = others
+
+	function E:CheckAddons()
+		for key, value in next, addons do
+			if type(value) == 'string' then
+				others[key] = E:IsAddOnEnabled(value)
+			else
+				others[key] = E:IsAddOnEnabled(key)
+			end
+		end
+	end
+end
+
 function E:SetCVar(cvar, value, ...)
 	local valstr = ((type(value) == 'boolean') and (value and '1' or '0')) or tostring(value)
 	if GetCVar(cvar) ~= valstr then
@@ -398,6 +413,7 @@ function E:OnInitialize()
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
 
+	E:CheckAddons()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
