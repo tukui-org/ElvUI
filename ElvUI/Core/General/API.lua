@@ -309,11 +309,11 @@ function E:PopulateSpecInfo()
 	wipe(E.SpecInfoBySpecID)
 	wipe(E.SpecInfoBySpecClass)
 
-	for classFile, specData in next, E.SpecByClass do
+	for classFile, specID in next, E.SpecByClass do
 		local info = E.ClassInfoByFile[classFile]
 		if info then -- exclude evoker on mists
 			local classMale, classFemale = E:LocalizedClassName(classFile, 2), E:LocalizedClassName(classFile, 3)
-			for index, id in next, specData do
+			for index, id in next, specID do
 				local data = {
 					id = id,
 					index = index,
