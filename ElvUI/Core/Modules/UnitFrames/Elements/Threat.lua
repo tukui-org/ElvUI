@@ -24,7 +24,7 @@ function UF:Construct_Threat(frame)
 	threat.TextureIcon:SetTexture(E.media.blankTex)
 	threat.TextureIcon:Hide()
 
-	threat.PostUpdate = self.UpdateThreat
+	threat.PostUpdate = UF.UpdateThreat
 	return threat
 end
 

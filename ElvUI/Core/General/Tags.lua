@@ -933,11 +933,7 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 	if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 	local _, classToken = UnitClass(unit)
-	if UnitSex(unit) == 3 then
-		return _G.LOCALIZED_CLASS_NAMES_FEMALE[classToken]
-	else
-		return _G.LOCALIZED_CLASS_NAMES_MALE[classToken]
-	end
+	return E:LocalizedClassName(classToken, unit)
 end)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)

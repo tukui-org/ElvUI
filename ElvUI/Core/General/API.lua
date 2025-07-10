@@ -274,19 +274,101 @@ end
 
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
-	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
-	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
+
+	local classMale = _G.LOCALIZED_CLASS_NAMES_MALE
+	local classFemale = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
+	for k, v in pairs(classMale) do E.UnlocalizedClasses[v] = k end
+	for k, v in pairs(classFemale) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
 		return E.UnlocalizedClasses[className]
 	end
 
 	function E:LocalizedClassName(className, unit)
-		local gender = (not unit and E.mygender) or UnitSex(unit)
-		if gender == 3 then
-			return _G.LOCALIZED_CLASS_NAMES_FEMALE[className]
-		else
-			return _G.LOCALIZED_CLASS_NAMES_MALE[className]
+		local gender = (type(unit) == 'number' and unit) or (not unit and E.mygender) or UnitSex(unit)
+		return (gender == 3 and classFemale[className]) or classMale[className]
+	end
+end
+
+function E:GetUnitSpecInfo(unit)
+	if not UnitIsPlayer(unit) then return end
+
+	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
+	local specText = specLine and specLine.leftText
+	if specText then
+		return E.SpecInfoBySpecClass[specText]
+	end
+end
+
+function E:PopulateSpecInfo()
+	wipe(E.SpecInfoBySpecID)
+	wipe(E.SpecInfoBySpecClass)
+
+	for classFile, specID in next, E.SpecByClass do
+		local info = E.ClassInfoByFile[classFile]
+		if info then -- exclude evoker on mists
+			local classMale, classFemale = E:LocalizedClassName(classFile, 2), E:LocalizedClassName(classFile, 3)
+			for index, id in next, specID do
+				local data = {
+					id = id,
+					index = index,
+					classFile = classFile,
+					className = info.className,
+					classMale = classMale,
+					classFemale = classFemale,
+					englishName = E.SpecName[id]
+				}
+
+				E.SpecInfoBySpecID[id] = data
+
+				for x = 3, 1, -1 do
+					local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
+					if name then
+						if x == 1 then -- SpecInfoBySpecID
+							data.name = name
+							data.desc = desc
+							data.icon = icon
+							data.role = role
+
+							local specClass = name..' '..info.className
+							E.SpecInfoBySpecClass[specClass] = data
+						else
+							local copy = E:CopyTable({}, data)
+							copy.name = name
+							copy.desc = desc
+							copy.icon = icon
+							copy.role = role
+
+							local localized = (x == 3 and classFemale) or classMale
+							copy.className = localized
+
+							if localized then
+								local specClassLocalized = name..' '..localized
+								E.SpecInfoBySpecClass[specClassLocalized] = copy
+							end
+						end
+					end
+				end
+
+				-- fallback for mop
+				local _, name, desc, icon, role = GetSpecializationInfoByID(id)
+				if name then
+					local specClass = name..' '..info.className
+					if not E.SpecInfoBySpecClass[specClass] then
+						data.name = name
+						data.desc = desc
+						data.icon = icon
+						data.role = role
+
+						E.SpecInfoBySpecClass[specClass] = data
+					end
+				end
+			end
 		end
 	end
 end
@@ -1084,20 +1166,6 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 	end
 end
 
-function E:GetUnitSpecInfo(unit)
-	if not UnitIsPlayer(unit) then return end
-
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
-
-	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
-	local specText = specLine and specLine.leftText
-	if specText then
-		return E.SpecInfoBySpecClass[specText]
-	end
-end
-
 function E:GetClassCoords(classFile, crop, get)
 	local t = _G.CLASS_ICON_TCOORDS[classFile]
 	if not t then return 0, 1, 0, 1 end
@@ -1213,72 +1281,8 @@ function E:LoadAPI()
 
 	E:SetupGameMenu()
 
-	if E.Retail or E.Mists then -- fill the spec info tables
-		local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
-		local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
-
-		for classFile, specData in next, E.SpecByClass do
-			local info = E.ClassInfoByFile[classFile]
-			if info then -- exclude evoker on mists
-				local male, female = MALE[classFile], FEMALE[classFile]
-
-				for index, id in next, specData do
-					local data = {
-						id = id,
-						index = index,
-						classFile = classFile,
-						className = info.className,
-						englishName = E.SpecName[id]
-					}
-
-					E.SpecInfoBySpecID[id] = data
-
-					for x = 3, 1, -1 do
-						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
-						if name then
-
-							if x == 1 then -- SpecInfoBySpecID
-								data.name = name
-								data.desc = desc
-								data.icon = icon
-								data.role = role
-
-								local specClass = name..' '..info.className
-								E.SpecInfoBySpecClass[specClass] = data
-							else
-								local copy = E:CopyTable({}, data)
-								copy.name = name
-								copy.desc = desc
-								copy.icon = icon
-								copy.role = role
-
-								local localized = (x == 3 and female) or male
-								copy.className = localized
-
-								if localized then
-									local specClassLocalized = name..' '..localized
-									E.SpecInfoBySpecClass[specClassLocalized] = copy
-								end
-							end
-						end
-					end
-
-					-- fallback for mop
-					local _, name, desc, icon, role = GetSpecializationInfoByID(id)
-					if name then
-						local specClass = name..' '..info.className
-						if not E.SpecInfoBySpecClass[specClass] then
-							data.name = name
-							data.desc = desc
-							data.icon = icon
-							data.role = role
-
-							E.SpecInfoBySpecClass[specClass] = data
-						end
-					end
-				end
-			end
-		end
+	if E.Retail or E.Mists then
+		E:PopulateSpecInfo()
 	end
 
 	if not E.Retail then

@@ -39,7 +39,7 @@ function UF:Construct_Portrait(frame, which)
 	end
 
 	portrait.__owner = frame -- set this for both, oUF will only set it when active
-	portrait.PostUpdate = self.PortraitUpdate
+	portrait.PostUpdate = UF.PortraitUpdate
 
 	return portrait
 end
