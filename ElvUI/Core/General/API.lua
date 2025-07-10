@@ -274,8 +274,12 @@ end
 
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
-	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
-	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
+
+	local classMale = _G.LOCALIZED_CLASS_NAMES_MALE
+	local classFemale = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
+	for k, v in pairs(classMale) do E.UnlocalizedClasses[v] = k end
+	for k, v in pairs(classFemale) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
 		return E.UnlocalizedClasses[className]
@@ -283,11 +287,7 @@ do -- other non-english locales require this
 
 	function E:LocalizedClassName(className, unit)
 		local gender = (type(unit) == 'number' and unit) or (not unit and E.mygender) or UnitSex(unit)
-		if gender == 3 then
-			return _G.LOCALIZED_CLASS_NAMES_FEMALE[className]
-		else
-			return _G.LOCALIZED_CLASS_NAMES_MALE[className]
-		end
+		return (gender == 3 and classFemale[className]) or classMale[className]
 	end
 end
 
