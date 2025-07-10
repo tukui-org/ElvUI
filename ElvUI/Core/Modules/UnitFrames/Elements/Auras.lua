@@ -72,12 +72,12 @@ UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.PreSetPosition = self.SortAuras
-	buffs.PostCreateButton = self.Construct_AuraIcon
-	buffs.PostUpdateButton = self.PostUpdateAura
-	buffs.SetPosition = self.SetPosition
-	buffs.PreUpdate = self.PreUpdateAura
-	buffs.CustomFilter = self.AuraFilter
+	buffs.PreSetPosition = UF.SortAuras
+	buffs.PostCreateButton = UF.Construct_AuraIcon
+	buffs.PostUpdateButton = UF.PostUpdateAura
+	buffs.SetPosition = UF.SetPosition
+	buffs.PreUpdate = UF.PreUpdateAura
+	buffs.CustomFilter = UF.AuraFilter
 	buffs.stacks = {}
 	buffs.rows = {}
 	buffs.type = 'buffs'
@@ -90,12 +90,12 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.PreSetPosition = self.SortAuras
-	debuffs.PostCreateButton = self.Construct_AuraIcon
-	debuffs.PostUpdateButton = self.PostUpdateAura
-	debuffs.SetPosition = self.SetPosition
-	debuffs.PreUpdate = self.PreUpdateAura
-	debuffs.CustomFilter = self.AuraFilter
+	debuffs.PreSetPosition = UF.SortAuras
+	debuffs.PostCreateButton = UF.Construct_AuraIcon
+	debuffs.PostUpdateButton = UF.PostUpdateAura
+	debuffs.SetPosition = UF.SetPosition
+	debuffs.PreUpdate = UF.PreUpdateAura
+	debuffs.CustomFilter = UF.AuraFilter
 	debuffs.stacks = {}
 	debuffs.rows = {}
 	debuffs.type = 'debuffs'

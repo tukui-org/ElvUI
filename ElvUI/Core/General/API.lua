@@ -1228,6 +1228,8 @@ function E:LoadAPI()
 						index = index,
 						classFile = classFile,
 						className = info.className,
+						classMale = male,
+						classFemale = female,
 						englishName = E.SpecName[id]
 					}
 
@@ -1236,7 +1238,6 @@ function E:LoadAPI()
 					for x = 3, 1, -1 do
 						local _, name, desc, icon, role = GetSpecializationInfoForSpecID(id, x)
 						if name then
-
 							if x == 1 then -- SpecInfoBySpecID
 								data.name = name
 								data.desc = desc
