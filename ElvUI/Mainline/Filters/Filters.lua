@@ -897,6 +897,20 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	--------------- The War Within (Season 3) ----------------
 	----------------------------------------------------------
 	-- Eco-Dome Al'dani
+		[1217439] = List(), -- Toxic Regurgitation
+		[1227152] = List(), -- Warp Strike
+		[1219535] = List(), -- Rift Claws
+		[1220390] = List(), -- Warp Strike
+		[1236126] = List(), -- Binding Javelin
+		[1225221] = List(), -- Dread of the Unknown
+		[1217446] = List(), -- Digestive Spittle
+		[1220671] = List(), -- Binding Javelin
+		[1231494] = List(), -- Overgorged Burst
+		[1224865] = List(), -- Fatebound
+		[1231224] = List(), -- Arcane Slash
+		[1221190] = List(), -- Gluttonous Miasma
+		[1221483] = List(), -- Arcing Energy
+		[1222202] = List(), -- Arcane Burn
 	-- Halls of Atonement
 		[335338] = List(), -- Ritual of Woe
 		[326891] = List(), -- Anguish
@@ -1101,6 +1115,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	--------------- The War Within (Season 3) ----------------
 	----------------------------------------------------------
 	-- Eco-Dome Al'dani
+		[1231234] = List(), -- Protected Core
+		[1231608] = List(), -- Alacrity
+		[1231244] = List(), -- Unstable Core
+		[1217247] = List(), -- Feast
+		[1248702] = List(), -- Spirit Protection
+		[1221133] = List(), -- Hungering Rage
+		[1236703] = List(), -- Eternal Weave
+		[1221532] = List(), -- Erratic Ritual
+		[1219457] = List(), -- Incorporeal
+		[1217232] = List(), -- Devour
+		[1220511] = List(), -- Arcane Overload
+		[1223000] = List(), -- Embrace of K'aresh
+		[1248701] = List(), -- Consume Spirit
 	-- Halls of Atonement
 		[326450] = List(), -- Loyal Beasts
 	-- Tazavesh, the Veiled Market
