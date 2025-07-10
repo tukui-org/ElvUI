@@ -898,8 +898,39 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	-- Eco-Dome Al'dani
 	-- Halls of Atonement
-	-- Tazavesh: Streets of Wonder
-	-- Tazavesh: So'leah's Gambit
+		[335338] = List(), -- Ritual of Woe
+		[326891] = List(), -- Anguish
+		[329321] = List(), -- Jagged Swipe 1
+		[344993] = List(), -- Jagged Swipe 2
+		[319603] = List(), -- Curse of Stone
+		[319611] = List(), -- Turned to Stone
+		[325876] = List(), -- Curse of Obliteration
+		[326632] = List(), -- Stony Veins
+		[323650] = List(), -- Haunting Fixation
+		[326874] = List(), -- Ankle Bites
+		[340446] = List(), -- Mark of Envy
+	-- Tazavesh, the Veiled Market
+		[350804] = List(), -- Collapsing Energy
+		[350885] = List(), -- Hyperlight Jolt
+		[351101] = List(), -- Energy Fragmentation
+		[346828] = List(), -- Sanitizing Field
+		[355641] = List(), -- Scintillate
+		[355451] = List(), -- Undertow
+		[355581] = List(), -- Crackle
+		[349999] = List(), -- Anima Detonation
+		[346961] = List(), -- Purging Field
+		[351956] = List(), -- High-Value Target
+		[346297] = List(), -- Unstable Explosion
+		[347728] = List(), -- Flock!
+		[356408] = List(), -- Ground Stomp
+		[347744] = List(), -- Quickblade
+		[347481] = List(), -- Shuri
+		[355915] = List(), -- Glyph of Restraint
+		[350134] = List(), -- Infinite Breath
+		[350013] = List(), -- Gluttonous Feast
+		[355465] = List(), -- Boulder Throw
+		[346116] = List(), -- Shearing Swings
+		[356011] = List(), -- Beam Splicer
 	---------------------------------------------------------
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
@@ -1071,8 +1102,19 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	-- Eco-Dome Al'dani
 	-- Halls of Atonement
-	-- Tazavesh: Streets of Wonder
-	-- Tazavesh: So'leah's Gambit
+		[326450] = List(), -- Loyal Beasts
+	-- Tazavesh, the Veiled Market
+		[355147] = List(), -- Fish Invigoration
+		[351960] = List(), -- Static Cling
+		[351088] = List(), -- Relic Link
+		[346296] = List(), -- Instability
+		[355057] = List(), -- Cry of Mrrggllrrgg
+		[355640] = List(), -- Phalanx Field
+		[355783] = List(), -- Force Multiplied
+		[351086] = List(), -- Power Overwhelming
+		[347840] = List(), -- Feral
+		[355782] = List(), -- Force Multiplier
+		[347992] = List(), -- Rotar Body Armor
 	---------------------------------------------------------
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
