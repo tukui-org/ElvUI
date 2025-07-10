@@ -949,8 +949,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
 	-- Plexus Sentinel
+		[1219459] = List(), -- Manifest Matrices
+		[1219607] = List(), -- Eradicating Salvo
+		[1218625] = List(), -- Displacement Matrix
 	-- Loom'ithar
+		[1226311] = List(5), -- Infusion Tether
+		[1237212] = List(4), -- Piercing Strand
+		[1226721] = List(6), -- Silken Snare
 	-- Soulbinder Naazindhri
+		[1227276] = List(), -- Soulfray Annihilation
+		[1223859] = List(), -- Arcane Expulsion
 	-- Forgeweaver Araz
 	-- The Soul Hunters
 	-- Fractillus
@@ -1146,8 +1154,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
 	-- Plexus Sentinel
+		[1241303] = List(), -- Arcanoshield
 	-- Loom'ithar
+		[1238502] = List(), -- Woven Ward
 	-- Soulbinder Naazindhri
+		[1241100] = List(), -- Mystic Lash
+		[1225616] = List(), -- Soulfire Convergence
 	-- Forgeweaver Araz
 	-- The Soul Hunters
 	-- Fractillus
