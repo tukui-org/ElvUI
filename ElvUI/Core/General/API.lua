@@ -1099,15 +1099,16 @@ function E:GetUnitSpecInfo(unit)
 end
 
 function E:PopulateSpecInfo()
-	-- fill the spec info tables
 	local MALE = _G.LOCALIZED_CLASS_NAMES_MALE
 	local FEMALE = _G.LOCALIZED_CLASS_NAMES_FEMALE
+
+	wipe(E.SpecInfoBySpecID)
+	wipe(E.SpecInfoBySpecClass)
 
 	for classFile, specData in next, E.SpecByClass do
 		local info = E.ClassInfoByFile[classFile]
 		if info then -- exclude evoker on mists
 			local male, female = MALE[classFile], FEMALE[classFile]
-
 			for index, id in next, specData do
 				local data = {
 					id = id,
