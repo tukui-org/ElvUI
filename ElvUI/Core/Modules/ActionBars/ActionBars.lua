@@ -1332,11 +1332,14 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		return
 	end
 
-	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
+	if not bar.buttonConfig then
+		bar.buttonConfig = E:CopyTable({}, buttonDefaults)
+	end
 
-	if not bar.buttonConfig then bar.buttonConfig = E:CopyTable({}, buttonDefaults) end
-	local text = bar.buttonConfig.text
+	local config = bar.buttonConfig
+	local text = config.text
+	local db = AB.db[barName]
 
 	do -- hotkey text
 		local font, size, flags, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
@@ -1379,22 +1382,22 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		text.macro.color = { c.r, c.g, c.b }
 	end
 
-	bar.buttonConfig.hideElements.count = not db.counttext
-	bar.buttonConfig.hideElements.macro = not db.macrotext
-	bar.buttonConfig.hideElements.hotkey = not db.hotkeytext
+	config.hideElements.count = not db.counttext
+	config.hideElements.macro = not db.macrotext
+	config.hideElements.hotkey = not db.hotkeytext
 
-	bar.buttonConfig.enabled = db.enabled -- only used to keep events off for targetReticle
-	bar.buttonConfig.showGrid = db.showGrid
-	bar.buttonConfig.targetReticle = db.targetReticle
-	bar.buttonConfig.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
-	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
-	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
-	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, AB.db.noPowerColor)
-	bar.buttonConfig.colors.usable = E:SetColorTable(bar.buttonConfig.colors.usable, AB.db.usableColor)
-	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, AB.db.notUsableColor)
-	bar.buttonConfig.useDrawBling = not AB.db.hideCooldownBling
-	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
-	bar.buttonConfig.handleOverlay = AB.db.handleOverlay
+	config.enabled = db.enabled -- only used to keep events off for targetReticle
+	config.showGrid = db.showGrid
+	config.targetReticle = db.targetReticle
+	config.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
+	config.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
+	config.colors.range = E:SetColorTable(config.colors.range, AB.db.noRangeColor)
+	config.colors.mana = E:SetColorTable(config.colors.mana, AB.db.noPowerColor)
+	config.colors.usable = E:SetColorTable(config.colors.usable, AB.db.usableColor)
+	config.colors.notUsable = E:SetColorTable(config.colors.notUsable, AB.db.notUsableColor)
+	config.useDrawBling = not AB.db.hideCooldownBling
+	config.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
+	config.handleOverlay = AB.db.handleOverlay
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
 	if not buttonName then
@@ -1404,8 +1407,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
-		bar.buttonConfig.keyBoundTarget = AB:GetKeyTarget(buttonName, i)
-		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
+		local keyTarget = AB:GetKeyTarget(buttonName, i)
+		config.keyBoundTarget = keyTarget -- for LAB
+		button.keyBoundTarget = keyTarget -- for bind mode
 		button.postKeybind = AB.FixKeybindText
 
 		button:SetAttribute('buttonlock', AB.db.lockActionBars or nil)
@@ -1414,7 +1418,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 		button:SetAttribute('checkmouseovercast', GetCVarBool('enableMouseoverCast') or nil)
 		button:SetAttribute('unit2', AB.db.rightClickSelfCast and 'player' or nil)
 
-		button:UpdateConfig(bar.buttonConfig)
+		button:UpdateConfig(config)
 	end
 end
 
