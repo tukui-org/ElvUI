@@ -299,14 +299,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		return nameColor
 	else
-		local isPetCompanion = E.Retail and UnitIsBattlePetCompanion(unit)
+		local isPetCompanion = not E.Classic and UnitIsBattlePetCompanion(unit)
 		local levelLine, classLine = TT:GetLevelLine(tt, 1)
 		if levelLine then
 			local pvpFlag, classificationString, diffColor, level = '', ''
 			local creatureClassification = UnitClassification(unit)
 			local creatureType = UnitCreatureType(unit)
 
-			if isPetCompanion or (E.Retail and UnitIsWildBattlePet(unit)) then
+			if isPetCompanion or (not E.Classic and UnitIsWildBattlePet(unit)) then
 				level = UnitBattlePetLevel(unit)
 
 				local petType = UnitBattlePetType(unit)
@@ -1104,7 +1104,7 @@ function TT:Initialize()
 		end
 	end
 
-	if E.Retail or E.Mists then
+	if not E.Classic then
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 

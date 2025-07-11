@@ -827,7 +827,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isDead = UnitIsDead(unit)
 		nameplate.isGameObject = UnitIsGameObject(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
-		nameplate.isBattlePet = E.Retail and UnitIsBattlePet(unit)
+		nameplate.isBattlePet = not E.Classic and UnitIsBattlePet(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.faction = UnitFactionGroup(unit)
