@@ -150,8 +150,14 @@ local function SkinJournalScrollButton(bu)
 				bu.factionIcon:Point('TOPRIGHT', -1, -1)
 				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
 
+				icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				bu.DragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.DragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+
+				local hl = bu.DragButton:GetHighlightTexture()
+				hl:SetTexture(E.media.blankTex)
+				hl:SetVertexColor(1, 1, 1, .25)
+				hl:SetAllPoints(bu.icon)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
