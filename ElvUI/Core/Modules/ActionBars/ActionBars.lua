@@ -1312,6 +1312,19 @@ function AB:GetHotkeyConfig(db)
 	return font, size, flags, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1 }, show
 end
 
+do
+	local fixBars = {}
+	if E.Mists then
+		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
+		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
+		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
+	end
+
+	function AB:GetKeyTarget(buttonName, id)
+		return format('%s%d', fixBars[buttonName] or buttonName, id)
+	end
+end
+
 function AB:UpdateButtonConfig(barName, buttonName)
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
@@ -1391,7 +1404,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
-		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
+		bar.buttonConfig.keyBoundTarget = AB:GetKeyTarget(buttonName, i)
 		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
 
