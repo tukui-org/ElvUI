@@ -63,7 +63,7 @@ local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local SellAllJunkItems = C_MerchantFrame.SellAllJunkItems
 local C_Texture_GetAtlasInfo = C_Texture.GetAtlasInfo
-local C_TransmogCollection_PlayerHasTransmogByItemInfo = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogByItemInfo
+local C_TransmogCollection_PlayerHasTransmogItemModifiedAppearance = C_TransmogCollection and C_TransmogCollection.PlayerHasTransmogItemModifiedAppearance
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection and C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
@@ -1581,6 +1581,11 @@ B.ExcludeVendors = {
 	[100995] = "Auto-Hammer"
 }
 
+function B:SkipAquiredTransmog(itemLink)
+	local appearanceID, modifiedID = C_TransmogCollection_GetItemInfo(itemLink)
+	return not appearanceID or (modifiedID and C_TransmogCollection_PlayerHasTransmogItemModifiedAppearance(modifiedID))
+end
+
 function B:GetGrays(vendor)
 	local value = 0
 
@@ -1591,9 +1596,8 @@ function B:GetGrays(vendor)
 			if itemLink and not info.hasNoValue and not B.ExcludeGrays[info.itemID] then
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
-				if rarity and rarity == 0 -- grays :o
-				and (classID ~= 12 or bindType ~= 4) -- Quest can be classID:12 or bindType:4
-				and (not E.Retail or not C_TransmogCollection_GetItemInfo(itemLink) or C_TransmogCollection_PlayerHasTransmogByItemInfo(itemLink)) then -- skip transmogable items
+				-- rarity:0 is grey items; Quest can be classID:12 or bindType:4
+				if (rarity and rarity == 0) and (classID ~= 12 or bindType ~= 4) and (not E.Mists or B:SkipAquiredTransmog(itemLink)) then
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 
