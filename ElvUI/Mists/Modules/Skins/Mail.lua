@@ -22,6 +22,8 @@ local function Skin_SendMail()
 			icon:SetInside()
 		end
 	end
+
+	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 end
 
 local function Skin_OpenMail()
@@ -94,7 +96,6 @@ function S:MailFrame()
 	-- send mail
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
-	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 	_G.MailEditBox.ScrollBox:ClearAllPoints()
 	_G.MailEditBox.ScrollBox:Point('TOPLEFT', _G.SendStationeryBackgroundLeft, 'TOPLEFT', 8, 0)
 	_G.MailEditBox.ScrollBox:Point('BOTTOMRIGHT', _G.SendStationeryBackgroundRight, 'BOTTOMRIGHT', -18, -8)
