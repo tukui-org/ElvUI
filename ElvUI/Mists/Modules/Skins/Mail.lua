@@ -22,6 +22,8 @@ local function Skin_SendMail()
 			icon:SetInside()
 		end
 	end
+
+	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 end
 
 local function Skin_OpenMail()
@@ -76,9 +78,12 @@ function S:MailFrame()
 	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
-	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
 	_G.InboxPrevPageButton:StripTexts()
+	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
+
+	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
 	_G.InboxNextPageButton:StripTexts()
+	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
@@ -94,15 +99,17 @@ function S:MailFrame()
 	-- send mail
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
-	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
 	_G.MailEditBox.ScrollBox:ClearAllPoints()
-	_G.MailEditBox.ScrollBox:Point('TOPLEFT', _G.MailEditBox, 'TOPLEFT', -13, 6)
-	_G.MailEditBox.ScrollBox:Point('BOTTOMRIGHT', _G.MailEditBox, 'BOTTOMRIGHT', 8, -6)
+	_G.MailEditBox.ScrollBox:Point('TOPLEFT', _G.SendStationeryBackgroundLeft, 'TOPLEFT', 8, 0)
+	_G.MailEditBox.ScrollBox:Point('BOTTOMRIGHT', _G.SendStationeryBackgroundRight, 'BOTTOMRIGHT', -18, -8)
 
 	_G.SendStationeryBackgroundLeft:StripTextures(true)
 	_G.SendStationeryBackgroundRight:StripTextures(true)
 
 	S:HandleTrimScrollBar(_G.MailEditBoxScrollBar)
+	_G.MailEditBoxScrollBar:ClearAllPoints()
+	_G.MailEditBoxScrollBar:Point('TOPLEFT', _G.MailEditBox.ScrollBox, 'TOPRIGHT', 0, 8)
+	_G.MailEditBoxScrollBar:Point('BOTTOMLEFT', _G.MailEditBox.ScrollBox, 'BOTTOMRIGHT', 0, 0)
 
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
@@ -156,8 +163,6 @@ function S:MailFrame()
 	_G.OpenMailScrollFrame:SetTemplate()
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
-	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
-	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.MailTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)

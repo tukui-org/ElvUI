@@ -76,9 +76,12 @@ function S:MailFrame()
 	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
-	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
 	_G.InboxPrevPageButton:StripTexts()
+	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
+
+	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
 	_G.InboxNextPageButton:StripTexts()
+	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
@@ -150,8 +153,6 @@ function S:MailFrame()
 
 	S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
 
-	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
-	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.MailTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
