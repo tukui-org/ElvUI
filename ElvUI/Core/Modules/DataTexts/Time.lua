@@ -180,7 +180,7 @@ local function OnEnter()
 		enteredFrame = true
 	end
 
-	local numAreas = E.Retail and GetNumWorldPVPAreas and GetNumWorldPVPAreas()
+	local numAreas = GetNumWorldPVPAreas and GetNumWorldPVPAreas()
 	if numAreas then
 		local addedHeader = false
 		for i = 1, numAreas do
