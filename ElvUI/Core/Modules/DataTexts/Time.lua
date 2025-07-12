@@ -147,7 +147,31 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 
 local function sortFunc(a,b) return a[1] < b[1] end
 
-local collectedInstanceImages = false
+local collectedImages = false
+local function CollectImages()
+	local numTiers = (EJ_GetNumTiers() or 0)
+	if numTiers > 0 then
+		-- Loop through the expansions to collect the textures
+		for i=1, numTiers do
+			EJ_SelectTier(i)
+			GetInstanceImages(1, false) -- Populate for dungeon icons
+			GetInstanceImages(1, true) -- Populate for raid icons
+		end
+
+		if collectIDs then
+			E:Dump(collectedIDs, true)
+		end
+
+		-- Set it back to the previous tier
+		local currentTier = EJ_GetCurrentTier()
+		if currentTier then
+			EJ_SelectTier(currentTier)
+		end
+
+		collectedImages = true
+	end
+end
+
 local lockedInstances = { raids = {}, dungeons = {} }
 local function OnEnter()
 	DT.tooltip:ClearLines()
@@ -156,54 +180,27 @@ local function OnEnter()
 		enteredFrame = true
 	end
 
-	if E.Retail then
-		if not collectedInstanceImages then
-			local numTiers = (EJ_GetNumTiers() or 0)
-			if numTiers > 0 then
-				local currentTier = EJ_GetCurrentTier()
+	local numAreas = E.Retail and GetNumWorldPVPAreas and GetNumWorldPVPAreas()
+	if numAreas then
+		local addedHeader = false
+		for i = 1, numAreas do
+			local _, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
 
-				-- Loop through the expansions to collect the textures
-				for i=1, numTiers do
-					EJ_SelectTier(i)
-					GetInstanceImages(1, false) -- Populate for dungeon icons
-					GetInstanceImages(1, true) -- Populate for raid icons
-				end
-
-				if collectIDs then
-					E:Dump(collectedIDs, true)
-				end
-
-				-- Set it back to the previous tier
-				if currentTier then
-					EJ_SelectTier(currentTier)
-				end
-
-				collectedInstanceImages = true
+			if isActive then
+				startTime = WINTERGRASP_IN_PROGRESS
+			elseif not startTime then
+				startTime = QUEUE_TIME_UNAVAILABLE
+			elseif startTime ~= 0 then
+				startTime = ToTime(startTime)
 			end
-		end
 
-		local numAreas = GetNumWorldPVPAreas and GetNumWorldPVPAreas()
-		if numAreas then
-			local addedHeader = false
-			for i = 1, numAreas do
-				local _, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
-
-				if isActive then
-					startTime = WINTERGRASP_IN_PROGRESS
-				elseif not startTime then
-					startTime = QUEUE_TIME_UNAVAILABLE
-				elseif startTime ~= 0 then
-					startTime = ToTime(startTime)
+			if canEnter and startTime ~= 0 then
+				if not addedHeader then
+					DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND)
+					addedHeader = true
 				end
 
-				if canEnter and startTime ~= 0 then
-					if not addedHeader then
-						DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND)
-						addedHeader = true
-					end
-
-					DT.tooltip:AddDoubleLine(format(formatBattleGroundInfo, localizedName), startTime, 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
-				end
+				DT.tooltip:AddDoubleLine(format(formatBattleGroundInfo, localizedName), startTime, 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 			end
 		end
 	end
@@ -323,6 +320,10 @@ local function OnEvent(self, event)
 		end
 	elseif event == 'ELVUI_FORCE_UPDATE' then
 		RequestRaidInfo()
+
+		if not collectedImages then
+			CollectImages()
+		end
 	elseif event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
 		OnLeave()
 	end
