@@ -51,6 +51,11 @@ function AB:StyleShapeShift()
 			break
 		else
 			local texture, isActive, isCastable, spellID = GetShapeshiftFormInfo(i)
+			if isActive and spellID == 51713 then -- fix active state for Shadow Dance on Mists
+				local _, duration = GetShapeshiftFormCooldown(i)
+				isActive = duration ~= 0
+			end
+
 			button.icon:SetTexture(((darken or not isActive) and spellID and GetSpellTexture(spellID)) or WispSplode)
 			button.icon:SetInside()
 
@@ -63,17 +68,16 @@ function AB:StyleShapeShift()
 					end
 
 					button:SetChecked(numForms == 1 and darken)
-					button.checked:SetColorTexture(1, 1, 1, 0.3)
+					button.checked:SetVertexColor(1, 1, 1, 0.3)
 				elseif numForms == 1 or stance == 0 then
 					button:SetChecked(false)
 				else
 					button:SetChecked(darken)
-					button.checked:SetAlpha(1)
 
 					if darken then
-						button.checked:SetColorTexture(0, 0, 0, 0.6)
+						button.checked:SetVertexColor(0, 0, 0, 0.6)
 					else
-						button.checked:SetColorTexture(1, 1, 1, 0.6)
+						button.checked:SetVertexColor(1, 1, 1, 0.6)
 					end
 				end
 			else
@@ -156,10 +160,9 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if useMasque then
 			MasqueGroup:AddButton(bar.buttons[i])
-		elseif db.style == 'darkenInactive' then
-			button.checked:SetBlendMode('BLEND')
 		else
-			button.checked:SetBlendMode('ADD')
+			button.checked:SetTexture(E.Media.Textures.White8x8)
+			button.checked:SetBlendMode(db.style == 'darkenInactive' and 'BLEND' or 'ADD')
 		end
 	end
 
@@ -193,22 +196,26 @@ function AB:AdjustMaxStanceButtons(event)
 
 	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
-		if not bar.buttons[i] then
-			bar.buttons[i] = CreateFrame('CheckButton', format(bar:GetName()..'Button%d', i), bar, 'StanceButtonTemplate')
-			bar.buttons[i]:SetID(i)
-			bar.buttons[i].parentName = 'ElvUI_StanceBar'
+		local button = bar.buttons[i]
+		if not button then
+			button = CreateFrame('CheckButton', format(bar:GetName()..'Button%d', i), bar, 'StanceButtonTemplate')
+			button:SetID(i)
 
-			AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
-			AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
+			button.parentName = 'ElvUI_StanceBar'
+
+			AB:HookScript(button, 'OnEnter', 'Button_OnEnter')
+			AB:HookScript(button, 'OnLeave', 'Button_OnLeave')
+
+			bar.buttons[i] = button
 		end
 
 		local blizz = _G[format('StanceButton%d', i)]
 		if blizz and blizz.commandName then
-			bar.buttons[i].commandName = blizz.commandName
+			button.commandName = blizz.commandName
 		end
 
 		if i <= numButtons then
-			bar.buttons[i]:Show()
+			button:Show()
 			bar.LastButton = i
 		end
 	end
