@@ -94,7 +94,7 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
-	bars.AdditionalHolder = (E.Retail or E.Mists) and frame.ClassAdditionalHolder
+	bars.AdditionalHolder = frame.ClassAdditionalHolder
 	bars.origParent = frame
 
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
