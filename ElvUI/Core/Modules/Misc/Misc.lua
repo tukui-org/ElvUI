@@ -44,8 +44,10 @@ local PlaySound = PlaySound
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
 local UnitIsGroupLeader = UnitIsGroupLeader
+local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID
 local ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders or ExpandAllFactionHeaders
 local SetWatchedFactionIndex = C_Reputation.SetWatchedFactionByIndex or SetWatchedFactionIndex
+local SetWatchedFactionByID = C_Reputation.SetWatchedFactionByID
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
@@ -143,21 +145,47 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-function M:COMBAT_TEXT_UPDATE(_, messagetype)
-	if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
+do
+	local twwBW = 2673	-- 11.1.0, both factions, account wide
+	local cataBW = 1133	-- 4.0.3, horde only, not account wide
+	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
+	function M:COMBAT_TEXT_UPDATE(_, messagetype)
+		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
-	local faction, rep = GetCurrentCombatTextEventInfo()
-	if (faction and faction ~= 'Guild') and (rep and rep > 0) then
-		local data = E:GetWatchedFactionInfo()
-		if not (data and data.name) or faction ~= data.name then
-			ExpandAllFactionHeaders()
+		local faction, rep = GetCurrentCombatTextEventInfo()
+		if (faction and faction ~= 'Guild') and (rep and rep > 0) then
+			local data = E:GetWatchedFactionInfo()
+			if not (data and data.name) or faction ~= data.name then
+				ExpandAllFactionHeaders()
 
-			for i = 1, GetNumFactions() do
-				local info = GetFactionInfo(i)
-				local name = (E.Retail and info and info.name) or (not E.Retail and info)
-				if name == faction then
-					SetWatchedFactionIndex(i)
-					break
+				local khazAlgar = E.MapInfo.continentMapID == 2274
+				for i = 1, GetNumFactions() do
+					if E.Retail then
+						local info = GetFactionInfo(i)
+						if info then
+							local name, factionID = info.name, info.factionID
+							if factionID == twwBW then
+								bilgewater = info -- reupdate this info
+							end
+
+							if name == faction and factionID and factionID ~= 0 then
+								if bilgewater and name == bilgewater.name then -- two have matching faction names
+									SetWatchedFactionByID(khazAlgar and twwBW or cataBW) -- prefer TWW when in Khaz Algar
+								else
+									SetWatchedFactionByID(factionID)
+								end
+
+								break
+							end
+						end
+					else
+						local name, _, _, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
+						if name == faction and factionID and factionID ~= 0 then
+							SetWatchedFactionIndex(i)
+
+							break
+						end
+					end
 				end
 			end
 		end
