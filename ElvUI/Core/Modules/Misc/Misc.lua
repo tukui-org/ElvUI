@@ -146,7 +146,9 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 do
-	local bilgewater = E.Retail and GetFactionDataByID(2673) -- 2673 (11.1.0, both factions, account wide) and 1133 (4.0.3, horde only, not account wide) have matching faction names
+	local twwBW = 2673	-- 11.1.0, both factions, account wide
+	local cataBW = 1133	-- 4.0.3, horde only, not account wide
+	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
 	function M:COMBAT_TEXT_UPDATE(_, messagetype)
 		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
@@ -162,9 +164,13 @@ do
 						local info = GetFactionInfo(i)
 						if info then
 							local name, factionID = info.name, info.factionID
+							if factionID == twwBW then
+								bilgewater = info -- reupdate this info
+							end
+
 							if name == faction and factionID and factionID ~= 0 then
-								if bilgewater and name == bilgewater.name then
-									SetWatchedFactionByID(khazAlgar and 2673 or 1133) -- prefer TWW when in Khaz Algar
+								if bilgewater and name == bilgewater.name then -- two have matching faction names
+									SetWatchedFactionByID(khazAlgar and twwBW or cataBW) -- prefer TWW when in Khaz Algar
 								else
 									SetWatchedFactionByID(factionID)
 								end
