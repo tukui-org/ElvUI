@@ -1153,14 +1153,17 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.known and trigger.known.spells and next(trigger.known.spells) then
 		for spell, value in pairs(trigger.known.spells) do
 			if value then -- only run if at least one is selected
-				local known
-				if trigger.known.playerSpell then
-					known = IsPlayerSpell(spell)
-				else
-					known = IsSpellKnownOrOverridesKnown(spell)
-				end
+				local name, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
+				if name then -- check spell name valid
+					local known
+					if trigger.known.playerSpell then
+						known = IsPlayerSpell(spellID)
+					else
+						known = IsSpellKnownOrOverridesKnown(spellID)
+					end
 
-				if (not trigger.known.notKnown and known) or (trigger.known.notKnown and not known) then passed = true else return end
+					if (not trigger.known.notKnown and known) or (trigger.known.notKnown and not known) then passed = true else return end
+				end
 			end
 		end
 	end
