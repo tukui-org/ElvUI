@@ -1,3 +1,35 @@
+### Version 13.94 [ July 14th 2025 ]
+*   Mists fixes
+    *   Absorb Style shows up in options
+    *   Actionbars 13, 14, and 15 were not saving keybinds (fixed again on the 11th)
+    *   Chi was not showing on early levels and Mana not showing on MW spec with Fierce Stance
+    *   Currency was breaking Datatext
+    *   Druid Balance Eclipse bar not updating properly
+    *   Glyphs were not applying on first attempt
+    *   MapInfo was causing an error because Blizzard changed Outlands ID
+    *   Monk class icon not appearing on Unitframes or Nameplates
+    *   Priest Mind Flay (Insanity) ticks were added to Castbar
+    *   Rogues with Shadow Dance was not showing the proper active state on Stance bar
+    *   Send Mail item second row behind the backdrop you write in and text sometimes wrong color
+    *   SpecSwitch Datatext updated
+    *   Tooltips for Battle Pets were not showing correct level
+    *   Transmogrify now has a skin toggle
+*   Retail fixes
+    *   Arena Preparation frames would sometimes error
+    *   Bilgewater Cartel was able to break Auto Track Reputation (Thanks Nihilistzsche)
+    *   Druids Combo points and Classbar were being mega wonky
+    *   Mage arcane charges color option displays again
+    *   Mistweaver Monks don't have Chi
+    *   Saved Instance icons were not appearing when loading in the first time
+    *   Warlock Destruction soul shards were not showing partial amounts
+*   Additional Class Bar now has its own auto hide settings separate from the main Class bar toggle
+*   Datatext inviting was not listing players from the same game version
+*   Debug mode now keeps BugSack and BugGrabber enabled to help get the correct error information
+*   Don't color the game menu header if misc blizzard skin isn't enabled (Thanks Pingumania)
+*   Objective Tracker Autohide option was removed when DBM is loaded (they have a setting too)
+*   Style Filters was causing an error when trying to use known spells
+*   Warmode Datatext can't be clicked anymore, as the API is blocked now
+
 ### Version 13.93 [ July 1st 2025 ]
 *   Mists of Pandaria support.
 *   Blizzards One Button Assist and Assisted Highlight now supported (you can toggle spells off in General > Blizzard Improvements > Assisted Highlight and adjust colors in General > Cosmetic > Custom Glow).
