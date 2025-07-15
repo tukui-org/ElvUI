@@ -409,7 +409,7 @@ local function Disable(self)
 		ClassPowerDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
 		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
 	end
 end
