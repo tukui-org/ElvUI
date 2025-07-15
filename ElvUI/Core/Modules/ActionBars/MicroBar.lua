@@ -9,7 +9,6 @@ local assert = assert
 local unpack = unpack
 local tinsert = tinsert
 local CreateFrame = CreateFrame
-local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
@@ -468,8 +467,8 @@ function AB:SetupMicroBar()
 	if _G.ResetMicroMenuPosition then
 		_G.ResetMicroMenuPosition()
 	else
+		_G.UpdateMicroButtonsParent(microBar)
 		AB:SecureHook('UpdateMicroButtonsParent')
-		UpdateMicroButtonsParent(microBar)
 	end
 
 	if not E.Retail then
