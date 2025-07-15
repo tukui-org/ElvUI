@@ -382,8 +382,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		end
 
-		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
-			oUF:RegisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
+		if oUF.isMists or (oUF.isRetail and next(RequireSpec)) then
+			oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
 		end
 
 		element.ClassPowerEnable = ClassPowerEnable
@@ -408,13 +408,9 @@ local function Disable(self)
 	if(self.ClassPower) then
 		ClassPowerDisable(self)
 
-		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
-
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-
-		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
-			oUF:UnregisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath)
-		end
+		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
 	end
 end
 
