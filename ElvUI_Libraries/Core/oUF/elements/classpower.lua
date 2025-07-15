@@ -122,7 +122,7 @@ end
 
 local function Update(self, event, unit, powerType)
 	if event == 'UNIT_AURA' then powerType = 'ARCANE_CHARGES' end
-	if not (powerType and unit and UnitIsUnit(unit, 'player')) then return end
+	if not (unit and UnitIsUnit(unit, 'player')) then return end
 
 	local currentType = ClassPowerType[ClassPowerID]
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
