@@ -1151,7 +1151,7 @@ do
 		self:Flush()
 		self:ClearActiveCategoryTutorial()
 
-		_G.UpdateMicroButtons()
+		_G.UpdateMicroButtons() -- keep this to maintain the hook
 
 		if not InCombatLockdown() then
 			local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
