@@ -240,12 +240,6 @@ function AB:HandleMicroButton(button, name)
 	AB:UpdateMicroButtonTexture(name)
 end
 
-function AB:UpdateMicroButtonsParent()
-	for _, x in next, AB.MICRO_BUTTONS do
-		_G[x]:SetParent(microBar)
-	end
-end
-
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
 		AB.NeedsUpdateMicroBarVisibility = true
@@ -255,6 +249,26 @@ function AB:UpdateMicroBarVisibility()
 
 	local visibility = gsub(AB.db.microbar.visibility, '[\n\r]', '')
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
+end
+
+function AB:UpdateMicroButtonTexture(name)
+	local button = _G[name]
+	if not button then return end
+
+	AB:HandleMicroTextures(button, name)
+	AB:HandleMicroCoords(button, name)
+end
+
+function AB:UpdateMicroBarTextures()
+	for _, name in next, AB.MICRO_BUTTONS do
+		AB:UpdateMicroButtonTexture(name)
+	end
+end
+
+function AB:UpdateMicroButtonsParent()
+	for _, x in next, AB.MICRO_BUTTONS do
+		_G[x]:SetParent(microBar)
+	end
 end
 
 do
@@ -368,20 +382,6 @@ do
 		end
 
 		AB:UpdateMicroBarVisibility()
-	end
-end
-
-function AB:UpdateMicroButtonTexture(name)
-	local button = _G[name]
-	if not button then return end
-
-	AB:HandleMicroTextures(button, name)
-	AB:HandleMicroCoords(button, name)
-end
-
-function AB:UpdateMicroBarTextures()
-	for _, name in next, AB.MICRO_BUTTONS do
-		AB:UpdateMicroButtonTexture(name)
 	end
 end
 
