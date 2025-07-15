@@ -381,11 +381,8 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if RequirePower then
-			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		end
-
-		oUF:RegisterEvent(self, 'SPELLS_CHANGED', Visibility, true)
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:RegisterEvent(self, 'SPELLS_CHANGED', VisibilityPath, true)
 
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
@@ -410,7 +407,7 @@ local function Disable(self)
 		ClassPowerDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
+		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', VisibilityPath)
 	end
 end
 
