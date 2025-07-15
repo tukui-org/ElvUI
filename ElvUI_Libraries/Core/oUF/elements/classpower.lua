@@ -122,6 +122,7 @@ end
 
 local function Update(self, event, unit, powerType)
 	if event == 'UNIT_AURA' then powerType = 'ARCANE_CHARGES' end
+	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 	if not (unit and UnitIsUnit(unit, 'player')) then return end
 
 	local currentType = ClassPowerType[ClassPowerID]
