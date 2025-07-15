@@ -233,14 +233,16 @@ local function Visibility(self, event, unit)
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID and (not next(RequireSpec) or RequireSpec[CurrentSpec]) then
-		if not RequirePower or RequirePower == UnitPowerType('player') then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
-			if not RequireSpell or IsPlayerSpell(RequireSpell) then
-				oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
-				shouldEnable = true
-				unit = 'player'
-			else
-				oUF:RegisterEvent(self, 'SPELLS_CHANGED', Visibility, true)
+	elseif ClassPowerID then
+		local checkSpec = not next(RequireSpec) or RequireSpec[CurrentSpec]
+		if checkSpec then
+			local checkPower = not RequirePower or RequirePower == UnitPowerType('player') -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
+			if checkPower then
+				local checkSpell = not RequireSpell or IsPlayerSpell(RequireSpell)
+				if checkSpell then
+					shouldEnable = true
+					unit = 'player'
+				end
 			end
 		end
 	end
@@ -382,9 +384,7 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		end
 
-		if oUF.isMists or (oUF.isRetail and next(RequireSpec)) then
-			oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
-		end
+		oUF:RegisterEvent(self, 'SPELLS_CHANGED', Visibility, true)
 
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
@@ -409,7 +409,6 @@ local function Disable(self)
 		ClassPowerDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
 		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
 	end
 end
