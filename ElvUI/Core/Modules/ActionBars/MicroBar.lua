@@ -9,7 +9,6 @@ local assert = assert
 local unpack = unpack
 local tinsert = tinsert
 local CreateFrame = CreateFrame
-local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
@@ -240,12 +239,6 @@ function AB:HandleMicroButton(button, name)
 	AB:UpdateMicroButtonTexture(name)
 end
 
-function AB:UpdateMicroButtonsParent()
-	for _, x in next, AB.MICRO_BUTTONS do
-		_G[x]:SetParent(microBar)
-	end
-end
-
 function AB:UpdateMicroBarVisibility()
 	if InCombatLockdown() then
 		AB.NeedsUpdateMicroBarVisibility = true
@@ -257,8 +250,29 @@ function AB:UpdateMicroBarVisibility()
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
 end
 
+function AB:UpdateMicroButtonTexture(name)
+	local button = _G[name]
+	if not button then return end
+
+	AB:HandleMicroTextures(button, name)
+	AB:HandleMicroCoords(button, name)
+end
+
+function AB:UpdateMicroBarTextures()
+	for _, name in next, AB.MICRO_BUTTONS do
+		AB:UpdateMicroButtonTexture(name)
+	end
+end
+
+function AB:UpdateMicroButtonsParent()
+	for _, x in next, AB.MICRO_BUTTONS do
+		_G[x]:SetParent(microBar)
+	end
+end
+
 do
-	local buttons = {}
+	local unsorted = {}
+	local sorted = {}
 	local sorting = {
 		-- order this as a safe way to fix glyph taint on mists, warning: adjusting this can lead to
 		-- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
@@ -269,21 +283,26 @@ do
 	}
 
 	function AB:ShownMicroButtons()
-		wipe(buttons)
+		wipe(unsorted)
+		wipe(sorted)
 
 		for _, name in next, AB.MICRO_BUTTONS do
 			local button = _G[name]
 			if button and button:IsShown() then
 				local order = sorting[name]
 				if order then
-					tinsert(buttons, order, name)
+					tinsert(unsorted, order, name)
 				else
-					tinsert(buttons, name)
+					tinsert(unsorted, name)
 				end
 			end
 		end
 
-		return buttons
+		for _, name in next, unsorted do
+			tinsert(sorted, name)
+		end
+
+		return sorted
 	end
 end
 
@@ -362,20 +381,6 @@ do
 		end
 
 		AB:UpdateMicroBarVisibility()
-	end
-end
-
-function AB:UpdateMicroButtonTexture(name)
-	local button = _G[name]
-	if not button then return end
-
-	AB:HandleMicroTextures(button, name)
-	AB:HandleMicroCoords(button, name)
-end
-
-function AB:UpdateMicroBarTextures()
-	for _, name in next, AB.MICRO_BUTTONS do
-		AB:UpdateMicroButtonTexture(name)
 	end
 end
 
@@ -462,8 +467,8 @@ function AB:SetupMicroBar()
 	if _G.ResetMicroMenuPosition then
 		_G.ResetMicroMenuPosition()
 	else
+		_G.UpdateMicroButtonsParent(microBar)
 		AB:SecureHook('UpdateMicroButtonsParent')
-		UpdateMicroButtonsParent(microBar)
 	end
 
 	if not E.Retail then

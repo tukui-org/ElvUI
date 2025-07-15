@@ -1581,7 +1581,7 @@ B.ExcludeVendors = {
 	[100995] = "Auto-Hammer"
 }
 
-function B:SkipAquiredTransmog(itemLink)
+function B:SkipAquiredTransmog(itemLink) -- currently unused
 	local appearanceID, modifiedID = C_TransmogCollection_GetItemInfo(itemLink)
 	return not appearanceID or (modifiedID and C_TransmogCollection_PlayerHasTransmogItemModifiedAppearance(modifiedID))
 end
@@ -1597,7 +1597,7 @@ function B:GetGrays(vendor)
 				local _, _, rarity, _, _, _, _, _, _, _, itemPrice, classID, _, bindType = GetItemInfo(itemLink)
 
 				-- rarity:0 is grey items; Quest can be classID:12 or bindType:4
-				if (rarity and rarity == 0) and (classID ~= 12 or bindType ~= 4) and (not E.Mists or B:SkipAquiredTransmog(itemLink)) then
+				if (rarity and rarity == 0) and (classID ~= 12 or bindType ~= 4) then
 					local stackCount = info.stackCount or 1
 					local stackPrice = itemPrice * stackCount
 

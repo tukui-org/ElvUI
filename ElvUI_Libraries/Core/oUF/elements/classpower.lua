@@ -122,7 +122,8 @@ end
 
 local function Update(self, event, unit, powerType)
 	if event == 'UNIT_AURA' then powerType = 'ARCANE_CHARGES' end
-	if not (powerType and unit and UnitIsUnit(unit, 'player')) then return end
+	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
+	if not (unit and UnitIsUnit(unit, 'player')) then return end
 
 	local currentType = ClassPowerType[ClassPowerID]
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
@@ -221,26 +222,28 @@ local function Visibility(self, event, unit)
 	CurrentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 
 	if PlayerClass == 'MONK' then
-		ClassPowerID = ((CurrentSpec == SPEC_MONK_WINDWALKER or CurrentSpec == SPEC_MONK_MISTWEAVER) or (oUF.isMists and CurrentSpec == SPEC_MONK_BREWMASTER)) and POWERTYPE_CHI or -1
+		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or -1
 	elseif PlayerClass == 'WARLOCK' then
 		ClassPowerID = oUF.isMists and ((CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
+	elseif PlayerClass == 'MAGE' then
+		ClassPowerID = (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
 		ClassPowerID = (CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
-	elseif oUF.isMists and PlayerClass == 'MAGE' then
-		ClassPowerID = (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	end
 
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID and (not next(RequireSpec) or RequireSpec[CurrentSpec]) then
-		if not RequirePower or RequirePower == UnitPowerType('player') then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
-			if not RequireSpell or IsPlayerSpell(RequireSpell) then
-				oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
-				shouldEnable = true
-				unit = 'player'
-			else
-				oUF:RegisterEvent(self, 'SPELLS_CHANGED', Visibility, true)
+	elseif ClassPowerID then
+		local checkSpec = not next(RequireSpec) or RequireSpec[CurrentSpec]
+		if checkSpec then
+			local checkPower = not RequirePower or RequirePower == UnitPowerType('player') -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
+			if checkPower then
+				local checkSpell = not RequireSpell or IsPlayerSpell(RequireSpell)
+				if checkSpell then
+					shouldEnable = true
+					unit = 'player'
+				end
 			end
 		end
 	end
@@ -378,13 +381,8 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		if RequirePower then
-			self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		end
-
-		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
-			oUF:RegisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
-		end
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		oUF:RegisterEvent(self, 'SPELLS_CHANGED', VisibilityPath, true)
 
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
@@ -408,13 +406,8 @@ local function Disable(self)
 	if(self.ClassPower) then
 		ClassPowerDisable(self)
 
-		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', Visibility)
-
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-
-		if next(RequireSpec) and (oUF.isRetail or oUF.isMists) then
-			oUF:UnregisterEvent(self, oUF.isMists and 'PLAYER_SPECIALIZATION_CHANGED' or 'PLAYER_TALENT_UPDATE', VisibilityPath)
-		end
+		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', VisibilityPath)
 	end
 end
 

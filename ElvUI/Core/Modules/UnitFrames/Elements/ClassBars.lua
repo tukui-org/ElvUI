@@ -11,6 +11,7 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 
 local AltManaTypes = { Rage = 1, Energy = 3 }
 local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
@@ -28,8 +29,8 @@ function UF:GetClassPower_Construct(frame)
 
 	if E.myclass == 'DRUID' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-	elseif E.myclass == 'MONK' then
-		frame.Stagger = UF:Construct_Stagger(frame)
+	elseif E.Mists and E.myclass == 'MONK' then
+		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
@@ -94,7 +95,7 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
-	bars.AdditionalHolder = frame.ClassAdditionalHolder
+	bars.AdditionalHolder = frame.AdditionalPower and frame.ClassAdditionalHolder
 	bars.origParent = frame
 
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
@@ -221,7 +222,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
 
-	if bars.AdditionalHolder and (E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) then
+	if bars.AdditionalHolder then
 		bars.AdditionalHolder:Size(db.classAdditional.width, db.classAdditional.height)
 
 		if not bars.AdditionalHolder.mover then
@@ -592,7 +593,7 @@ function UF:PostUpdateAdditionalPower(CUR, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	self:SetShown((frame.USE_CLASSBAR and event ~= 'ElementDisable') and (CUR ~= MAX or not db.classAdditional.autoHide) and (not E.Mists or E.myclass ~= 'MONK' or E.myspec == 2))
+	self:SetShown((frame.USE_CLASSBAR and event ~= 'ElementDisable') and (CUR ~= MAX or not db.classAdditional.autoHide) and (not E.Mists or E.myclass ~= 'MONK' or E.myspec == SPEC_MONK_MISTWEAVER))
 end
 
 function UF:PostVisibilityAdditionalPower()

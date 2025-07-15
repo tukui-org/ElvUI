@@ -32,7 +32,6 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UpdateMicroButtons = UpdateMicroButtons
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
@@ -1152,7 +1151,7 @@ do
 		self:Flush()
 		self:ClearActiveCategoryTutorial()
 
-		UpdateMicroButtons()
+		_G.UpdateMicroButtons() -- keep this to maintain the hook
 
 		if not InCombatLockdown() then
 			local checked = _G.Settings.GetValue('PROXY_CHARACTER_SPECIFIC_BINDINGS')
