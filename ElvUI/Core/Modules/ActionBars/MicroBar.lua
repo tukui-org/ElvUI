@@ -258,7 +258,8 @@ function AB:UpdateMicroBarVisibility()
 end
 
 do
-	local buttons = {}
+	local unsorted = {}
+	local sorted = {}
 	local sorting = {
 		-- order this as a safe way to fix glyph taint on mists, warning: adjusting this can lead to
 		-- action failed because cannot anchor to a region dependent on it (Mists/MainMenuBarMicroButtons.lua:133)
@@ -269,21 +270,26 @@ do
 	}
 
 	function AB:ShownMicroButtons()
-		wipe(buttons)
+		wipe(unsorted)
+		wipe(sorted)
 
 		for _, name in next, AB.MICRO_BUTTONS do
 			local button = _G[name]
 			if button and button:IsShown() then
 				local order = sorting[name]
 				if order then
-					tinsert(buttons, order, name)
+					tinsert(unsorted, order, name)
 				else
-					tinsert(buttons, name)
+					tinsert(unsorted, name)
 				end
 			end
 		end
 
-		return buttons
+		for _, name in next, unsorted do
+			tinsert(sorted, name)
+		end
+
+		return sorted
 	end
 end
 
