@@ -173,6 +173,7 @@ function S:BlizzardMiscFrames()
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
 		local ItemFrame = _G['StaticPopup'..i..'ItemFrame']
+		local ItemFrameName = _G['StaticPopup'..i..'ItemFrameNameFrame']
 		local ItemNameFrame = _G['StaticPopup'..i..'ItemNameFrame']
 		local IconTexture = _G['StaticPopup'..i..'ItemFrameIconTexture']
 		local CloseButton = _G['StaticPopup'..i..'CloseButton']
@@ -218,6 +219,10 @@ function S:BlizzardMiscFrames()
 
 		if ItemNameFrame then
 			ItemNameFrame:Hide()
+		end
+
+		if ItemFrameName then
+			ItemFrameName:StripTextures()
 		end
 
 		if ItemFrame then
