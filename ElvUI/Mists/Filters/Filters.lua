@@ -633,6 +633,7 @@ G.unitframe.ChannelTicks = {
 	[755]	= 10, -- Health Funnel
 	[79268]	= 3, -- Soul Harvest
 	[1949]	= 15, -- Hellfire
+	[103103] = 4, -- Malefic Grasp
 	-- Druid
 	[44203]	= 4, -- Tranquility
 	[16914]	= 10, -- Hurricane
