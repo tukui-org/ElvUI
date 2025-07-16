@@ -194,7 +194,12 @@ function AB:HandleMicroTextures(button, name)
 
 		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
 		if disabled then
-			disabled:SetTexture(texture)
+			if stock and stock.disabled then
+				disabled:SetTexture(stock.disabled)
+			else
+				disabled:SetTexture(texture)
+			end
+
 			disabled:SetDesaturated(true)
 			disabled:SetInside(button)
 		end
@@ -230,9 +235,14 @@ function AB:HandleMicroButton(button, name)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if not E.Retail then
+		local pushed = button.GetPushedTexture and button:GetPushedTexture()
+		local normal = button.GetNormalTexture and button:GetNormalTexture()
+		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
+
 		AB.MICRO_CLASSIC[name] = {
-			pushed = button:GetPushedTexture():GetTexture(),
-			normal = button:GetNormalTexture():GetTexture()
+			pushed = pushed and pushed:GetTexture() or nil,
+			normal = normal and normal:GetTexture() or nil,
+			disabled = disabled and disabled:GetTexture() or nil
 		}
 	end
 
