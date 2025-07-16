@@ -627,12 +627,11 @@ G.unitframe.aurawatch = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[1120]		= 5, -- Drain Soul
-	[689]		= 5, -- Drain Life
-	[5740]		= 4, -- Rain of Fire
-	[755]		= 10, -- Health Funnel
-	[79268]		= 3, -- Soul Harvest
-	[1949]		= 15, -- Hellfire
+	[1120]		= 6, -- Drain Soul
+	[689]		= 6, -- Drain Life
+	[5740]		= 6, -- Rain of Fire
+	[755]		= 6, -- Health Funnel
+	[1949]		= 14, -- Hellfire
 	[103103] 	= 4, -- Malefic Grasp
 	-- Druid
 	[44203]		= 4, -- Tranquility
@@ -694,7 +693,6 @@ G.unitframe.HastedChannelTicks = {
 	[689]	= true, -- Drain Life
 	[5740]	= true, -- Rain of Fire
 	[755]	= true, -- Health Funnel
-	[79268]	= true, -- Soul Harvest
 	[1949]	= true, -- Hellfire
 }
 
