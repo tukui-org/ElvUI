@@ -651,6 +651,11 @@ G.unitframe.ChannelTicks = {
 	-- Death Knight
 	[42650]	= 8, -- Army of the Dead
 	-- First Aid
+	[102695]    = 8, -- Heavy Windwool Bandage
+    [102694]    = 8, -- Windwool Bandage
+    [74555]    = 8, -- Dense Embersilk Bandage
+    [74554]    = 8, -- Heavy Embersilk Bandage
+    [74553]    = 8, -- Embersilk Bandage
 	[45544]	= 8, -- Heavy Frostweave Bandage
 	[45543]	= 8, -- Frostweave Bandage
 	[27031]	= 8, -- Heavy Netherweave Bandage
