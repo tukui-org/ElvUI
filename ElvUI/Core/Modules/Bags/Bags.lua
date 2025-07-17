@@ -1159,6 +1159,7 @@ function B:Layout(isBank)
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
+	local splitProfessionBags = isBank and B.db.split.splitbankprofessionbags or B.db.split.splitplayerprofessionbags
 	local reverseSlots = B.db.reverseSlots
 
 	f.totalSlots = 0
@@ -1231,7 +1232,7 @@ function B:Layout(isBank)
 
 	for _, bagID in next, f.BagIDs do
 		if isSplit then
-			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and B.db.split['bag'..bagID] or false
+			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and (B.db.split['bag'..bagID] or (splitProfessionBags and (select(2, GetContainerNumFreeSlots(bagID)) ~= 0))) or false
 		end
 
 		--Bag Slots
