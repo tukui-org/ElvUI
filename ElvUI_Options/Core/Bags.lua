@@ -75,6 +75,7 @@ Bags.args.general.args.playerGroup.args.split = ACH:Group(L["Split"], nil, -1, n
 Bags.args.general.args.playerGroup.args.split.args.player = ACH:Toggle(L["Enable"], nil, 1)
 Bags.args.general.args.playerGroup.args.split.args.bagSpacing = ACH:Range(L["Bag Spacing"], nil, 2, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.split.player end)
 Bags.args.general.args.playerGroup.args.split.args.splitbags = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout() end, nil, function() return not E.db.bags.split.player end)
+Bags.args.general.args.playerGroup.args.split.args.splitplayerprofessionbags = ACH:Toggle(L["Always Split Profession Bags"], nil, 5, nil, nil, nil, nil, nil, nil, function() return not E.db.bags.split.player end)
 Bags.args.general.args.playerGroup.args.split.inline = true
 
 Bags.args.general.args.bankGroup = ACH:Group(L["Bank"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)
@@ -87,6 +88,7 @@ Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
 Bags.args.general.args.bankGroup.args.split.args.bankSpacing = ACH:Range(L["Bag Spacing"], nil, 2, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.split.bank end)
 Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.bank end, true)
+Bags.args.general.args.bankGroup.args.split.args.splitbankprofessionbags = ACH:Toggle(L["Always Split Profession Bags"], nil, 5, nil, nil, nil, nil, nil, nil, function() return not E.db.bags.split.bank end)
 Bags.args.general.args.bankGroup.args.split.inline = true
 
 Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)

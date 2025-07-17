@@ -109,6 +109,7 @@ L["ALT_KEY_TEXT"] = "ALT"
 L["Always Display"] = "Exibir sempre"
 L["Always Show Player"] = "Sempre Mostrar Jogador"
 L["Always Show Realm"] = "Sempre Mostrar Reino"
+L["Always Split Profession Bags"] = true
 L["Anchor Point"] = "Ponto de Fixação"
 L["Anchor"] = "Âncora"
 L["Anima Diversion"] = "Desvio de Anima"
