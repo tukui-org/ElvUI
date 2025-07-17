@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tonumber = tonumber
+local tinsert, next = tinsert, next
 local unpack, strmatch = unpack, strmatch
-local format, tinsert, next = format, tinsert, next
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -88,7 +88,7 @@ local MasqueButtonData = {
 }
 
 -- use custom script that will only call hide when it needs to, this prevents spam to `SecureAuraHeader_Update`
-A.AttributeCustomVisbility = [[
+A.AttributeCustomVisibility = [[
 	local header = self:GetFrameRef('AuraHeader')
 	local hide, shown = newstate == 0, header:IsShown()
 	if hide and shown then header:Hide() elseif not hide and not shown then header:Show() end
@@ -532,7 +532,7 @@ function A:CreateAuraHeader(filter)
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
 	RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
-	header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisbility)
+	header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
 
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
