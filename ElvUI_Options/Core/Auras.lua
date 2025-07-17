@@ -9,19 +9,23 @@ local CopyTable = CopyTable
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 local SharedOptions = {
-	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 1, C.Values.GrowthDirection),
-	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 2, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
-	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 3, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
-	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 4, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
+	showDuration = ACH:Toggle(L["Duration Enable"], nil, 1),
+	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 2),
+	keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3),
+	spacer1 = ACH:Spacer(5, 'full'),
 
-	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 5, { min = 10, max = 60, step = 1 }),
-	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 6, { min = 1, max = 32, step = 1 }),
-	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 7, { min = 1, max = 32, step = 1 }),
-	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 8, { min = -5, max = 50, step = 1 }),
-	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 9, { min = -5, max = 50, step = 1 }),
-	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 10, { min = -1, max = 30, step = 1 }),
-	showDuration = ACH:Toggle(L["Duration Enable"], nil, 11),
-	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 12),
+	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 10, C.Values.GrowthDirection),
+	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
+	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 12, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
+	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
+
+	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 20, { min = 10, max = 80, step = 1 }),
+	height = ACH:Range(L["Height"], L["Set the size of the individual auras."], 21, { min = 10, max = 80, step = 1 }),
+	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 22, { min = 1, max = 32, step = 1 }),
+	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 23, { min = 1, max = 32, step = 1 }),
+	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 24, { min = -5, max = 50, step = 1 }),
+	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
+	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }),
 
 	statusBar = ACH:Group(L["Statusbar"], nil, -3),
 	timeGroup = ACH:Group(L["Time Text"], nil, -2),
@@ -79,12 +83,16 @@ end
 
 Auras.args.buffs = ACH:Group(L["Buffs"], nil, 10, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
 Auras.args.buffs.args = CopyTable(SharedOptions)
+Auras.args.buffs.args.size.name = function() return E.db.auras.buffs.keepSizeRatio and L["Size"] or L["Width"] end
+Auras.args.buffs.args.height.hidden = function() return E.db.auras.buffs.keepSizeRatio end
 Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.buffs.barColor local d = P.auras.buffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
 Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 11, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
 Auras.args.debuffs.args = CopyTable(SharedOptions)
+Auras.args.debuffs.args.size.name = function() return E.db.auras.debuffs.keepSizeRatio and L["Size"] or L["Width"] end
+Auras.args.debuffs.args.height.hidden = function() return E.db.auras.debuffs.keepSizeRatio end
 Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end

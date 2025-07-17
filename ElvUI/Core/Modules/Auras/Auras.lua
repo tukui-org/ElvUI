@@ -5,8 +5,8 @@ local ElvUF = E.oUF
 
 local _G = _G
 local tonumber = tonumber
+local tinsert, next = tinsert, next
 local unpack, strmatch = unpack, strmatch
-local format, tinsert, next = format, tinsert, next
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -86,6 +86,21 @@ local MasqueButtonData = {
 	Duration = false,
 	AutoCast = nil,
 }
+
+-- use custom script that will only call hide when it needs to, this prevents spam to `SecureAuraHeader_Update`
+A.AttributeCustomVisibility = [[
+	local header = self:GetFrameRef('AuraHeader')
+	local hide, shown = newstate == 0, header:IsShown()
+	if hide and shown then header:Hide() elseif not hide and not shown then header:Show() end
+]]
+
+-- this will handle the size of auras
+A.AttributeInitialConfig = [[
+	local header = self:GetParent()
+
+	self:SetWidth(header:GetAttribute('config-height'))
+	self:SetHeight(header:GetAttribute('config-width'))
+]]
 
 function A:MasqueData(texture, highlight)
 	local btnData = E:CopyTable({}, MasqueButtonData)
@@ -191,7 +206,8 @@ function A:UpdateIcon(button, update)
 	local db = A.db[button.auraType]
 
 	if update then
-		button:Size(db.size)
+		button:SetWidth(db.size)
+		button:SetHeight((db.keepSizeRatio and db.size) or db.height)
 
 		E:SetSmoothing(button.statusBar, db.smoothbars)
 	end
@@ -439,35 +455,35 @@ function A:UpdateHeader(header)
 	if not E.private.auras.enable then return end
 
 	local db = A.db[header.auraType]
-	local template = format('ElvUIAuraTemplate%d', db.size)
+	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
 
 	E:UpdateClassColor(db.barColor)
 
-	if header.filter == 'HELPFUL' then
-		header:SetAttribute('weaponTemplate', template)
-	end
-
-	header:SetAttribute('template', template)
+	header:SetAttribute('config-width', width)
+	header:SetAttribute('config-height', height)
+	header:SetAttribute('template', 'ElvUIAuraTemplate')
+	header:SetAttribute('weaponTemplate', header.filter == 'HELPFUL' and 'ElvUIAuraTemplate' or nil)
 	header:SetAttribute('separateOwn', db.seperateOwn)
 	header:SetAttribute('sortMethod', db.sortMethod)
 	header:SetAttribute('sortDirection', db.sortDir)
 	header:SetAttribute('maxWraps', db.maxWraps)
 	header:SetAttribute('wrapAfter', db.wrapAfter)
 	header:SetAttribute('point', DIRECTION_TO_POINT[db.growthDirection])
+	header:SetAttribute('initialConfigFunction', A.AttributeInitialConfig)
 
 	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
-		header:SetAttribute('minWidth', ((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + db.size) * db.wrapAfter)
-		header:SetAttribute('minHeight', (db.verticalSpacing + db.size) * db.maxWraps)
-		header:SetAttribute('xOffset', DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + db.size))
+		header:SetAttribute('minWidth', ((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter)
+		header:SetAttribute('minHeight', (db.verticalSpacing + height) * db.maxWraps)
+		header:SetAttribute('xOffset', DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + width))
 		header:SetAttribute('yOffset', 0)
 		header:SetAttribute('wrapXOffset', 0)
-		header:SetAttribute('wrapYOffset', DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + db.size))
+		header:SetAttribute('wrapYOffset', DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + height))
 	else
-		header:SetAttribute('minWidth', (db.horizontalSpacing + db.size) * db.maxWraps)
-		header:SetAttribute('minHeight', ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + db.size) * db.wrapAfter)
+		header:SetAttribute('minWidth', (db.horizontalSpacing + width) * db.maxWraps)
+		header:SetAttribute('minHeight', ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + height) * db.wrapAfter)
 		header:SetAttribute('xOffset', 0)
-		header:SetAttribute('yOffset', DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + db.size))
-		header:SetAttribute('wrapXOffset', DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + db.size))
+		header:SetAttribute('yOffset', DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[db.growthDirection] * (db.verticalSpacing + height))
+		header:SetAttribute('wrapXOffset', DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + width))
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
@@ -516,11 +532,7 @@ function A:CreateAuraHeader(filter)
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
 	RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
-	header.visibility:SetAttribute('_onstate-customVisibility', [[
-		local header = self:GetFrameRef('AuraHeader')
-		local hide, shown = newstate == 0, header:IsShown()
-		if hide and shown then header:Hide() elseif not hide and not shown then header:Show() end
-	]]) -- use custom script that will only call hide when it needs to, this prevents spam to `SecureAuraHeader_Update`
+	header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
 
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
