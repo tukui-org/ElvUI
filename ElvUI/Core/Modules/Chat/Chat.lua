@@ -126,7 +126,6 @@ local DEFAULT_STRINGS = {
 	RAID_LEADER = L["RL"],
 	INSTANCE_CHAT = L["I"],
 	INSTANCE_CHAT_LEADER = L["IL"],
-	PET_BATTLE_COMBAT_LOG = _G.PET_BATTLE_COMBAT_LOG,
 }
 
 local hyperlinkTypes = {
@@ -2691,9 +2690,7 @@ function CH:PET_BATTLE_CLOSE()
 
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
-		local tab = CH:GetTab(chat)
-		local text = tab and tab.Text:GetText()
-		if text and strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
+		if chat and chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
 			CH.FCF_Close(chat)
 			break -- we found it, dont gotta keep lookin'
 		end
