@@ -1266,7 +1266,7 @@ function B:Layout(isBank)
 
 				if lastButton then
 					local anchorPoint, relativePoint = (reverseSlots and 'BOTTOM' or 'TOP'), (reverseSlots and 'TOP' or 'BOTTOM')
-					if isSplit and splitBag and slotID == 1 then
+					if splitBag and slotID == 1 then
 						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing))
 						lastRowButton = slot
 						numContainerRows = numContainerRows + 1
