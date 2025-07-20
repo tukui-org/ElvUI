@@ -30,7 +30,7 @@ General.args.sticky = ACH:Toggle(L["Sticky Chat"], L["When opening the Chat Edit
 General.args.emotionIcons = ACH:Toggle(L["Emotion Icons"], L["Display emotion icons in chat."], 6)
 General.args.lfgIcons = ACH:Toggle(L["Role Icon"], L["Display LFG Icons in group chat."], 7, nil, nil, nil, nil, function(_, value) E.db.chat.lfgIcons = value CH:CheckLFGRoles() end, nil, not E.allowRoles)
 General.args.useAltKey = ACH:Toggle(L["Use Alt Key"], L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."], 8, nil, nil, nil, nil, function(_, value) E.db.chat.useAltKey = value CH:UpdateSettings() end)
-General.args.autoClosePetBattleLog = ACH:Toggle(L["Auto-Close Pet Battle Log"], nil, 9, nil, nil, nil, nil, nil, nil, not E.Retail)
+General.args.autoClosePetBattleLog = ACH:Toggle(L["Auto-Close Pet Battle Log"], nil, 9, nil, nil, nil, nil, nil, nil, E.Classic)
 General.args.useBTagName = ACH:Toggle(L["Use Real ID BattleTag"], L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."], 10)
 General.args.socialQueueMessages = ACH:Toggle(L["Quick Join Messages"], L["Show clickable Quick Join messages inside of the chat."], 11, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.copyChatLines = ACH:Toggle(L["Copy Chat Lines"], L["Adds an arrow infront of the chat lines to copy the entire line."], 12)

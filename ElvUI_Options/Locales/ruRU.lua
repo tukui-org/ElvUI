@@ -111,6 +111,7 @@ L["ALT_KEY_TEXT"] = "Alt"
 L["Always Display"] = "Всегда отображать"
 L["Always Show Player"] = "Всегда показывать игрока"
 L["Always Show Realm"] = "Всегда отображать сервер"
+L["Always Split Professions"] = true
 L["Anchor Point"] = "Точка фиксации"
 L["Anchor"] = "Фиксатор"
 L["Anima Diversion"] = "Поток анимы"

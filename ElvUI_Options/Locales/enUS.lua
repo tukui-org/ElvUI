@@ -109,6 +109,7 @@ L["ALT_KEY_TEXT"] = "ALT"
 L["Always Display"] = true
 L["Always Show Player"] = true
 L["Always Show Realm"] = true
+L["Always Split Professions"] = true
 L["Anchor Point"] = true
 L["Anchor"] = true
 L["Anima Diversion"] = true

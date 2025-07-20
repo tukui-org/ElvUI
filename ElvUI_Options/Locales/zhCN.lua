@@ -113,6 +113,7 @@ L["Always Display"] = "总是显示"
 L["Always show Loot Specialization."] = "始终显示专精拾取"
 L["Always Show Player"] = "始终显示玩家姓名板"
 L["Always Show Realm"] = "总是显示服务器"
+L["Always Split Professions"] = true
 L["Amount"] = "数量"
 L["Anchor Point"] = "定位方向"
 L["Anchor"] = "定位"

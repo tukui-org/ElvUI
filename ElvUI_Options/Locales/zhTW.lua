@@ -109,6 +109,7 @@ L["ALT_KEY_TEXT"] = "Alt"
 L["Always Display"] = "總是顯示"
 L["Always Show Player"] = "總是顯示玩家"
 L["Always Show Realm"] = "總是顯示伺服器"
+L["Always Split Professions"] = true
 L["Anchor Point"] = "定位方向"
 L["Anchor"] = "定位"
 L["Anima Diversion"] = true
