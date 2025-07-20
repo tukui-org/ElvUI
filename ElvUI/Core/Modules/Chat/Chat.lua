@@ -2713,7 +2713,6 @@ function CH:PET_BATTLE_CLOSE()
 		local chat = _G[frameName]
 		if chat and chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
 			CH.FCF_Close(chat)
-			break -- we found it, dont gotta keep lookin'
 		end
 	end
 end
