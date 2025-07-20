@@ -1148,7 +1148,7 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
-	local lastButton, lastRowButton, newBag
+	local lastButton, lastRowButton
 	local numContainerRows, numBags, numBagSlots = 0, 0, 0
 	local bankSpaceOffset = isBank and BANK_SPACE_OFFSET or 0
 	local warbandIndex = isBank and B.WarbandBanks[B.BankTab]
@@ -1231,14 +1231,9 @@ function B:Layout(isBank)
 	end
 
 	for _, bagID in next, f.BagIDs do
-		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = B:GetContainerNumSlots(bagID)
 		local bagShown = numSlots > 0 and B.db.shownBags['bag'..bagID]
-
-		if isSplit then
-			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and (B.db.split['bag'..bagID] or (professionSplit and B.ProfessionColors[bag.type])) or false
-		end
 
 		bag.numSlots = numSlots
 		bag:SetShown(bagShown)
@@ -1247,6 +1242,10 @@ function B:Layout(isBank)
 			for slotID, slot in ipairs(bag) do
 				slot:SetShown(slotID <= numSlots)
 			end
+
+			local mainBag = bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER
+			local doSplit = B.db.split['bag'..bagID] or (professionSplit and B.ProfessionColors[bag.type])
+			local splitBag = isSplit and not not (mainBag and doSplit)
 
 			for slotID = 1, numSlots do
 				f.totalSlots = f.totalSlots + 1
@@ -1267,7 +1266,7 @@ function B:Layout(isBank)
 
 				if lastButton then
 					local anchorPoint, relativePoint = (reverseSlots and 'BOTTOM' or 'TOP'), (reverseSlots and 'TOP' or 'BOTTOM')
-					if isSplit and newBag and slotID == 1 then
+					if isSplit and splitBag and slotID == 1 then
 						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing))
 						lastRowButton = slot
 						numContainerRows = numContainerRows + 1
