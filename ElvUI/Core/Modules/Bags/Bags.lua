@@ -1158,8 +1158,8 @@ function B:Layout(isBank)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
+	local professionSplit = (isBank and B.db.split.alwaysProfessionBags) or B.db.split.alwaysProfessionBank
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
-	local splitProfessionBags = isBank and B.db.split.splitbankprofessionbags or B.db.split.splitplayerprofessionbags
 	local reverseSlots = B.db.reverseSlots
 
 	f.totalSlots = 0
@@ -1231,14 +1231,14 @@ function B:Layout(isBank)
 	end
 
 	for _, bagID in next, f.BagIDs do
-		if isSplit then
-			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and (B.db.split['bag'..bagID] or (splitProfessionBags and (select(2, GetContainerNumFreeSlots(bagID)) ~= 0))) or false
-		end
-
 		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = B:GetContainerNumSlots(bagID)
 		local bagShown = numSlots > 0 and B.db.shownBags['bag'..bagID]
+
+		if isSplit then
+			newBag = (bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER) and (B.db.split['bag'..bagID] or (professionSplit and B.ProfessionColors[bag.type])) or false
+		end
 
 		bag.numSlots = numSlots
 		bag:SetShown(bagShown)
