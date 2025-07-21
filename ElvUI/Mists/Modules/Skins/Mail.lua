@@ -24,6 +24,7 @@ local function Skin_SendMail()
 	end
 
 	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
+	_G.MailEditBox:Size(285, _G.SendStationeryBackgroundLeft:GetHeight())
 end
 
 local function Skin_OpenMail()
@@ -97,14 +98,18 @@ function S:MailFrame()
 	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -19, 0)
 
 	-- send mail
+	_G.SendMailFrame:StripTextures()
+	_G.SendStationeryBackgroundLeft:Hide()
+	_G.SendStationeryBackgroundRight:Hide()
+
+	_G.MailEditBox:ClearAllPoints()
+	_G.MailEditBox:Point('TOPLEFT', _G.SendMailFrame, 20, -80)
+
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
-	_G.MailEditBox.ScrollBox:ClearAllPoints()
-	_G.MailEditBox.ScrollBox:Point('TOPLEFT', _G.SendStationeryBackgroundLeft, 'TOPLEFT', 8, 0)
-	_G.MailEditBox.ScrollBox:Point('BOTTOMRIGHT', _G.SendStationeryBackgroundRight, 'BOTTOMRIGHT', -18, -8)
 
-	_G.SendStationeryBackgroundLeft:StripTextures(true)
-	_G.SendStationeryBackgroundRight:StripTextures(true)
+	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
+	_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
 
 	S:HandleTrimScrollBar(_G.MailEditBoxScrollBar)
 	_G.MailEditBoxScrollBar:ClearAllPoints()
@@ -127,8 +132,6 @@ function S:MailFrame()
 	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
 	_G.SendMailSubjectEditBox:Width(214)
 	_G.SendMailSubjectEditBox:Height(18)
-
-	_G.SendMailFrame:StripTextures()
 
 	Skin_SendMail()
 	Skin_OpenMail()
