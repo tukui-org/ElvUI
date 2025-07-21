@@ -14,9 +14,6 @@ local FontMap = {
 	pvpsubzone		= { object = _G.PVPInfoTextString },
 	cooldown		= { object = _G.SystemFont_Shadow_Large_Outline },
 	mailbody		= { object = _G.MailTextFontNormal },
-	questtitle		= { object = _G.QuestTitleFont },
-	questtext		= { object = _G.QuestFont },
-	questsmall		= { object = _G.QuestFontNormalSmall },
 	errortext		= { object = _G.ErrorFont, func = function(data, opt)
 		local x, y, w = 512, 60, 16 -- default sizes we scale from
 		local diff = (opt.size - w) / w -- calculate the difference
@@ -29,6 +26,9 @@ local FontMap = {
 }
 
 if E.Retail then
+	FontMap.questtext		= { object = _G.QuestFont }
+	FontMap.questtitle		= { object = _G.QuestTitleFont }
+	FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
 	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont, _G.ObjectiveTrackerHeaderFont } }
@@ -137,18 +137,18 @@ function E:UpdateBlizzardFonts()
 	-- advanced fonts
 	local replaceFonts = db.replaceBlizzFonts
 	if replaceFonts then
-		E:MapFont(FontMap.questsmall,				NORMAL, (blizz and 12) or unscale or medium, 'NONE')
-		E:MapFont(FontMap.questtext,				NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, 'NONE')
 		E:MapFont(FontMap.cooldown,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 		E:MapFont(FontMap.errortext,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:MapFont(FontMap.questtitle,				NORMAL, (blizz and 18) or unscale or big, 'NONE')
 		E:MapFont(FontMap.pvpsubzone,				NORMAL, (blizz and 22) or unscale or large, outline)
 		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
 		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
 
 		if E.Retail then
+			E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
+			E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
+			E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
 			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
 			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
