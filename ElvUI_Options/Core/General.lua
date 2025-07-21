@@ -162,9 +162,9 @@ do
 		objective = { name = L["Objective Text"], order = 56, hidden = not E.Retail },
 		errortext = { name = L["Quest Progress and Error Text"], order = 57 },
 		mailbody = { name = L["Mail Text"], order = 58 },
-		questtitle = { name = L["Quest Title"], order = 59 },
-		questtext = { name = L["Quest Text"], order = 60 },
-		questsmall = { name = L["Quest Small"], order = 61 },
+		questtitle = { name = L["Quest Title"], order = 59, hidden = not E.Retail },
+		questtext = { name = L["Quest Text"], order = 60, hidden = not E.Retail },
+		questsmall = { name = L["Quest Small"], order = 61, hidden = not E.Retail },
 		talkingtitle = { name = L["Talking Head Name"], order = 62, hidden = not E.Retail },
 		talkingtext = { name = L["Talking Head Text"], order = 63, hidden = not E.Retail },
 	}

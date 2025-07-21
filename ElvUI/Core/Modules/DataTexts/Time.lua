@@ -297,7 +297,17 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == 'UPDATE_INSTANCE_INFO' or event == 'ENCOUNTER_END' then
+	if event == 'ELVUI_FORCE_UPDATE' then
+		RequestRaidInfo()
+
+		if not collectedImages then
+			CollectImages()
+		end
+	elseif event == 'LOADING_SCREEN_ENABLED' then
+		if enteredFrame then
+			OnLeave()
+		end
+	else
 		wipe(lockedInstances.raids)
 		wipe(lockedInstances.dungeons)
 
@@ -318,14 +328,6 @@ local function OnEvent(self, event)
 		if enteredFrame then
 			OnEnter(self)
 		end
-	elseif event == 'ELVUI_FORCE_UPDATE' then
-		RequestRaidInfo()
-
-		if not collectedImages then
-			CollectImages()
-		end
-	elseif event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
-		OnLeave()
 	end
 end
 
@@ -364,4 +366,4 @@ local function ApplySettings(self, hex)
 	OnUpdate(self, 20000)
 end
 
-DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED', 'ENCOUNTER_END' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
+DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'ENCOUNTER_END', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
