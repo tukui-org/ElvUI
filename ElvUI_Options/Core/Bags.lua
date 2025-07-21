@@ -35,12 +35,12 @@ Bags.args.general.args.generalGroup.values = {
 	clearSearchOnClose = L["Clear Search On Close"],
 	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
 	reverseSlots = L["Reverse Bag Slots"],
-	useBlizzardCleanup = L["Use Blizzard Cleanup"]
+	useBlizzardCleanup = L["Use Blizzard Cleanup"],
+	upgradeIcon = L["Upgrade Icon"]
 }
 
 if E.Retail then
 	Bags.args.general.args.generalGroup.values.scrapIcon = L["Scrap Icon"]
-	Bags.args.general.args.generalGroup.values.upgradeIcon = L["Upgrade Icon"]
 	Bags.args.general.args.generalGroup.values.showAssignedIcon = L["Assigned Icon"]
 	Bags.args.general.args.generalGroup.values.useBlizzardJunk = L["Use Blizzard Sell Junk"]
 end

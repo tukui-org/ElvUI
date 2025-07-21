@@ -491,33 +491,34 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 	return (B.IsEquipmentSlot[equipLoc] or (classID == 3 and subClassID == 11)) and (rarity and rarity > 1)
 end
 
+-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
 function B:UpdateItemUpgradeIcon(slot)
-	if not B.db.upgradeIcon or not slot.isEquipment then
+	if not B.db.upgradeIcon or not slot.isEquipment or not _G.PawnIsContainerItemAnUpgrade then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
 	end
 
-	local itemIsUpgrade, containerID, slotID = nil, slot.BagID, slot.SlotID
-
-	-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
-	if _G.PawnIsContainerItemAnUpgrade then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
-
-	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
+	local isUpgrade = _G.PawnIsContainerItemAnUpgrade(slot.BagID, slot.SlotID)
+	if isUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', B.UpgradeCheck_OnUpdate)
 	else
-		slot.UpgradeIcon:SetShown(itemIsUpgrade)
+		slot.UpgradeIcon:SetShown(isUpgrade)
 		slot:SetScript('OnUpdate', nil)
 	end
 end
 
-local ITEM_UPGRADE_CHECK_TIME = 0.5
-function B:UpgradeCheck_OnUpdate(elapsed)
-	self.timeSinceUpgradeCheck = (self.timeSinceUpgradeCheck or 0) + elapsed
-	if self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
-		B:UpdateItemUpgradeIcon(self)
-		self.timeSinceUpgradeCheck = 0
+do
+	local ITEM_UPGRADE_CHECK_TIME = 0.5
+	function B:UpgradeCheck_OnUpdate(elapsed)
+		self.timeSinceUpgradeCheck = (self.timeSinceUpgradeCheck or 0) + elapsed
+
+		if self.timeSinceUpgradeCheck >= ITEM_UPGRADE_CHECK_TIME then
+			self.timeSinceUpgradeCheck = 0
+
+			B:UpdateItemUpgradeIcon(self)
+		end
 	end
 end
 
@@ -730,7 +731,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((E.Classic and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
-	if slot.UpgradeIcon and E.Retail then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end -- Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
