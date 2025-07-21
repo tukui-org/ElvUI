@@ -364,4 +364,4 @@ local function ApplySettings(self, hex)
 	OnUpdate(self, 20000)
 end
 
-DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED', 'ENCOUNTER_END' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
+DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'ENCOUNTER_END', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
