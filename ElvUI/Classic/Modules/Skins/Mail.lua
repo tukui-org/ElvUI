@@ -37,8 +37,8 @@ local function MailFrameSkin()
 		end
 	end
 
-	_G.MailEditBox:SetHeight(_G.SendStationeryBackgroundLeft:GetHeight())
 	_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
+	_G.MailEditBox:Size(285, _G.SendStationeryBackgroundLeft:GetHeight())
 end
 
 function S:MailFrame()
@@ -52,8 +52,6 @@ function S:MailFrame()
 
 	_G.InboxFrameBg:StripTextures()
 	_G.MailFrameBg:StripTextures()
-
-	_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
 
 	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
 		local mail = _G['MailItem'..i]
@@ -133,10 +131,15 @@ function S:MailFrame()
 	_G.SendMailFrame:StripTextures()
 	_G.SendStationeryBackgroundLeft:Hide()
 	_G.SendStationeryBackgroundRight:Hide()
+
+	_G.MailEditBox:ClearAllPoints()
+	_G.MailEditBox:Point('TOPLEFT', _G.SendMailFrame, 20, -80)
+
 	_G.MailEditBox.ScrollBox:StripTextures(true)
 	_G.MailEditBox.ScrollBox:SetTemplate()
 
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
+	_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
 
 	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
 
