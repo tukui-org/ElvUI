@@ -534,12 +534,11 @@ local function CreateCustomTextGroup(unit, objectName)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 9, attachToValues)
 	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
 
-	if unit == 'player' and UF.player.AdditionalPower then
-		config.args.attachTextTo.values.AdditionalPower = L["Additional Power"]
-
-		if E.Mists and (E.myclass == 'DRUID' and UF.player.EclipseBar) then
-			config.args.attachTextTo.values.EclipseBar = L["Eclipse Power"]
-		end
+	if unit == 'player' then
+		config.args.attachTextTo.values.AdditionalPower = UF.player.AdditionalPower and L["Additional Power"] or nil
+		config.args.attachTextTo.values.EclipseBar = (E.Mists and E.myclass == 'DRUID' and UF.player.EclipseBar) and L["Eclipse Power"] or nil
+		config.args.attachTextTo.values.Stagger = (E.Mists and E.myclass == 'MONK' and UF.player.Stagger) and L["Stagger"] or nil
+		config.args.attachTextTo.values.EnergyManaRegen = (E.Classic and E.myclass ~= 'WARRIOR') and L["Energy/Mana Regen Tick"] or nil
 	end
 
 	E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = config
