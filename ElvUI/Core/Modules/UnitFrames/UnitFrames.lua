@@ -302,10 +302,14 @@ function UF:CreateRaisedText(RaisedElement)
 	return text
 end
 
-function UF:CreateRaisedElement(frame, bar)
+function UF:CreateRaisedElement(frame)
 	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', frame)
 	local RaisedLevel = frame:GetFrameLevel() + 100
+
+	RaisedElement:SetAllPoints()
 	RaisedElement:SetFrameLevel(RaisedLevel)
+
+	RaisedElement.TextureParent = CreateFrame('Frame', '$parent_TextureParent', RaisedElement)
 	RaisedElement.frameName = RaisedElement:GetName()
 	RaisedElement.__owner = frame
 
@@ -319,12 +323,6 @@ function UF:CreateRaisedElement(frame, bar)
 	RaisedElement.RestingIconLevel = RaisedLevel + 30
 	RaisedElement.RaidRoleLevel = RaisedLevel + 35
 	RaisedElement.CastBarLevel = RaisedLevel + 40
-
-	if bar then
-		RaisedElement:SetAllPoints()
-	else
-		RaisedElement.TextureParent = CreateFrame('Frame', nil, RaisedElement)
-	end
 
 	return RaisedElement
 end

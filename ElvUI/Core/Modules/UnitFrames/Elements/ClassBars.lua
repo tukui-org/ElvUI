@@ -374,9 +374,7 @@ function UF:Construct_ClassBar(frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
-	bars.RaisedElementParent = CreateFrame('Frame', nil, bars)
-	bars.RaisedElementParent:OffsetFrameLevel(100, bars)
-	bars.RaisedElementParent:SetAllPoints()
+	bars.RaisedElementParent = UF:CreateRaisedElement(bars)
 
 	local frameName = frame:GetName()
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
@@ -575,7 +573,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	UF.statusbars[additionalPower] = true
 	UF.classbars[additionalPower] = true
 
-	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower, true)
+	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 	additionalPower.displayPairs = {[E.myclass] = {}} -- display power types
 
@@ -619,16 +617,14 @@ end
 function UF:Construct_EnergyManaRegen(frame)
 	local element = CreateFrame('StatusBar', nil, frame.Power)
 	element:SetStatusBarTexture(E.media.blankTex)
-	element:OffsetFrameLevel(3, frame.Power)
+	element:OffsetFrameLevel(10, frame.Power)
 	element:SetMinMaxValues(0, 2)
 	element:SetAllPoints()
 
 	local barTexture = element:GetStatusBarTexture()
 	barTexture:SetAlpha(0)
 
-	element.RaisedElementParent = CreateFrame('Frame', nil, element)
-	element.RaisedElementParent:OffsetFrameLevel(100, element)
-	element.RaisedElementParent:SetAllPoints()
+	element.RaisedElementParent = UF:CreateRaisedElement(element)
 
 	element.Spark = element:CreateTexture(nil, 'OVERLAY')
 	element.Spark:SetTexture(E.media.blankTex)
@@ -649,7 +645,7 @@ function UF:Configure_EnergyManaRegen(frame)
 		end
 
 		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
-		frame.EnergyManaRegen:OffsetFrameLevel(3, frame.Power)
+		frame.EnergyManaRegen:OffsetFrameLevel(10, frame.Power)
 	elseif frame:IsElementEnabled('EnergyManaRegen') then
 		frame:DisableElement('EnergyManaRegen')
 	end
@@ -671,9 +667,7 @@ function UF:Construct_DruidEclipseBar(frame)
 	eclipseBar.SolarBar:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[eclipseBar.SolarBar] = true
 
-	eclipseBar.RaisedElementParent = CreateFrame('Frame', nil, eclipseBar)
-	eclipseBar.RaisedElementParent:OffsetFrameLevel(100, eclipseBar)
-	eclipseBar.RaisedElementParent:SetAllPoints()
+	eclipseBar.RaisedElementParent = UF:CreateRaisedElement(eclipseBar)
 
 	eclipseBar.Arrow = eclipseBar.LunarBar:CreateTexture(nil, 'OVERLAY')
 	eclipseBar.Arrow:SetTexture(E.Media.Textures.ArrowUp)
