@@ -374,9 +374,14 @@ function UF:Construct_ClassBar(frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
+	bars.RaisedElementParent = CreateFrame('Frame', nil, bars)
+	bars.RaisedElementParent:OffsetFrameLevel(100, bars)
+	bars.RaisedElementParent:SetAllPoints()
+
+	local frameName = frame:GetName()
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 	for i = 1, maxBars do
-		local bar = CreateFrame('StatusBar', frame:GetName()..'ClassIconButton'..i, bars)
+		local bar = CreateFrame('StatusBar', frameName..'ClassIconButton'..i, bars)
 		bar:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
 		bar:GetStatusBarTexture():SetHorizTile(false)
 
