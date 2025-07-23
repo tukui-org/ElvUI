@@ -15,6 +15,8 @@ function S:Blizzard_ItemSocketingUI()
 	local ItemSocketingFrame = _G.ItemSocketingFrame
 	S:HandleFrame(ItemSocketingFrame)
 
+	S:HandleScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
+
 	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
 	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
