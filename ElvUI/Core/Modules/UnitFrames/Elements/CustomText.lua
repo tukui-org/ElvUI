@@ -3,13 +3,14 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local pairs = pairs
-local anchorElements = {
-	Power = 1,
-	EclipseBar = 1,
-	EnergyManaRegen = 1,
-	InfoPanel = 1, -- no raised element parent
-	AdditionalPower = E.Mists and 0 or 1, -- both are possible on Mists but we want to prevent the fallback
-	Stagger = E.Mists and 0 or 1 -- so the custom text isnt shown when attached to the other element
+
+UF.CustomTextAttachState = {
+	Power			= 2, -- two means can fallback
+	InfoPanel		= 2, -- no raised element parent
+	EnergyManaRegen	= E.Classic and 1 or 0,
+	EclipseBar		= E.Mists and 1 or 0,
+	AdditionalPower	= E.Mists and 1 or 0,
+	Stagger			= E.Mists and 1 or 0
 }
 
 function UF:Configure_CustomTexts(frame)
@@ -42,8 +43,8 @@ function UF:Configure_CustomTexts(frame)
 		object:SetJustifyH(db.justifyH or 'CENTER')
 		object:SetShown(db.enable)
 
-		local state = anchorElements[db.attachTextTo]
-		local anchor = (state and frame[db.attachTextTo]) or (state ~= 0 and frame)
+		local state = UF.CustomTextAttachState[db.attachTextTo]
+		local anchor = (state and frame[db.attachTextTo]) or (state == 2 and frame)
 		object:SetParent((not anchor and E.HiddenFrame) or anchor.RaisedElementParent or anchor)
 
 		-- This takes care of custom texts that were added before the enable option was added
@@ -51,7 +52,8 @@ function UF:Configure_CustomTexts(frame)
 			db.enable = true
 		end
 
-		if db.enable then
+		-- Require an anchor otherwise untag as its hidden
+		if anchor and db.enable then
 			frame:Tag(object, db.text_format or '')
 		else
 			frame:Untag(object)

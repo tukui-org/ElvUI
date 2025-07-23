@@ -536,9 +536,9 @@ local function CreateCustomTextGroup(unit, objectName)
 
 	if unit == 'player' then
 		config.args.attachTextTo.values.AdditionalPower = UF.player.AdditionalPower and L["Additional Power"] or nil
-		config.args.attachTextTo.values.EclipseBar = (E.Mists and E.myclass == 'DRUID' and UF.player.EclipseBar) and L["Eclipse Power"] or nil
-		config.args.attachTextTo.values.Stagger = (E.Mists and E.myclass == 'MONK' and UF.player.Stagger) and L["Stagger"] or nil
-		config.args.attachTextTo.values.EnergyManaRegen = (E.Classic and E.myclass ~= 'WARRIOR') and L["Energy/Mana Regen Tick"] or nil
+		config.args.attachTextTo.values.EclipseBar = UF.player.EclipseBar and L["Eclipse Power"] or nil
+		config.args.attachTextTo.values.Stagger = UF.player.Stagger and L["Stagger"] or nil
+		config.args.attachTextTo.values.EnergyManaRegen = UF.player.EnergyManaRegen and L["Energy/Mana Regen Tick"] or nil
 	end
 
 	E.Options.args.unitframe.args[group].args[unit].args.customTexts.args.tags.args[objectName] = config
