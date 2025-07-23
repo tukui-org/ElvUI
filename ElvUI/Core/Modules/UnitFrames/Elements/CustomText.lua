@@ -44,7 +44,7 @@ function UF:Configure_CustomTexts(frame)
 		object:SetShown(db.enable)
 
 		local state = UF.CustomTextAttachState[db.attachTextTo]
-		local anchor = (state and frame[db.attachTextTo]) or (state == 2 and frame)
+		local anchor = (state and frame[db.attachTextTo]) or (state ~= 0 and frame)
 		object:SetParent((not anchor and E.HiddenFrame) or anchor.RaisedElementParent or anchor)
 
 		-- This takes care of custom texts that were added before the enable option was added
