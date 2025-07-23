@@ -4,13 +4,11 @@ local LSM = E.Libs.LSM
 
 local pairs = pairs
 
-UF.CustomTextAttachState = {
-	Power			= 2, -- two means can fallback
-	InfoPanel		= 2, -- no raised element parent
-	EnergyManaRegen	= E.Classic and 1 or 0,
-	EclipseBar		= E.Mists and 1 or 0,
-	AdditionalPower	= E.Mists and 1 or 0,
-	Stagger			= E.Mists and 1 or 0
+UF.CustomTextAvoidFallback = {
+	EnergyManaRegen	= E.Classic,
+	EclipseBar		= E.Mists,
+	AdditionalPower	= E.Mists,
+	Stagger			= E.Mists
 }
 
 function UF:Configure_CustomTexts(frame)
@@ -43,8 +41,8 @@ function UF:Configure_CustomTexts(frame)
 		object:SetJustifyH(db.justifyH or 'CENTER')
 		object:SetShown(db.enable)
 
-		local state = UF.CustomTextAttachState[db.attachTextTo]
-		local anchor = (state and frame[db.attachTextTo]) or (state == 2 and frame)
+		local avoidFallback = UF.CustomTextAvoidFallback[db.attachTextTo]
+		local anchor = frame[db.attachTextTo] or (not avoidFallback and frame)
 		object:SetParent((not anchor and E.HiddenFrame) or anchor.RaisedElementParent or anchor)
 
 		-- This takes care of custom texts that were added before the enable option was added

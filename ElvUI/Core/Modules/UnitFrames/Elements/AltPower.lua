@@ -15,7 +15,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.BG:SetAllPoints()
 	altpower.BG:SetTexture(E.media.blankTex)
 
-	altpower.RaisedElementParent = UF:CreateRaisedElement(altpower, true)
+	altpower.RaisedElementParent = UF:CreateRaisedElement(altpower)
 
 	altpower.value = UF:CreateRaisedText(altpower.RaisedElementParent)
 	altpower.value:SetJustifyH('CENTER')
