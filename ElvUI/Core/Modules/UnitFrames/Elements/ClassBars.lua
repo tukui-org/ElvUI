@@ -29,6 +29,10 @@ function UF:GetClassPower_Construct(frame)
 
 	if E.myclass == 'DRUID' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+
+		if E.Mists then
+			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
+		end
 	elseif E.Mists and E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
@@ -39,6 +43,10 @@ function UF:GetClassPower_Construct(frame)
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
+	end
+
+	if E.Classic and E.myclass ~= 'WARRIOR' then
+		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 end
 
@@ -598,6 +606,48 @@ end
 
 function UF:PostVisibilityAdditionalPower()
 	-- this used to do something but now the bar is split off
+end
+
+-----------------------------------------------------------
+-- Energy Mana Regen Ticks
+-----------------------------------------------------------
+function UF:Construct_EnergyManaRegen(frame)
+	local element = CreateFrame('StatusBar', nil, frame.Power)
+	element:SetStatusBarTexture(E.media.blankTex)
+	element:OffsetFrameLevel(3, frame.Power)
+	element:SetMinMaxValues(0, 2)
+	element:SetAllPoints()
+
+	local barTexture = element:GetStatusBarTexture()
+	barTexture:SetAlpha(0)
+
+	element.RaisedElementParent = CreateFrame('Frame', nil, element)
+	element.RaisedElementParent:OffsetFrameLevel(100, element)
+	element.RaisedElementParent:SetAllPoints()
+
+	element.Spark = element:CreateTexture(nil, 'OVERLAY')
+	element.Spark:SetTexture(E.media.blankTex)
+	element.Spark:SetVertexColor(0.9, 0.9, 0.9, 0.6)
+	element.Spark:SetBlendMode('ADD')
+	element.Spark:Point('RIGHT', barTexture)
+	element.Spark:Point('BOTTOM')
+	element.Spark:Point('TOP')
+	element.Spark:Width(2)
+
+	return element
+end
+
+function UF:Configure_EnergyManaRegen(frame)
+	if frame.db.power.EnergyManaRegen then
+		if not frame:IsElementEnabled('EnergyManaRegen') then
+			frame:EnableElement('EnergyManaRegen')
+		end
+
+		frame.EnergyManaRegen:SetFrameStrata(frame.Power:GetFrameStrata())
+		frame.EnergyManaRegen:OffsetFrameLevel(3, frame.Power)
+	elseif frame:IsElementEnabled('EnergyManaRegen') then
+		frame:DisableElement('EnergyManaRegen')
+	end
 end
 
 -----------------------------------------------------------

@@ -4,6 +4,15 @@ local LSM = E.Libs.LSM
 
 local pairs = pairs
 
+UF.CustomTextAttachState = {
+	Power			= 2, -- two means can fallback
+	InfoPanel		= 2, -- no raised element parent
+	EnergyManaRegen	= E.Classic and 1 or 0,
+	EclipseBar		= E.Mists and 1 or 0,
+	AdditionalPower	= E.Mists and 1 or 0,
+	Stagger			= E.Mists and 1 or 0
+}
+
 function UF:Configure_CustomTexts(frame)
 	local customTexts = frame.customTexts
 	if not customTexts then return end
@@ -17,7 +26,7 @@ function UF:Configure_CustomTexts(frame)
 	end
 
 	if not frameDB then return end
-	local font = LSM:Fetch('font', UF.db.font)
+	local mainFont = LSM:Fetch('font', UF.db.font)
 
 	for name, db in pairs(frameDB) do
 		local object = customTexts[name]
@@ -26,36 +35,25 @@ function UF:Configure_CustomTexts(frame)
 			customTexts[name] = object -- reference it
 		end
 
-		local tagFont
-		if db.font then
-			tagFont = LSM:Fetch('font', db.font)
-		end
-
+		local tagFont = (db.font and LSM:Fetch('font', db.font)) or mainFont
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTextTo, db.attachTextTo == 'Power')
 		object:ClearAllPoints()
 		object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
-		object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
+		object:FontTemplate(tagFont, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
 		object:SetJustifyH(db.justifyH or 'CENTER')
 		object:SetShown(db.enable)
 
-		if db.attachTextTo == 'Power' and frame.Power then
-			object:SetParent(frame.Power.RaisedElementParent)
-		elseif db.attachTextTo == 'EclipseBar' and frame.EclipseBar then
-			object:SetParent(frame.EclipseBar.RaisedElementParent)
-		elseif db.attachTextTo == 'AdditionalPower' and frame.AdditionalPower then
-			object:SetParent(frame.AdditionalPower.RaisedElementParent)
-		elseif db.attachTextTo == 'InfoPanel' and frame.InfoPanel then
-			object:SetParent(frame.InfoPanel)
-		else
-			object:SetParent(frame.RaisedElementParent)
-		end
+		local state = UF.CustomTextAttachState[db.attachTextTo]
+		local anchor = (state and frame[db.attachTextTo]) or (state == 2 and frame)
+		object:SetParent((not anchor and E.HiddenFrame) or anchor.RaisedElementParent or anchor)
 
 		-- This takes care of custom texts that were added before the enable option was added
 		if db.enable == nil then
 			db.enable = true
 		end
 
-		if db.enable then
+		-- Require an anchor otherwise untag as its hidden
+		if anchor and db.enable then
 			frame:Tag(object, db.text_format or '')
 		else
 			frame:Untag(object)
