@@ -32,6 +32,8 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.PostUpdate = UF.PostUpdateHealth
 	health.PostUpdateColor = UF.PostUpdateHealthColor
 
+	health.RaisedElementParent = UF:CreateRaisedElement(health)
+
 	if bg then
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
