@@ -209,7 +209,9 @@ function AB:TrimIcon(button, masque)
 	if not icon then return end
 
 	if button.db and not button.db.keepSizeRatio then
-		icon:SetTexCoord(E:CropRatio(button, button.db.customCoords))
+		local width, height = button:GetSize()
+		local left, right, top, bottom = E:CropRatio(width, height, nil, button.db.customCoords)
+		icon:SetTexCoord(left, right, top, bottom)
 	elseif not masque then
 		icon:SetTexCoord(unpack(E.TexCoords))
 	end
