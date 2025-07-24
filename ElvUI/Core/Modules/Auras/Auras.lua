@@ -98,8 +98,8 @@ A.AttributeCustomVisibility = [[
 A.AttributeInitialConfig = [[
 	local header = self:GetParent()
 
-	self:SetWidth(header:GetAttribute('config-height'))
-	self:SetHeight(header:GetAttribute('config-width'))
+	self:SetWidth(header:GetAttribute('config-width'))
+	self:SetHeight(header:GetAttribute('config-height'))
 ]]
 
 function A:MasqueData(texture, highlight)
@@ -149,7 +149,6 @@ function A:CreateIcon(button)
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
-	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
 	button.count:FontTemplate()
@@ -205,33 +204,49 @@ end
 function A:UpdateIcon(button, update)
 	local db = A.db[button.auraType]
 
+	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
 	if update then
-		button:SetWidth(db.size)
-		button:SetHeight((db.keepSizeRatio and db.size) or db.height)
-
-		E:SetSmoothing(button.statusBar, db.smoothbars)
+		button:SetWidth(width)
+		button:SetHeight(height)
 	end
 
-	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
-	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	if button.texture then
+		if db.keepSizeRatio then
+			button.texture:SetTexCoord(unpack(E.TexCoords))
+		else
+			local left, right, top, bottom = E:CropRatio(width, height, nil, db.customCoords)
+			button.texture:SetTexCoord(left, right, top, bottom)
+		end
+	end
 
-	button.text:ClearAllPoints()
-	button.text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
-	button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
+	if button.count then
+		button.count:ClearAllPoints()
+		button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
+		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	end
 
-	local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
-	local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
-	local barSpacing = db.barSpacing + (E.PixelMode and 1 or 3)
-	local barSize = db.barSize + (E.PixelMode and 0 or 2)
-	local isHorizontal = onTop or onBottom
+	if button.text then
+		button.text:ClearAllPoints()
+		button.text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
+		button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
+	end
 
-	button.statusBar:ClearAllPoints()
-	button.statusBar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
-	button.statusBar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
-	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
-	button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
-	button.statusBar:SetRotatesTexture(not isHorizontal)
+	if button.statusBar then
+		E:SetSmoothing(button.statusBar, db.smoothbars)
+
+		local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
+		local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
+		local barSpacing = db.barSpacing + (E.PixelMode and 1 or 3)
+		local barSize = db.barSize + (E.PixelMode and 0 or 2)
+		local isHorizontal = onTop or onBottom
+
+		button.statusBar:ClearAllPoints()
+		button.statusBar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
+		button.statusBar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
+		button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
+		button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
+		button.statusBar:SetRotatesTexture(not isHorizontal)
+	end
 end
 
 function A:SetAuraTime(button, expiration, duration, modRate)

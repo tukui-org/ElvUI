@@ -36,7 +36,9 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged, texCoords)
 		elseif db.portrait.keepSizeRatio then
 			self:SetTexCoord(unpack(E.TexCoords))
 		else
-			self:SetTexCoord(E:CropRatio(self))
+			local width, height = self:GetSize()
+			local left, right, top, bottom = E:CropRatio(width, height, nil, db.portrait.customCoords)
+			self:SetTexCoord(left, right, top, bottom)
 		end
 	end
 end

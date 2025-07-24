@@ -1181,11 +1181,10 @@ function E:GetClassCoords(classFile, crop, get)
 	end
 end
 
-function E:CropRatio(frame, coords, mult)
+function E:CropRatio(width, height, mult, coords)
 	local left, right, top, bottom = unpack(coords or E.TexCoords)
 	if not mult then mult = 0.5 end
 
-	local width, height = frame:GetSize()
 	local ratio = width / height
 	if ratio > 1 then
 		local trimAmount = (1 - (1 / ratio)) * mult
