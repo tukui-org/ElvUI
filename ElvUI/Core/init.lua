@@ -256,6 +256,7 @@ do
 		'ElvUI_VisualAuraTimers',
 		'ElvUI_SecondsToBuff',
 		'ElvUI_BuffHighlight',
+		'ElvUI_RatioMinimapAuras',
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
