@@ -79,11 +79,11 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	frame.POWERBAR_SHOWN = true -- we need this for autoHide
 	UF.statusbars[power] = true
 
-	power.RaisedElementParent = UF:CreateRaisedElement(power)
-
 	power.PostUpdate = UF.PostUpdatePower
 	power.PostUpdateColor = UF.PostUpdatePowerColor
 	power.GetDisplayPower = UF.GetDisplayPower
+
+	power.RaisedElementParent = UF:CreateRaisedElement(power)
 
 	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
