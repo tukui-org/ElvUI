@@ -31,11 +31,11 @@ local warbandGold, totalGold, totalHorde, totalAlliance = 0, 0, 0, 0
 local iconStringName = '|T%s:16:16:0:0:64:64:4:60:4:60|t %s'
 local db
 
-local function sortFunction(a, b)
+local function SortFunction(a, b)
 	return a.amount > b.amount
 end
 
-local function deleteCharacter(_, realm, name)
+local function DeleteCharacter(_, realm, name)
 	ElvDB.gold[realm][name] = nil
 	ElvDB.class[realm][name] = nil
 	ElvDB.faction[realm][name] = nil
@@ -43,7 +43,7 @@ local function deleteCharacter(_, realm, name)
 	DT:ForceUpdate_DataText('Gold')
 end
 
-local function updateTotal(faction, change)
+local function UpdateTotal(faction, change)
 	if faction == 'Alliance' then
 		totalAlliance = totalAlliance + change
 	elseif faction == 'Horde' then
@@ -53,7 +53,26 @@ local function updateTotal(faction, change)
 	totalGold = totalGold + change
 end
 
-local function updateGold(self, updateAll, goldChange)
+local function DisplayCurrencyInfo()
+	local index = 1
+	local info, name = DT:BackpackCurrencyInfo(index)
+
+	while name do
+		if index == 1 then
+			DT.tooltip:AddLine(' ')
+			DT.tooltip:AddLine(CURRENCY)
+		end
+
+		if info.quantity then
+			DT.tooltip:AddDoubleLine(format(iconStringName, info.iconFileID, name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+		end
+
+		index = index + 1
+		info, name = DT:BackpackCurrencyInfo(index)
+	end
+end
+
+local function UpdateGold(self, updateAll, goldChange)
 	local textOnly = not db.goldCoins and true or false
 	local style = db.goldFormat or 'BLIZZARD'
 
@@ -89,10 +108,10 @@ local function updateGold(self, updateAll, goldChange)
 					tinsert(menuList, {
 						text = format('%s - %s', name, realm),
 						notCheckable = true,
-						func = function() deleteCharacter(self, realm, name) end
+						func = function() DeleteCharacter(self, realm, name) end
 					})
 
-					updateTotal(faction, gold)
+					UpdateTotal(faction, gold)
 				end
 			end
 		end
@@ -107,7 +126,7 @@ local function updateGold(self, updateAll, goldChange)
 		end
 
 		if goldChange then
-			updateTotal(E.myfaction, goldChange)
+			UpdateTotal(E.myfaction, goldChange)
 		end
 	end
 end
@@ -129,11 +148,11 @@ local function OnEvent(self, event)
 
 	if E.Retail then
 		UpdateWarbandGold()
+	end
 
-		if not Ticker then
-			C_WowTokenPublic_UpdateMarketPrice()
-			Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
-		end
+	if (E.Retail or E.Mists) and not Ticker then
+		C_WowTokenPublic_UpdateMarketPrice()
+		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
 	end
 
 	--prevent an error possibly from really old profiles
@@ -154,7 +173,7 @@ local function OnEvent(self, event)
 		Profit = Profit + Change
 	end
 
-	updateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
+	UpdateGold(self, event == 'ELVUI_FORCE_UPDATE', Change)
 
 	self.text:SetText(E:FormatMoney(NewMoney, db.goldFormat or 'BLIZZARD', not db.goldCoins))
 end
@@ -191,7 +210,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Character: "])
 
-	sort(myGold, sortFunction)
+	sort(myGold, SortFunction)
 
 	local total, limit = #myGold, db.maxLimit
 	local useLimit = limit and limit > 0
@@ -225,27 +244,13 @@ local function OnEnter()
 
 	if E.Retail then
 		DT.tooltip:AddDoubleLine(L["Warband:"], E:FormatMoney(warbandGold or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 	end
 
 	if E.Retail or E.Mists then
-		local index = 1
-		local info, name = DT:BackpackCurrencyInfo(index)
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
-		while name do
-			if index == 1 then
-				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(CURRENCY)
-			end
-
-			if info.quantity then
-				DT.tooltip:AddDoubleLine(format(iconStringName, info.iconFileID, name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
-			end
-
-			index = index + 1
-			info, name = DT:BackpackCurrencyInfo(index)
-		end
+		DisplayCurrencyInfo()
 	end
 
 	local grayValue = B:GetGraysValue()
