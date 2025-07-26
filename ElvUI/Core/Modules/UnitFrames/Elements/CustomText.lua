@@ -4,6 +4,12 @@ local LSM = E.Libs.LSM
 
 local pairs = pairs
 
+-- avoid indicator icons being below the text
+UF.CustomTextForceFallback = {
+	Health = true
+}
+
+-- these need to be hidden; remove the fallback
 UF.CustomTextAvoidFallback = {
 	EnergyManaRegen	= E.Classic,
 	EclipseBar		= E.Mists,
@@ -33,16 +39,18 @@ function UF:Configure_CustomTexts(frame)
 			customTexts[name] = object -- reference it
 		end
 
+		local horizontal = db.justifyH or 'CENTER'
 		local tagFont = (db.font and LSM:Fetch('font', db.font)) or mainFont
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTextTo, db.attachTextTo == 'Power')
 		object:ClearAllPoints()
-		object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
+		object:Point(horizontal, attachPoint, horizontal, db.xOffset, db.yOffset)
 		object:FontTemplate(tagFont, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
-		object:SetJustifyH(db.justifyH or 'CENTER')
+		object:SetJustifyH(horizontal)
 		object:SetShown(db.enable)
 
+		local forceFallback = UF.CustomTextForceFallback[db.attachTextTo]
 		local avoidFallback = UF.CustomTextAvoidFallback[db.attachTextTo]
-		local anchor = frame[db.attachTextTo] or (not avoidFallback and frame)
+		local anchor = (forceFallback and frame) or frame[db.attachTextTo] or (not avoidFallback and frame)
 		object:SetParent((not anchor and E.HiddenFrame) or anchor.RaisedElementParent or anchor)
 
 		-- This takes care of custom texts that were added before the enable option was added
