@@ -259,6 +259,7 @@ do --this can save some main file locals
 			-- Simpy (4373: Myzrael)
 			z['Player-4373-011657A7']	= itsSimpy -- Paladin:	Cutepally
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:	Kalline
+			z['Player-4373-04115928']	= itsSimpy -- Shaman:	Yumi
 			z['Player-4373-040E5AA9']	= itsSimpy -- Druid:	Puttietat
 			z['Player-4373-03E24528']	= itsSimpy -- Hunter:	Arieva
 			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
