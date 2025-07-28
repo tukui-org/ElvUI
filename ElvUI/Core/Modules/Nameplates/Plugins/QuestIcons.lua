@@ -2,21 +2,23 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
-local ipairs, ceil, floor, tonumber = ipairs, ceil, floor, tonumber
-local wipe, strmatch, strlower, strfind, next = wipe, strmatch, strlower, strfind, next
+local wipe, ipairs, ceil, floor, tonumber = wipe, ipairs, ceil, floor, tonumber
+local strsub, strmatch, strlower, strfind, next = strsub, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
+local GetQuestLogTitle = GetQuestLogTitle
 local UnitIsPlayer = UnitIsPlayer
 local IsInInstance = IsInInstance
 local UnitGUID = UnitGUID
 
+local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
 local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
-local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
-local C_QuestLog_GetQuestObjectives = C_QuestLog.GetQuestObjectives
-local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
+
+local GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries or GetNumQuestLogEntries
+local GetTitleForQuestID = C_QuestLog.GetTitleForQuestID or C_QuestLog.GetQuestInfo
 
 local iconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
 local activeQuests = {} --[questTitle] = quest data
@@ -143,6 +145,7 @@ end
 local function GetQuests(unitID)
 	local QuestList, notMyQuest, lastTitle
 	local info = E.ScanTooltip:GetUnitInfo(unitID)
+
 	if info and info.lines[2] then
 		for _, line in next, info.lines, 2 do
 			local text = line and line.leftText
@@ -151,15 +154,16 @@ local function GetQuests(unitID)
 			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				if line.type == 17 or not E.Retail then
+				if line.type == 17 or (not E.Retail and not lastTitle) then
 					lastTitle = activeQuests[text]
 				end -- this line comes from one line up in the tooltip
 
 				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
 				if objectives then
-					local quest = objectives[text]
+					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
 					if quest then
 						if not QuestList then QuestList = {} end
+
 						QuestList[#QuestList + 1] = {
 							itemTexture = lastTitle.texture,
 							isPercent = quest.isPercent,
@@ -283,6 +287,10 @@ local function Enable(self)
 			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 		end
 
+		if E.Mists then
+			self:RegisterEvent('QUEST_WATCH_UPDATE', Path, true)
+		end
+
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
 
@@ -298,22 +306,36 @@ local function Disable(self)
 
 		element.lastQuests = nil
 
+		if E.Mists then
+			self:UnregisterEvent('QUEST_WATCH_UPDATE', Path)
+		end
+
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
 	end
 end
 
 local function UpdateQuest(id, index)
-	local title = C_QuestLog_GetTitleForQuestID(id)
+	local title = GetTitleForQuestID(id)
 	if not title then return end
 
 	if not index then -- get the index now
-		index = C_QuestLog_GetLogIndexForQuestID(id)
+		if E.Retail then
+			index = C_QuestLog_GetLogIndexForQuestID(id)
+		else
+			for i = 1, GetNumQuestLogEntries() do
+				local _, _, _, _, _, _, _, questID = GetQuestLogTitle(i)
+				if id == questID then
+					index = i
+					break
+				end
+			end
+		end
 	end
 
 	if not index then return end
 	local _, texture = GetQuestLogSpecialItemInfo(index)
-	local level = C_QuestLog_GetQuestDifficultyLevel(id)
+	local level = E.Retail and C_QuestLog_GetQuestDifficultyLevel(id) or nil
 
 	activeTitles[id] = title
 	activeQuests[title] = {
@@ -322,7 +344,7 @@ local function UpdateQuest(id, index)
 		texture = texture,
 		difficulty = level,
 		title = title,
-		color = GetQuestDifficultyColor(level),
+		color = level and GetQuestDifficultyColor(level) or nil,
 		objectives = GetQuestObjectives(id, texture)
 	}
 end
@@ -332,8 +354,13 @@ frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_LOG_UPDATE')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+if E.Mists then
+	frame:RegisterEvent('QUEST_WATCH_UPDATE')
+end
+
 frame:SetScript('OnEvent', function(self, event, questID)
-	if not E.Retail then return end
+	if E.Classic then return end
 
 	if event == 'QUEST_ACCEPTED' then
 		UpdateQuest(questID)
@@ -347,10 +374,17 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		wipe(activeQuests)
 		wipe(activeTitles)
 
-		for index = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local id = C_QuestLog_GetQuestIDForLogIndex(index)
-			if id and id > 0 then
-				UpdateQuest(id, index)
+		for index = 1, GetNumQuestLogEntries() do
+			if E.Retail then
+				local id = C_QuestLog_GetQuestIDForLogIndex(index)
+				if id and id > 0 then
+					UpdateQuest(id, index)
+				end
+			else
+				local _, _, _, _, _, _, _, id = GetQuestLogTitle(index)
+				if id and id > 0 then
+					UpdateQuest(id, index)
+				end
 			end
 		end
 

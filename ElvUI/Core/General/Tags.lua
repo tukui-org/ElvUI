@@ -9,7 +9,7 @@ local translitMark = '!'
 local _G = _G
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
 local ipairs, pairs, wipe, floor, ceil = ipairs, pairs, wipe, floor, ceil
-local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
+local strsub, strfind, strmatch, strlower, strsplit = strsub, strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -1286,13 +1286,13 @@ do
 			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				if line.type == 17 or not E.Retail then
+				if line.type == 17 or (not E.Retail and not lastTitle) then
 					lastTitle = NP.QuestIcons.activeQuests[text]
 				end -- this line comes from one line up in the tooltip
 
 				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
 				if objectives then
-					local quest = objectives[text]
+					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
 					if quest then
 						if not which then
 							return text
@@ -1327,23 +1327,23 @@ do
 
 	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, nil, Hex)
-	end, not E.Retail)
+	end, E.Classic)
 
 	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'full', Hex)
-	end, not E.Retail)
+	end, E.Classic)
 
 	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'info', Hex)
-	end, not E.Retail)
+	end, E.Classic)
 
 	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'title', Hex)
-	end, not E.Retail)
+	end, E.Classic)
 
 	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
 		return GetQuestData(unit, 'count', Hex)
-	end, not E.Retail)
+	end, E.Classic)
 end
 
 do

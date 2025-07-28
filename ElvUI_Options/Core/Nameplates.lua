@@ -367,7 +367,7 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 
-		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 70, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, not E.Retail)
+		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 70, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, E.Classic)
 		group.args.questIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.questIcon.args.hideIcon = ACH:Toggle(L["Hide Icon"], nil, 2)
 		group.args.questIcon.args.position = ACH:Select(L["Position"], nil, 3, C.Values.AllPositions)
