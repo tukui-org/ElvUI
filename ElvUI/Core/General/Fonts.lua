@@ -108,7 +108,7 @@ function E:UpdateBlizzardFonts()
 	local tiny		= size * 0.8 -- 9.6
 
 	-- set an invisible font for xp, honor kill, etc
-	local COMBAT		= (E.eyefinity or E.ultrawide) and E.Media.Fonts.Invisible or LSM:Fetch('font', db.dmgfont)
+	local COMBAT		= LSM:Fetch('font', db.dmgfont)
 	local NAMEFONT		= LSM:Fetch('font', db.namefont)
 	local NORMAL		= E.media.normFont
 	local NUMBER		= E.media.normFont
