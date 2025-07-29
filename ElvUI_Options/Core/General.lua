@@ -131,7 +131,7 @@ Fonts.blizzard.args.noFontScale = ACH:Toggle(L["No Font Scale"], L["Dont scale b
 Fonts.blizzard.inline = true
 
 Fonts.combat = ACH:Group('', nil, 13, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
-Fonts.combat.args.dmgfont = ACH:SharedMediaFont(L["Combat Font"], L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"], 1, nil, nil, nil, function() return E.eyefinity or E.ultrawide or not E.private.general.replaceCombatFont end)
+Fonts.combat.args.dmgfont = ACH:SharedMediaFont(L["Combat Font"], L["The font that combat text will use. |cffFF3333WARNING: This requires a game restart or re-log for this change to take effect.|r"], 1, nil, nil, nil, function() return not E.private.general.replaceCombatFont end)
 Fonts.combat.args.replaceCombatFont = ACH:Toggle(L["Enable"], nil, 2, nil, nil, 130)
 Fonts.combat.args.replaceCombatText = ACH:Toggle(L["Replace Text on Me"], nil, 3, nil, nil, nil, nil, nil, function() return not E.private.general.replaceCombatFont end)
 Fonts.combat.inline = true
