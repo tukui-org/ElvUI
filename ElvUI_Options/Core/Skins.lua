@@ -64,6 +64,7 @@ if E.Mists or E.Retail then
 	toggles.pvp = L["PvP Frames"]
 	toggles.petbattleui = L["Pet Battle"]
 	toggles.transmogrify = L["TRANSMOGRIFY"]
+	toggles.guild = L["Guild"]
 end
 
 if not E.Retail then
@@ -93,7 +94,6 @@ if E.Retail then
 	toggles.genericTrait = L["Generic Trait"]
 	toggles.gmChat = L["GM Chat"]
 	toggles.guide = L["Guide Frame"]
-	toggles.guild = L["Guild"]
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]
 	toggles.itemInteraction = L["Item Interaction"]
