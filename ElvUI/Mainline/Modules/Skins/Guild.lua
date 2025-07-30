@@ -222,8 +222,10 @@ function S:GuildInviteFrame()
 	GuildInviteFrame:SetTemplate('Transparent')
 	GuildInviteFrame.Points:ClearAllPoints()
 	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
+
 	S:HandleButton(_G.GuildInviteFrameJoinButton)
 	S:HandleButton(_G.GuildInviteFrameDeclineButton)
+
 	GuildInviteFrame:Height(225)
 	GuildInviteFrame:HookScript('OnEvent', function()
 		GuildInviteFrame:Height(225)
