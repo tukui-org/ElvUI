@@ -62,7 +62,9 @@ function S:Blizzard_PVPUI()
 	local HonorFrame = _G.HonorQueueFrame
 	HonorFrame:StripTextures()
 
+	_G.HonorQueueFrame.RoleInset.Background:Kill()
 	_G.HonorQueueFrame.RoleInset.NineSlice:StripTextures()
+
 	S:HandleScrollBar(_G.HonorQueueFrameSpecificFrameScrollBar)
 
 	local BonusFrame = HonorFrame.BonusFrame
