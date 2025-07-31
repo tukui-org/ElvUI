@@ -21,28 +21,32 @@ function S:LossOfControlFrame()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
 	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
 
-	hooksecurefunc(_G.LossOfControlMixin, 'SetUpDisplay', function(animate, data)
-		self.Icon:ClearAllPoints()
-		self.Icon:Point('CENTER', self, 'CENTER', 0, 0)
+	hooksecurefunc(_G.LossOfControlMixin, 'SetUpDisplay', function(frame, animate, data)
+		frame.Icon:ClearAllPoints()
+		frame.Icon:Point('CENTER', frame, 'CENTER', 0, 0)
 
-		self.AbilityName:ClearAllPoints()
-		self.AbilityName:Point('BOTTOM', self, 0, -28)
-		self.AbilityName.scrollTime = nil
-		self.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
+		if frame.AbilityName then
+			frame.AbilityName:ClearAllPoints()
+			frame.AbilityName:Point('BOTTOM', frame, 0, -28)
+			frame.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
+			frame.AbilityName.scrollTime = nil -- huh?
+		end
 
-		self.TimeLeft.NumberText:ClearAllPoints()
-		self.TimeLeft.NumberText:Point('BOTTOM', self, 4, -58)
-		self.TimeLeft.NumberText.scrollTime = nil
-		self.TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
+		if frame.TimeLeft then
+			frame.TimeLeft.NumberText:ClearAllPoints()
+			frame.TimeLeft.NumberText:Point('BOTTOM', frame, 4, -58)
+			frame.TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
+			frame.TimeLeft.NumberText.scrollTime = nil -- huh?
 
-		self.TimeLeft.SecondsText:ClearAllPoints()
-		self.TimeLeft.SecondsText:Point('BOTTOM', self, 0, -80)
-		self.TimeLeft.SecondsText.scrollTime = nil
-		self.TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
+			frame.TimeLeft.SecondsText:ClearAllPoints()
+			frame.TimeLeft.SecondsText:Point('BOTTOM', frame, 0, -80)
+			frame.TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
+			frame.TimeLeft.SecondsText.scrollTime = nil -- huh?
+		end
 
 		-- always stop shake animation on start
-		if self.Anim:IsPlaying() then
-			self.Anim:Stop()
+		if frame.Anim:IsPlaying() then
+			frame.Anim:Stop()
 		end
 	end)
 end
