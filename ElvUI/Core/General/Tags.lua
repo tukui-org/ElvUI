@@ -1591,7 +1591,7 @@ E.TagInfo = {
 		['factioncolor'] = { category = 'Colors', description = "Colors names by Faction (Alliance, Horde, Neutral)" },
 		['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 		['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
-		['happiness:color'] = { hidden = E.Retail, category = 'Colors', description = "Changes the text color, depending on the pet happiness" },
+		['happiness:color'] = { hidden = not E.Classic, category = 'Colors', description = "Changes the text color, depending on the pet happiness" },
 	-- Guild
 		['guild:brackets:translit'] = { category = 'Guild', description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" },
 		['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
@@ -1648,9 +1648,9 @@ E.TagInfo = {
 		['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
 	--Hunter
 		['diet'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the diet of your pet (Fish, Meat, ...)" },
-		['happiness:discord'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
-		['happiness:full'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
-		['happiness:icon'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
+		['happiness:discord'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
+		['happiness:full'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
+		['happiness:icon'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
 		['loyalty'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet loyalty level" },
 	-- Level
 		['level'] = { category = 'Level', description = "Displays the level of the unit" },
