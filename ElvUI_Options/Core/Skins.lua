@@ -112,7 +112,6 @@ if E.Retail then
 	toggles.soulbinds = L["Soulbinds"]
 	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
-	toggles.voidstorage = L["VOID_STORAGE"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Mists then
 	toggles.arenaRegistrar = L["Arena Registrar"]

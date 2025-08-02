@@ -1927,7 +1927,6 @@ L["Vertical Spacing"] = "垂直间隔"
 L["Vertical"] = "垂直"
 L["Visibility State"] = "可见状态"
 L["Visibility"] = "可见性"
-L["VOID_STORAGE"] = "虚空仓库"
 L["WeakAuras"] = true --No need to translate
 L["Weekly Rewards"] = "每周奖励"
 L["What point to anchor to the frame you set to attach to."] = "框架的定位对齐方向"
