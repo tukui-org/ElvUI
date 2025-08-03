@@ -28,7 +28,7 @@ function Private.nierror(...)
 end
 
 function Private.unitExists(unit)
-	return unit and (UnitExists(unit) or ShowBossFrameWhenUninteractable(unit))
+	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
 local validator = CreateFrame('Frame')
