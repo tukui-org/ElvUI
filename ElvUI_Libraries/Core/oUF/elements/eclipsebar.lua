@@ -7,9 +7,10 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetShapeshiftForm = GetShapeshiftForm
-local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetEclipseDirection = GetEclipseDirection
+
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
 local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
@@ -86,7 +87,7 @@ local function Visibility(self)
 	local shouldEnable
 
 	local form = GetShapeshiftForm()
-	local treant = IsSpellKnownOrOverridesKnown(TREANT_GLYPH)
+	local treant = IsSpellInSpellBook(TREANT_GLYPH)
 	if (form == 0) or (not treant and form == 5) or (treant and (form == 5 or form == 6)) then
 		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
 	end

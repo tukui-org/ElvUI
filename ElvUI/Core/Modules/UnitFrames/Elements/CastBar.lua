@@ -8,14 +8,15 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetTime = GetTime
-local IsPlayerSpell = IsPlayerSpell
 local UnitCanAttack = UnitCanAttack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
-local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
+
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 do
 	local pipMapColor = {4, 1, 2, 3, 5}
@@ -515,7 +516,7 @@ function UF:PostCastStart(unit)
 		local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
 		if talentTicks then
 			for auraID, tickCount in next, talentTicks do
-				if IsSpellKnownOrOverridesKnown(auraID) or IsPlayerSpell(auraID) then
+				if IsSpellInSpellBook(auraID) or IsSpellKnown(auraID) then
 					baseTicks = tickCount
 					break -- found one so stop
 				end
