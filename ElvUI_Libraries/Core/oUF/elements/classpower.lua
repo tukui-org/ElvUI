@@ -75,6 +75,7 @@ local POWERTYPE_ESSENCE = Enum.PowerType.Essence or 19
 local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 local ClassPowerType, ClassPowerID = {
 	[POWERTYPE_CHI] = 'CHI',

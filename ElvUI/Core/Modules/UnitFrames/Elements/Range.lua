@@ -11,9 +11,10 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitCanAttack = UnitCanAttack
 local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local CheckInteractDistance = CheckInteractDistance
 local InCombatLockdown = InCombatLockdown
+
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 
 local IsSpellInRange = C_Spell.IsSpellInRange
 local UnitPhaseReason = UnitPhaseReason
@@ -33,7 +34,7 @@ function UF:UpdateRangeList(db)
 				end
 			end
 
-			if id and IsSpellKnownOrOverridesKnown(id) then
+			if id and IsSpellInSpellBook(id) then
 				spells[id] = true
 			end
 		end

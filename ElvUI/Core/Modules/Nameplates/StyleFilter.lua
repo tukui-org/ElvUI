@@ -13,9 +13,7 @@ local GetTime = GetTime
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local IsPlayerSpell = IsPlayerSpell
 local IsResting = IsResting
-local IsSpellKnownOrOverridesKnown = IsSpellKnownOrOverridesKnown
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -48,6 +46,8 @@ local UnitThreatSituation = UnitThreatSituation
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -1157,9 +1157,9 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 				if name then -- check spell name valid
 					local known
 					if trigger.known.playerSpell then
-						known = IsPlayerSpell(spellID)
+						known = IsSpellKnown(spellID)
 					else
-						known = IsSpellKnownOrOverridesKnown(spellID)
+						known = IsSpellInSpellBook(spellID)
 					end
 
 					if (not trigger.known.notKnown and known) or (trigger.known.notKnown and not known) then passed = true else return end
