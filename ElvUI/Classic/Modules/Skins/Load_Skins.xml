@@ -1,8 +1,8 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='AddonManager.lua'/>
 	<Script file='AuctionHouse.lua'/>
-	<Script file='Battlefield.lua'/>
 	<Script file='Bags.lua'/>
+	<Script file='Battlefield.lua'/>
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='BGScore.lua'/>
