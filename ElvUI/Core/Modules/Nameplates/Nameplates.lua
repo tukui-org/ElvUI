@@ -38,9 +38,9 @@ local UnitReaction = UnitReaction
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
 local UnitWidgetSet = UnitWidgetSet
+local UnitIsVisible = UnitIsVisible
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
-local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -58,7 +58,7 @@ do	-- credit: oUF/private.lua
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
 
 	function NP:UnitExists(unit)
-		return unit and UnitExists(unit) or E.Retail and ShowBossFrameWhenUninteractable(unit)
+		return unit and (UnitExists(unit) or UnitIsVisible(unit))
 	end
 
 	function NP:UnitSelectionType(unit, considerHostile)
