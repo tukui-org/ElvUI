@@ -516,7 +516,7 @@ function UF:PostCastStart(unit)
 		local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
 		if talentTicks then
 			for auraID, tickCount in next, talentTicks do
-				if IsSpellInSpellBook(auraID) or IsSpellKnown(auraID) then
+				if IsSpellInSpellBook(auraID, nil, true) or IsSpellKnown(auraID) then
 					baseTicks = tickCount
 					break -- found one so stop
 				end

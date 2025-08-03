@@ -87,7 +87,7 @@ local function Visibility(self)
 	local shouldEnable
 
 	local form = GetShapeshiftForm()
-	local treant = IsSpellInSpellBook(TREANT_GLYPH)
+	local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true)
 	if (form == 0) or (not treant and form == 5) or (treant and (form == 5 or form == 6)) then
 		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
 	end

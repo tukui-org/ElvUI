@@ -34,7 +34,7 @@ function UF:UpdateRangeList(db)
 				end
 			end
 
-			if id and IsSpellInSpellBook(id) then
+			if id and IsSpellInSpellBook(id, nil, true) then
 				spells[id] = true
 			end
 		end

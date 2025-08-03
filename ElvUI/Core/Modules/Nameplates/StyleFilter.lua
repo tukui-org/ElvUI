@@ -1159,7 +1159,7 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 					if trigger.known.playerSpell then
 						known = IsSpellKnown(spellID)
 					else
-						known = IsSpellInSpellBook(spellID)
+						known = IsSpellInSpellBook(spellID, nil, true)
 					end
 
 					if (not trigger.known.notKnown and known) or (trigger.known.notKnown and not known) then passed = true else return end
