@@ -78,6 +78,7 @@ local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
 local NumberFontNormalSmallGray = NumberFontNormalSmallGray
 local NumberFontNormal = NumberFontNormal
 
+local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
 local UnitAura = UnitAura

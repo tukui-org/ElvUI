@@ -6,7 +6,7 @@ local LCG = E.Libs.CustomGlow
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
-local IsSpellOverlayed = IsSpellOverlayed
+local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
