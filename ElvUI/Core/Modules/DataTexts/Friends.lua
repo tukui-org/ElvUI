@@ -16,7 +16,6 @@ local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsAltKeyDown = IsAltKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
-local SendChatMessage = SendChatMessage
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
@@ -28,6 +27,7 @@ local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
+local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
