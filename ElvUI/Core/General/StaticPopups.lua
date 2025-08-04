@@ -373,9 +373,9 @@ function E:StaticPopup_OnShow()
 		OnShow(self, self.data)
 	end
 
-	local moneyInputFrameName = dialog.hasMoneyInputFrame and self:GetName()
-	if moneyInputFrameName then
-		_G[moneyInputFrameName..'MoneyInputFrameGold']:SetFocus()
+	local dialogName = self:GetName()
+	if dialog.hasMoneyInputFrame then
+		_G[dialogName..'MoneyInputFrameGold']:SetFocus()
 	end
 
 	if dialog.enterClicksFirstButton or dialog.hideOnEscape then
