@@ -1187,10 +1187,10 @@ function E:Contruct_StaticPopups()
 		checkbuttontext:SetTextColor(1,0.17,0.26)
 		checkbuttontext:Point('LEFT', checkbutton, 'RIGHT', 4, 1)
 
-		--Skin
-		if E.Retail then
+		if popup.Border then
 			popup.Border:StripTextures()
 		end
+
 		popup:SetTemplate('Transparent')
 
 		for i = 1, 4 do
@@ -1234,6 +1234,11 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index] = popup
 	end
 
-	E:SecureHook('StaticPopup_SetUpPosition')
-	E:SecureHook('StaticPopup_CollapseTable')
+	if _G.StaticPopup_SetUpPosition then
+		E:SecureHook('StaticPopup_SetUpPosition')
+	end
+
+	if _G.StaticPopup_CollapseTable then
+		E:SecureHook('StaticPopup_CollapseTable')
+	end
 end
