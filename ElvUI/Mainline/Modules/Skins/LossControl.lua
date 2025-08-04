@@ -21,7 +21,9 @@ function S:LossOfControlFrame()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
 	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
 
-	hooksecurefunc(_G.LossOfControlMixin, 'SetUpDisplay', function(frame, animate, data)
+	hooksecurefunc(LossOfControlFrame, 'SetUpDisplay', function(frame)
+		if not frame then return end
+
 		frame.Icon:ClearAllPoints()
 		frame.Icon:Point('CENTER', frame, 'CENTER', 0, 0)
 
