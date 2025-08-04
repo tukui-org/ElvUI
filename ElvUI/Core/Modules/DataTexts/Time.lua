@@ -119,33 +119,6 @@ if E.locale == 'deDE' then -- O.O
 end
 
 local instanceIconByName = {}
-local instanceIconSuffixes = {
-	["Molten Core"] = "moltencore",
-	["Blackwing Lair"] = "blackwinglair",
-	["Onyxia's Lair"] = "onyxia",
-	["Ruins of Ahn'Qiraj"] = "ruinsofahnqiraj",
-	["Ahn'Qiraj Temple"] = "templeofahnqiraj",
-	["Karazhan"] = "karazhan",
-	["Magtheridon's Lair"] = "magtheridonslair",
-	["Gruul's Lair"] = "gruulslair",
-	["Coilfang: Serpentshrine Cavern"] = "coilfangreservoir",
-	["Tempest Keep"] = "tempestkeep",
-	["The Battle for Mount Hyjal"] = "cavernsoftime",
-	["Black Temple"] = "blacktemple",
-	["Naxxramas"] = "naxxramas",
-	["The Sunwell"] = "sunwellplateau",
-	["Ulduar"] = "ulduar",
-	["The Obsidian Sanctum"] = "obsidiansanctum",
-	["The Eye of Eternity"] = "eyeofeternity",
-	["Trial of the Crusader"] = "trialofthecrusader",
-	["Icecrown Citadel"] = "icecrowncitadel",
-	["The Ruby Sanctum"] = "rubysanctum"
-}
-
-for name, suffix in pairs(instanceIconSuffixes) do
-	instanceIconByName[name] = "Interface\\EncounterJournal\\ui-ej-dungeonbutton-" .. suffix
-end
-
 local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table (@Merathilis :x)
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
@@ -302,39 +275,6 @@ local function OnEnter()
 				DT.tooltip:AddDoubleLine(name, ToTime(reset), 1, 1, 1, 0.8, 0.8, 0.8)
 			end
 		end
-	end
-
-	-- Adds world boss checks for MoP Classic
-	local sharedPandariaIcon = "Interface\\EncounterJournal\\ui-ej-dungeonbutton-pandaria"
-	local mopWorldBossIDs = {
-		["Galleon"] = 32098,
-		["Sha of Anger"] = 32099,
-		["Oondasta"] = 32519,
-		["Nalak"] = 32518
-	}
-	
-	local mopWorldBosses = {}
-	local worldBossIconByName = {}
-	
-	for name, questID in pairs(mopWorldBossIDs) do
-		tinsert(mopWorldBosses, { name = name, questID = questID })
-		worldBossIconByName[name] = sharedPandariaIcon
-	end
-
-	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
-	local addedHeader = false
-	
-	for _, boss in ipairs(mopWorldBosses) do
-	    if C_QuestLog.IsQuestFlaggedCompleted(boss.questID) then
-	        if not addedHeader then
-	            DT.tooltip:AddLine(" ")
-	            DT.tooltip:AddLine("World Bosses")
-	            addedHeader = true
-	        end
-	
-	        local icon = worldBossIconByName[boss.name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', worldBossIconByName[boss.name]) or ''
-	        DT.tooltip:AddDoubleLine(icon .. boss.name, ToTime(weeklyReset), 1, 1, 1, 0.8, 0.8, 0.8)
-	    end
 	end
 
 	local Hr, Min, Sec, AmPm = GetTimeValues(true)
