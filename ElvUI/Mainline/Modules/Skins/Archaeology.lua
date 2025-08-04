@@ -53,6 +53,10 @@ function S:Blizzard_ArchaeologyUI()
 		_G.ArchaeologyFrameBgRight:SetDrawLayer('BACKGROUND', 2)
 	end
 
+	if E.global.general.disableTutorialButtons then
+		_G.ArchaeologyFrameInfoButton:Kill()
+	end
+
 	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)
 	S:HandleButton(ArchaeologyFrame.summaryPage.nextPageButton, nil, nil, true)
 	S:HandleButton(ArchaeologyFrame.completedPage.prevPageButton, nil, nil, true)
