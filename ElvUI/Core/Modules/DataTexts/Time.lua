@@ -118,7 +118,6 @@ if E.locale == 'deDE' then -- O.O
 	InstanceNameByID[1203] = 'Azurblaues Gewölbe'		-- 'Das Azurblaue Gewölbe'
 end
 
--- Fixed saved raid instances not having icons in classic due to pre-cata raids not having EJ entries
 local instanceIconByName = {}
 local instanceIconSuffixes = {
 	["Molten Core"] = "moltencore",
@@ -146,7 +145,6 @@ local instanceIconSuffixes = {
 for name, suffix in pairs(instanceIconSuffixes) do
 	instanceIconByName[name] = "Interface\\EncounterJournal\\ui-ej-dungeonbutton-" .. suffix
 end
-
 
 local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table (@Merathilis :x)
 local function GetInstanceImages(index, raid)
@@ -359,7 +357,17 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == 'UPDATE_INSTANCE_INFO' or event == 'ENCOUNTER_END' then
+	if event == 'ELVUI_FORCE_UPDATE' or event == 'BOSS_KILL' then
+		RequestRaidInfo()
+
+		if not collectedImages then
+			CollectImages()
+		end
+	elseif event == 'LOADING_SCREEN_ENABLED' then
+		if enteredFrame then
+			OnLeave()
+		end
+	else
 		wipe(lockedInstances.raids)
 		wipe(lockedInstances.dungeons)
 
@@ -380,14 +388,6 @@ local function OnEvent(self, event)
 		if enteredFrame then
 			OnEnter(self)
 		end
-	elseif event == 'ELVUI_FORCE_UPDATE' then
-		RequestRaidInfo()
-
-		if not collectedImages then
-			CollectImages()
-		end
-	elseif event == 'LOADING_SCREEN_ENABLED' and enteredFrame then
-		OnLeave()
 	end
 end
 
@@ -426,4 +426,4 @@ local function ApplySettings(self, hex)
 	OnUpdate(self, 20000)
 end
 
-DT:RegisterDatatext('Time', nil, { 'UPDATE_INSTANCE_INFO', 'LOADING_SCREEN_ENABLED', 'ENCOUNTER_END' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
+DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
