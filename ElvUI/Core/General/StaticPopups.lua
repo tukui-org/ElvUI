@@ -650,10 +650,10 @@ end
 function E:StaticPopup_EditBoxOnEnterPressed()
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnEnterPressed(self) then
 		local parent = self:GetParent()
-		local owner = parent:GetParent()
+		local owner = parent and parent:GetParent()
 		local which, dialog
 
-		if parent.which then
+		if parent and parent.which then
 			which = parent.which
 			dialog = parent
 		elseif owner and owner.which then -- This is needed if this is a money input frame since it's nested deeper than a normal edit box
@@ -671,7 +671,7 @@ end
 
 function E:StaticPopup_EditBoxOnEscapePressed()
 	local parent = self:GetParent()
-	local popup = E.PopupDialogs[parent.which]
+	local popup = parent and E.PopupDialogs[parent.which]
 	local onEscapePressed = popup and popup.EditBoxOnEscapePressed
 	if onEscapePressed then
 		onEscapePressed(self, parent.data)
@@ -681,7 +681,7 @@ end
 function E:StaticPopup_EditBoxOnTextChanged(userInput)
 	if not self.autoCompleteParams or not AutoCompleteEditBox_OnTextChanged(self, userInput) then
 		local parent = self:GetParent()
-		local popup = E.PopupDialogs[parent.which]
+		local popup = parent and E.PopupDialogs[parent.which]
 		local onTextChanged = popup and popup.EditBoxOnTextChanged
 		if onTextChanged then
 			onTextChanged(self, parent.data)
@@ -887,11 +887,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			editBox:SetMaxBytes(info.maxBytes)
 		end
 
-		if info.editBoxWidth then
-			editBox:Width(info.editBoxWidth)
-		else
-			editBox:Width(130)
-		end
+		editBox:Width(info.editBoxWidth or 130)
 	else
 		editBox:Hide()
 	end
@@ -929,7 +925,11 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 		if data and type(data) == 'table' then
 			itemFrame.link = data.link
-			_G[dialogName..'ItemFrameIconTexture']:SetTexture(data.texture)
+
+			local iconTexture = _G[dialogName..'ItemFrameIconTexture']
+			if iconTexture then
+				iconTexture:SetTexture(data.texture)
+			end
 
 			local nameText = _G[dialogName..'ItemFrameText']
 			if nameText then
@@ -1074,7 +1074,6 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	editBox.autoCompleteParams = info.autoCompleteParams
 	editBox.autoCompleteRegex = info.autoCompleteRegex
 	editBox.autoCompleteFormatRegex = info.autoCompleteFormatRegex
-
 	editBox.addHighlightedText = true
 
 	-- Finally size and show the dialog
@@ -1100,12 +1099,14 @@ function E:StaticPopup_Hide(which, data)
 end
 
 function E:StaticPopup_ButtonOnClick()
-	E.StaticPopup_OnClick(self:GetParent(), self:GetID())
+	local id = self:GetID()
+	local parent = self:GetParent()
+	E.StaticPopup_OnClick(parent, id)
 end
 
 function E:StaticPopup_CheckButtonOnClick()
 	local parent = self:GetParent()
-	local which = parent.which
+	local which = parent and parent.which
 	local info = E.PopupDialogs[which]
 	if not info then return end
 
@@ -1158,7 +1159,7 @@ end
 function E:StaticPopup_PositionSecureButton(popup, popupButton, secureButton)
 	secureButton:SetParent(popup)
 	secureButton:SetAllPoints(popupButton)
-	secureButton:Size(popupButton:GetSize())
+	secureButton:SetSize(popupButton:GetSize())
 end
 
 function E:StaticPopup_SetSecureButton(which, btn)
