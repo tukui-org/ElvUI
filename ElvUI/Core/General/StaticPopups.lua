@@ -543,11 +543,18 @@ function E:StaticPopup_OnUpdate(elapsed)
 		if self.startDelay <= 0 then
 			self.startDelay = nil
 
-			local text = _G[dialogName..'Text']
-			text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
 			button1:Enable()
 
-			StaticPopup_Resize(self, self.which)
+			local text = _G[dialogName..'Text']
+			if text then
+				text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
+			end
+
+			if StaticPopup_Resize then
+				StaticPopup_Resize(self, self.which)
+			elseif self.Resize then
+				self:Resize(self.which)
+			end
 
 			return
 		end
