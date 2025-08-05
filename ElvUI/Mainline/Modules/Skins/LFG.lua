@@ -477,7 +477,6 @@ function S:LookingForGroupFrames()
 	S:HandleTrimScrollBar(LFGListFrame.SearchPanel.ScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
-	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	S:HandleButton(LFGListFrame.SearchPanel.BackToGroupButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
