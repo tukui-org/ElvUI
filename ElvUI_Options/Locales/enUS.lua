@@ -1856,7 +1856,6 @@ L["Vertical Spacing"] = true
 L["Vertical"] = true
 L["Visibility State"] = true
 L["Visibility"] = true
-L["VOID_STORAGE"] = "Void Storage"
 L["WeakAuras"] = true
 L["Weekly Rewards"] = true
 L["What point to anchor to the frame you set to attach to."] = true

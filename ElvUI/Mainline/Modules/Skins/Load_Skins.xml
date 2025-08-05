@@ -101,7 +101,6 @@
 	<Script file='Trade.lua'/>
 	<Script file='Trainer.lua'/>
 	<Script file='TutorialFrame.lua'/>
-	<Script file='VoidStorage.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WeeklyRewards.lua'/>
 	<Script file='WorldMap.lua'/>

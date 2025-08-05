@@ -894,74 +894,76 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[472878] = List(), -- Sludge Claws
 		[473224] = List(), -- Sonic Boom
 	----------------------------------------------------------
-	--------------- The War Within (Season 2) ----------------
+	--------------- The War Within (Season 3) ----------------
 	----------------------------------------------------------
-	-- The MOTHERLODE
-		[263074] = List(), -- Festering Bite
-		[280605] = List(), -- Brain Freeze
-		[257337] = List(), -- Shocking Claw
-		[270882] = List(), -- Blazing Azerite
-		[268797] = List(), -- Transmute: Enemy to Goo
-		[259856] = List(), -- Chemical Burn
-		[269302] = List(), -- Toxic Blades
-		[280604] = List(), -- Iced Spritzer
-		[257371] = List(), -- Tear Gas
-		[257544] = List(), -- Jagged Cut
-		[268846] = List(), -- Echo Blade
-		[262794] = List(), -- Energy Lash
-		[262513] = List(), -- Azerite Heartseeker
-		[260829] = List(), -- Homing Missle (travelling)
-		[260838] = List(), -- Homing Missle (exploded)
-		[263637] = List(), -- Clothesline
-		[262347] = List(), -- Static Pulse
-		[1213141] = List(), -- Heavy Slash
-	-- Theater of Pain
-		[333299] = List(), -- Curse of Desolation 1
-		[333301] = List(), -- Curse of Desolation 2
-		[319539] = List(), -- Soulless
-		[326892] = List(), -- Fixate
-		[321768] = List(), -- On the Hook
-		[323825] = List(), -- Grasping Rift
-		[342675] = List(), -- Bone Spear
-		[323831] = List(), -- Death Grasp
-		[330608] = List(), -- Vile Eruption
-		[330868] = List(), -- Necrotic Bolt Volley
-		[323750] = List(), -- Vile Gas
-		[330700] = List(), -- Decaying Blight
-		[319626] = List(), -- Phantasmal Parasite
-		[324449] = List(), -- Manifest Death
-		[341949] = List(), -- Withering Blight
-		[473576] = List(), -- Well of Darkness (application)
-		[1223804] = List(), -- Well of Darkness (being targeted)
-		[333231] = List(), -- Searing Death
-		[323406] = List(), -- Jagged Gash
-		[330810] = List(), -- Bind Soul
-	-- Operation Mechagon: Workshop
-		[291928] = List(), -- Giga-Zap
-		[292267] = List(), -- Giga-Zap
-		[302274] = List(), -- Fulminating Zap
-		[298669] = List(), -- Taze
-		[295445] = List(), -- Wreck
-		[294929] = List(), -- Blazing Chomp
-		[297257] = List(), -- Electrical Charge
-		[294855] = List(), -- Blossom Blast
-		[291972] = List(), -- Explosive Leap
-		[285443] = List(), -- 'Hidden' Flame Cannon
-		[291974] = List(), -- Obnoxious Monologue
-		[296150] = List(), -- Vent Blast
-		[298602] = List(), -- Smoke Cloud
-		[296560] = List(), -- Clinging Static
-		[297283] = List(), -- Cave In
-		[291914] = List(), -- Cutting Beam
-		[302384] = List(), -- Static Discharge
-		[294195] = List(), -- Arcing Zap
-		[299572] = List(), -- Shrink
-		[300659] = List(), -- Consuming Slime
-		[300650] = List(), -- Suffocating Smog
-		[301712] = List(), -- Pounce
-		[299475] = List(), -- B.O.R.K
-		[293670] = List(), -- Chain Blade
-		[1215411] = List(), -- Puncture
+	-- Eco-Dome Al'dani
+		[1217439] = List(), -- Toxic Regurgitation
+		[1227152] = List(), -- Warp Strike
+		[1219535] = List(), -- Rift Claws
+		[1220390] = List(), -- Warp Strike
+		[1236126] = List(), -- Binding Javelin
+		[1225221] = List(), -- Dread of the Unknown
+		[1217446] = List(), -- Digestive Spittle
+		[1220671] = List(), -- Binding Javelin
+		[1231494] = List(), -- Overgorged Burst
+		[1224865] = List(), -- Fatebound
+		[1231224] = List(), -- Arcane Slash
+		[1221190] = List(), -- Gluttonous Miasma
+		[1221483] = List(), -- Arcing Energy
+		[1222202] = List(), -- Arcane Burn
+	-- Halls of Atonement
+		[335338] = List(), -- Ritual of Woe
+		[326891] = List(), -- Anguish
+		[329321] = List(), -- Jagged Swipe 1
+		[344993] = List(), -- Jagged Swipe 2
+		[319603] = List(), -- Curse of Stone
+		[319611] = List(), -- Turned to Stone
+		[325876] = List(), -- Curse of Obliteration
+		[326632] = List(), -- Stony Veins
+		[323650] = List(), -- Haunting Fixation
+		[326874] = List(), -- Ankle Bites
+		[340446] = List(), -- Mark of Envy
+	-- Tazavesh, the Veiled Market
+		[350804] = List(), -- Collapsing Energy
+		[350885] = List(), -- Hyperlight Jolt
+		[351101] = List(), -- Energy Fragmentation
+		[346828] = List(), -- Sanitizing Field
+		[355641] = List(), -- Scintillate
+		[355451] = List(), -- Undertow
+		[355581] = List(), -- Crackle
+		[349999] = List(), -- Anima Detonation
+		[346961] = List(), -- Purging Field
+		[351956] = List(), -- High-Value Target
+		[346297] = List(), -- Unstable Explosion
+		[347728] = List(), -- Flock!
+		[356408] = List(), -- Ground Stomp
+		[347744] = List(), -- Quickblade
+		[347481] = List(), -- Shuri
+		[355915] = List(), -- Glyph of Restraint
+		[350134] = List(), -- Infinite Breath
+		[350013] = List(), -- Gluttonous Feast
+		[355465] = List(), -- Boulder Throw
+		[346116] = List(), -- Shearing Swings
+		[356011] = List(), -- Beam Splicer
+	---------------------------------------------------------
+	------------------- Manaforge Omega ---------------------
+	---------------------------------------------------------
+	-- Plexus Sentinel
+		[1219459] = List(), -- Manifest Matrices
+		[1219607] = List(), -- Eradicating Salvo
+		[1218625] = List(), -- Displacement Matrix
+	-- Loom'ithar
+		[1226311] = List(5), -- Infusion Tether
+		[1237212] = List(4), -- Piercing Strand
+		[1226721] = List(6), -- Silken Snare
+	-- Soulbinder Naazindhri
+		[1227276] = List(), -- Soulfray Annihilation
+		[1223859] = List(), -- Arcane Expulsion
+	-- Forgeweaver Araz
+	-- The Soul Hunters
+	-- Fractillus
+	-- Nexus-King Salhadaar
+	-- Dimensius, the All-Devouring
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
@@ -1118,15 +1120,51 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Darkflame Cleft
 	-- Operation: Floodgate
 	----------------------------------------------------------
-	--------------- The War Within (Season 2) ----------------
+	--------------- The War Within (Season 3) ----------------
 	----------------------------------------------------------
-	-- The MOTHERLODE
-	-- Theater of Pain
-		[331510] = List(), -- Death Wish
-		[333241] = List(), -- Raging Tantrum
-		[326892] = List(), -- Fixate
-		[330545] = List(), -- Commanding Presences
-	-- Operation Mechagon: Workshop
+	-- Eco-Dome Al'dani
+		[1231234] = List(), -- Protected Core
+		[1231608] = List(), -- Alacrity
+		[1231244] = List(), -- Unstable Core
+		[1217247] = List(), -- Feast
+		[1248702] = List(), -- Spirit Protection
+		[1221133] = List(), -- Hungering Rage
+		[1236703] = List(), -- Eternal Weave
+		[1221532] = List(), -- Erratic Ritual
+		[1219457] = List(), -- Incorporeal
+		[1217232] = List(), -- Devour
+		[1220511] = List(), -- Arcane Overload
+		[1223000] = List(), -- Embrace of K'aresh
+		[1248701] = List(), -- Consume Spirit
+	-- Halls of Atonement
+		[326450] = List(), -- Loyal Beasts
+	-- Tazavesh, the Veiled Market
+		[355147] = List(), -- Fish Invigoration
+		[351960] = List(), -- Static Cling
+		[351088] = List(), -- Relic Link
+		[346296] = List(), -- Instability
+		[355057] = List(), -- Cry of Mrrggllrrgg
+		[355640] = List(), -- Phalanx Field
+		[355783] = List(), -- Force Multiplied
+		[351086] = List(), -- Power Overwhelming
+		[347840] = List(), -- Feral
+		[355782] = List(), -- Force Multiplier
+		[347992] = List(), -- Rotar Body Armor
+	---------------------------------------------------------
+	------------------- Manaforge Omega ---------------------
+	---------------------------------------------------------
+	-- Plexus Sentinel
+		[1241303] = List(), -- Arcanoshield
+	-- Loom'ithar
+		[1238502] = List(), -- Woven Ward
+	-- Soulbinder Naazindhri
+		[1241100] = List(), -- Mystic Lash
+		[1225616] = List(), -- Soulfire Convergence
+	-- Forgeweaver Araz
+	-- The Soul Hunters
+	-- Fractillus
+	-- Nexus-King Salhadaar
+	-- Dimensius, the All-Devouring
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------

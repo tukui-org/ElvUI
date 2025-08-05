@@ -176,7 +176,6 @@ V.skins = {
 		trainer = true,
 		transmogrify = true,
 		tutorials = true,
-		voidstorage = true,
 		weeklyRewards = true,
 		worldmap = true,
 		expansionLanding = true,
