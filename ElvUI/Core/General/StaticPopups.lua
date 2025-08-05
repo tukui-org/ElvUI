@@ -367,19 +367,20 @@ function E:StaticPopup_OnShow()
 	PlaySound(850) --IG_MAINMENU_OPEN
 
 	local dialog = E.PopupDialogs[self.which]
-	local OnShow = dialog.OnShow
+	if dialog then
+		local OnShow = dialog.OnShow
+		if OnShow then
+			OnShow(self, self.data)
+		end
 
-	if OnShow then
-		OnShow(self, self.data)
-	end
+		local dialogName = self:GetName()
+		if dialog.hasMoneyInputFrame then
+			_G[dialogName..'MoneyInputFrameGold']:SetFocus()
+		end
 
-	local dialogName = self:GetName()
-	if dialog.hasMoneyInputFrame then
-		_G[dialogName..'MoneyInputFrameGold']:SetFocus()
-	end
-
-	if dialog.enterClicksFirstButton or dialog.hideOnEscape then
-		self:SetScript('OnKeyDown', E.StaticPopup_OnKeyDown)
+		if dialog.enterClicksFirstButton or dialog.hideOnEscape then
+			self:SetScript('OnKeyDown', E.StaticPopup_OnKeyDown)
+		end
 	end
 
 	-- boost static popups over ace gui
@@ -506,6 +507,10 @@ function E:StaticPopup_OnHide()
 
 	if self.extraFrame then
 		self.extraFrame:Hide()
+	end
+
+	if self.editBox then
+		self.editBox:ClearText()
 	end
 
 	if dialog.enterClicksFirstButton then
@@ -876,7 +881,6 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local editBox = _G[dialogName..'EditBox']
 	if info.hasEditBox then
 		editBox:Show()
-		editBox:SetText('')
 
 		if info.maxLetters then
 			editBox:SetMaxLetters(info.maxLetters)
@@ -954,9 +958,6 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	dialog.hideOnEscape = info.hideOnEscape
 	dialog.exclusive = info.exclusive
 	dialog.enterClicksFirstButton = info.enterClicksFirstButton
-
-	-- Clear out data
-	dialog.data = data
 
 	-- Set the buttons of the dialog
 	local button1 = _G[dialogName..'Button1']
@@ -1183,18 +1184,18 @@ function E:Contruct_StaticPopups()
 
 	for index = 1, MAX_STATIC_POPUPS do
 		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
+
+		popup:SetScript('OnShow', E.StaticPopup_OnShow)
+		popup:SetScript('OnHide', E.StaticPopup_OnHide)
+		popup:SetScript('OnEvent', E.StaticPopup_OnEvent)
+		popup:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
+
 		if popup.Border then
 			popup.Border:StripTextures()
 		end
 
 		popup:SetTemplate('Transparent')
 		popup:SetID(index)
-
-		--Fix Scripts
-		popup:SetScript('OnShow', E.StaticPopup_OnShow)
-		popup:SetScript('OnHide', E.StaticPopup_OnHide)
-		popup:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
-		popup:SetScript('OnEvent', E.StaticPopup_OnEvent)
 
 		local checkbutton = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate')
 		checkbutton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
