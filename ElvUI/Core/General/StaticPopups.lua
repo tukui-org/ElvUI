@@ -772,7 +772,7 @@ function E:StaticPopup_OnEvent()
 end
 
 local tempButtonLocs = {}	--So we don't make a new table each time.
-function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
+function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 	local info = E.PopupDialogs[which]
 	if not info then return end
 
@@ -954,10 +954,12 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 	-- Set the miscellaneous variables for the dialog
 	dialog.which = which
+	dialog.data = data
 	dialog.timeleft = info.timeout
 	dialog.hideOnEscape = info.hideOnEscape
 	dialog.exclusive = info.exclusive
 	dialog.enterClicksFirstButton = info.enterClicksFirstButton
+	dialog.insertedFrame = insertedFrame
 
 	-- Set the buttons of the dialog
 	local button1 = _G[dialogName..'Button1']
