@@ -148,9 +148,12 @@ E.PopupDialogs.DISABLE_INCOMPATIBLE_ADDON = {
 		E.global.ignoreIncompatible = true
 	end,
 	OnCancel = function()
-		local popup = E.PopupDialogs.INCOMPATIBLE_ADDON
 		E:StaticPopup_Hide('DISABLE_INCOMPATIBLE_ADDON')
-		E:StaticPopup_Show('INCOMPATIBLE_ADDON', popup.button1, popup.button2)
+
+		local popup = E.PopupDialogs.INCOMPATIBLE_ADDON
+		if popup then
+			E:StaticPopup_Show('INCOMPATIBLE_ADDON', popup.button1, popup.button2)
+		end
 	end,
 	button1 = L["I Swear"],
 	button2 = DECLINE,
@@ -402,10 +405,10 @@ function E:StaticPopup_EscapePressed()
 	local closed = nil
 	for _, frame in pairs(E.StaticPopup_DisplayedFrames) do
 		if frame:IsShown() and frame.hideOnEscape then
-			local standardDialog = E.PopupDialogs[frame.which]
-			if standardDialog then
-				local OnCancel = standardDialog.OnCancel
-				local noCancelOnEscape = standardDialog.noCancelOnEscape
+			local dialog = E.PopupDialogs[frame.which]
+			if dialog then
+				local OnCancel = dialog.OnCancel
+				local noCancelOnEscape = dialog.noCancelOnEscape
 				if OnCancel and not noCancelOnEscape then
 					OnCancel(frame, frame.data, 'clicked')
 				end
@@ -499,10 +502,15 @@ function E:StaticPopup_OnHide()
 	E:StaticPopup_CollapseTable()
 
 	local dialog = E.PopupDialogs[self.which]
+	if dialog then
+		local OnHide = dialog.OnHide
+		if OnHide then
+			OnHide(self, self.data)
+		end
 
-	local OnHide = dialog.OnHide
-	if OnHide then
-		OnHide(self, self.data)
+		if dialog.enterClicksFirstButton then
+			self:SetScript('OnKeyDown', nil)
+		end
 	end
 
 	if self.extraFrame then
@@ -511,10 +519,6 @@ function E:StaticPopup_OnHide()
 
 	if self.editBox then
 		self.editBox:ClearText()
-	end
-
-	if dialog.enterClicksFirstButton then
-		self:SetScript('OnKeyDown', nil)
 	end
 
 	-- static popup was boosted over ace gui, set it back to normal
@@ -531,6 +535,7 @@ end
 
 function E:StaticPopup_OnUpdate(elapsed)
 	local info = E.PopupDialogs[self.which]
+	if not info then return end
 
 	if self.timeleft and self.timeleft > 0 then
 		self.timeleft = self.timeleft - elapsed
