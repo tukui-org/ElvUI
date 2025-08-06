@@ -1179,11 +1179,6 @@ function B:Layout(isBank)
 	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
 
-	if isBank and not f.fullBank and not E.Retail then
-		f.fullBank = select(2, GetNumBankSlots())
-		f.purchaseBagButton:SetShown(not f.fullBank)
-	end
-
 	if not isBank then
 		local currencies = f.currencyButton
 		if B.numTrackedTokens == 0 then
@@ -2285,14 +2280,10 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 
 		if not E.Retail then
-			f.fullBank = select(2, GetNumBankSlots())
-
-			--Toggle Bags Button
 			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 			f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
-			f.purchaseBagButton:SetShown(not f.fullBank)
 			f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		else
 			f.bagsButton:Hide()
@@ -2944,7 +2935,8 @@ function B:ShowBankTab(f, bankTab)
 
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
-		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
+		f.fullBank = not CanPurchaseBankTab(WARBANDBANK_TYPE)
+
 		if E.Retail then
 			f.BankTabs:Hide()
 			f.WarbandTabs:Show()
@@ -2955,7 +2947,7 @@ function B:ShowBankTab(f, bankTab)
 				f['BankTabs'..bankIndex]:Hide()
 			end
 
-			f.purchaseSecureButton:SetShown(canBuyTab)
+			f.purchaseSecureButton:SetShown(not f.fullBank)
 			f.purchaseSecureButton:SetScript('OnClick', function()
 				PlaySound(852) --IG_MAINMENU_OPTION
 				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = WARBANDBANK_TYPE })
@@ -2965,10 +2957,9 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 	else
 		if E.Retail then
-			local canBuyTab = CanPurchaseBankTab(CHARACTERBANK_TYPE)
+			f.fullBank = not CanPurchaseBankTab(CHARACTERBANK_TYPE)
 
 			for _, bankIndex in next, B.WarbandBanks do
 				f['WarbandTabs'..bankIndex]:Hide()
@@ -2979,18 +2970,20 @@ function B:ShowBankTab(f, bankTab)
 			f.warbandDeposit:Hide()
 			f.warbandReagents:Hide()
 
-			f.purchaseSecureButton:SetShown(canBuyTab)
+			f.purchaseSecureButton:SetShown(not f.fullBank)
 			f.purchaseSecureButton:SetScript('OnClick', function()
 				PlaySound(852) --IG_MAINMENU_OPTION
 				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = CHARACTERBANK_TYPE })
 			end)
 		else
+			f.fullBank = select(2, GetNumBankSlots())
 			f.purchaseBagButton:SetShown(not f.fullBank)
 		end
 
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 	end
+
+	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 
 	if previousTab ~= B.BankTab then
 		B:Layout(true)
