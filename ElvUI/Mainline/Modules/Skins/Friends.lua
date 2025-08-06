@@ -224,8 +224,7 @@ local ButtonsToHandle = {
 	'FriendsFrameIgnorePlayerButton',
 	'FriendsFrameUnsquelchButton',
 	'AddFriendEntryFrameAcceptButton',
-	'AddFriendEntryFrameCancelButton',
-	'AddFriendInfoFrameContinueButton',
+	'AddFriendEntryFrameCancelButton'
 }
 
 local EditBoxBorders = {
@@ -316,12 +315,8 @@ function S:FriendsFrame()
 	_G.WhoFrame:StripTextures()
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
-	_G.WhoFrameEditBoxInset:StripTextures()
-	_G.WhoFrameEditBoxInset.NineSlice:Hide()
-
-	_G.WhoFrameEditBox:CreateBackdrop('Transparent')
-	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBoxInset)
-	_G.WhoFrameEditBox.backdrop:Point('BOTTOMRIGHT', _G.WhoFrameEditBoxInset, -1, 1)
+	_G.WhoFrameEditBox.Backdrop:StripTextures()
+	_G.WhoFrameEditBox.Backdrop:CreateBackdrop()
 
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32

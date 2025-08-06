@@ -157,6 +157,7 @@ function S:ChatConfig()
 	S:HandleButton(_G.ChatConfigFrameOkayButton)
 	S:HandleButton(_G.ChatConfigFrameDefaultButton)
 	S:HandleButton(_G.ChatConfigFrameRedockButton)
+
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton, 'up')
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton, 'down')
 
@@ -175,15 +176,17 @@ function S:ChatConfig()
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()
 
-	S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
-	S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
-	S:HandleButton(_G.TextToSpeechDefaultButton)
-	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
+	if _G.TextToSpeechFramePlaySampleButton then
+		S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
+		S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
+		S:HandleButton(_G.TextToSpeechDefaultButton)
+		S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
 
-	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceDropdown)
-	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
-	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustRateSlider)
-	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustVolumeSlider)
+		S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceDropdown)
+		S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
+		S:HandleSliderFrame(_G.TextToSpeechFrameAdjustRateSlider)
+		S:HandleSliderFrame(_G.TextToSpeechFrameAdjustVolumeSlider)
+	end
 
 	for _, checkbox in pairs({ -- check boxes
 		'PlayActivitySoundWhenNotFocusedCheckButton',

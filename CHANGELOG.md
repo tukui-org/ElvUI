@@ -1,3 +1,30 @@
+### Version 13.95 [ August 6th 2025 ]
+*   Retail
+    *   Priest with Insanity showing is not showing Mana as secondary.
+    *   Currently Static Popups are not working for right now.
+*   Mists
+    *   Quest Icons are now displayed on Nameplates.
+    *   Warlock class bar not updating when swapping specs.
+    *   Chi still wasn't showing for low level Monks without a specialization.
+    *   Chi color settings not displaying.
+    *   Druid Eclipse bar not displaying when using Treant form glyph while in Boomkin form.
+    *   Vendor greys not working for several items.
+    *   Mail box items unable to mouseover with skin active.
+    *   Warlock Castbar ticks don't increase by haste anymore.
+    *   Priest Penance Castbar ticks show properly now.
+    *   Gold Datatext now displays Token price.
+    *   Inspect skin was not working after the recent patch.
+*   Micro bar acting weird when using vertical button alignment.
+*   Micro bar showing incorrect icons when not using Use Icons option.
+*   Mage Arcane charges not showing up when switching specs.
+*   Static popup for some items wasn't properly skinned.
+*   Top Auras has an option to not keep size ratio.
+*   Auto Close Pet Battle tabs not working on Chat.
+*   Bag item upgrade icon should show again if using Pawn.
+*   Always Split Professions option for Bags. (Thanks snowflame0)
+*   Custom Text option to attach to Stagger or Energy Regen bars.
+*   Combat Font can be changed regardless of Ultrawide.
+
 ### Version 13.94 [ July 14th 2025 ]
 *   Mists fixes
     *   Absorb Style shows up in options

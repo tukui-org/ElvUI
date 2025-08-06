@@ -6,13 +6,13 @@ local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 local tonumber, floor, band = tonumber, floor, bit.band
 
-local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetTime = GetTime
 local GetCursorInfo = GetCursorInfo
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemInfo = GetGuildBankItemInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetInventoryItemLink = GetInventoryItemLink
-local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
@@ -46,10 +46,15 @@ local PickupContainerItem = C_Container.PickupContainerItem
 local SplitContainerItem = C_Container.SplitContainerItem
 
 local guildBags = {51,52,53,54,55,56,57,58}
-local bankBags = {BANK_CONTAINER}
+local bankBags = {}
+
 local MAX_MOVE_TIME = 1.25
 
-local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or E.Mists and 11 or 12
+if not E.Retail then
+	tinsert(bankBags, BANK_CONTAINER)
+end
+
+local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or 11
 for i = bankOffset + 1, maxBankSlots do
 	tinsert(bankBags, i)
 end
@@ -63,6 +68,7 @@ local allBags = {}
 for _,i in ipairs(playerBags) do
 	tinsert(allBags, i)
 end
+
 for _,i in ipairs(bankBags) do
 	tinsert(allBags, i)
 end
@@ -204,9 +210,12 @@ local conjured_items = E.Retail and {
 }
 
 local safe = {
-	[BANK_CONTAINER] = true,
 	[0] = true
 }
+
+if not E.Retail then
+	safe[BANK_CONTAINER] = true
+end
 
 local WAIT_TIME = 0.1
 do
