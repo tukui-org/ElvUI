@@ -788,14 +788,18 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
+function B:InventorySearchUpdate(slot)
+	if not slot.BagID or not slot.SlotID then return end
+
+	local info = B:GetContainerItemInfo(slot.BagID, slot.SlotID)
+	slot.searchOverlay:SetShown(info.isFiltered)
+end
+
 function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
-		if self.BagID and self.SlotID then
-			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
-			self.searchOverlay:SetShown(info.isFiltered)
-		end
+		B:InventorySearchUpdate(self)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
 		E:Delay(0.1, B.UpdateSlotColors, B, self, self.isQuestItem, self.QuestID, self.isActiveQuest)
 	elseif event == 'COLOR_OVERRIDE_UPDATED' then
@@ -1347,9 +1351,7 @@ end
 
 function B:UpdateLayout(frame)
 	for index in next, frame.BagIDs do
-		if B:SetBagAssignments(frame.ContainerHolder[index]) then
-			break
-		end
+		B:SetBagAssignments(frame.ContainerHolder[index])
 	end
 end
 
@@ -1885,10 +1887,10 @@ function B:BankTabs_MenuSpawn(menu, bagID)
 	menu:SetParent(UIParent)
 	menu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 
-	local lastID = menu.selectedTabID
+	local lastTab = menu.selectedTabID
 	menu.selectedTabID = bagID
 
-	if lastID == bagID and menu:IsShown() then
+	if lastTab == bagID and menu:IsShown() then
 		menu:Hide()
 	else
 		menu:SetSelectedTab(bagID)
@@ -2813,16 +2815,27 @@ do
 		if E.Retail then
 			local panel = _G.BankPanel
 			if panel then
-				panel.selectedTabID = B.BankTab -- not required to work
-				panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
+				local lastTab = panel.selectedTabID
+				panel.selectedTabID = B.BankTab
 
-				if not panel:IsShown() then
-					panel:Show()
+				if lastTab ~= B.BankTab then
+					panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
+
+					if not panel:IsShown() then
+						panel:Show()
+					end
+
+					panel:SetParent(UIParent)
+					panel:ClearAllPoints()
+					panel:SetPoint('TOP', UIParent, 'BOTTOM')
 				end
 
-				panel:SetParent(UIParent)
-				panel:ClearAllPoints()
-				panel:SetPoint('TOP', UIParent, 'BOTTOM')
+				-- used to display the overlay to show what can go into warband bank
+				for _, bag in next, B.BagFrame.Bags do
+					for _, slot in ipairs(bag) do
+						slot:UpdateItemContextMatching()
+					end
+				end
 			end
 		else
 			_G.BankFrame.activeTabIndex = index
