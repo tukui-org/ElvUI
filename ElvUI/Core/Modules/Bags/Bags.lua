@@ -1862,23 +1862,23 @@ function B:BankTabs_MenuPosition(menu)
 end
 
 function B:BankTabs_MenuSkin(menu)
-	if not menu.IsSkinned then
-		S:HandleIconSelectionFrame(menu)
+	if menu.IsSkinned then return end
 
-		local deposit = menu.DepositSettingsMenu
-		if deposit then
-			S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
+	S:HandleIconSelectionFrame(menu)
 
-			B:BankTabs_PanelCheckbox(deposit.AssignEquipmentCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignConsumablesCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignReagentsCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignJunkCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
-		end
+	local deposit = menu.DepositSettingsMenu
+	if deposit then
+		S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
 
-		menu.IsSkinned = true
+		B:BankTabs_PanelCheckbox(deposit.AssignEquipmentCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignConsumablesCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignReagentsCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignJunkCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
 	end
+
+	menu.IsSkinned = true
 end
 
 function B:BankTabs_MenuSpawn(menu, bagID)
@@ -1898,20 +1898,20 @@ end
 
 function B:BankTabs_ShowSettings(bagID)
 	local panel = _G.BankPanel
-	if panel then
-		panel:SetParent(UIParent)
-		panel:ClearAllPoints()
-		panel:SetPoint('TOP', UIParent, 'BOTTOM')
+	if not panel then return end
 
-		local bankType = B.WarbandBanks[bagID] and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
-		panel.purchasedBankTabData = B:BankTab_PurchasedData(bankType, true)
+	panel:ClearAllPoints()
+	panel:SetPoint('TOP', UIParent, 'BOTTOM')
+	panel:SetParent(UIParent)
 
-		local tabMenu = panel.TabSettingsMenu
-		if tabMenu then
-			B:BankTabs_MenuPosition(tabMenu)
-			B:BankTabs_MenuSpawn(tabMenu, bagID)
-			B:BankTabs_MenuSkin(tabMenu)
-		end
+	local bankType = B.WarbandBanks[bagID] and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
+	panel.purchasedBankTabData = B:BankTab_PurchasedData(bankType, true)
+
+	local menu = panel.TabSettingsMenu
+	if menu then
+		B:BankTabs_MenuPosition(menu)
+		B:BankTabs_MenuSpawn(menu, bagID)
+		B:BankTabs_MenuSkin(menu)
 	end
 end
 
@@ -2806,24 +2806,32 @@ function B:CloseBags()
 end
 
 do
-	local TabIndex = {}
+	local panelIndex = {}
 	for bankID in next, B.WarbandBanks do
-		TabIndex[bankID] = 2
+		panelIndex[bankID] = 2
 	end
 
 	function B:SetBankSelectedTab()
-		local tab = TabIndex[B.BankTab] or 1
+		local index = panelIndex[B.BankTab] or 1
 
-		_G.BankFrame.activeTabIndex = tab
-		_G.BankFrame.selectedTabID = B.BankTab
-		_G.BankFrame.selectedTab = tab
+		if E.Retail then
+			local panel = _G.BankPanel
+			if panel then
+				panel.selectedTabID = B.BankTab -- not required to work
+				panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
+			end
+		else
+			_G.BankFrame.activeTabIndex = index
+			_G.BankFrame.selectedTabID = B.BankTab
+			_G.BankFrame.selectedTab = index
+		end
 
-		return tab
+		return index
 	end
 end
 
 function B:SetBankTabs(f)
-	local activeTab = B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+	local activeTab = B:SetBankSelectedTab()
 	B:SetBankTabColor(f.bankToggle, activeTab, 1)
 	B:SetBankTabColor(f.warbandToggle, activeTab, 2)
 end
@@ -3017,6 +3025,10 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
+	if _G.BankPanel then
+		_G.BankPanel:Show()
+	end
+
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
 	-- keep this over update slots for bank slot assignments
@@ -3061,6 +3073,10 @@ end
 
 function B:CloseBank()
 	_G.BankFrame:Hide()
+
+	if _G.BankPanel then
+		_G.BankPanel:Hide()
+	end
 
 	B:CloseBags()
 end
