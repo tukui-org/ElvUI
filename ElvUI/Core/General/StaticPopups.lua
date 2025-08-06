@@ -1183,7 +1183,7 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, '')
+		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, E.Retail and '' or 'StaticPopupTemplate')
 
 		popup:SetScript('OnShow', E.StaticPopup_OnShow)
 		popup:SetScript('OnHide', E.StaticPopup_OnHide)
