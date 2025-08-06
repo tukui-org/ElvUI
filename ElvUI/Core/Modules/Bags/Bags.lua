@@ -1900,10 +1900,6 @@ function B:BankTabs_ShowSettings(bagID)
 	local panel = _G.BankPanel
 	if not panel then return end
 
-	panel:ClearAllPoints()
-	panel:SetPoint('TOP', UIParent, 'BOTTOM')
-	panel:SetParent(UIParent)
-
 	local bankType = B.WarbandBanks[bagID] and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
 	panel.purchasedBankTabData = B:BankTab_PurchasedData(bankType, true)
 
@@ -2819,6 +2815,14 @@ do
 			if panel then
 				panel.selectedTabID = B.BankTab -- not required to work
 				panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
+
+				if not panel:IsShown() then
+					panel:Show()
+				end
+
+				panel:SetParent(UIParent)
+				panel:ClearAllPoints()
+				panel:SetPoint('TOP', UIParent, 'BOTTOM')
 			end
 		else
 			_G.BankFrame.activeTabIndex = index
@@ -3025,10 +3029,6 @@ function B:OpenBank()
 	B.BankFrame:Show()
 	_G.BankFrame:Show()
 
-	if _G.BankPanel then
-		_G.BankPanel:Show()
-	end
-
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
 	-- keep this over update slots for bank slot assignments
@@ -3074,8 +3074,9 @@ end
 function B:CloseBank()
 	_G.BankFrame:Hide()
 
-	if _G.BankPanel then
-		_G.BankPanel:Hide()
+	local panel = _G.BankPanel
+	if panel and panel:IsShown() then
+		panel:Hide()
 	end
 
 	B:CloseBags()
@@ -3506,6 +3507,8 @@ function B:Initialize()
 		B:RegisterEvent('BANK_TAB_SETTINGS_UPDATED')
 		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+
+		_G.BankPanel:SetScript('OnShow', nil)
 	end
 
 	B:SecureHook('OpenAllBags')
