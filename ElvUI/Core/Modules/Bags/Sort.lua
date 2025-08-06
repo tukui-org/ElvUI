@@ -6,13 +6,13 @@ local tinsert, tremove, sort, wipe = tinsert, tremove, sort, wipe
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 local tonumber, floor, band = tonumber, floor, bit.band
 
-local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetTime = GetTime
 local GetCursorInfo = GetCursorInfo
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetGuildBankItemInfo = GetGuildBankItemInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetInventoryItemLink = GetInventoryItemLink
-local GetTime = GetTime
 local InCombatLockdown = InCombatLockdown
 local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
@@ -20,7 +20,8 @@ local SplitGuildBankItem = SplitGuildBankItem
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
-local BANK_CONTAINER = Enum.BagIndex.Characterbanktab or Enum.BagIndex.Bank
+local BANK_CONTAINER = Enum.BagIndex.Bank
+local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods or BagSlotFlags.ClassProfessionGoods
@@ -45,10 +46,15 @@ local PickupContainerItem = C_Container.PickupContainerItem
 local SplitContainerItem = C_Container.SplitContainerItem
 
 local guildBags = {51,52,53,54,55,56,57,58}
-local bankBags = {BANK_CONTAINER}
+local bankBags = {}
+
 local MAX_MOVE_TIME = 1.25
 
-local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or E.Mists and 11 or 12
+if not E.Retail then
+	tinsert(bankBags, BANK_CONTAINER)
+end
+
+local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or 11
 for i = bankOffset + 1, maxBankSlots do
 	tinsert(bankBags, i)
 end
@@ -62,6 +68,7 @@ local allBags = {}
 for _,i in ipairs(playerBags) do
 	tinsert(allBags, i)
 end
+
 for _,i in ipairs(bankBags) do
 	tinsert(allBags, i)
 end
@@ -203,9 +210,12 @@ local conjured_items = E.Retail and {
 }
 
 local safe = {
-	[BANK_CONTAINER] = true,
 	[0] = true
 }
+
+if not E.Retail then
+	safe[BANK_CONTAINER] = true
+end
 
 local WAIT_TIME = 0.1
 do
@@ -227,8 +237,8 @@ do
 	B.SortUpdateTimer = frame
 end
 
-local function WaitDelay(guild)
-	return (guild and 0.6) or 0.1
+local function WaitDelay(guild, reagent)
+	return (guild and 0.6) or (reagent and 0.3) or 0.1
 end
 
 local function IsGuildBankBag(bagid)
@@ -562,6 +572,8 @@ do
 end
 
 function B:IsSpecialtyBag(bagID)
+	if bagID == REAGENT_CONTAINER then return 'Reagent' end
+
 	if safe[bagID] or IsGuildBankBag(bagID) then return 'Normal' end
 
 	local assigned = B:IsAssignedBag(bagID)
@@ -584,6 +596,9 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local item = bagIDs[B:Encode_BagSlot(bag, slot)]
 	local _, _, rarity, _, _, _, _, _, equipSlot, _, sellPrice, classID, _, bindType, _, _, isReagent = GetItemInfo(item)
+	if targetBag == REAGENT_CONTAINER then
+		return isReagent
+	end
 
 	local assigned = B:IsAssignedBag(targetBag)
 	if assigned then
@@ -939,7 +954,9 @@ function B:DoMove(move)
 	if sourceGuild then QueryGuildBankTab(sourceBag - 50) end
 	if targetGuild then QueryGuildBankTab(targetBag - 50) end
 
-	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild
+	local sourceReagent = sourceBag == REAGENT_CONTAINER
+	local targetReagent = targetBag == REAGENT_CONTAINER
+	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild, sourceReagent or targetReagent
 end
 
 function B:DoMoves()
@@ -975,8 +992,8 @@ function B:DoMoves()
 
 				if (now - lockStop) > MAX_MOVE_TIME then
 					if lastMove and moveRetries < 100 then
-						local success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(lastMove)
-						WAIT_TIME = WaitDelay(wasGuild)
+						local success, moveID, moveSource, targetID, moveTarget, wasGuild, wasReagent = B:DoMove(lastMove)
+						WAIT_TIME = WaitDelay(wasGuild, wasReagent)
 
 						if not success then
 							lockStop = now
@@ -1007,9 +1024,9 @@ function B:DoMoves()
 
 	if #moves > 0 then
 		for i = #moves, 1, -1 do
-			local success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(moves[i])
+			local success, moveID, moveSource, targetID, moveTarget, wasGuild, wasReagent = B:DoMove(moves[i])
 			if not success then
-				WAIT_TIME = WaitDelay(wasGuild)
+				WAIT_TIME = WaitDelay(wasGuild, wasReagent)
 				lockStop = now
 				return
 			end
@@ -1022,7 +1039,7 @@ function B:DoMoves()
 			tremove(moves, i)
 
 			if moves[i-1] then
-				WAIT_TIME = WaitDelay(wasGuild)
+				WAIT_TIME = WaitDelay(wasGuild, wasReagent)
 				return
 			end
 		end

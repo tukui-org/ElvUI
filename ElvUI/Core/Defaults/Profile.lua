@@ -433,6 +433,7 @@ P.databars.azerite.hideAtMaxLevel = true
 --Bags
 P.bags = {
 	sortInverted = true,
+	bankCombined = false,
 	warbandCombined = true,
 	warbandSize = 32,
 	bagSize = 34,
@@ -577,7 +578,11 @@ for i = -3, 12 do
 	end
 end
 
-for id = 14, 17 do -- ignore first bag (13)
+for id = 6, 11 do
+	P.bags.split['bank'..id] = false
+end
+
+for id = 12, 16 do
 	P.bags.split['warband'..id] = false
 end
 

@@ -83,6 +83,7 @@ Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
+Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(L["Combined"], nil, 6)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
@@ -103,13 +104,19 @@ Bags.args.general.args.warbandGroup.args.split.args.warbandSpacing = ACH:Range(L
 Bags.args.general.args.warbandGroup.args.split.args.splitWarband = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.warband end)
 Bags.args.general.args.warbandGroup.args.split.inline = true
 
-for i = 1, (E.Retail and 12 or 11) do
+for i = 1, 11 do
 	local bag = 'bag'..i
 	local lastSlot = (E.Retail and 5 or 4)
 	if i >= 1 and i <= lastSlot then
 		Bags.args.general.args.playerGroup.args.split.args.splitbags.values[bag] = i == 5 and L["Reagent"] or format(L["Bag %d"], i)
-	else
+	elseif not E.Retail then
 		Bags.args.general.args.bankGroup.args.split.args.splitbank.values[bag] = format(L["Bank %d"], i - lastSlot)
+	end
+end
+
+for id, index in next, B.CharacterBanks do
+	if index ~= 1 then
+		Bags.args.general.args.bankGroup.args.split.args.splitbank.values['bank'..id] = format(L["Tab %d"], index)
 	end
 end
 
