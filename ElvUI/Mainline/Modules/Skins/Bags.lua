@@ -9,8 +9,6 @@ local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
-local GetInventoryItemTexture = GetInventoryItemTexture
-local GetInventorySlotInfo = GetInventorySlotInfo
 local hooksecurefunc = hooksecurefunc
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -229,81 +227,7 @@ local function SkinAllBags()
 	SkinBag(1, _G.ContainerFrameCombinedBags)
 end
 
-local function UpdateBankItem(button)
-	if not button.teplate then
-		SkinButton(button)
-	end
-
-	local BankFrame = _G.BankFrame
-	if not BankFrame.IsSkinned then
-		S:HandleButton(_G.BankFramePurchaseButton, true)
-		S:HandleCloseButton(_G.BankFrameCloseButton)
-
-		_G.AccountBankPanel.NineSlice:Kill()
-		_G.BankFrameMoneyFrameBorder:Kill()
-
-		BankFrame:StripTextures(true)
-		BankFrame:SetTemplate('Transparent')
-
-		BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
-		BankFrame.backdrop2:SetTemplate('Transparent')
-		BankFrame.backdrop2:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
-		BankFrame.backdrop2:Point('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
-
-		BankFrame.backdrop3 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
-		BankFrame.backdrop3:SetTemplate('Transparent')
-		BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
-		BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
-
-		BankFrame.IsSkinned = true
-	end
-
-	local ReagentBankFrame = _G.ReagentBankFrame
-	if _G.ReagentBankFrameItem1 and not ReagentBankFrame.backdrop2 then
-		ReagentBankFrame.backdrop2 = CreateFrame('Frame', nil, ReagentBankFrame)
-		ReagentBankFrame.backdrop2:SetTemplate('Transparent')
-		ReagentBankFrame.backdrop2:Point('TOPLEFT', _G.ReagentBankFrameItem1, 'TOPLEFT', -6, 6)
-		ReagentBankFrame.backdrop2:Point('BOTTOMRIGHT', _G.ReagentBankFrameItem98, 'BOTTOMRIGHT', 6, -6)
-	end
-
-	if not button.levelAdjusted then
-		button:OffsetFrameLevel(1)
-		button.levelAdjusted = true
-	end
-
-	local slotID = button:GetID()
-	local inventoryID = button:GetInventorySlot()
-	local textureName = GetInventoryItemTexture('player', inventoryID)
-
-	if textureName then
-		button.icon:SetTexture(textureName)
-	elseif button.isBag then
-		local _, slotTextureName = GetInventorySlotInfo('Bag'..slotID)
-		button.icon:SetTexture(slotTextureName)
-	end
-
-	if not button.isBag then
-		local container = button:GetParent():GetID()
-		local info = B:GetContainerItemInfo(container, slotID)
-		local questInfo = B:GetContainerItemQuestInfo(container, slotID)
-		button.itemID, button.itemLink, button.rarity = info.itemID, info.hyperlink, info.quality
-
-		if info.hyperlink then
-			local _
-			button.name, _, button.quality, _, _, button.type = GetItemInfo(info.hyperlink)
-		else
-			button.name, button.quality, button.type = nil, nil, nil
-		end
-
-		if questInfo.isQuestItem or questInfo.questID then
-			button.type = QUESTS_LABEL
-		end
-
-		UpdateBorderColors(button)
-	end
-end
-
-local function HandleWarbandItem(button)
+local function HandleItem(button)
 	button:StripTextures()
 	button:StyleButton()
 	button:SetTemplate()
@@ -311,10 +235,14 @@ local function HandleWarbandItem(button)
 	button.icon:SetInside()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 
+	if button.Background then
+		button.Background:Hide()
+	end
+
 	S:HandleIconBorder(button.IconBorder)
 end
 
-local function HandleWarbandTab(tab)
+local function HandleTab(tab)
 	S:HandleIcon(tab.Icon, true)
 	S:HandleTab(tab)
 
@@ -322,11 +250,11 @@ local function HandleWarbandTab(tab)
 	tab.Border:SetAlpha(0)
 end
 
-local function RefreshWarbandTabs(frame)
+local function RefreshTabs(frame)
 	if frame.bankTabPool then
 		for tab in frame.bankTabPool:EnumerateActive() do
 			if not tab.IsSkinned then
-				HandleWarbandTab(tab)
+				HandleTab(tab)
 
 				tab.IsSkinned = true
 			end
@@ -334,11 +262,11 @@ local function RefreshWarbandTabs(frame)
 	end
 end
 
-local function GenerateWarbandSlots(frame)
+local function GenerateSlots(frame)
 	if frame.itemButtonPool then
 		for item in frame.itemButtonPool:EnumerateActive() do
 			if not item.IsSkinned then
-				HandleWarbandItem(item)
+				HandleItem(item)
 
 				item.IsSkinned = true
 			end
@@ -346,57 +274,83 @@ local function GenerateWarbandSlots(frame)
 	end
 end
 
+local function HandleAutoSortButton(button)
+	button:StripTextures()
+	button:SetTemplate()
+	button:StyleButton()
+
+	button.Icon = button:CreateTexture()
+	button.Icon:SetTexture(E.Media.Textures.PetBroom)
+	button.Icon:SetTexCoord(unpack(E.TexCoords))
+	button.Icon:SetInside()
+end
+
+local function HandleTabMenu(menu)
+	B:BankTabs_MenuSkin(menu)
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
-	_G.BankSlotsFrame:StripTextures()
-	_G.BankSlotsFrame.EdgeShadows:Hide()
+	local bankFrame = _G.BankFrame
+	if bankFrame then
+		bankFrame:CreateBackdrop('Transparent')
 
-	S:HandleTab(_G.BankFrameTab1)
-	S:HandleTab(_G.BankFrameTab2)
-	S:HandleTab(_G.BankFrameTab3)
+		bankFrame.NineSlice:StripTextures()
+		bankFrame.PortraitContainer:Hide()
+		bankFrame.TopTileStreaks:Hide()
+		bankFrame.Background:Hide()
+		bankFrame.Bg:Hide()
+
+		S:HandleCloseButton(bankFrame.CloseButton)
+
+		local tabSystem = bankFrame.TabSystem
+		if tabSystem then
+			for _, tab in next, tabSystem.tabs do
+				S:HandleTab(tab)
+			end
+		end
+	end
+
 	S:HandleEditBox(_G.BagItemSearchBox)
 	S:HandleEditBox(_G.BankItemSearchBox)
 
-	local warband = _G.AccountBankPanel
-	if warband then
-		S:HandleButton(warband.ItemDepositFrame.DepositButton)
-		S:HandleButton(warband.MoneyFrame.DepositButton)
-		S:HandleButton(warband.MoneyFrame.WithdrawButton)
-		S:HandleCheckBox(warband.ItemDepositFrame.IncludeReagentsCheckbox)
-		warband.EdgeShadows:Hide()
-		warband.MoneyFrame.Border:Hide()
+	local panel = _G.BankPanel
+	if panel then
+		S:HandleButton(panel.MoneyFrame.DepositButton)
+		S:HandleButton(panel.MoneyFrame.WithdrawButton)
+		S:HandleButton(panel.AutoDepositFrame.DepositButton)
+		S:HandleCheckBox(panel.AutoDepositFrame.IncludeReagentsCheckbox)
 
-		warband.backdrop2 = CreateFrame('Frame', nil, warband)
-		warband.backdrop2:SetTemplate('Transparent')
-		warband.backdrop2:Point('TOPLEFT', warband.PurchasePrompt, 'TOPLEFT', 8, 2)
-		warband.backdrop2:Point('BOTTOMRIGHT', warband.PurchasePrompt, 'BOTTOMRIGHT', -6, 2)
+		HandleAutoSortButton(panel.AutoSortButton)
 
-		HandleWarbandTab(warband.PurchaseTab)
+		panel:StripTextures()
+		panel.EdgeShadows:Hide()
+		panel.MoneyFrame.Border:Hide()
 
-		hooksecurefunc(warband, 'RefreshBankTabs', RefreshWarbandTabs)
-		hooksecurefunc(warband, 'GenerateItemSlotsForSelectedTab', GenerateWarbandSlots)
+		panel.PurchasePrompt:StripTextures()
+		S:HandleButton(panel.PurchasePrompt.TabCostFrame.PurchaseButton)
+
+		local tabMenu = panel.TabSettingsMenu
+		if tabMenu then -- skin the tab settings
+			tabMenu:HookScript('OnShow', HandleTabMenu)
+		end
+
+		panel.backdrop2 = CreateFrame('Frame', nil, panel)
+		panel.backdrop2:SetTemplate('Transparent')
+		panel.backdrop2:Point('TOPLEFT', panel.PurchasePrompt, 'TOPLEFT', 8, 2)
+		panel.backdrop2:Point('BOTTOMRIGHT', panel.PurchasePrompt, 'BOTTOMRIGHT', -6, 2)
+
+		HandleTab(panel.PurchaseTab)
+
+		hooksecurefunc(panel, 'RefreshBankTabs', RefreshTabs)
+		hooksecurefunc(panel, 'GenerateItemSlotsForSelectedTab', GenerateSlots)
 	end
 
-	S:HandleButton(_G.ReagentBankFrame.DespositButton)
-	_G.ReagentBankFrame:HookScript('OnShow', _G.ReagentBankFrame.StripTextures)
-	_G.ReagentBankFrame.EdgeShadows:Hide()
-	_G.ReagentBankFrame.UnlockInfo:SetFrameLevel(4)
-
-	for _, icon in next, { _G.BagItemAutoSortButton, _G.BankItemAutoSortButton } do
-		icon:StripTextures()
-		icon:SetTemplate()
-		icon:StyleButton()
-
-		icon.Icon = icon:CreateTexture()
-		icon.Icon:SetTexture(E.Media.Textures.PetBroom)
-		icon.Icon:SetTexCoord(unpack(E.TexCoords))
-		icon.Icon:SetInside()
-	end
+	HandleAutoSortButton(_G.BagItemAutoSortButton)
 
 	_G.BackpackTokenFrame:StripTextures(true)
 	hooksecurefunc(_G.BackpackTokenFrame, 'Update', BackpackToken_Update)
-	hooksecurefunc('BankFrameItemButton_Update', UpdateBankItem)
 
 	SkinAllBags()
 end
