@@ -1948,6 +1948,11 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder.icon:SetTexture(DEFAULT_ICON)
 	holder.icon:SetInside()
 
+	holder.selectedTexture = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
+	holder.selectedTexture:SetInside()
+	holder.selectedTexture:SetColorTexture(1, 1, 1, 0.4)
+	holder.selectedTexture:Hide()
+
 	holder.IconBorder:SetAlpha(0)
 
 	if index == 1 then
@@ -2883,6 +2888,9 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 	local info = data[bankID]
 	local shouldShow = not not info
 	holder:SetEnabled(shouldShow)
+
+	local combined = B.db[B.WarbandBanks[bankID] and 'warbandCombined' or 'bankCombined']
+	holder.selectedTexture:SetShown(not combined and B.BankTab == bankID)
 
 	if info then
 		holder.icon:SetTexture(info.icon or DEFAULT_ICON)
