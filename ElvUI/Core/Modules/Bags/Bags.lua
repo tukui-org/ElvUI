@@ -2331,7 +2331,7 @@ function B:ConstructContainerFrame(name, isBank)
 				end)
 
 				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
-				f.warbandReagents.Text:SetText(L["Include Reagents"])
+				f.warbandReagents.Text:SetText(L["Deposit Reagents"])
 				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
 
 				S:HandleButton(f.warbandToggle)
