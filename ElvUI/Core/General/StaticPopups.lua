@@ -520,6 +520,24 @@ function E:StaticPopup_OnHide()
 		self.editBox:ClearText()
 	end
 
+	if self.insertedFrame then
+		self.insertedFrame:Hide()
+		self.insertedFrame:SetParent(nil)
+
+		local dialogName = self:GetName()
+		local text = _G[dialogName..'Text']
+		local moneyFrame = _G[dialogName..'MoneyFrame']
+		local moneyInputFrame = _G[dialogName..'MoneyInputFrame']
+
+		if moneyFrame then
+			moneyFrame:Point('TOP', text or self, 'BOTTOM', 0, -5)
+		end
+
+		if moneyInputFrame then
+			moneyInputFrame:Point('TOP', text or self, 'BOTTOM', 0, -5)
+		end
+	end
+
 	-- static popup was boosted over ace gui, set it back to normal
 	if self.frameStrataIncreased then
 		self.frameStrataIncreased = nil
@@ -734,13 +752,7 @@ function E:StaticPopup_Resize(dialog, which)
 		dialog.maxWidthSoFar = width
 	end
 
-	if info.wideText then
-		dialog.text:Width(360)
-		dialog.SubText:Width(360)
-	else
-		dialog.text:Width(290)
-		dialog.SubText:Width(290)
-	end
+	dialog.text:Width(info.wideText and 360 or 290)
 
 	local height = 32 + (text and text:GetHeight() or 0) + 8 + button1:GetHeight()
 	if info.hasEditBox then
@@ -961,6 +973,21 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 	dialog.enterClicksFirstButton = info.enterClicksFirstButton
 	dialog.insertedFrame = insertedFrame
 
+	if insertedFrame then
+		insertedFrame:SetParent(dialog)
+		insertedFrame:ClearAllPoints()
+		insertedFrame:Point('TOP', text or dialog, 'BOTTOM')
+		insertedFrame:Show()
+
+		if moneyFrame then
+			moneyFrame:Point('TOP', insertedFrame, 'BOTTOM')
+		end
+
+		if moneyInputFrame then
+			moneyInputFrame:Point('TOP', insertedFrame, 'BOTTOM')
+		end
+	end
+
 	-- Set the buttons of the dialog
 	local button1 = _G[dialogName..'Button1']
 	local button2 = _G[dialogName..'Button2']
@@ -994,7 +1021,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 		dialog.numButtons = numButtons
 
 		if numButtons == 4 then
-			tempButtonLocs[1]:SetPoint('BOTTOMRIGHT', dialog, 'BOTTOM', -139, 16);
+			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -139, 16);
 		elseif numButtons == 3 then
 			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -72, 16)
 		elseif numButtons == 2 then
