@@ -2322,20 +2322,7 @@ function B:ConstructContainerFrame(name, isBank)
 					B:SelectBankTab(f, 13)
 				end)
 
-				f.warbandReagents = CreateFrame('CheckButton', name..'WarbandReagents', f, 'UICheckButtonTemplate')
-				f.warbandReagents:Hide()
-				f.warbandReagents:Size(30)
-				f.warbandReagents:SetChecked(GetCVarBool('bankAutoDepositReagents'))
-				f.warbandReagents:SetScript('OnClick', function(checkButton)
-					E:SetCVar('bankAutoDepositReagents', checkButton:GetChecked())
-				end)
-
-				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
-				f.warbandReagents.Text:SetText(L["Deposit Reagents"])
-				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
-
 				S:HandleButton(f.warbandToggle)
-				S:HandleCheckBox(f.warbandReagents)
 			end
 
 			do -- account bank gold
@@ -2367,8 +2354,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
-
-				f.warbandReagents:Point('LEFT', f.goldWithdraw, 'RIGHT', 5, 0)
 			end
 
 			--Deposite Reagents Button
@@ -2938,7 +2923,6 @@ function B:ShowBankTab(f, bankTab)
 
 		f.BankTabs:Hide()
 		f.WarbandTabs:Show()
-		f.warbandReagents:Show()
 
 		for _, bankIndex in next, B.CharacterBanks do
 			f['BankTabs'..bankIndex]:Hide()
@@ -2967,7 +2951,6 @@ function B:ShowBankTab(f, bankTab)
 
 			f.BankTabs:Show()
 			f.WarbandTabs:Hide()
-			f.warbandReagents:Hide()
 
 			f.purchaseSecureButton:SetShown(not f.fullBank)
 			f.purchaseSecureButton:SetScript('OnClick', function()
