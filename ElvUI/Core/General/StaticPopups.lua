@@ -14,7 +14,6 @@ local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
 local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
-local StaticPopup_Resize = StaticPopup_Resize
 local GetBindingFromClick = GetBindingFromClick
 
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
@@ -570,11 +569,7 @@ function E:StaticPopup_OnUpdate(elapsed)
 				text:SetFormattedText(info.text, text.text_arg1, text.text_arg2)
 			end
 
-			if StaticPopup_Resize then
-				StaticPopup_Resize(self, self.which)
-			elseif self.Resize then
-				self:Resize(self.which)
-			end
+			E:StaticPopup_Resize(self, self.which)
 
 			return
 		end
@@ -953,7 +948,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 				itemFrameCount:Hide()
 			end
 		end
-	else
+	elseif itemFrame then
 		itemFrame:Hide()
 	end
 
@@ -1037,7 +1032,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERTGEAR)
 		alertIcon:Point('LEFT', 24, 0)
 		alertIcon:Show()
-	else
+	elseif alertIcon then
 		alertIcon:SetTexture()
 		alertIcon:Hide()
 	end
@@ -1107,7 +1102,12 @@ end
 function E:StaticPopup_ButtonOnClick()
 	local id = self:GetID()
 	local parent = self:GetParent()
-	E.StaticPopup_OnClick(parent, id)
+
+	if E.Retail then -- has ButtonContainer
+		E.StaticPopup_OnClick(parent:GetParent(), id)
+	else
+		E.StaticPopup_OnClick(parent, id)
+	end
 end
 
 function E:StaticPopup_CheckButtonOnClick()
@@ -1184,16 +1184,32 @@ function E:StaticPopup_HandleButton(button)
 	S:HandleButton(button)
 end
 
+function E:StaticPopup_OnLoad(popup)
+	local name = popup:GetName()
+
+	popup.button1 = _G[name..'Button1']
+	popup.button2 = _G[name..'Button2']
+	popup.button3 = _G[name..'Button3']
+	popup.moneyInputFrame = _G[name..'MoneyInputFrame']
+	popup.icon = _G[name..'AlertIcon']
+	popup.text = _G[name..'Text']
+
+	popup:RegisterEvent('DISPLAY_SIZE_CHANGED')
+end
+
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, E.Retail and '' or 'StaticPopupTemplate')
+		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'ElvUIStaticPopupTemplate')
+
+		E:StaticPopup_OnLoad(popup)
 
 		popup:SetScript('OnShow', E.StaticPopup_OnShow)
 		popup:SetScript('OnHide', E.StaticPopup_OnHide)
 		popup:SetScript('OnEvent', E.StaticPopup_OnEvent)
 		popup:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
+		popup:Hide()
 
 		if popup.Border then
 			popup.Border:StripTextures()
@@ -1227,6 +1243,8 @@ function E:Contruct_StaticPopups()
 
 		local extraButton = _G['ElvUI_StaticPopup'..index..'ExtraButton']
 		if extraButton then
+			extraButton:Hide()
+
 			E:StaticPopup_HandleButton(extraButton)
 		end
 
