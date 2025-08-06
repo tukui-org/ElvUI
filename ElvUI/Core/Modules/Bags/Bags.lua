@@ -302,13 +302,11 @@ end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
 local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or 11
-local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
+local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
 	BAG_SLOT_FLAGS_UPDATED = true,
 	BANK_BAG_SLOT_FLAGS_UPDATED = true,
-	PLAYERBANKSLOTS_CHANGED = true,
-	BAG_CONTAINER_UPDATE = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
@@ -318,13 +316,18 @@ if E.Retail then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bagIDs, REAGENT_CONTAINER)
-elseif E.Classic then
-	tinsert(bankIDs, -1)
-	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
-	tinsert(bagIDs, KEYRING_CONTAINER)
+
+	presistentEvents.BAG_CONTAINER_UPDATE = true
 else
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
+	tinsert(bankEvents, 'PLAYERBANKSLOTS_CHANGED')
+
+	presistentEvents.PLAYERBANKSLOTS_CHANGED = true
+end
+
+if E.Classic then
+	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
 for bankID = bankOffset + 1, maxBankSlots do
@@ -1941,6 +1944,7 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder:SetScript('OnEnter', B.BankTabs_OnEnter)
 	holder:SetScript('OnLeave', B.BankTabs_OnLeave)
 	holder:SetScript('OnClick', B.BankTabs_OnClick)
+	holder:SetID(bagNum)
 
 	if holder.animIcon then
 		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
@@ -1951,10 +1955,6 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder.icon:SetInside()
 
 	holder.IconBorder:SetAlpha(0)
-
-	holder:SetID(bagNum)
-	-- holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
-	-- holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 
 	if index == 1 then
 		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
@@ -2032,10 +2032,10 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 		holder:SetScript('OnDragStart', B.Holder_OnDragStart)
 		holder:SetScript('OnReceiveDrag', B.Holder_OnReceiveDrag)
 
-		if isBank then
+		if isBank and not E.Retail then
 			holder:SetID(index == 1 and BANK_CONTAINER or (bagID - bankOffset))
-			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 		else
 			holder:SetID(ContainerIDToInventoryID(bagID))
 
