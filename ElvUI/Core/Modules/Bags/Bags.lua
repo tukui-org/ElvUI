@@ -2427,6 +2427,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Sort Button
+		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 		f.sortButton:SetScript('OnClick', function()
 			if E.Retail and B.db.useBlizzardCleanup then
 				SortBags()
@@ -2778,6 +2779,22 @@ function B:CloseBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
+function B:PanelShowHidden(panel)
+	if not panel:IsShown() then
+		panel:Show()
+	end
+
+	panel:SetParent(UIParent)
+	panel:ClearAllPoints()
+	panel:SetPoint('TOP', UIParent, 'BOTTOM')
+end
+
+function B:PanelHide(panel)
+	if panel:IsShown() then
+		panel:Hide()
+	end
+end
+
 do
 	local panelIndex = {}
 	for bankID in next, B.WarbandBanks do
@@ -2796,13 +2813,7 @@ do
 				if lastTab ~= B.BankTab then
 					panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
 
-					if not panel:IsShown() then
-						panel:Show()
-					end
-
-					panel:SetParent(UIParent)
-					panel:ClearAllPoints()
-					panel:SetPoint('TOP', UIParent, 'BOTTOM')
+					B:PanelShowHidden(panel)
 				end
 
 				-- used to display the overlay to show what can go into warband bank
@@ -3021,7 +3032,7 @@ end
 
 function B:OpenBank()
 	B.BankFrame:Show()
-	_G.BankFrame:Show()
+	B:PanelShowHidden(_G.BankFrame)
 
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
@@ -3066,12 +3077,8 @@ function B:OpenBank()
 end
 
 function B:CloseBank()
-	_G.BankFrame:Hide()
-
-	local panel = _G.BankPanel
-	if panel and panel:IsShown() then
-		panel:Hide()
-	end
+	B:PanelHide(_G.BankFrame)
+	B:PanelHide(_G.BankPanel)
 
 	B:CloseBags()
 end
