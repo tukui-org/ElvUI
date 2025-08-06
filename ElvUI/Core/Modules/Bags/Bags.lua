@@ -2337,23 +2337,23 @@ function B:ConstructContainerFrame(name, isBank)
 					end
 				end)
 
-				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
-				f.goldDeposit:Size(71, 23)
-				f.goldDeposit:SetText(L["Deposit"])
-				f.goldDeposit:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
-				f.goldDeposit:SetScript('OnClick', function()
-					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
-						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
-					end
-				end)
-
 				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
 				f.goldWithdraw:Size(71, 23)
 				f.goldWithdraw:SetText(L["Withdraw"])
-				f.goldWithdraw:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
+				f.goldWithdraw:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
 				f.goldWithdraw:SetScript('OnClick', function()
 					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
 						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+					end
+				end)
+
+				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
+				f.goldDeposit:Size(71, 23)
+				f.goldDeposit:SetText(L["Deposit"])
+				f.goldDeposit:Point('LEFT', f.goldWithdraw, 'RIGHT', 5, 0)
+				f.goldDeposit:SetScript('OnClick', function()
+					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
+						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
 					end
 				end)
 
