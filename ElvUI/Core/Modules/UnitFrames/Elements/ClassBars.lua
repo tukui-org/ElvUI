@@ -33,9 +33,12 @@ function UF:GetClassPower_Construct(frame)
 		if E.Mists then
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
-	elseif E.Mists and E.myclass == 'MONK' then
+	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
-		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+
+		if E.Mists then
+			frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
+		end
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
