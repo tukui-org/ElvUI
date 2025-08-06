@@ -1197,21 +1197,33 @@ function E:Contruct_StaticPopups()
 		popup:SetTemplate('Transparent')
 		popup:SetID(index)
 
-		local checkbutton = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate')
-		checkbutton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
-		checkbutton:Size(24)
-		S:HandleCheckBox(checkbutton)
+		local frame = _G['ElvUI_StaticPopup'..index]
+		local checkbutton = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', frame, 'UICheckButtonTemplate')
+		if checkbutton then
+			checkbutton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
+			checkbutton:Size(24)
 
-		local checkbuttontext = _G['ElvUI_StaticPopup'..index..'CheckButtonText']
-		checkbuttontext:FontTemplate(nil, nil, 'SHADOW')
-		checkbuttontext:SetTextColor(1,0.17,0.26)
-		checkbuttontext:Point('LEFT', checkbutton, 'RIGHT', 4, 1)
+			S:HandleCheckBox(checkbutton)
 
-		for i = 1, 4 do
-			E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
+			local checkbuttontext = _G['ElvUI_StaticPopup'..index..'CheckButtonText']
+			if checkbuttontext then
+				checkbuttontext:FontTemplate(nil, nil, 'SHADOW')
+				checkbuttontext:SetTextColor(1,0.17,0.26)
+				checkbuttontext:Point('LEFT', checkbutton, 'RIGHT', 4, 1)
+			end
 		end
 
-		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ExtraButton'])
+		for i = 1, 4 do
+			local button = _G['ElvUI_StaticPopup'..index..'Button'..i]
+			if button then
+				E:StaticPopup_HandleButton()
+			end
+		end
+
+		local extraButton = _G['ElvUI_StaticPopup'..index..'ExtraButton']
+		if extraButton then
+			E:StaticPopup_HandleButton(extraButton)
+		end
 
 		local moneyInputFrame = _G['ElvUI_StaticPopup'..index..'MoneyInputFrame']
 		if moneyInputFrame then
@@ -1228,6 +1240,7 @@ function E:Contruct_StaticPopups()
 			editbox:OffsetFrameLevel(1)
 
 			S:HandleEditBox(editbox)
+
 			editbox.backdrop:Point('TOPLEFT', -2, -4)
 			editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 		end
