@@ -1183,7 +1183,7 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
+		local popup = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, '')
 
 		popup:SetScript('OnShow', E.StaticPopup_OnShow)
 		popup:SetScript('OnHide', E.StaticPopup_OnHide)
@@ -1213,19 +1213,24 @@ function E:Contruct_StaticPopups()
 
 		E:StaticPopup_HandleButton(_G['ElvUI_StaticPopup'..index..'ExtraButton'])
 
+		local moneyInputFrame = _G['ElvUI_StaticPopup'..index..'MoneyInputFrame']
+		if moneyInputFrame then
+			S:HandleEditBox(moneyInputFrame.gold)
+			S:HandleEditBox(moneyInputFrame.silver)
+			S:HandleEditBox(moneyInputFrame.copper)
+		end
+
 		local editbox = _G['ElvUI_StaticPopup'..index..'EditBox']
-		editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
-		editbox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
-		editbox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
-		editbox:OffsetFrameLevel(1)
+		if editbox then
+			editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
+			editbox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
+			editbox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
+			editbox:OffsetFrameLevel(1)
 
-		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameGold'])
-		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameSilver'])
-		S:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameCopper'])
-
-		S:HandleEditBox(editbox)
-		editbox.backdrop:Point('TOPLEFT', -2, -4)
-		editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+			S:HandleEditBox(editbox)
+			editbox.backdrop:Point('TOPLEFT', -2, -4)
+			editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+		end
 
 		local nameFrame = _G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']
 		if nameFrame then
