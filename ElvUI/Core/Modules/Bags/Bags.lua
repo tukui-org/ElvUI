@@ -2376,6 +2376,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.depositButton:Size(20)
 			f.depositButton:SetTemplate()
 			f.depositButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
+			f.depositButton.ttText = L["Auto Deposit"]
 			B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
 			f.depositButton:StyleButton(nil, true)
 			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
@@ -2949,7 +2950,6 @@ function B:ShowBankTab(f, bankTab)
 			StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = WARBANDBANK_TYPE })
 		end)
 
-		f.depositButton.ttText = L["Deposit Warbound Items"]
 		f.depositButton:SetScript('OnClick', function()
 			PlaySound(852) --IG_MAINMENU_OPTION
 			AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
@@ -2975,7 +2975,6 @@ function B:ShowBankTab(f, bankTab)
 				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = CHARACTERBANK_TYPE })
 			end)
 
-			f.depositButton.ttText = L["Deposit Reagents"]
 			f.depositButton:SetScript('OnClick', function()
 				PlaySound(852) --IG_MAINMENU_OPTION
 				AutoDepositItemsIntoBank(CHARACTERBANK_TYPE)
