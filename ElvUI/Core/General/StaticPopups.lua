@@ -1221,7 +1221,7 @@ function E:Contruct_StaticPopups()
 		for i = 1, 4 do
 			local button = _G['ElvUI_StaticPopup'..index..'Button'..i]
 			if button then
-				E:StaticPopup_HandleButton()
+				E:StaticPopup_HandleButton(button)
 			end
 		end
 
