@@ -193,6 +193,18 @@ function A:CreateIcon(button)
 	A:UpdateIcon(button)
 end
 
+function A:UpdateTexture(button)
+	local db = A.db[button.auraType]
+	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
+
+	if db.keepSizeRatio then
+		button.texture:SetTexCoord(unpack(E.TexCoords))
+	else
+		local left, right, top, bottom = E:CropRatio(width, height, nil, db.customCoords)
+		button.texture:SetTexCoord(left, right, top, bottom)
+	end
+end
+
 function A:UpdateIcon(button, update)
 	local db = A.db[button.auraType]
 
@@ -208,12 +220,7 @@ function A:UpdateIcon(button, update)
 	end
 
 	if button.texture then
-		if db.keepSizeRatio then
-			button.texture:SetTexCoord(unpack(E.TexCoords))
-		else
-			local left, right, top, bottom = E:CropRatio(width, height, nil, db.customCoords)
-			button.texture:SetTexCoord(left, right, top, bottom)
-		end
+		A:UpdateTexture(button)
 	end
 
 	if button.count then
@@ -305,10 +312,6 @@ function A:UpdateAura(button, index)
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype
-	end
-
-	if button.header.MasqueGroup then
-		button.header.MasqueGroup:ReSkin()
 	end
 
 	if duration > 0 and expiration then
@@ -421,7 +424,27 @@ function A:Button_OnAttributeChanged(attr, value)
 	end
 end
 
+function A:UpdateMasque(header, event)
+	if header.MasqueGroup then
+		header.MasqueGroup:ReSkin()
+
+		if event then -- masque retrims them all so we have to too
+			for _, child in next, { header:GetChildren() } do
+				if child.texture then
+					A:UpdateTexture(child)
+				end
+			end
+		end
+	end
+end
+
 function A:Header_OnEvent(event)
+	if event == 'UNIT_AURA' then
+		A:UpdateMasque(self, event)
+	end
+end
+
+function A:Visibility_OnEvent(event)
 	if event == 'WEAPON_ENCHANT_CHANGED' then
 		local header = self.frame
 		for enchantIndex, button in next, header.enchantButtons do
@@ -433,7 +456,7 @@ function A:Header_OnEvent(event)
 	end
 end
 
-function A:Header_OnUpdate(elapsed)
+function A:Visibility_OnUpdate(elapsed)
 	local header = self.frame
 	if header.elapsedSpells and header.elapsedSpells > 0.1 then
 		local button, value = next(header.spells)
@@ -503,12 +526,18 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
+	A:UpdateMasque(header) -- this will remove the delay when adjusting size in the options
+
 	for index, child in next, { header:GetChildren() } do
 		child.db = db
 		child.auraType = header.auraType -- used to update cooldown text
 
 		A:Update_CooldownOptions(child)
 		A:UpdateIcon(child, true)
+
+		if header.MasqueGroup and child.texture then
+			A:UpdateTexture(child) -- handle the trim again, we skipped this in the above function to reduce a loop
+		end
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
@@ -526,13 +555,14 @@ function A:CreateAuraHeader(filter)
 	header:RegisterUnitEvent('UNIT_AURA', 'player', 'vehicle')
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
+	header:HookScript('OnEvent', A.Header_OnEvent)
 	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
-	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
-	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- dont put this on the main frame
+	header.visibility:SetScript('OnUpdate', A.Visibility_OnUpdate) -- dont put this on the main frame
+	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
