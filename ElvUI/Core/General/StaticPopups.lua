@@ -1219,7 +1219,11 @@ function E:StaticPopup_OnLoad(popup)
 	popup.button1 = _G[name..'Button1']
 	popup.button2 = _G[name..'Button2']
 	popup.button3 = _G[name..'Button3']
+	popup.itemFrame = _G[name..'ItemFrame']
+	popup.extraButton = _G[name..'ExtraButton']
+	popup.moneyFrame = _G[name..'MoneyFrame']
 	popup.moneyInputFrame = _G[name..'MoneyInputFrame']
+	popup.editBox = _G[name..'EditBox']
 	popup.icon = _G[name..'AlertIcon']
 	popup.text = _G[name..'Text']
 
@@ -1297,11 +1301,6 @@ function E:Contruct_StaticPopups()
 			editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 		end
 
-		local nameFrame = _G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']
-		if nameFrame then
-			nameFrame:Kill()
-		end
-
 		local itemFrame = _G['ElvUI_StaticPopup'..index..'ItemFrame']
 		if itemFrame then
 			itemFrame:GetNormalTexture():Kill()
@@ -1313,6 +1312,11 @@ function E:Contruct_StaticPopups()
 		if iconTexture then
 			iconTexture:SetTexCoord(unpack(E.TexCoords))
 			iconTexture:SetInside()
+		end
+
+		local nameFrame = _G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']
+		if nameFrame then
+			nameFrame:Kill()
 		end
 
 		E.StaticPopupFrames[index] = popup
