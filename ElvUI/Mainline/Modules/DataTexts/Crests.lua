@@ -11,10 +11,10 @@ local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 
 local crests = {
 	{ id = 3008, color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor() },		-- Valorstones
-	{ id = 3107, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered
-	{ id = 3108, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved
-	{ id = 3109, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed
-	{ id = 3110, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }		-- Gilded
+	{ id = 3284, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered
+	{ id = 3286, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved
+	{ id = 3288, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed
+	{ id = 3290, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }		-- Gilded
 }
 
 local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
