@@ -1299,10 +1299,7 @@ function E:Contruct_StaticPopups()
 
 			S:HandleEditBox(editbox)
 
-			if editbox.NineSlice then
-				editbox.NineSlice:StripTextures()
-				editbox.backdrop:SetInside(editbox.NineSlice)
-			else
+			if not editbox.NineSlice then
 				editbox.backdrop:Point('TOPLEFT', -2, -4)
 				editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 			end

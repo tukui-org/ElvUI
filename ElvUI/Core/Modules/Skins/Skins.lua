@@ -1215,9 +1215,17 @@ function S:HandleEditBox(frame, template)
 	if frame.backdrop then return end
 
 	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
-	frame.backdrop:SetPoint('TOPLEFT', -2, 0)
-	frame.backdrop:SetPoint('BOTTOMRIGHT')
+
 	S:HandleBlizzardRegions(frame)
+
+	if frame.NineSlice then
+		frame.NineSlice:StripTextures()
+
+		frame.backdrop:SetInside(frame.NineSlice)
+	else
+		frame.backdrop:SetPoint('TOPLEFT', -2, 0)
+		frame.backdrop:SetPoint('BOTTOMRIGHT')
+	end
 
 	local EditBoxName = frame:GetName()
 	if EditBoxName and (strfind(EditBoxName, 'Silver') or strfind(EditBoxName, 'Copper')) then
