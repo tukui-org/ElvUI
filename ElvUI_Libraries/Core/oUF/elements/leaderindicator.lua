@@ -106,6 +106,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		oUF:RegisterEvent(self, 'UNIT_FLAGS', Path)
+		oUF:RegisterEvent(self, 'PLAYER_FLAGS_CHANGED', Path)
 		oUF:RegisterEvent(self, 'GROUP_ROSTER_UPDATE', Path, true)
 		oUF:RegisterEvent(self, 'PARTY_LEADER_CHANGED', Path, true)
 		oUF:RegisterEvent(self, 'PLAYER_REGEN_DISABLED', Path, true)
@@ -121,6 +122,7 @@ local function Disable(self)
 		element:Hide()
 
 		oUF:UnregisterEvent(self, 'UNIT_FLAGS', Path)
+		oUF:UnregisterEvent(self, 'PLAYER_FLAGS_CHANGED', Path)
 		oUF:UnregisterEvent(self, 'GROUP_ROSTER_UPDATE', Path)
 		oUF:UnregisterEvent(self, 'PARTY_LEADER_CHANGED', Path)
 		oUF:UnregisterEvent(self, 'PLAYER_REGEN_DISABLED', Path)
