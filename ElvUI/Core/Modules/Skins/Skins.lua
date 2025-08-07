@@ -1225,11 +1225,11 @@ function S:HandleEditBox(frame, template)
 	else
 		frame.backdrop:SetPoint('TOPLEFT', -2, 0)
 		frame.backdrop:SetPoint('BOTTOMRIGHT')
-	end
 
-	local EditBoxName = frame:GetName()
-	if EditBoxName and (strfind(EditBoxName, 'Silver') or strfind(EditBoxName, 'Copper')) then
-		frame.backdrop:Point('BOTTOMRIGHT', -12, -2)
+		local name = frame:GetName()
+		if name and (strfind(name, 'Silver') or strfind(name, 'Copper')) then
+			frame.backdrop:Point('BOTTOMRIGHT', -12, -2)
+		end
 	end
 end
 

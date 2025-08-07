@@ -184,8 +184,10 @@ function S:Ace3_SkinEditBox(editbox, button)
 		hooksecurefunc(editbox, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
 		hooksecurefunc(editbox, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
-		editbox.backdrop:Point('TOPLEFT', 0, -2)
-		editbox.backdrop:Point('BOTTOMRIGHT', -1, 1)
+		if not editbox.NineSlice then
+			editbox.backdrop:Point('TOPLEFT', 0, -2)
+			editbox.backdrop:Point('BOTTOMRIGHT', -1, 1)
+		end
 	end
 end
 
