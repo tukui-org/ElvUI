@@ -1,5 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Frame name="ElvUIStaticPopupTemplate" inherits="StaticPopupTemplate" toplevel="true" enableKeyboard="true" enableMouse="true" hyperlinksEnabled="true" virtual="true">
+	<Frame name='ElvUIStaticPopupTemplate' inherits='StaticPopupTemplate' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
 		<Scripts>
 			<OnUpdate></OnUpdate>
 			<OnEvent></OnEvent>
@@ -7,9 +7,9 @@
 			<OnHide></OnHide>
 			<OnLoad></OnLoad>
 
-			<OnHyperlinkClick function="StaticPopup_OnHyperlinkClick"/>
-			<OnHyperlinkEnter function="StaticPopup_OnHyperlinkEnter"/>
-			<OnHyperlinkLeave function="StaticPopup_OnHyperlinkLeave"/>
+			<OnHyperlinkClick function='StaticPopup_OnHyperlinkClick'/>
+			<OnHyperlinkEnter function='StaticPopup_OnHyperlinkEnter'/>
+			<OnHyperlinkLeave function='StaticPopup_OnHyperlinkLeave'/>
 		</Scripts>
 	</Frame>
 
