@@ -103,10 +103,12 @@ A.AttributeInitialConfig = [[
 ]]
 
 function A:MasqueData(texture, highlight)
-	local btnData = E:CopyTable({}, MasqueButtonData)
-	btnData.Icon = texture
-	btnData.Highlight = highlight
-	return btnData
+	local data = E:CopyTable({}, MasqueButtonData)
+
+	data.Icon = texture
+	data.Highlight = highlight
+
+	return data
 end
 
 function A:UpdateButton(button)
@@ -134,15 +136,17 @@ function A:UpdateButton(button)
 end
 
 function A:CreateIcon(button)
-	button.header = button:GetParent()
-	button.filter = button.header.filter
-	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
+	local header = button:GetParent()
+
+	button.header = header
+	button.filter = header.filter
+	button.auraType = header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
 	button.name = button:GetName()
 	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
 	if button.enchantIndex then
-		button.header['enchant'..button.enchantIndex] = button
-		button.header.enchantButtons[button.enchantIndex] = button
+		header['enchant'..button.enchantIndex] = button
+		header.enchantButtons[button.enchantIndex] = button
 	else
 		button.instant = true -- let update on attribute change
 	end
@@ -196,6 +200,11 @@ function A:UpdateIcon(button, update)
 	if update then
 		button:SetWidth(width)
 		button:SetHeight(height)
+	elseif button.header.MasqueGroup then
+		local data = A:MasqueData(button.texture, button.highlight)
+		button.header.MasqueGroup:AddButton(button, data)
+	elseif not button.template then
+		button:SetTemplate()
 	end
 
 	if button.texture then
@@ -234,16 +243,6 @@ function A:UpdateIcon(button, update)
 		button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
 		button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
 		button.statusBar:SetRotatesTexture(not isHorizontal)
-	end
-
-	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
-		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		MasqueGroupBuffs:ReSkin()
-	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
-		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		MasqueGroupDebuffs:ReSkin()
-	elseif not button.template then
-		button:SetTemplate()
 	end
 end
 
@@ -306,6 +305,10 @@ function A:UpdateAura(button, index)
 		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		button.debuffType = dtype
+	end
+
+	if button.header.MasqueGroup then
+		button.header.MasqueGroup:ReSkin()
 	end
 
 	if duration > 0 and expiration then
@@ -547,6 +550,12 @@ function A:CreateAuraHeader(filter)
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
 		header:SetAttribute('includeWeapons', 1)
+
+		if MasqueGroupBuffs and E.private.auras.masque.buffs then
+			header.MasqueGroup = MasqueGroupBuffs
+		end
+	elseif MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+		header.MasqueGroup = MasqueGroupDebuffs
 	end
 
 	header:Show()
@@ -588,7 +597,6 @@ function A:Initialize()
 		A.BuffFrame:SetPoint('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'TOPLEFT', xoffset, -E.Spacing)
 
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
-		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
 	if E.private.auras.debuffsHeader then
@@ -599,7 +607,6 @@ function A:Initialize()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', xoffset, E.Spacing)
 
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
-		if Masque and MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
 end
 
