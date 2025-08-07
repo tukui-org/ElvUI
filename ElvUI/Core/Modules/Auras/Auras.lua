@@ -187,18 +187,6 @@ function A:CreateIcon(button)
 
 	A:Update_CooldownOptions(button)
 	A:UpdateIcon(button)
-
-	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
-		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
-		MasqueGroupBuffs:ReSkin()
-	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
-		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
-		MasqueGroupDebuffs:ReSkin()
-	else
-		button:SetTemplate()
-	end
 end
 
 function A:UpdateIcon(button, update)
@@ -246,6 +234,16 @@ function A:UpdateIcon(button, update)
 		button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
 		button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
 		button.statusBar:SetRotatesTexture(not isHorizontal)
+	end
+
+	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
+		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		MasqueGroupBuffs:ReSkin()
+	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		MasqueGroupDebuffs:ReSkin()
+	else
+		button:SetTemplate()
 	end
 end
 
@@ -514,9 +512,6 @@ function A:UpdateHeader(header)
 			child:Hide()
 		end
 	end
-
-	if MasqueGroupBuffs and E.private.auras.buffsHeader and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
-	if MasqueGroupDebuffs and E.private.auras.debuffsHeader and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
 end
 
 function A:CreateAuraHeader(filter)
