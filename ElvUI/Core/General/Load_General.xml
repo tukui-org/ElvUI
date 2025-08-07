@@ -6,10 +6,6 @@
 			<OnShow></OnShow>
 			<OnHide></OnHide>
 			<OnLoad></OnLoad>
-
-			<OnHyperlinkClick function='StaticPopup_OnHyperlinkClick'/>
-			<OnHyperlinkEnter function='StaticPopup_OnHyperlinkEnter'/>
-			<OnHyperlinkLeave function='StaticPopup_OnHyperlinkLeave'/>
 		</Scripts>
 	</Frame>
 
