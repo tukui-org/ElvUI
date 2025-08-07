@@ -194,7 +194,7 @@ function A:CreateIcon(button)
 	A:UpdateIcon(button)
 end
 
-function A:UpdateTexture(button)
+function A:UpdateTexture(button) -- self here can be the header from UpdateMasque calling this function
 	local db = A.db[button.auraType]
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
 
@@ -425,23 +425,14 @@ function A:Button_OnAttributeChanged(attr, value)
 	end
 end
 
-function A:UpdateMasque(header, event)
-	if header.MasqueGroup then
-		header.MasqueGroup:ReSkin()
-
-		if event then -- masque retrims them all so we have to too
-			for _, child in next, { header:GetChildren() } do
-				if child.texture then
-					A:UpdateTexture(child)
-				end
-			end
-		end
-	end
+function A:UpdateMasque(header)
+	header.MasqueGroup:ReSkin()
+	header:ForEachChild(A.UpdateTexture) -- masque retrims them all so we have to too
 end
 
 function A:Header_OnEvent(event)
-	if event == 'UNIT_AURA' then
-		A:UpdateMasque(self, event)
+	if event == 'UNIT_AURA' and self.MasqueGroup then
+		A:UpdateMasque(self)
 	end
 end
 
@@ -491,6 +482,19 @@ function A:Visibility_OnUpdate(elapsed)
 	end
 end
 
+function A:UpdateChild(child, index, db) -- self here is the header
+	child.db = db
+	child.auraType = self.auraType -- used to update cooldown text
+
+	A:Update_CooldownOptions(child)
+	A:UpdateIcon(child, true)
+
+	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
+	if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
+		child:Hide()
+	end
+end
+
 function A:UpdateHeader(header)
 	if not E.private.auras.enable then return end
 
@@ -527,23 +531,18 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
-	A:UpdateMasque(header) -- this will remove the delay when adjusting size in the options
+	header:ForEachChild(A.UpdateChild, db)
 
-	for index, child in next, { header:GetChildren() } do
-		child.db = db
-		child.auraType = header.auraType -- used to update cooldown text
+	if header.MasqueGroup then
+		A:UpdateMasque(header)
+	end
+end
 
-		A:Update_CooldownOptions(child)
-		A:UpdateIcon(child, true)
+function A:ForEachChild(func, ...)
+	if not func then return end
 
-		if header.MasqueGroup and child.texture then
-			A:UpdateTexture(child) -- handle the trim again, we skipped this in the above function to reduce a loop
-		end
-
-		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
-		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
-			child:Hide()
-		end
+	for index, child in next, { self:GetChildren() } do
+		func(self, child, index, ...)
 	end
 end
 
@@ -557,6 +556,7 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
 	header:HookScript('OnEvent', A.Header_OnEvent)
+	header.ForEachChild = A.ForEachChild
 	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
