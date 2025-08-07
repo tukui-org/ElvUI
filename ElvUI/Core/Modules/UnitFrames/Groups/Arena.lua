@@ -24,7 +24,7 @@ function UF:ToggleArenaPreparationInfo(frame, specID)
 	frame.PvPClassificationIndicator:SetAtlas(nil)
 	frame.Trinket.cd:Clear()
 
-	if E.Retail then -- during `PostUpdateArenaPreparation` this means spec class and name exist
+	if not E.Classic then -- during `PostUpdateArenaPreparation` this means spec class and name exist
 		frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', show and specInfo.name or '', show and specInfo.classMale or '')
 
 		if show and frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
@@ -71,7 +71,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
 
-		if E.Retail then
+		if not E.Classic then
 			frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
 
 			frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
@@ -113,7 +113,7 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
-		frame.PVPINFO_WIDTH = (E.Retail and frame.ORIENTATION ~= 'MIDDLE' and db.pvpSpecIcon and frame.UNIT_HEIGHT) or 0
+		frame.PVPINFO_WIDTH = (not E.Classic and frame.ORIENTATION ~= 'MIDDLE' and db.pvpSpecIcon and frame.UNIT_HEIGHT) or 0
 	end
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

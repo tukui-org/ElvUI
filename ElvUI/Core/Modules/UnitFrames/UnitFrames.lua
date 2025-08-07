@@ -1400,7 +1400,7 @@ do
 		elseif which == 'arena' then
 			UF:Configure_Trinket(frame)
 
-			if E.Retail then
+			if not E.Classic then
 				UF:Configure_PVPSpecIcon(frame)
 			end
 		elseif which == 'player' then

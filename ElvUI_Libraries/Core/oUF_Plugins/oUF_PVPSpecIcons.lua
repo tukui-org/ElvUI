@@ -60,7 +60,7 @@ local Enable = function(frame)
 		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update)
 		frame:RegisterEvent('PLAYER_ENTERING_WORLD', Update, true)
 
-		if oUF.isRetail then
+		if not oUF.isClassic then
 			frame:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', Update, true)
 		end
 
@@ -74,7 +74,7 @@ local Disable = function(frame)
 		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
 		frame:UnregisterEvent('PLAYER_ENTERING_WORLD', Update)
 
-		if oUF.isRetail then
+		if not oUF.isClassic then
 			frame:UnregisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', Update)
 		end
 
