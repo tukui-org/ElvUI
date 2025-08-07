@@ -483,8 +483,8 @@ function A:Visibility_OnUpdate(elapsed)
 end
 
 function A:UpdateChild(child, index, db) -- self here is the header
-	child.db = db
 	child.auraType = self.auraType -- used to update cooldown text
+	child.db = db
 
 	A:Update_CooldownOptions(child)
 	A:UpdateIcon(child, true)
