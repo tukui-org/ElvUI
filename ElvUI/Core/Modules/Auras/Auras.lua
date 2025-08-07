@@ -201,7 +201,7 @@ function A:UpdateTexture(button) -- self here can be the header from UpdateMasqu
 	if db.keepSizeRatio then
 		button.texture:SetTexCoord(unpack(E.TexCoords))
 	else
-		local left, right, top, bottom = E:CropRatio(width, height, nil, db.customCoords)
+		local left, right, top, bottom = E:CropRatio(width, height)
 		button.texture:SetTexCoord(left, right, top, bottom)
 	end
 end
