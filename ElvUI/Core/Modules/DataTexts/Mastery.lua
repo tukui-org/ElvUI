@@ -42,7 +42,7 @@ local function OnEnter()
 				hasSpell = true
 			end
 
-			if CreateBaseTooltipInfo then
+			if E.Retail then
 				local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', spell)
 				tooltipInfo.append = true
 				DT.tooltip:ProcessInfo(tooltipInfo)
