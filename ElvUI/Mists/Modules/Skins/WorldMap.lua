@@ -20,7 +20,7 @@ function S:WorldMapFrame()
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapContinentDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
-	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapFrame.WorldMapLevelDropDown, 160)
 	S:HandleDropDownBox(_G.WorldMapFrame.WorldMapOptionsDropDown, 160)
 
 	S:HandleCheckBox(_G.WorldMapTrackQuest)
