@@ -1299,8 +1299,13 @@ function E:Contruct_StaticPopups()
 
 			S:HandleEditBox(editbox)
 
-			editbox.backdrop:Point('TOPLEFT', -2, -4)
-			editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+			if editbox.NineSlice then
+				editbox.NineSlice:StripTextures()
+				editbox.backdrop:SetInside(editbox.NineSlice)
+			else
+				editbox.backdrop:Point('TOPLEFT', -2, -4)
+				editbox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+			end
 		end
 
 		local itemFrame = _G['ElvUI_StaticPopup'..index..'ItemFrame']
