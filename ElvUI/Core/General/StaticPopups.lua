@@ -1220,6 +1220,7 @@ function E:StaticPopup_OnLoad(popup)
 	popup.button2 = _G[name..'Button2']
 	popup.button3 = _G[name..'Button3']
 	popup.button4 = _G[name..'Button4']
+	popup.extraFrame = _G[name..'ExtraFrame']
 	popup.itemFrame = _G[name..'ItemFrame']
 	popup.extraButton = _G[name..'ExtraButton']
 	popup.moneyFrame = _G[name..'MoneyFrame']
