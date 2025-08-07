@@ -7,6 +7,7 @@ local _G = _G
 local tonumber = tonumber
 local tinsert, next = tinsert, next
 local unpack, strmatch = unpack, strmatch
+
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
