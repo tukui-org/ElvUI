@@ -242,7 +242,7 @@ function A:UpdateIcon(button, update)
 	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
 		MasqueGroupDebuffs:ReSkin()
-	else
+	elseif not button.template then
 		button:SetTemplate()
 	end
 end
