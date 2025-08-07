@@ -1,4 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<!-- Remove the scripts added from GameDialogMixin -->
 	<Frame name='ElvUIStaticPopupTemplate' inherits='StaticPopupTemplate' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
 		<Scripts>
 			<OnUpdate></OnUpdate>
