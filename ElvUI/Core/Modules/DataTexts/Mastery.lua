@@ -31,44 +31,23 @@ local function OnEnter()
 	DT.tooltip:AddLine(title)
 	DT.tooltip:AddLine(' ')
 
-	if E.Mists then
-		local primaryTalentTree = GetSpecialization()
-		if primaryTalentTree then
-			local masterySpells = GetSpecializationMasterySpells(primaryTalentTree)
-			local hasAddedAnyMasterySpell = false
-			for _, masterySpell in next, masterySpells do
-				if hasAddedAnyMasterySpell then
-					DT.tooltip:AddLine(' ')
-				end
-
-				DT.tooltip:AddSpellByID(masterySpell)
-				hasAddedAnyMasterySpell = true
-			end
-		end
-	else
-		local primaryTalentTree = GetSpecialization()
-		if primaryTalentTree then
-			local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
-			if masterySpell then
-				if CreateBaseTooltipInfo then
-					local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', masterySpell)
-					tooltipInfo.append = true
-					DT.tooltip:ProcessInfo(tooltipInfo)
-				else
-					DT.tooltip:AddSpellByID(masterySpell)
-				end
-			end
-
-			if masterySpell2 then
+	local spec = GetSpecialization()
+	if spec then
+		local spells = GetSpecializationMasterySpells(spec)
+		local hasSpell = false
+		for _, spell in next, spells do
+			if hasSpell then
 				DT.tooltip:AddLine(' ')
+			else
+				hasSpell = true
+			end
 
-				if CreateBaseTooltipInfo then
-					local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', masterySpell2)
-					tooltipInfo.append = true
-					DT.tooltip:ProcessInfo(tooltipInfo)
-				else
-					DT.tooltip:AddSpellByID(masterySpell2)
-				end
+			if CreateBaseTooltipInfo then
+				local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', spell)
+				tooltipInfo.append = true
+				DT.tooltip:ProcessInfo(tooltipInfo)
+			else
+				DT.tooltip:AddSpellByID(spell)
 			end
 		end
 	end
