@@ -1,3 +1,21 @@
+### Version 13.96 [ August 7th 2025 ]
+*   Retail:
+    *   Bag items not going into Warband bank when selected.
+    *   Bag items fade correctly for what can go into Warband.
+    *   Bank search box not placed correctly when you purchased all tabs.
+    *   Bank and Warband now have new Deposit button.
+    *   Bank Include Reagents checkbox moved to Auto Deposit Reagents in options.
+    *   Bank tabs now have a selected texture when selected and not combined.
+    *   Mastery Datatext not displaying information on mouseover.
+    *   Monk stagger bar not showing up ever. oops.
+    *   Crest Datatext to show Ethereal currencies now.
+*   Mists:
+    *   Blizzard Castbar can optionally be used regardless of Player Unitframe Castbar being enabled.
+*   StaticPopups not working.
+*   Top Auras not playing nicely with Masque.
+*   Group Leader Icon not displaying correctly.
+*   Error related to Crop Icons functionality.
+
 ### Version 13.95 [ August 6th 2025 ]
 *   Retail
     *   Priest with Insanity showing is not showing Mana as secondary.
