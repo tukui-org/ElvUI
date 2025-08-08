@@ -117,7 +117,6 @@ local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
 
-local WARBANDBANK_OFFSET = 30
 local BOTTOM_OFFSET = 8
 local TOP_OFFSET = 50
 
@@ -302,13 +301,11 @@ end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
 local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or 11
-local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
+local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
 	BAG_SLOT_FLAGS_UPDATED = true,
 	BANK_BAG_SLOT_FLAGS_UPDATED = true,
-	PLAYERBANKSLOTS_CHANGED = true,
-	BAG_CONTAINER_UPDATE = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
@@ -318,13 +315,18 @@ if E.Retail then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bagIDs, REAGENT_CONTAINER)
-elseif E.Classic then
-	tinsert(bankIDs, -1)
-	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
-	tinsert(bagIDs, KEYRING_CONTAINER)
+
+	presistentEvents.BAG_CONTAINER_UPDATE = true
 else
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
+	tinsert(bankEvents, 'PLAYERBANKSLOTS_CHANGED')
+
+	presistentEvents.PLAYERBANKSLOTS_CHANGED = true
+end
+
+if E.Classic then
+	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
 for bankID = bankOffset + 1, maxBankSlots do
@@ -788,14 +790,18 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	end
 end
 
+function B:InventorySearchUpdate(slot)
+	if not slot.BagID or not slot.SlotID then return end
+
+	local info = B:GetContainerItemInfo(slot.BagID, slot.SlotID)
+	slot.searchOverlay:SetShown(info.isFiltered)
+end
+
 function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
 		B:UpdateCooldown(self)
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
-		if self.BagID and self.SlotID then
-			local info = B:GetContainerItemInfo(self.BagID, self.SlotID)
-			self.searchOverlay:SetShown(info.isFiltered)
-		end
+		B:InventorySearchUpdate(self)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
 		E:Delay(0.1, B.UpdateSlotColors, B, self, self.isQuestItem, self.QuestID, self.isActiveQuest)
 	elseif event == 'COLOR_OVERRIDE_UPDATED' then
@@ -1103,7 +1109,7 @@ function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, n
 				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
 			end
 		else
-			slot:Point('TOPLEFT', f.holderFrame, 0, -BANK_SPACE_OFFSET - (B.WarbandBanks[bankID] and WARBANDBANK_OFFSET or 0))
+			slot:Point('TOPLEFT', f.holderFrame, 0, -BANK_SPACE_OFFSET)
 			lastRow = slot
 		end
 
@@ -1171,11 +1177,6 @@ function B:Layout(isBank)
 
 	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
-
-	if isBank and not f.fullBank and not E.Retail then
-		f.fullBank = select(2, GetNumBankSlots())
-		f.purchaseBagButton:SetShown(not f.fullBank)
-	end
 
 	if not isBank then
 		local currencies = f.currencyButton
@@ -1321,7 +1322,7 @@ function B:Layout(isBank)
 
 	local splitOffset = bankSplitOffset or (isSplit and (numBags * bagSpacing)) or 0
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
-	f:SetSize(containerWidth, buttonsHeight + f.topOffset + (warbandIndex and WARBANDBANK_OFFSET or 0) + bankSpaceOffset + f.bottomOffset + splitOffset)
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + bankSpaceOffset + f.bottomOffset + splitOffset)
 	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
@@ -1347,9 +1348,7 @@ end
 
 function B:UpdateLayout(frame)
 	for index in next, frame.BagIDs do
-		if B:SetBagAssignments(frame.ContainerHolder[index]) then
-			break
-		end
+		B:SetBagAssignments(frame.ContainerHolder[index])
 	end
 end
 
@@ -1862,33 +1861,33 @@ function B:BankTabs_MenuPosition(menu)
 end
 
 function B:BankTabs_MenuSkin(menu)
-	if not menu.IsSkinned then
-		S:HandleIconSelectionFrame(menu)
+	if menu.IsSkinned then return end
 
-		local deposit = menu.DepositSettingsMenu
-		if deposit then
-			S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
+	S:HandleIconSelectionFrame(menu)
 
-			B:BankTabs_PanelCheckbox(deposit.AssignEquipmentCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignConsumablesCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignReagentsCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.AssignJunkCheckbox)
-			B:BankTabs_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
-		end
+	local deposit = menu.DepositSettingsMenu
+	if deposit then
+		S:HandleDropDownBox(deposit.ExpansionFilterDropdown, 120)
 
-		menu.IsSkinned = true
+		B:BankTabs_PanelCheckbox(deposit.AssignEquipmentCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignConsumablesCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignProfessionGoodsCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignReagentsCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.AssignJunkCheckbox)
+		B:BankTabs_PanelCheckbox(deposit.IgnoreCleanUpCheckbox)
 	end
+
+	menu.IsSkinned = true
 end
 
 function B:BankTabs_MenuSpawn(menu, bagID)
 	menu:SetParent(UIParent)
 	menu:EnableMouse(true) -- enables the ability to drop an icon here ~ Flamanis
 
-	local lastID = menu.selectedTabID
+	local lastTab = menu.selectedTabID
 	menu.selectedTabID = bagID
 
-	if lastID == bagID and menu:IsShown() then
+	if lastTab == bagID and menu:IsShown() then
 		menu:Hide()
 	else
 		menu:SetSelectedTab(bagID)
@@ -1898,20 +1897,16 @@ end
 
 function B:BankTabs_ShowSettings(bagID)
 	local panel = _G.BankPanel
-	if panel then
-		panel:SetParent(UIParent)
-		panel:ClearAllPoints()
-		panel:SetPoint('TOP', UIParent, 'BOTTOM')
+	if not panel then return end
 
-		local bankType = B.WarbandBanks[bagID] and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
-		panel.purchasedBankTabData = B:BankTab_PurchasedData(bankType, true)
+	local bankType = B.WarbandBanks[bagID] and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
+	panel.purchasedBankTabData = B:BankTab_PurchasedData(bankType, true)
 
-		local tabMenu = panel.TabSettingsMenu
-		if tabMenu then
-			B:BankTabs_MenuPosition(tabMenu)
-			B:BankTabs_MenuSpawn(tabMenu, bagID)
-			B:BankTabs_MenuSkin(tabMenu)
-		end
+	local menu = panel.TabSettingsMenu
+	if menu then
+		B:BankTabs_MenuPosition(menu)
+		B:BankTabs_MenuSpawn(menu, bagID)
+		B:BankTabs_MenuSkin(menu)
 	end
 end
 
@@ -1943,6 +1938,7 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder:SetScript('OnEnter', B.BankTabs_OnEnter)
 	holder:SetScript('OnLeave', B.BankTabs_OnLeave)
 	holder:SetScript('OnClick', B.BankTabs_OnClick)
+	holder:SetID(bagNum)
 
 	if holder.animIcon then
 		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
@@ -1952,11 +1948,12 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder.icon:SetTexture(DEFAULT_ICON)
 	holder.icon:SetInside()
 
-	holder.IconBorder:SetAlpha(0)
+	holder.selectedTexture = holder:CreateTexture(nil, 'OVERLAY', nil, 1)
+	holder.selectedTexture:SetInside()
+	holder.selectedTexture:SetColorTexture(1, 1, 1, 0.4)
+	holder.selectedTexture:Hide()
 
-	holder:SetID(bagNum)
-	-- holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
-	-- holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+	holder.IconBorder:SetAlpha(0)
 
 	if index == 1 then
 		holder:Point('BOTTOMLEFT', f, 'TOPLEFT', 4, 5)
@@ -2034,10 +2031,10 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 		holder:SetScript('OnDragStart', B.Holder_OnDragStart)
 		holder:SetScript('OnReceiveDrag', B.Holder_OnReceiveDrag)
 
-		if isBank then
+		if isBank and not E.Retail then
 			holder:SetID(index == 1 and BANK_CONTAINER or (bagID - bankOffset))
-			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 		else
 			holder:SetID(ContainerIDToInventoryID(bagID))
 
@@ -2092,7 +2089,7 @@ function B:ConstructContainerTabHolder(f, name, key, totalBags)
 
 	local cover = B:ConstructContainerCover(frame)
 	if cover then
-		cover:Point('TOPLEFT', 0, -WARBANDBANK_OFFSET)
+		cover:Point('TOPLEFT')
 		cover:Point('BOTTOMRIGHT')
 		cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
 		cover.button:Hide()
@@ -2229,7 +2226,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Sort Button
 	f.sortButton = CreateFrame('Button', name..'SortButton', f)
-	f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 	f.sortButton:Size(20)
 	f.sortButton:SetTemplate()
 	B:SetButtonTexture(f.sortButton, E.Media.Textures.PetBroom)
@@ -2287,14 +2283,10 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 
 		if not E.Retail then
-			f.fullBank = select(2, GetNumBankSlots())
-
-			--Toggle Bags Button
 			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 			f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
-			f.purchaseBagButton:SetShown(not f.fullBank)
 			f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		else
 			f.bagsButton:Hide()
@@ -2335,32 +2327,7 @@ function B:ConstructContainerFrame(name, isBank)
 					B:SelectBankTab(f, 13)
 				end)
 
-				f.warbandDeposit = CreateFrame('Button', name..'WarbandDeposit', f, 'UIPanelButtonTemplate')
-				f.warbandDeposit:Hide()
-				f.warbandDeposit:Size(190, 23)
-				f.warbandDeposit:SetText(L["Deposit Warbound Items"])
-				f.warbandDeposit:Point('TOPLEFT', f.bankToggle, 'BOTTOMLEFT', 0, -5)
-				f.warbandDeposit:SetScript('OnClick', function()
-					PlaySound(852) --IG_MAINMENU_OPTION
-					AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
-				end)
-
-				f.warbandReagents = CreateFrame('CheckButton', name..'WarbandReagents', f, 'UICheckButtonTemplate')
-				f.warbandReagents:Hide()
-				f.warbandReagents:Size(30)
-				f.warbandReagents:Point('LEFT', f.warbandDeposit, 'RIGHT', 5, 0)
-				f.warbandReagents:SetChecked(GetCVarBool('bankAutoDepositReagents'))
-				f.warbandReagents:SetScript('OnClick', function(checkButton)
-					E:SetCVar('bankAutoDepositReagents', checkButton:GetChecked())
-				end)
-
-				f.warbandReagents.Text = _G[name..'WarbandReagentsText']
-				f.warbandReagents.Text:SetText(L["Include Reagents"])
-				f.warbandReagents.Text:FontTemplate(nil, 12, 'OUTLINE')
-
 				S:HandleButton(f.warbandToggle)
-				S:HandleButton(f.warbandDeposit)
-				S:HandleCheckBox(f.warbandReagents)
 			end
 
 			do -- account bank gold
@@ -2370,29 +2337,40 @@ function B:ConstructContainerFrame(name, isBank)
 					end
 				end)
 
-				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
-				f.goldDeposit:Size(71, 23)
-				f.goldDeposit:SetText(L["Deposit"])
-				f.goldDeposit:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
-				f.goldDeposit:SetScript('OnClick', function()
-					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
-						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
-					end
-				end)
-
 				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
 				f.goldWithdraw:Size(71, 23)
 				f.goldWithdraw:SetText(L["Withdraw"])
-				f.goldWithdraw:Point('LEFT', f.goldDeposit, 'RIGHT', 5, 0)
+				f.goldWithdraw:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
 				f.goldWithdraw:SetScript('OnClick', function()
 					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
 						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
 					end
 				end)
 
+				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
+				f.goldDeposit:Size(71, 23)
+				f.goldDeposit:SetText(L["Deposit"])
+				f.goldDeposit:Point('LEFT', f.goldWithdraw, 'RIGHT', 5, 0)
+				f.goldDeposit:SetScript('OnClick', function()
+					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
+						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
+					end
+				end)
+
 				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
 			end
+
+			--Deposite Reagents Button
+			f.depositButton = CreateFrame('Button', name..'DepositButton', f)
+			f.depositButton:Size(20)
+			f.depositButton:SetTemplate()
+			f.depositButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
+			f.depositButton.ttText = L["Auto Deposit"]
+			B:SetButtonTexture(f.depositButton, 450905) -- Interface\ICONS\misc_arrowdown
+			f.depositButton:StyleButton(nil, true)
+			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
+			f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
 
 			f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
 			f.purchaseSecureButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -2403,7 +2381,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText = L["Stack Items In Bank"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bags"]
-		f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', -2, 4)
+		f.stackButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		f.stackButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.stackButton:SetScript('OnLeave', GameTooltip_Hide)
 		f.stackButton:SetScript('OnClick', function()
@@ -2454,6 +2432,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Sort Button
+		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 		f.sortButton:SetScript('OnClick', function()
 			if E.Retail and B.db.useBlizzardCleanup then
 				SortBags()
@@ -2805,25 +2784,62 @@ function B:CloseBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
+function B:PanelShowHidden(panel)
+	if not panel:IsShown() then
+		panel:Show()
+	end
+
+	panel:SetParent(UIParent)
+	panel:ClearAllPoints()
+	panel:SetPoint('TOP', UIParent, 'BOTTOM')
+end
+
+function B:PanelHide(panel)
+	if panel:IsShown() then
+		panel:Hide()
+	end
+end
+
 do
-	local TabIndex = {}
+	local panelIndex = {}
 	for bankID in next, B.WarbandBanks do
-		TabIndex[bankID] = 2
+		panelIndex[bankID] = 2
 	end
 
 	function B:SetBankSelectedTab()
-		local tab = TabIndex[B.BankTab] or 1
+		local index = panelIndex[B.BankTab] or 1
 
-		_G.BankFrame.activeTabIndex = tab
-		_G.BankFrame.selectedTabID = B.BankTab
-		_G.BankFrame.selectedTab = tab
+		if E.Retail then
+			local panel = _G.BankPanel
+			if panel then
+				local lastTab = panel.selectedTabID
+				panel.selectedTabID = B.BankTab
 
-		return tab
+				if lastTab ~= B.BankTab then
+					panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
+
+					B:PanelShowHidden(panel)
+				end
+
+				-- used to display the overlay to show what can go into warband bank
+				for _, bag in next, B.BagFrame.Bags do
+					for _, slot in ipairs(bag) do
+						slot:UpdateItemContextMatching()
+					end
+				end
+			end
+		else
+			_G.BankFrame.activeTabIndex = index
+			_G.BankFrame.selectedTabID = B.BankTab
+			_G.BankFrame.selectedTab = index
+		end
+
+		return index
 	end
 end
 
 function B:SetBankTabs(f)
-	local activeTab = B:SetBankSelectedTab() -- the hook doesnt trigger by this button
+	local activeTab = B:SetBankSelectedTab()
 	B:SetBankTabColor(f.bankToggle, activeTab, 1)
 	B:SetBankTabColor(f.warbandToggle, activeTab, 2)
 end
@@ -2873,6 +2889,9 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 	local shouldShow = not not info
 	holder:SetEnabled(shouldShow)
 
+	local combined = B.db[B.WarbandBanks[bankID] and 'warbandCombined' or 'bankCombined']
+	holder.selectedTexture:SetShown(not combined and B.BankTab == bankID)
+
 	if info then
 		holder.icon:SetTexture(info.icon or DEFAULT_ICON)
 		holder.icon:SetVertexColor(1, 1, 1)
@@ -2919,31 +2938,31 @@ function B:ShowBankTab(f, bankTab)
 
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
-		local canBuyTab = CanPurchaseBankTab(WARBANDBANK_TYPE)
-		if E.Retail then
-			f.BankTabs:Hide()
-			f.WarbandTabs:Show()
-			f.warbandDeposit:Show()
-			f.warbandReagents:Show()
+		f.fullBank = not CanPurchaseBankTab(WARBANDBANK_TYPE)
 
-			for _, bankIndex in next, B.CharacterBanks do
-				f['BankTabs'..bankIndex]:Hide()
-			end
+		f.BankTabs:Hide()
+		f.WarbandTabs:Show()
 
-			f.purchaseSecureButton:SetShown(canBuyTab)
-			f.purchaseSecureButton:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = WARBANDBANK_TYPE })
-			end)
-		else
-			f.purchaseBagButton:Hide()
+		for _, bankIndex in next, B.CharacterBanks do
+			f['BankTabs'..bankIndex]:Hide()
 		end
 
+		f.purchaseSecureButton:SetShown(not f.fullBank)
+		f.purchaseSecureButton:SetScript('OnClick', function()
+			PlaySound(852) --IG_MAINMENU_OPTION
+			StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = WARBANDBANK_TYPE })
+		end)
+
+		f.depositButton:SetScript('OnClick', function()
+			PlaySound(852) --IG_MAINMENU_OPTION
+			AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
+		end)
+
 		f.holderFrame:Hide()
-		f.editBox:Point('RIGHT', (canBuyTab and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+		f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 	else
 		if E.Retail then
-			local canBuyTab = CanPurchaseBankTab(CHARACTERBANK_TYPE)
+			f.fullBank = not CanPurchaseBankTab(CHARACTERBANK_TYPE)
 
 			for _, bankIndex in next, B.WarbandBanks do
 				f['WarbandTabs'..bankIndex]:Hide()
@@ -2951,21 +2970,27 @@ function B:ShowBankTab(f, bankTab)
 
 			f.BankTabs:Show()
 			f.WarbandTabs:Hide()
-			f.warbandDeposit:Hide()
-			f.warbandReagents:Hide()
 
-			f.purchaseSecureButton:SetShown(canBuyTab)
+			f.purchaseSecureButton:SetShown(not f.fullBank)
 			f.purchaseSecureButton:SetScript('OnClick', function()
 				PlaySound(852) --IG_MAINMENU_OPTION
 				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = CHARACTERBANK_TYPE })
 			end)
+
+			f.depositButton:SetScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+				AutoDepositItemsIntoBank(CHARACTERBANK_TYPE)
+			end)
 		else
+			f.fullBank = select(2, GetNumBankSlots())
 			f.purchaseBagButton:SetShown(not f.fullBank)
 		end
 
 		f.holderFrame:Show()
-		f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 	end
+
+	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 
 	if previousTab ~= B.BankTab then
 		B:Layout(true)
@@ -3015,7 +3040,7 @@ end
 
 function B:OpenBank()
 	B.BankFrame:Show()
-	_G.BankFrame:Show()
+	B:PanelShowHidden(_G.BankFrame)
 
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
@@ -3060,7 +3085,8 @@ function B:OpenBank()
 end
 
 function B:CloseBank()
-	_G.BankFrame:Hide()
+	B:PanelHide(_G.BankFrame)
+	B:PanelHide(_G.BankPanel)
 
 	B:CloseBags()
 end
@@ -3490,6 +3516,8 @@ function B:Initialize()
 		B:RegisterEvent('BANK_TAB_SETTINGS_UPDATED')
 		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')
 		B:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE')
+
+		_G.BankPanel:SetScript('OnShow', nil)
 	end
 
 	B:SecureHook('OpenAllBags')

@@ -8,6 +8,7 @@ local format, strmatch = format, strmatch
 local tonumber = tonumber
 
 local GameTooltip = GameTooltip
+local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
 local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 
@@ -24,7 +25,7 @@ Bags.args.general.args.currencyFormat = ACH:Select(L["Currency Format"], L["The 
 Bags.args.general.args.moneyFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown at the top of the main bag."], 3, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2", HIDE = L["Hide"] }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 Bags.args.general.args.moneyCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 4, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 
-Bags.args.general.args.generalGroup = ACH:MultiSelect(L["General"], nil, 5, nil, nil, nil, function(_, key) return E.db.bags[key] end)
+Bags.args.general.args.generalGroup = ACH:MultiSelect(L["General"], nil, 5)
 Bags.args.general.args.generalGroup.values = {
 	transparent = L["Transparent"],
 	questIcon = L["Quest Starter Icon"],
@@ -43,6 +44,7 @@ if E.Retail then
 	Bags.args.general.args.generalGroup.values.scrapIcon = L["Scrap Icon"]
 	Bags.args.general.args.generalGroup.values.showAssignedIcon = L["Assigned Icon"]
 	Bags.args.general.args.generalGroup.values.useBlizzardJunk = L["Use Blizzard Sell Junk"]
+	Bags.args.general.args.generalGroup.values.bankAutoDepositReagents = E.NewSign..L["Auto Deposit Reagents"]
 end
 
 local excludeUpdates = {
@@ -51,7 +53,21 @@ local excludeUpdates = {
 	auctionToggle = true
 }
 
+Bags.args.general.args.generalGroup.get = function(_, key)
+	if key == 'bankAutoDepositReagents' then
+		return GetCVarBool('bankAutoDepositReagents')
+	else
+		return E.db.bags[key]
+	end
+end
+
 Bags.args.general.args.generalGroup.set = function(_, key, value)
+	if key == 'bankAutoDepositReagents' then
+		E:SetCVar('bankAutoDepositReagents', value and 1 or 0)
+
+		return
+	end
+
 	E.db.bags[key] = value
 
 	if key == 'showAssignedIcon' then
@@ -83,7 +99,7 @@ Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
-Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(L["Combined"], nil, 6)
+Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(E.NewSign..L["Combined"], nil, 6)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)

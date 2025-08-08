@@ -207,15 +207,13 @@ function S:BlizzardMiscFrames()
 			anim2:SetTarget(button.shadow)
 		end
 
+		S:HandleCloseButton(CloseButton)
+
 		S:HandleEditBox(Gold)
 		S:HandleEditBox(Silver)
 		S:HandleEditBox(Copper)
 		S:HandleEditBox(EditBox)
 		EditBox:OffsetFrameLevel(1)
-		EditBox.backdrop:Point('TOPLEFT', -2, -4)
-		EditBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
-
-		S:HandleCloseButton(CloseButton)
 
 		if ItemNameFrame then
 			ItemNameFrame:Hide()

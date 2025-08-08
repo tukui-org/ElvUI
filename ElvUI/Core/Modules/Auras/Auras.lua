@@ -7,6 +7,7 @@ local _G = _G
 local tonumber = tonumber
 local tinsert, next = tinsert, next
 local unpack, strmatch = unpack, strmatch
+
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -103,10 +104,12 @@ A.AttributeInitialConfig = [[
 ]]
 
 function A:MasqueData(texture, highlight)
-	local btnData = E:CopyTable({}, MasqueButtonData)
-	btnData.Icon = texture
-	btnData.Highlight = highlight
-	return btnData
+	local data = E:CopyTable({}, MasqueButtonData)
+
+	data.Icon = texture
+	data.Highlight = highlight
+
+	return data
 end
 
 function A:UpdateButton(button)
@@ -134,15 +137,17 @@ function A:UpdateButton(button)
 end
 
 function A:CreateIcon(button)
-	button.header = button:GetParent()
-	button.filter = button.header.filter
-	button.auraType = button.header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
+	local header = button:GetParent()
+
+	button.header = header
+	button.filter = header.filter
+	button.auraType = header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 
 	button.name = button:GetName()
 	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
 	if button.enchantIndex then
-		button.header['enchant'..button.enchantIndex] = button
-		button.header.enchantButtons[button.enchantIndex] = button
+		header['enchant'..button.enchantIndex] = button
+		header.enchantButtons[button.enchantIndex] = button
 	else
 		button.instant = true -- let update on attribute change
 	end
@@ -187,17 +192,17 @@ function A:CreateIcon(button)
 
 	A:Update_CooldownOptions(button)
 	A:UpdateIcon(button)
+end
 
-	if button.filter == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
-		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
-		MasqueGroupBuffs:ReSkin()
-	elseif button.filter == 'HARMFUL' and MasqueGroupDebuffs and E.private.auras.masque.debuffs then
-		MasqueGroupDebuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
-		if button.__MSQ_BaseFrame then button.__MSQ_BaseFrame:SetFrameLevel(2) end --Lower the framelevel to fix issue with buttons created during combat
-		MasqueGroupDebuffs:ReSkin()
+function A:UpdateTexture(button) -- self here can be the header from UpdateMasque calling this function
+	local db = A.db[button.auraType]
+	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
+
+	if db.keepSizeRatio then
+		button.texture:SetTexCoord(unpack(E.TexCoords))
 	else
-		button:SetTemplate()
+		local left, right, top, bottom = E:CropRatio(width, height)
+		button.texture:SetTexCoord(left, right, top, bottom)
 	end
 end
 
@@ -208,15 +213,15 @@ function A:UpdateIcon(button, update)
 	if update then
 		button:SetWidth(width)
 		button:SetHeight(height)
+	elseif button.header.MasqueGroup then
+		local data = A:MasqueData(button.texture, button.highlight)
+		button.header.MasqueGroup:AddButton(button, data)
+	elseif not button.template then
+		button:SetTemplate()
 	end
 
 	if button.texture then
-		if db.keepSizeRatio then
-			button.texture:SetTexCoord(unpack(E.TexCoords))
-		else
-			local left, right, top, bottom = E:CropRatio(width, height, nil, db.customCoords)
-			button.texture:SetTexCoord(left, right, top, bottom)
-		end
+		A:UpdateTexture(button)
 	end
 
 	if button.count then
@@ -420,7 +425,18 @@ function A:Button_OnAttributeChanged(attr, value)
 	end
 end
 
+function A:UpdateMasque(header)
+	header.MasqueGroup:ReSkin()
+	header:ForEachChild(A.UpdateTexture) -- masque retrims them all so we have to too
+end
+
 function A:Header_OnEvent(event)
+	if event == 'UNIT_AURA' and self.MasqueGroup then
+		A:UpdateMasque(self)
+	end
+end
+
+function A:Visibility_OnEvent(event)
 	if event == 'WEAPON_ENCHANT_CHANGED' then
 		local header = self.frame
 		for enchantIndex, button in next, header.enchantButtons do
@@ -432,7 +448,7 @@ function A:Header_OnEvent(event)
 	end
 end
 
-function A:Header_OnUpdate(elapsed)
+function A:Visibility_OnUpdate(elapsed)
 	local header = self.frame
 	if header.elapsedSpells and header.elapsedSpells > 0.1 then
 		local button, value = next(header.spells)
@@ -463,6 +479,19 @@ function A:Header_OnUpdate(elapsed)
 		header.elapsedEnchants = 0
 	else
 		header.elapsedEnchants = (header.elapsedEnchants or 0) + elapsed
+	end
+end
+
+function A:UpdateChild(child, index, db) -- self here is the header
+	child.auraType = self.auraType -- used to update cooldown text
+	child.db = db
+
+	A:Update_CooldownOptions(child)
+	A:UpdateIcon(child, true)
+
+	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
+	if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
+		child:Hide()
 	end
 end
 
@@ -502,21 +531,19 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapYOffset', 0)
 	end
 
-	for index, child in next, { header:GetChildren() } do
-		child.db = db
-		child.auraType = header.auraType -- used to update cooldown text
+	header:ForEachChild(A.UpdateChild, db)
 
-		A:Update_CooldownOptions(child)
-		A:UpdateIcon(child, true)
-
-		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
-		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
-			child:Hide()
-		end
+	if header.MasqueGroup then
+		A:UpdateMasque(header)
 	end
+end
 
-	if MasqueGroupBuffs and E.private.auras.buffsHeader and E.private.auras.masque.buffs then MasqueGroupBuffs:ReSkin() end
-	if MasqueGroupDebuffs and E.private.auras.debuffsHeader and E.private.auras.masque.debuffs then MasqueGroupDebuffs:ReSkin() end
+function A:ForEachChild(func, ...)
+	if not func then return end
+
+	for index, child in next, { self:GetChildren() } do
+		func(self, child, index, ...)
+	end
 end
 
 function A:CreateAuraHeader(filter)
@@ -528,13 +555,15 @@ function A:CreateAuraHeader(filter)
 	header:RegisterUnitEvent('UNIT_AURA', 'player', 'vehicle')
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
+	header:HookScript('OnEvent', A.Header_OnEvent)
+	header.ForEachChild = A.ForEachChild
 	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
-	header.visibility:SetScript('OnUpdate', A.Header_OnUpdate) -- dont put this on the main frame
-	header.visibility:SetScript('OnEvent', A.Header_OnEvent) -- dont put this on the main frame
+	header.visibility:SetScript('OnUpdate', A.Visibility_OnUpdate) -- dont put this on the main frame
+	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 	header.auraType = auraType
 	header.filter = filter
@@ -552,6 +581,12 @@ function A:CreateAuraHeader(filter)
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
 		header:SetAttribute('includeWeapons', 1)
+
+		if MasqueGroupBuffs and E.private.auras.masque.buffs then
+			header.MasqueGroup = MasqueGroupBuffs
+		end
+	elseif MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+		header.MasqueGroup = MasqueGroupDebuffs
 	end
 
 	header:Show()
@@ -593,7 +628,6 @@ function A:Initialize()
 		A.BuffFrame:SetPoint('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'TOPLEFT', xoffset, -E.Spacing)
 
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
-		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
 	if E.private.auras.debuffsHeader then
@@ -604,7 +638,6 @@ function A:Initialize()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', xoffset, E.Spacing)
 
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
-		if Masque and MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
 end
 

@@ -1400,7 +1400,7 @@ do
 		elseif which == 'arena' then
 			UF:Configure_Trinket(frame)
 
-			if E.Retail then
+			if not E.Classic then
 				UF:Configure_PVPSpecIcon(frame)
 			end
 		elseif which == 'player' then
@@ -1758,7 +1758,7 @@ do
 						HideFrame(_G.PlayerCastingBarFrame)
 						HideFrame(_G.PetCastingBarFrame)
 					end
-				elseif disable.castbar or (UF.db.units.player.enable and UF.db.units.player.castbar.enable) then
+				elseif disable.castbar then
 					CastingBarFrame_SetUnit(_G.CastingBarFrame)
 					CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
 				else
