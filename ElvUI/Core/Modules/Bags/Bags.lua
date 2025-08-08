@@ -2789,9 +2789,7 @@ function B:PanelShowHidden(panel)
 		panel:Show()
 	end
 
-	if panel:GetParent() ~= E.HiddenFrame then
-		panel:SetParent(E.HiddenFrame)
-	end
+	panel:SetParent(E.HiddenFrame)
 end
 
 function B:PanelHide(panel)
