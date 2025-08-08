@@ -2590,12 +2590,14 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.Background:Hide()
 	end
 
-	if slot.UpgradeIcon then
-		slot.UpgradeIcon:SetTexture(E.Media.Textures.BagUpgradeIcon)
-		slot.UpgradeIcon:SetTexCoord(0, 1, 0, 1)
-		slot.UpgradeIcon:SetInside()
-		slot.UpgradeIcon:Hide()
+	if not slot.UpgradeIcon then
+		slot.UpgradeIcon = slot:CreateTexture(nil, 'OVERLAY', nil, 2)
 	end
+
+	slot.UpgradeIcon:SetTexture(E.Media.Textures.BagUpgradeIcon)
+	slot.UpgradeIcon:SetTexCoord(0, 1, 0, 1)
+	slot.UpgradeIcon:SetInside()
+	slot.UpgradeIcon:Hide()
 
 	if not slot.JunkIcon then
 		slot.JunkIcon = slot:CreateTexture(nil, 'OVERLAY', nil, 2)
