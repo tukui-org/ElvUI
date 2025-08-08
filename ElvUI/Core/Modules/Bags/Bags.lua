@@ -2798,17 +2798,33 @@ function B:CloseBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
-function B:PanelShowHidden(panel)
-	if panel and not panel:IsShown() then
-		panel:Show()
+do
+	local lockedFrames = {}
+	local function LockParent(frame, parent)
+		if parent ~= E.HiddenFrame then
+			frame:SetParent(E.HiddenFrame)
+		end
 	end
 
-	panel:SetParent(E.HiddenFrame)
-end
+	function B:PanelShowHidden(panel)
+		if not panel then return end
 
-function B:PanelHide(panel)
-	if panel and panel:IsShown() then
-		panel:Hide()
+		if not panel:IsShown() then
+			panel:Show()
+		end
+
+		if not lockedFrames[panel] then
+			hooksecurefunc(panel, 'SetParent', LockParent)
+			lockedFrames[panel] = true
+		end
+
+		panel:SetParent(E.HiddenFrame)
+	end
+
+	function B:PanelHide(panel)
+		if panel and panel:IsShown() then
+			panel:Hide()
+		end
 	end
 end
 
