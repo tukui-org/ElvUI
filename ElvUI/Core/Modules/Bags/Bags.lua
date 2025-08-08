@@ -117,9 +117,6 @@ local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
 
-local BOTTOM_OFFSET = 8
-local TOP_OFFSET = 50
-
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
 local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
@@ -227,6 +224,8 @@ local BANK_SPACE_OFFSET = E.Retail and 30 or 0
 local MAX_CONTAINER_ITEMS = 38
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
+local BOTTOM_OFFSET = 8
+local TOP_OFFSET = 50
 local BIND_START, BIND_END
 
 B.numTrackedTokens = 0
@@ -915,15 +914,15 @@ function B:UpdateCooldown(slot)
 	end
 end
 
-function B:SetSlotAlphaForBag(f, bag)
-	for _, bagID in next, f.BagIDs do
-		f.Bags[bagID]:SetAlpha(bagID == bag and 1 or .1)
+function B:SetSlotAlphaForBag(f, bagID)
+	for id, bag in next, f.Bags do
+		bag:SetAlpha(bagID == id and 1 or .1)
 	end
 end
 
 function B:ResetSlotAlphaForBags(f)
-	for _, bagID in next, f.BagIDs do
-		f.Bags[bagID]:SetAlpha(1)
+	for _, bag in next, f.Bags do
+		bag:SetAlpha(1)
 	end
 end
 
@@ -1099,7 +1098,7 @@ function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, n
 		slot:ClearAllPoints()
 		slot:SetSize(buttonSize, buttonSize)
 
-		local prevSlot = bag[slotID - 1] or (slotID == 1 and lastSlot)
+		local prevSlot = (slotID ~= 1 and bag[slotID - 1]) or (slotID == 1 and lastSlot)
 		if prevSlot then
 			if (totalSlots - 1) % numColumns == 0 then
 				slot:Point('TOP', lastRow, 'BOTTOM', 0, -(buttonSpacing + (totalSlots == 1 and bagSpacing or 0)))
@@ -1773,23 +1772,19 @@ end
 
 function B:ConstructContainerBank(f, id, key, keySize)
 	local frame = CreateFrame('Frame', 'ElvUI'..key, f)
+	frame:SetAllPoints(f.holderFrame)
+	frame:SetID(id)
+
+	frame.numSlots = keySize
+	frame.staleSlots = {}
+
 	f[key] = frame
 
-	frame:Point('TOP', f, 'TOP', 0, -f.topOffset)
-	frame:Point('BOTTOM', f, 'BOTTOM', 0, BOTTOM_OFFSET)
-	frame:SetID(id)
-	frame:Hide()
+	f.Bags[id] = frame
 
-	local bag = {}
 	for slotID = 1, keySize do
-		bag[slotID] = B:ConstructContainerButton(f, id, slotID)
+		frame[slotID] = B:ConstructContainerButton(f, id, slotID)
 	end
-
-	bag.numSlots = keySize
-	bag.staleSlots = {}
-
-	f.Bags[id] = bag
-	frame.slots = bag
 
 	return frame
 end
@@ -1814,6 +1809,11 @@ function B:BankTabs_SettingsToTooltip(tooltip, depositFlags)
 end
 
 function B:BankTabs_OnEnter()
+	local combined = B.db[B.WarbandBanks[self.BagID] and 'warbandCombined' or 'bankCombined']
+	if combined then
+		B:SetSlotAlphaForBag(self.bagFrame, self.BagID)
+	end
+
 	if GameTooltip:IsForbidden() then return end
 
 	local data = B:BankTab_PurchasedData(self.bankType)
@@ -1828,6 +1828,11 @@ function B:BankTabs_OnEnter()
 end
 
 function B:BankTabs_OnLeave()
+	local combined = B.db[B.WarbandBanks[self.BagID] and 'warbandCombined' or 'bankCombined']
+	if combined then
+		B:ResetSlotAlphaForBags(self.bagFrame)
+	end
+
 	if GameTooltip:IsForbidden() then return end
 
 	GameTooltip:Hide()
