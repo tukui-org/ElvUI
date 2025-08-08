@@ -36,7 +36,6 @@ Bags.args.general.args.generalGroup.values = {
 	clearSearchOnClose = L["Clear Search On Close"],
 	reverseLoot = L["REVERSE_NEW_LOOT_TEXT"],
 	reverseSlots = L["Reverse Bag Slots"],
-	useBlizzardCleanup = L["Use Blizzard Cleanup"],
 	upgradeIcon = L["Upgrade Icon"]
 }
 
@@ -49,7 +48,6 @@ end
 
 local excludeUpdates = {
 	clearSearchOnClose = true,
-	useBlizzardCleanup = true,
 	auctionToggle = true
 }
 
@@ -86,6 +84,7 @@ Bags.args.general.args.playerGroup.args.bagSize = ACH:Range(L["Button Size"], ni
 Bags.args.general.args.playerGroup.args.bagButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.playerGroup.args.bagWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bag frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.playerGroup.args.disableBagSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(false) end)
+Bags.args.general.args.playerGroup.args.useBlizzardCleanup = ACH:Toggle(L["Use Blizzard Cleanup"], nil, 6, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value end, nil, not E.Retail)
 
 Bags.args.general.args.playerGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout() end)
 Bags.args.general.args.playerGroup.args.split.args.player = ACH:Toggle(L["Enable"], nil, 1)
@@ -99,7 +98,8 @@ Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
-Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(E.NewSign..L["Combined"], nil, 6)
+Bags.args.general.args.bankGroup.args.useBlizzardCleanupBank = ACH:Toggle(E.NewSign..L["Use Blizzard Cleanup"], nil, 6, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value end, nil, not E.Retail)
+Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(E.NewSign..L["Combined"], nil, 7)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
@@ -254,7 +254,7 @@ Bags.args.vendorGrays.args.interval = ACH:Range(L["Sell Interval"], L["Will atte
 Bags.args.vendorGrays.args.details = ACH:Toggle(L["Vendor Gray Detailed Report"], L["Displays a detailed report of every item sold when enabled."], 3)
 Bags.args.vendorGrays.args.progressBar = ACH:Toggle(L["Progress Bar"], nil, 4)
 
-Bags.args.bagSortingGroup = ACH:Group(L["Sorting"], nil, 5, nil, nil, nil, function() return (not E.Bags.Initialized) or E.db.bags.useBlizzardCleanup end)
+Bags.args.bagSortingGroup = ACH:Group(L["Sorting"], nil, 5, nil, nil, nil, function() return not E.Bags.Initialized end)
 Bags.args.bagSortingGroup.args.sortInverted = ACH:Toggle(L["Sort Inverted"], L["Direction the bag sorting will use to allocate the items."], 1)
 Bags.args.bagSortingGroup.args.description = ACH:Description(L["Here you can add items that you want to be excluded from sorting. To remove an item just click on its name in the list."], 3)
 Bags.args.bagSortingGroup.args.addEntryGroup = ACH:Group(L["Add Item"], nil, 3)

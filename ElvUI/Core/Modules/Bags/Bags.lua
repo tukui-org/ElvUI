@@ -2409,7 +2409,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Sort Button
 		f.sortButton:SetScript('OnClick', function()
 			if f.holderFrame:IsShown() then
-				if E.Retail and B.db.useBlizzardCleanup then
+				if E.Retail and B.db.useBlizzardCleanupBank then
 					SortBankBags()
 				else
 					B:UnregisterBagEvents(f)
