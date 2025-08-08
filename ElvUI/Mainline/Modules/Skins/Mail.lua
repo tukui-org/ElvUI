@@ -108,12 +108,6 @@ function S:MailFrame()
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
 
-	_G.SendMailMoneySilver.backdrop:Point('TOPLEFT', _G.SendMailMoneySilver, 'TOPLEFT', -2, 0)
-	_G.SendMailMoneySilver.backdrop:Point('BOTTOMRIGHT', _G.SendMailMoneySilver, 'BOTTOMRIGHT', 0, -2)
-
-	_G.SendMailMoneyCopper.backdrop:Point('TOPLEFT', _G.SendMailMoneyCopper, 'TOPLEFT', -2, 0)
-	_G.SendMailMoneyCopper.backdrop:Point('BOTTOMRIGHT', _G.SendMailMoneyCopper, 'BOTTOMRIGHT', 0, -2)
-
 	_G.SendMailNameEditBox:ClearAllPoints()
 	_G.SendMailNameEditBox:Point('TOPLEFT', _G.SendMailFrame, 'TOPLEFT', 90, -30)
 	_G.SendMailNameEditBox:Width(109)
@@ -140,7 +134,7 @@ function S:MailFrame()
 	S:HandleRadioButton(_G.SendMailCODButton)
 
 	_G.SendMailSendMoneyButton:ClearAllPoints()
-	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 28, 9)
+	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 26, 12)
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
