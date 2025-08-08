@@ -502,13 +502,13 @@ end
 
 -- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
 function B:UpdateItemUpgradeIcon(slot)
-	if not B.db.upgradeIcon or not slot.isEquipment or not _G.PawnShouldItemLinkHaveUpgradeArrow then
+	if not B.db.upgradeIcon or not slot.isEquipment or not _G.PawnShouldItemLinkHaveUpgradeArrowUnbudgeted then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
 	end
 
-	local isUpgrade = slot.itemLink and _G.PawnShouldItemLinkHaveUpgradeArrow(slot.itemLink, true)
+	local isUpgrade = slot.itemLink and _G.PawnShouldItemLinkHaveUpgradeArrowUnbudgeted(slot.itemLink, true)
 	if isUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', B.UpgradeCheck_OnUpdate)
