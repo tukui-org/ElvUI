@@ -533,6 +533,7 @@ P.bags = {
 		bank = false,
 		warband = false,
 		alwaysProfessionBags = false,
+		alwaysProfessionBank = false,
 	},
 	shownBags = {},
 	autoToggle = {

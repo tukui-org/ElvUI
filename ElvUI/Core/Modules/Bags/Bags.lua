@@ -1170,7 +1170,7 @@ function B:Layout(isBank)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
-	local professionSplit = B.db.split.alwaysProfessionBags
+	local professionSplit = E.Mists and (isBank and B.db.split.alwaysProfessionBank) or B.db.split.alwaysProfessionBags
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 	local reverseSlots = B.db.reverseSlots
 
