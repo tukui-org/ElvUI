@@ -134,7 +134,7 @@ function S:MailFrame()
 	S:HandleRadioButton(_G.SendMailCODButton)
 
 	_G.SendMailSendMoneyButton:ClearAllPoints()
-	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 26, 12)
+	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 30, 8)
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)

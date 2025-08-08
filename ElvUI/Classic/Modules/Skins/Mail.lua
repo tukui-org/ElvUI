@@ -168,6 +168,9 @@ function S:MailFrame()
 	S:HandleRadioButton(_G.SendMailSendMoneyButton)
 	S:HandleRadioButton(_G.SendMailCODButton)
 
+	_G.SendMailSendMoneyButton:ClearAllPoints()
+	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 20, 8)
+
 	for i = 1, 5 do
 		_G['AutoCompleteButton'..i]:StyleButton()
 	end
