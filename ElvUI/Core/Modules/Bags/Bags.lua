@@ -2789,9 +2789,9 @@ function B:PanelShowHidden(panel)
 		panel:Show()
 	end
 
-	panel:SetParent(UIParent)
-	panel:ClearAllPoints()
-	panel:SetPoint('TOP', UIParent, 'BOTTOM')
+	if panel:GetParent() ~= E.HiddenFrame then
+		panel:SetParent(E.HiddenFrame)
+	end
 end
 
 function B:PanelHide(panel)
