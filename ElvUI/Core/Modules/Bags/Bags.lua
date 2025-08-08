@@ -2122,9 +2122,18 @@ function B:CoverButton_ClickBank()
 end
 
 function B:BagsButton_ClickBank()
-	local frame = self:GetParent()
-	ToggleFrame(frame.ContainerHolder)
 	PlaySound(852) --IG_MAINMENU_OPTION
+
+	local f = self:GetParent()
+	if E.Retail then
+		if f.bankType == WARBANDBANK_TYPE then
+			ToggleFrame(f.WarbandTabs)
+		else
+			ToggleFrame(f.BankTabs)
+		end
+	else
+		ToggleFrame(f.ContainerHolder)
+	end
 end
 
 function B:BagsButton_ClickBag()
@@ -2253,6 +2262,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.bagsButton.ttText = L["Toggle Bags"]
 	f.bagsButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.bagsButton:SetScript('OnLeave', GameTooltip_Hide)
+	f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
 	--Search
 	f.editBox = CreateFrame('EditBox', name..'EditBox', f, 'SearchBoxTemplate')
@@ -2288,14 +2298,10 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 
 		if not E.Retail then
-			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
-
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 			f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
 			f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		else
-			f.bagsButton:Hide()
-
 			do -- main bank button
 				local tabHolder = B:ConstructContainerTabHolder(f, name, 'BankTabs', 6)
 
@@ -2378,7 +2384,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
 
 			f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
-			f.purchaseSecureButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
+			f.purchaseSecureButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 			f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
 			f.purchaseSecureButton:SetAttribute('type', 'click')
 		end
@@ -2924,6 +2930,14 @@ function B:BankTabs_UpdateIcons(bankType)
 	end
 end
 
+function B:BankTabs_SwapTabs(f, tab)
+	local tabsShown = tab:IsShown()
+	if tabsShown then
+		ToggleFrame(f.BankTabs)
+		ToggleFrame(f.WarbandTabs)
+	end
+end
+
 function B:BANK_TAB_SETTINGS_UPDATED(_, bankType)
 	B:BankTabs_UpdateIcons(bankType)
 end
@@ -2937,14 +2951,14 @@ function B:ShowBankTab(f, bankTab)
 
 	B.BankTab = bankTab or (E.Retail and 6) or 1
 
+	local warbandIndex = B.WarbandBanks[B.BankTab]
+	f.bankType = warbandIndex and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
 	f.ContainerHolder:Hide()
 
-	local warbandIndex = B.WarbandBanks[B.BankTab]
 	if warbandIndex then
 		f.fullBank = not CanPurchaseBankTab(WARBANDBANK_TYPE)
 
-		f.BankTabs:Hide()
-		f.WarbandTabs:Show()
+		B:BankTabs_SwapTabs(f, f.BankTabs)
 
 		for _, bankIndex in next, B.CharacterBanks do
 			f['BankTabs'..bankIndex]:Hide()
@@ -2967,12 +2981,11 @@ function B:ShowBankTab(f, bankTab)
 		if E.Retail then
 			f.fullBank = not CanPurchaseBankTab(CHARACTERBANK_TYPE)
 
+			B:BankTabs_SwapTabs(f, f.WarbandTabs)
+
 			for _, bankIndex in next, B.WarbandBanks do
 				f['WarbandTabs'..bankIndex]:Hide()
 			end
-
-			f.BankTabs:Show()
-			f.WarbandTabs:Hide()
 
 			f.purchaseSecureButton:SetShown(not f.fullBank)
 			f.purchaseSecureButton:SetScript('OnClick', function()
@@ -2993,7 +3006,7 @@ function B:ShowBankTab(f, bankTab)
 		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 	end
 
-	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseSecureButton or f.purchaseBagButton) or f.sortButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseSecureButton or f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 
 	if previousTab ~= B.BankTab then
 		B:Layout(true)
