@@ -474,6 +474,11 @@ function E:StaticPopup_IsLastDisplayedFrame(frame)
 	return false
 end
 
+function E:StaticPopup_ClearText()
+	self:SetText('')
+	self:ClearFocus()
+end
+
 function E:StaticPopup_OnKeyDown(key)
 	if GetBindingFromClick(key) == 'TOGGLEGAMEMENU' then
 		return E:StaticPopup_EscapePressed()
@@ -1292,6 +1297,8 @@ function E:Contruct_StaticPopups()
 
 		local editbox = _G['ElvUI_StaticPopup'..index..'EditBox']
 		if editbox then
+			editbox.ClearText = E.StaticPopup_ClearText
+
 			editbox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
 			editbox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 			editbox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
