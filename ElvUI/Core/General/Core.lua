@@ -582,6 +582,7 @@ do
 			},
 			'Prat-3.0',
 			'Chatter',
+			'Chattynator',
 			'Glass'
 		},
 		NamePlates = {
