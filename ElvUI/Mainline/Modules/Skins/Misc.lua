@@ -172,16 +172,16 @@ function S:BlizzardMiscFrames()
 	-- reskin popup buttons
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
-		local ItemFrame = _G['StaticPopup'..i..'ItemFrame']
-		local ItemFrameName = _G['StaticPopup'..i..'ItemFrameNameFrame']
-		local ItemNameFrame = _G['StaticPopup'..i..'ItemNameFrame']
-		local IconTexture = _G['StaticPopup'..i..'ItemFrameIconTexture']
 		local CloseButton = _G['StaticPopup'..i..'CloseButton']
 
 		local EditBox = _G['StaticPopup'..i..'EditBox']
 		local Gold = _G['StaticPopup'..i..'MoneyInputFrameGold']
 		local Silver = _G['StaticPopup'..i..'MoneyInputFrameSilver']
 		local Copper = _G['StaticPopup'..i..'MoneyInputFrameCopper']
+
+		local ItemFrame = StaticPopup.ItemFrame or _G['StaticPopup'..i..'ItemFrame']
+		local ItemNameFrame = ItemFrame.NameFrame or _G['StaticPopup'..i..'ItemNameFrame']
+		local ItemFrameNameFrame = ItemFrame.ItemFrameNameFrame or _G['StaticPopup'..i..'ItemFrameNameFrame']
 
 		StaticPopup:StripTextures()
 		StaticPopup:SetTemplate('Transparent')
@@ -219,21 +219,20 @@ function S:BlizzardMiscFrames()
 			ItemNameFrame:Hide()
 		end
 
-		if ItemFrameName then
-			ItemFrameName:StripTextures()
+		if ItemFrameNameFrame then
+			ItemFrameNameFrame:StripTextures()
 		end
 
+		local item = ItemFrame and ItemFrame.Item
 		if ItemFrame then
-			ItemFrame:SetTemplate()
-			ItemFrame:StyleButton()
+			S:HandleItemButton(item, true)
+			S:HandleIconBorder(item.IconBorder, item.backdrop)
 
-			S:HandleIcon(IconTexture)
-			S:HandleIconBorder(ItemFrame.IconBorder)
+			local normalTexture = item:GetNormalTexture()
+			if normalTexture then
+				normalTexture:SetTexture()
 
-			local normTex = ItemFrame:GetNormalTexture()
-			if normTex then
-				normTex:SetTexture()
-				hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
+				hooksecurefunc(normalTexture, 'SetTexture', ClearSetTexture)
 			end
 		end
 	end
