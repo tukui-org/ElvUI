@@ -1220,6 +1220,7 @@ function E:StaticPopup_OnLoad(popup)
 	popup.extraFrame = E:StaticPopup_GetElement(popup, 'ExtraFrame')
 	popup.moneyFrame = E:StaticPopup_GetElement(popup, 'MoneyFrame')
 	popup.moneyInputFrame = E:StaticPopup_GetElement(popup, 'MoneyInputFrame')
+	popup.closeButton = E:StaticPopup_GetElement(popup, 'CloseButton')
 
 	local itemFrame = E:StaticPopup_GetElement(popup, 'ItemFrame')
 	if itemFrame then
