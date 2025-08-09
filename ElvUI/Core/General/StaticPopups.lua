@@ -32,10 +32,10 @@ local YES, NO, OKAY, CANCEL, ACCEPT, DECLINE = YES, NO, OKAY, CANCEL, ACCEPT, DE
 
 local DOWNLOAD_URL = 'https://tukui.org/elvui'
 local FALLBACK_COLOR = { 1, 1, 1, 1 }
-local MAX_STATIC_POPUPS = 4
 
 E.PopupDialogs = {}
 E.StaticPopup_DisplayedFrames = {}
+E.MAX_STATIC_POPUPS = 4
 
 E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."],
@@ -818,7 +818,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 		dialog:Hide()
 	else
 		-- Find a free dialog
-		for i = (info.preferredIndex or 1), MAX_STATIC_POPUPS do
+		for i = (info.preferredIndex or 1), E.MAX_STATIC_POPUPS do
 			local popup = _G['ElvUI_StaticPopup'..i]
 			if popup and not popup:IsShown() then
 				dialog = popup
@@ -1262,7 +1262,7 @@ end
 function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
-	for index = 1, MAX_STATIC_POPUPS do
+	for index = 1, E.MAX_STATIC_POPUPS do
 		local name = 'ElvUI_StaticPopup'..index
 		local popup = CreateFrame('Frame', name, E.UIParent, 'ElvUIStaticPopupTemplate')
 

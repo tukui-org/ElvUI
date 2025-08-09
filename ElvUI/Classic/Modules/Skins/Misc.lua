@@ -8,12 +8,6 @@ local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 
-local function ClearSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetTexture()
-	end
-end
-
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and UnitIsUnit('player', frame.initiator) then
 		frame:Hide() -- bug fix, don't show it if player is initiator
@@ -126,66 +120,8 @@ function S:BlizzardMiscFrames()
 	end
 
 	-- reskin popup buttons
-	for i = 1, 4 do
-		local StaticPopup = _G['StaticPopup'..i]
-		local CloseButton = _G['StaticPopup'..i..'CloseButton']
-		local EditBox = _G['StaticPopup'..i..'EditBox']
-		local Gold = _G['StaticPopup'..i..'MoneyInputFrameGold']
-		local Silver = _G['StaticPopup'..i..'MoneyInputFrameSilver']
-		local Copper = _G['StaticPopup'..i..'MoneyInputFrameCopper']
-
-		local ItemFrame = StaticPopup.ItemFrame or _G['StaticPopup'..i..'ItemFrame']
-		local ItemFrameNameFrame = ItemFrame.NameFrame or _G['StaticPopup'..i..'ItemFrameNameFrame']
-
-		StaticPopup:StripTextures()
-		StaticPopup:SetTemplate('Transparent')
-		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
-			if StaticPopup.UpdateRecapButton and not StaticPopup.UpdateRecapButtonHooked then
-				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
-
-				hooksecurefunc(StaticPopup, 'UpdateRecapButton', S.UpdateRecapButton)
-			end
-		end)
-
-		for j = 1, 4 do
-			local button = _G['StaticPopup'..i..'Button'..j]
-			S:HandleButton(button)
-
-			button:OffsetFrameLevel(1)
-			button:CreateShadow(5)
-			button.shadow:SetAlpha(0)
-			button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-			button.Flash:Hide()
-
-			local anim1, anim2 = button.PulseAnim:GetAnimations()
-			anim1:SetTarget(button.shadow)
-			anim2:SetTarget(button.shadow)
-		end
-
-		S:HandleCloseButton(CloseButton)
-
-		S:HandleEditBox(Gold)
-		S:HandleEditBox(Silver)
-		S:HandleEditBox(Copper)
-		S:HandleEditBox(EditBox)
-		EditBox:OffsetFrameLevel(1)
-
-		if ItemFrameNameFrame then
-			ItemFrameNameFrame:StripTextures()
-		end
-
-		if ItemFrame then
-			local item = ItemFrame.Item or ItemFrame
-			S:HandleItemButton(item, true)
-			S:HandleIconBorder(item.IconBorder, item.backdrop)
-
-			local normalTexture = item:GetNormalTexture()
-			if normalTexture then
-				normalTexture:SetTexture()
-
-				hooksecurefunc(normalTexture, 'SetTexture', ClearSetTexture)
-			end
-		end
+	for i = 1, E.MAX_STATIC_POPUPS do
+		S:HandleStaticPopup(_G['StaticPopup'..i])
 	end
 
 	_G.OpacityFrame:StripTextures()

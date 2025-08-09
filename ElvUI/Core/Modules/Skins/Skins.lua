@@ -164,6 +164,12 @@ do
 	end
 end
 
+function S:ClearSetTexture(texture)
+	if texture ~= nil then
+		self:SetTexture()
+	end
+end
+
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
 		frame:SetHighlightTexture(E.ClearTexture)
@@ -302,14 +308,94 @@ function S:SetDisabledBackdrop()
 	end
 end
 
--- function to handle the recap button script
-function S:UpdateRecapButton()
+do
+	local hookedFrames = {}
+	function S:StaticPopup_OnShow() -- UpdateRecapButton is created OnShow
+		if self.UpdateRecapButton and not hookedFrames[self] then
+			hookedFrames[self] = true
+
+			hooksecurefunc(self, 'UpdateRecapButton', S.StaticPopup_UpdateRecapButton)
+		end
+	end
+end
+
+function S:StaticPopup_UpdateRecapButton()
 	-- when UpdateRecapButton runs and enables the button, it unsets OnEnter
 	-- we need to reset it with ours. blizzard will replace it when the button
 	-- is disabled. so, we don't have to worry about anything else.
-	if self and self.button4 and self.button4:IsEnabled() then
-		self.button4:SetScript('OnEnter', S.SetModifiedBackdrop)
-		self.button4:SetScript('OnLeave', S.SetOriginalBackdrop)
+
+	local button = self.button4
+	if button and button:IsEnabled() then
+		button:SetScript('OnEnter', S.SetModifiedBackdrop)
+		button:SetScript('OnLeave', S.SetOriginalBackdrop)
+	end
+end
+
+function S:StaticPopup_HandleButton(button)
+	S:HandleButton(button)
+
+	button:OffsetFrameLevel(1)
+	button:CreateShadow(5)
+	button.shadow:SetAlpha(0)
+	button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	button.Flash:Hide()
+
+	local anim1, anim2 = button.PulseAnim:GetAnimations()
+	anim1:SetTarget(button.shadow)
+	anim2:SetTarget(button.shadow)
+end
+
+function S:HandleStaticPopup(popup)
+	if not popup then return end
+
+	popup:StripTextures()
+	popup:SetTemplate('Transparent')
+	popup:HookScript('OnShow', S.StaticPopup_OnShow)
+
+	local i = 1
+	local button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	while button do
+		S:StaticPopup_HandleButton(button)
+
+		i = i + 1
+		button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	end
+
+	local closeButton = E:StaticPopup_GetElement(popup, 'CloseButton')
+	if closeButton then
+		S:HandleCloseButton(closeButton)
+	end
+
+	local moneyInputFrame = E:StaticPopup_GetElement(popup, 'MoneyInputFrame')
+	if moneyInputFrame then
+		S:HandleEditBox(moneyInputFrame.gold)
+		S:HandleEditBox(moneyInputFrame.silver)
+		S:HandleEditBox(moneyInputFrame.copper)
+	end
+
+	local editBox = E:StaticPopup_GetElement(popup, 'EditBox')
+	if editBox then
+		S:HandleEditBox(editBox)
+		editBox:OffsetFrameLevel(1)
+	end
+
+	local itemFrame = E:StaticPopup_GetElement(popup, 'ItemFrame')
+	if itemFrame then
+		local itemFrameNameFrame = itemFrame.NameFrame or E:StaticPopup_GetElement(popup, 'ItemFrameNameFrame')
+		if itemFrameNameFrame then
+			itemFrameNameFrame:StripTextures()
+		end
+
+		local item = itemFrame.Item or itemFrame
+		S:HandleItemButton(item, true)
+		S:HandleIconBorder(item.IconBorder, item.backdrop)
+
+		local normalTexture = item:GetNormalTexture()
+		if normalTexture then
+			normalTexture:SetTexture()
+
+			hooksecurefunc(normalTexture, 'SetTexture', S.ClearSetTexture)
+		end
 	end
 end
 
