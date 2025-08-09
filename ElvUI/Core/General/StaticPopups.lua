@@ -1212,16 +1212,21 @@ function E:StaticPopup_OnLoad(popup)
 	-- reference elements with compatibility
 	popup.text = E:StaticPopup_GetElement(popup, 'Text')
 	popup.editBox = E:StaticPopup_GetElement(popup, 'EditBox')
-	popup.button1 = E:StaticPopup_GetElement(popup, 'Button1')
-	popup.button2 = E:StaticPopup_GetElement(popup, 'Button2')
-	popup.button3 = E:StaticPopup_GetElement(popup, 'Button3')
-	popup.button4 = E:StaticPopup_GetElement(popup, 'Button4')
 	popup.alertIcon = E:StaticPopup_GetElement(popup, 'AlertIcon')
 	popup.extraButton = E:StaticPopup_GetElement(popup, 'ExtraButton')
 	popup.extraFrame = E:StaticPopup_GetElement(popup, 'ExtraFrame')
 	popup.moneyFrame = E:StaticPopup_GetElement(popup, 'MoneyFrame')
 	popup.moneyInputFrame = E:StaticPopup_GetElement(popup, 'MoneyInputFrame')
 	popup.closeButton = E:StaticPopup_GetElement(popup, 'CloseButton')
+
+	local i = 1
+	local button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	while button do
+		popup['button'..i] = button
+
+		i = i + 1
+		button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	end
 
 	local itemFrame = E:StaticPopup_GetElement(popup, 'ItemFrame')
 	if itemFrame then
