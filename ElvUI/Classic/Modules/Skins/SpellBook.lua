@@ -13,18 +13,6 @@ local function SpellHighlightSetTexture(texture, tex)
 	end
 end
 
-local function TabHighlightSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetHighlightTexture(E.ClearTexture)
-	end
-end
-
-local function TabCheckedSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetCheckedTexture(E.ClearTexture)
-	end
-end
-
 function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
@@ -143,8 +131,8 @@ function S:SpellBookFrame()
 			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 		end
 
-		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)
-		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', TabCheckedSetTexture)
+		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', S.ClearHighlightTexture)
+		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', S.ClearCheckedTexture)
 
 		flash:Kill()
 	end
