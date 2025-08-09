@@ -148,8 +148,7 @@ function S:BlizzardMiscFrames()
 		local Copper = _G['StaticPopup'..i..'MoneyInputFrameCopper']
 
 		local ItemFrame = StaticPopup.ItemFrame or _G['StaticPopup'..i..'ItemFrame']
-		local ItemNameFrame = ItemFrame.NameFrame or _G['StaticPopup'..i..'ItemNameFrame']
-		local ItemFrameNameFrame = ItemFrame.ItemFrameNameFrame or _G['StaticPopup'..i..'ItemFrameNameFrame']
+		local ItemFrameNameFrame = ItemFrame.NameFrame or _G['StaticPopup'..i..'ItemFrameNameFrame']
 
 		StaticPopup:StripTextures()
 		StaticPopup:SetTemplate('Transparent')
@@ -183,10 +182,6 @@ function S:BlizzardMiscFrames()
 		S:HandleEditBox(Copper)
 		S:HandleEditBox(EditBox)
 		EditBox:OffsetFrameLevel(1)
-
-		if ItemNameFrame then
-			ItemNameFrame:Hide()
-		end
 
 		if ItemFrameNameFrame then
 			ItemFrameNameFrame:StripTextures()
