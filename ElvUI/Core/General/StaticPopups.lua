@@ -1058,36 +1058,40 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 
 	-- Show or hide the alert icon
 	local alertIcon = _G[dialogName..'AlertIcon']
-	if info.showAlert then
-		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERT)
-		alertIcon:Point('LEFT', 24, button3:IsShown() and 10 or 0)
-		alertIcon:Show()
-	elseif info.showAlertGear then
-		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERTGEAR)
-		alertIcon:Point('LEFT', 24, 0)
-		alertIcon:Show()
-	elseif alertIcon then
-		alertIcon:SetTexture()
-		alertIcon:Hide()
+	if alertIcon then
+		if info.showAlert then
+			alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERT)
+			alertIcon:Point('LEFT', 24, button3:IsShown() and 10 or 0)
+			alertIcon:Show()
+		elseif info.showAlertGear then
+			alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERTGEAR)
+			alertIcon:Point('LEFT', 24, 0)
+			alertIcon:Show()
+		elseif alertIcon then
+			alertIcon:SetTexture()
+			alertIcon:Hide()
+		end
 	end
 
 	-- Show or hide the checkbox
 	local checkButton = _G[dialogName..'CheckButton']
 	local checkButtonText = _G[dialogName..'CheckButtonText']
-	if info.hasCheckButton then
-		checkButton:ClearAllPoints()
-		checkButton:Point('BOTTOMLEFT', 24, 20 + button1:GetHeight())
-
-		if info.checkButtonText then
-			checkButtonText:SetText(info.checkButtonText)
-			checkButtonText:Show()
+	if checkButton then
+		if info.hasCheckButton then
+			checkButton:ClearAllPoints()
+			checkButton:Point('BOTTOMLEFT', 24, 20 + button1:GetHeight())
+	
+			if info.checkButtonText then
+				checkButtonText:SetText(info.checkButtonText)
+				checkButtonText:Show()
+			else
+				checkButtonText:Hide()
+			end
+	
+			checkButton:Show()
 		else
-			checkButtonText:Hide()
+			checkButton:Hide()
 		end
-
-		checkButton:Show()
-	else
-		checkButton:Hide()
 	end
 
 	if info.StartDelay then
