@@ -173,7 +173,6 @@ function S:BlizzardMiscFrames()
 	for i = 1, 4 do
 		local StaticPopup = _G['StaticPopup'..i]
 		local CloseButton = _G['StaticPopup'..i..'CloseButton']
-
 		local EditBox = _G['StaticPopup'..i..'EditBox']
 		local Gold = _G['StaticPopup'..i..'MoneyInputFrameGold']
 		local Silver = _G['StaticPopup'..i..'MoneyInputFrameSilver']
@@ -186,14 +185,15 @@ function S:BlizzardMiscFrames()
 		StaticPopup:StripTextures()
 		StaticPopup:SetTemplate('Transparent')
 		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
-			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
+			if StaticPopup.UpdateRecapButton and not StaticPopup.UpdateRecapButtonHooked then
 				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
+
 				hooksecurefunc(StaticPopup, 'UpdateRecapButton', S.UpdateRecapButton)
 			end
 		end)
 
 		for j = 1, 4 do
-			local button = _G["StaticPopup"..i.."Button"..j]
+			local button = _G['StaticPopup'..i..'Button'..j]
 			S:HandleButton(button)
 
 			button:OffsetFrameLevel(1)
@@ -223,8 +223,8 @@ function S:BlizzardMiscFrames()
 			ItemFrameNameFrame:StripTextures()
 		end
 
-		local item = ItemFrame and ItemFrame.Item
 		if ItemFrame then
+			local item = ItemFrame.Item or ItemFrame
 			S:HandleItemButton(item, true)
 			S:HandleIconBorder(item.IconBorder, item.backdrop)
 
