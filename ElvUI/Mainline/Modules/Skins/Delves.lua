@@ -42,6 +42,15 @@ local function DifficultyPickerFrame_Update(frame)
 	frame:ForEachFrame(SetRewards)
 end
 
+local function UpdatePaginatedButtonDisplay(frame)
+	for _, button in pairs(frame.buttons) do
+		if button and button.Icon and not button.Icon.IsSkinned then
+			S:HandleIcon(button.Icon, true)
+			button.Icon.IsSkinned = true
+		end
+	end
+end
+
 function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -60,6 +69,8 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	S:HandleDropDownBox(CompanionAbilityListFrame.DelvesCompanionRoleDropdown) -- ??
 	S:HandleNextPrevButton(CompanionAbilityListFrame.DelvesCompanionAbilityListPagingControls.PrevPageButton)
 	S:HandleNextPrevButton(CompanionAbilityListFrame.DelvesCompanionAbilityListPagingControls.NextPageButton)
+
+	hooksecurefunc(CompanionAbilityListFrame, 'UpdatePaginatedButtonDisplay', UpdatePaginatedButtonDisplay)
 end
 
 S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration')
