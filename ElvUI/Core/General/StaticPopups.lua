@@ -1279,10 +1279,6 @@ function E:Contruct_StaticPopups()
 		popup:SetID(index)
 		popup:Hide()
 
-		if popup.Border then
-			popup.Border:StripTextures()
-		end
-
 		if not popup.checkButton then
 			popup.checkButton = CreateFrame('CheckButton', name..'CheckButton', popup, 'UICheckButtonTemplate')
 			popup.checkButton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
@@ -1299,36 +1295,44 @@ function E:Contruct_StaticPopups()
 			end
 		end
 
-		if popup.extraButton then
-			popup.extraButton:Hide()
-
-			E:StaticPopup_HandleButton(popup.extraButton)
+		if popup.Border then
+			popup.Border:StripTextures()
 		end
 
-		if popup.moneyInputFrame then
-			S:HandleEditBox(popup.moneyInputFrame.gold)
-			S:HandleEditBox(popup.moneyInputFrame.silver)
-			S:HandleEditBox(popup.moneyInputFrame.copper)
+		local extraButton = popup.extraButton
+		if extraButton then
+			extraButton:Hide()
+
+			E:StaticPopup_HandleButton(extraButton)
 		end
 
-		if popup.editBox then
-			popup.editBox.ClearText = E.StaticPopup_ClearText
+		local moneyInputFrame = popup.moneyInputFrame
+		if moneyInputFrame then
+			S:HandleEditBox(moneyInputFrame.gold)
+			S:HandleEditBox(moneyInputFrame.silver)
+			S:HandleEditBox(moneyInputFrame.copper)
+		end
 
-			popup.editBox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
-			popup.editBox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
-			popup.editBox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
-			popup.editBox:OffsetFrameLevel(1)
+		local editBox = popup.editBox
+		if editBox then
+			editBox.ClearText = E.StaticPopup_ClearText -- use our own function, it doesnt exist on era
 
-			S:HandleEditBox(popup.editBox)
+			editBox:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
+			editBox:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
+			editBox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
+			editBox:OffsetFrameLevel(1)
 
-			if not popup.editBox.NineSlice then
-				popup.editBox.backdrop:Point('TOPLEFT', -2, -4)
-				popup.editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+			S:HandleEditBox(editBox)
+
+			if not editBox.NineSlice then
+				editBox.backdrop:Point('TOPLEFT', -2, -4)
+				editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 			end
 		end
 
-		if popup.itemFrame then
-			local item = popup.itemFrameItem or popup.itemFrame
+		local itemFrame = popup.itemFrame
+		if itemFrame then
+			local item = popup.itemFrameItem or itemFrame
 			if item then
 				local normalTexture = item:GetNormalTexture()
 				if normalTexture then
