@@ -8,11 +8,9 @@ local hooksecurefunc = hooksecurefunc
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local function SkinTab(tab)
-	tab.Left:SetAlpha(0)
-	if tab.Middle then
-		tab.Middle:SetAlpha(0)
-	end
-	tab.Right:SetAlpha(0)
+	if tab.Left then tab.Left:SetAlpha(0) end
+	if tab.Middle then tab.Middle:SetAlpha(0) end
+	if tab.Right then tab.Right:SetAlpha(0) end
 end
 
 local function BlackMarketScrollUpdateChild(button)
