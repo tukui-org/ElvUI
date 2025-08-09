@@ -1154,10 +1154,11 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, attributes)
 	txt:FontTemplate(nil, nil, 'SHADOW')
 	txt:SetJustifyH('CENTER')
 	txt:SetText(text)
-	btn.text = txt
 
-	btn:SetFontString(t)
+	btn.text = txt
+	btn:SetFontString(txt)
 	btn:SetTemplate(nil, true)
+
 	SecureOnLeave(btn)
 
 	return btn
