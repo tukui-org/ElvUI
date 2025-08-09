@@ -116,6 +116,7 @@ local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
+local MAIL_INTERACTION = Enum.PlayerInteractionType.MailInfo
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -2714,6 +2715,8 @@ function B:ToggleBackpack()
 end
 
 function B:OpenAllBags(frame)
+	if not frame then return end
+
 	local mail = frame == _G.MailFrame and frame:IsShown()
 	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
@@ -3438,6 +3441,12 @@ function B:ADDON_LOADED(_, addon)
 	end
 end
 
+function B:PlayerInteraction_ShowFrame(_, interactionType)
+	if interactionType == MAIL_INTERACTION then
+		B:OpenAllBags(_G.MailFrame)
+	end
+end
+
 function B:Initialize()
 	BIND_START, BIND_END = B:GetBindLines()
 
@@ -3526,10 +3535,12 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	if E.Mists then
-		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
+	if E.Classic then
+		B:SecureHook(_G.PlayerInteractionFrameManager, 'ShowFrame', 'PlayerInteraction_ShowFrame')
 	elseif E.Retail then
 		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'UpdateTokensIfVisible')
+	else
+		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
 
 	if E.Retail then
