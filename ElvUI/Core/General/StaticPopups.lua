@@ -6,8 +6,9 @@ local M = E:GetModule('Misc')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next, wipe, gsub, strlower = next, wipe, gsub, strlower
 local pairs, type, unpack, assert, ceil, error = pairs, type, unpack, assert, ceil, error
-local tremove, tContains, tinsert, next, wipe = tremove, tContains, tinsert, next, wipe
+local tremove, tContains, tinsert = tremove, tContains, tinsert
 
 local CreateFrame = CreateFrame
 local MoneyFrame_Update = MoneyFrame_Update
@@ -1222,22 +1223,36 @@ function E:StaticPopup_HandleButton(button)
 	S:HandleButton(button)
 end
 
-function E:StaticPopup_OnLoad(popup)
+function E:StaticPopup_GetElement(popup, text)
+	local lower = gsub(text, '^%w', strlower)
+	local element = popup[lower] or popup[text]
+	if element then
+		return element
+	end
+
 	local name = popup:GetName()
+	if name then
+		return _G[name..text]
+	end
+end
 
-	popup.button1 = _G[name..'Button1']
-	popup.button2 = _G[name..'Button2']
-	popup.button3 = _G[name..'Button3']
-	popup.button4 = _G[name..'Button4']
-	popup.extraFrame = _G[name..'ExtraFrame']
-	popup.itemFrame = _G[name..'ItemFrame']
-	popup.extraButton = _G[name..'ExtraButton']
-	popup.moneyFrame = _G[name..'MoneyFrame']
-	popup.moneyInputFrame = _G[name..'MoneyInputFrame']
-	popup.editBox = _G[name..'EditBox']
-	popup.icon = _G[name..'AlertIcon']
-	popup.text = _G[name..'Text']
+function E:StaticPopup_OnLoad(popup)
+	-- reference elements with compatibility
+	popup.text = E:StaticPopup_GetElement(popup, 'Text')
+	popup.editBox = E:StaticPopup_GetElement(popup, 'EditBox')
+	popup.button1 = E:StaticPopup_GetElement(popup, 'Button1')
+	popup.button2 = E:StaticPopup_GetElement(popup, 'Button2')
+	popup.button3 = E:StaticPopup_GetElement(popup, 'Button3')
+	popup.button4 = E:StaticPopup_GetElement(popup, 'Button4')
+	popup.itemFrame = E:StaticPopup_GetElement(popup, 'ItemFrame')
+	popup.alertIcon = E:StaticPopup_GetElement(popup, 'AlertIcon')
+	popup.extraButton = E:StaticPopup_GetElement(popup, 'ExtraButton')
+	popup.extraFrame = E:StaticPopup_GetElement(popup, 'ExtraFrame')
+	popup.moneyFrame = E:StaticPopup_GetElement(popup, 'MoneyFrame')
+	popup.moneyInputFrame = E:StaticPopup_GetElement(popup, 'MoneyInputFrame')
+	popup.checkButton = E:StaticPopup_GetElement(popup, 'CheckButton')
 
+	-- resize on event
 	popup:RegisterEvent('DISPLAY_SIZE_CHANGED')
 end
 
