@@ -33,6 +33,7 @@ local WEEKLY_RESET = format('%s %s', WEEKLY, RESET)
 local C_Map_GetAreaInfo = C_Map.GetAreaInfo
 local C_DateAndTime_GetSecondsUntilDailyReset = C_DateAndTime.GetSecondsUntilDailyReset
 local C_DateAndTime_GetSecondsUntilWeeklyReset = C_DateAndTime.GetSecondsUntilWeeklyReset
+local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local lockoutColorExtended = { r = 0.3, g = 1, b = 0.3 }
@@ -47,6 +48,17 @@ local displayFormats = {
 	eu_nocolor = '',
 	na_color = '',
 	eu_color = ''
+}
+
+local OVERRIDE_ICON = [[Interface\EncounterJournal\UI-EJ-Dungeonbutton-%s]]
+local BOSSNAME_MIST = [[|TInterface\EncounterJournal\UI-EJ-Dungeonbutton-pandaria:16:16:0:0:96:96:0:64:0:64|t %s]]
+local BOSSNAME_TWW = [[|TInterface\EncounterJournal\UI-EJ-Dungeonbutton-khazalgar:16:16:0:0:96:96:0:64:0:64|t %s]]
+
+local WORLD_BOSSES_MIST = {
+	[32098] = 'Galleon',
+	[32099] = 'Sha of Anger',
+	[32519] = 'Oondasta',
+	[32518] = 'Nalak'
 }
 
 local ALLOW_ID = { -- also has IDs maintained in Nameplate StyleFilters
@@ -65,7 +77,7 @@ local LFR_ID = {
 	[17] = true
 }
 
-local ICON_ID = not E.Retail and {
+local ICON_EJ = {
 	[521746] = 'default',
 	[522349] = 'baradinhold',
 	[522350] = 'blackrockcaverns',
@@ -316,9 +328,9 @@ local function GetInstanceImages(index, raid)
 			collectedIDs[instanceID] = name
 		end
 
-		local overrideImage = ICON_ID[buttonImage]
+		local overrideImage = not E.Retail and ICON_EJ[buttonImage]
 		local overrideName = InstanceNameByID[instanceID] or name
-		instanceIconByName[overrideName] = overrideImage and format([[Interface\EncounterJournal\UI-EJ-Dungeonbutton-%s]], overrideImage) or buttonImage
+		instanceIconByName[overrideName] = overrideImage and format(OVERRIDE_ICON, overrideImage) or buttonImage
 
 		index = index + 1
 		instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
@@ -439,15 +451,25 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail then
+	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
+	if not E.Classic then
 		local addedLine = false
 		local worldbossLockoutList = {}
-		for i = 1, GetNumSavedWorldBosses() do
-			local name, _, reset = GetSavedWorldBossInfo(i)
-			tinsert(worldbossLockoutList, {name, reset})
-		end
 
-		sort(worldbossLockoutList, sortFunc)
+		if E.Retail then
+			for i = 1, GetNumSavedWorldBosses() do
+				local name, _, reset = GetSavedWorldBossInfo(i)
+				tinsert(worldbossLockoutList, { format(BOSSNAME_TWW, name), reset })
+			end
+
+			sort(worldbossLockoutList, sortFunc)
+		elseif E.Mists then
+			for questID, name in next, WORLD_BOSSES_MIST do
+				if not C_QuestLog_IsQuestFlaggedCompleted(questID) then
+					tinsert(worldbossLockoutList, { format(BOSSNAME_MIST, name), weeklyReset })
+				end
+			end
+		end
 
 		for _, info in next, worldbossLockoutList do
 			local name, reset = unpack(info)
@@ -460,6 +482,7 @@ local function OnEnter()
 					DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 					addedLine = true
 				end
+
 				DT.tooltip:AddDoubleLine(name, ToTime(reset), 1, 1, 1, 0.8, 0.8, 0.8)
 			end
 		end
@@ -475,7 +498,6 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["Daily Reset"], ToTime(dailyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
-	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
 	if weeklyReset then
 		DT.tooltip:AddDoubleLine(WEEKLY_RESET, ToTime(weeklyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
