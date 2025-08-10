@@ -349,6 +349,10 @@ E.StyleFilterDefaults = {
 		usePortrait = false,
 		nameOnly = false,
 		scale = 1,
-		alpha = -1
+		alpha = -1,
+		playSound = {
+			enable = false,
+			soundFile = ''
+		},
 	}
 }
