@@ -9,11 +9,12 @@ local ipairs, next, pairs = ipairs, next, pairs
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
-local GetTime = GetTime
+local IsResting = IsResting
+local PlaySoundFile = PlaySoundFile
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local IsResting = IsResting
+local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -557,7 +558,7 @@ do
 	end
 end
 
-function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, PlaySound)
+function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, Sound)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -620,9 +621,9 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 	if NameOnly then
 		return -- skip the other stuff now
 	end
-	
-	if PlaySound then
-		PlaySoundFile(E.LSM:Fetch("sound", actions.playSound.soundFile))
+
+	if Sound then
+		PlaySoundFile(E.LSM:Fetch('sound', actions.playSound.soundFile))
 	end
 
 	-- bar stuff
@@ -1285,24 +1286,25 @@ function NP:StyleFilterPass(frame, actions)
 	local healthBarEnabled = db.health.enable or (NP.db.displayStyle ~= 'ALL') or (frame.isTarget and NP.db.alwaysShowTargetHealth)
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
+	local tags, sound = actions.tags, actions.playSound
 	NP:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColor
-		(healthBarShown and db.power.enable and actions.color and actions.color.power), --PowerColor
+		(healthBarShown and actions.color and actions.color.power and db.power.enable), --PowerColor
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
 		(healthBarShown and actions.glow and actions.glow.enable), --HealthGlow
 		(healthBarShown and actions.scale and actions.scale ~= 1), --Scale
 		(actions.alpha and actions.alpha ~= -1), --Alpha
-		(actions.tags and actions.tags.name and actions.tags.name ~= ''), --NameTag
-		(actions.tags and actions.tags.power and actions.tags.power ~= ''), --PowerTag
-		(actions.tags and actions.tags.health and actions.tags.health ~= ''), --HealthTag
-		(actions.tags and actions.tags.title and actions.tags.title ~= ''), --TitleTag
-		(actions.tags and actions.tags.level and actions.tags.level ~= ''), --LevelTag
+		(tags and tags.name and tags.name ~= ''), --NameTag
+		(tags and tags.power and tags.power ~= ''), --PowerTag
+		(tags and tags.health and tags.health ~= ''), --HealthTag
+		(tags and tags.title and tags.title ~= ''), --TitleTag
+		(tags and tags.level and tags.level ~= ''), --LevelTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
 		(actions.hide), --Visibility
-		(actions.playSound and actions.playSound.enable) --Sound
+		(sound and sound.enable and sound.soundFile ~= '') --Sound
 	)
 end
 
