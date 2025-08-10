@@ -43,10 +43,12 @@ local function DifficultyPickerFrame_Update(frame)
 end
 
 local function UpdatePaginatedButtonDisplay(frame)
+	if not frame.buttons then return end
+
 	for _, button in pairs(frame.buttons) do
-		if button and button.Icon and not button.Icon.IsSkinned then
+		local icon = button.Icon
+		if icon and not icon.backdrop then
 			S:HandleIcon(button.Icon, true)
-			button.Icon.IsSkinned = true
 		end
 	end
 end
