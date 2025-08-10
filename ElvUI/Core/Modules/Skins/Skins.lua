@@ -1340,13 +1340,17 @@ function S:HandleEditBox(frame, template)
 		frame.backdrop:SetInside(frame.NineSlice)
 	else
 		local name = frame:GetDebugName()
+		local popup = strfind(name, 'StaticPopup')
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if not E.Retail and (gold or silver or copper) then
-			frame.backdrop:Point('TOPLEFT', -4, 2)
+			frame.backdrop:Point('TOPLEFT', popup and -4 or -2, popup and 2 or 0)
 			frame.backdrop:Point('BOTTOMRIGHT', gold and 20 or 10, -2)
-		else
+		elseif popup then
 			frame.backdrop:Point('TOPLEFT', -4, -4)
 			frame.backdrop:Point('BOTTOMRIGHT', 4, 4)
+		else
+			frame.backdrop:Point('TOPLEFT', -2, 0)
+			frame.backdrop:Point('BOTTOMRIGHT')
 		end
 	end
 end
