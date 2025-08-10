@@ -227,8 +227,6 @@ function AB:HandleMicroTextures(button, name)
 end
 
 function AB:HandleMicroButton(button, name)
-	assert(button, 'Invalid micro button name.')
-
 	button:SetTemplate()
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)
