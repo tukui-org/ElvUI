@@ -1339,14 +1339,14 @@ function S:HandleEditBox(frame, template)
 
 		frame.backdrop:SetInside(frame.NineSlice)
 	else
-		frame.backdrop:Point('TOPLEFT', -2, 0)
-
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if not E.Retail and (gold or silver or copper) then
+			frame.backdrop:Point('TOPLEFT', -4, 2)
 			frame.backdrop:Point('BOTTOMRIGHT', gold and 20 or 10, -2)
 		else
-			frame.backdrop:Point('BOTTOMRIGHT')
+			frame.backdrop:Point('TOPLEFT', -4, -4)
+			frame.backdrop:Point('BOTTOMRIGHT', 4, 4)
 		end
 	end
 end
