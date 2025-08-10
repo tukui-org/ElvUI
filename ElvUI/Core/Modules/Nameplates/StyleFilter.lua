@@ -557,7 +557,7 @@ do
 	end
 end
 
-function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, HealthGlow, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility, PlaySound)
 	local c = frame.StyleFilterChanges
 	if not c then return end
 
@@ -619,6 +619,10 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 
 	if NameOnly then
 		return -- skip the other stuff now
+	end
+	
+	if PlaySound then
+		PlaySoundFile(E.LSM:Fetch("sound", actions.playSound.soundFile))
 	end
 
 	-- bar stuff
@@ -1297,7 +1301,8 @@ function NP:StyleFilterPass(frame, actions)
 		(actions.tags and actions.tags.level and actions.tags.level ~= ''), --LevelTag
 		(actions.usePortrait), --Portrait
 		(actions.nameOnly), --NameOnly
-		(actions.hide) --Visibility
+		(actions.hide), --Visibility
+		(actions.playSound and actions.playSound.enable) --Sound
 	)
 end
 
