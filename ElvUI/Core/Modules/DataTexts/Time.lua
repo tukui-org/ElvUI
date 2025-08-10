@@ -58,6 +58,8 @@ local WORLD_BOSSES_MIST = {
 	[32098] = 'Galleon',
 	[32099] = 'Sha of Anger',
 	[32519] = 'Oondasta',
+	[33117] = 'Celestials', -- ChiJi, Yulon, Niuzao, Xuen
+	[33118] = 'Ordos',
 	[32518] = 'Nalak'
 }
 
@@ -451,7 +453,9 @@ local function OnEnter()
 		end
 	end
 
+	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
 	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
+
 	if not E.Classic then
 		local addedLine = false
 		local worldbossLockoutList = {}
@@ -493,7 +497,6 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 
-	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
 	if dailyReset then
 		DT.tooltip:AddDoubleLine(L["Daily Reset"], ToTime(dailyReset), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
