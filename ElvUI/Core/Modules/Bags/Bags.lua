@@ -97,11 +97,11 @@ local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
 local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 20
-local NUM_BAG_FRAMES = NUM_BAG_FRAMES
-local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
-local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES or 6
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM or 12
+local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS or 28
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 local BANK_TAB_DEPOSIT_ASSIGNMENTS = BANK_TAB_DEPOSIT_ASSIGNMENTS
 local BANK_TAB_EXPANSION_ASSIGNMENT = BANK_TAB_EXPANSION_ASSIGNMENT
@@ -377,7 +377,9 @@ do
 		frame:SetScript('OnShow', nil)
 		frame:SetScript('OnHide', nil)
 		frame:UnregisterAllEvents()
+
 		frame:ClearAllPoints()
+		hooksecurefunc(frame, 'SetPoint', frame.ClearAllPoints)
 
 		if container then -- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
 			frame:RegisterEvent('BAG_CONTAINER_UPDATE')
@@ -389,7 +391,7 @@ do
 		DisableFrame(_G.ContainerFrameCombinedBags, true)
 
 		for i = 1, NUM_CONTAINER_FRAMES do
-			_G['ContainerFrame'..i]:Kill()
+			DisableFrame(_G['ContainerFrame'..i])
 		end
 	end
 end
