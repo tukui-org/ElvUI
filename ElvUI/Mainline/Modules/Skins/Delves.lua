@@ -2,12 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleButton(button)
 	if button.IsSkinned then return end
 
-	if button.Border then button.Border:SetAlpha(0) end
+	if button.Border then
+		button.Border:SetAlpha(0)
+	end
+
 	if button.Icon then
 		S:HandleIcon(button.Icon)
 	end
@@ -45,7 +49,7 @@ end
 local function UpdatePaginatedButtonDisplay(frame)
 	if not frame.buttons then return end
 
-	for _, button in pairs(frame.buttons) do
+	for _, button in next, frame.buttons do
 		local icon = button.Icon
 		if icon and not icon.backdrop then
 			S:HandleIcon(icon, true)
