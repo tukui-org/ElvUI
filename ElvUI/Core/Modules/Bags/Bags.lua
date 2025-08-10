@@ -374,12 +374,10 @@ do
 	local function DisableFrame(frame, container)
 		if not frame then return end
 
-		frame:UnregisterAllEvents()
 		frame:SetScript('OnShow', nil)
 		frame:SetScript('OnHide', nil)
-		frame:SetParent(E.HiddenFrame)
+		frame:UnregisterAllEvents()
 		frame:ClearAllPoints()
-		frame:Point('BOTTOM')
 
 		if container then -- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
 			frame:RegisterEvent('BAG_CONTAINER_UPDATE')
@@ -732,8 +730,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if E.Retail then
-		if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
-		slot:UpdateItemContextMatching() -- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else.
+		if slot.ScrapIcon then
+			B:UpdateItemScrapIcon(slot)
+		end
+
+		-- Blizzards way to highlighting for Scrap, Rune Carving, Upgrade Items and whatever else
+		slot:UpdateItemContextMatching()
 	end
 
 	B:UpdateItemLevel(slot)
@@ -2800,8 +2802,6 @@ function B:PanelShowHidden(panel)
 	if panel and not panel:IsShown() then
 		panel:Show()
 	end
-
-	panel:SetParent(E.HiddenFrame)
 end
 
 function B:PanelHide(panel)
