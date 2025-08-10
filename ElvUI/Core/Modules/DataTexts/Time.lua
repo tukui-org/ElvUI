@@ -50,6 +50,7 @@ local displayFormats = {
 	eu_color = ''
 }
 
+local db
 local OVERRIDE_ICON = [[Interface\EncounterJournal\UI-EJ-Dungeonbutton-%s]]
 local BOSSNAME_MIST = [[|TInterface\EncounterJournal\UI-EJ-Dungeonbutton-pandaria:16:16:0:0:96:96:0:64:0:64|t %s]]
 local BOSSNAME_TWW = [[|TInterface\EncounterJournal\UI-EJ-Dungeonbutton-khazalgar:16:16:0:0:96:96:0:64:0:64|t %s]]
@@ -263,8 +264,6 @@ local ICON_EJ = {
 	[7050019] = 'manaforge',
 	[7074042] = 'ecodome'
 }
-
-local db
 
 local function ToTime(start, seconds)
 	return SecondsToTime(start, not seconds, nil, 3)
