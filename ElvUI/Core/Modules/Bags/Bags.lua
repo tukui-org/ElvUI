@@ -99,9 +99,9 @@ local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 20
-local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES or 6
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM or 12
+local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES or 13
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS or 28
+local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM or 12
 local BINDING_NAME_TOGGLEKEYRING = BINDING_NAME_TOGGLEKEYRING
 local BANK_TAB_DEPOSIT_ASSIGNMENTS = BANK_TAB_DEPOSIT_ASSIGNMENTS
 local BANK_TAB_EXPANSION_ASSIGNMENT = BANK_TAB_EXPANSION_ASSIGNMENT
@@ -370,29 +370,28 @@ function B:Tooltip_Show()
 	GameTooltip:Show()
 end
 
-do
-	local function DisableFrame(frame, container)
-		if not frame then return end
+function B:DisableFrame(frame)
+	frame:SetScript('OnShow', nil)
+	frame:SetScript('OnHide', nil)
+	frame:UnregisterAllEvents()
+	frame:ClearAllPoints()
 
-		frame:SetScript('OnShow', nil)
-		frame:SetScript('OnHide', nil)
-		frame:UnregisterAllEvents()
+	hooksecurefunc(frame, 'SetPoint', frame.ClearAllPoints)
+end
 
-		frame:ClearAllPoints()
-		hooksecurefunc(frame, 'SetPoint', frame.ClearAllPoints)
+function B:DisableBlizzard()
+	B:DisableFrame(_G.BankFrame)
 
-		if container then -- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
-			frame:RegisterEvent('BAG_CONTAINER_UPDATE')
-		end
+	for i = 1, NUM_CONTAINER_FRAMES do
+		B:DisableFrame(_G['ContainerFrame'..i])
 	end
 
-	function B:DisableBlizzard()
-		DisableFrame(_G.BankFrame)
-		DisableFrame(_G.ContainerFrameCombinedBags, true)
+	local combinedBag = _G.ContainerFrameCombinedBags
+	if combinedBag then
+		B:DisableFrame(combinedBag)
 
-		for i = 1, NUM_CONTAINER_FRAMES do
-			DisableFrame(_G['ContainerFrame'..i])
-		end
+		-- this will fix itemButton being nil inside of UpdateItemLayout when first accessing a vendor then adding a bag
+		combinedBag:RegisterEvent('BAG_CONTAINER_UPDATE')
 	end
 end
 
