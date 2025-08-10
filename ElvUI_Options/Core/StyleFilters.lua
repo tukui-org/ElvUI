@@ -764,7 +764,7 @@ StyleFilters.actions.args.glow.inline = true
 
 StyleFilters.actions.args.playSound = ACH:Group(_G.SOUND, nil, 50, nil, actionSubGroup, actionSubGroup, actionHidePlate)
 StyleFilters.actions.args.playSound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.playSound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 8, "double", nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.playSound.enable end)
+StyleFilters.actions.args.playSound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 8, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.playSound.enable end)
 StyleFilters.actions.args.playSound.inline = true
 
 StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 60, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
