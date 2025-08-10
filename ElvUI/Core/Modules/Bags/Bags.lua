@@ -1755,18 +1755,27 @@ end
 function B:ConstructContainerCover(frame)
 	local cover = CreateFrame('Button', '$parentCover', frame)
 	cover:SetTemplate()
+	cover:Point('TOPLEFT')
+	cover:Point('BOTTOMRIGHT')
 	cover:SetFrameLevel(15)
+	cover:Hide()
 
 	cover.secureButton = B:ConstructCoverButton(cover, 'SecurePurchase', L["Purchase"], 'InsecureActionButtonTemplate')
 	cover.secureButton:RegisterForClicks('AnyUp', 'AnyDown')
-	cover.secureButton:Hide()
+	cover.secureButton:SetAttribute('type', 'click')
+	cover.secureButton:SetAttribute('clickbutton', _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
+	cover.secureButton:HookScript('OnClick', function()
+		PlaySound(852) --IG_MAINMENU_OPTION
+	end)
 
 	cover.button = B:ConstructCoverButton(cover, 'Purchase', L["Purchase"])
+	cover.button:Hide()
 
 	cover.text = cover:CreateFontString(nil, 'OVERLAY')
 	cover.text:FontTemplate()
 	cover.text:Point('BOTTOM', cover.button, 'TOP', 0, 10)
 	cover.text:SetWordWrap(true)
+	cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
 
 	return cover
 end
@@ -2092,23 +2101,7 @@ function B:ConstructContainerTabHolder(f, name, key, totalBags)
 	f[key] = frame
 
 	frame.totalBags = totalBags or 5
-
-	local cover = B:ConstructContainerCover(frame)
-	if cover then
-		cover:Point('TOPLEFT')
-		cover:Point('BOTTOMRIGHT')
-		cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
-		cover.button:Hide()
-
-		cover.secureButton:Show()
-		cover.secureButton:SetAttribute('type', 'click')
-		cover.secureButton:SetAttribute('clickbutton', _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
-		cover.secureButton:HookScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-		end)
-
-		frame.cover = cover
-	end
+	frame.cover = B:ConstructContainerCover(frame)
 
 	return frame
 end
