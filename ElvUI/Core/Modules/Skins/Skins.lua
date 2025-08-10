@@ -1340,7 +1340,6 @@ function S:HandleEditBox(frame, template)
 		frame.backdrop:SetInside(frame.NineSlice)
 	else
 		local name = frame:GetDebugName()
-
 		local gold, silver, copper = strfind(name, 'Gold', nil, true), strfind(name, 'Silver', nil, true), strfind(name, 'Copper', nil, true)
 		if gold or silver or copper then
 			if frame.label then -- send mail and popups
@@ -1350,13 +1349,11 @@ function S:HandleEditBox(frame, template)
 				frame.backdrop:Point('TOPLEFT', 4, -4)
 				frame.backdrop:Point('BOTTOMRIGHT', -4, 6)
 			end
-
-			return -- dont proceed
+		else
+			local popup = strfind(name, 'StaticPopup', nil, true)
+			frame.backdrop:Point('TOPLEFT', -4, popup and -4 or 0)
+			frame.backdrop:Point('BOTTOMRIGHT', 4, popup and 4 or 0)
 		end
-
-		local popup = strfind(name, 'StaticPopup', nil, true)
-		frame.backdrop:Point('TOPLEFT', -4, popup and -4 or 0)
-		frame.backdrop:Point('BOTTOMRIGHT', 4, popup and 4 or 0)
 	end
 end
 
