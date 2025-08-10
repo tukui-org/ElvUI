@@ -1342,10 +1342,13 @@ function S:HandleEditBox(frame, template)
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold', nil, true), strfind(name, 'Silver', nil, true), strfind(name, 'Copper', nil, true)
 		if gold or silver or copper then
-			if frame.label then -- send mail and popups
+			if E.Retail then
+				frame.backdrop:Point('TOPLEFT', -4, 0)
+				frame.backdrop:Point('BOTTOMRIGHT')
+			elseif frame.label then -- send mail, popups, and others
 				frame.backdrop:Point('TOPLEFT', -4, 2)
 				frame.backdrop:Point('BOTTOMRIGHT', (gold and 20) or 10, -2)
-			else
+			else -- auctionhouse sell tab and others
 				frame.backdrop:Point('TOPLEFT', 4, -4)
 				frame.backdrop:Point('BOTTOMRIGHT', -4, 6)
 			end
