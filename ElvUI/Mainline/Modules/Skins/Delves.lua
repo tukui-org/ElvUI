@@ -48,7 +48,7 @@ local function UpdatePaginatedButtonDisplay(frame)
 	for _, button in pairs(frame.buttons) do
 		local icon = button.Icon
 		if icon and not icon.backdrop then
-			S:HandleIcon(button.Icon, true)
+			S:HandleIcon(icon, true)
 		end
 	end
 end
