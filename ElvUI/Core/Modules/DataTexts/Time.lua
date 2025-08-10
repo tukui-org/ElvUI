@@ -468,7 +468,7 @@ local function OnEnter()
 			sort(worldbossLockoutList, sortFunc)
 		elseif E.Mists then
 			for questID, name in next, WORLD_BOSSES_MIST do
-				if not C_QuestLog_IsQuestFlaggedCompleted(questID) then
+				if C_QuestLog_IsQuestFlaggedCompleted(questID) then
 					tinsert(worldbossLockoutList, { format(BOSSNAME_MIST, name), weeklyReset })
 				end
 			end
