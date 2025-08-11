@@ -924,6 +924,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[326874] = List(), -- Ankle Bites
 		[340446] = List(), -- Mark of Envy
 	-- Tazavesh, the Veiled Market
+		[356943] = List(), -- Lockdown
 		[350804] = List(), -- Collapsing Energy
 		[350885] = List(), -- Hyperlight Jolt
 		[351101] = List(), -- Energy Fragmentation
@@ -940,6 +941,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[347744] = List(), -- Quickblade
 		[347481] = List(), -- Shuri
 		[355915] = List(), -- Glyph of Restraint
+		[350101] = List(), -- Chains of Damnation
 		[350134] = List(), -- Infinite Breath
 		[350013] = List(), -- Gluttonous Feast
 		[355465] = List(), -- Boulder Throw
