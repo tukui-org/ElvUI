@@ -772,6 +772,26 @@ function E:StaticPopup_OnEvent()
 	E:StaticPopup_Resize(self, self.which)
 end
 
+function E:StaticPopup_HideExclusive()
+	for _, frame in pairs(E.StaticPopup_DisplayedFrames) do
+		if frame:IsShown() and frame.exclusive then
+			local dialog = E.PopupDialogs[frame.which]
+			if dialog then
+				frame:Hide()
+
+				local OnCancel = dialog.OnCancel
+				if OnCancel then
+					OnCancel(frame, frame.data, 'override')
+				end
+			else
+				E:StaticPopupSpecial_Hide(frame)
+			end
+
+			break
+		end
+	end
+end
+
 local tempButtonLocs = {}	--So we don't make a new table each time.
 function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 	local info = E.PopupDialogs[which]
@@ -791,6 +811,10 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
 		end
 
 		return
+	end
+
+	if info.exclusive then
+		E:StaticPopup_HideExclusive()
 	end
 
 	if info.cancels then
