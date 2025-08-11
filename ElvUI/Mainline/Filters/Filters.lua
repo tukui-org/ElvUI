@@ -952,20 +952,38 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------------------------------------------------
 	-- Plexus Sentinel
 		[1219459] = List(), -- Manifest Matrices
-		[1219607] = List(), -- Eradicating Salvo
+		[1219607] = List(), -- Eradicating Salvo 1
+		[1219531] = List(), -- Eradicating Salvo 2
 		[1218625] = List(), -- Displacement Matrix
 	-- Loom'ithar
 		[1226311] = List(5), -- Infusion Tether
 		[1237212] = List(4), -- Piercing Strand
 		[1226721] = List(6), -- Silken Snare
+		[1247045] = List(), -- Hyper Infusion
+		[1237307] = List(), -- Lair Weaving
 	-- Soulbinder Naazindhri
 		[1227276] = List(), -- Soulfray Annihilation
-		[1223859] = List(), -- Arcane Expulsion
+		[1226827] = List(), -- Soulrend Orb
+		[1227052] = List(), -- Void Burst
 	-- Forgeweaver Araz
+		[1234324] = List(), -- Photon Blast
+		[1228214] = List(), -- Astral Harvest
+		[1243901] = List(), -- Void Harvest
+		[1240705] = List(6), -- Astral Burn
 	-- The Soul Hunters
+		[1227847] = List(), -- The Hunt
+		[1241946] = List(), -- Frailty
 	-- Fractillus
+		[1233411] = List(), -- Crystalline Shockwave
 	-- Nexus-King Salhadaar
+		[1227549] = List(), -- Banishment
+		[1226362] = List(), -- Twilight Scar
+		[1228056] = List(), -- Reap
 	-- Dimensius, the All-Devouring
+		[1239270] = List(), -- Voidwarding
+		[1250055] = List(), -- Voidgrasp
+		[1243699] = List(), -- Spatial Fragment
+		[1249425] = List(), -- Mass Destruction
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
