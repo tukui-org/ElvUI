@@ -1358,12 +1358,4 @@ function E:Contruct_StaticPopups()
 			end
 		end
 	end
-
-	if _G.StaticPopup_SetUpPosition then
-		E:SecureHook('StaticPopup_SetUpPosition')
-	end
-
-	if _G.StaticPopup_CollapseTable then
-		E:SecureHook('StaticPopup_CollapseTable')
-	end
 end
