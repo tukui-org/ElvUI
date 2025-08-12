@@ -500,7 +500,7 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 	return (B.IsEquipmentSlot[equipLoc] or (classID == 3 and subClassID == 11)) and (rarity and rarity > 1)
 end
 
--- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
+-- We need to use Pawn here to show the icon, as Blizzard API doesnt work
 function B:UpdateItemUpgradeIcon(slot)
 	if not B.db.upgradeIcon or (not slot.isEquipment or not slot.itemLink) or not _G.PawnShouldItemLinkHaveUpgradeArrowUnbudgeted then
 		slot.UpgradeIcon:SetShown(false)
@@ -1421,15 +1421,15 @@ function B:UpdateDelayedContainer(frame)
 end
 
 function B:DelayedContainer(bagFrame, event, bagID)
-	local container = bagID and bagFrame.ContainerHolderByBagID[bagID]
-	if container then
-		bagFrame.DelayedContainers[bagID] = container
+	local holder = bagID and bagFrame.ContainerHolderByBagID[bagID]
+	if not holder then return end
 
-		if event == 'BAG_CLOSED' then -- let it call layout
-			bagFrame.totalSlots = 0
-		else
-			bagFrame.Bags[bagID].needsUpdate = true
-		end
+	bagFrame.DelayedContainers[bagID] = holder
+
+	if event == 'BAG_CLOSED' then -- let it call layout
+		bagFrame.totalSlots = 0
+	else
+		bagFrame.Bags[bagID].needsUpdate = true
 	end
 end
 
@@ -2171,6 +2171,124 @@ function B:ConstructPurchaseButton(frame, text, template)
 	return button
 end
 
+function B:Container_OnDragStart()
+	if IsShiftKeyDown() then
+		self:StartMoving()
+	end
+end
+
+function B:Container_OnDragStop()
+	self:StopMovingOrSizing()
+end
+
+function B:Container_OnClick()
+	if IsControlKeyDown() then
+		B.PostBagMove(self.mover)
+	end
+end
+
+function B:HelpButton_OnEnter()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+	GameTooltip:ClearLines()
+	GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
+	GameTooltip:Show()
+end
+
+function B:BankToggle_OnClick()
+	local parent = self:GetParent()
+	B:SelectBankTab(parent, BANK_CONTAINER)
+end
+
+function B:WarbandToggle_OnClick()
+	local parent = self:GetParent()
+	B:SelectBankTab(parent, 13)
+end
+
+function B:Container_WithdrawGold()
+	if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
+		StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
+	end
+end
+
+function B:Container_DepositGold()
+	if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
+		StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
+	end
+end
+
+function B:Container_ClickStackBag()
+	local parent = self:GetParent()
+	B:UnregisterBagEvents(parent)
+
+	if not parent.sortingSlots then
+		parent.sortingSlots = true
+	end
+
+	if IsShiftKeyDown() then
+		B:CommandDecorator(B.Stack, 'bags bank')()
+	else
+		B:CommandDecorator(B.Compress, 'bags')()
+	end
+end
+
+function B:Container_ClickStackBank()
+	if IsShiftKeyDown() then
+		B:CommandDecorator(B.Stack, 'bank bags')()
+	else
+		B:CommandDecorator(B.Compress, 'bank')()
+	end
+end
+
+function B:Container_ClickSortBag()
+	if E.Retail and B.db.useBlizzardCleanup then
+		SortBags()
+	else
+		local parent = self:GetParent()
+		B:UnregisterBagEvents(parent)
+
+		if not parent.sortingSlots then
+			B:SortingFadeBags(parent, true)
+		end
+
+		B:CommandDecorator(B.SortBags, 'bags')()
+	end
+end
+
+function B:Container_ClickSortBank()
+	local parent = self:GetParent()
+	if parent.holderFrame:IsShown() then
+		if E.Retail and B.db.useBlizzardCleanupBank then
+			SortBankBags()
+		else
+			B:UnregisterBagEvents(parent)
+
+			if not parent.sortingSlots then
+				B:SortingFadeBags(parent, true)
+			end
+
+			B:CommandDecorator(B.SortBags, 'bank')()
+		end
+	elseif E.Retail and B.WarbandBanks[B.BankTab] then
+		SortAccountBankBags()
+	end
+end
+
+function B:Container_ClickGold()
+	StaticPopup_Show('PICKUP_MONEY')
+end
+
+function B:ToggleKeyring()
+	local parent = self:GetParent()
+	local holder = parent.ContainerHolderByBagID
+	local keyring = holder and holder[KEYRING_CONTAINER]
+	if keyring then
+		B:ToggleBag(keyring)
+	end
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -2204,9 +2322,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f:SetScript('OnEvent', B.OnEvent)
 	f:SetScript('OnShow', B.ContainerOnShow)
 	f:SetScript('OnHide', B.ContainerOnHide)
-	f:SetScript('OnDragStart', function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
-	f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
-	f:SetScript('OnClick', function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
+	f:SetScript('OnDragStart', B.Container_OnDragStart)
+	f:SetScript('OnDragStop', B.Container_OnDragStop)
+	f:SetScript('OnClick', B.Container_OnClick)
 
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton')
 	f.closeButton:Point('TOPRIGHT', 5, 5)
@@ -2216,15 +2334,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.helpButton:Size(16)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
 	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
-	f.helpButton:SetScript('OnEnter', function(frame)
-		if GameTooltip:IsForbidden() then return end
-
-		GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT', 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
-		GameTooltip:Show()
-	end)
+	f.helpButton:SetScript('OnEnter', B.HelpButton_OnEnter)
 
 	S:HandleCloseButton(f.closeButton)
 
@@ -2329,9 +2439,7 @@ function B:ConstructContainerFrame(name, isBank)
 				f.bankToggle:SetText(L["Bank"])
 				f.bankToggle.Text:SetTextColor(1, 1, 1)
 				f.bankToggle:Point('TOPLEFT', f, 14, -52)
-				f.bankToggle:SetScript('OnClick', function()
-					B:SelectBankTab(f, BANK_CONTAINER)
-				end)
+				f.bankToggle:SetScript('OnClick', B.BankToggle_OnClick)
 
 				S:HandleButton(f.bankToggle)
 			end
@@ -2348,39 +2456,25 @@ function B:ConstructContainerFrame(name, isBank)
 				f.warbandToggle:Size(71, 23)
 				f.warbandToggle:SetText(L["Warband"])
 				f.warbandToggle:Point('LEFT', f.bankToggle, 'RIGHT', 5, 0)
-				f.warbandToggle:SetScript('OnClick', function()
-					B:SelectBankTab(f, 13)
-				end)
+				f.warbandToggle:SetScript('OnClick', B.WarbandToggle_OnClick)
 
 				S:HandleButton(f.warbandToggle)
 			end
 
 			do -- account bank gold
-				f.pickupGold:SetScript('OnClick', function()
-					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
-						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
-					end
-				end)
+				f.pickupGold:SetScript('OnClick', B.Container_WithdrawGold)
 
 				f.goldWithdraw = CreateFrame('Button', name..'WithdrawButton', f, 'UIPanelButtonTemplate')
 				f.goldWithdraw:Size(71, 23)
 				f.goldWithdraw:SetText(L["Withdraw"])
 				f.goldWithdraw:Point('LEFT', f.warbandToggle, 'RIGHT', 5, 0)
-				f.goldWithdraw:SetScript('OnClick', function()
-					if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
-						StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
-					end
-				end)
+				f.goldWithdraw:SetScript('OnClick', B.Container_WithdrawGold)
 
 				f.goldDeposit = CreateFrame('Button', name..'DepositButton', f, 'UIPanelButtonTemplate')
 				f.goldDeposit:Size(71, 23)
 				f.goldDeposit:SetText(L["Deposit"])
 				f.goldDeposit:Point('LEFT', f.goldWithdraw, 'RIGHT', 5, 0)
-				f.goldDeposit:SetScript('OnClick', function()
-					if not StaticPopup_FindVisible('BANK_MONEY_WITHDRAW') then
-						StaticPopup_Show('BANK_MONEY_DEPOSIT', nil, nil, { bankType = WARBANDBANK_TYPE })
-					end
-				end)
+				f.goldDeposit:SetScript('OnClick', B.Container_DepositGold)
 
 				S:HandleButton(f.goldWithdraw)
 				S:HandleButton(f.goldDeposit)
@@ -2408,72 +2502,33 @@ function B:ConstructContainerFrame(name, isBank)
 		f.stackButton.ttText2desc = L["Stack Items To Bags"]
 		f.stackButton:SetScript('OnEnter', B.Tooltip_Show)
 		f.stackButton:SetScript('OnLeave', GameTooltip_Hide)
-		f.stackButton:SetScript('OnClick', function()
-			if IsShiftKeyDown() then
-				B:CommandDecorator(B.Stack, 'bank bags')()
-			else
-				B:CommandDecorator(B.Compress, 'bank')()
-			end
-		end)
+		f.stackButton:SetScript('OnClick', B.Container_ClickStackBank)
 
 		--Sort Button
-		f.sortButton:SetScript('OnClick', function()
-			if f.holderFrame:IsShown() then
-				if E.Retail and B.db.useBlizzardCleanupBank then
-					SortBankBags()
-				else
-					B:UnregisterBagEvents(f)
-
-					if not f.sortingSlots then B:SortingFadeBags(f, true) end
-					B:CommandDecorator(B.SortBags, 'bank')()
-				end
-			elseif E.Retail and B.WarbandBanks[B.BankTab] then
-				SortAccountBankBags()
-			end
-		end)
+		f.sortButton:SetScript('OnClick', B.Container_ClickSortBank)
 
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
-		f.pickupGold:SetScript('OnClick', function()
-			StaticPopup_Show('PICKUP_MONEY')
-		end)
+		f.pickupGold:SetScript('OnClick', B.Container_ClickGold)
 
 		-- Stack/Transfer Button
 		f.stackButton.ttText = L["Stack Items In Bags"]
 		f.stackButton.ttText2 = L["Hold Shift:"]
 		f.stackButton.ttText2desc = L["Stack Items To Bank"]
 		f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
-		f.stackButton:SetScript('OnClick', function()
-			B:UnregisterBagEvents(f)
-
-			if not f.sortingSlots then f.sortingSlots = true end
-			if IsShiftKeyDown() then
-				B:CommandDecorator(B.Stack, 'bags bank')()
-			else
-				B:CommandDecorator(B.Compress, 'bags')()
-			end
-		end)
+		f.stackButton:SetScript('OnClick', B.Container_ClickStackBag)
 
 		--Sort Button
 		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
-		f.sortButton:SetScript('OnClick', function()
-			if E.Retail and B.db.useBlizzardCleanup then
-				SortBags()
-			else
-				B:UnregisterBagEvents(f)
-
-				if not f.sortingSlots then B:SortingFadeBags(f, true) end
-				B:CommandDecorator(B.SortBags, 'bags')()
-			end
-		end)
+		f.sortButton:SetScript('OnClick', B.Container_ClickSortBag)
 
 		--Bags Button
 		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
 
 		--Keyring Button
 		if E.Classic then
-			f.keyButton = CreateFrame('Button', name..'KeyButton', f.holderFrame)
+			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
 			f.keyButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
@@ -2482,7 +2537,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
-			f.keyButton:SetScript('OnClick', function() B:ToggleBag(f.ContainerHolderByBagID[KEYRING_CONTAINER]) end)
+			f.keyButton:SetScript('OnClick', B.ToggleKeyring)
 		end
 
 		--Vendor Grays
@@ -2925,9 +2980,9 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 end
 
 function B:BankTabs_CheckCover(tabs, tabsData)
-	if tabs then
-		tabs.cover:SetShown(not next(tabsData))
-	end
+	if not tabs then return end
+
+	tabs.cover:SetShown(not next(tabsData))
 end
 
 function B:BankTabs_UpdateIcons(bankType)
