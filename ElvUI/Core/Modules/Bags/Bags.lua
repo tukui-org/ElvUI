@@ -1760,7 +1760,11 @@ function B:ClickSound()
 end
 
 function B:GetPurchaseTabButton()
-	return _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton
+	local panel = _G.BankPanel
+	local prompt = panel and panel.PurchasePrompt
+	local cost = prompt and prompt.TabCostFrame
+
+	return cost and cost.PurchaseButton
 end
 
 function B:SetupSecurePurchase(button)
@@ -2949,6 +2953,19 @@ function B:BankTabs_SwapTabs(f, tab)
 	end
 end
 
+function B:BankTabs_AutoDeposit(bankType)
+	B:ClickSound()
+	AutoDepositItemsIntoBank(bankType)
+end
+
+function B:BankTabs_DepositWarband()
+	B:BankTabs_AutoDeposit(WARBANDBANK_TYPE)
+end
+
+function B:BankTabs_DepositCharacter()
+	B:BankTabs_AutoDeposit(CHARACTERBANK_TYPE)
+end
+
 function B:BANK_TAB_SETTINGS_UPDATED(_, bankType)
 	B:BankTabs_UpdateIcons(bankType)
 end
@@ -2976,16 +2993,12 @@ function B:ShowBankTab(f, bankTab)
 			f['BankTabs'..bankIndex]:Hide()
 		end
 
+		f.depositButton:SetScript('OnClick', B.BankTabs_DepositWarband)
 		f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
 
 		if purcahseTab then
 			purcahseTab:SetAttribute('overrideBankType', WARBANDBANK_TYPE)
 		end
-
-		f.depositButton:SetScript('OnClick', function()
-			B:ClickSound()
-			AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
-		end)
 
 		f.holderFrame:Hide()
 		f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
@@ -2999,16 +3012,12 @@ function B:ShowBankTab(f, bankTab)
 				f['WarbandTabs'..bankIndex]:Hide()
 			end
 
+			f.depositButton:SetScript('OnClick', B.BankTabs_DepositCharacter)
 			f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
 
 			if purcahseTab then
 				purcahseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
 			end
-
-			f.depositButton:SetScript('OnClick', function()
-				B:ClickSound()
-				AutoDepositItemsIntoBank(CHARACTERBANK_TYPE)
-			end)
 		else
 			f.fullBank = select(2, GetNumBankSlots())
 			f.purchaseBagButton:SetShown(not f.fullBank)
@@ -3115,6 +3124,11 @@ end
 function B:CloseBank()
 	B:PanelHide(_G.BankFrame)
 	B:PanelHide(_G.BankPanel)
+
+	local purcahseTab = B:GetPurchaseTabButton()
+	if purcahseTab then
+		purcahseTab:SetAttribute('overrideBankType', nil)
+	end
 
 	B:CloseBags()
 end
