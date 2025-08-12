@@ -2187,16 +2187,6 @@ function B:Container_OnClick()
 	end
 end
 
-function B:HelpButton_OnEnter()
-	if GameTooltip:IsForbidden() then return end
-
-	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
-	GameTooltip:ClearLines()
-	GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
-	GameTooltip:Show()
-end
-
 function B:BankToggle_OnClick()
 	local parent = self:GetParent()
 	B:SelectBankTab(parent, BANK_CONTAINER)
@@ -2211,6 +2201,16 @@ function B:Container_WithdrawGold()
 	if not StaticPopup_FindVisible('BANK_MONEY_DEPOSIT') then
 		StaticPopup_Show('BANK_MONEY_WITHDRAW', nil, nil, { bankType = WARBANDBANK_TYPE })
 	end
+end
+
+function B:Container_HelpTooltip()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+	GameTooltip:ClearLines()
+	GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
+	GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
+	GameTooltip:Show()
 end
 
 function B:Container_DepositGold()
@@ -2334,7 +2334,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.helpButton:Size(16)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
 	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
-	f.helpButton:SetScript('OnEnter', B.HelpButton_OnEnter)
+	f.helpButton:SetScript('OnEnter', B.Container_HelpTooltip)
 
 	S:HandleCloseButton(f.closeButton)
 
