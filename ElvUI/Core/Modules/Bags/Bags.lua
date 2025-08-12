@@ -1756,7 +1756,7 @@ function B:ConstructCoverButton(cover, name, text, template)
 end
 
 function B:ClickSound()
-	PlaySound(852) --IG_MAINMENU_OPTION
+	PlaySound(852) -- SOUNDKIT.IG_MAINMENU_OPTION
 end
 
 function B:GetPurchaseTabButton()
