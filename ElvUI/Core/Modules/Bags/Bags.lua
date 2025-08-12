@@ -1787,15 +1787,6 @@ function B:ConstructContainerCover(f)
 	cover.purchaseButton = B:ConstructCoverButton(cover, 'SecurePurchase', L["Purchase"], 'InsecureActionButtonTemplate')
 	B:SetupSecurePurchase(cover.purchaseButton)
 
-	cover.button = B:ConstructCoverButton(cover, 'Purchase', L["Purchase"])
-	cover.button:Hide()
-
-	cover.text = cover:CreateFontString(nil, 'OVERLAY')
-	cover.text:FontTemplate()
-	cover.text:Point('BOTTOM', cover.button, 'TOP', 0, 10)
-	cover.text:SetWordWrap(true)
-	cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
-
 	return cover
 end
 
