@@ -1254,7 +1254,7 @@ function S:HandleRotateButton(frame, width, height, noSize)
 	if pushTex then
 		pushTex:SetAllPoints(normTex)
 		pushTex:SetAtlas(rotate)
-		pushTex:SetTexCoord(0.05, 1.1, -0.1, 0.95)
+		pushTex:SetTexCoord(0, 1, -0.1, 0.95)
 	end
 
 	local highlightTex = frame:GetHighlightTexture()
