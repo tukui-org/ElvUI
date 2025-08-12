@@ -2280,7 +2280,7 @@ function B:Container_ClickGold()
 	StaticPopup_Show('PICKUP_MONEY')
 end
 
-function B:ToggleKeyring()
+function B:Container_ToggleKeyring()
 	local parent = self:GetParent()
 	local holder = parent.ContainerHolderByBagID
 	local keyring = holder and holder[KEYRING_CONTAINER]
@@ -2537,7 +2537,7 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
-			f.keyButton:SetScript('OnClick', B.ToggleKeyring)
+			f.keyButton:SetScript('OnClick', B.Container_ToggleKeyring)
 		end
 
 		--Vendor Grays
