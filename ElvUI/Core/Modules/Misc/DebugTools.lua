@@ -17,22 +17,29 @@ local BUTTON_SPACING = 2
 
 D.HideFrame = CreateFrame('Frame')
 
-local function UnHighlightText(text)
-	text:HighlightText(0, 0)
+function D:ClearHighlight()
+	self:HighlightText(0, 0)
 end
 
-local function FirstButton_OnClick(button)
+function D:ScriptErrors_ClearHighlight()
+	D.ClearHighlight(self.ScrollFrame.Text)
+end
+
+function D:OnClick_FirstButton(button)
 	button.frame.index = 1
 	button.frame:Update()
 end
 
-local function LastButton_OnClick(button)
-	button.frame.index = #button.frame.errorData
+function D:OnClick_LastButton(button)
+	local data = D:GetErrorData(button.frame)
+	if not data then return end
+
+	button.frame.index = #data
 	button.frame:Update()
 end
 
-local function ScriptErrors_UnHighlightText()
-	_G.ScriptErrorsFrame.ScrollFrame.Text:HighlightText(0, 0)
+function D:GetErrorData(frame)
+	return frame.errorData or frame.order
 end
 
 function D:ModifyErrorFrame()
@@ -41,10 +48,10 @@ function D:ModifyErrorFrame()
 	frame.ScrollFrame.Text.cursorHeight = 0
 	frame.ScrollFrame.Text:SetScript('OnEditFocusGained', nil)
 
-	hooksecurefunc(frame, 'Update', ScriptErrors_UnHighlightText)
+	hooksecurefunc(frame, 'Update', D.ScriptErrors_ClearHighlight)
 
 	-- Unhighlight text when focus is hit
-	frame.ScrollFrame.Text:HookScript('OnEscapePressed', UnHighlightText)
+	frame.ScrollFrame.Text:HookScript('OnEscapePressed', D.ClearHighlight)
 	frame:Size(500, 300)
 	frame.ScrollFrame:Size(frame:GetWidth() - 45, frame:GetHeight() - 71)
 
@@ -53,7 +60,7 @@ function D:ModifyErrorFrame()
 	firstButton:Point('BOTTOMLEFT', frame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
 	firstButton:SetText('First')
 	firstButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
-	firstButton:SetScript('OnClick', FirstButton_OnClick)
+	firstButton:SetScript('OnClick', D.OnClick_FirstButton)
 	firstButton.frame = frame
 	frame.firstButton = firstButton
 
@@ -62,7 +69,7 @@ function D:ModifyErrorFrame()
 	lastButton:Point('BOTTOMRIGHT', frame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
 	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
-	lastButton:SetScript('OnClick', LastButton_OnClick)
+	lastButton:SetScript('OnClick', D.OnClick_LastButton)
 	lastButton.frame = frame
 	frame.lastButton = lastButton
 
@@ -74,7 +81,8 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	local frame = _G.ScriptErrorsFrame
 	if not frame.firstButton then return end
 
-	if frame.index == 0 or #frame.errorData == 1 then
+	local data = D:GetErrorData(frame)
+	if frame.index == 0 or (data and #data == 1) then
 		frame.lastButton:Disable()
 		frame.firstButton:Disable()
 	else
