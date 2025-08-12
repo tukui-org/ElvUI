@@ -11,6 +11,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
+local GetCVarBool = C_CVar.GetCVarBool
 
 local function SkinFriendRequest(frame)
 	if frame.IsSkinned then return end
@@ -88,6 +89,23 @@ local function UpdateWhoList()
 	end
 end
 
+local function RepositionTabs()
+	local previous = _G.FriendsFrame
+	local index = 1
+	local tab = _G['FriendsFrameTab'..index]
+	while tab do
+		tab:ClearAllPoints()
+
+		if index ~= _G.FRIEND_TAB_GUILD or GetCVarBool('useClassicGuildUI') then
+			tab:Point('TOPLEFT', previous, index == 1 and 'BOTTOMLEFT' or 'TOPRIGHT', index == 1 and -15 or -19, 0)
+			previous = tab
+		end
+
+		index = index + 1
+		tab = _G['FriendsFrameTab'..index]
+	end
+end
+
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
@@ -103,14 +121,11 @@ function S:FriendsFrame()
 	end
 
 	-- Reposition Tabs
-	_G.FriendsFrameTab1:ClearAllPoints()
-	_G.FriendsFrameTab1:Point('TOPLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -15, 0)
-	_G.FriendsFrameTab2:Point('TOPLEFT', _G.FriendsFrameTab1, 'TOPRIGHT', -19, 0)
-	_G.FriendsFrameTab3:Point('TOPLEFT', _G.FriendsFrameTab2, 'TOPRIGHT', -19, 0)
-	_G.FriendsFrameTab4:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
+	hooksecurefunc('FriendsFrame_UpdateGuildTabVisibility', RepositionTabs)
 
 	if _G.FriendsFrameTab5 then
-		_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab4, 'TOPRIGHT', -19, 0)
+		_G.FriendsFrameTab5:ClearAllPoints()
+		_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
 	end
 
 	-- Friends List Frame
