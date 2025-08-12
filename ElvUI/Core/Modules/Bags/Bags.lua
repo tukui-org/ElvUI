@@ -2802,7 +2802,7 @@ function B:CloseBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
-function B:PanelShowHidden(panel)
+function B:PanelShow(panel)
 	if panel and not panel:IsShown() then
 		panel:Show()
 	end
@@ -2832,7 +2832,7 @@ do
 				if lastTab ~= B.BankTab then
 					panel.bankType = (B.WarbandBanks[B.BankTab] and WARBANDBANK_TYPE) or CHARACTERBANK_TYPE
 
-					B:PanelShowHidden(panel)
+					B:PanelShow(panel)
 				end
 
 				-- used to display the overlay to show what can go into warband bank
@@ -3053,7 +3053,7 @@ end
 
 function B:OpenBank()
 	B.BankFrame:Show()
-	B:PanelShowHidden(_G.BankFrame)
+	B:PanelShow(_G.BankFrame)
 
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
