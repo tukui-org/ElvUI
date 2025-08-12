@@ -463,7 +463,6 @@ function E:StaticPopupSpecial_Hide(frame)
 	E:StaticPopup_CollapseTable()
 end
 
-
 function E:StaticPopupSpecial_Toggle(frame)
 	if frame:IsShown() then
 		E:StaticPopupSpecial_Hide(frame)
