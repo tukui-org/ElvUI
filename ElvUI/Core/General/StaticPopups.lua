@@ -463,6 +463,15 @@ function E:StaticPopupSpecial_Hide(frame)
 	E:StaticPopup_CollapseTable()
 end
 
+
+function E:StaticPopupSpecial_Toggle(frame)
+	if frame:IsShown() then
+		E:StaticPopupSpecial_Hide(frame)
+	else
+		E:StaticPopupSpecial_Show(frame)
+	end
+end
+
 --Used to figure out if we can resize a frame
 function E:StaticPopup_IsLastDisplayedFrame(frame)
 	for i = #E.StaticPopup_DisplayedFrames, 1, -1 do
