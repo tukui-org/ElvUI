@@ -336,19 +336,24 @@ do
 	end
 
 	function RU:TargetIcons_UpdateMacro(button, i)
-		local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
-		local modType = E.db.general.raidUtility.modifierSwap or 'world'
-
 		local id = ground[i]
-		local world = modType == 'world'
 		local tm = format('%s %d', TM, i)
-		local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
 
-		button:SetAttribute('macrotext', world and wm or tm)
-		button:SetAttribute('macrotext1', world and tm or wm)
-		button:SetAttribute('macrotext2', world and tm or wm)
-		button:SetAttribute('macrotext3', world and tm or wm)
-		button:SetAttribute(modifier..'type*', 'macro')
+		if E.Classic then
+			button:SetAttribute('type', 'macro')
+			button:SetAttribute('macrotext', tm)
+		else
+			local modType = E.db.general.raidUtility.modifierSwap or 'world'
+			local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
+			local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
+			local world = modType == 'world'
+
+			button:SetAttribute(modifier..'type*', 'macro')
+			button:SetAttribute('macrotext', world and wm or tm)
+			button:SetAttribute('macrotext1', world and tm or wm)
+			button:SetAttribute('macrotext2', world and tm or wm)
+			button:SetAttribute('macrotext3', world and tm or wm)
+		end
 	end
 end
 
@@ -432,7 +437,7 @@ function RU:ToggleRaidUtil(event)
 end
 
 function RU:TargetIcons_OnEnter()
-	if _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
+	if E.Classic or _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
 
 	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')

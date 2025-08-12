@@ -270,9 +270,9 @@ blizz.objectiveFrameGroup.inline = true
 
 blizz.raidControl = ACH:Group(L["RAID_CONTROL"], nil, 30, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value RU:TargetIcons_Update() end)
 blizz.raidControl.args.raidUtility = ACH:Toggle(L["Enable"], L["Enables the ElvUI Raid Control panel."], 1, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
-blizz.raidControl.args.modifier = ACH:Select(L["Modifier"], nil, 2, modifierValues)
-blizz.raidControl.args.modifierSwap = ACH:Select(L["Swap Modifier"], nil, 3, { world = L["World"], target = L["Target"] })
-blizz.raidControl.args.showTooltip = ACH:Toggle(L["Tooltip"], L["Display Tooltip on Raid Markers."], 4, nil, nil, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value end)
+blizz.raidControl.args.modifier = ACH:Select(L["Modifier"], nil, 2, modifierValues, nil, nil, nil, nil, nil, E.Classic)
+blizz.raidControl.args.modifierSwap = ACH:Select(L["Swap Modifier"], nil, 3, { world = L["World"], target = L["Target"] }, nil, nil, nil, nil, nil, E.Classic)
+blizz.raidControl.args.showTooltip = ACH:Toggle(L["Tooltip"], L["Display Tooltip on Raid Markers."], 4, nil, nil, nil, function(info) return E.db.general.raidUtility[info[#info]] end, function(info, value) E.db.general.raidUtility[info[#info]] = value end, nil, E.Classic)
 
 blizz.lootRollGroup = ACH:Group(L["Loot Roll"], nil, 40, nil, function(info) return E.db.general.lootRoll[info[#info]] end, function(info, value) E.db.general.lootRoll[info[#info]] = value M:UpdateLootRollFrames() end)
 blizz.lootRollGroup.args.lootRoll = ACH:Toggle(L["Enable"], L["Enable/Disable the loot roll frame."], 0, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E.ShowPopup = true end)
