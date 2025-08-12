@@ -408,13 +408,12 @@ function E:StaticPopup_EscapePressed()
 		if frame:IsShown() and frame.hideOnEscape then
 			local dialog = E.PopupDialogs[frame.which]
 			if dialog then
+				frame:Hide()
+
 				local OnCancel = dialog.OnCancel
-				local noCancelOnEscape = dialog.noCancelOnEscape
-				if OnCancel and not noCancelOnEscape then
+				if OnCancel and not dialog.noCancelOnEscape then
 					OnCancel(frame, frame.data, 'clicked')
 				end
-
-				frame:Hide()
 			else
 				E:StaticPopupSpecial_Hide(frame)
 			end
