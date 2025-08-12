@@ -374,7 +374,6 @@ function RU:CreateTargetIcons()
 		button:SetScript('OnMouseUp', RU.TargetIcons_MouseUp)
 		button:SetScript('OnEnter', RU.TargetIcons_OnEnter)
 		button:SetScript('OnLeave', RU.TargetIcons_OnLeave)
-		button:RegisterForClicks('AnyDown', 'AnyUp')
 		button:SetAttribute('type1', 'macro')
 		button:SetAttribute('type2', 'macro')
 		button:SetAttribute('type3', 'macro')
@@ -383,6 +382,7 @@ function RU:CreateTargetIcons()
 		button:Size(TARGET_SIZE)
 		button.keys = {}
 
+		RU:FixSecureClicks(button)
 		RU:TargetIcons_UpdateMacro(button, id)
 
 		raidMarkers[id] = button
@@ -845,34 +845,12 @@ function RU:Initialize()
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or E.Mists and 0.8 or 1)) + ((E.Retail or E.Mists) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or 1)) + (E.Retail and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
 	if E.allowRoles then
 		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 5, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
 		RU:CreateRoleIcons()
-	end
-
-	-- Reposition/Resize and Reuse the World Marker Button
-	local marker = E.Mists and _G.CompactRaidFrameManager and _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-	if marker then
-		marker:SetParent(RaidUtilityPanel)
-		marker:ClearAllPoints()
-		marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 4, 0)
-		marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-		marker:HookScript('OnEnter', RU.OnEnter_Button)
-		marker:HookScript('OnLeave', RU.OnLeave_Button)
-		RU:CleanButton(marker)
-		RU.MarkerButton = marker
-
-		-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
-		local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-		if readyCheck then
-			readyCheck:ClearAllPoints()
-			readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-			readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-			RU.ReadyCheck = readyCheck
-		end
 	end
 
 	if E.Retail then -- these use the new dropdown stuff
