@@ -1755,11 +1755,10 @@ function B:ConstructCoverButton(cover, name, text, template)
 	return button
 end
 
-function B:ConstructContainerCover(frame)
-	local cover = CreateFrame('Button', '$parentCover', frame)
+function B:ConstructContainerCover(f)
+	local cover = CreateFrame('Button', '$parentCover', f)
 	cover:SetTemplate()
-	cover:Point('TOPLEFT')
-	cover:Point('BOTTOMRIGHT')
+	cover:SetAllPoints(f.holderFrame)
 	cover:SetFrameLevel(15)
 	cover:Hide()
 
@@ -2104,7 +2103,7 @@ function B:ConstructContainerTabHolder(f, name, key, totalBags)
 	f[key] = frame
 
 	frame.totalBags = totalBags or 5
-	frame.cover = B:ConstructContainerCover(frame)
+	frame.cover = B:ConstructContainerCover(f)
 
 	return frame
 end
