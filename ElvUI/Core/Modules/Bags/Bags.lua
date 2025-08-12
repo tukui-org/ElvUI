@@ -1433,7 +1433,7 @@ function B:DelayedContainer(bagFrame, event, bagID)
 	end
 end
 
-function B:OnEvent(event, ...)
+function B:Container_OnEvent(event, ...)
 	if event == 'PLAYERBANKBAGSLOTS_CHANGED' then
 		local containerID, holder = next(self.notPurchased)
 		if containerID then
@@ -2227,18 +2227,16 @@ function B:Container_ClickStackBag()
 		parent.sortingSlots = true
 	end
 
-	if IsShiftKeyDown() then
-		B:CommandDecorator(B.Stack, 'bags bank')()
-	else
-		B:CommandDecorator(B.Compress, 'bags')()
+	local sorting = IsShiftKeyDown() and B:CommandDecorator(B.Stack, 'bags bank') or B:CommandDecorator(B.Compress, 'bags')
+	if sorting then
+		sorting()
 	end
 end
 
 function B:Container_ClickStackBank()
-	if IsShiftKeyDown() then
-		B:CommandDecorator(B.Stack, 'bank bags')()
-	else
-		B:CommandDecorator(B.Compress, 'bank')()
+	local sorting = IsShiftKeyDown() and B:CommandDecorator(B.Stack, 'bank bags') or B:CommandDecorator(B.Compress, 'bank')
+	if sorting then
+		sorting()
 	end
 end
 
@@ -2253,7 +2251,10 @@ function B:Container_ClickSortBag()
 			B:SortingFadeBags(parent, true)
 		end
 
-		B:CommandDecorator(B.SortBags, 'bags')()
+		local sorting = B:CommandDecorator(B.SortBags, 'bags')
+		if sorting then
+			sorting()
+		end
 	end
 end
 
@@ -2269,7 +2270,10 @@ function B:Container_ClickSortBank()
 				B:SortingFadeBags(parent, true)
 			end
 
-			B:CommandDecorator(B.SortBags, 'bank')()
+			local sorting = B:CommandDecorator(B.SortBags, 'bank')
+			if sorting then
+				sorting()
+			end
 		end
 	elseif E.Retail and B.WarbandBanks[B.BankTab] then
 		SortAccountBankBags()
@@ -2319,9 +2323,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f:SetMovable(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:RegisterForClicks('AnyUp')
-	f:SetScript('OnEvent', B.OnEvent)
-	f:SetScript('OnShow', B.ContainerOnShow)
-	f:SetScript('OnHide', B.ContainerOnHide)
+	f:SetScript('OnEvent', B.Container_OnEvent)
+	f:SetScript('OnShow', B.Container_OnShow)
+	f:SetScript('OnHide', B.Container_OnHide)
 	f:SetScript('OnDragStart', B.Container_OnDragStart)
 	f:SetScript('OnDragStop', B.Container_OnDragStop)
 	f:SetScript('OnClick', B.Container_OnClick)
@@ -2796,13 +2800,13 @@ function B:ToggleSortButtonState(isBank)
 	button:SetEnabled(not B.db[isBank and 'disableBankSort' or 'disableBagSort'])
 end
 
-function B:ContainerOnShow()
+function B:Container_OnShow()
 	if not self.sortingSlots then
 		B:SetListeners(self)
 	end
 end
 
-function B:ContainerOnHide()
+function B:Container_OnHide()
 	B:ClearListeners(self)
 	B:BagFrameHidden(self)
 	B:HideItemGlow(self)
