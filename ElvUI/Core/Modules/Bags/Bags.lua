@@ -2386,6 +2386,10 @@ function B:ConstructContainerFrame(name, isBank)
 			f.purchaseSecureButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 			f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
 			f.purchaseSecureButton:SetAttribute('type', 'click')
+			f.purchaseSecureButton:SetAttribute('clickbutton', _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
+			f.purchaseSecureButton:HookScript('OnClick', function()
+				PlaySound(852) --IG_MAINMENU_OPTION
+			end)
 
 			f.stackButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		end
@@ -2967,10 +2971,6 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.purchaseSecureButton:SetShown(not f.fullBank)
-		f.purchaseSecureButton:SetScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
-			StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = WARBANDBANK_TYPE })
-		end)
 
 		f.depositButton:SetScript('OnClick', function()
 			PlaySound(852) --IG_MAINMENU_OPTION
@@ -2990,10 +2990,6 @@ function B:ShowBankTab(f, bankTab)
 			end
 
 			f.purchaseSecureButton:SetShown(not f.fullBank)
-			f.purchaseSecureButton:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-				StaticPopup_Show("CONFIRM_BUY_BANK_TAB", nil, nil, { bankType = CHARACTERBANK_TYPE })
-			end)
 
 			f.depositButton:SetScript('OnClick', function()
 				PlaySound(852) --IG_MAINMENU_OPTION
