@@ -314,19 +314,23 @@ local function SkinMountFrame()
 
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
-	MountJournal.MountDisplay:StripTextures()
-	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
 
-	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
-	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
-	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
+	local MountDisplay = MountJournal.MountDisplay
+	if MountDisplay then
+		MountJournal.MountDisplay:StripTextures()
+		MountJournal.MountDisplay.ShadowOverlay:StripTextures()
+		MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
+
+		S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
+		S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
+		S:HandleModelSceneControlButtons(_G.MountJournal.MountDisplay.ModelScene.ControlFrame)
+	end
 
 	S:HandleButton(_G.MountJournalMountButton)
 	_G.MountJournalMountButton:NudgePoint(0, -3)
 	S:HandleEditBox(_G.MountJournalSearchBox)
 	S:HandleTrimScrollBar(_G.MountJournal.ScrollBar)
-	S:HandleModelSceneControlButtons(_G.MountJournal.MountDisplay.ModelScene.ControlFrame)
 
 	MountJournal.BottomLeftInset:StripTextures()
 	MountJournal.BottomLeftInset:SetTemplate('Transparent')
