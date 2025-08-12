@@ -1755,6 +1755,24 @@ function B:ConstructCoverButton(cover, name, text, template)
 	return button
 end
 
+function B:ClickSound()
+	PlaySound(852) --IG_MAINMENU_OPTION
+end
+
+function B:GetPurchaseTabButton()
+	return _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton
+end
+
+function B:SetupSecurePurchase(button)
+	local purcahseTab = B:GetPurchaseTabButton()
+	if not purcahseTab then return end
+
+	button:SetAttribute('type', 'click')
+	button:SetAttribute('clickbutton', purcahseTab)
+	button:RegisterForClicks('AnyUp', 'AnyDown')
+	button:HookScript('OnClick', B.ClickSound)
+end
+
 function B:ConstructContainerCover(f)
 	local cover = CreateFrame('Button', '$parentCover', f)
 	cover:SetTemplate()
@@ -1762,13 +1780,8 @@ function B:ConstructContainerCover(f)
 	cover:SetFrameLevel(15)
 	cover:Hide()
 
-	cover.secureButton = B:ConstructCoverButton(cover, 'SecurePurchase', L["Purchase"], 'InsecureActionButtonTemplate')
-	cover.secureButton:RegisterForClicks('AnyUp', 'AnyDown')
-	cover.secureButton:SetAttribute('type', 'click')
-	cover.secureButton:SetAttribute('clickbutton', _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
-	cover.secureButton:HookScript('OnClick', function()
-		PlaySound(852) --IG_MAINMENU_OPTION
-	end)
+	cover.purchaseButton = B:ConstructCoverButton(cover, 'SecurePurchase', L["Purchase"], 'InsecureActionButtonTemplate')
+	B:SetupSecurePurchase(cover.purchaseButton)
 
 	cover.button = B:ConstructCoverButton(cover, 'Purchase', L["Purchase"])
 	cover.button:Hide()
@@ -1855,7 +1868,7 @@ function B:BankTabs_OnClick(button)
 
 	if button == 'RightButton' then
 		B:BankTabs_ShowSettings(bagID)
-		PlaySound(852) --IG_MAINMENU_OPTION
+		B:ClickSound()
 	elseif (self.bankType == WARBANDBANK_TYPE and not B.db.warbandCombined) or (self.bankType == CHARACTERBANK_TYPE and not B.db.bankCombined) then
 		B:SelectBankTab(self.bagFrame, bagID)
 	end
@@ -2118,7 +2131,7 @@ function B:CoverButton_ClickBank()
 end
 
 function B:BagsButton_ClickBank()
-	PlaySound(852) --IG_MAINMENU_OPTION
+	B:ClickSound()
 
 	local f = self:GetParent()
 	if E.Retail then
@@ -2296,7 +2309,6 @@ function B:ConstructContainerFrame(name, isBank)
 		if not E.Retail then
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 			f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
-			f.purchaseBagButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 
 			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 		else
@@ -2381,14 +2393,8 @@ function B:ConstructContainerFrame(name, isBank)
 			f.depositButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.depositButton:SetScript('OnLeave', GameTooltip_Hide)
 
-			f.purchaseSecureButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
-			f.purchaseSecureButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
-			f.purchaseSecureButton:RegisterForClicks('AnyUp', 'AnyDown')
-			f.purchaseSecureButton:SetAttribute('type', 'click')
-			f.purchaseSecureButton:SetAttribute('clickbutton', _G.BankPanel.PurchasePrompt.TabCostFrame.PurchaseButton)
-			f.purchaseSecureButton:HookScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
-			end)
+			f.purchaseTabButton = B:ConstructPurchaseButton(f, L["Purchase Bags"], 'InsecureActionButtonTemplate')
+			B:SetupSecurePurchase(f.purchaseTabButton)
 
 			f.stackButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		end
@@ -2960,6 +2966,7 @@ function B:ShowBankTab(f, bankTab)
 	f.bankType = warbandIndex and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
 	f.ContainerHolder:Hide()
 
+	local purcahseTab = B:GetPurchaseTabButton()
 	if warbandIndex then
 		f.fullBank = not CanPurchaseBankTab(WARBANDBANK_TYPE)
 
@@ -2969,10 +2976,14 @@ function B:ShowBankTab(f, bankTab)
 			f['BankTabs'..bankIndex]:Hide()
 		end
 
-		f.purchaseSecureButton:SetShown(not f.fullBank)
+		f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
+
+		if purcahseTab then
+			purcahseTab:SetAttribute('overrideBankType', WARBANDBANK_TYPE)
+		end
 
 		f.depositButton:SetScript('OnClick', function()
-			PlaySound(852) --IG_MAINMENU_OPTION
+			B:ClickSound()
 			AutoDepositItemsIntoBank(WARBANDBANK_TYPE)
 		end)
 
@@ -2988,10 +2999,14 @@ function B:ShowBankTab(f, bankTab)
 				f['WarbandTabs'..bankIndex]:Hide()
 			end
 
-			f.purchaseSecureButton:SetShown(not f.fullBank)
+			f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
+
+			if purcahseTab then
+				purcahseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
+			end
 
 			f.depositButton:SetScript('OnClick', function()
-				PlaySound(852) --IG_MAINMENU_OPTION
+				B:ClickSound()
 				AutoDepositItemsIntoBank(CHARACTERBANK_TYPE)
 			end)
 		else
@@ -3003,7 +3018,7 @@ function B:ShowBankTab(f, bankTab)
 		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 	end
 
-	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseSecureButton or f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, BANK_SPACE_OFFSET)
+	f.editBox:Point('RIGHT', (not f.fullBank and f.purchaseTabButton or f.purchaseBagButton) or f.bagsButton, 'LEFT', -5, BANK_SPACE_OFFSET)
 
 	if previousTab ~= B.BankTab then
 		B:Layout(true)
