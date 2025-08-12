@@ -4,8 +4,8 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local unpack, type, gsub, rad, strfind = unpack, type, gsub, rad, strfind
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
-local unpack, assert, type, gsub, rad, strfind = unpack, assert, type, gsub, rad, strfind
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded

@@ -5,7 +5,6 @@ local _G = _G
 local next = next
 local wipe = wipe
 local gsub = gsub
-local assert = assert
 local unpack = unpack
 local tinsert = tinsert
 local CreateFrame = CreateFrame
