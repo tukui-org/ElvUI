@@ -1774,7 +1774,6 @@ function B:SetupSecurePurchase(button)
 	button:SetAttribute('type', 'click')
 	button:SetAttribute('clickbutton', purcahseTab)
 	button:RegisterForClicks('AnyUp', 'AnyDown')
-	button:HookScript('OnClick', B.ClickSound)
 end
 
 function B:ConstructContainerCover(f)
