@@ -1,3 +1,29 @@
+### Version 13.97 [ August 13th 2025 ]
+*   Retail:
+    *   Bank purchase tab not working.
+    *   Bank now has a toggle for showing the tabs.
+    *   Bank tabs now fade other bags during mouseover when in combined mode (similar to the bag frame).
+    *   Bank sorting can now use Blizzard Cleanup separate from Bags.
+    *   Blizzard Bank frame sometimes showing as a side effect from other addons.
+    *   Mistweaver Monks not displaying Poison or Disease in Aura Highlight.
+*   Mists:
+    *   Black Market Auction house skinned.
+    *   Time Datatext now includes proper instance icons and also world boss tracking. (Thanks Donkstronomer)
+    *   Friendship status now displays on Reputation Datatext and Databar.
+*   Era:
+    *   Static popups hiding would cause an error.
+    *   Mail auto toggle not closing the bags when unchecked.
+    *   Script error frame not having the First and Last button skinned because of an error.
+*   Bank default width increased to 800 (up from 600).
+*   Bank search and buttons not placed properly.
+*   Bags upgrade icon should display properly with Pawn.
+*   Chattynator added to incompatibility list with Chat module.
+*   Static popups with money input have the backdrops placed better.
+*   Static popup code further improved to handle more edge cases.
+*   Money input boxes have better placed backdrops too.
+*   Style Filter action to play a sound when triggered. (Thanks Eltreum)
+*   Friends frame tabs not aligned properly with the skin enabled.
+
 ### Version 13.96 [ August 7th 2025 ]
 *   Retail:
     *   Bag items not going into Warband bank when selected.

@@ -82,14 +82,6 @@ ShowButton:SetClampedToScreen(true)
 ShowButton:SetClampRectInsets(0, 0, -1, 1)
 ShowButton:Hide()
 
-function RU:FixSecureClicks(button)
-	if E.Retail then
-		button:RegisterForClicks('AnyDown', 'AnyUp')
-	else
-		button:RegisterForClicks('AnyUp')
-	end
-end
-
 function RU:SetEnabled(button, enabled, isLeader)
 	if button.SetChecked then
 		button:SetChecked(enabled)
@@ -344,19 +336,24 @@ do
 	end
 
 	function RU:TargetIcons_UpdateMacro(button, i)
-		local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
-		local modType = E.db.general.raidUtility.modifierSwap or 'world'
-
 		local id = ground[i]
-		local world = modType == 'world'
 		local tm = format('%s %d', TM, i)
-		local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
 
-		button:SetAttribute('macrotext', world and wm or tm)
-		button:SetAttribute('macrotext1', world and tm or wm)
-		button:SetAttribute('macrotext2', world and tm or wm)
-		button:SetAttribute('macrotext3', world and tm or wm)
-		button:SetAttribute(modifier..'type*', 'macro')
+		if E.Classic then
+			button:SetAttribute('type', 'macro')
+			button:SetAttribute('macrotext', tm)
+		else
+			local modType = E.db.general.raidUtility.modifierSwap or 'world'
+			local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
+			local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
+			local world = modType == 'world'
+
+			button:SetAttribute(modifier..'type*', 'macro')
+			button:SetAttribute('macrotext', world and wm or tm)
+			button:SetAttribute('macrotext1', world and tm or wm)
+			button:SetAttribute('macrotext2', world and tm or wm)
+			button:SetAttribute('macrotext3', world and tm or wm)
+		end
 	end
 end
 
@@ -374,7 +371,6 @@ function RU:CreateTargetIcons()
 		button:SetScript('OnMouseUp', RU.TargetIcons_MouseUp)
 		button:SetScript('OnEnter', RU.TargetIcons_OnEnter)
 		button:SetScript('OnLeave', RU.TargetIcons_OnLeave)
-		button:RegisterForClicks('AnyDown', 'AnyUp')
 		button:SetAttribute('type1', 'macro')
 		button:SetAttribute('type2', 'macro')
 		button:SetAttribute('type3', 'macro')
@@ -383,6 +379,7 @@ function RU:CreateTargetIcons()
 		button:Size(TARGET_SIZE)
 		button.keys = {}
 
+		E:RegisterClicks(button)
 		RU:TargetIcons_UpdateMacro(button, id)
 
 		raidMarkers[id] = button
@@ -440,14 +437,14 @@ function RU:ToggleRaidUtil(event)
 end
 
 function RU:TargetIcons_OnEnter()
-	if _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
+	if E.Classic or _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
 
 	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
 	_G.GameTooltip:SetText(L["Raid Markers"])
 	_G.GameTooltip:AddLine(' ')
-	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.GROUPMANAGER_GROUND_MARKER, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
-	_G.GameTooltip:AddDoubleLine(isTarget and _G.GROUPMANAGER_GROUND_MARKER or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.WORLD, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(isTarget and _G.WORLD or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
 	_G.GameTooltip:Show()
 end
 
@@ -835,44 +832,22 @@ function RU:Initialize()
 	MainTankButton:SetAttribute('type', 'maintank')
 	MainTankButton:SetAttribute('unit', 'target')
 	MainTankButton:SetAttribute('action', 'toggle')
-	RU:FixSecureClicks(MainTankButton)
+	E:RegisterClicks(MainTankButton)
 
 	local MainAssistButton = RU:CreateUtilButton('RaidUtility_MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate', BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'TOPRIGHT', 5, 0, _G.MAINASSIST, nil, buttonEvents, RU.OnEvent_MainAssistButton)
 	MainAssistButton:SetAttribute('type', 'mainassist')
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')
-	RU:FixSecureClicks(MainAssistButton)
+	E:RegisterClicks(MainAssistButton)
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or E.Mists and 0.8 or 1)) + ((E.Retail or E.Mists) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Retail and 0.5 or 1)) + (E.Retail and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
 	if E.allowRoles then
 		RU:CreateUtilButton('RaidUtility_RoleCheckButton', RaidUtilityPanel, nil, BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', ReadyCheckButton, 'TOPRIGHT', 5, 0, _G.ROLE_POLL, nil, buttonEvents, RU.OnEvent_RoleCheckButton, RU.OnClick_RoleCheckButton)
 		RU:CreateRoleIcons()
-	end
-
-	-- Reposition/Resize and Reuse the World Marker Button
-	local marker = E.Mists and _G.CompactRaidFrameManager and _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
-	if marker then
-		marker:SetParent(RaidUtilityPanel)
-		marker:ClearAllPoints()
-		marker:Point('TOPLEFT', RaidCountdownButton, 'TOPRIGHT', 4, 0)
-		marker:Size(BUTTON_WIDTH * 0.2, BUTTON_HEIGHT)
-		marker:HookScript('OnEnter', RU.OnEnter_Button)
-		marker:HookScript('OnLeave', RU.OnLeave_Button)
-		RU:CleanButton(marker)
-		RU.MarkerButton = marker
-
-		-- Since we steal the Marker Button for our utility panel, move the Ready Check button over a bit
-		local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
-		if readyCheck then
-			readyCheck:ClearAllPoints()
-			readyCheck:Point('BOTTOMLEFT', _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, 'TOPLEFT', 0, 1)
-			readyCheck:Point('BOTTOMRIGHT', _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, 'TOPRIGHT', 0, 1)
-			RU.ReadyCheck = readyCheck
-		end
 	end
 
 	if E.Retail then -- these use the new dropdown stuff

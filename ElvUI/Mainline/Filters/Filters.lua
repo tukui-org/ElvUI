@@ -13,6 +13,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 	-- Evoker
 		[355689]	= List(2), -- Landslide
 		[370898]	= List(1), -- Permeating Chill
+		[408544]	= List(4), -- Seismic Slam (Stun)
 		[360806]	= List(3), -- Sleep Walk
 	-- Death Knight
 		[47476]		= List(2), -- Strangulate
@@ -69,6 +70,10 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[162480]	= List(1), -- Steel Trap
 		[212638]	= List(1), -- Tracker's Net
 		[200108]	= List(1), -- Ranger's Net
+		[356727]	= List(4), -- Spider Venom (Silence)
+		[407032]	= List(4), -- Super Sticky Tar Bomb (Disarm)
+		[407031]	= List(4), -- Super Sticky Tar Bomb #2 (Disarm)
+		[451517]	= List(4), -- Catch Out (Root)
 	-- Mage
 		[61721]		= List(3), -- Rabbit
 		[61305]		= List(3), -- Black Cat
@@ -90,6 +95,11 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[157997]	= List(1), -- Ice Nova
 		[228600]	= List(1), -- Glacial Spike
 		[198121]	= List(1), -- Frostbite
+		[461489]	= List(4), -- New Polymorph Variant #1 (CC)
+		[460392]	= List(4), -- New Polymorph Variant #2 (CC)
+		[391622]	= List(4), -- New Polymorph Variant #3 (CC)
+		[383121]	= List(4), -- Mass Polymorph (CC)
+		[449700]	= List(4), -- Gravity Lapse (Root)
 	-- Monk
 		[119381]	= List(4), -- Leg Sweep
 		[202346]	= List(4), -- Double Barrel
@@ -100,13 +110,15 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[123407]	= List(1), -- Spinning Fire Blossom
 		[116706]	= List(1), -- Disable
 		[232055]	= List(4), -- Fists of Fury
+		[324382]	= List(4), -- Clash (Root)
 	-- Paladin
 		[853]		= List(3), -- Hammer of Justice
 		[20066]		= List(3), -- Repentance
 		[105421]	= List(3), -- Blinding Light
 		[31935]		= List(2), -- Avenger's Shield
 		[217824]	= List(2), -- Shield of Virtue
-		[205290]	= List(3), -- Wake of Ashes
+		[205290]	= List(3), -- Wake of Ashes 1
+		[255941]	= List(4), -- Wake of Ashes 2 (Stun)
 	-- Priest
 		[9484]		= List(3), -- Shackle Undead
 		[200196]	= List(4), -- Holy Word: Chastise
@@ -143,6 +155,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[204437]	= List(3), -- Lightning Lasso
 		[157375]	= List(4), -- Gale Force
 		[64695]		= List(1), -- Earthgrab
+		[197214]	= List(4), -- Sundering (CC)
 	-- Warlock
 		[710]		= List(5), -- Banish
 		[6789]		= List(3), -- Mortal Coil
@@ -153,6 +166,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[30283]		= List(3), -- Shadowfury
 		[89766]		= List(4), -- Axe Toss
 		[233582]	= List(1), -- Entrenched in Flame
+		[130616]	= List(4), -- Fear Standstill (CC)
 	-- Warrior
 		[5246]		= List(4), -- Intimidating Shout
 		[132169]	= List(4), -- Storm Bolt
@@ -161,9 +175,14 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[199042]	= List(1), -- Thunderstruck
 		[236077]	= List(2), -- Disarm
 		[105771]	= List(2), -- Charge
+		[316593]	= List(4), -- Intimidating Shout Standstill Target (CC)
+		[316595]	= List(4), -- Intimidating Shout Standstill Others (CC)
+		[385954]	= List(4), -- Shield Charge (Stun)
 	-- Racial
 		[20549]		= List(4), -- War Stomp
 		[107079]	= List(4), -- Quaking Palm
+	-- Uncategorized
+		[389831]	= List(4), -- Snowdrift (Stun)
 	},
 }
 
@@ -393,7 +412,7 @@ G.unitframe.aurafilters.Whitelist = {
 		[371807]	= List(), -- Recall
 		[395296]	= List(), -- Ebon Might < self
 		[395152]	= List(), -- Ebon Might < others
-		[390386]	= List(), -- [Evoker] Fury of the Aspects
+		[390386]	= List(), -- Fury of the Aspects
 	-- Death Knight
 		[48707]		= List(), -- Anti-Magic Shell
 		[81256]		= List(), -- Dancing Rune Weapon
@@ -671,8 +690,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[160029] = List(), -- Resurrecting (Pending CR)
 		[225080] = List(), -- Reincarnation (Ankh ready)
 		[255234] = List(), -- Totemic Revival
-	-- Affixes
-		[440313] = List(), -- Void Rift
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
@@ -924,6 +941,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[326874] = List(), -- Ankle Bites
 		[340446] = List(), -- Mark of Envy
 	-- Tazavesh, the Veiled Market
+		[356943] = List(), -- Lockdown
 		[350804] = List(), -- Collapsing Energy
 		[350885] = List(), -- Hyperlight Jolt
 		[351101] = List(), -- Energy Fragmentation
@@ -940,6 +958,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[347744] = List(), -- Quickblade
 		[347481] = List(), -- Shuri
 		[355915] = List(), -- Glyph of Restraint
+		[350101] = List(), -- Chains of Damnation
 		[350134] = List(), -- Infinite Breath
 		[350013] = List(), -- Gluttonous Feast
 		[355465] = List(), -- Boulder Throw
@@ -950,20 +969,38 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------------------------------------------------
 	-- Plexus Sentinel
 		[1219459] = List(), -- Manifest Matrices
-		[1219607] = List(), -- Eradicating Salvo
+		[1219607] = List(), -- Eradicating Salvo 1
+		[1219531] = List(), -- Eradicating Salvo 2
 		[1218625] = List(), -- Displacement Matrix
 	-- Loom'ithar
 		[1226311] = List(5), -- Infusion Tether
 		[1237212] = List(4), -- Piercing Strand
 		[1226721] = List(6), -- Silken Snare
+		[1247045] = List(), -- Hyper Infusion
+		[1237307] = List(), -- Lair Weaving
 	-- Soulbinder Naazindhri
 		[1227276] = List(), -- Soulfray Annihilation
-		[1223859] = List(), -- Arcane Expulsion
+		[1226827] = List(), -- Soulrend Orb
+		[1227052] = List(), -- Void Burst
 	-- Forgeweaver Araz
+		[1234324] = List(), -- Photon Blast
+		[1228214] = List(), -- Astral Harvest
+		[1243901] = List(), -- Void Harvest
+		[1240705] = List(6), -- Astral Burn
 	-- The Soul Hunters
+		[1227847] = List(), -- The Hunt
+		[1241946] = List(), -- Frailty
 	-- Fractillus
+		[1233411] = List(), -- Crystalline Shockwave
 	-- Nexus-King Salhadaar
+		[1227549] = List(), -- Banishment
+		[1226362] = List(), -- Twilight Scar
+		[1228056] = List(), -- Reap
 	-- Dimensius, the All-Devouring
+		[1239270] = List(), -- Voidwarding
+		[1250055] = List(), -- Voidgrasp
+		[1243699] = List(), -- Spatial Fragment
+		[1249425] = List(), -- Mass Destruction
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
@@ -1168,18 +1205,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
-	-- Vexie and the Geargrinders
-	-- Cauldron of Carnage
-	-- Rik Reverb
 	-- Stix Bunkjunker
 		[473115] = List(), -- Short Fuse
 		[467117] = List(), -- Overdrive
-	-- Sprocketmonger Lockenstock
 	-- The One-Armed Bandit
 		[472718] = List(), -- Up the Ante
 	-- Mug'Zee, Heads of Security
 		[466385] = List(), -- Moxie
-	-- Chrome King Gallywix
 	---------------------------------------------------------
 	------------------- Nerub'ar Palace ---------------------
 	---------------------------------------------------------
@@ -1257,7 +1289,6 @@ G.unitframe.aurawatch = {
 	},
 	PRIEST = {
 		[194384]	= Aura(194384, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement
-		[214206]	= Aura(214206, nil, 'TOPRIGHT', {1, 1, 0.66}), -- Atonement (PvP)
 		[17]		= Aura(17, nil, 'TOPLEFT', {0.7, 0.7, 0.7}, true), -- Power Word: Shield
 		[41635]		= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
 		[193065]	= Aura(193065, nil, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}, nil, nil, nil, nil, -20), -- Masochism

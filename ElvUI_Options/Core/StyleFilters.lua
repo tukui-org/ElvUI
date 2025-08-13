@@ -12,10 +12,10 @@ local next, sort, tinsert, tonumber, format = next, sort, tinsert, tonumber, for
 local GetDifficultyInfo = GetDifficultyInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetRealZoneText = GetRealZoneText
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
+local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
@@ -344,7 +344,7 @@ StyleFilters.triggers.args.faction.args.types.args.Neutral = ACH:Toggle(L["Neutr
 
 StyleFilters.triggers.args.class = ACH:Group(L["CLASS"], nil, 12, nil, nil, nil, DisabledFilter)
 
-for classID, info in next, E.ClassInfoByID do
+for _, info in next, E.ClassInfoByID do
 	local className, classFile = info.className, info.classFile
 
 	local coloredName = E:ClassColor(classFile)
@@ -354,8 +354,8 @@ for classID, info in next, E.ClassInfoByID do
 	local group = ACH:Group(className, nil, tIndexOf(sortedClasses, classFile) + 13, nil, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return not tagTrigger or not tagTrigger.enabled end)
 	group.inline = true
 
-	for _, specID in next, E.SpecByClass[classFile] do
-		group.args[format('%s%s', classFile, specID)] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, k, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
+	for specIndex, specID in next, E.SpecByClass[classFile] do
+		group.args[format('%s%s', classFile, specID)] = ACH:Toggle(format('|c%s%s|r', coloredName, E.SpecName[specID]), nil, specIndex, nil, nil, nil, function() local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] return tagTrigger and tagTrigger.specs and tagTrigger.specs[specID] end, function(_, value) local triggers = GetFilter(true) local tagTrigger = triggers.class[classFile] if not tagTrigger.specs then triggers.class[classFile].specs = {} end triggers.class[classFile].specs[specID] = value or nil if not next(triggers.class[classFile].specs) then triggers.class[classFile].specs = nil end NP:ConfigureAll() end)
 	end
 
 	StyleFilters.triggers.args.class.args[format('%s%s', classFile, 'spec')] = group
@@ -762,7 +762,12 @@ StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 6, { min = 
 StyleFilters.actions.args.glow.args.lines = ACH:Range(function() local _, actions = GetFilter(true) return actions.glow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 7, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' and actions.glow.style ~= 'Autocast Shine' end)
 StyleFilters.actions.args.glow.inline = true
 
-StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 50, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
+StyleFilters.actions.args.playSound = ACH:Group(_G.SOUND, nil, 50, nil, actionSubGroup, actionSubGroup, actionHidePlate)
+StyleFilters.actions.args.playSound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+StyleFilters.actions.args.playSound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 8, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.playSound.enable end)
+StyleFilters.actions.args.playSound.inline = true
+
+StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 60, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
 StyleFilters.actions.args.text_format.inline = true
 StyleFilters.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')
 StyleFilters.actions.args.text_format.args.name = ACH:Input(L["Name"], nil, 1, nil, 'full')

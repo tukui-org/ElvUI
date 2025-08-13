@@ -4,8 +4,8 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local unpack, type, gsub, rad, strfind = unpack, type, gsub, rad, strfind
 local tinsert, xpcall, next, ipairs, pairs = tinsert, xpcall, next, ipairs, pairs
-local unpack, assert, type, gsub, rad, strfind = unpack, assert, type, gsub, rad, strfind
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -164,6 +164,42 @@ do
 	end
 end
 
+function S:ClearSetTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetTexture(E.ClearTexture)
+	end
+end
+
+function S:ClearNormalTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetNormalTexture(E.ClearTexture)
+	end
+end
+
+function S:ClearPushedTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetPushedTexture(E.ClearTexture)
+	end
+end
+
+function S:ClearDisabledTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetDisabledTexture(E.ClearTexture)
+	end
+end
+
+function S:ClearHighlightTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetHighlightTexture(E.ClearTexture)
+	end
+end
+
+function S:ClearCheckedTexture(texture)
+	if texture ~= E.ClearTexture then
+		self:SetCheckedTexture(E.ClearTexture)
+	end
+end
+
 function S:HandleButtonHighlight(frame, r, g, b)
 	if frame.SetHighlightTexture then
 		frame:SetHighlightTexture(E.ClearTexture)
@@ -189,8 +225,6 @@ function S:HandleButtonHighlight(frame, r, g, b)
 end
 
 function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
-	assert(frame, 'doesn\'t exist!')
-
 	local name = frame and frame.GetName and frame:GetName()
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
 	local portraitFrame = name and _G[name..'Portrait'] or frame.Portrait or frame.portrait
@@ -225,8 +259,6 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 end
 
 function S:HandleInsetFrame(frame)
-	assert(frame, 'doesn\'t exist!')
-
 	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
 	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
 	if frame.InsetBorderTopRight then frame.InsetBorderTopRight:Hide() end
@@ -243,8 +275,6 @@ end
 
 -- All frames that have a Portrait
 function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
-	assert(frame, 'doesn\'t exist!')
-
 	local name = frame and frame.GetName and frame:GetName()
 
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
@@ -302,14 +332,94 @@ function S:SetDisabledBackdrop()
 	end
 end
 
--- function to handle the recap button script
-function S:UpdateRecapButton()
+do
+	local hookedFrames = {}
+	function S:StaticPopup_OnShow() -- UpdateRecapButton is created OnShow
+		if self.UpdateRecapButton and not hookedFrames[self] then
+			hookedFrames[self] = true
+
+			hooksecurefunc(self, 'UpdateRecapButton', S.StaticPopup_UpdateRecapButton)
+		end
+	end
+end
+
+function S:StaticPopup_UpdateRecapButton()
 	-- when UpdateRecapButton runs and enables the button, it unsets OnEnter
 	-- we need to reset it with ours. blizzard will replace it when the button
 	-- is disabled. so, we don't have to worry about anything else.
-	if self and self.button4 and self.button4:IsEnabled() then
-		self.button4:SetScript('OnEnter', S.SetModifiedBackdrop)
-		self.button4:SetScript('OnLeave', S.SetOriginalBackdrop)
+
+	local button = self.button4
+	if button and button:IsEnabled() then
+		button:SetScript('OnEnter', S.SetModifiedBackdrop)
+		button:SetScript('OnLeave', S.SetOriginalBackdrop)
+	end
+end
+
+function S:StaticPopup_HandleButton(button)
+	S:HandleButton(button)
+
+	button:OffsetFrameLevel(1)
+	button:CreateShadow(5)
+	button.shadow:SetAlpha(0)
+	button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	button.Flash:Hide()
+
+	local anim1, anim2 = button.PulseAnim:GetAnimations()
+	anim1:SetTarget(button.shadow)
+	anim2:SetTarget(button.shadow)
+end
+
+function S:HandleStaticPopup(popup)
+	if not popup then return end
+
+	popup:StripTextures()
+	popup:SetTemplate('Transparent')
+	popup:HookScript('OnShow', S.StaticPopup_OnShow)
+
+	local i = 1
+	local button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	while button do
+		S:StaticPopup_HandleButton(button)
+
+		i = i + 1
+		button = E:StaticPopup_GetElement(popup, 'Button'..i)
+	end
+
+	local closeButton = E:StaticPopup_GetElement(popup, 'CloseButton')
+	if closeButton then
+		S:HandleCloseButton(closeButton)
+	end
+
+	local moneyInputFrame = E:StaticPopup_GetElement(popup, 'MoneyInputFrame')
+	if moneyInputFrame then
+		S:HandleEditBox(moneyInputFrame.gold)
+		S:HandleEditBox(moneyInputFrame.silver)
+		S:HandleEditBox(moneyInputFrame.copper)
+	end
+
+	local editBox = E:StaticPopup_GetElement(popup, 'EditBox')
+	if editBox then
+		S:HandleEditBox(editBox)
+		editBox:OffsetFrameLevel(1)
+	end
+
+	local itemFrame = E:StaticPopup_GetElement(popup, 'ItemFrame')
+	if itemFrame then
+		local itemFrameNameFrame = itemFrame.NameFrame or E:StaticPopup_GetElement(popup, 'ItemFrameNameFrame')
+		if itemFrameNameFrame then
+			itemFrameNameFrame:StripTextures()
+		end
+
+		local item = itemFrame.Item or itemFrame
+		S:HandleItemButton(item, true)
+		S:HandleIconBorder(item.IconBorder, item.backdrop)
+
+		local normalTexture = item:GetNormalTexture()
+		if normalTexture then
+			normalTexture:SetTexture()
+
+			hooksecurefunc(normalTexture, 'SetTexture', S.ClearSetTexture)
+		end
 	end
 end
 
@@ -844,8 +954,6 @@ do
 end
 
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
-	assert(button, 'doesn\'t exist!')
-
 	if button.IsSkinned then return end
 
 	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.ClearTexture) end
@@ -949,8 +1057,6 @@ do
 	local thumbButtons = {'ThumbTexture', 'thumbTexture', 'Thumb'}
 
 	function S:HandleScrollBar(frame, thumbY, thumbX, template)
-		assert(frame, 'doesn\'t exist!')
-
 		if frame.backdrop then return end
 
 		local upButton, downButton = GetButton(frame, upButtons), GetButton(frame, downButtons)
@@ -1051,8 +1157,6 @@ do
 	end
 
 	function S:HandleTrimScrollBar(frame, ignoreUpdates)
-		assert(frame, 'doesn\'t exist.')
-
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
@@ -1127,26 +1231,39 @@ do --Tab Regions
 	end
 end
 
-function S:HandleRotateButton(btn)
-	if btn.IsSkinned then return end
+function S:HandleRotateButton(frame, width, height, noSize)
+	if frame.IsSkinned then return end
 
-	btn:SetTemplate()
-	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
+	if not noSize then
+		frame:Size(width or 24, height or 24)
+	end
 
-	local normTex = btn:GetNormalTexture()
-	local pushTex = btn:GetPushedTexture()
-	local highlightTex = btn:GetHighlightTexture()
+	frame:SetTemplate()
 
-	normTex:SetInside()
-	normTex:SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+	local left = strfind(frame:GetDebugName(), 'Left')
+	local rotate = left and 'common-icon-rotateleft' or 'common-icon-rotateright'
 
-	pushTex:SetAllPoints(normTex)
-	pushTex:SetTexCoord(0.3, 0.29, 0.3, 0.65, 0.69, 0.29, 0.69, 0.65)
+	local normTex = frame:GetNormalTexture()
+	if normTex then
+		normTex:SetInside()
+		normTex:SetAtlas(rotate)
+		normTex:SetTexCoord(0.05, 1.05, -0.05, 1)
+	end
 
-	highlightTex:SetAllPoints(normTex)
-	highlightTex:SetColorTexture(1, 1, 1, 0.3)
+	local pushTex = frame:GetPushedTexture()
+	if pushTex then
+		pushTex:SetAllPoints(normTex)
+		pushTex:SetAtlas(rotate)
+		pushTex:SetTexCoord(0, 1, -0.1, 0.95)
+	end
 
-	btn.IsSkinned = true
+	local highlightTex = frame:GetHighlightTexture()
+	if highlightTex then
+		highlightTex:SetAllPoints(normTex)
+		highlightTex:SetColorTexture(1, 1, 1, 0.3)
+	end
+
+	frame.IsSkinned = true
 end
 
 do
@@ -1163,8 +1280,6 @@ do
 	end
 
 	function S:HandleMaxMinFrame(frame)
-		assert(frame, 'doesn\'t exist.')
-
 		if frame.IsSkinned then return end
 
 		frame:StripTextures(true)
@@ -1210,8 +1325,6 @@ function S:HandleBlizzardRegions(frame, name, kill, zero)
 end
 
 function S:HandleEditBox(frame, template)
-	assert(frame, 'doesn\'t exist!')
-
 	if frame.backdrop then return end
 
 	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
@@ -1223,19 +1336,28 @@ function S:HandleEditBox(frame, template)
 
 		frame.backdrop:SetInside(frame.NineSlice)
 	else
-		frame.backdrop:SetPoint('TOPLEFT', -2, 0)
-		frame.backdrop:SetPoint('BOTTOMRIGHT')
-
-		local name = frame:GetName()
-		if name and (strfind(name, 'Silver') or strfind(name, 'Copper')) then
-			frame.backdrop:Point('BOTTOMRIGHT', -12, -2)
+		local name = frame:GetDebugName()
+		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
+		if gold or silver or copper then
+			if E.Retail then
+				frame.backdrop:Point('TOPLEFT', -4, 0)
+				frame.backdrop:Point('BOTTOMRIGHT')
+			elseif frame.label then -- send mail, popups, and others
+				frame.backdrop:Point('TOPLEFT', -4, 2)
+				frame.backdrop:Point('BOTTOMRIGHT', (gold and 20) or 10, -2)
+			else -- auctionhouse sell tab and others
+				frame.backdrop:Point('TOPLEFT', 4, -4)
+				frame.backdrop:Point('BOTTOMRIGHT', -4, 6)
+			end
+		else
+			local popup = strfind(name, 'StaticPopup')
+			frame.backdrop:Point('TOPLEFT', -4, popup and -4 or 0)
+			frame.backdrop:Point('BOTTOMRIGHT', 4, popup and 4 or 0)
 		end
 	end
 end
 
 function S:HandleDropDownBox(frame, width, template, old)
-	assert(frame, 'doesn\'t exist!')
-
 	if not width then
 		width = 155
 	end
@@ -1312,9 +1434,6 @@ do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
 
-	local function checkNormalTexture(checkbox, texture) if texture ~= E.ClearTexture then checkbox:SetNormalTexture(E.ClearTexture) end end
-	local function checkPushedTexture(checkbox, texture) if texture ~= E.ClearTexture then checkbox:SetPushedTexture(E.ClearTexture) end end
-	local function checkHighlightTexture(checkbox, texture) if texture ~= E.ClearTexture then checkbox:SetHighlightTexture(E.ClearTexture) end end
 	local function checkCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
 		checkbox:SetCheckedTexture(S.db.checkBoxSkin and E.Media.Textures.Melli or check)
@@ -1325,8 +1444,6 @@ do
 	end
 
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
-		assert(frame, 'doesn\'t exist.')
-
 		if frame.IsSkinned then return end
 
 		frame:StripTextures()
@@ -1373,10 +1490,10 @@ do
 
 			frame:HookScript('OnDisable', checkOnDisable)
 
-			hooksecurefunc(frame, 'SetNormalTexture', checkNormalTexture)
-			hooksecurefunc(frame, 'SetPushedTexture', checkPushedTexture)
 			hooksecurefunc(frame, 'SetCheckedTexture', checkCheckedTexture)
-			hooksecurefunc(frame, 'SetHighlightTexture', checkHighlightTexture)
+			hooksecurefunc(frame, 'SetNormalTexture', S.ClearNormalTexture)
+			hooksecurefunc(frame, 'SetPushedTexture', S.ClearPushedTexture)
+			hooksecurefunc(frame, 'SetHighlightTexture', S.ClearHighlightTexture)
 		end
 
 		frame.IsSkinned = true
@@ -1385,11 +1502,6 @@ end
 
 do
 	local background = [[Interface\Minimap\UI-Minimap-Background]]
-
-	local function buttonNormalTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetNormalTexture(E.ClearTexture) end end
-	local function buttonPushedTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetPushedTexture(E.ClearTexture) end end
-	local function buttonDisabledTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetDisabledTexture(E.ClearTexture) end end
-	local function buttonHighlightTexture(frame, texture) if texture ~= E.ClearTexture then frame:SetHighlightTexture(E.ClearTexture) end end
 
 	function S:HandleRadioButton(Button)
 		if Button.IsSkinned then return end
@@ -1432,10 +1544,10 @@ do
 		Disabled:SetVertexColor(.3, .3, .3)
 		Disabled:AddMaskTexture(OutsideMask)
 
-		hooksecurefunc(Button, 'SetNormalTexture', buttonNormalTexture)
-		hooksecurefunc(Button, 'SetPushedTexture', buttonPushedTexture)
-		hooksecurefunc(Button, 'SetDisabledTexture', buttonDisabledTexture)
-		hooksecurefunc(Button, 'SetHighlightTexture', buttonHighlightTexture)
+		hooksecurefunc(Button, 'SetNormalTexture', S.ClearNormalTexture)
+		hooksecurefunc(Button, 'SetPushedTexture', S.ClearPushedTexture)
+		hooksecurefunc(Button, 'SetDisabledTexture', S.ClearDisabledTexture)
+		hooksecurefunc(Button, 'SetHighlightTexture', S.ClearHighlightTexture)
 
 		Button.IsSkinned = true
 	end
@@ -1592,8 +1704,6 @@ do
 end
 
 function S:HandleSliderFrame(frame, template, frameLevel)
-	assert(frame, 'doesn\'t exist!')
-
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 
@@ -1631,8 +1741,6 @@ end
 -- ToDO: DF => UpdateME => Credits: NDUI
 local sparkTexture = [[Interface\CastingBar\UI-CastingBar-Spark]]
 function S:HandleStepSlider(frame, minimal)
-	assert(frame, 'doesn\'t exist!')
-
 	frame:StripTextures()
 
 	local slider = frame.Slider
@@ -1956,8 +2064,6 @@ do
 	end
 
 	function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, nameOverride, dontOffset)
-		assert(frame, 'doesn\'t exist!')
-
 		if frame.IsSkinned then return end
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets

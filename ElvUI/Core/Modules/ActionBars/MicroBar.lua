@@ -5,7 +5,6 @@ local _G = _G
 local next = next
 local wipe = wipe
 local gsub = gsub
-local assert = assert
 local unpack = unpack
 local tinsert = tinsert
 local CreateFrame = CreateFrame
@@ -227,8 +226,6 @@ function AB:HandleMicroTextures(button, name)
 end
 
 function AB:HandleMicroButton(button, name)
-	assert(button, 'Invalid micro button name.')
-
 	button:SetTemplate()
 	button:HookScript('OnEnter', onEnter)
 	button:HookScript('OnLeave', onLeave)

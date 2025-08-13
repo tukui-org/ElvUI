@@ -275,11 +275,17 @@ local function SkinMountFrame()
 
 	local MountJournal = _G.MountJournal
 	MountJournal:StripTextures()
-	MountJournal.MountDisplay:StripTextures()
-	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
 
-	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
+	local MountDisplay = MountJournal.MountDisplay
+	if MountDisplay then
+		MountJournal.MountDisplay:StripTextures()
+		MountJournal.MountDisplay.ShadowOverlay:StripTextures()
+
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateLeftButton)
+		S:HandleRotateButton(MountJournal.MountDisplay.ModelScene.RotateRightButton)
+		S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
+	end
 
 	S:HandleButton(_G.MountJournalMountButton)
 	_G.MountJournalMountButton:NudgePoint(0, -3)

@@ -174,6 +174,16 @@ E.SpecName = { -- english locale
 	[73]	= 'Protection',
 }
 
+-- the secure header is different on retail because of evokers
+-- if both are registered on non-retail, it will fire on down and up
+function E:RegisterClicks(frame)
+	if E.Retail then
+		frame:RegisterForClicks('AnyDown', 'AnyUp')
+	else
+		frame:RegisterForClicks('AnyUp')
+	end
+end
+
 function E:GetCurrencyIDFromLink(link)
 	return link and tonumber(strmatch(link, 'currency:(%d+)'))
 end

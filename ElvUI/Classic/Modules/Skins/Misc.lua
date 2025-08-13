@@ -2,17 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
-
-local function ClearSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetTexture()
-	end
-end
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and UnitIsUnit('player', frame.initiator) then
@@ -126,53 +120,8 @@ function S:BlizzardMiscFrames()
 	end
 
 	-- reskin popup buttons
-	for i = 1, 4 do
-		local StaticPopup = _G['StaticPopup'..i]
-		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
-			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
-				StaticPopup.UpdateRecapButtonHooked = true -- we should only hook this once
-				hooksecurefunc(_G['StaticPopup'..i], 'UpdateRecapButton', S.UpdateRecapButton)
-			end
-		end)
-		StaticPopup:StripTextures()
-		StaticPopup:SetTemplate('Transparent')
-
-		for j = 1, 4 do
-			local button = StaticPopup['button'..j]
-			S:HandleButton(button)
-
-			button.Flash:Hide()
-
-			button:CreateShadow(5)
-			button.shadow:SetAlpha(0)
-			button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-
-			local anim1, anim2 = button.PulseAnim:GetAnimations()
-			anim1:SetTarget(button.shadow)
-			anim2:SetTarget(button.shadow)
-		end
-
-		_G['StaticPopup'..i..'EditBox']:OffsetFrameLevel(1)
-		S:HandleEditBox(_G['StaticPopup'..i..'EditBox'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
-		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
-		_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
-		_G['StaticPopup'..i..'ItemFrame']:StyleButton()
-		_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
-		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
-		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
-
-		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
-		if normTex then
-			normTex:SetTexture()
-			hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
-		end
-
-		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
+	for i = 1, E.MAX_STATIC_POPUPS do
+		S:HandleStaticPopup(_G['StaticPopup'..i])
 	end
 
 	_G.OpacityFrame:StripTextures()

@@ -2,12 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleButton(button)
 	if button.IsSkinned then return end
 
-	if button.Border then button.Border:SetAlpha(0) end
+	if button.Border then
+		button.Border:SetAlpha(0)
+	end
+
 	if button.Icon then
 		S:HandleIcon(button.Icon)
 	end
@@ -42,6 +46,17 @@ local function DifficultyPickerFrame_Update(frame)
 	frame:ForEachFrame(SetRewards)
 end
 
+local function UpdatePaginatedButtonDisplay(frame)
+	if not frame.buttons then return end
+
+	for _, button in next, frame.buttons do
+		local icon = button.Icon
+		if icon and not icon.backdrop then
+			S:HandleIcon(icon, true)
+		end
+	end
+end
+
 function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -60,6 +75,8 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	S:HandleDropDownBox(CompanionAbilityListFrame.DelvesCompanionRoleDropdown) -- ??
 	S:HandleNextPrevButton(CompanionAbilityListFrame.DelvesCompanionAbilityListPagingControls.PrevPageButton)
 	S:HandleNextPrevButton(CompanionAbilityListFrame.DelvesCompanionAbilityListPagingControls.NextPageButton)
+
+	hooksecurefunc(CompanionAbilityListFrame, 'UpdatePaginatedButtonDisplay', UpdatePaginatedButtonDisplay)
 end
 
 S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration')
