@@ -93,8 +93,10 @@ local GetContainerItemInfo = C_Container.GetContainerItemInfo
 local GetContainerItemQuestInfo = C_Container.GetContainerItemQuestInfo
 
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
-local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE
-local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
+local IG_BACKPACK_CLOSE = SOUNDKIT.IG_BACKPACK_CLOSE or 863
+local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN or 862
+local IG_CHARACTER_INFO_TAB = SOUNDKIT.IG_CHARACTER_INFO_TAB or 841
+local IG_MAINMENU_OPTION = SOUNDKIT.IG_MAINMENU_OPTION or 852
 local ITEMQUALITY_COMMON = Enum.ItemQuality.Common or Enum.ItemQuality.Standard
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
@@ -1128,7 +1130,13 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 	local keySplit = isWarband and 'warband' or 'bank'
 
 	local data = B:BankTab_PurchasedData(bankType)
-	B:BankTabs_CheckCover(isWarband and f.WarbandTabs or f.BankTabs, data)
+	local tabs = isWarband and f.WarbandTabs or f.BankTabs
+	if tabs then
+		B:BankTabs_CheckCover(tabs, data)
+
+		tabs.cover.text:SetWidth((isWarband and B.db.warbandWidth or B.db.bankWidth) - 40)
+		tabs.cover.text:SetText(isWarband and _G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT or _G.CHARACTER_BANK_TAB_PURCHASE_PROMPT)
+	end
 
 	local combined = B.db[isWarband and 'warbandCombined' or 'bankCombined']
 	local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split[keySplit], B.db.split[isWarband and 'warbandSpacing' or 'bankSpacing'], 0, 0
@@ -1310,16 +1318,8 @@ function B:Layout(isBank)
 	if E.Retail and isBank then
 		if warbandIndex then
 			numContainerRows, bankSplitOffset = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns, warbandIndex, WARBANDBANK_TYPE)
-
-			if f.WarbandTabs then
-				f.WarbandTabs.cover.text:SetWidth(B.db.warbandWidth - 40)
-			end
 		elseif characterIndex then
 			numContainerRows, bankSplitOffset = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns, characterIndex, CHARACTERBANK_TYPE)
-
-			if f.BankTabs then
-				f.BankTabs.cover.text:SetWidth(B.db.bankWidth - 40)
-			end
 		end
 	end
 
@@ -1756,7 +1756,7 @@ function B:ConstructCoverButton(cover, name, text, template)
 end
 
 function B:ClickSound()
-	PlaySound(852) -- SOUNDKIT.IG_MAINMENU_OPTION
+	PlaySound(IG_MAINMENU_OPTION)
 end
 
 function B:GetPurchaseTabButton()
@@ -1790,7 +1790,6 @@ function B:ConstructContainerCover(f)
 	cover.text:FontTemplate()
 	cover.text:Point('BOTTOM', cover.purchaseButton, 'TOP', 0, 10)
 	cover.text:SetWordWrap(true)
-	cover.text:SetText(_G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT)
 
 	return cover
 end
@@ -2939,7 +2938,8 @@ end
 function B:SelectBankTab(f, bagID)
 	if B.BankTab == bagID then return end
 
-	PlaySound(841) -- IG_CHARACTER_INFO_TAB
+	PlaySound(IG_CHARACTER_INFO_TAB)
+
 	B:ShowBankTab(f, bagID)
 	B:SetBankTabs(f)
 end
