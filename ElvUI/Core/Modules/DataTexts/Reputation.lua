@@ -49,7 +49,7 @@ local function OnEvent(self)
 		reaction = 1
 	end
 
-	local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+	local info = not E.Classic and factionID and GetFriendshipReputation(factionID)
 	if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
 		standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
@@ -123,7 +123,7 @@ local function OnEnter()
 		DT.tooltip:AddLine(name)
 		DT.tooltip:AddLine(' ')
 
-		local info = E.Retail and factionID and GetFriendshipReputation(factionID)
+		local info = not E.Classic and factionID and GetFriendshipReputation(factionID)
 		if info and info.friendshipFactionID and info.friendshipFactionID > 0 then
 			standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 		end
