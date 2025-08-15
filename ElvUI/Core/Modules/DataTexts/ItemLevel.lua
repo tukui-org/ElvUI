@@ -15,12 +15,12 @@ local STAT_AVERAGE_ITEM_LEVEL = STAT_AVERAGE_ITEM_LEVEL
 local LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT = LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT
 local NOT_APPLICABLE = NOT_APPLICABLE
 
-local sameString = '%s%0.2f|r'
-local bothString = '%s%0.2f|r / %s%0.2f|r'
+local sameString = '%s: %s%0.2f|r'
+local bothString = '%s: %s%0.2f|r / %s%0.2f|r'
 local iconString = '|T%s:13:15:0:0:50:50:4:46:4:46|t %s'
 local slotID = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }
 local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
-local displayString, db = ''
+local db
 
 local function OnEvent(self)
 	if E.Retail or E.Mists then
@@ -33,10 +33,8 @@ local function OnEvent(self)
 		end
 
 		local hex = db.rarityColor and E:RGBToHex(r, g, b) or '|cFFFFFFFF'
-		local label = db.NoLabel and '' or format('%s: ', db.Label == '' and ITEM_LEVEL_ABBR or db.Label)
-		displayString = strjoin('', label, (db.onlyEquipped or avg == avgEquipped) and sameString or bothString)
 
-		self.text:SetFormattedText(displayString, hex, avgEquipped or 0, hex, avg or 0)
+		self.text:SetFormattedText((db.onlyEquipped or avg == avgEquipped) and sameString or bothString, ITEM_LEVEL_ABBR, hex, avgEquipped or 0, hex, avg or 0)
 	else
 		self.text:SetText(NOT_APPLICABLE)
 	end

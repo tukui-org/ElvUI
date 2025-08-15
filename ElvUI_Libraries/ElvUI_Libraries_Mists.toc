@@ -1,7 +1,7 @@
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bLibraries|r
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
-## Version: @project-version@
+## Version: v13.97
 ## Interface: 50500
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
