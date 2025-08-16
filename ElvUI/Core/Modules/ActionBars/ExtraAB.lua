@@ -139,12 +139,13 @@ function AB:ExtraButtons_UpdateScale()
 		AB:ExtraButtons_ZoneScale()
 	end
 
-	if _G.ExtraActionBarFrame then
+	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	if ExtraActionBarFrame then
 		local scale = E.db.actionbar.extraActionButton.scale
-		_G.ExtraActionBarFrame:SetScale(scale * E.uiscale)
-		_G.ExtraActionBarFrame:SetIgnoreParentScale(true)
+		ExtraActionBarFrame:SetScale(scale * E.uiscale)
+		ExtraActionBarFrame:SetIgnoreParentScale(true)
 
-		local width, height = _G.ExtraActionBarFrame.button:GetSize()
+		local width, height = ExtraActionBarFrame.button:GetSize()
 		ExtraActionBarHolder:SetSize(width * scale, height * scale)
 	end
 end
@@ -204,7 +205,12 @@ function AB:ExtraButtons_SetupBoss()
 
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-	ExtraActionBarFrame.ignoreInLayout = true
+
+	if E.Retail then
+		ExtraActionBarFrame.ignoreInLayout = true
+	else
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
+	end
 end
 
 function AB:ExtraButtons_SetupZone()
@@ -234,19 +240,26 @@ end
 
 function AB:ExtraButtons_SetupAbility()
 	local ExtraAbilityContainer = _G.ExtraAbilityContainer
-	if not ExtraAbilityContainer then return end
+	if ExtraAbilityContainer then
+		if not extraHooked[ExtraAbilityContainer] then
+			-- try to shutdown the container movement and taints
+			ExtraAbilityContainer:KillEditMode()
+			ExtraAbilityContainer:SetScript('OnShow', nil)
+			ExtraAbilityContainer:SetScript('OnUpdate', nil)
+			ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
+			ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
 
-	if not extraHooked[ExtraAbilityContainer] then
-		-- try to shutdown the container movement and taints
-		ExtraAbilityContainer:KillEditMode()
-		ExtraAbilityContainer:SetScript('OnShow', nil)
-		ExtraAbilityContainer:SetScript('OnUpdate', nil)
-		ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
-		ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
+			hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
 
-		hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
-
-		extraHooked[ExtraAbilityContainer] = true
+			extraHooked[ExtraAbilityContainer] = true
+		end
+	else
+		for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
+			local button = _G['ExtraActionButton'..i]
+			if button then
+				AB:ExtraButtons_BossStyle(button)
+			end
+		end
 	end
 end
 
