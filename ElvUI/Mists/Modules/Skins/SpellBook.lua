@@ -234,7 +234,7 @@ function S:SpellBookFrame()
 			local button = buttons[i]
 			if not button then return end
 
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 				button:StyleButton()
@@ -257,7 +257,7 @@ function S:SpellBookFrame()
 					end)
 				end
 
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 
 			if button.FutureTexture:IsShown() then
@@ -279,7 +279,7 @@ function S:SpellBookFrame()
 		for i = 1, #tabs do
 			local tab = tabs[i]
 
-			if tab and not tab.isSkinned then
+			if tab and not tab.IsSkinned then
 				tab:GetRegions():Hide()
 				tab:SetTemplate()
 				tab:StyleButton(nil, true)
@@ -292,7 +292,7 @@ function S:SpellBookFrame()
 				normal:SetInside()
 				normal:SetTexCoord(unpack(E.TexCoords))
 
-				tab.isSkinned = true
+				tab.IsSkinned = true
 			end
 		end
 	end)
