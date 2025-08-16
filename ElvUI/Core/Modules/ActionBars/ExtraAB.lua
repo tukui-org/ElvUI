@@ -15,8 +15,11 @@ local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
 
 local extraBtns, extraHooked, ExtraActionBarHolder, ZoneAbilityHolder = {}, {}
 
-function AB:ExtraButtons_BossStyle(frame)
-	local button = frame.button
+function AB:ExtraButtons_AddFrame(frame)
+	AB:ExtraButtons_BossStyle(frame.button)
+end
+
+function AB:ExtraButtons_BossStyle(button)
 	if button and not button.IsSkinned then
 		AB:StyleButton(button, true) -- registers cooldown too
 
@@ -249,7 +252,7 @@ function AB:ExtraButtons_SetupAbility()
 			ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
 			ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
 
-			hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
+			hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_AddFrame)
 
 			extraHooked[ExtraAbilityContainer] = true
 		end
@@ -257,6 +260,8 @@ function AB:ExtraButtons_SetupAbility()
 		for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
 			local button = _G['ExtraActionButton'..i]
 			if button then
+				button.commandName = 'EXTRAACTIONBUTTON'..i -- to support KB like retail
+
 				AB:ExtraButtons_BossStyle(button)
 			end
 		end
