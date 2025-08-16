@@ -455,17 +455,25 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB:UpdateButtonSettings()
 		AB.NeedsUpdateButtonSettings = nil
 	end
+
 	if AB.NeedsUpdateMicroBarVisibility then
 		AB:UpdateMicroBarVisibility()
 		AB.NeedsUpdateMicroBarVisibility = nil
 	end
+
 	if AB.NeedsAdjustMaxStanceButtons then
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
 		AB.NeedsAdjustMaxStanceButtons = nil
 	end
-	if AB.NeedsReparentExtraButtons then
+
+	if AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
-		AB.NeedsReparentExtraButtons = nil
+		AB.NeedsExtraButtonsReparent = nil
+	end
+
+	if AB.NeedsExtraButtonsRescale then
+		AB:ExtraButtons_UpdateScale()
+		AB.NeedsExtraButtonsRescale = nil
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')

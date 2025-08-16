@@ -138,6 +138,14 @@ end
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
+	if InCombatLockdown() then
+		AB.NeedsExtraButtonsRescale = true
+
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+
+		return
+	end
+
 	if _G.ZoneAbilityFrame then
 		AB:ExtraButtons_ZoneScale()
 	end
@@ -167,20 +175,20 @@ function AB:ExtraButtons_ZoneScale()
 end
 
 function AB:ExtraButtons_BossParent(parent)
-	if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+	if parent ~= ExtraActionBarHolder and not AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
 	end
 end
 
 function AB:ExtraButtons_ZoneParent(parent)
-	if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
+	if parent ~= ZoneAbilityHolder and not AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
 	end
 end
 
 function AB:ExtraButtons_Reparent()
 	if InCombatLockdown() then
-		AB.NeedsReparentExtraButtons = true
+		AB.NeedsExtraButtonsReparent = true
 
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 
