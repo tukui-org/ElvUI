@@ -20,32 +20,32 @@ function AB:ExtraButtons_AddFrame(frame)
 end
 
 function AB:ExtraButtons_BossStyle(button)
-	if button and not button.IsSkinned then
-		AB:StyleButton(button, true) -- registers cooldown too
+	if not button or button.IsSkinned then return end
 
-		-- the cooldown is already fired sometimes?
-		if ActionButton_UpdateCooldown then
-			ActionButton_UpdateCooldown(button)
-		end
+	AB:StyleButton(button, true) -- registers cooldown too
 
-		button.icon:SetDrawLayer('ARTWORK', -1)
-		button:SetTemplate()
-
-		button.holder = ExtraActionBarHolder
-		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-		button.HotKey:SetText(GetBindingKey(button.commandName))
-
-		AB:FixKeybindText(button)
-		AB:FixKeybindColor(button)
-
-		AB:ExtraButtons_BossAlpha(button)
-
-		tinsert(extraBtns, button)
-
-		button.IsSkinned = true
+	-- the cooldown is already fired sometimes?
+	if ActionButton_UpdateCooldown then
+		ActionButton_UpdateCooldown(button)
 	end
+
+	button.icon:SetDrawLayer('ARTWORK', -1)
+	button:SetTemplate()
+
+	button.holder = ExtraActionBarHolder
+	button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+	button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+	button.HotKey:SetText(GetBindingKey(button.commandName))
+
+	AB:FixKeybindText(button)
+	AB:FixKeybindColor(button)
+
+	AB:ExtraButtons_BossAlpha(button)
+
+	tinsert(extraBtns, button)
+
+	button.IsSkinned = true
 end
 
 function AB:ExtraButtons_ZoneStyle()
