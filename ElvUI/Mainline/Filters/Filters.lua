@@ -986,7 +986,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1234324] = List(), -- Photon Blast
 		[1228214] = List(), -- Astral Harvest
 		[1243901] = List(), -- Void Harvest
-		[1240705] = List(6), -- Astral Burn
 	-- The Soul Hunters
 		[1227847] = List(), -- The Hunt
 		[1241946] = List(), -- Frailty
