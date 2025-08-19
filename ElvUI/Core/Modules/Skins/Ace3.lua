@@ -392,46 +392,68 @@ end
 
 function S:Ace3_RefreshTree(scrollToSelection)
 	self.old_RefreshTree(self, scrollToSelection)
-	if not self.tree then return end
 
-	self.border:ClearAllPoints()
-	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
-		self.border:Point('TOPLEFT', self.treeframe, 'TOPRIGHT', 1, 13)
-		self.border:Point('BOTTOMRIGHT', self.frame, 'BOTTOMRIGHT', 6, 0)
-		self.treeframe:Point('TOPLEFT', 0, 0)
-		self.treeframe:Hide()
-		return
-	else
-		self.border:Point('TOPLEFT', self.treeframe, 'TOPRIGHT')
-		self.border:Point('BOTTOMRIGHT', self.frame)
-		self.treeframe:Point('TOPLEFT', 0, -2)
-		self.treeframe:Show()
+	local tree = self.tree
+	if not tree then return end
+
+	local border = self.border
+	local treeframe = self.treeframe
+	if border and treeframe then
+		border:ClearAllPoints()
+
+		local userdata = self.userdata
+		local dataoption = userdata and userdata.option
+		if dataoption and dataoption.childGroups == 'ElvUI_HiddenTree' then
+			border:Point('TOPLEFT', treeframe, 'TOPRIGHT', 1, 13)
+			border:Point('BOTTOMRIGHT', self.frame, 'BOTTOMRIGHT', 6, 0)
+
+			treeframe:Point('TOPLEFT', 0, 0)
+
+			if treeframe:IsShown() then
+				treeframe:Hide()
+			end
+
+			return -- dont proceed
+		else
+			border:Point('TOPLEFT', treeframe, 'TOPRIGHT')
+			border:Point('BOTTOMRIGHT', self.frame)
+
+			treeframe:Point('TOPLEFT', 0, -2)
+
+			if not treeframe:IsShown() then
+				treeframe:Show()
+			end
+		end
 	end
 
 	if not E.private.skins.ace3Enable then return end
 
-	local status = self.status or self.localstatus
-	local groupstatus = status.groups
 	local lines = self.lines
 	local buttons = self.buttons
-	local offset = status.scrollvalue
+	if lines and buttons then
+		local status = self.status or self.localstatus
+		local offset = status.scrollvalue
+		local groupstatus = status.groups
 
-	for i = offset + 1, #lines do
-		local button = buttons[i - offset]
-		if button then
-			if button.highlight then
-				button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+		for i = offset + 1, #lines do
+			local button = buttons[i - offset]
+			if button then
+				if button.highlight then
+					button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+				end
+
+				local line = lines[i]
+				local unique = line and line.uniquevalue
+				if unique and groupstatus[unique] then
+					button.toggle:SetNormalTexture(E.Media.Textures.Minus)
+					button.toggle:SetPushedTexture(E.Media.Textures.Minus)
+				else
+					button.toggle:SetNormalTexture(E.Media.Textures.Plus)
+					button.toggle:SetPushedTexture(E.Media.Textures.Plus)
+				end
+
+				button.toggle:SetHighlightTexture(E.ClearTexture)
 			end
-
-			if groupstatus[lines[i].uniquevalue] then
-				button.toggle:SetNormalTexture(E.Media.Textures.Minus)
-				button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-			else
-				button.toggle:SetNormalTexture(E.Media.Textures.Plus)
-				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-			end
-
-			button.toggle:SetHighlightTexture(E.ClearTexture)
 		end
 	end
 end
@@ -545,6 +567,7 @@ function S:Ace3_MetaIndex(k, v)
 		S.Ace3_StyleTooltip(v)
 	elseif k == 'popup' then
 		rawset(self, k, v)
+
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)
 	elseif k == 'RegisterAsContainer' then
 		rawset(self, k, function(s, w, ...)
