@@ -85,21 +85,17 @@ local function ElementDisable(self)
 end
 
 local function Visibility(self)
-	local shouldEnable
-
-	local aquatic = IsSpellInSpellBook(AQUATIC_FORM, nil, true) -- lower levels wont have this yet
-	local primary, secondary = aquatic and 5 or 4, aquatic and 6 or 5
-
-	local form = GetShapeshiftForm()
-	local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true)
-	if (form == 0) or (not treant and form == primary) or (treant and (form == primary or form == secondary)) then
-		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
-	end
-
-	if shouldEnable then
-		ElementEnable(self)
-	else
+	if UnitHasVehicleUI('player') or GetSpecialization() ~= SPEC_DRUID_BALANCE then
 		ElementDisable(self)
+	else
+		local aquatic = IsSpellInSpellBook(AQUATIC_FORM, nil, true) -- lower levels wont have this yet
+		local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true) -- check for tree form glyph
+		local primary, secondary, form = aquatic and 5 or 4, aquatic and 6 or 5, GetShapeshiftForm()
+		if (form == 0) or (not treant and form == primary) or (treant and (form == primary or form == secondary)) then
+			ElementEnable(self)
+		else
+			ElementDisable(self)
+		end
 	end
 end
 
