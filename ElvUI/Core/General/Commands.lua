@@ -7,13 +7,12 @@ local type, lower, wipe, next, print = type, strlower, wipe, next, print
 local ipairs, format, tinsert = ipairs, format, tinsert
 local strmatch, ceil = strmatch, math.ceil
 
-local ReloadUI = ReloadUI
-
 local DisableAddOn = C_AddOns.DisableAddOn
 local EnableAddOn = C_AddOns.EnableAddOn
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 local GetNumAddOns = C_AddOns.GetNumAddOns
 
+local ReloadUI = ReloadUI
 local PlayerClubRequestStatusNone = Enum.PlayerClubRequestStatus.None
 local RequestMembershipToClub = C_ClubFinder.RequestMembershipToClub
 local GetPlayerClubApplicationStatus = C_ClubFinder.GetPlayerClubApplicationStatus

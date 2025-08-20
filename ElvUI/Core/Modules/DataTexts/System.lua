@@ -106,12 +106,13 @@ end
 local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
 local function OnEnter(_, slow)
 	if not db.showTooltip then return end
+	local isShiftDown = IsShiftKeyDown()
 
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 
 	local fps = E.FPS
-	if IsShiftKeyDown() and fps.rate then
+	if isShiftDown and fps.rate then
 		DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
 		DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
 		DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
@@ -146,7 +147,7 @@ local function OnEnter(_, slow)
 	wipe(infoDisplay)
 
 	local count, totalMEM, totalCPU = 0, 0, 0
-	local showByCPU = cpuProfiling and not IsShiftKeyDown()
+	local showByCPU = cpuProfiling and not isShiftDown
 	for _, data in ipairs(infoTable) do
 		local i = data.index
 		if IsAddOnLoaded(i) then
