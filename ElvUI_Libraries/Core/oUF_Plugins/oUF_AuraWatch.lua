@@ -156,7 +156,7 @@ local function preOnlyMissing(element)
 	wipe(missing)
 
 	for spellID, setting in pairs(element.watched) do
-		if setting.onlyShowMissing then
+		if setting.enabled and setting.onlyShowMissing then
 			missing[spellID] = setting
 		end
 	end
@@ -165,21 +165,18 @@ end
 local function postOnlyMissing(element, unit, offset)
 	local visible = 0
 	for spellID, setting in pairs(missing) do
-		-- Only show missing auras if they are enabled
-		if setting.enabled then
-			local button, position = getIcon(element, visible, offset)
+		local button, position = getIcon(element, visible, offset)
 
-			button.spellID = spellID
+		button.spellID = spellID
 
-			local icon = GetSpellTexture(spellID)
-			handleElements(element, unit, button, setting, icon)
+		local icon = GetSpellTexture(spellID)
+		handleElements(element, unit, button, setting, icon)
 
-			if element.PostUpdateIcon then
-				element:PostUpdateIcon(unit, button, nil, position)
-			end
-
-			visible = visible + 1
+		if element.PostUpdateIcon then
+			element:PostUpdateIcon(unit, button, nil, position)
 		end
+
+		visible = visible + 1
 	end
 
 	return visible
