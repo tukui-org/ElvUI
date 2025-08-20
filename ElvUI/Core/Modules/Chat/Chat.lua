@@ -3791,7 +3791,7 @@ function CH:Initialize()
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
 	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
-	CH:BuildCopyChatFrame() -- Currently use this to display profiler information
+	CH:BuildCopyChatFrame()
 
 	if not E.private.chat.enable then
 		-- if the chat module is off we still need to spawn the dts for the panels

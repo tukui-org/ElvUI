@@ -4,7 +4,6 @@ local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = 'devel'
 
 local oUF = ns.oUF
-local Profiler = oUF.Profiler.func
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
@@ -17,8 +16,6 @@ local callback, objects, headers = {}, {}, {}
 
 local elements = {}
 local activeElements = {}
-
-oUF.elements = elements -- for the Profiler
 
 -- ElvUI
 local _G = _G
@@ -915,11 +912,11 @@ function oUF:AddElement(name, update, enable, disable)
 		return error('Element [%s] is already registered.', name)
 	end
 
-	local module = Profiler({})
-	module.update = update
-	module.enable = enable
-	module.disable = disable
-	elements[name] = module
+	elements[name] = {
+		update = update,
+		enable = enable,
+		disable = disable
+	}
 end
 
 function oUF:GetAuraData(unitToken, index, filter)

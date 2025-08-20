@@ -1,6 +1,5 @@
 local _, ns = ...
 local oUF = ns.oUF
-local Profiler = oUF.Profiler.func
 
 -- Event Pooler by Simpy
 
@@ -14,7 +13,7 @@ local GetTime = GetTime
 
 local object = CreateFrame('Frame')
 local pooler = { frame = object }
-oUF.Pooler = Profiler(pooler)
+oUF.Pooler = pooler
 
 object.tracked = {}
 object.events = {}

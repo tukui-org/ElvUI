@@ -110,15 +110,12 @@ local function OnEnter(_, slow)
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 
-	local isShiftDown = IsShiftKeyDown()
-	if isShiftDown then
-		local fps = E.Profiler.fps._all
-		if fps.rate then
-			DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddLine(' ')
-		end
+	local fps = E.FPS
+	if IsShiftKeyDown() and fps.rate then
+		DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddLine(' ')
 	end
 
 	local _, _, homePing, worldPing = GetNetStats()
@@ -287,7 +284,7 @@ local function OnUpdate(self, elapsed)
 
 		local _, _, homePing, worldPing = GetNetStats()
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
-		local fps = E.Profiler.fps._all.rate or 0
+		local fps = E.FPS.rate or 0
 
 		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColor(fps), fps, statusColor(nil, latency), latency)
 
