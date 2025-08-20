@@ -15,6 +15,7 @@ local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecializ
 local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local TREANT_GLYPH = 114282
+local AQUATIC_FORM = 1066
 
 local function Update(self, event, unit, powerType)
 	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'BALANCE')) then return end
@@ -86,13 +87,16 @@ end
 local function Visibility(self)
 	local shouldEnable
 
+	local aquatic = IsSpellInSpellBook(AQUATIC_FORM, nil, true) -- lower levels wont have this yet
+	local primary, secondary = aquatic and 5 or 4, aquatic and 6 or 5
+
 	local form = GetShapeshiftForm()
 	local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true)
-	if (form == 0) or (not treant and form == 5) or (treant and (form == 5 or form == 6)) then
+	if (form == 0) or (not treant and form == primary) or (treant and (form == primary or form == secondary)) then
 		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
 	end
 
-	if(shouldEnable) then
+	if shouldEnable then
 		ElementEnable(self)
 	else
 		ElementDisable(self)
