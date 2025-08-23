@@ -122,6 +122,7 @@ local function TryAdded(frame, unit, aura)
 	end
 end
 
+local empty = {}
 local function TryUpdated(frame, unit, auraInstanceID)
 	local aura = auraInstanceInfo[auraInstanceID]
 
@@ -131,7 +132,7 @@ local function TryUpdated(frame, unit, auraInstanceID)
 		auraInstanceInfo[auraInstanceID] = aura -- add it to the list
 	end
 
-	return aura
+	return aura or empty
 end
 
 local function TryRemove(frame, unit, auraInstanceID)
