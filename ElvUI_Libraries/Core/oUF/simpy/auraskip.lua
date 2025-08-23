@@ -122,22 +122,22 @@ local function TryAdded(frame, unit, aura)
 	end
 end
 
-local function TryUpdated(frame, unit, instanceID)
-	local aura = auraInstanceInfo[instanceID]
+local function TryUpdated(frame, unit, auraInstanceID)
+	local aura = auraInstanceInfo[auraInstanceID]
 
 	if not aura then -- must be during load in
-		aura = GetAuraDataByAuraInstanceID(unit, instanceID) -- get the preexisting
+		aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get the preexisting
 
-		auraInstanceInfo[instanceID] = aura -- add it to the list
+		auraInstanceInfo[auraInstanceID] = aura -- add it to the list
 	end
 
 	return aura
 end
 
-local function TryRemove(frame, unit, instanceID)
-	local aura = auraInstanceInfo[instanceID]
+local function TryRemove(frame, unit, auraInstanceID)
+	local aura = auraInstanceInfo[auraInstanceID]
 
-	auraInstanceInfo[instanceID] = nil -- remove it
+	auraInstanceInfo[auraInstanceID] = nil -- remove it
 
 	return aura or true
 end
