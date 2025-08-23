@@ -1002,16 +1002,12 @@ do
 	end
 end
 
-function E:XPIsUserDisabled()
-	return E.Retail and IsXPUserDisabled()
-end
-
 function E:XPIsTrialMax()
-	return E.Retail and (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+	return (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
 function E:XPIsLevelMax()
-	return IsLevelAtEffectiveMaxLevel(E.mylevel) or E:XPIsUserDisabled() or E:XPIsTrialMax()
+	return IsLevelAtEffectiveMaxLevel(E.mylevel) or IsXPUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)
