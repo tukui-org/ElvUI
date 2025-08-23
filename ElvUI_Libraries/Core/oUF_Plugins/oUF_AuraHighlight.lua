@@ -61,7 +61,7 @@ local function GetAuraType(unit, check, list)
 end
 
 local function Update(self, event, unit, updateInfo)
-	if not unit or self.unit ~= unit then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
@@ -103,7 +103,7 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		oUF:RegisterEvent(self, 'UNIT_AURA', Update)
+		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
 	end
@@ -112,7 +112,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()

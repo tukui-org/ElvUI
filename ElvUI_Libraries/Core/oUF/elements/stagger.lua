@@ -169,11 +169,11 @@ local function Visibility(self, event, unit)
 
 	if useClassbar and isShown then
 		element:Hide()
-		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
+		self:UnregisterEvent('UNIT_AURA', Path)
 		stateChanged = true
 	elseif not useClassbar and not isShown then
 		element:Show()
-		oUF:RegisterEvent(self, 'UNIT_AURA', Path)
+		self:RegisterEvent('UNIT_AURA', Path)
 		stateChanged = true
 	end
 
@@ -208,7 +208,7 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
+		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
@@ -228,8 +228,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'UNIT_AURA', Path)
-		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+		self:UnregisterEvent('UNIT_AURA', Path)
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end

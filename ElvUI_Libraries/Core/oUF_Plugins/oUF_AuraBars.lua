@@ -251,7 +251,7 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	if not unit or self.unit ~= unit then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local element = self.AuraBars
 	if(element) then
@@ -303,7 +303,7 @@ local function Enable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -340,7 +340,7 @@ local function Disable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
 
 		element:Hide()
 	end

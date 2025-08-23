@@ -212,10 +212,10 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_START', Path)
-		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
-		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
-		oUF:RegisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		self:RegisterEvent('UNIT_SPELLCAST_START', Path)
+		self:RegisterEvent('UNIT_SPELLCAST_STOP', Path)
+		self:RegisterEvent('UNIT_SPELLCAST_FAILED', Path)
+		self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 
@@ -246,10 +246,10 @@ local function Disable(self)
 			element.altBar:Hide()
 		end
 
-		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_START', Path)
-		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_STOP', Path)
-		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_FAILED', Path)
-		oUF:UnregisterEvent(self, 'UNIT_SPELLCAST_SUCCEEDED', Path)
+		self:UnregisterEvent('UNIT_SPELLCAST_START', Path)
+		self:UnregisterEvent('UNIT_SPELLCAST_STOP', Path)
+		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', Path)
+		self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', Path)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 	end

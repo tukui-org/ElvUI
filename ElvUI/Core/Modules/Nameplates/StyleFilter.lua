@@ -1650,8 +1650,6 @@ do -- oUF style filter inject watch functions without actually registering any e
 	object.tracked = {}
 	object.times = {}
 
-	ElvUF.Pooler.StyleFilter = object
-
 	function NP:StyleFilterPoolerRun()
 		for frame in pairs(object.tracked) do
 			NP:StyleFilterUpdate(frame, 'PoolerUpdate')

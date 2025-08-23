@@ -170,6 +170,10 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
+	if event ~= 'UNIT_AURA' or not updateInfo then
+		return false -- this is from some other thing
+	end
+
 	if updateInfo.isFullUpdate then
 		return false -- we doin the thing
 	end

@@ -289,13 +289,13 @@ local function SetColorDisconnected(element, state, isForced)
 	if(element.colorDisconnected ~= state or isForced) then
 		element.colorDisconnected = state
 		if(state) then
-			oUF:RegisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
-			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
-			oUF:RegisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
+			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_CONNECTION', ColorPath)
-			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_ENABLE', ColorPath)
-			oUF:UnregisterEvent(element.__owner, 'PARTY_MEMBER_DISABLE', ColorPath)
+			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
+			element.__owner:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 	end
 end
@@ -311,9 +311,9 @@ local function SetColorSelection(element, state, isForced)
 	if(element.colorSelection ~= state or isForced) then
 		element.colorSelection = state
 		if(state) then
-			oUF:RegisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
+			element.__owner:RegisterEvent('UNIT_FLAGS', ColorPath)
 		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_FLAGS', ColorPath)
+			element.__owner:UnregisterEvent('UNIT_FLAGS', ColorPath)
 		end
 	end
 end
@@ -329,9 +329,9 @@ local function SetColorTapping(element, state, isForced)
 	if(element.colorTapping ~= state or isForced) then
 		element.colorTapping = state
 		if(state) then
-			oUF:RegisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
+			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
 		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_FACTION', ColorPath)
+			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
 		end
 	end
 end
@@ -347,9 +347,9 @@ local function SetColorThreat(element, state, isForced)
 	if(element.colorThreat ~= state or isForced) then
 		element.colorThreat = state
 		if(state) then
-			oUF:RegisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
+			element.__owner:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		else
-			oUF:UnregisterEvent(element.__owner, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
+			element.__owner:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 	end
 end
@@ -365,19 +365,19 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 
 		if(element.colorDisconnected) then
-			oUF:RegisterEvent(self, 'UNIT_CONNECTION', ColorPath)
+			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
 		end
 
 		if(element.colorSelection) then
-			oUF:RegisterEvent(self, 'UNIT_FLAGS', ColorPath)
+			self:RegisterEvent('UNIT_FLAGS', ColorPath)
 		end
 
 		if(element.colorTapping) then
-			oUF:RegisterEvent(self, 'UNIT_FACTION', ColorPath)
+			self:RegisterEvent('UNIT_FACTION', ColorPath)
 		end
 
 		if(element.colorThreat) then
-			oUF:RegisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
+			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
@@ -405,10 +405,10 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'UNIT_CONNECTION', ColorPath)
-		oUF:UnregisterEvent(self, 'UNIT_FACTION', ColorPath)
-		oUF:UnregisterEvent(self, 'UNIT_FLAGS', ColorPath)
-		oUF:UnregisterEvent(self, 'UNIT_THREAT_LIST_UPDATE', ColorPath)
+		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
+		self:UnregisterEvent('UNIT_FACTION', ColorPath)
+		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
+		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)

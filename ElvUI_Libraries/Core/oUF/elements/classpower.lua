@@ -306,13 +306,13 @@ do
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
-			oUF:RegisterEvent(self, 'UNIT_POWER_POINT_CHARGE', Path)
+			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		else
-			oUF:RegisterEvent(self, 'PLAYER_TARGET_CHANGED', VisibilityPath, true)
+			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
 		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			oUF:RegisterEvent(self, 'UNIT_AURA', Path)
+			self:RegisterEvent('UNIT_AURA', Path)
 		end
 
 		self.ClassPower.__isEnabled = true
@@ -329,13 +329,13 @@ do
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		if oUF.isRetail then
-			oUF:UnregisterEvent(self, 'UNIT_POWER_POINT_CHARGE', Path)
+			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 		else
-			oUF:UnregisterEvent(self, 'PLAYER_TARGET_CHANGED', VisibilityPath)
+			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
 		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			oUF:UnregisterEvent(self, 'UNIT_AURA')
+			self:UnregisterEvent('UNIT_AURA')
 		end
 
 		local element = self.ClassPower
@@ -383,7 +383,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		oUF:RegisterEvent(self, 'SPELLS_CHANGED', VisibilityPath, true)
+		self:RegisterEvent('SPELLS_CHANGED', VisibilityPath, true)
 
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
@@ -408,7 +408,7 @@ local function Disable(self)
 		ClassPowerDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		oUF:UnregisterEvent(self, 'SPELLS_CHANGED', VisibilityPath)
+		self:UnregisterEvent('SPELLS_CHANGED', VisibilityPath)
 	end
 end
 
