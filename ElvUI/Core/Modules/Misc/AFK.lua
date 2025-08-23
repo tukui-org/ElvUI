@@ -54,7 +54,8 @@ afkAnimations["lean"] = {
 	facing = 5.8,
 	wait = 10,
 	offsetX = -100,
-	offsetY = 220
+	offsetY = 220,
+	duration = 600
 }
 afkAnimations["dance"] = {
 	id = 69,
@@ -62,7 +63,8 @@ afkAnimations["dance"] = {
 	facing = 6,
 	wait = 30,
 	offsetX = -200,
-	offsetY = 220
+	offsetY = 220,
+	duration = 300
 }
 
 if IsMacClient() then
@@ -282,7 +284,7 @@ function AFK:LoopAnimations()
 		model:SetAnimation(afkAnimations[afkAnimation].id)
 		model.curAnimation = afkAnimations[afkAnimation].key
 		model.startTime = GetTime()
-		model.duration = 300
+		model.duration = afkAnimations[afkAnimation].duration
 		model.isIdle = false
 		model.idleDuration = 120
 	end
