@@ -9,10 +9,10 @@ local IsShiftKeyDown = IsShiftKeyDown
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local SetLootSpecialization = SetLootSpecialization
-local SetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.SetActiveSpecGroup
-local GetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.GetActiveSpecGroup
-local GetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization
-local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo
+local SetActiveSpecGroup = C_SpecializationInfo.SetActiveSpecGroup
+local GetActiveSpecGroup = C_SpecializationInfo.GetActiveSpecGroup
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION

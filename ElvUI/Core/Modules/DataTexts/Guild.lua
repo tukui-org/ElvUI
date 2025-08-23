@@ -26,6 +26,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 local GUILD_MOTD = GUILD_MOTD
 local GUILD = GUILD
 
+local GetGuildFactionData = C_Reputation.GetGuildFactionData
 local GetAndSortMemberInfo = CommunitiesUtil.GetAndSortMemberInfo
 local GetSubscribedClubs = C_Club.GetSubscribedClubs
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
@@ -52,12 +53,6 @@ local moreMembersOnlineString = strjoin('', '+%d ', _G.FRIENDS_LIST_ONLINE, '...
 local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local clubTable, guildTable, guildMotD = {}, {}, ''
-
-local factionTemp = {}
-local GetGuildFactionInfo = (C_Reputation and C_Reputation.GetGuildFactionData) or function()
-	factionTemp.name, factionTemp.description, factionTemp.reaction, factionTemp.currentReactionThreshold, factionTemp.nextReactionThreshold, factionTemp.currentStanding = _G.GetGuildFactionInfo()
-	return factionTemp
-end
 
 local function sortByRank(a, b)
 	if a and b then
@@ -261,7 +256,7 @@ local function OnEnter(_, _, noUpdate)
 	end
 
 	if E.Retail then
-		local info = GetGuildFactionInfo()
+		local info = GetGuildFactionData()
 		if info and info.reaction ~= 8 then -- Not Max Rep
 			local nextReactionThreshold = info.nextReactionThreshold - info.currentReactionThreshold
 			local currentStanding = info.currentStanding - info.currentReactionThreshold

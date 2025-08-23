@@ -87,13 +87,13 @@ do -- Expansions
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
-	local season = C_Seasons and C_Seasons.GetActiveSeason()
+	local season = C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
 	E.ClassicSOD = season == 2 -- Season of Discovery
 	E.ClassicAnniv = season == 11 -- Anniversary
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
 
-	local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+	local IsHardcoreActive = C_GameRules.IsHardcoreActive
 	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
 
 	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled

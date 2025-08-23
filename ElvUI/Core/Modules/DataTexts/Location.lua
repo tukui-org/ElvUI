@@ -5,7 +5,7 @@ local _G = _G
 local IsInInstance = IsInInstance
 local ToggleFrame = ToggleFrame
 
-local GetZonePVPInfo = (C_PvP and C_PvP.GetZonePVPInfo) or GetZonePVPInfo
+local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
 local NOT_APPLICABLE = NOT_APPLICABLE
 
 local mapInfo = E.MapInfo

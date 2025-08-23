@@ -11,23 +11,6 @@ local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
 local ACCEPT = ACCEPT
 
-local GetSpellInfo
-do	-- backwards compatibility for GetSpellInfo
-	local C_Spell_GetSpellInfo = not _G.GetSpellInfo and C_Spell.GetSpellInfo
-	GetSpellInfo = function(spellID)
-		if not spellID then return end
-
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return _G.GetSpellInfo(spellID)
-		end
-	end
-end
-
 --[[-----------------------------------------------------------------------------
 Support functions
 -------------------------------------------------------------------------------]]
@@ -119,7 +102,8 @@ end
 local function OnReceiveDrag(self)                                               -- EditBox / ScrollFrame
 	local type, _, info, spellID = GetCursorInfo()
 	if type == "spell" then
-		info = GetSpellInfo(spellID, info)
+		local spell = C_Spell.GetSpellInfo(spellID, info)
+		info = (spell and spell.name) or nil
 	elseif type ~= "item" then
 		return
 	end

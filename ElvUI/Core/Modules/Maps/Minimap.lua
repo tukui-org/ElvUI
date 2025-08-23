@@ -31,7 +31,7 @@ local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
-local GetZonePVPInfo = (C_PvP and C_PvP.GetZonePVPInfo) or GetZonePVPInfo
+local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
 
 local PlayerSpellsUtil = _G.PlayerSpellsUtil
 local WorldMapFrame = _G.WorldMapFrame

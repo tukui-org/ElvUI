@@ -22,7 +22,7 @@ local UnitHealthMax = UnitHealthMax
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
-local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo and C_PlayerInfo.GetGlidingInfo
+local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 
 local GetMouseFocus = GetMouseFocus or function()
 	local frames = _G.GetMouseFoci()

@@ -22,24 +22,7 @@ local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
 
 local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
 
-local GetSpellInfo
-do	-- backwards compatibility for GetSpellInfo
-	local C_Spell_GetSpellInfo = not _G.GetSpellInfo and C_Spell.GetSpellInfo
-	GetSpellInfo = function(spellID)
-		if not spellID then return end
-
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return _G.GetSpellInfo(spellID)
-		end
-	end
-end
-
--- local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+-- local IsHardcoreActive = C_GameRules.IsHardcoreActive
 -- local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 
 -- local WoWClassicHC = IsHardcoreActive and IsHardcoreActive()
@@ -709,7 +692,9 @@ local function UpdateAbilityInfo(self)
 		local actionSpell, actionMacro, actionFlyout = actionType == 'spell', actionType == 'macro', actionType == 'flyout'
 		local macroSpell = actionMacro and ((subType == 'spell' and actionID) or (subType ~= 'spell' and GetMacroSpell(actionID))) or nil
 		local spellID = (actionSpell and actionID) or macroSpell
-		local spellName = spellID and GetSpellInfo(spellID) or nil
+
+		local spell = spellID and C_Spell.GetSpellInfo(spellID)
+		local spellName = (spell and spell.name) or nil
 
 		self.isFlyoutButton = actionFlyout
 		self.abilityName = spellName

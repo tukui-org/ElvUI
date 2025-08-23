@@ -45,7 +45,7 @@ local UnitIsUnit = UnitIsUnit
 local UnitSex = UnitSex
 
 local GetWatchedFactionInfo = GetWatchedFactionInfo
-local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
+local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
@@ -60,11 +60,13 @@ local GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
 local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
-local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
-local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
-local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
+local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
+local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
+local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
+local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
+local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
@@ -443,20 +445,19 @@ do -- backwards compatibility for GetMouseFocus
 	end
 end
 
-do	-- backwards compatibility for C_Spell
-	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
+do
 	function E:GetSpellInfo(spellID)
-		if not spellID then return end
+		local info = spellID and C_Spell_GetSpellInfo(spellID)
+		if not info then return end
 
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return GetSpellInfo(spellID)
-		end
+		return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+	end
+
+	function E:GetSpellCharges(spellID)
+		local info = spellID and C_Spell_GetSpellCharges(spellID)
+		if not info then return end
+
+		return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
 	end
 
 	local GetSpellCooldown = GetSpellCooldown
@@ -470,21 +471,6 @@ do	-- backwards compatibility for C_Spell
 			local info = C_Spell_GetSpellCooldown(spellID)
 			if info then
 				return info.startTime, info.duration, info.isEnabled, info.modRate
-			end
-		end
-	end
-
-	local GetSpellCharges = GetSpellCharges
-	local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
-	function E:GetSpellCharges(spellID)
-		if not spellID then return end
-
-		if GetSpellCharges then
-			return GetSpellCharges(spellID)
-		else
-			local info = C_Spell_GetSpellCharges(spellID)
-			if info then
-				return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
 			end
 		end
 	end

@@ -38,6 +38,7 @@ local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil.UnpackAuraData
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetCVar = C_CVar.SetCVar
@@ -922,21 +923,11 @@ function oUF:GetAuraData(unitToken, index, filter)
 	return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 end
 
-do	-- backwards compatibility for GetSpellInfo
-	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
-	function oUF:GetSpellInfo(spellID)
-		if not spellID then return end
+function oUF:GetSpellInfo(spellID)
+	local info = spellID and C_Spell_GetSpellInfo(spellID)
+	if not info then return end
 
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return GetSpellInfo(spellID)
-		end
-	end
+	return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
 end
 
 oUF.version = _VERSION
