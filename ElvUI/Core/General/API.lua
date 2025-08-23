@@ -48,8 +48,8 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
 
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
-local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
-local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo

@@ -11,13 +11,7 @@ if not lib then return end
 -- Lua functions
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
-local str_match, format, tinsert, tremove, strsub = string.match, format, tinsert, tremove, strsub
-
-local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
-local IsAttackSpell = C_Spell.IsAutoAttackSpell or IsAttackSpell
-local IsAutoRepeatSpell = C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
-local IsPressHoldReleaseSpell = C_Spell.IsPressHoldReleaseSpell or IsPressHoldReleaseSpell
+local str_match, format, tinsert, tremove = string.match, format, tinsert, tremove
 
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
@@ -59,14 +53,8 @@ local CBH = LibStub("CallbackHandler-1.0")
 local LCG = LibStub("LibCustomGlow-1.0", true)
 local Masque = LibStub("Masque", true)
 
-local SetCVar = C_CVar.SetCVar
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
-
-local C_ActionBar = C_ActionBar
-local C_UnitAuras = C_UnitAuras
-local C_LevelLink = C_LevelLink
-local C_ToyBox = C_ToyBox
 
 local ATTACK_BUTTON_FLASH_TIME = ATTACK_BUTTON_FLASH_TIME
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
@@ -78,9 +66,33 @@ local GameFontHighlightSmallOutline = GameFontHighlightSmallOutline
 local NumberFontNormalSmallGray = NumberFontNormalSmallGray
 local NumberFontNormal = NumberFontNormal
 
+local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
-local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
-local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
+
+local UnpackAuraData = AuraUtil.UnpackAuraData
+local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
+local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
+local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
+local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
+local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+
+local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
+
+-- unwrapped functions that return tables now
+local GetSpellCharges = function(spell)
+	local c = C_Spell.GetSpellCharges(spell)
+	if c then
+		return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration
+	end
+end
+
+local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell)
+	local c = C_Spell.GetSpellCooldown(spell)
+	if c then
+		return c.startTime, c.duration, c.isEnabled, c.modRate
+	end
+end or GetSpellCooldown
 
 -- GLOBALS: _G, GameTooltip, UIParent
 
@@ -372,7 +384,7 @@ function SetupSecureSnippets(button)
 	-- secure UpdateState(self, state)
 
 	-- button state for push casting
-	if IsPressHoldReleaseSpell then -- retail only
+	if C_Spell.IsPressHoldReleaseSpell then -- retail only
 		button:SetAttribute("UpdateReleaseCasting", [[
 			local type, action = ...
 
@@ -388,7 +400,7 @@ function SetupSecureSnippets(button)
 				spellID = action
 			end
 
-			if spellID and IsPressHoldReleaseSpell(spellID) then
+			if spellID and C_Spell.IsPressHoldReleaseSpell(spellID) then
 				self:SetAttribute('pressAndHoldAction', true)
 				self:SetAttribute('typerelease', 'actionrelease')
 			elseif self:GetAttribute('typerelease') then
@@ -646,7 +658,7 @@ local function WatchRange(button, slot)
 	lib.slotByButton[button] = slot
 
 	if WoWRetail then -- activate the event for slot
-		C_ActionBar.EnableActionRangeCheck(slot, true)
+		EnableActionRangeCheck(slot, true)
 	end
 end
 
@@ -657,7 +669,7 @@ local function ClearRange(button, slot)
 
 		if not next(buttons) then -- deactivate event for slot (unused)
 			if WoWRetail then
-				C_ActionBar.EnableActionRangeCheck(slot, false)
+				EnableActionRangeCheck(slot, false)
 			end
 
 			lib.buttonsBySlot[slot] = nil
@@ -1241,11 +1253,7 @@ local function PickupAny(kind, target, detail, ...)
 	elseif kind == 'petaction' then
 		PickupPetAction(target)
 	elseif kind == 'spell' then
-		if C_Spell and C_Spell.PickupSpell then
-			C_Spell.PickupSpell(target)
-		else
-			PickupSpell(target)
-		end
+		C_Spell.PickupSpell(target)
 	elseif kind == 'companion' then
 		PickupCompanion(target, detail)
 	elseif kind == 'equipmentset' then
@@ -2142,7 +2150,7 @@ function UpdateButtonState(self)
 
 	-- one punch button ~Simpy
 	local actionID = WoWRetail and self._state_type == "action" and tonumber(self._state_action)
-	if actionID and C_ActionBar.IsAssistedCombatAction(actionID) then
+	if actionID and IsAssistedCombatAction(actionID) then
 		UpdateAbilityInfo(self) -- lets clean that up
 		UpdateCooldown(self) -- update cooldown
 
@@ -2291,7 +2299,7 @@ function UpdateCooldown(self)
 
 	local passiveCooldownSpellID = self:GetPassiveCooldownSpellID()
 	if passiveCooldownSpellID and passiveCooldownSpellID ~= 0 then
-		auraData = C_UnitAuras.GetPlayerAuraBySpellID(passiveCooldownSpellID)
+		auraData = GetPlayerAuraBySpellID(passiveCooldownSpellID)
 	end
 
 	if auraData then
@@ -2760,21 +2768,20 @@ Action.GetSpellId              = function(self)
 		end
 	end
 end
+
 Action.GetLossOfControlCooldown = function(self) return GetActionLossOfControlCooldown(self._state_action) end
-if C_UnitAuras and C_UnitAuras.GetCooldownAuraBySpellID then
-	Action.GetPassiveCooldownSpellID = function(self)
-		local _actionType, actionID = GetActionInfo(self._state_action)
-		local onEquipPassiveSpellID
-		if actionID and C_ActionBar.GetItemActionOnEquipSpellID then
-			onEquipPassiveSpellID = C_ActionBar.GetItemActionOnEquipSpellID(self._state_action)
-		end
-		if onEquipPassiveSpellID then
-			return C_UnitAuras.GetCooldownAuraBySpellID(onEquipPassiveSpellID)
-		else
-			local spellID = self:GetSpellId()
-			if spellID then
-				return C_UnitAuras.GetCooldownAuraBySpellID(spellID)
-			end
+Action.GetPassiveCooldownSpellID = function(self)
+	local _actionType, actionID = GetActionInfo(self._state_action)
+	local onEquipPassiveSpellID
+	if actionID and GetItemActionOnEquipSpellID then
+		onEquipPassiveSpellID = GetItemActionOnEquipSpellID(self._state_action)
+	end
+	if onEquipPassiveSpellID then
+		return GetCooldownAuraBySpellID(onEquipPassiveSpellID)
+	else
+		local spellID = self:GetSpellId()
+		if spellID then
+			return GetCooldownAuraBySpellID(spellID)
 		end
 	end
 end
@@ -2799,45 +2806,27 @@ if not WoWRetail then
 	Action.GetLossOfControlCooldown = function(self) return 0,0 end
 end
 
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
-local GetSpellCastCount = C_Spell.GetSpellCastCount or GetSpellCount
-local IsAttackSpell = C_SpellBook.IsAutoAttackSpellBookItem or IsAttackSpell
-local IsCurrentSpell = C_Spell.IsCurrentSpell or IsCurrentSpell
-local IsAutoRepeatSpell = C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
-local IsSpellUsable = C_Spell.IsSpellUsable or IsUsableSpell
-local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
-local IsSpellInRange = C_Spell.IsSpellInRange or IsSpellInRange
-local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
-
--- unwrapped functions that return tables now
-local GetSpellCharges = C_Spell.GetSpellCharges and function(spell) local c = C_Spell.GetSpellCharges(spell) if c then return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration end end or GetSpellCharges
-local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell) local c = C_Spell.GetSpellCooldown(spell) if c then return c.startTime, c.duration, c.isEnabled, c.modRate end end or GetSpellCooldown
-
-local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
-
 -----------------------------------------------------------
 --- Spell Button
 Spell.HasAction               = function(self) return true end
 Spell.GetActionText           = function(self) return "" end
-Spell.GetTexture              = function(self) return GetSpellTexture(self._state_action) end
+Spell.GetTexture              = function(self) return C_Spell.GetSpellTexture(self._state_action) end
 Spell.GetCharges              = function(self) return GetSpellCharges(self._state_action) end
-Spell.GetCount                = function(self) return GetSpellCastCount(self._state_action) end
+Spell.GetCount                = function(self) return C_Spell.GetSpellCastCount(self._state_action) end
 Spell.GetCooldown             = function(self) return GetSpellCooldown(self._state_action) end
-Spell.IsAttack                = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAttackSpell(slot, BOOKTYPE_SPELL) or nil end
+Spell.IsAttack                = function(self) return C_Spell.IsAutoAttackSpell(self._state_action) or nil end
 Spell.IsEquipped              = function(self) return nil end
-Spell.IsCurrentlyActive       = function(self) return IsCurrentSpell(self._state_action) end
-Spell.IsAutoRepeat            = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAutoRepeatSpell(slot, BOOKTYPE_SPELL) or nil end
-Spell.IsUsable                = function(self) return IsSpellUsable(self._state_action) end
+Spell.IsCurrentlyActive       = function(self) return C_Spell.IsCurrentSpell(self._state_action) end
+Spell.IsAutoRepeat            = function(self) return C_Spell.IsAutoRepeatSpell(self._state_action) or nil end
+Spell.IsUsable                = function(self) return C_Spell.IsSpellUsable(self._state_action) end
 Spell.IsConsumableOrStackable = function(self) return IsConsumableSpell(self._state_action) end
-Spell.IsUnitInRange           = function(self, unit) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsSpellInRange(slot, BOOKTYPE_SPELL, unit) or nil end
+Spell.IsUnitInRange           = function(self, unit) return C_Spell.IsSpellInRange(self._state_action, unit) or nil end
 Spell.SetTooltip              = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId              = function(self) return self._state_action end
 Spell.GetLossOfControlCooldown = function(self) return GetSpellLossOfControlCooldown(self._state_action) end
-if C_UnitAuras then
-	Spell.GetPassiveCooldownSpellID = function(self)
-		if self._state_action then
-			return C_UnitAuras.GetCooldownAuraBySpellID(self._state_action)
-		end
+Spell.GetPassiveCooldownSpellID = function(self)
+	if self._state_action then
+		return GetCooldownAuraBySpellID(self._state_action)
 	end
 end
 

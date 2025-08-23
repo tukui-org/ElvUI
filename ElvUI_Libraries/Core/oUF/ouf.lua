@@ -36,8 +36,8 @@ local UnitGUID = UnitGUID
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
-local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetCVar = C_CVar.SetCVar
