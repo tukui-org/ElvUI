@@ -29,27 +29,26 @@ pooler.run = function(funcs, frame, event, ...)
 	end
 end
 
-pooler.execute = function(event, pool, instant, arg1, ...)
+pooler.execute = function(event, pool, instant, arg1, arg2, ...)
 	for frame, info in pairs(pool) do
 		local funcs = info.functions
 		if instant and funcs then
-			if event == 'UNIT_AURA' and oUF.isRetail then
-				local fullUpdate, updatedAuras = ...
-				if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, fullUpdate, updatedAuras) then
-					pooler.run(funcs, frame, event, arg1, fullUpdate, updatedAuras)
+			if event == 'UNIT_AURA' then
+				if not oUF:ShouldSkipAuraUpdate(frame, event, arg1, arg2) then
+					pooler.run(funcs, frame, event, arg1, arg2)
 				end
 			else
-				pooler.run(funcs, frame, event, arg1, ...)
+				pooler.run(funcs, frame, event, arg1, arg2, ...)
 			end
 		else
 			local data = funcs and info.data[event]
 			if data then
-				if event == 'UNIT_AURA' and oUF.isRetail then
+				if event == 'UNIT_AURA' then
 					local allowUnit = false
 					for i = 1, #data do
 						local args = data[i]
-						local unit, fullUpdate, updatedAuras = unpack(args)
-						if not oUF:ShouldSkipAuraUpdate(frame, event, unit, fullUpdate, updatedAuras) then
+						local unit, auraInfo = unpack(args)
+						if not oUF:ShouldSkipAuraUpdate(frame, event, unit, auraInfo) then
 							allowUnit = unit
 							break
 						end

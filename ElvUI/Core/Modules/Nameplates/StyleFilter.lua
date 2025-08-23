@@ -1674,14 +1674,14 @@ do -- oUF style filter inject watch functions without actually registering any e
 	object:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
 	object:Hide()
 
-	function NP:StyleFilterPoolerTrack(event, arg1, arg2, arg3, ...)
+	function NP:StyleFilterPoolerTrack(event, arg1, arg2, ...)
 		local eventFunc = NP.StyleFilterEventFunctions[event]
 		if eventFunc then
-			eventFunc(self, event, arg1, arg2, arg3, ...)
+			eventFunc(self, event, arg1, arg2, ...)
 		end
 
 		local auraEvent = event == 'UNIT_AURA'
-		if auraEvent and E.Retail and ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2, arg3) then
+		if auraEvent and ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2) then
 			return
 		end
 

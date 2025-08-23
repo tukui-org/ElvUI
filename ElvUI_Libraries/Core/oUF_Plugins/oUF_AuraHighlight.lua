@@ -60,7 +60,7 @@ local function GetAuraType(unit, check, list)
 	if icon then return auraType, icon, filtered, style, color end
 end
 
-local function Update(self, event, unit, isFullUpdate, updatedAuras)
+local function Update(self, event, unit, updateInfo)
 	if not unit or self.unit ~= unit then return end
 
 	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)

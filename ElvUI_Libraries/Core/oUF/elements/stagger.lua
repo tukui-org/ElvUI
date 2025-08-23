@@ -100,12 +100,12 @@ local staggerID = {
 	[124273] = true, -- [RED]    Heavy Stagger
 }
 
-local function verifyStagger(frame, event, unit, auraInfo)
-	return staggerID[auraInfo.spellId]
+local function verifyStagger(frame, event, unit, aura)
+	return staggerID[aura.spellId]
 end
 
-local function Update(self, event, unit, isFullUpdate, updatedAuras)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, isFullUpdate, updatedAuras, verifyStagger) then return end
+local function Update(self, event, unit, updateInfo)
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, verifyStagger) then return end
 
 	local element = self.Stagger
 

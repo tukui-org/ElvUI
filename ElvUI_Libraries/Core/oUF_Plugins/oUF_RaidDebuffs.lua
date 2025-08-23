@@ -148,7 +148,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 	end
 end
 
-local function Update(self, event, unit, isFullUpdate, updatedAuras)
+local function Update(self, event, unit, updateInfo)
 	if not unit or self.unit ~= unit then return end
 
 	local element = self.RaidDebuffs
