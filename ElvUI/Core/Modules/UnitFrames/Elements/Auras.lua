@@ -51,7 +51,7 @@ UF.SmartPosition = {
 			buffs.attachTo = debuffs
 
 			buffs.PostUpdate = nil
-			debuffs.PostUpdate = UF.UpdateAuraSmartPoisition
+			debuffs.PostUpdate = UF.UpdateAuraSmartPosition
 		end
 	},
 	DEBUFFS_ON_BUFFS = {
@@ -62,7 +62,7 @@ UF.SmartPosition = {
 			debuffs.attachTo = buffs
 
 			debuffs.PostUpdate = nil
-			buffs.PostUpdate = UF.UpdateAuraSmartPoisition
+			buffs.PostUpdate = UF.UpdateAuraSmartPosition
 		end
 	}
 }
@@ -484,7 +484,7 @@ function UF:GetSmartAuraElements(auras)
 	end
 end
 
-function UF:UpdateAuraSmartPoisition()
+function UF:UpdateAuraSmartPosition()
 	local element, other, visible = UF:GetSmartAuraElements(self)
 
 	if visible == 0 then
