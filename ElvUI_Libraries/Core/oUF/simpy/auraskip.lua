@@ -14,6 +14,7 @@ local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer = false
+local auraInstanceInfo = {}
 local cachedVisibility = {}
 local cachedSelfBuffChecks = {}
 local cachedPriority = SpellIsPriorityAura and {}
@@ -37,6 +38,8 @@ end
 eventFrame:SetScript('OnEvent', function(_, event)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		hasValidPlayer = true
+
+		wipe(auraInstanceInfo)
 	elseif event == 'PLAYER_LEAVING_WORLD' then
 		hasValidPlayer = false
 	elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
@@ -115,26 +118,26 @@ end
 
 local function TryAdded(frame, unit, aura)
 	if aura.auraInstanceID then
-		frame.auraInstanceInfo[aura.auraInstanceID] = aura
+		auraInstanceInfo[aura.auraInstanceID] = aura
 	end
 end
 
 local function TryUpdated(frame, unit, instanceID)
-	local aura = frame.auraInstanceInfo[instanceID]
+	local aura = auraInstanceInfo[instanceID]
 
 	if not aura then -- must be during load in
 		aura = GetAuraDataByAuraInstanceID(unit, instanceID) -- get the preexisting
 
-		frame.auraInstanceInfo[instanceID] = aura -- add it to the list
+		auraInstanceInfo[instanceID] = aura -- add it to the list
 	end
 
 	return aura
 end
 
 local function TryRemove(frame, unit, instanceID)
-	local aura = frame.auraInstanceInfo[instanceID]
+	local aura = auraInstanceInfo[instanceID]
 
-	frame.auraInstanceInfo[instanceID] = nil -- remove it
+	auraInstanceInfo[instanceID] = nil -- remove it
 
 	return aura or true
 end
@@ -162,10 +165,6 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
-	if not frame.auraInstanceInfo then
-		frame.auraInstanceInfo = {}
-	end
-
 	if updateInfo.isFullUpdate then
 		return false -- we doin the thing
 	end
