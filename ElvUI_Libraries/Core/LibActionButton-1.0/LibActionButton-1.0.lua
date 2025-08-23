@@ -81,7 +81,6 @@ local NumberFontNormal = NumberFontNormal
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
-local UnitAura = UnitAura
 
 -- GLOBALS: _G, GameTooltip, UIParent
 
@@ -614,11 +613,7 @@ function WrapOnClick(button, unwrapheader)
 end
 
 local function GetAuraData(unitToken, index, filter)
-	if WoWRetail then
-		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
-	else
-		return UnitAura(unitToken, index, filter)
-	end
+	return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 end
 
 -- prevent pickup calling spells ~Simpy

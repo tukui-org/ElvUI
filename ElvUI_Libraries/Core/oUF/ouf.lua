@@ -38,7 +38,6 @@ local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
-local UnitAura = UnitAura
 
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetCVar = C_CVar.SetCVar
@@ -920,11 +919,7 @@ function oUF:AddElement(name, update, enable, disable)
 end
 
 function oUF:GetAuraData(unitToken, index, filter)
-	if oUF.isRetail then
-		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
-	else
-		return UnitAura(unitToken, index, filter)
-	end
+	return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 end
 
 do	-- backwards compatibility for GetSpellInfo

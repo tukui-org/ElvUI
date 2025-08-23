@@ -50,7 +50,6 @@ local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionDat
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
-local UnitAura = UnitAura
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
@@ -515,11 +514,7 @@ end
 
 do
 	function E:GetAuraData(unitToken, index, filter)
-		if E.Retail then
-			return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
-		else
-			return UnitAura(unitToken, index, filter)
-		end
+		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 	end
 
 	local function FindAura(key, value, unit, index, filter, ...)
