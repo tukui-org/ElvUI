@@ -87,7 +87,7 @@ do -- Expansions
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
-	local season = C_Seasons.GetActiveSeason()
+	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
 	E.ClassicSOD = season == 2 -- Season of Discovery
 	E.ClassicAnniv = season == 11 -- Anniversary
