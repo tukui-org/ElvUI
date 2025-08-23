@@ -21,7 +21,7 @@ local cachedPriority = SpellIsPriorityAura and {}
 local _, myclass = UnitClass('player')
 local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
 	[335904] = true, -- Doom Winds: Unable to gain effects of Doom Winds
-	[25771] = myclass == 'PALADIN'
+	[25771] = myclass == 'PALADIN' -- Forbearance: Blizzard has it listed as a priority debuff
 }
 
 local eventFrame = CreateFrame('Frame')
