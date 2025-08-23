@@ -102,7 +102,7 @@ end
 local function OnReceiveDrag(self)                                               -- EditBox / ScrollFrame
 	local type, _, info, spellID = GetCursorInfo()
 	if type == "spell" then
-		local spell = C_Spell.GetSpellInfo(spellID, info)
+		local spell = spellID and C_Spell.GetSpellInfo(spellID, info)
 		info = (spell and spell.name) or nil
 	elseif type ~= "item" then
 		return

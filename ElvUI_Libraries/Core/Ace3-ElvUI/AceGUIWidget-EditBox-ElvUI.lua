@@ -82,7 +82,7 @@ local function EditBox_OnReceiveDrag(frame)
 	if type == "item" then
 		name = info
 	elseif type == "spell" then
-		local spell = C_Spell.GetSpellInfo(spellID, info)
+		local spell = spellID and C_Spell.GetSpellInfo(spellID, info)
 		name = (spell and spell.name) or nil
 	elseif type == "macro" then
 		name = GetMacroInfo(id)
