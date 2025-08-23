@@ -91,6 +91,10 @@ local function AllowAura(spellId, sourceUnit, canApplyHelpful)
 end
 
 local function AuraIsPriority(spellId)
+	if not spellId then
+		return false
+	end
+
 	if AlwaysAllow[spellId] then
 		return true
 	end
