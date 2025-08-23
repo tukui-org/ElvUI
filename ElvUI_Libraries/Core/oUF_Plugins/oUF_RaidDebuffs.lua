@@ -149,7 +149,8 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 end
 
 local function Update(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	if auraSkip then return end
 
 	local element = self.RaidDebuffs
 	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate

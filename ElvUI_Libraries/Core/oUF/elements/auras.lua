@@ -165,7 +165,7 @@ local function customFilter(element, unit, button, name)
 	end
 end
 
-local function updateAura(element, unit, index, offset, filter, isDebuff, visible)
+local function updateAura(element, unit, auraInfo, index, offset, filter, isDebuff, visible)
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
 
 	if element.forceShow or element.forceCreate then
@@ -325,7 +325,7 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
 	local index = 1
 	local visible = 0
@@ -333,7 +333,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local created = 0 -- ElvUI
 
 	while(visible < limit) do
-		local result = updateAura(element, unit, index, offset, filter, isDebuff, visible)
+		local result = updateAura(element, unit, auraInfo, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
 		elseif(result == VISIBLE) then
@@ -362,7 +362,8 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	if auraSkip then return end
 
 	local auras = self.Auras
 	if(auras) then
@@ -378,9 +379,9 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 		local numBuffs = auras.numBuffs or 32
 		local numDebuffs = auras.numDebuffs or 40
-		local max = auras.numTotal or numBuffs + numDebuffs
+		local maxAuras = auras.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(auras, unit, auraInfo, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, maxAuras), nil, 0, true)
 
 		local hasGap
 		if(visibleBuffs ~= 0 and auras.gap) then
@@ -417,7 +418,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 			end
 		end
 
-		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleDebuffs = filterIcons(auras, unit, auraInfo, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, maxAuras - visibleBuffs), true, visibleBuffs)
 		auras.visibleDebuffs = visibleDebuffs
 
 		if(hasGap and visibleDebuffs == 0) then
@@ -441,7 +442,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		* to   - the offset of the last aura button to be (re-)anchored (number)
 		--]]
 		if(auras.PreSetPosition) then
-			fromRange, toRange = auras:PreSetPosition(max)
+			fromRange, toRange = auras:PreSetPosition(maxAuras)
 		end
 
 		if(fromRange or auras.createdButtons > auras.anchoredButtons) then
@@ -473,7 +474,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		wipe(buffs.active)
 
 		local numBuffs = buffs.num or 32
-		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
+		local visibleBuffs = filterIcons(buffs, unit, auraInfo, buffs.filter or 'HELPFUL', numBuffs)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
@@ -496,7 +497,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		wipe(debuffs.active)
 
 		local numDebuffs = debuffs.num or 40
-		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		local visibleDebuffs = filterIcons(debuffs, unit, auraInfo, debuffs.filter or 'HARMFUL', numDebuffs, true)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange

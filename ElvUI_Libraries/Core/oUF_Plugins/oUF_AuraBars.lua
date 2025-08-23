@@ -251,7 +251,8 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	if auraSkip then return end
 
 	local element = self.AuraBars
 	if(element) then

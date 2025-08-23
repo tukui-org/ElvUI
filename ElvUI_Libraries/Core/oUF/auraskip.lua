@@ -12,12 +12,13 @@ local SpellIsPriorityAura = SpellIsPriorityAura
 local UnitAffectingCombat = UnitAffectingCombat
 local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
 local hasValidPlayer = false
-local auraInstanceInfo = {}
 local cachedVisibility = {}
 local cachedSelfBuffChecks = {}
 local cachedPriority = SpellIsPriorityAura and {}
+local auraInfo = {}
 
 local _, myclass = UnitClass('player')
 local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
@@ -38,8 +39,6 @@ end
 eventFrame:SetScript('OnEvent', function(_, event)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		hasValidPlayer = true
-
-		wipe(auraInstanceInfo)
 	elseif event == 'PLAYER_LEAVING_WORLD' then
 		hasValidPlayer = false
 	elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
@@ -121,28 +120,31 @@ local function CouldDisplayAura(frame, event, unit, aura)
 end
 
 local function TryAdded(frame, unit, aura)
-	if aura.auraInstanceID then
-		auraInstanceInfo[aura.auraInstanceID] = aura
-	end
+	if not aura.auraInstanceID then return end
+
+	local unitAura = auraInfo[unit]
+	unitAura[aura.auraInstanceID] = aura
 end
 
-local empty = {}
+local empty = {} -- incase of failure
 local function TryUpdated(frame, unit, auraInstanceID)
-	local aura = auraInstanceInfo[auraInstanceID]
+	local unitAura = auraInfo[unit]
+	local aura = unitAura[auraInstanceID]
 
 	if not aura then -- must be during load in
 		aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get the preexisting
 
-		auraInstanceInfo[auraInstanceID] = aura -- add it to the list
+		unitAura[auraInstanceID] = aura  -- add it to the list
 	end
 
 	return aura or empty
 end
 
 local function TryRemove(frame, unit, auraInstanceID)
-	local aura = auraInstanceInfo[auraInstanceID]
+	local unitAura = auraInfo[unit]
+	local aura = unitAura[auraInstanceID]
 
-	auraInstanceInfo[auraInstanceID] = nil -- remove it
+	unitAura[auraInstanceID] = nil -- remove it
 
 	return aura or true
 end
@@ -157,40 +159,47 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 		local aura = tryFunc(frame, unit, value) -- collect the aura from updated or check if a preexisting was removed
 		if aura == true then -- an aura that existed during load was removed
 			skip = false -- this can also happen with nameplates that spawn in and an aura is removed
-		elseif skip then
+		elseif skip then -- check skip status
 			skip = not shouldDisplay(frame, event, unit, aura or value)
-		end
-
-		if not skip then
-			break -- if one is allowed we dont need to continue
 		end
 	end
 
 	return skip
 end
 
+local function ProcessExisting(frame, event, unit)
+	local index = 1
+	local aura = GetAuraDataByIndex(unit, index)
+	while aura do
+		TryAdded(frame, unit, aura)
+
+		index = index + 1
+		aura = GetAuraDataByIndex(unit, index)
+	end
+end
+
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
-	if event ~= 'UNIT_AURA' or not updateInfo then
-		return false -- this is from some other thing
+	if not auraInfo[unit] then
+		auraInfo[unit] = {}
 	end
 
-	if updateInfo.isFullUpdate then
-		return false -- we doin the thing
+	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
+		wipe(auraInfo[unit]) -- clear this since we cant verify it
+
+		ProcessExisting(frame, event, unit) -- we need to collect full data here
+
+		return false, auraInfo -- this is from some other thing
 	end
 
-	if not TrySkipAura(frame, event, unit, shouldDisplay, TryAdded, updateInfo.addedAuras) then
-		return false -- a new aura has appeared
-	end
+	local added = TrySkipAura(frame, event, unit, shouldDisplay, TryAdded, updateInfo.addedAuras)
+	local updated = TrySkipAura(frame, event, unit, shouldDisplay, TryUpdated, updateInfo.updatedAuraInstanceIDs)
+	local removed = TrySkipAura(frame, event, unit, shouldDisplay, TryRemove, updateInfo.removedAuraInstanceIDs)
 
-	if not TrySkipAura(frame, event, unit, shouldDisplay, TryUpdated, updateInfo.updatedAuraInstanceIDs) then
-		return false -- an existing aura has been altered
-	end
+	if not added then return false, auraInfo end -- a new aura has appeared
+	if not updated then return false, auraInfo end -- an existing aura has been altered
+	if not removed then return false, auraInfo end -- an aura has been yeeted into the abyss
 
-	if not TrySkipAura(frame, event, unit, shouldDisplay, TryRemove, updateInfo.removedAuraInstanceIDs) then
-		return false -- an aura has been yeeted into the abyss
-	end
-
-	return true -- who are you
+	return true, auraInfo -- who are you
 end
 
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
