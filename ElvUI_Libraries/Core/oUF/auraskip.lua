@@ -21,6 +21,8 @@ local cachedSelfBuffChecks = {}
 local cachedPriority = SpellIsPriorityAura and {}
 local auraInfo = {}
 
+oUF.AuraInfo = auraInfo -- export it
+
 local _, myclass = UnitClass('player')
 local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
 	[335904] = true, -- Doom Winds: Unable to gain effects of Doom Winds
@@ -201,18 +203,18 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 
 		ProcessExisting(frame, unit) -- we need to collect full data here
 
-		return false, auraInfo -- this is from some other thing
+		return false -- this is from some other thing
 	end
 
 	local added = TrySkipAura(frame, event, unit, shouldDisplay, TryAdded, updateInfo.addedAuras)
 	local updated = TrySkipAura(frame, event, unit, shouldDisplay, TryUpdated, updateInfo.updatedAuraInstanceIDs)
 	local removed = TrySkipAura(frame, event, unit, shouldDisplay, TryRemove, updateInfo.removedAuraInstanceIDs)
 
-	if not added then return false, auraInfo end -- a new aura has appeared
-	if not updated then return false, auraInfo end -- an existing aura has been altered
-	if not removed then return false, auraInfo end -- an aura has been yeeted into the abyss
+	if not added then return false end -- a new aura has appeared
+	if not updated then return false end -- an existing aura has been altered
+	if not removed then return false end -- an aura has been yeeted into the abyss
 
-	return true, auraInfo -- who are you
+	return true -- who are you
 end
 
 function oUF:ShouldSkipAuraFilter(aura, filter)

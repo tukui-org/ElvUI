@@ -3,6 +3,7 @@
 
 local _, ns = ...
 local oUF = ns.oUF
+local AuraInfo = oUF.AuraInfo
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -221,11 +222,11 @@ local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	end
 end
 
-local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
+local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
 	if not offset then offset = 0 end
 
 	local index, visible, hidden = 1, 0, 0
-	local auraInstanceID, aura = next(auraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura and (visible < limit) do
 		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
@@ -235,7 +236,7 @@ local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, off
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 	end
 
 	if not dontHide then
@@ -248,34 +249,34 @@ local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, off
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	local element = self.AuraWatch
+	if not element then return end
+
+	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
 	if auraSkip then return end
 
-	local element = self.AuraWatch
-	if element then
-		if element.PreUpdate then element:PreUpdate(unit) end
+	if element.PreUpdate then element:PreUpdate(unit) end
 
-		preOnlyMissing(element)
-		wipe(stackAuras) -- clear stacking table
+	preOnlyMissing(element)
+	wipe(stackAuras) -- clear stacking table
 
-		local numBuffs = element.numBuffs or 32
-		local numDebuffs = element.numDebuffs or 16
-		local numAuras = element.numTotal or (numBuffs + numDebuffs)
+	local numBuffs = element.numBuffs or 32
+	local numDebuffs = element.numDebuffs or 16
+	local numAuras = element.numTotal or (numBuffs + numDebuffs)
 
-		local visibleBuffs, hiddenBuffs = filterIcons(element, unit, auraInfo, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
-		local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, auraInfo, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
+	local visibleBuffs, hiddenBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
+	local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
 
-		element.visibleDebuffs = visibleDebuffs
-		element.visibleBuffs = visibleBuffs
+	element.visibleDebuffs = visibleDebuffs
+	element.visibleBuffs = visibleBuffs
 
-		element.visibleAuras = visibleBuffs + visibleDebuffs
+	element.visibleAuras = visibleBuffs + visibleDebuffs
 
-		local visibleMissing = postOnlyMissing(element, unit, element.visibleAuras)
+	local visibleMissing = postOnlyMissing(element, unit, element.visibleAuras)
 
-		element.allAuras = visibleBuffs + visibleDebuffs + hiddenBuffs + hiddenDebuffs + visibleMissing
+	element.allAuras = visibleBuffs + visibleDebuffs + hiddenBuffs + hiddenDebuffs + visibleMissing
 
-		if element.PostUpdate then element:PostUpdate(unit) end
-	end
+	if element.PostUpdate then element:PostUpdate(unit) end
 end
 
 local function Update(self, event, unit)

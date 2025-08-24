@@ -1,5 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
+local AuraInfo = oUF.AuraInfo
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -224,13 +225,13 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterBars(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
+local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
 	local visible = 0
 	local hidden = 0
 
 	local index = 1
-	local auraInstanceID, aura = next(auraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura and (visible < limit) do
 		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
@@ -240,7 +241,7 @@ local function filterBars(element, unit, auraInfo, filter, limit, isDebuff, offs
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 	end
 
 	if(not dontHide) then
@@ -253,34 +254,34 @@ local function filterBars(element, unit, auraInfo, filter, limit, isDebuff, offs
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	local element = self.AuraBars
+	if element then return end
+
+	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
 	if auraSkip then return end
 
-	local element = self.AuraBars
-	if(element) then
-		if(element.PreUpdate) then element:PreUpdate(unit) end
+	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-		wipe(element.active)
+	wipe(element.active)
 
-		local isEnemy = UnitIsEnemy(unit, 'player')
-		local reaction = UnitReaction(unit, 'player')
-		local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
-		local visibleAuras = filterBars(element, unit, auraInfo, filter, element.maxBars, filter == 'HARMFUL', 0)
+	local isEnemy = UnitIsEnemy(unit, 'player')
+	local reaction = UnitReaction(unit, 'player')
+	local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
+	local visibleAuras = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
-		element.visibleAuras = visibleAuras
+	element.visibleAuras = visibleAuras
 
-		local fromRange, toRange
-		if(element.PreSetPosition) then
-			fromRange, toRange = element:PreSetPosition(element.maxBars)
-		end
-
-		if(fromRange or element.createdBars > element.anchoredBars) then
-			(element.SetPosition or SetPosition) (element, fromRange or element.anchoredBars + 1, toRange or element.createdBars)
-			element.anchoredBars = element.createdBars
-		end
-
-		if(element.PostUpdate) then element:PostUpdate(unit) end
+	local fromRange, toRange
+	if(element.PreSetPosition) then
+		fromRange, toRange = element:PreSetPosition(element.maxBars)
 	end
+
+	if(fromRange or element.createdBars > element.anchoredBars) then
+		(element.SetPosition or SetPosition) (element, fromRange or element.anchoredBars + 1, toRange or element.createdBars)
+		element.anchoredBars = element.createdBars
+	end
+
+	if(element.PostUpdate) then element:PostUpdate(unit) end
 end
 
 local function Update(self, event, unit)

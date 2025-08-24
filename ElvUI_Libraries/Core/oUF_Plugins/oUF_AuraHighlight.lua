@@ -1,5 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
+local AuraInfo = oUF.AuraInfo
 
 local next = next
 local UnitCanAssist = UnitCanAssist
@@ -38,8 +39,8 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 	end
 end
 
-local function Looper(unit, auraInfo, filter, check, list, func)
-	local auraInstanceID, aura = next(auraInfo[unit])
+local function Looper(unit, filter, check, list, func)
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura do
 		if not oUF:ShouldSkipAuraFilter(aura, filter) then
 			local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
@@ -50,25 +51,25 @@ local function Looper(unit, auraInfo, filter, check, list, func)
 			end
 		end
 
-		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 	end
 end
 
-local function GetAuraType(unit, auraInfo, check, list)
+local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local auraType, icon, filtered, style, color = Looper(unit, auraInfo, 'HARMFUL', check, list, DebuffLoop)
+	local auraType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
 	if icon then return auraType, icon, filtered, style, color end
 
-	auraType, icon, filtered, style, color = Looper(unit, auraInfo, 'HELPFUL', check, list, BuffLoop)
+	auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
 	if icon then return auraType, icon, filtered, style, color end
 end
 
 local function Update(self, event, unit, updateInfo)
-	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
 	if auraSkip then return end
 
-	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, auraInfo, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
 	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then

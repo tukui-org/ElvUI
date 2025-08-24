@@ -5,6 +5,7 @@ local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
+local AuraInfo = ElvUF.AuraInfo
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
@@ -438,10 +439,10 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 end
 
 function TT:AddMountInfo(tt, unit)
-	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit)
+	local auraSkip = ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit)
 	if auraSkip then return end
 
-	local auraInstanceID, aura = next(auraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura do
 		local mountID = not ElvUF:ShouldSkipAuraFilter(aura, 'HELPFUL') and E.MountIDs[aura.spellId]
 		if mountID then
@@ -464,7 +465,7 @@ function TT:AddMountInfo(tt, unit)
 			break
 		end
 
-		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 	end
 end
 

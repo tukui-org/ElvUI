@@ -1,5 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF or oUF
+local AuraInfo = oUF.AuraInfo
 
 local _G = _G
 local addon = {}
@@ -150,7 +151,7 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 end
 
 local function Update(self, event, unit, updateInfo)
-	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
+	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
 	if auraSkip then return end
 
 	local element = self.RaidDebuffs
@@ -165,7 +166,7 @@ local function Update(self, event, unit, updateInfo)
 		local canAttack = UnitCanAttack('player', unit) -- store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
 
 		local index = 1
-		local auraInstanceID, aura = next(auraInfo[unit])
+		local auraInstanceID, aura = next(AuraInfo[unit])
 		while aura do
 			if not oUF:ShouldSkipAuraFilter(aura, 'HARMFUL') then
 				local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
@@ -199,7 +200,7 @@ local function Update(self, event, unit, updateInfo)
 			end
 
 			index = index + 1
-			auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+			auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 		end
 	end
 

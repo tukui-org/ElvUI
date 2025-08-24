@@ -3,6 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 local LCG = E.Libs.CustomGlow
 local ElvUF = E.oUF
+local AuraInfo = ElvUF.AuraInfo
 
 local _G = _G
 local ipairs, next, pairs = ipairs, next, pairs
@@ -363,10 +364,10 @@ end
 
 function NP:StyleFilterDispelCheck(frame, event, filter)
 	local unit = frame.unit
-	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
+	local auraSkip = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
 	if auraSkip then return end
 
-	local auraInstanceID, aura = next(auraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura do
 		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
 			local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
@@ -382,20 +383,20 @@ function NP:StyleFilterDispelCheck(frame, event, filter)
 			end
 		end
 
-		auraInstanceID, aura = next(auraInfo[frame.unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[frame.unit], auraInstanceID)
 	end
 end
 
 function NP:StyleFilterAuraData(frame, event, filter, unit)
 	local temp = {}
 
-	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
+	local auraSkip = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
 	if auraSkip then
 		return temp
 	end
 
 	local index = 1
-	local auraInstanceID, aura = next(auraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura do
 		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
 			local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
@@ -409,7 +410,7 @@ function NP:StyleFilterAuraData(frame, event, filter, unit)
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
 	end
 
 	return temp
