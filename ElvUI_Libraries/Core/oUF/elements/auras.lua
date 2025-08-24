@@ -86,6 +86,7 @@ local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local floor, min = math.floor, math.min
+local UnpackAuraData = AuraUtil.UnpackAuraData
 -- end block
 
 -- ElvUI adds IsForbidden checks
@@ -165,8 +166,10 @@ local function customFilter(element, unit, button, name)
 	end
 end
 
-local function updateAura(element, unit, auraInfo, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
+local function updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+	if oUF:CheckAuraFilter(aura, filter) then return end
+
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 
 	if element.forceShow or element.forceCreate then
 		spellID = 5782
@@ -327,13 +330,14 @@ end
 
 local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
-	local index = 1
 	local visible = 0
 	local hidden = 0
 	local created = 0 -- ElvUI
 
+	local index = 1
+	local auraInstanceID, aura = next(auraInfo[unit])
 	while(visible < limit) do
-		local result = updateAura(element, unit, auraInfo, index, offset, filter, isDebuff, visible)
+		local result = updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
 		elseif(result == VISIBLE) then
@@ -348,6 +352,7 @@ local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, off
 		end
 
 		index = index + 1
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 
 	visible = visible - created -- ElvUI changed

@@ -77,8 +77,12 @@ local function CheckIsSelfBuff(spellId)
 	return cachedSelfBuffChecks[spellId]
 end
 
+local function CheckIsMine(sourceUnit)
+	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
+end
+
 local function AllowAura(spellId, sourceUnit, canApplyHelpful)
-	local isMine = sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
+	local isMine = CheckIsMine(sourceUnit)
 	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
 	local isCustom = hasCustom and (showForMySpec or (alwaysShowMine and isMine))
 
@@ -202,6 +206,25 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	return true, auraInfo -- who are you
 end
 
+-- C_UnitAuras.GetAuraDataByIndex has this info
+function oUF:CheckAuraFilter(aura, filter)
+	if not aura then return end
+
+	if filter == 'HELPFUL' then
+		return not aura.isHelpful
+	elseif filter == 'HARMFUL' then
+		return not aura.isHarmful
+	elseif filter == 'RAID' then
+		return not aura.isRaid
+	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
+		return not aura.isNameplateOnly
+	elseif filter == 'PLAYER' then
+		return not CheckIsMine(aura.sourceUnit)
+	end
+end
+
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
-	return (not unit or frame.unit ~= unit) or ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay or CouldDisplayAura)
+	if not unit or frame.unit ~= unit then return true end
+
+	return ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay or CouldDisplayAura)
 end

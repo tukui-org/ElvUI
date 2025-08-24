@@ -9,6 +9,7 @@ local HIDDEN = 0
 
 local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local UnpackAuraData = AuraUtil.UnpackAuraData
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 
@@ -182,8 +183,10 @@ local function postOnlyMissing(element, unit, offset)
 	return visible
 end
 
-local function updateIcon(element, unit, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
+local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
+	if oUF:CheckAuraFilter(aura, filter) then return end
+
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end
 
 	local button, position = getIcon(element, visible, offset)
@@ -220,12 +223,13 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	end
 end
 
-local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
 	if not offset then offset = 0 end
 
 	local index, visible, hidden = 1, 0, 0
+	local auraInstanceID, aura = next(auraInfo[unit])
 	while visible < limit do
-		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
+		local result = updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if not result then
 			break
 		elseif result == VISIBLE then
@@ -235,6 +239,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		end
 
 		index = index + 1
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 
 	if not dontHide then
@@ -261,8 +266,8 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		local numDebuffs = element.numDebuffs or 16
 		local numAuras = element.numTotal or (numBuffs + numDebuffs)
 
-		local visibleBuffs, hiddenBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
-		local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
+		local visibleBuffs, hiddenBuffs = filterIcons(element, unit, auraInfo, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
+		local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, auraInfo, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
 
 		element.visibleDebuffs = visibleDebuffs
 		element.visibleBuffs = visibleBuffs

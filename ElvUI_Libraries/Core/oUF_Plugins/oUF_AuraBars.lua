@@ -15,6 +15,7 @@ local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -153,9 +154,10 @@ local function updateBar(element, bar)
 	end
 end
 
-local function auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
+local function auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+	if oUF:CheckAuraFilter(aura, filter) then return end
 
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end
 
 	local position = visible + offset + 1
@@ -223,13 +225,15 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function filterBars(element, unit, auraInfo, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
-	local index = 1
 	local visible = 0
 	local hidden = 0
+
+	local index = 1
+	local auraInstanceID, aura = next(auraInfo[unit])
 	while(visible < limit) do
-		local result = auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
+		local result = auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if(not result) then
 			break
 		elseif(result == VISIBLE) then
@@ -239,6 +243,7 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 		end
 
 		index = index + 1
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 
 	if(not dontHide) then
@@ -263,7 +268,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		local isEnemy = UnitIsEnemy(unit, 'player')
 		local reaction = UnitReaction(unit, 'player')
 		local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
-		local visibleAuras = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
+		local visibleAuras = filterBars(element, unit, auraInfo, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		element.visibleAuras = visibleAuras
 
