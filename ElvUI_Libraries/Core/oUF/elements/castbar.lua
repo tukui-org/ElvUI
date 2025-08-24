@@ -93,6 +93,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 local _, ns = ...
 local oUF = ns.oUF
+local AuraInfo = oUF.AuraInfo
 
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
@@ -134,20 +135,22 @@ if oUF.isClassic then
 	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
 end
 
-local function SpecialActive(unit, filter)
-	if not next(specialAuras) then return end
+local function SpecialActive(frame, event, unit, filter)
+	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
 
-	local index, speed = 1
-	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
-	while name do
-		speed = specialAuras[spellID];
+	local speed = 1
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
+	while aura do
+		if not oUF:ShouldSkipAuraFilter(aura, filter) then
+			speed = specialAuras[aura.spellID]
 
-		if speed == 0.6 then
-			return speed -- fastest speed
+			if speed == 0.6 then
+				return speed -- fastest speed
+			end
 		end
 
-		index = index + 1
-		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 
 	return speed -- we have to check the entire table otherwise just to see if a faster one is available
@@ -276,7 +279,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, real, unit, 'HELPFUL')
 			if speedMod then
 				castTime = castTime * speedMod
 			end

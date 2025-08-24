@@ -52,6 +52,8 @@ local CombineAddOns = {
 	['Details'] = '^Details!',
 	['RaiderIO'] = '^RaiderIO',
 	['BigWigs'] = '^BigWigs',
+	['HandyNotes'] = '^HandyNotes',
+	['SilverDragon'] = '^SilverDragon'
 }
 
 local function formatMem(memory)
@@ -87,15 +89,15 @@ end
 local function displayData(data, totalMEM, totalCPU)
 	if not data then return end
 
-	local name, mem, cpu = data.title, data.mem, data.cpu
+	local cpu, mem = data.cpu, data.mem
 	if cpu then
 		local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
 		local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-		DT.tooltip:AddDoubleLine(name, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(data.title, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
 	else
 		local red = mem / totalMEM
 		local green = (1 - red) + .5
-		DT.tooltip:AddDoubleLine(name, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
+		DT.tooltip:AddDoubleLine(data.title, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
 	end
 end
 
@@ -167,8 +169,9 @@ local function OnEnter(_, slow)
 			count = count + 1
 			infoDisplay[count] = data
 
-			if data.name == 'ElvUI' or data.name == 'ElvUI_Options' or data.name == 'ElvUI_Libraries' then
-				infoTable[data.name] = data
+			local name = data.name
+			if name == 'ElvUI' or name == 'ElvUI_Options' or name == 'ElvUI_Libraries' then
+				infoTable[name] = data
 			end
 		end
 	end
@@ -201,19 +204,15 @@ local function OnEnter(_, slow)
 			end
 
 			for k, data in pairs(infoDisplay) do
-				if type(data) == 'table' then
-					local name, mem, cpu = data.title, data.mem, data.cpu
-					local stripName = E:StripString(data.title)
-					if name and (strmatch(stripName, searchString) or data.name == addon) then
-						if data.name ~= addon and stripName ~= addon then
-							memoryUsage = memoryUsage + mem
-							if showByCPU and cpuProfiling then
-								cpuUsage = cpuUsage + cpu
-							end
+				local cleanTitle = type(data) == 'table' and data.title and E:StripString(data.title)
+				if cleanTitle and cleanTitle ~= addon and strmatch(cleanTitle, searchString) then
+					memoryUsage = memoryUsage + data.mem
 
-							infoDisplay[k] = false
-						end
+					if showByCPU and cpuProfiling then
+						cpuUsage = cpuUsage + data.cpu
 					end
+
+					infoDisplay[k] = false
 				end
 			end
 

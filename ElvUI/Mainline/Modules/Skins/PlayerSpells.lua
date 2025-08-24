@@ -5,7 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local GetSpellTexture = C_Spell.GetSpellTexture
 
 local function HandleTalentFrameDialog(dialog)
 	if not dialog then return end

@@ -1,7 +1,10 @@
 local _, ns = ...
 local oUF = ns.oUF
+local AuraInfo = oUF.AuraInfo
 
+local next = next
 local UnitCanAssist = UnitCanAssist
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -37,16 +40,19 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 end
 
 local function Looper(unit, filter, check, list, func)
-	local index = 1
-	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
-	while name do
-		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
-		if Icon then
-			return AuraType, Icon, filtered, style, color
-		else
-			index = index + 1
-			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
+	while aura do
+		if not oUF:ShouldSkipAuraFilter(aura, filter) then
+			local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
+			local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+
+			if Icon then
+				return AuraType, Icon, filtered, style, color
+			end
 		end
+
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 end
 

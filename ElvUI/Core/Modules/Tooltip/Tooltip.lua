@@ -4,6 +4,8 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
+local AuraInfo = ElvUF.AuraInfo
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
@@ -69,6 +71,7 @@ local UnitSex = UnitSex
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemCount = C_Item.GetItemCount
@@ -437,12 +440,14 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 end
 
 function TT:AddMountInfo(tt, unit)
-	local index = 1
-	local name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
-	while name do
-		local mountID = E.MountIDs[spellID]
+	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
+
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
+	while aura do
+		local mountID = not ElvUF:ShouldSkipAuraFilter(aura, 'HELPFUL') and E.MountIDs[aura.spellId]
 		if mountID then
-			tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
+			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
 			local sourceText = E.MountText[mountID]
 			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
@@ -459,10 +464,9 @@ function TT:AddMountInfo(tt, unit)
 			end
 
 			break
-		else
-			index = index + 1
-			name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
 		end
+
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 end
 
@@ -855,12 +859,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	end
 end
 
-function TT:SetUnitAura(tt, unit, index, filter)
-	if not tt or tt:IsForbidden() then return end
-
-	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
-	if not name then return end
-
+function TT:ShowAuraInfo(tt, source, spellID)
 	local mountID, mountText = E.MountIDs[spellID]
 	if mountID then
 		local sourceText = E.MountText[mountID]
@@ -887,6 +886,27 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	end
 
 	tt:Show()
+end
+
+function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
+	if not tt or tt:IsForbidden() then return end
+
+	local unitAuraInfo = AuraInfo[unit]
+	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
+	if not aura then return end
+
+	local _, _, _, _, _, _, source, _, _, spellID = UnpackAuraData(aura)
+
+	TT:ShowAuraInfo(tt, source, spellID)
+end
+
+function TT:SetUnitAura(tt, unit, index, filter)
+	if not tt or tt:IsForbidden() then return end
+
+	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
+	if not name then return end
+
+	TT:ShowAuraInfo(tt, source, spellID)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
@@ -1085,6 +1105,11 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+
+	if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
+		TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
+		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
+	end
 
 	if AddTooltipPostCall and not E.Mists then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)

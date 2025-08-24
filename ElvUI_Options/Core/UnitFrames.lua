@@ -9,7 +9,7 @@ local wipe, next, pairs, ipairs, gsub = wipe, next, pairs, ipairs, gsub
 local format, strmatch, strsplit, ceil = format, strmatch, strsplit, ceil
 local tinsert, tonumber, tostring = tinsert, tonumber, tostring
 
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local GetSpellTexture = C_Spell.GetSpellTexture
 local CopyTable = CopyTable
 
 local petTypes = {

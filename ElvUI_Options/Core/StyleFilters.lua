@@ -15,7 +15,7 @@ local GetRealZoneText = GetRealZoneText
 local tIndexOf = tIndexOf
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
-local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
+local GetSpellTexture = C_Spell.GetSpellTexture
 
 local MAX_PLAYER_LEVEL = E.Retail and GetMaxLevelForPlayerExpansion() or GetMaxPlayerLevel()
 
