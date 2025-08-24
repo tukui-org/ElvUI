@@ -202,17 +202,15 @@ local function OnEnter(_, slow)
 			end
 
 			for k, data in pairs(infoDisplay) do
-				if type(data) == 'table' then
-					local cleanTitle = data.title and E:StripString(data.title)
-					if cleanTitle and cleanTitle ~= addon and strmatch(cleanTitle, searchString) then
-						memoryUsage = memoryUsage + data.mem
+				local cleanTitle = type(data) == 'table' and data.title and E:StripString(data.title)
+				if cleanTitle and cleanTitle ~= addon and strmatch(cleanTitle, searchString) then
+					memoryUsage = memoryUsage + data.mem
 
-						if showByCPU and cpuProfiling then
-							cpuUsage = cpuUsage + data.cpu
-						end
-
-						infoDisplay[k] = false
+					if showByCPU and cpuProfiling then
+						cpuUsage = cpuUsage + data.cpu
 					end
+
+					infoDisplay[k] = false
 				end
 			end
 
