@@ -133,13 +133,9 @@ end
 local empty = {} -- incase of failure
 local function TryUpdated(frame, unit, auraInstanceID)
 	local unitAura = auraInfo[unit]
-	local aura = unitAura[auraInstanceID]
 
-	if not aura then -- must be during load in
-		aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get the preexisting
-
-		unitAura[auraInstanceID] = aura  -- add it to the list
-	end
+	local aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get new info
+	unitAura[auraInstanceID] = aura  -- update the data
 
 	return aura or empty
 end
