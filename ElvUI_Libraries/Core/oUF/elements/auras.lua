@@ -96,7 +96,7 @@ local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
 
 	-- we need compatibility here because this wasnt implemented on Era or Mists
-	oUF:SetTooltipByAuraInstanceID(GameTooltip, self:GetParent().__owner.unit, self.auraInstanceID, self.filter)
+	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.__owner.__owner.unit, self.auraInstanceID, self.filter)
 end
 
 local function onEnter(self)
@@ -105,7 +105,7 @@ local function onEnter(self)
 	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 	-- otherwise it'll inherit said restrictions which will cause issues with
 	-- its further positioning, clamping, etc
-	GameTooltip:SetOwner(self, self:GetParent().__restricted and 'ANCHOR_CURSOR' or self:GetParent().tooltipAnchor)
+	GameTooltip:SetOwner(self, self.__owner.__restricted and 'ANCHOR_CURSOR' or self.__owner.tooltipAnchor)
 
 	self:UpdateTooltip()
 end
@@ -119,6 +119,7 @@ end
 local function CreateButton(element, index)
 	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element, "BackdropTemplate")
 	button:RegisterForClicks('RightButtonUp')
+	button.__owner = element
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cd:SetAllPoints()

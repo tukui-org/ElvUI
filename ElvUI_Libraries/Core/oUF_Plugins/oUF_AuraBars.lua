@@ -82,7 +82,6 @@ local function createAuraBar(element, index)
 	local bar = CreateFrame('StatusBar', element:GetName() .. 'StatusBar' .. index, element)
 	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 	bar:SetMinMaxValues(0, 1)
-	bar.tooltipAnchor = element.tooltipAnchor
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', onLeave)
 	bar:EnableMouse(false)
@@ -107,6 +106,7 @@ local function createAuraBar(element, index)
 	bar.spark = spark
 	bar.nameText = nameText
 	bar.timeText = timeText
+	bar.tooltipAnchor = element.tooltipAnchor
 	bar.__owner = element
 
 	if(element.PostCreateBar) then element:PostCreateBar(bar) end
