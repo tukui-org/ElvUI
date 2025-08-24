@@ -206,6 +206,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 		return false -- this is from some other thing
 	end
 
+	-- these try functions will update the aura info table, so let them process before returning
 	local added = TrySkipAura(frame, event, unit, shouldDisplay, TryAdded, updateInfo.addedAuras)
 	local updated = TrySkipAura(frame, event, unit, shouldDisplay, TryUpdated, updateInfo.updatedAuraInstanceIDs)
 	local removed = TrySkipAura(frame, event, unit, shouldDisplay, TryRemove, updateInfo.removedAuraInstanceIDs)
