@@ -165,7 +165,8 @@ local function Update(self, event, unit, updateInfo)
 		local canAttack = UnitCanAttack('player', unit) -- store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
 
 		local index = 1
-		local auraInstanceID, aura = next(AuraInfo[unit])
+		local unitAuraInfo = AuraInfo[unit]
+		local auraInstanceID, aura = next(unitAuraInfo)
 		while aura do
 			if not oUF:ShouldSkipAuraFilter(aura, 'HARMFUL') then
 				local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
@@ -199,7 +200,7 @@ local function Update(self, event, unit, updateInfo)
 			end
 
 			index = index + 1
-			auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+			auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 		end
 	end
 

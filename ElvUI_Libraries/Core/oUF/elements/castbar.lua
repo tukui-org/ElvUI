@@ -139,7 +139,8 @@ local function SpecialActive(frame, event, unit, filter)
 	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
 
 	local speed = 1
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
 		if not oUF:ShouldSkipAuraFilter(aura, filter) then
 			speed = specialAuras[aura.spellID]
@@ -149,7 +150,7 @@ local function SpecialActive(frame, event, unit, filter)
 			end
 		end
 
-		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 
 	return speed -- we have to check the entire table otherwise just to see if a faster one is available

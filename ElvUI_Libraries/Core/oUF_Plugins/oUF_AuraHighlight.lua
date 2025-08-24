@@ -40,7 +40,8 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 end
 
 local function Looper(unit, filter, check, list, func)
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
 		if not oUF:ShouldSkipAuraFilter(aura, filter) then
 			local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
@@ -51,7 +52,7 @@ local function Looper(unit, filter, check, list, func)
 			end
 		end
 
-		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 end
 

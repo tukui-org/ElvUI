@@ -129,25 +129,25 @@ end
 local function TryAdded(unit, aura)
 	if not aura.auraInstanceID then return end
 
-	local unitAura = auraInfo[unit]
-	unitAura[aura.auraInstanceID] = aura
+	local unitAuraInfo = auraInfo[unit]
+	unitAuraInfo[aura.auraInstanceID] = aura
 end
 
 local empty = {} -- incase of failure
 local function TryUpdated(unit, auraInstanceID)
-	local unitAura = auraInfo[unit]
+	local unitAuraInfo = auraInfo[unit]
 
 	local aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get new info
-	unitAura[auraInstanceID] = aura  -- update the data
+	unitAuraInfo[auraInstanceID] = aura  -- update the data
 
 	return aura or empty
 end
 
 local function TryRemove(unit, auraInstanceID)
-	local unitAura = auraInfo[unit]
-	local aura = unitAura[auraInstanceID]
+	local unitAuraInfo = auraInfo[unit]
+	local aura = unitAuraInfo[auraInstanceID]
 
-	unitAura[auraInstanceID] = nil -- remove it
+	unitAuraInfo[auraInstanceID] = nil -- remove it
 
 	return aura or true
 end

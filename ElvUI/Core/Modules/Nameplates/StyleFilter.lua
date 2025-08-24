@@ -365,7 +365,8 @@ end
 function NP:StyleFilterDispelCheck(frame, event, filter)
 	if ElvUF:ShouldSkipAuraUpdate(frame, event, frame.unit) then return end
 
-	local auraInstanceID, aura = next(AuraInfo[frame.unit])
+	local unitAuraInfo = AuraInfo[frame.unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
 		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
 			local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
@@ -381,7 +382,7 @@ function NP:StyleFilterDispelCheck(frame, event, filter)
 			end
 		end
 
-		auraInstanceID, aura = next(AuraInfo[frame.unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 end
 
@@ -393,7 +394,8 @@ function NP:StyleFilterAuraData(frame, event, filter, unit)
 	end
 
 	local index = 1
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
 		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
 			local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
@@ -407,7 +409,7 @@ function NP:StyleFilterAuraData(frame, event, filter, unit)
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 
 	return temp

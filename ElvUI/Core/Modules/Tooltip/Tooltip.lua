@@ -442,7 +442,8 @@ end
 function TT:AddMountInfo(tt, unit)
 	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
 
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
 		local mountID = not ElvUF:ShouldSkipAuraFilter(aura, 'HELPFUL') and E.MountIDs[aura.spellId]
 		if mountID then
@@ -465,7 +466,7 @@ function TT:AddMountInfo(tt, unit)
 			break
 		end
 
-		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 end
 

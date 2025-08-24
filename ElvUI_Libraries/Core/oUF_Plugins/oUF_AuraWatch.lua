@@ -226,7 +226,8 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	if not offset then offset = 0 end
 
 	local index, visible, hidden = 1, 0, 0
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local unitAuraInfo = AuraInfo[unit]
+	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura and (visible < limit) do
 		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
@@ -236,7 +237,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(AuraInfo[unit], auraInstanceID)
+		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
 	end
 
 	if not dontHide then
