@@ -17,6 +17,7 @@ local DebuffColors = LibDispel:GetDebuffTypeColor()
 local abs = math.abs
 local type, pairs, wipe = type, pairs, wipe
 
+local UnpackAuraData = AuraUtil.UnpackAuraData
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
 local GetTime = GetTime
@@ -164,37 +165,40 @@ local function Update(self, event, unit, updateInfo)
 		local canAttack = UnitCanAttack('player', unit) -- store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
 
 		local index = 1
-		local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = oUF:GetAuraData(unit, index, 'HARMFUL')
-		while name do
-			-- we coudln't dispel if the unit its charmed, or its not friendly
-			if debuffType and (not isCharmed and not canAttack) and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
-				local priority
-				if addon.FilterDispellableDebuff then
-					DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
+		local auraInstanceID, aura = next(auraInfo[unit])
+		while aura do
+			local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
+			if name and not oUF:ShouldSkipAuraFilter(aura, 'HARMFUL') then
+				-- we coudln't dispel if the unit its charmed, or its not friendly
+				if debuffType and (not isCharmed and not canAttack) and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
+					local priority
+					if addon.FilterDispellableDebuff then
+						DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
 
-					priority = (DispelFilter[debuffType] and DispelPriority[debuffType]) or 0
+						priority = (DispelFilter[debuffType] and DispelPriority[debuffType]) or 0
 
-					if priority == 0 then
-						debuffType = nil
+						if priority == 0 then
+							debuffType = nil
+						end
+					else
+						priority = DispelPriority[debuffType] or 0
 					end
-				else
-					priority = DispelPriority[debuffType] or 0
+
+					if priority > _priority then
+						_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
+					end
 				end
 
-				if priority > _priority then
+				-- handle from the list
+				local data = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
+				local priority = data and data.priority
+				if priority and (priority > _priority) then
 					_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 				end
 			end
 
-			-- handle from the list
-			local data = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
-			local priority = data and data.priority
-			if priority and (priority > _priority) then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
-			end
-
 			index = index + 1
-			name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = oUF:GetAuraData(unit, index, 'HARMFUL')
+			auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 		end
 	end
 

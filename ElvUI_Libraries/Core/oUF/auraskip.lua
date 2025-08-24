@@ -203,7 +203,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 end
 
 -- C_UnitAuras.GetAuraDataByIndex has this info
-function oUF:CheckAuraFilter(aura, filter)
+function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then return end
 
 	if filter == 'HELPFUL' then

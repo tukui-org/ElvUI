@@ -184,7 +184,7 @@ local function postOnlyMissing(element, unit, offset)
 end
 
 local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
-	if oUF:CheckAuraFilter(aura, filter) then return end
+	if oUF:ShouldSkipAuraFilter(aura, filter) then return end
 
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end

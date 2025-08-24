@@ -134,20 +134,24 @@ if oUF.isClassic then
 	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
 end
 
-local function SpecialActive(unit, filter)
+local function SpecialActive(frame, event, unit, filter)
 	if not next(specialAuras) then return end
 
-	local index, speed = 1
-	local name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
-	while name do
-		speed = specialAuras[spellID];
+	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(frame, event, unit)
+	if auraSkip then return end
 
-		if speed == 0.6 then
-			return speed -- fastest speed
+	local speed = 1
+	local auraInstanceID, aura = next(auraInfo[unit])
+	while aura do
+		if not oUF:ShouldSkipAuraFilter(aura, filter) then
+			speed = specialAuras[aura.spellID]
+
+			if speed == 0.6 then
+				return speed -- fastest speed
+			end
 		end
 
-		index = index + 1
-		name, _, _, _, _, _, _, _, _, spellID = oUF:GetAuraData(unit, index, filter)
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 
 	return speed -- we have to check the entire table otherwise just to see if a faster one is available
@@ -276,7 +280,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, real, unit, 'HELPFUL')
 			if speedMod then
 				castTime = castTime * speedMod
 			end

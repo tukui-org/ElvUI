@@ -2,6 +2,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local UnitCanAssist = UnitCanAssist
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -36,27 +37,29 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 	end
 end
 
-local function Looper(unit, filter, check, list, func)
-	local index = 1
-	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
-	while name do
-		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
-		if Icon then
-			return AuraType, Icon, filtered, style, color
-		else
-			index = index + 1
-			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
+local function Looper(unit, auraInfo, filter, check, list, func)
+	local auraInstanceID, aura = next(auraInfo[unit])
+	while aura do
+		if not oUF:ShouldSkipAuraFilter(aura, filter) then
+			local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
+			local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+
+			if Icon then
+				return AuraType, Icon, filtered, style, color
+			end
 		end
+
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 end
 
-local function GetAuraType(unit, check, list)
+local function GetAuraType(unit, auraInfo, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local auraType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
+	local auraType, icon, filtered, style, color = Looper(unit, auraInfo, 'HARMFUL', check, list, DebuffLoop)
 	if icon then return auraType, icon, filtered, style, color end
 
-	auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+	auraType, icon, filtered, style, color = Looper(unit, auraInfo, 'HELPFUL', check, list, BuffLoop)
 	if icon then return auraType, icon, filtered, style, color end
 end
 
@@ -64,7 +67,7 @@ local function Update(self, event, unit, updateInfo)
 	local auraSkip, auraInfo = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
 	if auraSkip then return end
 
-	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, auraInfo, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
 	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then
