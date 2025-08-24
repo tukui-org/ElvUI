@@ -95,12 +95,8 @@ local UnpackAuraData = AuraUtil.UnpackAuraData
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
 
-	local element = self:GetParent()
-	if self.filter == 'HELPFUL' then
-		GameTooltip:SetUnitBuffByAuraInstanceID(element.__owner.unit, self.auraInstanceID)
-	else
-		GameTooltip:SetUnitDebuffByAuraInstanceID(element.__owner.unit, self.auraInstanceID)
-	end
+	-- we need compatibility here because this wasnt implemented on Era or Mists
+	oUF:SetTooltipByAuraInstanceID(GameTooltip, self:GetParent().__owner.unit, self.auraInstanceID, self.filter)
 end
 
 local function onEnter(self)

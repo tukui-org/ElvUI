@@ -13,6 +13,7 @@ local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 
 local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer = false
@@ -241,4 +242,38 @@ function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
 	if not unit or (frame.unit and frame.unit ~= unit) then return true end
 
 	return ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay or CouldDisplayAura)
+end
+
+-- Blizzard didnt implement the tooltip functions on Era or Mists
+function oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
+	local index = 1
+	local aura = GetAuraDataByIndex(unit, index, filter)
+	while aura do
+		if aura.auraInstanceID == auraInstanceID then
+			return index
+		end
+
+		index = index + 1
+		aura = GetAuraDataByIndex(unit, index, filter)
+	end
+end
+
+function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
+	if filter == 'HELPFUL' then
+		if tt.SetUnitBuffByAuraInstanceID then
+			tt:SetUnitBuffByAuraInstanceID(unit, auraInstanceID)
+		else
+			local index = oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
+			if index then
+				tt:SetUnitBuff(unit, index)
+			end
+		end
+	elseif tt.SetUnitDebuffByAuraInstanceID then
+		tt:SetUnitDebuffByAuraInstanceID(unit, auraInstanceID)
+	else
+		local index = oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
+		if index then
+			tt:SetUnitDebuff(unit, index)
+		end
+	end
 end

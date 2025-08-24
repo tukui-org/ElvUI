@@ -46,11 +46,8 @@ local function onEnter(self)
 
 	GameTooltip:SetOwner(self, self.tooltipAnchor)
 
-	if self.filter == 'HELPFUL' then
-		GameTooltip:SetUnitBuffByAuraInstanceID(self.unit, self.auraInstanceID)
-	else
-		GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
-	end
+	-- we need compatibility here because this wasnt implemented on Era or Mists
+	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
 end
 
 local function onLeave()
