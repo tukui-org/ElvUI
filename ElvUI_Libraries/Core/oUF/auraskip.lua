@@ -3,6 +3,7 @@ local oUF = ns.oUF
 
 local next = next
 local wipe = wipe
+local select = select
 local unpack = unpack
 
 local SpellIsSelfBuff = SpellIsSelfBuff
@@ -10,7 +11,8 @@ local SpellIsPriorityAura = SpellIsPriorityAura
 local UnitAffectingCombat = UnitAffectingCombat
 local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 
-local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local GetAuraSlots = C_UnitAuras.GetAuraSlots
+local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer = false
@@ -166,15 +168,27 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 	return skip
 end
 
-local function ProcessExisting(frame, unit)
-	local index = 1
-	local aura = GetAuraDataByIndex(unit, index)
-	while aura do
-		TryAdded(frame, unit, aura)
-
-		index = index + 1
-		aura = GetAuraDataByIndex(unit, index)
+local function ProcessAura(frame, unit, token, ...)
+	local numSlots = select('#', ...)
+	for i = 1, numSlots do
+		local slot = select(i, ...)
+		local aura = GetAuraDataBySlot(unit, slot)
+		if aura then
+			TryAdded(frame, unit, aura)
+		end
 	end
+
+	return token
+end
+
+local function ProcessTokens(frame, unit, token, ...)
+	repeat token = ProcessAura(frame, unit, token, ...)
+	until not token
+end
+
+local function ProcessExisting(frame, unit)
+	ProcessTokens(frame, unit, GetAuraSlots(unit, 'HELPFUL'))
+	ProcessTokens(frame, unit, GetAuraSlots(unit, 'HARMFUL'))
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
