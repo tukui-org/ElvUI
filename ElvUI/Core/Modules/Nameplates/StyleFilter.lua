@@ -49,6 +49,7 @@ local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -360,32 +361,44 @@ function NP:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 	end
 end
 
-function NP:StyleFilterDispelCheck(frame, filter)
-	local index = 1
-	local name, _, _, auraType, _, _, _, isStealable, _, spellID = E:GetAuraData(frame.unit, index, filter)
-	while name do
-		if filter == 'HELPFUL' then
-			if isStealable then
+function NP:StyleFilterDispelCheck(frame, event, filter)
+	local unit = frame.unit
+	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
+	if auraSkip then return end
+
+	local auraInstanceID, aura = next(auraInfo[unit])
+	while aura do
+		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
+			local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
+
+			if filter == 'HELPFUL' then
+				if isStealable then
+					return true
+				end
+			elseif auraType and DispelTypes[auraType] then
+				return true
+			elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
 				return true
 			end
-		elseif auraType and DispelTypes[auraType] then
-			return true
-		elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
-			return true
 		end
 
-		index = index + 1
-		name, _, _, auraType, _, _, _, isStealable, _, spellID = E:GetAuraData(frame.unit, index, filter)
+		auraInstanceID, aura = next(auraInfo[frame.unit], auraInstanceID)
 	end
 end
 
-function NP:StyleFilterAuraData(frame, filter, unit)
+function NP:StyleFilterAuraData(frame, event, filter, unit)
 	local temp = {}
 
-	if unit then
-		local index = 1
-		local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = E:GetAuraData(unit, index, filter)
-		while name do
+	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
+	if auraSkip then
+		return temp
+	end
+
+	local index = 1
+	local auraInstanceID, aura = next(auraInfo[unit])
+	while aura do
+		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
+			local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
 			local info = temp[name] or temp[spellID]
 			if not info then info = {} end
 
@@ -393,16 +406,16 @@ function NP:StyleFilterAuraData(frame, filter, unit)
 			temp[spellID] = info
 
 			info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
-
-			index = index + 1
-			name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = E:GetAuraData(unit, index, filter)
 		end
+
+		index = index + 1
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 
 	return temp
 end
 
-function NP:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
+function NP:StyleFilterAuraCheck(frame, event, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
 	local total, matches, now = 0, 0, GetTime()
 	local temp -- data of current auras
 
@@ -411,7 +424,7 @@ function NP:StyleFilterAuraCheck(frame, names, tickers, filter, mustHaveAll, mis
 			total = total + 1 -- keep track of the names
 
 			if not temp then
-				temp = NP:StyleFilterAuraData(frame, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
+				temp = NP:StyleFilterAuraData(frame, event, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
 			end
 
 			local spell, count = strmatch(key, NP.StyleFilterStackPattern)
@@ -776,7 +789,7 @@ function NP:StyleFilterThreatUpdate(frame, unit)
 	end
 end
 
-function NP:StyleFilterConditionCheck(frame, filter, trigger)
+function NP:StyleFilterConditionCheck(frame, event, filter, trigger)
 	local passed -- skip StyleFilterPass when triggers are empty
 
 	-- Class and Specialization
@@ -1219,13 +1232,13 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Buffs_ and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
-			local isStealable = NP:StyleFilterDispelCheck(frame, 'HELPFUL')
+			local isStealable = NP:StyleFilterDispelCheck(frame, event, 'HELPFUL')
 			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = NP:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
+			local buff = NP:StyleFilterAuraCheck(frame, event, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1236,12 +1249,12 @@ function NP:StyleFilterConditionCheck(frame, filter, trigger)
 	if frame.Debuffs_ and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
-			local canDispel = NP:StyleFilterDispelCheck(frame, 'HARMFUL')
+			local canDispel = NP:StyleFilterDispelCheck(frame, event, 'HARMFUL')
 			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
-		local debuff = NP:StyleFilterAuraCheck(frame, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
+		local debuff = NP:StyleFilterAuraCheck(frame, event, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end
@@ -1635,7 +1648,7 @@ function NP:StyleFilterUpdate(frame, event)
 	for filterNum in ipairs(NP.StyleFilterTriggerList) do
 		local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 		if filter then
-			NP:StyleFilterConditionCheck(frame, filter, filter.triggers)
+			NP:StyleFilterConditionCheck(frame, event, filter, filter.triggers)
 		end
 	end
 
