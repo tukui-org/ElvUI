@@ -202,7 +202,9 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 end
 
 function oUF:ShouldSkipAuraFilter(aura, filter)
-	if not aura then return end
+	if not aura then
+		return true
+	end
 
 	if filter == 'HELPFUL' then
 		return not aura.isHelpful

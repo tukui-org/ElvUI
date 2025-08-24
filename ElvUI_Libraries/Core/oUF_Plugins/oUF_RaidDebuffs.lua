@@ -167,8 +167,9 @@ local function Update(self, event, unit, updateInfo)
 		local index = 1
 		local auraInstanceID, aura = next(auraInfo[unit])
 		while aura do
-			local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
-			if name and not oUF:ShouldSkipAuraFilter(aura, 'HARMFUL') then
+			if not oUF:ShouldSkipAuraFilter(aura, 'HARMFUL') then
+				local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
+
 				-- we coudln't dispel if the unit its charmed, or its not friendly
 				if debuffType and (not isCharmed and not canAttack) and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
 					local priority

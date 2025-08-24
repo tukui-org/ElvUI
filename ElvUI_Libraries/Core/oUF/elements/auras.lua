@@ -168,8 +168,6 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
-	if oUF:ShouldSkipAuraFilter(aura, filter) then return end
-
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 
 	if element.forceShow or element.forceCreate then
@@ -338,7 +336,7 @@ local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, off
 	local index = 1
 	local auraInstanceID, aura = next(auraInfo[unit])
 	while aura and (visible < limit) do
-		local result = updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
