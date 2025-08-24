@@ -363,11 +363,9 @@ function NP:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 end
 
 function NP:StyleFilterDispelCheck(frame, event, filter)
-	local unit = frame.unit
-	local auraSkip = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
-	if auraSkip then return end
+	if ElvUF:ShouldSkipAuraUpdate(frame, event, frame.unit) then return end
 
-	local auraInstanceID, aura = next(AuraInfo[unit])
+	local auraInstanceID, aura = next(AuraInfo[frame.unit])
 	while aura do
 		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
 			local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
@@ -390,8 +388,7 @@ end
 function NP:StyleFilterAuraData(frame, event, filter, unit)
 	local temp = {}
 
-	local auraSkip = ElvUF:ShouldSkipAuraUpdate(frame, event, unit)
-	if auraSkip then
+	if ElvUF:ShouldSkipAuraUpdate(frame, event, unit) then
 		return temp
 	end
 

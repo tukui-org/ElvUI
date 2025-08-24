@@ -363,8 +363,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
-	if auraSkip then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local auras = self.Auras
 	if(auras) then

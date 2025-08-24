@@ -66,8 +66,7 @@ local function GetAuraType(unit, check, list)
 end
 
 local function Update(self, event, unit, updateInfo)
-	local auraSkip = oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo)
-	if auraSkip then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 

@@ -439,8 +439,7 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 end
 
 function TT:AddMountInfo(tt, unit)
-	local auraSkip = ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit)
-	if auraSkip then return end
+	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
 
 	local auraInstanceID, aura = next(AuraInfo[unit])
 	while aura do

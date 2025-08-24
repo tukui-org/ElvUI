@@ -136,10 +136,7 @@ if oUF.isClassic then
 end
 
 local function SpecialActive(frame, event, unit, filter)
-	if not next(specialAuras) then return end
-
-	local auraSkip = oUF:ShouldSkipAuraUpdate(frame, event, unit)
-	if auraSkip then return end
+	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
 
 	local speed = 1
 	local auraInstanceID, aura = next(AuraInfo[unit])
