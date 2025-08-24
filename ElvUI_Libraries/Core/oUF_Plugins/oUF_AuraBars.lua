@@ -45,7 +45,12 @@ local function onEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:SetOwner(self, self.tooltipAnchor)
-	GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
+
+	if self.filter == 'HELPFUL' then
+		GameTooltip:SetUnitBuffByAuraInstanceID(self.unit, self.auraInstanceID)
+	else
+		GameTooltip:SetUnitDebuffByAuraInstanceID(self.unit, self.auraInstanceID)
+	end
 end
 
 local function onLeave()
@@ -186,6 +191,7 @@ local function auraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.modRate = modRate
 	bar.spellID = spellID
 	bar.spell = name
+	bar.auraInstanceID = aura.auraInstanceID
 	bar.noTime = (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or customFilter) (element, unit, bar, name, texture,

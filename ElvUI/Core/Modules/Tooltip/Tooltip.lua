@@ -71,6 +71,7 @@ local UnitSex = UnitSex
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemCount = C_Item.GetItemCount
@@ -857,12 +858,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	end
 end
 
-function TT:SetUnitAura(tt, unit, index, filter)
-	if not tt or tt:IsForbidden() then return end
-
-	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
-	if not name then return end
-
+function TT:ShowAuraInfo(tt, source, spellID)
 	local mountID, mountText = E.MountIDs[spellID]
 	if mountID then
 		local sourceText = E.MountText[mountID]
@@ -889,6 +885,27 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	end
 
 	tt:Show()
+end
+
+function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
+	if not tt or tt:IsForbidden() then return end
+
+	local unitAura = AuraInfo[unit]
+	local aura = unitAura and unitAura[auraInstanceID]
+	if not aura then return end
+
+	local _, _, _, _, _, _, source, _, _, spellID = UnpackAuraData(aura)
+
+	TT:ShowAuraInfo(tt, source, spellID)
+end
+
+function TT:SetUnitAura(tt, unit, index, filter)
+	if not tt or tt:IsForbidden() then return end
+
+	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
+	if not name then return end
+
+	TT:ShowAuraInfo(tt, source, spellID)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
@@ -1085,6 +1102,8 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
+	TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
+	TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
