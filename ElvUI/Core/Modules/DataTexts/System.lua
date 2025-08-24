@@ -52,6 +52,8 @@ local CombineAddOns = {
 	['Details'] = '^Details!',
 	['RaiderIO'] = '^RaiderIO',
 	['BigWigs'] = '^BigWigs',
+	['HandyNotes'] = '^HandyNotes',
+	['SilverDragon'] = '^SilverDragon'
 }
 
 local function formatMem(memory)
