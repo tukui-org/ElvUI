@@ -265,7 +265,7 @@ function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
 		else
 			local index = oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
 			if index then
-				tt:SetUnitBuff(unit, index)
+				tt:SetUnitBuff(unit, index, filter)
 			end
 		end
 	elseif tt.SetUnitDebuffByAuraInstanceID then
@@ -273,7 +273,7 @@ function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
 	else
 		local index = oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
 		if index then
-			tt:SetUnitDebuff(unit, index)
+			tt:SetUnitDebuff(unit, index, filter)
 		end
 	end
 end
