@@ -44,7 +44,7 @@ end
 local function onEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	GameTooltip:SetOwner(self, self.tooltipAnchor)
+	GameTooltip:SetOwner(self, self.__owner.__restricted and 'ANCHOR_CURSOR' or self.__owner.tooltipAnchor)
 
 	-- we need compatibility here because this wasnt implemented on Era or Mists
 	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
@@ -106,7 +106,6 @@ local function createAuraBar(element, index)
 	bar.spark = spark
 	bar.nameText = nameText
 	bar.timeText = timeText
-	bar.tooltipAnchor = element.tooltipAnchor
 	bar.__owner = element
 
 	if(element.PostCreateBar) then element:PostCreateBar(bar) end
@@ -330,12 +329,8 @@ local function Enable(self)
 		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 		-- otherwise it'll inherit said restrictions which will cause issues
 		-- with its further positioning, clamping, etc
-
-		if(not pcall(self.GetCenter, self)) then
-			element.tooltipAnchor = 'ANCHOR_CURSOR'
-		else
-			element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
-		end
+		element.__restricted = not pcall(self.GetCenter, self)
+		element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 		element:Show()
 
