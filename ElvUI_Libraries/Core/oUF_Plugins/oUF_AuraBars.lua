@@ -5,6 +5,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local mod = mod
+local next = next
 local wipe = wipe
 local pcall = pcall
 local unpack = unpack

@@ -15,7 +15,7 @@ local DispelFilter = LibDispel:GetMyDispelTypes()
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
 local abs = math.abs
-local type, pairs, wipe = type, pairs, wipe
+local type, next, pairs, wipe = type, next, pairs, wipe
 
 local UnpackAuraData = AuraUtil.UnpackAuraData
 local UnitCanAttack = UnitCanAttack

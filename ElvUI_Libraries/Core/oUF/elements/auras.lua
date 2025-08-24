@@ -80,6 +80,7 @@ local HIDDEN = 0
 local CREATED = 2
 
 local wipe = wipe
+local next = next
 local pcall = pcall
 local tinsert = tinsert
 local UnitIsUnit = UnitIsUnit

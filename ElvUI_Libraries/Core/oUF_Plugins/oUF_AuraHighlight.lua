@@ -1,6 +1,7 @@
 local _, ns = ...
 local oUF = ns.oUF
 
+local next = next
 local UnitCanAssist = UnitCanAssist
 local UnpackAuraData = AuraUtil.UnpackAuraData
 

@@ -7,7 +7,7 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
-local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
+local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
 local GetSpellTexture = C_Spell.GetSpellTexture or GetSpellTexture
 local UnpackAuraData = AuraUtil.UnpackAuraData
 local CreateFrame = CreateFrame
