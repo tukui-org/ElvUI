@@ -233,13 +233,11 @@ local function filterBars(element, unit, auraInfo, filter, limit, isDebuff, offs
 
 	local index = 1
 	local auraInstanceID, aura = next(auraInfo[unit])
-	while(visible < limit) do
+	while aura and (visible < limit) do
 		local result = auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
-		if(not result) then
-			break
-		elseif(result == VISIBLE) then
+		if result == VISIBLE then
 			visible = visible + 1
-		elseif(result == HIDDEN) then
+		elseif result == HIDDEN then
 			hidden = hidden + 1
 		end
 

@@ -337,19 +337,15 @@ local function filterIcons(element, unit, auraInfo, filter, limit, isDebuff, off
 
 	local index = 1
 	local auraInstanceID, aura = next(auraInfo[unit])
-	while(visible < limit) do
+	while aura and (visible < limit) do
 		local result = updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
-		if(not result) then
-			break
-		elseif(result == VISIBLE) then
+		if result == VISIBLE then
 			visible = visible + 1
-		elseif(result == HIDDEN) then
+		elseif result == HIDDEN then
 			hidden = hidden + 1
-		-- ElvUI changed block
 		elseif result == CREATED then
 			visible = visible + 1
 			created = created + 1
-		-- end block
 		end
 
 		index = index + 1

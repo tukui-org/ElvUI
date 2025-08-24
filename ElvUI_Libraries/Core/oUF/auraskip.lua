@@ -1,8 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 
--- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
-
 local next = next
 local wipe = wipe
 local unpack = unpack
@@ -11,8 +9,9 @@ local SpellIsSelfBuff = SpellIsSelfBuff
 local SpellIsPriorityAura = SpellIsPriorityAura
 local UnitAffectingCombat = UnitAffectingCombat
 local SpellGetVisibilityInfo = SpellGetVisibilityInfo
-local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer = false
 local cachedVisibility = {}
@@ -167,7 +166,7 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 	return skip
 end
 
-local function ProcessExisting(frame, event, unit)
+local function ProcessExisting(frame, unit)
 	local index = 1
 	local aura = GetAuraDataByIndex(unit, index)
 	while aura do
@@ -186,7 +185,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
 		wipe(auraInfo[unit]) -- clear this since we cant verify it
 
-		ProcessExisting(frame, event, unit) -- we need to collect full data here
+		ProcessExisting(frame, unit) -- we need to collect full data here
 
 		return false, auraInfo -- this is from some other thing
 	end
@@ -202,7 +201,6 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	return true, auraInfo -- who are you
 end
 
--- C_UnitAuras.GetAuraDataByIndex has this info
 function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then return end
 
@@ -219,6 +217,7 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 end
 
+-- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
 	if not unit or (frame.unit and frame.unit ~= unit) then return true end
 
