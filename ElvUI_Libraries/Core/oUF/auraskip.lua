@@ -220,7 +220,7 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 end
 
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
-	if not unit or frame.unit ~= unit then return true end
+	if not unit or (frame.unit and frame.unit ~= unit) then return true end
 
 	return ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay or CouldDisplayAura)
 end

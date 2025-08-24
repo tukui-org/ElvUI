@@ -4,6 +4,7 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
@@ -437,12 +438,14 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 end
 
 function TT:AddMountInfo(tt, unit)
-	local index = 1
-	local name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
-	while name do
-		local mountID = E.MountIDs[spellID]
+	local auraSkip, auraInfo = ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit)
+	if auraSkip then return end
+
+	local auraInstanceID, aura = next(auraInfo[unit])
+	while aura do
+		local mountID = not ElvUF:ShouldSkipAuraFilter(aura, 'HELPFUL') and E.MountIDs[aura.spellId]
 		if mountID then
-			tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
+			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
 			local sourceText = E.MountText[mountID]
 			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
@@ -459,10 +462,9 @@ function TT:AddMountInfo(tt, unit)
 			end
 
 			break
-		else
-			index = index + 1
-			name, _, _, _, _, _, _, _, _, spellID = E:GetAuraData(unit, index, 'HELPFUL')
 		end
+
+		auraInstanceID, aura = next(auraInfo[unit], auraInstanceID)
 	end
 end
 
