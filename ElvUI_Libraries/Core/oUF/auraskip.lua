@@ -126,7 +126,7 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	return false
 end
 
-local function TryAdded(frame, unit, aura)
+local function TryAdded(unit, aura)
 	if not aura.auraInstanceID then return end
 
 	local unitAura = auraInfo[unit]
@@ -134,7 +134,7 @@ local function TryAdded(frame, unit, aura)
 end
 
 local empty = {} -- incase of failure
-local function TryUpdated(frame, unit, auraInstanceID)
+local function TryUpdated(unit, auraInstanceID)
 	local unitAura = auraInfo[unit]
 
 	local aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get new info
@@ -143,7 +143,7 @@ local function TryUpdated(frame, unit, auraInstanceID)
 	return aura or empty
 end
 
-local function TryRemove(frame, unit, auraInstanceID)
+local function TryRemove(unit, auraInstanceID)
 	local unitAura = auraInfo[unit]
 	local aura = unitAura[auraInstanceID]
 
@@ -159,7 +159,7 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 
 	local skip = true
 	for _, value in next, auras do
-		local aura = tryFunc(frame, unit, value) -- collect the aura from updated or check if a preexisting was removed
+		local aura = tryFunc(unit, value) -- collect the aura from updated or check if a preexisting was removed
 		if aura == true then -- an aura that existed during load was removed
 			skip = false -- this can also happen with nameplates that spawn in and an aura is removed
 		elseif skip then -- check skip status
@@ -170,27 +170,27 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 	return skip
 end
 
-local function ProcessAura(frame, unit, token, ...)
+local function ProcessAura(unit, token, ...)
 	local numSlots = select('#', ...)
 	for i = 1, numSlots do
 		local slot = select(i, ...)
 		local aura = GetAuraDataBySlot(unit, slot)
 		if aura then
-			TryAdded(frame, unit, aura)
+			TryAdded(unit, aura)
 		end
 	end
 
 	return token
 end
 
-local function ProcessTokens(frame, unit, token, ...)
-	repeat token = ProcessAura(frame, unit, token, ...)
+local function ProcessTokens(unit, token, ...)
+	repeat token = ProcessAura(unit, token, ...)
 	until not token
 end
 
-local function ProcessExisting(frame, unit)
-	ProcessTokens(frame, unit, GetAuraSlots(unit, 'HELPFUL'))
-	ProcessTokens(frame, unit, GetAuraSlots(unit, 'HARMFUL'))
+local function ProcessExisting(unit)
+	ProcessTokens(unit, GetAuraSlots(unit, 'HELPFUL'))
+	ProcessTokens(unit, GetAuraSlots(unit, 'HARMFUL'))
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
@@ -201,7 +201,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
 		wipe(auraInfo[unit]) -- clear this since we cant verify it
 
-		ProcessExisting(frame, unit) -- we need to collect full data here
+		ProcessExisting(unit) -- we need to collect full data here
 
 		return false -- this is from some other thing
 	end
