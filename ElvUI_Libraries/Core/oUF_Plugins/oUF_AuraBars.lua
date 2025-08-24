@@ -255,7 +255,7 @@ end
 
 local function UpdateAuras(self, event, unit, updateInfo)
 	local element = self.AuraBars
-	if element then return end
+	if not element then return end
 
 	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
