@@ -55,6 +55,8 @@ local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
+local SPEC_MAGE_FIRE = _G.SPEC_MAGE_FIRE or 2
+local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
 local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
@@ -73,7 +75,12 @@ local POWERTYPE_DEMONIC_FURY = Enum.PowerType.DemonicFury or 15
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local POWERTYPE_ESSENCE = Enum.PowerType.Essence or 19
 local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
+local POWERTYPE_ICICLES = -2 -- this is fake, -1 is a fallback
 
+local SPELL_FROST_ICICLES = 205473 -- retail
+local SPELL_ARCANE_CHARGE = 36032 -- mists
+
+local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
@@ -82,6 +89,7 @@ local ClassPowerType, ClassPowerID = {
 	[POWERTYPE_SHADOW_ORBS] = 'SHADOW_ORBS',
 	[POWERTYPE_COMBO_POINTS] = 'COMBO_POINTS',
 	[POWERTYPE_ARCANE_CHARGES] = 'ARCANE_CHARGES',
+	[POWERTYPE_ICICLES] = 'FROST_ICICLES',
 	[POWERTYPE_ESSENCE] = 'ESSENCE',
 	[POWERTYPE_HOLY_POWER] = 'HOLY_POWER',
 	[POWERTYPE_SOUL_SHARDS] = 'SOUL_SHARDS',
@@ -122,7 +130,10 @@ local function UpdateColor(element, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if event == 'UNIT_AURA' then powerType = 'ARCANE_CHARGES' end
+	if event == 'UNIT_AURA' then
+		powerType = (ClassPowerID == POWERTYPE_ARCANE_CHARGES and 'ARCANE_CHARGES') or (ClassPowerID == POWERTYPE_ICICLES and 'FROST_ICICLES')
+	end
+
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 	if not (unit and UnitIsUnit(unit, 'player')) then return end
 
@@ -145,21 +156,25 @@ local function Update(self, event, unit, powerType)
 	local cur, max, oldMax, chargedPoints
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
-		local mod = UnitPowerDisplayMod(powerID)
+		local mod = powerID > 0 and UnitPowerDisplayMod(powerID)
 
 		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS
+		local mageIcicles = ClassPowerID == POWERTYPE_ICICLES
 
-		max = (warlockDemo and 1) or (warlockDest and 4) or UnitPowerMax(unit, powerID, warlockDest)
+		max = (warlockDemo and 1) or (warlockDest and 4) or (mageIcicles and 5) or UnitPowerMax(unit, powerID, warlockDest)
 
 		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			cur = 0
-		elseif oUF.isRetail and CurrentSpec == SPEC_WARLOCK_DESTRUCTION then -- destro locks are special
+		elseif oUF.isRetail and ClassPowerID == POWERTYPE_DEMONIC_FURY then -- destro locks are special
 			cur = UnitPower(unit, powerID, true) / mod
+		elseif ClassPowerID == POWERTYPE_ICICLES then
+			local info = GetPlayerAuraBySpellID(SPELL_FROST_ICICLES)
+			cur = (info and info.isHelpful and info.applications) or 0
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			local info = C_UnitAuras.GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
+			local info = GetPlayerAuraBySpellID(SPELL_ARCANE_CHARGE)
 			cur = (info and info.isHarmful and info.applications) or 0
 		else
 			local current = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
@@ -227,7 +242,7 @@ local function Visibility(self, event, unit)
 	elseif PlayerClass == 'WARLOCK' then
 		ClassPowerID = oUF.isMists and ((CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
 	elseif PlayerClass == 'MAGE' then
-		ClassPowerID = (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
+		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
 		ClassPowerID = (CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
 	end
@@ -311,7 +326,7 @@ do
 			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 		end
 
-		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
+		if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or ClassPowerID == POWERTYPE_ICICLES then
 			self:RegisterEvent('UNIT_AURA', Path)
 		end
 
@@ -334,7 +349,7 @@ do
 			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 		end
 
-		if oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
+		if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or ClassPowerID == POWERTYPE_ICICLES then
 			self:UnregisterEvent('UNIT_AURA')
 		end
 
@@ -366,10 +381,6 @@ do
 			RequirePower = POWERTYPE_ENERGY
 			RequireSpell = oUF.isRetail and 5221 or 768
 		end
-	elseif(PlayerClass == 'MAGE') then
-		ClassPowerID = POWERTYPE_ARCANE_CHARGES
-
-		RequireSpec[SPEC_MAGE_ARCANE] = true
 	elseif(PlayerClass == 'EVOKER') then
 		ClassPowerID = POWERTYPE_ESSENCE
 	end
