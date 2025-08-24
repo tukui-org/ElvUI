@@ -891,8 +891,8 @@ end
 function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
 	if not tt or tt:IsForbidden() then return end
 
-	local unitAura = AuraInfo[unit]
-	local aura = unitAura and unitAura[auraInstanceID]
+	local unitAuraInfo = AuraInfo[unit]
+	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
 	if not aura then return end
 
 	local _, _, _, _, _, _, source, _, _, spellID = UnpackAuraData(aura)
