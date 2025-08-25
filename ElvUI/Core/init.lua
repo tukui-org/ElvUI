@@ -262,7 +262,7 @@ do
 	end
 
 	for _, addon in next, alwaysDisable do
-		DisableAddOn(addon)
+		DisableAddOn(addon, E.myguid)
 	end
 end
 

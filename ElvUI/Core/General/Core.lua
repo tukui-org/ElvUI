@@ -516,7 +516,7 @@ end
 
 do
 	local cancel = function(popup)
-		DisableAddOn(popup.addon)
+		DisableAddOn(popup.addon, E.myguid)
 		ReloadUI()
 	end
 

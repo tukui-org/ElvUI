@@ -1371,7 +1371,7 @@ function E:ToggleOptions(msg)
 			E:Print('|cffff0000Error|r -- Addon "ElvUI_Options" not found.')
 			return
 		else
-			EnableAddOn('ElvUI_Options')
+			EnableAddOn('ElvUI_Options', E.myguid)
 			LoadAddOn('ElvUI_Options')
 
 			-- version check if it's actually enabled
