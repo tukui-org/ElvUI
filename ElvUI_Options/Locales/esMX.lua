@@ -1306,6 +1306,7 @@ L["Power Prediction"] = true
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "El texto de poder estará oculto en los objetivos PNJ, además el texto del nombre será fijado donde el texto de poder."
 L["Power Threshold"] = true
 L["Power"] = "Poder"
+L["FROST_ICICLES"] = "Icicles"
 L["POWER_TYPE_ARCANE_CHARGES"] = "Cargas Arcanas"
 L["POWER_TYPE_ESSENCE"] = "Esencia"
 L["Prefer Target Color"] = true

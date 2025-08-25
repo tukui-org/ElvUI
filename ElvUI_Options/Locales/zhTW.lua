@@ -1306,6 +1306,7 @@ L["Power Prediction"] = "能量預測"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "NPC 目標將隱藏能量值文字."
 L["Power Threshold"] = "能量閾值"
 L["Power"] = "能量"
+L["FROST_ICICLES"] = "Icicles"
 L["POWER_TYPE_ARCANE_CHARGES"] = "秘法充能"
 L["POWER_TYPE_ESSENCE"] = "龍能"
 L["Prefer Target Color"] = true

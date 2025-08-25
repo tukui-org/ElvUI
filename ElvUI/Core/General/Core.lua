@@ -1470,9 +1470,7 @@ function E:DBConvertTWW()
 			healthBreak.threshold.good = false
 		end
 	end
-end
 
-function E:DBConvertMists()
 	-- soulshard convert
 	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
 		if data.r or data.g or data.b then
@@ -1486,6 +1484,14 @@ function E:DBConvertDev()
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
+	end
+
+	-- mage resource convert
+	for _, data in ipairs({ E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE }) do
+		if data.r or data.g or data.b then
+			data.ARCANE_CHARGES.r, data.ARCANE_CHARGES.g, data.ARCANE_CHARGES.b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
 	end
 end
 
@@ -1955,7 +1961,6 @@ function E:DBConversions()
 		E:DBConvertSL()
 		E:DBConvertDF()
 		E:DBConvertTWW()
-		E:DBConvertMists()
 	end
 
 	-- development convert always

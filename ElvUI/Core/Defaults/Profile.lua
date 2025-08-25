@@ -948,7 +948,10 @@ P.nameplates = {
 				{r = 0.8, g = 0.4, b = 1}
 			},
 			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
-			MAGE = {r = 0, g = 0.62, b = 1.00},
+			MAGE = {
+				FROST_ICICLES = {r = 0, g = 0.80, b = 1.00},
+				ARCANE_CHARGES = {r = 0, g = 0.40, b = 1.00}
+			},
 			EVOKER = {
 				{r = 0.10, g = 0.92, b = 1.00},
 				{r = 0.17, g = 0.94, b = 0.84},
