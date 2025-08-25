@@ -77,8 +77,11 @@ local POWERTYPE_ESSENCE = Enum.PowerType.Essence or 19
 local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 local POWERTYPE_ICICLES = -2 -- this is fake, -1 is a fallback
 
-local SPELL_FROST_ICICLES = 205473 -- retail
-local SPELL_ARCANE_CHARGE = 36032 -- mists
+local SPELL_FROST_ICICLES = 205473
+local SPELL_ARCANE_CHARGE = 36032
+local SPELL_SOULBURN = 74434
+local SPELL_CATFORM = 768
+local SPELL_SHRED = 5221
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
@@ -240,7 +243,7 @@ local function Visibility(self, event, unit)
 	if PlayerClass == 'MONK' then
 		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or -1
 	elseif PlayerClass == 'WARLOCK' then
-		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(74434) and POWERTYPE_SOUL_SHARDS) or -1
+		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or -1
 	elseif PlayerClass == 'MAGE' then
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
@@ -379,7 +382,7 @@ do
 
 		if(PlayerClass == 'DRUID') then
 			RequirePower = POWERTYPE_ENERGY
-			RequireSpell = oUF.isRetail and 5221 or 768
+			RequireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
 		end
 	elseif(PlayerClass == 'EVOKER') then
 		ClassPowerID = POWERTYPE_ESSENCE
