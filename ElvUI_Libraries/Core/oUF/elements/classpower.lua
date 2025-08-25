@@ -240,7 +240,7 @@ local function Visibility(self, event, unit)
 	if PlayerClass == 'MONK' then
 		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or -1
 	elseif PlayerClass == 'WARLOCK' then
-		ClassPowerID = oUF.isMists and ((CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
+		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(74434) and POWERTYPE_SOUL_SHARDS) or -1
 	elseif PlayerClass == 'MAGE' then
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
 	elseif oUF.isMists and PlayerClass == 'PRIEST' then
