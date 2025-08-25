@@ -261,8 +261,10 @@ do
 		tinsert(alwaysDisable, 'kExtraBossFrames')
 	end
 
-	for _, addon in next, alwaysDisable do
-		DisableAddOn(addon, E.myguid)
+	function E:DisableAddons()
+		for _, addon in next, alwaysDisable do
+			DisableAddOn(addon, E.myguid)
+		end
 	end
 end
 
@@ -463,6 +465,7 @@ function E:OnInitialize()
 	E.loadedtime = GetTime()
 
 	E:CheckAddons()
+	E:DisableAddons()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
