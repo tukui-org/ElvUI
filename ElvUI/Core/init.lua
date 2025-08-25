@@ -464,8 +464,8 @@ function E:OnInitialize()
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
 
-	E:CheckAddons()
 	E:DisableAddons()
+	E:CheckAddons()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
