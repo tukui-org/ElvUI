@@ -315,13 +315,8 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon = nil
 	end
 
-	if db.hidetext then
-		castbar.Text:SetAlpha(0)
-		castbar.Time:SetAlpha(0)
-	else
-		castbar.Text:SetAlpha(1)
-		castbar.Time:SetAlpha(1)
-	end
+	castbar.Text:SetAlpha(db.hideName and 0 or 1)
+	castbar.Time:SetAlpha(db.hideTime and 0 or 1)
 
 	--Adjust tick heights
 	castbar.tickHeight = height

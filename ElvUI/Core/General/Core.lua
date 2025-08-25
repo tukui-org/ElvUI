@@ -1493,6 +1493,18 @@ function E:DBConvertDev()
 			data.r, data.g, data.b = nil, nil, nil
 		end
 	end
+
+	-- hide text -> hide name & hide time
+	for _, unit in ipairs({'player','target','focus','pet','boss','arena','party'}) do
+		local db = E.db.unitframe.units[unit].castbar
+		local previous = db.hidetext
+		if previous ~= nil then
+			db.hideName = previous
+			db.hideTime = previous
+
+			db.hidetext = nil
+		end
+	end
 end
 
 function E:UpdateDB()
