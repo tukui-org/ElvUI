@@ -5,7 +5,7 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
+local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
@@ -14,6 +14,7 @@ local GetLocale = GetLocale
 local GetTime = GetTime
 local ReloadUI = ReloadUI
 local UIParent = UIParent
+local UnitGUID = UnitGUID
 
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
@@ -463,6 +464,11 @@ function E:OnInitialize()
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
 	E.loadedtime = GetTime()
+
+	local playerGUID = UnitGUID('player')
+	local _, serverID = strsplit('-', playerGUID)
+	E.serverID = tonumber(serverID)
+	E.myguid = playerGUID
 
 	E:DisableAddons()
 	E:CheckAddons()

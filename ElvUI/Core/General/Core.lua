@@ -5,7 +5,7 @@ local LCS = E.Libs.LCS
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
+local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -23,7 +23,6 @@ local SaveBindings = SaveBindings
 local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
-local UnitGUID = UnitGUID
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
@@ -2015,12 +2014,7 @@ function E:Initialize()
 	wipe(E.global)
 	wipe(E.private)
 
-	local playerGUID = UnitGUID('player')
-	local _, serverID = strsplit('-', playerGUID)
-	E.serverID = tonumber(serverID)
 	E.myspec = GetSpecialization()
-	E.myguid = playerGUID
-
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
