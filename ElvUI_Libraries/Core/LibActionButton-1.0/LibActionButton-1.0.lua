@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 66 -- the real minor version is 126
+local MINOR_VERSION = 67 -- the real minor version is 126
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1309,7 +1309,7 @@ function Generic:PreClick()
 	self._receiving_drag = true
 end
 
-local function formatHelper(input)
+local function FormatHelper(input)
 	if type(input) == "string" then
 		return format("%q", input)
 	else
@@ -1333,7 +1333,7 @@ function Generic:PostClick(button, down)
 			local frame = self:GetFrameRef("updateButton")
 			control:RunFor(frame, frame:GetAttribute("OnReceiveDrag"), %s, %s, %s, %s)
 			control:RunFor(frame, frame:GetAttribute("UpdateState"), %s)
-		]], formatHelper(kind), formatHelper(data), formatHelper(subtype), formatHelper(extra), formatHelper(self:GetAttribute("state"))))
+		]], FormatHelper(kind), FormatHelper(data), FormatHelper(subtype), FormatHelper(extra), FormatHelper(self:GetAttribute("state"))))
 		PickupAny("clear", oldType, oldAction)
 	end
 	self._receiving_drag = nil
@@ -1350,7 +1350,7 @@ end
 -----------------------------------------------------------
 --- configuration
 
-local function merge(target, source, default)
+local function Merge(target, source, default)
 	for k,v in pairs(default) do
 		if type(v) ~= "table" then
 			if source and source[k] ~= nil then
@@ -1360,9 +1360,10 @@ local function merge(target, source, default)
 			end
 		else
 			if type(target[k]) ~= "table" then target[k] = {} else wipe(target[k]) end
-			merge(target[k], type(source) == "table" and source[k], v)
+			Merge(target[k], type(source) == "table" and source[k], v)
 		end
 	end
+
 	return target
 end
 
@@ -1401,8 +1402,8 @@ function Generic:UpdateConfig(config)
 
 	local oldconfig = self.config
 	self.config = {}
-	-- merge the two configs
-	merge(self.config, config, DefaultConfig)
+	-- Merge the two configs
+	Merge(self.config, config, DefaultConfig)
 
 	if self.config.outOfRangeColoring == "button" or (oldconfig and oldconfig.outOfRangeColoring == "button") then
 		UpdateUsable(self)
@@ -1878,7 +1879,7 @@ function Generic:GetHotkey()
 	end
 end
 
-local function getKeys(binding, keys)
+local function GetKeys(binding, keys)
 	keys = keys or ""
 	for i = 1, select("#", GetBindingKey(binding)) do
 		local hotKey = select(i, GetBindingKey(binding))
@@ -1894,10 +1895,10 @@ function Generic:GetBindings()
 	local keys
 
 	if self.config.keyBoundTarget then
-		keys = getKeys(self.config.keyBoundTarget)
+		keys = GetKeys(self.config.keyBoundTarget)
 	end
 
-	keys = getKeys(("CLICK %s:%s"):format(self:GetName(), self.config.keyBoundClickButton), keys)
+	keys = GetKeys(("CLICK %s:%s"):format(self:GetName(), self.config.keyBoundClickButton), keys)
 
 	return keys
 end
@@ -1911,7 +1912,7 @@ function Generic:SetKey(key)
 	lib.callbacks:Fire("OnKeybindingChanged", self, key)
 end
 
-local function clearBindings(binding)
+local function ClearBindings(binding)
 	while GetBindingKey(binding) do
 		SetBinding(GetBindingKey(binding), nil)
 	end
@@ -1919,9 +1920,11 @@ end
 
 function Generic:ClearBindings()
 	if self.config.keyBoundTarget then
-		clearBindings(self.config.keyBoundTarget)
+		ClearBindings(self.config.keyBoundTarget)
 	end
-	clearBindings(("CLICK %s:%s"):format(self:GetName(), self.config.keyBoundClickButton))
+
+	ClearBindings(("CLICK %s:%s"):format(self:GetName(), self.config.keyBoundClickButton))
+
 	lib.callbacks:Fire("OnKeybindingChanged", self, nil)
 end
 
@@ -2107,7 +2110,7 @@ function Update(self, which)
 			self.header:Execute(([[
 				local frame = self:GetFrameRef("updateButton")
 				control:RunFor(frame, frame:GetAttribute("UpdateReleaseCasting"), %s, %s)
-			]]):format(formatHelper(self._state_type), formatHelper(self._state_action)))
+			]]):format(FormatHelper(self._state_type), FormatHelper(self._state_action)))
 		end
 
 		local onStateChanged = self:GetAttribute("OnStateChanged")
@@ -2116,7 +2119,7 @@ function Update(self, which)
 			self.header:Execute(([[
 				local frame = self:GetFrameRef("updateButton")
 				control:RunFor(frame, frame:GetAttribute("OnStateChanged"), %s, %s, %s)
-			]]):format(formatHelper(self:GetAttribute("state")), formatHelper(self._state_type), formatHelper(self._state_action)))
+			]]):format(FormatHelper(self:GetAttribute("state")), FormatHelper(self._state_type), FormatHelper(self._state_action)))
 		end
 	end
 
@@ -2818,7 +2821,7 @@ end
 
 -----------------------------------------------------------
 --- Item Button
-local function getItemId(input)
+local function GetItemId(input)
 	return input:match("^item:(%d+)")
 end
 
@@ -2827,7 +2830,7 @@ Item.GetActionText           = function(self) return "" end
 Item.GetTexture              = function(self) return C_Item.GetItemIconByID(self._state_action) end
 Item.GetCharges              = function(self) return nil end
 Item.GetCount                = function(self) return C_Item.GetItemCount(self._state_action, nil, true) end
-Item.GetCooldown             = function(self) return C_Container.GetItemCooldown(getItemId(self._state_action)) end
+Item.GetCooldown             = function(self) return C_Container.GetItemCooldown(GetItemId(self._state_action)) end
 Item.IsAttack                = function(self) return nil end
 Item.IsEquipped              = function(self) return C_Item.IsEquippedItem(self._state_action) end
 Item.IsCurrentlyActive       = function(self) return C_Item.IsCurrentItem(self._state_action) end
