@@ -525,15 +525,20 @@ do -- DropDownMenu library support
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
 
+		local func = function()
+			local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS'] or 1
+			for i = 1, lvls do
+				HandleBackdrop(_G[key..'_DropDownList'..i..'Backdrop'])
+				HandleBackdrop(_G[key..'_DropDownList'..i..'MenuBackdrop'])
+			end
+		end
+
+		local keyName = key..'_UIDropDownMenu_CreateFrames'
 		local lib = prefix == 'L4' and LibStub.libs['LibUIDropDownMenu-4.0']
-		if (lib and lib.UIDropDownMenu_CreateFrames) or _G[key..'_UIDropDownMenu_CreateFrames'] then
-			hooksecurefunc(lib or _G, (lib and '' or key..'_') .. 'UIDropDownMenu_CreateFrames', function()
-				local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS'] or 1
-				for i = 1, lvls do
-					HandleBackdrop(_G[key..'_DropDownList'..i..'Backdrop'])
-					HandleBackdrop(_G[key..'_DropDownList'..i..'MenuBackdrop'])
-				end
-			end)
+		if lib and lib.UIDropDownMenu_CreateFrames then
+			hooksecurefunc(lib, 'UIDropDownMenu_CreateFrames', func)
+		elseif _G[keyName] then
+			hooksecurefunc(_G, keyName, func)
 		end
 	end
 end
