@@ -1907,7 +1907,10 @@ end
 
 do
 	local function Errorhandler(err)
-		return _G.geterrorhandler()(err)
+		local handler = _G.geterrorhandler()
+		if handler then
+			return handler(err)
+		end
 	end
 
 	function E:CallLoadFunc(func, ...)
