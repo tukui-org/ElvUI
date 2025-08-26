@@ -401,13 +401,19 @@ end
 
 local lastTooltipXLineHeader
 local function TooltipAddXLine(X, header, ...)
-	X = (X == true and 'AddDoubleLine') or 'AddLine'
+	local tt = DT.tooltip
+	local func = X and tt.AddDoubleLine or tt.AddLine
 	if lastTooltipXLineHeader ~= header then
-		DT.tooltip[X](DT.tooltip, ' ')
-		DT.tooltip[X](DT.tooltip, header)
+		tt:AddLine(' ')
+
+		if header ~= wowString and header ~= 'bnet' then
+			func(tt, header)
+		end
+
 		lastTooltipXLineHeader = header
 	end
-	DT.tooltip[X](DT.tooltip, ...)
+
+	func(tt, ...)
 end
 
 local isBNOnline
@@ -496,7 +502,9 @@ local function OnEnter()
 								if shiftDown then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end
-									TooltipAddXLine(true, header, info.zoneName, info.realmName, zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+									if info.zoneName or info.realmName then
+										TooltipAddXLine(true, header, info.zoneName or ' ', info.realmName or ' ', zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+									end
 								end
 							else
 								TooltipAddXLine(true, header, info.characterName..status, info.accountName, .9, .9, .9, .9, .9, .9)
