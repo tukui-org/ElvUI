@@ -767,30 +767,6 @@ local function UnregisterEvents(fs)
 	end
 end
 
--- this bullshit is to fix texture strings not adjusting to its inherited alpha
--- it is a blizzard issue with how texture strings are rendered
-local alphaFix = CreateFrame('Frame')
-alphaFix.fontStrings = {}
-alphaFix:SetScript('OnUpdate', function()
-	local strs = alphaFix.fontStrings
-	if next(strs) then
-		for fs in next, strs do
-			strs[fs] = nil
-
-			local a = fs:GetAlpha()
-			fs:SetAlpha(0)
-			fs:SetAlpha(a)
-		end
-	else
-		alphaFix:Hide()
-	end
-end)
-
-local function FixAlpha(self)
-	alphaFix.fontStrings[self] = true
-	alphaFix:Show()
-end
-
 local function RegisterTimer(fs, timer)
 	if(not timerFontStrings[timer]) then
 		timerFontStrings[timer] = {}
@@ -837,12 +813,6 @@ local function Tag(self, fs, ts, ...)
 	end
 
 	-- ElvUI
-	if not fs.__HookedAlphaFix then
-		hooksecurefunc(fs, 'SetText', FixAlpha)
-		hooksecurefunc(fs, 'SetFormattedText', FixAlpha)
-		fs.__HookedAlphaFix = true
-	end
-
 	ts = ts:gsub('||([TCRAtncra])', EscapeSequence)
 
 	local customArgs = ts:match('{(.-)}%]')
