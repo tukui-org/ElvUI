@@ -12,18 +12,6 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
 
-local MAX_POINTS = { -- match to UF.classMaxResourceBar
-	DEATHKNIGHT	= max(6, MAX_COMBO_POINTS),
-	PALADIN		= max(5, MAX_COMBO_POINTS),
-	WARLOCK		= max(5, MAX_COMBO_POINTS),
-	MONK		= max(6, MAX_COMBO_POINTS),
-	MAGE		= max(4, MAX_COMBO_POINTS),
-	ROGUE		= max(7, MAX_COMBO_POINTS),
-	EVOKER		= max(6, MAX_COMBO_POINTS),
-	DRUID		= max(5, MAX_COMBO_POINTS),
-	PRIEST		= max(3, MAX_COMBO_POINTS),
-}
-
 function NP:ClassPower_SetBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
@@ -90,7 +78,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 
 	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
-	local total = MAX_POINTS[E.myclass] or 0
+	local total = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 
 	for i = 1, total do
 		local barName = containerName..i
@@ -106,7 +94,9 @@ function NP:Construct_ClassPower(nameplate)
 
 		if nameplate == _G.ElvNP_Test then
 			local combo = NP.db.colors.classResources.comboPoints[i]
-			bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			if combo then
+				bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			end
 		end
 
 		ClassPower[i] = bar

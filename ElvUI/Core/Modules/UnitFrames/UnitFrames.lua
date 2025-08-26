@@ -64,8 +64,9 @@ UF.badHeaderPoints = {
 }
 
 UF.headerFunctions = {}
-UF.classMaxResourceBar = { -- match to NP ClassPower MAX_POINTS
+UF.classMaxResourceBar = { -- also used by Nameplates
 	DEATHKNIGHT = 6,
+	SHAMAN = E.Retail and 10 or nil,
 	PALADIN = 5,
 	WARLOCK = 5,
 	EVOKER = 6,
@@ -491,6 +492,9 @@ function UF:UpdateColors()
 		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
+
+	if not ElvUF.colors.ClassBars.SHAMAN then ElvUF.colors.ClassBars.SHAMAN = {} end
+	ElvUF.colors.ClassBars.SHAMAN.MAELSTROM = E:SetColorTable(ElvUF.colors.ClassBars.SHAMAN.MAELSTROM, db.classResources.SHAMAN.MAELSTROM)
 
 	if not ElvUF.colors.ClassBars.MAGE then ElvUF.colors.ClassBars.MAGE = {} end
 	ElvUF.colors.ClassBars.MAGE.FROST_ICICLES = E:SetColorTable(ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, db.classResources.MAGE.FROST_ICICLES)

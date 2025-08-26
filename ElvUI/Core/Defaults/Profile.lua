@@ -969,10 +969,13 @@ P.nameplates = {
 				{r = 0.14, g = 0.63, b = 0.50}
 			},
 			SHAMAN = {
-				{r = .23, g = .45, b = .13}, -- earth
-				{r = .58, g = .23, b = .10}, -- fire
-				{r = .19, g = .48, b = .60}, -- water
-				{r = .42, g = .18, b = .74}, -- air
+				TOTEMS = {
+					{r = .23, g = .45, b = .13}, -- earth
+					{r = .58, g = .23, b = .10}, -- fire
+					{r = .19, g = .48, b = .60}, -- water
+					{r = .42, g = .18, b = .74}, -- air
+				},
+				MAELSTROM = {r = 0.58, g = 0.51, b = 0.79}
 			},
 			PRIEST = {r = 0.40, g = 0.00, b = 0.80}, -- shadow orbs
 			WARLOCK = {

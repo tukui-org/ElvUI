@@ -15,7 +15,7 @@ local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 
 local AltManaTypes = { Rage = 1, Energy = 3 }
 local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
-local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
+local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK' }
 
 if E.Retail then
 	AltManaTypes.LunarPower = 8
@@ -750,7 +750,7 @@ end
 -----------------------------------------------------------
 
 function UF:Totems_PostUpdateColor()
-	UF.ClassPower_UpdateColor(self, 'Totems')
+	UF.ClassPower_UpdateColor(self, 'TOTEMS')
 end
 
 function UF:Construct_Totems(frame)
