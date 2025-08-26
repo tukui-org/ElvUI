@@ -61,7 +61,7 @@ local function ToggleAlpha(self, element, endAlpha)
 	end
 end
 
-local function updateInstanceDifficulty(element)
+local function UpdateInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
 	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
 end
@@ -105,7 +105,7 @@ local function Update(self, event, unit)
 
 	-- Instance Difficulty is enabled and we haven't checked yet
 	if element.InstanceDifficulty and not element.InstancedCached then
-		updateInstanceDifficulty(element)
+		UpdateInstanceDifficulty(element)
 	end
 
 	-- normal fader
@@ -143,7 +143,7 @@ local function ForceUpdate(element, event)
 	return Update(element.__owner, event or 'ForceUpdate', element.__owner.unit)
 end
 
-local function onRangeUpdate(frame, elapsed)
+local function OnRangeUpdate(frame, elapsed)
 	frame.timer = (frame.timer or 0) + elapsed
 
 	if (frame.timer >= .20) then
@@ -157,9 +157,10 @@ local function onRangeUpdate(frame, elapsed)
 	end
 end
 
-local function onInstanceDifficulty(self)
+local function OnInstanceDifficulty(self)
 	local element = self.Fader
-	updateInstanceDifficulty(element)
+	UpdateInstanceDifficulty(element)
+
 	element:ForceUpdate('OnInstanceDifficulty')
 end
 
@@ -185,7 +186,7 @@ local options = {
 		enable = function(self)
 			if not onRangeFrame then
 				onRangeFrame = CreateFrame('Frame')
-				onRangeFrame:SetScript('OnUpdate', onRangeUpdate)
+				onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
 			end
 
 			onRangeFrame:Show()
@@ -291,10 +292,10 @@ local options = {
 	},
 	InstanceDifficulty = {
 		enable = function(self)
-			self:RegisterEvent('ZONE_CHANGED', onInstanceDifficulty, true)
-			self:RegisterEvent('ZONE_CHANGED_INDOORS', onInstanceDifficulty, true)
-			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', onInstanceDifficulty, true)
-			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', onInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED', OnInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_INDOORS', OnInstanceDifficulty, true)
+			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', OnInstanceDifficulty, true)
+			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', OnInstanceDifficulty, true)
 		end,
 		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
 	},

@@ -54,45 +54,45 @@ local mainIcon = '|T%s:%d:%d:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local listText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local function starter_checked()
+local function StarterChecked()
 	return GetStarterBuildActive()
 end
 
-local function loadout_checked(data)
+local function LoadoutChecked(data)
 	return data and data.arg1 == DT.ClassTalentsID
 end
 
-local loadout_func
+local LoadoutFunc
 do
 	local loadoutID
-	local function loadout_callback(_, configID)
+	local function LoadoutCallback(_, configID)
 		return configID == loadoutID
 	end
 
-	loadout_func = function(_, arg1)
+	LoadoutFunc = function(_, arg1)
 		if not _G.PlayerSpellsFrame then
 			_G.PlayerSpellsFrame_LoadUI()
 		end
 
 		loadoutID = arg1
 
-		_G.PlayerSpellsFrame.TalentsFrame:LoadConfigByPredicate(loadout_callback)
+		_G.PlayerSpellsFrame.TalentsFrame:LoadConfigByPredicate(LoadoutCallback)
 	end
 end
 
-local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
-local function menu_func(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
+local function MenuChecked(data) return data and data.arg1 == GetLootSpecialization() end
+local function MenuFunc(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
 
-local function spec_checked(data) return data and data.arg1 == GetSpecialization() end
-local function spec_func(_, arg1) SetSpecialization(arg1) DT:CloseMenus() end
+local function SpecChecked(data) return data and data.arg1 == GetSpecialization() end
+local function SpecFunc(_, arg1) SetSpecialization(arg1) DT:CloseMenus() end
 
 local function OnEvent(self, event, loadoutID)
 	if #menuList == 2 then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if id then
-				menuList[index + 2] = { arg1 = id, text = name, checked = menu_checked, func = menu_func }
-				specList[index + 1] = { arg1 = index, text = format(listText, icon, name), checked = spec_checked, func = spec_func }
+				menuList[index + 2] = { arg1 = id, text = name, checked = MenuChecked, func = MenuFunc }
+				specList[index + 1] = { arg1 = index, text = format(listText, icon, name), checked = SpecChecked, func = SpecFunc }
 			end
 		end
 	end
@@ -128,10 +128,10 @@ local function OnEvent(self, event, loadoutID)
 
 		for index, configID in next, builds do
 			if configID == STARTER_ID then
-				loadoutList[index + 1] = { text = STARTER_TEXT, checked = starter_checked, func = loadout_func, arg1 = STARTER_ID }
+				loadoutList[index + 1] = { text = STARTER_TEXT, checked = StarterChecked, func = LoadoutFunc, arg1 = STARTER_ID }
 			else
 				local configInfo = C_Traits_GetConfigInfo(configID)
-				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = loadout_checked, func = loadout_func, arg1 = configID }
+				loadoutList[index + 1] = { text = configInfo and configInfo.name or UNKNOWN, checked = LoadoutChecked, func = LoadoutFunc, arg1 = configID }
 			end
 		end
 	end

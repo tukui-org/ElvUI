@@ -7,7 +7,7 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function showFollower(frame)
+local function ShowFollower(frame)
 	S:HandleFollowerAbilities(frame)
 end
 
@@ -358,7 +358,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar)
-	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
 
 	local FollowerTab = GarrisonMissionFrame.FollowerTab
 	FollowerTab:StripTextures()
@@ -462,7 +462,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
-	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(frame, index)
 		local ability = frame.Abilities[index]
 		if not ability.IsSkinned then
@@ -544,7 +544,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 
 	S:HandleEditBox(FollowerList.SearchBox)
-	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
 
 	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
@@ -621,7 +621,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:StripTextures()
 	Follower.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, 'ShowFollower', showFollower)
+	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
 	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
 
 	local XPBar = FollowerTab.XPBar
@@ -653,7 +653,7 @@ function S:Blizzard_GarrisonUI()
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
 
-	hooksecurefunc(Follower, 'ShowFollower', showFollower)
+	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
 	Follower:StripTextures()
 
 	FollowerTab:StripTextures()

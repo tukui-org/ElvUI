@@ -21,21 +21,21 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-local function alphaValue(num)
+local function AlphaValue(num)
 	return num and floor(((1 - num) * 100) + .05) or 0
 end
 
 local function UpdateAlphaText(alpha)
-	if not alpha then alpha = alphaValue(_G.OpacitySliderFrame:GetValue()) end
+	if not alpha then alpha = AlphaValue(_G.OpacitySliderFrame:GetValue()) end
 
 	_G.ColorPPBoxA:SetText(alpha)
 end
 
-local function expandFromThree(r, g, b)
+local function ExpandFromThree(r, g, b)
 	return strjoin('',r,r,g,g,b,b)
 end
 
-local function extendToSix(str)
+local function ExtendToSix(str)
 	for _=1, 6-strlen(str) do str=str..0 end
 	return str
 end
@@ -43,9 +43,9 @@ end
 local function GetHexColor(box)
 	local rgb, rgbSize = box:GetText(), box:GetNumLetters()
 	if rgbSize == 3 then
-		rgb = gsub(rgb, '(%x)(%x)(%x)$', expandFromThree)
+		rgb = gsub(rgb, '(%x)(%x)(%x)$', ExpandFromThree)
 	elseif rgbSize < 6 then
-		rgb = gsub(rgb, '(.+)$', extendToSix)
+		rgb = gsub(rgb, '(.+)$', ExtendToSix)
 	end
 
 	local r, g, b = tonumber(strsub(rgb,0,2),16) or 0, tonumber(strsub(rgb,3,4),16) or 0, tonumber(strsub(rgb,5,6),16) or 0
@@ -99,7 +99,7 @@ local function ColorPPBoxR_SetFocus()
 end
 
 local delayWait, delayFunc = 0.15
-local function delayCall()
+local function DelayCall()
 	if delayFunc then
 		delayFunc()
 		delayFunc = nil
@@ -107,8 +107,8 @@ local function delayCall()
 end
 
 local last = {r = 0, g = 0, b = 0, a = 0}
-local function onAlphaValueChanged(_, value)
-	local alpha = alphaValue(value)
+local function OnAlphaValueChanged(_, value)
+	local alpha = AlphaValue(value)
 	if last.a ~= alpha then
 		last.a = alpha
 	else -- alpha matched so we don't need to update
@@ -118,14 +118,14 @@ local function onAlphaValueChanged(_, value)
 	UpdateAlphaText(alpha)
 
 	if not ColorPickerFrame:IsVisible() then
-		delayCall()
+		DelayCall()
 	else
 		local opacityFunc = ColorPickerFrame.opacityFunc
 		if delayFunc and (delayFunc ~= opacityFunc) then
 			delayFunc = opacityFunc
 		elseif not delayFunc then
 			delayFunc = opacityFunc
-			E:Delay(delayWait, delayCall)
+			E:Delay(delayWait, DelayCall)
 		end
 	end
 end
@@ -139,10 +139,10 @@ local function UpdateAlpha(tbox)
 
 	local value = 1 - (num * 0.01)
 	_G.OpacitySliderFrame:SetValue(value)
-	-- onAlphaValueChanged(nil, value)
+	-- OnAlphaValueChanged(nil, value)
 end
 
-local function onColorSelect(frame, r, g, b)
+local function OnColorSelect(frame, r, g, b)
 	if frame.noColorCallback then
 		return -- prevent error from E:GrabColorPickerValues, better note in that function
 	elseif r ~= last.r or g ~= last.g or b ~= last.b then
@@ -156,10 +156,10 @@ local function onColorSelect(frame, r, g, b)
 	-- UpdateAlphaText()
 
 	if not frame:IsVisible() then
-		delayCall()
+		DelayCall()
 	elseif not delayFunc then
 		delayFunc = ColorPickerFrame.swatchFunc
-		E:Delay(delayWait, delayCall)
+		E:Delay(delayWait, DelayCall)
 	end
 end
 
@@ -185,10 +185,10 @@ function BL:EnhanceColorPicker()
 
 	-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
 	-- We overwrite these two scripts and set a limit on how often we allow a call their update functions
-	_G.OpacitySliderFrame:SetScript('OnValueChanged', onAlphaValueChanged)
+	_G.OpacitySliderFrame:SetScript('OnValueChanged', OnAlphaValueChanged)
 
 	-- Keep the colors updated
-	ColorPickerFrame:SetScript('OnColorSelect', onColorSelect)
+	ColorPickerFrame:SetScript('OnColorSelect', OnColorSelect)
 
 	ColorPickerFrame:HookScript('OnShow', function(frame)
 		-- get color that will be replaced

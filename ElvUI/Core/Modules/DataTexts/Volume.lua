@@ -107,7 +107,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function onMouseWheel(_, delta)
+local function OnMouseWheel(_, delta)
 	local vol = GetCVar(activeStream.Volume)
 	local scale = 100
 
@@ -135,7 +135,7 @@ local function OnEvent(self, event, arg1)
 	if force or (event == 'CVAR_UPDATE' and (E.Retail and Sound_CVars[arg1] or arg1 == 'ELVUI_VOLUME')) then
 		if force then
 			self:EnableMouseWheel(true)
-			self:SetScript('OnMouseWheel', onMouseWheel)
+			self:SetScript('OnMouseWheel', OnMouseWheel)
 		end
 
 		panelText:SetText(GetStreamString(activeStream))

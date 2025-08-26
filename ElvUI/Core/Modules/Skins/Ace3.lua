@@ -683,24 +683,24 @@ do -- Early Skin Loading
 		end
 	end
 
-	local findWidget
-	local function earlyWidget(y)
-		if y.children then findWidget(y.children) end
+	local FindWidget
+	local function EarlyWidget(y)
+		if y.children then FindWidget(y.children) end
 		if y.frame and (y.base and y.base.Release) then
 			tinsert(S.EarlyAceWidgets, y)
 		end
 	end
 
-	findWidget = function(x)
+	FindWidget = function(x)
 		for _, y in ipairs(x) do
-			earlyWidget(y)
+			EarlyWidget(y)
 		end
 	end
 
 	for n in next, LibStub.libs do
 		if n == 'AceGUI-3.0' then
 			for _, x in next, { UIParent:GetChildren() } do
-				if x and x.obj then earlyWidget(x.obj) end
+				if x and x.obj then EarlyWidget(x.obj) end
 			end
 		end
 		if Libraries[gsub(n, numEnding, '')] then

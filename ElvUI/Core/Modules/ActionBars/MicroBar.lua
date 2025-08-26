@@ -53,17 +53,17 @@ end
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 microBar:SetSize(100, 100)
 
-local function onLeaveBar()
+local function OnLeaveBar()
 	return AB.db.microbar.mouseover and E:UIFrameFadeOut(microBar, 0.2, microBar:GetAlpha(), 0)
 end
 
 local watcher = 0
-local function onUpdate(self, elapsed)
+local function OnUpdate(self, elapsed)
 	if watcher > 0.1 then
 		if not self:IsMouseOver() then
 			self.IsMouseOvered = nil
 			self:SetScript('OnUpdate', nil)
-			onLeaveBar()
+			OnLeaveBar()
 		end
 		watcher = 0
 	else
@@ -71,10 +71,10 @@ local function onUpdate(self, elapsed)
 	end
 end
 
-local function onEnter(button)
+local function OnEnter(button)
 	if AB.db.microbar.mouseover and not microBar.IsMouseOvered then
 		microBar.IsMouseOvered = true
-		microBar:SetScript('OnUpdate', onUpdate)
+		microBar:SetScript('OnUpdate', OnUpdate)
 		E:UIFrameFadeIn(microBar, 0.2, microBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 
@@ -94,7 +94,7 @@ local function onEnter(button)
 	end
 end
 
-local function onLeave(button)
+local function OnLeave(button)
 	if button:IsEnabled() then
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
@@ -227,8 +227,8 @@ end
 
 function AB:HandleMicroButton(button, name)
 	button:SetTemplate()
-	button:HookScript('OnEnter', onEnter)
-	button:HookScript('OnLeave', onLeave)
+	button:HookScript('OnEnter', OnEnter)
+	button:HookScript('OnLeave', OnLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
 	if not E.Retail then

@@ -5,7 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function updateNewGlow(self)
+local function UpdateNewGlow(self)
 	self.backdrop:SetBackdropBorderColor(0, self.NewOutline:IsShown() and 0.8 or 0, 0)
 end
 
@@ -25,7 +25,7 @@ local function HandleScrollUpdateChild(child)
 
 		child.NewOutline:SetTexture(E.ClearTexture)
 		child.BindingText:FontTemplate()
-		hooksecurefunc(child, 'Init', updateNewGlow)
+		hooksecurefunc(child, 'Init', UpdateNewGlow)
 
 		icon.IsSkinned = true
 	end

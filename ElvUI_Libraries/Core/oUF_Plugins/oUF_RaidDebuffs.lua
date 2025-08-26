@@ -37,7 +37,7 @@ local DispelPriority = {
 	Poison  = 1,
 }
 
-local function formatTime(sec)
+local function FormatTime(sec)
 	if sec > 60 then
 		return '%dm', sec / 60
 	elseif sec < 1 then
@@ -47,7 +47,7 @@ local function formatTime(sec)
 	end
 end
 
-local function add(spell, priority, stackThreshold)
+local function AddSpell(spell, priority, stackThreshold)
 	if addon.MatchBySpellName and type(spell) == 'number' then
 		spell = oUF:GetSpellInfo(spell)
 	end
@@ -66,7 +66,7 @@ function addon:RegisterDebuffs(t)
 			local oldValue = t[spell]
 			t[spell] = { enable = oldValue, priority = 0, stackThreshold = 0 }
 		elseif t[spell].enable then
-			add(spell, t[spell].priority or 0, t[spell].stackThreshold or 0)
+			AddSpell(spell, t[spell].priority or 0, t[spell].stackThreshold or 0)
 		end
 	end
 end
@@ -86,7 +86,7 @@ local function OnUpdate(self, elapsed)
 		end
 
 		if timeLeft > 0 then
-			self.time:SetFormattedText(formatTime(timeLeft))
+			self.time:SetFormattedText(FormatTime(timeLeft))
 		else
 			self:SetScript('OnUpdate', nil)
 			self.time:Hide()

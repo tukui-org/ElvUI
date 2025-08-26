@@ -14,7 +14,7 @@ local UnpackAuraData = AuraUtil.UnpackAuraData
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 
-local function createAuraIcon(element, index)
+local function CreateAuraIcon(element, index)
 	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element)
 	button:EnableMouse(false)
 	button:Hide()
@@ -51,7 +51,7 @@ local function createAuraIcon(element, index)
 end
 
 local stackAuras = {}
-local function customFilter(element, _, button, _, _, count)
+local function CustomFilter(element, _, button, _, _, count)
 	local spellID = button.spellID
 	local setting = element.watched[spellID]
 	if not setting then
@@ -84,12 +84,12 @@ local function customFilter(element, _, button, _, _, count)
 	return setting.enabled and not setting.onlyShowMissing
 end
 
-local function getIcon(element, visible, offset)
+local function FetIcon(element, visible, offset)
 	local position = visible + offset + 1
 	local button = element[position]
 
 	if not button then
-		button = (element.CreateIcon or createAuraIcon) (element, position)
+		button = (element.CreateIcon or CreateAuraIcon) (element, position)
 
 		tinsert(element, button)
 		element.createdIcons = element.createdIcons + 1
@@ -98,7 +98,7 @@ local function getIcon(element, visible, offset)
 	return button, position
 end
 
-local function handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
+local function HandleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
 	if button.cd then
 		if duration and duration > 0 then
 			button.cd:SetCooldown(expiration - duration, duration, modRate)
@@ -154,7 +154,7 @@ local function handleElements(element, unit, button, setting, icon, count, durat
 end
 
 local missing = {}
-local function preOnlyMissing(element)
+local function PreOnlyMissing(element)
 	wipe(missing)
 
 	for spellID, setting in pairs(element.watched) do
@@ -164,15 +164,15 @@ local function preOnlyMissing(element)
 	end
 end
 
-local function postOnlyMissing(element, unit, offset)
+local function PostOnlyMissing(element, unit, offset)
 	local visible = 0
 	for spellID, setting in pairs(missing) do
-		local button, position = getIcon(element, visible, offset)
+		local button, position = FetIcon(element, visible, offset)
 
 		button.spellID = spellID
 
 		local icon = GetSpellTexture(spellID)
-		handleElements(element, unit, button, setting, icon)
+		HandleElements(element, unit, button, setting, icon)
 
 		if element.PostUpdateIcon then
 			element:PostUpdateIcon(unit, button, nil, position)
@@ -184,11 +184,11 @@ local function postOnlyMissing(element, unit, offset)
 	return visible
 end
 
-local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
+local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end
 
-	local button, position = getIcon(element, visible, offset)
+	local button, position = FetIcon(element, visible, offset)
 
 	button.caster = source
 	button.filter = filter
@@ -200,7 +200,7 @@ local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 
 	button:SetID(index)
 
-	local show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, button, name, icon,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
@@ -210,7 +210,7 @@ local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	end
 
 	if show then
-		handleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
+		HandleElements(element, unit, button, setting, icon, count, duration, expiration, isDebuff, debuffType, isStealable, modRate)
 
 		if element.PostUpdateIcon then
 			element:PostUpdateIcon(unit, button, index, position, duration, expiration, debuffType, isStealable)
@@ -222,14 +222,14 @@ local function updateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	end
 end
 
-local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function FilterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
 	if not offset then offset = 0 end
 
 	local index, visible, hidden = 1, 0, 0
 	local unitAuraInfo = AuraInfo[unit]
 	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura and (visible < limit) do
-		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and updateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -257,22 +257,22 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 	if element.PreUpdate then element:PreUpdate(unit) end
 
-	preOnlyMissing(element)
+	PreOnlyMissing(element)
 	wipe(stackAuras) -- clear stacking table
 
 	local numBuffs = element.numBuffs or 32
 	local numDebuffs = element.numDebuffs or 16
 	local numAuras = element.numTotal or (numBuffs + numDebuffs)
 
-	local visibleBuffs, hiddenBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
-	local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
+	local visibleBuffs, hiddenBuffs = FilterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
+	local visibleDebuffs, hiddenDebuffs = FilterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
 
 	element.visibleDebuffs = visibleDebuffs
 	element.visibleBuffs = visibleBuffs
 
 	element.visibleAuras = visibleBuffs + visibleDebuffs
 
-	local visibleMissing = postOnlyMissing(element, unit, element.visibleAuras)
+	local visibleMissing = PostOnlyMissing(element, unit, element.visibleAuras)
 
 	element.allAuras = visibleBuffs + visibleDebuffs + hiddenBuffs + hiddenDebuffs + visibleMissing
 

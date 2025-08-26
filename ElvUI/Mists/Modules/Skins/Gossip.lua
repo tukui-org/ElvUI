@@ -76,7 +76,7 @@ local function GreetingPanel_Update(frame)
 	frame:ForEachFrame(GreetingPanel_UpdateChild)
 end
 
-local function createParchment(frame)
+local function CreateParchment(frame)
 	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	tex:SetTexCoord(0, 0.586, 0.02, 0.655)
@@ -137,11 +137,11 @@ function S:GossipFrame()
 		_G.ItemTextMaterialTopLeft:SetDrawLayer('ARTWORK', 1)
 		_G.ItemTextMaterialTopRight:SetDrawLayer('ARTWORK', 1)
 
-		local spellTex = createParchment(GreetingPanel)
+		local spellTex = CreateParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
 		GreetingPanel.spellTex = spellTex
 
-		local itemTex = createParchment(ItemTextFrame)
+		local itemTex = CreateParchment(ItemTextFrame)
 		itemTex:SetInside(ItemTextScrollFrame, -5)
 		ItemTextFrame.itemTex = itemTex
 	end

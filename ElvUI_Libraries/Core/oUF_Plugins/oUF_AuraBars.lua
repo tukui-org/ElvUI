@@ -41,7 +41,7 @@ local function FormatTime(sec)
 	end
 end
 
-local function onEnter(self)
+local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:SetOwner(self, self.__owner.__restricted and 'ANCHOR_CURSOR' or self.__owner.tooltipAnchor)
@@ -50,13 +50,13 @@ local function onEnter(self)
 	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
 end
 
-local function onLeave()
+local function OnLeave()
 	if GameTooltip:IsForbidden() then return end
 
 	GameTooltip:Hide()
 end
 
-local function updateValue(bar, start)
+local function UpdateValue(bar, start)
 	local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
 
 	if start and bar.SetValue_ then
@@ -68,22 +68,22 @@ local function updateValue(bar, start)
 	bar.timeText:SetFormattedText(FormatTime(remain))
 end
 
-local function onUpdate(bar, elapsed)
+local function OnUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
 
 	if bar.elapsed > 0.01 then
-		updateValue(bar)
+		UpdateValue(bar)
 
 		bar.elapsed = 0
 	end
 end
 
-local function createAuraBar(element, index)
+local function CreateAuraBar(element, index)
 	local bar = CreateFrame('StatusBar', element:GetName() .. 'StatusBar' .. index, element)
 	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 	bar:SetMinMaxValues(0, 1)
-	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', onLeave)
+	bar:SetScript('OnEnter', OnEnter)
+	bar:SetScript('OnLeave', OnLeave)
 	bar:EnableMouse(false)
 
 	local spark = bar:CreateTexture(nil, "OVERLAY", nil);
@@ -113,13 +113,13 @@ local function createAuraBar(element, index)
 	return bar
 end
 
-local function customFilter(element, unit, button, name)
+local function CustomFilter(element, unit, button, name)
 	if (element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name) then
 		return true
 	end
 end
 
-local function updateBar(element, bar)
+local function UpdateBar(element, bar)
 	if bar.count > 1 then
 		bar.nameText:SetFormattedText('[%d] %s', bar.count, bar.spell)
 	else
@@ -157,14 +157,14 @@ local function updateBar(element, bar)
 	end
 end
 
-local function auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
 	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end
 
 	local position = visible + offset + 1
 	local bar = element[position]
 	if not bar then
-		bar = (element.CreateBar or createAuraBar) (element, position)
+		bar = (element.CreateBar or CreateAuraBar) (element, position)
 		tinsert(element, bar)
 		element.createdBars = element.createdBars + 1
 	end
@@ -190,17 +190,18 @@ local function auraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.auraInstanceID = aura.auraInstanceID
 	bar.noTime = (duration == 0 and expiration == 0)
 
-	local show = (element.CustomFilter or customFilter) (element, unit, bar, name, texture,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
-	updateBar(element, bar)
+	UpdateBar(element, bar)
 
 	if bar.noTime then
 		bar:SetScript('OnUpdate', nil)
 	else
-		updateValue(bar, true)
-		bar:SetScript('OnUpdate', onUpdate)
+		UpdateValue(bar, true)
+
+		bar:SetScript('OnUpdate', OnUpdate)
 	end
 
 	return show and VISIBLE or HIDDEN
@@ -227,7 +228,7 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function FilterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
 	local visible = 0
 	local hidden = 0
@@ -236,7 +237,7 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 	local unitAuraInfo = AuraInfo[unit]
 	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura and (visible < limit) do
-		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and auraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -269,7 +270,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 	local isEnemy = UnitIsEnemy(unit, 'player')
 	local reaction = UnitReaction(unit, 'player')
 	local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
-	local visibleAuras = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
+	local visibleAuras = FilterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 	element.visibleAuras = visibleAuras
 

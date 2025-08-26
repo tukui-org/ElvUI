@@ -77,7 +77,7 @@ elseif E.Retail then
 	classPowers[10] = PowerType.Alternate or 10
 end
 
-local function envUnit(arg1)
+local function EnvUnit(arg1)
 	local frame = configEnv._FRAME -- yoink
 	if not frame then return arg1, true end
 
@@ -90,9 +90,9 @@ local function envUnit(arg1)
 	end
 end
 
-local function generateStatusFunc(tag)
+local function CreateStatusFunc(tag)
 	return function(arg1)
-		local unit, real = envUnit(arg1)
+		local unit, real = EnvUnit(arg1)
 		if real then
 			return _G[tag](unit)
 		end
@@ -106,7 +106,7 @@ local function generateStatusFunc(tag)
 	end
 end
 
-local function createConfigEnv()
+local function CreateConfigEnv()
 	if configEnv then return end
 
 	UF.ConfigEnv = {
@@ -115,7 +115,7 @@ local function createConfigEnv()
 		_COLORS = ElvUF.colors,
 		ColorGradient = ElvUF.ColorGradient,
 		UnitPower = function(arg1, displayType)
-			local unit, real = envUnit(arg1)
+			local unit, real = EnvUnit(arg1)
 			if real then
 				return UnitPower(unit, displayType)
 			end
@@ -124,7 +124,7 @@ local function createConfigEnv()
 			return random(1, (maxPower > 0 and maxPower) or 100)
 		end,
 		UnitPowerType = function(arg1)
-			local unit, real = envUnit(arg1)
+			local unit, real = EnvUnit(arg1)
 			if real then
 				return UnitPowerType(unit)
 			end
@@ -132,7 +132,7 @@ local function createConfigEnv()
 			return classPowers[random(0, #classPowers)]
 		end,
 		UnitHealth = function(arg1)
-			local unit, real = envUnit(arg1)
+			local unit, real = EnvUnit(arg1)
 			if real then
 				return UnitHealth(unit)
 			end
@@ -141,7 +141,7 @@ local function createConfigEnv()
 			return random(1, (maxHealth > 0 and maxHealth) or 100)
 		end,
 		UnitName = function(arg1)
-			local unit, real = envUnit(arg1)
+			local unit, real = EnvUnit(arg1)
 			if real then
 				return UnitName(unit)
 			end
@@ -155,7 +155,7 @@ local function createConfigEnv()
 			end
 		end,
 		UnitClass = function(arg1)
-			local unit, real = envUnit(arg1)
+			local unit, real = EnvUnit(arg1)
 			if real then
 				return UnitClass(unit)
 			end
@@ -167,7 +167,7 @@ local function createConfigEnv()
 	}
 
 	for _, name in next, { 'IsResting', 'UnitIsDead', 'UnitIsGhost', 'UnitIsDeadOrGhost', 'UnitIsConnected' } do
-		UF.ConfigEnv[name] = generateStatusFunc(name)
+		UF.ConfigEnv[name] = CreateStatusFunc(name)
 	end
 
 	configEnv = setmetatable(UF.ConfigEnv, {
@@ -193,7 +193,7 @@ end
 
 local function WhoIsAwesome(awesome)
 	if not configEnv then
-		createConfigEnv()
+		CreateConfigEnv()
 	end
 
 	if awesome then

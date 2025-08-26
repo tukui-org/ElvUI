@@ -67,7 +67,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 	end
 end
 
-local function onEvent(self, event, ...)
+local function OnEvent(self, event, ...)
 	if(self:IsVisible()) then
 		return self[event](self, event, ...)
 	end
@@ -126,7 +126,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 		self[event] = func
 
 		if(not self:GetScript('OnEvent')) then
-			self:SetScript('OnEvent', onEvent)
+			self:SetScript('OnEvent', OnEvent)
 		end
 
 		if(unitless or self.__eventless) then

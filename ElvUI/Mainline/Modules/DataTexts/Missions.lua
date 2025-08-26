@@ -78,7 +78,7 @@ local garrisonPages = {
 	'ArdenwealdGardeningPanel'
 }
 
-local function sortFunction(a, b)
+local function SortFunction(a, b)
 	return a.missionEndTime < b.missionEndTime
 end
 
@@ -114,7 +114,7 @@ local function AddInProgressMissions(garrisonType)
 	C_Garrison_GetInProgressMissions(data, garrisonType)
 
 	if next(data) then
-		sort(data, sortFunction) -- Sort by time left, lowest first
+		sort(data, SortFunction) -- Sort by time left, lowest first
 
 		for _, mission in ipairs(data) do
 			local timeLeft = mission.timeLeftSeconds

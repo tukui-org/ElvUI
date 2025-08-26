@@ -736,7 +736,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	return tfbCleaned
 end
 
-local function keySort(a, b)
+local function KeySort(a, b)
 	local A, B = type(a), type(b)
 
 	if A == B then
@@ -752,10 +752,10 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
-	local function recurse(tbl, level, ret)
+	local function Recurse(tbl, level, ret)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
@@ -772,7 +772,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				if v then ret = ret..'true,\n' else ret = ret..'false,\n' end
 			elseif type(v) == 'table' then
 				ret = ret..'{\n'
-				ret = recurse(v, level + 1, ret)
+				ret = Recurse(v, level + 1, ret)
 				ret = ret..strrep('    ', level)..'},\n'
 			else
 				ret = ret..'"'..tostring(v)..'",\n'
@@ -789,7 +789,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		end
 
 		local ret = '{\n'
-		if inTable then ret = recurse(inTable, 1, ret) end
+		if inTable then ret = Recurse(inTable, 1, ret) end
 		ret = ret..'}'
 
 		return ret
@@ -806,7 +806,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		styleFilters = 'E.global'
 	}
 
-	local function buildLineStructure(str) -- str is profileText
+	local function BuildLineStructure(str) -- str is profileText
 		for _, v in ipairs(lineStructureTable) do
 			if type(v) == 'string' then
 				str = str..'["'..v..'"]'
@@ -819,12 +819,12 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	end
 
 	local sameLine
-	local function recurse(tbl, ret, profileText)
+	local function Recurse(tbl, ret, profileText)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
-		local lineStructure = buildLineStructure(profileText)
+		local lineStructure = BuildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
 
@@ -844,7 +844,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				tinsert(lineStructureTable, k)
 				sameLine = true
 				ret = ret..']'
-				ret = recurse(v, ret, profileText)
+				ret = Recurse(v, ret, profileText)
 			else
 				sameLine = false
 				ret = ret..'] = '
@@ -879,7 +879,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
-			ret = recurse(inTable, ret, profileText)
+			ret = Recurse(inTable, ret, profileText)
 		end
 
 		return ret
@@ -989,7 +989,7 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 end
 
 do -- BFA Convert, deprecated..
-	local function buffwatchConvert(spell)
+	local function ConvertAurawatch(spell)
 		if spell.sizeOverride then spell.sizeOverride = nil end
 		if spell.size then spell.size = nil end
 
@@ -1206,14 +1206,14 @@ do -- BFA Convert, deprecated..
 		if E.global.unitframe.buffwatch then
 			for _, spells in pairs(E.global.unitframe.buffwatch) do
 				for _, spell in pairs(spells) do
-					buffwatchConvert(spell)
+					ConvertAurawatch(spell)
 				end
 			end
 		end
 
 		if E.db.unitframe.filters.buffwatch then
 			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
-				buffwatchConvert(spell)
+				ConvertAurawatch(spell)
 			end
 		end
 
@@ -1906,12 +1906,12 @@ function E:ResetUI(...)
 end
 
 do
-	local function errorhandler(err)
+	local function Errorhandler(err)
 		return _G.geterrorhandler()(err)
 	end
 
 	function E:CallLoadFunc(func, ...)
-		xpcall(func, errorhandler, ...)
+		xpcall(func, Errorhandler, ...)
 	end
 end
 

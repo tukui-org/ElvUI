@@ -11,11 +11,11 @@ local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell
 local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
 
-local function clearBackdrop(backdrop)
+local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
 
-local function spellButtonHighlight(button, texture)
+local function SpellButtonHighlight(button, texture)
 	if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 		button:SetColorTexture(1, 1, 1, 0.3)
 	end
@@ -143,7 +143,7 @@ function S:SpellBookFrame()
 		end
 
 		highlight:SetAllPoints(button.IconTexture)
-		hooksecurefunc(highlight, 'SetTexture', spellButtonHighlight)
+		hooksecurefunc(highlight, 'SetTexture', SpellButtonHighlight)
 
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
@@ -201,7 +201,7 @@ function S:SpellBookFrame()
 			button.backdrop.Center:SetDrawLayer('BORDER', -1)
 			button.backdrop:SetOutside(button.icon)
 			button.backdrop:SetBackdropColor(0, 0, 0, 1)
-			button.backdrop.callbackBackdropColor = clearBackdrop
+			button.backdrop.callbackBackdropColor = ClearBackdrop
 
 			button.icon:SetDesaturated(false)
 			button.icon:SetAlpha(1)

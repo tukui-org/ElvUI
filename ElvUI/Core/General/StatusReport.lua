@@ -201,7 +201,7 @@ function E:CreateStatusFrame()
 	return StatusFrame
 end
 
-local function pluginSort(a, b)
+local function PluginSort(a, b)
 	local A, B = a.title or a.name, b.title or b.name
 	if A and B then
 		return E:StripString(A) < E:StripString(B)
@@ -239,7 +239,7 @@ function E:UpdateStatusFrame()
 		end
 
 		if next(pluginData) then
-			sort(pluginData, pluginSort)
+			sort(pluginData, PluginSort)
 
 			local count = #pluginData
 			local width = PluginSection:GetWidth()
