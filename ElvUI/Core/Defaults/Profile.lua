@@ -975,7 +975,7 @@ P.nameplates = {
 					{r = .19, g = .48, b = .60}, -- water
 					{r = .42, g = .18, b = .74}, -- air
 				},
-				MAELSTROM = {r = 0.58, g = 0.51, b = 0.79}
+				MAELSTROM = {r = 0.35, g = 0.15, b = 1}
 			},
 			PRIEST = {r = 0.40, g = 0.00, b = 0.80}, -- shadow orbs
 			WARLOCK = {
