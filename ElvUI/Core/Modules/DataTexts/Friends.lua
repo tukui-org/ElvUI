@@ -400,15 +400,13 @@ local function Click(self, btn)
 end
 
 local lastTooltipXLineHeader
-local function TooltipAddXLine(X, header, ...)
+local function TooltipAddXLine(doubleLine, header, ...)
 	local tt = DT.tooltip
-	local func = X and tt.AddDoubleLine or tt.AddLine
+	local func = doubleLine and tt.AddDoubleLine or tt.AddLine
 	if lastTooltipXLineHeader ~= header then
 		tt:AddLine(' ')
 
-		if header ~= wowString and header ~= 'bnet' then
-			func(tt, header)
-		end
+		func(tt, header)
 
 		lastTooltipXLineHeader = header
 	end
