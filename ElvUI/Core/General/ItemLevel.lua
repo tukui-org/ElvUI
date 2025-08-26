@@ -92,6 +92,7 @@ end
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
 	tt:SetOwner(UIParent, 'ANCHOR_NONE')
+
 	local hasItem = tt:SetInventoryItem(unit, slot)
 	tt:Show()
 
@@ -144,14 +145,10 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	return slotInfo
 end
 
---Credit ls & Acidweb
+-- Credit ls & Acidweb
 function E:CalculateAverageItemLevel(iLevelDB, unit)
-	local spec = E.Retail and GetInspectSpecialization(unit) -- fix this later?
-	local total = 0
-
-	if E.Retail and (not spec or spec == 0) then
-		return
-	end
+	local total, spec = 0, not E.Classic and GetInspectSpecialization(unit)
+	if not spec or spec == 0 then return end
 
 	-- Armor
 	for _, id in next, ARMOR_SLOTS do
