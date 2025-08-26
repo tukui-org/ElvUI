@@ -693,62 +693,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Stonevault
-		[427329] = List(), -- Void Corruption
-		[435813] = List(), -- Void Empowerment
-		[423572] = List(), -- Void Empowerment
-		[424889] = List(), -- Seismic Reverberation
-		[424795] = List(), -- Refracting Beam
-		[457465] = List(), -- Entropy
-		[425974] = List(), -- Ground Pound
-		[445207] = List(), -- Piercing Wail
-		[428887] = List(), -- Smashed
-		[427382] = List(), -- Concussive Smash
-		[449154] = List(), -- Molten Mortar
-		[427361] = List(), -- Fracture
-		[443494] = List(), -- Crystalline Eruption
-		[424913] = List(), -- Volatile Explosion
-		[443954] = List(), -- Exhaust Vents
-		[426308] = List(), -- Void Infection
-		[429999] = List(), -- Flaming Scrap
-		[429545] = List(), -- Censoring Gear
-		[428819] = List(), -- Exhaust Vents
-	-- City of Threads
-		[434722] = List(), -- Subjugate
-		[439341] = List(), -- Splice
-		[440437] = List(), -- Shadow Shunpo
-		[448561] = List(), -- Shadows of Doubt
-		[440107] = List(), -- Knife Throw
-		[439324] = List(), -- Umbral Weave
-		[442285] = List(), -- Corrupted Coating
-		[440238] = List(), -- Ice Sickles
-		[461842] = List(), -- Oozing Smash
-		[434926] = List(), -- Lingering Influence
-		[440310] = List(), -- Chains of Oppression
-		[439646] = List(), -- Process of Elimination
-		[448562] = List(), -- Doubt
-		[441391] = List(), -- Dark Paranoia
-		[461989] = List(), -- Oozing Smash
-		[441298] = List(), -- Freezing Blood
-		[441286] = List(), -- Dark Paranoia
-		[452151] = List(), -- Rigorous Jab
-		[451239] = List(), -- Brutal Jab
-		[443509] = List(), -- Ravenous Swarm
-		[443437] = List(), -- Shadows of Doubt
-		[451295] = List(), -- Void Rush
-		[443427] = List(), -- Web Bolt
-		[461630] = List(), -- Venomous Spray
-		[445435] = List(), -- Black Blood
-		[443401] = List(), -- Venom Strike
-		[443430] = List(), -- Silk Binding
-		[443438] = List(), -- Doubt
-		[443435] = List(), -- Twist Thoughts
-		[443432] = List(), -- Silk Binding
-		[448047] = List(), -- Web Wrap
-		[451426] = List(), -- Gossamer Barrage
-		[446718] = List(), -- Umbral Weave
-		[450055] = List(), -- Gutburst
-		[450783] = List(), -- Perfume Toss
 	-- The Dawnbreaker
 		[463428] = List(), -- Lingering Erosion
 		[426736] = List(), -- Shadow Shroud
@@ -797,20 +741,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[436322] = List(), -- Poison Bolt
 		[434083] = List(), -- Ambush
 		[433843] = List(), -- Erupting Webs
-	-- The Rookery
-		[429493] = List(), -- Unstable Corruption
-		[424739] = List(), -- Chaotic Corruption
-		[433067] = List(), -- Seeping Corruption
-		[426160] = List(), -- Dark Gravity
-		[1214324] = List(), -- Crashing Thunder
-		[424966] = List(), -- Lingering Void
-		[467907] = List(), -- Festering Void
-		[458082] = List(), -- Stormrider's Charge
-		[472764] = List(), -- Void Extraction
-		[427616] = List(), -- Energized Barrage
-		[430814] = List(), -- Attracting Shadows
-		[430179] = List(), -- Seeping Corruption
-		[1214523] = List(), -- Feasting Void
 	-- Priory of the Sacred Flame
 		[424414] = List(), -- Pierce Armor
 		[423015] = List(), -- Castigator's Shield
@@ -830,60 +760,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[424430] = List(), -- Consecration
 		[453461] = List(), -- Caltrops
 		[427900] = List(), -- Molten Pool
-	-- Cinderbrew Meadery
-		[441397] = List(), -- Bee Venom
-		[431897] = List(), -- Rowdy Yell
-		[442995] = List(), -- Swarming Surprise
-		[437956] = List(), -- Erupting Inferno
-		[441413] = List(), -- Shredding Sting
-		[434773] = List(), -- Mean Mug
-		[438975] = List(), -- Shredding Sting
-		[463220] = List(), -- Volatile Keg
-		[449090] = List(), -- Reckless Delivery
-		[437721] = List(), -- Boiling Flames
-		[441179] = List(), -- Oozing Honey
-		[440087] = List(), -- Oozing Honey
-		[434707] = List(), -- Cinderbrew Toss
-		[445180] = List(), -- Crawling Brawl
-		[442589] = List(), -- Beeswax
-		[435789] = List(), -- Cindering Wounds
-		[440134] = List(), -- Honey Marinade
-		[432182] = List(), -- Throw Cinderbrew
-		[436644] = List(), -- Burning Ricochet
-		[436624] = List(), -- Cash Cannon
-		[436640] = List(), -- Burning Ricochet
-		[439325] = List(), -- Burning Fermentation
-		[432196] = List(), -- Hot Honey
-		[439586] = List(), -- Fluttering Wing
-		[440141] = List(), -- Honey Marinade
-	-- Darkflame Cleft
-		[426943] = List(), -- Rising Gloom
-		[427015] = List(), -- Shadowblast
-		[420696] = List(), -- Throw Darkflame
-		[422648] = List(), -- Darkflame Pickaxe
-		[1218308] = List(), -- Enkindling Inferno
-		[422245] = List(), -- Rock Buster
-		[423693] = List(), -- Luring Candleflame
-		[421638] = List(), -- Wicklighter Barrage
-		[421817] = List(), -- Wicklighter Barrage
-		[424223] = List(), -- Incite Flames
-		[421146] = List(), -- Throw Darkflame
-		[427180] = List(), -- Fear of the Gloom
-		[424322] = List(), -- Explosive Flame
-		[422807] = List(), -- Candlelight
-		[420307] = List(), -- Candlelight
-		[422806] = List(), -- Smothering Shadows
-		[469620] = List(), -- Creeping Shadow
-		[443694] = List(), -- Crude Weapons
-		[425555] = List(), -- Crude Weapons
-		[428019] = List(), -- Flashpoint
-		[423501] = List(), -- Wild Wallop
-		[426277] = List(), -- One-Hand Headlock
-		[423654] = List(), -- Ouch!
-		[421653] = List(), -- Cursed Wax
-		[421067] = List(), -- Molten Wax
-		[426883] = List(), -- Bonk!
-		[440653] = List(), -- Surging Flamethrower
 	-- Operation: Floodgate
 		[462737] = List(), -- Black Blood Wound
 		[1213803] = List(), -- Nailed
@@ -1090,38 +966,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
-	-- The Stonevault
-		[445541] = List(), -- Activate Ventilation
-		[423228] = List(), -- Crumbling Shell 1
-		[445409] = List(), -- Crumbling Shell 2
-		[428519] = List(), -- Deconstruction 1
-		[428520] = List(), -- Deconstruction 2
-		[462372] = List(), -- Exhaust Vents 1
-		[428820] = List(), -- Exhaust Vents 2
-		[423766] = List(), -- Fracturing Blows
-		[427300] = List(), -- Pillaging
-		[428212] = List(), -- Scrap Song 1
-		[428242] = List(), -- Scrap Song 2
-		[423246] = List(), -- Shattered Shell
-		[448640] = List(), -- Shield Stampede
-		[439577] = List(), -- Silenced Speaker
-		[428532] = List(), -- Unleash the Void
-		[423327] = List(), -- Void Discharge 1
-		[423324] = List(), -- Void Discharge 2
-		[426771] = List(), -- Void Outburst
-		[427315] = List(), -- Void Rift
-	-- City of Threads
-		[450047] = List(), -- Gorged
-		[439518] = List(), -- Twin Fangs
-		[434829] = List(), -- Vociferous Indoctrination
-		[451222] = List(), -- Void Rush
-		[452162] = List(), -- Mending Web
-		[434691] = List(), -- Chains of Oppression
-		[444428] = List(), -- Honored Citizen
-		[436205] = List(), -- Fierce Stomping
-		[445813] = List(), -- Dark Barrage
-		[441395] = List(), -- Dark Pulse
-		[446726] = List(), -- Shadow Shield
 	-- The Dawnbreaker
 		[431493] = List(), -- Darkblade
 		[448888] = List(), -- Erosive Spray
@@ -1150,11 +994,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[434254] = List(), -- Intensity
 		[438494] = List(), -- Alerting Shrill
 		[434793] = List(), -- Resonant Barrage
-	-- The Rookery
 	-- Priory of the Sacred Flame
-	-- Cinderbrew Meadery
-	-- Darkflame Cleft
+		[427342] = List(), -- Defend (Channel)
+		[427359] = List(), -- Defend
+		[423588] = List(), -- Barrier of Light
+		[464240] = List(), -- Reflective Shield
 	-- Operation: Floodgate
+		[465420] = List(), -- High Ground
+		[471733] = List(), -- Restorative Algae
 	----------------------------------------------------------
 	--------------- The War Within (Season 3) ----------------
 	----------------------------------------------------------
@@ -1174,6 +1021,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[1248701] = List(), -- Consume Spirit
 	-- Halls of Atonement
 		[326450] = List(), -- Loyal Beasts
+		[1235121] = List(), -- Flee
 	-- Tazavesh, the Veiled Market
 		[355147] = List(), -- Fish Invigoration
 		[351960] = List(), -- Static Cling
@@ -1197,10 +1045,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[1241100] = List(), -- Mystic Lash
 		[1225616] = List(), -- Soulfire Convergence
 	-- Forgeweaver Araz
+		[1233415] = List(), -- Mana Splinter
 	-- The Soul Hunters
 	-- Fractillus
 	-- Nexus-King Salhadaar
+		[1228284] = List(), -- Royal Ward
 	-- Dimensius, the All-Devouring
+		[1237689] = List(), -- Void Shell
 	---------------------------------------------------------
 	--------------- Liberation of Undermine -----------------
 	---------------------------------------------------------
