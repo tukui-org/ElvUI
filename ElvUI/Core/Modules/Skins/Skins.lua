@@ -2351,17 +2351,14 @@ function S:AddCallback(name, func, position) -- arg1: name is 'given name'
 	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
 end
 
-local function errorhandler(err)
-	return _G.geterrorhandler()(err)
-end
-
 function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 	if bypass then
 		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
+
 		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
@@ -2386,7 +2383,7 @@ end
 
 function S:CallLoadedAddon(addonName, object)
 	for _, func in next, object do
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
 	end
 
 	S.addonsToLoad[addonName] = nil
@@ -2402,7 +2399,8 @@ function S:Initialize()
 	S.Initialized = true
 
 	for index, func in next, S.nonAddonsToLoad do
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
+
 		S.nonAddonsToLoad[index] = nil
 	end
 
