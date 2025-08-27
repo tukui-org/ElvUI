@@ -36,8 +36,9 @@ local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
 local GameTooltip_SetDefaultAnchor = GameTooltip_SetDefaultAnchor
 local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
-local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
 local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
 local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
@@ -1572,7 +1573,7 @@ function InitializeEventHandler()
 	end
 end
 
-function OnEvent(_, event, arg1, ...)
+function OnEvent(_, event, arg1, arg2, ...)
 	if event == "PLAYER_LOGIN" then
 		if UseCustomFlyout then
 			DiscoverFlyoutSpells()
@@ -1634,7 +1635,7 @@ function OnEvent(_, event, arg1, ...)
 		end
 	elseif event == "UNIT_AURA" then
 		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns(event)
+			UpdateAuraCooldowns(event, arg1, arg2)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
@@ -1643,7 +1644,7 @@ function OnEvent(_, event, arg1, ...)
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
 			for button in next, buttons do
-				UpdateRange(button, nil, ...) -- inRange, checksRange
+				UpdateRange(button, nil, arg2, ...) -- inRange, checksRange
 			end
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
@@ -1863,37 +1864,82 @@ end
 
 do
 	local current = {}
-	function UpdateAuraCooldowns(event, disable)
-		local previous
-		if next(current) then
-			previous = CopyTable(current, true)
+	local auraInstances = {}
 
-			wipe(current)
-		end
+	local function GetTargetAuraCooldown(aura)
+		if not aura then return end
 
-		if not disable then
-			local filter = UnitIsFriend('player', 'target') and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
-			for spellName, buttons in next, AuraButtons.auras do
-				local aura = GetAuraDataBySpellName('target', spellName, filter)
-				if aura then
-					local _, _, _, _, duration, expiration = UnpackAuraData(aura)
-					local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
-					if start then
-						for _, button in next, buttons do
-							button.AuraCooldown:SetCooldown(start, duration, 1)
+		local _, _, _, _, duration, expiration = UnpackAuraData(aura)
+		local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
+		return start, duration, expiration
+	end
 
-							current[button] = true
+	local function CheckTargetAuraCooldown(aura, buttons, previous)
+		local start, duration = GetTargetAuraCooldown(aura)
+		if not start then return end
 
-							if previous then
-								previous[button] = nil
-							end
-						end
-					end
-				end
+		for _, button in next, buttons do
+			button.AuraCooldown:SetCooldown(start, duration, 1)
+
+			current[button] = true
+
+			if previous then
+				previous[button] = nil
 			end
 		end
 
-		if previous then
+	end
+
+	local function ProcessAuras(which, auras)
+		if not auras then return end
+
+		for _, value in next, auras do
+			if which == 'add' then
+				auraInstances[value.auraInstanceID] = value
+
+				local buttons = AuraButtons.auras[value.name]
+				if buttons then
+					CheckTargetAuraCooldown(value, buttons)
+				end
+			else
+				local aura
+				if which == 'update' then -- update it
+					aura = GetAuraDataByAuraInstanceID('target', value)
+					auraInstances[value] = aura
+				else
+					aura = auraInstances[value] -- use cache to remove
+					auraInstances[value] = nil -- clear the old one
+				end
+
+				local buttons = aura and AuraButtons.auras[aura.name]
+				if buttons then
+					CheckTargetAuraCooldown(aura, buttons)
+				end
+			end
+		end
+	end
+
+	function UpdateAuraCooldowns(event, arg1, updateInfo)
+		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
+			ProcessAuras('add', updateInfo.addedAuras)
+			ProcessAuras('update', updateInfo.updatedAuraInstanceIDs)
+			ProcessAuras('remove', updateInfo.removedAuraInstanceIDs)
+		elseif event ~= 'SetAuraCooldowns' or not arg1 then
+			local previous = CopyTable(current, true) -- shallow copy
+
+			wipe(current) -- clear the current ones
+			wipe(auraInstances) -- keep this clean
+
+			local filter = UnitIsFriend('player', 'target') and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
+			for spellName, buttons in next, AuraButtons.auras do
+				local aura = GetAuraDataBySpellName('target', spellName, filter)
+				if aura then -- collect what we can
+					auraInstances[aura.auraInstanceID] = aura
+
+					CheckTargetAuraCooldown(aura, buttons, previous)
+				end
+			end
+
 			for button in next, previous do
 				button.AuraCooldown:Clear()
 			end
