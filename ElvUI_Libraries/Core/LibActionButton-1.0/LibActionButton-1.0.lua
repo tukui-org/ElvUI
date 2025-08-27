@@ -1894,7 +1894,6 @@ do
 				previous[button] = nil
 			end
 		end
-
 	end
 
 	local function ProcessTargetAuras(which, auras)
