@@ -208,8 +208,6 @@ local function Update(self, event, unit, powerType)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
 		end
 
-		print(unit, powerType, powerID, current, maximum, displayMod)
-
 		for i = 1, maximum do
 			element[i]:Show()
 
