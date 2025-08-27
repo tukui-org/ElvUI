@@ -136,10 +136,12 @@ local function UpdateColor(element, powerType)
 
 	for i = 1, #element do
 		local bar = element[i]
+		if not bar then break end
+
 		bar:SetStatusBarColor(r, g, b)
 
 		local bg = bar.bg
-		if(bg) then
+		if bg then
 			local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
@@ -214,6 +216,8 @@ local function Update(self, event, unit, powerType)
 
 		for i = 1, maximum do
 			local bar = element[i]
+			if not bar then break end
+
 			bar:Show()
 
 			if ClassPowerID == POWERTYPE_MANA then
@@ -231,6 +235,8 @@ local function Update(self, event, unit, powerType)
 			if(maximum < previousMax) then
 				for i = maximum + 1, previousMax do
 					local bar = element[i]
+					if not bar then break end
+
 					bar:Hide()
 					bar:SetValue(0)
 				end
@@ -425,6 +431,8 @@ local function Enable(self, unit)
 
 		for i = 1, #element do
 			local bar = element[i]
+			if not bar then break end
+
 			if bar:IsObjectType('StatusBar') then
 				if not bar:GetStatusBarTexture() then
 					bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
