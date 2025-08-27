@@ -862,11 +862,7 @@ function Generic:DisableDragNDrop(flag)
 		error("LibActionButton-1.0: You can only toggle DragNDrop out of combat!", 2)
 	end
 
-	if flag then
-		self:SetAttribute("LABdisableDragNDrop", true)
-	else
-		self:SetAttribute("LABdisableDragNDrop", nil)
-	end
+	self:SetAttribute("LABdisableDragNDrop", flag and true or nil)
 end
 
 function Generic:AddToButtonFacade(group)
