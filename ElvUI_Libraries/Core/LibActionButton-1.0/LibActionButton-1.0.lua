@@ -46,7 +46,7 @@ local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or G
 
 local C_Container_GetItemCooldown = C_Container.GetItemCooldown
 local C_EquipmentSet_PickupEquipmentSet = C_EquipmentSet.PickupEquipmentSet
-local C_LevelLink_IsActionLocked = C_LevelLink.IsActionLocked
+local C_LevelLink_IsActionLocked = C_LevelLink and C_LevelLink.IsActionLocked
 local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 
 local GetTime = GetTime
