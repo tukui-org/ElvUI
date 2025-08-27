@@ -61,7 +61,9 @@ local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
 local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_SHAMAN_ELEMENTAL = _G.SPEC_SHAMAN_ELEMENTAL or 1
 
+local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
 local POWERTYPE_COMBO_POINTS = Enum.PowerType.ComboPoints or 4
 local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
@@ -100,6 +102,7 @@ local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 local ClassPowerType, ClassPowerID = {
 	[POWERTYPE_CHI] = 'CHI',
+	[POWERTYPE_MANA] = 'MANA',
 	[POWERTYPE_SHADOW_ORBS] = 'SHADOW_ORBS',
 	[POWERTYPE_COMBO_POINTS] = 'COMBO_POINTS',
 	[POWERTYPE_ARCANE_CHARGES] = 'ARCANE_CHARGES',
@@ -113,6 +116,7 @@ local ClassPowerType, ClassPowerID = {
 }
 
 local ClassPowerMax = {
+	[POWERTYPE_MANA] = 1,
 	[POWERTYPE_DEMONIC_FURY] = 1,
 	[POWERTYPE_BURNING_EMBERS] = 4,
 	[POWERTYPE_MAELSTROM] = 10,
@@ -263,12 +267,14 @@ local function Visibility(self, event, unit)
 
 	if PlayerClass == 'MONK' then
 		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
+	elseif PlayerClass == 'SHAMAN' then
+		ClassPowerID = oUF.isRetail and (CurrentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or CurrentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
 	elseif PlayerClass == 'WARLOCK' then
 		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif PlayerClass == 'MAGE' then
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
-	elseif oUF.isMists and PlayerClass == 'PRIEST' then
-		ClassPowerID = (CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
+	elseif PlayerClass == 'PRIEST' then
+		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
@@ -390,18 +396,10 @@ do
 		Path(self, 'ClassPowerDisable', 'player', ClassPowerType[ClassPowerID])
 	end
 
-	if(PlayerClass == 'MONK') then
-		ClassPowerID = POWERTYPE_CHI
-
-		if oUF.isRetail then
-			RequireSpec[SPEC_MONK_WINDWALKER] = true
-		end
-	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
-		ClassPowerID = POWERTYPE_SHADOW_ORBS
-
-		RequireSpec[SPEC_PRIEST_SHADOW] = true
-	elseif(PlayerClass == 'PALADIN') then
+	if(PlayerClass == 'PALADIN') then
 		ClassPowerID = POWERTYPE_HOLY_POWER
+	elseif(PlayerClass == 'EVOKER') then
+		ClassPowerID = POWERTYPE_ESSENCE
 	elseif(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then
 		ClassPowerID = POWERTYPE_COMBO_POINTS
 
@@ -409,12 +407,6 @@ do
 			RequirePower = POWERTYPE_ENERGY
 			RequireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
 		end
-	elseif(oUF.isRetail and PlayerClass == 'SHAMAN') then
-		ClassPowerID = POWERTYPE_MAELSTROM
-
-		RequireSpec[SPEC_SHAMAN_ENHANCEMENT] = true
-	elseif(PlayerClass == 'EVOKER') then
-		ClassPowerID = POWERTYPE_ESSENCE
 	end
 end
 

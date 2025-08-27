@@ -10,8 +10,6 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
-
 function NP:ClassPower_SetBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
@@ -25,7 +23,6 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 
 	local classPower = self.classColor
 	local colors = NP.db.colors.classResources
-	local fallback = NP.db.colors.power[powerType] or NP.db.colors.power.MANA
 
 	if isRunes and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self, rune)
@@ -33,9 +30,10 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
-		local classColor = not classPower and (colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
+		local fallback = NP.db.colors.power[powerType] or NP.db.colors.power.MANA
+		local classColor = not classPower and powerType ~= 'MANA' and (colors[UF.ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
 		for i, bar in ipairs(self) do
-			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or classColor[i] or classColor
+			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or (classColor and classColor[i]) or classColor
 			if not color or not color.r then
 				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else

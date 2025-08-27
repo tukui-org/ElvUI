@@ -13,10 +13,10 @@ local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 
-local AltManaTypes = { Rage = 1, Energy = 3 }
-local ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
-local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK' }
+UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
+UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK' }
 
+local AltManaTypes = { Rage = 1, Energy = 3 }
 if E.Retail then
 	AltManaTypes.LunarPower = 8
 	AltManaTypes.Maelstrom = 11
@@ -42,9 +42,7 @@ function UF:GetClassPower_Construct(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif E.Retail and (E.myclass == 'SHAMAN' or E.myclass == 'PRIEST') then
-		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-	elseif E.myclass == 'SHAMAN' then
+	elseif not E.Retail and E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
 	end
 
@@ -78,17 +76,16 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	local isRunes = powerType == 'RUNES'
 
 	local colors = UF.db.colors.classResources
-	local fallback = UF.db.colors.power[powerType] or UF.db.colors.power.MANA
-
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local classColor = colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass]
+		local fallback = UF.db.colors.power[powerType] or UF.db.colors.power.MANA
+		local classColor = powerType ~= 'MANA' and (colors[UF.ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
 		for i, bar in ipairs(self) do
-			local color = (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or classColor[i] or classColor
+			local color = (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or (classColor and classColor[i]) or classColor
 			if not color or not color.r then
 				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
 			else
@@ -308,7 +305,7 @@ function UF:Configure_ClassBar(frame)
 		bars:SetParent(frame)
 	end
 
-	for _, powerType in pairs(ClassPowerTypes) do
+	for _, powerType in pairs(UF.ClassPowerTypes) do
 		if frame[powerType] then
 			if frame.USE_CLASSBAR then
 				if powerType == 'AdditionalPower' then
