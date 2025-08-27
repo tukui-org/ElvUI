@@ -114,7 +114,6 @@ local ClassPowerType = {
 }
 
 local ClassPowerMax = {
-	[POWERTYPE_MANA] = 1,
 	[POWERTYPE_DEMONIC_FURY] = 1,
 	[POWERTYPE_BURNING_EMBERS] = 4,
 	[POWERTYPE_MAELSTROM] = 10,
@@ -187,15 +186,12 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local current, maximum, oldMax, chargedPoints
+	local current, maximum, previousMax, chargedPoints
 	if event ~= 'ClassPowerDisable' then
 		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
 		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS or nil
 		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
-
-		maximum = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
-		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			current = 0
@@ -212,23 +208,31 @@ local function Update(self, event, unit, powerType)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
 		end
 
-		for i = 1, maximum do
-			element[i]:Show()
+		local powerMax = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
+		maximum = (ClassPowerID == POWERTYPE_MANA and 1) or powerMax
+		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
-			if warlockDest and i == floor(current + 1) then
-				element[i]:SetValue(current % 1)
+		for i = 1, maximum do
+			local bar = element[i]
+			bar:Show()
+
+			if ClassPowerID == POWERTYPE_MANA then
+				bar:SetValue(current / powerMax)
+			elseif warlockDest and i == floor(current + 1) then
+				bar:SetValue(current % 1)
 			else
-				element[i]:SetValue(current - i + 1)
+				bar:SetValue(current - i + 1)
 			end
 		end
 
-		oldMax = element.__max
+		previousMax = element.__max
 
-		if(maximum ~= oldMax) then
-			if(maximum < oldMax) then
-				for i = maximum + 1, oldMax do
-					element[i]:Hide()
-					element[i]:SetValue(0)
+		if(maximum ~= previousMax) then
+			if(maximum < previousMax) then
+				for i = maximum + 1, previousMax do
+					local bar = element[i]
+					bar:Hide()
+					bar:SetValue(0)
 				end
 			end
 
@@ -247,7 +251,7 @@ local function Update(self, event, unit, powerType)
 	* ...           - the indices of currently charged power points, if any
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(current, maximum, oldMax ~= maximum, powerType or currentType, chargedPoints)  -- ElvUI uses chargedPoints as table
+		return element:PostUpdate(current, maximum, previousMax ~= maximum, powerType or currentType, chargedPoints)
 	end
 end
 
