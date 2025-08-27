@@ -162,7 +162,7 @@ local function Update(self, event, unit, powerType)
 
 	local currentType = ClassPowerType[ClassPowerID]
 	if event == 'UNIT_AURA' then powerType = currentType end
-	if (event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType) then return end
+	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
 	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
@@ -180,20 +180,18 @@ local function Update(self, event, unit, powerType)
 	end
 
 	local current, maximum, oldMax, chargedPoints
-	if(event ~= 'ClassPowerDisable') then
-		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
-		local displayMod = powerID > 0 and UnitPowerDisplayMod(powerID)
-
-		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
+	local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
+	if event ~= 'ClassPowerDisable' then
+		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS or nil
+		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
 
 		maximum = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
-
 		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			current = 0
-		elseif oUF.isRetail and CurrentSpec == SPEC_WARLOCK_DESTRUCTION then -- destro locks are special
+		elseif oUF.isRetail and (PlayerClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
 			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HELPFUL')
