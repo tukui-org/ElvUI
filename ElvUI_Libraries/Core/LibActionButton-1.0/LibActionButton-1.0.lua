@@ -613,8 +613,14 @@ function WrapOnClick(button, unwrapheader)
 			end
 
 			-- if this is a pickup click, disable on-down casting
+			-- it should get re-enabled in the post handler, or the OnDragStart handler, whichever occurs
 			if button ~= "Keybind" and ((self:GetAttribute("unlockedpreventdrag") and not self:GetAttribute("buttonlock")) or IsModifiedClick("PICKUPACTION")) and not self:GetAttribute("LABdisableDragNDrop") then
-				return false
+				local useOnkeyDown = self:GetAttribute("useOnKeyDown")
+				if useOnkeyDown ~= false then
+					self:SetAttribute("LABToggledOnDown", true)
+					self:SetAttribute("LABToggledOnDownBackup", useOnkeyDown)
+					self:SetAttribute("useOnKeyDown", false)
+				end
 			end
 
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
@@ -633,6 +639,13 @@ function WrapOnClick(button, unwrapheader)
 		local type, action = GetActionInfo(self:GetAttribute("action"))
 		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
+		end
+
+		-- re-enable ondown casting if needed
+		if self:GetAttribute("LABToggledOnDown") then
+			self:SetAttribute("useOnKeyDown", self:GetAttribute("LABToggledOnDownBackup"))
+			self:SetAttribute("LABToggledOnDown", nil)
+			self:SetAttribute("LABToggledOnDownBackup", nil)
 		end
 	]])
 end
@@ -771,6 +784,7 @@ function Generic:ClearStates()
 		self:SetAttribute(format("labtype-%s", state), nil)
 		self:SetAttribute(format("labaction-%s", state), nil)
 	end
+
 	wipe(self.state_types)
 	wipe(self.state_actions)
 end
@@ -1468,13 +1482,14 @@ function Generic:UpdateConfig(config)
 		end
 	end
 
-	self:SetAttribute("flyoutDirection", self.config.flyoutDirection)
-
 	UpdateCooldownNumberHidden(self)
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, 'UpdateConfig')
+
+	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
+	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
 	if not WoWRetail then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
