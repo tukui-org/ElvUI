@@ -57,12 +57,9 @@ local _, PlayerClass = UnitClass('player')
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
 local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
-local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
-local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_WARLOCK_AFFLICTION = _G.SPEC_WARLOCK_AFFLICTION or 1
 local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
 
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -161,9 +158,11 @@ local function CurrentApplications(spellID, filter)
 end
 
 local function Update(self, event, unit, powerType)
+	if not unit or not UnitIsUnit(unit, 'player') then return end
+
 	local currentType = ClassPowerType[ClassPowerID]
 	if event == 'UNIT_AURA' then powerType = currentType end
-	if not powerType or not unit or not UnitIsUnit(unit, 'player') then return end
+	if (event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType) then return end
 
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
 	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
@@ -389,6 +388,7 @@ do
 		end
 
 		element.__isEnabled = false
+
 		Path(self, 'ClassPowerDisable', 'player', ClassPowerType[ClassPowerID])
 	end
 
