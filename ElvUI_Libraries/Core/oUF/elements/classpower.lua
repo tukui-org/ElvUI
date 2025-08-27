@@ -180,8 +180,8 @@ local function Update(self, event, unit, powerType)
 	end
 
 	local current, maximum, oldMax, chargedPoints
-	local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
 	if event ~= 'ClassPowerDisable' then
+		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
 		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS or nil
 		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
