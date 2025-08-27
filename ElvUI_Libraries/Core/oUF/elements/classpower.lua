@@ -48,9 +48,7 @@ Supported class powers:
 local _, ns = ...
 local oUF = ns.oUF
 
-local next = next
 local floor = floor
-
 local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
@@ -58,10 +56,10 @@ local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
 local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
-local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
-local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
 local SPEC_SHAMAN_ELEMENTAL = _G.SPEC_SHAMAN_ELEMENTAL or 1
+local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
+local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -100,7 +98,7 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
-local ClassPowerType, ClassPowerID = {
+local ClassPowerType = {
 	[POWERTYPE_CHI] = 'CHI',
 	[POWERTYPE_MANA] = 'MANA',
 	[POWERTYPE_SHADOW_ORBS] = 'SHADOW_ORBS',
@@ -123,8 +121,15 @@ local ClassPowerMax = {
 	[POWERTYPE_ICICLES] = 5,
 }
 
+local UseFakePower = {
+	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
+	[POWERTYPE_MAELSTROM] = oUF.isRetail,
+	[POWERTYPE_ICICLES] = oUF.isRetail
+}
+
 local ClassPowerEnable, ClassPowerDisable
-local CurrentSpec, RequirePower, RequireSpell
+local RequirePower, RequireSpell
+local CurrentSpec, ClassPowerID
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -364,7 +369,7 @@ function ClassPowerEnable(self)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
-	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+	if UseFakePower[ClassPowerID] then
 		self:RegisterEvent('UNIT_AURA', Path)
 	end
 
@@ -387,7 +392,7 @@ function ClassPowerDisable(self)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 
-	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+	if UseFakePower[ClassPowerID] then
 		self:UnregisterEvent('UNIT_AURA')
 	end
 
