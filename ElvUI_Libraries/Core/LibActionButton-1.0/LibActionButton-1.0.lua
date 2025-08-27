@@ -613,14 +613,8 @@ function WrapOnClick(button, unwrapheader)
 			end
 
 			-- if this is a pickup click, disable on-down casting
-			-- it should get re-enabled in the post handler, or the OnDragStart handler, whichever occurs
 			if button ~= "Keybind" and ((self:GetAttribute("unlockedpreventdrag") and not self:GetAttribute("buttonlock")) or IsModifiedClick("PICKUPACTION")) and not self:GetAttribute("LABdisableDragNDrop") then
-				local useOnkeyDown = self:GetAttribute("useOnKeyDown")
-				if useOnkeyDown ~= false then
-					self:SetAttribute("LABToggledOnDown", true)
-					self:SetAttribute("LABToggledOnDownBackup", useOnkeyDown)
-					self:SetAttribute("useOnKeyDown", false)
-				end
+				return false
 			end
 
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
@@ -639,13 +633,6 @@ function WrapOnClick(button, unwrapheader)
 		local type, action = GetActionInfo(self:GetAttribute("action"))
 		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
-		end
-
-		-- re-enable ondown casting if needed
-		if self:GetAttribute("LABToggledOnDown") then
-			self:SetAttribute("useOnKeyDown", self:GetAttribute("LABToggledOnDownBackup"))
-			self:SetAttribute("LABToggledOnDown", nil)
-			self:SetAttribute("LABToggledOnDownBackup", nil)
 		end
 	]])
 end
@@ -874,6 +861,7 @@ function Generic:DisableDragNDrop(flag)
 	if InCombatLockdown() then
 		error("LibActionButton-1.0: You can only toggle DragNDrop out of combat!", 2)
 	end
+
 	if flag then
 		self:SetAttribute("LABdisableDragNDrop", true)
 	else
@@ -1337,20 +1325,21 @@ end
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
 -- to place it on the button. Like action buttons work.
 function Generic:PreClick()
-	if self._state_type == "action" or self._state_type == "pet"
-	   or InCombatLockdown() or self:GetAttribute("LABdisableDragNDrop")
-	then
+	if self._state_type == "action" or self._state_type == "pet" or InCombatLockdown() or self:GetAttribute("LABdisableDragNDrop") then
 		return
 	end
+
 	-- check if there is actually something on the cursor
 	local kind, value, _subtype = GetCursorInfo()
 	if not (kind and value) then return end
+
 	self._old_type = self._state_type
 	if self._state_type and self._state_type ~= "empty" then
 		self._old_type = self._state_type
 		self:SetAttribute("type", "empty")
 		--self:SetState(nil, "empty", nil)
 	end
+
 	self._receiving_drag = true
 end
 
@@ -1371,16 +1360,20 @@ function Generic:PostClick(button, down)
 			self:SetAttribute("type", self._old_type)
 			self._old_type = nil
 		end
+
 		local oldType, oldAction = self._state_type, self._state_action
 		local kind, data, subtype, extra = GetCursorInfo()
+
 		self.header:SetFrameRef("updateButton", self)
 		self.header:Execute(format([[
 			local frame = self:GetFrameRef("updateButton")
 			control:RunFor(frame, frame:GetAttribute("OnReceiveDrag"), %s, %s, %s, %s)
 			control:RunFor(frame, frame:GetAttribute("UpdateState"), %s)
 		]], FormatHelper(kind), FormatHelper(data), FormatHelper(subtype), FormatHelper(extra), FormatHelper(self:GetAttribute("state"))))
+
 		PickupAny("clear", oldType, oldAction)
 	end
+
 	self._receiving_drag = nil
 
 	if self._state_type == "action" and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
