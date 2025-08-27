@@ -1866,6 +1866,10 @@ do
 	local current = {}
 	local auraInstances = {}
 
+	local function CheckIsMine(sourceUnit)
+		return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
+	end
+
 	local function GetTargetAuraCooldown(aura)
 		if not aura then return end
 
@@ -1875,6 +1879,9 @@ do
 	end
 
 	local function CheckTargetAuraCooldown(aura, buttons, previous)
+		local isMine = aura and CheckIsMine(aura.sourceUnit)
+		if not isMine then return end
+
 		local start, duration = GetTargetAuraCooldown(aura)
 		if not start then return end
 
