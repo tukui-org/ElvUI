@@ -1663,13 +1663,13 @@ function AB:UpdateChargeCooldown(button, duration)
 	end
 end
 
-function AB:SetAuraCooldownDuration(value)
-	LAB:SetAuraCooldownDuration(value)
+function AB:SetTargetAuraDuration(value)
+	LAB:SetTargetAuraDuration(value)
 end
 
-function AB:SetAuraCooldowns(enabled)
+function AB:SetTargetAuraCooldowns(enabled)
 	local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
-	LAB:SetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
+	LAB:SetTargetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
 end
 
 function AB:ToggleCooldownOptions()
@@ -1932,7 +1932,7 @@ function AB:Initialize()
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
-	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
+	AB:SetTargetAuraDuration(E.db.cooldown.targetAuraDuration)
 
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')

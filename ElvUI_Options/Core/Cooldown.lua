@@ -79,7 +79,7 @@ local function Group(order, db, label)
 	elseif db == 'actionbar' then
 		local auraGroup = ACH:Group(L["Target Aura"], nil, 10)
 		auraGroup.args.targetAura = ACH:Toggle(L["Enable"], L["Display Target's Aura Duration, when there is no CD displaying."], 1, nil, nil, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings(db); end)
-		auraGroup.args.targetAuraDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 }, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; if AB.Initialized then AB:SetAuraCooldownDuration(value) end end)
+		auraGroup.args.targetAuraDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 }, nil, function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; if AB.Initialized then AB:SetTargetAuraDuration(value) end end)
 
 		auraGroup.args.spacer = ACH:Spacer(5)
 		auraGroup.args.targetAuraColor = ACH:Color(L["Target Aura"], L["Color of the Targets Aura time."], 6, nil, 125)

@@ -196,9 +196,9 @@ local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
 local UpdateRange -- Sezz
 
-local UpdateAuraCooldowns -- Simpy
-local AURA_COOLDOWNS_ENABLED = true
-local AURA_COOLDOWNS_DURATION = 0
+local UpdateTargetAuras -- Simpy
+local TARGETAURA_ENABLED = true
+local TARGETAURA_DURATION = 0
 
 local RangeFont
 do -- properly support range symbol when it's shown ~Simpy
@@ -1596,8 +1596,8 @@ function OnEvent(_, event, arg1, arg2, ...)
 			end
 		end
 
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns(event)
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
 		end
 	elseif event == "UNIT_INVENTORY_CHANGED" or event == "LEARNED_SPELL_IN_TAB" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
@@ -1612,8 +1612,8 @@ function OnEvent(_, event, arg1, arg2, ...)
 			end
 		end
 
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns(event)
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update, nil, event)
@@ -1624,8 +1624,8 @@ function OnEvent(_, event, arg1, arg2, ...)
 	elseif event == "UPDATE_BINDINGS" or event == "GAME_PAD_ACTIVE_CHANGED" then
 		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns(event)
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
 		end
 
 		if not WoWRetail then
@@ -1634,8 +1634,8 @@ function OnEvent(_, event, arg1, arg2, ...)
 			end
 		end
 	elseif event == "UNIT_AURA" then
-		if AURA_COOLDOWNS_ENABLED then
-			UpdateAuraCooldowns(event, arg1, arg2)
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event, arg1, arg2)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
@@ -1874,7 +1874,7 @@ do
 		if not aura then return end
 
 		local _, _, _, _, duration, expiration = UnpackAuraData(aura)
-		local start = (duration and duration > 0 and duration <= AURA_COOLDOWNS_DURATION) and (expiration - duration)
+		local start = (duration and duration > 0 and duration <= TARGETAURA_DURATION) and (expiration - duration)
 		return start, duration, expiration
 	end
 
@@ -1897,7 +1897,7 @@ do
 
 	end
 
-	local function ProcessAuras(which, auras)
+	local function ProcessTargetAuras(which, auras)
 		if not auras then return end
 
 		for _, value in next, auras do
@@ -1926,12 +1926,12 @@ do
 		end
 	end
 
-	function UpdateAuraCooldowns(event, arg1, updateInfo)
+	function UpdateTargetAuras(event, arg1, updateInfo)
 		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
-			ProcessAuras('add', updateInfo.addedAuras)
-			ProcessAuras('update', updateInfo.updatedAuraInstanceIDs)
-			ProcessAuras('remove', updateInfo.removedAuraInstanceIDs)
-		elseif event ~= 'SetAuraCooldowns' or not arg1 then
+			ProcessTargetAuras('add', updateInfo.addedAuras)
+			ProcessTargetAuras('update', updateInfo.updatedAuraInstanceIDs)
+			ProcessTargetAuras('remove', updateInfo.removedAuraInstanceIDs)
+		elseif event ~= 'SetTargetAuraCooldowns' or not arg1 then
 			local previous = CopyTable(current, true) -- shallow copy
 
 			wipe(current) -- clear the current ones
@@ -1954,16 +1954,16 @@ do
 	end
 end
 
-function lib:SetAuraCooldownDuration(value)
-	AURA_COOLDOWNS_DURATION = value
+function lib:SetTargetAuraDuration(value)
+	TARGETAURA_DURATION = value
 
-	UpdateAuraCooldowns('SetAuraCooldownDuration')
+	UpdateTargetAuras('SetTargetAuraDuration')
 end
 
-function lib:SetAuraCooldowns(enabled)
-	AURA_COOLDOWNS_ENABLED = enabled
+function lib:SetTargetAuraCooldowns(enabled)
+	TARGETAURA_ENABLED = enabled
 
-	UpdateAuraCooldowns('SetAuraCooldowns', not enabled)
+	UpdateTargetAuras('SetTargetAuraCooldowns', not enabled)
 end
 
 -----------------------------------------------------------
