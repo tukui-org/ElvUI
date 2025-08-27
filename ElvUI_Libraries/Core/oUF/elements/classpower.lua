@@ -55,7 +55,6 @@ local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
-local SPEC_MAGE_FIRE = _G.SPEC_MAGE_FIRE or 2
 local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
