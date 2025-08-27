@@ -259,6 +259,10 @@ function oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
 end
 
 function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
+	if not auraInstanceID then
+		return
+	end
+
 	if filter == 'HELPFUL' then
 		if tt.SetUnitBuffByAuraInstanceID then
 			tt:SetUnitBuffByAuraInstanceID(unit, auraInstanceID)
