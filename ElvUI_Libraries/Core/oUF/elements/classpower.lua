@@ -200,7 +200,7 @@ local function Update(self, event, unit, powerType)
 		elseif oUF.isRetail and (PlayerClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HELPFUL')
+			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
 		elseif ClassPowerID == POWERTYPE_ICICLES then
 			current = CurrentApplications(SPELL_FROST_ICICLES, 'HELPFUL')
 		elseif ClassPowerID == POWERTYPE_MAELSTROM then
