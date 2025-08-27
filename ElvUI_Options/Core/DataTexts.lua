@@ -130,7 +130,7 @@ function DT:SetupPanelOptions(name, data)
 	end
 end
 
-local function escapeString(str, get)
+local function EscapeString(str, get)
 	return get == gsub(str, '|', '||') or gsub(str, '||', '|')
 end
 
@@ -157,7 +157,7 @@ local function CreateDTOptions(name, data)
 	end
 
 	if data.isLDB then
-		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:LoadDataTexts() end)
+		optionTable.args.customLabel = ACH:Input(L["Custom Label"], nil, 1, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:LoadDataTexts() end)
 		optionTable.args.spacer = ACH:Spacer(2, 'full')
 		optionTable.args.label = ACH:Toggle(L["Show Label"], nil, 3)
 		optionTable.args.text = ACH:Toggle(L["Show Text"], nil, 4)
@@ -166,7 +166,7 @@ local function CreateDTOptions(name, data)
 	else
 		for key in pairs(settings) do
 			if key == 'Label' then
-				optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+				optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end)
 			elseif key == 'NoLabel' then
 				optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
 			elseif key == 'NoIcon' then
@@ -196,10 +196,10 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Combat' then
 			optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
 		elseif name == 'CombatIndicator' then
-			optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+			optionTable.args.OutOfCombat = ACH:Input(L["Out of Combat Label"], nil, 1, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end)
 			optionTable.args.OutOfCombatColor = ACH:Color('', nil, 2, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
 			optionTable.args.Spacer = ACH:Spacer(3, 'full')
-			optionTable.args.InCombat = ACH:Input(L["In Combat Label"], nil, 4, nil, nil, function(info) return escapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = escapeString(value) DT:ForceUpdate_DataText(name) end)
+			optionTable.args.InCombat = ACH:Input(L["In Combat Label"], nil, 4, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end)
 			optionTable.args.InCombatColor = ACH:Color('', nil, 5, nil, nil, function(info) local c, d = settings[info[#info]], G.datatexts.settings[name][info[#info]] return c.r, c.g, c.b, nil, d.r, d.g, d.b end, function(info, r, g, b) local c = settings[info[#info]] c.r, c.g, c.b = r, g, b DT:ForceUpdate_DataText(name) end)
 		elseif name == 'Currencies' then
 			optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 10, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.name end end return list end, nil, nil, nil, nil, nil, nil, true)
@@ -304,7 +304,7 @@ DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], ni
 DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, max = 2, step = 1 }, nil, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
-local function addCurrency(_, value)
+local function AddCurrency(_, value)
 	local currencyID = tonumber(value)
 	if not currencyID then return end
 
@@ -316,7 +316,7 @@ local function addCurrency(_, value)
 	end
 end
 
-local function getCurrencyList()
+local function GetCurrencyList()
 	local list = E:CopyTable({}, DT.CurrencyList)
 	list.GOLD = nil
 	list.BACKPACK = nil
@@ -330,8 +330,8 @@ end
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, E.Classic)
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
-DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, getCurrencyList, nil, 'double', nil, addCurrency)
-DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, addCurrency)
+DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, GetCurrencyList, nil, 'double', nil, AddCurrency)
+DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, AddCurrency)
 DataTexts.args.customCurrency.args.delete = ACH:Select(L["Delete"], nil, 2, function() wipe(currencyList) for currencyID, info in pairs(E.global.datatexts.customCurrencies) do currencyList[currencyID] = info.name end return currencyList end, nil, 'double', nil, function(_, value) local currencyName = E.global.datatexts.customCurrencies[value].name DT:RemoveCustomCurrency(currencyName) E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil DT.RegisteredDataTexts[currencyName] = nil E.global.datatexts.customCurrencies[value] = nil dts[currencyName] = nil DT:LoadDataTexts() end, function() return not next(E.global.datatexts.customCurrencies) end)
 DataTexts.args.customCurrency.args.spacer = ACH:Spacer(4)
 

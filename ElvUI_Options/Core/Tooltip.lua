@@ -36,7 +36,7 @@ General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -3)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues)
 General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
 General.modifierGroup.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 6)
-General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7)
+General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.modifierGroup.inline = true
 
 General.itemCount = ACH:MultiSelect(L["Item Count"], L["Display how many of a certain item you have in your possession."], -2, { bags = L["Bags"], bank = L["Bank"], stack = L["Stack Size"] }, nil, nil, function(_, key) return E.db.tooltip.itemCount[key] end, function(_, key, value) E.db.tooltip.itemCount[key] = value end)

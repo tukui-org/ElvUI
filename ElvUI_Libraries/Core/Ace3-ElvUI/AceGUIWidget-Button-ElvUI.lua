@@ -2,7 +2,7 @@
 Button Widget (Modified to change text color on SetDisabled method and add Drag and Drop support for Filter lists)
 Graphical Button.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Button-ElvUI", 4
+local Type, Version = "Button-ElvUI", 5
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -19,7 +19,7 @@ local DragTooltip = CreateFrame("GameTooltip", "ElvUIAceGUIWidgetDragTooltip", U
 Scripts
 -------------------------------------------------------------------------------]]
 local dragdropButton
-local function lockTooltip()
+local function LockTooltip()
 	_G.ElvUIAceConfigDialogTooltip:Hide()
 
 	DragTooltip:ClearAllPoints()
@@ -27,7 +27,7 @@ local function lockTooltip()
 	DragTooltip:SetText(" ")
 	DragTooltip:Show()
 end
-local function dragdrop_OnMouseDown(frame, ...)
+local function Dragdrop_OnMouseDown(frame, ...)
 	if frame.obj.dragOnMouseDown then
 		dragdropButton.mouseDownFrame = frame
 		dragdropButton:SetText(frame.obj.value or "Unknown")
@@ -35,7 +35,7 @@ local function dragdrop_OnMouseDown(frame, ...)
 		frame.obj.dragOnMouseDown(frame, ...)
 	end
 end
-local function dragdrop_OnMouseUp(frame, ...)
+local function Dragdrop_OnMouseUp(frame, ...)
 	if frame.obj.dragOnMouseUp then
 		frame:SetAlpha(1)
 		if dragdropButton.enteredFrame and dragdropButton.enteredFrame ~= frame and dragdropButton.enteredFrame:IsMouseOver() then
@@ -49,10 +49,10 @@ local function dragdrop_OnMouseUp(frame, ...)
 		dragdropButton.mouseDownFrame = nil
 	end
 end
-local function dragdrop_OnLeave(frame, ...)
+local function Dragdrop_OnLeave(frame, ...)
 	if frame.obj.dragOnLeave then
 		if dragdropButton.mouseDownFrame then
-			lockTooltip()
+			LockTooltip()
 		end
 		if frame == dragdropButton.mouseDownFrame then
 			frame:SetAlpha(0)
@@ -61,14 +61,14 @@ local function dragdrop_OnLeave(frame, ...)
 		end
 	end
 end
-local function dragdrop_OnEnter(frame, ...)
+local function Dragdrop_OnEnter(frame, ...)
 	if frame.obj.dragOnEnter and dragdropButton:IsShown() then
 		dragdropButton.enteredFrame = frame
-		lockTooltip()
+		LockTooltip()
 		frame.obj.dragOnEnter(frame, ...)
 	end
 end
-local function dragdrop_OnClick(frame, ...)
+local function Dragdrop_OnClick(frame, ...)
 	local button = ...
 	if frame.obj.dragOnClick and button == "RightButton" then
 		frame.obj.dragOnClick(frame, ...)
@@ -162,11 +162,11 @@ local function Constructor()
 		end
 	end
 
-	frame:HookScript("OnClick", dragdrop_OnClick)
-	frame:HookScript("OnEnter", dragdrop_OnEnter)
-	frame:HookScript("OnLeave", dragdrop_OnLeave)
-	frame:HookScript("OnMouseUp", dragdrop_OnMouseUp)
-	frame:HookScript("OnMouseDown", dragdrop_OnMouseDown)
+	frame:HookScript("OnClick", Dragdrop_OnClick)
+	frame:HookScript("OnEnter", Dragdrop_OnEnter)
+	frame:HookScript("OnLeave", Dragdrop_OnLeave)
+	frame:HookScript("OnMouseUp", Dragdrop_OnMouseUp)
+	frame:HookScript("OnMouseDown", Dragdrop_OnMouseDown)
 
 	local text = frame:GetFontString()
 	text:ClearAllPoints()

@@ -12,7 +12,7 @@ local SpellBookSpellBank = Enum.SpellBookSpellBank
 
 local barColor = { 0, .86, 0 }
 
-local function clearBackdrop(backdrop)
+local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
 
@@ -128,7 +128,7 @@ function S:Blizzard_ProfessionsBook()
 			button.backdrop.Center:SetDrawLayer('BORDER', -1)
 			button.backdrop:SetOutside(button.icon)
 			button.backdrop:SetBackdropColor(0, 0, 0, 1)
-			button.backdrop.callbackBackdropColor = clearBackdrop
+			button.backdrop.callbackBackdropColor = ClearBackdrop
 
 			button.icon:SetDesaturated(false)
 			button.icon:SetAlpha(1)

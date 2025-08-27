@@ -689,7 +689,7 @@ function DT:GetMenuListCategory(category)
 end
 
 do
-	local function menuSort(a, b)
+	local function MenuSort(a, b)
 		if a.order and b.order and not (a.order == b.order) then
 			return a.order < b.order
 		end
@@ -704,12 +704,12 @@ do
 			end
 		end
 
-		sort(list, menuSort)
+		sort(list, MenuSort)
 	end
 end
 
 do
-	local function hasName(tbl, name)
+	local function HasName(tbl, name)
 		for _, data in pairs(tbl) do
 			if data.text == name then
 				return true
@@ -727,7 +727,7 @@ do
 				tinsert(QuickList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} })
 			end
 
-			if not hasName(QuickList[category].menuList, info.localizedName or name) then
+			if not HasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
 					text = gsub(info.localizedName or name, '^LDB: ', ''),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,

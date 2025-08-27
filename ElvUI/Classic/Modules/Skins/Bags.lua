@@ -23,7 +23,7 @@ local bagIconCache = {
 	[0] = E.Media.Textures.Backpack
 }
 
-local function setBagIcon(frame, texture)
+local function SetBagIcon(frame, texture)
 	if not frame.BagIcon then
 		local portraitButton = _G[frame:GetName()..'PortraitButton']
 
@@ -91,9 +91,9 @@ function S:ContainerFrame()
 				bagIconCache[itemID] = select(10, GetItemInfo(itemID))
 			end
 
-			setBagIcon(frame, bagIconCache[itemID])
+			SetBagIcon(frame, bagIconCache[itemID])
 		else
-			setBagIcon(frame, bagIconCache[id])
+			SetBagIcon(frame, bagIconCache[id])
 		end
 	end)
 

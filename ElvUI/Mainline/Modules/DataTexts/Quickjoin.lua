@@ -105,15 +105,16 @@ local function Update(self)
 end
 
 local delayed
-local function throttle(self)
+local function Throttle(self)
 	Update(self)
+
 	delayed = nil
 end
 
 local function OnEvent(self, event)
 	if delayed then return end
 
-	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle, self)
+	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, Throttle, self)
 end
 
 local function ApplySettings(self, hex)

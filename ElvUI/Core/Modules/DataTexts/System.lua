@@ -56,7 +56,7 @@ local CombineAddOns = {
 	['SilverDragon'] = '^SilverDragon'
 }
 
-local function formatMem(memory)
+local function FormatMem(memory)
 	if memory >= 1024 then
 		return format(megaByteString, memory / 1024)
 	else
@@ -64,7 +64,7 @@ local function formatMem(memory)
 	end
 end
 
-local function statusColor(fps, ping)
+local function StatusColor(fps, ping)
 	if fps then
 		return statusColors[fps >= 30 and 1 or (fps >= 20 and fps < 30) and 2 or (fps >= 10 and fps < 20) and 3 or 4]
 	else
@@ -86,22 +86,22 @@ local function OnClick()
 	end
 end
 
-local function displayData(data, totalMEM, totalCPU)
+local function DisplayData(data, totalMEM, totalCPU)
 	if not data then return end
 
 	local cpu, mem = data.cpu, data.mem
 	if cpu then
 		local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
 		local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-		DT.tooltip:AddDoubleLine(data.title, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(data.title, format(profilingString, E:RGBToHex(memRed, memGreen, 0), FormatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
 	else
 		local red = mem / totalMEM
 		local green = (1 - red) + .5
-		DT.tooltip:AddDoubleLine(data.title, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
+		DT.tooltip:AddDoubleLine(data.title, FormatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
 	end
 end
 
-local function displaySort(a, b)
+local function DisplaySort(a, b)
 	return a.sort > b.sort
 end
 
@@ -177,7 +177,7 @@ local function OnEnter(_, slow)
 	end
 
 	if isShiftDown then
-		DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMEM), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["AddOn Memory:"], FormatMem(totalMEM), .69, .31, .31, .84, .75, .65)
 
 		if cpuProfiling then
 			DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
@@ -187,9 +187,9 @@ local function OnEnter(_, slow)
 	DT.tooltip:AddLine(' ')
 
 	if not db.ShowOthers then
-		displayData(infoTable.ElvUI, totalMEM, totalCPU)
-		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
-		displayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
 		DT.tooltip:AddLine(' ')
 	else
 		for addon, searchString in pairs(CombineAddOns) do
@@ -236,10 +236,10 @@ local function OnEnter(_, slow)
 			end
 		end
 
-		sort(infoDisplay, displaySort)
+		sort(infoDisplay, DisplaySort)
 
 		for i = 1, count do
-			displayData(infoDisplay[i], totalMEM, totalCPU)
+			DisplayData(infoDisplay[i], totalMEM, totalCPU)
 		end
 
 		DT.tooltip:AddLine(' ')
@@ -286,7 +286,7 @@ local function OnUpdate(self, elapsed)
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
 		local fps = E.FPS.rate or 0
 
-		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColor(fps), fps, statusColor(nil, latency), latency)
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
 
 		if not enteredFrame then
 			return

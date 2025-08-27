@@ -44,7 +44,7 @@ function E:LuaError(msg)
 		for i = 1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
 			if (not addon[name] and (switch == '1' or not bugsack[name])) and E:IsAddOnEnabled(name) then
-				DisableAddOn(name, E.myname)
+				DisableAddOn(name, E.myguid)
 				ElvDB.DisabledAddOns[name] = i
 			end
 		end
@@ -60,7 +60,7 @@ function E:LuaError(msg)
 
 		if next(ElvDB.DisabledAddOns) then
 			for name in pairs(ElvDB.DisabledAddOns) do
-				EnableAddOn(name, E.myname)
+				EnableAddOn(name, E.myguid)
 			end
 
 			wipe(ElvDB.DisabledAddOns)

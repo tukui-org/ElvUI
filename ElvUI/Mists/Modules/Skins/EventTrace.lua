@@ -11,7 +11,7 @@ local function ReskinEventTraceButton(button)
 	button.MouseoverOverlay:SetAlpha(0)
 end
 
-local function reskinScrollChild(child)
+local function ReskinScrollChild(child)
 	local button = child.HideButton
 	if button and not button.IsSkinned then
 		S:HandleCloseButton(button)
@@ -29,15 +29,15 @@ local function reskinScrollChild(child)
 	end
 end
 
-local function reskinScrollFrame(frame)
-	frame:ForEachFrame(reskinScrollChild)
+local function ReskinScrollFrame(frame)
+	frame:ForEachFrame(ReskinScrollChild)
 end
 
 local function ReskinEventTraceScrollBox(frame)
 	frame:DisableDrawLayer('BACKGROUND')
 	frame:CreateBackdrop('Transparent')
 
-	hooksecurefunc(frame, 'Update', reskinScrollFrame)
+	hooksecurefunc(frame, 'Update', ReskinScrollFrame)
 end
 
 local function ReskinEventTraceFrame(frame)

@@ -1011,7 +1011,7 @@ do
 	end
 end
 
-local function colorizeLine(text, r, g, b)
+local function ColorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
 	return format('%s%s|r', hexCode, text)
 end
@@ -1029,7 +1029,7 @@ function CH:GetLines(frame)
 			message = removeIconFromLine(message)
 
 			--Add text color
-			message = colorizeLine(message, r, g, b)
+			message = ColorizeLine(message, r, g, b)
 
 			copyLines[index] = message
 			index = index + 1
@@ -3219,7 +3219,7 @@ end
 
 do -- securely lock the atlas texture; we need this cause its not shown on init login
 	local ttsAtlas = 'chatframe-button-icon-TTS'
-	local function lockAtlas(icon, atlas)
+	local function LockAtlas(icon, atlas)
 		if atlas ~= ttsAtlas then
 			icon:SetAtlas(ttsAtlas)
 		end
@@ -3229,7 +3229,7 @@ do -- securely lock the atlas texture; we need this cause its not shown on init 
 		button.highlightAtlas = nil -- hide the highlight
 
 		if button.Icon and not button.Icon.isHookedAtlas then
-			hooksecurefunc(button.Icon, 'SetAtlas', lockAtlas)
+			hooksecurefunc(button.Icon, 'SetAtlas', LockAtlas)
 			button.Icon.isHookedAtlas = true
 		end
 	end

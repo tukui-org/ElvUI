@@ -120,7 +120,7 @@ for key, data in next, clientList do
 	DT.clientFullName[key] = data.name
 end
 
-local function inGroup(name, realmName)
+local function InGroup(name, realmName)
 	if realmName and realmName ~= '' and realmName ~= E.myrealm then
 		name = name..'-'..realmName
 	end
@@ -179,7 +179,7 @@ local function Sort(a, b)
 end
 
 --Sort client by statically given index (this is a `pairs by keys` sorting method)
-local function clientSort(a, b)
+local function ClientSort(a, b)
 	if a and b then
 		local A, B = clientList[a], clientList[b]
 		if A and B then
@@ -316,7 +316,7 @@ local function BuildBNTable(total)
 		tinsert(clientSorted, c)
 	end
 	if next(clientSorted) then
-		sort(clientSorted, clientSort)
+		sort(clientSorted, ClientSort)
 	end
 end
 
@@ -344,7 +344,7 @@ local function Click(self, btn)
 						menuCountWhispers = menuCountWhispers + 1
 						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = DT.SendWhisper}
 
-						if inGroup(info.name) == '' then
+						if InGroup(info.name) == '' then
 							menuCountInvites = menuCountInvites + 1
 							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 						end
@@ -379,7 +379,7 @@ local function Click(self, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.SendWhisper}
 					end
 
-					if (info.client and info.client == wowString) and inGroup(info.characterName, info.realmName) == '' then
+					if (info.client and info.client == wowString) and InGroup(info.characterName, info.realmName) == '' then
 						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
@@ -400,14 +400,18 @@ local function Click(self, btn)
 end
 
 local lastTooltipXLineHeader
-local function TooltipAddXLine(X, header, ...)
-	X = (X == true and 'AddDoubleLine') or 'AddLine'
+local function TooltipAddXLine(doubleLine, header, ...)
+	local tt = DT.tooltip
+	local func = doubleLine and tt.AddDoubleLine or tt.AddLine
 	if lastTooltipXLineHeader ~= header then
-		DT.tooltip[X](DT.tooltip, ' ')
-		DT.tooltip[X](DT.tooltip, header)
+		tt:AddLine(' ')
+
+		func(tt, header)
+
 		lastTooltipXLineHeader = header
 	end
-	DT.tooltip[X](DT.tooltip, ...)
+
+	func(tt, ...)
 end
 
 local isBNOnline
@@ -449,7 +453,7 @@ local function OnEnter()
 					classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 					if not classc then classc = levelc end
 
-					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,inGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,InGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 				end
 			end
 		end
@@ -492,11 +496,13 @@ local function OnEnter()
 								--Sometimes the friend list is fubar with level 0 unknown friends
 								if not classc then classc = PRIEST_COLOR end
 
-								TooltipAddXLine(true, header, format(levelNameString..'%s%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status,info.timerunningID and TIMERUNNING_SMALL or ''),info.accountName,238,238,238,238,238,238)
+								TooltipAddXLine(true, header, format(levelNameString..'%s%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,InGroup(info.characterName, info.realmName),status,info.timerunningID and TIMERUNNING_SMALL or ''),info.accountName,238,238,238,238,238,238)
 								if shiftDown then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end
-									TooltipAddXLine(true, header, info.zoneName, info.realmName, zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+									if info.zoneName or info.realmName then
+										TooltipAddXLine(true, header, info.zoneName or ' ', info.realmName or ' ', zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
+									end
 								end
 							else
 								TooltipAddXLine(true, header, info.characterName..status, info.accountName, .9, .9, .9, .9, .9, .9)

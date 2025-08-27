@@ -22,7 +22,7 @@ local oldAtlas = {
 	Options_ListExpand_Right_Expanded = 1
 }
 
-local function updateCollapse(texture, atlas)
+local function UpdateCollapse(texture, atlas)
 	if not atlas or oldAtlas[atlas] then
 		local parent = texture:GetParent()
 		if parent:IsCollapsed() then
@@ -40,11 +40,11 @@ local function UpdateTokenSkinsChild(child)
 			child:CreateBackdrop('Transparent')
 			child.backdrop:SetInside(child)
 
-			updateCollapse(child.Right)
-			updateCollapse(child.HighlightRight)
+			UpdateCollapse(child.Right)
+			UpdateCollapse(child.HighlightRight)
 
-			hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
-			hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
+			hooksecurefunc(child.Right, 'SetAtlas', UpdateCollapse)
+			hooksecurefunc(child.HighlightRight, 'SetAtlas', UpdateCollapse)
 		end
 
 		local icon = child.Content and child.Content.CurrencyIcon
@@ -243,11 +243,11 @@ local function UpdateFactionSkinsChild(child)
 			child:CreateBackdrop('Transparent')
 			child.backdrop:SetInside(child)
 
-			updateCollapse(child.Right)
-			updateCollapse(child.HighlightRight)
+			UpdateCollapse(child.Right)
+			UpdateCollapse(child.HighlightRight)
 
-			hooksecurefunc(child.Right, 'SetAtlas', updateCollapse)
-			hooksecurefunc(child.HighlightRight, 'SetAtlas', updateCollapse)
+			hooksecurefunc(child.Right, 'SetAtlas', UpdateCollapse)
+			hooksecurefunc(child.HighlightRight, 'SetAtlas', UpdateCollapse)
 		end
 
 		local ReputationBar = child.Content and child.Content.ReputationBar

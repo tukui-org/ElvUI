@@ -517,7 +517,7 @@ do
 	end
 end
 
-local function generateName(unit, attributes)
+local function createName(unit, attributes)
 	local name = 'oUF_' .. style:gsub('^oUF_?', ''):gsub('[^%a%d_]+', '')
 
 	local raid, party, groupFilter, unitsuffix
@@ -671,7 +671,7 @@ do
 		template = (template or 'SecureGroupHeaderTemplate')
 
 		local isPetHeader = template:match('PetHeader')
-		local name = overrideName or generateName(nil, attributes)
+		local name = overrideName or createName(nil, attributes)
 		local header = CreateFrame('Frame', name, UFParent, template)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
@@ -763,7 +763,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 
 	unit = unit:lower()
 
-	local name = overrideName or generateName(unit)
+	local name = overrideName or createName(unit)
 	local object = CreateFrame('Button', name, UFParent, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
@@ -795,7 +795,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	if(_G.oUF_NamePlateDriver) then return error('oUF nameplate driver has already been initialized.') end
 
 	local style = style
-	local prefix = namePrefix or generateName()
+	local prefix = namePrefix or createName()
 
 	-- Because there's no way to prevent nameplate settings updates without tainting UI,
 	-- and because forbidden nameplates exist, we have to allow default nameplate

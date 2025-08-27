@@ -83,7 +83,7 @@ do
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
-	local function filterMatch(s,v)
+	local function FilterMatch(s,v)
 		local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
 		return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
 	end
@@ -92,7 +92,7 @@ do
 		if not auraType or not value then return end
 		local filter = db[groupName] and db[groupName][auraType] and db[groupName][auraType].priority
 		if not filter then return end
-		local found = filterMatch(filter, E:EscapeString(value))
+		local found = FilterMatch(filter, E:EscapeString(value))
 		if found and movehere then
 			local tbl, sv, sm = {strsplit(',',filter)}
 			for i in ipairs(tbl) do
@@ -104,9 +104,9 @@ do
 			db[groupName][auraType].priority = tconcat(tbl,',')
 		elseif found and friendState then
 			local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
-			local friend = filterMatch(filter, E:EscapeString('Friendly:'..realValue))
-			local enemy = filterMatch(filter, E:EscapeString('Enemy:'..realValue))
-			local default = filterMatch(filter, E:EscapeString(realValue))
+			local friend = FilterMatch(filter, E:EscapeString('Friendly:'..realValue))
+			local enemy = FilterMatch(filter, E:EscapeString('Enemy:'..realValue))
+			local default = FilterMatch(filter, E:EscapeString(realValue))
 
 			local state =
 				(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
@@ -116,7 +116,7 @@ do
 			or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
 
 			if state then
-				local stateFound = filterMatch(filter, E:EscapeString(state))
+				local stateFound = FilterMatch(filter, E:EscapeString(state))
 				if not stateFound then
 					local tbl, sv = {strsplit(',',filter)}
 					for i in ipairs(tbl) do
@@ -344,7 +344,7 @@ E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, valu
 end
 
 do -- Import and Export
-	local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
+	local function ValidateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
 
 	local function DecodeString(text, plugin)
@@ -359,7 +359,7 @@ do -- Import and Export
 	end
 
 	local function DecodeLabel(label, text, plugin)
-		if not validateString(nil, text) then
+		if not ValidateString(nil, text) then
 			label.name = ''
 			return text
 		end
@@ -412,7 +412,7 @@ do -- Import and Export
 
 				count = count + 1 -- keep this after the count usage
 
-				if which == 'text' and validateString(nil, importText) then
+				if which == 'text' and ValidateString(nil, importText) then
 					local profileType = D:Decode(importText)
 					local imported = profileType and D:ImportProfile(importText)
 					label.name = (imported and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]

@@ -55,16 +55,15 @@ local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
-local SPEC_MAGE_FIRE = _G.SPEC_MAGE_FIRE or 2
 local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
-local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
-local SPEC_MONK_MISTWEAVER = _G.SPEC_MONK_MISTWEAVER or 2
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
 local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_WARLOCK_AFFLICTION = _G.SPEC_WARLOCK_AFFLICTION or 1
+local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_SHAMAN_ELEMENTAL = _G.SPEC_SHAMAN_ELEMENTAL or 1
 
+local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
 local POWERTYPE_COMBO_POINTS = Enum.PowerType.ComboPoints or 4
 local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
@@ -75,10 +74,27 @@ local POWERTYPE_DEMONIC_FURY = Enum.PowerType.DemonicFury or 15
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local POWERTYPE_ESSENCE = Enum.PowerType.Essence or 19
 local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
-local POWERTYPE_ICICLES = -2 -- this is fake, -1 is a fallback
 
-local SPELL_FROST_ICICLES = 205473 -- retail
-local SPELL_ARCANE_CHARGE = 36032 -- mists
+-- these are not real class powers
+local POWERTYPE_ICICLES = -1
+local POWERTYPE_MAELSTROM = -2
+
+local SPELL_FROST_ICICLES = 205473
+local SPELL_ARCANE_CHARGE = 36032
+local SPELL_MAELSTROM = 344179
+local SPELL_SOULBURN = 74434
+local SPELL_CATFORM = 768
+local SPELL_SHRED = 5221
+
+local UnitPower = UnitPower
+local UnitIsUnit = UnitIsUnit
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitPowerDisplayMod = UnitPowerDisplayMod
+local PlayerVehicleHasComboPoints = PlayerVehicleHasComboPoints
+local GetUnitChargedPowerPoints = GetUnitChargedPowerPoints
+local GetComboPoints = GetComboPoints
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
@@ -86,10 +102,12 @@ local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 local ClassPowerType, ClassPowerID = {
 	[POWERTYPE_CHI] = 'CHI',
+	[POWERTYPE_MANA] = 'MANA',
 	[POWERTYPE_SHADOW_ORBS] = 'SHADOW_ORBS',
 	[POWERTYPE_COMBO_POINTS] = 'COMBO_POINTS',
 	[POWERTYPE_ARCANE_CHARGES] = 'ARCANE_CHARGES',
 	[POWERTYPE_ICICLES] = 'FROST_ICICLES',
+	[POWERTYPE_MAELSTROM] = 'MAELSTROM',
 	[POWERTYPE_ESSENCE] = 'ESSENCE',
 	[POWERTYPE_HOLY_POWER] = 'HOLY_POWER',
 	[POWERTYPE_SOUL_SHARDS] = 'SOUL_SHARDS',
@@ -97,9 +115,16 @@ local ClassPowerType, ClassPowerID = {
 	[POWERTYPE_BURNING_EMBERS] = 'BURNING_EMBERS',
 }
 
--- Holds the class specific stuff.
-local ClassPowerEnable, ClassPowerDisable, CurrentSpec
-local RequireSpec, RequirePower, RequireSpell = {}
+local ClassPowerMax = {
+	[POWERTYPE_MANA] = 1,
+	[POWERTYPE_DEMONIC_FURY] = 1,
+	[POWERTYPE_BURNING_EMBERS] = 4,
+	[POWERTYPE_MAELSTROM] = 10,
+	[POWERTYPE_ICICLES] = 5,
+}
+
+local ClassPowerEnable, ClassPowerDisable
+local CurrentSpec, RequirePower, RequireSpell
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -129,15 +154,19 @@ local function UpdateColor(element, powerType)
 	end
 end
 
-local function Update(self, event, unit, powerType)
-	if event == 'UNIT_AURA' then
-		powerType = (ClassPowerID == POWERTYPE_ARCANE_CHARGES and 'ARCANE_CHARGES') or (ClassPowerID == POWERTYPE_ICICLES and 'FROST_ICICLES')
-	end
+local function CurrentApplications(spellID, filter)
+	local info = GetPlayerAuraBySpellID(spellID)
+	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
+	return checkFilter and info.applications or 0
+end
 
-	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
-	if not (unit and UnitIsUnit(unit, 'player')) then return end
+local function Update(self, event, unit, powerType)
+	if not unit or not UnitIsUnit(unit, 'player') then return end
 
 	local currentType = ClassPowerType[ClassPowerID]
+	if event == 'UNIT_AURA' then powerType = currentType end
+	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
+
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
 	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
@@ -153,69 +182,67 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local cur, max, oldMax, chargedPoints
-	if(event ~= 'ClassPowerDisable') then
+	local current, maximum, oldMax, chargedPoints
+	if event ~= 'ClassPowerDisable' then
 		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
-		local mod = powerID > 0 and UnitPowerDisplayMod(powerID)
+		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
+		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS or nil
+		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
 
-		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY
-		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS
-		local mageIcicles = ClassPowerID == POWERTYPE_ICICLES
-
-		max = (warlockDemo and 1) or (warlockDest and 4) or (mageIcicles and 5) or UnitPowerMax(unit, powerID, warlockDest)
-
+		maximum = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
 		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
-		if mod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
-			cur = 0
-		elseif oUF.isRetail and ClassPowerID == POWERTYPE_DEMONIC_FURY then -- destro locks are special
-			cur = UnitPower(unit, powerID, true) / mod
-		elseif ClassPowerID == POWERTYPE_ICICLES then
-			local info = GetPlayerAuraBySpellID(SPELL_FROST_ICICLES)
-			cur = (info and info.isHelpful and info.applications) or 0
+		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
+			current = 0
+		elseif oUF.isRetail and (PlayerClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			local info = GetPlayerAuraBySpellID(SPELL_ARCANE_CHARGE)
-			cur = (info and info.isHarmful and info.applications) or 0
+			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HELPFUL')
+		elseif ClassPowerID == POWERTYPE_ICICLES then
+			current = CurrentApplications(SPELL_FROST_ICICLES, 'HELPFUL')
+		elseif ClassPowerID == POWERTYPE_MAELSTROM then
+			current = CurrentApplications(SPELL_MAELSTROM, 'HELPFUL')
 		else
-			local current = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
-			cur = warlockDest and (current * 0.1) or warlockDemo and (current * 0.001) or current
+			local cur = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
+			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
 		end
 
-		for i = 1, max do
+		for i = 1, maximum do
 			element[i]:Show()
 
-			if warlockDest and i == floor(cur + 1) then
-				element[i]:SetValue(cur % 1)
+			if warlockDest and i == floor(current + 1) then
+				element[i]:SetValue(current % 1)
 			else
-				element[i]:SetValue(cur - i + 1)
+				element[i]:SetValue(current - i + 1)
 			end
 		end
 
 		oldMax = element.__max
 
-		if(max ~= oldMax) then
-			if(max < oldMax) then
-				for i = max + 1, oldMax do
+		if(maximum ~= oldMax) then
+			if(maximum < oldMax) then
+				for i = maximum + 1, oldMax do
 					element[i]:Hide()
 					element[i]:SetValue(0)
 				end
 			end
 
-			element.__max = max
+			element.__max = maximum
 		end
 	end
-	--[[ Callback: ClassPower:PostUpdate(cur, max, hasMaxChanged, powerType)
+
+	--[[ Callback: ClassPower:PostUpdate(current, maximum, hasMaxChanged, powerType)
 	Called after the element has been updated.
 
 	* self          - the ClassPower element
-	* cur           - the current amount of power (number)
-	* max           - the maximum amount of power (number)
+	* current       - the current amount of power (number)
+	* maximum       - the maximum amount of power (number)
 	* hasMaxChanged - indicates whether the maximum amount has changed since the last update (boolean)
 	* powerType     - the active power type (string)
 	* ...           - the indices of currently charged power points, if any
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(cur, max, oldMax ~= max, powerType or currentType, chargedPoints)  -- ElvUI uses chargedPoints as table
+		return element:PostUpdate(current, maximum, oldMax ~= maximum, powerType or currentType, chargedPoints)  -- ElvUI uses chargedPoints as table
 	end
 end
 
@@ -236,32 +263,44 @@ local function Visibility(self, event, unit)
 	local shouldEnable
 
 	CurrentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
+	RequirePower, RequireSpell = nil, nil -- clear these
 
-	if PlayerClass == 'MONK' then
-		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or -1
+	if PlayerClass == 'DRUID' then
+		ClassPowerID = POWERTYPE_COMBO_POINTS
+
+		RequirePower = POWERTYPE_ENERGY
+		RequireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
+	elseif PlayerClass == 'PALADIN' then
+		ClassPowerID = POWERTYPE_HOLY_POWER
+	elseif PlayerClass == 'EVOKER' then
+		ClassPowerID = POWERTYPE_ESSENCE
+	elseif PlayerClass == 'ROGUE' then
+		ClassPowerID = POWERTYPE_COMBO_POINTS
+	elseif PlayerClass == 'MONK' then
+		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
+	elseif PlayerClass == 'SHAMAN' then
+		ClassPowerID = oUF.isRetail and (CurrentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or CurrentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
 	elseif PlayerClass == 'WARLOCK' then
-		ClassPowerID = oUF.isMists and ((CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS)) or POWERTYPE_SOUL_SHARDS
+		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif PlayerClass == 'MAGE' then
-		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or -1
-	elseif oUF.isMists and PlayerClass == 'PRIEST' then
-		ClassPowerID = (CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or -1
+		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
+	elseif PlayerClass == 'PRIEST' then
+		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 
 	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
 		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
-	elseif ClassPowerID then
-		local checkSpec = not next(RequireSpec) or RequireSpec[CurrentSpec]
-		if checkSpec then
-			local checkPower = not RequirePower or RequirePower == UnitPowerType('player') -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
-			if checkPower then
-				local checkSpell = not RequireSpell or IsPlayerSpell(RequireSpell)
-				if checkSpell then
-					shouldEnable = true
-					unit = 'player'
-				end
+	elseif ClassPowerID then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
+		if not RequirePower or RequirePower == UnitPowerType('player') then
+			if not RequireSpell or IsPlayerSpell(RequireSpell) then
+				shouldEnable = true
+				unit = 'player'
 			end
 		end
+	else
+		shouldEnable = false
+		unit = 'player'
 	end
 
 	local isEnabled = element.__isEnabled
@@ -315,75 +354,51 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-do
-	function ClassPowerEnable(self)
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
+function ClassPowerEnable(self)
+	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
-		if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
-			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-		else
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
-		end
-
-		if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or ClassPowerID == POWERTYPE_ICICLES then
-			self:RegisterEvent('UNIT_AURA', Path)
-		end
-
-		self.ClassPower.__isEnabled = true
-
-		if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
-			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
-		else
-			Path(self, 'ClassPowerEnable', 'player', ClassPowerType[ClassPowerID])
-		end
+	if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
+		self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+	else
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
-	function ClassPowerDisable(self)
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_MAXPOWER', Path)
-
-		if oUF.isRetail then
-			self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-		else
-			self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
-		end
-
-		if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or ClassPowerID == POWERTYPE_ICICLES then
-			self:UnregisterEvent('UNIT_AURA')
-		end
-
-		local element = self.ClassPower
-		for i = 1, #element do
-			element[i]:Hide()
-		end
-
-		element.__isEnabled = false
-		Path(self, 'ClassPowerDisable', 'player', ClassPowerType[ClassPowerID])
+	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+		self:RegisterEvent('UNIT_AURA', Path)
 	end
 
-	if(PlayerClass == 'MONK') then
-		ClassPowerID = POWERTYPE_CHI
+	self.ClassPower.__isEnabled = true
 
-		if oUF.isRetail then
-			RequireSpec[SPEC_MONK_WINDWALKER] = true
-		end
-	elseif(oUF.isMists and PlayerClass == 'PRIEST') then
-		ClassPowerID = POWERTYPE_SHADOW_ORBS
-
-		RequireSpec[SPEC_PRIEST_SHADOW] = true
-	elseif(PlayerClass == 'PALADIN') then
-		ClassPowerID = POWERTYPE_HOLY_POWER
-	elseif(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then
-		ClassPowerID = POWERTYPE_COMBO_POINTS
-
-		if(PlayerClass == 'DRUID') then
-			RequirePower = POWERTYPE_ENERGY
-			RequireSpell = oUF.isRetail and 5221 or 768
-		end
-	elseif(PlayerClass == 'EVOKER') then
-		ClassPowerID = POWERTYPE_ESSENCE
+	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
+		Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
+	else
+		Path(self, 'ClassPowerEnable', 'player', ClassPowerType[ClassPowerID])
 	end
+end
+
+function ClassPowerDisable(self)
+	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+	self:UnregisterEvent('UNIT_MAXPOWER', Path)
+
+	if oUF.isRetail then
+		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+	else
+		self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
+	end
+
+	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+		self:UnregisterEvent('UNIT_AURA')
+	end
+
+	local element = self.ClassPower
+	for i = 1, #element do
+		element[i]:Hide()
+	end
+
+	element.__isEnabled = false
+
+	Path(self, 'ClassPowerDisable', 'player', ClassPowerType[ClassPowerID])
 end
 
 local function Enable(self, unit)

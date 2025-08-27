@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 46
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 48
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -33,21 +33,18 @@ LibElvUIPlugin API:
 local tonumber, strmatch, strsub, tinsert, strtrim = tonumber, strmatch, strsub, tinsert, strtrim
 local unpack, assert, pairs, ipairs, strlen, pcall, xpcall = unpack, assert, pairs, ipairs, strlen, pcall, xpcall
 local format, wipe, type, gmatch, gsub, ceil, strfind = format, wipe, type, gmatch, gsub, ceil, strfind
-
-local geterrorhandler = geterrorhandler
 local hooksecurefunc = hooksecurefunc
 
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
+local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
+local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 local GetNumGroupMembers = GetNumGroupMembers
 local CreateFrame = CreateFrame
 local GetLocale = GetLocale
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
-
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
-local C_ChatInfo_RegisterAddonMessagePrefix = C_ChatInfo.RegisterAddonMessagePrefix
-local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
@@ -97,7 +94,7 @@ elseif locale == "zhTW" then
 end
 
 local E, L
-local function checkElvUI()
+local function CheckElvUI()
 	if not E then
 		if ElvUI then
 			E, L = unpack(ElvUI)
@@ -109,7 +106,8 @@ end
 
 function lib:RegisterPlugin(name, callback, isLib, version)
 	if not IsAddOnLoaded(name) then return end
-	checkElvUI()
+
+	CheckElvUI()
 
 	local plugin = {
 		name = name,
@@ -132,9 +130,11 @@ function lib:RegisterPlugin(name, callback, isLib, version)
 
 	if not lib.registeredPrefix then
 		C_ChatInfo_RegisterAddonMessagePrefix(lib.prefix)
+
 		lib.VCFrame:RegisterEvent('CHAT_MSG_ADDON')
 		lib.VCFrame:RegisterEvent('GROUP_ROSTER_UPDATE')
 		lib.VCFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+
 		lib.registeredPrefix = true
 	end
 
@@ -168,17 +168,13 @@ function lib:DelayedSendVersionCheck(delay)
 	end
 end
 
-local function errorhandler(err)
-	return geterrorhandler()(err)
-end
-
 function lib:OptionsLoaded(_, addon)
 	if addon == 'ElvUI_Options' then
 		lib:GetPluginOptions()
 
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
-				xpcall(plugin.callback, errorhandler)
+				E:CallLoadFunc(plugin.callback)
 			end
 		end
 
@@ -321,7 +317,9 @@ function lib:HookInitialize(tbl, func)
 
 	if not self.inits then
 		self.inits = {}
-		checkElvUI()
+
+		CheckElvUI()
+
 		hooksecurefunc(E, 'Initialize', self.Initialized)
 	end
 

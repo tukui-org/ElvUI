@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 local slotColor = { r = .6, g = 0, b = .6, a = .5 }
-local function itemSlotColor(self)
+local function ItemSlotColor(self)
 	self:SetBackdropColor(slotColor.r, slotColor.g, slotColor.b, slotColor.a)
 end
 
@@ -34,7 +34,7 @@ function S:Blizzard_AzeriteRespecUI()
 
 	ItemSlot:SetTemplate('Transparent')
 	ItemSlot:SetBackdropColor(slotColor.r, slotColor.g, slotColor.b, slotColor.a)
-	ItemSlot.callbackBackdropColor = itemSlotColor
+	ItemSlot.callbackBackdropColor = ItemSlotColor
 	S:HandleIcon(ItemSlot.Icon)
 
 	local ButtonFrame = AzeriteRespecFrame.ButtonFrame

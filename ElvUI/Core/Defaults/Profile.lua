@@ -949,7 +949,10 @@ P.nameplates = {
 				{r = 0.8, g = 0.4, b = 1}
 			},
 			PALADIN = {r = 0.89, g = 0.88, b = 0.06},
-			MAGE = {r = 0, g = 0.62, b = 1.00},
+			MAGE = {
+				FROST_ICICLES = {r = 0, g = 0.80, b = 1.00},
+				ARCANE_CHARGES = {r = 0, g = 0.40, b = 1.00}
+			},
 			EVOKER = {
 				{r = 0.10, g = 0.92, b = 1.00},
 				{r = 0.17, g = 0.94, b = 0.84},
@@ -967,10 +970,13 @@ P.nameplates = {
 				{r = 0.14, g = 0.63, b = 0.50}
 			},
 			SHAMAN = {
-				{r = .23, g = .45, b = .13}, -- earth
-				{r = .58, g = .23, b = .10}, -- fire
-				{r = .19, g = .48, b = .60}, -- water
-				{r = .42, g = .18, b = .74}, -- air
+				TOTEMS = {
+					{r = .23, g = .45, b = .13}, -- earth
+					{r = .58, g = .23, b = .10}, -- fire
+					{r = .19, g = .48, b = .60}, -- water
+					{r = .42, g = .18, b = .74}, -- air
+				},
+				MAELSTROM = {r = 0.35, g = 0.15, b = 1}
 			},
 			PRIEST = {r = 0.40, g = 0.00, b = 0.80}, -- shadow orbs
 			WARLOCK = {
@@ -1542,7 +1548,8 @@ local UF_Castbar = {
 	enable = true,
 	format = 'REMAINING',
 	height = 18,
-	hidetext = false,
+	hideName = false,
+	hideTime = false,
 	icon = true,
 	iconAttached = true,
 	iconAttachedTo = 'Frame',
@@ -1880,9 +1887,7 @@ P.unitframe = {
 	},
 	altManaPowers = {
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
-		MONK = { Energy = true, Stagger = true },
-		SHAMAN = { Maelstrom = true },
-		PRIEST = { Insanity = true }
+		MONK = { Energy = true, Stagger = true }
 	},
 	thinBorders = true,
 	targetSound = false,

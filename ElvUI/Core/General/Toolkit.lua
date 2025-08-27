@@ -546,7 +546,7 @@ local API = {
 	GetChild = GetChild,
 }
 
-local function addapi(object)
+local function AddAPI(object)
 	local mk = getmetatable(object).__index
 	for method, func in next, API do
 		if not object[method] then
@@ -569,21 +569,21 @@ end
 
 local handled = { Frame = true }
 local object = CreateFrame('Frame')
-addapi(object)
-addapi(object:CreateTexture())
-addapi(object:CreateFontString())
-addapi(object:CreateMaskTexture())
+AddAPI(object)
+AddAPI(object:CreateTexture())
+AddAPI(object:CreateFontString())
+AddAPI(object:CreateMaskTexture())
 
 object = EnumerateFrames()
 while object do
 	local objType = object:GetObjectType()
 	if not object:IsForbidden() and not handled[objType] then
-		addapi(object)
+		AddAPI(object)
 		handled[objType] = true
 	end
 
 	object = EnumerateFrames(object)
 end
 
-addapi(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
-addapi(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
+AddAPI(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
+AddAPI(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget

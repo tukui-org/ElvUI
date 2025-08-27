@@ -9,12 +9,12 @@ local tonumber, tsort, error = tonumber, table.sort, error
 local UIParent, CreateFrame = UIParent, CreateFrame
 local _G = _G
 
-local function fixlevels(parent,...)
+local function Fixlevels(parent,...)
 	local i = 1
 	local child = select(i, ...)
 	while child do
 		child:SetFrameLevel(parent:GetFrameLevel()+1)
-		fixlevels(child, child:GetChildren())
+		Fixlevels(child, child:GetChildren())
 		i = i + 1
 		child = select(i, ...)
 	end
@@ -22,7 +22,7 @@ end
 
 do
 	local widgetType = "Dropdown-ElvUI"
-	local widgetVersion = 36
+	local widgetVersion = 37
 
 	--[[ Static data ]]--
 
@@ -124,7 +124,7 @@ do
 		pullout:SetCallback("OnClose", OnPulloutClose)
 		pullout:SetCallback("OnOpen", OnPulloutOpen)
 		self.pullout.frame:SetFrameLevel(self.frame:GetFrameLevel() + 1)
-		fixlevels(self.pullout.frame, self.pullout.frame:GetChildren())
+		Fixlevels(self.pullout.frame, self.pullout.frame:GetChildren())
 
 		self:SetHeight(44)
 		self:SetWidth(200)
@@ -256,7 +256,7 @@ do
 
 	-- exported
 	local sortlist = {}
-	local function sortTbl(x,y)
+	local function SortObject(x,y)
 		local num1, num2 = tonumber(x), tonumber(y)
 		if num1 and num2 then -- numeric comparison, either two numbers or numeric strings
 			return num1 < num2
@@ -293,7 +293,7 @@ do
 				for v in pairs(list) do
 					sortlist[#sortlist + 1] = v
 				end
-				tsort(sortlist, sortTbl)
+				tsort(sortlist, SortObject)
 
 				for i, key in ipairs(sortlist) do
 					AddListItem(self, key, list[key], itemType)

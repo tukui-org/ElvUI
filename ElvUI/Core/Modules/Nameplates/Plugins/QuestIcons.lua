@@ -181,7 +181,7 @@ local function GetQuests(unitID)
 	return QuestList
 end
 
-local function hideIcon(icon)
+local function HideIcon(icon)
 	icon:Hide()
 
 	if icon.Text then
@@ -189,9 +189,9 @@ local function hideIcon(icon)
 	end
 end
 
-local function hideIcons(element)
+local function HideIcons(element)
 	for _, object in next, iconTypes do
-		hideIcon(element[object])
+		HideIcon(element[object])
 	end
 end
 
@@ -226,7 +226,7 @@ local function Update(self, event)
 	element.backdrop:Hide()
 
 	if list then
-		hideIcons(element)
+		HideIcons(element)
 
 		local shown = -1
 		for _, quest in next, list do
@@ -302,7 +302,7 @@ local function Disable(self)
 	local element = self.QuestIcons
 	if element then
 		element:Hide()
-		hideIcons(element)
+		HideIcons(element)
 
 		element.lastQuests = nil
 

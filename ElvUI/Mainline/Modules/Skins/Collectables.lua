@@ -17,11 +17,11 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
-local function clearBackdrop(backdrop)
+local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
-local function toyTextColor(text, r, g, b)
+local function ToyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
 	elseif r == 1 and g == 0.82 and b == 0 then
@@ -29,7 +29,7 @@ local function toyTextColor(text, r, g, b)
 	end
 end
 
-local function mountNameColor(object)
+local function MountNameColor(object)
 	local button = object:GetParent()
 	local name = button.name
 
@@ -48,7 +48,7 @@ local function mountNameColor(object)
 	end
 end
 
-local function selectedTextureSetShown(texture, shown) -- used sets list
+local function SelectedTextureSetShown(texture, shown) -- used sets list
 	local parent = texture:GetParent()
 	if shown then
 		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
@@ -58,12 +58,12 @@ local function selectedTextureSetShown(texture, shown) -- used sets list
 	end
 end
 
-local function selectedTextureShow(texture) -- used for pets/mounts
+local function SelectedTextureShow(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
 end
 
-local function selectedTextureHide(texture) -- used for pets/mounts
+local function SelectedTextureHide(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	if not parent.hovered then
 		local r, g, b = unpack(E.media.bordercolor)
@@ -71,14 +71,14 @@ local function selectedTextureHide(texture) -- used for pets/mounts
 	end
 end
 
-local function buttonOnEnter(button)
+local function ButtonOnEnter(button)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	button.backdrop:SetBackdropBorderColor(r, g, b)
 
 	button.hovered = true
 end
 
-local function buttonOnLeave(button)
+local function ButtonOnLeave(button)
 	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
 		button.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
@@ -108,8 +108,8 @@ local function SkinJournalScrollButton(bu)
 		bu.backdrop:Point('BOTTOMRIGHT', bu, 0, 2)
 		icon:SetTexture(savedIconTexture) -- restore the texture
 
-		bu:HookScript('OnEnter', buttonOnEnter)
-		bu:HookScript('OnLeave', buttonOnLeave)
+		bu:HookScript('OnEnter', ButtonOnEnter)
+		bu:HookScript('OnLeave', ButtonOnLeave)
 
 		if bu.ProgressBar then
 			bu.ProgressBar:SetTexture(E.media.normTex)
@@ -121,11 +121,11 @@ local function SkinJournalScrollButton(bu)
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
-			hooksecurefunc(bu.SelectedTexture, 'SetShown', selectedTextureSetShown)
+			hooksecurefunc(bu.SelectedTexture, 'SetShown', SelectedTextureSetShown)
 		else
 			bu.selectedTexture:SetTexture()
-			hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
-			hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
+			hooksecurefunc(bu.selectedTexture, 'Show', SelectedTextureShow)
+			hooksecurefunc(bu.selectedTexture, 'Hide', SelectedTextureHide)
 
 			if parent == _G.PetJournal then
 				bu.petList = true
@@ -163,8 +163,8 @@ local function SkinJournalScrollButton(bu)
 				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
 				bu.favorite:Size(32)
 
-				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
-				hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)
+				hooksecurefunc(bu.name, 'SetFontObject', MountNameColor)
+				hooksecurefunc(bu.background, 'SetVertexColor', MountNameColor)
 			end
 		end
 
@@ -506,8 +506,8 @@ local function SkinToyFrame()
 		button.pushed:SetAllPoints(button.iconTexture)
 		button.cooldown:SetAllPoints(button.iconTexture)
 
-		hooksecurefunc(button.name, 'SetTextColor', toyTextColor)
-		hooksecurefunc(button.new, 'SetTextColor', toyTextColor)
+		hooksecurefunc(button.name, 'SetTextColor', ToyTextColor)
+		hooksecurefunc(button.new, 'SetTextColor', ToyTextColor)
 		E:RegisterCooldown(button.cooldown)
 	end
 
@@ -576,7 +576,7 @@ local function SkinTransmogFrames()
 				border:Point('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:Point('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-				border.callbackBackdropColor = clearBackdrop
+				border.callbackBackdropColor = ClearBackdrop
 
 				if Model.NewGlow then Model.NewGlow:SetParent(border) end
 				if Model.NewString then Model.NewString:SetParent(border) end

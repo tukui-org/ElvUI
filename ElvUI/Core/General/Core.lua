@@ -5,7 +5,7 @@ local LCS = E.Libs.LCS
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
+local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -23,7 +23,6 @@ local SaveBindings = SaveBindings
 local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
-local UnitGUID = UnitGUID
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
@@ -516,7 +515,7 @@ end
 
 do
 	local cancel = function(popup)
-		DisableAddOn(popup.addon)
+		DisableAddOn(popup.addon, E.myguid)
 		ReloadUI()
 	end
 
@@ -737,7 +736,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	return tfbCleaned
 end
 
-local function keySort(a, b)
+local function KeySort(a, b)
 	local A, B = type(a), type(b)
 
 	if A == B then
@@ -753,10 +752,10 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
-	local function recurse(tbl, level, ret)
+	local function Recurse(tbl, level, ret)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
@@ -773,7 +772,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				if v then ret = ret..'true,\n' else ret = ret..'false,\n' end
 			elseif type(v) == 'table' then
 				ret = ret..'{\n'
-				ret = recurse(v, level + 1, ret)
+				ret = Recurse(v, level + 1, ret)
 				ret = ret..strrep('    ', level)..'},\n'
 			else
 				ret = ret..'"'..tostring(v)..'",\n'
@@ -790,7 +789,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		end
 
 		local ret = '{\n'
-		if inTable then ret = recurse(inTable, 1, ret) end
+		if inTable then ret = Recurse(inTable, 1, ret) end
 		ret = ret..'}'
 
 		return ret
@@ -807,7 +806,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		styleFilters = 'E.global'
 	}
 
-	local function buildLineStructure(str) -- str is profileText
+	local function BuildLineStructure(str) -- str is profileText
 		for _, v in ipairs(lineStructureTable) do
 			if type(v) == 'string' then
 				str = str..'["'..v..'"]'
@@ -820,12 +819,12 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	end
 
 	local sameLine
-	local function recurse(tbl, ret, profileText)
+	local function Recurse(tbl, ret, profileText)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
-		local lineStructure = buildLineStructure(profileText)
+		local lineStructure = BuildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
 
@@ -845,7 +844,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				tinsert(lineStructureTable, k)
 				sameLine = true
 				ret = ret..']'
-				ret = recurse(v, ret, profileText)
+				ret = Recurse(v, ret, profileText)
 			else
 				sameLine = false
 				ret = ret..'] = '
@@ -880,7 +879,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
-			ret = recurse(inTable, ret, profileText)
+			ret = Recurse(inTable, ret, profileText)
 		end
 
 		return ret
@@ -990,7 +989,7 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 end
 
 do -- BFA Convert, deprecated..
-	local function buffwatchConvert(spell)
+	local function ConvertAurawatch(spell)
 		if spell.sizeOverride then spell.sizeOverride = nil end
 		if spell.size then spell.size = nil end
 
@@ -1207,14 +1206,14 @@ do -- BFA Convert, deprecated..
 		if E.global.unitframe.buffwatch then
 			for _, spells in pairs(E.global.unitframe.buffwatch) do
 				for _, spell in pairs(spells) do
-					buffwatchConvert(spell)
+					ConvertAurawatch(spell)
 				end
 			end
 		end
 
 		if E.db.unitframe.filters.buffwatch then
 			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
-				buffwatchConvert(spell)
+				ConvertAurawatch(spell)
 			end
 		end
 
@@ -1471,9 +1470,7 @@ function E:DBConvertTWW()
 			healthBreak.threshold.good = false
 		end
 	end
-end
 
-function E:DBConvertMists()
 	-- soulshard convert
 	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
 		if data.r or data.g or data.b then
@@ -1487,6 +1484,26 @@ function E:DBConvertDev()
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
+	end
+
+	-- mage resource convert
+	for _, data in ipairs({ E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE }) do
+		if data.r or data.g or data.b then
+			data.ARCANE_CHARGES.r, data.ARCANE_CHARGES.g, data.ARCANE_CHARGES.b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end
+
+	-- hide text -> hide name & hide time
+	for _, unit in ipairs({'player','target','focus','pet','boss','arena','party'}) do
+		local db = E.db.unitframe.units[unit].castbar
+		local previous = db.hidetext
+		if previous ~= nil then
+			db.hideName = previous
+			db.hideTime = previous
+
+			db.hidetext = nil
+		end
 	end
 end
 
@@ -1889,12 +1906,15 @@ function E:ResetUI(...)
 end
 
 do
-	local function errorhandler(err)
-		return _G.geterrorhandler()(err)
+	local function Errorhandler(err)
+		local handler = _G.geterrorhandler()
+		if handler then
+			return handler(err)
+		end
 	end
 
 	function E:CallLoadFunc(func, ...)
-		xpcall(func, errorhandler, ...)
+		xpcall(func, Errorhandler, ...)
 	end
 end
 
@@ -1956,7 +1976,6 @@ function E:DBConversions()
 		E:DBConvertSL()
 		E:DBConvertDF()
 		E:DBConvertTWW()
-		E:DBConvertMists()
 	end
 
 	-- development convert always
@@ -2015,12 +2034,7 @@ function E:Initialize()
 	wipe(E.global)
 	wipe(E.private)
 
-	local playerGUID = UnitGUID('player')
-	local _, serverID = strsplit('-', playerGUID)
-	E.serverID = tonumber(serverID)
 	E.myspec = GetSpecialization()
-	E.myguid = playerGUID
-
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)

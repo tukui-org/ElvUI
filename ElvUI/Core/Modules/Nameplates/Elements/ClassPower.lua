@@ -10,20 +10,6 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
-
-local MAX_POINTS = { -- match to UF.classMaxResourceBar
-	DEATHKNIGHT	= max(6, MAX_COMBO_POINTS),
-	PALADIN		= max(5, MAX_COMBO_POINTS),
-	WARLOCK		= max(5, MAX_COMBO_POINTS),
-	MONK		= max(6, MAX_COMBO_POINTS),
-	MAGE		= max(4, MAX_COMBO_POINTS),
-	ROGUE		= max(7, MAX_COMBO_POINTS),
-	EVOKER		= max(6, MAX_COMBO_POINTS),
-	DRUID		= max(5, MAX_COMBO_POINTS),
-	PRIEST		= max(3, MAX_COMBO_POINTS),
-}
-
 function NP:ClassPower_SetBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
@@ -37,7 +23,6 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 
 	local classPower = self.classColor
 	local colors = NP.db.colors.classResources
-	local fallback = NP.db.colors.power[powerType] or NP.db.colors.power.MANA
 
 	if isRunes and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self, rune)
@@ -45,9 +30,10 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		local color = colors.DEATHKNIGHT[rune.runeType or 0]
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
-		local classColor = not classPower and (colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
+		local fallback = NP.db.colors.power[powerType] or NP.db.colors.power.MANA
+		local classColor = not classPower and powerType ~= 'MANA' and (colors[UF.ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
 		for i, bar in ipairs(self) do
-			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or classColor[i] or classColor
+			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or (classColor and classColor[i]) or classColor
 			if not color or not color.r then
 				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else
@@ -90,7 +76,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 
 	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
-	local total = MAX_POINTS[E.myclass] or 0
+	local total = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 
 	for i = 1, total do
 		local barName = containerName..i
@@ -106,7 +92,9 @@ function NP:Construct_ClassPower(nameplate)
 
 		if nameplate == _G.ElvNP_Test then
 			local combo = NP.db.colors.classResources.comboPoints[i]
-			bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			if combo then
+				bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			end
 		end
 
 		ClassPower[i] = bar

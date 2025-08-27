@@ -220,7 +220,7 @@ end
 local WAIT_TIME = 0.1
 do
 	local wait = 0
-	local function update(_, elapsed)
+	local function OnUpdate(_, elapsed)
 		wait = wait + (elapsed or 0.01)
 
 		if wait > WAIT_TIME then
@@ -231,7 +231,7 @@ do
 	end
 
 	local frame = CreateFrame('Frame')
-	frame:SetScript('OnUpdate', update)
+	frame:SetScript('OnUpdate', OnUpdate)
 	frame:Hide()
 
 	B.SortUpdateTimer = frame

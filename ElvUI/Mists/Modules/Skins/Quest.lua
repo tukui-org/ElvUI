@@ -62,7 +62,7 @@ local function UpdateGreetingFrame()
 	end
 end
 
-local function handleItemButton(item)
+local function HandleItemButton(item)
 	if not item then return end
 
 	if item then
@@ -113,9 +113,9 @@ local function handleItemButton(item)
 	end
 end
 
-local function questQualityColors(frame, text, link)
+local function HandleQualityColors(frame, text, link)
 	if not frame.template then
-		handleItemButton(frame)
+		HandleItemButton(frame)
 	end
 
 	local quality = GetItemQualityByID(link or 0)
@@ -189,7 +189,7 @@ function S:BlizzardQuestFrames()
 
 	for frame, numItems in pairs({ QuestLogItem = MAX_NUM_ITEMS, QuestProgressItem = MAX_REQUIRED_ITEMS }) do
 		for i = 1, numItems do
-			handleItemButton(_G[frame..i])
+			HandleItemButton(_G[frame..i])
 		end
 	end
 
@@ -224,7 +224,7 @@ function S:BlizzardQuestFrames()
 		local button = rewardsFrame.RewardButtons[index]
 		if not button and button.template then return end
 
-		handleItemButton(button)
+		HandleItemButton(button)
 	end)
 
 	hooksecurefunc('QuestInfoItem_OnClick', function(frame)
@@ -239,7 +239,7 @@ function S:BlizzardQuestFrames()
 					local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 					local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-					questQualityColors(item, name, link)
+					HandleQualityColors(item, name, link)
 				end
 			end
 		end
@@ -251,7 +251,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 			local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -285,7 +285,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestProgressItem'..i..'Name']
 			local link = item.type and GetQuestItemLink(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -385,7 +385,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestLogItem'..i..'Name']
 			local link = item.type and (GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -426,7 +426,7 @@ function S:BlizzardQuestFrames()
 		end
 		for spellIcon, _ in _G.QuestInfoFrame.rewardsFrame.spellRewardPool:EnumerateActive() do
 			if not spellIcon.template then
-				handleItemButton(spellIcon)
+				HandleItemButton(spellIcon)
 			end
 		end
 
@@ -444,7 +444,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 			local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 

@@ -60,7 +60,7 @@ end
 
 do
 	local azeriteItem, currentLevel, curXP, maxXP
-	local function dataLoadedCancelFunc()
+	local function DataLoadedCancelFunc()
 		if _G.GameTooltip:IsForbidden() then return end
 
 		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItem:GetItemName()..' ('..currentLevel..')', nil, nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
@@ -87,7 +87,7 @@ do
 			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(item)
 			currentLevel = C_AzeriteItem_GetPowerLevel(item)
 			azeriteItem = Item:CreateFromItemLocation(item)
-			azeriteItem:ContinueWithCancelOnItemLoad(dataLoadedCancelFunc)
+			azeriteItem:ContinueWithCancelOnItemLoad(DataLoadedCancelFunc)
 		end
 	end
 end

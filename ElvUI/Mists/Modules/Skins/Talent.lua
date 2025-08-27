@@ -15,7 +15,7 @@ local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpeci
 local GetSpellTexture = GetSpellTexture
 local UnitSex = UnitSex
 
-local function clearBackdrop(backdrop)
+local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
@@ -292,7 +292,7 @@ function S:Blizzard_TalentUI()
 			S:HandleIcon(Button.specIcon, true, nil, nil, nil, nil, nil, nil, Button:GetFrameLevel() + 1)
 			if Button.specIcon.backdrop then
 				Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
-				Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
+				Button.specIcon.backdrop.callbackBackdropColor = ClearBackdrop
 			end
 			Button:SetHighlightTexture(E.ClearTexture)
 
