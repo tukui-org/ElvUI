@@ -690,6 +690,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[160029] = List(), -- Resurrecting (Pending CR)
 		[225080] = List(), -- Reincarnation (Ankh ready)
 		[255234] = List(), -- Totemic Revival
+		[1239997] = List(), -- Oath-Bound
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
