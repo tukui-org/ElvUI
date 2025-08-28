@@ -2841,6 +2841,14 @@ function B:ClearListeners(frame)
 	end
 end
 
+function B:OpenSound()
+	PlaySound(IG_BACKPACK_OPEN)
+end
+
+function B:CloseSound()
+	PlaySound(IG_BACKPACK_CLOSE)
+end
+
 function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
@@ -2855,17 +2863,19 @@ function B:OpenBags()
 		B:UpdateTokensIfVisible()
 	end
 
-	PlaySound(IG_BACKPACK_OPEN)
+	B:OpenSound()
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
 function B:CloseBags()
-	if not B.BagFrame:IsShown() then return end
+	if not B.BagFrame:IsShown() then
+		return true -- for when the bank closes
+	end
 
 	B.BagFrame:Hide()
 
-	PlaySound(IG_BACKPACK_CLOSE)
+	B:CloseSound()
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
@@ -3189,7 +3199,13 @@ function B:CloseBank()
 		purcahseTab:SetAttribute('overrideBankType', nil)
 	end
 
-	B:CloseBags()
+	if B.BankFrame:IsShown() then
+		B.BankFrame:Hide()
+	end
+
+	if B:CloseBags() then
+		B:CloseSound() -- the bags werent open but we should play the sound
+	end
 end
 
 function B:GetInitialContainerFrameOffsetX()
