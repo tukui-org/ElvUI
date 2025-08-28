@@ -211,7 +211,7 @@ local function Update(self, event, unit, powerType)
 		end
 
 		local powerMax = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
-		maximum = (ClassPowerID == POWERTYPE_MANA and 1) or powerMax
+		maximum = (ClassPowerID == POWERTYPE_MANA and 1) or powerMax or 0
 		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 		for i = 1, maximum do
@@ -221,7 +221,7 @@ local function Update(self, event, unit, powerType)
 			bar:Show()
 
 			if ClassPowerID == POWERTYPE_MANA then
-				bar:SetValue(current / powerMax)
+				bar:SetValue((powerMax <= 0 and 0) or current / powerMax)
 			elseif warlockDest and i == floor(current + 1) then
 				bar:SetValue(current % 1)
 			else
