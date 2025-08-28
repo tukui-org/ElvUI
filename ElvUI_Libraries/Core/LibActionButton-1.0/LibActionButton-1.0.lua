@@ -9,6 +9,7 @@ if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
+local _G = _G
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
@@ -33,7 +34,6 @@ local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 local UnpackAuraData = AuraUtil.UnpackAuraData
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
-local GameTooltip_SetDefaultAnchor = GameTooltip_SetDefaultAnchor
 local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
@@ -1294,6 +1294,7 @@ function Generic:OnEnter()
 	if self.config.tooltip ~= "disabled" and (self.config.tooltip ~= "nocombat" or not InCombatLockdown()) then
 		UpdateTooltip(self)
 	end
+
 	if KeyBound then
 		KeyBound:Set(self)
 	end
@@ -2507,12 +2508,14 @@ end
 
 function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
+
 	if (GetCVar("UberTooltips") == "1") then
 		GameTooltip:ClearAllPoints();
-		GameTooltip_SetDefaultAnchor(GameTooltip, self);
+		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	end
+
 	if self:SetTooltip() then
 		self.UpdateTooltip = UpdateTooltip
 	else
