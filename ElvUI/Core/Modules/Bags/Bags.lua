@@ -372,17 +372,23 @@ function B:Tooltip_Show()
 	GameTooltip:Show()
 end
 
-function B:DisableFrame(frame)
-	frame:SetScript('OnShow', nil)
-	frame:SetScript('OnHide', nil)
-	frame:UnregisterAllEvents()
-	frame:ClearAllPoints()
+do
+	local function GiveZero() return 0 end
+	function B:DisableFrame(frame, noRight)
+		frame:SetScript('OnShow', nil)
+		frame:SetScript('OnHide', nil)
+		frame:UnregisterAllEvents()
+		frame:ClearAllPoints()
 
-	hooksecurefunc(frame, 'SetPoint', frame.ClearAllPoints)
+		-- bug with GetRight in GetContainerScale from UpdateContainerFrameAnchors because it has no points now
+		frame.GetRight = (noRight and GiveZero) or nil
+
+		hooksecurefunc(frame, 'SetPoint', frame.ClearAllPoints)
+	end
 end
 
 function B:DisableBlizzard()
-	B:DisableFrame(_G.BankFrame)
+	B:DisableFrame(_G.BankFrame, true)
 
 	for i = 1, NUM_CONTAINER_FRAMES do
 		B:DisableFrame(_G['ContainerFrame'..i])
@@ -3171,8 +3177,8 @@ function B:OpenBank()
 		end
 	end
 
-	if B.db.autoToggle.bank then
-		B:OpenBags()
+	if B.db.autoToggle.bank and not B.BagFrame:IsShown() then
+		_G.ToggleAllBags()
 	end
 end
 
