@@ -1761,10 +1761,6 @@ function B:ConstructCoverButton(cover, name, text, template)
 	return button
 end
 
-function B:ClickSound()
-	PlaySound(IG_MAINMENU_OPTION)
-end
-
 function B:GetPurchaseTabButton()
 	local panel = _G.BankPanel
 	local prompt = panel and panel.PurchasePrompt
@@ -2849,6 +2845,14 @@ function B:CloseSound()
 	PlaySound(IG_BACKPACK_CLOSE)
 end
 
+function B:ClickSound()
+	PlaySound(IG_MAINMENU_OPTION)
+end
+
+function B:SelectSound()
+	PlaySound(IG_CHARACTER_INFO_TAB)
+end
+
 function B:OpenBags()
 	if B.BagFrame:IsShown() then return end
 
@@ -2952,8 +2956,7 @@ end
 function B:SelectBankTab(f, bagID)
 	if B.BankTab == bagID then return end
 
-	PlaySound(IG_CHARACTER_INFO_TAB)
-
+	B:SelectSound()
 	B:ShowBankTab(f, bagID)
 	B:SetBankTabs(f)
 end
