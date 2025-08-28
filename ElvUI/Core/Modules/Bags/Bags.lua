@@ -2861,13 +2861,11 @@ function B:OpenBags()
 end
 
 function B:CloseBags()
-	local bag, bank = B.BagFrame:IsShown(), B.BankFrame:IsShown()
-	if bag or bank then
-		if bag then B.BagFrame:Hide() end
-		if bank then B.BankFrame:Hide() end
+	if not B.BagFrame:IsShown() then return end
 
-		PlaySound(IG_BACKPACK_CLOSE)
-	end
+	B.BagFrame:Hide()
+
+	PlaySound(IG_BACKPACK_CLOSE)
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
