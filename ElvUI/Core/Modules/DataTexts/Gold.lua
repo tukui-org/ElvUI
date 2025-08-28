@@ -188,7 +188,11 @@ local function Click(self, btn)
 			Spent = 0
 		end
 	else
-		_G.ToggleAllBags()
+		if E.Retail and _G.ElvUI_BankContainerFrame:IsShown() then
+			_G.ToggleFrame(_G.ElvUI_ContainerFrame)
+		else
+			_G.ToggleAllBags()
+		end
 	end
 end
 
