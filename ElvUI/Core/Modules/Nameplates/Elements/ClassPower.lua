@@ -19,7 +19,8 @@ function NP:ClassPower_SetBarColor(bar, r, g, b)
 end
 
 function NP:ClassPower_UpdateColor(powerType, rune)
-	local isRunes, colors, fallback, classColor = UF:ClassPower_GetColor(NP.db.colors, powerType)
+	local isRunes = powerType == 'RUNES'
+	local colors, powers, fallback = UF:ClassPower_GetColor(NP.db.colors, powerType)
 	if isRunes and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self, rune)
 	elseif isRunes and rune and not self.classColor then
@@ -27,7 +28,7 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
 		for index, bar in ipairs(self) do
-			local color = self.classColor or UF:ClassPower_BarColor(isRunes, bar, index, colors, classColor)
+			local color = self.classColor or UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
 				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else

@@ -75,16 +75,17 @@ function UF:ClassPower_GetColor(colors, powerType)
 	local all, power = colors.classResources, colors.power
 	local mine = all and all[E.myclass]
 
-	return powerType == 'RUNES', all, power[powerType] or power.MANA, powerType ~= 'MANA' and (all[UF.ClassPowerColors[powerType]] or (mine and mine[powerType]) or mine)
+	return all, powerType ~= 'MANA' and (all[UF.ClassPowerColors[powerType]] or (mine and mine[powerType]) or mine), power[powerType] or power.MANA
 end
 
-function UF:ClassPower_BarColor(isRunes, bar, index, colors, classColor)
-	return (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or (index and classColor and classColor[index]) or classColor
+function UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
+	return (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or (index and powers and powers[index]) or powers
 end
 
 function UF:ClassPower_UpdateColor(powerType, rune)
+	local isRunes = powerType == 'RUNES'
 	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	local isRunes, colors, fallback, classColor = UF:ClassPower_GetColor(UF.db.colors, powerType)
+	local colors, powers, fallback = UF:ClassPower_GetColor(UF.db.colors, powerType)
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
@@ -92,7 +93,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
 		for index, bar in ipairs(self) do
-			local color = UF:ClassPower_BarColor(isRunes, bar, index, colors, classColor)
+			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
 				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
 			else
