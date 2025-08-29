@@ -362,9 +362,7 @@ function NP:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 	end
 end
 
-function NP:StyleFilterDispelCheck(frame, event, filter)
-	if ElvUF:ShouldSkipAuraUpdate(frame, event, frame.unit) then return end
-
+function NP:StyleFilterDispelCheck(frame, event, arg1, arg2, filter)
 	local unitAuraInfo = AuraInfo[frame.unit]
 	local auraInstanceID, aura = next(unitAuraInfo)
 	while aura do
@@ -386,12 +384,8 @@ function NP:StyleFilterDispelCheck(frame, event, filter)
 	end
 end
 
-function NP:StyleFilterAuraData(frame, event, filter, unit)
+function NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, unit)
 	local temp = {}
-
-	if ElvUF:ShouldSkipAuraUpdate(frame, event, unit) then
-		return temp
-	end
 
 	local index = 1
 	local unitAuraInfo = AuraInfo[unit]
@@ -415,7 +409,7 @@ function NP:StyleFilterAuraData(frame, event, filter, unit)
 	return temp
 end
 
-function NP:StyleFilterAuraCheck(frame, event, names, tickers, filter, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
+function NP:StyleFilterAuraCheck(frame, event, arg1, arg2, filter, names, tickers, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
 	local total, matches, now = 0, 0, GetTime()
 	local temp -- data of current auras
 
@@ -424,7 +418,7 @@ function NP:StyleFilterAuraCheck(frame, event, names, tickers, filter, mustHaveA
 			total = total + 1 -- keep track of the names
 
 			if not temp then
-				temp = NP:StyleFilterAuraData(frame, event, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
+				temp = NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
 			end
 
 			local spell, count = strmatch(key, NP.StyleFilterStackPattern)
@@ -789,7 +783,7 @@ function NP:StyleFilterThreatUpdate(frame, unit)
 	end
 end
 
-function NP:StyleFilterConditionCheck(frame, event, filter, trigger)
+function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	local passed -- skip StyleFilterPass when triggers are empty
 
 	-- Class and Specialization
@@ -1232,13 +1226,13 @@ function NP:StyleFilterConditionCheck(frame, event, filter, trigger)
 	if frame.Buffs_ and trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
-			local isStealable = NP:StyleFilterDispelCheck(frame, event, 'HELPFUL')
+			local isStealable = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HELPFUL')
 			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = NP:StyleFilterAuraCheck(frame, event, trigger.buffs.names, frame.Buffs_.tickers, 'HELPFUL', trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
+			local buff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HELPFUL', trigger.buffs.names, frame.Buffs_.tickers, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1249,12 +1243,12 @@ function NP:StyleFilterConditionCheck(frame, event, filter, trigger)
 	if frame.Debuffs_ and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
-			local canDispel = NP:StyleFilterDispelCheck(frame, event, 'HARMFUL')
+			local canDispel = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HARMFUL')
 			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
-		local debuff = NP:StyleFilterAuraCheck(frame, event, trigger.debuffs.names, frame.Debuffs_.tickers, 'HARMFUL', trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
+		local debuff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HARMFUL', trigger.debuffs.names, frame.Debuffs_.tickers, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end
@@ -1393,6 +1387,11 @@ end
 NP.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 NP.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
 NP.StyleFilterPlateEvents = {} -- events watched inside of ouf, which is called on the nameplate itself, updated by StyleFilterWatchEvents
+NP.StyleFilterAuraEvents = { -- events that can help populate aura cache
+	NAME_PLATE_UNIT_ADDED = true,
+	UNIT_AURA = true
+}
+
 NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
 	-- existing:
 	UNIT_AURA = false,
@@ -1404,10 +1403,10 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
-	NAME_PLATE_UNIT_ADDED = true,
-	NAME_PLATE_UNIT_REMOVED = true,
-	GROUP_ROSTER_UPDATE = true,
+	NAME_PLATE_UNIT_ADDED = false,
+	NAME_PLATE_UNIT_REMOVED = false,
 	INCOMING_RESURRECT_CHANGED = false,
+	GROUP_ROSTER_UPDATE = true,
 	MODIFIER_STATE_CHANGED = true,
 	PLAYER_EQUIPMENT_CHANGED = true,
 	PLAYER_FLAGS_CHANGED = false,
@@ -1462,13 +1461,13 @@ function NP:StyleFilterConfigure()
 			if t and db and db.triggers and db.triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
-				-- NOTE: 0 for fake events
+				-- NOTE: -1 is force, 0 for fake events, 1 is real events
+				events.PLAYER_TARGET_CHANGED = 1
+				events.NAME_PLATE_UNIT_ADDED = 1
+				events.UNIT_FACTION = 1 -- frameType can change here
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
-				events.PLAYER_TARGET_CHANGED = 1
-				events.UNIT_FACTION = 1 -- frameType can change here
 				events.ForceUpdate = -1
-				events.PoolerUpdate = -1
 
 				if t.casting then
 					local spell
@@ -1503,9 +1502,6 @@ function NP:StyleFilterConfigure()
 
 				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
 					events.NAME_PLATE_UNIT_REMOVED = 1
-					events.NAME_PLATE_UNIT_ADDED = 1
-				elseif not events.NAME_PLATE_UNIT_ADDED then
-					events.NAME_PLATE_UNIT_ADDED = 2
 				end
 
 				if t.unitInVehicle then
@@ -1577,7 +1573,7 @@ function NP:StyleFilterConfigure()
 				end
 
 				if t.isUnconscious or t.isConscious or t.isCharmed or t.notCharmed or t.isPossessed or t.notPossessed then
-					events.UNIT_FLAGS = 1 -- instead these might need UNIT_AURA
+					events.UNIT_FLAGS = 1
 				end
 
 				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
@@ -1638,7 +1634,7 @@ function NP:StyleFilterHiddenState(c)
 	return c and ((c.NameOnly and c.Visibility and 3) or (c.NameOnly and 2) or (c.Visibility and 1))
 end
 
-function NP:StyleFilterUpdate(frame, event)
+function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
 
 	local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
@@ -1648,7 +1644,7 @@ function NP:StyleFilterUpdate(frame, event)
 	for filterNum in ipairs(NP.StyleFilterTriggerList) do
 		local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 		if filter then
-			NP:StyleFilterConditionCheck(frame, event, filter, filter.triggers)
+			NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers)
 		end
 	end
 
@@ -1656,84 +1652,33 @@ function NP:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local object = CreateFrame('Frame')
-	object.delay = 0.1 -- update check rate
-	object.instant = 0.3 -- seconds since last event
-	object.active = true -- off is always instant
-	object.tracked = {}
-	object.times = {}
-
-	function NP:StyleFilterPoolerRun()
-		for frame in pairs(object.tracked) do
-			NP:StyleFilterUpdate(frame, 'PoolerUpdate')
-		end
-
-		wipe(object.tracked) -- clear it out
-	end
-
-	local wait = 0
-	function NP:StyleFilterPoolerOnUpdate(elapsed)
-		if wait > object.delay then
-			NP:StyleFilterPoolerRun()
-
-			wait = 0
-		else
-			wait = wait + elapsed
-		end
-	end
-
-	object:SetScript('OnUpdate', NP.StyleFilterPoolerOnUpdate)
-	object:Hide()
-
-	function NP:StyleFilterPoolerTrack(event, arg1, arg2, ...)
+	function NP:StyleFilterExecuteUpdate(event, arg1, arg2, ...)
 		local eventFunc = NP.StyleFilterEventFunctions[event]
 		if eventFunc then
 			eventFunc(self, event, arg1, arg2, ...)
 		end
 
-		local auraEvent = event == 'UNIT_AURA'
-		if auraEvent and ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2) then
-			return
-		end
+		local hasTrigger = NP.StyleFilterTriggerEvents[event]
+		if not hasTrigger then return end -- no trigger for this event
 
-		-- Trigger Event and (auraEvent or unitless or verifiedUnit); auraEvent is already unit verified by ShouldSkipAuraUpdate
-		local trigger = NP.StyleFilterTriggerEvents[event]
-		if trigger == 2 and (self.unit ~= arg1) then
-			return -- this blocks rechecking other plates on added when not using the amount trigger (preformance thing)
-		elseif trigger and (auraEvent or NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)) then
-			if object.active then
-				local now = GetTime()
-				local last = object.times[event]
-				if last and (last + object.instant) < now then
-					NP:StyleFilterUpdate(self, 'PoolerUpdate')
-				else
-					object.tracked[self] = true
+		local verifyUnit = NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)
+		if not verifyUnit then return end -- this event doesnt match the unit, this checks unitless
 
-					if not object:IsShown() then
-						object:Show()
-					end
-				end
+		local allowUpdate = not NP.StyleFilterAuraEvents[event] or not ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2)
+		if not allowUpdate then return end -- should we allow the update, aura events that can help populate cache
 
-				object.times[event] = now
-			else
-				if object:IsShown() then
-					object:Hide()
-				end
-
-				NP:StyleFilterUpdate(self, 'PoolerUpdate')
-			end
-		end
+		NP:StyleFilterUpdate(self, event, arg1, arg2)
 	end
 
-	local update = NP.StyleFilterPoolerTrack
-	function NP:StyleFilterPoolerCall(frame, ...)
+	local update = NP.StyleFilterExecuteUpdate
+	function NP:StyleFilterExecuteCall(frame, ...)
 		for _, func in next, self do
 			func(frame, ...)
 		end
 	end
 
-	local metatable = { __call = NP.StyleFilterPoolerCall }
-	function NP:StyleFilterFakeRegister(frame, event, remove)
+	local metatable = { __call = NP.StyleFilterExecuteCall }
+	function NP:StyleFilterExecuteRegister(frame, event, remove)
 		local curev = frame[event]
 		if curev then
 			local kind = type(curev)
@@ -1777,17 +1722,17 @@ do -- oUF style filter inject watch functions without actually registering any e
 			local holdsEvent = NP:StyleFilterIsWatching(frame, event)
 			if disable then
 				if holdsEvent then
-					NP:StyleFilterFakeRegister(frame, event, true)
+					NP:StyleFilterExecuteRegister(frame, event, true)
 				end
 			elseif NP.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
-					NP:StyleFilterFakeRegister(frame, event)
+					NP:StyleFilterExecuteRegister(frame, event)
 				end
 			elseif holdsEvent then
-				NP:StyleFilterFakeRegister(frame, event, true)
+				NP:StyleFilterExecuteRegister(frame, event, true)
 	end end end
 
-	function NP:StyleFilterRegister(nameplate, event, unitless, func, objectEvent)
+	function NP:StyleFilterEventRegister(nameplate, event, unitless, func, objectEvent)
 		if objectEvent then
 			if not nameplate.objectEventFunc then
 				nameplate.objectEventFunc = function(_, evnt, ...) update(nameplate, evnt, ...) end
@@ -1810,14 +1755,14 @@ function NP:StyleFilterEvents(nameplate)
 
 	-- add events to be watched
 	for event, unitless in pairs(NP.StyleFilterDefaultEvents) do
-		NP:StyleFilterRegister(nameplate, event, unitless)
+		NP:StyleFilterEventRegister(nameplate, event, unitless)
 	end
 
 	-- object event pathing (these update after MapInfo updates), these events are not added onto the nameplate itself
-	NP:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
-	NP:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
-	NP:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
-	NP:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
+	NP:StyleFilterEventRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
+	NP:StyleFilterEventRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
+	NP:StyleFilterEventRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
+	NP:StyleFilterEventRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
 end
 
 function NP:StyleFilterAddCustomCheck(name, func)
