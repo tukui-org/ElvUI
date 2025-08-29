@@ -1403,8 +1403,8 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_PET = false,
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
-	NAME_PLATE_UNIT_ADDED = false,
-	NAME_PLATE_UNIT_REMOVED = false,
+	NAME_PLATE_UNIT_ADDED = true,
+	NAME_PLATE_UNIT_REMOVED = true,
 	INCOMING_RESURRECT_CHANGED = false,
 	GROUP_ROSTER_UPDATE = true,
 	MODIFIER_STATE_CHANGED = true,
@@ -1461,9 +1461,9 @@ function NP:StyleFilterConfigure()
 			if t and db and db.triggers and db.triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
-				-- NOTE: -1 is force, 0 for fake events, 1 is real events
+				-- NOTE: -1 is force, 0 for fake events, 1 is real events, 2 has a unitToken but cant use RegisterUnitEvent
 				events.PLAYER_TARGET_CHANGED = 1
-				events.NAME_PLATE_UNIT_ADDED = 1
+				events.NAME_PLATE_UNIT_ADDED = 2
 				events.UNIT_FACTION = 1 -- frameType can change here
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
@@ -1501,7 +1501,7 @@ function NP:StyleFilterConfigure()
 				end
 
 				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
-					events.NAME_PLATE_UNIT_REMOVED = 1
+					events.NAME_PLATE_UNIT_REMOVED = 2
 				end
 
 				if t.unitInVehicle then
@@ -1658,10 +1658,10 @@ do -- oUF style filter inject watch functions without actually registering any e
 			eventFunc(self, event, arg1, arg2, ...)
 		end
 
-		local hasTrigger = NP.StyleFilterTriggerEvents[event]
-		if not hasTrigger then return end -- no trigger for this event
+		local trigger = NP.StyleFilterTriggerEvents[event]
+		if not trigger then return end -- no trigger for this event
 
-		local verifyUnit = NP.StyleFilterDefaultEvents[event] or (arg1 and arg1 == self.unit)
+		local verifyUnit = (trigger ~= 2 and NP.StyleFilterDefaultEvents[event]) or (arg1 and arg1 == self.unit)
 		if not verifyUnit then return end -- this event doesnt match the unit, this checks unitless
 
 		local allowUpdate = not NP.StyleFilterAuraEvents[event] or not ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2)
@@ -1752,6 +1752,13 @@ function NP:StyleFilterEvents(nameplate)
 
 	-- happy little table
 	nameplate.StyleFilterChanges = {}
+
+	-- we may fire events before having any aura data for the unit
+	-- populate an empty table because not all events update the cache
+	local unitAuraInfo = AuraInfo[nameplate.unit]
+	if not unitAuraInfo then
+		AuraInfo[nameplate.unit] = {}
+	end
 
 	-- add events to be watched
 	for event, unitless in pairs(NP.StyleFilterDefaultEvents) do
