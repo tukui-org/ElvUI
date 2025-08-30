@@ -68,24 +68,24 @@ local function VisibilityInfo(spellId)
 end
 
 local function CachedVisibility(spellId)
-	if not cachedVisibility[spellId] then
-		local visibilityInfo = VisibilityInfo(spellId)
-
-		if hasValidPlayer then -- only cache when the player is valid
-			cachedVisibility[spellId] = { visibilityInfo }
-		else
-			return visibilityInfo
-		end
+	local cached = cachedVisibility[spellId]
+	if cached then -- send the cache
+		return unpack(cached)
 	end
 
-	return unpack(cachedVisibility[spellId])
+	local hasCustom, alwaysShowMine, showForMySpec = VisibilityInfo(spellId)
+	if hasValidPlayer then -- only cache when the player is valid
+		cachedVisibility[spellId] = { hasCustom, alwaysShowMine, showForMySpec }
+	end
+
+	return hasCustom, alwaysShowMine, showForMySpec
 end
 
 local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
-local function AllowAura(unit, spellId, sourceUnit)
+local function AllowAura(spellId, sourceUnit)
 	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
 	if hasCustom then -- whether the spell visibility should be customized
 		return showForMySpec or (alwaysShowMine and CheckIsMine(sourceUnit))
@@ -114,18 +114,16 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	elseif aura.isBossAura or AuraIsPriority(aura.spellId) then
 		return true
 	elseif aura.isHarmful or aura.isHelpful then
-		return AllowAura(unit, aura.spellId, aura.sourceUnit)
+		return AllowAura(aura.spellId, aura.sourceUnit)
 	end
 
 	return false
 end
 
-local function UpdateFilter(which, allow, unit, auraInstanceID, aura, filter)
-	local filtered = auraFiltered[filter]
-	local unitAuraFiltered = filtered and filtered[unit]
-	if not unitAuraFiltered then return end
+local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
+	local unitAuraFiltered = filtered[unit]
 
-	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and allow and aura) or nil
+	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and (which ~= 'remove' and allow and aura) or nil
 end
 
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
@@ -141,11 +139,9 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 
 	local allow = (which == 'remove') or not aura or not showFunc or showFunc(frame, event, unit, aura)
 
-	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
-	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
-	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
-	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
-	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
+	for filter, filtered in next, auraFiltered do
+		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
+	end
 
 	return allow
 end
@@ -264,7 +260,9 @@ end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
-	if not unit or (frame.unit and frame.unit ~= unit) then return true end
+	if not unit or (frame.unit and frame.unit ~= unit) then
+		return true
+	end
 
 	return ShouldSkipAura(frame, event, unit, updateInfo, showFunc or CouldDisplayAura)
 end
