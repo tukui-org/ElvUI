@@ -1875,6 +1875,14 @@ do
 		return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 	end
 
+	local function CheckAuraFilter(aura, filter)
+		if filter == 'HELPFUL' then
+			return not aura.isHelpful
+		elseif filter == 'HARMFUL' then
+			return not aura.isHarmful
+		end
+	end
+
 	local function GetTargetAuraCooldown(aura)
 		if not aura then return end
 
@@ -1883,8 +1891,11 @@ do
 		return start, duration, expiration
 	end
 
-	local function CheckTargetAuraCooldown(aura, buttons, previous)
-		local isMine = aura and CheckIsMine(aura.sourceUnit)
+	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
+		local skip = not filter or CheckAuraFilter(aura, filter)
+		if skip then return end
+
+		local isMine = CheckIsMine(aura.sourceUnit)
 		if not isMine then return end
 
 		local start, duration = GetTargetAuraCooldown(aura)
@@ -1901,7 +1912,7 @@ do
 		end
 	end
 
-	local function ProcessTargetAuras(which, auras)
+	local function ProcessTargetAuras(which, filter, auras)
 		if not auras then return end
 
 		for _, value in next, auras do
@@ -1910,7 +1921,7 @@ do
 
 				local buttons = AuraButtons.auras[value.name]
 				if buttons then
-					CheckTargetAuraCooldown(value, buttons)
+					CheckTargetAuraCooldown(value, filter, buttons)
 				end
 			else
 				local aura
@@ -1924,30 +1935,33 @@ do
 
 				local buttons = aura and AuraButtons.auras[aura.name]
 				if buttons then
-					CheckTargetAuraCooldown(aura, buttons)
+					CheckTargetAuraCooldown(aura, filter, buttons)
 				end
 			end
 		end
 	end
 
 	function UpdateTargetAuras(event, arg1, updateInfo)
+		local isFriend = UnitIsFriend('player', 'target')
 		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
-			ProcessTargetAuras('add', updateInfo.addedAuras)
-			ProcessTargetAuras('update', updateInfo.updatedAuraInstanceIDs)
-			ProcessTargetAuras('remove', updateInfo.removedAuraInstanceIDs)
+			local filter = isFriend and 'HELPFUL' or 'HARMFUL'
+			ProcessTargetAuras('add', filter, updateInfo.addedAuras)
+			ProcessTargetAuras('update', filter, updateInfo.updatedAuraInstanceIDs)
+			ProcessTargetAuras('remove', filter, updateInfo.removedAuraInstanceIDs)
 		elseif event ~= 'SetTargetAuraCooldowns' or not arg1 then
 			local previous = CopyTable(current, true) -- shallow copy
 
 			wipe(current) -- clear the current ones
 			wipe(auraInstances) -- keep this clean
 
-			local filter = UnitIsFriend('player', 'target') and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
+			local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
 			for spellName, buttons in next, AuraButtons.auras do
 				local aura = GetAuraDataBySpellName('target', spellName, filter)
 				if aura then -- collect what we can
 					auraInstances[aura.auraInstanceID] = aura
 
-					CheckTargetAuraCooldown(aura, buttons, previous)
+					-- this is already filtered by GetAuraDataBySpellName
+					CheckTargetAuraCooldown(aura, nil, buttons, previous)
 				end
 			end
 
