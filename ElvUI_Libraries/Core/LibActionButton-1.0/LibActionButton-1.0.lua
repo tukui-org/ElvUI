@@ -1876,7 +1876,9 @@ do
 	end
 
 	local function CheckAuraFilter(aura, filter)
-		if filter == 'HELPFUL' then
+		if not filter then
+			return true -- already filtered by GetAuraDataBySpellName
+		elseif filter == 'HELPFUL' then
 			return aura.isHelpful
 		elseif filter == 'HARMFUL' then
 			return aura.isHarmful
@@ -1892,7 +1894,7 @@ do
 	end
 
 	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
-		local allow = not filter or CheckAuraFilter(aura, filter)
+		local allow = CheckAuraFilter(aura, filter)
 		if not allow then return end
 
 		local isMine = CheckIsMine(aura.sourceUnit)
@@ -1960,7 +1962,6 @@ do
 				if aura then -- collect what we can
 					auraInstances[aura.auraInstanceID] = aura
 
-					-- this is already filtered by GetAuraDataBySpellName
 					CheckTargetAuraCooldown(aura, nil, buttons, previous)
 				end
 			end
