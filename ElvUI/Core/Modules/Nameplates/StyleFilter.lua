@@ -1755,10 +1755,7 @@ function NP:StyleFilterEvents(nameplate)
 
 	-- we may fire events before having any aura data for the unit
 	-- populate an empty table because not all events update the cache
-	local unitAuraInfo = AuraInfo[nameplate.unit]
-	if not unitAuraInfo then
-		AuraInfo[nameplate.unit] = {}
-	end
+	ElvUF:CreateUnitAuraInfo(nameplate.unit)
 
 	-- add events to be watched
 	for event, unitless in pairs(NP.StyleFilterDefaultEvents) do

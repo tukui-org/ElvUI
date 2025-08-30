@@ -20,9 +20,18 @@ local hasValidPlayer = false
 local cachedVisibility = {}
 local cachedSelfBuffChecks = {}
 local cachedPriority = SpellIsPriorityAura and {}
+
 local auraInfo = {}
+local auraFiltered = {
+	HELPFUL = {},
+	HARMFUL = {},
+	RAID = {},
+	PLAYER = {},
+	INCLUDE_NAME_PLATE_ONLY = {}
+}
 
 oUF.AuraInfo = auraInfo -- export it
+oUF.AuraFiltered = auraFiltered -- by filter
 
 local _, myclass = UnitClass('player')
 local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
@@ -127,30 +136,47 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	return false
 end
 
-local function TryAdded(unit, aura)
-	if not aura.auraInstanceID then return end
+local function UpdateFilter(which, unit, auraInstanceID, aura, filter)
+	local filtered = auraFiltered[filter]
+	local unitAuraFiltered = filtered and filtered[unit]
+	if not unitAuraFiltered then return end
+
+	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and aura) or nil
+end
+
+local function UpdateAuraFilters(which, unit, auraInstanceID, aura)
+	if not auraInstanceID then return end
 
 	local unitAuraInfo = auraInfo[unit]
-	unitAuraInfo[aura.auraInstanceID] = aura
+
+	if which == 'update' then
+		aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID)
+	elseif which == 'remove' then
+		aura = unitAuraInfo[auraInstanceID]
+	end
+
+	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
+
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HELPFUL')
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
+
+	return aura
 end
 
 local empty = {} -- incase of failure
+local function TryAdded(unit, aura)
+	return UpdateAuraFilters('add', unit, aura.auraInstanceID, aura) or empty
+end
+
 local function TryUpdated(unit, auraInstanceID)
-	local unitAuraInfo = auraInfo[unit]
-
-	local aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID) -- get new info
-	unitAuraInfo[auraInstanceID] = aura  -- update the data
-
-	return aura or empty
+	return UpdateAuraFilters('update', unit, auraInstanceID) or empty
 end
 
 local function TryRemove(unit, auraInstanceID)
-	local unitAuraInfo = auraInfo[unit]
-	local aura = unitAuraInfo[auraInstanceID]
-
-	unitAuraInfo[auraInstanceID] = nil -- remove it
-
-	return aura or true
+	return UpdateAuraFilters('remove', unit, auraInstanceID) or true
 end
 
 local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
@@ -196,11 +222,11 @@ end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	if not auraInfo[unit] then
-		auraInfo[unit] = {}
+		oUF:CreateUnitAuraInfo(unit)
 	end
 
 	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
-		wipe(auraInfo[unit]) -- clear this since we cant verify it
+		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
 		ProcessExisting(unit) -- we need to collect full data here
 
@@ -217,6 +243,26 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	if not removed then return false end -- an aura has been yeeted into the abyss
 
 	return true -- who are you
+end
+
+function oUF:ClearUnitAuraInfo(unit)
+	wipe(auraInfo[unit])
+
+	for _, data in next, auraFiltered do
+		wipe(data[unit])
+	end
+end
+
+function oUF:CreateUnitAuraInfo(unit)
+	if not auraInfo[unit] then
+		auraInfo[unit] = {}
+	end
+
+	for _, data in next, auraFiltered do
+		if not data[unit] then
+			data[unit] = {}
+		end
+	end
 end
 
 function oUF:ShouldSkipAuraFilter(aura, filter)
