@@ -1,6 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
-local AuraInfo = oUF.AuraInfo
+local AuraFiltered = oUF.AuraFiltered
 
 local next = next
 local UnitCanAssist = UnitCanAssist
@@ -40,19 +40,17 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 end
 
 local function Looper(unit, filter, check, list, func)
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if not oUF:ShouldSkipAuraFilter(aura, filter) then
-			local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
-			local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
+		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
-			if Icon then
-				return AuraType, Icon, filtered, style, color
-			end
+		if Icon then
+			return AuraType, Icon, filtered, style, color
 		end
 
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 end
 

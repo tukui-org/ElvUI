@@ -93,7 +93,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 local _, ns = ...
 local oUF = ns.oUF
-local AuraInfo = oUF.AuraInfo
+local AuraFiltered = oUF.AuraFiltered
 
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
@@ -139,18 +139,16 @@ local function SpecialActive(frame, event, unit, filter)
 	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
 
 	local speed = 1
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if not oUF:ShouldSkipAuraFilter(aura, filter) then
-			speed = specialAuras[aura.spellID]
+		speed = specialAuras[aura.spellID]
 
-			if speed == 0.6 then
-				return speed -- fastest speed
-			end
+		if speed == 0.6 then
+			return speed -- fastest speed
 		end
 
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	return speed -- we have to check the entire table otherwise just to see if a faster one is available

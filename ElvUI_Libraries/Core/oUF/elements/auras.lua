@@ -72,7 +72,7 @@ button.isPlayer		- indicates if the aura caster is the player or their vehicle (
 
 local _, ns = ...
 local oUF = ns.oUF
-local AuraInfo = oUF.AuraInfo
+local AuraFiltered = oUF.AuraFiltered
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -331,10 +331,10 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 
 	local index = 1
 	local forceShow = element.forceShow
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while (aura or forceShow) and (visible < limit) do
-		local result = (forceShow or not oUF:ShouldSkipAuraFilter(aura, filter)) and updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = forceShow or updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -349,7 +349,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		index = index + 1
 
 		if not forceShow then
-			auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+			auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 		end
 	end
 

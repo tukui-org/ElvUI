@@ -3,7 +3,7 @@
 
 local _, ns = ...
 local oUF = ns.oUF
-local AuraInfo = oUF.AuraInfo
+local AuraFiltered = oUF.AuraFiltered
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -226,10 +226,10 @@ local function FilterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	if not offset then offset = 0 end
 
 	local index, visible, hidden = 1, 0, 0
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura and (visible < limit) do
-		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -237,7 +237,7 @@ local function FilterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	if not dontHide then

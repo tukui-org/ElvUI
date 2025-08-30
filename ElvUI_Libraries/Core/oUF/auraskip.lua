@@ -265,6 +265,7 @@ function oUF:CreateUnitAuraInfo(unit)
 	end
 end
 
+-- you could juse use AuraFiltered now
 function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then
 		return true

@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 local LCG = E.Libs.CustomGlow
 local ElvUF = E.oUF
-local AuraInfo = ElvUF.AuraInfo
+local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local ipairs, next, pairs = ipairs, next, pairs
@@ -363,24 +363,22 @@ function NP:StyleFilterAuraWait(frame, ticker, timer, timeLeft, mTimeLeft)
 end
 
 function NP:StyleFilterDispelCheck(frame, event, arg1, arg2, filter)
-	local unitAuraInfo = AuraInfo[frame.unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][frame.unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
-			local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
+		local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
 
-			if filter == 'HELPFUL' then
-				if isStealable then
-					return true
-				end
-			elseif auraType and DispelTypes[auraType] then
-				return true
-			elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
+		if filter == 'HELPFUL' then
+			if isStealable then
 				return true
 			end
+		elseif auraType and DispelTypes[auraType] then
+			return true
+		elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
+			return true
 		end
 
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 end
 
@@ -388,22 +386,19 @@ function NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, unit)
 	local temp = {}
 
 	local index = 1
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][frame.unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if not ElvUF:ShouldSkipAuraFilter(aura, filter) then
-			local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
-			local info = temp[name] or temp[spellID]
-			if not info then info = {} end
+		local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
+		local info = temp[name] or temp[spellID]
+		if not info then info = {} end
 
-			temp[name] = info
-			temp[spellID] = info
-
-			info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
-		end
+		temp[name] = info
+		temp[spellID] = info
+		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
 
 		index = index + 1
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	return temp
