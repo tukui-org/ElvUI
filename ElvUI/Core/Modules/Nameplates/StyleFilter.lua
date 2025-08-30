@@ -45,6 +45,7 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
 
+local C_Sound_IsPlaying = C_Sound.IsPlaying
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
@@ -625,7 +626,19 @@ function NP:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borde
 	end
 
 	if Sound then
-		PlaySoundFile(E.LSM:Fetch('sound', actions.playSound.soundFile))
+		local sound = E.LSM:Fetch('sound', actions.playSound.soundFile)
+
+		if actions.playSound.overlap then
+			PlaySoundFile(sound)
+		else
+			local exists = NP.SoundHandlers[sound]
+			if not exists or not C_Sound_IsPlaying(exists) then
+				local willPlay, soundHandle = PlaySoundFile(sound)
+				if willPlay then -- we can play it, add it to handlers
+					NP.SoundHandlers[sound] = soundHandle
+				end
+			end
+		end
 	end
 
 	-- bar stuff

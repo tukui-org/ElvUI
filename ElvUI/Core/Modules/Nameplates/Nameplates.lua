@@ -608,6 +608,8 @@ function NP:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 		NP:ConfigureAll(true)
 	end
 
+	wipe(NP.SoundHandlers)
+
 	NP:EnviromentConditionals(event)
 end
 
@@ -1004,6 +1006,7 @@ function NP:Initialize()
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
+	NP.SoundHandlers = {}
 	NP.multiplier = 0.35
 	NP.numPlates = 0
 

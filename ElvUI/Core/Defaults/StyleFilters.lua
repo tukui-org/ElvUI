@@ -352,6 +352,7 @@ E.StyleFilterDefaults = {
 		alpha = -1,
 		playSound = {
 			enable = false,
+			overlap = false,
 			soundFile = ''
 		},
 	}
