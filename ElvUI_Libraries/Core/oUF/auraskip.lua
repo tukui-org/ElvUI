@@ -94,16 +94,19 @@ local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
-local function AllowAura(spellId, sourceUnit, canApplyHelpful)
+local function AllowAura(unit, spellId, sourceUnit, canApplyHelpful)
 	local isMine = CheckIsMine(sourceUnit)
 	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-	local isCustom = hasCustom and (showForMySpec or (alwaysShowMine and isMine))
+
+	if hasCustom and (showForMySpec or (alwaysShowMine and isMine)) then
+		return true -- isCustom, whatever that means
+	end
 
 	if canApplyHelpful then
-		return isCustom or (isMine and not CheckIsSelfBuff(spellId))
-	else
-		return isCustom or true
+		return isMine and not CheckIsSelfBuff(spellId)
 	end
+
+	return true -- assume its allowed
 end
 
 local function AuraIsPriority(spellId)
@@ -130,7 +133,7 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	elseif aura.isBossAura or AuraIsPriority(aura.spellId) then
 		return true
 	elseif aura.isHarmful or aura.isHelpful then
-		return AllowAura(aura.spellId, aura.sourceUnit, aura.isHelpful and aura.canApplyAura)
+		return AllowAura(unit, aura.spellId, aura.sourceUnit, aura.isHelpful and aura.canApplyAura)
 	end
 
 	return false
@@ -145,8 +148,6 @@ local function UpdateFilter(which, unit, auraInstanceID, aura, filter)
 end
 
 local function UpdateAuraFilters(which, unit, auraInstanceID, aura)
-	if not auraInstanceID then return end
-
 	local unitAuraInfo = auraInfo[unit]
 
 	if which == 'update' then
@@ -190,7 +191,7 @@ local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
 		if aura == true then -- an aura that existed during load was removed
 			skip = false -- this can also happen with nameplates that spawn in and an aura is removed
 		elseif skip then -- check skip status
-			skip = not shouldDisplay(frame, event, unit, aura or value)
+			skip = not shouldDisplay(frame, event, unit, aura)
 		end
 	end
 
