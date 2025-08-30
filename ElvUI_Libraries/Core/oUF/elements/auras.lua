@@ -334,7 +334,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while (aura or forceShow) and (visible < limit) do
-		local result = forceShow or updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
