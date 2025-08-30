@@ -1877,9 +1877,9 @@ do
 
 	local function CheckAuraFilter(aura, filter)
 		if filter == 'HELPFUL' then
-			return not aura.isHelpful
+			return aura.isHelpful
 		elseif filter == 'HARMFUL' then
-			return not aura.isHarmful
+			return aura.isHarmful
 		end
 	end
 
@@ -1892,8 +1892,8 @@ do
 	end
 
 	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
-		local skip = not filter or CheckAuraFilter(aura, filter)
-		if skip then return end
+		local allow = not filter or CheckAuraFilter(aura, filter)
+		if not allow then return end
 
 		local isMine = CheckIsMine(aura.sourceUnit)
 		if not isMine then return end
