@@ -68,11 +68,13 @@ local function VisibilityInfo(spellId)
 end
 
 local function CachedVisibility(spellId)
-	if cachedVisibility[spellId] == nil then
-		if not hasValidPlayer then -- Don't cache the info if the player is not valid since we didn't get a valid result
-			return VisibilityInfo(spellId)
+	if not cachedVisibility[spellId] then
+		local visibilityInfo = VisibilityInfo(spellId)
+
+		if hasValidPlayer then -- only cache when the player is valid
+			cachedVisibility[spellId] = { visibilityInfo }
 		else
-			cachedVisibility[spellId] = { VisibilityInfo(spellId) }
+			return visibilityInfo
 		end
 	end
 
@@ -148,24 +150,24 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	return show
 end
 
-local function TryAdded(frame, event, unit, showFunc, aura)
-	return UpdateAuraFilters('add', frame, event, unit, showFunc, aura and aura.auraInstanceID, aura)
+local function TryAdded(which, frame, event, unit, showFunc, aura)
+	return UpdateAuraFilters(which, frame, event, unit, showFunc, aura and aura.auraInstanceID, aura)
 end
 
-local function TryUpdated(frame, event, unit, showFunc, auraInstanceID)
-	return UpdateAuraFilters('update', frame, event, unit, showFunc, auraInstanceID)
+local function TryUpdated(which, frame, event, unit, showFunc, auraInstanceID)
+	return UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID)
 end
 
-local function TryRemove(frame, event, unit, showFunc, auraInstanceID)
-	return UpdateAuraFilters('remove', frame, event, unit, showFunc, auraInstanceID)
+local function TryRemove(which, frame, event, unit, showFunc, auraInstanceID)
+	return UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID)
 end
 
-local function TrySkipAura(frame, event, unit, showFunc, tryFunc, auras)
+local function TrySkipAura(which, frame, event, unit, showFunc, tryFunc, auras)
 	if not auras then return end
 
 	local show -- assume we skip it
 	for _, value in next, auras do -- lets process them all
-		if tryFunc(frame, event, unit, showFunc, value) then
+		if tryFunc(which, frame, event, unit, showFunc, value) then
 			show = true -- something is shown
 		end
 	end
@@ -179,7 +181,7 @@ local function ProcessAura(frame, event, unit, showFunc, token, ...)
 		local slot = select(i, ...)
 		local aura = GetAuraDataBySlot(unit, slot)
 		if aura then
-			TryAdded(frame, event, unit, showFunc, aura)
+			TryAdded('add', frame, event, unit, showFunc, aura)
 		end
 	end
 
@@ -202,17 +204,19 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 	end
 
 	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
-		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
+		if hasValidPlayer and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
+			oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
-		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
+			ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
+		end
 
 		return false -- this is from some other thing
 	end
 
 	-- these try functions will update the aura info table, so let them process before returning
-	local added = TrySkipAura(frame, event, unit, showFunc, TryAdded, updateInfo.addedAuras)
-	local updated = TrySkipAura(frame, event, unit, showFunc, TryUpdated, updateInfo.updatedAuraInstanceIDs)
-	local removed = TrySkipAura(frame, event, unit, showFunc, TryRemove, updateInfo.removedAuraInstanceIDs)
+	local added = TrySkipAura('add', frame, event, unit, showFunc, TryAdded, updateInfo.addedAuras)
+	local updated = TrySkipAura('update', frame, event, unit, showFunc, TryUpdated, updateInfo.updatedAuraInstanceIDs)
+	local removed = TrySkipAura('remove', frame, event, unit, showFunc, TryRemove, updateInfo.removedAuraInstanceIDs)
 
 	if added then return false end -- a new aura has appeared
 	if updated then return false end -- an existing aura has been altered
@@ -241,7 +245,7 @@ function oUF:CreateUnitAuraInfo(unit)
 	end
 end
 
--- you could juse use AuraFiltered now
+-- now you can just use AuraFiltered
 function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then
 		return true
