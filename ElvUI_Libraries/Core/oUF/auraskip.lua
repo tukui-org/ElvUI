@@ -165,9 +165,7 @@ local function TryRemove(frame, event, unit, showFunc, auraInstanceID)
 end
 
 local function TrySkipAura(frame, event, unit, showFunc, tryFunc, auras)
-	if not auras then
-		return true
-	end
+	if not auras then return end
 
 	local show -- assume we skip it
 	for _, value in next, auras do -- lets process them all
