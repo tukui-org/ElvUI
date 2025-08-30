@@ -30,7 +30,7 @@ local auraFiltered = {
 	INCLUDE_NAME_PLATE_ONLY = {}
 }
 
-oUF.AuraInfo = auraInfo -- export it
+oUF.AuraInfo = auraInfo -- export it, not filtered
 oUF.AuraFiltered = auraFiltered -- by filter
 
 local _, myclass = UnitClass('player')
@@ -139,15 +139,15 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	return false
 end
 
-local function UpdateFilter(which, unit, auraInstanceID, aura, filter)
+local function UpdateFilter(which, show, unit, auraInstanceID, aura, filter)
 	local filtered = auraFiltered[filter]
 	local unitAuraFiltered = filtered and filtered[unit]
 	if not unitAuraFiltered then return end
 
-	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and aura) or nil
+	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and show and aura) or nil
 end
 
-local function UpdateAuraFilters(which, unit, auraInstanceID, aura)
+local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
 	local unitAuraInfo = auraInfo[unit]
 
 	if which == 'update' then
@@ -158,70 +158,68 @@ local function UpdateAuraFilters(which, unit, auraInstanceID, aura)
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
+	local show = (which == 'remove') or not aura or not showFunc or showFunc(frame, event, unit, aura)
 
-	return aura
+	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
+	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
+	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
+	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
+	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
+
+	return show
 end
 
-local empty = {} -- incase of failure
-local function TryAdded(unit, aura)
-	return UpdateAuraFilters('add', unit, aura.auraInstanceID, aura) or empty
+local function TryAdded(frame, event, unit, showFunc, aura)
+	return UpdateAuraFilters('add', frame, event, unit, showFunc, aura and aura.auraInstanceID, aura)
 end
 
-local function TryUpdated(unit, auraInstanceID)
-	return UpdateAuraFilters('update', unit, auraInstanceID) or empty
+local function TryUpdated(frame, event, unit, showFunc, auraInstanceID)
+	return UpdateAuraFilters('update', frame, event, unit, showFunc, auraInstanceID)
 end
 
-local function TryRemove(unit, auraInstanceID)
-	return UpdateAuraFilters('remove', unit, auraInstanceID) or true
+local function TryRemove(frame, event, unit, showFunc, auraInstanceID)
+	return UpdateAuraFilters('remove', frame, event, unit, showFunc, auraInstanceID)
 end
 
-local function TrySkipAura(frame, event, unit, shouldDisplay, tryFunc, auras)
+local function TrySkipAura(frame, event, unit, showFunc, tryFunc, auras)
 	if not auras then
 		return true
 	end
 
-	local skip = true
-	for _, value in next, auras do
-		local aura = tryFunc(unit, value) -- collect the aura from updated or check if a preexisting was removed
-		if aura == true then -- an aura that existed during load was removed
-			skip = false -- this can also happen with nameplates that spawn in and an aura is removed
-		elseif skip then -- check skip status
-			skip = not shouldDisplay(frame, event, unit, aura)
+	local show -- assume we skip it
+	for _, value in next, auras do -- lets process them all
+		if tryFunc(frame, event, unit, showFunc, value) then
+			show = true -- something is shown
 		end
 	end
 
-	return skip
+	return show
 end
 
-local function ProcessAura(unit, token, ...)
+local function ProcessAura(frame, event, unit, showFunc, token, ...)
 	local numSlots = select('#', ...)
 	for i = 1, numSlots do
 		local slot = select(i, ...)
 		local aura = GetAuraDataBySlot(unit, slot)
 		if aura then
-			TryAdded(unit, aura)
+			TryAdded(frame, event, unit, showFunc, aura)
 		end
 	end
 
 	return token
 end
 
-local function ProcessTokens(unit, token, ...)
-	repeat token = ProcessAura(unit, token, ...)
+local function ProcessTokens(frame, event, unit, showFunc, token, ...)
+	repeat token = ProcessAura(frame, event, unit, showFunc, token, ...)
 	until not token
 end
 
-local function ProcessExisting(unit)
-	ProcessTokens(unit, GetAuraSlots(unit, 'HELPFUL'))
-	ProcessTokens(unit, GetAuraSlots(unit, 'HARMFUL'))
+local function ProcessExisting(frame, event, unit, showFunc)
+	ProcessTokens(frame, event, unit, showFunc, GetAuraSlots(unit, 'HELPFUL'))
+	ProcessTokens(frame, event, unit, showFunc, GetAuraSlots(unit, 'HARMFUL'))
 end
 
-local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
+local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 	if not auraInfo[unit] then
 		oUF:CreateUnitAuraInfo(unit)
 	end
@@ -229,19 +227,19 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay)
 	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
 		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
-		ProcessExisting(unit) -- we need to collect full data here
+		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
 
 		return false -- this is from some other thing
 	end
 
 	-- these try functions will update the aura info table, so let them process before returning
-	local added = TrySkipAura(frame, event, unit, shouldDisplay, TryAdded, updateInfo.addedAuras)
-	local updated = TrySkipAura(frame, event, unit, shouldDisplay, TryUpdated, updateInfo.updatedAuraInstanceIDs)
-	local removed = TrySkipAura(frame, event, unit, shouldDisplay, TryRemove, updateInfo.removedAuraInstanceIDs)
+	local added = TrySkipAura(frame, event, unit, showFunc, TryAdded, updateInfo.addedAuras)
+	local updated = TrySkipAura(frame, event, unit, showFunc, TryUpdated, updateInfo.updatedAuraInstanceIDs)
+	local removed = TrySkipAura(frame, event, unit, showFunc, TryRemove, updateInfo.removedAuraInstanceIDs)
 
-	if not added then return false end -- a new aura has appeared
-	if not updated then return false end -- an existing aura has been altered
-	if not removed then return false end -- an aura has been yeeted into the abyss
+	if added then return false end -- a new aura has appeared
+	if updated then return false end -- an existing aura has been altered
+	if removed then return false end -- an aura has been yeeted into the abyss
 
 	return true -- who are you
 end
@@ -286,10 +284,10 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
-function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, shouldDisplay)
+function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
 	if not unit or (frame.unit and frame.unit ~= unit) then return true end
 
-	return ShouldSkipAura(frame, event, unit, updateInfo, shouldDisplay or CouldDisplayAura)
+	return ShouldSkipAura(frame, event, unit, updateInfo, showFunc or CouldDisplayAura)
 end
 
 -- Blizzard didnt implement the tooltip functions on Era or Mists
