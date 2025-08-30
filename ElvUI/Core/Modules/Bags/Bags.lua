@@ -48,8 +48,9 @@ local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 
 local ConvertFilterFlagsToList = ContainerFrameUtil_ConvertFilterFlagsToList
 local CloseBankFrame = (C_Bank and C_Bank.CloseBankFrame) or CloseBankFrame
-local FetchPurchasedBankTabData = C_Bank and C_Bank.FetchPurchasedBankTabData
 local AutoDepositItemsIntoBank = C_Bank and C_Bank.AutoDepositItemsIntoBank
+local FetchPurchasedBankTabData = C_Bank and C_Bank.FetchPurchasedBankTabData
+local FetchNumPurchasedBankTabs = C_Bank and C_Bank.FetchNumPurchasedBankTabs
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
 local CanViewBank = C_Bank and C_Bank.CanViewBank
@@ -1135,15 +1136,15 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 	local key = isWarband and 'WarbandTabs' or 'BankTabs'
 	local keySplit = isWarband and 'warband' or 'bank'
 
-	local data = B:BankTab_PurchasedData(bankType)
 	local tabs = isWarband and f.WarbandTabs or f.BankTabs
 	if tabs then
-		B:BankTabs_CheckCover(tabs, data)
+		B:BankTabs_CheckCover(tabs, bankType)
 
 		tabs.cover.text:SetWidth((isWarband and B.db.warbandWidth or B.db.bankWidth) - 40)
 		tabs.cover.text:SetText(isWarband and _G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT or _G.CHARACTER_BANK_TAB_PURCHASE_PROMPT)
 	end
 
+	local data = B:BankTab_PurchasedData(bankType)
 	local combined = B.db[isWarband and 'warbandCombined' or 'bankCombined']
 	local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split[keySplit], B.db.split[isWarband and 'warbandSpacing' or 'bankSpacing'], 0, 0
 	for index, tabID in next, (isWarband and B.WarbandIndexs) or B.CharacterBankIndexs do
@@ -2996,10 +2997,11 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 	end
 end
 
-function B:BankTabs_CheckCover(tabs, tabsData)
+function B:BankTabs_CheckCover(tabs, bankType)
 	if not tabs then return end
 
-	tabs.cover:SetShown(not next(tabsData))
+	local numTabs = FetchNumPurchasedBankTabs(bankType)
+	tabs.cover:SetShown(numTabs == 0)
 end
 
 function B:BankTabs_UpdateIcons(bankType)
@@ -3009,9 +3011,9 @@ function B:BankTabs_UpdateIcons(bankType)
 	local tabs = (isWarband and B.BankFrame.WarbandTabs) or (bankType == CHARACTERBANK_TYPE and B.BankFrame.BankTabs)
 	if not tabs then return end
 
-	local tabsData = B:BankTab_PurchasedData(bankType)
-	B:BankTabs_CheckCover(tabs, tabsData)
+	B:BankTabs_CheckCover(tabs, bankType)
 
+	local tabsData = B:BankTab_PurchasedData(bankType)
 	for _, bankID in next, (isWarband and B.WarbandIndexs) or B.CharacterBankIndexs do
 		B:BankTabs_UpdateIcon(B.BankFrame, bankID, tabsData)
 	end
