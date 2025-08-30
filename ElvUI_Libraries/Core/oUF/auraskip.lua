@@ -85,11 +85,11 @@ end
 
 local function AllowAura(unit, spellId, sourceUnit)
 	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-	if hasCustom then -- whether the spell visibility should be customized, if false it means always display
+	if hasCustom then -- whether the spell visibility should be customized
 		return showForMySpec or (alwaysShowMine and CheckIsMine(sourceUnit))
 	end
 
-	return true -- just allow the rest
+	return true -- if hasCustom is false, it means always display
 end
 
 local function AuraIsPriority(spellId)
