@@ -120,12 +120,12 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	return false
 end
 
-local function UpdateFilter(which, show, unit, auraInstanceID, aura, filter)
+local function UpdateFilter(which, allow, unit, auraInstanceID, aura, filter)
 	local filtered = auraFiltered[filter]
 	local unitAuraFiltered = filtered and filtered[unit]
 	if not unitAuraFiltered then return end
 
-	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and show and aura) or nil
+	unitAuraFiltered[auraInstanceID] = (which ~= 'remove' and allow and aura) or nil
 end
 
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
@@ -139,15 +139,15 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
-	local show = (which == 'remove') or not aura or not showFunc or showFunc(frame, event, unit, aura)
+	local allow = (which == 'remove') or not aura or not showFunc or showFunc(frame, event, unit, aura)
 
-	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
-	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
-	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
-	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
-	UpdateFilter(which, show, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
+	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
+	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
+	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
+	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
+	UpdateFilter(which, allow, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
 
-	return show
+	return allow
 end
 
 local function TryAdded(which, frame, event, unit, showFunc, aura)
@@ -203,26 +203,24 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 		oUF:CreateUnitAuraInfo(unit)
 	end
 
-	if event ~= 'UNIT_AURA' or not updateInfo or updateInfo.isFullUpdate then
-		if hasValidPlayer and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
-			oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
+	if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
+		-- these try functions will update the aura info table, so let them process before returning
+		local added = TrySkipAura('add', frame, event, unit, showFunc, TryAdded, updateInfo.addedAuras)
+		local updated = TrySkipAura('update', frame, event, unit, showFunc, TryUpdated, updateInfo.updatedAuraInstanceIDs)
+		local removed = TrySkipAura('remove', frame, event, unit, showFunc, TryRemove, updateInfo.removedAuraInstanceIDs)
 
-			ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
-		end
+		if added then return false end -- a new aura has appeared
+		if updated then return false end -- an existing aura has been altered
+		if removed then return false end -- an aura has been yeeted into the abyss
 
-		return false -- this is from some other thing
+		return true -- who are you
+	elseif hasValidPlayer and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
+		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
+
+		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
 	end
 
-	-- these try functions will update the aura info table, so let them process before returning
-	local added = TrySkipAura('add', frame, event, unit, showFunc, TryAdded, updateInfo.addedAuras)
-	local updated = TrySkipAura('update', frame, event, unit, showFunc, TryUpdated, updateInfo.updatedAuraInstanceIDs)
-	local removed = TrySkipAura('remove', frame, event, unit, showFunc, TryRemove, updateInfo.removedAuraInstanceIDs)
-
-	if added then return false end -- a new aura has appeared
-	if updated then return false end -- an existing aura has been altered
-	if removed then return false end -- an aura has been yeeted into the abyss
-
-	return true -- who are you
+	return false -- this is from something
 end
 
 function oUF:ClearUnitAuraInfo(unit)
