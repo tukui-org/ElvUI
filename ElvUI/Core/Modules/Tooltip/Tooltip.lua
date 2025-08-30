@@ -5,6 +5,7 @@ local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
+local AuraInfo = ElvUF.AuraInfo
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
