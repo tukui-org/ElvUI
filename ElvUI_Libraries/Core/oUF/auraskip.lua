@@ -158,7 +158,7 @@ local function UpdateAuraFilters(which, unit, auraInstanceID, aura)
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
 	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHelpful and 'HELPFUL')
-	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HELPFUL')
+	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isHarmful and 'HARMFUL')
 	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isRaid and 'RAID')
 	UpdateFilter(which, unit, auraInstanceID, aura, aura and aura.isNameplateOnly and 'INCLUDE_NAME_PLATE_ONLY')
 	UpdateFilter(which, unit, auraInstanceID, aura, aura and CheckIsMine(aura.sourceUnit) and 'PLAYER')
