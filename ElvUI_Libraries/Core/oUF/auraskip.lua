@@ -93,10 +93,6 @@ local function AllowAura(unit, spellId, sourceUnit)
 end
 
 local function AuraIsPriority(spellId)
-	if not spellId then
-		return false
-	end
-
 	if AlwaysAllow[spellId] then
 		return true
 	end
