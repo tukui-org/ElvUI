@@ -6,7 +6,6 @@ local wipe = wipe
 local select = select
 local unpack = unpack
 
-local SpellIsSelfBuff = SpellIsSelfBuff
 local SpellIsPriorityAura = SpellIsPriorityAura
 local UnitAffectingCombat = UnitAffectingCombat
 local SpellGetVisibilityInfo = SpellGetVisibilityInfo
@@ -18,7 +17,6 @@ local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer = false
 local cachedVisibility = {}
-local cachedSelfBuffChecks = {}
 local cachedPriority = SpellIsPriorityAura and {}
 
 local auraInfo = {}
@@ -58,7 +56,6 @@ eventFrame:SetScript('OnEvent', function(_, event)
 		wipe(cachedVisibility)
 	elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
 		wipe(cachedVisibility)
-		wipe(cachedSelfBuffChecks)
 
 		if cachedPriority then
 			wipe(cachedPriority)
@@ -82,31 +79,17 @@ local function CachedVisibility(spellId)
 	return unpack(cachedVisibility[spellId])
 end
 
-local function CheckIsSelfBuff(spellId)
-	if cachedSelfBuffChecks[spellId] == nil then
-		cachedSelfBuffChecks[spellId] = SpellIsSelfBuff(spellId)
-	end
-
-	return cachedSelfBuffChecks[spellId]
-end
-
 local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
-local function AllowAura(unit, spellId, sourceUnit, canApplyHelpful)
-	local isMine = CheckIsMine(sourceUnit)
+local function AllowAura(unit, spellId, sourceUnit)
 	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-
-	if hasCustom and (showForMySpec or (alwaysShowMine and isMine)) then
-		return true -- isCustom, whatever that means
+	if hasCustom then -- whether the spell visibility should be customized, if false it means always display
+		return showForMySpec or (alwaysShowMine and CheckIsMine(sourceUnit))
 	end
 
-	if canApplyHelpful then
-		return isMine and not CheckIsSelfBuff(spellId)
-	end
-
-	return true -- assume its allowed
+	return true -- just allow the rest
 end
 
 local function AuraIsPriority(spellId)
@@ -133,7 +116,7 @@ local function CouldDisplayAura(frame, event, unit, aura)
 	elseif aura.isBossAura or AuraIsPriority(aura.spellId) then
 		return true
 	elseif aura.isHarmful or aura.isHelpful then
-		return AllowAura(unit, aura.spellId, aura.sourceUnit, aura.isHelpful and aura.canApplyAura)
+		return AllowAura(unit, aura.spellId, aura.sourceUnit)
 	end
 
 	return false
