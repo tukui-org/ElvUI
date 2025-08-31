@@ -1433,6 +1433,9 @@ NP.StyleFilterSetVariablesAllowed = {
 	UNIT_TARGET = true,
 	VEHICLE_UPDATE = true,
 	UNIT_SPELLCAST_START = true,
+	PLAYER_TARGET_CHANGED = true,
+	PLAYER_FOCUS_CHANGED = true,
+	RAID_TARGET_UPDATE = true
 }
 
 function NP:StyleFilterSetVariables(nameplate)
