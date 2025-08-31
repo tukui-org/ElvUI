@@ -1356,11 +1356,11 @@ end
 function NP:StyleFilterPass(frame, actions)
 	local db = NP:PlateDB(frame)
 
-	local health = NP:StyleFilterGetElement(frame.changesHealth or {}, db.health.enable and actions.health)
-	local power = NP:StyleFilterGetElement(frame.changesPower or {}, db.power.enable and actions.power)
-	local castbar = NP:StyleFilterGetElement(frame.changesCastbar or {}, db.castbar.enable and actions.castbar)
-	local general = NP:StyleFilterGetGeneral(frame.changesGeneral or {}, actions)
-	local tags = NP:StyleFilterGetTags(frame.changesTags or {}, actions)
+	local health = NP:StyleFilterGetElement(frame.changesHealth, db.health.enable and actions.health)
+	local power = NP:StyleFilterGetElement(frame.changesPower, db.power.enable and actions.power)
+	local castbar = NP:StyleFilterGetElement(frame.changesCastbar, db.castbar.enable and actions.castbar)
+	local general = NP:StyleFilterGetGeneral(frame.changesGeneral, actions)
+	local tags = NP:StyleFilterGetTags(frame.changesTags, actions)
 
 	NP:StyleFilterSetChanges(frame, actions, general, tags, health, power, castbar)
 end
@@ -1368,7 +1368,7 @@ end
 function NP:StyleFilterClear(frame)
 	if frame == NP.TestFrame then return end
 
-	local changes = E:CopyTable(frame.changesChanged or {}, frame.StyleFilterChanges, true) -- store the changes
+	local changes = E:CopyTable(frame.changesChanged, frame.StyleFilterChanges, true) -- store the changes
 
 	wipe(frame.StyleFilterChanges) -- clean out the table
 
@@ -1824,6 +1824,14 @@ function NP:StyleFilterEvents(nameplate)
 
 	-- happy little table
 	nameplate.StyleFilterChanges = {}
+
+	-- tables for handling changes
+	nameplate.changesChanged = {}
+	nameplate.changesGeneral = {}
+	nameplate.changesTags = {}
+	nameplate.changesHealth = {}
+	nameplate.changesPower = {}
+	nameplate.changesCastbar = {}
 
 	-- we may fire events before having any aura data for the unit
 	-- populate an empty table because not all events update the cache
