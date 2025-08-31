@@ -50,7 +50,6 @@ local C_Item_IsEquippedItem = C_Item.IsEquippedItem
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local BleedList = E.Libs.Dispel:GetBleedList()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -364,16 +363,12 @@ function NP:StyleFilterDispelCheck(frame, event, arg1, arg2, filter)
 	local unitAuraFiltered = AuraFiltered[filter][frame.unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local _, _, _, auraType, _, _, _, isStealable, _, spellID = UnpackAuraData(aura)
-
-		if filter == 'HELPFUL' then
-			if isStealable then
-				return true
-			end
-		elseif auraType and DispelTypes[auraType] then
+		if filter == 'HELPFUL' and aura.isStealable then
 			return true
-		elseif not auraType and DispelTypes.Bleed and BleedList[spellID] then
-			return true
+		elseif aura.dispelName and DispelTypes[aura.dispelName] then
+			return true -- regular debuff with a type
+		elseif not aura.dispelName and DispelTypes.Bleed and BleedList[aura.spellID] then
+			return true -- its a bleed debuff
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
