@@ -363,8 +363,10 @@ function NP:StyleFilterDispelCheck(frame, event, arg1, arg2, filter)
 	local unitAuraFiltered = AuraFiltered[filter][frame.unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if filter == 'HELPFUL' and aura.isStealable then
-			return true
+		if filter == 'HELPFUL' then
+			if aura.isStealable then
+				return true
+			end
 		elseif aura.dispelName and DispelTypes[aura.dispelName] then
 			return true -- regular debuff with a type
 		elseif not aura.dispelName and DispelTypes.Bleed and BleedList[aura.spellID] then
