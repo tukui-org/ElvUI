@@ -765,27 +765,24 @@ end
 function NP:StyleFilterClearChanges(frame, changes)
 	local db = NP:PlateDB(frame)
 
-	local general = changes.general
-	local tags = changes.tags
-
-	if not general.nameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if tags.name then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
-		if tags.power then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
-		if tags.health then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
-		if tags.title then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
-		if tags.level then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
+	if not changes.general.nameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
+		if changes.tags.name then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
+		if changes.tags.power then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
+		if changes.tags.health then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
+		if changes.tags.title then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
+		if changes.tags.level then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
 	end
 
 	-- generic stuff
-	if general.scale then
+	if changes.general.scale then
 		NP:ScalePlate(frame, frame.threatScale or 1)
 	end
 
-	if general.alpha then
+	if changes.general.alpha then
 		NP:PlateFade(frame, NP.db.fadeIn and 1 or 0, (frame.FadeObject and frame.FadeObject.endAlpha) or 0.5, 1)
 	end
 
-	if general.portrait then
+	if changes.general.portrait then
 		NP:Update_Portrait(frame)
 	end
 
