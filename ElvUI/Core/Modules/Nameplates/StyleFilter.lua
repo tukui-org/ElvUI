@@ -1242,7 +1242,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Buffs
-	if frame.Buffs_ and trigger.buffs then
+	if trigger.buffs then
 		-- Has Stealable
 		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
 			local isStealable = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HELPFUL')
@@ -1251,7 +1251,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 		-- Names / Spell IDs
 		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HELPFUL', trigger.buffs.names, frame.Buffs_.tickers, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
+			local buff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HELPFUL', trigger.buffs.names, frame.BuffTickers, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1259,7 +1259,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Debuffs
-	if frame.Debuffs_ and trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
 		-- Has Dispellable
 		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
 			local canDispel = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HARMFUL')
@@ -1267,7 +1267,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		end
 
 		-- Names / Spell IDs
-		local debuff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HARMFUL', trigger.debuffs.names, frame.Debuffs_.tickers, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
+		local debuff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HARMFUL', trigger.debuffs.names, frame.DebuffTickers, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
 		if debuff ~= nil then -- ignore if none are selected
 			if debuff then passed = true else return end
 		end
@@ -1832,8 +1832,10 @@ end
 function NP:StyleFilterEvents(nameplate)
 	if nameplate == NP.TestFrame then return end
 
-	-- happy little table
+	-- happy little tables
 	nameplate.StyleFilterChanges = {}
+	nameplate.DebuffTickers = {}
+	nameplate.BuffTickers = {}
 
 	-- tables for handling changes
 	nameplate.changesChanged = {}
