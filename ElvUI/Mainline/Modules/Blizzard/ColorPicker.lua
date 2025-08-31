@@ -263,7 +263,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(classButton)
 
 	classButton:SetScript('OnClick', function()
-		local color = E:ClassColor(E.myclass, true)
+		local color = E.myClassColor
 		ColorPickerFrame.Content.ColorPicker:SetColorRGB(color.r, color.g, color.b)
 		ColorPickerFrame.Content.ColorSwatchCurrent:SetColorTexture(color.r, color.g, color.b)
 	end)

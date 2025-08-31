@@ -128,7 +128,7 @@ function NP:Update_ClassPower(nameplate)
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
-		nameplate.ClassPower.classColor = db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.ClassPower.classColor = db.classpower.classColor and E.myClassColor
 
 		for i = 1, #nameplate.ClassPower do
 			nameplate.ClassPower[i]:Hide()
@@ -247,7 +247,7 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Runes:Show()
 
-		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E.myClassColor
 		nameplate.Runes.sortOrder = (db.classpower.sortDirection ~= 'NONE') and db.classpower.sortDirection
 		nameplate.Runes.colorSpec = E.Retail and NP.db.colors.runeBySpec
 

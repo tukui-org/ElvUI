@@ -561,7 +561,7 @@ end
 
 function NP:StyleFilterSetChangesOnElement(frame, actions, changes, bar, cutaway)
 	if changes.colors then
-		local hc = (actions.colors.class and frame.classColor) or actions.colors.color
+		local hc = (actions.colors.playerClass and E.myClassColor) or (actions.colors.unitClass and frame.classColor) or actions.colors.color
 
 		bar:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
 
@@ -571,7 +571,7 @@ function NP:StyleFilterSetChangesOnElement(frame, actions, changes, bar, cutaway
 	end
 
 	if changes.border then
-		local bc = (actions.border.class and frame.classColor) or actions.border.color
+		local bc = (actions.border.playerClass and E.myClassColor) or (actions.border.unitClass and frame.classColor) or actions.border.color
 
 		NP:StyleFilterBorderLock(bar.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 	end
@@ -590,7 +590,7 @@ function NP:StyleFilterSetChangesOnElement(frame, actions, changes, bar, cutaway
 
 		local anim = flashTexture.anim or NP:StyleFilterSetupFlash(flashTexture)
 		if anim and anim.Fade then
-			local fc = (actions.flash.class and frame.classColor) or actions.flash.color
+			local fc = (actions.flash.playerClass and E.myClassColor) or (actions.flash.unitClass and frame.classColor) or actions.flash.color
 			anim.Fade.customValue = fc.a or 1
 			anim.Fade:SetDuration(actions.flash.speed * 0.1)
 			anim.Fade:SetChange(anim.Fade.customValue)

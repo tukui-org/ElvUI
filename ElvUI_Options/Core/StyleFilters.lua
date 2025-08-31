@@ -778,28 +778,24 @@ local function CreateActions(locale, order, key)
 	group.args.colors = ACH:Group(L["Color"], nil, 10, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 	group.args.colors.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.colors.args.color = ACH:Color(L["Health Color"], nil, 2, true)
-	group.args.colors.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.colors.args.unitClass = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.colors.args.playerClass = ACH:Toggle(L["Class Color"], nil, 4)
 	--group.args.colors.inline = true
 
 	group.args.flash = ACH:Group(L["Flash"], nil, 15, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 	group.args.flash.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
-	group.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
-	group.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
+	group.args.flash.args.unitClass = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.flash.args.playerClass = ACH:Toggle(L["Class Color"], nil, 4)
+	group.args.flash.args.speed = ACH:Range(L["SPEED"], nil, 5, { min = 1, max = 10, step = 1 })
 	--group.args.flash.inline = true
 
 	group.args.border = ACH:Group(L["Border"], nil, 20, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 	group.args.border.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.border.args.color = ACH:Color(L["COLOR"], nil, 2, true)
-	group.args.border.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.border.args.unitClass = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.border.args.playerClass = ACH:Toggle(L["Class Color"], nil, 4)
 	--group.args.border.inline = true
-
-	group.args.flash = ACH:Group(L["Flash"], nil, 25, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-	group.args.flash.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
-	group.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
-	group.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
-	--group.args.flash.inline = true
 
 	group.args.glow = ACH:Group(L["Custom Glow"], nil, 30, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 	group.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)

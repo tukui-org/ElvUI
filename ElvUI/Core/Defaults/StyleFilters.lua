@@ -6,14 +6,28 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local defaults = {
-	colors = {
-		enable = false,
-		class = false,
-		color = { r = 1, g = 1, b = 1, a = 1 },
-	},
 	texture = {
 		enable = false,
 		texture = 'ElvUI Norm'
+	},
+	colors = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 },
+	},
+	border = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 }
+	},
+	flash = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 },
+		speed = 4
 	},
 	glow = {
 		enable = false,
@@ -24,17 +38,6 @@ local defaults = {
 		speed = 0.3,
 		lines = 8,
 		size = 1
-	},
-	border = {
-		enable = false,
-		class = false,
-		color = { r = 1, g = 1, b = 1, a = 1 }
-	},
-	flash = {
-		enable = false,
-		class = false,
-		color = { r = 1, g = 1, b = 1, a = 1 },
-		speed = 4
 	}
 }
 

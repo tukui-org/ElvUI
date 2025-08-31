@@ -213,7 +213,7 @@ end
 function E:SetupTheme(theme, noDisplayMsg)
 	E.private.theme = theme
 
-	local classColor
+	local classColor = E.myClassColor
 
 	--Set colors
 	if theme == 'classic' then
@@ -228,8 +228,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.castClassColor = false
 		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
 	elseif theme == 'class' then
-		classColor = E:ClassColor(E.myclass, true)
-
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
 		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)

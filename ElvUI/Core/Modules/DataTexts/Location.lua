@@ -32,7 +32,7 @@ local function OnEvent(self)
 	end
 
 	local db = E.global.datatexts.settings.Location
-	local color = db.color == 'REACTION' and GetStatus() or db.color == 'CLASS' and E:ClassColor(E.myclass) or db.customColor
+	local color = db.color == 'REACTION' and GetStatus() or db.color == 'CLASS' and E.myClassColor or db.customColor
 
 	local continent = db.showContinent and mapInfo.continentName or ''
 	local subzone = db.showSubZone and mapInfo.subZoneText or ''
