@@ -369,19 +369,13 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 	local auras = self.Auras
 	if(auras) then
-		--[[ Callback: Auras:PreUpdate(unit)
-		Called before the element has been updated.
-
-		* self - the widget holding the aura buttons
-		* unit - the unit for which the update has been triggered (string)
-		--]]
 		if(auras.PreUpdate) then auras:PreUpdate(unit) end
 
 		wipe(auras.active)
 
 		local numBuffs = auras.numBuffs or 32
 		local numDebuffs = auras.numDebuffs or 40
-		local maxAuras = auras.numTotal or numBuffs + numDebuffs
+		local maxAuras = auras.num or (numBuffs + numDebuffs)
 
 		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, maxAuras), nil, 0, true)
 
@@ -407,14 +401,6 @@ local function UpdateAuras(self, event, unit, updateInfo)
 			button:EnableMouse(false)
 			button:Show()
 
-			--[[ Callback: Auras:PostUpdateGapIcon(unit, gapButton, visibleBuffs)
-			Called after an invisible aura button has been created. Only used by Auras when the `gap` option is enabled.
-
-			* self         - the widget holding the aura buttons
-			* unit         - the unit that has the invisible aura button (string)
-			* gapButton    - the invisible aura button (Button)
-			* visibleBuffs - the number of currently visible aura buttons (number)
-			--]]
 			if(auras.PostUpdateGapIcon) then
 				auras:PostUpdateGapIcon(unit, button, visibleBuffs)
 			end
@@ -432,40 +418,15 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		auras.visibleAuras = auras.visibleBuffs + auras.visibleDebuffs
 
 		local fromRange, toRange
-		--[[ Callback: Auras:PreSetPosition(max)
-		Called before the aura buttons have been (re-)anchored.
-
-		* self - the widget holding the aura buttons
-		* max  - the maximum possible number of aura buttons (number)
-
-		## Returns
-
-		* from - the offset of the first aura button to be (re-)anchored (number)
-		* to   - the offset of the last aura button to be (re-)anchored (number)
-		--]]
 		if(auras.PreSetPosition) then
 			fromRange, toRange = auras:PreSetPosition(maxAuras)
 		end
 
 		if(fromRange or auras.createdButtons > auras.anchoredButtons) then
-			--[[ Override: Auras:SetPosition(from, to)
-			Used to (re-)anchor the aura buttons.
-			Called when new aura buttons have been created or if :PreSetPosition is defined.
-
-			* self - the widget that holds the aura buttons
-			* from - the offset of the first aura button to be (re-)anchored (number)
-			* to   - the offset of the last aura button to be (re-)anchored (number)
-			--]]
 			(auras.SetPosition or SetPosition) (auras, fromRange or auras.anchoredButtons + 1, toRange or auras.createdButtons)
 			auras.anchoredButtons = auras.createdButtons
 		end
 
-		--[[ Callback: Auras:PostUpdate(unit)
-		Called after the element has been updated.
-
-		* self - the widget holding the aura buttons
-		* unit - the unit for which the update has been triggered (string)
-		--]]
 		if(auras.PostUpdate) then auras:PostUpdate(unit) end
 	end
 

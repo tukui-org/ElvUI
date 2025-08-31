@@ -14,6 +14,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Auras = UF:Construct_Auras(frame)
 	frame.Buffs = UF:Construct_Buffs(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Focus Castbar"])
 	frame.Castbar.SafeZone = nil

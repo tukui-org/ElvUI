@@ -74,7 +74,7 @@ local spacingLong = { min = -5, softMax = 100, max = 500, step = 1 }
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
 local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Private Auras"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
+	local config = ACH:Group(L["Private Auras"], nil, 4, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
@@ -120,7 +120,7 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 end
 
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
-	local config = ACH:Group(L["Aura Bars"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
+	local config = ACH:Group(L["Aura Bars"], nil, 3, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
@@ -185,8 +185,15 @@ local function AddFilters(info)
 	return filters
 end
 
+local auraKeys = {
+	buffs = { name = L["Buffs"], order = 1 },
+	debuffs = { name = L["Debuffs"], order = 2 },
+	auras = { name = L["Custom"], order = -1 },
+}
+
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
-	local config = ACH:Group(auraType == 'buffs' and L["Buffs"] or L["Debuffs"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	local key = auraKeys[auraType]
+	local config = ACH:Group(key.name, nil, key.order, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
@@ -200,14 +207,15 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, offsetShort)
 	config.args.generalGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, offsetShort)
 	config.args.generalGroup.args.spacing = ACH:Range(L["Spacing"], nil, 10, spacingNormal)
-	config.args.generalGroup.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end)
+	config.args.generalGroup.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() if auraType ~= 'auras' then local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end end)
 
 	config.args.generalGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, C.Values.Anchors)
 	config.args.generalGroup.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 13, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'LEFT' or point == 'RIGHT' end)
 	config.args.generalGroup.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 14, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'TOP' or point == 'BOTTOM' end)
-	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 15)
-	config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+	config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 15, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 	config.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
+	config.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 17, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, auraType ~= 'auras')
+	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 18)
 
 	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, auraType)
 	config.args.strataAndLevel.inline = nil
@@ -277,28 +285,26 @@ local function BuffIndicator_ApplyToAll(info, value, profile, pet)
 end
 
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
-	local config = ACH:Group(L["Aura Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	local config = ACH:Group(L["Aura Indicator"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 
-	config.args.generalGroup = ACH:Group(' ', nil, 2)
+	config.args.generalGroup = ACH:Group(L["General"], nil, 2)
 	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local configString = format('Aura Indicator (%s)', (petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific and 'Pet') or (E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
 	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 3)
 	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not petTypes[groupName] end)
-	config.args.generalGroup.inline = true
 
-	config.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
-	config.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-	config.args.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 24, step = 1 })
-	config.args.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
-	config.args.countGroup.inline = true
+	config.args.generalGroup.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
+	config.args.generalGroup.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
+	config.args.generalGroup.args.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 24, step = 1 })
+	config.args.generalGroup.args.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
+	config.args.generalGroup.args.countGroup.inline = true
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	else
 		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) updateFunc(UF, groupName, numGroup) end)
-		config.args.applyToAll.inline = true
 		config.args.applyToAll.args.header = ACH:Description(L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
 		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
 		config.args.applyToAll.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 3, { min = -1, max = 60, step = 1 })
@@ -308,11 +314,13 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.args.applyToAll.args.countGroup.args.countAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
 		config.args.applyToAll.args.countGroup.args.countX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 		config.args.applyToAll.args.countGroup.args.countY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
+		config.args.applyToAll.args.countGroup.inline = true
 
 		config.args.applyToAll.args.cooldownGroup = ACH:Group(L["Cooldown Text"], nil, 25)
 		config.args.applyToAll.args.cooldownGroup.args.cooldownAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
 		config.args.applyToAll.args.cooldownGroup.args.cooldownX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 		config.args.applyToAll.args.cooldownGroup.args.cooldownY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
+		config.args.applyToAll.args.cooldownGroup.inline = true
 	end
 
 	return config
@@ -890,7 +898,7 @@ local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 end
 
 local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
-	local config = ACH:Group(L["Raid Debuff Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs[info[#info]] = value updateFunc(UF, groupName) end)
+	local config = ACH:Group(L["Raid Debuff Indicator"], nil, 6, nil, function(info) return E.db.unitframe.units[groupName].rdebuffs[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].rdebuffs[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.showDispellableDebuff = ACH:Toggle(L["Show Dispellable Debuffs"], nil, 2)
 	config.args.onlyMatchSpellID = ACH:Toggle(L["Only Match SpellID"], L["When enabled it will only show spells that were added to the filter using a spell ID and not a name."], 3)
@@ -1063,14 +1071,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 
 	if groupName ~= 'tank' and groupName ~= 'assist' then
 		config.args.hideonnpc = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.hideonnpc end, function(_, value) E.db.unitframe.units[groupName].power.hideonnpc = value updateFunc(UF, groupName, numUnits) end)
-	end
-
-	if groupName ~= 'party' and groupName ~= 'assist' and groupName ~= 'tank' and not strmatch(groupName, '^raid') then
-		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 2, C.Values.SmartAuraPositions)
-	end
-
-	if P.unitframe.units[groupName].debuffHighlight then
-		config.args.debuffHighlightEnable = ACH:Toggle(L["Aura Highlight"], nil, 6, nil, nil, nil, function() return E.db.unitframe.units[groupName].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[groupName].debuffHighlight.enable = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	if groupName == 'arena' then
@@ -1566,7 +1566,18 @@ local unitSettingsFunc = {
 }
 
 local function GetUnitSettings(unitType, updateFunc, numUnits)
-	local config = { enable = ACH:Toggle(L["Enable"], nil, 1) }
+	local config = {
+		enable = ACH:Toggle(L["Enable"], nil, 1),
+		auraGroup = ACH:Group(L["Auras"], nil, 10, 'tab')
+	}
+
+	if unitType ~= 'party' and unitType ~= 'assist' and unitType ~= 'tank' and not strmatch(unitType, '^raid') then
+		config.auraGroup.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 1, C.Values.SmartAuraPositions)
+	end
+
+	if P.unitframe.units[unitType].debuffHighlight then
+		config.auraGroup.args.debuffHighlightEnable = ACH:Toggle(L["Aura Highlight"], nil, 2, nil, nil, nil, function() return E.db.unitframe.units[unitType].debuffHighlight.enable end, function(_, value) E.db.unitframe.units[unitType].debuffHighlight.enable = value updateFunc(UF, unitType, numUnits) end)
+	end
 
 	local defaults = P.unitframe.units[unitType]
 	for element in pairs(defaults) do
@@ -1575,8 +1586,8 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 			config[element] = GetOptionsTable_Health(not isIndividual, updateFunc, unitType, numUnits)
 		elseif element == 'power' then
 			config[element] = GetOptionsTable_Power(isIndividual, updateFunc, unitType, numUnits)
-		elseif element == 'buffs' or element == 'debuffs' then
-			config[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
+		elseif element == 'buffs' or element == 'debuffs' or element == 'auras' then
+			config.auraGroup.args[element] = GetOptionsTable_Auras(element, updateFunc, unitType, numUnits)
 		elseif element == 'petsGroup' or element == 'targetsGroup' then
 			local group = ACH:Group(element == 'targetsGroup' and L["Target Group"] or L["Pet Group"], nil, -1, 'tab', function(info) return E.db.unitframe.units[unitType][element][info[#info]] end, function(info, value) E.db.unitframe.units[unitType][element][info[#info]] = value updateFunc(UF, unitType, numUnits) end)
 			group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -1608,7 +1619,11 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		else
 			local func = unitSettingsFunc[element]
 			if func then
-				config[element] = func(updateFunc, unitType, numUnits)
+				if element == 'aurabar' or element == 'privateAuras' or element == 'buffIndicator' or element == 'rdebuffs' then
+					config.auraGroup.args[element] = func(updateFunc, unitType, numUnits)
+				else
+					config[element] = func(updateFunc, unitType, numUnits)
+				end
 			end
 		end
 	end
