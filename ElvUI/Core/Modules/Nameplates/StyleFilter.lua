@@ -1368,6 +1368,8 @@ end
 function NP:StyleFilterClear(frame)
 	if frame == NP.TestFrame then return end
 
+	wipe(frame.changesChanged) -- lets get a fresh table
+
 	local changes = E:CopyTable(frame.changesChanged, frame.StyleFilterChanges, true) -- store the changes
 
 	wipe(frame.StyleFilterChanges) -- clean out the table
