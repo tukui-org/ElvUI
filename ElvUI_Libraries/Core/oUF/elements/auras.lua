@@ -36,21 +36,7 @@ At least one of the above widgets must be present for the element to work.
 
 ## Options Auras
 
-.numBuffs     - The maximum number of buffs to display. Defaults to 32 (number)
-.numDebuffs   - The maximum number of debuffs to display. Defaults to 40 (number)
-.numTotal     - The maximum number of auras to display. Prioritizes buffs over debuffs. Defaults to the sum of
-                .numBuffs and .numDebuffs (number)
-.gap          - Controls the creation of an invisible button between buffs and debuffs. Defaults to false (boolean)
-.buffFilter   - Custom filter list for buffs to display. Takes priority over `filter` (string)
-.debuffFilter - Custom filter list for debuffs to display. Takes priority over `filter` (string)
-
-## Options Buffs
-
-.num - Number of buffs to display. Defaults to 32 (number)
-
-## Options Debuffs
-
-.num - Number of debuffs to display. Defaults to 40 (number)
+.num                - The maximum number of auras to display. Defaults to 32 (number)
 
 ## Attributes
 
@@ -324,7 +310,8 @@ local function SetPosition(element, from, to)
 end
 
 local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
-	if(not offset) then offset = 0 end
+	if not offset then offset = 0 end
+
 	local visible = 0
 	local hidden = 0
 	local created = 0
@@ -355,7 +342,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 
 	visible = visible - created
 
-	if(not dontHide) then
+	if not dontHide then
 		for i = visible + offset + 1, #element do
 			element[i]:Hide()
 		end
@@ -373,53 +360,17 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 		wipe(auras.active)
 
-		local numBuffs = auras.numBuffs or 32
-		local numDebuffs = auras.numDebuffs or 40
-		local maxAuras = auras.num or (numBuffs + numDebuffs)
+		local num = auras.num or 32
+		local filter = auras.filter or 'HELPFUL|HARMFUL'
+		local hasBoth = filter == 'HELPFUL|HARMFUL'
+		local visibleBuffs = filterIcons(auras, unit, (hasBoth and 'HELPFUL') or filter, num, filter == 'HARMFUL' or filter == 'RAID', nil, hasBoth)
+		local visibleDebuffs = hasBoth and filterIcons(auras, unit, 'HARMFUL', num - visibleBuffs, true, visibleBuffs) or 0
 
-		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, maxAuras), nil, 0, true)
-
-		local hasGap
-		if(visibleBuffs ~= 0 and auras.gap) then
-			hasGap = true
-			visibleBuffs = visibleBuffs + 1
-
-			local button = auras[visibleBuffs]
-			if(not button) then
-				button = (auras.CreateButton or CreateButton) (auras, visibleBuffs)
-				tinsert(auras, button)
-				auras.createdButtons = auras.createdButtons + 1
-			end
-
-			-- Prevent the button from displaying anything.
-			if(button.Cooldown) then button.Cooldown:Hide() end
-			if(button.Icon) then button.Icon:SetTexture() end
-			if(button.Overlay) then button.Overlay:Hide() end
-			if(button.Stealable) then button.Stealable:Hide() end
-			if(button.Count) then button.Count:SetText('') end
-
-			button:EnableMouse(false)
-			button:Show()
-
-			if(auras.PostUpdateGapIcon) then
-				auras:PostUpdateGapIcon(unit, button, visibleBuffs)
-			end
-		end
-
-		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, maxAuras - visibleBuffs), true, visibleBuffs)
-		auras.visibleDebuffs = visibleDebuffs
-
-		if(hasGap and visibleDebuffs == 0) then
-			auras[visibleBuffs]:Hide()
-			visibleBuffs = visibleBuffs - 1
-		end
-
-		auras.visibleBuffs = visibleBuffs
-		auras.visibleAuras = auras.visibleBuffs + auras.visibleDebuffs
+		auras.visibleAuras = visibleBuffs + visibleDebuffs
 
 		local fromRange, toRange
 		if(auras.PreSetPosition) then
-			fromRange, toRange = auras:PreSetPosition(maxAuras)
+			fromRange, toRange = auras:PreSetPosition(num)
 		end
 
 		if(fromRange or auras.createdButtons > auras.anchoredButtons) then
@@ -436,13 +387,13 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 		wipe(buffs.active)
 
-		local numBuffs = buffs.num or 32
-		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
+		local num = buffs.num or 32
+		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', num)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
 		if(buffs.PreSetPosition) then
-			fromRange, toRange = buffs:PreSetPosition(numBuffs)
+			fromRange, toRange = buffs:PreSetPosition(num)
 		end
 
 		if(fromRange or buffs.createdButtons > buffs.anchoredButtons) then
@@ -459,13 +410,13 @@ local function UpdateAuras(self, event, unit, updateInfo)
 
 		wipe(debuffs.active)
 
-		local numDebuffs = debuffs.num or 40
-		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		local num = debuffs.num or 32
+		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', num, true)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange
 		if(debuffs.PreSetPosition) then
-			fromRange, toRange = debuffs:PreSetPosition(numDebuffs)
+			fromRange, toRange = debuffs:PreSetPosition(num)
 		end
 
 		if(fromRange or debuffs.createdButtons > debuffs.anchoredButtons) then
