@@ -396,7 +396,7 @@ function UF:Configure_Auras(frame, which)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
 
-	if which == 'auras' then -- only use this for custom
+	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
 	end
 
