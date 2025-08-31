@@ -1453,8 +1453,6 @@ function NP:StyleFilterClearVariables(nameplate)
 	nameplate.isChanneling = nil
 	nameplate.castingSpellID = nil
 	nameplate.castingGUID = nil
-
-	print('cleared')
 end
 
 NP.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
