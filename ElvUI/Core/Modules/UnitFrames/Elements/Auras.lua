@@ -80,7 +80,7 @@ function UF:Construct_Auras(frame)
 	auras.CustomFilter = UF.AuraFilter
 	auras.stacks = {}
 	auras.rows = {}
-	auras.type = 'debuffs'
+	auras.type = 'auras'
 
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	auras:SetSize(1, 1)
@@ -397,7 +397,7 @@ function UF:Configure_Auras(frame, which)
 	auras.numRows = settings.numrows
 
 	if which == 'auras' then -- only use this for custom
-		auras.filter = settings.filter
+		auras.filter = settings.filter or 'HARMFUL'
 	end
 
 	local x, y
@@ -648,7 +648,8 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 
 	local myPet = source == 'pet'
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
-	local canDispel = (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
+	local dispellable = UF:AuraDispellable(debuffType, spellID)
+	local canDispel = (auras.type == 'both' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
 	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
 	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 
