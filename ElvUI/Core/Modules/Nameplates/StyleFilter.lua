@@ -1356,8 +1356,7 @@ end
 function NP:StyleFilterPass(frame, actions)
 	local db = NP:PlateDB(frame)
 
-	local healthEnabled = db.health.enable or (NP.db.displayStyle ~= 'ALL') or (frame.isTarget and NP.db.alwaysShowTargetHealth)
-	local health = NP:StyleFilterGetElement(frame.changesHealth or {}, healthEnabled and actions.health)
+	local health = NP:StyleFilterGetElement(frame.changesHealth or {}, db.health.enable and actions.health)
 	local power = NP:StyleFilterGetElement(frame.changesPower or {}, db.power.enable and actions.power)
 	local castbar = NP:StyleFilterGetElement(frame.changesCastbar or {}, db.castbar.enable and actions.castbar)
 	local general = NP:StyleFilterGetGeneral(frame.changesGeneral or {}, actions)
