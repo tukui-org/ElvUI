@@ -1392,11 +1392,13 @@ function NP:StyleFilterTargetFunction(_, unit)
 	self.isTargetingMe = UnitIsUnit(unit..'target', 'player') or nil
 end
 
-function NP:StyleFilterSpellcastFunction(event, unit, guid, spell)
-	self.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
-	self.casting = event == 'UNIT_SPELLCAST_START'
-	self.castingSpellID = spell
-	self.castingGUID = guid
+function NP:StyleFilterCastingFunction(event, unit, guid, spellID)
+	self.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
+	self.casting = event == 'UNIT_SPELLCAST_START' or nil
+
+	local active = self.channeling or self.casting
+	self.castingSpellID = (active and spellID) or nil
+	self.castingGUID = (active and guid) or nil
 end
 
 NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
@@ -1414,12 +1416,12 @@ NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	UNIT_THREAT_LIST_UPDATE = NP.StyleFilterTargetFunction,
 	UNIT_ENTERED_VEHICLE = NP.StyleFilterVehicleFunction,
 	UNIT_EXITED_VEHICLE = NP.StyleFilterVehicleFunction,
-	UNIT_SPELLCAST_START = NP.StyleFilterSpellcastFunction,
-	UNIT_SPELLCAST_CHANNEL_START = NP.StyleFilterSpellcastFunction,
-	UNIT_SPELLCAST_STOP = NP.StyleFilterSpellcastFunction,
-	UNIT_SPELLCAST_CHANNEL_STOP = NP.StyleFilterSpellcastFunction,
-	UNIT_SPELLCAST_FAILED = NP.StyleFilterSpellcastFunction,
-	UNIT_SPELLCAST_INTERRUPTED = NP.StyleFilterSpellcastFunction
+	UNIT_SPELLCAST_START = NP.StyleFilterCastingFunction,
+	UNIT_SPELLCAST_CHANNEL_START = NP.StyleFilterCastingFunction,
+	UNIT_SPELLCAST_STOP = NP.StyleFilterCastingFunction,
+	UNIT_SPELLCAST_CHANNEL_STOP = NP.StyleFilterCastingFunction,
+	UNIT_SPELLCAST_FAILED = NP.StyleFilterCastingFunction,
+	UNIT_SPELLCAST_INTERRUPTED = NP.StyleFilterCastingFunction
 }
 
 NP.StyleFilterSetVariablesIgnored = {
@@ -1451,6 +1453,8 @@ function NP:StyleFilterClearVariables(nameplate)
 	nameplate.isChanneling = nil
 	nameplate.castingSpellID = nil
 	nameplate.castingGUID = nil
+
+	print('cleared')
 end
 
 NP.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
