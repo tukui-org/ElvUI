@@ -1405,17 +1405,22 @@ NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	PLAYER_TARGET_CHANGED = function(self)
 		self.isTarget = self.unit and UnitIsUnit(self.unit, 'target') or nil
 	end,
+
 	PLAYER_FOCUS_CHANGED = function(self)
 		self.isFocused = self.unit and UnitIsUnit(self.unit, 'focus') or nil
 	end,
+
 	RAID_TARGET_UPDATE = function(self)
 		self.raidTargetIndex = self.unit and GetRaidTargetIndex(self.unit) or nil
 	end,
-	VEHICLE_UPDATE = NP.StyleFilterVehicleFunction,
+
 	UNIT_TARGET = NP.StyleFilterTargetFunction,
 	UNIT_THREAT_LIST_UPDATE = NP.StyleFilterTargetFunction,
+
+	VEHICLE_UPDATE = NP.StyleFilterVehicleFunction,
 	UNIT_ENTERED_VEHICLE = NP.StyleFilterVehicleFunction,
 	UNIT_EXITED_VEHICLE = NP.StyleFilterVehicleFunction,
+
 	UNIT_SPELLCAST_START = NP.StyleFilterCastingFunction,
 	UNIT_SPELLCAST_CHANNEL_START = NP.StyleFilterCastingFunction,
 	UNIT_SPELLCAST_STOP = NP.StyleFilterCastingFunction,
@@ -1424,17 +1429,17 @@ NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	UNIT_SPELLCAST_INTERRUPTED = NP.StyleFilterCastingFunction
 }
 
-NP.StyleFilterSetVariablesIgnored = {
-	UNIT_THREAT_LIST_UPDATE = true,
-	UNIT_ENTERED_VEHICLE = true,
-	UNIT_EXITED_VEHICLE = true
+NP.StyleFilterSetVariablesAllowed = {
+	UNIT_TARGET = true,
+	VEHICLE_UPDATE = true,
+	UNIT_SPELLCAST_START = true,
 }
 
 function NP:StyleFilterSetVariables(nameplate)
 	if nameplate == NP.TestFrame then return end
 
 	for event, func in pairs(NP.StyleFilterEventFunctions) do
-		if not NP.StyleFilterSetVariablesIgnored[event] then -- ignore extras as we just need one call to Vehicle and Target
+		if NP.StyleFilterSetVariablesAllowed[event] then -- we only need to call each function once on added
 			func(nameplate)
 		end
 	end
