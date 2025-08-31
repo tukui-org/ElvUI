@@ -3,13 +3,11 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local wipe = wipe
 local unpack = unpack
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
-
 	local Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
@@ -24,7 +22,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthX = 'RIGHT'
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
-	Buffs.forceShow = nameplate == _G.ElvNP_Test
+	Buffs.forceShow = nameplate == NP.TestFrame
 	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
@@ -43,7 +41,7 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthX = 'RIGHT'
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
-	Debuffs.forceShow = nameplate == _G.ElvNP_Test
+	Debuffs.forceShow = nameplate == NP.TestFrame
 	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}

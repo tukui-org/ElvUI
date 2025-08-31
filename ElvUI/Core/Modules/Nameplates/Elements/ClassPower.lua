@@ -3,7 +3,6 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local max, next, ipairs = max, next, ipairs
 
 local CreateFrame = CreateFrame
@@ -85,7 +84,7 @@ function NP:Construct_ClassPower(nameplate)
 		bar.bg:SetTexture(texture)
 		bar.bg:SetAllPoints()
 
-		if nameplate == _G.ElvNP_Test then
+		if nameplate == NP.TestFrame then
 			local combo = NP.db.colors.classResources.comboPoints[i]
 			if combo then
 				bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
@@ -95,7 +94,7 @@ function NP:Construct_ClassPower(nameplate)
 		ClassPower[i] = bar
 	end
 
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		ClassPower.Hide = ClassPower.Show
 		ClassPower:Show()
 	end
@@ -109,7 +108,7 @@ end
 function NP:Update_ClassPower(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		if not db.nameOnly and db.classpower and db.classpower.enable then
 			NP.ClassPower_UpdateColor(nameplate.ClassPower, 'COMBO_POINTS')
 			nameplate.ClassPower:SetAlpha(1)

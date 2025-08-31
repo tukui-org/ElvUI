@@ -398,6 +398,8 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 	end
 
 	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
+
+	return holder
 end
 
 function E:ToggleMovers(show, which)

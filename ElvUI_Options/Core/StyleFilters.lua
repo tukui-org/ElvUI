@@ -675,21 +675,60 @@ for i, iconName in next, E.NamePlates.TriggerConditions.raidTargets do
 end
 
 local actionDefaults = {
-	color = {
-		healthColor = { r = 0.53, g = 1.00, b = 0.40, a = 1 },
-		powerColor = { r = 0.40, g = 0.53, b = 1.00, a = 1 },
-		borderColor = { r = 0, g = 0, b = 0, a = 1}
+	health = {
+		colors = {
+			color = { r = 0.53, g = 1.00, b = 0.40, a = 1 }
+		},
+		border = {
+			color = { r = 0, g = 0, b = 0, a = 1 }
+		},
+		flash = {
+			color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
+			speed = 4
+		},
+		glow = {
+			color = { 0.09, 0.52, 0.82, 0.9 },
+			speed = 0.3,
+			lines = 8,
+			size = 1
+		}
 	},
-	flash = {
-		color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
-		speed = 4
+	power = {
+		colors = {
+			color = { r = 0.40, g = 0.53, b = 1.00, a = 1 }
+		},
+		border = {
+			color = { r = 0, g = 0, b = 0, a = 1 }
+		},
+		flash = {
+			color = { r = 0.41, g = 0.54, b = 0.85, a = 1 },
+			speed = 4
+		},
+		glow = {
+			color = { 0.09, 0.52, 0.82, 0.9 },
+			speed = 0.3,
+			lines = 8,
+			size = 1
+		}
 	},
-	glow = {
-		color = { 0.09, 0.52, 0.82, 0.9 },
-		speed = 0.3,
-		lines = 8,
-		size = 1
-	}
+	castbar = {
+		colors = {
+			color = { r = 1, g = 1, b = 1, a = 1 }
+		},
+		border = {
+			color = { r = 0, g = 0, b = 0, a = 1 }
+		},
+		flash = {
+			color = { r = 1, g = 0, b = 0, a = 1 },
+			speed = 4
+		},
+		glow = {
+			color = { 0, 1, 0, 0.9 },
+			speed = 0.3,
+			lines = 8,
+			size = 1
+		}
+	},
 }
 
 local function ActionHidePlate() local _, actions = GetFilter(true) return actions.hide end
@@ -697,79 +736,105 @@ local function ActionSubGroup(info, ...)
 	local _, actions = GetFilter(true)
 	if not actions then return end
 
+	local owner = info[#info-2] -- actions, actions, actions, health
+	local main = info[#info-1] -- health, health, health, texture
+	local sub = info[#info] -- enable, colors, class, enable
+
+	local element = actions[main]
+	local subElement = owner ~= 'actions'
+	if subElement then -- its a sub element
+		element = actions[owner][main]
+	end
+
 	if info.type == 'color' then
-		local t = actions[info[#info-1]][info[#info]]
+		local t = element[sub]
 		local r, g, b, a = ...
 		if r then
 			t.r, t.g, t.b, t.a = r, g, b, a
 		else
-			local d = actionDefaults[info[#info-1]][info[#info]]
+			local d = (subElement and actionDefaults[owner][main][sub]) or actionDefaults[main][sub]
 			return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 		end
 	else
 		local value = ...
 		if value ~= nil then
-			actions[info[#info-1]][info[#info]] = value
+			element[sub] = value
 		else
-			return actions[info[#info-1]][info[#info]]
+			return element[sub]
 		end
 	end
 
 	NP:ConfigureAll()
 end
 
+local function CreateActions(locale, order, key)
+	local group = ACH:Group(locale, nil, order, 'tab', ActionSubGroup, ActionSubGroup, ActionHidePlate)
+
+	group.args.texture = ACH:Group(L["Texture"], nil, 5, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.texture.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return not actions[key].texture.enable end)
+	--group.args.texture.inline = true
+
+	group.args.colors = ACH:Group(L["Color"], nil, 10, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.colors.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.colors.args.color = ACH:Color(L["Health Color"], nil, 2, true)
+	group.args.colors.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	--group.args.colors.inline = true
+
+	group.args.flash = ACH:Group(L["Flash"], nil, 15, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.flash.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
+	group.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
+	--group.args.flash.inline = true
+
+	group.args.border = ACH:Group(L["Border"], nil, 20, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.border.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.border.args.color = ACH:Color(L["COLOR"], nil, 2, true)
+	group.args.border.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	--group.args.border.inline = true
+
+	group.args.flash = ACH:Group(L["Flash"], nil, 25, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.flash.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
+	group.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
+	group.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
+	--group.args.flash.inline = true
+
+	group.args.glow = ACH:Group(L["Custom Glow"], nil, 30, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+	group.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	group.args.glow.args.style = ACH:Select(L["Style"], nil, 2, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
+	group.args.glow.args.color = ACH:Color(L["COLOR"], nil, 3, true, nil, function() local _, actions = GetFilter(true) local d = actionDefaults[key].glow.color local t = actions[key].glow.color return t[1], t[2], t[3], t[4], d[1], d[2], d[3], d[4] end, function(_, r, g, b, a) local _, actions = GetFilter(true) local t = actions[key].glow.color t[1], t[2], t[3], t[4] = r, g, b, a NP:ConfigureAll() end)
+	group.args.glow.args.spacer1 = ACH:Spacer(4, 'full')
+	group.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 5, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
+	group.args.glow.args.size = ACH:Range(L["Size"], nil, 6, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions[key].glow.style ~= 'Pixel Glow' end)
+	group.args.glow.args.lines = ACH:Range(function() local _, actions = GetFilter(true) return actions[key].glow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 7, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions[key].glow.style ~= 'Pixel Glow' and actions[key].glow.style ~= 'Autocast Shine' end)
+	--group.args.glow.inline = true
+
+	return group
+end
+
 StyleFilters.actions = ACH:Group(L["Actions"], nil, 10, nil, function(info) local _, actions = GetFilter(true) return actions[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions[info[#info]] = value NP:ConfigureAll() end, DisabledFilter)
-StyleFilters.actions.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
-StyleFilters.actions.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, ActionHidePlate)
-StyleFilters.actions.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, ActionHidePlate)
-StyleFilters.actions.args.spacer1 = ACH:Spacer(4, 'full')
-StyleFilters.actions.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .25, max = 1.5, softMin = .5, softMax = 1.25, step = .01 }, nil, nil, nil, ActionHidePlate)
-StyleFilters.actions.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 6, { min = -1, max = 100, step = 1 }, nil, nil, nil, ActionHidePlate)
 
-StyleFilters.actions.args.color = ACH:Group(L["COLOR"], nil, 10, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-StyleFilters.actions.args.color.inline = true
-StyleFilters.actions.args.color.args.health = ACH:Toggle(L["Health"], nil, 1)
-StyleFilters.actions.args.color.args.healthColor = ACH:Color(L["Health Color"], nil, 2, true)
-StyleFilters.actions.args.color.args.healthClass = ACH:Toggle(L["Unit Class Color"], nil, 3)
-StyleFilters.actions.args.color.args.spacer1 = ACH:Spacer(4, 'full')
-StyleFilters.actions.args.color.args.power = ACH:Toggle(L["Power"], nil, 10)
-StyleFilters.actions.args.color.args.powerColor = ACH:Color(L["Power Color"], nil, 11, true)
-StyleFilters.actions.args.color.args.powerClass = ACH:Toggle(L["Unit Class Color"], nil, 12)
-StyleFilters.actions.args.color.args.spacer2 = ACH:Spacer(13, 'full')
-StyleFilters.actions.args.color.args.border = ACH:Toggle(L["Border"], nil, 20)
-StyleFilters.actions.args.color.args.borderColor = ACH:Color(L["Border Color"], nil, 21, true)
-StyleFilters.actions.args.color.args.borderClass = ACH:Toggle(L["Unit Class Color"], nil, 22)
+StyleFilters.actions.args.general = ACH:Group(L["General"], nil, 1)
+StyleFilters.actions.args.general.args.hide = ACH:Toggle(L["Hide Frame"], nil, 1)
+StyleFilters.actions.args.general.args.usePortrait = ACH:Toggle(L["Use Portrait"], nil, 2, nil, nil, nil, nil, nil, ActionHidePlate)
+StyleFilters.actions.args.general.args.nameOnly = ACH:Toggle(L["Name Only"], nil, 3, nil, nil, nil, nil, nil, ActionHidePlate)
+StyleFilters.actions.args.general.args.spacer1 = ACH:Spacer(4, 'full')
+StyleFilters.actions.args.general.args.scale = ACH:Range(L["Scale"], nil, 5, { min = .25, max = 1.5, softMin = .5, softMax = 1.25, step = .01 }, nil, nil, nil, ActionHidePlate)
+StyleFilters.actions.args.general.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 6, { min = -1, max = 100, step = 1 }, nil, nil, nil, ActionHidePlate)
+StyleFilters.actions.args.general.inline = true
 
-StyleFilters.actions.args.texture = ACH:Group(L["Texture"], nil, 20, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-StyleFilters.actions.args.texture.inline = true
-StyleFilters.actions.args.texture.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.texture.args.texture = ACH:SharedMediaStatusbar(L["Texture"], nil, 2, nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.texture.enable end)
+StyleFilters.actions.args.health = CreateActions(L["Health"], 10, 'health')
+StyleFilters.actions.args.power = CreateActions(L["Power"], 20, 'power')
+StyleFilters.actions.args.castbar = CreateActions(L["Castbar"], 30, 'castbar')
 
-StyleFilters.actions.args.flash = ACH:Group(L["Flash"], nil, 30, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-StyleFilters.actions.args.flash.inline = true
-StyleFilters.actions.args.flash.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.flash.args.color = ACH:Color(L["COLOR"], nil, 2, true)
-StyleFilters.actions.args.flash.args.class = ACH:Toggle(L["Unit Class Color"], nil, 3)
-StyleFilters.actions.args.flash.args.speed = ACH:Range(L["SPEED"], nil, nil, { min = 1, max = 10, step = 1 })
-
-StyleFilters.actions.args.glow = ACH:Group(L["Custom Glow"], nil, 40, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-StyleFilters.actions.args.glow.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.glow.args.style = ACH:Select(L["Style"], nil, 2, function() local tbl = {} for _, name in next, E.Libs.CustomGlow.glowList do if name ~= 'Action Button Glow' then tbl[name] = name end end return tbl end)
-StyleFilters.actions.args.glow.args.color = ACH:Color(L["COLOR"], nil, 3, true, nil, function() local _, actions = GetFilter(true) local d = actionDefaults.glow.color local t = actions.glow.color return t[1], t[2], t[3], t[4], d[1], d[2], d[3], d[4] end, function(_, r, g, b, a) local _, actions = GetFilter(true) local t = actions.glow.color t[1], t[2], t[3], t[4] = r, g, b, a NP:ConfigureAll() end)
-StyleFilters.actions.args.glow.args.spacer1 = ACH:Spacer(4, 'full')
-StyleFilters.actions.args.glow.args.speed = ACH:Range(L["SPEED"], nil, 5, { min = -1, max = 1, softMin = -0.5, softMax = 0.5, step = .01, bigStep = .05 })
-StyleFilters.actions.args.glow.args.size = ACH:Range(L["Size"], nil, 6, { min = 1, max = 5, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' end)
-StyleFilters.actions.args.glow.args.lines = ACH:Range(function() local _, actions = GetFilter(true) return actions.glow.style == 'Pixel Glow' and L["Lines"] or L["Particles"] end, nil, 7, { min = 1, max = 20, step = 1 }, nil, nil, nil, nil, function() local _, actions = GetFilter(true) return actions.glow.style ~= 'Pixel Glow' and actions.glow.style ~= 'Autocast Shine' end)
-StyleFilters.actions.args.glow.inline = true
-
-StyleFilters.actions.args.playSound = ACH:Group(_G.SOUND, nil, 50, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
-StyleFilters.actions.args.playSound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-StyleFilters.actions.args.playSound.args.overlap = ACH:Toggle(L["Overlap"], nil, 2)
-StyleFilters.actions.args.playSound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 3, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.playSound.enable end)
-StyleFilters.actions.args.playSound.inline = true
+StyleFilters.actions.args.sound = ACH:Group(_G.SOUND, nil, 50, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
+StyleFilters.actions.args.sound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+StyleFilters.actions.args.sound.args.overlap = ACH:Toggle(L["Overlap"], nil, 2)
+StyleFilters.actions.args.sound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 3, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.sound.enable end)
 
 StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 60, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
-StyleFilters.actions.args.text_format.inline = true
 StyleFilters.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')
 StyleFilters.actions.args.text_format.args.name = ACH:Input(L["Name"], nil, 1, nil, 'full')
 StyleFilters.actions.args.text_format.args.level = ACH:Input(L["Level"], nil, 2, nil, 'full')

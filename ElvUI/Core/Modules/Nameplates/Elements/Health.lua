@@ -42,9 +42,10 @@ function NP:Health_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local sf = NP:StyleFilterChanges(self)
-	if sf.HealthColor then
-		r, g, b = sf.HealthColor.r, sf.HealthColor.g, sf.HealthColor.b
+	local styleFilter = NP:StyleFilterChanges(self)
+	local styleHealth = (styleFilter.health and styleFilter.health.colors) and styleFilter.actions.health.colors.color
+	if styleHealth then
+		r, g, b = styleHealth.r, styleHealth.g, styleHealth.b
 	end
 
 	if b then
@@ -71,16 +72,7 @@ function NP:Construct_Health(nameplate)
 
 	NP.StatusBars[Health] = true
 
-	local healthBarTexture = Health:GetStatusBarTexture()
-	Health.barTexture = healthBarTexture
-
-	local healthFlashTexture = Health:CreateTexture(nameplate.frameName..'FlashTexture', 'OVERLAY')
-	healthFlashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
-	healthFlashTexture:Point('BOTTOMLEFT', healthBarTexture, 'BOTTOMLEFT')
-	healthFlashTexture:Point('TOPRIGHT', healthBarTexture, 'TOPRIGHT')
-	healthFlashTexture:Hide()
-	nameplate.HealthFlashTexture = healthFlashTexture
-
+	NP:Construct_FlashTexture(nameplate, Health)
 	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
