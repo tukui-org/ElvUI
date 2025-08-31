@@ -649,7 +649,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	local myPet = source == 'pet'
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
 	local dispellable = UF:AuraDispellable(debuffType, spellID)
-	local canDispel = (auras.type == 'both' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
+	local canDispel = (auras.type == 'auras' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
 	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
 	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 
