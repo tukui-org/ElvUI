@@ -1438,9 +1438,10 @@ NP.StyleFilterSetVariablesAllowed = {
 function NP:StyleFilterSetVariables(nameplate)
 	if nameplate == NP.TestFrame then return end
 
-	for event, func in pairs(NP.StyleFilterEventFunctions) do
-		if NP.StyleFilterSetVariablesAllowed[event] then -- we only need to call each function once on added
-			func(nameplate)
+	for event in next, NP.StyleFilterSetVariablesAllowed do
+		local eventFunc = NP.StyleFilterEventFunctions[event]
+		if eventFunc then -- we only need to call each function once on added
+			eventFunc(nameplate)
 		end
 	end
 end
