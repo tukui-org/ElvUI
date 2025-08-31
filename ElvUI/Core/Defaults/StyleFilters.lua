@@ -125,6 +125,7 @@ E.StyleFilterDefaults = {
 			notCasting = false,
 			notChanneling = false,
 			interruptible = false,
+			requireStart = false,
 			notSpell = false,
 			spells = {}
 		},

@@ -545,7 +545,7 @@ do
 	end
 end
 
-function NP:StyleFilterSetChangesOnElement(frame, actions, changes, bar, cutaway)
+function NP:StyleFilterSetChangesOnElement(frame, event, actions, changes, bar, cutaway)
 	if changes.colors then
 		local hc = (actions.colors.playerClass and E.myClassColor) or (actions.colors.unitClass and frame.classColor) or actions.colors.color
 
@@ -604,7 +604,7 @@ function NP:StyleFilterSetChangesOnElement(frame, actions, changes, bar, cutaway
 	end
 end
 
-function NP:StyleFilterSetChanges(frame, actions, general, tags, health, power, castbar)
+function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
 	local changes = frame.StyleFilterChanges
 	if not changes then
 		return
@@ -684,9 +684,9 @@ function NP:StyleFilterSetChanges(frame, actions, general, tags, health, power, 
 		end
 	end
 
-	NP:StyleFilterSetChangesOnElement(frame, actions.health, health, frame.Health, frame.Cutaway.Health)
-	NP:StyleFilterSetChangesOnElement(frame, actions.power, power, frame.Power, frame.Cutaway.Power)
-	NP:StyleFilterSetChangesOnElement(frame, actions.castbar, castbar, frame.Castbar)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.health, health, frame.Health, frame.Cutaway.Health)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.power, power, frame.Power, frame.Cutaway.Power)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, castbar, frame.Castbar)
 end
 
 function NP:StyleFilterClearVisibility(frame, previous)
@@ -1188,14 +1188,15 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Casting
 	if trigger.casting then
 		local cast = trigger.casting
+		local start = not cast.requireStart or (event == 'UNIT_SPELLCAST_START' or event == 'UNIT_SPELLCAST_CHANNEL_START')
 
 		-- Spell
 		if cast.spells then
 			for _, value in next, cast.spells do
 				if value then -- only run if at least one is selected
 					local castingSpell = (frame.castingSpellID and cast.spells[tostring(frame.castingSpellID)]) or cast.spells[frame.spellName]
-					if (cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell) then passed = true else return end
-					-- break -- we can execute this once on the first enabled option then kill the loop
+					if start and ((cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell)) then passed = true else return end
+					break -- we can execute this once on the first enabled option then kill the loop
 				end
 			end
 		end
@@ -1203,19 +1204,19 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		-- Not Status
 		if cast.notCasting or cast.notChanneling then
 			if cast.notCasting and cast.notChanneling then
-				if not frame.casting and not frame.channeling then passed = true else return end
-			elseif (cast.notCasting and not frame.casting) or (cast.notChanneling and not frame.channeling) then passed = true else return end
+				if start and (not frame.casting and not frame.channeling) then passed = true else return end
+			elseif start and ((cast.notCasting and not frame.casting) or (cast.notChanneling and not frame.channeling)) then passed = true else return end
 		end
 
 		-- Is Status
 		if cast.isCasting or cast.isChanneling then
-			if (cast.isCasting and frame.casting) or (cast.isChanneling and frame.channeling) then passed = true else return end
+			if start and ((cast.isCasting and frame.casting) or (cast.isChanneling and frame.channeling)) then passed = true else return end
 		end
 
 		-- Interruptible
 		if cast.interruptible or cast.notInterruptible then
 			if (frame.casting or frame.channeling) and ((cast.interruptible and not frame.notInterruptible)
-			or (cast.notInterruptible and frame.notInterruptible)) then passed = true else return end
+			or start and ((cast.notInterruptible and frame.notInterruptible))) then passed = true else return end
 		end
 	end
 
@@ -1229,15 +1230,17 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 	-- Buffs
 	if trigger.buffs then
+		local buffs = trigger.buffs
+
 		-- Has Stealable
-		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
+		if buffs.hasStealable or buffs.hasNoStealable then
 			local isStealable = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HELPFUL')
-			if (trigger.buffs.hasStealable and isStealable) or (trigger.buffs.hasNoStealable and not isStealable) then passed = true else return end
+			if (buffs.hasStealable and isStealable) or (buffs.hasNoStealable and not isStealable) then passed = true else return end
 		end
 
 		-- Names / Spell IDs
-		if trigger.buffs.names and next(trigger.buffs.names) then
-			local buff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HELPFUL', trigger.buffs.names, frame.BuffTickers, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft, trigger.buffs.fromMe, trigger.buffs.fromPet, trigger.buffs.onMe, trigger.buffs.onPet)
+		if buffs.names and next(buffs.names) then
+			local buff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HELPFUL', buffs.names, frame.BuffTickers, buffs.mustHaveAll, buffs.missing, buffs.minTimeLeft, buffs.maxTimeLeft, buffs.fromMe, buffs.fromPet, buffs.onMe, buffs.onPet)
 			if buff ~= nil then -- ignore if none are selected
 				if buff then passed = true else return end
 			end
@@ -1245,17 +1248,21 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Debuffs
-	if trigger.debuffs and trigger.debuffs.names and next(trigger.debuffs.names) then
+	if trigger.debuffs then
+		local debuffs = trigger.debuffs
+
 		-- Has Dispellable
-		if trigger.debuffs.hasDispellable or trigger.debuffs.hasNoDispellable then
+		if debuffs.hasDispellable or debuffs.hasNoDispellable then
 			local canDispel = NP:StyleFilterDispelCheck(frame, event, arg1, arg2, 'HARMFUL')
-			if (trigger.debuffs.hasDispellable and canDispel) or (trigger.debuffs.hasNoDispellable and not canDispel) then passed = true else return end
+			if (debuffs.hasDispellable and canDispel) or (debuffs.hasNoDispellable and not canDispel) then passed = true else return end
 		end
 
-		-- Names / Spell IDs
-		local debuff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HARMFUL', trigger.debuffs.names, frame.DebuffTickers, trigger.debuffs.mustHaveAll, trigger.debuffs.missing, trigger.debuffs.minTimeLeft, trigger.debuffs.maxTimeLeft, trigger.debuffs.fromMe, trigger.debuffs.fromPet, trigger.debuffs.onMe, trigger.debuffs.onPet)
-		if debuff ~= nil then -- ignore if none are selected
-			if debuff then passed = true else return end
+		if debuffs.names and next(debuffs.names) then
+			-- Names / Spell IDs
+			local debuff = NP:StyleFilterAuraCheck(frame, event, arg1, arg2, 'HARMFUL', debuffs.names, frame.DebuffTickers, debuffs.mustHaveAll, debuffs.missing, debuffs.minTimeLeft, debuffs.maxTimeLeft, debuffs.fromMe, debuffs.fromPet, debuffs.onMe, debuffs.onPet)
+			if debuff ~= nil then -- ignore if none are selected
+				if debuff then passed = true else return end
+			end
 		end
 	end
 
@@ -1289,7 +1296,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 	-- Pass it along
 	if passed then
-		NP:StyleFilterPass(frame, filter.actions)
+		NP:StyleFilterPass(frame, event, filter.actions)
 	end
 end
 
@@ -1336,7 +1343,7 @@ function NP:StyleFilterGetTags(object, actions)
 	return object
 end
 
-function NP:StyleFilterPass(frame, actions)
+function NP:StyleFilterPass(frame, event, actions)
 	local db = NP:PlateDB(frame)
 
 	local health = NP:StyleFilterGetElement(frame.changesHealth, db.health.enable and actions.health)
@@ -1345,7 +1352,7 @@ function NP:StyleFilterPass(frame, actions)
 	local general = NP:StyleFilterGetGeneral(frame.changesGeneral, actions)
 	local tags = NP:StyleFilterGetTags(frame.changesTags, actions)
 
-	NP:StyleFilterSetChanges(frame, actions, general, tags, health, power, castbar)
+	NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
 end
 
 function NP:StyleFilterClear(frame)

@@ -243,6 +243,7 @@ StyleFilters.triggers.args.casting.args.types.args.notCasting = ACH:Toggle(L["No
 StyleFilters.triggers.args.casting.args.types.args.spacer2 = ACH:Spacer(6, 'full')
 StyleFilters.triggers.args.casting.args.types.args.isChanneling = ACH:Toggle(L["Is Channeling Anything"], L["If enabled then the filter will activate if the unit is channeling anything."], 7)
 StyleFilters.triggers.args.casting.args.types.args.notChanneling = ACH:Toggle(L["Not Channeling Anything"], L["If enabled then the filter will activate if the unit is not channeling anything."], 8)
+StyleFilters.triggers.args.casting.args.types.args.requireStart = ACH:Toggle(L["Require Start"], nil, 9)
 
 StyleFilters.triggers.args.casting.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = true UpdateFilterList('casting', nil, value, true) NP:ConfigureAll() end, nil, nil, ValidateString)
 StyleFilters.triggers.args.casting.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.casting.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = nil UpdateFilterList('casting', nil, value) NP:ConfigureAll() end)
