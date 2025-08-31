@@ -58,7 +58,7 @@ E.noop = function() end
 E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
 E.version, E.versionString, E.versionDev, E.versionGit = E:ParseVersionString('ElvUI')
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
-E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player')
+E.myLocalizedClass, E.myclass, E.myClassID = UnitClass('player') -- UpdateMedia creates E.myClassColor
 E.myLocalizedRace, E.myrace, E.myRaceID = UnitRace('player')
 E.mygender = UnitSex('player')
 E.mylevel = UnitLevel('player')
@@ -242,7 +242,7 @@ end
 
 function E:UpdateClassColor(db)
 	if E:CheckClassColor(db.r, db.g, db.b) then
-		local color = E:ClassColor(E.myclass, true)
+		local color = E.myClassColor
 		if color then
 			db.r, db.g, db.b = color.r, color.g, color.b
 		end
@@ -298,6 +298,8 @@ end
 
 function E:UpdateMedia(mediaType)
 	if not E.db.general or not E.private.general then return end
+
+	E.myClassColor = E:ClassColor(E.myclass, true)
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
 	E.media.combatFont = LSM:Fetch('font', E.private.general.dmgfont)

@@ -21,9 +21,6 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	element.token = ptoken
 
-	local sf = NP:StyleFilterChanges(self)
-	if sf.PowerColor then return end
-
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t, atlas
@@ -66,6 +63,13 @@ function NP:Power_UpdateColor(_, unit)
 
 	if t then
 		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
+		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
+	end
+
+	local styleFilter = NP:StyleFilterChanges(self)
+	local stylePower = (styleFilter.power and styleFilter.power.colors) and styleFilter.actions.power.colors.color
+	if stylePower then
+		r, g, b = stylePower.r, stylePower.g, stylePower.b
 	end
 
 	if atlas then
@@ -112,6 +116,7 @@ function NP:Construct_Power(nameplate)
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
 
+	NP:Construct_FlashTexture(nameplate, Power)
 	UF:Construct_ClipFrame(nameplate, Power)
 
 	return Power

@@ -48,9 +48,7 @@ Supported class powers:
 local _, ns = ...
 local oUF = ns.oUF
 
-local next = next
 local floor = floor
-
 local _, PlayerClass = UnitClass('player')
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
@@ -58,10 +56,10 @@ local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
 local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
-local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
-local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
 local SPEC_SHAMAN_ELEMENTAL = _G.SPEC_SHAMAN_ELEMENTAL or 1
+local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
+local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -100,7 +98,7 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
-local ClassPowerType, ClassPowerID = {
+local ClassPowerType = {
 	[POWERTYPE_CHI] = 'CHI',
 	[POWERTYPE_MANA] = 'MANA',
 	[POWERTYPE_SHADOW_ORBS] = 'SHADOW_ORBS',
@@ -116,15 +114,21 @@ local ClassPowerType, ClassPowerID = {
 }
 
 local ClassPowerMax = {
-	[POWERTYPE_MANA] = 1,
 	[POWERTYPE_DEMONIC_FURY] = 1,
 	[POWERTYPE_BURNING_EMBERS] = 4,
 	[POWERTYPE_MAELSTROM] = 10,
 	[POWERTYPE_ICICLES] = 5,
 }
 
+local UseFakePower = {
+	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
+	[POWERTYPE_MAELSTROM] = oUF.isRetail,
+	[POWERTYPE_ICICLES] = oUF.isRetail
+}
+
 local ClassPowerEnable, ClassPowerDisable
-local CurrentSpec, RequirePower, RequireSpell
+local RequirePower, RequireSpell
+local CurrentSpec, ClassPowerID
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -132,10 +136,12 @@ local function UpdateColor(element, powerType)
 
 	for i = 1, #element do
 		local bar = element[i]
+		if not bar then break end
+
 		bar:SetStatusBarColor(r, g, b)
 
 		local bg = bar.bg
-		if(bg) then
+		if bg then
 			local mu = bg.multiplier or 1
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
@@ -182,22 +188,19 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local current, maximum, oldMax, chargedPoints
+	local current, maximum, previousMax, chargedPoints
 	if event ~= 'ClassPowerDisable' then
 		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or ClassPowerID
 		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
 		local warlockDest = ClassPowerID == POWERTYPE_BURNING_EMBERS or nil
 		local warlockDemo = ClassPowerID == POWERTYPE_DEMONIC_FURY or nil
 
-		maximum = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
-		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
-
 		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			current = 0
 		elseif oUF.isRetail and (PlayerClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
-			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HELPFUL')
+			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
 		elseif ClassPowerID == POWERTYPE_ICICLES then
 			current = CurrentApplications(SPELL_FROST_ICICLES, 'HELPFUL')
 		elseif ClassPowerID == POWERTYPE_MAELSTROM then
@@ -207,23 +210,35 @@ local function Update(self, event, unit, powerType)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
 		end
 
-		for i = 1, maximum do
-			element[i]:Show()
+		local powerMax = ClassPowerMax[ClassPowerID] or UnitPowerMax(unit, powerID, warlockDest)
+		maximum = (ClassPowerID == POWERTYPE_MANA and 1) or powerMax or 0
+		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
-			if warlockDest and i == floor(current + 1) then
-				element[i]:SetValue(current % 1)
+		for i = 1, maximum do
+			local bar = element[i]
+			if not bar then break end
+
+			bar:Show()
+
+			if ClassPowerID == POWERTYPE_MANA then
+				bar:SetValue((powerMax <= 0 and 0) or current / powerMax)
+			elseif warlockDest and i == floor(current + 1) then
+				bar:SetValue(current % 1)
 			else
-				element[i]:SetValue(current - i + 1)
+				bar:SetValue(current - i + 1)
 			end
 		end
 
-		oldMax = element.__max
+		previousMax = element.__max
 
-		if(maximum ~= oldMax) then
-			if(maximum < oldMax) then
-				for i = maximum + 1, oldMax do
-					element[i]:Hide()
-					element[i]:SetValue(0)
+		if(maximum ~= previousMax) then
+			if(maximum < previousMax) then
+				for i = maximum + 1, previousMax do
+					local bar = element[i]
+					if not bar then break end
+
+					bar:Hide()
+					bar:SetValue(0)
 				end
 			end
 
@@ -242,7 +257,7 @@ local function Update(self, event, unit, powerType)
 	* ...           - the indices of currently charged power points, if any
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(current, maximum, oldMax ~= maximum, powerType or currentType, chargedPoints)  -- ElvUI uses chargedPoints as table
+		return element:PostUpdate(current, maximum, previousMax ~= maximum, powerType or currentType, chargedPoints)
 	end
 end
 
@@ -364,7 +379,7 @@ function ClassPowerEnable(self)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
-	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+	if UseFakePower[ClassPowerID] then
 		self:RegisterEvent('UNIT_AURA', Path)
 	end
 
@@ -387,7 +402,7 @@ function ClassPowerDisable(self)
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 
-	if (oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES) or (oUF.isRetail and ClassPowerID == POWERTYPE_MAELSTROM) or ClassPowerID == POWERTYPE_ICICLES then
+	if UseFakePower[ClassPowerID] then
 		self:UnregisterEvent('UNIT_AURA')
 	end
 
@@ -416,6 +431,8 @@ local function Enable(self, unit)
 
 		for i = 1, #element do
 			local bar = element[i]
+			if not bar then break end
+
 			if bar:IsObjectType('StatusBar') then
 				if not bar:GetStatusBarTexture() then
 					bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])

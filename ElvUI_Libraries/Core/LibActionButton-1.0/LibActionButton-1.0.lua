@@ -9,6 +9,7 @@ if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
+local _G = _G
 local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
@@ -33,7 +34,6 @@ local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 local UnpackAuraData = AuraUtil.UnpackAuraData
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
-local GameTooltip_SetDefaultAnchor = GameTooltip_SetDefaultAnchor
 local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
@@ -613,8 +613,14 @@ function WrapOnClick(button, unwrapheader)
 			end
 
 			-- if this is a pickup click, disable on-down casting
+			-- it should get re-enabled in the post handler, or the OnDragStart handler, whichever occurs
 			if button ~= "Keybind" and ((self:GetAttribute("unlockedpreventdrag") and not self:GetAttribute("buttonlock")) or IsModifiedClick("PICKUPACTION")) and not self:GetAttribute("LABdisableDragNDrop") then
-				return false
+				local useOnkeyDown = self:GetAttribute("useOnKeyDown")
+				if useOnkeyDown ~= false then
+					self:SetAttribute("LABToggledOnDown", true)
+					self:SetAttribute("LABToggledOnDownBackup", useOnkeyDown)
+					self:SetAttribute("useOnKeyDown", false)
+				end
 			end
 
 			return (button == "Keybind") and "LeftButton" or nil, format("%s|%s", tostring(type), tostring(action))
@@ -633,6 +639,13 @@ function WrapOnClick(button, unwrapheader)
 		local type, action = GetActionInfo(self:GetAttribute("action"))
 		if message ~= format("%s|%s", tostring(type), tostring(action)) then
 			self:RunAttribute("UpdateState", self:GetAttribute("state"))
+		end
+
+		-- re-enable ondown casting if needed
+		if self:GetAttribute("LABToggledOnDown") then
+			self:SetAttribute("useOnKeyDown", self:GetAttribute("LABToggledOnDownBackup"))
+			self:SetAttribute("LABToggledOnDown", nil)
+			self:SetAttribute("LABToggledOnDownBackup", nil)
 		end
 	]])
 end
@@ -771,6 +784,7 @@ function Generic:ClearStates()
 		self:SetAttribute(format("labtype-%s", state), nil)
 		self:SetAttribute(format("labaction-%s", state), nil)
 	end
+
 	wipe(self.state_types)
 	wipe(self.state_actions)
 end
@@ -1280,6 +1294,7 @@ function Generic:OnEnter()
 	if self.config.tooltip ~= "disabled" and (self.config.tooltip ~= "nocombat" or not InCombatLockdown()) then
 		UpdateTooltip(self)
 	end
+
 	if KeyBound then
 		KeyBound:Set(self)
 	end
@@ -1468,13 +1483,14 @@ function Generic:UpdateConfig(config)
 		end
 	end
 
-	self:SetAttribute("flyoutDirection", self.config.flyoutDirection)
-
 	UpdateCooldownNumberHidden(self)
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
 	Update(self, 'UpdateConfig')
+
+	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
+	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
 	if not WoWRetail then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
@@ -1509,6 +1525,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
 
 	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
+	lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
 	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 
@@ -1621,6 +1638,10 @@ function OnEvent(_, event, arg1, arg2, ...)
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
+		end
+	elseif event == "UNIT_FACTION" then
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
 		end
 	elseif event == "UNIT_AURA" then
 		if TARGETAURA_ENABLED then
@@ -1859,6 +1880,16 @@ do
 		return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 	end
 
+	local function CheckAuraFilter(aura, filter)
+		if not filter then
+			return true -- already filtered by GetAuraDataBySpellName
+		elseif filter == 'HELPFUL' then
+			return aura.isHelpful
+		elseif filter == 'HARMFUL' then
+			return aura.isHarmful
+		end
+	end
+
 	local function GetTargetAuraCooldown(aura)
 		if not aura then return end
 
@@ -1867,8 +1898,11 @@ do
 		return start, duration, expiration
 	end
 
-	local function CheckTargetAuraCooldown(aura, buttons, previous)
-		local isMine = aura and CheckIsMine(aura.sourceUnit)
+	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
+		local allow = CheckAuraFilter(aura, filter)
+		if not allow then return end
+
+		local isMine = CheckIsMine(aura.sourceUnit)
 		if not isMine then return end
 
 		local start, duration = GetTargetAuraCooldown(aura)
@@ -1885,7 +1919,7 @@ do
 		end
 	end
 
-	local function ProcessTargetAuras(which, auras)
+	local function ProcessTargetAuras(which, filter, auras)
 		if not auras then return end
 
 		for _, value in next, auras do
@@ -1894,7 +1928,7 @@ do
 
 				local buttons = AuraButtons.auras[value.name]
 				if buttons then
-					CheckTargetAuraCooldown(value, buttons)
+					CheckTargetAuraCooldown(value, filter, buttons)
 				end
 			else
 				local aura
@@ -1908,30 +1942,32 @@ do
 
 				local buttons = aura and AuraButtons.auras[aura.name]
 				if buttons then
-					CheckTargetAuraCooldown(aura, buttons)
+					CheckTargetAuraCooldown(aura, filter, buttons)
 				end
 			end
 		end
 	end
 
 	function UpdateTargetAuras(event, arg1, updateInfo)
+		local isFriend = UnitIsFriend('player', 'target')
 		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
-			ProcessTargetAuras('add', updateInfo.addedAuras)
-			ProcessTargetAuras('update', updateInfo.updatedAuraInstanceIDs)
-			ProcessTargetAuras('remove', updateInfo.removedAuraInstanceIDs)
+			local filter = isFriend and 'HELPFUL' or 'HARMFUL'
+			ProcessTargetAuras('add', filter, updateInfo.addedAuras)
+			ProcessTargetAuras('update', filter, updateInfo.updatedAuraInstanceIDs)
+			ProcessTargetAuras('remove', filter, updateInfo.removedAuraInstanceIDs)
 		elseif event ~= 'SetTargetAuraCooldowns' or not arg1 then
 			local previous = CopyTable(current, true) -- shallow copy
 
 			wipe(current) -- clear the current ones
 			wipe(auraInstances) -- keep this clean
 
-			local filter = UnitIsFriend('player', 'target') and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
+			local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
 			for spellName, buttons in next, AuraButtons.auras do
 				local aura = GetAuraDataBySpellName('target', spellName, filter)
 				if aura then -- collect what we can
 					auraInstances[aura.auraInstanceID] = aura
 
-					CheckTargetAuraCooldown(aura, buttons, previous)
+					CheckTargetAuraCooldown(aura, nil, buttons, previous)
 				end
 			end
 
@@ -2492,12 +2528,14 @@ end
 
 function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
+
 	if (GetCVar("UberTooltips") == "1") then
 		GameTooltip:ClearAllPoints();
-		GameTooltip_SetDefaultAnchor(GameTooltip, self);
+		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self);
 	else
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 	end
+
 	if self:SetTooltip() then
 		self.UpdateTooltip = UpdateTooltip
 	else

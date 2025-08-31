@@ -237,6 +237,12 @@ function NP:Style(unit)
 	self.frameName = frameName
 	self.isNamePlate = true
 
+	if frameName == 'ElvNP_Player' then
+		NP.PlayerFrame = self
+	elseif frameName == 'ElvNP_TestFrame' then
+		NP.TestFrame = self
+	end
+
 	if frameName == 'ElvNP_TargetClassPower' then
 		NP:StyleTargetPlate(self, unit)
 	else
@@ -244,6 +250,19 @@ function NP:Style(unit)
 	end
 
 	return self
+end
+
+function NP:Construct_FlashTexture(nameplate, element)
+	local barTexture = element:GetStatusBarTexture()
+
+	local flashTexture = element:CreateTexture(nil, 'OVERLAY')
+	flashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
+	flashTexture:Point('BOTTOMLEFT', barTexture, 'BOTTOMLEFT')
+	flashTexture:Point('TOPRIGHT', barTexture, 'TOPRIGHT')
+	flashTexture:Hide()
+
+	element.barTexture = barTexture
+	element.flashTexture = flashTexture
 end
 
 function NP:Construct_RaisedELement(nameplate)
@@ -259,7 +278,7 @@ function NP:Construct_RaisedELement(nameplate)
 end
 
 function NP:Construct_ClassPowerTwo(nameplate)
-	if nameplate ~= _G.ElvNP_Test then
+	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			nameplate.Runes = NP:Construct_Runes(nameplate)
 		elseif E.myclass == 'MONK' and E.Retail then
@@ -269,7 +288,7 @@ function NP:Construct_ClassPowerTwo(nameplate)
 end
 
 function NP:Update_ClassPowerTwo(nameplate)
-	if nameplate ~= _G.ElvNP_Test then
+	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
 		elseif E.myclass == 'MONK' and E.Retail then
@@ -298,7 +317,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test) and 1 or E.uiscale
+	local mult = (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -313,7 +332,7 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 end
 
 function NP:PostUpdateAllElements(event)
-	if self == _G.ElvNP_Test or self.widgetsOnly then return end -- skip test and widget plates
+	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
 
 	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
 		NP:StyleFilterUpdate(self, event)
@@ -377,7 +396,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	if db.nameOnly or not db.enable then
 		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable)
 
-		if nameplate == _G.ElvNP_Test then
+		if nameplate == NP.TestFrame then
 			nameplate.Castbar:SetAlpha(0)
 			nameplate.ClassPower:SetAlpha(0)
 		end
@@ -400,7 +419,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 
 		NP:Update_ClassPowerTwo(nameplate)
 
-		if nameplate == _G.ElvNP_Player then
+		if nameplate == NP.PlayerFrame then
 			NP:Update_Fader(nameplate)
 		end
 	elseif db.enable then
@@ -485,14 +504,14 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 end
 
 function NP:GetClassAnchor()
-	local TCP = _G.ElvNP_TargetClassPower
+	local TCP = NP.TargetClassPower
 	return TCP.realPlate or TCP
 end
 
 function NP:SetupTarget(nameplate, removed)
 	if not (NP.db.units and NP.db.units.TARGET) then return end
 
-	local TCP = _G.ElvNP_TargetClassPower
+	local TCP = NP.TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
 
 	if removed or not nameplate or not cp.enable then
@@ -530,7 +549,7 @@ end
 
 function NP:SetNamePlateSelfClickThrough()
 	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	_G.ElvNP_StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
+	NP.StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
 end
 
 function NP:SetNamePlateFriendlyClickThrough()
@@ -543,8 +562,9 @@ end
 
 function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
-		local sf = NP:StyleFilterChanges(bar:GetParent())
-		if not sf.HealthTexture then
+		local styleFilter = NP:StyleFilterChanges(bar:GetParent())
+
+		if not (styleFilter.health and styleFilter.health.texture) then
 			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
 			if bar.SetStatusBarTexture then
 				bar:SetStatusBarTexture(texture)
@@ -608,6 +628,8 @@ function NP:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 		NP:ConfigureAll(true)
 	end
 
+	wipe(NP.SoundHandlers)
+
 	NP:EnviromentConditionals(event)
 end
 
@@ -616,14 +638,14 @@ function NP:ToggleStaticPlate()
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
 	if playerEnabled and isStatic then
-		E:EnableMover(_G.ElvNP_Player.mover.name)
-		_G.ElvNP_Player:Enable()
-		_G.ElvNP_StaticSecure:Show()
+		E:EnableMover(NP.PlayerFrame.mover.name)
+		NP.PlayerFrame:Enable()
+		NP.StaticSecure:Show()
 	else
-		NP:DisablePlate(_G.ElvNP_Player)
-		E:DisableMover(_G.ElvNP_Player.mover.name)
-		_G.ElvNP_Player:Disable()
-		_G.ElvNP_StaticSecure:Hide()
+		NP:DisablePlate(NP.PlayerFrame)
+		E:DisableMover(NP.PlayerFrame.mover.name)
+		NP.PlayerFrame:Disable()
+		NP.StaticSecure:Hide()
 	end
 
 	E:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
@@ -632,16 +654,16 @@ end
 function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
-	if _G.ElvNP_Test:IsEnabled() then
-		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
+	if NP.TestFrame:IsEnabled() then
+		NP:NamePlateCallBack(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED')
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
 	if init then -- since this is a fake plate, we actually need to trigger this always
-		NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
+		NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
 
-		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
-		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
+		NP.PlayerFrame.StyleFilterBaseAlreadyUpdated = nil
+		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
 			if nameplate.frameType == 'PLAYER' then
@@ -652,8 +674,8 @@ function NP:ConfigurePlates(init)
 				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 			end
 
-			if nameplate == _G.ElvNP_Player then
-				NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
+			if nameplate == NP.PlayerFrame then
+				NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
@@ -678,7 +700,7 @@ function NP:ConfigureAll(init)
 	end
 
 	NP:PLAYER_REGEN_ENABLED()
-	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
+	NP:UpdateTargetPlate(NP.TargetClassPower)
 	NP:Update_StatusBars()
 
 	NP:ConfigurePlates(init) -- keep before toggle static
@@ -720,15 +742,15 @@ function NP:UpdatePlateGUID(nameplate, guid)
 end
 
 function NP:UpdatePlateType(nameplate)
-	if nameplate == _G.ElvNP_Test then return end
+	if nameplate == NP.TestFrame then return end
 
 	if nameplate.isMe then
 		nameplate.frameType = 'PLAYER'
 
 		if NP.db.units.PLAYER.enable then
 			NP.PlayerNamePlateAnchor:ClearAllPoints()
-			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and NP.PlayerFrame or nameplate)
+			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and NP.PlayerFrame or nameplate)
 			NP.PlayerNamePlateAnchor:Show()
 		end
 	elseif nameplate.isPVPSanctuary then
@@ -753,9 +775,9 @@ function NP:UpdatePlateSize(nameplate)
 end
 
 function NP:UpdatePlateBase(nameplate)
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		NP:UpdatePlate(nameplate, true)
-	elseif nameplate == _G.ElvNP_Player then
+	elseif nameplate == NP.PlayerFrame then
 		NP:UpdatePlate(nameplate, true)
 
 		nameplate.StyleFilterBaseAlreadyUpdated = true
@@ -773,8 +795,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate then
 			nameplate.isDead = UnitIsDead(nameplate.unit)
 
-			local sf = NP:StyleFilterChanges(nameplate)
-			NP:SetupTarget(nameplate, sf.NameOnly or nameplate.isDead)
+			local styleFilter = NP:StyleFilterChanges(nameplate)
+			NP:SetupTarget(nameplate, (styleFilter.general and styleFilter.general.nameOnly) or nameplate.isDead)
 		else -- pass it, even as nil here
 			NP:SetupTarget(nameplate)
 		end
@@ -891,7 +913,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		if nameplate ~= _G.ElvNP_Test then
+		if nameplate ~= NP.TestFrame then
 			if nameplate.frameType == 'PLAYER' then
 				NP.PlayerNamePlateAnchor:Hide()
 			end
@@ -1004,6 +1026,7 @@ function NP:Initialize()
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
+	NP.SoundHandlers = {}
 	NP.multiplier = 0.35
 	NP.numPlates = 0
 
@@ -1013,51 +1036,52 @@ function NP:Initialize()
 		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', NP.SetupClassNameplateBars)
 	end
 
-	ElvUF:Spawn('player', 'ElvNP_Player', '')
+	local playerFrame = ElvUF:Spawn('player', 'ElvNP_Player', '')
+	playerFrame:SetScale(1)
+	playerFrame:ClearAllPoints()
+	playerFrame:Point('TOP', UIParent, 'CENTER', 0, -150)
+	playerFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	playerFrame.frameType = 'PLAYER'
 
-	_G.ElvNP_Player:SetScale(1)
-	_G.ElvNP_Player:ClearAllPoints()
-	_G.ElvNP_Player:Point('TOP', UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Player.frameType = 'PLAYER'
+	local playerHolder = E:CreateMover(playerFrame, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
+	NP.PlayerMover = playerHolder.mover
 
-	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
+	local staticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', UIParent, 'SecureUnitButtonTemplate')
+	staticSecure:SetAttribute('unit', 'player')
+	staticSecure:SetAttribute('*type1', 'target')
+	staticSecure:SetAttribute('*type2', 'togglemenu')
+	staticSecure:SetAttribute('toggleForVehicle', true)
+	staticSecure:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
+	staticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
+	staticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	staticSecure:ClearAllPoints()
+	staticSecure:Point('TOPLEFT', NP.PlayerMover)
+	staticSecure:Point('BOTTOMRIGHT', NP.PlayerMover)
+	staticSecure:Hide()
+	staticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
+	NP.StaticSecure = staticSecure
 
-	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', UIParent, 'SecureUnitButtonTemplate')
-	StaticSecure:SetAttribute('unit', 'player')
-	StaticSecure:SetAttribute('*type1', 'target')
-	StaticSecure:SetAttribute('*type2', 'togglemenu')
-	StaticSecure:SetAttribute('toggleForVehicle', true)
-	StaticSecure:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
-	StaticSecure:ClearAllPoints()
-	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
-	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
-	StaticSecure:Hide()
-	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
+	local testFrame = ElvUF:Spawn('player', 'ElvNP_TestFrame')
+	testFrame:SetScale(1)
+	testFrame:ClearAllPoints()
+	testFrame:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
+	testFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	testFrame:SetMovable(true)
+	testFrame:RegisterForDrag('LeftButton', 'RightButton')
+	testFrame:SetScript('OnDragStart', function() NP.TestFrame:StartMoving() end)
+	testFrame:SetScript('OnDragStop', function() NP.TestFrame:StopMovingOrSizing() end)
+	testFrame.frameType = 'PLAYER'
+	testFrame:Disable()
 
-	ElvUF:Spawn('player', 'ElvNP_Test')
+	NP:DisablePlate(testFrame)
 
-	_G.ElvNP_Test:SetScale(1)
-	_G.ElvNP_Test:ClearAllPoints()
-	_G.ElvNP_Test:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Test:SetMovable(true)
-	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')
-	_G.ElvNP_Test:SetScript('OnDragStart', function() _G.ElvNP_Test:StartMoving() end)
-	_G.ElvNP_Test:SetScript('OnDragStop', function() _G.ElvNP_Test:StopMovingOrSizing() end)
-	_G.ElvNP_Test.frameType = 'PLAYER'
-	_G.ElvNP_Test:Disable()
-	NP:DisablePlate(_G.ElvNP_Test)
-
-	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
-
-	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
-	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
-	_G.ElvNP_TargetClassPower:ClearAllPoints()
-	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	local targetClassPower = ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
+	targetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	targetClassPower.frameType = 'TARGET'
+	targetClassPower:SetAttribute('toggleForVehicle', true)
+	targetClassPower:ClearAllPoints()
+	targetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	NP.TargetClassPower = targetClassPower
 
 	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
 	NP.PlayerNamePlateAnchor:EnableMouse(false)

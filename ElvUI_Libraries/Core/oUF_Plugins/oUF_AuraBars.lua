@@ -1,6 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
-local AuraInfo = oUF.AuraInfo
+local AuraFiltered = oUF.AuraFiltered
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -234,10 +234,10 @@ local function FilterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 	local hidden = 0
 
 	local index = 1
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura and (visible < limit) do
-		local result = not oUF:ShouldSkipAuraFilter(aura, filter) and AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -245,7 +245,7 @@ local function FilterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 		end
 
 		index = index + 1
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	if(not dontHide) then

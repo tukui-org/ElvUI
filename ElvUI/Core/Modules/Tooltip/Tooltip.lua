@@ -6,6 +6,7 @@ local B = E:GetModule('Bags')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 local AuraInfo = ElvUF.AuraInfo
+local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
@@ -442,10 +443,10 @@ end
 function TT:AddMountInfo(tt, unit)
 	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
 
-	local unitAuraInfo = AuraInfo[unit]
-	local auraInstanceID, aura = next(unitAuraInfo)
+	local unitAuraFiltered = AuraFiltered.HELPFUL[unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local mountID = not ElvUF:ShouldSkipAuraFilter(aura, 'HELPFUL') and E.MountIDs[aura.spellId]
+		local mountID = E.MountIDs[aura.spellId]
 		if mountID then
 			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
@@ -466,7 +467,7 @@ function TT:AddMountInfo(tt, unit)
 			break
 		end
 
-		auraInstanceID, aura = next(unitAuraInfo, auraInstanceID)
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 end
 

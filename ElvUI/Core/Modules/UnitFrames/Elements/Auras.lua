@@ -70,6 +70,24 @@ UF.SmartPosition = {
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
+function UF:Construct_Auras(frame)
+	local auras = CreateFrame('Frame', '$parentAuras', frame)
+	auras.PreSetPosition = UF.SortAuras
+	auras.PostCreateButton = UF.Construct_AuraIcon
+	auras.PostUpdateButton = UF.PostUpdateAura
+	auras.SetPosition = UF.SetPosition
+	auras.PreUpdate = UF.PreUpdateAura
+	auras.CustomFilter = UF.AuraFilter
+	auras.stacks = {}
+	auras.rows = {}
+	auras.type = 'auras'
+
+	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+	auras:SetSize(1, 1)
+
+	return auras
+end
+
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 	buffs.PreSetPosition = UF.SortAuras
@@ -286,9 +304,11 @@ function UF:UpdateAuraCooldownPosition(button)
 end
 
 function UF:Configure_AllAuras(frame)
+	if frame.Auras then frame.Auras:ClearAllPoints() end
 	if frame.Buffs then frame.Buffs:ClearAllPoints() end
 	if frame.Debuffs then frame.Debuffs:ClearAllPoints() end
 
+	UF:Configure_Auras(frame, 'Auras')
 	UF:Configure_Auras(frame, 'Buffs')
 	UF:Configure_Auras(frame, 'Debuffs')
 end
@@ -375,6 +395,10 @@ function UF:Configure_Auras(frame, which)
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
+
+	if which == 'Auras' then -- only use this for custom
+		auras.filter = settings.filter or 'HARMFUL'
+	end
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
@@ -624,7 +648,8 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 
 	local myPet = source == 'pet'
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
-	local canDispel = (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and UF:AuraDispellable(debuffType, spellID))
+	local dispellable = UF:AuraDispellable(debuffType, spellID)
+	local canDispel = (auras.type == 'auras' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
 	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
 	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 

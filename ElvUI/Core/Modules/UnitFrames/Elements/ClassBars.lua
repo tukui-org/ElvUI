@@ -71,21 +71,29 @@ function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
-function UF:ClassPower_UpdateColor(powerType, rune)
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	local isRunes = powerType == 'RUNES'
+function UF:ClassPower_GetColor(colors, powerType)
+	local all, power = colors.classResources, colors.power
+	local mine = all and all[E.myclass]
 
-	local colors = UF.db.colors.classResources
+	return all, powerType ~= 'MANA' and (all[UF.ClassPowerColors[powerType]] or (mine and mine[powerType]) or mine), power[powerType] or power.MANA
+end
+
+function UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
+	return (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or (index and powers and powers[index]) or powers
+end
+
+function UF:ClassPower_UpdateColor(powerType, rune)
+	local isRunes = powerType == 'RUNES'
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+	local colors, powers, fallback = UF:ClassPower_GetColor(UF.db.colors, powerType)
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
-		local color = colors.DEATHKNIGHT[rune.runeType or 0]
+		local color = UF:ClassPower_BarColor(isRunes, rune)
 		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
-		local fallback = UF.db.colors.power[powerType] or UF.db.colors.power.MANA
-		local classColor = powerType ~= 'MANA' and (colors[UF.ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
-		for i, bar in ipairs(self) do
-			local color = (isRunes and colors.DEATHKNIGHT[bar.runeType or 0]) or (classColor and classColor[i]) or classColor
+		for index, bar in ipairs(self) do
+			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
 				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
 			else

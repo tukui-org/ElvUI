@@ -260,7 +260,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(classButton)
 
 	classButton:SetScript('OnClick', function()
-		local color = E:ClassColor(E.myclass, true)
+		local color = E.myClassColor
 		ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
 		_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
 		if ColorPickerFrame.hasOpacity then

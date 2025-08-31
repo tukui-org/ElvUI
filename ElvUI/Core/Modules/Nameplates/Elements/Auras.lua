@@ -3,12 +3,29 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local wipe = wipe
 local unpack = unpack
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
+	local Auras = CreateFrame('Frame', '$parentAuras', nameplate)
+	Auras:SetFrameStrata(nameplate:GetFrameStrata())
+	Auras:SetFrameLevel(5)
+	Auras:Size(1)
+	Auras.size = 27
+	Auras.num = 4
+	Auras.spacing = E.Border * 2
+	Auras.onlyShowPlayer = false
+	Auras.disableMouse = true
+	Auras.isNameplate = true
+	Auras.initialAnchor = 'BOTTOMLEFT'
+	Auras.growthX = 'RIGHT'
+	Auras.growthY = 'UP'
+	Auras.type = 'auras'
+	Auras.forceShow = nameplate == NP.TestFrame
+	Auras.tickers = {} -- StyleFilters
+	Auras.stacks = {}
+	Auras.rows = {}
 
 	local Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
@@ -24,7 +41,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthX = 'RIGHT'
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
-	Buffs.forceShow = nameplate == _G.ElvNP_Test
+	Buffs.forceShow = nameplate == NP.TestFrame
 	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
@@ -43,10 +60,17 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthX = 'RIGHT'
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
-	Debuffs.forceShow = nameplate == _G.ElvNP_Test
+	Debuffs.forceShow = nameplate == NP.TestFrame
 	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
+
+	Auras.PreUpdate = UF.PreUpdateAura
+	Auras.PreSetPosition = UF.SortAuras
+	Auras.SetPosition = UF.SetPosition
+	Auras.PostCreateButton = NP.Construct_AuraIcon
+	Auras.PostUpdateButton = UF.PostUpdateAura
+	Auras.CustomFilter = UF.AuraFilter
 
 	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PreSetPosition = UF.SortAuras
@@ -62,8 +86,8 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.PostUpdateButton = UF.PostUpdateAura
 	Debuffs.CustomFilter = UF.AuraFilter
 
-	nameplate.Buffs_, nameplate.Debuffs_ = Buffs, Debuffs
-	nameplate.Buffs, nameplate.Debuffs = Buffs, Debuffs
+	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
+	nameplate.Auras, nameplate.Buffs, nameplate.Debuffs = Auras, Buffs, Debuffs
 end
 
 function NP:Construct_AuraIcon(button)
@@ -95,7 +119,12 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
-function NP:Configure_Auras(nameplate, auras, db)
+function NP:Configure_Auras(nameplate, which)
+	local plateDB = NP:PlateDB(nameplate)
+	local auras = nameplate[which]
+	local auraType = which:lower()
+	local db = plateDB[auraType]
+
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
@@ -114,6 +143,10 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo) -- keep below SetSmartPosition
 	auras.num = db.numAuras * db.numRows
 	auras.db = db -- for auraSort
+
+	if which == 'Auras' then
+		auras.filter = db.filter or 'HARMFUL'
+	end
 
 	local index = 1
 	while auras[index] do
@@ -135,17 +168,28 @@ end
 function NP:Update_Auras(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	if db.debuffs.enable or db.buffs.enable then
+	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
 		if not nameplate:IsElementEnabled('Auras') then
 			nameplate:EnableElement('Auras')
 		end
 
+		nameplate.Auras_:ClearAllPoints()
 		nameplate.Buffs_:ClearAllPoints()
 		nameplate.Debuffs_:ClearAllPoints()
 
+		if db.auras.enable then
+			nameplate.Auras = nameplate.Auras_
+			NP:Configure_Auras(nameplate, 'Auras')
+			nameplate.Auras:Show()
+			nameplate.Auras:ForceUpdate()
+		elseif nameplate.Auras then
+			nameplate.Auras:Hide()
+			nameplate.Auras = nil
+		end
+
 		if db.debuffs.enable then
 			nameplate.Debuffs = nameplate.Debuffs_
-			NP:Configure_Auras(nameplate, nameplate.Debuffs, db.debuffs)
+			NP:Configure_Auras(nameplate, 'Debuffs')
 			nameplate.Debuffs:Show()
 			nameplate.Debuffs:ForceUpdate()
 		elseif nameplate.Debuffs then
@@ -155,7 +199,7 @@ function NP:Update_Auras(nameplate)
 
 		if db.buffs.enable then
 			nameplate.Buffs = nameplate.Buffs_
-			NP:Configure_Auras(nameplate, nameplate.Buffs, db.buffs)
+			NP:Configure_Auras(nameplate, 'Buffs')
 			nameplate.Buffs:Show()
 			nameplate.Buffs:ForceUpdate()
 		elseif nameplate.Buffs then

@@ -25,6 +25,7 @@ function UF:Construct_AssistFrames()
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 
 	if not isChild then
+		self.Auras = UF:Construct_Auras(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
 		self.AuraWatch = UF:Construct_AuraWatch(self)

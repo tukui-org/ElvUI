@@ -4,7 +4,6 @@ local UF = E:GetModule('UnitFrames')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local abs = abs
 local next = next
 local unpack = unpack
@@ -136,6 +135,8 @@ function NP:Construct_Castbar(nameplate)
 	castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
+	NP:Construct_FlashTexture(nameplate, castbar)
+
 	NP.StatusBars[castbar] = true
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 
@@ -168,7 +169,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.PostUpdatePip = UF.PostUpdatePip
 	castbar.CreatePip = NP.BuildPip
 
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		castbar.Hide = castbar.Show
 		castbar:Show()
 		castbar.Text:SetText('Casting')
@@ -208,7 +209,7 @@ function NP:Update_Castbar(nameplate)
 	local db = frameDB.castbar
 
 	local castbar = nameplate.Castbar
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		castbar:SetAlpha((not frameDB.nameOnly and db.enable) and 1 or 0)
 	end
 

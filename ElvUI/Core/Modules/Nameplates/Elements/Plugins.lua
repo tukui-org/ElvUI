@@ -189,7 +189,7 @@ function NP:Update_Highlight(nameplate, nameOnlySF)
 
 		if db.health.enable and not (db.nameOnly or nameOnlySF) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
-			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.Health.flashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)

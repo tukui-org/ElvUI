@@ -8,7 +8,7 @@ local hooksecurefunc = hooksecurefunc
 function S:Blizzard_OrderHallUI()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall then return end
 
-	local classColor = E:ClassColor(E.myclass, true)
+	local classColor = E.myClassColor
 
 	-- CommandBar
 	local OrderHallCommandBar = _G.OrderHallCommandBar

@@ -224,7 +224,7 @@ function S:SpellBookFrame()
 	local SpellBookCoreAbilitiesFrame = _G.SpellBookCoreAbilitiesFrame
 	SpellBookCoreAbilitiesFrame:Point('TOPLEFT', -80, 5)
 
-	local classTextColor = E:ClassColor(E.myclass)
+	local classTextColor = E.myClassColor
 	SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 	SpellBookCoreAbilitiesFrame.SpecName:Point('TOP', 37, -30)
 

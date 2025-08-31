@@ -19,7 +19,7 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local unitTank = unitRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(unitTarget)])
 	local isTank, offTank, feedbackUnit = unitTank or imTank, db.beingTankedByTank and (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'
 
-	nameplate.ThreatScale = nil
+	nameplate.threatScale = nil
 
 	if pass then
 		return isTank, offTank, feedbackUnit
@@ -32,9 +32,11 @@ end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	local nameplate, colors, db = self.__owner, NP.db.colors.threat, NP.db.threat
-	local sf = NP:StyleFilterChanges(nameplate)
-	if not status and not sf.Scale then
-		nameplate.ThreatScale = 1
+	local styleFilter = NP:StyleFilterChanges(nameplate)
+	local styleScale = styleFilter.general and styleFilter.general.scale
+
+	if not status and not styleScale then
+		nameplate.threatScale = 1
 		NP:ScalePlate(nameplate, 1)
 	elseif status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
 		NP:Health_SetColors(nameplate, true)
@@ -55,16 +57,16 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			Scale = self.isTank and db.badScale or db.goodScale
 		end
 
-		if sf.HealthColor then
+		if styleFilter.health and styleFilter.health.colors then
 			self.r, self.g, self.b = Color.r, Color.g, Color.b
 		else
 			nameplate.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 		end
 
 		if Scale then
-			nameplate.ThreatScale = Scale
+			nameplate.threatScale = Scale
 
-			if not sf.Scale then
+			if not styleScale then
 				NP:ScalePlate(nameplate, Scale)
 			end
 		end

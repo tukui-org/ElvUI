@@ -602,6 +602,7 @@ local NP_Auras = {
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	stackAuras = true,
+	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	spacing = 1,
@@ -1112,13 +1113,10 @@ for unit, data in next, P.nameplates.units do
 	data.enable = unit ~= 'PLAYER'
 
 	if unit ~= 'TARGET' then
-		data.showTitle = true
-		data.smartAuraPosition = 'DISABLED'
-		data.nameOnly = unit == 'FRIENDLY_NPC'
-
+		data.auras = CopyTable(NP_Auras)
 		data.buffs = CopyTable(NP_Auras)
-		data.castbar = CopyTable(NP_Castbar)
 		data.debuffs = CopyTable(NP_Auras)
+		data.castbar = CopyTable(NP_Castbar)
 		data.health = CopyTable(NP_Health)
 		data.level = CopyTable(NP_Level)
 		data.name = CopyTable(NP_Name)
@@ -1128,6 +1126,21 @@ for unit, data in next, P.nameplates.units do
 		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
 		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
+
+		local enemyNPC = unit == 'ENEMY_NPC'
+		data.auras.enable = enemyNPC
+		data.nameOnly = unit == 'FRIENDLY_NPC'
+		data.smartAuraPosition = 'DISABLED'
+		data.showTitle = true
+
+		if enemyNPC then
+			data.auras.priority = 'Blacklist,CCDebuffs'
+			data.auras.anchorPoint = 'RIGHT'
+			data.auras.filter = 'HARMFUL'
+			data.auras.numAuras = 2
+			data.auras.xOffset = 2
+			data.auras.yOffset = 0
+		end
 
 		if strfind(unit, '_NPC') then
 			data.eliteIcon = CopyTable(NP_EliteIcon)
@@ -1470,6 +1483,7 @@ local UF_Auras = {
 	enable = false,
 	numrows = 1,
 	perrow = 8,
+	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	xOffset = 0,
@@ -2087,6 +2101,7 @@ P.unitframe = {
 			debuffHighlight = CopyTable(UF_DebuffHighlight),
 			buffIndicator = CopyTable(UF_AuraWatch),
 			buffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
@@ -2129,6 +2144,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2160,6 +2176,7 @@ P.unitframe = {
 			cutaway = CopyTable(UF_Cutaway),
 			customTexts = {},
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			health = CopyTable(UF_Health),
 			healPrediction = CopyTable(UF_HealthPrediction),
@@ -2192,6 +2209,7 @@ P.unitframe = {
 			cutaway = CopyTable(UF_Cutaway),
 			CombatIcon = CopyTable(UF_CombatIcon),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2223,6 +2241,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2256,6 +2275,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2293,6 +2313,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2336,6 +2357,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2376,6 +2398,7 @@ P.unitframe = {
 			customTexts = {},
 			cutaway = CopyTable(UF_Cutaway),
 			debuffs = CopyTable(UF_Auras),
+			auras = CopyTable(UF_Auras),
 			fader = CopyTable(UF_Fader),
 			healPrediction = CopyTable(UF_HealthPrediction),
 			health = CopyTable(UF_Health),
@@ -2424,6 +2447,14 @@ P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
 P.unitframe.units.target.aurabar.priority = 'Blacklist,blockNoDuration,Personal,RaidDebuffs'
+P.unitframe.units.target.auras.enable = true
+P.unitframe.units.target.auras.priority = 'Blacklist,CCDebuffs'
+P.unitframe.units.target.auras.filter = 'HARMFUL'
+P.unitframe.units.target.auras.xOffset = 2
+P.unitframe.units.target.auras.anchorPoint = 'RIGHT'
+P.unitframe.units.target.auras.sizeOverride = 48
+P.unitframe.units.target.auras.perrow = 4
+P.unitframe.units.target.auras.numRows = 1
 P.unitframe.units.target.buffs.enable = true
 P.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT'
 P.unitframe.units.target.buffs.growthX = 'LEFT'

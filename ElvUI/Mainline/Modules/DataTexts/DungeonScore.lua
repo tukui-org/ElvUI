@@ -20,7 +20,7 @@ local function OnEnter()
 	local score = GetOverallDungeonScore()
 	local color = GetDungeonScoreRarityColor(score) or HIGHLIGHT_FONT_COLOR
 
-	local classColor = E:ClassColor(E.myclass)
+	local classColor = E.myClassColor
 	DT.tooltip:AddLine(format('|c%s%s|r', classColor.colorStr, E.myname), 1, 1, 1, true)
 	DT.tooltip:AddLine(E.myLocalizedClass, 1, 1, 1, true)
 	DT.tooltip:AddLine(format('%s|c%s%s|r', DUNGEON_SCORE_LINK_RATING, E:RGBToHex(color.r, color.g, color.b, 'ff'), score), nil, nil, nil, true)
