@@ -6,7 +6,7 @@ local ElvUF = E.oUF
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
-local ipairs, next, pairs = ipairs, next, pairs
+local ipairs, pairs, next = ipairs, pairs, next
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
