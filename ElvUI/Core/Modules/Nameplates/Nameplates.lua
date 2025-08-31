@@ -237,6 +237,12 @@ function NP:Style(unit)
 	self.frameName = frameName
 	self.isNamePlate = true
 
+	if frameName == 'ElvNP_Player' then
+		NP.PlayerFrame = self
+	elseif frameName == 'ElvNP_TestFrame' then
+		NP.TestFrame = self
+	end
+
 	if frameName == 'ElvNP_TargetClassPower' then
 		NP:StyleTargetPlate(self, unit)
 	else
@@ -1036,7 +1042,6 @@ function NP:Initialize()
 	playerFrame:Point('TOP', UIParent, 'CENTER', 0, -150)
 	playerFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	playerFrame.frameType = 'PLAYER'
-	NP.PlayerFrame = playerFrame
 
 	local playerHolder = E:CreateMover(playerFrame, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 	NP.PlayerMover = playerHolder.mover
@@ -1056,7 +1061,7 @@ function NP:Initialize()
 	staticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 	NP.StaticSecure = staticSecure
 
-	local testFrame = ElvUF:Spawn('player', 'ElvNP_Test')
+	local testFrame = ElvUF:Spawn('player', 'ElvNP_TestFrame')
 	testFrame:SetScale(1)
 	testFrame:ClearAllPoints()
 	testFrame:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
@@ -1067,7 +1072,6 @@ function NP:Initialize()
 	testFrame:SetScript('OnDragStop', function() NP.TestFrame:StopMovingOrSizing() end)
 	testFrame.frameType = 'PLAYER'
 	testFrame:Disable()
-	NP.TestFrame = testFrame
 
 	NP:DisablePlate(testFrame)
 

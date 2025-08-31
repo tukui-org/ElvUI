@@ -601,6 +601,7 @@ local NP_Auras = {
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	stackAuras = true,
+	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	spacing = 1,
@@ -1111,13 +1112,10 @@ for unit, data in next, P.nameplates.units do
 	data.enable = unit ~= 'PLAYER'
 
 	if unit ~= 'TARGET' then
-		data.showTitle = true
-		data.smartAuraPosition = 'DISABLED'
-		data.nameOnly = unit == 'FRIENDLY_NPC'
-
+		data.auras = CopyTable(NP_Auras)
 		data.buffs = CopyTable(NP_Auras)
-		data.castbar = CopyTable(NP_Castbar)
 		data.debuffs = CopyTable(NP_Auras)
+		data.castbar = CopyTable(NP_Castbar)
 		data.health = CopyTable(NP_Health)
 		data.level = CopyTable(NP_Level)
 		data.name = CopyTable(NP_Name)
@@ -1127,6 +1125,21 @@ for unit, data in next, P.nameplates.units do
 		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
 		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
+
+		local enemyNPC = unit == 'ENEMY_NPC'
+		data.auras.enable = enemyNPC
+		data.nameOnly = unit == 'FRIENDLY_NPC'
+		data.smartAuraPosition = 'DISABLED'
+		data.showTitle = true
+
+		if enemyNPC then
+			data.auras.priority = 'Blacklist,CCDebuffs'
+			data.auras.anchorPoint = 'RIGHT'
+			data.auras.filter = 'HARMFUL'
+			data.auras.numAuras = 2
+			data.auras.xOffset = 2
+			data.auras.yOffset = 0
+		end
 
 		if strfind(unit, '_NPC') then
 			data.eliteIcon = CopyTable(NP_EliteIcon)
