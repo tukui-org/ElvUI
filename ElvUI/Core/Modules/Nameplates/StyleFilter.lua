@@ -1188,14 +1188,14 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Casting
 	if trigger.casting then
 		local cast = trigger.casting
-		local start = not cast.requireStart or (event == 'UNIT_SPELLCAST_START' or event == 'UNIT_SPELLCAST_CHANNEL_START')
+		local allow = not cast.requireStart or (event == 'UNIT_SPELLCAST_START' or event == 'UNIT_SPELLCAST_CHANNEL_START')
 
 		-- Spell
 		if cast.spells then
 			for _, value in next, cast.spells do
 				if value then -- only run if at least one is selected
 					local castingSpell = (frame.castingSpellID and cast.spells[tostring(frame.castingSpellID)]) or cast.spells[frame.spellName]
-					if start and ((cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell)) then passed = true else return end
+					if allow and ((cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell)) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
 			end
@@ -1204,19 +1204,19 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		-- Not Status
 		if cast.notCasting or cast.notChanneling then
 			if cast.notCasting and cast.notChanneling then
-				if start and (not frame.casting and not frame.channeling) then passed = true else return end
-			elseif start and ((cast.notCasting and not frame.casting) or (cast.notChanneling and not frame.channeling)) then passed = true else return end
+				if allow and (not frame.casting and not frame.channeling) then passed = true else return end
+			elseif allow and ((cast.notCasting and not frame.casting) or (cast.notChanneling and not frame.channeling)) then passed = true else return end
 		end
 
 		-- Is Status
 		if cast.isCasting or cast.isChanneling then
-			if start and ((cast.isCasting and frame.casting) or (cast.isChanneling and frame.channeling)) then passed = true else return end
+			if allow and ((cast.isCasting and frame.casting) or (cast.isChanneling and frame.channeling)) then passed = true else return end
 		end
 
 		-- Interruptible
 		if cast.interruptible or cast.notInterruptible then
 			if (frame.casting or frame.channeling) and ((cast.interruptible and not frame.notInterruptible)
-			or start and ((cast.notInterruptible and frame.notInterruptible))) then passed = true else return end
+			or allow and ((cast.notInterruptible and frame.notInterruptible))) then passed = true else return end
 		end
 	end
 
