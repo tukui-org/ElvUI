@@ -6,9 +6,8 @@ local ElvUF = E.oUF
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
-local ipairs, pairs, next = ipairs, pairs, next
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
-local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
+local strmatch, tinsert, tremove, next, sort, wipe = strmatch, tinsert, tremove, next, sort, wipe
 
 local IsResting = IsResting
 local PlaySoundFile = PlaySoundFile
@@ -381,20 +380,16 @@ function NP:StyleFilterDispelCheck(frame, event, arg1, arg2, filter)
 	end
 end
 
-function NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, unit)
-	local temp = {}
-
-	local index = 1
-	local unitAuraFiltered = AuraFiltered[filter][frame.unit]
+function NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, unit, spellName, spellID)
+	local index, temp = 1
+	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local name, _, count, _, _, expiration, source, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
-		local info = temp[name] or temp[spellID]
-		if not info then info = {} end
+		if spellName == aura.name or spellID == aura.spellId then
+			if not temp then temp = {} end
 
-		temp[name] = info
-		temp[spellID] = info
-		info[index] = { count = count, expiration = expiration, source = source, modRate = modRate }
+			temp[index] = aura
+		end
 
 		index = index + 1
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
@@ -405,29 +400,24 @@ end
 
 function NP:StyleFilterAuraCheck(frame, event, arg1, arg2, filter, names, tickers, mustHaveAll, missing, minTimeLeft, maxTimeLeft, fromMe, fromPet, onMe, onPet)
 	local total, matches, now = 0, 0, GetTime()
-	local temp -- data of current auras
 
-	for key, value in pairs(names) do
+	for key, value in next, names do
 		if value then -- only if they are turned on
 			total = total + 1 -- keep track of the names
 
-			if not temp then
-				temp = NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit)
-			end
-
 			local spell, count = strmatch(key, NP.StyleFilterStackPattern)
-			local info = temp[spell] or temp[tonumber(spell)]
+			local auras = NP:StyleFilterAuraData(frame, event, arg1, arg2, filter, (onMe and 'player') or (onPet and 'pet') or frame.unit, spell, tonumber(spell))
 
-			if info then
+			if auras then
 				local stacks = tonumber(count) -- send stacks to nil or int
 				local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 				local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
 
-				for _, data in pairs(info) do -- need to loop for the sources, not all the spells though
-					if not stacks or (data.count and data.count >= stacks) then
-						local isMe, isPet = data.source == 'player' or data.source == 'vehicle', data.source == 'pet'
+				for _, data in next, auras do -- need to loop for the sources, not all the spells though
+					if not stacks or (data.applications and data.applications >= stacks) then
+						local isMe, isPet = data.sourceUnit == 'player' or data.sourceUnit == 'vehicle', data.sourceUnit == 'pet'
 						if fromMe and fromPet and (isMe or isPet) or (fromMe and isMe) or (fromPet and isPet) or (not fromMe and not fromPet) then
-							local timeLeft = (hasMinTime or hasMaxTime) and data.expiration and ((data.expiration - now) / (data.modRate or 1))
+							local timeLeft = (hasMinTime or hasMaxTime) and data.expirationTime and ((data.expirationTime - now) / (data.timeMod or 1))
 							local minTimeAllow = not hasMinTime or (timeLeft and timeLeft > minTimeLeft)
 							local maxTimeAllow = not hasMaxTime or (timeLeft and timeLeft < maxTimeLeft)
 
@@ -451,10 +441,6 @@ function NP:StyleFilterAuraCheck(frame, event, arg1, arg2, filter, names, ticker
 				ticker = tickers[stale]
 	end end end
 
-	if temp then
-		wipe(temp) -- dont need it anymore
-	end
-
 	if total == 0 then
 		return nil -- If no auras are checked just pass nil, we dont need to run the filter here.
 	else
@@ -469,7 +455,7 @@ function NP:StyleFilterCooldownCheck(names, mustHaveAll)
 	local _, gcd = E:GetSpellCooldown(61304)
 	local total, count = 0, 0
 
-	for name, value in pairs(names) do
+	for name, value in next, names do
 		if E:GetSpellInfo(name) then -- check spell name valid, GetSpellCharges/GetSpellCooldown will return nil if not known by your class
 			if value == 'ONCD' or value == 'OFFCD' then -- only if they are turned on
 				total = total + 1 -- keep track of the names
@@ -1081,7 +1067,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 				-- Instance Difficulty
 				if instanceType == 'raid' or instanceType == 'party' then
 					local D = trigger.instanceDifficulty[(instanceType == 'party' and 'dungeon') or instanceType]
-					for _, value in pairs(D) do
+					for _, value in next, D do
 						if value and not D[NP.TriggerConditions.difficulties[difficultyID]] then return end
 					end
 				end
@@ -1141,7 +1127,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 	-- Key Modifier
 	if trigger.keyMod and trigger.keyMod.enable then
-		for key, value in pairs(trigger.keyMod) do
+		for key, value in next, trigger.keyMod do
 			local isDown = NP.TriggerConditions.keys[key]
 			if value and isDown then
 				if isDown() then passed = true else return end
@@ -1150,8 +1136,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Name or GUID
-	if trigger.names and next(trigger.names) then
-		for _, value in pairs(trigger.names) do
+	if trigger.names then
+		for _, value in next, trigger.names do
 			if value then -- only run if at least one is selected
 				local npcID = frame.npcID and tostring(frame.npcID) or nil
 				local name = trigger.names[frame.unitName] or trigger.names[npcID]
@@ -1162,8 +1148,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Slots
-	if trigger.slots and next(trigger.slots) then
-		for slot, value in pairs(trigger.slots) do
+	if trigger.slots then
+		for slot, value in next, trigger.slots do
 			if value then -- only run if at least one is selected
 				if GetInventoryItemID('player', slot) then passed = true else return end
 			end
@@ -1171,8 +1157,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Items
-	if trigger.items and next(trigger.items) then
-		for item, value in pairs(trigger.items) do
+	if trigger.items then
+		for item, value in next, trigger.items do
 			if value then -- only run if at least one is selected
 				local hasItem = C_Item_IsEquippedItem(item)
 				if (not trigger.negativeMatch and hasItem) or (trigger.negativeMatch and not hasItem) then passed = true else return end
@@ -1181,8 +1167,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Known Spells (new talents)
-	if trigger.known and trigger.known.spells and next(trigger.known.spells) then
-		for spell, value in pairs(trigger.known.spells) do
+	if trigger.known and trigger.known.spells then
+		for spell, value in next, trigger.known.spells do
 			if value then -- only run if at least one is selected
 				local name, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
 				if name then -- check spell name valid
@@ -1204,8 +1190,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		local cast = trigger.casting
 
 		-- Spell
-		if cast.spells and next(cast.spells) then
-			for _, value in pairs(cast.spells) do
+		if cast.spells then
+			for _, value in next, cast.spells do
 				if value then -- only run if at least one is selected
 					local castingSpell = (frame.castingSpellID and cast.spells[tostring(frame.castingSpellID)]) or cast.spells[frame.spellName]
 					if (cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell) then passed = true else return end
@@ -1280,8 +1266,8 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 		if m.hasAura or m.missingAura then
 			if (m.hasAura and icons) or (m.missingAura and not icons) then passed = true else return end
-		elseif icons and m.auras and next(m.auras) then
-			for texture, value in pairs(m.auras) do
+		elseif icons and m.auras then
+			for texture, value in next, m.auras do
 				if value then -- only if they are turned on
 					local active = element.activeIcons[texture]
 					if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
@@ -1293,7 +1279,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 
 	-- Plugin Callback
 	if NP.StyleFilterCustomChecks then
-		for _, customCheck in pairs(NP.StyleFilterCustomChecks) do
+		for _, customCheck in next, NP.StyleFilterCustomChecks do
 			local custom = customCheck(frame, filter, trigger)
 			if custom ~= nil then -- ignore if nil return
 				if custom then passed = true else return end
@@ -1520,12 +1506,12 @@ NP.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_INTERRUPTED = 1
 }
 
-for event in pairs(NP.StyleFilterCastEvents) do
+for event in next, NP.StyleFilterCastEvents do
 	NP.StyleFilterDefaultEvents[event] = false
 end
 
 function NP:StyleFilterWatchEvents()
-	for event in pairs(NP.StyleFilterDefaultEvents) do
+	for event in next, NP.StyleFilterDefaultEvents do
 		NP.StyleFilterPlateEvents[event] = NP.StyleFilterTriggerEvents[event] and true or nil
 	end
 end
@@ -1537,7 +1523,7 @@ function NP:StyleFilterConfigure()
 	wipe(list)
 
 	if NP.db.filters then
-		for filterName, filter in pairs(E.global.nameplates.filters) do
+		for filterName, filter in next, E.global.nameplates.filters do
 			local t, db = filter.triggers, NP.db.filters[filterName]
 			if t and db and db.triggers and db.triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
@@ -1552,15 +1538,15 @@ function NP:StyleFilterConfigure()
 
 				if t.casting then
 					local spell
-					if t.casting.spells and next(t.casting.spells) then
-						for _, value in pairs(t.casting.spells) do
+					if t.casting.spells then
+						for _, value in next, t.casting.spells do
 							if value then
 								spell = true
 								break
 					end end end
 
 					if spell or (t.casting.interruptible or t.casting.notInterruptible or t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
-						for event in pairs(NP.StyleFilterCastEvents) do
+						for event in next, NP.StyleFilterCastEvents do
 							events[event] = 1
 						end
 					end
@@ -1661,43 +1647,43 @@ function NP:StyleFilterConfigure()
 					events.UNIT_AURA = 1
 				end
 
-				if not events.UNIT_NAME_UPDATE and t.names and next(t.names) then
-					for _, value in pairs(t.names) do
+				if not events.UNIT_NAME_UPDATE and t.names then
+					for _, value in next, t.names do
 						if value then
 							events.UNIT_NAME_UPDATE = 1
 							break
 				end end end
 
-				if not events.PLAYER_EQUIPMENT_CHANGED and t.slots and next(t.slots) then
-					for _, value in pairs(t.slots) do
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.slots then
+					for _, value in next, t.slots do
 						if value then
 							events.PLAYER_EQUIPMENT_CHANGED = 1
 							break
 				end end end
 
-				if not events.PLAYER_EQUIPMENT_CHANGED and t.items and next(t.items) then
-					for _, value in pairs(t.items) do
+				if not events.PLAYER_EQUIPMENT_CHANGED and t.items then
+					for _, value in next, t.items do
 						if value then
 							events.PLAYER_EQUIPMENT_CHANGED = 1
 							break
 				end end end
 
-				if not events.SPELL_UPDATE_COOLDOWN and t.cooldowns and t.cooldowns.names and next(t.cooldowns.names) then
-					for _, value in pairs(t.cooldowns.names) do
+				if not events.SPELL_UPDATE_COOLDOWN and t.cooldowns and t.cooldowns.names then
+					for _, value in next, t.cooldowns.names do
 						if value == 'ONCD' or value == 'OFFCD' then
 							events.SPELL_UPDATE_COOLDOWN = 1
 							break
 				end end end
 
-				if not events.UNIT_AURA and t.buffs and t.buffs.names and next(t.buffs.names) then
-					for _, value in pairs(t.buffs.names) do
+				if not events.UNIT_AURA and t.buffs and t.buffs.names then
+					for _, value in next, t.buffs.names do
 						if value then
 							events.UNIT_AURA = 1
 							break
 				end end end
 
-				if not events.UNIT_AURA and t.debuffs and t.debuffs.names and next(t.debuffs.names) then
-					for _, value in pairs(t.debuffs.names) do
+				if not events.UNIT_AURA and t.debuffs and t.debuffs.names then
+					for _, value in next, t.debuffs.names do
 						if value then
 							events.UNIT_AURA = 1
 							break
@@ -1723,7 +1709,7 @@ function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 
 	NP:StyleFilterClear(frame)
 
-	for filterNum in ipairs(NP.StyleFilterTriggerList) do
+	for filterNum in next, NP.StyleFilterTriggerList do
 		local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 		if filter then
 			NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers)
@@ -1800,7 +1786,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 	function NP:StyleFilterEventWatch(frame, disable)
 		if frame == NP.TestFrame then return end
 
-		for event in pairs(NP.StyleFilterDefaultEvents) do
+		for event in next, NP.StyleFilterDefaultEvents do
 			local holdsEvent = NP:StyleFilterIsWatching(frame, event)
 			if disable then
 				if holdsEvent then
@@ -1850,7 +1836,7 @@ function NP:StyleFilterEvents(nameplate)
 	ElvUF:CreateUnitAuraInfo(nameplate.unit)
 
 	-- add events to be watched
-	for event, unitless in pairs(NP.StyleFilterDefaultEvents) do
+	for event, unitless in next, NP.StyleFilterDefaultEvents do
 		NP:StyleFilterEventRegister(nameplate, event, unitless)
 	end
 
@@ -1882,7 +1868,7 @@ function NP:PLAYER_LOGOUT()
 end
 
 function NP:StyleFilterClearDefaults(tbl)
-	for filterName, filterTable in pairs(tbl) do
+	for filterName, filterTable in next, tbl do
 		if G.nameplates.filters[filterName] then
 			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults)
 			E:CopyTable(defaultTable, G.nameplates.filters[filterName])
@@ -1898,7 +1884,7 @@ function NP:StyleFilterCopyDefaults(tbl)
 end
 
 function NP:StyleFilterInitialize()
-	for _, filterTable in pairs(E.global.nameplates.filters) do
+	for _, filterTable in next, E.global.nameplates.filters do
 		NP:StyleFilterCopyDefaults(filterTable)
 	end
 end
