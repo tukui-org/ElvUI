@@ -1287,7 +1287,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Plugin Callback
 	if NP.StyleFilterCustomChecks then
 		for _, customCheck in next, NP.StyleFilterCustomChecks do
-			local custom = customCheck(frame, filter, trigger)
+			local custom = customCheck(frame, filter, trigger, event)
 			if custom ~= nil then -- ignore if nil return
 				if custom then passed = true else return end
 			end
