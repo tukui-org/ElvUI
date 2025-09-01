@@ -603,13 +603,14 @@ end
 
 function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
 	local changes = frame.StyleFilterChanges
-
-	changes.actions = E:CopyTable(changes.actions, actions)
-	changes.general = E:CopyTable(changes.general, general)
-	changes.tags = E:CopyTable(changes.tags, tags)
-	changes.health = E:CopyTable(changes.health, health)
-	changes.power = E:CopyTable(changes.power, power)
-	changes.castbar = E:CopyTable(changes.castbar, castbar)
+	if changes then
+		changes.actions = E:CopyTable(changes.actions, actions)
+		changes.general = E:CopyTable(changes.general, general)
+		changes.tags = E:CopyTable(changes.tags, tags)
+		changes.health = E:CopyTable(changes.health, health)
+		changes.power = E:CopyTable(changes.power, power)
+		changes.castbar = E:CopyTable(changes.castbar, castbar)
+	end
 
 	if general.visibility or general.nameOnly then
 		if general.nameOnly then -- only allow name only for the secure plate
@@ -771,6 +772,11 @@ function NP:StyleFilterClearChanges(frame, changes)
 	NP:StyleFilterClearChangesOnElement(frame, db, changes.castbar, frame.Castbar)
 
 	wipe(changes) -- farewell
+	wipe(frame.changesGeneral)
+	wipe(frame.changesTags)
+	wipe(frame.changesHealth)
+	wipe(frame.changesPower)
+	wipe(frame.changesCastbar)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
@@ -1297,9 +1303,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 end
 
 function NP:StyleFilterGetElement(object, actions)
-	if not actions then
-		return wipe(object)
-	end
+	if not actions then return object end
 
 	object.glow = actions.glow and actions.glow.enable or nil
 	object.colors = actions.colors and actions.colors.enable or nil
@@ -1311,9 +1315,7 @@ function NP:StyleFilterGetElement(object, actions)
 end
 
 function NP:StyleFilterGetGeneral(object, actions)
-	if not actions then
-		return wipe(object)
-	end
+	if not actions then return object end
 
 	object.visibility = actions.hide or nil
 	object.nameOnly = actions.nameOnly or nil
@@ -1326,9 +1328,7 @@ function NP:StyleFilterGetGeneral(object, actions)
 end
 
 function NP:StyleFilterGetTags(object, actions)
-	if not actions or not actions.tags then
-		wipe(object)
-	end
+	if not actions or not actions.tags then return object end
 
 	object.name = actions.tags.name and actions.tags.name ~= '' or nil
 	object.power = actions.tags.power and actions.tags.power ~= '' or nil
