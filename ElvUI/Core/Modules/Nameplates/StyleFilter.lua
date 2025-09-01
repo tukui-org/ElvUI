@@ -603,16 +603,13 @@ end
 
 function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
 	local changes = frame.StyleFilterChanges
-	if not changes then
-		return
-	end
 
-	changes.actions = actions
-	changes.general = general
-	changes.tags = tags
-	changes.health = health
-	changes.power = power
-	changes.castbar = castbar
+	changes.actions = E:CopyTable(changes.actions, actions)
+	changes.general = E:CopyTable(changes.general, general)
+	changes.tags = E:CopyTable(changes.tags, tags)
+	changes.health = E:CopyTable(changes.health, health)
+	changes.power = E:CopyTable(changes.power, power)
+	changes.castbar = E:CopyTable(changes.castbar, castbar)
 
 	if general.visibility or general.nameOnly then
 		if general.nameOnly then -- only allow name only for the secure plate
@@ -772,6 +769,8 @@ function NP:StyleFilterClearChanges(frame, changes)
 	NP:StyleFilterClearChangesOnElement(frame, db, changes.health, frame.Health, frame.Cutaway.Health)
 	NP:StyleFilterClearChangesOnElement(frame, db, changes.power, frame.Power, frame.Cutaway.Power)
 	NP:StyleFilterClearChangesOnElement(frame, db, changes.castbar, frame.Castbar)
+
+	wipe(changes) -- farewell
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
@@ -1302,11 +1301,11 @@ function NP:StyleFilterGetElement(object, actions)
 		return wipe(object)
 	end
 
-	object.glow = actions.glow and actions.glow.enable
-	object.colors = actions.colors and actions.colors.enable
-	object.border = actions.border and actions.border.enable
-	object.texture = actions.texture and actions.texture.enable
-	object.flash = actions.flash and actions.flash.enable
+	object.glow = actions.glow and actions.glow.enable or nil
+	object.colors = actions.colors and actions.colors.enable or nil
+	object.border = actions.border and actions.border.enable or nil
+	object.texture = actions.texture and actions.texture.enable or nil
+	object.flash = actions.flash and actions.flash.enable or nil
 
 	return object
 end
@@ -1316,12 +1315,12 @@ function NP:StyleFilterGetGeneral(object, actions)
 		return wipe(object)
 	end
 
-	object.visibility = actions.hide
-	object.nameOnly = actions.nameOnly
-	object.portrait = actions.usePortrait
-	object.scale = actions.scale ~= 1
-	object.alpha = actions.alpha ~= -1
-	object.sound = actions.sound and actions.sound.enable and actions.sound.soundFile ~= ''
+	object.visibility = actions.hide or nil
+	object.nameOnly = actions.nameOnly or nil
+	object.portrait = actions.usePortrait or nil
+	object.scale = actions.scale ~= 1 or nil
+	object.alpha = actions.alpha ~= -1 or nil
+	object.sound = actions.sound and actions.sound.enable and actions.sound.soundFile ~= '' or nil
 
 	return object
 end
@@ -1331,11 +1330,11 @@ function NP:StyleFilterGetTags(object, actions)
 		wipe(object)
 	end
 
-	object.name = actions.tags.name and actions.tags.name ~= ''
-	object.power = actions.tags.power and actions.tags.power ~= ''
-	object.health = actions.tags.health and actions.tags.health ~= ''
-	object.title = actions.tags.title and actions.tags.title ~= ''
-	object.level = actions.tags.level and actions.tags.level ~= ''
+	object.name = actions.tags.name and actions.tags.name ~= '' or nil
+	object.power = actions.tags.power and actions.tags.power ~= '' or nil
+	object.health = actions.tags.health and actions.tags.health ~= '' or nil
+	object.title = actions.tags.title and actions.tags.title ~= '' or nil
+	object.level = actions.tags.level and actions.tags.level ~= '' or nil
 
 	return object
 end
@@ -1353,17 +1352,9 @@ function NP:StyleFilterPass(frame, event, actions)
 end
 
 function NP:StyleFilterClear(frame)
-	if frame == NP.TestFrame then return end
+	if frame == NP.TestFrame or not next(frame.StyleFilterChanges) then return end
 
-	wipe(frame.changesChanged) -- lets get a fresh table
-
-	local changes = E:CopyTable(frame.changesChanged, frame.StyleFilterChanges, true) -- store the changes
-
-	wipe(frame.StyleFilterChanges) -- clean out the table
-
-	if next(changes) then -- lets restore what was changed
-		NP:StyleFilterClearChanges(frame, changes)
-	end
+	NP:StyleFilterClearChanges(frame, frame.StyleFilterChanges)
 end
 
 function NP:StyleFilterSort(place)
@@ -1828,7 +1819,6 @@ function NP:StyleFilterEvents(nameplate)
 	nameplate.BuffTickers = {}
 
 	-- tables for handling changes
-	nameplate.changesChanged = {}
 	nameplate.changesGeneral = {}
 	nameplate.changesTags = {}
 	nameplate.changesHealth = {}
