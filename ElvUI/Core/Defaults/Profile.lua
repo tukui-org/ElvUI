@@ -1132,10 +1132,10 @@ for unit, data in next, P.nameplates.units do
 		data.smartAuraPosition = 'DISABLED'
 		data.showTitle = true
 
-		local unitEnemy = npcEnemy or (unit == 'ENEMY_PLAYER' or unit == 'FRIENDLY_PLAYER')
-		data.auras.enable = unitEnemy -- enemy npc and players
+		local useCCDebuffs = npcEnemy or (unit == 'ENEMY_PLAYER' or unit == 'FRIENDLY_PLAYER')
+		data.auras.enable = useCCDebuffs -- enemy npc and players
 
-		if unitEnemy then
+		if useCCDebuffs then
 			data.auras.priority = 'Blacklist,CCDebuffs'
 			data.auras.anchorPoint = 'RIGHT'
 			data.auras.filter = 'HARMFUL'
