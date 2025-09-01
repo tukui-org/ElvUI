@@ -1132,7 +1132,7 @@ for unit, data in next, P.nameplates.units do
 		data.smartAuraPosition = 'DISABLED'
 		data.showTitle = true
 
-		local unitEnemy = npcFriendly or npcEnemy or (unit == 'ENEMY_PLAYER')
+		local unitEnemy = npcEnemy or (unit == 'ENEMY_PLAYER' or unit == 'FRIENDLY_PLAYER')
 		data.auras.enable = unitEnemy -- enemy npc and players
 
 		if unitEnemy then
