@@ -604,7 +604,6 @@ end
 function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
 	local changes = frame.StyleFilterChanges
 	if changes then
-		changes.actions = E:CopyTable(changes.actions, actions)
 		changes.general = E:CopyTable(changes.general, general)
 		changes.tags = E:CopyTable(changes.tags, tags)
 		changes.health = E:CopyTable(changes.health, health)

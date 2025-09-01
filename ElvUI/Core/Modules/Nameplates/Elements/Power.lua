@@ -67,19 +67,18 @@ function NP:Power_UpdateColor(_, unit)
 	end
 
 	local styleFilter = NP:StyleFilterChanges(self)
-	local stylePower = (styleFilter.power and styleFilter.power.colors) and styleFilter.actions.power.colors.color
-	if stylePower then
-		r, g, b = stylePower.r, stylePower.g, stylePower.b
-	end
+	if not (styleFilter.power and styleFilter.power.colors) then
+		if atlas then
+			element:SetStatusBarTexture(atlas)
+			element:SetStatusBarColor(1, 1, 1)
+		elseif b then
+			element:SetStatusBarColor(r, g, b)
+		end
 
-	if atlas then
-		element:SetStatusBarTexture(atlas)
-		element:SetStatusBarColor(1, 1, 1)
-	elseif b then
-		element:SetStatusBarColor(r, g, b)
+		if element.bg and b then
+			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		end
 	end
-
-	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 
 	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
