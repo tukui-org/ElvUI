@@ -673,7 +673,7 @@ function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, 
 		else
 			local exists = NP.SoundHandlers[sound]
 			if not exists or not C_Sound_IsPlaying(exists) then
-				local willPlay, soundHandle = PlaySoundFile(sound)
+				local willPlay, soundHandle = PlaySoundFile(sound, actions.sound.channel)
 				if willPlay then -- we can play it, add it to handlers
 					NP.SoundHandlers[sound] = soundHandle
 				end

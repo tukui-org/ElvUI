@@ -92,6 +92,7 @@ E.StyleFilterDefaults = {
 		sound = {
 			enable = false,
 			overlap = false,
+			channel = 'Master',
 			soundFile = ''
 		},
 		tags = {

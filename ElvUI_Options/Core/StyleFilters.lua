@@ -832,6 +832,7 @@ StyleFilters.actions.args.castbar = CreateActions(L["Castbar"], 30, 'castbar')
 StyleFilters.actions.args.sound = ACH:Group(_G.SOUND, nil, 50, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 StyleFilters.actions.args.sound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 StyleFilters.actions.args.sound.args.overlap = ACH:Toggle(L["Overlap"], nil, 2)
+StyleFilters.actions.args.sound.args.channel = ACH:Select(L["Channel"], nil, 13, { Master = L["Master"], Music = L["Music"], SFX = L["Sound Effects"], Ambience = L["Ambience"], Dialog = L["Dialog"] })
 StyleFilters.actions.args.sound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 3, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.sound.enable end)
 
 StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 60, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
