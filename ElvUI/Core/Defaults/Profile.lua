@@ -1171,7 +1171,7 @@ P.nameplates.units.FRIENDLY_PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.yOffset = 35
-P.nameplates.units.FRIENDLY_PLAYER.debuffs.priority = 'Blacklist,Dispellable,blockNoDuration,CCDebuffs'
+P.nameplates.units.FRIENDLY_PLAYER.debuffs.priority = 'Blacklist,Dispellable'
 
 P.nameplates.units.ENEMY_PLAYER.buffs.priority = 'Blacklist,Whitelist,Dispellable,TurtleBuffs'
 P.nameplates.units.ENEMY_PLAYER.buffs.maxDuration = 300
@@ -1187,7 +1187,7 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthX = 'LEFT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
-P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Dispellable,blockNoDuration'
+P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Dispellable,blockNoDuration,CCDebuffs'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
 P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
