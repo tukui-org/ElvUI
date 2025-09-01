@@ -864,8 +864,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1228214] = List(), -- Astral Harvest
 		[1243901] = List(), -- Void Harvest
 	-- The Soul Hunters
-		[1227847] = List(), -- The Hunt
-		[1241946] = List(), -- Frailty
+		[1227847] = List(6), -- The Hunt
+		[1241946] = List(6), -- Frailty
+		[1222232] = List(2), -- Devourer's Ire
 	-- Fractillus
 		[1233411] = List(), -- Crystalline Shockwave
 	-- Nexus-King Salhadaar
