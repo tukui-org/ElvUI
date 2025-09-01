@@ -1132,8 +1132,8 @@ for unit, data in next, P.nameplates.units do
 		data.smartAuraPosition = 'DISABLED'
 		data.showTitle = true
 
-		local unitEnemy = npcEnemy or unit == 'ENEMY_PLAYER'
-		data.auras.enable = unitEnemy
+		local unitEnemy = npcFriendly or npcEnemy or (unit == 'ENEMY_PLAYER')
+		data.auras.enable = unitEnemy -- enemy npc and players
 
 		if unitEnemy then
 			data.auras.priority = 'Blacklist,CCDebuffs'
@@ -1144,7 +1144,7 @@ for unit, data in next, P.nameplates.units do
 			data.auras.yOffset = 0
 		end
 
-		if npcFriendly or npcEnemy then
+		if npcFriendly or npcEnemy then -- npcs
 			data.eliteIcon = CopyTable(NP_EliteIcon)
 			data.questIcon = CopyTable(NP_QuestIcon)
 		else
