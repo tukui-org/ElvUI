@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
-local strfind = strfind
 local next = next
 
 P.gridSize = 64
@@ -1126,13 +1125,17 @@ for unit, data in next, P.nameplates.units do
 		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
 
-		local enemyNPC = unit == 'ENEMY_NPC'
-		data.auras.enable = enemyNPC
-		data.nameOnly = unit == 'FRIENDLY_NPC'
+		local npcFriendly = unit == 'FRIENDLY_NPC'
+		local npcEnemy = unit == 'ENEMY_NPC'
+
+		data.nameOnly = npcFriendly
 		data.smartAuraPosition = 'DISABLED'
 		data.showTitle = true
 
-		if enemyNPC then
+		local unitEnemy = npcEnemy or unit == 'ENEMY_PLAYER'
+		data.auras.enable = unitEnemy
+
+		if unitEnemy then
 			data.auras.priority = 'Blacklist,CCDebuffs'
 			data.auras.anchorPoint = 'RIGHT'
 			data.auras.filter = 'HARMFUL'
@@ -1141,7 +1144,7 @@ for unit, data in next, P.nameplates.units do
 			data.auras.yOffset = 0
 		end
 
-		if strfind(unit, '_NPC') then
+		if npcFriendly or npcEnemy then
 			data.eliteIcon = CopyTable(NP_EliteIcon)
 			data.questIcon = CopyTable(NP_QuestIcon)
 		else
