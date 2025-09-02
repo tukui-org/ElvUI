@@ -261,6 +261,14 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
+function UF:CleanCache(button)
+	if button.auraStale then
+		wipe(button.auraStale)
+	else -- this data is only used for AuraUnchanged
+		button.auraStale = {}
+	end
+end
+
 function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
@@ -277,11 +285,7 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
-	if button.auraInfo then
-		wipe(button.auraInfo)
-	else
-		button.auraInfo = {}
-	end
+	UF:CleanCache(button)
 
 	button.needsButtonTrim = true
 	button.needsUpdateCooldownPosition = true
@@ -575,7 +579,7 @@ function UF:ConvertFilters(auras, priority)
 	end
 end
 
-function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, noDuration, castByPlayer, blizzardNameplate, isMount, filterList)
+function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossAura, noDuration, castByPlayer, blizzardNameplate, isMount, filterList)
 	for i = 1, #filterList do
 		local data = filterList[i]
 		local status = data.status
@@ -604,7 +608,7 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 				elseif (name == 'Personal' and isPlayer)
 				or (name == 'nonPersonal' and not isPlayer)
 				or (name == 'Mount' and isMount)
-				or (name == 'Boss' and isBossDebuff)
+				or (name == 'Boss' and isBossAura)
 				or (name == 'MyPet' and myPet)
 				or (name == 'OtherPet' and otherPet)
 				or (name == 'CastByUnit' and source and unitIsCaster)
@@ -621,9 +625,9 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 	end
 end
 
-function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
-	if a.name ~= name or a.icon ~= icon or a.count ~= count or a.debuffType ~= debuffType or a.duration ~= duration or a.expiration ~= expiration or a.source ~= source or a.isStealable ~= isStealable or a.nameplateShowPersonal ~= nameplateShowPersonal or a.spellID ~= spellID or a.canApplyAura ~= canApplyAura or a.isBossDebuff ~= isBossDebuff or a.castByPlayer ~= castByPlayer or a.nameplateShowAll ~= nameplateShowAll then
-		a.name, a.icon, a.count, a.debuffType, a.duration, a.expiration, a.source, a.isStealable, a.nameplateShowPersonal, a.spellID, a.canApplyAura, a.isBossDebuff, a.castByPlayer, a.nameplateShowAll = name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll
+function UF:AuraUnchanged(a, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll)
+	if a.name ~= name or a.icon ~= icon or a.count ~= count or a.debuffType ~= debuffType or a.duration ~= duration or a.expiration ~= expiration or a.source ~= source or a.isStealable ~= isStealable or a.nameplateShowPersonal ~= nameplateShowPersonal or a.spellID ~= spellID or a.canApplyAura ~= canApplyAura or a.isBossAura ~= isBossAura or a.castByPlayer ~= castByPlayer or a.nameplateShowAll ~= nameplateShowAll then
+		a.name, a.icon, a.count, a.debuffType, a.duration, a.expiration, a.source, a.isStealable, a.nameplateShowPersonal, a.spellID, a.canApplyAura, a.isBossAura, a.castByPlayer, a.nameplateShowAll = name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll
 	else
 		return true
 	end
@@ -700,7 +704,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	return myPet, otherPet, canDispel, isFriend, unitIsCaster
 end
 
-function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
+function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db
@@ -708,7 +712,7 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 		return true -- no database huh
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
-	elseif UF:AuraUnchanged(button.auraInfo, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll) then
+	elseif UF:AuraUnchanged(button.auraStale, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll) then
 		return button.filterPass
 	end
 
@@ -720,7 +724,7 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	else
-		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
+		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossAura, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
 
 		button.filterPass = pass
 		button.priority = priority or 0 -- This is the only difference from auarbars code

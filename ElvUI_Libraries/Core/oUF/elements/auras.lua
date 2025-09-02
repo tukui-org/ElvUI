@@ -159,15 +159,15 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(element, unit, aura, index, offset, filter, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
+	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = UnpackAuraData(aura)
 
 	local forceShow = element.forceShow
 	if forceShow or element.forceCreate then
-		spellID = 5782
-		name, _, icon = oUF:GetSpellInfo(spellID)
+		spellId = 5782
+		name, _, icon = oUF:GetSpellInfo(spellId)
 
 		if forceShow then
-			count, debuffType, duration, expiration, source = 5, 'Magic', 0, 60, 'player'
+			applications, dispelName, duration, expirationTime, sourceUnit = 5, 'Magic', 0, 60, 'player'
 		end
 	end
 
@@ -194,15 +194,15 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 
 	element.active[position] = button
 
-	local isDebuff = aura and aura.isHarmful
-	local auraInstanceID = aura and aura.auraInstanceID
+	local isDebuff = aura.isHarmful
+	local auraInstanceID = aura.auraInstanceID
 
 	button.aura = aura or nil
-	button.caster = source or nil
+	button.caster = sourceUnit or nil
 	button.filter = filter or nil
 	button.isDebuff = isDebuff or nil
 	button.auraInstanceID = auraInstanceID or nil
-	button.isPlayer = (source == 'player' or source == 'vehicle') or nil
+	button.isPlayer = (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
 	Defines a custom filter that controls if the aura button should be shown.
@@ -220,8 +220,8 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 	local show = not element.forceCreate
 	if not (forceShow or element.forceCreate) then
 		show = (element.CustomFilter or customFilter) (element, unit, button, aura, name, icon,
-			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
-			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
+			applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId,
+			canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod)
 	end
 
 	if(show) then
@@ -230,7 +230,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 		-- complicated.
 		if(button.Cooldown and not element.disableCooldown) then
 			if(duration and duration > 0) then
-				button.Cooldown:SetCooldown(expiration - duration, duration, modRate)
+				button.Cooldown:SetCooldown(expirationTime - duration, duration, timeMod)
 				button.Cooldown:Show()
 			else
 				button.Cooldown:Hide()
@@ -240,7 +240,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 		if button.Overlay then
 			if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
 				local colors = element.__owner.colors.debuff
-				local color = colors[debuffType] or colors.none
+				local color = colors[dispelName] or colors.none
 
 				button.Overlay:SetVertexColor(color.r, color.g, color.b)
 				button.Overlay:Show()
@@ -254,7 +254,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 		end
 
 		if button.Icon then button.Icon:SetTexture(icon) end
-		if button.Count then button.Count:SetText(not count or count <= 1 and '' or count) end
+		if button.Count then button.Count:SetText(not applications or applications <= 1 and '' or applications) end
 
 		local width = element.width or element.size or 16
 		local height = element.height or element.size or 16
@@ -277,7 +277,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 		* isStealable - whether the aura can be stolen or purged (boolean)
 		--]]
 		if(element.PostUpdateButton) then
-			element:PostUpdateButton(unit, button, index, position, duration, expiration, debuffType, isStealable)
+			element:PostUpdateButton(unit, button, index, position, duration, expirationTime, dispelName, isStealable)
 		end
 
 		return VISIBLE
@@ -287,7 +287,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 		button:Hide()
 
 		if element.PostUpdateButton then
-			element:PostUpdateButton(unit, button, index, position, duration, expiration, debuffType, isStealable)
+			element:PostUpdateButton(unit, button, index, position, duration, expirationTime, dispelName, isStealable)
 		end
 
 		return CREATED

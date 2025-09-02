@@ -221,11 +221,7 @@ function NP:UpdateAuraSettings(button)
 		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
-	if button.auraInfo then
-		wipe(button.auraInfo)
-	else
-		button.auraInfo = {}
-	end
+	UF:CleanCache(button)
 
 	button.needsButtonTrim = true
 	button.needsUpdateCooldownPosition = true
