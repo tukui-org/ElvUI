@@ -223,7 +223,7 @@ local function SetPosition(element, from, to)
 
 		if bar.noTime then
 			bar:SetValue(1)
-			bar.timeText:SetText()
+			bar.timeText:SetText('')
 		end
 	end
 end

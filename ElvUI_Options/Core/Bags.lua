@@ -43,7 +43,7 @@ if E.Retail then
 	Bags.args.general.args.generalGroup.values.scrapIcon = L["Scrap Icon"]
 	Bags.args.general.args.generalGroup.values.showAssignedIcon = L["Assigned Icon"]
 	Bags.args.general.args.generalGroup.values.useBlizzardJunk = L["Use Blizzard Sell Junk"]
-	Bags.args.general.args.generalGroup.values.bankAutoDepositReagents = E.NewSign..L["Auto Deposit Reagents"]
+	Bags.args.general.args.generalGroup.values.bankAutoDepositReagents = L["Auto Deposit Reagents"]
 end
 
 local excludeUpdates = {
@@ -98,8 +98,8 @@ Bags.args.general.args.bankGroup.args.bankSize = ACH:Range(L["Button Size"], nil
 Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
-Bags.args.general.args.bankGroup.args.useBlizzardCleanupBank = ACH:Toggle(E.NewSign..L["Use Blizzard Cleanup"], nil, 6, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value end, nil, not E.Retail)
-Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(E.NewSign..L["Combined"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Retail)
+Bags.args.general.args.bankGroup.args.useBlizzardCleanupBank = ACH:Toggle(L["Use Blizzard Cleanup"], nil, 6, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value end, nil, not E.Retail)
+Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(L["Combined"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)

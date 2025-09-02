@@ -586,6 +586,18 @@ for id = 12, 16 do
 	P.bags.split['warband'..id] = false
 end
 
+local NP_AuraSourceText = {
+	enable = false,
+	class = true,
+	xOffset = 0,
+	yOffset = 0,
+	length = 8, -- 2 to 12
+	position = 'TOP',
+	font = 'PT Sans Narrow',
+	fontOutline = 'OUTLINE',
+	fontSize = 10,
+}
+
 local NP_Auras = {
 	enable = true,
 	desaturate = true,
@@ -618,6 +630,7 @@ local NP_Auras = {
 	durationPosition = 'CENTER',
 	minDuration = 0,
 	maxDuration = 0,
+	sourceText = CopyTable(NP_AuraSourceText),
 	priority = ''
 }
 
@@ -1500,6 +1513,7 @@ local UF_Auras = {
 	height = 30,
 	spacing = 1,
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	sourceText = CopyTable(NP_AuraSourceText)
 }
 
 local UF_DebuffHighlight = {

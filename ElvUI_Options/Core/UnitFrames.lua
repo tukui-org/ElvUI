@@ -217,11 +217,8 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 17, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, auraType ~= 'auras')
 	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 18)
 
-	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, auraType)
-	config.args.strataAndLevel.inline = nil
-
-	config.args.textGroup = ACH:Group(L["Text"], nil, 15)
-	config.args.textGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.textGroup = ACH:Group(L["Text"], nil, 20)
+	config.args.textGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 1, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.textGroup.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	config.args.textGroup.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
@@ -230,12 +227,27 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.textGroup.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, C.Values.AllPoints)
 	config.args.textGroup.args.stacks.inline = true
 
-	config.args.textGroup.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.textGroup.args.duration = ACH:Group(L["Duration"], nil, 2, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
 	config.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.textGroup.args.duration.inline = true
 
-	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
+	config.args.sourceGroup = ACH:Group(E.NewSign..L["Source Text"], nil, 30, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
+	config.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
+	config.args.sourceGroup.args.length = ACH:Range(L["Length"], nil, 5, { min = 2, max = 12, step = 1 })
+	config.args.sourceGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -80, max = 80, step = 1 })
+	config.args.sourceGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -80, max = 80, step = 1 })
+	config.args.sourceGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 10)
+	config.args.sourceGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize)
+	config.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
+
+	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, auraType)
+	config.args.strataAndLevel.inline = nil
+	config.args.strataAndLevel.order = 35
+
+	config.args.filtersGroup = ACH:Group(L["Filters"], nil, 40)
 	config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.filtersGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)

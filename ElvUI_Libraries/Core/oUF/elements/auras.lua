@@ -65,7 +65,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 local CREATED = 2
 
-local floor, min, wipe, next = floor, min, wipe, next
+local floor, wipe, next = floor, wipe, next
 local pcall, tinsert = pcall, tinsert
 
 local UnitIsUnit = UnitIsUnit
@@ -111,13 +111,17 @@ local function CreateButton(element, index)
 	icon:SetAllPoints()
 	button.Icon = icon
 
-	local countFrame = CreateFrame('Frame', nil, button)
-	countFrame:SetAllPoints(button)
-	countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
+	local textFrame = CreateFrame('Frame', nil, button)
+	textFrame:SetAllPoints(button)
+	textFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
 
-	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
-	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
+	local count = textFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+	count:SetPoint('BOTTOMRIGHT', textFrame, 'BOTTOMRIGHT', -1, 0)
 	button.Count = count
+
+	local text = textFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+	text:SetPoint('BOTTOM', textFrame, 'TOP')
+	button.Text = text
 
 	local overlay = button:CreateTexture(nil, 'OVERLAY')
 	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])

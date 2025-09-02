@@ -122,7 +122,7 @@ local function HandleElements(element, unit, button, setting, icon, count, durat
 		elseif count and count > 1 then
 			button.count:SetText(count)
 		else
-			button.count:SetText()
+			button.count:SetText('')
 		end
 	end
 

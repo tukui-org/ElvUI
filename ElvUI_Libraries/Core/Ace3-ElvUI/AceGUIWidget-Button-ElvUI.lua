@@ -103,7 +103,7 @@ local methods = {
 		self:SetWidth(200)
 		self:SetDisabled(false)
 		self:SetAutoWidth(false)
-		self:SetText()
+		self:SetText('')
 	end,
 
 	-- ["OnRelease"] = nil,

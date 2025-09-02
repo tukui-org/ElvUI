@@ -28,7 +28,7 @@ function M:UpdateBubbleBorder()
 	end
 
 	local name = self.Name and self.Name:GetText()
-	if name then self.Name:SetText() end
+	if name then self.Name:SetText('') end
 
 	local text = str:GetText()
 	if not text then return end

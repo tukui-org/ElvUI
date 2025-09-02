@@ -15,6 +15,8 @@ local IsShiftKeyDown = IsShiftKeyDown
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
+local UnitName = UnitName
+local UnitClass = UnitClass
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -266,6 +268,12 @@ function UF:UpdateAuraSettings(button)
 		button.Count:SetJustifyH(strfind(point, 'RIGHT', nil, true) and 'RIGHT' or 'LEFT')
 		button.Count:Point(point, db.countXOffset, db.countYOffset)
 		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+
+		if button.Text then
+			button.Text:ClearAllPoints()
+			button.Text:Point(db.sourceText.position or 'TOP', db.sourceText.xOffset, db.sourceText.yOffset)
+			button.Text:FontTemplate(LSM:Fetch('font', db.sourceText.font), db.sourceText.fontSize, db.sourceText.fontOutline)
+		end
 	end
 
 	if button.auraInfo then
@@ -488,6 +496,28 @@ function UF:PostUpdateAura(_, button)
 
 	button:SetBackdropBorderColor(r, g, b)
 	button.Icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
+
+	if button.Text then
+		local bdb = button.db
+		if bdb and button.caster and bdb.sourceText.enable then
+			local unitName = UnitName(button.caster)
+			button.Text:SetText(unitName or '')
+
+			if bdb.sourceText.class then
+				local _, classToken = UnitClass(button.caster)
+				local color = E:ClassColor(classToken)
+				if color then
+					button.Text:SetTextColor(color.r, color.g, color.b)
+				else
+					button.Text:SetTextColor(1, 1, 1)
+				end
+			else
+				button.Text:SetTextColor(1, 1, 1)
+			end
+		else
+			button.Text:SetText('')
+		end
+	end
 
 	if button.needsButtonTrim then
 		AB:TrimIcon(button)
