@@ -170,7 +170,6 @@ local DEVELOPERS = {
 }
 
 local TESTERS = {
-	'Affinity',
 	'Modarch',
 	'Tirain',
 	'Phima',
