@@ -864,6 +864,7 @@ P.nameplates = {
 		badScale = 1,
 		useThreatColor = true,
 		indicator = false,
+		useSoloColor = false,
 	},
 	filters = {
 		ElvUI_Boss = {triggers = {enable = false}},
@@ -910,6 +911,7 @@ P.nameplates = {
 			offTankColor = {r = 0.73, g = 0.20, b = 1.00},
 			offTankColorGoodTransition = {r = .31, g = .45, b = .63},
 			offTankColorBadTransition = {r = 0.71, g = 0.43, b = 0.27},
+			soloColor = {r = 0.20, g = 0.71, b = 0.00},
 		},
 		power = {
 			ENERGY = {r = 1, g = 0.96, b = 0.41},
