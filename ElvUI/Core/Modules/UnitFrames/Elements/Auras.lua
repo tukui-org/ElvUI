@@ -555,8 +555,17 @@ function UF:UpdateAuraSmartPosition()
 end
 
 function UF:GetFilterNameInfo(name)
-	local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
-	return friend or enemy or name, friend, enemy
+	local block = strmatch(name, '^block([^,]*)')
+	local allow = strmatch(name, '^allow([^,]*)')
+
+	if block or allow then
+		name = block or allow
+	end
+
+	local friend = strmatch(name, '^Friendly:([^,]*)')
+	local enemy = strmatch(name, '^Enemy:([^,]*)')
+
+	return friend or enemy or name, friend, enemy, block, allow
 end
 
 function UF:ConvertFilters(auras, priority)

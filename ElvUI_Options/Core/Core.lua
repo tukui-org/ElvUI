@@ -75,11 +75,8 @@ end
 
 do
 	C.StateSwitchGetText = function(_, text)
-		local blockB, blockS, blockT
-		local real, friend, enemy = UF:GetFilterNameInfo(text)
-		local SF, localized = E.global.unitframe.specialFilters[real], L[real]
-		if SF and localized and real:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
-		local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or real
+		local real, friend, enemy, block, allow = UF:GetFilterNameInfo(text)
+		local filterText = ((block or allow) and format(block and '|cFF999999%s|r %s' or '|cFFcccccc%s|r %s', block and L["Block"] or L["Allow"], real)) or real
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
@@ -88,10 +85,12 @@ do
 		return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
 	end
 
-	C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState)
+	C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState, typeOverride)
 		if not auraType or not value then return end
+
 		local filter = db[groupName] and db[groupName][auraType] and db[groupName][auraType].priority
 		if not filter then return end
+
 		local found = FilterMatch(filter, E:EscapeString(value))
 		if found and movehere then
 			local tbl, sv, sm = {strsplit(',',filter)}
@@ -102,17 +101,27 @@ do
 			tremove(tbl, sm)
 			tinsert(tbl, sv, movehere)
 			db[groupName][auraType].priority = tconcat(tbl,',')
-		elseif found and friendState then
-			local real, friend, enemy = UF:GetFilterNameInfo(value)
-			local default = FilterMatch(filter, E:EscapeString(real))
+		elseif found and (friendState or typeOverride) then
+			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(value)
 
-			local state = (friend and (not enemy) and format('%s%s','Enemy:',real))			--[x] friend [ ] enemy: > enemy
-			or	((not enemy and not friend) and format('%s%s','Friendly:',real))			--[ ] friend [ ] enemy: > friendly
-			or	(enemy and (not friend) and default and format('%s%s','Friendly:',real))	--[ ] friend [x] enemy: (default exists) > friendly
-			or	(enemy and (not friend) and strmatch(value, '^Enemy:') and real)			--[ ] friend [x] enemy: (no default) > realvalue
-			or	(friend and enemy and real)													--[x] friend [x] enemy: > default
+			local state
+			if friendState then
+				state = (friend and not enemy and format('Enemy:%s',real))		--[x] friend [ ] enemy > enemy
+				or (not enemy and not friend and format('Friendly:%s',real))	--[ ] friend [ ] enemy > friendly
+				or (enemy and not friend and real)								--[ ] friend [x] enemy > reset
+			else
+				state = (friend and format('Friendly:%s',real)) or (enemy and format('Enemy:%s',real)) or real
+			end
 
-			if state then
+			if typeOverride then
+				state = (allow and not block and format('block%s',state))	--[x] allow [ ] block > block
+				or (not block and not allow and format('allow%s',state))	--[ ] allow [ ] block > allow
+				or (block and not allow and state)							--[ ] allow [x] block > reset
+			else -- changing friend state but need to keep the type state
+				state = (allow and format('allow%s',state)) or (block and format('block%s',state)) or state
+			end
+
+			if state ~= value then
 				local stateFound = FilterMatch(filter, E:EscapeString(state))
 				if not stateFound then
 					local tbl, sv = {strsplit(',',filter)}
