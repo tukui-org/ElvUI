@@ -554,6 +554,11 @@ function UF:UpdateAuraSmartPosition()
 	end
 end
 
+function UF:GetFilterNameInfo(name)
+	local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
+	return friend or enemy or name, friend, enemy
+end
+
 function UF:ConvertFilters(auras, priority)
 	if not priority or priority == '' then return end
 
@@ -565,8 +570,7 @@ function UF:ConvertFilters(auras, priority)
 	local temp = { strsplit(',', priority) }
 	for i = 1, #temp do
 		local name = temp[i]
-		local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
-		local real = friend or enemy or name
+		local real, friend, enemy = UF:GetFilterNameInfo(name)
 		local custom = filters[real]
 
 		if special[real] or custom then

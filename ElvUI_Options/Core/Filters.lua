@@ -287,7 +287,14 @@ local function GetSelectedFilter() return selectedFilter end
 
 local function ResetSelectedFilter(_, value) selectedFilter, selectedSpell, quickSearchText = nil, nil, '' if value ~= '' then selectedFilter = value end end
 
-local function ValidateCreateFilter(_, value) return not (strmatch(value, '^[%s%p]-$') or strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') or G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value]) end
+local function ValidateCreateFilter(_, value)
+	if strmatch(value, '^[%s%p]-$') then return end
+
+	local real = UF:GetFilterNameInfo(value)
+	local exists = G.unitframe.specialFilters[real] or E.global.unitframe.aurafilters[real]
+
+	return not exists
+end
 
 local function ConfirmResetFilter(_, value) return value ~= '' and format(L["Reset Filter - %s"], value) end
 

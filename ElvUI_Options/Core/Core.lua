@@ -74,12 +74,12 @@ do
 end
 
 do
-	C.StateSwitchGetText = function(_, TEXT)
-		local friend, enemy = strmatch(TEXT, '^Friendly:([^,]*)'), strmatch(TEXT, '^Enemy:([^,]*)')
-		local text, blockB, blockS, blockT = friend or enemy or TEXT
-		local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-		if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
-		local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
+	C.StateSwitchGetText = function(_, text)
+		local blockB, blockS, blockT
+		local real, friend, enemy = UF:GetFilterNameInfo(text)
+		local SF, localized = E.global.unitframe.specialFilters[real], L[real]
+		if SF and localized and real:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
+		local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or real
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
@@ -103,17 +103,14 @@ do
 			tinsert(tbl, sv, movehere)
 			db[groupName][auraType].priority = tconcat(tbl,',')
 		elseif found and friendState then
-			local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
-			local friend = FilterMatch(filter, E:EscapeString('Friendly:'..realValue))
-			local enemy = FilterMatch(filter, E:EscapeString('Enemy:'..realValue))
-			local default = FilterMatch(filter, E:EscapeString(realValue))
+			local real, friend, enemy = UF:GetFilterNameInfo(value)
+			local default = FilterMatch(filter, E:EscapeString(real))
 
-			local state =
-				(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
-			or	((not enemy and not friend) and format('%s%s','Friendly:',realValue))			--[ ] friend [ ] enemy: > friendly
-			or	(enemy and (not friend) and default and format('%s%s','Friendly:',realValue))	--[ ] friend [x] enemy: (default exists) > friendly
-			or	(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue)			--[ ] friend [x] enemy: (no default) > realvalue
-			or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+			local state = (friend and (not enemy) and format('%s%s','Enemy:',real))			--[x] friend [ ] enemy: > enemy
+			or	((not enemy and not friend) and format('%s%s','Friendly:',real))			--[ ] friend [ ] enemy: > friendly
+			or	(enemy and (not friend) and default and format('%s%s','Friendly:',real))	--[ ] friend [x] enemy: (default exists) > friendly
+			or	(enemy and (not friend) and strmatch(value, '^Enemy:') and real)			--[ ] friend [x] enemy: (no default) > realvalue
+			or	(friend and enemy and real)													--[x] friend [x] enemy: > default
 
 			if state then
 				local stateFound = FilterMatch(filter, E:EscapeString(state))
@@ -125,8 +122,10 @@ do
 							break
 						end
 					end
+
 					tinsert(tbl, sv, state)
 					tremove(tbl, sv+1)
+
 					db[groupName][auraType].priority = tconcat(tbl,',')
 				end
 			end
