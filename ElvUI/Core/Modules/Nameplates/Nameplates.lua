@@ -561,10 +561,11 @@ function NP:SetNamePlateEnemyClickThrough()
 end
 
 function NP:Update_StatusBars()
-	for bar in pairs(NP.StatusBars) do
+	for bar, which in pairs(NP.StatusBars) do
 		local styleFilter = NP:StyleFilterChanges(bar:GetParent())
 
-		if not (styleFilter.health and styleFilter.health.texture) then
+		local hasFilter = styleFilter[which]
+		if not (hasFilter and hasFilter.texture) then
 			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
 			if bar.SetStatusBarTexture then
 				bar:SetStatusBarTexture(texture)

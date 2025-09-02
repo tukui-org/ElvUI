@@ -137,7 +137,7 @@ function NP:Construct_Castbar(nameplate)
 
 	NP:Construct_FlashTexture(nameplate, castbar)
 
-	NP.StatusBars[castbar] = true
+	NP.StatusBars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 
 	castbar.Button = CreateFrame('Frame', nil, castbar)

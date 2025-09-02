@@ -65,7 +65,7 @@ function NP:Construct_Health(nameplate)
 	Health.considerSelectionInCombatHostile = true
 	Health.UpdateColor = NP.Health_UpdateColor
 
-	NP.StatusBars[Health] = true
+	NP.StatusBars[Health] = 'health'
 
 	NP:Construct_FlashTexture(nameplate, Health)
 	UF:Construct_ClipFrame(nameplate, Health)
@@ -126,7 +126,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		bar:Point('BOTTOM')
 		bar:Width(150)
 		HealthPrediction[name] = bar
-		NP.StatusBars[bar] = true
+		NP.StatusBars[bar] = 'healPrediction'
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()

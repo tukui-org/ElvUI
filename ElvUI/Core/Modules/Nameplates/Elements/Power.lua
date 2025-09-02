@@ -107,7 +107,7 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
-	NP.StatusBars[Power] = true
+	NP.StatusBars[Power] = 'power'
 
 	Power.colorTapping = false
 	Power.colorClass = false
