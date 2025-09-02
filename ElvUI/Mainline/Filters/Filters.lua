@@ -12,86 +12,85 @@ G.unitframe.aurafilters.ImportantClassDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Evoker
+		[434473] 	= List(), -- Bombardments
+		[357209] 	= List(), -- Fire Breath
+		[361500] 	= List(), -- Living Flame
+		[370452] 	= List(), -- Shattering Star
+		[441172] 	= List(), -- Melt Armor
+		[444017] 	= List(), -- Enkindle
 	-- Death Knight
+		[51714]		= List(), -- Razorice
+		[55078]		= List(), -- Blood Plague
+		[191587]	= List(), -- Virulent Plague
+		[194310] 	= List(), -- Festering Wound
+		[343294] 	= List(), -- Soul Reaper
+		[434765] 	= List(), -- Reaper's Mark
+		[1233351] 	= List(), -- Frostreaper
 	-- Demon Hunter
+		[204598] 	= List(), -- Sigil of Flame
+		[207771] 	= List(), -- Fiery Brand
+		[320338] 	= List(), -- Essence Break
+		[391191] 	= List(), -- Burning Wound
 	-- Druid
+		[155625] 	= List(), -- Moonfire 1
+		[164812] 	= List(), -- Moonfire 2
+		[164815] 	= List(), -- Sunfire
+		[202347] 	= List(), -- Stellar Flare
+		[155722] 	= List(), -- Rake
+		[1079] 		= List(), -- Rip
+		[391889] 	= List(), -- Adaptive Swarm
+		[439531] 	= List(), -- Bloodseeker Vines
 	-- Hunter
+		[257284] 	= List(), -- Hunter's Mark
+		[259491] 	= List(), -- Serpent Sting 1
+		[271788] 	= List(), -- Serpent Sting 2
+		[217200] 	= List(), -- Barbed Shot
 	-- Mage
+		[443740] 	= List(), -- Embedded Frost Splinter
+		[444735] 	= List(), -- Embedded Arcane Splinter
+		[228358] 	= List(), -- Winter's Chill
+		[210824] 	= List(), -- Touch of the Magi
+		[453268] 	= List(), -- Controlled Destruction
 	-- Monk
+		[123725] 	= List(), -- Breath of Fire
+		[228287] 	= List(), -- Mark of the Crane
+		[325153] 	= List(), -- Exploding Keg
 	-- Paladin
+		[343527] 	= List(), -- Execution Sentence
+		[343721] 	= List(), -- Final Reckoning
+		[387174] 	= List(), -- Eye of Tyr
+		[383346] 	= List(), -- Expurgation
+		[431380] 	= List(), -- Dawnlight
 	-- Priest
+		[335467] 	= List(), -- Devouring Plague
+		[214621] 	= List(), -- Mind Blast
+		[34914] 	= List(), -- Vampiric Touch
+		[589] 		= List(), -- Shadow Word: Pain
+		[14914] 	= List(), -- Holy Fire
 	-- Rogue
+		[703] 		= List(), -- Garrote
+		[1943] 		= List(), -- Rupture
+		[196937] 	= List(), -- Ghostly Strike
+		[316220] 	= List(), -- Find Weakness
+		[421976] 	= List(), -- Caustic Splatter
+		[441224] 	= List(), -- Fazed
+		[457129] 	= List(), -- Deathstalker's Mark
 	-- Shaman
+		[188389] 	= List(), -- Flame Shock
+		[197209] 	= List(), -- Lightning Rod
+		[334168] 	= List(), -- Lashing Flames
 	-- Warlock
+		[316099] 	= List(), -- Unstable Affliction
+		[48181] 	= List(), -- Haunt
+		[980] 		= List(), -- Agony
+		[80240] 	= List(), -- Havoc
+		[146739] 	= List(), -- Corruption
+		[157736] 	= List(), -- Immolate
+		[460553] 	= List(), -- Doom
+		[445474] 	= List(), -- Wither
 	-- Warrior
-	-- TODO: Sort Me By Class
-		[589] = List(),
-		[703] = List(),
-		[980] = List(),
-		[1079] = List(),
-		[1943] = List(),
-		[14914] = List(),
-		[34914] = List(),
-		[48181] = List(),
-		[51714] = List(),
-		[55078] = List(),
-		[80240] = List(),
-		[123725] = List(),
-		[146739] = List(),
-		[155625] = List(),
-		[155722] = List(),
-		[157736] = List(),
-		[164812] = List(),
-		[164815] = List(),
-		[188389] = List(),
-		[191587] = List(),
-		[194310] = List(),
-		[196937] = List(),
-		[197209] = List(),
-		[202347] = List(),
-		[204598] = List(),
-		[207771] = List(),
-		[210824] = List(),
-		[214621] = List(),
-		[217200] = List(),
-		[228287] = List(),
-		[228358] = List(),
-		[257284] = List(),
-		[259491] = List(),
-		[262115] = List(),
-		[271788] = List(),
-		[316099] = List(),
-		[316220] = List(),
-		[320338] = List(),
-		[325153] = List(),
-		[334168] = List(),
-		[335467] = List(),
-		[343294] = List(),
-		[343527] = List(),
-		[343721] = List(),
-		[357209] = List(),
-		[361500] = List(),
-		[370452] = List(),
-		[383346] = List(),
-		[387174] = List(),
-		[388539] = List(),
-		[391191] = List(),
-		[391889] = List(),
-		[421976] = List(),
-		[431380] = List(),
-		[434473] = List(),
-		[434765] = List(),
-		[439531] = List(),
-		[441172] = List(),
-		[441224] = List(),
-		[443740] = List(),
-		[444017] = List(),
-		[444735] = List(),
-		[445474] = List(),
-		[453268] = List(),
-		[457129] = List(),
-		[460553] = List(),
-		[1233351] = List(),
+		[388539] 	= List(), -- Rend
+		[262115] 	= List(), -- Deep Wounds
 	}
 }
 
