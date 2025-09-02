@@ -10,13 +10,11 @@ G.unitframe.aurafilters.PlayerBuffs = nil
 G.unitframe.aurafilters.ImportantCC = {
 	type = 'Whitelist',
 	spells = {
-	-- TODO
-		-- Priority overrides
 	-- Evoker
-		[372245]	= List(3), -- Terror of the Skies
-		[360806]	= List(3), -- Sleep Walk
 		[355689]	= List(3), -- Landslide
 		[372048]	= List(3), -- Oppressing Roar
+		[360806]	= List(4), -- Sleep Walk
+		[372245]	= List(3), -- Terror of the Skies
 	-- Death Knight
 		[108194]	= List(3), -- Asphyxiate [Talent]
 		[221562]	= List(3), -- Asphyxiate
@@ -25,8 +23,8 @@ G.unitframe.aurafilters.ImportantCC = {
 	-- Demon Hunter
 		[179057]	= List(3), -- Chaos Nova
 		[211881]	= List(3), -- Fel Eruption
-		[217832]	= List(3), -- Imprison
-		[207685]	= List(3), -- Sigil of Misery
+		[217832]	= List(5), -- Imprison
+		[207685]	= List(4), -- Sigil of Misery
 	-- Druid
 		[33786]		= List(3), -- Cyclone
 		[339]		= List(3), -- Entangling Roots
@@ -39,12 +37,11 @@ G.unitframe.aurafilters.ImportantCC = {
 		[5211]		= List(3), -- Mighty Bash
 		[163505]	= List(3), -- Rake
 		[81261]		= List(3), -- Solar Beam
-		[61391]		= List(3), -- Typhoon
 		[127797]	= List(3), -- Ursol's Vortex
 	-- Hunter
 		[117405]	= List(3), -- Binding Shot [Start]
 		[117526]	= List(3), -- Binding Shot [Triggered]
-		[3355]		= List(3), -- Freezing Trap
+		[3355]		= List(5), -- Freezing Trap
 		[19577]		= List(3), -- Intimidation 1
 		[24394]		= List(3), -- Intimidation 2
 		[1513]		= List(3), -- Scare Beast
@@ -53,57 +50,57 @@ G.unitframe.aurafilters.ImportantCC = {
 		[31661]		= List(3), -- Dragon's Breath
 		[122]		= List(3), -- Frost Nova
 		[157997]	= List(3), -- Ice Nova
-		[118]		= List(3), -- Poly
-		[61305]		= List(3), -- Poly Black Cat
-		[28271]		= List(3), -- Poly Turtle
-		[161354]	= List(3), -- Poly Monkey
-		[161353]	= List(3), -- Poly Polar Bear Cub
-		[126819]	= List(3), -- Poly Porcupine
-		[277787]	= List(3), -- Poly Direhorn
-		[61721]		= List(3), -- Poly Rabbit
-		[28272]		= List(3), -- Poly Pig
-		[277792]	= List(3), -- Poly Bumblebee
-		[391622]	= List(3), -- Poly Duck
-		[460392]	= List(3), -- Poly Mosswool
+		[118]		= List(5), -- Poly
+		[61305]		= List(5), -- Poly Black Cat
+		[28271]		= List(5), -- Poly Turtle
+		[161354]	= List(5), -- Poly Monkey
+		[161353]	= List(5), -- Poly Polar Bear Cub
+		[126819]	= List(5), -- Poly Porcupine
+		[277787]	= List(5), -- Poly Direhorn
+		[61721]		= List(5), -- Poly Rabbit
+		[28272]		= List(5), -- Poly Pig
+		[277792]	= List(5), -- Poly Bumblebee
+		[391622]	= List(5), -- Poly Duck
+		[460392]	= List(5), -- Poly Mosswool
 		[82691]		= List(3), -- Ring of Frost [Triggered]
 	-- Monk
 		[116706]	= List(3), -- Disable
 		[119381]	= List(3), -- Leg Sweep
-		[115078]	= List(3), -- Paralysis
+		[115078]	= List(5), -- Paralysis
 		[198909]	= List(3), -- Song of Chi-Ji
 	-- Paladin
 		[105421]	= List(3), -- Blinding Light
 		[853]		= List(3), -- Hammer of Justice
-		[20066]		= List(3), -- Repentance
+		[20066]		= List(4), -- Repentance
 		[217824]	= List(3), -- Shield of Virtue
-		[10326]		= List(3), -- Turn Evil
+		[10326]		= List(4), -- Turn Evil
 	-- Priest
 		[200196]	= List(3), -- Holy Word: Chastise 1
 		[200200]	= List(3), -- Holy Word: Chastise 2
 		[205364]	= List(3), -- Mind Control 1
 		[605]		= List(3), -- Mind Control 2
-		[453]		= List(3), -- Mind Soothe
+		[453]		= List(4), -- Mind Soothe
 		[64044]		= List(3), -- Psychic Horror
 		[8122]		= List(3), -- Psychic Scream
 		[9484]		= List(3), -- Shackle Undead
 	-- Rogue
-		[2094]		= List(3), -- Blind
-		[427773]	= List(3), -- Mass Blind
+		[2094]		= List(4), -- Blind
 		[1833]		= List(3), -- Cheap Shot
-		[408]		= List(3), -- Kidney Shot
-		[6770]		= List(3), -- Sap
 		[1776]		= List(3), -- Gouge
+		[408]		= List(3), -- Kidney Shot
+		[427773]	= List(4), -- Mass Blind
+		[6770]		= List(5), -- Sap
 	-- Shaman
 		[64695]		= List(3), -- Earthgrab
-		[51514]		= List(3), -- Hex
-		[210873]	= List(3), -- Hex Compy
-		[211004]	= List(3), -- Hex Spider
-		[211010]	= List(3), -- Hex Snake
-		[211015]	= List(3), -- Hex Cockroach
-		[269352]	= List(3), -- Hex Skeletal Hatchling
-		[277778]	= List(3), -- Hex Zandalari Tendonripper
-		[277784]	= List(3), -- Hex Wicker Mongrel
-		[309328]	= List(3), -- Hex Living Honey
+		[51514]		= List(5), -- Hex
+		[210873]	= List(5), -- Hex Compy
+		[211004]	= List(5), -- Hex Spider
+		[211010]	= List(5), -- Hex Snake
+		[211015]	= List(5), -- Hex Cockroach
+		[269352]	= List(5), -- Hex Skeletal Hatchling
+		[277778]	= List(5), -- Hex Zandalari Tendonripper
+		[277784]	= List(5), -- Hex Wicker Mongrel
+		[309328]	= List(5), -- Hex Living Honey
 		[118905]	= List(3), -- Static Charge [Cap Totem]
 		[197214]	= List(3), -- Sundering
 	-- Warlock
@@ -117,8 +114,8 @@ G.unitframe.aurafilters.ImportantCC = {
 		[132168]	= List(3), -- Shockwave
 		[132169]	= List(3), -- Storm Bolt
 	-- Racials
-		[107079]	= List(4), -- Quaking Palm [Pandaren]
-		[20549]		= List(4), -- War Stomp [Tauren]
+		[107079]	= List(3), -- Quaking Palm [Pandaren]
+		[20549]		= List(3), -- War Stomp [Tauren]
 	}
 }
 
