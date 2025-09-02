@@ -223,8 +223,9 @@ function NP:Update_Castbar(nameplate)
 		castbar.channelTimeFormat = db.channelTimeFormat
 		castbar.pipColor = NP.db.colors.empoweredCast
 
+		castbar:ClearAllPoints()
+		castbar:Point(E.InversePoints[db.anchorPoint], nameplate, db.anchorPoint, db.xOffset, db.yOffset)
 		castbar:Size(db.width, db.height)
-		castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
 
 		E:SetSmoothing(castbar, db.smoothbars)
 
