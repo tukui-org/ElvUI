@@ -563,9 +563,8 @@ end
 function NP:Update_StatusBars()
 	for bar, which in pairs(NP.StatusBars) do
 		local styleFilter = NP:StyleFilterChanges(bar:GetParent())
-
-		local hasFilter = styleFilter[which]
-		if not (hasFilter and hasFilter.texture) then
+		local filter = styleFilter[which]
+		if not (filter and filter.texture) then
 			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
 			if bar.SetStatusBarTexture then
 				bar:SetStatusBarTexture(texture)
