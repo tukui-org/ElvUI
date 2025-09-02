@@ -40,7 +40,6 @@ At least one of the above widgets must be present for the element to work.
 
 ## Attributes
 
-button.caster		   - the unit who cast the aura (string)
 button.filter		   - the filter list used to determine the visibility of the aura (string)
 button.isDebuff		   - indicates if the button holds a debuff (boolean)
 button.isPlayer		   - indicates if the aura caster is the player or their vehicle (boolean)
@@ -198,7 +197,6 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 	local auraInstanceID = aura.auraInstanceID
 
 	button.aura = aura or nil
-	button.caster = sourceUnit or nil
 	button.filter = filter or nil
 	button.isDebuff = isDebuff or nil
 	button.auraInstanceID = auraInstanceID or nil

@@ -190,7 +190,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 
 	local button, position = FetIcon(element, visible, offset)
 
-	button.caster = source
+	button.aura = aura
 	button.filter = filter
 	button.spellID = spellID
 	button.isDebuff = isDebuff

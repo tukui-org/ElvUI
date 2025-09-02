@@ -667,7 +667,7 @@ end
 
 function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	-- already set by oUF:
-	--- button.caster = source
+	--- button.aura = aura
 	--- button.filter = filter
 	--- button.isDebuff = isDebuff
 	--- button.auraInstanceID = auraInstanceID

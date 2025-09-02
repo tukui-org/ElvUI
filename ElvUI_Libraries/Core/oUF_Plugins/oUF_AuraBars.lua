@@ -171,10 +171,10 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 
 	element.active[position] = bar
 
+	bar.aura = aura
 	bar.unit = unit
 	bar.count = count
 	bar.index = index
-	bar.caster = source
 	bar.filter = filter
 	bar.texture = texture
 	bar.isDebuff = isDebuff
