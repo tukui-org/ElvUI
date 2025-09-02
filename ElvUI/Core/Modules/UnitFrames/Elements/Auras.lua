@@ -15,8 +15,9 @@ local IsShiftKeyDown = IsShiftKeyDown
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
-local UnitName = UnitName
-local UnitClass = UnitClass
+
+local UNKNOWN = UNKNOWN
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -499,21 +500,11 @@ function UF:PostUpdateAura(_, button)
 
 	if button.Text then
 		local bdb = button.db
-		if bdb and button.caster and bdb.sourceText.enable then
-			local unitName = UnitName(button.caster)
-			button.Text:SetText(unitName or '')
-
-			if bdb.sourceText.class then
-				local _, classToken = UnitClass(button.caster)
-				local color = E:ClassColor(classToken)
-				if color then
-					button.Text:SetTextColor(color.r, color.g, color.b)
-				else
-					button.Text:SetTextColor(1, 1, 1)
-				end
-			else
-				button.Text:SetTextColor(1, 1, 1)
-			end
+		local aura = bdb and bdb.sourceText.enable and button.aura
+		if aura then
+			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
+			button.Text:SetTextColor(color.r, color.g, color.b)
+			button.Text:SetText(aura.unitName or UNKNOWN)
 		else
 			button.Text:SetText('')
 		end

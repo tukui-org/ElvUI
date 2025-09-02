@@ -1787,9 +1787,9 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				seenGroups[groupIndex] = true
 				local groupList = '['
 				for i = 1, GetNumGroupMembers() do
-					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
+					local name, _, subgroup, _, _, classFilename = GetRaidRosterInfo(i)
 					if name and subgroup == groupIndex then
-						local classColorTable = E:ClassColor(classFileName)
+						local classColorTable = E:ClassColor(classFilename)
 						if classColorTable then
 							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end

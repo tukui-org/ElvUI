@@ -72,7 +72,6 @@ local UnitSex = UnitSex
 local TooltipDataType = Enum.TooltipDataType
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemCount = C_Item.GetItemCount
@@ -860,7 +859,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	end
 end
 
-function TT:ShowAuraInfo(tt, source, spellID)
+function TT:ShowAuraInfo(tt, source, spellID, aura)
 	local mountID, mountText = E.MountIDs[spellID]
 	if mountID then
 		local sourceText = E.MountText[mountID]
@@ -877,7 +876,10 @@ function TT:ShowAuraInfo(tt, source, spellID)
 			tt:AddLine(' ')
 		end
 
-		if source then
+		if aura and aura.unitClassFilename then
+			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, aura.unitName or UNKNOWN))
+		elseif source then
 			local _, class = UnitClass(source)
 			local color = E:ClassColor(class) or PRIEST_COLOR
 			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, UnitName(source) or UNKNOWN))
@@ -896,9 +898,7 @@ function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
 	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
 	if not aura then return end
 
-	local _, _, _, _, _, _, source, _, _, spellID = UnpackAuraData(aura)
-
-	TT:ShowAuraInfo(tt, source, spellID)
+	TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)

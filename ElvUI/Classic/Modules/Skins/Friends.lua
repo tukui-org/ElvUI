@@ -98,10 +98,10 @@ local function UpdateGuildStatus()
 			local button = _G['GuildFrameButton'..i]
 			if button and button.guildIndex then
 				local _, _, _, level, className, zone, _, _, online = GetGuildRosterInfo(button.guildIndex)
-				local classFileName = E:UnlocalizedClassName(className)
-				if classFileName then
+				local classFilename = E:UnlocalizedClassName(className)
+				if classFilename then
 					if online then
-						local classTextColor = E:ClassColor(classFileName)
+						local classTextColor = E:ClassColor(classFilename)
 						local levelTextColor = GetQuestDifficultyColor(level)
 						_G['GuildFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 						_G['GuildFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
@@ -113,7 +113,7 @@ local function UpdateGuildStatus()
 						end
 					end
 
-					button.icon:SetTexCoord(E:GetClassCoords(classFileName))
+					button.icon:SetTexCoord(E:GetClassCoords(classFilename))
 				end
 			end
 		end
@@ -122,9 +122,9 @@ local function UpdateGuildStatus()
 			local button = _G['GuildFrameGuildStatusButton'..i]
 			if button and button.guildIndex then
 				local _, _, _, _, className, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
-				local classFileName = online and E:UnlocalizedClassName(className)
-				if classFileName then
-					local classTextColor = E:ClassColor(classFileName)
+				local classFilename = online and E:UnlocalizedClassName(className)
+				if classFilename then
+					local classTextColor = E:ClassColor(classFilename)
 					_G['GuildFrameGuildStatusButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 					_G['GuildFrameGuildStatusButton'..i..'Online']:SetTextColor(1, 1, 1)
 				end

@@ -45,6 +45,7 @@ button.filter		   - the filter list used to determine the visibility of the aura
 button.isDebuff		   - indicates if the button holds a debuff (boolean)
 button.isPlayer		   - indicates if the aura caster is the player or their vehicle (boolean)
 button.auraInstanceID  - the auras instance ID (number)
+button.aura            - the aura (table)
 
 ## Examples
 
@@ -196,6 +197,7 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 	local isDebuff = aura and aura.isHarmful
 	local auraInstanceID = aura and aura.auraInstanceID
 
+	button.aura = aura or nil
 	button.caster = source or nil
 	button.filter = filter or nil
 	button.isDebuff = isDebuff or nil
