@@ -26,7 +26,7 @@ function UF:Construct_AuraBars(bar)
 	bar.icon:Point('RIGHT', bar, 'LEFT', -self.barSpacing, 0)
 	bar.icon:SetTexCoord(unpack(E.TexCoords))
 
-	UF.statusbars[bar] = true
+	UF.statusbars[bar] = 'aurabars'
 	UF:Update_StatusBar(bar)
 
 	UF:Configure_FontString(bar.timeText)

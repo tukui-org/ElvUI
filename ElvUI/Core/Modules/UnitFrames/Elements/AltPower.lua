@@ -8,7 +8,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
-	UF.statusbars[altpower] = true
+	UF.statusbars[altpower] = 'altpower'
 
 	altpower:CreateBackdrop(nil, nil, nil, nil, true)
 	altpower.BG = altpower:CreateTexture(nil, 'BORDER')

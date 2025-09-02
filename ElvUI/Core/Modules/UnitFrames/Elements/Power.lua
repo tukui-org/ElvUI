@@ -77,7 +77,7 @@ end
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
 	frame.POWERBAR_SHOWN = true -- we need this for autoHide
-	UF.statusbars[power] = true
+	UF.statusbars[power] = 'power'
 
 	power.PostUpdate = UF.PostUpdatePower
 	power.PostUpdateColor = UF.PostUpdatePowerColor

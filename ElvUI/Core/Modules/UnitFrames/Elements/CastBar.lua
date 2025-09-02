@@ -107,7 +107,7 @@ function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent.CastBarLevel)
 
-	UF.statusbars[castbar] = true
+	UF.statusbars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = UF.statusbars -- not oUF
 
 	castbar.CustomDelayText = UF.CustomCastDelayText

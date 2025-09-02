@@ -26,7 +26,7 @@ end
 
 function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local health = CreateFrame('StatusBar', '$parent_HealthBar', frame)
-	UF.statusbars[health] = true
+	UF.statusbars[health] = 'health'
 
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = UF.PostUpdateHealth

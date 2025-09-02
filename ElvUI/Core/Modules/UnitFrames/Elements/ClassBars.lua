@@ -391,7 +391,7 @@ function UF:Construct_ClassBar(frame)
 		bar:SetStatusBarTexture(E.media.blankTex) --Dummy really, this needs to be set so we can change the color
 		bar:GetStatusBarTexture():SetHorizTile(false)
 
-		UF.statusbars[bar] = true
+		UF.statusbars[bar] = 'classpower'
 		UF.classbars[bar] = true
 
 		bar:CreateBackdrop(nil, nil, nil, nil, true)
@@ -541,7 +541,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune:SetStatusBarTexture(E.media.blankTex)
 		rune:GetStatusBarTexture():SetHorizTile(false)
 
-		UF.statusbars[rune] = true
+		UF.statusbars[rune] = 'runes'
 		UF.classbars[rune] = true
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
@@ -578,7 +578,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower:CreateBackdrop(nil, nil, nil, nil, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 
-	UF.statusbars[additionalPower] = true
+	UF.statusbars[additionalPower] = 'additionalpower'
 	UF.classbars[additionalPower] = true
 
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
@@ -669,11 +669,11 @@ function UF:Construct_DruidEclipseBar(frame)
 	eclipseBar.LunarBar = CreateFrame('StatusBar', 'LunarBar', eclipseBar)
 	eclipseBar.LunarBar:Point('LEFT', eclipseBar)
 	eclipseBar.LunarBar:SetStatusBarTexture(E.media.blankTex)
-	UF.statusbars[eclipseBar.LunarBar] = true
+	UF.statusbars[eclipseBar.LunarBar] = 'eclipsebar'
 
 	eclipseBar.SolarBar = CreateFrame('StatusBar', 'SolarBar', eclipseBar)
 	eclipseBar.SolarBar:SetStatusBarTexture(E.media.blankTex)
-	UF.statusbars[eclipseBar.SolarBar] = true
+	UF.statusbars[eclipseBar.SolarBar] = 'solarbar'
 
 	eclipseBar.RaisedElementParent = UF:CreateRaisedElement(eclipseBar)
 
@@ -717,7 +717,7 @@ function UF:Construct_Stagger(frame)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostVisibility = UF.PostUpdateVisibilityStagger
 
-	UF.statusbars[stagger] = true
+	UF.statusbars[stagger] = 'stagger'
 	UF.classbars[stagger] = true
 
 	stagger:SetScript('OnShow', UF.ToggleResourceBar)
@@ -767,7 +767,7 @@ function UF:Construct_Totems(frame)
 		totem:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 		totem.backdrop:SetParent(totems)
 
-		UF.statusbars[totem] = true
+		UF.statusbars[totem] = 'totems'
 		UF.classbars[totem] = true
 
 		totem:EnableMouse(true)
