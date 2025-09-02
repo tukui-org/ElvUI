@@ -318,9 +318,6 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:SetAlpha(db.hideName and 0 or 1)
 	castbar.Time:SetAlpha(db.hideTime and 0 or 1)
 
-	--Adjust tick heights
-	castbar.tickHeight = height
-
 	if db.ticks then --Only player unitframe has this
 		--Set tick width and color
 		castbar.tickWidth = db.tickWidth
@@ -444,8 +441,9 @@ function UF:SetCastTicks(frame, numTicks)
 
 		tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 		tick:ClearAllPoints()
+		tick:Point('TOP')
+		tick:Point('BOTTOM')
 		tick:Point('RIGHT', frame, 'LEFT', offset * i, 0)
-		tick:Height(frame.tickHeight)
 		tick:Show()
 	end
 end
