@@ -488,7 +488,7 @@ NamePlates.generalGroup.args.threatGroup.args.enable = ACH:Toggle(L["Enable"], n
 NamePlates.generalGroup.args.threatGroup.args.goodScale = ACH:Range(L["Good Scale"], nil, 1, { min = .5, max = 1.5, step = .01, isPercent = true }, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
 NamePlates.generalGroup.args.threatGroup.args.badScale = ACH:Range(L["Bad Scale"], nil, 2, { min = .5, max = 1.5, step = .01, isPercent = true }, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
 NamePlates.generalGroup.args.threatGroup.args.useThreatColor = ACH:Toggle(L["Use Threat Color"], nil, 3)
-NamePlates.generalGroup.args.threatGroup.args.useSoloColor = ACH:Toggle(L["Use Solo Color"], L["Use solo threat color when not in a group."], 4)
+NamePlates.generalGroup.args.threatGroup.args.useSoloColor = ACH:Toggle(L["Use Solo Color"], L["Use solo threat color when not in a group."], 4, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.generalGroup.args.threatGroup.args.beingTankedByTank = ACH:Toggle(L["Off Tank"], L["Use Off Tank Color when another Tank has threat."], 5, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.generalGroup.args.threatGroup.args.beingTankedByPet = ACH:Toggle(L["Off Tank (Pets)"], nil, 6, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.generalGroup.args.threatGroup.args.indicator = ACH:Toggle(L["Show Icon"], nil, 7, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.enable end)
@@ -517,14 +517,14 @@ NamePlates.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health
 
 NamePlates.colorsGroup.args.threat = ACH:Group(L["Threat"], nil, 2, nil, function(info) local t, d = E.db.nameplates.colors.threat[info[#info]], P.nameplates.colors.threat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.threat[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.colorsGroup.args.threat.inline = true
-NamePlates.colorsGroup.args.threat.args.goodColor = ACH:Color(L["Good Color"], nil, 1)
-NamePlates.colorsGroup.args.threat.args.goodTransition = ACH:Color(L["Good Transition Color"], nil, 2)
-NamePlates.colorsGroup.args.threat.args.badTransition = ACH:Color(L["Bad Transition Color"], nil, 3)
-NamePlates.colorsGroup.args.threat.args.badColor = ACH:Color(L["Bad Color"], nil, 4)
-NamePlates.colorsGroup.args.threat.args.offTankColor = ACH:Color(L["Off Tank"], nil, 5, nil, nil, nil, nil, nil, function() return (not E.db.nameplates.threat.beingTankedByTank or not E.db.nameplates.threat.useThreatColor) end)
-NamePlates.colorsGroup.args.threat.args.offTankColorGoodTransition = ACH:Color(L["Off Tank Good Transition"], nil, 6, nil, nil, nil, nil, function() return (not E.db.nameplates.threat.beingTankedByTank or not E.db.nameplates.threat.useThreatColor) end)
-NamePlates.colorsGroup.args.threat.args.offTankColorBadTransition = ACH:Color(L["Off Tank Bad Transition"], nil, 7, nil, nil, nil, nil, function() return (not E.db.nameplates.threat.beingTankedByTank or not E.db.nameplates.threat.useThreatColor) end)
-NamePlates.colorsGroup.args.threat.args.soloColor = ACH:Color(L["Solo Color"], nil, 8, nil, nil, nil, nil, nil, function() return not E.db.nameplates.threat.useSoloColor end)
+NamePlates.colorsGroup.args.threat.args.badColor = ACH:Color(L["Bad Color"], nil, 1)
+NamePlates.colorsGroup.args.threat.args.badTransition = ACH:Color(L["Bad Transition Color"], nil, 2)
+NamePlates.colorsGroup.args.threat.args.goodTransition = ACH:Color(L["Good Transition Color"], nil, 3)
+NamePlates.colorsGroup.args.threat.args.goodColor = ACH:Color(L["Good Color"], nil, 4)
+NamePlates.colorsGroup.args.threat.args.offTankColor = ACH:Color(L["Off Tank"], nil, 5)
+NamePlates.colorsGroup.args.threat.args.offTankColorBadTransition = ACH:Color(L["Off Tank Bad Transition"], nil, 6)
+NamePlates.colorsGroup.args.threat.args.offTankColorGoodTransition = ACH:Color(L["Off Tank Good Transition"], nil, 7)
+NamePlates.colorsGroup.args.threat.args.soloColor = ACH:Color(L["Solo Color"], nil, 8)
 
 NamePlates.colorsGroup.args.castGroup = ACH:Group(L["Cast Bar"], nil, 3, nil, function(info) local t, d = E.db.nameplates.colors[info[#info]], P.nameplates.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.castGroup.inline = true
