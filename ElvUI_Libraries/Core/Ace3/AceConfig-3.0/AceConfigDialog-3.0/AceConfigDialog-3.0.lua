@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 91 -- based off 87
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 92 -- based off 87
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -1423,9 +1423,8 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								button:SetDisabled(disabled)
 								button:SetUserData("value", value)
 								button:SetUserData("text", text)
-								local state = v.stateSwitchGetText and v.stateSwitchGetText(button, text, value)
+								local state = v.dragGetText and v.dragGetText(button, text, value)
 								button:SetText(format("|cFF888888%d|r %s", s, state or text))
-								button.stateSwitchOnClick = v.stateSwitchOnClick
 								button.dragOnMouseDown = v.dragOnMouseDown
 								button.dragOnMouseUp = v.dragOnMouseUp
 								button.dragOnEnter = v.dragOnEnter

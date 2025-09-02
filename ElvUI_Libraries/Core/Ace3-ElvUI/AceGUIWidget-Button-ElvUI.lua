@@ -2,14 +2,13 @@
 Button Widget (Modified to change text color on SetDisabled method and add Drag and Drop support for Filter lists)
 Graphical Button.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Button-ElvUI", 5
+local Type, Version = "Button-ElvUI", 6
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local _G = _G
 local pairs = pairs
 local CreateFrame = CreateFrame
-local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local UIParent = UIParent
 local DragTooltip = CreateFrame("GameTooltip", "ElvUIAceGUIWidgetDragTooltip", UIParent, "GameTooltipTemplate")
@@ -69,12 +68,8 @@ local function Dragdrop_OnEnter(frame, ...)
 	end
 end
 local function Dragdrop_OnClick(frame, ...)
-	local button = ...
-	if frame.obj.dragOnClick and button == "RightButton" then
+	if frame.obj.dragOnClick then
 		frame.obj.dragOnClick(frame, ...)
-		frame.obj.ActivateMultiControl(frame.obj, ...)
-	elseif frame.obj.stateSwitchOnClick and (button == "LeftButton") and IsShiftKeyDown() then
-		frame.obj.stateSwitchOnClick(frame, ...)
 		frame.obj.ActivateMultiControl(frame.obj, ...)
 	end
 end
