@@ -190,7 +190,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.auraInstanceID = aura.auraInstanceID
 	bar.noTime = (duration == 0 and expiration == 0)
 
-	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, name, texture,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 

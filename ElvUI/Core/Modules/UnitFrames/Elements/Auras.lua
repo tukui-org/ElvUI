@@ -644,6 +644,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	--- button.caster = source
 	--- button.filter = filter
 	--- button.isDebuff = isDebuff
+	--- button.auraInstanceID = auraInstanceID
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
 	local myPet = source == 'pet'
@@ -677,7 +678,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	return myPet, otherPet, canDispel, isFriend, unitIsCaster
 end
 
-function UF:AuraFilter(unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
+function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db

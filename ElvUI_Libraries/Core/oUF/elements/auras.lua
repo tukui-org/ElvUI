@@ -36,14 +36,15 @@ At least one of the above widgets must be present for the element to work.
 
 ## Options Auras
 
-.num                - The maximum number of auras to display. Defaults to 32 (number)
+.num                   - The maximum number of auras to display. Defaults to 32 (number)
 
 ## Attributes
 
-button.caster		- the unit who cast the aura (string)
-button.filter		- the filter list used to determine the visibility of the aura (string)
-button.isDebuff		- indicates if the button holds a debuff (boolean)
-button.isPlayer		- indicates if the aura caster is the player or their vehicle (boolean)
+button.caster		   - the unit who cast the aura (string)
+button.filter		   - the filter list used to determine the visibility of the aura (string)
+button.isDebuff		   - indicates if the button holds a debuff (boolean)
+button.isPlayer		   - indicates if the aura caster is the player or their vehicle (boolean)
+button.auraInstanceID  - the auras instance ID (number)
 
 ## Examples
 
@@ -152,7 +153,7 @@ local function customFilter(element, unit, button, name)
 	end
 end
 
-local function updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+local function updateAura(element, unit, aura, index, offset, filter, visible)
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 
 	local forceShow = element.forceShow
@@ -188,11 +189,14 @@ local function updateAura(element, unit, aura, index, offset, filter, isDebuff, 
 
 	element.active[position] = button
 
-	button.caster = source
-	button.filter = filter
-	button.isDebuff = isDebuff
-	button.auraInstanceID = (aura and aura.auraInstanceID) or nil
-	button.isPlayer = source == 'player' or source == 'vehicle'
+	local isDebuff = aura and aura.isHarmful
+	local auraInstanceID = aura and aura.auraInstanceID
+
+	button.caster = source or nil
+	button.filter = filter or nil
+	button.isDebuff = isDebuff or nil
+	button.auraInstanceID = auraInstanceID or nil
+	button.isPlayer = (source == 'player' or source == 'vehicle') or nil
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
 	Defines a custom filter that controls if the aura button should be shown.
@@ -209,7 +213,7 @@ local function updateAura(element, unit, aura, index, offset, filter, isDebuff, 
 
 	local show = not element.forceCreate
 	if not (forceShow or element.forceCreate) then
-		show = (element.CustomFilter or customFilter) (element, unit, button, name, icon,
+		show = (element.CustomFilter or customFilter) (element, unit, button, aura, name, icon,
 			count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 			canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 	end
@@ -227,8 +231,8 @@ local function updateAura(element, unit, aura, index, offset, filter, isDebuff, 
 			end
 		end
 
-		if(button.Overlay) then
-			if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
+		if button.Overlay then
+			if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
 				local colors = element.__owner.colors.debuff
 				local color = colors[debuffType] or colors.none
 
@@ -309,7 +313,7 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function filterIcons(element, unit, filter, limit, offset, dontHide)
 	if not offset then offset = 0 end
 
 	local visible = 0
@@ -321,7 +325,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while (aura or forceShow) and (visible < limit) do
-		local result = updateAura(element, unit, aura, index, offset, filter, isDebuff, visible)
+		local result = updateAura(element, unit, aura, index, offset, filter, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -363,8 +367,9 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		local num = auras.num or 32
 		local filter = auras.filter or 'HELPFUL|HARMFUL'
 		local hasBoth = filter == 'HELPFUL|HARMFUL'
-		local visibleBuffs = filterIcons(auras, unit, (hasBoth and 'HELPFUL') or filter, num, filter == 'HARMFUL' or filter == 'RAID', nil, hasBoth)
-		local visibleDebuffs = hasBoth and filterIcons(auras, unit, 'HARMFUL', num - visibleBuffs, true, visibleBuffs) or 0
+
+		local visibleBuffs = filterIcons(auras, unit, (hasBoth and 'HELPFUL') or filter, num, nil, hasBoth)
+		local visibleDebuffs = hasBoth and filterIcons(auras, unit, 'HARMFUL', num - visibleBuffs, visibleBuffs) or 0
 
 		auras.visibleAuras = visibleBuffs + visibleDebuffs
 
@@ -411,7 +416,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		wipe(debuffs.active)
 
 		local num = debuffs.num or 32
-		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', num, true)
+		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', num)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange

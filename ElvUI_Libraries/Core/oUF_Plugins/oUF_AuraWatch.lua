@@ -200,7 +200,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 
 	button:SetID(index)
 
-	local show = (element.CustomFilter or CustomFilter) (element, unit, button, name, icon,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, button, aura, name, icon,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
