@@ -193,8 +193,8 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 
 	element.active[position] = button
 
-	local isDebuff = aura.isHarmful
-	local auraInstanceID = aura.auraInstanceID
+	local isDebuff = aura and aura.isHarmful or nil
+	local auraInstanceID = aura and aura.auraInstanceID or nil
 
 	button.aura = aura or nil
 	button.filter = filter or nil
