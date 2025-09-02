@@ -6,6 +6,27 @@ local Aura = E.Filters.Aura
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
+-- Only important debuffs which influence your action priority
+-- Typically paired with [BLOCK] Non Personal
+G.unitframe.aurafilters.ImportantClassDebuffs = {
+	type = 'Whitelist',
+	spells = {
+	-- Evoker
+	-- Death Knight
+	-- Demon Hunter
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Monk
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	}
+}
+
 -- Only important CC debuffs, mostly for mythic+
 G.unitframe.aurafilters.ImportantCC = {
 	type = 'Whitelist',
