@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local wipe = wipe
 local ipairs = ipairs
 local unpack = unpack
 local strfind = strfind
