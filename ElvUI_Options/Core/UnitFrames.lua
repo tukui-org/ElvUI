@@ -7,7 +7,7 @@ local ACH = E.Libs.ACH
 local _G = _G
 local wipe, next, pairs, ipairs, gsub = wipe, next, pairs, ipairs, gsub
 local format, strmatch, strsplit, ceil = format, strmatch, strsplit, ceil
-local tinsert, tonumber, tostring = tinsert, tonumber, tostring
+local strfind, tinsert, tonumber, tostring = strfind, tinsert, tonumber, tostring
 
 local GetSpellTexture = C_Spell.GetSpellTexture
 local CopyTable = CopyTable
@@ -518,7 +518,7 @@ local function UpdateCustomTextFrame(frame)
 end
 
 local function UpdateCustomTextGroup(unit)
-	if unit == 'party' or unit:find('raid') then
+	if unit == 'party' or strfind(unit, 'raid') then
 		for _, child in next, { UF[unit]:GetChildren() } do
 			for _, subchild in next, { child:GetChildren() } do
 				UpdateCustomTextFrame(subchild)

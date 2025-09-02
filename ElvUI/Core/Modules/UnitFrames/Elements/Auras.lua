@@ -272,15 +272,21 @@ end
 function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
-		local point = db.countPosition or 'CENTER'
-		button.Count:ClearAllPoints()
-		button.Count:SetJustifyH(strfind(point, 'RIGHT', nil, true) and 'RIGHT' or 'LEFT')
-		button.Count:Point(point, db.countXOffset, db.countYOffset)
-		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		if button.Count then
+			local point = db.countPosition or 'CENTER'
+			button.Count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+
+			button.Count:ClearAllPoints()
+			button.Count:Point(point, db.countXOffset, db.countYOffset)
+			button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		end
 
 		if button.Text then
+			local point = db.sourceText.position or 'TOP'
+			button.Text:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+
 			button.Text:ClearAllPoints()
-			button.Text:Point(db.sourceText.position or 'TOP', db.sourceText.xOffset, db.sourceText.yOffset)
+			button.Text:Point(point, db.sourceText.xOffset, db.sourceText.yOffset)
 			button.Text:FontTemplate(LSM:Fetch('font', db.sourceText.font), db.sourceText.fontSize, db.sourceText.fontOutline)
 		end
 	end
@@ -309,7 +315,7 @@ function UF:UpdateAuraCooldownPosition(button)
 	if point == 'CENTER' then
 		button.Cooldown.timer.text:Point(point, 1, 0)
 	else
-		local bottom, right = strfind(point, 'BOTTOM', nil, true), strfind(point, 'RIGHT', nil, true)
+		local bottom, right = strfind(point, 'BOTTOM'), strfind(point, 'RIGHT')
 		button.Cooldown.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
@@ -674,7 +680,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
 	local myPet = source == 'pet'
-	local otherPet = source and source ~= 'pet' and strfind(source, 'pet', nil, true)
+	local otherPet = source and source ~= 'pet' and strfind(source, 'pet')
 	local dispellable = UF:AuraDispellable(debuffType, spellID)
 	local canDispel = (auras.type == 'auras' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
 	local isFriend = unit == 'player' or (UnitIsFriend('player', unit) and not UnitCanAttack('player', unit))
