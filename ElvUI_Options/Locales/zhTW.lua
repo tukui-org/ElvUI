@@ -1987,3 +1987,23 @@ L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名
 範例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
+
+----------  FilterHelp  ----------
+L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
+L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
+L["*Personal:|r ^Auras cast by yourself.|r"] = true
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
+L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
+L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = true
+L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
+L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
+L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true
+----------------------------------
