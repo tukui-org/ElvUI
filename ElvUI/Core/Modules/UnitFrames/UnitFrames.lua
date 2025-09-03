@@ -341,7 +341,7 @@ function UF:UnitFrame_OnEnter()
 	else
 		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
 
-		self.UpdateTooltip = (GameTooltip:SetUnit(self.unit, self.hideStatusOnTooltip) and UF.UnitFrame_OnEnter) or nil
+		self.UpdateTooltip = (self.unit and GameTooltip:SetUnit(self.unit) and UF.UnitFrame_OnEnter) or nil
 	end
 
 	UF:SetAlpha_MouseTags(self.__mousetags, 1)
