@@ -103,6 +103,7 @@ local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame
 -- ElvUI block
 local wipe = wipe
 local next = next
+local strsub = strsub
 local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -169,6 +170,10 @@ local function resetAttributes(self)
 	for _, pip in next, self.Pips do
 		pip:Hide()
 	end
+end
+
+local function UpdateCurrentTarget(element, target)
+	element.curTarget = (target and target ~= "") and target or nil
 end
 
 local function CreatePip(element)
@@ -306,6 +311,10 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	element.casting = event == 'UNIT_SPELLCAST_START'
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
+
+	if strsub(real, 1, 14) == 'UNIT_SPELLCAST' then
+		UpdateCurrentTarget(element)
+	end
 
 	if element.empowering then
 		endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -559,7 +568,7 @@ end
 
 -- ElvUI block
 local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
-	self.Castbar.curTarget = (target and target ~= "") and target or nil
+	UpdateCurrentTarget(self.Castbar, target)
 
 	local castTime = specialCast[spellID]
 	if castTime then
