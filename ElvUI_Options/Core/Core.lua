@@ -81,6 +81,12 @@ do
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
+	local specialOldNames = { -- also in UF Auras
+		nonPersonal = 'NonPersonal',
+		notCastByUnit = 'NotCastByUnit',
+		notDispellable = 'NotDispellable'
+	}
+
 	local specialLocales = {
 		Boss = L["Auras cast by a boss unit."],
 		Mount = L["Auras which are classified as mounts."],
@@ -98,11 +104,10 @@ do
 		BlizzardNameplate = L["Auras that fall under the conditions to be a nameplate aura."]
 	}
 
-	local oldSpecial = { nonPersonal = 'NonPersonal', notCastByUnit = 'NotCastByUnit', notDispellable = 'NotDispellable' }
 	C.DragGetDesc = function(_, text)
 		local real = UF:GetFilterNameInfo(text)
 
-		local special = specialLocales[oldSpecial[real] or real]
+		local special = specialLocales[specialOldNames[real] or real]
 		if special then
 			return special
 		end

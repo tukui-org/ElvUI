@@ -569,7 +569,12 @@ function UF:GetFilterNameInfo(name)
 end
 
 do
-	local oldSpecial = { nonPersonal = 'NonPersonal', notCastByUnit = 'NotCastByUnit', notDispellable = 'NotDispellable' }
+	local specialOldNames = { -- also in Options Core
+		nonPersonal = 'NonPersonal',
+		notCastByUnit = 'NotCastByUnit',
+		notDispellable = 'NotDispellable'
+	}
+
 	function UF:ConvertFilters(auras, priority)
 		if not priority or priority == '' then return end
 
@@ -584,7 +589,7 @@ do
 			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(name)
 			local custom = filters[real]
 
-			if special[oldSpecial[real] or real] or custom then
+			if special[specialOldNames[real] or real] or custom then
 				tinsert(list, { name = real, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
 			end
 		end
