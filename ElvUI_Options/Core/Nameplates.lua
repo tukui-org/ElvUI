@@ -187,7 +187,6 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.sourceInterrupt = ACH:Toggle(L["Display Interrupt Source"], L["Display the unit name who interrupted a spell on the castbar. You should increase the Time to Hold to show properly."], 2)
 	group.args.castGroup.args.sourceInterruptClassColor = ACH:Toggle(L["Class Color Source"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.sourceInterrupt end)
 	group.args.castGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 5)
-	group.args.castGroup.args.nameLength = ACH:Range(L["Name Length"], nil, 6, { min = 3, max = 80, step = 1 })
 
 	-- order 4 is player Display Target
 	group.args.castGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
@@ -222,6 +221,7 @@ local function GetUnitSettings(unit, name)
 	group.args.castGroup.args.textGroup.args.text = ACH:Group(L["Text Options"], nil, 11)
 	group.args.castGroup.args.textGroup.args.text.args.textXOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
 	group.args.castGroup.args.textGroup.args.text.args.textYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
+	group.args.castGroup.args.textGroup.args.text.args.nameLength = ACH:Range(L["Name Length"], nil, 10, { min = 3, max = 80, step = 1 })
 	group.args.castGroup.args.textGroup.args.text.inline = true
 
 	group.args.castGroup.args.textGroup.args.fontGroup = ACH:Group(L["Font"], nil, 30)

@@ -398,7 +398,6 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
 	config.args.spellRename = ACH:Toggle(L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
 	config.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
-	config.args.nameLength = ACH:Range(L["Name Length"], nil, 6, { min = 3, max = 80, step = 1 })
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = 50, max = ceil(E.screenWidth), step = 1 })
@@ -421,6 +420,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.textGroup.args.textSettings.args.fontStyle = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 4)
 	config.args.textGroup.args.textSettings.args.xOffsetText = ACH:Range(L["X-Offset"], nil, 5, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
 	config.args.textGroup.args.textSettings.args.yOffsetText = ACH:Range(L["Y-Offset"], nil, 6, { min = -500, max = 500, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
+	config.args.textGroup.args.textSettings.args.nameLength = ACH:Range(L["Name Length"], nil, 7, { min = 3, max = 80, step = 1 }, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, false)
 
 	config.args.textGroup.args.timeSettings = ACH:Group(L["Time Options"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value updateFunc(UF, groupName, numUnits) end, function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end)
 	config.args.textGroup.args.timeSettings.inline = true
