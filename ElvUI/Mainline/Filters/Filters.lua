@@ -10,6 +10,7 @@ G.unitframe.aurafilters.PlayerBuffs = nil
 -- Typically paired with [BLOCK] Non Personal
 G.unitframe.aurafilters.ImportantClassDebuffs = {
 	type = 'Whitelist',
+	desc = 'Lucky wanted this, so there you go.',
 	spells = {
 	-- Evoker
 		[434473] 	= List(), -- Bombardments

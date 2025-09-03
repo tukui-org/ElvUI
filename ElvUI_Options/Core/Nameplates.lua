@@ -91,7 +91,8 @@ local function GetUnitAuras(unit, auraType)
 
 	group.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() NP:ConfigureAll() end)
 	group.args.filtersGroup.args.filterPriority.dragdrop = true
-	group.args.filtersGroup.args.filterPriority.dragGetText = C.StateSwitchGetText
+	group.args.filtersGroup.args.filterPriority.dragGetTitle = C.DragGetTitle
+	group.args.filtersGroup.args.filterPriority.dragGetDesc = C.DragGetDesc
 	group.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop -- keep it here
 	group.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
 	group.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end

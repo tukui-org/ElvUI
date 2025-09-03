@@ -74,10 +74,24 @@ do
 end
 
 do
-	C.StateSwitchGetText = function(_, text)
+	C.DragGetTitle = function(_, text)
 		local real, friend, enemy, block, allow = UF:GetFilterNameInfo(text)
 		local filterText = ((block or allow) and format(block and '|cFF999999%s|r %s' or '|cFFcccccc%s|r %s', block and L["Block"] or L["Allow"], real)) or real
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
+	end
+
+	C.DragGetDesc = function(_, text)
+		local real = UF:GetFilterNameInfo(text)
+
+		local special = G.unitframe.specialFilters[real]
+		if special then
+			return special
+		end
+
+		local custom = E.global.unitframe.aurafilters[real]
+		if custom then
+			return custom.desc
+		end
 	end
 
 	local function FilterMatch(s,v)

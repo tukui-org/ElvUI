@@ -105,7 +105,8 @@ local basekeys={
 		dragOnClick=optmethodfalse,
 		dragOnMouseUp=optmethodfalse,
 		dragOnMouseDown=optmethodfalse,
-		dragGetText=optmethodfalse,
+		dragGetDesc=optmethodfalse,
+		dragGetTitle=optmethodfalse,
 }
 
 local typedkeys={

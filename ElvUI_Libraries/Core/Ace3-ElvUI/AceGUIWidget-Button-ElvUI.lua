@@ -37,6 +37,7 @@ end
 local function Dragdrop_OnMouseUp(frame, ...)
 	if frame.obj.dragOnMouseUp then
 		frame:SetAlpha(1)
+
 		if dragdropButton.enteredFrame and dragdropButton.enteredFrame ~= frame and dragdropButton.enteredFrame:IsMouseOver() then
 			frame.obj.dragOnMouseUp(frame, ...)
 			frame.obj.ActivateMultiControl(frame.obj, ...)

@@ -152,7 +152,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	config.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.unitframe.units[groupName].aurabar.priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.unitframe.units[groupName].aurabar.priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() updateFunc(UF, groupName) end)
 	config.args.filtersGroup.args.filterPriority.dragdrop = true
-	config.args.filtersGroup.args.filterPriority.dragGetText = C.StateSwitchGetText
+	config.args.filtersGroup.args.filterPriority.dragGetTitle = C.DragGetTitle
+	config.args.filtersGroup.args.filterPriority.dragGetDesc = C.DragGetDesc
 	config.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop -- keep it here
 	config.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
 	config.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
@@ -256,7 +257,8 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.unitframe.units[groupName][auraType].priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.unitframe.units[groupName][auraType].priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() updateFunc(UF, groupName, numUnits) end)
 	config.args.filtersGroup.args.filterPriority.dragdrop = true
-	config.args.filtersGroup.args.filterPriority.dragGetText = C.StateSwitchGetText
+	config.args.filtersGroup.args.filterPriority.dragGetTitle = C.DragGetTitle
+	config.args.filtersGroup.args.filterPriority.dragGetDesc = C.DragGetDesc
 	config.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop -- keep it here
 	config.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
 	config.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
