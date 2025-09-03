@@ -1311,7 +1311,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	return passed
 end
 
-function NP:StyleFilterGetElement(object, actions)
+function NP:StyleFilterTempElement(object, actions)
 	if not actions then return object end
 
 	object.glow = actions.glow and actions.glow.enable or nil
@@ -1323,7 +1323,7 @@ function NP:StyleFilterGetElement(object, actions)
 	return object
 end
 
-function NP:StyleFilterGetGeneral(object, actions)
+function NP:StyleFilterTempGeneral(object, actions)
 	if not actions then return object end
 
 	object.visibility = actions.hide or nil
@@ -1336,7 +1336,7 @@ function NP:StyleFilterGetGeneral(object, actions)
 	return object
 end
 
-function NP:StyleFilterGetTags(object, actions)
+function NP:StyleFilterTempTags(object, actions)
 	if not actions or not actions.tags then return object end
 
 	object.name = actions.tags.name and actions.tags.name ~= '' or nil
@@ -1352,11 +1352,11 @@ function NP:StyleFilterPass(frame, event, filter, temp, applied)
 	local db = NP:PlateDB(frame)
 
 	-- populate the temporary tables for StyleFilterChanges
-	NP:StyleFilterGetElement(temp.health, db.health.enable and filter.actions.health)
-	NP:StyleFilterGetElement(temp.power, db.power.enable and filter.actions.power)
-	NP:StyleFilterGetElement(temp.castbar, db.castbar.enable and filter.actions.castbar)
-	NP:StyleFilterGetGeneral(temp.general, filter.actions)
-	NP:StyleFilterGetTags(temp.tags, filter.actions)
+	NP:StyleFilterTempElement(temp.health, db.health.enable and filter.actions.health)
+	NP:StyleFilterTempElement(temp.power, db.power.enable and filter.actions.power)
+	NP:StyleFilterTempElement(temp.castbar, db.castbar.enable and filter.actions.castbar)
+	NP:StyleFilterTempGeneral(temp.general, filter.actions)
+	NP:StyleFilterTempTags(temp.tags, filter.actions)
 
 	-- push stuff into StyleFilterChanges
 	local changes = frame.StyleFilterChanges
