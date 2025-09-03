@@ -601,7 +601,9 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, changes, bar, 
 	end
 end
 
-function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
+function NP:StyleFilterSetChanges(frame, event, temp, filter)
+	local actions = filter.actions
+	local general = temp.general
 	if general.visibility or general.nameOnly then
 		if general.nameOnly then -- only allow name only for the secure plate
 			NP:DisablePlate(frame, general.nameOnly and 1 or nil)
@@ -616,6 +618,7 @@ function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, 
 	end
 
 	-- Keeps Tag changes after NameOnly
+	local tags = temp.tags
 	if tags.name then
 		frame:Tag(frame.Name, actions.tags.name)
 		frame.Name:UpdateTag()
@@ -669,9 +672,9 @@ function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, 
 		end
 	end
 
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.health, health, frame.Health, frame.Cutaway.Health)
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.power, power, frame.Power, frame.Cutaway.Power)
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, castbar, frame.Castbar)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.health, temp.health, frame.Health, frame.Cutaway.Health)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.power, temp.power, frame.Power, frame.Cutaway.Power)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, temp.castbar, frame.Castbar)
 end
 
 function NP:StyleFilterClearVisibility(frame, previous)
@@ -1322,33 +1325,35 @@ function NP:StyleFilterGetTags(object, actions)
 	return object
 end
 
-function NP:StyleFilterPass(frame, event, general, tags, health, power, castbar, filter)
+function NP:StyleFilterPass(frame, event, temp, filter)
 	local db = NP:PlateDB(frame)
 
 	-- populate the temporary tables for StyleFilterChanges
-	NP:StyleFilterGetElement(health, db.health.enable and filter.actions.health)
-	NP:StyleFilterGetElement(power, db.power.enable and filter.actions.power)
-	NP:StyleFilterGetElement(castbar, db.castbar.enable and filter.actions.castbar)
-	NP:StyleFilterGetGeneral(general, filter.actions)
-	NP:StyleFilterGetTags(tags, filter.actions)
+	NP:StyleFilterGetElement(temp.health, db.health.enable and filter.actions.health)
+	NP:StyleFilterGetElement(temp.power, db.power.enable and filter.actions.power)
+	NP:StyleFilterGetElement(temp.castbar, db.castbar.enable and filter.actions.castbar)
+	NP:StyleFilterGetGeneral(temp.general, filter.actions)
+	NP:StyleFilterGetTags(temp.tags, filter.actions)
 
 	-- push stuff into StyleFilterChanges
 	local changes = frame.StyleFilterChanges
-	changes.general = E:CopyTable(changes.general, general)
-	changes.tags = E:CopyTable(changes.tags, tags)
-	changes.health = E:CopyTable(changes.health, health)
-	changes.power = E:CopyTable(changes.power, power)
-	changes.castbar = E:CopyTable(changes.castbar, castbar)
+	changes.general = E:CopyTable(changes.general, temp.general)
+	changes.tags = E:CopyTable(changes.tags, temp.tags)
+	changes.health = E:CopyTable(changes.health, temp.health)
+	changes.power = E:CopyTable(changes.power, temp.power)
+	changes.castbar = E:CopyTable(changes.castbar, temp.castbar)
 
 	-- execute some changes
-	NP:StyleFilterSetChanges(frame, event, filter.actions, general, tags, health, power, castbar)
+	NP:StyleFilterSetChanges(frame, event, temp, filter)
 end
 
-function NP:StyleFilterClear(frame, event, general, tags, health, power, castbar)
+function NP:StyleFilterClear(frame, event, temp)
 	if frame == NP.TestFrame then return end
 
-	-- clean up the temporary tables in StyleFilterChanges
-	wipe(general) wipe(tags) wipe(health) wipe(power) wipe(castbar)
+	-- clean up the temporary tables
+	for _, data in next, temp do
+		wipe(data)
+	end
 
 	if next(frame.StyleFilterChanges) then
 		NP:StyleFilterClearChanges(frame, frame.StyleFilterChanges)
@@ -1697,17 +1702,18 @@ end
 
 do
 	local general, tags, health, power, castbar = {}, {}, {}, {}, {}
+	local temp = { general = general, tags = tags, health = health, power = power, castbar = castbar }
 	function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 		if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
 
 		local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
 
-		NP:StyleFilterClear(frame, event, general, tags, health, power, castbar)
+		NP:StyleFilterClear(frame, event, temp)
 
 		for filterNum in next, NP.StyleFilterTriggerList do
 			local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 			if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
-				NP:StyleFilterPass(frame, event, general, tags, health, power, castbar, filter)
+				NP:StyleFilterPass(frame, event, temp, filter)
 			end
 		end
 
