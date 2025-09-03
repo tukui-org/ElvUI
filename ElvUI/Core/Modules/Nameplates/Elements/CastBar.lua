@@ -197,7 +197,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 						classColor = data.classColor.colorStr
 					end
 
-					plate.Castbar.Text:SetFormattedText('%s [%s]', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+					plate.Castbar.Text:SetFormattedText('%s [|c%s%s|r]', INTERRUPTED, classColor or 'FFdddddd', name)
 				else
 					plate.Castbar.Text:SetFormattedText('%s [%s]', INTERRUPTED, name)
 				end
