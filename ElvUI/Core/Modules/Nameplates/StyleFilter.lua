@@ -1752,6 +1752,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 		local verifyUnit = (trigger ~= 2 and NP.StyleFilterDefaultEvents[event]) or (arg1 and arg1 == self.unit)
 		if not verifyUnit then return end -- this event doesnt match the unit, this checks unitless
 
+		-- REMOVED does not make it here, so we call inside of NamePlateCallBack
+
 		local allowUpdate = not NP.StyleFilterAuraEvents[event] or not ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2)
 		if not allowUpdate then return end -- should we allow the update, aura events that can help populate cache
 
