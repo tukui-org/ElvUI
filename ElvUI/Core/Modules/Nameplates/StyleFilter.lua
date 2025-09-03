@@ -759,7 +759,8 @@ function NP:StyleFilterClearChangesOnElement(frame, changes, bar, cutaway)
 	end
 end
 
-function NP:StyleFilterClearChanges(frame, changes)
+function NP:StyleFilterClearChanges(frame)
+	local changes = frame.StyleFilterChanges
 	local db = NP:PlateDB(frame)
 
 	if not changes.general.nameOnly then -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
@@ -1375,14 +1376,6 @@ function NP:StyleFilterPass(frame, event, filter, temp, applied)
 	NP:StyleFilterSetChanges(frame, event, filter, temp, applied)
 end
 
-function NP:StyleFilterClear(frame, event)
-	if frame == NP.TestFrame then return end
-
-	if next(frame.StyleFilterChanges) then
-		NP:StyleFilterClearChanges(frame, frame.StyleFilterChanges)
-	end
-end
-
 function NP:StyleFilterSort(place)
 	if self[2] and place[2] then
 		return self[2] > place[2] -- Sort by priority: 1=first, 2=second, 3=third, etc
@@ -1730,8 +1723,8 @@ function NP:StyleFilterClean(object)
 end
 
 do
-	local temp = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- what changes are active
-	local applied = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- whats they are changed to (for plugins)
+	local temp = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- states
+	local applied = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- values
 
 	function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 		if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
@@ -1740,7 +1733,9 @@ do
 
 		NP:StyleFilterClean(temp)
 		NP:StyleFilterClean(applied)
-		NP:StyleFilterClear(frame, event)
+		if next(frame.StyleFilterChanges) then
+			NP:StyleFilterClearChanges(frame)
+		end
 
 		for filterNum in next, NP.StyleFilterTriggerList do
 			local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
