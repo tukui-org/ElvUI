@@ -1713,12 +1713,6 @@ function NP:StyleFilterHiddenState(changes)
 	return general and ((general.nameOnly and general.visibility and 3) or (general.nameOnly and 2) or (general.visibility and 1))
 end
 
-function NP:StyleFilterClean(object)
-	for _, data in next, object do
-		wipe(data) -- clean up
-	end
-end
-
 do
 	local temp = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- states
 	local applied = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- values
@@ -1733,9 +1727,6 @@ do
 		end
 
 		if event ~= 'NAME_PLATE_UNIT_REMOVED' then
-			NP:StyleFilterClean(temp)
-			NP:StyleFilterClean(applied)
-
 			for filterNum in next, NP.StyleFilterTriggerList do
 				local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 				if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
