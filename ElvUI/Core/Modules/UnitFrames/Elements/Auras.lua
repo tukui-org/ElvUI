@@ -568,31 +568,34 @@ function UF:GetFilterNameInfo(name)
 	return friend or enemy or name, friend, enemy, block, allow
 end
 
-function UF:ConvertFilters(auras, priority)
-	if not priority or priority == '' then return end
+do
+	local oldSpecial = { nonPersonal = 'NonPersonal', notCastByUnit = 'NotCastByUnit', notDispellable = 'NotDispellable' }
+	function UF:ConvertFilters(auras, priority)
+		if not priority or priority == '' then return end
 
-	local list = auras.filterList or {}
-	if #list > 0 then wipe(list) end
+		local list = auras.filterList or {}
+		if #list > 0 then wipe(list) end
 
-	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
+		local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-	local temp = { strsplit(',', priority) }
-	for i = 1, #temp do
-		local name = temp[i]
-		local real, friend, enemy = UF:GetFilterNameInfo(name)
-		local custom = filters[real]
+		local temp = { strsplit(',', priority) }
+		for i = 1, #temp do
+			local name = temp[i]
+			local real, friend, enemy = UF:GetFilterNameInfo(name)
+			local custom = filters[real]
 
-		if special[real] or custom then
-			tinsert(list, {
-				name = real,
-				custom = custom,
-				status = (friend and 1) or (enemy and 2)
-			})
+			if special[oldSpecial[real] or real] or custom then
+				tinsert(list, {
+					name = real,
+					custom = custom,
+					status = (friend and 1) or (enemy and 2)
+				})
+			end
 		end
-	end
 
-	if #list > 0 then
-		return list
+		if #list > 0 then
+			return list
+		end
 	end
 end
 
