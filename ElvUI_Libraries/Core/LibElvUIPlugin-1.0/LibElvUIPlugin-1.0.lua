@@ -71,11 +71,11 @@ if locale == "deDE" then
 	INFO_NEW = "Neuste:"
 	LIBRARY = "Bibliothek"
 elseif locale == "ruRU" then
-	MSG_OUTDATED = "Ваша версия %s %s устарела (последняя версия %s)."
-	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у вас последняя версия, красный - устаревшая)"
+	MSG_OUTDATED = "Ваша версия %s %s устарела (актуальная версия %s)."
+	HDR_INFORMATION = "LibElvUIPlugin-1.0.%d - загруженные плагины (зеленый означает, что у Вас актуальная версия, красный - устаревшая)"
 	INFO_BY = "от"
 	INFO_VERSION = "Версия:"
-	INFO_NEW = "Последняя:"
+	INFO_NEW = "Актуальная:"
 	LIBRARY = "Библиотека"
 elseif locale == "zhCN" then
 	MSG_OUTDATED = "你的 %s %s 版本已经过期 (最新版本是 %s)。"
