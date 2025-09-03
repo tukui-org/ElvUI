@@ -332,7 +332,7 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 		group.args.castGroup.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 5)
-		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Text"], SEPARATE = L["Separate"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
+		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Cast Name"], SEPARATE = L["Custom Anchor"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
 
 		group.args.castGroup.args.targetAnchor = ACH:Group(L["Target Anchor"], nil, 7, nil, nil, nil, function() return not (E.db.nameplates.units[unit].castbar.displayTarget and E.db.nameplates.units[unit].castbar.targetStyle == 'SEPARATE') end)
 		group.args.castGroup.args.targetAnchor.inline = true
@@ -354,7 +354,7 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 		group.args.castGroup.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 5)
-		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Cast Name"], SEPARATE = L["Separate"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
+		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Cast Name"], SEPARATE = L["Custom Anchor"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
 
 		group.args.castGroup.args.targetAnchor = ACH:Group(L["Target Anchor"], nil, 7, nil, nil, nil, function() return not (E.db.nameplates.units[unit].castbar.displayTarget and E.db.nameplates.units[unit].castbar.targetStyle == 'SEPARATE') end)
 		group.args.castGroup.args.targetAnchor.inline = true
