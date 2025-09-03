@@ -2052,9 +2052,6 @@ L["TEXTURE_EXAMPLE"] = [=[若要设置聊天框背景, 请你指定位于魔兽�
 对多数玩家来说，较简易的方式是将tga文件放入魔兽世界文件夹中，然后在此处输入文件名。]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, NonPersonal, CastByUnit, NotCastByUnit, Dispellable (includes steal-able), NotDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*白名单：|r ^Boss, Mount, MyPet, OtherPet, Personal, NonPersonal, CastByUnit, NotCastByUnit, Dispellable（包含可窃取）, NotDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*黑名单：|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | 黑名单过滤器只对优先级列表中排在它之后的过滤器有效。它不会阻止在它之前的过滤器的任何内容。|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "^黑名单过滤器只对优先级列表中排在它之后的过滤器有效。它不会阻止在它之前的过滤器的任何内容。"
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Boss：|r ^由首领单位施放的光环（仅限减益效果？）。|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = "*Mount：|r ^被归类为坐骑的光环。|r"
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Personal：|r ^由你自己施放的光环。|r"
@@ -2064,9 +2061,7 @@ L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe 
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Dispellable：|r ^可以驱散或法术窃取的光环。|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC：|r ^由NPC施放的光环。|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers：|r ^由玩家控制的单位（因此不包括NPC）施放的光环。|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*blockCastByPlayers：|r ^屏蔽由玩家控制的单位施放的光环（因此只会显示由NPC施放的光环）。|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*blockNoDuration：|r ^屏蔽永久的光环。|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*blockNonPersonal：|r ^屏蔽不是由自己施放的光环。|r"
+
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*显示全部：|r ^将“最长持续时间”设为0，优先级列表为空，或 (1) Personal | (2) NonPersonal"
 L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*屏蔽黑名单光环，显示其他所有光环：|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*屏蔽永久的光环，显示其他所有光环：|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"

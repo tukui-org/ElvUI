@@ -161,7 +161,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
 	config.args.filtersGroup.args.filterPriority.dragOnMouseUp = function() C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
 	config.args.filtersGroup.args.filterPriority.dragOnClick = function(_, button) C.SetFilterPriority(E.db.unitframe.units, groupName, 'aurabar', carryFilterFrom, button == 'RightButton', nil, button == 'LeftButton' and IsShiftKeyDown(), button == 'LeftButton' and IsControlKeyDown()) end
-	config.args.filtersGroup.args.spacer1 = ACH:Description(L["FILTER_PRIORTY_DESC"], 9)
+	config.args.filtersGroup.args.spacer1 = ACH:Description(L["FILTER_PRIORITY_DESC"], 9)
 
 	if groupName == 'target' then
 		config.args.generalGroup.args.attachTo.values.PLAYER_AURABARS = L["Player Frame Aura Bars"]

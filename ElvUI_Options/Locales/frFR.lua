@@ -1978,9 +1978,6 @@ Exemple: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 Ou pour la majorité des utilsateurs, il serait plus simple de mettre le fichier tga dans le dossier de World of Warcraft puis de taper son nom ici.]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, NonPersonal, CastByUnit, NotCastByUnit, Dispellable (includes steal-able), NotDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*Listes blanches :|r ^Boss, Monture, MonFamilier, AutreFamilier, Personnel, nonPersonnel, LancéParUnité, nonLancéParUnité, Dissipable (y compris les volables), nonDissipable, LancéParPNJ, LancéParJoueurs, NomplateBlizzard|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*Listes noires :|r ^bloqueMonture, bloqueNonPersonnel, bloqueLancéParJoueurs, bloquePasDeDurée, bloqueDissipable, bloqueNonDissipable | Un filtre de liste noire n'est efficace que contre les filtres qui le suivent dans la liste de priorités. Il ne bloquera rien des filtres qui le précèdent.|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "^Un filtre de liste noire n'est efficace que contre les filtres qui le suivent dans la liste de priorités. Il ne bloquera rien des filtres qui le précèdent."
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Boss :|r ^Auras (uniquement des debuffs ?) lancées par une unité de boss.|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = "*Monture :|r ^Auras classées comme montures.|r"
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Personnel :|r ^Auras lancées par vous-même.|r"
@@ -1990,9 +1987,7 @@ L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe 
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Dissipable :|r ^Auras que vous pouvez dissiper ou voler.|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*Lancé par un PNJ :|r ^Auras lancées par n'importe quel PNJ.|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*Lancé par des joueurs :|r ^Auras lancées par une unité contrôlée par un joueur (donc pas de PNJ).|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*Bloquer lancé par des joueurs :|r ^Bloque toute aura lancée par des unités contrôlées par des joueurs (donc montre uniquement les auras lancées par des PNJ).|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*Bloquer sans durée :|r ^Bloque toute aura sans durée.|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*Bloquer non personnel :|r ^Bloque toute aura qui n'est pas lancée par vous-même.|r"
+
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*Tout afficher :|r ^Réglez 'Durée maximale' sur 0 et laissez la liste de priorités vide ou (1) Personnel | (2) Non personnel"
 L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sur liste noire, tout le reste :|r ^(1) Liste noire | (2) Personnel | (3) Non personnel"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sans durée, tout le reste :|r ^(1) Bloquer sans durée | (2) Personnel | (3) Non personnel"

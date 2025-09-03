@@ -1992,9 +1992,6 @@ L["TEXTURE_EXAMPLE"] = [=[Укажите имя файла в папке World o
 Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, NonPersonal, CastByUnit, NotCastByUnit, Dispellable (includes steal-able), NotDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*Белые списки:|r ^Босс, Транспорт, Мой питомец, Чужой питомец, Личные, Принадлежит юниту, Не принадлежит юниту, Развеиваемые (включая те, что можно украсть), Не развеиваемые, Принадлежит НИП, Принадлежат игрокам, Индикатор Blizzard|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*Черные списки:|r ^[Блокировать] Транспорт, [Блокировать] Чужие, [Блокировать] Принадлежат игрокам, [Блокировать] Без длительности, [Блокировать] Развеиваемые, [Блокировать] Не развеиваемые | Фильтр типа черный список работают только на на фильтры, которые идут после них в списке приоритета. Они не будут блокировать ничего из фильтров перед ними.|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "^Фильтр типа черный список работают только на фильтры, которые идут после них в списке приоритета. Они не будут блокировать ничего из фильтров перед ними.|r"
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Босс:|r ^Ауры (только дебаффы?), наложенные боссом.|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = "*Транспорт:|r ^Ауры, которые классифицируются как средства передвижения.|r"
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Личные:|r ^Ауры, наложенные Вами.|r"
@@ -2004,9 +2001,7 @@ L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe 
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Развеиваемые:|r ^Ауры, которые Вы можете развеять или украсть.|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*Принадлежит НИП:|r ^Ауры, наложенные НИПами.|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*Принадлежат игрокам:|r ^Ауры, наложенные любым юнитом под контролем игрока (т.е. не НИПы).|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*[Блокировать] Принадлежат игрокам:|r ^Блокирует ауры, наложенные любым юнитом под контролем игрока (будут показаны только ауры НИПов).|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*[Блокировать] Без длительности:|r ^Блокирует ауры без длительности или определенного времени действия.|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*[Блокировать] Чужие:|r ^Блокирует ауры, наложенные не Вами.|r"
+
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*Показывать все:|r ^Установите 'Максимальная длительность' на 0 и оставьте список приоритета пустым или (1) 'Личные' | (2) 'Чужие'"
 L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*Блокировать ауры в черном списке, показывать все остальное:|r ^(1) 'Черный список'| (2) 'Личные' | (3) 'Чужие'"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*Блокировать ауры без длительности, показывать все остальное:|r ^(1) '[Блокировать] Без длительности' | (2) 'Личные' | (3) 'Чужие'"
