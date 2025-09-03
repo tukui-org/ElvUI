@@ -71,7 +71,6 @@ P.unitframe.filters = {
 G.unitframe.aurafilters = {}
 
 G.unitframe.specialFilters = {
-	-- Whitelists
 	Boss = 'Auras cast by a boss unit.',
 	Mount = 'Auras which are classified as mounts.',
 	MyPet = 'Auras which were from the pet unit.',
@@ -85,13 +84,5 @@ G.unitframe.specialFilters = {
 	NotDispellable = 'Auras you cannot dispel or spellsteal.',
 	CastByNPC = 'Auras cast by any NPC.',
 	CastByPlayers = 'Auras cast by any player-controlled unit (so no NPCs).',
-	BlizzardNameplate = 'Auras that fall under the conditions to be a nameplate aura.',
-
-	-- Blacklists
-	blockMount = '',
-	blockNonPersonal = '',
-	blockCastByPlayers = '',
-	blockNoDuration = '',
-	blockDispellable = '',
-	blockNotDispellable = '',
+	BlizzardNameplate = 'Auras that fall under the conditions to be a nameplate aura.'
 }
