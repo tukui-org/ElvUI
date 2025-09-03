@@ -623,15 +623,15 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 				or (name == 'blockNotDispellable' and not canDispel) then
 					return false -- Blacklists
 				elseif (name == 'Personal' and isPlayer)
-				or (name == 'nonPersonal' and not isPlayer)
+				or (name == 'NonPersonal' and not isPlayer)
 				or (name == 'Mount' and isMount)
 				or (name == 'Boss' and isBossAura)
 				or (name == 'MyPet' and myPet)
 				or (name == 'OtherPet' and otherPet)
 				or (name == 'CastByUnit' and source and unitIsCaster)
-				or (name == 'notCastByUnit' and source and not unitIsCaster)
+				or (name == 'NotCastByUnit' and source and not unitIsCaster)
 				or (name == 'Dispellable' and canDispel)
-				or (name == 'notDispellable' and not canDispel)
+				or (name == 'NotDispellable' and not canDispel)
 				or (name == 'CastByNPC' and not castByPlayer)
 				or (name == 'CastByPlayers' and castByPlayer)
 				or (name == 'BlizzardNameplate' and blizzardNameplate) then
