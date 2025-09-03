@@ -86,6 +86,7 @@ end
 
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
+	self.TargetText:SetText('')
 
 	-- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 	local plate = self.__owner
@@ -97,22 +98,24 @@ function NP:Castbar_PostCastStart(unit)
 		local changed = spellRename or (name ~= spellName)
 
 		if db.castbar.displayTarget then
-			local frameType = plate.frameType
-			if frameType == 'PLAYER' then
-				if self.curTarget then
-					local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
-					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', self.curTarget)
-				elseif changed then
-					self.Text:SetText(name)
+			local target, frameType = self.curTarget, plate.frameType
+			if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
+				target = UnitName(unit..'target')
+			end
+
+			if target and target ~= '' and target ~= plate.unitName then
+				local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
+				local targetText = '|c'.. (color or 'FFdddddd') .. target ..'|r'
+				if db.castbar.targetStyle == 'SEPARATE' then
+					self.TargetText:SetText(targetText)
+					if changed then
+						self.Text:SetText(name)
+					end
+				else
+					self.Text:SetFormattedText('%s: %s', name, targetText)
 				end
-			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
-				local target = self.curTarget or UnitName(unit..'target')
-				if target and target ~= '' and target ~= plate.unitName then
-					local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
-					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', target)
-				elseif changed then
-					self.Text:SetText(name)
-				end
+			elseif changed then
+				self.Text:SetText(name)
 			end
 		elseif changed then
 			self.Text:SetText(name)
@@ -165,6 +168,10 @@ function NP:Construct_Castbar(nameplate)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', 4, 0)
 	castbar.Text:SetJustifyH('LEFT')
 	castbar.Text:SetWordWrap(false)
+
+	castbar.TargetText = castbar:CreateFontString(nil, 'OVERLAY')
+	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.TargetText:SetJustifyH('LEFT')
 
 	castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	castbar.CustomDelayText = NP.Castbar_CustomDelayText
@@ -224,6 +231,15 @@ function NP:Update_Castbar(nameplate)
 	if db.enable then
 		if not nameplate:IsElementEnabled('Castbar') then
 			nameplate:EnableElement('Castbar')
+		end
+
+		castbar.TargetText:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		if db.displayTarget and db.targetStyle == 'SEPARATE' then
+			castbar.TargetText:ClearAllPoints()
+			castbar.TargetText:Point(db.targetAnchorPoint, castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
+			castbar.TargetText:Show()
+		else
+			castbar.TargetText:Hide()
 		end
 
 		castbar.timeToHold = db.timeToHold

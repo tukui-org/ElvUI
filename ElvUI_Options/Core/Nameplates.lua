@@ -332,6 +332,13 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 		group.args.castGroup.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 5)
+		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Text"], SEPARATE = L["Separate"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
+
+		group.args.castGroup.args.targetAnchor = ACH:Group(L["Target Anchor"], nil, 7, nil, nil, nil, function() return not (E.db.nameplates.units[unit].castbar.displayTarget and E.db.nameplates.units[unit].castbar.targetStyle == 'SEPARATE') end)
+		group.args.castGroup.args.targetAnchor.inline = true
+		group.args.castGroup.args.targetAnchor.args.targetAnchorPoint = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
+		group.args.castGroup.args.targetAnchor.args.targetXOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -200, max = 200, step = 1 })
+		group.args.castGroup.args.targetAnchor.args.targetYOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -200, max = 200, step = 1 })
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
@@ -347,6 +354,13 @@ local function GetUnitSettings(unit, name)
 
 		group.args.castGroup.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 4)
 		group.args.castGroup.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 5)
+		group.args.castGroup.args.targetStyle = ACH:Select(L["Target Style"], nil, 6, { APPEND = L["Append to Cast Name"], SEPARATE = L["Separate"] }, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].castbar.displayTarget end)
+
+		group.args.castGroup.args.targetAnchor = ACH:Group(L["Target Anchor"], nil, 7, nil, nil, nil, function() return not (E.db.nameplates.units[unit].castbar.displayTarget and E.db.nameplates.units[unit].castbar.targetStyle == 'SEPARATE') end)
+		group.args.castGroup.args.targetAnchor.inline = true
+		group.args.castGroup.args.targetAnchor.args.targetAnchorPoint = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
+		group.args.castGroup.args.targetAnchor.args.targetXOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -200, max = 200, step = 1 })
+		group.args.castGroup.args.targetAnchor.args.targetYOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -200, max = 200, step = 1 })
 
 		group.args.questIcon = ACH:Group(L["Quest Icon"], nil, 70, nil, function(info) return E.db.nameplates.units[unit].questIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].questIcon[info[#info]] = value NP:ConfigureAll() end, nil, E.Classic)
 		group.args.questIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
