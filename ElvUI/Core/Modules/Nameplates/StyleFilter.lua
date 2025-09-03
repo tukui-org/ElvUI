@@ -1545,6 +1545,7 @@ function NP:StyleFilterConfigure()
 				-- NOTE: -1 is force, 0 for fake events, 1 is real events, 2 has a unitToken but cant use RegisterUnitEvent
 				events.PLAYER_TARGET_CHANGED = 1
 				events.NAME_PLATE_UNIT_ADDED = 2
+				events.NAME_PLATE_UNIT_REMOVED = 2
 				events.UNIT_FACTION = 1 -- frameType can change here
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
@@ -1579,10 +1580,6 @@ function NP:StyleFilterConfigure()
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
-				end
-
-				if (t.amountBelow or 0) > 0 or (t.amountAbove or 0) > 0 then
-					events.NAME_PLATE_UNIT_REMOVED = 2
 				end
 
 				if t.unitInVehicle then

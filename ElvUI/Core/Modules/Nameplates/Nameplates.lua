@@ -334,12 +334,11 @@ end
 function NP:PostUpdateAllElements(event)
 	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
 
-	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
+	if event == 'ForceUpdate' then
 		NP:StyleFilterUpdate(self, event)
-		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
-	end
 
-	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
+		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
+	elseif event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
 		NP:SetupTarget(self)
 	end
 end
