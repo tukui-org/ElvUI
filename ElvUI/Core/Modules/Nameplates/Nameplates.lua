@@ -932,6 +932,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
 
+			NP:StyleFilterUpdate(nameplate, event, unit) -- lets clear it
 			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		end

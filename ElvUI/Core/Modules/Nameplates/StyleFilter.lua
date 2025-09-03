@@ -698,7 +698,7 @@ function NP:StyleFilterSetChanges(frame, event, filter, temp, applied)
 	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, temp.castbar, applied.castbar, frame.Castbar)
 end
 
-function NP:StyleFilterClearVisibility(frame, previous)
+function NP:StyleFilterClearVisibility(frame, event, previous)
 	local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
 
 	if (previous == 1 or previous == 3) and (state ~= 1 and state ~= 3) then
@@ -711,7 +711,7 @@ function NP:StyleFilterClearVisibility(frame, previous)
 		end
 	end
 
-	if previous and not state then
+	if previous and not state and event ~= 'NAME_PLATE_UNIT_REMOVED' then
 		NP:StyleFilterBaseUpdate(frame, state == 1)
 	end
 end
@@ -1728,20 +1728,23 @@ do
 
 		local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
 
-		NP:StyleFilterClean(temp)
-		NP:StyleFilterClean(applied)
 		if next(frame.StyleFilterChanges) then
 			NP:StyleFilterClearChanges(frame)
 		end
 
-		for filterNum in next, NP.StyleFilterTriggerList do
-			local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
-			if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
-				NP:StyleFilterPass(frame, event, filter, temp, applied)
+		if event ~= 'NAME_PLATE_UNIT_REMOVED' then
+			NP:StyleFilterClean(temp)
+			NP:StyleFilterClean(applied)
+
+			for filterNum in next, NP.StyleFilterTriggerList do
+				local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
+				if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
+					NP:StyleFilterPass(frame, event, filter, temp, applied)
+				end
 			end
 		end
 
-		NP:StyleFilterClearVisibility(frame, state)
+		NP:StyleFilterClearVisibility(frame, event, state)
 	end
 end
 
