@@ -1956,15 +1956,15 @@ L["OtherPet"] = "Чужой питомец"
 L["Personal"] = "Личные"
 
 L["FILTER_PRIORITY_DESC"] = [[
-Use drag and drop to rearrange filter priority.
+Используйте перетаскивание для установки приоритета фильтров.
 
-Right Click: Remove the filter.
-Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
-Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+ПКМ: Удалить фильтр.
+Shift + ЛКМ: Переключиться между обычным , дружеским и враждебным режимами.
+Ctrl + ЛКМ: Переключиться между режимами разрешения, блокирования или обычным.
 
-- Normal state will allow the filter to be checked on all units.
-- Friendly state is for friendly units only and enemy state is for enemy units.
-- Block state will be treated as an override block list and allow as allow list.
+- Обычный режим позволяет фильтру применяться ко всем юнитамs.
+- Дружеский режим применяет их только к дружественным целям, а враждебный только ко врагам.
+- Режим блокирования будет принудительно применять фильтр как черный список, а режим разрешения как белый список.
 ]]
 ----------------------------------
 
