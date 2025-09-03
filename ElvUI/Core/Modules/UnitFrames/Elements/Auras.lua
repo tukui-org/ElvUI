@@ -581,15 +581,11 @@ do
 		local temp = { strsplit(',', priority) }
 		for i = 1, #temp do
 			local name = temp[i]
-			local real, friend, enemy = UF:GetFilterNameInfo(name)
+			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(name)
 			local custom = filters[real]
 
 			if special[oldSpecial[real] or real] or custom then
-				tinsert(list, {
-					name = real,
-					custom = custom,
-					status = (friend and 1) or (enemy and 2)
-				})
+				tinsert(list, { name = real, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
 			end
 		end
 
@@ -602,30 +598,24 @@ end
 function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossAura, noDuration, castByPlayer, blizzardNameplate, isMount, filterList)
 	for i = 1, #filterList do
 		local data = filterList[i]
-		local status = data.status
-		local skip = (status == 1 and not isFriend) or (status == 2 and isFriend)
-		if not skip then
-			-- Custom Filters
+		local skip = (data.friend and not isFriend) or (data.enemy and isFriend)
+		if not skip then -- skip when the friend check doesnt pass
 			local custom = data.custom
-			if custom then
-				local which, list = custom.type, custom.spells
-				if which and list and next(list) then
+			if custom then -- Custom Filters
+				local list = custom.spells
+				if list and next(list) then
 					local spell = list[spellID] or list[spellName]
 					if spell and spell.enable then
-						return which ~= 'Blacklist', spell.priority
+						if not data.allow and not data.block then
+							return custom.type ~= 'Blacklist', spell.priority
+						else
+							return not data.block, spell.priority
+						end
 					end
 				end
-			-- Special Filters
-			else
+			else -- Special Filters
 				local name = data.name
-				if (name == 'blockCastByPlayers' and castByPlayer)
-				or (name == 'blockNoDuration' and noDuration)
-				or (name == 'blockMount' and isMount)
-				or (name == 'blockNonPersonal' and not isPlayer)
-				or (name == 'blockDispellable' and canDispel)
-				or (name == 'blockNotDispellable' and not canDispel) then
-					return false -- Blacklists
-				elseif (name == 'Personal' and isPlayer)
+				if (name == 'Personal' and isPlayer)
 				or (name == 'NonPersonal' and not isPlayer)
 				or (name == 'Mount' and isMount)
 				or (name == 'Boss' and isBossAura)
@@ -634,11 +624,12 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 				or (name == 'CastByUnit' and source and unitIsCaster)
 				or (name == 'NotCastByUnit' and source and not unitIsCaster)
 				or (name == 'Dispellable' and canDispel)
+				or (name == 'NoDuration' and noDuration)
 				or (name == 'NotDispellable' and not canDispel)
 				or (name == 'CastByNPC' and not castByPlayer)
 				or (name == 'CastByPlayers' and castByPlayer)
 				or (name == 'BlizzardNameplate' and blizzardNameplate) then
-					return true -- Whitelists
+					return not data.block
 				end
 			end
 		end

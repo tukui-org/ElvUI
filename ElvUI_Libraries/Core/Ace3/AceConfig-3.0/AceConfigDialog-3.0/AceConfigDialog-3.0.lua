@@ -541,7 +541,6 @@ local function OptionOnMouseOver(widget, event)
 		tooltip:SetText(user.title or name, 1, .82, 0, true)
 
 		if user.desc then
-			tooltip:AddLine(' ')
 			tooltip:AddLine(user.desc, 1, 1, 1, true)
 		end
 
