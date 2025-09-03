@@ -1928,6 +1928,7 @@ L["RAID_TARGET_7"] = "Kreuz"
 L["RAID_TARGET_8"] = "Totenschädel"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Blizzard Namensplakette"
 L["Mount"] = true --No need to translate
 L["CastByNPC"] = "Gezaubert von NPC"

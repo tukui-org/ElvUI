@@ -1930,6 +1930,7 @@ L["RAID_TARGET_7"] = "Cruz"
 L["RAID_TARGET_8"] = "Calavera"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Placas de Nombre de Blizzard"
 L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"

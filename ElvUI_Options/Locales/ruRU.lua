@@ -1942,6 +1942,7 @@ L["RAID_TARGET_7"] = "Крест"
 L["RAID_TARGET_8"] = "Череп"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Индикатор Blizzard"
 L["Mount"] = "Транспорт"
 L["CastByNPC"] = "Принадлежит НИП"

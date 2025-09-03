@@ -1931,6 +1931,7 @@ L["RAID_TARGET_7"] = "carpi"
 L["RAID_TARGET_8"] = "Kurukafa"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Blizzard Isim Levhasi"
 L["Mount"] = true
 L["CastByNPC"] = "NPC Tarafindan Kullanilan Yetenek"

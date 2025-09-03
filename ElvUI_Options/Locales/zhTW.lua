@@ -1930,6 +1930,7 @@ L["RAID_TARGET_7"] = "十字"
 L["RAID_TARGET_8"] = "頭顱"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "暴雪血條"
 L["Mount"] = true
 L["CastByNPC"] = "NPC施放的"

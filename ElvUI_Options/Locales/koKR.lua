@@ -1966,6 +1966,7 @@ L["RAID_TARGET_7"] = "가위표"
 L["RAID_TARGET_8"] = "해골"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Blizzard Nameplate"
 L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"

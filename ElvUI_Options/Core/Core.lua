@@ -76,7 +76,8 @@ end
 do
 	C.DragGetTitle = function(_, text)
 		local real, friend, enemy, block, allow = UF:GetFilterNameInfo(text)
-		local filterText = ((block or allow) and format(block and '|cFF999999%s|r %s' or '|cFFcccccc%s|r %s', block and L["Block"] or L["Allow"], real)) or real
+		local title = L[real] or real
+		local filterText = ((block or allow) and format(block and '|cFF999999%s|r %s' or '|cFFcccccc%s|r %s', block and L["Block"] or L["Allow"], title)) or title
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 

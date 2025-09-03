@@ -1928,6 +1928,7 @@ L["RAID_TARGET_7"] = "Croix"
 L["RAID_TARGET_8"] = "Crâne"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "NomplateBlizzard"
 L["Mount"] = "Monture"
 L["CastByNPC"] = "LancéParPNJ"

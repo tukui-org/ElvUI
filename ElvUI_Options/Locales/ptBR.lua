@@ -1931,6 +1931,7 @@ L["RAID_TARGET_7"] = "Xis"
 L["RAID_TARGET_8"] = "Caveira"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Placas de identificação Blizzard"
 L["Mount"] = "Montaria"
 L["CastByNPC"] = "Lançado por NPC"
