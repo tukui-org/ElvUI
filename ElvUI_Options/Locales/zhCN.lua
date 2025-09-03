@@ -1905,7 +1905,6 @@ L["Use Modifier for Item Count"] = "对物品使用修饰键显示计数"
 L["Use Off Tank Color when another Tank has threat."] = "当另一坦克有仇恨时使用非当前坦颜色。"
 L["Use Portrait"] = "使用头像"
 L["Use Real ID BattleTag"] = "显示战网昵称"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
 L["Use Solo Color"] = true
 L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "固定位置"
@@ -2015,6 +2014,18 @@ L["NotCastByUnit"] = "非该单位的"
 L["NotDispellable"] = "不可驱散的"
 L["OtherPet"] = "其他宠物"
 L["Personal"] = "自己的"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "修改动作条设置"

@@ -1836,7 +1836,6 @@ L["Use Modifier for Item Count"] = "Usar Modificador para Contador de Itens"
 L["Use Off Tank Color when another Tank has threat."] = "Usar Cor de Tanque Secundário quando outro Tanque tiver Ameaça."
 L["Use Portrait"] = "Usar Retrato"
 L["Use Real ID BattleTag"] = "Usar ID Real Battletag"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Use Shift + Clique Esquerdo para alternar entre amigos, inimigos ou estado normal. O estado normal permitirá que filtro seja checado contra todas as unidades. O estado de amigos checará apenas para unidades amigavéis e o estado inimigo é para unidades inimigas."
 L["Use Solo Color"] = true
 L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "Usar Posição Estática"
@@ -1944,6 +1943,18 @@ L["NotCastByUnit"] = "Não Lançado pela Unidade"
 L["NotDispellable"] = "Não Dissipável"
 L["OtherPet"] = "OutroMascote"
 L["Personal"] = "Pessoal"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modificar as configurações da barra de ações."

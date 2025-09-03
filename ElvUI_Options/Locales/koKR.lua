@@ -1869,7 +1869,6 @@ L["Use Modifier for Item Count"] = "항목 수를 추가하려면 수정 키를 
 L["Use Off Tank Color when another Tank has threat."] = "다른 탱커에 위협이 있을 때 오프 탱크 색상을 사용하십시오."
 L["Use Portrait"] = "초상화 사용"
 L["Use Real ID BattleTag"] = "배틀태그 사용"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Shift+클릭으로 우호적 또는 적대적 또는 일반 상태로 전환합니다. 일반 상태는 필터가 모든 유닛을 점검하도록 합니다. 우호적 상태는 우호적 유닛에만, 적대적 상태는 적대적 유닛에만 작동합니다."
 L["Use Solo Color"] = true
 L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "정적인 위치 사용"
@@ -1979,6 +1978,18 @@ L["NotCastByUnit"] = "Not Cast By Unit"
 L["NotDispellable"] = "Not Dispellable"
 L["OtherPet"] = "Other Pet"
 L["Personal"] = true
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."

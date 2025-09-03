@@ -1833,7 +1833,6 @@ L["Use Modifier for Item Count"] = true
 L["Use Off Tank Color when another Tank has threat."] = true
 L["Use Portrait"] = true
 L["Use Real ID BattleTag"] = true
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = true
 L["Use Solo Color"] = true
 L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = true
@@ -1941,6 +1940,18 @@ L["NotCastByUnit"] = "Not Cast By Unit"
 L["NotDispellable"] = "Not Dispellable"
 L["OtherPet"] = true
 L["Personal"] = true
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."

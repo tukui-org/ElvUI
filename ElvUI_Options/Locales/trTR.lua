@@ -1837,7 +1837,6 @@ L["Use Modifier for Item Count"] = "Oge Sayisi icin Degistiriciyi Kullan"
 L["Use Off Tank Color when another Tank has threat."] = true
 L["Use Portrait"] = "Portreyi Kullan"
 L["Use Real ID BattleTag"] = "Gercek Kimlik BattleTag Kullan"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Dost veya dusman veya normal durum arasinda gecis yapmak icin Shift+Sol Tiklamayi kullanin. Normal durum, filtrenin tum birimlerde kontrol edilmesini saglar. Dostluk durumu yalnizca dost birimler icindir ve dusman durumu dusman birimleri icindir."
 L["Use Solo Color"] = true
 L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "Statik Konumu Kullan"
@@ -1944,6 +1943,18 @@ L["NotCastByUnit"] = "Birim Tarafindan Kullanilmayan Yetenek"
 L["NotDispellable"] = "Arindirilamaz"
 L["OtherPet"] = "Diger Evcil Hayvan"
 L["Personal"] = "Kisiye Ozel"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Eylem cubugu ayarlarini degistirin."
