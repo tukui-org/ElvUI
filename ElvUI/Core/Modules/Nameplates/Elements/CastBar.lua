@@ -7,6 +7,7 @@ local LSM = E.Libs.LSM
 local abs = abs
 local next = next
 local unpack = unpack
+local strsub = strsub
 local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
@@ -92,23 +93,29 @@ function NP:Castbar_PostCastStart(unit)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 		local spellName = spellRename or self.spellName
+		local name = strsub(spellName, 1, db.castbar.nameLength)
+		local changed = spellRename or (name ~= spellName)
 
 		if db.castbar.displayTarget then
 			local frameType = plate.frameType
 			if frameType == 'PLAYER' then
 				if self.curTarget then
 					local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
-					self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', self.curTarget)
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', self.curTarget)
+				elseif changed then
+					self.Text:SetText(name)
 				end
 			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
 				local target = self.curTarget or UnitName(unit..'target')
 				if target and target ~= '' and target ~= plate.unitName then
 					local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
-					self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', target)
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', target)
+				elseif changed then
+					self.Text:SetText(name)
 				end
 			end
-		elseif spellRename then
-			self.Text:SetText(spellName)
+		elseif changed then
+			self.Text:SetText(name)
 		end
 	end
 end
