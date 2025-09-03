@@ -188,6 +188,7 @@ function NP:Construct_Castbar(nameplate)
 		castbar.Hide = castbar.Show
 		castbar:Show()
 		castbar.Text:SetText('Casting')
+		castbar.TargetText:SetText(E.myname)
 		castbar.Time:SetText('3.1')
 		castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
 		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
