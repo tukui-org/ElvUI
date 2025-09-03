@@ -8,7 +8,7 @@ G.unitframe.aurafilters.PlayerBuffs = nil
 
 -- Only important debuffs which influence your action priority
 -- Typically paired with [BLOCK] Non Personal
-G.unitframe.aurafilters.ImportantClassDebuffs = {
+G.unitframe.aurafilters.ClassDebuffs = {
 	type = 'Whitelist',
 	desc = 'Lucky wanted this, so there you go.',
 	spells = {
