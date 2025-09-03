@@ -7,7 +7,6 @@ local LSM = E.Libs.LSM
 local abs = abs
 local next = next
 local unpack = unpack
-local strjoin = strjoin
 local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
