@@ -474,6 +474,16 @@ function UF:GetInterruptColor(db, unit)
 	return r, g, b
 end
 
+function UF:GetCasterColor(unit)
+	if not unit then return end
+
+	local _, className = UnitClass(unit)
+	local classColor = className and E:ClassColor(className)
+	if classColor then
+		return classColor.colorStr
+	end
+end
+
 function UF:PostCastStart(unit)
 	local parent = self.__owner
 	local db = parent and parent.db
@@ -489,12 +499,14 @@ function UF:PostCastStart(unit)
 	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 		if parent.unitframeType == 'player' then
 			if self.curTarget then
-				self.Text:SetText(spellName..' > '..self.curTarget)
+				local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
+				self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', self.curTarget)
 			end
 		elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
 			local target = self.curTarget or UnitName(unit..'target')
 			if target and target ~= '' and target ~= UnitName(unit) then
-				self.Text:SetText(spellName..' > '..target)
+				local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
+				self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', target)
 			end
 		end
 	elseif spellRename then

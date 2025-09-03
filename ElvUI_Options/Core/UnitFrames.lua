@@ -460,7 +460,8 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	if groupName == 'player' then
 		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
-		config.args.latency = ACH:Toggle(L["Latency"], nil, 18)
+		config.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 18)
+		config.args.latency = ACH:Toggle(L["Latency"], nil, 19)
 
 		config.args.generalGroup.args.ticks = ACH:Group(L["Ticks"], nil, 20)
 		config.args.generalGroup.args.ticks.args.ticks = ACH:Toggle(L["Ticks"], L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."], 1)
@@ -469,6 +470,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.ticks.inline = true
 	elseif groupName == 'pet' or groupName == 'boss' then
 		config.args.displayTarget = ACH:Toggle(L["Display Target"], L["Display the target of current cast."], 17)
+		config.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 18)
 	end
 
 	if groupName == 'party' or groupName == 'arena' or groupName == 'boss' then

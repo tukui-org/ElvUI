@@ -98,12 +98,14 @@ function NP:Castbar_PostCastStart(unit)
 			local frameType = plate.frameType
 			if frameType == 'PLAYER' then
 				if self.curTarget then
-					self.Text:SetText(spellName..' > '..self.curTarget)
+					local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
+					self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', self.curTarget)
 				end
 			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
 				local target = self.curTarget or UnitName(unit..'target')
 				if target and target ~= '' and target ~= plate.unitName then
-					self.Text:SetText(spellName..' > '..target)
+					local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
+					self.Text:SetFormattedText('%s: |c%s%s|r', spellName, color or 'FFdddddd', target)
 				end
 			end
 		elseif spellRename then
@@ -195,9 +197,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 						classColor = data.classColor.colorStr
 					end
 
-					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+					plate.Castbar.Text:SetFormattedText('%s [%s]', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
 				else
-					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
+					plate.Castbar.Text:SetFormattedText('%s [%s]', INTERRUPTED, name)
 				end
 			end
 		end
