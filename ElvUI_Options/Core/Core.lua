@@ -81,11 +81,28 @@ do
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
+	local specialLocales = {
+		Boss = L["Auras cast by a boss unit."],
+		Mount = L["Auras which are classified as mounts."],
+		MyPet = L["Auras which were from the pet unit."],
+		OtherPet = L["Auras which were from another pet unit."],
+		Personal = L["Auras cast by yourself."],
+		NoDuration = L["Auras with no duration."],
+		NonPersonal = L["Auras cast by anyone other than yourself."],
+		CastByUnit = L["Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit)."],
+		NotCastByUnit = L["Auras cast by anyone other than the unit of the unitframe or nameplate."],
+		Dispellable = L["Auras you can either dispel or spellsteal."],
+		NotDispellable = L["Auras you cannot dispel or spellsteal."],
+		CastByNPC = L["Auras cast by any NPC."],
+		CastByPlayers = L["Auras cast by any player-controlled unit (so no NPCs)."],
+		BlizzardNameplate = L["Auras that fall under the conditions to be a nameplate aura."]
+	}
+
 	local oldSpecial = { nonPersonal = 'NonPersonal', notCastByUnit = 'NotCastByUnit', notDispellable = 'NotDispellable' }
 	C.DragGetDesc = function(_, text)
 		local real = UF:GetFilterNameInfo(text)
 
-		local special = G.unitframe.specialFilters[oldSpecial[real] or real]
+		local special = specialLocales[oldSpecial[real] or real]
 		if special then
 			return special
 		end
