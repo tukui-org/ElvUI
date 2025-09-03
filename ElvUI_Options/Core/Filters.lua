@@ -290,9 +290,10 @@ local function ResetSelectedFilter(_, value) selectedFilter, selectedSpell, quic
 local function ValidateCreateFilter(_, value)
 	if strmatch(value, '^[%s%p]-$') then return end
 
-	local real = UF:GetFilterNameInfo(value)
-	local exists = G.unitframe.specialFilters[real] or E.global.unitframe.aurafilters[real]
+	local real, friend, enemy, block, allow = UF:GetFilterNameInfo(value)
+	if friend or enemy or block or allow then return end
 
+	local exists = G.unitframe.specialFilters[real] or E.global.unitframe.aurafilters[real]
 	return not exists
 end
 
