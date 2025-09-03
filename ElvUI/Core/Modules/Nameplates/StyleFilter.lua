@@ -602,15 +602,6 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, changes, bar, 
 end
 
 function NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
-	local changes = frame.StyleFilterChanges
-	if changes then
-		changes.general = E:CopyTable(changes.general, general)
-		changes.tags = E:CopyTable(changes.tags, tags)
-		changes.health = E:CopyTable(changes.health, health)
-		changes.power = E:CopyTable(changes.power, power)
-		changes.castbar = E:CopyTable(changes.castbar, castbar)
-	end
-
 	if general.visibility or general.nameOnly then
 		if general.nameOnly then -- only allow name only for the secure plate
 			NP:DisablePlate(frame, general.nameOnly and 1 or nil)
@@ -771,11 +762,6 @@ function NP:StyleFilterClearChanges(frame, changes)
 	NP:StyleFilterClearChangesOnElement(frame, db, changes.castbar, frame.Castbar)
 
 	wipe(changes) -- farewell
-	wipe(frame.changesGeneral)
-	wipe(frame.changesTags)
-	wipe(frame.changesHealth)
-	wipe(frame.changesPower)
-	wipe(frame.changesCastbar)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
@@ -790,7 +776,7 @@ function NP:StyleFilterThreatUpdate(frame, unit)
 end
 
 function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
-	local passed -- skip StyleFilterPass when triggers are empty
+	local passed -- value we will return at the end
 
 	-- Class and Specialization
 	if trigger.class and next(trigger.class) then
@@ -1296,9 +1282,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	end
 
 	-- Pass it along
-	if passed then
-		NP:StyleFilterPass(frame, event, filter.actions)
-	end
+	return passed
 end
 
 function NP:StyleFilterGetElement(object, actions)
@@ -1338,22 +1322,37 @@ function NP:StyleFilterGetTags(object, actions)
 	return object
 end
 
-function NP:StyleFilterPass(frame, event, actions)
+function NP:StyleFilterPass(frame, event, general, tags, health, power, castbar, filter)
 	local db = NP:PlateDB(frame)
 
-	local health = NP:StyleFilterGetElement(frame.changesHealth, db.health.enable and actions.health)
-	local power = NP:StyleFilterGetElement(frame.changesPower, db.power.enable and actions.power)
-	local castbar = NP:StyleFilterGetElement(frame.changesCastbar, db.castbar.enable and actions.castbar)
-	local general = NP:StyleFilterGetGeneral(frame.changesGeneral, actions)
-	local tags = NP:StyleFilterGetTags(frame.changesTags, actions)
+	-- populate the temporary tables for StyleFilterChanges
+	NP:StyleFilterGetElement(health, db.health.enable and filter.actions.health)
+	NP:StyleFilterGetElement(power, db.power.enable and filter.actions.power)
+	NP:StyleFilterGetElement(castbar, db.castbar.enable and filter.actions.castbar)
+	NP:StyleFilterGetGeneral(general, filter.actions)
+	NP:StyleFilterGetTags(tags, filter.actions)
 
-	NP:StyleFilterSetChanges(frame, event, actions, general, tags, health, power, castbar)
+	-- push stuff into StyleFilterChanges
+	local changes = frame.StyleFilterChanges
+	changes.general = E:CopyTable(changes.general, general)
+	changes.tags = E:CopyTable(changes.tags, tags)
+	changes.health = E:CopyTable(changes.health, health)
+	changes.power = E:CopyTable(changes.power, power)
+	changes.castbar = E:CopyTable(changes.castbar, castbar)
+
+	-- execute some changes
+	NP:StyleFilterSetChanges(frame, event, filter.actions, general, tags, health, power, castbar)
 end
 
-function NP:StyleFilterClear(frame)
-	if frame == NP.TestFrame or not next(frame.StyleFilterChanges) then return end
+function NP:StyleFilterClear(frame, event, general, tags, health, power, castbar)
+	if frame == NP.TestFrame then return end
 
-	NP:StyleFilterClearChanges(frame, frame.StyleFilterChanges)
+	-- clean up the temporary tables in StyleFilterChanges
+	wipe(general) wipe(tags) wipe(health) wipe(power) wipe(castbar)
+
+	if next(frame.StyleFilterChanges) then
+		NP:StyleFilterClearChanges(frame, frame.StyleFilterChanges)
+	end
 end
 
 function NP:StyleFilterSort(place)
@@ -1696,21 +1695,24 @@ function NP:StyleFilterHiddenState(changes)
 	return general and ((general.nameOnly and general.visibility and 3) or (general.nameOnly and 2) or (general.visibility and 1))
 end
 
-function NP:StyleFilterUpdate(frame, event, arg1, arg2)
-	if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
+do
+	local general, tags, health, power, castbar = {}, {}, {}, {}, {}
+	function NP:StyleFilterUpdate(frame, event, arg1, arg2)
+		if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
 
-	local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
+		local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
 
-	NP:StyleFilterClear(frame)
+		NP:StyleFilterClear(frame, event, general, tags, health, power, castbar)
 
-	for filterNum in next, NP.StyleFilterTriggerList do
-		local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
-		if filter then
-			NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers)
+		for filterNum in next, NP.StyleFilterTriggerList do
+			local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
+			if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
+				NP:StyleFilterPass(frame, event, general, tags, health, power, castbar, filter)
+			end
 		end
-	end
 
-	NP:StyleFilterClearVisibility(frame, state)
+		NP:StyleFilterClearVisibility(frame, state)
+	end
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
@@ -1816,13 +1818,6 @@ function NP:StyleFilterEvents(nameplate)
 	nameplate.StyleFilterChanges = {}
 	nameplate.DebuffTickers = {}
 	nameplate.BuffTickers = {}
-
-	-- tables for handling changes
-	nameplate.changesGeneral = {}
-	nameplate.changesTags = {}
-	nameplate.changesHealth = {}
-	nameplate.changesPower = {}
-	nameplate.changesCastbar = {}
 
 	-- we may fire events before having any aura data for the unit
 	-- populate an empty table because not all events update the cache
