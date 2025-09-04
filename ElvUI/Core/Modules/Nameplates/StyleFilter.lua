@@ -611,9 +611,12 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied,
 	end
 end
 
-function NP:StyleFilterSetChanges(frame, event, filter, temp, applied)
+function NP:StyleFilterSetChanges(frame, event, filter, temp)
+	local changes = frame.StyleFilterChanges
+	local applied = changes.applied
 	local actions = filter.actions
 	local general = temp.general
+
 	if general.visibility or general.nameOnly then
 		applied.general.visibility = general.visibility
 		applied.general.nameOnly = general.nameOnly
@@ -1349,8 +1352,14 @@ function NP:StyleFilterTempTags(object, actions)
 	return object
 end
 
-function NP:StyleFilterPass(frame, event, filter, temp, applied)
+function NP:StyleFilterPass(frame, event, filter, temp)
+	local changes = frame.StyleFilterChanges
 	local db = NP:PlateDB(frame)
+
+	-- use this to export what is changed
+	if not changes.applied then
+		changes.applied = E:CopyTable({}, temp) -- values
+	end
 
 	-- populate the temporary tables for StyleFilterChanges
 	NP:StyleFilterTempElement(temp.health, db.health.enable and filter.actions.health)
@@ -1360,20 +1369,14 @@ function NP:StyleFilterPass(frame, event, filter, temp, applied)
 	NP:StyleFilterTempTags(temp.tags, filter.actions)
 
 	-- push stuff into StyleFilterChanges
-	local changes = frame.StyleFilterChanges
 	changes.general = E:CopyTable(changes.general, temp.general)
 	changes.tags = E:CopyTable(changes.tags, temp.tags)
 	changes.health = E:CopyTable(changes.health, temp.health)
 	changes.power = E:CopyTable(changes.power, temp.power)
 	changes.castbar = E:CopyTable(changes.castbar, temp.castbar)
 
-	-- use this to export what is changed
-	if not changes.applied then
-		changes.applied = applied
-	end
-
 	-- execute some changes
-	NP:StyleFilterSetChanges(frame, event, filter, temp, applied)
+	NP:StyleFilterSetChanges(frame, event, filter, temp)
 end
 
 function NP:StyleFilterSort(place)
@@ -1715,7 +1718,6 @@ end
 
 do
 	local temp = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- states
-	local applied = { general = {}, tags = {}, health = {}, power = {}, castbar = {} } -- values
 
 	function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 		if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
@@ -1724,13 +1726,17 @@ do
 
 		if next(frame.StyleFilterChanges) then
 			NP:StyleFilterClearChanges(frame)
+
+			for _, data in next, temp do
+				wipe(data)
+			end
 		end
 
 		if event ~= 'NAME_PLATE_UNIT_REMOVED' then
 			for filterNum in next, NP.StyleFilterTriggerList do
 				local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
 				if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
-					NP:StyleFilterPass(frame, event, filter, temp, applied)
+					NP:StyleFilterPass(frame, event, filter, temp)
 				end
 			end
 		end
