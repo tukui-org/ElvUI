@@ -1315,7 +1315,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 end
 
 function NP:StyleFilterTempElement(object, actions)
-	if not actions then return object end
+	if not actions then return wipe(object) end
 
 	object.glow = actions.glow and actions.glow.enable or nil
 	object.colors = actions.colors and actions.colors.enable or nil
@@ -1327,7 +1327,7 @@ function NP:StyleFilterTempElement(object, actions)
 end
 
 function NP:StyleFilterTempGeneral(object, actions)
-	if not actions then return object end
+	if not actions then return wipe(object) end
 
 	object.visibility = actions.hide or nil
 	object.nameOnly = actions.nameOnly or nil
@@ -1340,7 +1340,7 @@ function NP:StyleFilterTempGeneral(object, actions)
 end
 
 function NP:StyleFilterTempTags(object, actions)
-	if not actions or not actions.tags then return object end
+	if not actions or not actions.tags then return wipe(object) end
 
 	object.name = actions.tags.name and actions.tags.name ~= '' or nil
 	object.power = actions.tags.power and actions.tags.power ~= '' or nil
@@ -1717,11 +1717,6 @@ do
 		-- reset the plate back
 		if next(frame.StyleFilterChanges) then
 			NP:StyleFilterClearChanges(frame)
-
-			-- clean the temp table up
-			for _, data in next, temp do
-				wipe(data)
-			end
 		end
 
 		if event ~= 'NAME_PLATE_UNIT_REMOVED' then
