@@ -748,6 +748,7 @@ local NP_Castbar = {
 	displayTargetClass = true,
 	targetStyle = 'APPEND',
 	targetAnchorPoint = 'CENTER',
+	targetJustifyH = 'LEFT',
 	targetXOffset = 0,
 	targetYOffset = 0,
 	hideSpellName = false,
