@@ -67,7 +67,7 @@ function NP:Power_UpdateColor(_, unit)
 	end
 
 	local styleFilter = NP:StyleFilterChanges(self)
-	if not (styleFilter.power and styleFilter.power.colors) then
+	if not (styleFilter.power and styleFilter.power.color) then
 		if atlas then
 			element:SetStatusBarTexture(atlas)
 			element:SetStatusBarColor(1, 1, 1)

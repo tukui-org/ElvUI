@@ -58,7 +58,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			Scale = self.isTank and db.badScale or db.goodScale
 		end
 
-		if styleFilter.health and styleFilter.health.colors then
+		if styleFilter.health and styleFilter.health.color then
 			self.r, self.g, self.b = Color.r, Color.g, Color.b
 		else
 			nameplate.Health:SetStatusBarColor(Color.r, Color.g, Color.b)

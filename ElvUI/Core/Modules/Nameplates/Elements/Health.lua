@@ -43,7 +43,7 @@ function NP:Health_UpdateColor(_, unit)
 	end
 
 	local styleFilter = NP:StyleFilterChanges(self)
-	if not (styleFilter.health and styleFilter.health.colors) and b then
+	if not (styleFilter.health and styleFilter.health.color) and b then
 		element:SetStatusBarColor(r, g, b)
 
 		if element.bg then
