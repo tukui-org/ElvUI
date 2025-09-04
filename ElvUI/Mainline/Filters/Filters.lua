@@ -13,6 +13,8 @@ G.unitframe.aurafilters.ClassDebuffs = {
 	desc = 'Lucky wanted this, so there you go.',
 	spells = {
 	-- Evoker
+		[409560] 	= List(), -- Temporal Wound (Accumulating)
+		[409722] 	= List(), -- Temporal Wound (Done)
 		[434473] 	= List(), -- Bombardments
 		[357209] 	= List(), -- Fire Breath
 		[361500] 	= List(), -- Living Flame
