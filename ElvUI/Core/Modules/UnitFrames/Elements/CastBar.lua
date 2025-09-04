@@ -5,7 +5,7 @@ local ElvUF = E.oUF
 
 local abs, next = abs, next
 local unpack = unpack
-local strsub = strsub
+local utf8sub = string.utf8sub
 
 local CreateFrame = CreateFrame
 local GetTime = GetTime
@@ -496,7 +496,8 @@ function UF:PostCastStart(unit)
 
 	local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 	local spellName = spellRename or self.spellName
-	local name = strsub(spellName, 1, db.castbar.nameLength)
+	local length = db.castbar.nameLength
+	local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 	local changed = spellRename or (name ~= spellName)
 
 	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast

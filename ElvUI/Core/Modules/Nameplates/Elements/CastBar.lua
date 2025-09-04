@@ -7,8 +7,9 @@ local LSM = E.Libs.LSM
 local abs = abs
 local next = next
 local unpack = unpack
-local strsub = strsub
 local strmatch = strmatch
+local utf8sub = string.utf8sub
+
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitName = UnitName
@@ -86,40 +87,45 @@ end
 
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
-	self.TargetText:SetText('')
 
-	-- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
+	local targetChanged
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 		local spellName = spellRename or self.spellName
-		local name = strsub(spellName, 1, db.castbar.nameLength)
-		local changed = spellRename or (name ~= spellName)
+		local length = db.castbar.nameLength
+		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+		local textChanged = spellRename or (name ~= spellName)
 
 		if db.castbar.displayTarget then
 			local target, frameType = self.curTarget, plate.frameType
 			if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
-				target = UnitName(unit..'target')
-			end
+				target = UnitName(unit..'target') -- player or NPCs; if used on other players:
+			end -- the cast target doesn't match their target, can be misleading if they mouseover cast
 
 			if target and target ~= '' and target ~= plate.unitName then
-				local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
-				local targetText = '|c'.. (color or 'FFdddddd') .. target ..'|r'
+				local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
 				if db.castbar.targetStyle == 'SEPARATE' then
-					self.TargetText:SetText(targetText)
-					if changed then
+					self.TargetText:SetFormattedText('|c%s%s|r', color, target)
+					targetChanged = true
+
+					if textChanged then
 						self.Text:SetText(name)
 					end
 				else
-					self.Text:SetFormattedText('%s: %s', name, targetText)
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
 				end
-			elseif changed then
+			elseif textChanged then
 				self.Text:SetText(name)
 			end
-		elseif changed then
+		elseif textChanged then
 			self.Text:SetText(name)
 		end
+	end
+
+	if not targetChanged then
+		self.TargetText:SetText('')
 	end
 end
 
