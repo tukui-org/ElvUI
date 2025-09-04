@@ -613,13 +613,12 @@ end
 
 function NP:StyleFilterSetChanges(frame, event, filter, temp)
 	local changes = frame.StyleFilterChanges
-	local applied = changes.applied
 	local actions = filter.actions
 	local general = temp.general
 
 	if general.visibility or general.nameOnly then
-		applied.general.visibility = general.visibility
-		applied.general.nameOnly = general.nameOnly
+		changes.general.visibility = general.visibility
+		changes.general.nameOnly = general.nameOnly
 
 		if general.nameOnly then -- only allow name only for the secure plate
 			NP:DisablePlate(frame, general.nameOnly and 1 or nil)
@@ -636,42 +635,42 @@ function NP:StyleFilterSetChanges(frame, event, filter, temp)
 	-- Keeps Tag changes after NameOnly
 	local tags = temp.tags
 	if tags.name then
-		applied.tags.name = actions.tags.name
+		changes.tags.name = actions.tags.name
 		frame:Tag(frame.Name, actions.tags.name)
 		frame.Name:UpdateTag()
 	end
 	if tags.power then
-		applied.tags.power = actions.tags.power
+		changes.tags.power = actions.tags.power
 		frame:Tag(frame.Power.Text, actions.tags.power)
 		frame.Power.Text:UpdateTag()
 	end
 	if tags.health then
-		applied.tags.health = actions.tags.health
+		changes.tags.health = actions.tags.health
 		frame:Tag(frame.Health.Text, actions.tags.health)
 		frame.Health.Text:UpdateTag()
 	end
 	if tags.title then
-		applied.tags.title = actions.tags.title
+		changes.tags.title = actions.tags.title
 		frame:Tag(frame.Title, actions.tags.title)
 		frame.Title:UpdateTag()
 	end
 	if tags.level then
-		applied.tags.level = actions.tags.level
+		changes.tags.level = actions.tags.level
 		frame:Tag(frame.Level, actions.tags.level)
 		frame.Level:UpdateTag()
 	end
 
 	-- generic stuff
 	if general.scale then
-		applied.general.scale = actions.scale
+		changes.general.scale = actions.scale
 		NP:ScalePlate(frame, actions.scale)
 	end
 	if general.alpha then
-		applied.general.scale = actions.alpha
+		changes.general.scale = actions.alpha
 		NP:PlateFade(frame, NP.db.fadeIn and 1 or 0, frame:GetAlpha(), actions.alpha * 0.01)
 	end
 	if general.portrait then
-		applied.general.portrait = general.portrait
+		changes.general.portrait = general.portrait
 		NP:Update_Portrait(frame)
 		frame.Portrait:ForceUpdate()
 	end
@@ -696,9 +695,9 @@ function NP:StyleFilterSetChanges(frame, event, filter, temp)
 		end
 	end
 
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.health, temp.health, applied.health, frame.Health, frame.Cutaway.Health)
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.power, temp.power, applied.power, frame.Power, frame.Cutaway.Power)
-	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, temp.castbar, applied.castbar, frame.Castbar)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.health, temp.health, changes.health, frame.Health, frame.Cutaway.Health)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.power, temp.power, changes.power, frame.Power, frame.Cutaway.Power)
+	NP:StyleFilterSetChangesOnElement(frame, event, actions.castbar, temp.castbar, changes.castbar, frame.Castbar)
 end
 
 function NP:StyleFilterClearVisibility(frame, event, previous)
@@ -1353,13 +1352,7 @@ function NP:StyleFilterTempTags(object, actions)
 end
 
 function NP:StyleFilterPass(frame, event, filter, temp)
-	local changes = frame.StyleFilterChanges
 	local db = NP:PlateDB(frame)
-
-	-- use this to export what is changed
-	if not changes.applied then
-		changes.applied = E:CopyTable({}, temp) -- values
-	end
 
 	-- populate the temporary tables for StyleFilterChanges
 	NP:StyleFilterTempElement(temp.health, db.health.enable and filter.actions.health)
@@ -1368,12 +1361,8 @@ function NP:StyleFilterPass(frame, event, filter, temp)
 	NP:StyleFilterTempGeneral(temp.general, filter.actions)
 	NP:StyleFilterTempTags(temp.tags, filter.actions)
 
-	-- push stuff into StyleFilterChanges
-	changes.general = E:CopyTable(changes.general, temp.general)
-	changes.tags = E:CopyTable(changes.tags, temp.tags)
-	changes.health = E:CopyTable(changes.health, temp.health)
-	changes.power = E:CopyTable(changes.power, temp.power)
-	changes.castbar = E:CopyTable(changes.castbar, temp.castbar)
+	-- use this to export what is changed
+	E:CopyTable(frame.StyleFilterChanges, temp)
 
 	-- execute some changes
 	NP:StyleFilterSetChanges(frame, event, filter, temp)
@@ -1722,11 +1711,14 @@ do
 	function NP:StyleFilterUpdate(frame, event, arg1, arg2)
 		if frame == NP.TestFrame or not frame.StyleFilterChanges or not NP.StyleFilterTriggerEvents[event] then return end
 
+		-- store the previous visibility state
 		local state = NP:StyleFilterHiddenState(frame.StyleFilterChanges)
 
+		-- reset the plate back
 		if next(frame.StyleFilterChanges) then
 			NP:StyleFilterClearChanges(frame)
 
+			-- clean the temp table up
 			for _, data in next, temp do
 				wipe(data)
 			end
