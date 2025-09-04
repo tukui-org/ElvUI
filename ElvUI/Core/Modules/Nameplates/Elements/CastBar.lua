@@ -234,15 +234,6 @@ function NP:Update_Castbar(nameplate)
 			nameplate:EnableElement('Castbar')
 		end
 
-		castbar.TargetText:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-		if db.displayTarget and db.targetStyle == 'SEPARATE' then
-			castbar.TargetText:ClearAllPoints()
-			castbar.TargetText:Point(db.targetJustifyH, castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
-			castbar.TargetText:Show()
-		else
-			castbar.TargetText:Hide()
-		end
-
 		castbar.timeToHold = db.timeToHold
 		castbar.castTimeFormat = db.castTimeFormat
 		castbar.channelTimeFormat = db.channelTimeFormat
@@ -265,6 +256,16 @@ function NP:Update_Castbar(nameplate)
 			castbar.Button:Show()
 		else
 			castbar.Button:Hide()
+		end
+
+		if db.displayTarget and db.targetStyle == 'SEPARATE' then
+			castbar.TargetText:ClearAllPoints()
+			castbar.TargetText:Point(E.InversePoints[db.targetAnchorPoint], castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
+			castbar.TargetText:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.TargetText:SetJustifyH(db.targetJustifyH)
+			castbar.TargetText:Show()
+		else
+			castbar.TargetText:Hide()
 		end
 
 		castbar.Time:ClearAllPoints()
