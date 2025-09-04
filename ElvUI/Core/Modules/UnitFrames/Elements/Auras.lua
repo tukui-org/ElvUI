@@ -5,8 +5,9 @@ local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local format, strlower, strfind = format, strlower, strfind
-local tinsert, strsplit, strsub, strmatch = tinsert, strsplit, strsub, strmatch
+local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
+local utf8sub = string.utf8sub
 
 local CreateFrame = CreateFrame
 local IsAltKeyDown = IsAltKeyDown
@@ -511,9 +512,11 @@ function UF:PostUpdateAura(_, button)
 		local aura = bdb and bdb.sourceText and bdb.sourceText.enable and button.aura
 		if aura then
 			local text = aura.unitName or UNKNOWN
+			local length = bdb.sourceText.length
+			local shortText = length and length > 0 and utf8sub(text, 1, length)
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
 			button.Text:SetTextColor(color.r, color.g, color.b)
-			button.Text:SetText(strsub(text, 1, bdb.sourceText.length))
+			button.Text:SetText(shortText or text)
 		else
 			button.Text:SetText('')
 		end
