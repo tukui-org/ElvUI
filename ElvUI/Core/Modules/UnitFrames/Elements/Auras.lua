@@ -508,7 +508,7 @@ function UF:PostUpdateAura(_, button)
 
 	if button.Text then
 		local bdb = button.db
-		local aura = bdb and bdb.sourceText.enable and button.aura
+		local aura = bdb and bdb.sourceText and bdb.sourceText.enable and button.aura
 		if aura then
 			local text = aura.unitName or UNKNOWN
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
