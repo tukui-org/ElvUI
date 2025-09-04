@@ -6,9 +6,9 @@ local Aura = E.Filters.Aura
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
--- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
+	desc = L["Debuffs that are some form of CC. This can be stuns, roots, slows, etc."],
 	spells = {
 	-- Death Knight
 		[47476] = List(2),	-- Strangulate
@@ -94,9 +94,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 	},
 }
 
--- These are buffs that can be considered 'protection' buffs
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
+	desc = L["Immunity buffs like Bubble and Ice Block, but also most major defensive class cooldowns."],
 	spells = {
 	-- Mage
 		[45438] = List(5),	-- Ice Block
@@ -151,9 +151,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
--- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
+	desc = L["Auras you don't want to see on your frames."],
 	spells = {
 	-- General
 		[186403] = List(),	-- Sign of Battle
@@ -182,9 +182,9 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
--- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
+	desc = L["Auras which should always be displayed."],
 	spells = {
 	-- General
 		[96694] = List(),	-- Reflective Shield
@@ -305,9 +305,9 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
--- RAID DEBUFFS: This should be pretty self explainitory
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid debuffs. Includes affixes and utility on dead players like pending resurrection and available reincarnation."],
 	spells = {
 	-------------------------------------------------
 	-------------------- Dungeons -------------------
@@ -535,9 +535,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	},
 }
 
--- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid buffs."],
 	spells = {
 	-------------------------------------------------
 	-------------------- Dungeons -------------------

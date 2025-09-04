@@ -6,11 +6,9 @@ local Aura = E.Filters.Aura
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
--- Only important debuffs which influence your action priority
--- Typically paired with [BLOCK] Non Personal
 G.unitframe.aurafilters.ClassDebuffs = {
 	type = 'Whitelist',
-	desc = 'Lucky wanted this, so there you go.',
+	desc = L["Only important debuffs which influence your action priority. Recommended to be paired with 'Non Personal' set to 'Block'."],
 	spells = {
 	-- Evoker
 		[409560] 	= List(), -- Temporal Wound (Accumulating)
@@ -97,9 +95,9 @@ G.unitframe.aurafilters.ClassDebuffs = {
 	}
 }
 
--- Only important CC debuffs, mostly for mythic+
 G.unitframe.aurafilters.ImportantCC = {
 	type = 'Whitelist',
+	desc = L["Only important CC debuffs like Polymorph, Hex, Stuns. Also includes important cc-like debuffs, for example Mind Soothe and Solar Beam."],
 	spells = {
 	-- Evoker
 		[355689]	= List(3), -- Landslide
@@ -210,9 +208,9 @@ G.unitframe.aurafilters.ImportantCC = {
 	}
 }
 
--- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
+	desc = L["Debuffs that are some form of CC. This can be stuns, roots, slows, etc."],
 	spells = {
 	-- Evoker
 		[355689]	= List(2), -- Landslide
@@ -390,9 +388,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 	},
 }
 
--- These are buffs that can be considered 'protection' buffs
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
+	desc = L["Immunity buffs like Bubble and Ice Block, but also most major defensive class cooldowns."],
 	spells = {
 	-- Evoker
 		[378464]	= List(), -- Nullifying Shroud (PvP)
@@ -527,9 +525,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
--- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
+	desc = L["Auras you don't want to see on your frames."],
 	spells = {
 		[8326]		= List(), -- Ghost
 		[8733]		= List(), -- Blessing of Blackfathom
@@ -594,9 +592,9 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
--- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
+	desc = L["Auras which should always be displayed."],
 	spells = {
 	-- General
 		[256948]	= List(), -- Spatial Rift
@@ -883,9 +881,9 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
--- Debuffs applied to players by bosses, adds or trash
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid debuffs. Includes affixes and utility on dead players like pending resurrection and available reincarnation."],
 	spells = {
 	----------------------------------------------------------
 	------------------------- General ------------------------
@@ -895,6 +893,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[225080] = List(), -- Reincarnation (Ankh ready)
 		[255234] = List(), -- Totemic Revival
 		[1239997] = List(), -- Oath-Bound
+	-- Affix
+		[440313] = List(), -- Devouring Rift
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
@@ -1030,7 +1030,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355641] = List(), -- Scintillate
 		[355451] = List(), -- Undertow
 		[355581] = List(), -- Crackle
-		[349999] = List(), -- Anima Detonation
 		[346961] = List(), -- Purging Field
 		[351956] = List(), -- High-Value Target
 		[346297] = List(), -- Unstable Explosion
@@ -1045,6 +1044,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355465] = List(), -- Boulder Throw
 		[346116] = List(), -- Shearing Swings
 		[356011] = List(), -- Beam Splicer
+		[349627] = List(), -- Gluttony
 	---------------------------------------------------------
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
@@ -1168,6 +1168,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 -- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid buffs."],
 	spells = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
