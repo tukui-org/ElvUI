@@ -542,11 +542,11 @@ do
 	end
 end
 
-function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied, bar, cutaway)
+function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, changes, bar, cutaway)
 	if temp.colors then
 		local hc = (actions.colors.playerClass and E.myClassColor) or (actions.colors.unitClass and frame.classColor) or actions.colors.color
 
-		applied.color = hc
+		changes.color = hc
 
 		bar:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
 
@@ -558,7 +558,7 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied,
 	if temp.border then
 		local bc = (actions.border.playerClass and E.myClassColor) or (actions.border.unitClass and frame.classColor) or actions.border.color
 
-		applied.border = bc
+		changes.border = bc
 
 		NP:StyleFilterBorderLock(bar.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 	end
@@ -566,7 +566,7 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied,
 	if temp.glow then
 		bar.glowStyle = actions.glow.style
 
-		applied.glow = actions.glow
+		changes.glow = actions.glow
 
 		LCG.ShowOverlayGlow(bar, actions.glow)
 	end
@@ -584,7 +584,7 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied,
 			anim.Fade:SetDuration(actions.flash.speed * 0.1)
 			anim.Fade:SetChange(anim.Fade.customValue)
 
-			applied.flash = fc
+			changes.flash = fc
 
 			flashTexture:Show()
 			flashTexture:SetVertexColor(fc.r, fc.g, fc.b)
@@ -599,7 +599,7 @@ function NP:StyleFilterSetChangesOnElement(frame, event, actions, temp, applied,
 	if temp.texture then
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 
-		applied.texture = actions.texture.texture
+		changes.texture = actions.texture.texture
 
 		if bar.barTexture then
 			bar.barTexture:SetTexture(tx)
