@@ -43,6 +43,12 @@ local function GetTargetText()
 	group.args.targetAnchorPoint = ACH:Select(L["Anchor Point"], nil, 6, C.Values.AllPoints)
 	group.args.displayTargetClass = ACH:Toggle(L["Target Class Color"], nil, 7)
 
+	group.args.fontGroup = ACH:Group(L["Font"], nil, 8, nil, nil, nil, function() return E.db.nameplates.units[unit].castbar.targetStyle ~= 'SEPARATE' end)
+	group.args.fontGroup.inline = true
+	group.args.fontGroup.args.targetFont = ACH:SharedMediaFont(L["Font"], nil, 1)
+	group.args.fontGroup.args.targetFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+	group.args.fontGroup.args.targetFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+
 	return group
 end
 

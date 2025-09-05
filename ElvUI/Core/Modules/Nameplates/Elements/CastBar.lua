@@ -267,7 +267,7 @@ function NP:Update_Castbar(nameplate)
 		if db.displayTarget and db.targetStyle == 'SEPARATE' then
 			castbar.TargetText:ClearAllPoints()
 			castbar.TargetText:Point(E.InversePoints[db.targetAnchorPoint], castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
-			castbar.TargetText:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.TargetText:FontTemplate(LSM:Fetch('font', db.targetFont), db.targetFontSize, db.targetFontOutline)
 			castbar.TargetText:SetJustifyH(db.targetJustifyH)
 			castbar.TargetText:Show()
 		else
