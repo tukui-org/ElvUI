@@ -334,12 +334,11 @@ end
 function NP:PostUpdateAllElements(event)
 	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
 
-	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
+	if event == 'ForceUpdate' then
 		NP:StyleFilterUpdate(self, event)
-		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
-	end
 
-	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
+		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
+	elseif event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
 		NP:SetupTarget(self)
 	end
 end
@@ -561,10 +560,10 @@ function NP:SetNamePlateEnemyClickThrough()
 end
 
 function NP:Update_StatusBars()
-	for bar in pairs(NP.StatusBars) do
+	for bar, which in pairs(NP.StatusBars) do
 		local styleFilter = NP:StyleFilterChanges(bar:GetParent())
-
-		if not (styleFilter.health and styleFilter.health.texture) then
+		local filter = styleFilter[which]
+		if not (filter and filter.texture) then
 			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
 			if bar.SetStatusBarTexture then
 				bar:SetStatusBarTexture(texture)
@@ -933,6 +932,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
 
+			NP:StyleFilterUpdate(nameplate, event, unit) -- lets clear it
 			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		end

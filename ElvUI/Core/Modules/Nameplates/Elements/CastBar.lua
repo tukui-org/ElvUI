@@ -7,8 +7,9 @@ local LSM = E.Libs.LSM
 local abs = abs
 local next = next
 local unpack = unpack
-local strjoin = strjoin
 local strmatch = strmatch
+local utf8sub = string.utf8sub
+
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitName = UnitName
@@ -87,28 +88,44 @@ end
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
 
-	-- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
+	local targetChanged
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 		local spellName = spellRename or self.spellName
+		local length = db.castbar.nameLength
+		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+		local textChanged = spellRename or (name ~= spellName)
 
 		if db.castbar.displayTarget then
-			local frameType = plate.frameType
-			if frameType == 'PLAYER' then
-				if self.curTarget then
-					self.Text:SetText(spellName..' > '..self.curTarget)
+			local target, frameType = self.curTarget, plate.frameType
+			if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
+				target = UnitName(unit..'target') -- player or NPCs; if used on other players:
+			end -- the cast target doesn't match their target, can be misleading if they mouseover cast
+
+			if target and target ~= '' and target ~= plate.unitName then
+				local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
+				if db.castbar.targetStyle == 'SEPARATE' then
+					self.TargetText:SetFormattedText('|c%s%s|r', color, target)
+					targetChanged = true
+
+					if textChanged then
+						self.Text:SetText(name)
+					end
+				else
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
 				end
-			elseif frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC' then
-				local target = self.curTarget or UnitName(unit..'target')
-				if target and target ~= '' and target ~= plate.unitName then
-					self.Text:SetText(spellName..' > '..target)
-				end
+			elseif textChanged then
+				self.Text:SetText(name)
 			end
-		elseif spellRename then
-			self.Text:SetText(spellName)
+		elseif textChanged then
+			self.Text:SetText(name)
 		end
+	end
+
+	if not targetChanged then
+		self.TargetText:SetText('')
 	end
 end
 
@@ -137,7 +154,7 @@ function NP:Construct_Castbar(nameplate)
 
 	NP:Construct_FlashTexture(nameplate, castbar)
 
-	NP.StatusBars[castbar] = true
+	NP.StatusBars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 
 	castbar.Button = CreateFrame('Frame', nil, castbar)
@@ -158,6 +175,10 @@ function NP:Construct_Castbar(nameplate)
 	castbar.Text:SetJustifyH('LEFT')
 	castbar.Text:SetWordWrap(false)
 
+	castbar.TargetText = castbar:CreateFontString(nil, 'OVERLAY')
+	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.TargetText:SetJustifyH('LEFT')
+
 	castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	castbar.CustomDelayText = NP.Castbar_CustomDelayText
 	castbar.CustomTimeText = NP.Castbar_CustomTimeText
@@ -173,6 +194,7 @@ function NP:Construct_Castbar(nameplate)
 		castbar.Hide = castbar.Show
 		castbar:Show()
 		castbar.Text:SetText('Casting')
+		castbar.TargetText:SetText(E.myname)
 		castbar.Time:SetText('3.1')
 		castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
 		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
@@ -195,9 +217,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 						classColor = data.classColor.colorStr
 					end
 
-					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+					plate.Castbar.Text:SetFormattedText('%s [|c%s%s|r]', INTERRUPTED, classColor or 'FFdddddd', name)
 				else
-					plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
+					plate.Castbar.Text:SetFormattedText('%s [%s]', INTERRUPTED, name)
 				end
 			end
 		end
@@ -223,8 +245,9 @@ function NP:Update_Castbar(nameplate)
 		castbar.channelTimeFormat = db.channelTimeFormat
 		castbar.pipColor = NP.db.colors.empoweredCast
 
+		castbar:ClearAllPoints()
+		castbar:Point(E.InversePoints[db.anchorPoint], nameplate, db.anchorPoint, db.xOffset, db.yOffset)
 		castbar:Size(db.width, db.height)
-		castbar:Point('CENTER', nameplate, 'CENTER', db.xOffset, db.yOffset)
 
 		E:SetSmoothing(castbar, db.smoothbars)
 
@@ -239,6 +262,16 @@ function NP:Update_Castbar(nameplate)
 			castbar.Button:Show()
 		else
 			castbar.Button:Hide()
+		end
+
+		if db.displayTarget and db.targetStyle == 'SEPARATE' then
+			castbar.TargetText:ClearAllPoints()
+			castbar.TargetText:Point(E.InversePoints[db.targetAnchorPoint], castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
+			castbar.TargetText:FontTemplate(LSM:Fetch('font', db.targetFont), db.targetFontSize, db.targetFontOutline)
+			castbar.TargetText:SetJustifyH(db.targetJustifyH)
+			castbar.TargetText:Show()
+		else
+			castbar.TargetText:Hide()
 		end
 
 		castbar.Time:ClearAllPoints()

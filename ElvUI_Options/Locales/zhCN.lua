@@ -1638,6 +1638,7 @@ L["Smooth Bars"] = "平滑化"
 L["Smooth"] = "平滑"
 L["Smoothing Amount"] = "平滑量"
 L["Socket Frame"] = "珠宝插槽"
+L["Solo Color"] = true
 L["Sort By"] = "排序"
 L["Sort Direction"] = "排列方向"
 L["Sort Inverted"] = "倒序"
@@ -1908,7 +1909,8 @@ L["Use Modifier for Item Count"] = "对物品使用修饰键显示计数"
 L["Use Off Tank Color when another Tank has threat."] = "当另一坦克有仇恨时使用非当前坦颜色。"
 L["Use Portrait"] = "使用头像"
 L["Use Real ID BattleTag"] = "显示战网昵称"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
+L["Use Solo Color"] = true
+L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "固定位置"
 L["Use Subzone Names"] = "使用子区域名称"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "使用自定义背景色而不是多种主色."
@@ -2003,24 +2005,31 @@ L["RAID_TARGET_7"] = "十字"
 L["RAID_TARGET_8"] = "骷髅"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "暴雪姓名板"
-L["blockCastByPlayers"] = "[屏蔽]玩家施放的"
-L["blockDispellable"] = "[屏蔽]可驱散的"
-L["blockNoDuration"] = "[屏蔽]永久的"
-L["blockNonPersonal"] = "[屏蔽]他人的"
-L["blockNotDispellable"] = "[屏蔽]不可驱散的"
-L["blockMount"] = "[屏蔽]坐骑"
 L["Mount"] = "坐骑"
 L["CastByNPC"] = "NPC施放的"
 L["CastByPlayers"] = "玩家施放的"
 L["CastByUnit"] = "该单位施放的"
 L["Dispellable"] = "可驱散的"
 L["MyPet"] = "我的宠物"
-L["nonPersonal"] = "他人的"
-L["notCastByUnit"] = "非该单位的"
-L["notDispellable"] = "不可驱散的"
+L["NonPersonal"] = "他人的"
+L["NotCastByUnit"] = "非该单位的"
+L["NotDispellable"] = "不可驱散的"
 L["OtherPet"] = "其他宠物"
 L["Personal"] = "自己的"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "修改动作条设置"
@@ -2047,25 +2056,20 @@ L["TEXTURE_EXAMPLE"] = [=[若要设置聊天框背景, 请你指定位于魔兽�
 对多数玩家来说，较简易的方式是将tga文件放入魔兽世界文件夹中，然后在此处输入文件名。]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*白名单：|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable（包含可窃取）, notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*黑名单：|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | 黑名单过滤器只对优先级列表中排在它之后的过滤器有效。它不会阻止在它之前的过滤器的任何内容。|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "^黑名单过滤器只对优先级列表中排在它之后的过滤器有效。它不会阻止在它之前的过滤器的任何内容。"
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Boss：|r ^由首领单位施放的光环（仅限减益效果？）。|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = "*Mount：|r ^被归类为坐骑的光环。|r"
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Personal：|r ^由你自己施放的光环。|r"
-L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*nonPersonal：|r ^由自己以外的任何人施放的光环。|r"
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*NonPersonal：|r ^由自己以外的任何人施放的光环。|r"
 L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = "*CastByUnit：|r ^由单位框架或姓名板的单位自己施放的光环（因此在目标框架上只显示目标单位施放的光环）。|r"
-L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*notCastByUnit：|r ^由单位框架或姓名板的单位自己以外的任何人施放的光环。|r"
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*NotCastByUnit：|r ^由单位框架或姓名板的单位自己以外的任何人施放的光环。|r"
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Dispellable：|r ^可以驱散或法术窃取的光环。|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC：|r ^由NPC施放的光环。|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers：|r ^由玩家控制的单位（因此不包括NPC）施放的光环。|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*blockCastByPlayers：|r ^屏蔽由玩家控制的单位施放的光环（因此只会显示由NPC施放的光环）。|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*blockNoDuration：|r ^屏蔽永久的光环。|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*blockNonPersonal：|r ^屏蔽不是由自己施放的光环。|r"
-L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = "*显示全部：|r ^将“最长持续时间”设为0，优先级列表为空，或 (1) Personal | (2) nonPersonal"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = "*屏蔽黑名单光环，显示其他所有光环：|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"
-L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = "*屏蔽永久的光环，显示其他所有光环：|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"
-L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = "*屏蔽永久的光环，屏蔽黑名单光环，显示其他所有光环：|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*显示全部：|r ^将“最长持续时间”设为0，优先级列表为空，或 (1) Personal | (2) NonPersonal"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*屏蔽黑名单光环，显示其他所有光环：|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*屏蔽永久的光环，显示其他所有光环：|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*屏蔽永久的光环，屏蔽黑名单光环，显示其他所有光环：|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*屏蔽一切除了你自己的光环：|r ^(1) Personal"
 L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = "*屏蔽一切除了白名单的光环：|r ^(1) Whitelist"
 L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = "*屏蔽一切除了白名单的光环和你自己施放的光环：|r ^(1) blockNonPersonal | (2) Whitelist"

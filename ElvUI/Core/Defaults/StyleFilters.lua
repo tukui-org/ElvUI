@@ -92,6 +92,7 @@ E.StyleFilterDefaults = {
 		sound = {
 			enable = false,
 			overlap = false,
+			channel = 'Master',
 			soundFile = ''
 		},
 		tags = {
@@ -125,6 +126,7 @@ E.StyleFilterDefaults = {
 			notCasting = false,
 			notChanneling = false,
 			interruptible = false,
+			requireStart = false,
 			notSpell = false,
 			spells = {}
 		},

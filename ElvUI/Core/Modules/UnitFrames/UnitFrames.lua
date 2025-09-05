@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 local PA = E:GetModule('PrivateAuras')
+local TT = E:GetModule('Tooltip')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
@@ -11,6 +12,7 @@ local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostrin
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
+local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
 local UIParent = UIParent
@@ -24,8 +26,6 @@ local GetInventoryItemLink = GetInventoryItemLink
 local UnregisterStateDriver = UnregisterStateDriver
 local RegisterStateDriver = RegisterStateDriver
 
-local UnitFrame_OnEnter = UnitFrame_OnEnter
-local UnitFrame_OnLeave = UnitFrame_OnLeave
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
@@ -335,13 +335,29 @@ function UF:SetAlpha_MouseTags(mousetags, alpha)
 	end
 end
 
-function UF:UnitFrame_OnEnter(...)
-	UnitFrame_OnEnter(self, ...)
+function UF:UnitFrame_OnEnter()
+	if GameTooltip:IsForbidden() then
+		self.UpdateTooltip = nil
+	else
+		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
+
+		self.UpdateTooltip = (self.unit and GameTooltip:SetUnit(self.unit) and UF.UnitFrame_OnEnter) or nil
+	end
+
 	UF:SetAlpha_MouseTags(self.__mousetags, 1)
 end
 
-function UF:UnitFrame_OnLeave(...)
-	UnitFrame_OnLeave(self, ...)
+function UF:UnitFrame_OnLeave()
+	self.UpdateTooltip = nil
+
+	if not GameTooltip:IsForbidden() then
+		if not E.private.tooltip.enable or TT.db.fadeOut then
+			GameTooltip:FadeOut()
+		else
+			GameTooltip:Hide()
+		end
+	end
+
 	UF:SetAlpha_MouseTags(self.__mousetags, 0)
 end
 

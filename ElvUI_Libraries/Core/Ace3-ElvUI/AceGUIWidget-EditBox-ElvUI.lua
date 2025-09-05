@@ -137,7 +137,7 @@ local methods = {
 		self:SetWidth(200)
 		self:SetDisabled(false)
 		self:SetLabel()
-		self:SetText()
+		self:SetText('')
 		self:DisableButton(false)
 		self:SetMaxLetters(0)
 	end,

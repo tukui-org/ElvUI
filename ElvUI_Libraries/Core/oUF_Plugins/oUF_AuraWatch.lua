@@ -122,7 +122,7 @@ local function HandleElements(element, unit, button, setting, icon, count, durat
 		elseif count and count > 1 then
 			button.count:SetText(count)
 		else
-			button.count:SetText()
+			button.count:SetText('')
 		end
 	end
 
@@ -190,7 +190,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 
 	local button, position = FetIcon(element, visible, offset)
 
-	button.caster = source
+	button.aura = aura
 	button.filter = filter
 	button.spellID = spellID
 	button.isDebuff = isDebuff
@@ -200,7 +200,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 
 	button:SetID(index)
 
-	local show = (element.CustomFilter or CustomFilter) (element, unit, button, name, icon,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, button, aura, name, icon,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 

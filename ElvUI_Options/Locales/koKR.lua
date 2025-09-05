@@ -1611,6 +1611,7 @@ L["Smooth Bars"] = "부드러운 증감"
 L["Smooth"] = "매끄러운"
 L["Smoothing Amount"] = "데이터 갱신"
 L["Socket Frame"] = "보석홈 UI"
+L["Solo Color"] = true
 L["Sort By"] = "정렬 기준"
 L["Sort Direction"] = "정렬 방법"
 L["Sort Inverted"] = "아래로 정렬"
@@ -1872,7 +1873,8 @@ L["Use Modifier for Item Count"] = "항목 수를 추가하려면 수정 키를 
 L["Use Off Tank Color when another Tank has threat."] = "다른 탱커에 위협이 있을 때 오프 탱크 색상을 사용하십시오."
 L["Use Portrait"] = "초상화 사용"
 L["Use Real ID BattleTag"] = "배틀태그 사용"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Shift+클릭으로 우호적 또는 적대적 또는 일반 상태로 전환합니다. 일반 상태는 필터가 모든 유닛을 점검하도록 합니다. 우호적 상태는 우호적 유닛에만, 적대적 상태는 적대적 유닛에만 작동합니다."
+L["Use Solo Color"] = true
+L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "정적인 위치 사용"
 L["Use Subzone Names"] = "하위 지역명 사용"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "기본 색상 대신 사용자가 배경 색상을 선택 합니다."
@@ -1967,24 +1969,31 @@ L["RAID_TARGET_7"] = "가위표"
 L["RAID_TARGET_8"] = "해골"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Blizzard Nameplate"
-L["blockCastByPlayers"] = "[Block] Cast By Players"
-L["blockDispellable"] = "[Block] Dispellable"
-L["blockNoDuration"] = "[Block] No Duration"
-L["blockNonPersonal"] = "[Block] Non Personal"
-L["blockNotDispellable"] = "[Block] Not Dispellable"
-L["blockMount"] = "[Block] Mount"
 L["Mount"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
 L["Dispellable"] = true
 L["MyPet"] = "My Pet"
-L["nonPersonal"] = "Non Personal"
-L["notCastByUnit"] = "Not Cast By Unit"
-L["notDispellable"] = "Not Dispellable"
+L["NonPersonal"] = "Non Personal"
+L["NotCastByUnit"] = "Not Cast By Unit"
+L["NotDispellable"] = "Not Dispellable"
 L["OtherPet"] = "Other Pet"
 L["Personal"] = true
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "행동단축바의 설정을 변경합니다."
@@ -2014,25 +2023,20 @@ L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치�
 간단히는 그림을 와우 설치 폴더에 넣은후 파일명만 적으세요.]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*Whitelists|r-^화이트리스트: 다음의 필터들과 같은 보여주는 필터 이며 원하는 오라(버프/디버프)를 등록하여 |cffFF0000보이게|r 할수 있다.|r\n\n          *Boss|r-^보스의 주문|r,          *Mount|r-^Is Mount|r,          *My Pet|r-^Is My Pet|r,          *Other Pet|r-^Is Others Pet|r,\n\n          *Personal|r-^자신의 주문|r,          *nonPersonal|r-^자신의 것이 아닌 주문|r,          *CastByUnit|r-^대상의 주문|r,          *notCastByUnit|r-^대상의 주문이 아닌|r, *Dispellable|r-^차단(마흡 포함)|r, *Not Dispellable|r-^Not Dispellable|r,\n\n          *CastByNPC|r-^NPC의주문|r,          *CastByPlayers|r-^플레이어의 주문|r          *BlizzardNameplate|r-^Is a Blizzard Nameplate|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*Blacklists|r-^블랙리스트: 다음의 필터들과 같은 숨기는 필터이며이며 원하는 오라(버프/디버프)를 등록하여 |cffFF0000숨길|r수 있다.|r\n\n          *blockMount|r-^Block Mounts|r,          *blockNonPersonal|r-^내주문이 아닌것을(숨김)|r,\n\n          *blockCastByPlayers|r-^모든 플레이어의 주문(숨김)|r          *blockNoDuration|r-^지속되는 버프는(숨김)|r,\n\n          *blockDispellable|r-^Block Dispellable|r          *blockNotDispellable|r-^Block Not Dispellable|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "|cffFF0000!!!|r^블랙리스트 필터는 우선 순위 목록에서 그 뒤에 오는 필터에 대해서만 적용됩니다. 앞선 필터에서 아무것도 작용도 하지안습니다.|r"
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Boss:|r ^보스 유닛이 오라(디버프 만?)를 보여줍니다.|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Personal|r-^본인의주문: 자신이 시전한 오라(버프/디버프)를 보여줍니다.|r"
-L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*nonPersonal|r-^자신의의 주문이 아닌:|r ^자신의 주문이 아닌 오라(버프/디버프)를 보여줍니다.|r"
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*NonPersonal|r-^자신의의 주문이 아닌:|r ^자신의 주문이 아닌 오라(버프/디버프)를 보여줍니다.|r"
 L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = "*CastByUnit|r-^대상의 주문: 대상의 유닛프레임 또는 네임플레이트(이름표)에서 시전이 보이는 오라(버프/디버프)를 보여줍니다.\n\n          (적용시, 대상 프레임에는 대상이 시전하는 오라(버프/디버프)만 표시됨)|r"
-L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*notCastByUnit|r-^대상의 시전을 제외한: 유닛프레임 또는 네임플레이트(이름표)의 대상이 아닌 사람이 시전한 오라(버프/디버프)를 보여줍니다.|r"
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*NotCastByUnit|r-^대상의 시전을 제외한: 유닛프레임 또는 네임플레이트(이름표)의 대상이 아닌 사람이 시전한 오라(버프/디버프)를 보여줍니다.|r"
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Dispellable|r-^차단: 차단/ 마흡/ 해제가 가능한 오라(버프/디버프)를 보여줍니다.|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC|r-^NPC의 주문: 모든 NPC가 시전한 오라(버프/디버프)를 보여줍니다.|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers|r-^플레이어에 의한 주문:|r |cffFF0000!|r^모든 플레이어에 의해 움직이는 유닛(케릭터)의 오라(버프/디버프)를 보여줍니다. (※ NPC는 제외).|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*blockCastByPlayers|r-^플레이어의 주문을 숨김: 플레이어가 제어하는 유닛이 시전하는 모든 오라(버프/디버프)를 |r|cffFF0000차단|r^합니다. (NPC가 시전한 오라만 표시됨).|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*blockNoDuration|r-^지속되는 버프는 제외:|r 지속 시간이 없는 모든 오라(버프/디버프)를 |cffFF0000차단|r합니다.|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*blockNonPersonal|r-^내주문이 아닌것 제외: 자신이 시전하지 않은 오라를 |cffFF0000차단|r합니다.|r"
-L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = "|cffFF0000예 시|r\n\n*모든 오라(버프)를 보는법:|r ^'지속시간'을 '0'으로 모두 설정하고, 우선 순위 목록을 비워 두거나 (1) Personal | (2)nonPersonal 선택!"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = "*블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1)Blacklist| (2)Personal| (3)nonPersonal"
-L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = "*지속 되는 오라 차단, 다른 모든 항목 표시 :|r ^(1) blockNoDuration | (2)Personal | (3)nonPersonal"
-L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = "*지속 되는 오라 차단, 블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "|cffFF0000예 시|r\n\n*모든 오라(버프)를 보는법:|r ^'지속시간'을 '0'으로 모두 설정하고, 우선 순위 목록을 비워 두거나 (1) Personal | (2)NonPersonal 선택!"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1)Blacklist| (2)Personal| (3)NonPersonal"
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*지속 되는 오라 차단, 다른 모든 항목 표시 :|r ^(1) blockNoDuration | (2)Personal | (3)NonPersonal"
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*지속 되는 오라 차단, 블랙리스트 차단, 기타 모든 항목 표시 :|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*자신의 오라를 제외한 모든 것을 차단 :|r ^(1) Personal"
 L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = "*화이트리스트에있는 오라를 제외한 모든 것을 차단 : |r ^(1) Whitelist"
 L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = "*자신이 캐스트하는 화이트리스트 오라를 제외한 모든 것을 차단 :|r ^(1) blockNonPersonal | (2) Whitelist"

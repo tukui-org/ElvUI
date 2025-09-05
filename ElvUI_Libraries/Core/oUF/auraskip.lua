@@ -6,6 +6,9 @@ local wipe = wipe
 local select = select
 local unpack = unpack
 
+local UnitGUID = UnitGUID
+local UnitName = UnitName
+local UnitClass = UnitClass
 local SpellIsPriorityAura = SpellIsPriorityAura
 local UnitAffectingCombat = UnitAffectingCombat
 local SpellGetVisibilityInfo = SpellGetVisibilityInfo
@@ -133,6 +136,12 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = GetAuraDataByAuraInstanceID(unit, auraInstanceID)
 	elseif which == 'remove' then
 		aura = unitAuraInfo[auraInstanceID]
+	end
+
+	if aura and aura.sourceUnit then -- this is lame but useful
+		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
+		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
+		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
 	end
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil

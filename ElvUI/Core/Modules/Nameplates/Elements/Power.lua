@@ -67,19 +67,18 @@ function NP:Power_UpdateColor(_, unit)
 	end
 
 	local styleFilter = NP:StyleFilterChanges(self)
-	local stylePower = (styleFilter.power and styleFilter.power.colors) and styleFilter.actions.power.colors.color
-	if stylePower then
-		r, g, b = stylePower.r, stylePower.g, stylePower.b
-	end
+	if not (styleFilter.power and styleFilter.power.color) then
+		if atlas then
+			element:SetStatusBarTexture(atlas)
+			element:SetStatusBarColor(1, 1, 1)
+		elseif b then
+			element:SetStatusBarColor(r, g, b)
+		end
 
-	if atlas then
-		element:SetStatusBarTexture(atlas)
-		element:SetStatusBarColor(1, 1, 1)
-	elseif b then
-		element:SetStatusBarColor(r, g, b)
+		if element.bg and b then
+			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		end
 	end
-
-	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
 
 	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
@@ -108,7 +107,7 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
-	NP.StatusBars[Power] = true
+	NP.StatusBars[Power] = 'power'
 
 	Power.colorTapping = false
 	Power.colorClass = false
@@ -130,8 +129,9 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
+		nameplate.Power:ClearAllPoints()
+		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		E:SetSmoothing(nameplate.Power, db.power.smoothbars)
 	elseif nameplate:IsElementEnabled('Power') then

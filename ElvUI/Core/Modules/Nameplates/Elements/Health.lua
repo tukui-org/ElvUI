@@ -43,12 +43,7 @@ function NP:Health_UpdateColor(_, unit)
 	end
 
 	local styleFilter = NP:StyleFilterChanges(self)
-	local styleHealth = (styleFilter.health and styleFilter.health.colors) and styleFilter.actions.health.colors.color
-	if styleHealth then
-		r, g, b = styleHealth.r, styleHealth.g, styleHealth.b
-	end
-
-	if b then
+	if not (styleFilter.health and styleFilter.health.color) and b then
 		element:SetStatusBarColor(r, g, b)
 
 		if element.bg then
@@ -70,7 +65,7 @@ function NP:Construct_Health(nameplate)
 	Health.considerSelectionInCombatHostile = true
 	Health.UpdateColor = NP.Health_UpdateColor
 
-	NP.StatusBars[Health] = true
+	NP.StatusBars[Health] = 'health'
 
 	NP:Construct_FlashTexture(nameplate, Health)
 	UF:Construct_ClipFrame(nameplate, Health)
@@ -131,7 +126,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		bar:Point('BOTTOM')
 		bar:Width(150)
 		HealthPrediction[name] = bar
-		NP.StatusBars[bar] = true
+		NP.StatusBars[bar] = 'healPrediction'
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()

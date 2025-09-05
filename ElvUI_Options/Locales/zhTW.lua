@@ -1580,6 +1580,7 @@ L["Smooth Bars"] = "條平滑化"
 L["Smooth"] = "平滑"
 L["Smoothing Amount"] = "平滑程度"
 L["Socket Frame"] = "珠寶插槽"
+L["Solo Color"] = true
 L["Sort By"] = "排序"
 L["Sort Direction"] = "排序方向"
 L["Sort Inverted"] = "倒序排列"
@@ -1839,7 +1840,8 @@ L["Use Modifier for Item Count"] = "按下修飾鍵來添加物品計數"
 L["Use Off Tank Color when another Tank has threat."] = true
 L["Use Portrait"] = "使用頭像"
 L["Use Real ID BattleTag"] = "使用 Real ID BattleTag"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用 Shift + 左键 来切换友方狀態, 敵方狀態及正常狀態. 正常狀態將允許在所有單位上設為啟用的過濾器.友方狀態僅允許用於友方單位的過濾器, 敵方狀態僅允許用於敵方單位的過濾器."
+L["Use Solo Color"] = true
+L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "固定位置"
 L["Use Subzone Names"] = "使用二級地區名字"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "使用自訂的背景色而不是多種主色."
@@ -1931,24 +1933,31 @@ L["RAID_TARGET_7"] = "十字"
 L["RAID_TARGET_8"] = "頭顱"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "暴雪血條"
-L["blockCastByPlayers"] = "[屏蔽] 玩家施放的"
-L["blockDispellable"] = "[屏蔽] 可驅散的"
-L["blockNoDuration"] = "[屏蔽] 永久的"
-L["blockNonPersonal"] = "[屏蔽] 他人的"
-L["blockNotDispellable"] = "[屏蔽] 不可驅散的"
-L["blockMount"] = "[屏蔽] Mount"
 L["Mount"] = true
 L["CastByNPC"] = "NPC施放的"
 L["CastByPlayers"] = "玩家施放的"
 L["CastByUnit"] = "單位施放的"
 L["Dispellable"] = "可驅散的"
 L["MyPet"] = "自己的寵物"
-L["nonPersonal"] = "他人的"
-L["notCastByUnit"] = "非該單位的"
-L["notDispellable"] = "不可驅散的"
+L["NonPersonal"] = "他人的"
+L["NotCastByUnit"] = "非該單位的"
+L["NotDispellable"] = "不可驅散的"
 L["OtherPet"] = "他人的寵物"
 L["Personal"] = "自己的"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "修改動作條設定."
@@ -1982,3 +1991,23 @@ L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名
 範例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
+
+----------  FilterHelp  ----------
+L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
+L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
+L["*Personal:|r ^Auras cast by yourself.|r"] = true
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
+L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
+L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = true
+L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
+L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
+L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true
+----------------------------------

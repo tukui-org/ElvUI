@@ -6,9 +6,9 @@ local Aura = E.Filters.Aura
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
--- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
+	desc = L["Debuffs that are some form of CC. This can be stuns, roots, slows, etc."],
 	spells = {
 	-- Druid
 		[339]	= List(1), -- Entangling Roots (Rank 1)
@@ -201,9 +201,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 	},
 }
 
--- These are buffs that can be considered 'protection' buffs
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
+	desc = L["Immunity buffs like Bubble and Ice Block, but also most major defensive class cooldowns."],
 	spells = {
 	-- Druid
 		[22812]	= List(2), -- Barkskin
@@ -239,9 +239,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
--- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
+	desc = L["Auras you don't want to see on your frames."],
 	spells = {
 	-- Seasonal
 		[362859] = List(), -- Adventure Awaits: Quest experience increased by 100%.
@@ -262,9 +262,9 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
--- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
+	desc = L["Auras which should always be displayed."],
 	spells = {
 	-- General
 		[349981] = List(), -- Supercharged Chronoboon Displacer (Suspended World Buffs)
@@ -452,9 +452,9 @@ if E.ClassicHC then
 	G.unitframe.aurafilters.Whitelist.spells[431567] = List(2) -- Self-Found Adventurer
 end
 
--- RAID DEBUFFS: This should be pretty self explainitory
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid debuffs. Includes affixes and utility on dead players like pending resurrection and available reincarnation."],
 	spells = {
 	----------------------------------------------------------
 	-------------------------- Misc --------------------------
@@ -674,9 +674,9 @@ if E.ClassicSOD then
 	RaidDebuffs[444165] = List(5) -- Skeletal
 end
 
--- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid buffs."],
 	spells = {
 	----------------------------------------------------------
 	---------------------- Molten Core -----------------------

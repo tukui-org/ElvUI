@@ -5,6 +5,7 @@ local ElvUF = E.oUF
 
 local abs, next = abs, next
 local unpack = unpack
+local utf8sub = string.utf8sub
 
 local CreateFrame = CreateFrame
 local GetTime = GetTime
@@ -107,7 +108,7 @@ function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent.CastBarLevel)
 
-	UF.statusbars[castbar] = true
+	UF.statusbars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = UF.statusbars -- not oUF
 
 	castbar.CustomDelayText = UF.CustomCastDelayText
@@ -318,9 +319,6 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:SetAlpha(db.hideName and 0 or 1)
 	castbar.Time:SetAlpha(db.hideTime and 0 or 1)
 
-	--Adjust tick heights
-	castbar.tickHeight = height
-
 	if db.ticks then --Only player unitframe has this
 		--Set tick width and color
 		castbar.tickWidth = db.tickWidth
@@ -444,8 +442,9 @@ function UF:SetCastTicks(frame, numTicks)
 
 		tick:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
 		tick:ClearAllPoints()
+		tick:Point('TOP')
+		tick:Point('BOTTOM')
 		tick:Point('RIGHT', frame, 'LEFT', offset * i, 0)
-		tick:Height(frame.tickHeight)
 		tick:Show()
 	end
 end
@@ -476,6 +475,16 @@ function UF:GetInterruptColor(db, unit)
 	return r, g, b
 end
 
+function UF:GetCasterColor(unit)
+	if not unit then return end
+
+	local _, className = UnitClass(unit)
+	local classColor = className and E:ClassColor(className)
+	if classColor then
+		return classColor.colorStr
+	end
+end
+
 function UF:PostCastStart(unit)
 	local parent = self.__owner
 	local db = parent and parent.db
@@ -487,20 +496,29 @@ function UF:PostCastStart(unit)
 
 	local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 	local spellName = spellRename or self.spellName
+	local length = db.castbar.nameLength
+	local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+	local changed = spellRename or (name ~= spellName)
 
 	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 		if parent.unitframeType == 'player' then
 			if self.curTarget then
-				self.Text:SetText(spellName..' > '..self.curTarget)
+				local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
+				self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', self.curTarget)
+			elseif changed then
+				self.Text:SetText(name)
 			end
 		elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
 			local target = self.curTarget or UnitName(unit..'target')
 			if target and target ~= '' and target ~= UnitName(unit) then
-				self.Text:SetText(spellName..' > '..target)
+				local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
+				self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', target)
+			elseif changed then
+				self.Text:SetText(name)
 			end
 		end
-	elseif spellRename then
-		self.Text:SetText(spellName)
+	elseif changed then
+		self.Text:SetText(name)
 	end
 
 	if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then

@@ -3,8 +3,9 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local wipe = wipe
 local unpack = unpack
+local strfind = strfind
+
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
@@ -214,18 +215,24 @@ end
 function NP:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
-		local point = db.countPosition or 'CENTER'
-		button.Count:ClearAllPoints()
-		button.Count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
-		button.Count:Point(point, db.countXOffset, db.countYOffset)
-		button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		if button.Count then
+			local point = db.countPosition or 'CENTER'
+			button.Count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+			button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+			button.Count:ClearAllPoints()
+			button.Count:Point(point, db.countXOffset, db.countYOffset)
+		end
+
+		if button.Text then
+			local point = db.sourceText.position or 'TOP'
+			button.Text:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+			button.Text:FontTemplate(LSM:Fetch('font', db.sourceText.font), db.sourceText.fontSize, db.sourceText.fontOutline)
+			button.Text:ClearAllPoints()
+			button.Text:Point(point or 'TOP', db.sourceText.xOffset, db.sourceText.yOffset)
+		end
 	end
 
-	if button.auraInfo then
-		wipe(button.auraInfo)
-	else
-		button.auraInfo = {}
-	end
+	UF:CleanCache(button)
 
 	button.needsButtonTrim = true
 	button.needsUpdateCooldownPosition = true

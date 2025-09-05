@@ -243,13 +243,17 @@ StyleFilters.triggers.args.casting.args.types.args.notCasting = ACH:Toggle(L["No
 StyleFilters.triggers.args.casting.args.types.args.spacer2 = ACH:Spacer(6, 'full')
 StyleFilters.triggers.args.casting.args.types.args.isChanneling = ACH:Toggle(L["Is Channeling Anything"], L["If enabled then the filter will activate if the unit is channeling anything."], 7)
 StyleFilters.triggers.args.casting.args.types.args.notChanneling = ACH:Toggle(L["Not Channeling Anything"], L["If enabled then the filter will activate if the unit is not channeling anything."], 8)
+StyleFilters.triggers.args.casting.args.types.args.spacer3 = ACH:Spacer(9, 'full')
+StyleFilters.triggers.args.casting.args.types.args.notSpell = ACH:Toggle(L["Not Spell"], L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."], 10)
+StyleFilters.triggers.args.casting.args.types.args.requireStart = ACH:Toggle(L["Require Start"], nil, 11)
 
-StyleFilters.triggers.args.casting.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = true UpdateFilterList('casting', nil, value, true) NP:ConfigureAll() end, nil, nil, ValidateString)
-StyleFilters.triggers.args.casting.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.casting.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = nil UpdateFilterList('casting', nil, value) NP:ConfigureAll() end)
-StyleFilters.triggers.args.casting.args.notSpell = ACH:Toggle(L["Not Spell"], L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."], 4)
-StyleFilters.triggers.args.casting.args.description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10)
-StyleFilters.triggers.args.casting.args.description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11)
-StyleFilters.triggers.args.casting.args.addSpell.preferSpellID = true
+StyleFilters.triggers.args.casting.args.changeList = ACH:Group(L["Add / Remove"], nil, 40)
+StyleFilters.triggers.args.casting.args.changeList.inline = true
+StyleFilters.triggers.args.casting.args.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 2, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = true UpdateFilterList('casting', nil, value, true) NP:ConfigureAll() end, nil, nil, ValidateString)
+StyleFilters.triggers.args.casting.args.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 3, function() local triggers, values = GetFilter(true), {} for spell in next, triggers.casting.spells do values[spell] = spell end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers.casting.spells[value] = nil UpdateFilterList('casting', nil, value) NP:ConfigureAll() end)
+StyleFilters.triggers.args.casting.args.changeList.args.description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10)
+StyleFilters.triggers.args.casting.args.changeList.args.description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11)
+StyleFilters.triggers.args.casting.args.changeList.args.addSpell.preferSpellID = true
 
 StyleFilters.triggers.args.casting.args.spells = ACH:Group('', nil, 50, nil, function(info) local triggers = GetFilter(true) return triggers.casting.spells and triggers.casting.spells[info[#info]] end, function(info, value) local triggers = GetFilter(true) if not triggers.casting.spells then triggers.casting.spells = {} end triggers.casting.spells[info[#info]] = value NP:ConfigureAll() end, nil, true)
 StyleFilters.triggers.args.casting.args.spells.inline = true
@@ -471,7 +475,7 @@ do
 		option.onMe = ACH:Toggle(L["On Me"], nil, 10)
 		option.onPet = ACH:Toggle(L["On Pet"], nil, 11)
 
-		option.changeList = ACH:Group(L["Add / Remove"], nil, 10)
+		option.changeList = ACH:Group(L["Add / Remove"], nil, 40)
 		option.changeList.inline = true
 		option.changeList.args.addSpell = ACH:Input(L["Add Spell ID or Name"], nil, 1, nil, nil, nil, function(_, value) if stackThreshold then value = value .. '\n' .. stackThreshold end local triggers = GetFilter(true) triggers[auraType].names[value] = true stackThreshold = nil UpdateFilterList(auraType, nil, value, true) NP:ConfigureAll() end, nil, nil, ValidateString)
 		option.changeList.args.removeSpell = ACH:Select(L["Remove Spell ID or Name"], L["If the aura is listed with a number then you need to use that to remove it from the list."], 2, function() local triggers, values = GetFilter(true), {} for name in pairs(triggers[auraType].names) do values[name] = format('%s (%d)', strsplit('\n', name)) end return values end, nil, nil, nil, function(_, value) local triggers = GetFilter(true) triggers[auraType].names[value] = nil UpdateFilterList(auraType, nil, value) end)
@@ -828,7 +832,9 @@ StyleFilters.actions.args.castbar = CreateActions(L["Castbar"], 30, 'castbar')
 StyleFilters.actions.args.sound = ACH:Group(_G.SOUND, nil, 50, nil, ActionSubGroup, ActionSubGroup, ActionHidePlate)
 StyleFilters.actions.args.sound.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 StyleFilters.actions.args.sound.args.overlap = ACH:Toggle(L["Overlap"], nil, 2)
-StyleFilters.actions.args.sound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 3, 'double', nil, nil, nil, function() local _, actions = GetFilter(true) return not actions.sound.enable end)
+StyleFilters.actions.args.sound.args.spacer1 = ACH:Spacer(3, 'full')
+StyleFilters.actions.args.sound.args.channel = ACH:Select(L["Channel"], nil, 4, { Master = L["Master"], Music = L["Music"], SFX = L["Sound Effects"], Ambience = L["Ambience"], Dialog = L["Dialog"] })
+StyleFilters.actions.args.sound.args.soundFile = ACH:SharedMediaSound(_G.SOUND, nil, 5, 'double')
 
 StyleFilters.actions.args.text_format = ACH:Group(L["Text Format"], nil, 60, nil, function(info) local _, actions = GetFilter(true) return actions.tags[info[#info]] end, function(info, value) local _, actions = GetFilter(true) actions.tags[info[#info]] = value NP:ConfigureAll() end)
 StyleFilters.actions.args.text_format.args.info = ACH:Description(L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 1, 'medium')

@@ -78,7 +78,7 @@ function NP:Construct_ClassPower(nameplate)
 		bar:SetStatusBarTexture(texture)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())
 		bar:SetFrameLevel(6)
-		NP.StatusBars[bar] = true
+		NP.StatusBars[bar] = 'classpower'
 
 		bar.bg = ClassPower:CreateTexture(barName..'bg', 'BORDER')
 		bar.bg:SetTexture(texture)
@@ -219,7 +219,7 @@ function NP:Construct_Runes(nameplate)
 		rune:SetStatusBarColor(color.r, color.g, color.b)
 		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
 		rune.__owner = Runes
-		NP.StatusBars[rune] = true
+		NP.StatusBars[rune] = 'runes'
 
 		rune.bg = rune:CreateTexture(barName..'bg', 'BORDER')
 		rune.bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
@@ -287,7 +287,7 @@ function NP:Construct_Stagger(nameplate)
 	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Stagger:Hide()
 
-	NP.StatusBars[Stagger] = true
+	NP.StatusBars[Stagger] = 'stagger'
 
 	return Stagger
 end

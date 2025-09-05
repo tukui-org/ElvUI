@@ -1581,6 +1581,7 @@ L["Smooth Bars"] = "Puruzsuz Cubuklar"
 L["Smooth"] = "Puruzsuz"
 L["Smoothing Amount"] = "Puruzsuzluk Miktari"
 L["Socket Frame"] = "Soket Cercevesi"
+L["Solo Color"] = true
 L["Sort By"] = "Gore sirala"
 L["Sort Direction"] = "Siralama Yonu"
 L["Sort Inverted"] = "Ters Siralama"
@@ -1840,7 +1841,8 @@ L["Use Modifier for Item Count"] = "Oge Sayisi icin Degistiriciyi Kullan"
 L["Use Off Tank Color when another Tank has threat."] = true
 L["Use Portrait"] = "Portreyi Kullan"
 L["Use Real ID BattleTag"] = "Gercek Kimlik BattleTag Kullan"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Dost veya dusman veya normal durum arasinda gecis yapmak icin Shift+Sol Tiklamayi kullanin. Normal durum, filtrenin tum birimlerde kontrol edilmesini saglar. Dostluk durumu yalnizca dost birimler icindir ve dusman durumu dusman birimleri icindir."
+L["Use Solo Color"] = true
+L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "Statik Konumu Kullan"
 L["Use Subzone Names"] = "Alt Bolge Isimlerini Kullan"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "Ana rengin bir kati yerine ozel zemin rengini kullanin."
@@ -1932,24 +1934,31 @@ L["RAID_TARGET_7"] = "carpi"
 L["RAID_TARGET_8"] = "Kurukafa"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "Blizzard Isim Levhasi"
-L["blockCastByPlayers"] = "[Blok] Oyuncular Tarafindan Kullanilan Yetenek"
-L["blockDispellable"] = "[Blok] Arindirilabilir"
-L["blockNoDuration"] = "[Blok] Sure Yok"
-L["blockNonPersonal"] = "[Blok] Kisisel Olmayan"
-L["blockNotDispellable"] = "[Blok] Arindirilamaz"
-L["blockMount"] = "[Blok] Mount"
 L["Mount"] = true
 L["CastByNPC"] = "NPC Tarafindan Kullanilan Yetenek"
 L["CastByPlayers"] = "Oyuncular Tarafindan Kullanilan Yetenek"
 L["CastByUnit"] = "Birime Gore Kullanilan Yetenek"
 L["Dispellable"] = "Arindirilabilir"
 L["MyPet"] = "Evcil Hayvanim"
-L["nonPersonal"] = "Kisisel Olmayan"
-L["notCastByUnit"] = "Birim Tarafindan Kullanilmayan Yetenek"
-L["notDispellable"] = "Arindirilamaz"
+L["NonPersonal"] = "Kisisel Olmayan"
+L["NotCastByUnit"] = "Birim Tarafindan Kullanilmayan Yetenek"
+L["NotDispellable"] = "Arindirilamaz"
 L["OtherPet"] = "Diger Evcil Hayvan"
 L["Personal"] = "Kisiye Ozel"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Eylem cubugu ayarlarini degistirin."
@@ -1976,25 +1985,20 @@ Example: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 Or for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here.]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = true
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = true
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = true
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = true
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = true
 L["*Personal:|r ^Auras cast by yourself.|r"] = true
-L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = true
 L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = true
-L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = true
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = true
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = true
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = true
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = true
-L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = true
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = true
-L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = true
-L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = true
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = true
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = true
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = true
 L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = true
 L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = true

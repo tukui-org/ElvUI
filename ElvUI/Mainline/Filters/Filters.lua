@@ -6,9 +6,211 @@ local Aura = E.Filters.Aura
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
--- These are debuffs that are some form of CC
+G.unitframe.aurafilters.ClassDebuffs = {
+	type = 'Whitelist',
+	desc = L["Only important debuffs which influence your action priority. Recommended to be paired with 'Non Personal' set to 'Block'."],
+	spells = {
+	-- Evoker
+		[409560] 	= List(), -- Temporal Wound (Accumulating)
+		[409722] 	= List(), -- Temporal Wound (Done)
+		[434473] 	= List(), -- Bombardments
+		[357209] 	= List(), -- Fire Breath
+		[361500] 	= List(), -- Living Flame
+		[370452] 	= List(), -- Shattering Star
+		[441172] 	= List(), -- Melt Armor
+		[444017] 	= List(), -- Enkindle
+	-- Death Knight
+		[51714]		= List(), -- Razorice
+		[55078]		= List(), -- Blood Plague
+		[191587]	= List(), -- Virulent Plague
+		[194310] 	= List(), -- Festering Wound
+		[343294] 	= List(), -- Soul Reaper
+		[434765] 	= List(), -- Reaper's Mark
+		[1233351] 	= List(), -- Frostreaper
+	-- Demon Hunter
+		[204598] 	= List(), -- Sigil of Flame
+		[207771] 	= List(), -- Fiery Brand
+		[320338] 	= List(), -- Essence Break
+		[391191] 	= List(), -- Burning Wound
+	-- Druid
+		[155625] 	= List(), -- Moonfire 1
+		[164812] 	= List(), -- Moonfire 2
+		[164815] 	= List(), -- Sunfire
+		[202347] 	= List(), -- Stellar Flare
+		[155722] 	= List(), -- Rake
+		[1079] 		= List(), -- Rip
+		[391889] 	= List(), -- Adaptive Swarm
+		[439531] 	= List(), -- Bloodseeker Vines
+	-- Hunter
+		[257284] 	= List(), -- Hunter's Mark
+		[259491] 	= List(), -- Serpent Sting 1
+		[271788] 	= List(), -- Serpent Sting 2
+		[217200] 	= List(), -- Barbed Shot
+	-- Mage
+		[443740] 	= List(), -- Embedded Frost Splinter
+		[444735] 	= List(), -- Embedded Arcane Splinter
+		[228358] 	= List(), -- Winter's Chill
+		[210824] 	= List(), -- Touch of the Magi
+		[453268] 	= List(), -- Controlled Destruction
+	-- Monk
+		[123725] 	= List(), -- Breath of Fire
+		[228287] 	= List(), -- Mark of the Crane
+		[325153] 	= List(), -- Exploding Keg
+	-- Paladin
+		[343527] 	= List(), -- Execution Sentence
+		[343721] 	= List(), -- Final Reckoning
+		[387174] 	= List(), -- Eye of Tyr
+		[383346] 	= List(), -- Expurgation
+		[431380] 	= List(), -- Dawnlight
+	-- Priest
+		[335467] 	= List(), -- Devouring Plague
+		[214621] 	= List(), -- Mind Blast
+		[34914] 	= List(), -- Vampiric Touch
+		[589] 		= List(), -- Shadow Word: Pain
+		[14914] 	= List(), -- Holy Fire
+	-- Rogue
+		[703] 		= List(), -- Garrote
+		[1943] 		= List(), -- Rupture
+		[196937] 	= List(), -- Ghostly Strike
+		[316220] 	= List(), -- Find Weakness
+		[421976] 	= List(), -- Caustic Splatter
+		[441224] 	= List(), -- Fazed
+		[457129] 	= List(), -- Deathstalker's Mark
+	-- Shaman
+		[188389] 	= List(), -- Flame Shock
+		[197209] 	= List(), -- Lightning Rod
+		[334168] 	= List(), -- Lashing Flames
+	-- Warlock
+		[316099] 	= List(), -- Unstable Affliction
+		[48181] 	= List(), -- Haunt
+		[980] 		= List(), -- Agony
+		[80240] 	= List(), -- Havoc
+		[146739] 	= List(), -- Corruption
+		[157736] 	= List(), -- Immolate
+		[460553] 	= List(), -- Doom
+		[445474] 	= List(), -- Wither
+	-- Warrior
+		[388539] 	= List(), -- Rend
+		[262115] 	= List(), -- Deep Wounds
+	}
+}
+
+G.unitframe.aurafilters.ImportantCC = {
+	type = 'Whitelist',
+	desc = L["Only important CC debuffs like Polymorph, Hex, Stuns. Also includes important cc-like debuffs, for example Mind Soothe and Solar Beam."],
+	spells = {
+	-- Evoker
+		[355689]	= List(3), -- Landslide
+		[372048]	= List(3), -- Oppressing Roar
+		[360806]	= List(4), -- Sleep Walk
+		[372245]	= List(3), -- Terror of the Skies
+	-- Death Knight
+		[108194]	= List(3), -- Asphyxiate [Talent]
+		[221562]	= List(3), -- Asphyxiate
+		[207167]	= List(3), -- Blinding Sleet
+		[91807]		= List(3), -- Shab Rush
+	-- Demon Hunter
+		[179057]	= List(3), -- Chaos Nova
+		[211881]	= List(3), -- Fel Eruption
+		[217832]	= List(5), -- Imprison
+		[207685]	= List(4), -- Sigil of Misery
+	-- Druid
+		[33786]		= List(3), -- Cyclone
+		[339]		= List(3), -- Entangling Roots
+		[2637]		= List(3), -- Hibernate
+		[45334]		= List(3), -- Immobilized
+		[99]		= List(3), -- Incapacitating Roar
+		[236748]	= List(3), -- Intimidating Roar
+		[203123]	= List(3), -- Maim
+		[102359]	= List(3), -- Mass Entanglement
+		[5211]		= List(3), -- Mighty Bash
+		[163505]	= List(3), -- Rake
+		[81261]		= List(3), -- Solar Beam
+		[127797]	= List(3), -- Ursol's Vortex
+	-- Hunter
+		[117405]	= List(3), -- Binding Shot [Start]
+		[117526]	= List(3), -- Binding Shot [Triggered]
+		[3355]		= List(5), -- Freezing Trap
+		[19577]		= List(3), -- Intimidation 1
+		[24394]		= List(3), -- Intimidation 2
+		[1513]		= List(3), -- Scare Beast
+		[162480]	= List(3), -- Steel Trap
+	-- Mage
+		[31661]		= List(3), -- Dragon's Breath
+		[122]		= List(3), -- Frost Nova
+		[157997]	= List(3), -- Ice Nova
+		[118]		= List(5), -- Poly
+		[61305]		= List(5), -- Poly Black Cat
+		[28271]		= List(5), -- Poly Turtle
+		[161354]	= List(5), -- Poly Monkey
+		[161353]	= List(5), -- Poly Polar Bear Cub
+		[126819]	= List(5), -- Poly Porcupine
+		[277787]	= List(5), -- Poly Direhorn
+		[61721]		= List(5), -- Poly Rabbit
+		[28272]		= List(5), -- Poly Pig
+		[277792]	= List(5), -- Poly Bumblebee
+		[391622]	= List(5), -- Poly Duck
+		[460392]	= List(5), -- Poly Mosswool
+		[82691]		= List(3), -- Ring of Frost [Triggered]
+	-- Monk
+		[116706]	= List(3), -- Disable
+		[119381]	= List(3), -- Leg Sweep
+		[115078]	= List(5), -- Paralysis
+		[198909]	= List(3), -- Song of Chi-Ji
+	-- Paladin
+		[105421]	= List(3), -- Blinding Light
+		[853]		= List(3), -- Hammer of Justice
+		[20066]		= List(4), -- Repentance
+		[217824]	= List(3), -- Shield of Virtue
+		[10326]		= List(4), -- Turn Evil
+	-- Priest
+		[200196]	= List(3), -- Holy Word: Chastise 1
+		[200200]	= List(3), -- Holy Word: Chastise 2
+		[205364]	= List(3), -- Mind Control 1
+		[605]		= List(3), -- Mind Control 2
+		[453]		= List(4), -- Mind Soothe
+		[64044]		= List(3), -- Psychic Horror
+		[8122]		= List(3), -- Psychic Scream
+		[9484]		= List(3), -- Shackle Undead
+	-- Rogue
+		[2094]		= List(4), -- Blind
+		[1833]		= List(3), -- Cheap Shot
+		[1776]		= List(3), -- Gouge
+		[408]		= List(3), -- Kidney Shot
+		[427773]	= List(4), -- Mass Blind
+		[6770]		= List(5), -- Sap
+	-- Shaman
+		[64695]		= List(3), -- Earthgrab
+		[51514]		= List(5), -- Hex
+		[210873]	= List(5), -- Hex Compy
+		[211004]	= List(5), -- Hex Spider
+		[211010]	= List(5), -- Hex Snake
+		[211015]	= List(5), -- Hex Cockroach
+		[269352]	= List(5), -- Hex Skeletal Hatchling
+		[277778]	= List(5), -- Hex Zandalari Tendonripper
+		[277784]	= List(5), -- Hex Wicker Mongrel
+		[309328]	= List(5), -- Hex Living Honey
+		[118905]	= List(3), -- Static Charge [Cap Totem]
+		[197214]	= List(3), -- Sundering
+	-- Warlock
+		[710]		= List(3), -- Banish
+		[118699]	= List(3), -- Fear
+		[5484]		= List(3), -- Howl of Terror
+		[6789]		= List(3), -- Mortal Coil
+		[30283]		= List(3), -- Shadowfury
+	-- Warrior
+		[5246]		= List(3), -- Intimidating Shout
+		[132168]	= List(3), -- Shockwave
+		[132169]	= List(3), -- Storm Bolt
+	-- Racials
+		[107079]	= List(3), -- Quaking Palm [Pandaren]
+		[20549]		= List(3), -- War Stomp [Tauren]
+	}
+}
+
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
+	desc = L["Debuffs that are some form of CC. This can be stuns, roots, slows, etc."],
 	spells = {
 	-- Evoker
 		[355689]	= List(2), -- Landslide
@@ -186,9 +388,9 @@ G.unitframe.aurafilters.CCDebuffs = {
 	},
 }
 
--- These are buffs that can be considered 'protection' buffs
 G.unitframe.aurafilters.TurtleBuffs = {
 	type = 'Whitelist',
+	desc = L["Immunity buffs like Bubble and Ice Block, but also most major defensive class cooldowns."],
 	spells = {
 	-- Evoker
 		[378464]	= List(), -- Nullifying Shroud (PvP)
@@ -323,9 +525,9 @@ G.unitframe.aurafilters.TurtleBuffs = {
 	},
 }
 
--- Buffs that we don't really need to see
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
+	desc = L["Auras you don't want to see on your frames."],
 	spells = {
 		[8326]		= List(), -- Ghost
 		[8733]		= List(), -- Blessing of Blackfathom
@@ -390,9 +592,9 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
--- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
+	desc = L["Auras which should always be displayed."],
 	spells = {
 	-- General
 		[256948]	= List(), -- Spatial Rift
@@ -679,9 +881,9 @@ G.unitframe.aurafilters.Whitelist = {
 	},
 }
 
--- Debuffs applied to players by bosses, adds or trash
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid debuffs. Includes affixes and utility on dead players like pending resurrection and available reincarnation."],
 	spells = {
 	----------------------------------------------------------
 	------------------------- General ------------------------
@@ -691,6 +893,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[225080] = List(), -- Reincarnation (Ankh ready)
 		[255234] = List(), -- Totemic Revival
 		[1239997] = List(), -- Oath-Bound
+	-- Affix
+		[440313] = List(), -- Devouring Rift
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------
 	----------------------------------------------------------
@@ -826,7 +1030,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355641] = List(), -- Scintillate
 		[355451] = List(), -- Undertow
 		[355581] = List(), -- Crackle
-		[349999] = List(), -- Anima Detonation
 		[346961] = List(), -- Purging Field
 		[351956] = List(), -- High-Value Target
 		[346297] = List(), -- Unstable Explosion
@@ -841,6 +1044,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355465] = List(), -- Boulder Throw
 		[346116] = List(), -- Shearing Swings
 		[356011] = List(), -- Beam Splicer
+		[349627] = List(), -- Gluttony
 	---------------------------------------------------------
 	------------------- Manaforge Omega ---------------------
 	---------------------------------------------------------
@@ -864,8 +1068,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1228214] = List(), -- Astral Harvest
 		[1243901] = List(), -- Void Harvest
 	-- The Soul Hunters
-		[1227847] = List(), -- The Hunt
-		[1241946] = List(), -- Frailty
+		[1227847] = List(6), -- The Hunt
+		[1241946] = List(6), -- Frailty
+		[1222232] = List(2), -- Devourer's Ire
 	-- Fractillus
 		[1233411] = List(), -- Crystalline Shockwave
 	-- Nexus-King Salhadaar
@@ -963,6 +1168,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 -- Buffs applied by bosses, adds or trash
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
+	desc = L["List of important Dungeon and Raid buffs."],
 	spells = {
 	----------------------------------------------------------
 	---------------- The War Within Dungeons -----------------

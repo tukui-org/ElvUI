@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local strfind = strfind
 local tonumber = tonumber
 local next, format = next, format
 local hooksecurefunc = hooksecurefunc
@@ -100,7 +101,7 @@ function AB:BindListener(key)
 	end
 
 	if key == 'MiddleButton' then key = 'BUTTON3' end
-	if key:find('Button%d') then key = key:upper() end
+	if strfind(key, 'Button%d') then key = key:upper() end
 
 	local allowBinding = not isFlyout or (key ~= 'LeftButton') --Don't attempt to bind left mouse button for flyout buttons
 	if allowBinding and bind.button.bindstring then

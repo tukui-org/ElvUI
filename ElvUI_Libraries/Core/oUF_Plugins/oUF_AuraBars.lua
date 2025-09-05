@@ -171,10 +171,10 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 
 	element.active[position] = bar
 
+	bar.aura = aura
 	bar.unit = unit
 	bar.count = count
 	bar.index = index
-	bar.caster = source
 	bar.filter = filter
 	bar.texture = texture
 	bar.isDebuff = isDebuff
@@ -190,7 +190,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.auraInstanceID = aura.auraInstanceID
 	bar.noTime = (duration == 0 and expiration == 0)
 
-	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, name, texture,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
@@ -223,7 +223,7 @@ local function SetPosition(element, from, to)
 
 		if bar.noTime then
 			bar:SetValue(1)
-			bar.timeText:SetText()
+			bar.timeText:SetText('')
 		end
 	end
 end

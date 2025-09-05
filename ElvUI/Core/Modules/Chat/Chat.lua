@@ -203,7 +203,6 @@ do --this can save some main file locals
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local ElvSimpy		= E:TextureString(E.Media.ChatLogos.ElvSimpy,y)
 
-	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
@@ -369,11 +368,6 @@ do --this can save some main file locals
 			z['Player-53-0D463E51']		= itsThradex -- Badbunny-Wildhammer
 			z['Player-113-0A9F78FF']	= itsThradex -- Vanessa-Darrowmere
 			z['Player-127-0AD64E79']	= itsThradex -- Christopher-Firetree
-			-- Affinity
-			z['Affinichi-Illidan']		= Bathrobe
-			z['Affinitii-Illidan']		= Bathrobe
-			z['Affinity-Illidan']		= Bathrobe
-			z['Uplift-Illidan']			= Bathrobe
 			-- Tirain (NOTE: lol)
 			z['Tierone-Spirestone']		= TyroneBiggums
 			z['Tirain-Spirestone']		= TyroneBiggums
@@ -1787,9 +1781,9 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				seenGroups[groupIndex] = true
 				local groupList = '['
 				for i = 1, GetNumGroupMembers() do
-					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
+					local name, _, subgroup, _, _, classFilename = GetRaidRosterInfo(i)
 					if name and subgroup == groupIndex then
-						local classColorTable = E:ClassColor(classFileName)
+						local classColorTable = E:ClassColor(classFilename)
 						if classColorTable then
 							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end
