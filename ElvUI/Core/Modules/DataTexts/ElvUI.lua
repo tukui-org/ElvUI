@@ -21,7 +21,7 @@ local function OnEnter()
 
 	if E.Libs.EP.registeredPrefix then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine('Plugins:', 'Version:')
+		DT.tooltip:AddDoubleLine(L["Plugins:"], L["Version:"])
 
 		for _, plugin in pairs(E.Libs.EP.plugins) do
 			if not plugin.isLib then
