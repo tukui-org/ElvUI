@@ -42,41 +42,74 @@ local defaults = {
 }
 
 G.nameplates.filters = {
-	ElvUI_Boss = {
-		triggers = {
-			level = true,
-			curlevel = -1,
-			priority = 2
-		},
-		actions = {
-			usePortrait = true,
-			scale = 1.15
-		}
-	},
-	ElvUI_Target = {
-		triggers = {
-			isTarget = true
-		},
-		actions = {
-			scale = 1.2
-		}
-	},
-	ElvUI_NonTarget = {
-		triggers = {
-			notTarget = true,
-			requireTarget = true,
-			nameplateType = {
-				enable = true,
-				friendlyPlayer = true,
-				friendlyNPC = true,
-				enemyPlayer = true,
-				enemyNPC = true
-			}
-		},
-		actions = {
-			alpha = 50
-		}
-	}
+    ElvUI_Boss = {
+        triggers = {
+            level = true,
+            curlevel = -1,
+            priority = 2
+        },
+        actions = {
+            usePortrait = true,
+            scale = 1.15
+        }
+    },
+    ElvUI_Target = {
+        triggers = {
+            isTarget = true
+        },
+        actions = {
+            scale = 1.2
+        }
+    },
+    ElvUI_NonTarget = {
+        triggers = {
+            notTarget = true,
+            requireTarget = true,
+            nameplateType = {
+                enable = true,
+                friendlyPlayer = true,
+                friendlyNPC = true,
+                enemyPlayer = true,
+                enemyNPC = true
+            }
+        },
+        actions = {
+            alpha = 50
+        }
+    },
+    ["Below 20"] = {
+        triggers = {
+            healthThreshold = true,
+            underHealthThreshold = 0.2,
+            nameplateType = {
+                enable = true,
+                enemyNPC = true,
+                friendlyNPC = true
+            }
+        },
+        actions = {
+            tags = {
+                name = "[healthcolor][name] || [perhp]%"
+            }
+        }
+    },
+    ["Below 20 (Players)"] = {
+        triggers = {
+            healthThreshold = true,
+            underHealthThreshold = 0.2,
+            nameplateType = {
+                enable = true,
+                enemyPlayer = true,
+                friendlyPlayer = true,
+                player = true
+            }
+        },
+        actions = {
+            tags = {
+                name = "[spec:icon] [healthcolor][name] || [perhp]%"
+            }
+        }
+    }
 }
 
 E.StyleFilterDefaults = {
