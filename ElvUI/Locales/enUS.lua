@@ -2,22 +2,19 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
---- Missed tranlsations ---
 L["Date"] = true
 L["Plugins:"] = true
 L["Version:"] = true
 L["Equipment Sets"] = true
 L["No Set Equipped"] = true
-L["Set:"] = "Set: "
+L["Set:"] = true
 L["New Mail"] = true
 L["No Mail"] = true
 L["Completed XP:"] = true
 L["Total Gold:"] = true
 L["Total XP:"] = true
-L["Quests:"] = "Quests: "
+L["Quests:"] = true
 L["Time"] = true
---- End missed translations ---
-
 L["Restrict Pings"] = true
 L["Player"] = true
 L["Small"] = true
