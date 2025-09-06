@@ -79,7 +79,7 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', '%s', hex, '%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
+	displayString = strjoin('', '%s ', hex, '%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')
 end
 
 DT:RegisterDatatext('Equipment Sets', nil, { 'PLAYER_EQUIPMENT_CHANGED', 'EQUIPMENT_SETS_CHANGED', 'EQUIPMENT_SWAP_FINISHED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Equipment Sets"], nil, ApplySettings)
