@@ -89,7 +89,7 @@ G.nameplates.filters = {
 		},
 		actions = {
 			tags = {
-				name = "[healthcolor][name] || [perhp]%"
+				name = "[healthcolor][name][ || >perhp<%]"
 			}
 		}
 	},
@@ -106,7 +106,7 @@ G.nameplates.filters = {
 		},
 		actions = {
 			tags = {
-				name = "[spec:icon] [healthcolor][name] || [perhp]%"
+				name = "[spec:icon< ][healthcolor][name][ || >perhp<%]"
 			}
 		}
 	}

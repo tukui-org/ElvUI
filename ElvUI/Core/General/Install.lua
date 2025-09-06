@@ -272,12 +272,11 @@ function E:SetAnniversaryLayout()
 	ANNIVERSARY_LAYOUT_CLICKED = true
 
 	--Shared base layout, tweaks to individual layouts will be below
-	E:ResetMovers()	
+	E:ResetMovers()
 
 	if not E.db.movers then
 		E.db.movers = {}
-	end	
-
+	end
 
 	--profile:Default
 	E.db.actionbar.bar1.backdrop = true
@@ -459,7 +458,6 @@ function E:SetAnniversaryLayout()
 	E.db.chat.timeStampFormat = "%I:%M %p "
 	E.db.chat.timeStampLocalTime = true
 	E.db.chat.useBTagName = true
-	E.db.convertPages = true
 	E.db.cooldown.hideBlizzard = true
 	E.db.databars.azerite.enable = false
 	E.db.databars.azerite.font = "Merathilis Expressway"
@@ -501,7 +499,7 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.panels.RightChatDataPanel.right = ""
 	E.db.datatexts.panels.RightChatDataPanel[1] = ""
 	E.db.datatexts.panels.RightChatDataPanel[2] = ""
-	E.db.datatexts.panels.RightChatDataPanel[3] = ""	
+	E.db.datatexts.panels.RightChatDataPanel[3] = ""
 	E.db.datatexts.wordWrap = true
 	E.db.general.addonCompartment.hide = true
 	E.db.general.altPowerBar.font = "Merathilis Expressway"
@@ -944,14 +942,14 @@ function E:SetAnniversaryLayout()
 	for mover, position in next, E.LayoutMoverPositions.anniversary do
 		E.db.movers[mover] = position
 		E:SaveMoverDefaultPosition(mover)
-	end	
+	end
 
 	E:StaggeredUpdateAll()
 
-	if _G.InstallStepComplete and not noDisplayMsg then
+	if _G.InstallStepComplete then
 		_G.InstallStepComplete.message = L["Cheers!"]
 		_G.InstallStepComplete:Show()
-	end	
+	end
 end
 
 function E:SetupLayout(layout, noDataReset, noDisplayMsg)
@@ -1294,7 +1292,7 @@ function E:SetPage(PageNum, direction)
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetAnniversaryLayout() end)
-		InstallOption1Button:SetText(L["Anniversary Layout"])				
+		InstallOption1Button:SetText(L["Anniversary Layout"])
 	elseif PageNum == 2 then
 		f.SubTitle:SetText(L["CVars"])
 		f.Desc1:SetText(L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."])
