@@ -269,6 +269,7 @@ function E:SetAnniversaryLayout()
 	local layout = "Anniversary"
 	E.db.layoutSet = layout
 	E.db.layoutSetting = layout
+
 	ANNIVERSARY_LAYOUT_CLICKED = true
 
 	--Shared base layout, tweaks to individual layouts will be below
@@ -956,7 +957,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
 		E.db.layoutSet = layout
 		E.db.layoutSetting = layout
-		E.db.convertPages = true
 
 		--Unitframes
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
