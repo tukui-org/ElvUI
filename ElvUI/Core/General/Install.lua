@@ -702,6 +702,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.arena.health.attachTextTo = 'InfoPanel'
 	E.db.unitframe.units.arena.health.position = 'RIGHT'
 	E.db.unitframe.units.arena.health.text_format = E.Classic and '[healthcolor][health:percent]' or '[healthcolor][health:percent-with-absorbs]'
+	E.db.unitframe.units.arena.health.xOffset = -2
 	E.db.unitframe.units.arena.height = 27
 	E.db.unitframe.units.arena.infoPanel.enable = true
 	E.db.unitframe.units.arena.infoPanel.transparent = true
@@ -745,6 +746,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.boss.health.attachTextTo = 'InfoPanel'
 	E.db.unitframe.units.boss.health.position = 'RIGHT'
 	E.db.unitframe.units.boss.health.text_format = E.Classic and '[healthcolor][health:percent]' or '[healthcolor][health:percent-with-absorbs]'
+	E.db.unitframe.units.boss.health.xOffset = -2
 	E.db.unitframe.units.boss.height = 27
 	E.db.unitframe.units.boss.infoPanel.enable = true
 	E.db.unitframe.units.boss.infoPanel.height = 17
