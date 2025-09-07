@@ -484,7 +484,8 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
 	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Time'
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
-	E.db.datatexts.panels.MinimapPanel = { 'DurabilityItemLevel', 'Gold' }
+	E.db.datatexts.panels.MinimapPanel[1] = 'DurabilityItemLevel'
+	E.db.datatexts.panels.MinimapPanel[2] = 'Gold'
 	E.db.datatexts.panels.MinimapPanel.enable = false
 	E.db.datatexts.panels.MinimapPanel.panelTransparency = true
 	E.db.datatexts.panels.RightChatDataPanel.backdrop = false
