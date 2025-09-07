@@ -484,7 +484,7 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.noCombatHover = true
 	E.db.datatexts.panels.LeftChatDataPanel[1] = "Friends"
 	E.db.datatexts.panels.LeftChatDataPanel[2] = "Guild"
-	E.db.datatexts.panels.LeftChatDataPanel[3] = "QuickJoin"
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Classic and 'Time' or 'QuickJoin'
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
 	E.db.datatexts.panels.LeftChatDataPanel.left = ""
 	E.db.datatexts.panels.LeftChatDataPanel.middle = ""
@@ -709,7 +709,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.arena.debuffs.yOffset = -11
 	E.db.unitframe.units.arena.health.attachTextTo = "InfoPanel"
 	E.db.unitframe.units.arena.health.position = "RIGHT"
-	E.db.unitframe.units.arena.health.text_format = "[healthcolor][health:percent-with-absorbs]"
+	E.db.unitframe.units.arena.health.text_format = E.Classic and "[healthcolor][health:percent]" or "[healthcolor][health:percent-with-absorbs]"
 	E.db.unitframe.units.arena.height = 27
 	E.db.unitframe.units.arena.infoPanel.enable = true
 	E.db.unitframe.units.arena.infoPanel.transparent = true
@@ -752,7 +752,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.boss.healPrediction.enable = true
 	E.db.unitframe.units.boss.health.attachTextTo = "InfoPanel"
 	E.db.unitframe.units.boss.health.position = "RIGHT"
-	E.db.unitframe.units.boss.health.text_format = "[healthcolor][health:percent-with-absorbs]"
+	E.db.unitframe.units.boss.health.text_format = E.Classic and "[healthcolor][health:percent]" or "[healthcolor][health:percent-with-absorbs]"
 	E.db.unitframe.units.boss.height = 27
 	E.db.unitframe.units.boss.infoPanel.enable = true
 	E.db.unitframe.units.boss.infoPanel.height = 17
@@ -857,7 +857,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.player.disableMouseoverGlow = true
 	E.db.unitframe.units.player.fader.minAlpha = 0
 	E.db.unitframe.units.player.health.position = "BOTTOMLEFT"
-	E.db.unitframe.units.player.health.text_format = "[healthcolor][health:percent-with-absorbs]"
+	E.db.unitframe.units.player.health.text_format = E.Classic and "[healthcolor][health:percent]" or "[healthcolor][health:percent-with-absorbs]"
 	E.db.unitframe.units.player.health.yOffset = -21
 	E.db.unitframe.units.player.height = 38
 	E.db.unitframe.units.player.infoPanel.enable = true
@@ -908,7 +908,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.target.debuffs.priority = "Blacklist,Personal,nonPersonal"
 	E.db.unitframe.units.target.disableMouseoverGlow = true
 	E.db.unitframe.units.target.health.position = "BOTTOMRIGHT"
-	E.db.unitframe.units.target.health.text_format = "[healthcolor][health:percent-with-absorbs]"
+	E.db.unitframe.units.target.health.text_format = E.Classic and "[healthcolor][health:percent]" or "[healthcolor][health:percent-with-absorbs]"
 	E.db.unitframe.units.target.health.yOffset = -21
 	E.db.unitframe.units.target.height = 38
 	E.db.unitframe.units.target.infoPanel.enable = true
@@ -1013,7 +1013,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.chat.tabFontSize = 12
 		E.db.chat.copyChatLines = true
 		--DataTexts
-		E.db.datatexts.panels.LeftChatDataPanel[3] = 'QuickJoin'
+		E.db.datatexts.panels.LeftChatDataPanel[3] = E.Classic and 'Coords' or 'QuickJoin'
 		--DataBars
 		E.db.databars.threat.height = 24
 		E.db.databars.threat.width = 472
