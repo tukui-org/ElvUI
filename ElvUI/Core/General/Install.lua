@@ -461,7 +461,7 @@ function E:SetAnniversaryLayout()
 	E.db.chat.useBTagName = true
 	E.db.cooldown.hideBlizzard = true
 	E.db.databars.azerite.enable = false
-	E.db.databars.azerite.font = 'Merathilis Expressway'
+	E.db.databars.azerite.font = 'Expressway'
 	E.db.databars.azerite.height = 12
 	E.db.databars.azerite.textFormat = 'CURPERCREM'
 	E.db.databars.azerite.width = 285
@@ -503,7 +503,7 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.panels.RightChatDataPanel[3] = ""
 	E.db.datatexts.wordWrap = true
 	E.db.general.addonCompartment.hide = true
-	E.db.general.altPowerBar.font = 'Merathilis Expressway'
+	E.db.general.altPowerBar.font = 'Expressway'
 	E.db.general.altPowerBar.fontSize = 11
 	E.db.general.altPowerBar.statusBarColorGradient = true
 	E.db.general.altPowerBar.textFormat = 'NAMECURMAXPERC'
