@@ -873,6 +873,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.raid1.verticalSpacing = 4
 	E.db.unitframe.units.raid1.visibility = '[@raid6,exists] show;hide'
 	E.db.unitframe.units.raid1.width = 83
+	E.db.unitframe.units.raid1.health.text_format = E.Classic and '[healthcolor][perhp]' or '[healthcolor][health:deficit-percent-absorbs]'
 	E.db.unitframe.units.raid2.enable = false
 	E.db.unitframe.units.raid3.enable = false
 	E.db.unitframe.units.target.aurabar.height = 16
