@@ -440,8 +440,6 @@ function E:SetAnniversaryLayout()
 	E.db.chat.font = 'Expressway'
 	E.db.chat.fontSize = 11
 	E.db.chat.hideChatToggles = true
-	E.db.chat.keywordSound = 'Whisper Alert'
-	E.db.chat.keywords = '%MYNAME%, ElvUI'
 	E.db.chat.numScrollMessages = 1
 	E.db.chat.panelColor = { r = 0.05882353335619, g = 0.05882353335619, b = 0.05882353335619, a = 0.80000001192093 }
 	E.db.chat.panelHeight = E.Classic and 206 or 204
