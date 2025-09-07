@@ -8,7 +8,7 @@ local translitMark = '!'
 
 local _G = _G
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
-local ipairs, pairs, wipe, floor, ceil = ipairs, pairs, wipe, floor, ceil
+local abs, ipairs, pairs, wipe, floor, ceil = abs, ipairs, pairs, wipe, floor, ceil
 local strsub, strfind, strmatch, strlower, strsplit = strsub, strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
@@ -594,36 +594,33 @@ E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNI
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end, E.Classic)
 
-local function FormatPercent(value, max, dec)
-	local perc = value / max * 100
-	return E:GetFormattedText('PERCENT', perc, 100, dec)
+do
+	local function FormatPercent(value, maximum, dec)
+		local perc = value / maximum * 100
+		return E:GetFormattedText('PERCENT', perc, 100, dec)
+	end
+
+	E:AddTag('health:deficit-percent-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+
+		if status then
+			return status
+		end
+
+		local current = UnitHealth(unit)
+		local maximum = UnitHealthMax(unit)
+		local absorb = UnitGetTotalAbsorbs(unit) or 0
+		local effective = current + absorb
+
+		if maximum == 0 or effective == maximum then
+			return
+		end
+
+		local deficit = maximum - effective
+		local percentage = FormatPercent(abs(deficit), maximum, 1)
+		return (deficit < 0 and '+' or '-') .. percentage
+	end, E.Classic)
 end
-
-E:AddTag('health:deficit-percent-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
-	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-
-	if status then
-		return status
-	end
-
-	local current = UnitHealth(unit)
-	local max = UnitHealthMax(unit)
-	local absorb = UnitGetTotalAbsorbs(unit) or 0
-	local effective = current + absorb
-
-	if max == 0 or effective == max then
-		return ""
-	end
-
-	local deficit = max - effective
-	local formatted = FormatPercent(math.abs(deficit), max, 1)
-
-	if deficit < 0 then
-		return "+" .. formatted
-	else
-		return "-" .. formatted
-	end
-end, E.Classic)
 
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)
@@ -1111,7 +1108,7 @@ do
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	E:AddTag('name:health', 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH', function(unit, _, args)
 		local name = UnitName(unit)
-		if not name then return '' end
+		if not name then return end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
 		local to = ceil(utf8len(name) * (min / max))
