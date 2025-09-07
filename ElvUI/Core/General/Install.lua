@@ -444,12 +444,12 @@ function E:SetAnniversaryLayout()
 	E.db.chat.keywords = "%MYNAME%, ElvUI"
 	E.db.chat.numScrollMessages = 1
 	E.db.chat.panelColor = { r = 0.05882353335619, g = 0.05882353335619, b = 0.05882353335619, a = 0.80000001192093 }
-	E.db.chat.panelHeight = 204
+	E.db.chat.panelHeight = E.Classic and 206 or 204
 	E.db.chat.panelHeightRight = 227
 	E.db.chat.panelTabBackdrop = true
 	E.db.chat.panelTabTransparency = true
 	E.db.chat.panelWidth = 427
-	E.db.chat.panelWidthRight = 288
+	E.db.chat.panelWidthRight = E.Classic and 290 or 288
 	E.db.chat.separateSizes = true
 	E.db.chat.socialQueueMessages = true
 	E.db.chat.tabFont = "Expressway"
@@ -484,7 +484,7 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.noCombatHover = true
 	E.db.datatexts.panels.LeftChatDataPanel[1] = "Friends"
 	E.db.datatexts.panels.LeftChatDataPanel[2] = "Guild"
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Classic and 'Time' or 'QuickJoin'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = (E.Classic or E.Mists) and 'Time' or 'QuickJoin'
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
 	E.db.datatexts.panels.LeftChatDataPanel.left = ""
 	E.db.datatexts.panels.LeftChatDataPanel.middle = ""
@@ -1013,7 +1013,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.chat.tabFontSize = 12
 		E.db.chat.copyChatLines = true
 		--DataTexts
-		E.db.datatexts.panels.LeftChatDataPanel[3] = E.Classic and 'Coords' or 'QuickJoin'
+		E.db.datatexts.panels.LeftChatDataPanel[3] = (E.Classic or E.Mists) and 'Coords' or 'QuickJoin'
 		--DataBars
 		E.db.databars.threat.height = 24
 		E.db.databars.threat.width = 472
