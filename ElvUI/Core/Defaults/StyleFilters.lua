@@ -76,6 +76,39 @@ G.nameplates.filters = {
 		actions = {
 			alpha = 50
 		}
+	},
+	["Below 20"] = {
+		triggers = {
+			healthThreshold = true,
+			underHealthThreshold = 0.2,
+			nameplateType = {
+				enable = true,
+				enemyNPC = true,
+				friendlyNPC = true
+			}
+		},
+		actions = {
+			tags = {
+				name = "[healthcolor][name][ || >perhp<%]"
+			}
+		}
+	},
+	["Below 20 (Players)"] = {
+		triggers = {
+			healthThreshold = true,
+			underHealthThreshold = 0.2,
+			nameplateType = {
+				enable = true,
+				enemyPlayer = true,
+				friendlyPlayer = true,
+				player = true
+			}
+		},
+		actions = {
+			tags = {
+				name = "[spec:icon< ][healthcolor][name][ || >perhp<%]"
+			}
+		}
 	}
 }
 

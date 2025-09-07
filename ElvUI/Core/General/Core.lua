@@ -1336,6 +1336,7 @@ function E:DBConvertSL()
 		E.db.convertPages = E.db.actionbar.convertPages
 		E.db.actionbar.convertPages = nil
 	end
+
 	if not E.db.convertPages then
 		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
 		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
