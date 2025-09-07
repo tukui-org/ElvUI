@@ -480,25 +480,14 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.font = 'Expressway'
 	E.db.datatexts.fontSize = 11
 	E.db.datatexts.noCombatHover = true
-	E.db.datatexts.panels.LeftChatDataPanel[1] = 'Friends'
-	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
-	E.db.datatexts.panels.LeftChatDataPanel[3] = (E.Classic or E.Mists) and 'Time' or 'QuickJoin'
+	E.db.datatexts.panels.LeftChatDataPanel = { 'Friends', 'Guild', E.Retail and 'QuickJoin' or 'Time' }
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
-	E.db.datatexts.panels.LeftChatDataPanel.left = ""
-	E.db.datatexts.panels.LeftChatDataPanel.middle = ""
-	E.db.datatexts.panels.LeftChatDataPanel.right = ""
-	E.db.datatexts.panels.MinimapPanel['1'] = 'DurabilityItemLevel'
-	E.db.datatexts.panels.MinimapPanel['2'] = 'Gold'
+	E.db.datatexts.panels.MinimapPanel = { 'DurabilityItemLevel', 'Gold' }
 	E.db.datatexts.panels.MinimapPanel.enable = false
 	E.db.datatexts.panels.MinimapPanel.panelTransparency = true
 	E.db.datatexts.panels.RightChatDataPanel.backdrop = false
 	E.db.datatexts.panels.RightChatDataPanel.battleground = false
-	E.db.datatexts.panels.RightChatDataPanel.left = ""
-	E.db.datatexts.panels.RightChatDataPanel.middle = ""
-	E.db.datatexts.panels.RightChatDataPanel.right = ""
-	E.db.datatexts.panels.RightChatDataPanel[1] = ""
-	E.db.datatexts.panels.RightChatDataPanel[2] = ""
-	E.db.datatexts.panels.RightChatDataPanel[3] = ""
+	E.db.datatexts.panels.RightChatDataPanel = { "", "", "" }
 	E.db.datatexts.wordWrap = true
 	E.db.general.addonCompartment.hide = true
 	E.db.general.altPowerBar.font = 'Expressway'
@@ -1011,7 +1000,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E.db.chat.tabFontSize = 12
 		E.db.chat.copyChatLines = true
 		--DataTexts
-		E.db.datatexts.panels.LeftChatDataPanel[3] = (E.Classic or E.Mists) and 'Coords' or 'QuickJoin'
+		E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
 		--DataBars
 		E.db.databars.threat.height = 24
 		E.db.databars.threat.width = 472
