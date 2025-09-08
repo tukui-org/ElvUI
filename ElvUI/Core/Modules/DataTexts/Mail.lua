@@ -12,7 +12,7 @@ local MAIL_LABEL = MAIL_LABEL
 local displayString = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, HasNewMail() and 'New Mail' or 'No Mail')
+	self.text:SetFormattedText(displayString, HasNewMail() and L["New Mail"] or L["No Mail"])
 end
 
 local function OnEnter()

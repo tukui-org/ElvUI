@@ -2,6 +2,19 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
+L["Date"] = "Datum"
+L["Plugins:"] = true
+L["Version:"] = true
+L["Equipment Sets"] = "Ausrüstungssets"
+L["No Set Equipped"] = "Kein Set ausgestattet"
+L["Set:"] = true
+L["New Mail"] = "Neue Mail"
+L["No Mail"] = "Keine Mail"
+L["Completed XP:"] = "Abgeschlossene XP:"
+L["Total Gold:"] = "Gesamt Gold:"
+L["Total XP:"] = "Gesamt XP:"
+L["Quests:"] = true
+L["Time"] = "Zeit"
 L["Restrict Pings"] = "Pings einschränken"
 L["Player"] = "Spieler"
 L["Small"] = "Klein"
@@ -13,8 +26,8 @@ L["ELVUI_DESC"] = ("*ElvUI|r ist ein komplettes Benutzerinterface für World of 
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
 L[" |cff00ff00bound to |r"] = " |cff00ff00gebunden zu |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s Frame hat einen Ankerpunkt-Konflikt. Die Stärkungszauber werden am Einheitenfenster angeheftet."
-L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = true
-L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = true
+L["%s is attempting to share the Private Profile (%s) with you. Would you like to accept the request?"] = "%s versucht, das private Profil (%s) mit Ihnen zu teilen. Möchten Sie die Anfrage annehmen?"
+L["%s is attempting to share the Global Profile with you. Would you like to accept the request?"] = "%s versucht, das globale Profil mit Ihnen zu teilen. Möchten Sie die Anfrage annehmen?"
 L["%s is attempting to share the Profile (%s) with you. Would you like to accept the request?"] = "%s versucht das Profil (%s) mit dir zu teilen. Möchtest du die Anfrage annehmen?"
 L["(Ctrl & Shift Click) Toggle CPU Profiling"] = "(Ctrl & Shift Click) CPU-Profiling umschalten"
 L["(Hold Shift) Memory Usage"] = "(Shift gedrückt) Speichernutzung"
@@ -107,7 +120,7 @@ L["Dead"] = "Tot"
 L["Debuffs"] = "Schwächungszauber"
 L["Deficit:"] = "Defizit:"
 L["Delete gray items?"] = "Graue Gegenstände löschen?"
-L["Auto Deposit"] = true
+L["Auto Deposit"] = "Automatische Einzahlung"
 L["Disable Warning"] = "Deaktiviere Warnung"
 L["Disable"] = "Deaktivieren"
 L["Disabled"] = "Deaktiviert"
@@ -133,7 +146,7 @@ L["Error resetting UnitFrame."] = "Fehler beim Zurücksetzen des Einheitenfester
 L["EventToastWidget"] = "EventToast Widget"
 L["Experience Bar"] = "Erfahrungsleiste"
 L["Experience"] = "Erfahrung"
-L["Download complete from %s, would you like to apply changes now?"] = true
+L["Download complete from %s, would you like to apply changes now?"] = "Download von %s abgeschlossen. Möchtest Du die Änderungen jetzt anwenden?"
 L["Finished"] = "Abgeschlossen"
 L["Fishy Loot"] = "Faule Beute"
 L["Focus Aura Bars"] = "Fokus Aurenleiste"
@@ -142,7 +155,7 @@ L["Focus Frame"] = "Fokusfenster"
 L["FocusTarget Frame"] = "Fokusziel Fenster"
 L["Frame"] = "Fenster"
 L["Friends List"] = "Freundesliste"
-L["From time to time you should compare your ElvUI version against the most recent version on our website."] = "Von Zeit zu Zeit solltest du deine gegenwärtige ElvUI Version mit der auf unsere Homepage vergleichen."
+L["From time to time you should compare your ElvUI version against the most recent version on our website."] = "Von Zeit zu Zeit solltest Du deine gegenwärtige ElvUI Version mit der auf unsere Homepage vergleichen."
 L["G"] = "G"
 L["Ghost"] = "Geist"
 L["GM Ticket Frame"] = "GM Ticketfenster"
@@ -242,7 +255,7 @@ L["Need help? Join our Discord: https://discord.tukui.org"] = "Brauchst du Hilfe
 L["New Profile will create a fresh profile for this character."] = "Neues Profil erstellt ein ganz neues Profil für diesen Charakter."
 L["New Profile"] = "Neues Profil"
 L["No bindings set."] = "Keine Belegungen gesetzt."
-L["No gray items to sell."] = true
+L["No gray items to sell."] = "Keine grauen Gegenstände zu verkaufen."
 L["No Guild"] = "Keine Gilde"
 L["No Loot"] = "Keine Beute"
 L["None"] = "Nichts"
@@ -367,7 +380,7 @@ L["To setup chat colors, chat channels and chat font size, right-click the chat 
 L["Toggle Bags"] = "Taschen an-/ausschalten"
 L["Toggle Chat Frame"] = "Chatfenster an-/ausschalten"
 L["Toggle Configuration"] = "Konfiguration an-/ausschalten"
-L["Toggle Mover Mode"] = true
+L["Toggle Mover Mode"] = "Mover-Modus umschalten"
 L["Toggle Volume Stream"] = "Lautstärke Stream an-/ausschalten"
 L["Tooltip"] = "Tooltip"
 L["TopCenterWidget"] = "Oberes Center Widget"
@@ -443,6 +456,6 @@ L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos
  */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
  */edebug|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
   PS: */edebug|r ^off|r aktiviert wieder alle AddOns, die durch */edebug|r ^on|r während der Sitzung deaktiviert wurden.
- */guildlist|r ^minPlayers|r  -  Dumps the sorted list of guilds from the finder.
- */guildapply|r ^"message"|r  -  Applies to the top 5 new guilds with an optional message.
+ */guildlist|r ^minPlayers|r  -  Gibt die sortierte Liste der Gilden aus dem Finder aus.
+ */guildapply|r ^"message"|r  -  Gilt für die Top 5 der neuen Gilden mit einer optionalen Nachricht.
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

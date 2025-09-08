@@ -14,8 +14,8 @@ local hooksecurefunc = hooksecurefunc
 BL.QuestWatch_ClickFrames = {}
 
 local MoverInfo = {
-	QuestTimerFrameMover = { text = _G.QUEST_TIMERS, point = 'TOP' },
-	QuestWatchFrameMover = { text = L["Quest Objective Frame"], point = 'TOPRIGHT' }
+	QuestTimerFrameMover = { point = 'TOP', text = _G.QUEST_TIMERS },
+	QuestWatchFrameMover = { point = 'TOPRIGHT', text = L["Quest Objective Frame"] }
 }
 
 local function QuestWatch_SetPoint(tracker, _, anchor)
@@ -31,7 +31,7 @@ function BL:QuestWatch_CreateMover(frame, name)
 
 	local holder = CreateFrame('Frame', nil, E.UIParent)
 	holder:Size(info.width or 150, info.height or 22)
-	holder:SetPoint(info.point, info.parent or E.UIParent, info.x or 0, info.y or 0)
+	holder:SetPoint(info.point, info.parent or E.UIParent, info.x or -20, info.y or -290)
 	E:CreateMover(holder, name, info.text, nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
 
 	frame:ClearAllPoints()

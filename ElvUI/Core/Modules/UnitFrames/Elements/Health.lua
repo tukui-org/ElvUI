@@ -110,8 +110,8 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorSelection(colorSelection)
 
 	--Position
-	health.WIDTH = db.width
-	health.HEIGHT = db.height
+	health.WIDTH = db.width or 60
+	health.HEIGHT = db.height or 10
 
 	local BORDER_SPACING = UF.BORDER + UF.SPACING
 	local LESS_SPACING = -UF.BORDER - UF.SPACING

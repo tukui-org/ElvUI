@@ -8,7 +8,7 @@ L["NONE"] = "Нет"
 L["GROUP"] = "Группа"
 
 -----------  Position  -----------
-L["CENTER"] = true
+L["CENTER"] = "По центру"
 L["BOTTOM"] = "Внизу"
 L["BOTTOMLEFT"] = "Внизу слева"
 L["BOTTOMRIGHT"] = "Внизу справа"
@@ -17,6 +17,7 @@ L["TOPRIGHT"] = "Вверху справа"
 L["LEFT"] = "Слева"
 L["RIGHT"] = "Справа"
 L["TOP"] = "Вверху"
+
 ------------  Strata  ------------
 L["BACKGROUND"] = true
 L["DIALOG"] = true
@@ -28,9 +29,9 @@ L["TOOLTIP"] = true
 
 L["BigWigs Spell Rename"] = true
 L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
-L["Add Aura ID"] = true
-L["Remove Aura"] = true
-L["Select Aura"] = true
+L["Add Aura ID"] = "Добавить ID Ауры"
+L["Remove Aura"] = "Удалить Ауру"
+L["Select Aura"] = "Выбрать Ауру"
 L["Add an aura to the filter. Aura IDs can be acquired using the tooltip to find the correct ID."] = true
 L["Primary Unit"] = "Основная цель"
 L["Requires the unit to be the primary target to display."] = "Отображается, когда юнит является основной целью"
@@ -628,7 +629,7 @@ L["Equipped Item"] = "Надетый предмет"
 L["Equipped"] = "Надето"
 L["Error decoding data. Import string may be corrupted!"] = "Ошибка при кодировании. Импортируемая строка может быть повреждена!"
 L["Error exporting profile!"] = "Ошибка при экспорте профиля!"
-L["Quest Progress and Error Text"] = true
+L["Quest Progress and Error Text"] = "Выполнение заданий и сообщения об ошибках"
 L["Event Log"] = "Журнал событий"
 L["Exclude Name"] = "Исключить имя"
 L["Excluded names will not be class colored."] = "Исключенные имена не окрашиваются в цвет класса"
@@ -712,7 +713,7 @@ L["Full Time"] = "Время полностью"
 L["Full"] = "Полный"
 L["FURY"] = "Гнев"
 L["Gaining Threat"] = "Получение угрозы"
-L["Game Menu"] = true
+L["Game Menu"] = "Меню игры"
 L["GARRISON_LOCATION_TOOLTIP"] = "Гарнизон"
 L["Gems"] = "Самоцветы"
 L["Gender"] = "Пол"
@@ -788,7 +789,7 @@ L["Hide Chat Toggles"] = "Скрыть переключатели чата"
 L["Hide Cooldown Bling"] = "Скрыть вспышку восстановления"
 L["Hide Copy Button"] = "Скрыть кнопку копирования"
 L["Hide Delay"] = "Задержка скрытия"
-L["Hide Quest Progress and Error Text"] = true
+L["Hide Quest Progress and Error Text"] = "Скрыть выполнение заданий и сообщения об ошибках"
 L["Hide Frame"] = "Скрыть рамку"
 L["Hide Icon"] = "Скрыть иконку"
 L["Hide In Combat"] = "Скрывать в бою"
@@ -1277,7 +1278,7 @@ L["Per Row"] = "Кол-во в ряду"
 L["Percent"] = "Процент"
 L["Percentage amount for horizontal overlap of Nameplates."] = "Процент перекрытия индикаторов по горизонтали."
 L["Percentage amount for vertical overlap of Nameplates."] = "Процент перекрытия индикаторов по вертикали."
-L["Trading Post"] = true
+L["Trading Post"] = "Торговая лавка"
 L["Personal"] = "Свое"
 L["Pet Battle"] = "Битвы питомцев"
 L["Pet Group"] = "Питомцы"
@@ -1966,7 +1967,7 @@ L["FILTER_PRIORITY_DESC"] = [[
 Shift + ЛКМ: Переключиться между обычным , дружеским и враждебным режимами.
 Ctrl + ЛКМ: Переключиться между режимами разрешения, блокирования или обычным.
 
-- Обычный режим позволяет фильтру применяться ко всем юнитамs.
+- Обычный режим позволяет фильтру применяться ко всем юнитам.
 - Дружеский режим применяет их только к дружественным целям, а враждебный только ко врагам.
 - Режим блокирования будет принудительно применять фильтр как черный список, а режим разрешения как белый список.
 ]]
@@ -1988,8 +1989,8 @@ L["TEXTURE_EXAMPLE"] = [=[Укажите имя файла в папке World o
 
 Пожалуйста, учтите:
 -Рекомендованный размер изображения 256x128
--Вы должны полностью перезапустить игру после добавления нового файла в папку.
--Тип файла должен быть tga.
+-Вы должны полностью перезапустить игру после добавления нового файла в папку
+-Тип файла должен быть tga
 
 Пример: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 

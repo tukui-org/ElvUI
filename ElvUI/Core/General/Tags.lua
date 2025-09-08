@@ -8,7 +8,7 @@ local translitMark = '!'
 
 local _G = _G
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
-local ipairs, pairs, wipe, floor, ceil = ipairs, pairs, wipe, floor, ceil
+local abs, ipairs, pairs, wipe, floor, ceil = abs, ipairs, pairs, wipe, floor, ceil
 local strsub, strfind, strmatch, strlower, strsplit = strsub, strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
@@ -594,6 +594,34 @@ E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNI
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end, E.Classic)
 
+do
+	local function FormatPercent(value, maximum, dec)
+		local perc = value / maximum * 100
+		return E:GetFormattedText('PERCENT', perc, 100, dec)
+	end
+
+	E:AddTag('health:deficit-percent-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+
+		if status then
+			return status
+		end
+
+		local current = UnitHealth(unit)
+		local maximum = UnitHealthMax(unit)
+		local absorb = UnitGetTotalAbsorbs(unit) or 0
+		local effective = current + absorb
+
+		if maximum == 0 or effective == maximum then
+			return
+		end
+
+		local deficit = maximum - effective
+		local percentage = FormatPercent(abs(deficit), maximum, 1)
+		return (deficit < 0 and '+' or '-') .. percentage
+	end, E.Classic)
+end
+
 E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
@@ -1080,7 +1108,7 @@ do
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	E:AddTag('name:health', 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH', function(unit, _, args)
 		local name = UnitName(unit)
-		if not name then return '' end
+		if not name then return end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
 		local to = ceil(utf8len(name) * (min / max))
@@ -1626,6 +1654,7 @@ E.TagInfo = {
 		['health:current'] = { category = 'Health', description = "Displays the current health of the unit" },
 		['health:deficit-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the health deficit, without status" },
 		['health:deficit-nostatus'] = { category = 'Health', description = "Displays the health of the unit as a deficit, without status" },
+		['health:deficit-percent-absorbs'] = { hidden = E.Classic, category = 'Health', description = "Displays the percentage deficit health including absorb values. If greater than max health that will be reflected." },
 		['health:deficit-percent:name-long'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)" },
 		['health:deficit-percent:name-medium'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)" },
 		['health:deficit-percent:name-short'] = { category = 'Health', description = "Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)" },

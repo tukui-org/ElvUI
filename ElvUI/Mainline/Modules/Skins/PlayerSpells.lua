@@ -182,6 +182,17 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
 		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
 		PagingControls.PageText:SetTextColor(1, 1, 1)
+
+		local AssistedCombatRotationSpellFrame = SpellBookFrame and SpellBookFrame.AssistedCombatRotationSpellFrame
+		local RotationButton = AssistedCombatRotationSpellFrame and AssistedCombatRotationSpellFrame.Button
+		if RotationButton then
+			RotationButton.Border:Hide()
+			S:HandleIcon(RotationButton.Icon, true)
+			RotationButton:SetHighlightTexture(E.media.blankTex)
+			RotationButton:GetHighlightTexture():SetVertexColor(1, 1, 1, 0.25)
+			RotationButton:SetPushedTexture(E.media.blankTex)
+			RotationButton:GetPushedTexture():SetVertexColor(1, 0.82, 0, 0.4)
+		end
 	end
 end
 

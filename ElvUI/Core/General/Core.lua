@@ -129,7 +129,7 @@ E.InverseAnchors = {
 -- Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
--- Socket Type info from 11.0.7
+-- Socket Type info from 11.2.0 (63003): Interface\AddOns\Blizzard_ItemSocketing\Blizzard_ItemSocketingUI.lua
 E.GemTypeInfo = {
 	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
 	Red				= { r = 1.00, g = 0.47, b = 0.47 },
@@ -149,6 +149,7 @@ E.GemTypeInfo = {
 	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29 },
 	SingingSea		= { r = 0.47, g = 0.67, b = 1.00 },
 	SingingWind		= { r = 1.00, g = 0.47, b = 0.47 },
+	Fiber			= { r = 0.90, g = 0.80, b = 0.50 },
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
@@ -1336,6 +1337,7 @@ function E:DBConvertSL()
 		E.db.convertPages = E.db.actionbar.convertPages
 		E.db.actionbar.convertPages = nil
 	end
+
 	if not E.db.convertPages then
 		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
 		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
