@@ -65,7 +65,7 @@ local function RAFRewards()
 				tab.Tab:Hide()
 			end
 
-			local relativeTo = tab:GetPoint()
+			local _, relativeTo = tab:GetPoint()
 			if relativeTo and relativeTo == rewardsFrame then
 				tab:NudgePoint(2, 0)
 			end
