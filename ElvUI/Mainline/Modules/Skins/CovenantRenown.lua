@@ -14,9 +14,9 @@ function S:Blizzard_CovenantRenown()
 	if skipButton then
 		S:HandleButton(skipButton, nil, nil, nil, true)
 
-		skipButton:GetNormalFontObject():SetFontObject('ElvUIFontSmall')
-		skipButton:GetHighlightFontObject():SetFontObject('ElvUIFontSmall')
-		skipButton:GetDisabledFontObject():SetFontObject('ElvUIFontSmall')
+		skipButton:SetNormalFontObject('ElvUIFontSmall')
+		skipButton:SetHighlightFontObject('ElvUIFontSmall')
+		skipButton:SetDisabledFontObject('ElvUIFontSmall')
 	end
 
 	hooksecurefunc(frame, 'SetUpCovenantData', function(Frame)
