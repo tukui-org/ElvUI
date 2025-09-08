@@ -10,11 +10,13 @@ function S:Blizzard_CovenantRenown()
 	local frame = _G.CovenantRenownFrame
 	S:HandleCloseButton(frame.CloseButton)
 
-	if frame.LevelSkipButton then
-		S:HandleButton(frame.LevelSkipButton, nil, nil, nil, true)
-		frame.LevelSkipButton:GetNormalFontObject():SetFontObject('ElvUIFontSmall')
-		frame.LevelSkipButton:GetHighlightFontObject():SetFontObject('ElvUIFontSmall')
-		frame.LevelSkipButton:GetDisabledFontObject():SetFontObject('ElvUIFontSmall')
+	local skipButton = frame.LevelSkipButton
+	if skipButton then
+		S:HandleButton(skipButton, nil, nil, nil, true)
+
+		skipButton:GetNormalFontObject():SetFontObject('ElvUIFontSmall')
+		skipButton:GetHighlightFontObject():SetFontObject('ElvUIFontSmall')
+		skipButton:GetDisabledFontObject():SetFontObject('ElvUIFontSmall')
 	end
 
 	hooksecurefunc(frame, 'SetUpCovenantData', function(Frame)
