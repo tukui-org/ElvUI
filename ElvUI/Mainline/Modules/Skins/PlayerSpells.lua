@@ -152,6 +152,7 @@ function S:Blizzard_PlayerSpells()
 	if TalentsSelect then
 		TalentsSelect:StripTextures()
 		TalentsSelect:SetTemplate()
+
 		S:HandleCloseButton(TalentsSelect.CloseButton)
 
 		hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
@@ -160,10 +161,16 @@ function S:Blizzard_PlayerSpells()
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	if SpellBookFrame then
-		SpellBookFrame.TopBar:Hide()
-		SpellBookFrame.BookCornerFlipbook:Hide()
 		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 		S:HandleEditBox(SpellBookFrame.SearchBox)
+
+		if SpellBookFrame.TopBar then
+			SpellBookFrame.TopBar:Hide()
+		end
+
+		if SpellBookFrame.BookCornerFlipbook then
+			SpellBookFrame.BookCornerFlipbook:Hide()
+		end
 
 		if E.global.general.disableTutorialButtons then
 			SpellBookFrame.HelpPlateButton:Kill()
@@ -176,18 +183,29 @@ function S:Blizzard_PlayerSpells()
 		end
 
 		local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
-		PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
+		if PagedSpellsFrame then
+			if PagedSpellsFrame.View1 then
+				PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
+			end
 
-		local PagingControls = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame.PagingControls
-		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
-		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
-		PagingControls.PageText:SetTextColor(1, 1, 1)
+			local PagingControls = PagedSpellsFrame.PagingControls
+			if PagingControls then
+				PagingControls.PageText:SetTextColor(1, 1, 1)
 
-		local AssistedCombatRotationSpellFrame = SpellBookFrame and SpellBookFrame.AssistedCombatRotationSpellFrame
-		local RotationButton = AssistedCombatRotationSpellFrame and AssistedCombatRotationSpellFrame.Button
+				S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
+				S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
+			end
+		end
+
+		local RotationSpellFrame = SpellBookFrame and SpellBookFrame.AssistedCombatRotationSpellFrame
+		local RotationButton = RotationSpellFrame and RotationSpellFrame.Button
 		if RotationButton then
-			RotationButton.Border:Hide()
 			S:HandleIcon(RotationButton.Icon, true)
+
+			if RotationButton.Border then
+				RotationButton.Border:Hide()
+			end
+
 			RotationButton:SetHighlightTexture(E.media.blankTex)
 			RotationButton:GetHighlightTexture():SetVertexColor(1, 1, 1, 0.25)
 			RotationButton:SetPushedTexture(E.media.blankTex)
