@@ -17,9 +17,14 @@ local function HandleTalentFrameDialog(dialog)
 	if dialog.CancelButton then S:HandleButton(dialog.CancelButton) end
 	if dialog.DeleteButton then S:HandleButton(dialog.DeleteButton) end
 
-	S:HandleEditBox(dialog.NameControl.EditBox)
-	dialog.NameControl.EditBox.backdrop:Point('TOPLEFT', -5, -10)
-	dialog.NameControl.EditBox.backdrop:Point('BOTTOMRIGHT', 5, 10)
+	local nameControl = dialog.NameControl
+	local nameControlEditbox = nameControl and nameControl.EditBox
+	if nameControlEditbox then
+		S:HandleEditBox(nameControlEditbox)
+
+		nameControlEditbox.backdrop:Point('TOPLEFT', -5, -10)
+		nameControlEditbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
+	end
 end
 
 local function UpdateSpecFrame(frame)
@@ -62,6 +67,7 @@ local function HandleHeroTalents(frame)
 				specFrame.CurrencyFrame.LabelText:FontTemplate()
 				specFrame.CurrencyFrame.AmountText:FontTemplate(nil, 18)
 			end
+
 			S:HandleButton(specFrame.ActivateButton)
 			S:HandleButton(specFrame.ApplyChangesButton)
 
