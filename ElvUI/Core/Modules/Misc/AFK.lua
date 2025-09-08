@@ -46,25 +46,67 @@ local ignoreKeys = {
 local printKeys = {
 	PRINTSCREEN = true,
 }
-local afkAnimations = {}
-
-afkAnimations["lean"] = {
-	id = 1260,
-	key = "lean",
-	facing = 5.8,
-	wait = 10,
-	offsetX = -100,
-	offsetY = 220,
-	duration = 600
-}
-afkAnimations["dance"] = {
-	id = 69,
-	key = "dance",
-	facing = 6,
-	wait = 30,
-	offsetX = -200,
-	offsetY = 220,
-	duration = 300
+local afkAnimations = {
+	lean = {
+		name = L["Lean"],
+		id = 1260,
+		key = "lean",
+		facing = 5.8,
+		wait = 10,
+		offsetX = -100,
+		offsetY = 220,
+		duration = 600
+	},
+	dance = {
+		name = L["Dance"],
+		id = 69,
+		key = "dance",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 300
+	},
+	salute = {
+		name = L["Salute"],
+		id = 113,
+		key = "salute",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 5
+	},
+	talk = {
+		name = L["Talk"],
+		id = 60,
+		key = "talk",
+		facing = 6.2,
+		wait = 15,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 10
+	},
+	shy = {
+		name = L["Shy"],
+		id = 83,
+		key = "shy",
+		facing = 6.2,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 10
+	},
+	roar = {
+		name = L["Roar"],
+		id = 74,
+		key = "roar",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 5
+	}
 }
 
 if IsMacClient() then
