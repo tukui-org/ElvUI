@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local pairs = pairs
+local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
@@ -52,6 +53,19 @@ local function RAFRewards()
 	local claiming = _G.RecruitAFriendFrame.RewardClaiming
 	if claiming and claiming.NextRewardButton then
 		claiming.NextRewardButton.Icon:SetDesaturation(0)
+	end
+
+	for tab in _G.RecruitAFriendRewardsFrame.rewardTabPool:EnumerateActive() do
+		if not tab.IsSkinned then
+			tab.Tab:Hide()
+			tab:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true)
+			tab:StyleButton()
+			local relativeTo = select(2, tab:GetPoint(1))
+			if relativeTo and relativeTo == _G.RecruitAFriendRewardsFrame then
+				tab:NudgePoint(2, 0)
+			end
+			tab.IsSkinned = true
+		end
 	end
 
 	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
