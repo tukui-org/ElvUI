@@ -883,7 +883,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.target.buffs.height = 20
 	E.db.unitframe.units.target.buffs.keepSizeRatio = false
 	E.db.unitframe.units.target.buffs.perrow = 6
-	E.db.unitframe.units.target.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,nonPersonal'
+	E.db.unitframe.units.target.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,NonPersonal'
 	E.db.unitframe.units.target.castbar.height = 8
 	E.db.unitframe.units.target.castbar.iconAttached = false
 	E.db.unitframe.units.target.castbar.iconPosition = 'RIGHT'
@@ -900,7 +900,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.target.debuffs.enable = false
 	E.db.unitframe.units.target.debuffs.growthX = 'RIGHT'
 	E.db.unitframe.units.target.debuffs.maxDuration = 0
-	E.db.unitframe.units.target.debuffs.priority = 'Blacklist,Personal,nonPersonal'
+	E.db.unitframe.units.target.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 	E.db.unitframe.units.target.disableMouseoverGlow = true
 	E.db.unitframe.units.target.health.position = 'BOTTOMRIGHT'
 	E.db.unitframe.units.target.health.text_format = E.Classic and '[healthcolor][health:percent]' or '[healthcolor][health:percent-with-absorbs]'
