@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local pairs = pairs
+local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
@@ -54,7 +55,26 @@ local function RAFRewards()
 		claiming.NextRewardButton.Icon:SetDesaturation(0)
 	end
 
-	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
+	local rewardsFrame = _G.RecruitAFriendRewardsFrame
+	for tab in rewardsFrame.rewardTabPool:EnumerateActive() do
+		if not tab.IsSkinned then
+			tab:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true)
+			tab:StyleButton()
+
+			if tab.Tab then
+				tab.Tab:Hide()
+			end
+
+			local _, relativeTo = tab:GetPoint()
+			if relativeTo and relativeTo == rewardsFrame then
+				tab:NudgePoint(2, 0)
+			end
+
+			tab.IsSkinned = true
+		end
+	end
+
+	for reward in rewardsFrame.rewardPool:EnumerateActive() do
 		local button = reward.Button
 		button:StyleButton(nil, true)
 		button.hover:SetAllPoints()
@@ -415,14 +435,14 @@ function S:FriendsFrame()
 	S:HandleCloseButton(Recruitment.CloseButton)
 
 	-- Rewards
-	local Reward = _G.RecruitAFriendRewardsFrame
-	Reward:StripTextures()
-	Reward:SetTemplate('Transparent')
-	Reward.Background:SetAlpha(0)
-	Reward.Watermark:SetAlpha(0)
-	S:HandleCloseButton(Reward.CloseButton)
+	local rewardsFrame = _G.RecruitAFriendRewardsFrame
+	rewardsFrame:StripTextures()
+	rewardsFrame:SetTemplate('Transparent')
+	rewardsFrame.Background:SetAlpha(0)
+	rewardsFrame.Watermark:SetAlpha(0)
+	S:HandleCloseButton(rewardsFrame.CloseButton)
 
-	hooksecurefunc(Reward, 'UpdateRewards', RAFRewards)
+	hooksecurefunc(rewardsFrame, 'UpdateRewards', RAFRewards)
 	RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
 end
 
