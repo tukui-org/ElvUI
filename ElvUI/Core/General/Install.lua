@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
+local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
 local S = E:GetModule('Skins')
 
@@ -485,14 +486,25 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
 
 	if E.Retail then
-		E.db.datatexts.panels.QuickJoin[1] = "QuickJoin"
-		E.db.datatexts.panels.QuickJoin.battleground = false
-		E.db.datatexts.panels.QuickJoin.enable = true
+		if not E.global.datatexts.customPanels.QuickJoin then
+			E.global.datatexts.customPanels.QuickJoin = E:CopyTable({}, G.datatexts.newPanelInfo)
+		end
+
+		E.global.datatexts.customPanels.QuickJoin.name = 'QuickJoin'
 		E.global.datatexts.customPanels.QuickJoin.backdrop = false
 		E.global.datatexts.customPanels.QuickJoin.border = false
-		E.global.datatexts.customPanels.QuickJoin.name = "QuickJoin"
 		E.global.datatexts.customPanels.QuickJoin.numPoints = 1
 		E.global.datatexts.customPanels.QuickJoin.width = 100
+
+		if not E.db.datatexts.panels.QuickJoin then
+			E.db.datatexts.panels.QuickJoin = {}
+		end
+
+		E.db.datatexts.panels.QuickJoin[1] = 'QuickJoin'
+		E.db.datatexts.panels.QuickJoin.battleground = false
+		E.db.datatexts.panels.QuickJoin.enable = true
+
+		DT:BuildPanelFrame('QuickJoin')
 	end
 
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
@@ -774,7 +786,7 @@ function E:SetAnniversaryLayout()
 	E.db.unitframe.units.focus.buffs.priority = 'Blacklist,Personal,Dispellable'
 	E.db.unitframe.units.focus.castbar.height = 8
 	E.db.unitframe.units.focus.castbar.iconAttached = false
-	E.db.unitframe.units.focus.castbar.iconPosition = "RIGHT"
+	E.db.unitframe.units.focus.castbar.iconPosition = 'RIGHT'
 	E.db.unitframe.units.focus.castbar.iconSize = 26
 	E.db.unitframe.units.focus.castbar.iconXOffset = 10
 	E.db.unitframe.units.focus.castbar.width = 130
