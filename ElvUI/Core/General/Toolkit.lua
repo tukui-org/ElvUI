@@ -374,6 +374,7 @@ local function CreateShadow(frame, size, pass)
 end
 
 local function KillEditMode(object)
+	object.IsInDefaultPosition = E.noop
 	object.HighlightSystem = E.noop
 	object.ClearHighlight = E.noop
 end
