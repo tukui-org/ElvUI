@@ -482,7 +482,20 @@ function E:SetAnniversaryLayout()
 	E.db.datatexts.noCombatHover = true
 	E.db.datatexts.panels.LeftChatDataPanel[1] = 'Friends'
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Time'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
+
+	if E.Retail then
+		E.db.datatexts.panels.QuickJoin[1] = "QuickJoin"
+		E.db.datatexts.panels.QuickJoin.battleground = false
+		E.db.datatexts.panels.QuickJoin.enable = true
+		E.global.datatexts.customPanels.QuickJoin.backdrop = false
+		E.global.datatexts.customPanels.QuickJoin.border = false
+		E.global.datatexts.customPanels.QuickJoin.name = "QuickJoin"
+		E.global.datatexts.customPanels.QuickJoin.numPoints = 1
+		E.global.datatexts.customPanels.QuickJoin.width = 100
+
+	end
+
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
 	E.db.datatexts.panels.MinimapPanel[1] = 'DurabilityItemLevel'
 	E.db.datatexts.panels.MinimapPanel[2] = 'Gold'
