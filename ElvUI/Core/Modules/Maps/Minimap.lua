@@ -746,7 +746,6 @@ function M:Initialize()
 
 	if E.Retail then
 		MinimapCluster:KillEditMode()
-		MinimapCluster.IsInDefaultPosition = E.noop
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
