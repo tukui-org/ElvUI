@@ -948,7 +948,7 @@ function E:LayoutAnniversary()
 	E.private.bags.enable = false
 	E.private.general.chatBubbleName = true
 
-	--NP Style
+	--Style Filters
 	E.db.nameplates.filters.ElvUI_Below20 = { triggers = { enable = true } }
 	E.db.nameplates.filters.ElvUI_Below20_Players = { triggers = { enable = true } }
 end
