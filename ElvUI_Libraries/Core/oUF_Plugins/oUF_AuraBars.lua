@@ -44,7 +44,16 @@ end
 local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	GameTooltip:SetOwner(self, self.__owner.__restricted and 'ANCHOR_CURSOR' or self.__owner.tooltipAnchor)
+	local restricted = self.__owner.__restricted
+	local anchor = self.__owner.tooltipAnchor
+	if anchor == 'Default' and not restricted then
+		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	else
+		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+		-- otherwise it'll inherit said restrictions which will cause issues with
+		-- its further positioning, clamping, etc
+		GameTooltip:SetOwner(self, (restricted and 'ANCHOR_CURSOR') or (anchor == 'Default' and 'ANCHOR_NONE') or anchor)
+	end
 
 	-- we need compatibility here because this wasnt implemented on Era or Mists
 	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
