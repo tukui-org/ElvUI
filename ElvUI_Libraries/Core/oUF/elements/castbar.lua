@@ -264,17 +264,17 @@ local function ShouldShow(element, unit)
 	return element.__owner.unit == unit
 end
 
-local function CastStart(self, real, unit, castGUID, spellID, castTime)
-	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
+local function CastStart(self, event, unit, castGUID, spellID, castTime)
+	if oUF.isRetail and event == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
 	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
 		return
 	end
 
-	local event, numStages, castDuration = 'UNIT_SPELLCAST_START'
+	local numStages, castDuration
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
-	if spellID and real == 'UNIT_SPELLCAST_SENT' then
+	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
 		if name then
@@ -282,7 +282,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, real, unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
 			if speedMod then
 				castTime = castTime * speedMod
 			end
@@ -291,9 +291,9 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
-	elseif real == 'UNIT_SPELLCAST_START' then
+	elseif event == 'UNIT_SPELLCAST_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
-	elseif real == 'UNIT_SPELLCAST_EMPOWER_START' or real == 'UNIT_SPELLCAST_CHANNEL_START' then
+	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
 	else
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
@@ -316,7 +316,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
 
-	if strsub(real, 1, 14) == 'UNIT_SPELLCAST' then
+	if strsub(event, 1, 14) == 'UNIT_SPELLCAST' then
 		UpdateCurrentTarget(element)
 	end
 
