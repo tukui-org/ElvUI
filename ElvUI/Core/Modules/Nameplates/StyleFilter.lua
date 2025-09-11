@@ -1387,21 +1387,27 @@ function NP:StyleFilterTargetFunction(_, unit)
 end
 
 function NP:StyleFilterCastingFunction(event, unit, guid, spellID)
-	self.castEmpowering = event == 'UNIT_SPELLCAST_EMPOWER_START' or nil
-	self.castChanneling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
-	self.castCasting = event == 'UNIT_SPELLCAST_START' or nil
+	if event == 'UNIT_SPELLCAST_INTERRUPTIBLE' then
+		self.castInterruptible = true
+	elseif event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE' then
+		self.castInterruptible = nil
+	else
+		self.castEmpowering = event == 'UNIT_SPELLCAST_EMPOWER_START' or nil
+		self.castChanneling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
+		self.castCasting = event == 'UNIT_SPELLCAST_START' or nil
 
-	local _, notInterruptible
-	if self.castChanneling or self.castEmpowering then
-		_, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
-	elseif self.castCasting then
-		_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
+		local _, notInterruptible
+		if self.castChanneling or self.castEmpowering then
+			_, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
+		elseif self.castCasting then
+			_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
+		end
+
+		local active = self.castChanneling or self.castCasting or self.castEmpowering
+		self.castSpellID = (active and spellID) or nil
+		self.castGUID = (active and guid) or nil
+		self.castInterruptible = (active and not notInterruptible) or nil
 	end
-
-	local active = self.castChanneling or self.castCasting or self.castEmpowering
-	self.castSpellID = (active and spellID) or nil
-	self.castGUID = (active and guid) or nil
-	self.castInterruptible = (active and not notInterruptible) or nil
 end
 
 NP.StyleFilterCastEvents = {
@@ -1412,7 +1418,9 @@ NP.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_FAILED = 1,			-- fail
 	UNIT_SPELLCAST_INTERRUPTED = 1,
 	UNIT_SPELLCAST_EMPOWER_START = E.Retail and 1 or nil,
-	UNIT_SPELLCAST_EMPOWER_STOP = E.Retail and 1 or nil
+	UNIT_SPELLCAST_EMPOWER_STOP = E.Retail and 1 or nil,
+	UNIT_SPELLCAST_INTERRUPTIBLE = E.Retail and 1 or nil,
+	UNIT_SPELLCAST_NOT_INTERRUPTIBLE = E.Retail and 1 or nil
 }
 
 NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
