@@ -84,6 +84,7 @@ function UF:Construct_Auras(frame)
 	auras.CustomFilter = UF.AuraFilter
 	auras.stacks = {}
 	auras.rows = {}
+	auras.tooltipAnchor = 'Default'
 	auras.type = 'auras'
 
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
@@ -102,6 +103,7 @@ function UF:Construct_Buffs(frame)
 	buffs.CustomFilter = UF.AuraFilter
 	buffs.stacks = {}
 	buffs.rows = {}
+	buffs.tooltipAnchor = 'Default'
 	buffs.type = 'buffs'
 
 	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
@@ -120,6 +122,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.CustomFilter = UF.AuraFilter
 	debuffs.stacks = {}
 	debuffs.rows = {}
+	debuffs.tooltipAnchor = 'Default'
 	debuffs.type = 'debuffs'
 
 	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)

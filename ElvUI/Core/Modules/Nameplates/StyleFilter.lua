@@ -18,6 +18,8 @@ local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
+local UnitChannelInfo = UnitChannelInfo
+local UnitCastingInfo = UnitCastingInfo
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasIncomingResurrection = UnitHasIncomingResurrection
 local UnitHealth = UnitHealth
@@ -1210,7 +1212,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		if cast.spells then
 			for _, value in next, cast.spells do
 				if value then -- only run if at least one is selected
-					local castingSpell = (frame.castingSpellID and cast.spells[tostring(frame.castingSpellID)]) or cast.spells[frame.spellName]
+					local castingSpell = (frame.castSpellID and cast.spells[tostring(frame.castSpellID)]) or cast.spells[frame.spellName]
 					if allow and ((cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell)) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
@@ -1220,19 +1222,19 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		-- Not Status
 		if cast.notCasting or cast.notChanneling then
 			if cast.notCasting and cast.notChanneling then
-				if allow and (not frame.casting and not frame.channeling) then passed = true else return end
-			elseif allow and ((cast.notCasting and not frame.casting) or (cast.notChanneling and not frame.channeling)) then passed = true else return end
+				if allow and (not frame.castCasting and not frame.castChanneling) then passed = true else return end
+			elseif allow and ((cast.notCasting and not frame.castCasting) or (cast.notChanneling and not frame.castChanneling)) then passed = true else return end
 		end
 
 		-- Is Status
 		if cast.isCasting or cast.isChanneling then
-			if allow and ((cast.isCasting and frame.casting) or (cast.isChanneling and frame.channeling)) then passed = true else return end
+			if allow and ((cast.isCasting and frame.castCasting) or (cast.isChanneling and frame.castChanneling)) then passed = true else return end
 		end
 
 		-- Interruptible
 		if cast.interruptible or cast.notInterruptible then
-			if (frame.casting or frame.channeling) and ((cast.interruptible and not frame.notInterruptible)
-			or allow and ((cast.notInterruptible and frame.notInterruptible))) then passed = true else return end
+			if (frame.castCasting or frame.castChanneling) and ((cast.interruptible and frame.castInterruptible)
+			or allow and ((cast.notInterruptible and not frame.castInterruptible))) then passed = true else return end
 		end
 	end
 
@@ -1385,13 +1387,41 @@ function NP:StyleFilterTargetFunction(_, unit)
 end
 
 function NP:StyleFilterCastingFunction(event, unit, guid, spellID)
-	self.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
-	self.casting = event == 'UNIT_SPELLCAST_START' or nil
+	if event == 'UNIT_SPELLCAST_INTERRUPTIBLE' then
+		self.castInterruptible = true
+	elseif event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE' then
+		self.castInterruptible = nil
+	else
+		self.castEmpowering = event == 'UNIT_SPELLCAST_EMPOWER_START' or nil
+		self.castChanneling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
+		self.castCasting = event == 'UNIT_SPELLCAST_START' or nil
 
-	local active = self.channeling or self.casting
-	self.castingSpellID = (active and spellID) or nil
-	self.castingGUID = (active and guid) or nil
+		local _, notInterruptible
+		if self.castChanneling or self.castEmpowering then
+			_, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
+		elseif self.castCasting then
+			_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
+		end
+
+		local active = self.castChanneling or self.castCasting or self.castEmpowering
+		self.castSpellID = (active and spellID) or nil
+		self.castGUID = (active and guid) or nil
+		self.castInterruptible = (active and not notInterruptible) or nil
+	end
 end
+
+NP.StyleFilterCastEvents = {
+	UNIT_SPELLCAST_START = 1,			-- start
+	UNIT_SPELLCAST_CHANNEL_START = 1,
+	UNIT_SPELLCAST_STOP = 1,			-- stop
+	UNIT_SPELLCAST_CHANNEL_STOP = 1,
+	UNIT_SPELLCAST_FAILED = 1,			-- fail
+	UNIT_SPELLCAST_INTERRUPTED = 1,
+	UNIT_SPELLCAST_INTERRUPTIBLE = 1,
+	UNIT_SPELLCAST_NOT_INTERRUPTIBLE = 1,
+	UNIT_SPELLCAST_EMPOWER_START = E.Retail and 1 or nil,
+	UNIT_SPELLCAST_EMPOWER_STOP = E.Retail and 1 or nil
+}
 
 NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	PLAYER_TARGET_CHANGED = function(self)
@@ -1412,14 +1442,11 @@ NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 	VEHICLE_UPDATE = NP.StyleFilterVehicleFunction,
 	UNIT_ENTERED_VEHICLE = NP.StyleFilterVehicleFunction,
 	UNIT_EXITED_VEHICLE = NP.StyleFilterVehicleFunction,
-
-	UNIT_SPELLCAST_START = NP.StyleFilterCastingFunction,
-	UNIT_SPELLCAST_CHANNEL_START = NP.StyleFilterCastingFunction,
-	UNIT_SPELLCAST_STOP = NP.StyleFilterCastingFunction,
-	UNIT_SPELLCAST_CHANNEL_STOP = NP.StyleFilterCastingFunction,
-	UNIT_SPELLCAST_FAILED = NP.StyleFilterCastingFunction,
-	UNIT_SPELLCAST_INTERRUPTED = NP.StyleFilterCastingFunction
 }
+
+for event in next, NP.StyleFilterCastEvents do
+	NP.StyleFilterEventFunctions[event] = NP.StyleFilterCastingFunction
+end
 
 NP.StyleFilterSetVariablesAllowed = {
 	UNIT_TARGET = true,
@@ -1450,10 +1477,14 @@ function NP:StyleFilterClearVariables(nameplate)
 	nameplate.isTargetingMe = nil
 	nameplate.raidTargetIndex = nil
 	nameplate.threatScale = nil
-	nameplate.isCasting = nil
-	nameplate.isChanneling = nil
-	nameplate.castingSpellID = nil
-	nameplate.castingGUID = nil
+
+	-- casting stuff
+	nameplate.castInterruptible = nil
+	nameplate.castCasting = nil
+	nameplate.castChanneling = nil
+	nameplate.castEmpowering = nil
+	nameplate.castSpellID = nil
+	nameplate.castGUID = nil
 end
 
 NP.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
@@ -1502,15 +1533,6 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 if E.Classic then
 	NP.StyleFilterDefaultEvents.UNIT_HEALTH_FREQUENT = false
 end
-
-NP.StyleFilterCastEvents = {
-	UNIT_SPELLCAST_START = 1,			-- start
-	UNIT_SPELLCAST_CHANNEL_START = 1,
-	UNIT_SPELLCAST_STOP = 1,			-- stop
-	UNIT_SPELLCAST_CHANNEL_STOP = 1,
-	UNIT_SPELLCAST_FAILED = 1,			-- fail
-	UNIT_SPELLCAST_INTERRUPTED = 1
-}
 
 for event in next, NP.StyleFilterCastEvents do
 	NP.StyleFilterDefaultEvents[event] = false

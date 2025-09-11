@@ -291,6 +291,10 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
+	elseif real == 'UNIT_SPELLCAST_START' then
+		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	elseif real == 'UNIT_SPELLCAST_EMPOWER_START' or real == 'UNIT_SPELLCAST_CHANNEL_START' then
+		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
 	else
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 
@@ -686,13 +690,13 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 		self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
 		if oUF.isRetail then
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
 
 		-- ElvUI block
@@ -748,13 +752,13 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+		self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
 
 		-- ElvUI block
