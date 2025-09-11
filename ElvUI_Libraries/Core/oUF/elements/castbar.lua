@@ -295,6 +295,14 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 	elseif real == 'UNIT_SPELLCAST_EMPOWER_START' or real == 'UNIT_SPELLCAST_CHANNEL_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+	else
+		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+
+		if not name then
+			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+
+			event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
+		end
 	end
 
 	if not name or (isTradeSkill and element.hideTradeSkills) then
