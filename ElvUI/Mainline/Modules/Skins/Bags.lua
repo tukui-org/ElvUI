@@ -213,6 +213,7 @@ local function SkinBag(bagID, bag)
 
 		S:HandleCloseButton(container.CloseButton)
 		S:HandleButton(container.PortraitButton)
+		container.PortraitButton:NudgePoint(15, -7)
 		container.PortraitButton.Highlight:SetAlpha(0)
 
 		hooksecurefunc(container, 'UpdateItems', SkinContainer)
