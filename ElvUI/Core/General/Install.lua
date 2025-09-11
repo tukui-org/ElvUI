@@ -493,7 +493,6 @@ function E:SetAnniversaryLayout()
 		E.global.datatexts.customPanels.QuickJoin.name = "QuickJoin"
 		E.global.datatexts.customPanels.QuickJoin.numPoints = 1
 		E.global.datatexts.customPanels.QuickJoin.width = 100
-
 	end
 
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
