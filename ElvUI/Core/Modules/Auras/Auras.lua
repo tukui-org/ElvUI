@@ -141,7 +141,7 @@ function A:CreateIcon(button)
 
 	button.header = header
 	button.filter = header.filter
-	button.auraType = header.filter == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
+	button.auraType = (header.filter == 'HELPFUL' and 'buffs') or 'debuffs'
 
 	button.name = button:GetName()
 	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
@@ -360,7 +360,7 @@ function A:Button_OnLeave()
 end
 
 function A:Button_OnEnter()
-	local db = self.header and A.db[self.header.auraType]
+	local db = A.db[self.auraType]
 	GameTooltip:SetOwner(self, db.tooltipAnchorType or 'ANCHOR_BOTTOMLEFT', db.tooltipAnchorX or -5, db.tooltipAnchorY or-5)
 
 	self.elapsed = 1 -- let the tooltip update next frame
@@ -484,7 +484,7 @@ function A:Visibility_OnUpdate(elapsed)
 end
 
 function A:UpdateChild(child, index, db) -- self here is the header
-	child.auraType = self.auraType -- used to update cooldown text
+	child.auraType = self.auraType
 	child.db = db
 
 	A:Update_CooldownOptions(child)
