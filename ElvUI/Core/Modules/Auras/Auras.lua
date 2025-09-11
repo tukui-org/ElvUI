@@ -360,7 +360,8 @@ function A:Button_OnLeave()
 end
 
 function A:Button_OnEnter()
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
+	local db = self.header and A.db[self.header.auraType]
+	GameTooltip:SetOwner(self, db.tooltipAnchorType or 'ANCHOR_BOTTOMLEFT', db.tooltipAnchorX or -5, db.tooltipAnchorY or-5)
 
 	self.elapsed = 1 -- let the tooltip update next frame
 end

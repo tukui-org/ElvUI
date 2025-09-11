@@ -84,16 +84,10 @@ end
 local function onEnter(self)
 	if(GameTooltip:IsForbidden() or not self:IsVisible()) then return end
 
-	local restricted = self.__owner.__restricted
-	local anchor = self.__owner.tooltipAnchor
-	if anchor == 'Default' and not restricted then
-		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
-	else
-		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
-		-- otherwise it'll inherit said restrictions which will cause issues with
-		-- its further positioning, clamping, etc
-		GameTooltip:SetOwner(self, (restricted and 'ANCHOR_CURSOR') or (anchor == 'Default' and 'ANCHOR_NONE') or anchor)
-	end
+	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+	-- otherwise it'll inherit said restrictions which will cause issues with
+	-- its further positioning, clamping, etc
+	GameTooltip:SetOwner(self, (self.__owner.__restricted and 'ANCHOR_CURSOR') or self.__owner.tooltipAnchor, self.__owner.tooltipAnchorX, self.__owner.tooltipAnchorY)
 
 	self:UpdateTooltip()
 end
@@ -475,6 +469,8 @@ local function Enable(self)
 			buffs.createdButtons = buffs.createdButtons or 0
 			buffs.anchoredButtons = 0
 			buffs.tooltipAnchor = buffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
+			buffs.tooltipAnchorX = buffs.tooltipAnchorX or 0
+			buffs.tooltipAnchorY = buffs.tooltipAnchorY or 0
 
 			buffs:Show()
 		end
@@ -490,6 +486,8 @@ local function Enable(self)
 			debuffs.createdButtons = debuffs.createdButtons or 0
 			debuffs.anchoredButtons = 0
 			debuffs.tooltipAnchor = debuffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
+			debuffs.tooltipAnchorX = debuffs.tooltipAnchorX or 0
+			debuffs.tooltipAnchorY = debuffs.tooltipAnchorY or 0
 
 			debuffs:Show()
 		end
@@ -505,6 +503,8 @@ local function Enable(self)
 			auras.createdButtons = auras.createdButtons or 0
 			auras.anchoredButtons = 0
 			auras.tooltipAnchor = auras.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
+			auras.tooltipAnchorX = auras.tooltipAnchorX or 0
+			auras.tooltipAnchorY = auras.tooltipAnchorY or 0
 
 			auras:Show()
 		end

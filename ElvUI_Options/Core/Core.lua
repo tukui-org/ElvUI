@@ -49,6 +49,7 @@ C.Values = {
 	FontFlags = ACH.FontValues,
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
+	TooltipAnchors = { ANCHOR_TOP = L["TOP"], ANCHOR_RIGHT = L["RIGHT"], ANCHOR_BOTTOM = L["BOTTOM"], ANCHOR_LEFT = L["LEFT"], ANCHOR_TOPRIGHT = L["TOPRIGHT"], ANCHOR_BOTTOMRIGHT = L["BOTTOMRIGHT"], ANCHOR_TOPLEFT = L["TOPLEFT"], ANCHOR_BOTTOMLEFT = L["BOTTOMLEFT"], ANCHOR_CURSOR = L["CURSOR"], ANCHOR_CURSOR_LEFT = L["CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["CURSOR_RIGHT"] },
 	AllPositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"], TOP = L["TOP"], BOTTOM = L["BOTTOM"], CENTER = L["CENTER"] },
 	EdgePositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"], TOP = L["TOP"], BOTTOM = L["BOTTOM"] },
 	SidePositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"] },

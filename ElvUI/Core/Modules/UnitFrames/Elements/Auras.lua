@@ -84,7 +84,6 @@ function UF:Construct_Auras(frame)
 	auras.CustomFilter = UF.AuraFilter
 	auras.stacks = {}
 	auras.rows = {}
-	auras.tooltipAnchor = 'Default'
 	auras.type = 'auras'
 
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
@@ -103,7 +102,6 @@ function UF:Construct_Buffs(frame)
 	buffs.CustomFilter = UF.AuraFilter
 	buffs.stacks = {}
 	buffs.rows = {}
-	buffs.tooltipAnchor = 'Default'
 	buffs.type = 'buffs'
 
 	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
@@ -122,7 +120,6 @@ function UF:Construct_Debuffs(frame)
 	debuffs.CustomFilter = UF.AuraFilter
 	debuffs.stacks = {}
 	debuffs.rows = {}
-	debuffs.tooltipAnchor = 'Default'
 	debuffs.type = 'debuffs'
 
 	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
@@ -385,6 +382,9 @@ function UF:Configure_Auras(frame, which)
 	auras.auraSort = UF.SortAuraFuncs[settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
+	auras.tooltipAnchor = settings.tooltipAnchorType
+	auras.tooltipAnchorX = settings.tooltipAnchorX
+	auras.tooltipAnchorY = settings.tooltipAnchorY
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
 		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))

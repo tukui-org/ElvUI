@@ -630,6 +630,9 @@ local NP_Auras = {
 	durationPosition = 'CENTER',
 	minDuration = 0,
 	maxDuration = 0,
+	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
+	tooltipAnchorX = 5,
+	tooltipAnchorY = -5,
 	sourceText = CopyTable(NP_AuraSourceText),
 	priority = ''
 }
@@ -1261,6 +1264,9 @@ local TopAuras = {
 	verticalSpacing = 16,
 	wrapAfter = 12,
 	smoothbars = false,
+	tooltipAnchorType = 'ANCHOR_BOTTOMLEFT',
+	tooltipAnchorX = -5,
+	tooltipAnchorY = -5
 }
 
 --Auras
@@ -1524,6 +1530,9 @@ local UF_Auras = {
 	keepSizeRatio = true,
 	height = 30,
 	spacing = 1,
+	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
+	tooltipAnchorX = 5,
+	tooltipAnchorY = -5,
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 	sourceText = CopyTable(NP_AuraSourceText)
 }
@@ -1548,6 +1557,9 @@ local UF_AuraBars = {
 	priority = '',
 	spacing = 0,
 	yOffset = 0,
+	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
+	tooltipAnchorX = 5,
+	tooltipAnchorY = -5,
 	clickThrough = false,
 	reverseFill = false,
 	abbrevName = false,
