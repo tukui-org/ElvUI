@@ -1388,33 +1388,33 @@ function E:SetPage(num)
 		InstallSlider.Max:SetText(1.15)
 
 		InstallOption1Button:Show()
-		InstallOption1Button:SetText(L["Small"])
+		InstallOption1Button:SetFormattedText('%s%s|r', E.InfoColor, L["Auto Scale"])
 		InstallOption1Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .6
+			E.global.general.UIScale = E:PixelBestSize()
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
 
 		InstallOption2Button:Show()
-		InstallOption2Button:SetText(L["Medium"])
+		InstallOption2Button:SetText(L["Small"])
 		InstallOption2Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .7
+			E.global.general.UIScale = .6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
 
 		InstallOption3Button:Show()
-		InstallOption3Button:SetText(L["Large"])
+		InstallOption3Button:SetText(L["Medium"])
 		InstallOption3Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .8
+			E.global.general.UIScale = .7
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
 
 		InstallOption4Button:Show()
-		InstallOption4Button:SetText(L["Auto Scale"])
+		InstallOption4Button:SetText(L["Large"])
 		InstallOption4Button:SetScript('OnClick', function()
-			E.global.general.UIScale = E:PixelBestSize()
+			E.global.general.UIScale = .8
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
