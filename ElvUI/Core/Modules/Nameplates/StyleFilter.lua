@@ -1417,10 +1417,10 @@ NP.StyleFilterCastEvents = {
 	UNIT_SPELLCAST_CHANNEL_STOP = 1,
 	UNIT_SPELLCAST_FAILED = 1,			-- fail
 	UNIT_SPELLCAST_INTERRUPTED = 1,
+	UNIT_SPELLCAST_INTERRUPTIBLE = 1,
+	UNIT_SPELLCAST_NOT_INTERRUPTIBLE = 1,
 	UNIT_SPELLCAST_EMPOWER_START = E.Retail and 1 or nil,
-	UNIT_SPELLCAST_EMPOWER_STOP = E.Retail and 1 or nil,
-	UNIT_SPELLCAST_INTERRUPTIBLE = E.Retail and 1 or nil,
-	UNIT_SPELLCAST_NOT_INTERRUPTIBLE = E.Retail and 1 or nil
+	UNIT_SPELLCAST_EMPOWER_STOP = E.Retail and 1 or nil
 }
 
 NP.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
