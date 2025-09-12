@@ -94,8 +94,6 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	tt:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
 	local hasItem = tt:SetInventoryItem(unit, slot)
-	tt:Show()
-
 	local info = hasItem and tt:GetTooltipData()
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
 	local slotInfo = tt.slotInfo
@@ -139,8 +137,6 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 			end
 		end
 	end
-
-	tt:Hide()
 
 	return slotInfo
 end

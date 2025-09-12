@@ -308,13 +308,8 @@ function E:GetUnitSpecInfo(unit)
 
 	E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
 
 	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
-
-	if E.ScanTooltip:IsShown() then
-		E.ScanTooltip:Hide()
-	end
 
 	local specText = specLine and specLine.leftText
 	if specText then
@@ -1163,10 +1158,6 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
 		end
 
-		if info.tooltip == E.ScanTooltip and info.tooltip:IsShown() then
-			info.tooltip:Hide()
-		end
-
 		return info
 	end
 end
@@ -1211,7 +1202,6 @@ function E:ScanTooltip_UnitInfo(unit)
 	else
 		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end
@@ -1223,7 +1213,6 @@ function E:ScanTooltip_InventoryInfo(unit, slot)
 	else
 		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetInventoryItem(unit, slot)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end
@@ -1235,7 +1224,6 @@ function E:ScanTooltip_HyperlinkInfo(link)
 	else
 		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetHyperlink(link)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end
