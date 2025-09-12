@@ -267,8 +267,6 @@ local function ShouldShow(element, unit)
 end
 
 local function CastStart(self, event, unit, castGUID, spellID, castTime)
-	if oUF.isRetail and event == 'UNIT_SPELLCAST_START' and not castGUID then return end
-
 	local element = self.Castbar
 	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
 		return
