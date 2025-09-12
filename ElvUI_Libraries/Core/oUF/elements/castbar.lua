@@ -301,7 +301,6 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 		if not name then
 			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
-
 			event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
 		end
 	end
