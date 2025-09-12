@@ -1332,12 +1332,7 @@ function E:SetPage(num)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			E.data:SetProfile('Default')
-
-			if E.db.layoutSet then
-				E:SetPage(9)
-			else
-				E:NextPage()
-			end
+			E:NextPage()
 		end)
 
 		InstallOption2Button:SetText(L["New Profile"])
@@ -1347,6 +1342,25 @@ function E:SetPage(num)
 			E:NextPage()
 		end)
 	elseif num == 5 then
+		f.SubTitle:SetText(L["Layout"])
+		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
+		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('anniversary') end)
+		InstallOption1Button:SetFormattedText('%s%s|r', E.InfoColor, L["Anniversary"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
+		InstallOption2Button:SetText(_G.MELEE)
+		InstallOption3Button:Show()
+		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
+		InstallOption3Button:SetText(_G.HEALER)
+		InstallOption4Button:Show()
+		InstallOption4Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
+		InstallOption4Button:SetText(_G.RANGED)
+	elseif num == 6 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
@@ -1362,7 +1376,7 @@ function E:SetPage(num)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
-	elseif num == 6 then
+	elseif num == 7 then
 		f.SubTitle:SetText(L["UI Scale"])
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen."])
 
@@ -1421,25 +1435,6 @@ function E:SetPage(num)
 
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		f.Desc3:FontTemplate(nil, 18)
-	elseif num == 7 then
-		f.SubTitle:SetText(L["Layout"])
-		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
-		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
-		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
-		f.Desc3:FontTemplate(nil, 18)
-
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('anniversary') end)
-		InstallOption1Button:SetFormattedText('%s%s|r', E.InfoColor, L["Anniversary"])
-		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption2Button:SetText(_G.MELEE)
-		InstallOption3Button:Show()
-		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallOption3Button:SetText(_G.HEALER)
-		InstallOption4Button:Show()
-		InstallOption4Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption4Button:SetText(_G.RANGED)
 	elseif num == 8 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."])
