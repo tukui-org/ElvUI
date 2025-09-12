@@ -1141,23 +1141,16 @@ end
 function E:CompatibleTooltip(tt) -- knock off compatibility
 	if tt.GetTooltipData then return end -- real support exists
 
-	local name = tt:GetName()
-	local info = {
-		lines = {},
-		name = name,
-		tooltip = tt,
-		leftTextName = name and (name..'TextLeft') or nil,
-		rightTextName = name and (name..'TextRight') or nil
-	}
+	local info = { lines = {}, name = tt:GetName() }
 
 	tt.GetTooltipData = function()
 		wipe(info.lines)
 
 		for i = 1, tt:NumLines() do
-			local left = info.leftTextName and _G[info.leftTextName..i]
+			local left = info.name and _G[info.name..'TextLeft'..i]
 			local leftText = left and left:GetText() or nil
 
-			local right = info.rightTextName and _G[info.rightTextName..i]
+			local right = info.name and _G[info.name..'TextRight'..i]
 			local rightText = right and right:GetText() or nil
 
 			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
