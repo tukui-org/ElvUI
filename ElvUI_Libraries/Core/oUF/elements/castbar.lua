@@ -423,7 +423,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
@@ -482,7 +482,7 @@ local function CastStop(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
@@ -513,7 +513,7 @@ local function CastFail(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
