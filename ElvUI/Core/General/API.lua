@@ -311,6 +311,11 @@ function E:GetUnitSpecInfo(unit)
 	E.ScanTooltip:Show()
 
 	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
+
+	if E.ScanTooltip:IsShown() then
+		E.ScanTooltip:Hide()
+	end
+
 	local specText = specLine and specLine.leftText
 	if specText then
 		return E.SpecInfoBySpecClass[specText]
@@ -1141,7 +1146,7 @@ end
 function E:CompatibleTooltip(tt) -- knock off compatibility
 	if tt.GetTooltipData then return end -- real support exists
 
-	local info = { name = tt:GetName(), lines = {} }
+	local info = { tooltip = tt, name = tt:GetName(), lines = {} }
 	info.leftTextName = info.name .. 'TextLeft'
 	info.rightTextName = info.name .. 'TextRight'
 
@@ -1156,6 +1161,10 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 			local rightText = right and right:GetText() or nil
 
 			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
+		end
+
+		if info.tooltip == E.ScanTooltip and info.tooltip:IsShown() then
+			info.tooltip:Hide()
 		end
 
 		return info
