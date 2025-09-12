@@ -12,7 +12,7 @@ local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
-local UIParent = UIParent
+local WorldFrame = WorldFrame
 
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
@@ -91,7 +91,7 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
-	tt:SetOwner(UIParent, 'ANCHOR_NONE')
+	tt:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
 	local hasItem = tt:SetInventoryItem(unit, slot)
 	tt:Show()

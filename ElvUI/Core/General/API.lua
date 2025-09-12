@@ -32,6 +32,7 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitFactionGroup = UnitFactionGroup
@@ -305,7 +306,7 @@ end
 function E:GetUnitSpecInfo(unit)
 	if not UnitIsPlayer(unit) then return end
 
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
@@ -1199,7 +1200,7 @@ function E:ScanTooltip_UnitInfo(unit)
 	if C_TooltipInfo_GetUnit then
 		return C_TooltipInfo_GetUnit(unit)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
 		E.ScanTooltip:Show()
 
@@ -1211,7 +1212,7 @@ function E:ScanTooltip_InventoryInfo(unit, slot)
 	if C_TooltipInfo_GetInventoryItem then
 		return C_TooltipInfo_GetInventoryItem(unit, slot)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetInventoryItem(unit, slot)
 		E.ScanTooltip:Show()
 
@@ -1223,7 +1224,7 @@ function E:ScanTooltip_HyperlinkInfo(link)
 	if C_TooltipInfo_GetHyperlink then
 		return C_TooltipInfo_GetHyperlink(link)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetHyperlink(link)
 		E.ScanTooltip:Show()
 
