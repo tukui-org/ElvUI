@@ -256,6 +256,10 @@ local function UpdatePips(element, numStages)
 	end
 end
 
+local function CastMatch(element, castID, spellID)
+	return element.castID == castID and element.spellID == spellID
+end
+
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -268,7 +272,7 @@ end
 
 local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
@@ -419,11 +423,11 @@ end
 
 local function CastUpdate(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -478,11 +482,11 @@ end
 
 local function CastStop(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -508,11 +512,11 @@ end
 
 local function CastFail(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -547,11 +551,13 @@ end
 
 local function CastInterruptible(self, event, unit)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if(not element:IsShown()) then return end
+	if not element:IsShown() then
+		return
+	end
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
 
