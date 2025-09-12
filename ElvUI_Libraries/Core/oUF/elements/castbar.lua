@@ -295,8 +295,9 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
-	else
+	else -- try both API when its forced
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		event = 'UNIT_SPELLCAST_START'
 
 		if not name then
 			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
