@@ -382,6 +382,9 @@ function UF:Configure_Auras(frame, which)
 	auras.auraSort = UF.SortAuraFuncs[settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
+	auras.tooltipAnchor = settings.tooltipAnchorType
+	auras.tooltipAnchorX = settings.tooltipAnchorX
+	auras.tooltipAnchorY = settings.tooltipAnchorY
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
 		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))

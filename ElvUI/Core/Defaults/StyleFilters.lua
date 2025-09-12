@@ -77,7 +77,7 @@ G.nameplates.filters = {
 			alpha = 50
 		}
 	},
-	["Below 20"] = {
+	ElvUI_Below20 = {
 		triggers = {
 			healthThreshold = true,
 			underHealthThreshold = 0.2,
@@ -89,11 +89,11 @@ G.nameplates.filters = {
 		},
 		actions = {
 			tags = {
-				name = "[healthcolor][name][ || >perhp<%]"
+				name = '[healthcolor][name][ || >perhp<%]'
 			}
 		}
 	},
-	["Below 20 (Players)"] = {
+	ElvUI_Below20_Players = {
 		triggers = {
 			healthThreshold = true,
 			underHealthThreshold = 0.2,
@@ -106,7 +106,7 @@ G.nameplates.filters = {
 		},
 		actions = {
 			tags = {
-				name = "[spec:icon< ][healthcolor][name][ || >perhp<%]"
+				name = '[spec:icon< ][healthcolor][name][ || >perhp<%]'
 			}
 		}
 	}

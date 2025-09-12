@@ -157,13 +157,15 @@ end
 -- end block
 
 local function resetAttributes(self)
-	self.castID = nil
 	self.casting = nil
 	self.channeling = nil
 	self.empowering = nil
-	self.notInterruptible = nil
+	self.castID = nil
 	self.spellID = nil
-	self.spellName = nil -- ElvUI
+	self.spellName = nil
+	self.notInterruptible = nil
+	self.tradeSkillCastID = nil
+	self.isTradeSkill = nil
 
 	wipe(self.stagePoints)
 
@@ -264,17 +266,17 @@ local function ShouldShow(element, unit)
 	return element.__owner.unit == unit
 end
 
-local function CastStart(self, real, unit, castGUID, spellID, castTime)
-	if oUF.isRetail and real == 'UNIT_SPELLCAST_START' and not castGUID then return end
+local function CastStart(self, event, unit, castGUID, spellID, castTime)
+	if oUF.isRetail and event == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
 	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
 		return
 	end
 
-	local event, numStages, castDuration = 'UNIT_SPELLCAST_START'
+	local numStages, castDuration
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
-	if spellID and real == 'UNIT_SPELLCAST_SENT' then
+	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
 		if name then
@@ -282,7 +284,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, real, unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
 			if speedMod then
 				castTime = castTime * speedMod
 			end
@@ -291,12 +293,16 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
-	else
+	elseif event == 'UNIT_SPELLCAST_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
+		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+	else -- try both API when its forced
+		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		event = 'UNIT_SPELLCAST_START'
 
 		if not name then
 			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
-
 			event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
 		end
 	end
@@ -312,7 +318,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
 
-	if strsub(real, 1, 14) == 'UNIT_SPELLCAST' then
+	if strsub(event, 1, 14) == 'UNIT_SPELLCAST' then
 		UpdateCurrentTarget(element)
 	end
 
@@ -345,7 +351,7 @@ local function CastStart(self, real, unit, castGUID, spellID, castTime)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and isTradeSkill and unit == 'player' then
+	if mergeTradeskill and unit == 'player' and isTradeSkill then
 		element.duration = element.duration + (element.max * tradeskillCurrent)
 		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
@@ -419,7 +425,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
@@ -478,14 +484,13 @@ local function CastStop(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and (tradeskillCurrent == tradeskillTotal) and unit == 'player' then
+	if mergeTradeskill and unit == 'player' and (tradeskillCurrent == tradeskillTotal) then
 		mergeTradeskill = false
-		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -509,7 +514,7 @@ local function CastFail(self, event, unit, castID, spellID)
 		return
 	end
 
-	if(not element:IsShown() or ((unit == 'player' or oUF.isRetail) and (element.castID ~= castID)) or (oUF.isRetail and (element.spellID ~= spellID))) then
+	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
 		return
 	end
 
@@ -524,7 +529,6 @@ local function CastFail(self, event, unit, castID, spellID)
 	-- ElvUI block
 	if mergeTradeskill and unit == 'player' then
 		mergeTradeskill = false
-		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -686,13 +690,13 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 		self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
 		if oUF.isRetail then
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-			self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
 
 		-- ElvUI block
@@ -748,13 +752,13 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
 		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+		self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
 		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 		end
 
 		-- ElvUI block

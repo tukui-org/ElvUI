@@ -25,17 +25,17 @@ function D:ScriptErrors_ClearHighlight()
 	D.ClearHighlight(self.ScrollFrame.Text)
 end
 
-function D:OnClick_FirstButton(button)
-	button.frame.index = 1
-	button.frame:Update()
+function D:OnClick_FirstButton()
+	self.frame.index = 1
+	self.frame:Update()
 end
 
-function D:OnClick_LastButton(button)
-	local data = D:GetErrorData(button.frame)
+function D:OnClick_LastButton()
+	local data = D:GetErrorData(self.frame)
 	if not data then return end
 
-	button.frame.index = #data
-	button.frame:Update()
+	self.frame.index = #data
+	self.frame:Update()
 end
 
 function D:GetErrorData(frame)

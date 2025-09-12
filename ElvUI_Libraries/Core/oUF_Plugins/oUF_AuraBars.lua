@@ -44,7 +44,10 @@ end
 local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	GameTooltip:SetOwner(self, self.__owner.__restricted and 'ANCHOR_CURSOR' or self.__owner.tooltipAnchor)
+	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+	-- otherwise it'll inherit said restrictions which will cause issues with
+	-- its further positioning, clamping, etc
+	GameTooltip:SetOwner(self, (self.__owner.__restricted and 'ANCHOR_CURSOR') or self.__owner.tooltipAnchor, self.__owner.tooltipAnchorX, self.__owner.tooltipAnchorY)
 
 	-- we need compatibility here because this wasnt implemented on Era or Mists
 	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
@@ -326,12 +329,14 @@ local function Enable(self)
 		element.growth = element.growth or 'UP'
 		element.maxBars = element.maxBars or 32
 		element.barSpacing = element.barSpacing or 2
+		element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
+		element.tooltipAnchorX = element.tooltipAnchorX or 0
+		element.tooltipAnchorY = element.tooltipAnchorY or 0
 
 		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 		-- otherwise it'll inherit said restrictions which will cause issues
 		-- with its further positioning, clamping, etc
 		element.__restricted = not pcall(self.GetCenter, self)
-		element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 		element:Show()
 
