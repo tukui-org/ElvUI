@@ -157,13 +157,15 @@ end
 -- end block
 
 local function resetAttributes(self)
-	self.castID = nil
 	self.casting = nil
 	self.channeling = nil
 	self.empowering = nil
-	self.notInterruptible = nil
+	self.castID = nil
 	self.spellID = nil
-	self.spellName = nil -- ElvUI
+	self.spellName = nil
+	self.notInterruptible = nil
+	self.tradeSkillCastID = nil
+	self.isTradeSkill = nil
 
 	wipe(self.stagePoints)
 
@@ -349,7 +351,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and isTradeSkill and unit == 'player' then
+	if mergeTradeskill and unit == 'player' and isTradeSkill then
 		element.duration = element.duration + (element.max * tradeskillCurrent)
 		element.max = element.max * tradeskillTotal
 		element.holdTime = 1
@@ -487,9 +489,8 @@ local function CastStop(self, event, unit, castID, spellID)
 	end
 
 	-- ElvUI block
-	if mergeTradeskill and (tradeskillCurrent == tradeskillTotal) and unit == 'player' then
+	if mergeTradeskill and unit == 'player' and (tradeskillCurrent == tradeskillTotal) then
 		mergeTradeskill = false
-		element.tradeSkillCastID = nil
 	end
 	-- end block
 
@@ -528,7 +529,6 @@ local function CastFail(self, event, unit, castID, spellID)
 	-- ElvUI block
 	if mergeTradeskill and unit == 'player' then
 		mergeTradeskill = false
-		element.tradeSkillCastID = nil
 	end
 	-- end block
 
