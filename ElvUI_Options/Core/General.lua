@@ -224,6 +224,7 @@ Cosmetic.afkGroup = ACH:Group(L["AFK Mode"], nil, 30)
 Cosmetic.afkGroup.inline = true
 Cosmetic.afkGroup.args.afk = ACH:Toggle(L["Enable"], L["When you go AFK display the AFK screen."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
 Cosmetic.afkGroup.args.afkSpin = ACH:Toggle(L["Camera Spin"], L["Toggle the camera spin on the AFK screen."], 2, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value end)
+Cosmetic.afkGroup.args.afkAnimation = ACH:Select(L["Idle Animation"], L["Select the idle animation on the AFK screen."], 1, function() if E.Retail then return {dance = L["Dance"], salute = L["Salute"], talk = L["Talk"], shy = L["Shy"], roar = L["Roar"], lean = L["Lean"] } else return { dance = L["Dance"], salute = L["Salute"], talk = L["Talk"], shy = L["Shy"], roar = L["Roar"] } end end)
 Cosmetic.afkGroup.args.afkChat = ACH:Toggle(L["Chat"], L["Display messages from Guild and Whisper on AFK screen.\nThis chat can be dragged around (position will be saved)."], 3, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value AFK:Toggle() end)
 Cosmetic.afkGroup.args.afkChatReset = ACH:Execute(L["Reset Chat Position"], nil, 4, function() AFK:ResetChatPosition(true) end)
 
