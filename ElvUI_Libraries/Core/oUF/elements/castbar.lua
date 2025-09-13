@@ -674,10 +674,14 @@ local function onUpdate(self, elapsed)
 		self.holdTime = self.holdTime - elapsed
 		self:SetValue(self.holdTime)
 
-		if self.holdTime < 0 then
-			self.Time:SetText('')
-		else
-			self.Time:SetFormattedText('%.1f', self.holdTime)
+		if self.Time and self.elapsed >= .01 then
+			if self.holdTime < 0 then
+				self.Time:SetText('')
+			else
+				self.Time:SetFormattedText('%.1f', self.holdTime)
+			end
+
+			self.elapsed = 0
 		end
 	else
 		resetAttributes(self)
