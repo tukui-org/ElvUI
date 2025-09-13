@@ -18,7 +18,7 @@ local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
-local hasValidPlayer = false
+local hasValidPlayer
 local cachedVisibility = {}
 local cachedPriority = SpellIsPriorityAura and {}
 
@@ -219,7 +219,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 		if removed then return false end -- an aura has been yeeted into the abyss
 
 		return true -- who are you
-	elseif hasValidPlayer and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
+	elseif (hasValidPlayer or hasValidPlayer == nil) and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
 		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
 		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
