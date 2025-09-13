@@ -276,14 +276,14 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local numStages, castDuration
+	local real, numStages, castDuration = event
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
 		if name then
 			if castDuration and castDuration ~= 0 then
-				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
+				castTime = castDuration -- prefer duration time, otherwise use the static duration
 			end
 
 			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
@@ -310,8 +310,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	end
 
 	if not name or (isTradeSkill and element.hideTradeSkills) then
-		resetAttributes(element)
-		element:Hide()
+		if real ~= 'PLAYER_TARGET_CHANGED' or element.holdTime <= 0 then
+			resetAttributes(element)
+			element:Hide()
+		end
 
 		return
 	end
