@@ -143,7 +143,7 @@ local function UpdateDebuff(element, aura, forced, stackThreshold)
 			end
 		end
 
-		local c = DebuffColors[debuffType] or DebuffColors.none
+		local c = (DispelFilter[debuffType] and DebuffColors[debuffType]) or DebuffColors.none
 		element:SetBackdropBorderColor(c.r, c.g, c.b)
 
 		element:Show()
@@ -186,15 +186,11 @@ local function Update(self, event, unit, updateInfo)
 		while aura do
 			local debuffType = aura.dispelName -- we coudln't dispel if the unit its charmed, or its not friendly
 			if debuffType and (not isCharmed and not canAttack) and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
-				local priority
 				if addon.FilterDispellableDebuff then
 					DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
-
-					priority = (DispelFilter[debuffType] and DispelPriority[debuffType]) or 0
-				else
-					priority = DispelPriority[debuffType] or 0
 				end
 
+				local priority = DispelPriority[debuffType] or 0
 				if CheckPriority(priority, _priority, aura, _aura) then
 					_priority, _aura = priority, aura -- swap it to the new one
 				end
