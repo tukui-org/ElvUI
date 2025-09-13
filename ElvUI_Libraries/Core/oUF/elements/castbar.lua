@@ -666,14 +666,12 @@ local function onUpdate(self, elapsed)
 		end
 
 		self:SetValue(self.duration)
-	elseif(self.holdTime > 0) and (self.elapsed >= .01) then
+	elseif(self.holdTime > 0) then
 		if self.holdTime == self.timeToHold then
 			self:SetMinMaxValues(0, self.timeToHold)
 		end
 
 		self.holdTime = self.holdTime - elapsed
-		self.elapsed = 0
-
 		self:SetValue(self.holdTime)
 
 		if self.holdTime < 0 then
