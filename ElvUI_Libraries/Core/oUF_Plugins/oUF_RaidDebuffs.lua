@@ -150,6 +150,16 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 	end
 end
 
+local function CheckPriority(newPriority, oldPriority, newSpellID, oldSpellID)
+	if not newPriority then return end
+
+	if newPriority == oldPriority then
+		return newSpellID > oldSpellID
+	else
+		return newPriority > oldPriority
+	end
+end
+
 local function Update(self, event, unit, updateInfo)
 	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
@@ -185,7 +195,7 @@ local function Update(self, event, unit, updateInfo)
 					priority = DispelPriority[debuffType] or 0
 				end
 
-				if priority > _priority then
+				if CheckPriority(priority, _priority, spellID, _spellID) then
 					_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 				end
 			end
@@ -193,7 +203,7 @@ local function Update(self, event, unit, updateInfo)
 			-- handle from the list
 			local data = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
 			local priority = data and data.priority
-			if priority and (priority > _priority) then
+			if CheckPriority(priority, _priority, spellID, _spellID) then
 				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
 			end
 
