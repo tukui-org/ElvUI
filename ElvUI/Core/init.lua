@@ -364,7 +364,7 @@ function E:GetAddOnEnableState(addon, character)
 end
 
 function E:IsAddOnEnabled(addon)
-	return E:GetAddOnEnableState(addon, E.myname) == 2
+	return E:GetAddOnEnableState(addon, E.myguid) == 2
 end
 
 function E:SetEasyMenuAnchor(menu, frame)
