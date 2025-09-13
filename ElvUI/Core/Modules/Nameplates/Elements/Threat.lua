@@ -34,17 +34,18 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 	local nameplate, colors, db = self.__owner, NP.db.colors.threat, NP.db.threat
 	local styleFilter = NP:StyleFilterChanges(nameplate)
 	local styleScale = styleFilter.general and styleFilter.general.scale
-	local solo = db.useSoloColor and not NP.IsInGroup
+
+	nameplate.ThreatStatus = status
 
 	if not status and not styleScale then
 		nameplate.threatScale = 1
 		NP:ScalePlate(nameplate, 1)
 	elseif status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
 		NP:Health_SetColors(nameplate, true)
-		nameplate.ThreatStatus = status
 
 		local Color, Scale
 		if status == 3 then -- securely tanking
+			local solo = db.useSoloColor and not NP.IsInGroup
 			Color = (solo and colors.soloColor) or (self.offTank and colors.offTankColor) or (self.isTank and colors.goodColor) or colors.badColor
 			Scale = (self.isTank and db.goodScale) or db.badScale
 		elseif status == 2 then -- insecurely tanking
