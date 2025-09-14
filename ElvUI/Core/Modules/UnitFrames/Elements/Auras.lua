@@ -459,9 +459,12 @@ function UF:Configure_Auras(frame, which)
 end
 
 function UF.SortAuraFunc(a, b)
-	local frame = a and a:IsShown() and a:GetParent()
-	if b and frame then
-		return not b:IsShown() or (frame.db and frame.auraSort(a, b, frame.db.sortDirection))
+	if not a or not b or not a:IsShown() then return end
+	if not b:IsShown() then return true end
+
+	local frame = a:GetParent()
+	if frame and frame.db then
+		return frame.auraSort(a, b, frame.db.sortDirection)
 	end
 end
 
