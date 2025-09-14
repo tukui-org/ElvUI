@@ -86,8 +86,8 @@ function UF:GetAuraSortValue(dir, A, B)
 end
 
 function UF:GetAuraSortDirection(dir, a, b, A, B)
-	if A == B and (a.auraInstanceID and b.auraInstanceID) then
-		return UF:GetAuraSortValue(dir, a.auraInstanceID, b.auraInstanceID)
+	if A == B then
+		return UF:GetAuraSortValue(dir, a.auraInstanceID or 0, b.auraInstanceID or 0)
 	else -- we sort by Aura Instance ID if they match priority
 		return UF:GetAuraSortValue(dir, A, B)
 	end
@@ -106,6 +106,9 @@ UF.SortAuraFuncs = {
 	PLAYER = function(a, b, dir)
 		return UF:GetAuraSortDirection(dir, a, b, a.isPlayer and 1 or 0, b.isPlayer and 1 or 0)
 	end,
+	INDEX = function(a, b, dir)
+		return UF:GetAuraSortValue(dir, a.auraInstanceID or 0, b.auraInstanceID or 0)
+	end
 }
 
 UF.headerGroupBy = {
