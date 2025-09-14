@@ -56,6 +56,8 @@ function E:SpawnTutorialFrame()
 	tutorial:SetTemplate('Transparent')
 	tutorial:Hide()
 
+	E.TutorialWindow = tutorial
+
 	local header = CreateFrame('Button', '$parentHeader', tutorial)
 	header:SetTemplate(nil, true)
 	header:Width(120); header:Height(25)
