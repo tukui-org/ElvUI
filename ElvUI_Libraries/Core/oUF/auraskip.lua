@@ -219,7 +219,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 		if removed then return false end -- an aura has been yeeted into the abyss
 
 		return true -- who are you
-	elseif (hasValidPlayer or hasValidPlayer == nil) and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
+	elseif hasValidPlayer ~= false and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
 		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
 		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
