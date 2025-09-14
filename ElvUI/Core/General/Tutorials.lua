@@ -1,12 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
-local _G = _G
 local CreateFrame = CreateFrame
 local DISABLE = DISABLE
 local HIDE = HIDE
-
--- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
 	L["Need help? Join our Discord: https://discord.tukui.org"],
@@ -26,6 +23,7 @@ E.TutorialList = {
 	L["To list all available ElvUI commands, type in chat /ehelp"]
 }
 
+local tutorial
 function E:SetNextTutorial()
 	E.db.currentTutorial = E.db.currentTutorial or 0
 	E.db.currentTutorial = E.db.currentTutorial + 1
@@ -34,7 +32,7 @@ function E:SetNextTutorial()
 		E.db.currentTutorial = 1
 	end
 
-	ElvUITutorialWindow.desc:SetText(E.TutorialList[E.db.currentTutorial])
+	tutorial.desc:SetText(E.TutorialList[E.db.currentTutorial])
 end
 
 function E:SetPrevTutorial()
@@ -45,72 +43,72 @@ function E:SetPrevTutorial()
 		E.db.currentTutorial = #E.TutorialList
 	end
 
-	ElvUITutorialWindow.desc:SetText(E.TutorialList[E.db.currentTutorial])
+	tutorial.desc:SetText(E.TutorialList[E.db.currentTutorial])
 end
 
 function E:SpawnTutorialFrame()
-	local f = CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent)
-	f:SetFrameStrata('DIALOG')
-	f:SetToplevel(true)
-	f:SetClampedToScreen(true)
-	f:Width(360)
-	f:Height(110)
-	f:SetTemplate('Transparent')
-	f:Hide()
+	tutorial = CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent)
+	tutorial:SetFrameStrata('DIALOG')
+	tutorial:SetToplevel(true)
+	tutorial:SetClampedToScreen(true)
+	tutorial:Width(360)
+	tutorial:Height(110)
+	tutorial:SetTemplate('Transparent')
+	tutorial:Hide()
 
-	local header = CreateFrame('Button', nil, f)
+	local header = CreateFrame('Button', '$parentHeader', tutorial)
 	header:SetTemplate(nil, true)
 	header:Width(120); header:Height(25)
-	header:Point('CENTER', f, 'TOP')
+	header:Point('CENTER', tutorial, 'TOP')
 	header:OffsetFrameLevel(2)
 
 	local title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
 	title:Point('CENTER', header, 'CENTER')
 	title:SetText('ElvUI')
+	tutorial.title = title
 
-	local desc = f:CreateFontString(nil, 'ARTWORK')
+	local desc = tutorial:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
 	desc:SetJustifyV('TOP')
 	desc:SetJustifyH('LEFT')
 	desc:Point('TOPLEFT', 18, -32)
 	desc:Point('BOTTOMRIGHT', -18, 30)
-	f.desc = desc
+	tutorial.desc = desc
 
-	f.disableButton = CreateFrame('CheckButton', f:GetName()..'DisableButton', f, 'UICheckButtonTemplate')
-	_G[f.disableButton:GetName() .. 'Text']:SetText(DISABLE)
-	f.disableButton:Point('BOTTOMLEFT')
-	S:HandleCheckBox(f.disableButton)
-	f.disableButton:SetScript('OnShow', function(btn) btn:SetChecked(E.db.hideTutorial) end)
+	local disableButton = CreateFrame('CheckButton', '$parentDisableButton', tutorial, 'UICheckButtonTemplate')
+	disableButton:Point('BOTTOMLEFT')
+	disableButton:SetScript('OnShow', function(btn) btn:SetChecked(E.db.hideTutorial) end)
+	disableButton:SetScript('OnClick', function(btn) E.db.hideTutorial = btn:GetChecked() end)
+	disableButton.Text:SetText(DISABLE)
+	S:HandleCheckBox(disableButton)
 
-	f.disableButton:SetScript('OnClick', function(btn) E.db.hideTutorial = btn:GetChecked() end)
+	local hideButton = CreateFrame('Button', '$parentHideButton', tutorial, 'UIPanelButtonTemplate')
+	hideButton:Point('BOTTOMRIGHT', -5, 5)
+	hideButton:SetScript('OnClick', function() E:StaticPopupSpecial_Hide(tutorial) end)
+	hideButton.Text:SetText(HIDE)
+	S:HandleButton(hideButton)
 
-	f.hideButton = CreateFrame('Button', f:GetName()..'HideButton', f, 'UIPanelButtonTemplate')
-	f.hideButton:Point('BOTTOMRIGHT', -5, 5)
-	S:HandleButton(f.hideButton)
-	_G[f.hideButton:GetName() .. 'Text']:SetText(HIDE)
-	f.hideButton:SetScript('OnClick', function(btn) E:StaticPopupSpecial_Hide(btn:GetParent()) end)
+	local nextButton = CreateFrame('Button', '$parentNextButton', tutorial, 'UIPanelButtonTemplate')
+	nextButton:Point('RIGHT', hideButton, 'LEFT', -4, 0)
+	nextButton:Width(20)
+	nextButton:SetScript('OnClick', function() E:SetNextTutorial() end)
+	nextButton.Text:SetText('>')
+	S:HandleButton(nextButton)
 
-	f.nextButton = CreateFrame('Button', f:GetName()..'NextButton', f, 'UIPanelButtonTemplate')
-	f.nextButton:Point('RIGHT', f.hideButton, 'LEFT', -4, 0)
-	f.nextButton:Width(20)
-	S:HandleButton(f.nextButton)
-	_G[f.nextButton:GetName() .. 'Text']:SetText('>')
-	f.nextButton:SetScript('OnClick', function() E:SetNextTutorial() end)
+	local prevButton = CreateFrame('Button', '$parentPrevButton', tutorial, 'UIPanelButtonTemplate')
+	prevButton:Point('RIGHT', nextButton, 'LEFT', -4, 0)
+	prevButton:Width(20)
+	prevButton:SetScript('OnClick', function() E:SetPrevTutorial() end)
+	prevButton.Text:SetText('<')
+	S:HandleButton(prevButton)
 
-	f.prevButton = CreateFrame('Button', f:GetName()..'PrevButton', f, 'UIPanelButtonTemplate')
-	f.prevButton:Point('RIGHT', f.nextButton, 'LEFT', -4, 0)
-	f.prevButton:Width(20)
-	S:HandleButton(f.prevButton)
-	_G[f.prevButton:GetName() .. 'Text']:SetText('<')
-	f.prevButton:SetScript('OnClick', function() E:SetPrevTutorial() end)
-
-	return f
+	return tutorial
 end
 
 function E:Tutorials(forceShow)
 	if not forceShow and (E.db.hideTutorial or not E.private.install_complete) then return end
 
-	E:StaticPopupSpecial_Show(ElvUITutorialWindow or E:SpawnTutorialFrame())
+	E:StaticPopupSpecial_Show(tutorial or E:SpawnTutorialFrame())
 	E:SetNextTutorial()
 end
