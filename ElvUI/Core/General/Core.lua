@@ -2089,10 +2089,6 @@ function E:Initialize()
 		E:StaticPopup_Show('UPDATE_REQUEST')
 	end
 
-	if E.OtherAddons.Tukui then
-		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
-	end
-
 	if GetCVarBool('scriptProfile') then
 		E:StaticPopup_Show('SCRIPT_PROFILE')
 	end

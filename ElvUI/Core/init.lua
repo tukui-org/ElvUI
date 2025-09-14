@@ -483,4 +483,8 @@ function E:OnInitialize()
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
+
+	if E.OtherAddons.Tukui then
+		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
+	end
 end
