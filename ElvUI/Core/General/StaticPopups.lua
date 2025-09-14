@@ -136,8 +136,17 @@ E.PopupDialogs.CONFIRM_LOSE_BINDING_CHANGES = {
 
 E.PopupDialogs.TUKUI_ELVUI_INCOMPATIBLE = {
 	text = L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."],
-	OnAccept = function() DisableAddOn('ElvUI', E.myguid); ReloadUI() end,
-	OnCancel = function() DisableAddOn('Tukui', E.myguid); ReloadUI() end,
+	OnAccept = function()
+		for addon in next, E.Status_Addons do
+			DisableAddOn(addon, E.myguid)
+		end
+
+		ReloadUI()
+	end,
+	OnCancel = function()
+		DisableAddOn('Tukui', E.myguid)
+		ReloadUI()
+	end,
 	button1 = 'ElvUI',
 	button2 = 'Tukui',
 	whileDead = 1,
