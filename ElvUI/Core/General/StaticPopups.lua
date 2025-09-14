@@ -1320,7 +1320,9 @@ function E:InitializeStaticPopups()
 			popup.checkButton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 			popup.checkButton:Size(24)
 
-			S:HandleCheckBox(popup.checkButton)
+			if not E.OtherAddons.Tukui then
+				S:HandleCheckBox(popup.checkButton)
+			end
 
 			popup.checkButtonText = _G[name..'CheckButtonText']
 
@@ -1343,7 +1345,7 @@ function E:InitializeStaticPopups()
 		end
 
 		local moneyInputFrame = popup.moneyInputFrame
-		if moneyInputFrame then
+		if moneyInputFrame and not E.OtherAddons.Tukui then
 			S:HandleEditBox(moneyInputFrame.gold)
 			S:HandleEditBox(moneyInputFrame.silver)
 			S:HandleEditBox(moneyInputFrame.copper)
@@ -1358,11 +1360,13 @@ function E:InitializeStaticPopups()
 			editBox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 			editBox:OffsetFrameLevel(1)
 
-			S:HandleEditBox(editBox)
+			if not E.OtherAddons.Tukui then
+				S:HandleEditBox(editBox)
 
-			if not editBox.NineSlice then
-				editBox.backdrop:Point('TOPLEFT', -2, -4)
-				editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+				if not editBox.NineSlice then
+					editBox.backdrop:Point('TOPLEFT', -2, -4)
+					editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+				end
 			end
 		end
 

@@ -1337,8 +1337,6 @@ function S:HandleEditBox(frame, template)
 
 	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, true)
 
-	if not frame.backdrop then return end -- tukui was loaded and this is popup code
-
 	S:HandleBlizzardRegions(frame)
 
 	if frame.NineSlice then
@@ -1463,10 +1461,7 @@ do
 			frame:Size(16)
 		else
 			frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, nil, frameLevel)
-
-			if frame.backdrop then -- tukui was loaded and this is popup code
-				frame.backdrop:SetInside(nil, 4, 4)
-			end
+			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
 		if not noReplaceTextures then
@@ -1476,7 +1471,7 @@ do
 
 					local checkedTexture = frame:GetCheckedTexture()
 					checkedTexture:SetVertexColor(1, .82, 0, 0.8)
-					checkedTexture:SetInside(frame.backdrop or frame)
+					checkedTexture:SetInside(frame.backdrop)
 				else
 					frame:SetCheckedTexture(check)
 
@@ -1492,7 +1487,7 @@ do
 
 					local disabledTexture = frame:GetDisabledTexture()
 					disabledTexture:SetVertexColor(.6, .6, .6, .8)
-					disabledTexture:SetInside(frame.backdrop or frame)
+					disabledTexture:SetInside(frame.backdrop)
 				else
 					frame:SetDisabledTexture(disabled)
 
