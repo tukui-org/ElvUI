@@ -256,6 +256,10 @@ local function UpdatePips(element, numStages)
 	end
 end
 
+local function CastMatch(element, castID, spellID)
+	return element.castID == castID and element.spellID == spellID
+end
+
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -267,21 +271,19 @@ local function ShouldShow(element, unit)
 end
 
 local function CastStart(self, event, unit, castGUID, spellID, castTime)
-	if oUF.isRetail and event == 'UNIT_SPELLCAST_START' and not castGUID then return end
-
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	local numStages, castDuration
+	local real, numStages, castDuration = event
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
 		if name then
 			if castDuration and castDuration ~= 0 then
-				castTime = castDuration -- prefer a real duration time, otherwise use the static duration
+				castTime = castDuration -- prefer duration time, otherwise use the static duration
 			end
 
 			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
@@ -308,8 +310,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	end
 
 	if not name or (isTradeSkill and element.hideTradeSkills) then
-		resetAttributes(element)
-		element:Hide()
+		if real ~= 'PLAYER_TARGET_CHANGED' or element.holdTime <= 0 then
+			resetAttributes(element)
+			element:Hide()
+		end
 
 		return
 	end
@@ -421,11 +425,11 @@ end
 
 local function CastUpdate(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -480,11 +484,11 @@ end
 
 local function CastStop(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -510,11 +514,11 @@ end
 
 local function CastFail(self, event, unit, castID, spellID)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if not element:IsShown() or (element.castID ~= castID or element.spellID ~= spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -549,11 +553,13 @@ end
 
 local function CastInterruptible(self, event, unit)
 	local element = self.Castbar
-	if(not (element.ShouldShow or ShouldShow) (element, unit)) then
+	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	if(not element:IsShown()) then return end
+	if not element:IsShown() then
+		return
+	end
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
 
@@ -661,7 +667,22 @@ local function onUpdate(self, elapsed)
 
 		self:SetValue(self.duration)
 	elseif(self.holdTime > 0) then
+		if self.holdTime == self.timeToHold then
+			self:SetMinMaxValues(0, self.timeToHold)
+		end
+
 		self.holdTime = self.holdTime - elapsed
+		self:SetValue(self.holdTime)
+
+		if self.Time and self.elapsed >= .01 then
+			if self.holdTime < 0 then
+				self.Time:SetText('')
+			else
+				self.Time:SetFormattedText('%.1f', self.holdTime)
+			end
+
+			self.elapsed = 0
+		end
 	else
 		resetAttributes(self)
 		self:Hide()

@@ -214,7 +214,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, offsetShort)
 	config.args.generalGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, offsetShort)
 	config.args.generalGroup.args.spacing = ACH:Range(L["Spacing"], nil, 10, spacingNormal)
-	config.args.generalGroup.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() if auraType ~= 'auras' then local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end end)
+	config.args.generalGroup.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], AURAS = auraType ~= 'auras' and L["Auras"] or nil, BUFFS = auraType ~= 'buffs' and L["Buffs"] or nil, DEBUFFS = auraType ~= 'debuffs' and L["Debuffs"] or nil, HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, function() if auraType ~= 'auras' then local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS' end end)
 
 	config.args.generalGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, C.Values.Anchors)
 	config.args.generalGroup.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 13, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'LEFT' or point == 'RIGHT' end)

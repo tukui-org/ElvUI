@@ -136,8 +136,17 @@ E.PopupDialogs.CONFIRM_LOSE_BINDING_CHANGES = {
 
 E.PopupDialogs.TUKUI_ELVUI_INCOMPATIBLE = {
 	text = L["Oh lord, you have got ElvUI and Tukui both enabled at the same time. Select an addon to disable."],
-	OnAccept = function() DisableAddOn('ElvUI', E.myguid); ReloadUI() end,
-	OnCancel = function() DisableAddOn('Tukui', E.myguid); ReloadUI() end,
+	OnAccept = function()
+		for addon in next, E.Status_Addons do
+			DisableAddOn(addon, E.myguid)
+		end
+
+		ReloadUI()
+	end,
+	OnCancel = function()
+		DisableAddOn('Tukui', E.myguid)
+		ReloadUI()
+	end,
 	button1 = 'ElvUI',
 	button2 = 'Tukui',
 	whileDead = 1,
@@ -1295,7 +1304,7 @@ function E:StaticPopup_HandleButtons(popup)
 	end
 end
 
-function E:Contruct_StaticPopups()
+function E:LoadStaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, E.MAX_STATIC_POPUPS do
@@ -1320,7 +1329,9 @@ function E:Contruct_StaticPopups()
 			popup.checkButton:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 			popup.checkButton:Size(24)
 
-			S:HandleCheckBox(popup.checkButton)
+			if not E.OtherAddons.Tukui then
+				S:HandleCheckBox(popup.checkButton)
+			end
 
 			popup.checkButtonText = _G[name..'CheckButtonText']
 
@@ -1343,7 +1354,7 @@ function E:Contruct_StaticPopups()
 		end
 
 		local moneyInputFrame = popup.moneyInputFrame
-		if moneyInputFrame then
+		if moneyInputFrame and not E.OtherAddons.Tukui then
 			S:HandleEditBox(moneyInputFrame.gold)
 			S:HandleEditBox(moneyInputFrame.silver)
 			S:HandleEditBox(moneyInputFrame.copper)
@@ -1358,11 +1369,13 @@ function E:Contruct_StaticPopups()
 			editBox:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 			editBox:OffsetFrameLevel(1)
 
-			S:HandleEditBox(editBox)
+			if not E.OtherAddons.Tukui then
+				S:HandleEditBox(editBox)
 
-			if not editBox.NineSlice then
-				editBox.backdrop:Point('TOPLEFT', -2, -4)
-				editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+				if not editBox.NineSlice then
+					editBox.backdrop:Point('TOPLEFT', -2, -4)
+					editBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
+				end
 			end
 		end
 

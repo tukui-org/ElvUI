@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
+local tonumber, pairs, ipairs, error, unpack, tostring = tonumber, pairs, ipairs, error, unpack, tostring
 local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
@@ -2051,52 +2051,61 @@ function E:Initialize()
 
 	E:UpdateDB()
 	E:UIScale()
-	E:BuildPrefixValues()
-	E:LoadAPI()
-	E:LoadCommands()
-	E:InitializeModules()
-	E:LoadMovers()
-	E:UpdateMedia()
-	E:UpdateDispelColors()
-	E:UpdateCustomClassColors()
-	E:UpdateCooldownSettings('all')
-	E:Contruct_StaticPopups()
+	E:LoadStaticPopups()
 
-	if E.Retail then
-		E:Tutorials()
-	end
+	if E.OtherAddons.Tukui then
+		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
+	else
+		E:BuildPrefixValues()
+		E:LoadAPI()
+		E:LoadCommands()
+		E:InitializeModules()
+		E:LoadMovers()
+		E:UpdateMedia()
+		E:UpdateDispelColors()
+		E:UpdateCustomClassColors()
+		E:UpdateCooldownSettings('all')
 
-	if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
-		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
-	end
+		E.initialized = true
 
-	E.initialized = true
+		if E.Retail then
+			E:Tutorials()
+		end
 
-	if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
-		E:TagUpdateRate(E.db.general.tagUpdateRate)
-	end
+		if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
+		end
 
-	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
-		E:SetSmoothingAmount(E.db.general.smoothingAmount)
-	end
+		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+			E:TagUpdateRate(E.db.general.tagUpdateRate)
+		end
 
-	if not E.private.install_complete then
-		E:Install()
-	end
+		if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
+			E:SetSmoothingAmount(E.db.general.smoothingAmount)
+		end
 
-	if E.version ~= E.Libs.version then
-		E.updateRequestTriggered = true
-		E:StaticPopup_Show('UPDATE_REQUEST')
-	end
+		if not E.private.install_complete then
+			E:Install()
+		end
 
-	if GetCVarBool('scriptProfile') then
-		E:StaticPopup_Show('SCRIPT_PROFILE')
-	end
+		if E.version ~= E.Libs.version then
+			E.updateRequestTriggered = true
+			E:StaticPopup_Show('UPDATE_REQUEST')
+		end
 
-	if E.db.general.loginmessage then
-		local msg = format(L["LOGIN_MSG"], E.versionString)
-		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
-		print(msg)
-		print(L["LOGIN_MSG_HELP"])
+		if GetCVarBool('scriptProfile') then
+			E:StaticPopup_Show('SCRIPT_PROFILE')
+		end
+
+		if E.db.general.loginmessage then
+			local msg, _ = format(L["LOGIN_MSG"], E.versionString)
+
+			if Chat.Initialized then -- setup the link
+				_, msg = Chat:FindURL('CHAT_MSG_DUMMY', msg)
+			end
+
+			print(msg)
+			print(L["LOGIN_MSG_HELP"])
+		end
 	end
 end

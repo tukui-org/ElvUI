@@ -426,6 +426,8 @@ end
 function UF:GetAuraAnchorFrame(frame, attachTo)
 	if attachTo == 'FRAME' then
 		return frame
+	elseif attachTo == 'AURAS' and frame.Auras then
+		return frame.Auras
 	elseif attachTo == 'BUFFS' and frame.Buffs then
 		return frame.Buffs
 	elseif attachTo == 'DEBUFFS' and frame.Debuffs then

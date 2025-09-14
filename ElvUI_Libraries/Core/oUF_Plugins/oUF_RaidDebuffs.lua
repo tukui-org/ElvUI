@@ -18,7 +18,6 @@ local DebuffColors = LibDispel:GetDebuffTypeColor()
 local abs = math.abs
 local type, next, pairs, wipe = type, next, pairs, wipe
 
-local UnpackAuraData = AuraUtil.UnpackAuraData
 local UnitCanAttack = UnitCanAttack
 local UnitIsCharmed = UnitIsCharmed
 local GetTime = GetTime
@@ -54,7 +53,7 @@ local function AddSpell(spell, priority, stackThreshold)
 
 	if spell then
 		debuff_data[spell] = {
-			priority = (addon.priority + priority),
+			priority = addon.priority + priority,
 			stackThreshold = stackThreshold,
 		}
 	end
@@ -62,11 +61,11 @@ end
 
 function addon:RegisterDebuffs(t)
 	for spell in pairs(t) do
-		if type(t[spell]) == 'boolean' then
-			local oldValue = t[spell]
-			t[spell] = { enable = oldValue, priority = 0, stackThreshold = 0 }
-		elseif t[spell].enable then
-			AddSpell(spell, t[spell].priority or 0, t[spell].stackThreshold or 0)
+		local info = t[spell]
+		if type(info) == 'boolean' then
+			t[spell] = { enable = info, priority = 0, stackThreshold = 0 }
+		elseif info.enable then
+			AddSpell(spell, info.priority or 0, info.stackThreshold or 0)
 		end
 	end
 end
@@ -96,14 +95,21 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
-local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, modRate)
-	local element = self.RaidDebuffs
+local function UpdateDebuff(element, aura, forced, stackThreshold)
+	local name, icon, count, duration, timeMod, spellID, debuffType, expiration
+	if forced then
+		spellID, count, duration, expiration, stackThreshold, timeMod, debuffType = 5782, 5, 0, 60, 0, 1, 'Magic'
+		name, _, icon = oUF:GetSpellInfo(spellID)
+	elseif aura then
+		name, icon, count, duration, timeMod, spellID, debuffType, expiration = aura.name, aura.icon, aura.applications, aura.duration, aura.timeMod, aura.spellId, aura.dispelName, aura.expirationTime
+	end
+
 	if name and (count >= stackThreshold) then
 		element.icon:SetTexture(icon)
 		element.icon:Show()
 
-		element.modRate = modRate
-		element.endTime = endTime
+		element.modRate = timeMod
+		element.endTime = expiration
 		element.duration = duration
 		element.reverse = element.ReverseTimer and element.ReverseTimer[spellID]
 
@@ -130,14 +136,14 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 
 		if element.cd then
 			if duration and (duration > 0) then
-				element.cd:SetCooldown(endTime - duration, duration, modRate)
+				element.cd:SetCooldown(expiration - duration, duration, timeMod)
 				element.cd:Show()
 			else
 				element.cd:Hide()
 			end
 		end
 
-		local c = DebuffColors[debuffType] or DebuffColors.none
+		local c = (DispelFilter[debuffType] and DebuffColors[debuffType]) or DebuffColors.none
 		element:SetBackdropBorderColor(c.r, c.g, c.b)
 
 		element:Show()
@@ -146,7 +152,21 @@ local function UpdateDebuff(self, name, icon, count, debuffType, duration, endTi
 	end
 
 	if element.PostUpdate then
-		element:PostUpdate(name, icon, count, debuffType, duration, endTime, spellID, stackThreshold, modRate)
+		element:PostUpdate(name, icon, count, debuffType, duration, expiration, spellID, stackThreshold, timeMod)
+	end
+end
+
+local function CheckPriority(newPriority, oldPriority, newAura, oldAura)
+	if not newPriority then
+		return -- debuff_data missing priority
+	elseif newPriority == oldPriority and (newAura and oldAura) then
+		if newAura.auraInstanceID and oldAura.auraInstanceID then
+			return newAura.auraInstanceID > oldAura.auraInstanceID
+		else -- prefer the latest aura but fallback to spellId
+			return newAura.spellId > oldAura.spellId
+		end
+	else
+		return newPriority > oldPriority
 	end
 end
 
@@ -154,13 +174,9 @@ local function Update(self, event, unit, updateInfo)
 	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local element = self.RaidDebuffs
-	local _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate
-	local _stackThreshold, _priority = 0, 0
+	local _stackThreshold, _priority, _forced, _aura = 0, 0, element.forceShow
 
-	if element.forceShow then
-		_spellID, _count, _dtype, _duration, _endTime, _stackThreshold, _modRate = 5782, 5, 'Magic', 0, 60, 0, 1
-		_name, _, _icon = oUF:GetSpellInfo(_spellID)
-	else
+	if not _forced then
 		local isCharmed = UnitIsCharmed(unit) -- store if the unit its charmed, mind controlled units (Imperial Vizier Zor'lok: Convert)
 		local canAttack = UnitCanAttack('player', unit) -- store if we cand attack that unit, if its so the unit its hostile (Amber-Shaper Un'sok: Reshape Life)
 
@@ -168,33 +184,23 @@ local function Update(self, event, unit, updateInfo)
 		local unitAuraFiltered = AuraFiltered.HARMFUL[unit]
 		local auraInstanceID, aura = next(unitAuraFiltered)
 		while aura do
-			local name, icon, count, debuffType, duration, expiration, _, _, _, spellID, _, _, _, _, modRate = UnpackAuraData(aura)
-
-			-- we coudln't dispel if the unit its charmed, or its not friendly
+			local debuffType = aura.dispelName -- we coudln't dispel if the unit its charmed, or its not friendly
 			if debuffType and (not isCharmed and not canAttack) and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
-				local priority
 				if addon.FilterDispellableDebuff then
 					DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
-
-					priority = (DispelFilter[debuffType] and DispelPriority[debuffType]) or 0
-
-					if priority == 0 then
-						debuffType = nil
-					end
-				else
-					priority = DispelPriority[debuffType] or 0
 				end
 
-				if priority > _priority then
-					_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
+				local priority = DispelPriority[debuffType] or 0
+				if CheckPriority(priority, _priority, aura, _aura) then
+					_priority, _aura = priority, aura -- swap it to the new one
 				end
 			end
 
 			-- handle from the list
-			local data = debuff_data[spellID] or (not element.onlyMatchSpellID and debuff_data[name])
+			local data = debuff_data[aura.spellId] or (not element.onlyMatchSpellID and debuff_data[aura.name])
 			local priority = data and data.priority
-			if priority and (priority > _priority) then
-				_priority, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _modRate = priority, name, icon, count, debuffType, duration, expiration, spellID, modRate
+			if CheckPriority(priority, _priority, aura, _aura) then
+				_priority, _aura = priority, aura -- swap it to the new one
 			end
 
 			index = index + 1
@@ -202,12 +208,12 @@ local function Update(self, event, unit, updateInfo)
 		end
 	end
 
-	local data = _name and debuff_data[addon.MatchBySpellName and _name or _spellID]
+	local data = _aura and debuff_data[addon.MatchBySpellName and _aura.name or _aura.spellId]
 	if data and data.stackThreshold then
 		_stackThreshold = data.stackThreshold
 	end
 
-	UpdateDebuff(self, _name, _icon, _count, _dtype, _duration, _endTime, _spellID, _stackThreshold, _modRate)
+	UpdateDebuff(element, _aura, _forced, _stackThreshold)
 
 	-- Reset the DispelPriority
 	DispelPriority.Magic = 4
