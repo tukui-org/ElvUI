@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local pairs = pairs
-local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
@@ -340,6 +339,7 @@ function S:FriendsFrame()
 
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
+
 	for i = 1, 17 do
 		local level = _G['WhoFrameButton'..i..'Level']
 		if level then
