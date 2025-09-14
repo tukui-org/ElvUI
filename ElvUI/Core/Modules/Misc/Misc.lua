@@ -51,7 +51,7 @@ local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID
 local ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders or ExpandAllFactionHeaders
 local SetWatchedFactionIndex = C_Reputation.SetWatchedFactionByIndex or SetWatchedFactionIndex
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
-local IsPartyWalkIn = C_PartyInfo and C_PartyInfo.IsPartyWalkIn
+local IsPartyWalkIn = C_PartyInfo.IsPartyWalkIn
 local GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
 local GetItemInfo = C_Item.GetItemInfo
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -298,7 +298,13 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		if not inviterGUID or inviterGUID == '' or IsInGroup() then return end
 
 		local queueButton = M:GetQueueStatusButton() -- don't auto accept during a queue
-		if queueButton and queueButton:IsShown() then return end
+		if queueButton == _G.LFGMinimapFrame then -- era has it always showing
+			if queueButton.eye and queueButton.eye:GetScript('OnUpdate') then
+				return -- its animating so lets not accept
+			end
+		elseif queueButton and queueButton:IsShown() then
+			return
+		end
 
 		if GetGameAccountInfoByGUID(inviterGUID) or IsFriend(inviterGUID) or IsGuildMember(inviterGUID) then
 			hideStatic = true

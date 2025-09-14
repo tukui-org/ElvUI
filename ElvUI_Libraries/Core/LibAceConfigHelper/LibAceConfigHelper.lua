@@ -1,5 +1,5 @@
 local LibStub = _G.LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 13
+local MAJOR, MINOR = 'LibAceConfigHelper', 14
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -18,7 +18,7 @@ ACH.FontValues = {
 	MONOCHROMETHICKOUTLINE = '|cFFAAAAAAMono|r Thick'
 }
 
-local function insertWidth(opt, width)
+local function InsertWidth(opt, width)
 	if type(width) == 'number' and width > 5 then
 		opt.customWidth = width
 	else
@@ -26,7 +26,7 @@ local function insertWidth(opt, width)
 	end
 end
 
-local function insertConfirm(opt, confirm)
+local function InsertConfirm(opt, confirm)
 	local confirmType = type(confirm)
 	opt.confirm = confirmType == 'function' and confirm or true -- func|bool
 	opt.confirmText = confirmType == 'string' and confirm or nil
@@ -35,7 +35,7 @@ end
 function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
 	local optionTable = { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end
@@ -43,7 +43,7 @@ end
 function ACH:Description(name, order, fontSize, image, imageCoords, imageWidth, imageHeight, width, hidden)
 	local optionTable = { type = 'description', name = name or '', order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end
@@ -51,8 +51,8 @@ end
 function ACH:Execute(name, desc, order, func, image, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, image = image, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
-	if confirm then insertConfirm(optionTable, confirm) end
+	if width then InsertWidth(optionTable, width) end
+	if confirm then InsertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -68,7 +68,7 @@ end
 function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidden, validate)
 	local optionTable = { type = 'input', name = name, desc = desc, order = order, multiline = multiline, get = get, set = set, disabled = disabled, hidden = hidden, validate = validate }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end
@@ -76,8 +76,8 @@ end
 function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden, sortByValue)
 	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden, sortByValue = sortByValue }
 
-	if width then insertWidth(optionTable, width) end
-	if confirm then insertConfirm(optionTable, confirm) end
+	if width then InsertWidth(optionTable, width) end
+	if confirm then InsertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -85,8 +85,8 @@ end
 function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden, sortByValue)
 	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values or {}, get = get, set = set, disabled = disabled, hidden = hidden, sortByValue = sortByValue }
 
-	if width then insertWidth(optionTable, width) end
-	if confirm then insertConfirm(optionTable, confirm) end
+	if width then InsertWidth(optionTable, width) end
+	if confirm then InsertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -94,8 +94,8 @@ end
 function ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate = tristate, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
-	if confirm then insertConfirm(optionTable, confirm) end
+	if width then InsertWidth(optionTable, width) end
+	if confirm then InsertConfirm(optionTable, confirm) end
 
 	return optionTable
 end
@@ -112,7 +112,7 @@ end
 function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
 	local optionTable = { type = 'range', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 	if values and type(values) == 'table' then
 		for key, value in pairs(values) do
 			optionTable[key] = value
@@ -125,7 +125,7 @@ end
 function ACH:Spacer(order, width, hidden)
 	local optionTable = { name = ' ', type = 'description', order = order, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end
@@ -133,7 +133,7 @@ end
 local function SharedMediaSelect(controlType, name, desc, order, values, width, get, set, disabled, hidden)
 	local optionTable = { type = 'select', dialogControl = controlType, name = name, desc = desc, order = order, values = values, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end
@@ -161,7 +161,7 @@ end
 function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
 	local optionTable = { type = 'select', name = name, desc = desc, order = order, get = get, set = set, disabled = disabled, hidden = hidden, values = ACH.FontValues, sortByValue = true }
 
-	if width then insertWidth(optionTable, width) end
+	if width then InsertWidth(optionTable, width) end
 
 	return optionTable
 end

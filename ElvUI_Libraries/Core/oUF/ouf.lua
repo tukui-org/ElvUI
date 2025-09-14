@@ -4,7 +4,6 @@ local global = GetAddOnMetadata(parent, 'X-oUF')
 local _VERSION = 'devel'
 
 local oUF = ns.oUF
-local Profiler = oUF.Profiler.func
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
@@ -17,8 +16,6 @@ local callback, objects, headers = {}, {}, {}
 
 local elements = {}
 local activeElements = {}
-
-oUF.elements = elements -- for the Profiler
 
 -- ElvUI
 local _G = _G
@@ -39,10 +36,7 @@ local UnitGUID = UnitGUID
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
-local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
-local UnitAura = UnitAura
-
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetCVar = C_CVar.SetCVar
 -- end
@@ -523,7 +517,7 @@ do
 	end
 end
 
-local function generateName(unit, attributes)
+local function createName(unit, attributes)
 	local name = 'oUF_' .. style:gsub('^oUF_?', ''):gsub('[^%a%d_]+', '')
 
 	local raid, party, groupFilter, unitsuffix
@@ -677,7 +671,7 @@ do
 		template = (template or 'SecureGroupHeaderTemplate')
 
 		local isPetHeader = template:match('PetHeader')
-		local name = overrideName or generateName(nil, attributes)
+		local name = overrideName or createName(nil, attributes)
 		local header = CreateFrame('Frame', name, UFParent, template)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
@@ -769,7 +763,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 
 	unit = unit:lower()
 
-	local name = overrideName or generateName(unit)
+	local name = overrideName or createName(unit)
 	local object = CreateFrame('Button', name, UFParent, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
@@ -801,7 +795,7 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	if(_G.oUF_NamePlateDriver) then return error('oUF nameplate driver has already been initialized.') end
 
 	local style = style
-	local prefix = namePrefix or generateName()
+	local prefix = namePrefix or createName()
 
 	-- Because there's no way to prevent nameplate settings updates without tainting UI,
 	-- and because forbidden nameplates exist, we have to allow default nameplate
@@ -915,36 +909,18 @@ function oUF:AddElement(name, update, enable, disable)
 		return error('Element [%s] is already registered.', name)
 	end
 
-	local module = Profiler({})
-	module.update = update
-	module.enable = enable
-	module.disable = disable
-	elements[name] = module
+	elements[name] = {
+		update = update,
+		enable = enable,
+		disable = disable
+	}
 end
 
-function oUF:GetAuraData(unitToken, index, filter)
-	if oUF.isRetail then
-		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
-	else
-		return UnitAura(unitToken, index, filter)
-	end
-end
+function oUF:GetSpellInfo(spellID)
+	local info = spellID and C_Spell_GetSpellInfo(spellID)
+	if not info then return end
 
-do	-- backwards compatibility for GetSpellInfo
-	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
-	function oUF:GetSpellInfo(spellID)
-		if not spellID then return end
-
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return GetSpellInfo(spellID)
-		end
-	end
+	return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
 end
 
 oUF.version = _VERSION

@@ -21,9 +21,11 @@ function TM:UpdateButton(button, totem)
 		button.icon:SetTexture(icon)
 		button.cooldown:SetCooldown(startTime, duration)
 
-		if not E.Classic and totem:GetParent() ~= button.holder then
-			totem:ClearAllPoints()
-			totem:SetParent(button.holder)
+		if not E.Classic then
+			if totem:GetParent() ~= button.holder then
+				totem:SetParent(button.holder)
+			end
+
 			totem:SetAllPoints(button.holder)
 		end
 	end
@@ -37,6 +39,7 @@ function TM:Update()
 				button:SetShown(false)
 			end
 		end
+
 		for totem in _G.TotemFrame.totemPool:EnumerateActive() do
 			TM:UpdateButton(TM.bar[priority[totem.layoutIndex]], totem)
 		end

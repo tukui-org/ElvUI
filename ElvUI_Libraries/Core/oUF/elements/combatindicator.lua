@@ -76,7 +76,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_FLAGS', Path)
+		self:RegisterEvent('UNIT_FLAGS', Path)
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
 			element:SetTexture([[Interface\CharacterFrame\UI-StateIcon]])
@@ -92,7 +92,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'UNIT_FLAGS', Path)
+		self:UnregisterEvent('UNIT_FLAGS', Path)
 	end
 end
 

@@ -12,7 +12,7 @@ local UnitPowerMax = UnitPowerMax
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
-local function updateTooltip(self)
+local function UpdateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
 
 	if self.powerName and self.powerTooltip then
@@ -22,16 +22,16 @@ local function updateTooltip(self)
 	end
 end
 
-local function onEnter(self)
+local function OnEnter(self)
 	if not self:IsVisible() or _G.GameTooltip:IsForbidden() then return end
 
 	_G.GameTooltip:ClearAllPoints()
 	_G.GameTooltip_SetDefaultAnchor(_G.GameTooltip, self)
 
-	updateTooltip(self)
+	UpdateTooltip(self)
 end
 
-local function onLeave()
+local function OnLeave()
 	_G.GameTooltip:Hide()
 end
 
@@ -183,8 +183,8 @@ function BL:SkinAltPowerBar()
 	bar:CreateBackdrop(nil, true)
 	bar:SetMinMaxValues(0, 200)
 	bar:Point('CENTER', BL.AltPowerBarHolder)
-	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', onLeave)
+	bar:SetScript('OnEnter', OnEnter)
+	bar:SetScript('OnLeave', OnLeave)
 	bar:Hide()
 
 	BL.AltPowerBar = bar

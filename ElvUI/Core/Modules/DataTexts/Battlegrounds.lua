@@ -52,7 +52,7 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 	end
 end
 
-local function columnSort(lhs, rhs)
+local function ColumnSort(lhs, rhs)
 	return lhs.orderIndex < rhs.orderIndex
 end
 
@@ -62,7 +62,7 @@ function DT:HoverBattleStats() -- Objectives OnEnter -- Idea is to store this in
 	if data.myIndex and DT.ShowingBattleStats == 'pvp' then
 		local columns = C_PvP_GetMatchPVPStatColumns()
 		if columns then
-			sort(columns, columnSort)
+			sort(columns, ColumnSort)
 
 			-- Add extra statistics to watch based on what BG you are in.
 			for i, stat in ipairs(columns) do

@@ -213,6 +213,7 @@ local function SkinBag(bagID, bag)
 
 		S:HandleCloseButton(container.CloseButton)
 		S:HandleButton(container.PortraitButton)
+		container.PortraitButton:NudgePoint(15, -7)
 		container.PortraitButton.Highlight:SetAlpha(0)
 
 		hooksecurefunc(container, 'UpdateItems', SkinContainer)
@@ -262,14 +263,14 @@ local function RefreshTabs(frame)
 	end
 end
 
-local function GenerateSlots(frame)
-	if frame.itemButtonPool then
-		for item in frame.itemButtonPool:EnumerateActive() do
-			if not item.IsSkinned then
-				HandleItem(item)
+local function HandleSlots(frame)
+	if not frame.itemButtonPool then return end
 
-				item.IsSkinned = true
-			end
+	for item in frame.itemButtonPool:EnumerateActive() do
+		if not item.IsSkinned then
+			HandleItem(item)
+
+			item.IsSkinned = true
 		end
 	end
 end
@@ -344,7 +345,7 @@ function S:ContainerFrame()
 		HandleTab(panel.PurchaseTab)
 
 		hooksecurefunc(panel, 'RefreshBankTabs', RefreshTabs)
-		hooksecurefunc(panel, 'GenerateItemSlotsForSelectedTab', GenerateSlots)
+		hooksecurefunc(panel, 'GenerateItemSlotsForSelectedTab', HandleSlots)
 	end
 
 	HandleAutoSortButton(_G.BagItemAutoSortButton)

@@ -5,6 +5,42 @@
 ]]
 local E, L, V, P, G = unpack(ElvUI)
 
+local defaults = {
+	texture = {
+		enable = false,
+		texture = 'ElvUI Norm'
+	},
+	colors = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 },
+	},
+	border = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 }
+	},
+	flash = {
+		enable = false,
+		unitClass = false,
+		playerClass = false,
+		color = { r = 1, g = 1, b = 1, a = 1 },
+		speed = 4
+	},
+	glow = {
+		enable = false,
+		useColor = true, -- not a real option
+		frameLevel = 5, -- not a real option
+		color = { 0.09, 0.52, 0.82, 0.9 }, -- lib uses old index table
+		style = 'Pixel Glow',
+		speed = 0.3,
+		lines = 8,
+		size = 1
+	}
+}
+
 G.nameplates.filters = {
 	ElvUI_Boss = {
 		triggers = {
@@ -40,10 +76,66 @@ G.nameplates.filters = {
 		actions = {
 			alpha = 50
 		}
+	},
+	ElvUI_Below20 = {
+		triggers = {
+			healthThreshold = true,
+			underHealthThreshold = 0.2,
+			nameplateType = {
+				enable = true,
+				enemyNPC = true,
+				friendlyNPC = true
+			}
+		},
+		actions = {
+			tags = {
+				name = '[healthcolor][name][ || >perhp<%]'
+			}
+		}
+	},
+	ElvUI_Below20_Players = {
+		triggers = {
+			healthThreshold = true,
+			underHealthThreshold = 0.2,
+			nameplateType = {
+				enable = true,
+				enemyPlayer = true,
+				friendlyPlayer = true,
+				player = true
+			}
+		},
+		actions = {
+			tags = {
+				name = '[spec:icon< ][healthcolor][name][ || >perhp<%]'
+			}
+		}
 	}
 }
 
 E.StyleFilterDefaults = {
+	actions = {
+		scale = 1,
+		alpha = -1,
+		hide = false,
+		nameOnly = false,
+		usePortrait = false,
+		health = CopyTable(defaults),
+		power = CopyTable(defaults),
+		castbar = CopyTable(defaults),
+		sound = {
+			enable = false,
+			overlap = false,
+			channel = 'Master',
+			soundFile = ''
+		},
+		tags = {
+			name = '',
+			level = '',
+			title = '',
+			health = '',
+			power = ''
+		},
+	},
 	triggers = {
 		priority = 1,
 		targetMe = false,
@@ -67,6 +159,7 @@ E.StyleFilterDefaults = {
 			notCasting = false,
 			notChanneling = false,
 			interruptible = false,
+			requireStart = false,
 			notSpell = false,
 			spells = {}
 		},
@@ -305,54 +398,5 @@ E.StyleFilterDefaults = {
 		outOfVehicle = false,
 		inVehicleUnit = false,
 		outOfVehicleUnit = false
-	},
-	actions = {
-		color = {
-			health = false,
-			power = false,
-			border = false,
-			healthClass = false,
-			healthColor = { r = 1, g = 1, b = 1, a = 1 },
-			powerClass = false,
-			powerColor = { r = 1, g = 1, b = 1, a = 1 },
-			borderClass = false,
-			borderColor = { r = 1, g = 1, b = 1, a = 1 }
-		},
-		texture = {
-			enable = false,
-			texture = 'ElvUI Norm'
-		},
-		flash = {
-			enable = false,
-			class = false,
-			color = {r = 1, g = 1, b = 1, a = 1},
-			speed = 4
-		},
-		tags = {
-			name = '',
-			level = '',
-			title = '',
-			health = '',
-			power = ''
-		},
-		glow = {
-			enable = false,
-			useColor = true, -- not a real option
-			frameLevel = 5, -- not a real option
-			color = { 0.09, 0.52, 0.82, 0.9 }, -- lib uses old index table
-			style = 'Pixel Glow',
-			speed = 0.3,
-			lines = 8,
-			size = 1
-		},
-		hide = false,
-		usePortrait = false,
-		nameOnly = false,
-		scale = 1,
-		alpha = -1,
-		playSound = {
-			enable = false,
-			soundFile = ''
-		},
 	}
 }

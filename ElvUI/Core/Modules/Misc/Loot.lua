@@ -51,7 +51,7 @@ local UnitName = UnitName
 local StaticPopup_Hide = StaticPopup_Hide
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetItemReagentQualityByItemInfo = C_TradeSkillUI and C_TradeSkillUI.GetItemReagentQualityByItemInfo
+local GetItemReagentQualityByItemInfo = C_TradeSkillUI.GetItemReagentQualityByItemInfo
 
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT

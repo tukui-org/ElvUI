@@ -76,6 +76,16 @@ function S:Blizzard_TradeSkillUI()
 			highlight:SetTexture(E.ClearTexture)
 			highlight.SetTexture = E.noop
 		end
+
+		local subSkillRankBar = _G['TradeSkillSkill'..i..'SubSkillRankBar']
+		if subSkillRankBar then
+			subSkillRankBar:StripTextures()
+			subSkillRankBar:CreateBackdrop()
+			subSkillRankBar:SetStatusBarTexture(E.media.normTex)
+			subSkillRankBar:SetStatusBarColor(0.13, 0.35, 0.80)
+
+			E:RegisterStatusBar(subSkillRankBar)
+		end
 	end
 
 	S:HandleCollapseTexture(_G.TradeSkillCollapseAllButton, nil, true)

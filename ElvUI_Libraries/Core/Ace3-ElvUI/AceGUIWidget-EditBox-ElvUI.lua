@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox-ElvUI", 31
+local Type, Version = "EditBox-ElvUI", 32
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -14,23 +14,6 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 
 local OKAY = OKAY
 local _G = _G
-
-local GetSpellInfo
-do	-- backwards compatibility for GetSpellInfo
-	local C_Spell_GetSpellInfo = not _G.GetSpellInfo and C_Spell.GetSpellInfo
-	GetSpellInfo = function(spellID)
-		if not spellID then return end
-
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return _G.GetSpellInfo(spellID)
-		end
-	end
-end
 
 --[[-----------------------------------------------------------------------------
 Support functions
@@ -99,7 +82,8 @@ local function EditBox_OnReceiveDrag(frame)
 	if type == "item" then
 		name = info
 	elseif type == "spell" then
-		name = GetSpellInfo(spellID, info)
+		local spell = spellID and C_Spell.GetSpellInfo(spellID, info)
+		name = (spell and spell.name) or nil
 	elseif type == "macro" then
 		name = GetMacroInfo(id)
 	end
@@ -153,7 +137,7 @@ local methods = {
 		self:SetWidth(200)
 		self:SetDisabled(false)
 		self:SetLabel()
-		self:SetText()
+		self:SetText('')
 		self:DisableButton(false)
 		self:SetMaxLetters(0)
 	end,

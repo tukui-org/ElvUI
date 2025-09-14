@@ -26,7 +26,7 @@ end
 
 function UF:Construct_HealthBar(frame, bg, text, textPos)
 	local health = CreateFrame('StatusBar', '$parent_HealthBar', frame)
-	UF.statusbars[health] = true
+	UF.statusbars[health] = 'health'
 
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
 	health.PostUpdate = UF.PostUpdateHealth
@@ -110,8 +110,8 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorSelection(colorSelection)
 
 	--Position
-	health.WIDTH = db.width
-	health.HEIGHT = db.height
+	health.WIDTH = db.width or 60
+	health.HEIGHT = db.height or 10
 
 	local BORDER_SPACING = UF.BORDER + UF.SPACING
 	local LESS_SPACING = -UF.BORDER - UF.SPACING

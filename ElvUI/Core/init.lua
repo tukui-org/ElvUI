@@ -5,7 +5,7 @@
 ]]
 
 local _G = _G
-local gsub, tinsert, next, type = gsub, tinsert, next, type
+local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
 
 local CreateFrame = CreateFrame
@@ -13,7 +13,9 @@ local GetBuildInfo = GetBuildInfo
 local GetLocale = GetLocale
 local GetTime = GetTime
 local ReloadUI = ReloadUI
+local WorldFrame = WorldFrame
 local UIParent = UIParent
+local UnitGUID = UnitGUID
 
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
@@ -35,14 +37,12 @@ local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
-local Profiler = oUF.Profiler.func -- ElvUI_CPU knock off by Simpy
-local E = Profiler(AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0'))
+local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree', get = E.noop, name = ''}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
 E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
-E.Profiler = oUF.Profiler
 E.oUF = oUF
 
 Engine[1] = E
@@ -52,30 +52,30 @@ Engine[4] = E.DF.profile
 Engine[5] = E.DF.global
 _G.ElvUI = Engine
 
-E.ActionBars = Profiler(E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0'))
-E.AFK = Profiler(E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0'))
-E.Auras = Profiler(E:NewModule('Auras','AceHook-3.0','AceEvent-3.0'))
-E.Bags = Profiler(E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
-E.Blizzard = Profiler(E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0'))
-E.Chat = Profiler(E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
-E.DataBars = Profiler(E:NewModule('DataBars','AceEvent-3.0'))
-E.DataTexts = Profiler(E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
-E.DebugTools = Profiler(E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0'))
-E.Distributor = Profiler(E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0'))
-E.EditorMode = Profiler(E:NewModule('EditorMode','AceEvent-3.0'))
-E.Layout = Profiler(E:NewModule('Layout','AceEvent-3.0'))
-E.Minimap = Profiler(E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
-E.Misc = Profiler(E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0'))
-E.ModuleCopy = Profiler(E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0'))
-E.NamePlates = Profiler(E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
-E.PluginInstaller = Profiler(E:NewModule('PluginInstaller'))
-E.PrivateAuras = Profiler(E:NewModule('PrivateAuras'))
-E.RaidUtility = Profiler(E:NewModule('RaidUtility','AceEvent-3.0'))
-E.Skins = Profiler(E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
-E.Tooltip = Profiler(E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0'))
-E.TotemTracker = Profiler(E:NewModule('TotemTracker','AceEvent-3.0'))
-E.UnitFrames = Profiler(E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0'))
-E.WorldMap = Profiler(E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0'))
+E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
+E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.EditorMode = E:NewModule('EditorMode','AceEvent-3.0')
+E.Layout = E:NewModule('Layout','AceEvent-3.0')
+E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0','AceHook-3.0')
+E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.PluginInstaller = E:NewModule('PluginInstaller')
+E.PrivateAuras = E:NewModule('PrivateAuras')
+E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
+E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.TotemTracker = E:NewModule('TotemTracker','AceEvent-3.0')
+E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 E.InfoColor = '|cff1784d1' -- blue
 E.InfoColor2 = '|cff9b9b9b' -- silver
@@ -95,7 +95,7 @@ do -- Expansions
 	E.ClassicAnniv = season == 11 -- Anniversary
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
 
-	local IsHardcoreActive = C_GameRules and C_GameRules.IsHardcoreActive
+	local IsHardcoreActive = C_GameRules.IsHardcoreActive
 	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
 
 	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
@@ -263,8 +263,10 @@ do
 		tinsert(alwaysDisable, 'kExtraBossFrames')
 	end
 
-	for _, addon in next, alwaysDisable do
-		DisableAddOn(addon)
+	function E:DisableAddons()
+		for _, addon in next, alwaysDisable do
+			DisableAddOn(addon, E.myguid)
+		end
 	end
 end
 
@@ -300,6 +302,56 @@ do
 	end
 end
 
+do
+	local fps = {}
+	E.FPS = fps
+
+	local CollectRate = function(rate)
+		fps.count = (fps.count or 0) + 1
+		fps.total = (fps.total or 0) + rate
+
+		fps.rate = rate
+		fps.average = fps.total / fps.count
+
+		if not fps.high or (rate > fps.high) then
+			fps.high = rate
+		end
+
+		if not fps.low or (rate < fps.low) then
+			fps.low = rate
+		end
+	end
+
+	local ignore, wait, rate = true, 0, 0
+	local TrackRate = function(_, elapsed)
+		if wait < 1 then
+			wait = wait + elapsed
+			rate = rate + 1
+		else
+			wait = 0
+
+			if ignore then -- ignore the first update
+				ignore = false
+			else
+				CollectRate(rate)
+			end
+
+			rate = 0 -- ok reset it
+		end
+	end
+
+	local ResetRate = function()
+		wipe(fps)
+
+		ignore = true -- ignore the first again
+	end
+
+	local frame = CreateFrame('Frame')
+	frame:SetScript('OnUpdate', TrackRate)
+	frame:SetScript('OnEvent', ResetRate)
+	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+end
+
 function E:SetCVar(cvar, value, ...)
 	local valstr = ((type(value) == 'boolean') and (value and '1' or '0')) or tostring(value)
 	if GetCVar(cvar) ~= valstr then
@@ -312,7 +364,7 @@ function E:GetAddOnEnableState(addon, character)
 end
 
 function E:IsAddOnEnabled(addon)
-	return E:GetAddOnEnableState(addon, E.myname) == 2
+	return E:GetAddOnEnableState(addon, E.myguid) == 2
 end
 
 function E:SetEasyMenuAnchor(menu, frame)
@@ -406,25 +458,32 @@ function E:OnInitialize()
 
 	E.SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUI_SpellBookTooltip', UIParent, 'GameTooltipTemplate')
 	E.ConfigTooltip = CreateFrame('GameTooltip', 'ElvUI_ConfigTooltip', UIParent, 'GameTooltipTemplate')
-	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', UIParent, 'GameTooltipTemplate')
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', WorldFrame, 'GameTooltipTemplate')
 	E.EasyMenu = CreateFrame('Frame', 'ElvUI_EasyMenu', UIParent, 'UIDropDownMenuTemplate')
 
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
+
+	E.myClassColor = E:ClassColor(E.myclass, true)
 	E.loadedtime = GetTime()
 
+	local playerGUID = UnitGUID('player')
+	local _, serverID = strsplit('-', playerGUID)
+	E.serverID = tonumber(serverID)
+	E.myguid = playerGUID
+
+	E:DisableAddons()
 	E:CheckAddons()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
-	E:InitializeInitialModules()
+
+	if not E.OtherAddons.Tukui then
+		E:InitializeInitialModules()
+	end
 
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
-	end
-
-	if E.OtherAddons.Tukui then
-		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 end

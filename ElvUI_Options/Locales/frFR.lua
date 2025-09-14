@@ -1303,6 +1303,8 @@ L["Power Prediction"] = "Prédiction de puissance"
 L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."] = "Le texte d'énergie sera masqué sur les PNJ ciblés, de plus le nom sera repositionné sur le texte d'énergie."
 L["Power Threshold"] = "Seuil de puissance"
 L["Power"] = "Énergie"
+L["MAELSTROM_WEAPON"] = "Maelstrom Weapon"
+L["FROST_ICICLES"] = "Icicles"
 L["POWER_TYPE_ARCANE_CHARGES"] = "Charges arcaniques"
 L["POWER_TYPE_ESSENCE"] = "Essence"
 L["Prefer Target Color"] = "Préférer la couleur de la cible"
@@ -1575,6 +1577,7 @@ L["Smooth Bars"] = "Barres lissées"
 L["Smooth"] = "Lisser"
 L["Smoothing Amount"] = "Quantité de lissage"
 L["Socket Frame"] = "Fenêtre de châsse"
+L["Solo Color"] = true
 L["Sort By"] = "Trier par"
 L["Sort Direction"] = "Direction de tri"
 L["Sort Inverted"] = "Tri inversé"
@@ -1830,7 +1833,8 @@ L["Use Modifier for Item Count"] = "Utiliser la touche de modification pour le c
 L["Use Off Tank Color when another Tank has threat."] = "Utiliser la couleur du tank secondaire lorsque qu'un autre tank a l'aggro."
 L["Use Portrait"] = "Utiliser le portrait"
 L["Use Real ID BattleTag"] = "Utiliser le BattleTag de l'ID réel"
-L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "Utilisez Maj+clic gauche pour basculer entre l'état amical, ennemi ou normal. L'état normal permettra au filtre d'être activé sur toutes les unités. L'état amical ne s'applique qu'aux unités amicales et l'état ennemi aux unités ennemies."
+L["Use Solo Color"] = true
+L["Use solo threat color when not in a group."] = true
 L["Use Static Position"] = "Utiliser une position statique"
 L["Use Subzone Names"] = "Utiliser les noms de sous-zone"
 L["Use the custom backdrop color instead of a multiple of the main color."] = "Utiliser la couleur de fond personnalisée au lieu d'une multiplication de la couleur principale."
@@ -1923,24 +1927,31 @@ L["RAID_TARGET_7"] = "Croix"
 L["RAID_TARGET_8"] = "Crâne"
 
 ----------------------------------
+L["NoDuration"] = "No Duration"
 L["BlizzardNameplate"] = "NomplateBlizzard"
-L["blockCastByPlayers"] = "[Bloque] LancéParJoueurs"
-L["blockDispellable"] = "[Bloque] Dissipable"
-L["blockNoDuration"] = "[Bloque] PasDeDurée"
-L["blockNonPersonal"] = "[Bloque] nonPersonnel"
-L["blockNotDispellable"] = "[Bloque] nonDissipable"
-L["blockMount"] = "[Bloque] Monture"
 L["Mount"] = "Monture"
 L["CastByNPC"] = "LancéParPNJ"
 L["CastByPlayers"] = "LancéParJoueurs"
 L["CastByUnit"] = "LancéParUnité"
 L["Dispellable"] = "Dissipable"
 L["MyPet"] = "Monfamilier"
-L["nonPersonal"] = "nonPersonnel"
-L["notCastByUnit"] = "nonLancéParUnité"
-L["notDispellable"] = "nonDissipable"
+L["NonPersonal"] = "nonPersonnel"
+L["NotCastByUnit"] = "nonLancéParUnité"
+L["NotDispellable"] = "nonDissipable"
 L["OtherPet"] = "AutreFamilier"
 L["Personal"] = "Personnel"
+
+L["FILTER_PRIORITY_DESC"] = [[
+Use drag and drop to rearrange filter priority.
+
+Right Click: Remove the filter.
+Shift + Left Click: Toggle between Friendly, Enemy, or normal state.
+Ctrl + Left Click: Toggle between Allow, Block, or normal state.
+
+- Normal state will allow the filter to be checked on all units.
+- Friendly state is for friendly units only and enemy state is for enemy units.
+- Block state will be treated as an override block list and allow as allow list.
+]]
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modifier les options des barres d'actions."
@@ -1967,25 +1978,20 @@ Exemple: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
 Ou pour la majorité des utilsateurs, il serait plus simple de mettre le fichier tga dans le dossier de World of Warcraft puis de taper son nom ici.]=]
 
 ----------  FilterHelp  ----------
-L["*Whitelists:|r ^Boss, Mount, MyPet, OtherPet, Personal, nonPersonal, CastByUnit, notCastByUnit, Dispellable (includes steal-able), notDispellable, CastByNPC, CastByPlayers, BlizzardNameplate|r"] = "*Listes blanches :|r ^Boss, Monture, MonFamilier, AutreFamilier, Personnel, nonPersonnel, LancéParUnité, nonLancéParUnité, Dissipable (y compris les volables), nonDissipable, LancéParPNJ, LancéParJoueurs, NomplateBlizzard|r"
-L["*Blacklists:|r ^blockMount, blockNonPersonal, blockCastByPlayers, blockNoDuration, blockDispellable, blockNotDispellable | A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it.|r"] = "*Listes noires :|r ^bloqueMonture, bloqueNonPersonnel, bloqueLancéParJoueurs, bloquePasDeDurée, bloqueDissipable, bloqueNonDissipable | Un filtre de liste noire n'est efficace que contre les filtres qui le suivent dans la liste de priorités. Il ne bloquera rien des filtres qui le précèdent.|r"
-L["^A blacklist filter is only effective against filters that come after it in the priority list. It will not block anything from the filters before it."] = "^Un filtre de liste noire n'est efficace que contre les filtres qui le suivent dans la liste de priorités. Il ne bloquera rien des filtres qui le précèdent."
 L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"] = "*Boss :|r ^Auras (uniquement des debuffs ?) lancées par une unité de boss.|r"
 L["*Mount:|r ^Auras which are classified as mounts.|r"] = "*Monture :|r ^Auras classées comme montures.|r"
 L["*Personal:|r ^Auras cast by yourself.|r"] = "*Personnel :|r ^Auras lancées par vous-même.|r"
-L["*nonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*Non personnel :|r ^Auras lancées par quelqu'un d'autre que vous.|r"
+L["*NonPersonal:|r ^Auras cast by anyone other than yourself.|r"] = "*Non personnel :|r ^Auras lancées par quelqu'un d'autre que vous.|r"
 L["*CastByUnit:|r ^Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit).|r"] = "*Lancé par l'unité :|r ^Auras lancées par l'unité du cadre d'unité ou de la barre de nom (donc sur le cadre de la cible, cela montre uniquement les auras lancées par l'unité cible).|r"
-L["*notCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*Non lancé par l'unité :|r ^Auras lancées par quelqu'un d'autre que l'unité du cadre d'unité ou de la barre de nom.|r"
+L["*NotCastByUnit:|r ^Auras cast by anyone other than the unit of the unitframe or nameplate.|r"] = "*Non lancé par l'unité :|r ^Auras lancées par quelqu'un d'autre que l'unité du cadre d'unité ou de la barre de nom.|r"
 L["*Dispellable:|r ^Auras you can either dispel or spellsteal.|r"] = "*Dissipable :|r ^Auras que vous pouvez dissiper ou voler.|r"
 L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*Lancé par un PNJ :|r ^Auras lancées par n'importe quel PNJ.|r"
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*Lancé par des joueurs :|r ^Auras lancées par une unité contrôlée par un joueur (donc pas de PNJ).|r"
-L["*blockCastByPlayers:|r ^Blocks any aura that is cast by player-controlled units (so will only show auras cast by NPCs).|r"] = "*Bloquer lancé par des joueurs :|r ^Bloque toute aura lancée par des unités contrôlées par des joueurs (donc montre uniquement les auras lancées par des PNJ).|r"
-L["*blockNoDuration:|r ^Blocks any aura without a duration.|r"] = "*Bloquer sans durée :|r ^Bloque toute aura sans durée.|r"
-L["*blockNonPersonal:|r ^Blocks any aura that is not cast by yourself.|r"] = "*Bloquer non personnel :|r ^Bloque toute aura qui n'est pas lancée par vous-même.|r"
-L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) nonPersonal"] = "*Tout afficher :|r ^Réglez 'Durée maximale' sur 0 et laissez la liste de priorités vide ou (1) Personnel | (2) Non personnel"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) nonPersonal"] = "*Bloquer les auras sur liste noire, tout le reste :|r ^(1) Liste noire | (2) Personnel | (3) Non personnel"
-L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) nonPersonal"] = "*Bloquer les auras sans durée, tout le reste :|r ^(1) Bloquer sans durée | (2) Personnel | (3) Non personnel"
-L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) nonPersonal"] = "*Bloquer les auras sans durée, bloquer les auras sur liste noire, tout le reste :|r ^(1) Bloquer sans durée | (2) Liste noire | (3) Personnel | (4) Non personnel"
+
+L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*Tout afficher :|r ^Réglez 'Durée maximale' sur 0 et laissez la liste de priorités vide ou (1) Personnel | (2) Non personnel"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sur liste noire, tout le reste :|r ^(1) Liste noire | (2) Personnel | (3) Non personnel"
+L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sans durée, tout le reste :|r ^(1) Bloquer sans durée | (2) Personnel | (3) Non personnel"
+L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*Bloquer les auras sans durée, bloquer les auras sur liste noire, tout le reste :|r ^(1) Bloquer sans durée | (2) Liste noire | (3) Personnel | (4) Non personnel"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*Tout bloquer, sauf vos propres auras :|r ^(1) Personnel"
 L["*Block Everything, Except Whitelisted Auras:|r ^(1) Whitelist"] = "*Tout bloquer, sauf les auras sur liste blanche :|r ^(1) Liste blanche"
 L["*Block Everything, Except Whitelisted Auras That Are Cast By Yourself:|r ^(1) blockNonPersonal | (2) Whitelist"] = "*Tout bloquer, sauf les auras sur liste blanche lancées par vous-même :|r ^(1) Bloquer non personnel | (2) Liste blanche"

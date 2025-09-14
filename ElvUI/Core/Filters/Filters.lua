@@ -71,26 +71,18 @@ P.unitframe.filters = {
 G.unitframe.aurafilters = {}
 
 G.unitframe.specialFilters = {
-	-- Whitelists
 	Boss = true,
 	Mount = true,
 	MyPet = true,
 	OtherPet = true,
 	Personal = true,
-	nonPersonal = true,
+	NoDuration = true,
+	NonPersonal = true,
 	CastByUnit = true,
-	notCastByUnit = true,
+	NotCastByUnit = true,
 	Dispellable = true,
-	notDispellable = true,
+	NotDispellable = true,
 	CastByNPC = true,
 	CastByPlayers = true,
 	BlizzardNameplate = true,
-
-	-- Blacklists
-	blockMount = true,
-	blockNonPersonal = true,
-	blockCastByPlayers = true,
-	blockNoDuration = true,
-	blockDispellable = true,
-	blockNotDispellable = true,
 }

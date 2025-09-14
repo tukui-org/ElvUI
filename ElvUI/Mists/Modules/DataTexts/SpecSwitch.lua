@@ -9,10 +9,10 @@ local IsShiftKeyDown = IsShiftKeyDown
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local SetLootSpecialization = SetLootSpecialization
-local SetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.SetActiveSpecGroup
-local GetActiveSpecGroup = C_SpecializationInfo and C_SpecializationInfo.GetActiveSpecGroup
-local GetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization
-local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo
+local SetActiveSpecGroup = C_SpecializationInfo.SetActiveSpecGroup
+local GetActiveSpecGroup = C_SpecializationInfo.GetActiveSpecGroup
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 
 local LOOT = LOOT
 local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
@@ -36,11 +36,11 @@ local mainIcon = '|T%s:%d:%d:0:0:64:64:4:60:4:60|t'
 local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local listText = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
 
-local function menu_checked(data) return data and data.arg1 == GetLootSpecialization() end
-local function menu_func(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
+local function MenuChecked(data) return data and data.arg1 == GetLootSpecialization() end
+local function MenuFunc(_, arg1) SetLootSpecialization(arg1) DT:CloseMenus() end
 
-local function spec_checked(data) return data and data.arg1 == GetActiveSpecGroup() end
-local function spec_func(_, arg1) SetActiveSpecGroup(arg1) DT:CloseMenus() end
+local function SpecChecked(data) return data and data.arg1 == GetActiveSpecGroup() end
+local function SpecFunc(_, arg1) SetActiveSpecGroup(arg1) DT:CloseMenus() end
 
 local function OnEvent(self)
 	self.timeSinceUpdate = 0
@@ -49,7 +49,7 @@ local function OnEvent(self)
 		for index = 1, GetNumSpecializations() do
 			local id, name = GetSpecializationInfo(index)
 			if id then
-				menuList[index + 2] = { arg1 = id, text = name, checked = menu_checked, func = menu_func }
+				menuList[index + 2] = { arg1 = id, text = name, checked = MenuChecked, func = MenuFunc }
 			end
 		end
 
@@ -57,7 +57,7 @@ local function OnEvent(self)
 			local specGroup = GetSpecialization(nil, nil, index)
 			local _, name, _, icon = GetSpecializationInfo(specGroup)
 			if icon then
-				specList[index + 1] = { arg1 = index, text = format(listText, icon, name ~= '' and name or DEFAULT_TEXT), checked = spec_checked, func = spec_func }
+				specList[index + 1] = { arg1 = index, text = format(listText, icon, name ~= '' and name or DEFAULT_TEXT), checked = SpecChecked, func = SpecFunc }
 			end
 		end
 	end

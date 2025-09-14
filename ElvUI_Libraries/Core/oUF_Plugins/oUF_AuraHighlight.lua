@@ -1,7 +1,10 @@
 local _, ns = ...
 local oUF = ns.oUF
+local AuraFiltered = oUF.AuraFiltered
 
+local next = next
 local UnitCanAssist = UnitCanAssist
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -37,16 +40,17 @@ local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, sp
 end
 
 local function Looper(unit, filter, check, list, func)
-	local index = 1
-	local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
-	while name do
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
+	while aura do
+		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
 		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+
 		if Icon then
 			return AuraType, Icon, filtered, style, color
-		else
-			index = index + 1
-			name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:GetAuraData(unit, index, filter)
 		end
+
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 end
 
@@ -60,8 +64,8 @@ local function GetAuraType(unit, check, list)
 	if icon then return auraType, icon, filtered, style, color end
 end
 
-local function Update(self, event, unit, isFullUpdate, updatedAuras)
-	if not unit or self.unit ~= unit then return end
+local function Update(self, event, unit, updateInfo)
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
 	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
@@ -103,7 +107,7 @@ end
 
 local function Enable(self)
 	if self.AuraHighlight then
-		oUF:RegisterEvent(self, 'UNIT_AURA', Update)
+		self:RegisterEvent('UNIT_AURA', Update)
 
 		return true
 	end
@@ -112,7 +116,7 @@ end
 local function Disable(self)
 	local element = self.AuraHighlight
 	if element then
-		oUF:UnregisterEvent(self, 'UNIT_AURA', Update)
+		self:UnregisterEvent('UNIT_AURA', Update)
 
 		if self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()

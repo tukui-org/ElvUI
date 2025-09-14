@@ -32,6 +32,7 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
+local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitFactionGroup = UnitFactionGroup
@@ -45,12 +46,11 @@ local UnitIsUnit = UnitIsUnit
 local UnitSex = UnitSex
 
 local GetWatchedFactionInfo = GetWatchedFactionInfo
-local GetWatchedFactionData = C_Reputation and C_Reputation.GetWatchedFactionData
+local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
-local GetAuraDataByIndex = C_UnitAuras and C_UnitAuras.GetAuraDataByIndex
-local UnpackAuraData = AuraUtil and AuraUtil.UnpackAuraData
-local UnitAura = UnitAura
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
@@ -61,11 +61,13 @@ local GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
 local C_TooltipInfo_GetInventoryItem = C_TooltipInfo and C_TooltipInfo.GetInventoryItem
-local C_MountJournal_GetMountIDs = C_MountJournal and C_MountJournal.GetMountIDs
-local C_MountJournal_GetMountInfoByID = C_MountJournal and C_MountJournal.GetMountInfoByID
-local C_MountJournal_GetMountInfoExtraByID = C_MountJournal and C_MountJournal.GetMountInfoExtraByID
+local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
+local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
+local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-local C_PvP_IsRatedBattleground = C_PvP and C_PvP.IsRatedBattleground
+local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
+local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
@@ -304,11 +306,11 @@ end
 function E:GetUnitSpecInfo(unit)
 	if not UnitIsPlayer(unit) then return end
 
-	E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+	E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
 
 	local _, specLine = TT:GetLevelLine(E.ScanTooltip, 1, true)
+
 	local specText = specLine and specLine.leftText
 	if specText then
 		return E.SpecInfoBySpecClass[specText]
@@ -444,20 +446,19 @@ do -- backwards compatibility for GetMouseFocus
 	end
 end
 
-do	-- backwards compatibility for C_Spell
-	local GetSpellInfo = GetSpellInfo
-	local C_Spell_GetSpellInfo = not GetSpellInfo and C_Spell.GetSpellInfo
+do
 	function E:GetSpellInfo(spellID)
-		if not spellID then return end
+		local info = spellID and C_Spell_GetSpellInfo(spellID)
+		if not info then return end
 
-		if C_Spell_GetSpellInfo then
-			local info = C_Spell_GetSpellInfo(spellID)
-			if info then
-				return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
-			end
-		else
-			return GetSpellInfo(spellID)
-		end
+		return info.name, nil, info.iconID, info.castTime, info.minRange, info.maxRange, info.spellID, info.originalIconID
+	end
+
+	function E:GetSpellCharges(spellID)
+		local info = spellID and C_Spell_GetSpellCharges(spellID)
+		if not info then return end
+
+		return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
 	end
 
 	local GetSpellCooldown = GetSpellCooldown
@@ -471,21 +472,6 @@ do	-- backwards compatibility for C_Spell
 			local info = C_Spell_GetSpellCooldown(spellID)
 			if info then
 				return info.startTime, info.duration, info.isEnabled, info.modRate
-			end
-		end
-	end
-
-	local GetSpellCharges = GetSpellCharges
-	local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
-	function E:GetSpellCharges(spellID)
-		if not spellID then return end
-
-		if GetSpellCharges then
-			return GetSpellCharges(spellID)
-		else
-			local info = C_Spell_GetSpellCharges(spellID)
-			if info then
-				return info.currentCharges, info.maxCharges, info.cooldownStartTime, info.cooldownDuration, info.chargeModRate
 			end
 		end
 	end
@@ -515,11 +501,7 @@ end
 
 do
 	function E:GetAuraData(unitToken, index, filter)
-		if E.Retail then
-			return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
-		else
-			return UnitAura(unitToken, index, filter)
-		end
+		return UnpackAuraData(GetAuraDataByIndex(unitToken, index, filter))
 	end
 
 	local function FindAura(key, value, unit, index, filter, ...)
@@ -657,6 +639,10 @@ do
 			color.colorStr = E:RGBToHex(r, g, b, 'ff')
 		end
 
+		if classTag == E.myclass then
+			E.myClassColor = E:ClassColor(E.myclass, true)
+		end
+
 		local db = E.db.general.classColors[classTag]
 		if db then
 			db.r, db.g, db.b = r, g, b
@@ -676,6 +662,10 @@ do
 			if color and (color.r ~= r or color.g ~= g or color.b ~= b) then
 				color.r, color.g, color.b = r, g, b
 				color.colorStr = E:RGBToHex(r, g, b, 'ff')
+
+				if classTag == E.myclass then
+					E.myClassColor = E:ClassColor(E.myclass, true)
+				end
 
 				changed = true
 			end
@@ -1007,16 +997,12 @@ do
 	end
 end
 
-function E:XPIsUserDisabled()
-	return E.Retail and IsXPUserDisabled()
-end
-
 function E:XPIsTrialMax()
-	return E.Retail and (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+	return (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
 function E:XPIsLevelMax()
-	return IsLevelAtEffectiveMaxLevel(E.mylevel) or E:XPIsUserDisabled() or E:XPIsTrialMax()
+	return IsLevelAtEffectiveMaxLevel(E.mylevel) or IsXPUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetGroupUnit(unit)
@@ -1155,18 +1141,16 @@ end
 function E:CompatibleTooltip(tt) -- knock off compatibility
 	if tt.GetTooltipData then return end -- real support exists
 
-	local info = { name = tt:GetName(), lines = {} }
-	info.leftTextName = info.name .. 'TextLeft'
-	info.rightTextName = info.name .. 'TextRight'
+	local info = { lines = {}, name = tt:GetName() }
 
 	tt.GetTooltipData = function()
 		wipe(info.lines)
 
 		for i = 1, tt:NumLines() do
-			local left = _G[info.leftTextName..i]
+			local left = info.name and _G[info.name..'TextLeft'..i]
 			local leftText = left and left:GetText() or nil
 
-			local right = _G[info.rightTextName..i]
+			local right = info.name and _G[info.name..'TextRight'..i]
 			local rightText = right and right:GetText() or nil
 
 			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
@@ -1214,9 +1198,8 @@ function E:ScanTooltip_UnitInfo(unit)
 	if C_TooltipInfo_GetUnit then
 		return C_TooltipInfo_GetUnit(unit)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetUnit(unit)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end
@@ -1226,9 +1209,8 @@ function E:ScanTooltip_InventoryInfo(unit, slot)
 	if C_TooltipInfo_GetInventoryItem then
 		return C_TooltipInfo_GetInventoryItem(unit, slot)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetInventoryItem(unit, slot)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end
@@ -1238,9 +1220,8 @@ function E:ScanTooltip_HyperlinkInfo(link)
 	if C_TooltipInfo_GetHyperlink then
 		return C_TooltipInfo_GetHyperlink(link)
 	else
-		E.ScanTooltip:SetOwner(UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetOwner(WorldFrame, 'ANCHOR_NONE')
 		E.ScanTooltip:SetHyperlink(link)
-		E.ScanTooltip:Show()
 
 		return E.ScanTooltip:GetTooltipData()
 	end

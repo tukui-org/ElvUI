@@ -932,23 +932,41 @@ function E:Config_UpdateLeftScroller(frame)
 	end
 end
 
+function E:Config_SaveOldFramelevel(frame)
+	if not frame.oldFramelevel then
+		frame.oldFramelevel = frame:GetFrameLevel()
+	end
+end
+
+function E:Config_RestoreOldFramelevel(frame)
+	if frame.oldFramelevel then
+		frame:SetFrameLevel(frame.oldFramelevel)
+
+		frame.oldFramelevel = nil
+	end
+end
+
 function E:Config_SaveOldPosition(frame)
 	if frame.GetNumPoints and not frame.oldPosition then
 		frame.oldPosition = {}
+
 		for i = 1, frame:GetNumPoints() do
-			tinsert(frame.oldPosition, {frame:GetPoint(i)})
+			tinsert(frame.oldPosition, { frame:GetPoint(i) })
 		end
 	end
 end
 
 function E:Config_RestoreOldPosition(frame)
 	local position = frame.oldPosition
-	if position then
-		frame:ClearAllPoints()
-		for i = 1, #position do
-			frame:Point(unpack(position[i]))
-		end
+	if not position then return end
+
+	frame:ClearAllPoints()
+
+	for i = 1, #position do
+		frame:Point(unpack(position[i]))
 	end
+
+	frame.oldPosition = nil
 end
 
 function E:Config_HandleLeftButton(info, frame, unskinned, buttons, last, index)
@@ -1080,11 +1098,16 @@ function E:Config_WindowClosed()
 		E:Config_RestoreOldPosition(self.obj.content)
 		E:Config_RestoreOldPosition(self.obj.titlebg)
 
+		local unskinned = not E.private.skins.ace3Enable
 		local statusParent = self.statusText and self.statusText.parent
 		if statusParent then
 			statusParent:Show()
 
 			E:Config_RestoreOldPosition(statusParent)
+
+			if unskinned then
+				E:Config_RestoreOldFramelevel(statusParent)
+			end
 		end
 
 		if E.ShowPopup then
@@ -1142,6 +1165,12 @@ function E:Config_WindowOpened(frame)
 
 		local statusParent = frame.statusText and frame.statusText.parent
 		if statusParent then
+			if unskinned then -- this lets the arrow work properly without finding it
+				E:Config_SaveOldFramelevel(statusParent)
+
+				statusParent:OffsetFrameLevel(-1)
+			end
+
 			E:Config_SaveOldPosition(statusParent)
 
 			statusParent:ClearAllPoints()
@@ -1342,7 +1371,7 @@ function E:ToggleOptions(msg)
 			E:Print('|cffff0000Error|r -- Addon "ElvUI_Options" not found.')
 			return
 		else
-			EnableAddOn('ElvUI_Options')
+			EnableAddOn('ElvUI_Options', E.myguid)
 			LoadAddOn('ElvUI_Options')
 
 			-- version check if it's actually enabled

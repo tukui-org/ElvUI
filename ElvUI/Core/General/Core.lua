@@ -4,8 +4,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local LCS = E.Libs.LCS
 
 local _G = _G
-local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
+local tonumber, pairs, ipairs, error, unpack, tostring = tonumber, pairs, ipairs, error, unpack, tostring
+local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -23,7 +23,6 @@ local SaveBindings = SaveBindings
 local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
-local UnitGUID = UnitGUID
 
 local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
@@ -130,7 +129,7 @@ E.InverseAnchors = {
 -- Workaround for people wanting to use white and it reverting to their class color.
 E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
--- Socket Type info from 11.0.7
+-- Socket Type info from 11.2.0 (63003): Interface\AddOns\Blizzard_ItemSocketing\Blizzard_ItemSocketingUI.lua
 E.GemTypeInfo = {
 	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
 	Red				= { r = 1.00, g = 0.47, b = 0.47 },
@@ -150,6 +149,7 @@ E.GemTypeInfo = {
 	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29 },
 	SingingSea		= { r = 0.47, g = 0.67, b = 1.00 },
 	SingingWind		= { r = 1.00, g = 0.47, b = 0.47 },
+	Fiber			= { r = 0.90, g = 0.80, b = 0.50 },
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
@@ -243,7 +243,7 @@ end
 
 function E:UpdateClassColor(db)
 	if E:CheckClassColor(db.r, db.g, db.b) then
-		local color = E:ClassColor(E.myclass, true)
+		local color = E.myClassColor
 		if color then
 			db.r, db.g, db.b = color.r, color.g, color.b
 		end
@@ -516,7 +516,7 @@ end
 
 do
 	local cancel = function(popup)
-		DisableAddOn(popup.addon)
+		DisableAddOn(popup.addon, E.myguid)
 		ReloadUI()
 	end
 
@@ -737,7 +737,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	return tfbCleaned
 end
 
-local function keySort(a, b)
+local function KeySort(a, b)
 	local A, B = type(a), type(b)
 
 	if A == B then
@@ -753,10 +753,10 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
-	local function recurse(tbl, level, ret)
+	local function Recurse(tbl, level, ret)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
@@ -773,7 +773,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				if v then ret = ret..'true,\n' else ret = ret..'false,\n' end
 			elseif type(v) == 'table' then
 				ret = ret..'{\n'
-				ret = recurse(v, level + 1, ret)
+				ret = Recurse(v, level + 1, ret)
 				ret = ret..strrep('    ', level)..'},\n'
 			else
 				ret = ret..'"'..tostring(v)..'",\n'
@@ -790,7 +790,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		end
 
 		local ret = '{\n'
-		if inTable then ret = recurse(inTable, 1, ret) end
+		if inTable then ret = Recurse(inTable, 1, ret) end
 		ret = ret..'}'
 
 		return ret
@@ -807,7 +807,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		styleFilters = 'E.global'
 	}
 
-	local function buildLineStructure(str) -- str is profileText
+	local function BuildLineStructure(str) -- str is profileText
 		for _, v in ipairs(lineStructureTable) do
 			if type(v) == 'string' then
 				str = str..'["'..v..'"]'
@@ -820,12 +820,12 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	end
 
 	local sameLine
-	local function recurse(tbl, ret, profileText)
+	local function Recurse(tbl, ret, profileText)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, keySort)
+		sort(tkeys, KeySort)
 
-		local lineStructure = buildLineStructure(profileText)
+		local lineStructure = BuildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
 
@@ -845,7 +845,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 				tinsert(lineStructureTable, k)
 				sameLine = true
 				ret = ret..']'
-				ret = recurse(v, ret, profileText)
+				ret = Recurse(v, ret, profileText)
 			else
 				sameLine = false
 				ret = ret..'] = '
@@ -880,7 +880,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
-			ret = recurse(inTable, ret, profileText)
+			ret = Recurse(inTable, ret, profileText)
 		end
 
 		return ret
@@ -990,7 +990,7 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 end
 
 do -- BFA Convert, deprecated..
-	local function buffwatchConvert(spell)
+	local function ConvertAurawatch(spell)
 		if spell.sizeOverride then spell.sizeOverride = nil end
 		if spell.size then spell.size = nil end
 
@@ -1207,14 +1207,14 @@ do -- BFA Convert, deprecated..
 		if E.global.unitframe.buffwatch then
 			for _, spells in pairs(E.global.unitframe.buffwatch) do
 				for _, spell in pairs(spells) do
-					buffwatchConvert(spell)
+					ConvertAurawatch(spell)
 				end
 			end
 		end
 
 		if E.db.unitframe.filters.buffwatch then
 			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
-				buffwatchConvert(spell)
+				ConvertAurawatch(spell)
 			end
 		end
 
@@ -1337,6 +1337,7 @@ function E:DBConvertSL()
 		E.db.convertPages = E.db.actionbar.convertPages
 		E.db.actionbar.convertPages = nil
 	end
+
 	if not E.db.convertPages then
 		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
 		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
@@ -1471,9 +1472,7 @@ function E:DBConvertTWW()
 			healthBreak.threshold.good = false
 		end
 	end
-end
 
-function E:DBConvertMists()
 	-- soulshard convert
 	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
 		if data.r or data.g or data.b then
@@ -1487,6 +1486,26 @@ function E:DBConvertDev()
 	if not ElvCharacterDB.ConvertKeybindings then
 		E:ConvertActionBarKeybinds()
 		ElvCharacterDB.ConvertKeybindings = true
+	end
+
+	-- mage resource convert
+	for _, data in ipairs({ E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE }) do
+		if data.r or data.g or data.b then
+			data.ARCANE_CHARGES.r, data.ARCANE_CHARGES.g, data.ARCANE_CHARGES.b = data.r, data.g, data.b
+			data.r, data.g, data.b = nil, nil, nil
+		end
+	end
+
+	-- hide text -> hide name & hide time
+	for _, unit in ipairs({'player','target','focus','pet','boss','arena','party'}) do
+		local db = E.db.unitframe.units[unit].castbar
+		local previous = db.hidetext
+		if previous ~= nil then
+			db.hideName = previous
+			db.hideTime = previous
+
+			db.hidetext = nil
+		end
 	end
 end
 
@@ -1889,12 +1908,15 @@ function E:ResetUI(...)
 end
 
 do
-	local function errorhandler(err)
-		return _G.geterrorhandler()(err)
+	local function Errorhandler(err)
+		local handler = _G.geterrorhandler()
+		if handler then
+			return handler(err)
+		end
 	end
 
 	function E:CallLoadFunc(func, ...)
-		xpcall(func, errorhandler, ...)
+		xpcall(func, Errorhandler, ...)
 	end
 end
 
@@ -1956,7 +1978,6 @@ function E:DBConversions()
 		E:DBConvertSL()
 		E:DBConvertDF()
 		E:DBConvertTWW()
-		E:DBConvertMists()
 	end
 
 	-- development convert always
@@ -2015,12 +2036,7 @@ function E:Initialize()
 	wipe(E.global)
 	wipe(E.private)
 
-	local playerGUID = UnitGUID('player')
-	local _, serverID = strsplit('-', playerGUID)
-	E.serverID = tonumber(serverID)
 	E.myspec = GetSpecialization()
-	E.myguid = playerGUID
-
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
@@ -2035,52 +2051,61 @@ function E:Initialize()
 
 	E:UpdateDB()
 	E:UIScale()
-	E:BuildPrefixValues()
-	E:LoadAPI()
-	E:LoadCommands()
-	E:InitializeModules()
-	E:LoadMovers()
-	E:UpdateMedia()
-	E:UpdateDispelColors()
-	E:UpdateCustomClassColors()
-	E:UpdateCooldownSettings('all')
-	E:Contruct_StaticPopups()
+	E:LoadStaticPopups()
 
-	if E.Retail then
-		E:Tutorials()
-	end
+	if E.OtherAddons.Tukui then
+		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
+	else
+		E:BuildPrefixValues()
+		E:LoadAPI()
+		E:LoadCommands()
+		E:InitializeModules()
+		E:LoadMovers()
+		E:UpdateMedia()
+		E:UpdateDispelColors()
+		E:UpdateCustomClassColors()
+		E:UpdateCooldownSettings('all')
 
-	if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
-		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
-	end
+		E.initialized = true
 
-	E.initialized = true
+		if E.Retail then
+			E:Tutorials()
+		end
 
-	if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
-		E:TagUpdateRate(E.db.general.tagUpdateRate)
-	end
+		if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
+		end
 
-	if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
-		E:SetSmoothingAmount(E.db.general.smoothingAmount)
-	end
+		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+			E:TagUpdateRate(E.db.general.tagUpdateRate)
+		end
 
-	if not E.private.install_complete then
-		E:Install()
-	end
+		if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
+			E:SetSmoothingAmount(E.db.general.smoothingAmount)
+		end
 
-	if E.version ~= E.Libs.version then
-		E.updateRequestTriggered = true
-		E:StaticPopup_Show('UPDATE_REQUEST')
-	end
+		if not E.private.install_complete then
+			E:Install()
+		end
 
-	if GetCVarBool('scriptProfile') then
-		E:StaticPopup_Show('SCRIPT_PROFILE')
-	end
+		if E.version ~= E.Libs.version then
+			E.updateRequestTriggered = true
+			E:StaticPopup_Show('UPDATE_REQUEST')
+		end
 
-	if E.db.general.loginmessage then
-		local msg = format(L["LOGIN_MSG"], E.versionString)
-		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
-		print(msg)
-		print(L["LOGIN_MSG_HELP"])
+		if GetCVarBool('scriptProfile') then
+			E:StaticPopup_Show('SCRIPT_PROFILE')
+		end
+
+		if E.db.general.loginmessage then
+			local msg, _ = format(L["LOGIN_MSG"], E.versionString)
+
+			if Chat.Initialized then -- setup the link
+				_, msg = Chat:FindURL('CHAT_MSG_DUMMY', msg)
+			end
+
+			print(msg)
+			print(L["LOGIN_MSG_HELP"])
+		end
 	end
 end

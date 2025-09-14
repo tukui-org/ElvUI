@@ -23,4 +23,4 @@ local function ApplySettings(_, hex)
 	displayString = hex..'%1|r'
 end
 
-DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, not E.ClassicHC and OnClick or nil, nil, nil, nil, nil, ApplySettings)
+DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, not E.ClassicHC and OnClick or nil, nil, nil, L["Date"], nil, ApplySettings)

@@ -3,26 +3,11 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
-local _G = _G
 local max, next, ipairs = max, next, ipairs
 
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
-
-local ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK', Totems = 'SHAMAN' }
-
-local MAX_POINTS = { -- match to UF.classMaxResourceBar
-	DEATHKNIGHT	= max(6, MAX_COMBO_POINTS),
-	PALADIN		= max(5, MAX_COMBO_POINTS),
-	WARLOCK		= max(5, MAX_COMBO_POINTS),
-	MONK		= max(6, MAX_COMBO_POINTS),
-	MAGE		= max(4, MAX_COMBO_POINTS),
-	ROGUE		= max(7, MAX_COMBO_POINTS),
-	EVOKER		= max(6, MAX_COMBO_POINTS),
-	DRUID		= max(5, MAX_COMBO_POINTS),
-	PRIEST		= max(3, MAX_COMBO_POINTS),
-}
 
 function NP:ClassPower_SetBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
@@ -34,20 +19,15 @@ end
 
 function NP:ClassPower_UpdateColor(powerType, rune)
 	local isRunes = powerType == 'RUNES'
-
-	local classPower = self.classColor
-	local colors = NP.db.colors.classResources
-	local fallback = NP.db.colors.power[powerType] or NP.db.colors.power.MANA
-
+	local colors, powers, fallback = UF:ClassPower_GetColor(NP.db.colors, powerType)
 	if isRunes and NP.db.colors.chargingRunes then
 		NP:Runes_UpdateCharged(self, rune)
-	elseif isRunes and rune and not classPower then
-		local color = colors.DEATHKNIGHT[rune.runeType or 0]
+	elseif isRunes and rune and not self.classColor then
+		local color = UF:ClassPower_BarColor(isRunes, rune)
 		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
 	else
-		local classColor = not classPower and (colors[ClassPowerColors[powerType]] or colors[E.myclass][powerType] or colors[E.myclass])
-		for i, bar in ipairs(self) do
-			local color = classPower or (isRunes and classColor[bar.runeType or 0]) or classColor[i] or classColor
+		for index, bar in ipairs(self) do
+			local color = self.classColor or UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
 				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else
@@ -90,7 +70,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 
 	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
-	local total = MAX_POINTS[E.myclass] or 0
+	local total = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 
 	for i = 1, total do
 		local barName = containerName..i
@@ -98,21 +78,23 @@ function NP:Construct_ClassPower(nameplate)
 		bar:SetStatusBarTexture(texture)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())
 		bar:SetFrameLevel(6)
-		NP.StatusBars[bar] = true
+		NP.StatusBars[bar] = 'classpower'
 
 		bar.bg = ClassPower:CreateTexture(barName..'bg', 'BORDER')
 		bar.bg:SetTexture(texture)
 		bar.bg:SetAllPoints()
 
-		if nameplate == _G.ElvNP_Test then
+		if nameplate == NP.TestFrame then
 			local combo = NP.db.colors.classResources.comboPoints[i]
-			bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			if combo then
+				bar.bg:SetVertexColor(combo.r, combo.g, combo.b)
+			end
 		end
 
 		ClassPower[i] = bar
 	end
 
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		ClassPower.Hide = ClassPower.Show
 		ClassPower:Show()
 	end
@@ -126,7 +108,7 @@ end
 function NP:Update_ClassPower(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	if nameplate == _G.ElvNP_Test then
+	if nameplate == NP.TestFrame then
 		if not db.nameOnly and db.classpower and db.classpower.enable then
 			NP.ClassPower_UpdateColor(nameplate.ClassPower, 'COMBO_POINTS')
 			nameplate.ClassPower:SetAlpha(1)
@@ -146,7 +128,7 @@ function NP:Update_ClassPower(nameplate)
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
 
-		nameplate.ClassPower.classColor = db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.ClassPower.classColor = db.classpower.classColor and E.myClassColor
 
 		for i = 1, #nameplate.ClassPower do
 			nameplate.ClassPower[i]:Hide()
@@ -237,7 +219,7 @@ function NP:Construct_Runes(nameplate)
 		rune:SetStatusBarColor(color.r, color.g, color.b)
 		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
 		rune.__owner = Runes
-		NP.StatusBars[rune] = true
+		NP.StatusBars[rune] = 'runes'
 
 		rune.bg = rune:CreateTexture(barName..'bg', 'BORDER')
 		rune.bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
@@ -265,7 +247,7 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Runes:Show()
 
-		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E:ClassColor(E.myclass)
+		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E.myClassColor
 		nameplate.Runes.sortOrder = (db.classpower.sortDirection ~= 'NONE') and db.classpower.sortDirection
 		nameplate.Runes.colorSpec = E.Retail and NP.db.colors.runeBySpec
 
@@ -305,7 +287,7 @@ function NP:Construct_Stagger(nameplate)
 	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Stagger:Hide()
 
-	NP.StatusBars[Stagger] = true
+	NP.StatusBars[Stagger] = 'stagger'
 
 	return Stagger
 end

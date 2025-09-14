@@ -101,7 +101,7 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_CLASSIFICATION_CHANGED', Path)
+		self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
 
 		return true
 	end
@@ -112,7 +112,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'UNIT_CLASSIFICATION_CHANGED', Path)
+		self:UnregisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
 	end
 end
 

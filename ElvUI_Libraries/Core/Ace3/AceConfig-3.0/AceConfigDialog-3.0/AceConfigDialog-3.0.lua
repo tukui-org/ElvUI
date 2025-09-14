@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 91 -- based off 87
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 92 -- based off 87
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -528,6 +528,7 @@ local function OptionOnMouseOver(widget, event)
 		Max = (opt.max and "|cFFCCCCCCMax:|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
 		softText = Min ~= "" or Max ~= ""
 	end
+
 	if bigText then
 		local dec = opt.step and format("%f", opt.step):gsub('%.?0-$','')
 		local num = dec and tonumber(dec)
@@ -535,7 +536,16 @@ local function OptionOnMouseOver(widget, event)
 		bigText = Step ~= ""
 	end
 
-	if descText or usageText or userText or softText or bigText then
+	if opt.dragdrop then
+		tooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
+		tooltip:SetText(user.title or name, 1, .82, 0, true)
+
+		if user.desc then
+			tooltip:AddLine(user.desc, 1, 1, 1, true)
+		end
+
+		tooltip:Show()
+	elseif descText or usageText or userText or softText or bigText then
 		tooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
 		tooltip:SetText(name, 1, .82, 0, true)
 
@@ -1420,12 +1430,16 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 							local text = values[value]
 							if dragdrop then
 								local button = gui:Create("Button-ElvUI")
-								button:SetDisabled(disabled)
+
+								local title = v.dragGetTitle and v.dragGetTitle(button, text, value) or nil
+								local desc = v.dragGetDesc and v.dragGetDesc(button, text, value) or nil
+								button:SetText(format("|cFF888888%d|r %s", s, title or text))
 								button:SetUserData("value", value)
 								button:SetUserData("text", text)
-								local state = v.stateSwitchGetText and v.stateSwitchGetText(button, text, value)
-								button:SetText(format("|cFF888888%d|r %s", s, state or text))
-								button.stateSwitchOnClick = v.stateSwitchOnClick
+								button:SetUserData("title", title)
+								button:SetUserData("desc", desc)
+								button:SetDisabled(disabled)
+
 								button.dragOnMouseDown = v.dragOnMouseDown
 								button.dragOnMouseUp = v.dragOnMouseUp
 								button.dragOnEnter = v.dragOnEnter

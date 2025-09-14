@@ -22,7 +22,7 @@ local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
-local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 local ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList or ExpandCurrencyList
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
@@ -580,7 +580,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
-		dt.text:SetText()
+		dt.text:SetText('')
 
 		dt.icon:Size(iconSize)
 		dt.icon:SetTexture(E.ClearTexture)
@@ -689,7 +689,7 @@ function DT:GetMenuListCategory(category)
 end
 
 do
-	local function menuSort(a, b)
+	local function MenuSort(a, b)
 		if a.order and b.order and not (a.order == b.order) then
 			return a.order < b.order
 		end
@@ -704,12 +704,12 @@ do
 			end
 		end
 
-		sort(list, menuSort)
+		sort(list, MenuSort)
 	end
 end
 
 do
-	local function hasName(tbl, name)
+	local function HasName(tbl, name)
 		for _, data in pairs(tbl) do
 			if data.text == name then
 				return true
@@ -727,7 +727,7 @@ do
 				tinsert(QuickList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} })
 			end
 
-			if not hasName(QuickList[category].menuList, info.localizedName or name) then
+			if not HasName(QuickList[category].menuList, info.localizedName or name) then
 				tinsert(QuickList[category].menuList, {
 					text = gsub(info.localizedName or name, '^LDB: ', ''),
 					checked = function() return E.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,

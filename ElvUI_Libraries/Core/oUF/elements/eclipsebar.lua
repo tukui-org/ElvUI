@@ -15,6 +15,7 @@ local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecializ
 local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local TREANT_GLYPH = 114282
+local AQUATIC_FORM = 1066
 
 local function Update(self, event, unit, powerType)
 	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'BALANCE')) then return end
@@ -84,18 +85,17 @@ local function ElementDisable(self)
 end
 
 local function Visibility(self)
-	local shouldEnable
-
-	local form = GetShapeshiftForm()
-	local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true)
-	if (form == 0) or (not treant and form == 5) or (treant and (form == 5 or form == 6)) then
-		shouldEnable = not UnitHasVehicleUI('player') and GetSpecialization() == SPEC_DRUID_BALANCE
-	end
-
-	if(shouldEnable) then
-		ElementEnable(self)
-	else
+	if UnitHasVehicleUI('player') or GetSpecialization() ~= SPEC_DRUID_BALANCE then
 		ElementDisable(self)
+	else
+		local aquatic = IsSpellInSpellBook(AQUATIC_FORM, nil, true) -- lower levels wont have this yet
+		local treant = IsSpellInSpellBook(TREANT_GLYPH, nil, true) -- check for tree form glyph
+		local primary, secondary, form = aquatic and 5 or 4, aquatic and 6 or 5, GetShapeshiftForm()
+		if (form == 0) or (not treant and form == primary) or (treant and (form == primary or form == secondary)) then
+			ElementEnable(self)
+		else
+			ElementDisable(self)
+		end
 	end
 end
 
@@ -117,7 +117,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath, true)
 		self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath, true)
 
-		oUF:RegisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath, true)
+		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
 		if(element.LunarBar and element.LunarBar:IsObjectType('StatusBar') and not element.LunarBar:GetStatusBarTexture()) then
 			element.LunarBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -138,7 +138,7 @@ local function Disable(self)
 		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
 		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
 
-		oUF:UnregisterEvent(self, 'PLAYER_TALENT_UPDATE', VisibilityPath)
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 	end
 end
 

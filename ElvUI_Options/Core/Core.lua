@@ -49,6 +49,7 @@ C.Values = {
 	FontFlags = ACH.FontValues,
 	FontSize = { min = 8, max = 64, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
+	TooltipAnchors = { ANCHOR_TOP = L["TOP"], ANCHOR_RIGHT = L["RIGHT"], ANCHOR_BOTTOM = L["BOTTOM"], ANCHOR_LEFT = L["LEFT"], ANCHOR_TOPRIGHT = L["TOPRIGHT"], ANCHOR_BOTTOMRIGHT = L["BOTTOMRIGHT"], ANCHOR_TOPLEFT = L["TOPLEFT"], ANCHOR_BOTTOMLEFT = L["BOTTOMLEFT"], ANCHOR_CURSOR = L["CURSOR"], ANCHOR_CURSOR_LEFT = L["CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["CURSOR_RIGHT"] },
 	AllPositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"], TOP = L["TOP"], BOTTOM = L["BOTTOM"], CENTER = L["CENTER"] },
 	EdgePositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"], TOP = L["TOP"], BOTTOM = L["BOTTOM"] },
 	SidePositions = { LEFT = L["LEFT"], RIGHT = L["RIGHT"] },
@@ -74,25 +75,62 @@ do
 end
 
 do
-	C.StateSwitchGetText = function(_, TEXT)
-		local friend, enemy = strmatch(TEXT, '^Friendly:([^,]*)'), strmatch(TEXT, '^Enemy:([^,]*)')
-		local text, blockB, blockS, blockT = friend or enemy or TEXT
-		local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-		if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
-		local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
+	C.DragGetTitle = function(_, text)
+		local real, friend, enemy, block, allow = UF:GetFilterNameInfo(text)
+		local title = L[real] or real
+		local filterText = ((block or allow) and format(block and '|cFF999999%s|r %s' or '|cFFcccccc%s|r %s', block and L["Block"] or L["Allow"], title)) or title
 		return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 	end
 
-	local function filterMatch(s,v)
+	local specialOldNames = { -- also in UF Auras
+		nonPersonal = 'NonPersonal',
+		notCastByUnit = 'NotCastByUnit',
+		notDispellable = 'NotDispellable'
+	}
+
+	local specialLocales = {
+		Boss = L["Auras cast by a boss unit."],
+		Mount = L["Auras which are classified as mounts."],
+		MyPet = L["Auras which were from the pet unit."],
+		OtherPet = L["Auras which were from another pet unit."],
+		Personal = L["Auras cast by yourself."],
+		NoDuration = L["Auras with no duration."],
+		NonPersonal = L["Auras cast by anyone other than yourself."],
+		CastByUnit = L["Auras cast by the unit of the unitframe or nameplate (so on target frame it only shows auras cast by the target unit)."],
+		NotCastByUnit = L["Auras cast by anyone other than the unit of the unitframe or nameplate."],
+		Dispellable = L["Auras you can either dispel or spellsteal."],
+		NotDispellable = L["Auras you cannot dispel or spellsteal."],
+		CastByNPC = L["Auras cast by any NPC."],
+		CastByPlayers = L["Auras cast by any player-controlled unit (so no NPCs)."],
+		BlizzardNameplate = L["Auras that fall under the conditions to be a nameplate aura."]
+	}
+
+	C.DragGetDesc = function(_, text)
+		local real = UF:GetFilterNameInfo(text)
+
+		local special = specialLocales[specialOldNames[real] or real]
+		if special then
+			return special
+		end
+
+		local custom = E.global.unitframe.aurafilters[real]
+		if custom then
+			return custom.desc
+		end
+	end
+
+	local function FilterMatch(s,v)
 		local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
 		return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
 	end
 
-	C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState)
+	C.SetFilterPriority = function(db, groupName, auraType, value, remove, movehere, friendState, typeOverride)
 		if not auraType or not value then return end
+
 		local filter = db[groupName] and db[groupName][auraType] and db[groupName][auraType].priority
 		if not filter then return end
-		local found = filterMatch(filter, E:EscapeString(value))
+
+		local found = FilterMatch(filter, E:EscapeString(value))
 		if found and movehere then
 			local tbl, sv, sm = {strsplit(',',filter)}
 			for i in ipairs(tbl) do
@@ -102,21 +140,28 @@ do
 			tremove(tbl, sm)
 			tinsert(tbl, sv, movehere)
 			db[groupName][auraType].priority = tconcat(tbl,',')
-		elseif found and friendState then
-			local realValue = strmatch(value, '^Friendly:([^,]*)') or strmatch(value, '^Enemy:([^,]*)') or value
-			local friend = filterMatch(filter, E:EscapeString('Friendly:'..realValue))
-			local enemy = filterMatch(filter, E:EscapeString('Enemy:'..realValue))
-			local default = filterMatch(filter, E:EscapeString(realValue))
+		elseif found and (friendState or typeOverride) then
+			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(value)
 
-			local state =
-				(friend and (not enemy) and format('%s%s','Enemy:',realValue))					--[x] friend [ ] enemy: > enemy
-			or	((not enemy and not friend) and format('%s%s','Friendly:',realValue))			--[ ] friend [ ] enemy: > friendly
-			or	(enemy and (not friend) and default and format('%s%s','Friendly:',realValue))	--[ ] friend [x] enemy: (default exists) > friendly
-			or	(enemy and (not friend) and strmatch(value, '^Enemy:') and realValue)			--[ ] friend [x] enemy: (no default) > realvalue
-			or	(friend and enemy and realValue)												--[x] friend [x] enemy: > default
+			local state
+			if friendState then
+				state = (friend and not enemy and format('Enemy:%s',real))		--[x] friend [ ] enemy > enemy
+				or (not enemy and not friend and format('Friendly:%s',real))	--[ ] friend [ ] enemy > friendly
+				or (enemy and not friend and real)								--[ ] friend [x] enemy > reset
+			else
+				state = (friend and format('Friendly:%s',real)) or (enemy and format('Enemy:%s',real)) or real
+			end
 
-			if state then
-				local stateFound = filterMatch(filter, E:EscapeString(state))
+			if typeOverride then
+				state = (allow and not block and format('block%s',state))	--[x] allow [ ] block > block
+				or (not block and not allow and format('allow%s',state))	--[ ] allow [ ] block > allow
+				or (block and not allow and state)							--[ ] allow [x] block > reset
+			else -- changing friend state but need to keep the type state
+				state = (allow and format('allow%s',state)) or (block and format('block%s',state)) or state
+			end
+
+			if state ~= value then
+				local stateFound = FilterMatch(filter, E:EscapeString(state))
 				if not stateFound then
 					local tbl, sv = {strsplit(',',filter)}
 					for i in ipairs(tbl) do
@@ -125,8 +170,10 @@ do
 							break
 						end
 					end
+
 					tinsert(tbl, sv, state)
 					tremove(tbl, sv+1)
+
 					db[groupName][auraType].priority = tconcat(tbl,',')
 				end
 			end
@@ -170,7 +217,6 @@ local DEVELOPERS = {
 }
 
 local TESTERS = {
-	'Affinity',
 	'Modarch',
 	'Tirain',
 	'Phima',
@@ -344,7 +390,7 @@ E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, valu
 end
 
 do -- Import and Export
-	local function validateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
+	local function ValidateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
 	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
 
 	local function DecodeString(text, plugin)
@@ -359,7 +405,7 @@ do -- Import and Export
 	end
 
 	local function DecodeLabel(label, text, plugin)
-		if not validateString(nil, text) then
+		if not ValidateString(nil, text) then
 			label.name = ''
 			return text
 		end
@@ -412,7 +458,7 @@ do -- Import and Export
 
 				count = count + 1 -- keep this after the count usage
 
-				if which == 'text' and validateString(nil, importText) then
+				if which == 'text' and ValidateString(nil, importText) then
 					local profileType = D:Decode(importText)
 					local imported = profileType and D:ImportProfile(importText)
 					label.name = (imported and L["Profile imported successfully!"]) or L["Error decoding data. Import string may be corrupted!"]

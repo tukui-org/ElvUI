@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local next = next
-local min, select = min, select
+local min, next, select = min, next, select
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
@@ -14,7 +13,6 @@ local GetItemInfo = C_Item.GetItemInfo
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
-local C_DelvesUI_GetDelvesMinRequiredLevel = C_DelvesUI.GetDelvesMinRequiredLevel
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
@@ -328,14 +326,18 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab1:ClearAllPoints()
 	_G.PVEFrameTab2:ClearAllPoints()
 	_G.PVEFrameTab3:ClearAllPoints()
-	_G.PVEFrameTab1:Point('BOTTOMLEFT', _G.PVEFrame, 'BOTTOMLEFT', -3, -32)
+	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', -3, -32)
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
 	hooksecurefunc('PVEFrame_ShowFrame', function()
-		if _G.PVEFrameTab4 and (E.mylevel >= C_DelvesUI_GetDelvesMinRequiredLevel()) then
-			_G.PVEFrameTab4:Point('TOPLEFT', _G.PVEFrameTab3, 'TOPRIGHT', -5, 0)
-		end
+		if not _G.PVEFrameTab4:IsShown() then return end
+
+		local twoShown = _G.PVEFrameTab2:IsShown()
+		local threeShown = _G.PVEFrameTab3:IsShown()
+
+		_G.PVEFrameTab4:ClearAllPoints()
+		_G.PVEFrameTab4:SetPoint('TOPLEFT', (twoShown and threeShown and _G.PVEFrameTab3) or (twoShown and not threeShown and _G.PVEFrameTab2) or _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	end)
 
 	-- Scenario Tab [[New in 10.2.7]]

@@ -12,6 +12,7 @@ local SelectQuestLogEntry = SelectQuestLogEntry
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestLogSelection = GetQuestLogSelection
 local GetQuestLogTitle = GetQuestLogTitle
+local IsXPUserDisabled = IsXPUserDisabled
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local GameTooltip = GameTooltip
 
@@ -84,7 +85,7 @@ function DB:ExperienceBar_Update()
 		bar:SetValue(1)
 
 		if textFormat ~= 'NONE' then
-			displayString = E:XPIsUserDisabled() and L["Disabled"] or L["Max Level"]
+			displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
 		end
 	else
 		bar:SetMinMaxValues(0, XPToLevel)

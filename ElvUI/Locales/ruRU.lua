@@ -2,6 +2,19 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
+L["Date"] = "Дата"
+L["Plugins:"] = "Плагины:"
+L["Version:"] = "Версия:"
+L["Equipment Sets"] = "Equipment Sets"
+L["No Set Equipped"] = "No Set Equipped"
+L["Set:"] = true
+L["New Mail"] = "Новое письмо"
+L["No Mail"] = "Нет писем"
+L["Completed XP:"] = "Завершенный опыт:"
+L["Total Gold:"] = "Всего золота:"
+L["Total XP:"] = "Всего опыта:"
+L["Quests:"] = "Задания:"
+L["Time"] = "Время"
 L["Restrict Pings"] = true
 L["Player"] = "Игрок"
 L["Small"] = "Малый"

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local strfind = strfind
 local next, unpack = next, unpack
 
 local hooksecurefunc = hooksecurefunc
@@ -139,8 +140,8 @@ local function StartBonusRoll()
 	-- skin currency icons
 	local ccf, pfifc = frame.CurrentCountFrame.Text, frame.PromptFrame.InfoFrame.Cost
 	local text1, text2 = ccf and ccf:GetText(), pfifc and pfifc:GetText()
-	if text1 and text1:find('|t') then ccf:SetText(text1:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
-	if text2 and text2:find('|t') then pfifc:SetText(text2:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
+	if text1 and strfind(text1, '|t') then ccf:SetText(text1:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
+	if text2 and strfind(text2, '|t') then pfifc:SetText(text2:gsub('|T(.-):.-|t', '|T%1:16:16:0:0:64:64:5:59:5:59|t')) end
 end
 
 local function SpecIconHide(bonusSpecIcon)

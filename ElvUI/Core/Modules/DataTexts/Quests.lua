@@ -70,12 +70,12 @@ local function OnEnter()
 
 	if completedXP > 0 then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine('Completed XP:', format('%s (%.2f%%)', BreakUpLargeNumbers(completedXP), (completedXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Completed XP:"], format('%s (%.2f%%)', BreakUpLargeNumbers(completedXP), (completedXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddDoubleLine('Total Gold:', E:FormatMoney(totalMoney, 'SMART'), nil, nil, nil, 1, 1, 1)
-	DT.tooltip:AddDoubleLine('Total XP:', format('%s (%.2f%%)', BreakUpLargeNumbers(totalXP), (totalXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Total Gold:"], E:FormatMoney(totalMoney, 'SMART'), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Total XP:"], format('%s (%.2f%%)', BreakUpLargeNumbers(totalXP), (totalXP / xpToLevel) * 100), nil, nil, nil, 1, 1, 1)
 	DT.tooltip:Show()
 end
 
@@ -87,7 +87,7 @@ local function OnEvent(self)
 	numEntries, numQuests = GetNumQuestLogEntries()
 	xpToLevel = UnitXPMax('player')
 
-	self.text:SetFormattedText(displayString, numQuests, MAX_QUESTLOG_QUESTS)
+	self.text:SetFormattedText(displayString, L["Quests:"], numQuests, MAX_QUESTLOG_QUESTS)
 
 	if MouseIsOver(self) then
 		OnEnter(self)
@@ -95,7 +95,7 @@ local function OnEvent(self)
 end
 
 local function ApplySettings(_, hex)
-	displayString = strjoin('', 'Quests: ', hex, '%d|r', '/', hex, '%d|r')
+	displayString = strjoin('', '%s ', hex, '%d|r', '/', hex, '%d|r')
 end
 
 DT:RegisterDatatext('Quests', nil, { 'QUEST_ACCEPTED', 'QUEST_REMOVED', 'QUEST_TURNED_IN', 'QUEST_LOG_UPDATE', 'MODIFIER_STATE_CHANGED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Quest Log"], nil, ApplySettings)

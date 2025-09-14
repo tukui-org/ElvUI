@@ -1,10 +1,12 @@
 local _, ns = ...
 local oUF = ns.oUF
+local AuraFiltered = oUF.AuraFiltered
 
 local VISIBLE = 1
 local HIDDEN = 0
 
 local mod = mod
+local next = next
 local wipe = wipe
 local pcall = pcall
 local unpack = unpack
@@ -15,6 +17,7 @@ local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
+local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -38,20 +41,25 @@ local function FormatTime(sec)
 	end
 end
 
-local function onEnter(self)
+local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	GameTooltip:SetOwner(self, self.tooltipAnchor)
-	GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
+	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+	-- otherwise it'll inherit said restrictions which will cause issues with
+	-- its further positioning, clamping, etc
+	GameTooltip:SetOwner(self, (self.__owner.__restricted and 'ANCHOR_CURSOR') or self.__owner.tooltipAnchor, self.__owner.tooltipAnchorX, self.__owner.tooltipAnchorY)
+
+	-- we need compatibility here because this wasnt implemented on Era or Mists
+	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
 end
 
-local function onLeave()
+local function OnLeave()
 	if GameTooltip:IsForbidden() then return end
 
 	GameTooltip:Hide()
 end
 
-local function updateValue(bar, start)
+local function UpdateValue(bar, start)
 	local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
 
 	if start and bar.SetValue_ then
@@ -63,23 +71,22 @@ local function updateValue(bar, start)
 	bar.timeText:SetFormattedText(FormatTime(remain))
 end
 
-local function onUpdate(bar, elapsed)
+local function OnUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
 
 	if bar.elapsed > 0.01 then
-		updateValue(bar)
+		UpdateValue(bar)
 
 		bar.elapsed = 0
 	end
 end
 
-local function createAuraBar(element, index)
+local function CreateAuraBar(element, index)
 	local bar = CreateFrame('StatusBar', element:GetName() .. 'StatusBar' .. index, element)
 	bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 	bar:SetMinMaxValues(0, 1)
-	bar.tooltipAnchor = element.tooltipAnchor
-	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', onLeave)
+	bar:SetScript('OnEnter', OnEnter)
+	bar:SetScript('OnLeave', OnLeave)
 	bar:EnableMouse(false)
 
 	local spark = bar:CreateTexture(nil, "OVERLAY", nil);
@@ -109,13 +116,13 @@ local function createAuraBar(element, index)
 	return bar
 end
 
-local function customFilter(element, unit, button, name)
+local function CustomFilter(element, unit, button, name)
 	if (element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name) then
 		return true
 	end
 end
 
-local function updateBar(element, bar)
+local function UpdateBar(element, bar)
 	if bar.count > 1 then
 		bar.nameText:SetFormattedText('[%d] %s', bar.count, bar.spell)
 	else
@@ -153,25 +160,24 @@ local function updateBar(element, bar)
 	end
 end
 
-local function auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:GetAuraData(unit, index, filter)
-
+local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
 	if not name then return end
 
 	local position = visible + offset + 1
 	local bar = element[position]
 	if not bar then
-		bar = (element.CreateBar or createAuraBar) (element, position)
+		bar = (element.CreateBar or CreateAuraBar) (element, position)
 		tinsert(element, bar)
 		element.createdBars = element.createdBars + 1
 	end
 
 	element.active[position] = bar
 
+	bar.aura = aura
 	bar.unit = unit
 	bar.count = count
 	bar.index = index
-	bar.caster = source
 	bar.filter = filter
 	bar.texture = texture
 	bar.isDebuff = isDebuff
@@ -184,19 +190,21 @@ local function auraUpdate(element, unit, index, offset, filter, isDebuff, visibl
 	bar.modRate = modRate
 	bar.spellID = spellID
 	bar.spell = name
+	bar.auraInstanceID = aura.auraInstanceID
 	bar.noTime = (duration == 0 and expiration == 0)
 
-	local show = (element.CustomFilter or customFilter) (element, unit, bar, name, texture,
+	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
-	updateBar(element, bar)
+	UpdateBar(element, bar)
 
 	if bar.noTime then
 		bar:SetScript('OnUpdate', nil)
 	else
-		updateValue(bar, true)
-		bar:SetScript('OnUpdate', onUpdate)
+		UpdateValue(bar, true)
+
+		bar:SetScript('OnUpdate', OnUpdate)
 	end
 
 	return show and VISIBLE or HIDDEN
@@ -218,27 +226,29 @@ local function SetPosition(element, from, to)
 
 		if bar.noTime then
 			bar:SetValue(1)
-			bar.timeText:SetText()
+			bar.timeText:SetText('')
 		end
 	end
 end
 
-local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
+local function FilterBars(element, unit, filter, limit, isDebuff, offset, dontHide)
 	if(not offset) then offset = 0 end
-	local index = 1
 	local visible = 0
 	local hidden = 0
-	while(visible < limit) do
-		local result = auraUpdate(element, unit, index, offset, filter, isDebuff, visible)
-		if(not result) then
-			break
-		elseif(result == VISIBLE) then
+
+	local index = 1
+	local unitAuraFiltered = AuraFiltered[filter][unit]
+	local auraInstanceID, aura = next(unitAuraFiltered)
+	while aura and (visible < limit) do
+		local result = AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
+		if result == VISIBLE then
 			visible = visible + 1
-		elseif(result == HIDDEN) then
+		elseif result == HIDDEN then
 			hidden = hidden + 1
 		end
 
 		index = index + 1
+		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	if(not dontHide) then
@@ -250,34 +260,34 @@ local function filterBars(element, unit, filter, limit, isDebuff, offset, dontHi
 	return visible, hidden
 end
 
-local function UpdateAuras(self, event, unit, isFullUpdate, updatedAuras)
-	if not unit or self.unit ~= unit then return end
-
+local function UpdateAuras(self, event, unit, updateInfo)
 	local element = self.AuraBars
-	if(element) then
-		if(element.PreUpdate) then element:PreUpdate(unit) end
+	if not element then return end
 
-		wipe(element.active)
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
-		local isEnemy = UnitIsEnemy(unit, 'player')
-		local reaction = UnitReaction(unit, 'player')
-		local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
-		local visibleAuras = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
+	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-		element.visibleAuras = visibleAuras
+	wipe(element.active)
 
-		local fromRange, toRange
-		if(element.PreSetPosition) then
-			fromRange, toRange = element:PreSetPosition(element.maxBars)
-		end
+	local isEnemy = UnitIsEnemy(unit, 'player')
+	local reaction = UnitReaction(unit, 'player')
+	local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
+	local visibleAuras = FilterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
-		if(fromRange or element.createdBars > element.anchoredBars) then
-			(element.SetPosition or SetPosition) (element, fromRange or element.anchoredBars + 1, toRange or element.createdBars)
-			element.anchoredBars = element.createdBars
-		end
+	element.visibleAuras = visibleAuras
 
-		if(element.PostUpdate) then element:PostUpdate(unit) end
+	local fromRange, toRange
+	if(element.PreSetPosition) then
+		fromRange, toRange = element:PreSetPosition(element.maxBars)
 	end
+
+	if(fromRange or element.createdBars > element.anchoredBars) then
+		(element.SetPosition or SetPosition) (element, fromRange or element.anchoredBars + 1, toRange or element.createdBars)
+		element.anchoredBars = element.createdBars
+	end
+
+	if(element.PostUpdate) then element:PostUpdate(unit) end
 end
 
 local function Update(self, event, unit)
@@ -303,7 +313,7 @@ local function Enable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		oUF:RegisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
@@ -319,16 +329,14 @@ local function Enable(self)
 		element.growth = element.growth or 'UP'
 		element.maxBars = element.maxBars or 32
 		element.barSpacing = element.barSpacing or 2
+		element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
+		element.tooltipAnchorX = element.tooltipAnchorX or 0
+		element.tooltipAnchorY = element.tooltipAnchorY or 0
 
 		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 		-- otherwise it'll inherit said restrictions which will cause issues
 		-- with its further positioning, clamping, etc
-
-		if(not pcall(self.GetCenter, self)) then
-			element.tooltipAnchor = 'ANCHOR_CURSOR'
-		else
-			element.tooltipAnchor = element.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
-		end
+		element.__restricted = not pcall(self.GetCenter, self)
 
 		element:Show()
 
@@ -340,7 +348,7 @@ local function Disable(self)
 	local element = self.AuraBars
 
 	if(element) then
-		oUF:UnregisterEvent(self, 'UNIT_AURA', UpdateAuras)
+		self:UnregisterEvent('UNIT_AURA', UpdateAuras)
 
 		element:Hide()
 	end

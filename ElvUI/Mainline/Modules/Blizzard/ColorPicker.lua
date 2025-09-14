@@ -21,23 +21,23 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
-local function alphaValue(num)
+local function AlphaValue(num)
 	return num and floor((num * 100) + .05) or 0
 end
 
 local function UpdateAlphaText(alpha)
 	if not alpha then
-		alpha = alphaValue(ColorPickerFrame:GetColorAlpha())
+		alpha = AlphaValue(ColorPickerFrame:GetColorAlpha())
 	end
 
 	_G.ColorPPBoxA:SetText(alpha)
 end
 
-local function expandFromThree(r, g, b)
+local function ExpandFromThree(r, g, b)
 	return strjoin('',r,r,g,g,b,b)
 end
 
-local function extendToSix(str)
+local function ExtendToSix(str)
 	for _=1, 6-strlen(str) do str=str..0 end
 	return str
 end
@@ -45,9 +45,9 @@ end
 local function GetHexColor(box)
 	local rgb, rgbSize = box:GetText(), box:GetNumLetters()
 	if rgbSize == 3 then
-		rgb = gsub(rgb, '(%x)(%x)(%x)$', expandFromThree)
+		rgb = gsub(rgb, '(%x)(%x)(%x)$', ExpandFromThree)
 	elseif rgbSize < 6 then
-		rgb = gsub(rgb, '(.+)$', extendToSix)
+		rgb = gsub(rgb, '(.+)$', ExtendToSix)
 	end
 
 	local r, g, b = tonumber(strsub(rgb,0,2),16) or 0, tonumber(strsub(rgb,3,4),16) or 0, tonumber(strsub(rgb,5,6),16) or 0
@@ -104,7 +104,7 @@ local function ColorPPBoxR_SetFocus()
 end
 
 local delayWait, delayFunc = 0.15
-local function delayCall()
+local function DelayCall()
 	if delayFunc then
 		delayFunc()
 		delayFunc = nil
@@ -112,8 +112,8 @@ local function delayCall()
 end
 
 local last = { r = 0, g = 0, b = 0, a = 0 }
-local function onAlphaValueChanged(_, value)
-	local alpha = alphaValue(value)
+local function OnAlphaValueChanged(_, value)
+	local alpha = AlphaValue(value)
 	if last.a ~= alpha then
 		last.a = alpha
 	else -- alpha matched so we don't need to update
@@ -123,14 +123,14 @@ local function onAlphaValueChanged(_, value)
 	UpdateAlphaText(alpha)
 
 	if not _G.ColorPickerFrame:IsVisible() then
-		delayCall()
+		DelayCall()
 	else
 		local opacityFunc = ColorPickerFrame.opacityFunc
 		if delayFunc and (delayFunc ~= opacityFunc) then
 			delayFunc = opacityFunc
 		elseif not delayFunc then
 			delayFunc = opacityFunc
-			E:Delay(delayWait, delayCall)
+			E:Delay(delayWait, DelayCall)
 		end
 	end
 end
@@ -144,10 +144,10 @@ local function UpdateAlpha(tbox)
 
 	local value = num * 0.01
 	ColorPickerFrame.Content.ColorPicker:SetColorAlpha(value)
-	onAlphaValueChanged(nil, value)
+	OnAlphaValueChanged(nil, value)
 end
 
-local function onColorSelect(frame, r, g, b)
+local function OnColorSelect(frame, r, g, b)
 	if frame.noColorCallback then
 		return -- prevent error from E:GrabColorPickerValues, better note in that function
 	elseif r ~= last.r or g ~= last.g or b ~= last.b then
@@ -161,12 +161,12 @@ local function onColorSelect(frame, r, g, b)
 	UpdateAlphaText()
 
 	if not frame:IsVisible() then
-		delayCall()
+		DelayCall()
 	elseif not delayFunc then
 		delayFunc = ColorPickerFrame.swatchFunc
 
 		if delayFunc then
-			E:Delay(delayWait, delayCall)
+			E:Delay(delayWait, DelayCall)
 		end
 	end
 end
@@ -198,7 +198,7 @@ function BL:EnhanceColorPicker()
 	HexText:SetFontObject('ElvUIFontNormal')
 
 	-- Keep the colors updated
-	ColorPickerFrame.Content.ColorPicker:SetScript('OnColorSelect', onColorSelect)
+	ColorPickerFrame.Content.ColorPicker:SetScript('OnColorSelect', OnColorSelect)
 
 	ColorPickerFrame:HookScript('OnShow', function(frame)
 		-- get color that will be replaced
@@ -252,7 +252,7 @@ function BL:EnhanceColorPicker()
 	local alphaUpdater = CreateFrame('Frame', '$parent_AlphaUpdater', ColorPickerFrame)
 	alphaUpdater:SetScript('OnUpdate', function()
 		if ColorPickerFrame.Content.ColorPicker.Alpha:IsMouseOver() then
-			onAlphaValueChanged(nil, ColorPickerFrame:GetColorAlpha())
+			OnAlphaValueChanged(nil, ColorPickerFrame:GetColorAlpha())
 		end
 	end)
 
@@ -263,7 +263,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(classButton)
 
 	classButton:SetScript('OnClick', function()
-		local color = E:ClassColor(E.myclass, true)
+		local color = E.myClassColor
 		ColorPickerFrame.Content.ColorPicker:SetColorRGB(color.r, color.g, color.b)
 		ColorPickerFrame.Content.ColorSwatchCurrent:SetColorTexture(color.r, color.g, color.b)
 	end)
@@ -282,7 +282,7 @@ function BL:EnhanceColorPicker()
 
 		if ColorPickerFrame.hasOpacity and colorBuffer.a then -- color copied had an alpha value
 			ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colorBuffer.a)
-			onAlphaValueChanged(nil, colorBuffer.a)
+			OnAlphaValueChanged(nil, colorBuffer.a)
 		end
 	end)
 
@@ -303,7 +303,7 @@ function BL:EnhanceColorPicker()
 
 		if ColorPickerFrame.hasOpacity and colors.a then
 			ColorPickerFrame.Content.ColorPicker:SetColorAlpha(colors.a)
-			onAlphaValueChanged(nil, colorBuffer.a)
+			OnAlphaValueChanged(nil, colorBuffer.a)
 		end
 	end)
 

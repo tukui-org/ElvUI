@@ -15,34 +15,37 @@ local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
 
 local extraBtns, extraHooked, ExtraActionBarHolder, ZoneAbilityHolder = {}, {}
 
-function AB:ExtraButtons_BossStyle(frame)
-	local button = frame.button
-	if button and not button.IsSkinned then
-		AB:StyleButton(button, true) -- registers cooldown too
+function AB:ExtraButtons_AddFrame(frame)
+	AB:ExtraButtons_BossStyle(frame.button)
+end
 
-		-- the cooldown is already fired sometimes?
-		if ActionButton_UpdateCooldown then
-			ActionButton_UpdateCooldown(button)
-		end
+function AB:ExtraButtons_BossStyle(button)
+	if not button or button.IsSkinned then return end
 
-		button.icon:SetDrawLayer('ARTWORK', -1)
-		button:SetTemplate()
+	AB:StyleButton(button, true) -- registers cooldown too
 
-		button.holder = ExtraActionBarHolder
-		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-		button.HotKey:SetText(GetBindingKey(button.commandName))
-
-		AB:FixKeybindText(button)
-		AB:FixKeybindColor(button)
-
-		AB:ExtraButtons_BossAlpha(button)
-
-		tinsert(extraBtns, button)
-
-		button.IsSkinned = true
+	-- the cooldown is already fired sometimes?
+	if ActionButton_UpdateCooldown then
+		ActionButton_UpdateCooldown(button)
 	end
+
+	button.icon:SetDrawLayer('ARTWORK', -1)
+	button:SetTemplate()
+
+	button.holder = ExtraActionBarHolder
+	button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+	button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+	button.HotKey:SetText(GetBindingKey(button.commandName))
+
+	AB:FixKeybindText(button)
+	AB:FixKeybindColor(button)
+
+	AB:ExtraButtons_BossAlpha(button)
+
+	tinsert(extraBtns, button)
+
+	button.IsSkinned = true
 end
 
 function AB:ExtraButtons_ZoneStyle()
@@ -135,16 +138,25 @@ end
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
+	if not E.Retail and InCombatLockdown() then
+		AB.NeedsExtraButtonsRescale = true
+
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+
+		return
+	end
+
 	if _G.ZoneAbilityFrame then
 		AB:ExtraButtons_ZoneScale()
 	end
 
-	if _G.ExtraActionBarFrame then
+	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	if ExtraActionBarFrame then
 		local scale = E.db.actionbar.extraActionButton.scale
-		_G.ExtraActionBarFrame:SetScale(scale * E.uiscale)
-		_G.ExtraActionBarFrame:SetIgnoreParentScale(true)
+		ExtraActionBarFrame:SetScale(scale * E.uiscale)
+		ExtraActionBarFrame:SetIgnoreParentScale(true)
 
-		local width, height = _G.ExtraActionBarFrame.button:GetSize()
+		local width, height = ExtraActionBarFrame.button:GetSize()
 		ExtraActionBarHolder:SetSize(width * scale, height * scale)
 	end
 end
@@ -163,20 +175,20 @@ function AB:ExtraButtons_ZoneScale()
 end
 
 function AB:ExtraButtons_BossParent(parent)
-	if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+	if parent ~= ExtraActionBarHolder and not AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
 	end
 end
 
 function AB:ExtraButtons_ZoneParent(parent)
-	if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
+	if parent ~= ZoneAbilityHolder and not AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
 	end
 end
 
 function AB:ExtraButtons_Reparent()
 	if InCombatLockdown() then
-		AB.NeedsReparentExtraButtons = true
+		AB.NeedsExtraButtonsReparent = true
 
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 
@@ -204,7 +216,12 @@ function AB:ExtraButtons_SetupBoss()
 
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-	ExtraActionBarFrame.ignoreInLayout = true
+
+	if E.Retail then
+		ExtraActionBarFrame.ignoreInLayout = true
+	else
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
+	end
 end
 
 function AB:ExtraButtons_SetupZone()
@@ -234,19 +251,28 @@ end
 
 function AB:ExtraButtons_SetupAbility()
 	local ExtraAbilityContainer = _G.ExtraAbilityContainer
-	if not ExtraAbilityContainer then return end
+	if ExtraAbilityContainer then
+		if not extraHooked[ExtraAbilityContainer] then
+			-- try to shutdown the container movement and taints
+			ExtraAbilityContainer:KillEditMode()
+			ExtraAbilityContainer:SetScript('OnShow', nil)
+			ExtraAbilityContainer:SetScript('OnUpdate', nil)
+			ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
+			ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
 
-	if not extraHooked[ExtraAbilityContainer] then
-		-- try to shutdown the container movement and taints
-		ExtraAbilityContainer:KillEditMode()
-		ExtraAbilityContainer:SetScript('OnShow', nil)
-		ExtraAbilityContainer:SetScript('OnUpdate', nil)
-		ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate
-		ExtraAbilityContainer.IsLayoutFrame = nil -- dont let it get readded
+			hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_AddFrame)
 
-		hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
+			extraHooked[ExtraAbilityContainer] = true
+		end
+	else
+		for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
+			local button = _G['ExtraActionButton'..i]
+			if button then
+				button.commandName = 'EXTRAACTIONBUTTON'..i -- to support KB like retail
 
-		extraHooked[ExtraAbilityContainer] = true
+				AB:ExtraButtons_BossStyle(button)
+			end
+		end
 	end
 end
 

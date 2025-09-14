@@ -216,7 +216,7 @@ function S:Blizzard_Communities()
 
 	local ClubFinderGuildOptionsList = ClubFinderGuildFinderFrame.OptionsList
 	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubFilterDropdown)
-	ClubFinderGuildOptionsList.ClubSizeDropdown:ClearAllPoints() -- FIX ME 11.0 Is this DropDown trolling us?
+	ClubFinderGuildOptionsList.ClubSizeDropdown:ClearAllPoints()
 	ClubFinderGuildOptionsList.ClubSizeDropdown:Point('LEFT', ClubFinderGuildOptionsList.ClubFilterDropdown, 'RIGHT', 3, 0)
 	S:HandleDropDownBox(ClubFinderGuildOptionsList.ClubSizeDropdown)
 

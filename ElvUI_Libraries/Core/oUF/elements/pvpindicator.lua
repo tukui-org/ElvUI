@@ -127,10 +127,10 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'UNIT_FACTION', Path)
+		self:RegisterEvent('UNIT_FACTION', Path)
 
 		if oUF.isRetail then
-			oUF:RegisterEvent(self, 'HONOR_LEVEL_UPDATE', Path, true)
+			self:RegisterEvent('HONOR_LEVEL_UPDATE', Path, true)
 		end
 
 		return true
@@ -146,10 +146,10 @@ local function Disable(self)
 			element.Badge:Hide()
 		end
 
-		oUF:UnregisterEvent(self, 'UNIT_FACTION', Path)
+		self:UnregisterEvent('UNIT_FACTION', Path)
 
 		if oUF.isRetail then
-			oUF:UnregisterEvent(self, 'HONOR_LEVEL_UPDATE', Path)
+			self:UnregisterEvent('HONOR_LEVEL_UPDATE', Path)
 		end
 	end
 end

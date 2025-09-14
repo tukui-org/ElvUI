@@ -18,7 +18,7 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
 local E -- placeholder
-local function checkElvUI()
+local function CheckElvUI()
 	if not E then
 		E = ElvUI and ElvUI[1]
 
@@ -26,18 +26,18 @@ local function checkElvUI()
 	end
 end
 
-local function closureFunc(self)
+local function ClosureFunc(self)
 	self.ready = nil
 	self.playing = nil
 	self.cur = nil
 end
 
-local function fadeClosure(element)
+local function FadeClosure(element)
 	if not element.FadeObject then
 		element.FadeObject = {
 			finishedFuncKeep = true,
 			finishedArg1 = element,
-			finishedFunc = closureFunc
+			finishedFunc = ClosureFunc
 		}
 	end
 
@@ -112,12 +112,13 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		E:Delay(element.lengthBeforeFade, fadeClosure, element)
+		E:Delay(element.lengthBeforeFade, FadeClosure, element)
 
 		element.playing = true
 	else
 		element:SetAlpha(0)
-		closureFunc(element)
+
+		ClosureFunc(element)
 	end
 end
 
@@ -150,12 +151,13 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		E:Delay(element.lengthBeforeFade, fadeClosure, element)
+		E:Delay(element.lengthBeforeFade, FadeClosure, element)
 
 		element.playing = true
 	else
 		element:SetAlpha(0)
-		closureFunc(element)
+
+		ClosureFunc(element)
 	end
 end
 
@@ -214,7 +216,7 @@ end
 local function Enable(self)
 	local element = self and self.Cutaway
 	if element then
-		checkElvUI()
+		CheckElvUI()
 
 		if element.Health and element.Health:IsObjectType("Texture") and not element.Health:GetTexture() then
 			element.Health:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -285,7 +287,7 @@ local function Enable(self)
 	end
 end
 
-local function disableElement(element)
+local function DisableElement(element)
 	if element then
 		element.enabled = false
 		element:Hide()
@@ -294,8 +296,8 @@ end
 
 local function Disable(self)
 	if self and self.Cutaway then
-		disableElement(self.Cutaway.Health)
-		disableElement(self.Cutaway.Power)
+		DisableElement(self.Cutaway.Health)
+		DisableElement(self.Cutaway.Power)
 	end
 end
 

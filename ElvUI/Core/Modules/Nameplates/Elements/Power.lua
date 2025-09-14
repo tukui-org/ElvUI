@@ -21,9 +21,6 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	element.token = ptoken
 
-	local sf = NP:StyleFilterChanges(self)
-	if sf.PowerColor then return end
-
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t, atlas
@@ -66,16 +63,22 @@ function NP:Power_UpdateColor(_, unit)
 
 	if t then
 		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
+		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	if atlas then
-		element:SetStatusBarTexture(atlas)
-		element:SetStatusBarColor(1, 1, 1)
-	elseif b then
-		element:SetStatusBarColor(r, g, b)
-	end
+	local styleFilter = NP:StyleFilterChanges(self)
+	if not (styleFilter.power and styleFilter.power.color) then
+		if atlas then
+			element:SetStatusBarTexture(atlas)
+			element:SetStatusBarColor(1, 1, 1)
+		elseif b then
+			element:SetStatusBarColor(r, g, b)
+		end
 
-	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
+		if element.bg and b then
+			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		end
+	end
 
 	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
@@ -104,7 +107,7 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
-	NP.StatusBars[Power] = true
+	NP.StatusBars[Power] = 'power'
 
 	Power.colorTapping = false
 	Power.colorClass = false
@@ -112,6 +115,7 @@ function NP:Construct_Power(nameplate)
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
 
+	NP:Construct_FlashTexture(nameplate, Power)
 	UF:Construct_ClipFrame(nameplate, Power)
 
 	return Power
@@ -125,8 +129,9 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
+		nameplate.Power:ClearAllPoints()
+		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		E:SetSmoothing(nameplate.Power, db.power.smoothbars)
 	elseif nameplate:IsElementEnabled('Power') then

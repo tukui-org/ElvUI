@@ -215,9 +215,9 @@ function S:Blizzard_InspectUI()
 	end
 
 	_G.InspectTalentFrame:HookScript('OnShow', function(frame)
-		if frame.isSkinned then return end
+		if frame.IsSkinned then return end
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 
 		local InspectGlyphs = frame.InspectGlyphs
 		for i = 1, 6 do

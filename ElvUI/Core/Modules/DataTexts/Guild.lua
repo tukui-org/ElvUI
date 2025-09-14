@@ -26,6 +26,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 local GUILD_MOTD = GUILD_MOTD
 local GUILD = GUILD
 
+local GetGuildFactionData = C_Reputation.GetGuildFactionData
 local GetAndSortMemberInfo = CommunitiesUtil.GetAndSortMemberInfo
 local GetSubscribedClubs = C_Club.GetSubscribedClubs
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
@@ -53,13 +54,7 @@ local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
 local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
 local clubTable, guildTable, guildMotD = {}, {}, ''
 
-local factionTemp = {}
-local GetGuildFactionInfo = (C_Reputation and C_Reputation.GetGuildFactionData) or function()
-	factionTemp.name, factionTemp.description, factionTemp.reaction, factionTemp.currentReactionThreshold, factionTemp.nextReactionThreshold, factionTemp.currentStanding = _G.GetGuildFactionInfo()
-	return factionTemp
-end
-
-local function sortByRank(a, b)
+local function SortByRank(a, b)
 	if a and b then
 		if a.rankIndex == b.rankIndex then
 			return a.name < b.name
@@ -68,7 +63,7 @@ local function sortByRank(a, b)
 	end
 end
 
-local function sortByName(a, b)
+local function SortByName(a, b)
 	if a and b then
 		return a.name < b.name
 	end
@@ -76,9 +71,9 @@ end
 
 local function SortGuildTable(shift)
 	if shift then
-		sort(guildTable, sortByRank)
+		sort(guildTable, SortByRank)
 	else
-		sort(guildTable, sortByName)
+		sort(guildTable, SortByName)
 	end
 end
 
@@ -94,7 +89,7 @@ local mobilestatus = {
 	[2] = [[|TInterface\ChatFrame\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t]],
 }
 
-local function inGroup(name)
+local function InGroup(name)
 	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ''
 end
 
@@ -217,7 +212,7 @@ local function Click(self, btn)
 				if not classc then classc = levelc end
 
 				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
-				if inGroup(info.name) ~= '' then
+				if InGroup(info.name) ~= '' then
 					name = name..' |cffaaaaaa*|r'
 				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
@@ -261,7 +256,7 @@ local function OnEnter(_, _, noUpdate)
 	end
 
 	if E.Retail then
-		local info = GetGuildFactionInfo()
+		local info = GetGuildFactionData()
 		if info and info.reaction ~= 8 then -- Not Max Rep
 			local nextReactionThreshold = info.nextReactionThreshold - info.currentReactionThreshold
 			local currentStanding = info.currentStanding - info.currentReactionThreshold
@@ -296,7 +291,7 @@ local function OnEnter(_, _, noUpdate)
 			if info.note ~= '' then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info.officerNote ~= '' then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, faction, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,'([^%-]+).*'), inGroup(info.name), info.status, info.timerunningID and TIMERUNNING_SMALL or ''), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, faction, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,'([^%-]+).*'), InGroup(info.name), info.status, info.timerunningID and TIMERUNNING_SMALL or ''), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 

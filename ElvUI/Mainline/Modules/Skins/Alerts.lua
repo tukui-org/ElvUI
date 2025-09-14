@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
-local function forceAlpha(self, alpha, forced)
+local function ForceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
 	end
@@ -20,7 +20,7 @@ local function SkinAchievementAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -64,7 +64,7 @@ local function SkinCriteriaAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -98,7 +98,7 @@ local function SkinDungeonCompletionAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -143,7 +143,7 @@ local function SkinGuildChallengeAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -180,7 +180,7 @@ end
 
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', forceAlpha); frame.hooked = true end
+	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', ForceAlpha); frame.hooked = true end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()
@@ -203,7 +203,7 @@ end
 local function SkinInvasionAlert(frame)
 	if not frame.IsSkinned then
 		frame:SetAlpha(1)
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 4, 4)
@@ -239,7 +239,7 @@ local function SkinScenarioAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -278,7 +278,7 @@ end
 local function SkinWorldQuestCompleteAlert(frame)
 	if not frame.IsSkinned then
 		frame:SetAlpha(1)
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
@@ -530,7 +530,7 @@ end
 
 local function SkinLootWonAlert(frame)
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -567,7 +567,7 @@ local function SkinLootUpgradeAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -598,7 +598,7 @@ local function SkinMoneyWonAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -625,7 +625,7 @@ local function SkinEntitlementDeliveredAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -659,7 +659,7 @@ local function SkinRafRewardDeliveredAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -693,7 +693,7 @@ local function SkinDigsiteCompleteAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -713,7 +713,7 @@ local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -747,7 +747,7 @@ local function SkinMiscAlerts(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -826,7 +826,7 @@ function S:AlertSystem()
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame
 	frame:SetAlpha(1)
-	hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+	hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.IconBorder:Kill()
@@ -845,7 +845,7 @@ function S:AlertSystem()
 	--Bonus Roll Loot
 	frame = _G.BonusRollLootWonFrame
 	frame:SetAlpha(1)
-	hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+	hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 	frame.Background:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()

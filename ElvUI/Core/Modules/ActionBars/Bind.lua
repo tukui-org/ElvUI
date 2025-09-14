@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
+local strfind = strfind
 local tonumber = tonumber
 local next, format = next, format
 local hooksecurefunc = hooksecurefunc
@@ -100,7 +101,7 @@ function AB:BindListener(key)
 	end
 
 	if key == 'MiddleButton' then key = 'BUTTON3' end
-	if key:find('Button%d') then key = key:upper() end
+	if strfind(key, 'Button%d') then key = key:upper() end
 
 	local allowBinding = not isFlyout or (key ~= 'LeftButton') --Don't attempt to bind left mouse button for flyout buttons
 	if allowBinding and bind.button.bindstring then
@@ -299,7 +300,7 @@ do
 end
 
 do
-	local function keybindButtonClick()
+	local function KeybindButtonClick()
 		if InCombatLockdown() then return end
 
 		AB:ActivateBindMode()
@@ -311,8 +312,8 @@ do
 		local data = element.data
 		if data and data.buttonText == QUICK_KEYBIND_MODE then
 			local button = element.Button
-			if button and button:GetScript('OnClick') ~= keybindButtonClick then
-				button:SetScript('OnClick', keybindButtonClick)
+			if button and button:GetScript('OnClick') ~= KeybindButtonClick then
+				button:SetScript('OnClick', KeybindButtonClick)
 				button:SetFormattedText('%s Keybind', E.title)
 			end
 		end
@@ -356,10 +357,10 @@ function AB:LoadKeyBinder()
 	bind:SetScript('OnMouseUp', function(_, key) self:BindListener(key) end)
 	bind:SetScript('OnMouseWheel', function(_, delta) if delta>0 then self:BindListener('MOUSEWHEELUP') else self:BindListener('MOUSEWHEELDOWN') end end)
 
-	local function buttonOnEnter(b) AB:BindUpdate(b) end
+	local function ButtonOnEnter(b) AB:BindUpdate(b) end
 	for b in next, self.handledbuttons do
 		if b:IsProtected() and b:IsObjectType('CheckButton') then
-			b:HookScript('OnEnter', buttonOnEnter)
+			b:HookScript('OnEnter', ButtonOnEnter)
 		end
 	end
 

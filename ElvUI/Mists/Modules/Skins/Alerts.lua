@@ -8,7 +8,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local function forceAlpha(self, alpha, forced)
+local function ForceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
 	end
@@ -18,7 +18,7 @@ local function SkinAchievementAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -62,7 +62,7 @@ local function SkinCriteriaAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -96,7 +96,7 @@ local function SkinDungeonCompletionAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -139,7 +139,7 @@ end
 
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', forceAlpha); frame.hooked = true end
+	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', ForceAlpha); frame.hooked = true end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()
@@ -195,7 +195,7 @@ end
 
 local function SkinLootWonAlert(frame)
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -232,7 +232,7 @@ local function SkinLootUpgradeAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -263,7 +263,7 @@ local function SkinMoneyWonAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -290,7 +290,7 @@ local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -324,7 +324,7 @@ local function SkinNewPetAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 

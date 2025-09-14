@@ -10,7 +10,7 @@ local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local function merchantItemPoint()
+local function MerchantItemPoint()
 	_G.MerchantItem1:PointXY(6, -40)
 
 	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
@@ -170,7 +170,7 @@ function S:MerchantFrame()
 
 		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
 
-		merchantItemPoint()
+		MerchantItemPoint()
 	end)
 
 	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', function()
@@ -196,7 +196,7 @@ function S:MerchantFrame()
 			end
 		end
 
-		merchantItemPoint()
+		MerchantItemPoint()
 	end)
 end
 

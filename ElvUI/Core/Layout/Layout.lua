@@ -57,13 +57,13 @@ function LO:UpdateTopPanel()
 	LO.TopPanel:SetTemplate(db.transparent and 'Transparent')
 end
 
-local function finishFade(self)
+local function FinishFade(self)
 	if self:GetAlpha() == 0 then
 		self:Hide()
 	end
 end
 
-local function fadeChatPanel(self, duration, alpha)
+local function FadeChatPanel(self, duration, alpha)
 	if alpha == 1 then
 		self.parent:Show()
 	end
@@ -77,7 +77,7 @@ end
 
 local function ChatButton_OnEnter(self)
 	if E.db[self.parent:GetName()..'Faded'] then
-		fadeChatPanel(self, 0.3, 1)
+		FadeChatPanel(self, 0.3, 1)
 	end
 
 	if not _G.GameTooltip:IsForbidden() then
@@ -90,7 +90,7 @@ end
 
 local function ChatButton_OnLeave(self)
 	if E.db[self.parent:GetName()..'Faded'] then
-		fadeChatPanel(self, 0.3, 0)
+		FadeChatPanel(self, 0.3, 0)
 	end
 
 	if not _G.GameTooltip:IsForbidden() then
@@ -102,10 +102,10 @@ local function ChatButton_OnClick(self)
 	local name = self.parent:GetName()..'Faded'
 	if E.db[name] then
 		E.db[name] = nil
-		fadeChatPanel(self, 0.2, 1)
+		FadeChatPanel(self, 0.2, 1)
 	else
 		E.db[name] = true
-		fadeChatPanel(self, 0.2, 0)
+		FadeChatPanel(self, 0.2, 0)
 	end
 
 	if not _G.GameTooltip:IsForbidden() then
@@ -307,7 +307,7 @@ function LO:CreateChatPanels()
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
-	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
+	lchat.FadeObject = {finishedFunc = FinishFade, finishedArg1 = lchat, finishedFuncKeep = true}
 	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture
@@ -356,7 +356,7 @@ function LO:CreateChatPanels()
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
-	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
+	rchat.FadeObject = {finishedFunc = FinishFade, finishedArg1 = rchat, finishedFuncKeep = true}
 	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture

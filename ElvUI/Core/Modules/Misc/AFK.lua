@@ -349,7 +349,7 @@ function AFK:Initialize()
 	faction:Size(size, size)
 	bottom.faction = faction
 
-	local classColor = E:ClassColor(E.myclass)
+	local classColor = E.myClassColor
 	local name = bottom:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, 20)
 	name:SetFormattedText('%s-%s', E.myname, E.myrealm)

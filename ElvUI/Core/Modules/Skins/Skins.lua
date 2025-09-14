@@ -515,6 +515,16 @@ do -- DropDownMenu library support
 		end
 	end
 
+	local function CreateHandler(key)
+		return function()
+			local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS'] or 1
+			for i = 1, lvls do
+				HandleBackdrop(_G[key..'_DropDownList'..i..'Backdrop'])
+				HandleBackdrop(_G[key..'_DropDownList'..i..'MenuBackdrop'])
+			end
+		end
+	end
+
 	function S:SkinLibDropDownMenu(prefix)
 		if S[prefix..'_UIDropDownMenuSkinned'] then return end
 
@@ -525,15 +535,13 @@ do -- DropDownMenu library support
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
 
+		local func = CreateHandler(key)
+		local name = key..'_UIDropDownMenu_CreateFrames'
 		local lib = prefix == 'L4' and LibStub.libs['LibUIDropDownMenu-4.0']
-		if (lib and lib.UIDropDownMenu_CreateFrames) or _G[key..'_UIDropDownMenu_CreateFrames'] then
-			hooksecurefunc(lib or _G, (lib and '' or key..'_') .. 'UIDropDownMenu_CreateFrames', function()
-				local lvls = _G[(key == 'Lib' and 'LIB' or key)..'_UIDROPDOWNMENU_MAXLEVELS'] or 1
-				for i = 1, lvls do
-					HandleBackdrop(_G[key..'_DropDownList'..i..'Backdrop'])
-					HandleBackdrop(_G[key..'_DropDownList'..i..'MenuBackdrop'])
-				end
-			end)
+		if lib and lib.UIDropDownMenu_CreateFrames then
+			hooksecurefunc(lib, 'UIDropDownMenu_CreateFrames', func)
+		elseif _G[name] then
+			hooksecurefunc(_G, name, func)
 		end
 	end
 end
@@ -745,7 +753,7 @@ do
 		['Professions-Slot-Frame-Legendary']		= ITEMQUALITY.Legendary
 	}
 
-	local function colorAtlas(border, atlas)
+	local function ColorAtlas(border, atlas)
 		local quality = iconColors[atlas]
 		if not quality then return end
 
@@ -759,7 +767,7 @@ do
 		end
 	end
 
-	local function colorVertex(border, r, g, b, a)
+	local function ColorVertex(border, r, g, b, a)
 		local quality = iconColors[border:GetAtlas()]
 		if quality then return end
 
@@ -771,7 +779,7 @@ do
 		end
 	end
 
-	local function borderHide(border, value)
+	local function BorderHide(border, value)
 		if value == 0 then return end -- hiding blizz border
 
 		local br, bg, bb = unpack(E.media.bordercolor)
@@ -783,15 +791,15 @@ do
 		end
 	end
 
-	local function borderShow(border)
+	local function BorderShow(border)
 		border:Hide(0)
 	end
 
-	local function borderShown(border, show)
+	local function BorderShown(border, show)
 		if show then
 			border:Hide(0)
 		else
-			borderHide(border)
+			BorderHide(border)
 		end
 	end
 
@@ -825,11 +833,11 @@ do
 			border.IconBorderHooked = true
 			border:Hide()
 
-			hooksecurefunc(border, 'SetAtlas', colorAtlas)
-			hooksecurefunc(border, 'SetVertexColor', colorVertex)
-			hooksecurefunc(border, 'SetShown', borderShown)
-			hooksecurefunc(border, 'Show', borderShow)
-			hooksecurefunc(border, 'Hide', borderHide)
+			hooksecurefunc(border, 'SetAtlas', ColorAtlas)
+			hooksecurefunc(border, 'SetVertexColor', ColorVertex)
+			hooksecurefunc(border, 'SetShown', BorderShown)
+			hooksecurefunc(border, 'Show', BorderShow)
+			hooksecurefunc(border, 'Hide', BorderHide)
 		end
 	end
 end
@@ -1269,12 +1277,12 @@ end
 do
 	local btns = {MaximizeButton = 'up', MinimizeButton = 'down'}
 
-	local function buttonOnEnter(btn)
+	local function ButtonOnEnter(btn)
 		local r,g,b = unpack(E.media.rgbvaluecolor)
 		btn:GetNormalTexture():SetVertexColor(r,g,b)
 		btn:GetPushedTexture():SetVertexColor(r,g,b)
 	end
-	local function buttonOnLeave(btn)
+	local function ButtonOnLeave(btn)
 		btn:GetNormalTexture():SetVertexColor(1, 1, 1)
 		btn:GetPushedTexture():SetVertexColor(1, 1, 1)
 	end
@@ -1293,8 +1301,8 @@ do
 				button:SetHitRectInsets(1, 1, 1, 1)
 				button:GetHighlightTexture():Kill()
 
-				button:SetScript('OnEnter', buttonOnEnter)
-				button:SetScript('OnLeave', buttonOnLeave)
+				button:SetScript('OnEnter', ButtonOnEnter)
+				button:SetScript('OnLeave', ButtonOnLeave)
 
 				button:SetNormalTexture(E.Media.Textures.ArrowUp)
 				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
@@ -1434,11 +1442,12 @@ do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
 
-	local function checkCheckedTexture(checkbox, texture)
+	local function CheckCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
 		checkbox:SetCheckedTexture(S.db.checkBoxSkin and E.Media.Textures.Melli or check)
 	end
-	local function checkOnDisable(checkbox)
+
+	local function CheckOnDisable(checkbox)
 		if not checkbox.SetDisabledTexture then return end
 		checkbox:SetDisabledTexture(checkbox:GetChecked() and (S.db.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
 	end
@@ -1488,9 +1497,9 @@ do
 				end
 			end
 
-			frame:HookScript('OnDisable', checkOnDisable)
+			frame:HookScript('OnDisable', CheckOnDisable)
 
-			hooksecurefunc(frame, 'SetCheckedTexture', checkCheckedTexture)
+			hooksecurefunc(frame, 'SetCheckedTexture', CheckCheckedTexture)
 			hooksecurefunc(frame, 'SetNormalTexture', S.ClearNormalTexture)
 			hooksecurefunc(frame, 'SetPushedTexture', S.ClearPushedTexture)
 			hooksecurefunc(frame, 'SetHighlightTexture', S.ClearHighlightTexture)
@@ -2035,7 +2044,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 end
 
 do
-	local function selectionOffset(frame)
+	local function SelectionOffset(frame)
 		local point, anchor, relativePoint, xOffset = frame:GetPoint()
 		if xOffset <= 0 then
 			local x = frame.BorderBox and 4 or 38 -- adjust values for wrath
@@ -2046,7 +2055,7 @@ do
 		end
 	end
 
-	local function handleButton(button, i, buttonNameTemplate)
+	local function HandleButton(button, i, buttonNameTemplate)
 		local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
 		if icon then
 			icon:SetTexCoord(unpack(E.TexCoords))
@@ -2067,7 +2076,7 @@ do
 		if frame.IsSkinned then return end
 
 		if not dontOffset then -- place it off to the side of parent with correct offsets
-			frame:HookScript('OnShow', selectionOffset)
+			frame:HookScript('OnShow', SelectionOffset)
 			frame:Height(frame:GetHeight() + 10)
 		end
 
@@ -2119,13 +2128,13 @@ do
 			for i = 1, numIcons do
 				local button = _G[buttonNameTemplate..i]
 				if button then
-					handleButton(button, i, buttonNameTemplate)
+					HandleButton(button, i, buttonNameTemplate)
 				end
 			end
 		else
 			S:HandleTrimScrollBar(frame.IconSelector.ScrollBar)
 
-			frame.IconSelector.ScrollBox:ForEachFrame(handleButton)
+			frame.IconSelector.ScrollBox:ForEachFrame(HandleButton)
 		end
 
 		frame.IsSkinned = true
@@ -2149,7 +2158,7 @@ do -- Handle collapse
 		end
 	end
 
-	local function syncPushTexture(button, _, skip)
+	local function SyncPushTexture(button, _, skip)
 		if skip then return end
 
 		local normal = button:GetNormalTexture():GetTexture()
@@ -2161,8 +2170,8 @@ do -- Handle collapse
 		button.collapsedSkinned = true -- little bit of a safety precaution
 
 		if syncPushed then -- not needed always
-			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
-			syncPushTexture(button)
+			hooksecurefunc(button, 'SetPushedTexture', SyncPushTexture)
+			SyncPushTexture(button)
 		elseif not ignorePushed then
 			button:SetPushedTexture(E.ClearTexture)
 		end
@@ -2201,7 +2210,7 @@ function S:SkinStatusBarWidget(widgetFrame)
 end
 
 do
-	local function handleBar(bar)
+	local function HandleBar(bar)
 		if not bar or bar.backdrop then return end
 
 		bar:CreateBackdrop('Transparent')
@@ -2216,8 +2225,8 @@ do
 	end
 
 	function S:SkinDoubleStatusBarWidget(widgetFrame)
-		handleBar(widgetFrame.LeftBar)
-		handleBar(widgetFrame.RightBar)
+		HandleBar(widgetFrame.LeftBar)
+		HandleBar(widgetFrame.RightBar)
 	end
 end
 
@@ -2346,17 +2355,14 @@ function S:AddCallback(name, func, position) -- arg1: name is 'given name'
 	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
 end
 
-local function errorhandler(err)
-	return _G.geterrorhandler()(err)
-end
-
 function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 	if bypass then
 		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
+
 		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
@@ -2381,7 +2387,7 @@ end
 
 function S:CallLoadedAddon(addonName, object)
 	for _, func in next, object do
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
 	end
 
 	S.addonsToLoad[addonName] = nil
@@ -2397,7 +2403,8 @@ function S:Initialize()
 	S.Initialized = true
 
 	for index, func in next, S.nonAddonsToLoad do
-		xpcall(func, errorhandler)
+		E:CallLoadFunc(func)
+
 		S.nonAddonsToLoad[index] = nil
 	end
 

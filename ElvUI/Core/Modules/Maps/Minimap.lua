@@ -31,7 +31,7 @@ local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
-local GetZonePVPInfo = (C_PvP and C_PvP.GetZonePVPInfo) or GetZonePVPInfo
+local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
 
 local PlayerSpellsUtil = _G.PlayerSpellsUtil
 local WorldMapFrame = _G.WorldMapFrame
@@ -746,6 +746,10 @@ function M:Initialize()
 
 	if E.Retail then
 		MinimapCluster:KillEditMode()
+
+		if MinimapCluster.systemInfo then -- fix an error when the cluster is moved to the lower part of screen
+			MinimapCluster.systemInfo.isInDefaultPosition = nil
+		end
 
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()

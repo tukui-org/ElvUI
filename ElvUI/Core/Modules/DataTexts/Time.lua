@@ -346,7 +346,7 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and _G.PLAYER_DIFFICULTY6) or utf8sub(_G.PLAYER_DIFFICULTY6, 1, 1)	-- M
 }
 
-local function sortFunc(a,b) return a[1] < b[1] end
+local function SortFunc(a,b) return a[1] < b[1] end
 
 local collectedImages = false
 local function CollectImages()
@@ -414,7 +414,7 @@ local function OnEnter()
 
 			DT.tooltip:AddLine(L["Saved Raid(s)"])
 
-			sort(lockedInstances.raids, sortFunc)
+			sort(lockedInstances.raids, SortFunc)
 
 			for _, info in next, lockedInstances.raids do
 				local difficultyLetter, buttonImg = info[2], info[3]
@@ -436,7 +436,7 @@ local function OnEnter()
 
 			DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
-			sort(lockedInstances.dungeons, sortFunc)
+			sort(lockedInstances.dungeons, SortFunc)
 
 			for _, info in next, lockedInstances.dungeons do
 				local difficultyLetter, buttonImg = info[2], info[3]
@@ -465,7 +465,7 @@ local function OnEnter()
 				tinsert(worldbossLockoutList, { format(BOSSNAME_TWW, name), reset })
 			end
 
-			sort(worldbossLockoutList, sortFunc)
+			sort(worldbossLockoutList, SortFunc)
 		elseif E.Mists then
 			for questID, name in next, WORLD_BOSSES_MIST do
 				if C_QuestLog_IsQuestFlaggedCompleted(questID) then
@@ -578,4 +578,4 @@ local function ApplySettings(self, hex)
 	OnUpdate(self, 20000)
 end
 
-DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ApplySettings)
+DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["Time"], nil, ApplySettings)

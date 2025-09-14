@@ -203,7 +203,6 @@ do --this can save some main file locals
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local ElvSimpy		= E:TextureString(E.Media.ChatLogos.ElvSimpy,y)
 
-	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
@@ -369,11 +368,6 @@ do --this can save some main file locals
 			z['Player-53-0D463E51']		= itsThradex -- Badbunny-Wildhammer
 			z['Player-113-0A9F78FF']	= itsThradex -- Vanessa-Darrowmere
 			z['Player-127-0AD64E79']	= itsThradex -- Christopher-Firetree
-			-- Affinity
-			z['Affinichi-Illidan']		= Bathrobe
-			z['Affinitii-Illidan']		= Bathrobe
-			z['Affinity-Illidan']		= Bathrobe
-			z['Uplift-Illidan']			= Bathrobe
 			-- Tirain (NOTE: lol)
 			z['Tierone-Spirestone']		= TyroneBiggums
 			z['Tirain-Spirestone']		= TyroneBiggums
@@ -1011,7 +1005,7 @@ do
 	end
 end
 
-local function colorizeLine(text, r, g, b)
+local function ColorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
 	return format('%s%s|r', hexCode, text)
 end
@@ -1029,7 +1023,7 @@ function CH:GetLines(frame)
 			message = removeIconFromLine(message)
 
 			--Add text color
-			message = colorizeLine(message, r, g, b)
+			message = ColorizeLine(message, r, g, b)
 
 			copyLines[index] = message
 			index = index + 1
@@ -1787,9 +1781,9 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 				seenGroups[groupIndex] = true
 				local groupList = '['
 				for i = 1, GetNumGroupMembers() do
-					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
+					local name, _, subgroup, _, _, classFilename = GetRaidRosterInfo(i)
 					if name and subgroup == groupIndex then
-						local classColorTable = E:ClassColor(classFileName)
+						local classColorTable = E:ClassColor(classFilename)
 						if classColorTable then
 							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end
@@ -3219,7 +3213,7 @@ end
 
 do -- securely lock the atlas texture; we need this cause its not shown on init login
 	local ttsAtlas = 'chatframe-button-icon-TTS'
-	local function lockAtlas(icon, atlas)
+	local function LockAtlas(icon, atlas)
 		if atlas ~= ttsAtlas then
 			icon:SetAtlas(ttsAtlas)
 		end
@@ -3229,7 +3223,7 @@ do -- securely lock the atlas texture; we need this cause its not shown on init 
 		button.highlightAtlas = nil -- hide the highlight
 
 		if button.Icon and not button.Icon.isHookedAtlas then
-			hooksecurefunc(button.Icon, 'SetAtlas', lockAtlas)
+			hooksecurefunc(button.Icon, 'SetAtlas', LockAtlas)
 			button.Icon.isHookedAtlas = true
 		end
 	end
@@ -3791,7 +3785,7 @@ function CH:Initialize()
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
 	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
-	CH:BuildCopyChatFrame() -- Currently use this to display profiler information
+	CH:BuildCopyChatFrame()
 
 	if not E.private.chat.enable then
 		-- if the chat module is off we still need to spawn the dts for the panels

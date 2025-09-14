@@ -42,12 +42,8 @@ function NP:Health_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local sf = NP:StyleFilterChanges(self)
-	if sf.HealthColor then
-		r, g, b = sf.HealthColor.r, sf.HealthColor.g, sf.HealthColor.b
-	end
-
-	if b then
+	local styleFilter = NP:StyleFilterChanges(self)
+	if not (styleFilter.health and styleFilter.health.color) and b then
 		element:SetStatusBarColor(r, g, b)
 
 		if element.bg then
@@ -69,18 +65,9 @@ function NP:Construct_Health(nameplate)
 	Health.considerSelectionInCombatHostile = true
 	Health.UpdateColor = NP.Health_UpdateColor
 
-	NP.StatusBars[Health] = true
+	NP.StatusBars[Health] = 'health'
 
-	local healthBarTexture = Health:GetStatusBarTexture()
-	Health.barTexture = healthBarTexture
-
-	local healthFlashTexture = Health:CreateTexture(nameplate.frameName..'FlashTexture', 'OVERLAY')
-	healthFlashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
-	healthFlashTexture:Point('BOTTOMLEFT', healthBarTexture, 'BOTTOMLEFT')
-	healthFlashTexture:Point('TOPRIGHT', healthBarTexture, 'TOPRIGHT')
-	healthFlashTexture:Hide()
-	nameplate.HealthFlashTexture = healthFlashTexture
-
+	NP:Construct_FlashTexture(nameplate, Health)
 	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
@@ -139,7 +126,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		bar:Point('BOTTOM')
 		bar:Width(150)
 		HealthPrediction[name] = bar
-		NP.StatusBars[bar] = true
+		NP.StatusBars[bar] = 'healPrediction'
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()

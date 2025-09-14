@@ -12,7 +12,7 @@ local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
 local UnitIsUnit = UnitIsUnit
-local UIParent = UIParent
+local WorldFrame = WorldFrame
 
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
 local ITEM_SPELL_TRIGGER_ONEQUIP = ITEM_SPELL_TRIGGER_ONEQUIP
@@ -91,10 +91,9 @@ end
 
 function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
-	tt:SetOwner(UIParent, 'ANCHOR_NONE')
-	local hasItem = tt:SetInventoryItem(unit, slot)
-	tt:Show()
+	tt:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
+	local hasItem = tt:SetInventoryItem(unit, slot)
 	local info = hasItem and tt:GetTooltipData()
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
 	local slotInfo = tt.slotInfo
@@ -139,19 +138,13 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		end
 	end
 
-	tt:Hide()
-
 	return slotInfo
 end
 
---Credit ls & Acidweb
+-- Credit ls & Acidweb
 function E:CalculateAverageItemLevel(iLevelDB, unit)
-	local spec = E.Retail and GetInspectSpecialization(unit) -- fix this later?
-	local total = 0
-
-	if E.Retail and (not spec or spec == 0) then
-		return
-	end
+	local total, spec = 0, not E.Classic and GetInspectSpecialization(unit)
+	if not spec or spec == 0 then return end
 
 	-- Armor
 	for _, id in next, ARMOR_SLOTS do

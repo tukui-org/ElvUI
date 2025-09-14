@@ -11,11 +11,11 @@ local GetProfessionInfo = GetProfessionInfo
 local IsPassiveSpell = IsPassiveSpell
 local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
 
-local function clearBackdrop(backdrop)
+local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
 
-local function spellButtonHighlight(button, texture)
+local function SpellButtonHighlight(button, texture)
 	if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 		button:SetColorTexture(1, 1, 1, 0.3)
 	end
@@ -143,7 +143,7 @@ function S:SpellBookFrame()
 		end
 
 		highlight:SetAllPoints(button.IconTexture)
-		hooksecurefunc(highlight, 'SetTexture', spellButtonHighlight)
+		hooksecurefunc(highlight, 'SetTexture', SpellButtonHighlight)
 
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
@@ -201,7 +201,7 @@ function S:SpellBookFrame()
 			button.backdrop.Center:SetDrawLayer('BORDER', -1)
 			button.backdrop:SetOutside(button.icon)
 			button.backdrop:SetBackdropColor(0, 0, 0, 1)
-			button.backdrop.callbackBackdropColor = clearBackdrop
+			button.backdrop.callbackBackdropColor = ClearBackdrop
 
 			button.icon:SetDesaturated(false)
 			button.icon:SetAlpha(1)
@@ -224,7 +224,7 @@ function S:SpellBookFrame()
 	local SpellBookCoreAbilitiesFrame = _G.SpellBookCoreAbilitiesFrame
 	SpellBookCoreAbilitiesFrame:Point('TOPLEFT', -80, 5)
 
-	local classTextColor = E:ClassColor(E.myclass)
+	local classTextColor = E.myClassColor
 	SpellBookCoreAbilitiesFrame.SpecName:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 	SpellBookCoreAbilitiesFrame.SpecName:Point('TOP', 37, -30)
 
@@ -234,7 +234,7 @@ function S:SpellBookFrame()
 			local button = buttons[i]
 			if not button then return end
 
-			if not button.isSkinned then
+			if not button.IsSkinned then
 				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 				button:StyleButton()
@@ -257,7 +257,7 @@ function S:SpellBookFrame()
 					end)
 				end
 
-				button.isSkinned = true
+				button.IsSkinned = true
 			end
 
 			if button.FutureTexture:IsShown() then
@@ -279,7 +279,7 @@ function S:SpellBookFrame()
 		for i = 1, #tabs do
 			local tab = tabs[i]
 
-			if tab and not tab.isSkinned then
+			if tab and not tab.IsSkinned then
 				tab:GetRegions():Hide()
 				tab:SetTemplate()
 				tab:StyleButton(nil, true)
@@ -292,7 +292,7 @@ function S:SpellBookFrame()
 				normal:SetInside()
 				normal:SetTexCoord(unpack(E.TexCoords))
 
-				tab.isSkinned = true
+				tab.IsSkinned = true
 			end
 		end
 	end)

@@ -90,13 +90,13 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		oUF:RegisterEvent(self, 'PLAYER_REGEN_DISABLED', Path, true)
-		oUF:RegisterEvent(self, 'PLAYER_REGEN_ENABLED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
+		self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
 
 		if(self.unit == 'player') then
-			oUF:RegisterEvent(self, 'PLAYER_ROLES_ASSIGNED', Path, true)
+			self:RegisterEvent('PLAYER_ROLES_ASSIGNED', Path, true)
 		else
-			oUF:RegisterEvent(self, 'GROUP_ROSTER_UPDATE', Path, true)
+			self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
 		end
 
 		if(element:IsObjectType('Texture') and not element:GetTexture()) then
@@ -112,10 +112,10 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		oUF:UnregisterEvent(self, 'PLAYER_REGEN_DISABLED', Path)
-		oUF:UnregisterEvent(self, 'PLAYER_REGEN_ENABLED', Path)
-		oUF:UnregisterEvent(self, 'PLAYER_ROLES_ASSIGNED', Path)
-		oUF:UnregisterEvent(self, 'GROUP_ROSTER_UPDATE', Path, true)
+		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
+		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
+		self:UnregisterEvent('PLAYER_ROLES_ASSIGNED', Path)
+		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path, true)
 	end
 end
 

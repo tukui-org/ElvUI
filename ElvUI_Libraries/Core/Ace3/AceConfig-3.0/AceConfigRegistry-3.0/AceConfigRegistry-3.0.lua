@@ -11,7 +11,7 @@
 -- @release $Id$
 local CallbackHandler = LibStub("CallbackHandler-1.0")
 
-local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 25
+local MAJOR, MINOR = "AceConfigRegistry-3.0-ElvUI", 26
 local AceConfigRegistry = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigRegistry then return end
@@ -105,8 +105,8 @@ local basekeys={
 		dragOnClick=optmethodfalse,
 		dragOnMouseUp=optmethodfalse,
 		dragOnMouseDown=optmethodfalse,
-		stateSwitchOnClick=optmethodfalse,
-		stateSwitchGetText=optmethodfalse,
+		dragGetDesc=optmethodfalse,
+		dragGetTitle=optmethodfalse,
 }
 
 local typedkeys={

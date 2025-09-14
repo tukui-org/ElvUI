@@ -455,17 +455,25 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB:UpdateButtonSettings()
 		AB.NeedsUpdateButtonSettings = nil
 	end
+
 	if AB.NeedsUpdateMicroBarVisibility then
 		AB:UpdateMicroBarVisibility()
 		AB.NeedsUpdateMicroBarVisibility = nil
 	end
+
 	if AB.NeedsAdjustMaxStanceButtons then
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
 		AB.NeedsAdjustMaxStanceButtons = nil
 	end
-	if AB.NeedsReparentExtraButtons then
+
+	if AB.NeedsExtraButtonsReparent then
 		AB:ExtraButtons_Reparent()
-		AB.NeedsReparentExtraButtons = nil
+		AB.NeedsExtraButtonsReparent = nil
+	end
+
+	if AB.NeedsExtraButtonsRescale then
+		AB:ExtraButtons_UpdateScale()
+		AB.NeedsExtraButtonsRescale = nil
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
@@ -576,7 +584,7 @@ do
 	local texts = { 'hotkey', 'macro', 'count' }
 	local bars = { 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton' }
 
-	local function saveSetting(option, value)
+	local function SaveSetting(option, value)
 		for i = 1, 10 do
 			E.db.actionbar['bar'..i][option] = value
 		end
@@ -594,10 +602,10 @@ do
 		if fonts then
 			local upperOption = gsub(option, '^%w', strupper) -- font>Font, fontSize>FontSize, fontOutline>FontOutline
 			for _, object in pairs(texts) do
-				saveSetting(object..upperOption, value)
+				SaveSetting(object..upperOption, value)
 			end
 		else
-			saveSetting(option, value)
+			SaveSetting(option, value)
 		end
 
 		AB:UpdateButtonSettings()
@@ -1488,14 +1496,14 @@ function AB:FixKeybindText(button)
 	end
 end
 
-local function skinFlyout()
+local function SkinFlyout()
 	if _G.SpellFlyout.Background then _G.SpellFlyout.Background:Hide() end
 	if _G.SpellFlyoutBackgroundEnd then _G.SpellFlyoutBackgroundEnd:Hide() end
 	if _G.SpellFlyoutHorizontalBackground then _G.SpellFlyoutHorizontalBackground:Hide() end
 	if _G.SpellFlyoutVerticalBackground then _G.SpellFlyoutVerticalBackground:Hide() end
 end
 
-local function flyoutButtonAnchor(frame)
+local function FlyoutButtonAnchor(frame)
 	local parent = frame:GetParent()
 	local _, parentAnchorButton = parent:GetPoint()
 	if not AB.handledbuttons[parentAnchorButton] then return end
@@ -1504,18 +1512,18 @@ local function flyoutButtonAnchor(frame)
 end
 
 function AB:FlyoutButton_OnEnter()
-	local anchor = flyoutButtonAnchor(self)
+	local anchor = FlyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
 
 	AB:BindUpdate(self, 'FLYOUT')
 end
 
 function AB:FlyoutButton_OnLeave()
-	local anchor = flyoutButtonAnchor(self)
+	local anchor = FlyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnLeave(anchor) end
 end
 
-local function spellFlyoutAnchor(frame)
+local function SpellFlyoutAnchor(frame)
 	local _, anchorButton = frame:GetPoint()
 	if not AB.handledbuttons[anchorButton] then return end
 
@@ -1523,12 +1531,12 @@ local function spellFlyoutAnchor(frame)
 end
 
 function AB:SpellFlyout_OnEnter()
-	local anchor = spellFlyoutAnchor(self)
+	local anchor = SpellFlyoutAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
 end
 
 function AB:SpellFlyout_OnLeave()
-	local anchor = spellFlyoutAnchor(self)
+	local anchor = SpellFlyoutAnchor(self)
 	if anchor then AB:Bar_OnLeave(anchor) end
 end
 
@@ -1655,13 +1663,13 @@ function AB:UpdateChargeCooldown(button, duration)
 	end
 end
 
-function AB:SetAuraCooldownDuration(value)
-	LAB:SetAuraCooldownDuration(value)
+function AB:SetTargetAuraDuration(value)
+	LAB:SetTargetAuraDuration(value)
 end
 
-function AB:SetAuraCooldowns(enabled)
+function AB:SetTargetAuraCooldowns(enabled)
 	local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
-	LAB:SetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
+	LAB:SetTargetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
 end
 
 function AB:ToggleCooldownOptions()
@@ -1924,7 +1932,7 @@ function AB:Initialize()
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
-	AB:SetAuraCooldownDuration(E.db.cooldown.targetAuraDuration)
+	AB:SetTargetAuraDuration(E.db.cooldown.targetAuraDuration)
 
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
@@ -1958,7 +1966,7 @@ function AB:Initialize()
 	end
 
 	if not E.Classic then
-		hooksecurefunc(_G.SpellFlyout, 'Toggle', skinFlyout)
+		hooksecurefunc(_G.SpellFlyout, 'Toggle', SkinFlyout)
 	end
 end
 

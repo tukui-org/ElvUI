@@ -5,7 +5,7 @@ local _G = _G
 local IsInInstance = IsInInstance
 local ToggleFrame = ToggleFrame
 
-local GetZonePVPInfo = (C_PvP and C_PvP.GetZonePVPInfo) or GetZonePVPInfo
+local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
 local NOT_APPLICABLE = NOT_APPLICABLE
 
 local mapInfo = E.MapInfo
@@ -32,7 +32,7 @@ local function OnEvent(self)
 	end
 
 	local db = E.global.datatexts.settings.Location
-	local color = db.color == 'REACTION' and GetStatus() or db.color == 'CLASS' and E:ClassColor(E.myclass) or db.customColor
+	local color = db.color == 'REACTION' and GetStatus() or db.color == 'CLASS' and E.myClassColor or db.customColor
 
 	local continent = db.showContinent and mapInfo.continentName or ''
 	local subzone = db.showSubZone and mapInfo.subZoneText or ''

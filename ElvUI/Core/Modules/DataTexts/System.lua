@@ -52,9 +52,11 @@ local CombineAddOns = {
 	['Details'] = '^Details!',
 	['RaiderIO'] = '^RaiderIO',
 	['BigWigs'] = '^BigWigs',
+	['HandyNotes'] = '^HandyNotes',
+	['SilverDragon'] = '^SilverDragon'
 }
 
-local function formatMem(memory)
+local function FormatMem(memory)
 	if memory >= 1024 then
 		return format(megaByteString, memory / 1024)
 	else
@@ -62,7 +64,7 @@ local function formatMem(memory)
 	end
 end
 
-local function statusColor(fps, ping)
+local function StatusColor(fps, ping)
 	if fps then
 		return statusColors[fps >= 30 and 1 or (fps >= 20 and fps < 30) and 2 or (fps >= 10 and fps < 20) and 3 or 4]
 	else
@@ -84,41 +86,39 @@ local function OnClick()
 	end
 end
 
-local function displayData(data, totalMEM, totalCPU)
+local function DisplayData(data, totalMEM, totalCPU)
 	if not data then return end
 
-	local name, mem, cpu = data.title, data.mem, data.cpu
+	local cpu, mem = data.cpu, data.mem
 	if cpu then
 		local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
 		local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-		DT.tooltip:AddDoubleLine(name, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(data.title, format(profilingString, E:RGBToHex(memRed, memGreen, 0), FormatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
 	else
 		local red = mem / totalMEM
 		local green = (1 - red) + .5
-		DT.tooltip:AddDoubleLine(name, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
+		DT.tooltip:AddDoubleLine(data.title, FormatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
 	end
 end
 
-local function displaySort(a, b)
+local function DisplaySort(a, b)
 	return a.sort > b.sort
 end
 
 local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
 local function OnEnter(_, slow)
 	if not db.showTooltip then return end
+	local isShiftDown = IsShiftKeyDown()
 
 	DT.tooltip:ClearLines()
 	enteredFrame = true
 
-	local isShiftDown = IsShiftKeyDown()
-	if isShiftDown then
-		local fps = E.Profiler.fps._all
-		if fps.rate then
-			DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
-			DT.tooltip:AddLine(' ')
-		end
+	local fps = E.FPS
+	if isShiftDown and fps.rate then
+		DT.tooltip:AddDoubleLine(L["FPS Average:"], format('%d', fps.average), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["FPS Lowest:"], format('%d', fps.low), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["FPS Highest:"], format('%d', fps.high), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddLine(' ')
 	end
 
 	local _, _, homePing, worldPing = GetNetStats()
@@ -149,7 +149,7 @@ local function OnEnter(_, slow)
 	wipe(infoDisplay)
 
 	local count, totalMEM, totalCPU = 0, 0, 0
-	local showByCPU = cpuProfiling and not IsShiftKeyDown()
+	local showByCPU = cpuProfiling and not isShiftDown
 	for _, data in ipairs(infoTable) do
 		local i = data.index
 		if IsAddOnLoaded(i) then
@@ -169,14 +169,15 @@ local function OnEnter(_, slow)
 			count = count + 1
 			infoDisplay[count] = data
 
-			if data.name == 'ElvUI' or data.name == 'ElvUI_Options' or data.name == 'ElvUI_Libraries' then
-				infoTable[data.name] = data
+			local name = data.name
+			if name == 'ElvUI' or name == 'ElvUI_Options' or name == 'ElvUI_Libraries' then
+				infoTable[name] = data
 			end
 		end
 	end
 
 	if isShiftDown then
-		DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMEM), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["AddOn Memory:"], FormatMem(totalMEM), .69, .31, .31, .84, .75, .65)
 
 		if cpuProfiling then
 			DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
@@ -186,9 +187,9 @@ local function OnEnter(_, slow)
 	DT.tooltip:AddLine(' ')
 
 	if not db.ShowOthers then
-		displayData(infoTable.ElvUI, totalMEM, totalCPU)
-		displayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
-		displayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI_Options, totalMEM, totalCPU)
+		DisplayData(infoTable.ElvUI_Libraries, totalMEM, totalCPU)
 		DT.tooltip:AddLine(' ')
 	else
 		for addon, searchString in pairs(CombineAddOns) do
@@ -203,19 +204,15 @@ local function OnEnter(_, slow)
 			end
 
 			for k, data in pairs(infoDisplay) do
-				if type(data) == 'table' then
-					local name, mem, cpu = data.title, data.mem, data.cpu
-					local stripName = E:StripString(data.title)
-					if name and (strmatch(stripName, searchString) or data.name == addon) then
-						if data.name ~= addon and stripName ~= addon then
-							memoryUsage = memoryUsage + mem
-							if showByCPU and cpuProfiling then
-								cpuUsage = cpuUsage + cpu
-							end
+				local cleanTitle = type(data) == 'table' and data.title and E:StripString(data.title)
+				if cleanTitle and cleanTitle ~= addon and strmatch(cleanTitle, searchString) then
+					memoryUsage = memoryUsage + data.mem
 
-							infoDisplay[k] = false
-						end
+					if showByCPU and cpuProfiling then
+						cpuUsage = cpuUsage + data.cpu
 					end
+
+					infoDisplay[k] = false
 				end
 			end
 
@@ -239,10 +236,10 @@ local function OnEnter(_, slow)
 			end
 		end
 
-		sort(infoDisplay, displaySort)
+		sort(infoDisplay, DisplaySort)
 
 		for i = 1, count do
-			displayData(infoDisplay[i], totalMEM, totalCPU)
+			DisplayData(infoDisplay[i], totalMEM, totalCPU)
 		end
 
 		DT.tooltip:AddLine(' ')
@@ -287,9 +284,9 @@ local function OnUpdate(self, elapsed)
 
 		local _, _, homePing, worldPing = GetNetStats()
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
-		local fps = E.Profiler.fps._all.rate or 0
+		local fps = E.FPS.rate or 0
 
-		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', statusColor(fps), fps, statusColor(nil, latency), latency)
+		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
 
 		if not enteredFrame then
 			return
