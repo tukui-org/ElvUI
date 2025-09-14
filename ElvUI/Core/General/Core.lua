@@ -2051,15 +2051,18 @@ function E:Initialize()
 
 	E:UpdateDB()
 	E:UIScale()
-	E:BuildPrefixValues()
-	E:LoadAPI()
-	E:LoadCommands()
-	E:InitializeModules()
-	E:LoadMovers()
-	E:UpdateMedia()
-	E:UpdateDispelColors()
-	E:UpdateCustomClassColors()
-	E:UpdateCooldownSettings('all')
+
+	if not E.OtherAddons.Tukui then
+		E:BuildPrefixValues()
+		E:LoadAPI()
+		E:LoadCommands()
+		E:InitializeModules()
+		E:LoadMovers()
+		E:UpdateMedia()
+		E:UpdateDispelColors()
+		E:UpdateCustomClassColors()
+		E:UpdateCooldownSettings('all')
+	end
 
 	if E.Retail then
 		E:Tutorials()
