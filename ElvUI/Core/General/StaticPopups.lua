@@ -1152,7 +1152,7 @@ function E:StaticPopup_ButtonOnClick()
 	local id = self:GetID()
 	local parent = self:GetParent()
 
-	if E.Retail then -- has ButtonContainer
+	if not E.Classic then -- has ButtonContainer
 		E.StaticPopup_OnClick(parent:GetParent(), id)
 	else
 		E.StaticPopup_OnClick(parent, id)
