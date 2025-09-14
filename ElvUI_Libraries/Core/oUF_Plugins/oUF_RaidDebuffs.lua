@@ -159,13 +159,9 @@ end
 local function CheckPriority(newPriority, oldPriority, newAura, oldAura)
 	if not newPriority then
 		return -- debuff_data missing priority
-	elseif newPriority == oldPriority and (newAura and oldAura) then
-		if newAura.auraInstanceID and oldAura.auraInstanceID then
-			return newAura.auraInstanceID > oldAura.auraInstanceID
-		else -- prefer the latest aura but fallback to spellId
-			return newAura.spellId > oldAura.spellId
-		end
-	else
+	elseif newPriority == oldPriority and (newAura and oldAura and newAura.auraInstanceID and oldAura.auraInstanceID) then
+		return newAura.auraInstanceID > oldAura.auraInstanceID
+	else -- we sort by Aura Instance ID if they match priority
 		return newPriority > oldPriority
 	end
 end
