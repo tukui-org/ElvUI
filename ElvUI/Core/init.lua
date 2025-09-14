@@ -479,6 +479,7 @@ function E:OnInitialize()
 	E:UIMult()
 	E:UpdateMedia()
 	E:InitializeInitialModules()
+	E:Contruct_StaticPopups()
 
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult

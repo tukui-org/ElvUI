@@ -2060,7 +2060,6 @@ function E:Initialize()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateCooldownSettings('all')
-	E:Contruct_StaticPopups()
 
 	if E.Retail then
 		E:Tutorials()
