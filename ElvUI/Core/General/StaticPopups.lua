@@ -1304,7 +1304,7 @@ function E:StaticPopup_HandleButtons(popup)
 	end
 end
 
-function E:InitializeStaticPopups()
+function E:LoadStaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, E.MAX_STATIC_POPUPS do

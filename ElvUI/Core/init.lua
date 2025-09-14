@@ -478,11 +478,8 @@ function E:OnInitialize()
 	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
-	E:InitializeStaticPopups()
 
-	if E.OtherAddons.Tukui then
-		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
-	else
+	if not E.OtherAddons.Tukui then
 		E:InitializeInitialModules()
 	end
 
