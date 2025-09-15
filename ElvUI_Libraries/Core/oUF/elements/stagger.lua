@@ -183,7 +183,7 @@ local function Visibility(self, event, unit)
 		stateChanged = true
 	end
 
-	if stateChanged then
+	if stateChanged or event == 'PLAYER_ENTERING_WORLD' then
 		wipe(staggerCache)
 	end
 
