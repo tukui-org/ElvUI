@@ -101,7 +101,7 @@ local staggerID = {
 }
 
 local function verifyStagger(frame, event, unit, aura)
-	return not aura or staggerID[aura.spellId]
+	return aura and staggerID[aura.spellId]
 end
 
 local function Update(self, event, unit, updateInfo)
