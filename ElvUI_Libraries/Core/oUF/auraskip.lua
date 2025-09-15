@@ -153,7 +153,7 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	end
 
 	if showFunc then
-		return showFunc(frame, event, unit, aura)
+		return showFunc(frame, event, unit, auraInstanceID, aura)
 	else
 		return allow
 	end
