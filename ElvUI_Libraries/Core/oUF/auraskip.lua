@@ -46,7 +46,7 @@ eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
 eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
 
-if oUF.isRetail or oUF.isMist then
+if oUF.isRetail or oUF.isMists then
 	eventFrame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
 end
 
