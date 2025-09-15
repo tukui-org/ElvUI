@@ -2,17 +2,16 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local next = next
+local tonumber = tonumber
+
 local GetTime = GetTime
 local UnitPower = UnitPower
-local UnitClass = UnitClass
-local tonumber = tonumber
 local UnitPowerType = UnitPowerType
 local UnitPowerMax = UnitPowerMax
 local GetSpellPowerCost = GetSpellPowerCost
 
 local LastTickTime = GetTime()
 local TickDelay = 2.025 -- Average tick time is slightly over 2 seconds
-local myClass = select(2, UnitClass('player'))
 local Mp5Delay = 5
 local Mp5DelayWillEnd = nil
 local Mp5IgnoredSpells = {
@@ -127,7 +126,7 @@ end
 local Enable = function(self, unit)
 	local element = self.Power and self.EnergyManaRegen
 
-	if unit == 'player' and element and myClass ~= 'WARRIOR' then
+	if unit == 'player' and element and oUF.myclass ~= 'WARRIOR' then
 		element.__owner = self
 
 		if element:IsObjectType('StatusBar') and not element:GetStatusBarTexture() then

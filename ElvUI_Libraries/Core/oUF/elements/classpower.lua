@@ -48,18 +48,15 @@ Supported class powers:
 local _, ns = ...
 local oUF = ns.oUF
 
-local floor = floor
-local _, PlayerClass = UnitClass('player')
-
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
-local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
-local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
-local SPEC_PRIEST_SHADOW = _G.SPEC_PRIEST_SHADOW or 3
-local SPEC_MONK_WINDWALKER = _G.SPEC_MONK_WINDWALKER or 3
-local SPEC_SHAMAN_ELEMENTAL = _G.SPEC_SHAMAN_ELEMENTAL or 1
-local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
-local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
+local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
+local SPEC_MAGE_FROST = SPEC_MAGE_FROST or 3
+local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
+local SPEC_MONK_WINDWALKER = SPEC_MONK_WINDWALKER or 3
+local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
+local SPEC_SHAMAN_ENHANCEMENT = SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
+local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
 
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -84,6 +81,7 @@ local SPELL_SOULBURN = 74434
 local SPELL_CATFORM = 768
 local SPELL_SHRED = 5221
 
+local floor = floor
 local UnitPower = UnitPower
 local UnitIsUnit = UnitIsUnit
 local UnitPowerMax = UnitPowerMax
@@ -173,8 +171,9 @@ local function Update(self, event, unit, powerType)
 	if event == 'UNIT_AURA' then powerType = currentType end
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 
+	local myClass = oUF.myclass
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
-	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (PlayerClass == 'ROGUE' and powerType == 'ENERGY'))
+	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
 
 	local element = self.ClassPower
@@ -197,7 +196,7 @@ local function Update(self, event, unit, powerType)
 
 		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			current = 0
-		elseif oUF.isRetail and (PlayerClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+		elseif oUF.isRetail and (myClass == 'WARLOCK' and CurrentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and ClassPowerID == POWERTYPE_ARCANE_CHARGES then
 			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
@@ -280,26 +279,27 @@ local function Visibility(self, event, unit)
 	CurrentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 	RequirePower, RequireSpell = nil, nil -- clear these
 
-	if PlayerClass == 'DRUID' then
+	local myClass = oUF.myclass
+	if myClass == 'DRUID' then
 		ClassPowerID = POWERTYPE_COMBO_POINTS
 
 		RequirePower = POWERTYPE_ENERGY
 		RequireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
-	elseif PlayerClass == 'PALADIN' then
+	elseif myClass == 'PALADIN' then
 		ClassPowerID = POWERTYPE_HOLY_POWER
-	elseif PlayerClass == 'EVOKER' then
+	elseif myClass == 'EVOKER' then
 		ClassPowerID = POWERTYPE_ESSENCE
-	elseif PlayerClass == 'ROGUE' then
+	elseif myClass == 'ROGUE' then
 		ClassPowerID = POWERTYPE_COMBO_POINTS
-	elseif PlayerClass == 'MONK' then
+	elseif myClass == 'MONK' then
 		ClassPowerID = (oUF.isMists or CurrentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
-	elseif PlayerClass == 'SHAMAN' then
+	elseif myClass == 'SHAMAN' then
 		ClassPowerID = oUF.isRetail and (CurrentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or CurrentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
-	elseif PlayerClass == 'WARLOCK' then
+	elseif myClass == 'WARLOCK' then
 		ClassPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (CurrentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (CurrentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
-	elseif PlayerClass == 'MAGE' then
+	elseif myClass == 'MAGE' then
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (CurrentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
-	elseif PlayerClass == 'PRIEST' then
+	elseif myClass == 'PRIEST' then
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 

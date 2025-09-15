@@ -1,7 +1,7 @@
-if(select(2, UnitClass('player')) ~= 'DRUID') then return end
-
 local _, ns = ...
 local oUF = ns.oUF
+
+if oUF.myclass ~= 'DRUID' then return end
 
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
@@ -12,7 +12,7 @@ local GetEclipseDirection = GetEclipseDirection
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
-local SPEC_DRUID_BALANCE = _G.SPEC_DRUID_BALANCE or 1
+local SPEC_DRUID_BALANCE = SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local TREANT_GLYPH = 114282
 local AQUATIC_FORM = 1066

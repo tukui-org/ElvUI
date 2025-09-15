@@ -56,8 +56,6 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
-local _, playerClass = UnitClass('player')
-
 -- ElvUI block
 local unpack = unpack
 local CopyTable = CopyTable
@@ -82,7 +80,7 @@ local function UpdateColor(self, event, unit, powerType)
 	if(element.colorPower) then
 		color = self.colors.power[POWER_INDEX]
 	elseif(element.colorClass) then
-		color = self.colors.class[playerClass]
+		color = self.colors.class[oUF.myclass]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	end
@@ -199,7 +197,7 @@ local function Visibility(self, event, unit)
 	local shouldEnable
 
 	if (oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player') then
-		local allowed = element.displayPairs[playerClass]
+		local allowed = element.displayPairs[oUF.myclass]
 		if allowed and UnitPowerMax(unit, POWER_INDEX) ~= 0 then
 			shouldEnable = allowed[UnitPowerType(unit)]
 		end

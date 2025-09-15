@@ -29,31 +29,30 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
     self.Stagger = Stagger
 --]]
 
-if(select(2, UnitClass('player')) ~= 'MONK') then return end
-
 local _, ns = ...
 local oUF = ns.oUF
 
-local wipe = wipe
+if oUF.myclass ~= 'MONK' then return end
+
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
-local UnitIsUnit = UnitIsUnit
 local UnitStagger = UnitStagger
+local UnitIsUnit = UnitIsUnit
+local wipe = wipe
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
-local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
-
+local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 local BREWMASTER_POWER_BAR_NAME = 'STAGGER'
 
 -- percentages at which bar should change color
-local STAGGER_YELLOW_TRANSITION =  _G.STAGGER_YELLOW_TRANSITION or 0.3
-local STAGGER_RED_TRANSITION = _G.STAGGER_RED_TRANSITION or 0.6
+local STAGGER_YELLOW_TRANSITION =  STAGGER_YELLOW_TRANSITION or 0.3
+local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
 
 -- table indices of bar colors
-local STAGGER_GREEN_INDEX = _G.STAGGER_GREEN_INDEX or 1
-local STAGGER_YELLOW_INDEX = _G.STAGGER_YELLOW_INDEX or 2
-local STAGGER_RED_INDEX = _G.STAGGER_RED_INDEX or 3
+local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
+local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
+local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function UpdateColor(self, event, unit)
 	if(unit and unit ~= self.unit) then return end
