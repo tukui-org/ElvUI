@@ -146,13 +146,17 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
-	local allow = (which == 'remove') or not aura or not showFunc or showFunc(frame, event, unit, aura)
+	local allow = (which == 'remove') or not aura or CouldDisplayAura(frame, event, unit, aura)
 
 	for filter, filtered in next, auraFiltered do
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
 
-	return allow
+	if showFunc then
+		return showFunc(frame, event, unit, aura)
+	else
+		return allow
+	end
 end
 
 local function TryAdded(which, frame, event, unit, showFunc, aura)
@@ -180,27 +184,27 @@ local function TrySkipAura(which, frame, event, unit, showFunc, tryFunc, auras)
 	return show
 end
 
-local function ProcessAura(frame, event, unit, showFunc, token, ...)
+local function ProcessAura(frame, event, unit, token, ...)
 	local numSlots = select('#', ...)
 	for i = 1, numSlots do
 		local slot = select(i, ...)
 		local aura = GetAuraDataBySlot(unit, slot)
 		if aura then
-			TryAdded('add', frame, event, unit, showFunc, aura)
+			TryAdded('add', frame, event, unit, nil, aura)
 		end
 	end
 
 	return token
 end
 
-local function ProcessTokens(frame, event, unit, showFunc, token, ...)
-	repeat token = ProcessAura(frame, event, unit, showFunc, token, ...)
+local function ProcessTokens(frame, event, unit, token, ...)
+	repeat token = ProcessAura(frame, event, unit, token, ...)
 	until not token
 end
 
-local function ProcessExisting(frame, event, unit, showFunc)
-	ProcessTokens(frame, event, unit, showFunc, GetAuraSlots(unit, 'HELPFUL'))
-	ProcessTokens(frame, event, unit, showFunc, GetAuraSlots(unit, 'HARMFUL'))
+local function ProcessExisting(frame, event, unit)
+	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HELPFUL'))
+	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HARMFUL'))
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
@@ -222,7 +226,7 @@ local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 	elseif hasValidPlayer ~= false and event ~= 'ElvUI_UpdateAllElements' then -- skip in this case
 		oUF:ClearUnitAuraInfo(unit) -- clear these since we cant verify it
 
-		ProcessExisting(frame, event, unit, showFunc) -- we need to collect full data here
+		ProcessExisting(frame, event, unit) -- we need to collect full data here
 	end
 
 	return false -- this is from something
@@ -273,7 +277,7 @@ function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
 		return true
 	end
 
-	return ShouldSkipAura(frame, event, unit, updateInfo, showFunc or CouldDisplayAura)
+	return ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
 end
 
 -- Blizzard didnt implement the tooltip functions on Era or Mists
