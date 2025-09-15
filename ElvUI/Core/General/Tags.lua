@@ -156,24 +156,51 @@ local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
 local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
 local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
-local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
-local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_WARLOCK_AFFLICTION = SPEC_WARLOCK_AFFLICTION or 1
-local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
+local SPEC_MAGE_ARCANE = _G.SPEC_MAGE_ARCANE or 1
+local SPEC_MAGE_FROST = _G.SPEC_MAGE_FROST or 3
+local SPEC_SHAMAN_ENHANCEMENT = _G.SPEC_SHAMAN_ENHANCEMENT or 2
+local SPEC_WARLOCK_DEMONOLOGY = _G.SPEC_WARLOCK_DEMONOLOGY or 2
+local SPEC_WARLOCK_DESTRUCTION = _G.SPEC_WARLOCK_DESTRUCTION or 3
 
+local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local POWERTYPE_BURNING_EMBERS = Enum.PowerType.BurningEmbers or 14
 local POWERTYPE_DEMONIC_FURY = Enum.PowerType.DemonicFury or 15
 local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
 
+-- these are not real class powers
+local POWERTYPE_ICICLES = -1
+local POWERTYPE_MAELSTROM = -2
+
+local SPELL_FROST_ICICLES = 205473
+local SPELL_ARCANE_CHARGE = 36032
+local SPELL_MAELSTROM = 344179
+
 local ClassPowers = {
 	MONK		= Enum.PowerType.Chi or 12,
-	MAGE		= Enum.PowerType.ArcaneCharges or 16,
 	PALADIN		= Enum.PowerType.HolyPower or 9,
 	DEATHKNIGHT	= Enum.PowerType.Runes or 5,
-	PRIEST		= Enum.PowerType.ShadowOrbs or 28,
 	WARLOCK		= POWERTYPE_SOUL_SHARDS
 }
+
+local ClassPowerMax = {
+	[POWERTYPE_MAELSTROM] = 10,
+	[POWERTYPE_ICICLES] = 5,
+}
+
+local function CurrentApplications(spellID, filter) -- same as in oUF
+	local info = GetPlayerAuraBySpellID(spellID)
+	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
+	return checkFilter and info.applications or 0
+end
+
+local function ClassPowerSpecial(unit, spellID, powerType, color, filter)
+	local current, r, g, b = CurrentApplications(spellID, filter)
+	local maximum = ClassPowerMax[powerType] or UnitPowerMax(unit, powerType)
+
+	if color then r, g, b = color.r, color.g, color.b end
+	return current or 0, maximum or 0, r or 1, g or 1, b or 1
+end
 
 Tags.Env.GetClassPower = function(unit)
 	local isme = UnitIsUnit(unit, 'player')
@@ -190,21 +217,17 @@ Tags.Env.GetClassPower = function(unit)
 		end
 	end
 
+	-- handle the fake powers (these use UNIT_AURA)
+	if E.Mists and unitClass == 'MAGE' and spec == SPEC_MAGE_ARCANE then
+		return ClassPowerSpecial(unit, SPELL_ARCANE_CHARGE, POWERTYPE_ARCANE_CHARGES, ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, 'HARMFUL')
+	elseif E.Retail and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
+		return ClassPowerSpecial(unit, SPELL_FROST_ICICLES, POWERTYPE_ICICLES, ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, 'HELPFUL')
+	elseif E.Retail and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
+		return ClassPowerSpecial(unit, SPELL_MAELSTROM, POWERTYPE_MAELSTROM, ElvUF.colors.ClassBars.SHAMAN.MAELSTROM, 'HELPFUL')
+	end
+
 	local monk = unitClass == 'MONK' -- checking brewmaster
-	local mistWarlock = E.Mists and unitClass == 'WARLOCK'
-	local mistPriest = E.Mists and unitClass == 'PRIEST'
-	local mistMage = E.Mists and unitClass == 'MAGE'
-
-	if mistMage and spec == SPEC_MAGE_ARCANE then -- mists arcane charges is weird
-		local info = GetPlayerAuraBySpellID(36032) -- this is kinda dumb but okay
-		Min = (info and info.isHarmful and info.applications) or 0
-		Max = UnitPowerMax(unit, POWERTYPE_ARCANE_CHARGES)
-
-		local color = ElvUF.colors.power[POWERTYPE_ARCANE_CHARGES]
-		local r, g, b = color.r, color.g, color.b
-
-		return Min or 0, Max or 0, r or 1, g or 1, b or 1
-	elseif monk and spec == SPEC_MONK_BREWMASTER then -- try to handle others
+	if monk and spec == SPEC_MONK_BREWMASTER then
 		Min = UnitStagger(unit) or 0
 		Max = UnitHealthMax(unit)
 
@@ -217,12 +240,13 @@ Tags.Env.GetClassPower = function(unit)
 	end
 
 	-- try special powers or combo points
+	local mistWarlock = E.Mists and unitClass == 'WARLOCK'
 	if mistWarlock then -- little gremlins
 		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
-	elseif mistPriest then -- only shadow orbs
-		if spec == SPEC_PRIEST_SHADOW then
-			barType = ClassPowers[unitClass]
-		end
+	elseif E.Mists and unitClass == 'PRIEST' then -- only shadow orbs
+		barType = (spec == SPEC_PRIEST_SHADOW) and POWERTYPE_SHADOW_ORBS
+	elseif spec == SPEC_MAGE_ARCANE then
+		barType = POWERTYPE_ARCANE_CHARGES
 	else
 		barType = ClassPowers[unitClass]
 	end
@@ -272,7 +296,8 @@ end
 --	Looping
 ------------------------------------------------------------------------
 
-local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or ((E.myclass == 'MONK' or (E.Mists and E.myclass == 'MAGE')) and 'UNIT_AURA ') or ''
+local classSpecificAura = { MONK = true, MAGE = true, SHAMAN = true }
+local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or (classSpecificAura[E.myclass] and 'UNIT_AURA ') or ''
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
