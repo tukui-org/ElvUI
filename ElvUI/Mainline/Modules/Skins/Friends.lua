@@ -317,11 +317,14 @@ function S:FriendsFrame()
 
 	-- IgnoreListWindow
 	local IgnoreWindow = FriendsFrame.IgnoreListWindow
-	IgnoreWindow:StripTextures()
-	IgnoreWindow:SetTemplate('Transparent')
-	S:HandleCloseButton(FriendsFrameCloseButton) -- Probably missing/temp name
-	S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
-	S:HandleButton(IgnoreWindow.UnignorePlayerButton)
+	if IgnoreWindow then
+		IgnoreWindow:StripTextures()
+		IgnoreWindow:SetTemplate('Transparent')
+		S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
+		S:HandleButton(IgnoreWindow.UnignorePlayerButton)
+	end
+
+	S:HandleCloseButton(_G.FriendsFrameCloseButton) -- Probably missing/temp name
 
 	--Who Frame
 	_G.WhoFrame:StripTextures()
@@ -345,11 +348,8 @@ function S:FriendsFrame()
 	-- Bottom Tabs
 	HandleTabs()
 
-	for i = 1, 3 do
-		local tab = select(i, FriendsTabHeader.TabSystem:GetChildren())
-		if tab then
-			S:HandleTab(tab)
-		end
+	for _, tab in next, { _G.FriendsTabHeader.TabSystem:GetChildren() } do
+		S:HandleTab(tab)
 	end
 
 	--View Friends BN Frame
