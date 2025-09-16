@@ -5,7 +5,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local select, strsplit, tonumber = select, strsplit, tonumber
+local strsplit, tonumber = strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
@@ -727,7 +727,10 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 end
 
 function NP:GetNPCID(guid)
-	return tonumber(guid and select(6, strsplit('-', guid))), guid
+	if not guid then return end
+
+	local _, _, _, _, _, npcid = strsplit('-', guid)
+	return tonumber(npcid), guid
 end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
