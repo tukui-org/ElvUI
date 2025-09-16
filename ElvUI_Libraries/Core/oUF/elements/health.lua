@@ -115,10 +115,23 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
-local _, PlayerClass = UnitClass('player')
 
 local gsub, unpack = gsub, unpack
+
 local Clamp = Clamp
+local GetPetHappiness = GetPetHappiness
+local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
+local UnitClass = UnitClass
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitIsConnected = UnitIsConnected
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsUnit = UnitIsUnit
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitReaction = UnitReaction
+local UnitThreatSituation = UnitThreatSituation
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
@@ -131,7 +144,7 @@ local function UpdateColor(self, event, unit)
 		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		color = self.colors.tapped
-	elseif(element.colorHappiness and oUF.isClassic and PlayerClass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
+	elseif(element.colorHappiness and oUF.isClassic and oUF.myclass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
 		color = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]

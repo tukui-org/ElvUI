@@ -77,25 +77,38 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 	PRIEST = 3
 }
 
+function UF:GetAuraSortTime(which, a, b)
+	return a.noTime and huge or a[which] or -huge, b.noTime and huge or b[which] or -huge
+end
+
+function UF:GetAuraSortValue(dir, A, B)
+	if dir == 'DESCENDING' then return A < B else return A > B end
+end
+
+function UF:GetAuraSortDirection(dir, a, b, A, B)
+	if A == B then
+		return UF:GetAuraSortValue(dir, a.auraInstanceID or 0, b.auraInstanceID or 0)
+	else -- we sort by Aura Instance ID if they match priority
+		return UF:GetAuraSortValue(dir, A, B)
+	end
+end
+
 UF.SortAuraFuncs = {
 	TIME_REMAINING = function(a, b, dir)
-		local A = a.noTime and huge or a.expiration or -huge
-		local B = b.noTime and huge or b.expiration or -huge
-		if dir == 'DESCENDING' then return A < B else return A > B end
+		return UF:GetAuraSortDirection(dir, a, b, UF:GetAuraSortTime('expiration', a, b))
 	end,
 	DURATION = function(a, b, dir)
-		local A = a.noTime and huge or a.duration or -huge
-		local B = b.noTime and huge or b.duration or -huge
-		if dir == 'DESCENDING' then return A < B else return A > B end
+		return UF:GetAuraSortDirection(dir, a, b, UF:GetAuraSortTime('duration', a, b))
 	end,
 	NAME = function(a, b, dir)
-		local A, B = a.name or '', b.name or ''
-		if dir == 'DESCENDING' then return A < B else return A > B end
+		return UF:GetAuraSortDirection(dir, a, b, a.name or '', b.name or '')
 	end,
 	PLAYER = function(a, b, dir)
-		local A, B = a.isPlayer or false, b.isPlayer or false
-		if dir == 'DESCENDING' then return A and not B else return not A and B end
+		return UF:GetAuraSortDirection(dir, a, b, a.isPlayer and 1 or 0, b.isPlayer and 1 or 0)
 	end,
+	INDEX = function(a, b, dir)
+		return UF:GetAuraSortValue(dir, a.auraInstanceID or 0, b.auraInstanceID or 0)
+	end
 }
 
 UF.headerGroupBy = {

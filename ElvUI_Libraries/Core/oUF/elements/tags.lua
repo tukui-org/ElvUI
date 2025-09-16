@@ -49,8 +49,8 @@ in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NA
 
     -- define the tag function
     oUF.Tags.Methods['mylayout:threatname'] = function(unit, realUnit)
-        local color = _TAGS['threatcolor'](unit)
-        local name = _TAGS['name'](unit, realUnit)
+        local color = _TAGS.threatcolor(unit)
+        local name = _TAGS.name(unit, realUnit)
         return string.format('%s%s|r', color, name)
     end
 
@@ -75,7 +75,6 @@ local validateEvent = Private.validateEvent
 -- ElvUI block
 local _G = _G
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 local format, tinsert = format, tinsert
 local rawset, select, wipe = rawset, select, wipe
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
@@ -222,11 +221,11 @@ tagFunctions.dead = function(u)
 end
 
 tagFunctions['deficit:name'] = function(u)
-	local missinghp = _TAGS['missinghp'](u)
+	local missinghp = _TAGS.missinghp(u)
 	if(missinghp) then
 		return '-' .. missinghp
 	else
-		return _TAGS['name'](u)
+		return _TAGS.name(u)
 	end
 end
 
@@ -431,10 +430,10 @@ end
 
 tagFunctions.smartclass = function(u)
 	if(UnitIsPlayer(u)) then
-		return _TAGS['class'](u)
+		return _TAGS.class(u)
 	end
 
-	return _TAGS['creature'](u)
+	return _TAGS.creature(u)
 end
 
 tagFunctions.smartlevel = function(u)
@@ -442,8 +441,8 @@ tagFunctions.smartlevel = function(u)
 	if(c == 'worldboss') then
 		return 'Boss'
 	else
-		local plus = _TAGS['plus'](u)
-		local level = _TAGS['level'](u)
+		local plus = _TAGS.plus(u)
+		local level = _TAGS.level(u)
 		if(plus) then
 			return level .. plus
 		else
@@ -467,7 +466,7 @@ tagFunctions.status = function(u)
 	elseif(not UnitIsConnected(u)) then
 		return 'Offline'
 	else
-		return _TAGS['resting'](u)
+		return _TAGS.resting(u)
 	end
 end
 
@@ -556,9 +555,9 @@ local unitlessEvents = {
 }
 
 if oUF.isRetail then
-	tagEvents['arcanecharges']       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
-	tagEvents['chi']                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
-	tagEvents['holypower']           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents.arcanecharges       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents.chi                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
+	tagEvents.holypower           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	unitlessEvents.PLAYER_TALENT_UPDATE = true
 elseif oUF.isMists then
 	unitlessEvents.PLAYER_TALENT_UPDATE = true

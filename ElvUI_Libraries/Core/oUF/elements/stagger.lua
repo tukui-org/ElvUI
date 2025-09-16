@@ -29,32 +29,30 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
     self.Stagger = Stagger
 --]]
 
-if(select(2, UnitClass('player')) ~= 'MONK') then return end
-
 local _, ns = ...
 local oUF = ns.oUF
 
--- ElvUI block
+if oUF.myclass ~= 'MONK' then return end
+
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
-local UnitIsUnit = UnitIsUnit
 local UnitStagger = UnitStagger
--- end block
+local UnitIsUnit = UnitIsUnit
+local wipe = wipe
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
-local SPEC_MONK_BREWMASTER = _G.SPEC_MONK_BREWMASTER or 1
-
+local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 local BREWMASTER_POWER_BAR_NAME = 'STAGGER'
 
 -- percentages at which bar should change color
-local STAGGER_YELLOW_TRANSITION =  _G.STAGGER_YELLOW_TRANSITION or 0.3
-local STAGGER_RED_TRANSITION = _G.STAGGER_RED_TRANSITION or 0.6
+local STAGGER_YELLOW_TRANSITION =  STAGGER_YELLOW_TRANSITION or 0.3
+local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
 
 -- table indices of bar colors
-local STAGGER_GREEN_INDEX = _G.STAGGER_GREEN_INDEX or 1
-local STAGGER_YELLOW_INDEX = _G.STAGGER_YELLOW_INDEX or 2
-local STAGGER_RED_INDEX = _G.STAGGER_RED_INDEX or 3
+local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
+local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
+local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function UpdateColor(self, event, unit)
 	if(unit and unit ~= self.unit) then return end
@@ -94,14 +92,21 @@ local function UpdateColor(self, event, unit)
 	end
 end
 
+local staggerCache = {}
 local staggerID = {
 	[124275] = true, -- [GREEN]  Light Stagger
 	[124274] = true, -- [YELLOW] Moderate Stagger
 	[124273] = true, -- [RED]    Heavy Stagger
 }
 
-local function verifyStagger(frame, event, unit, aura)
-	return staggerID[aura.spellId]
+local function verifyStagger(frame, event, unit, auraInstanceID, aura)
+	if aura and staggerID[aura.spellId] then
+		staggerCache[auraInstanceID] = aura
+		return true -- added or updated
+	elseif staggerCache[auraInstanceID] then
+		staggerCache[auraInstanceID] = nil
+		return true -- removed
+	end
 end
 
 local function Update(self, event, unit, updateInfo)
@@ -177,6 +182,10 @@ local function Visibility(self, event, unit)
 		stateChanged = true
 	end
 
+	if stateChanged or event == 'PLAYER_ENTERING_WORLD' then
+		wipe(staggerCache)
+	end
+
 	if element.PostVisibility then
 		element.PostVisibility(self, event, unit, not useClassbar, stateChanged)
 	end
@@ -209,7 +218,6 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
-
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
@@ -230,7 +238,6 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_AURA', Path)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
-
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end

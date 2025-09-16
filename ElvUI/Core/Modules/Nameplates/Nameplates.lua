@@ -5,7 +5,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local select, strsplit, tonumber = select, strsplit, tonumber
+local strsplit, tonumber = strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
@@ -585,7 +585,7 @@ function NP:GROUP_ROSTER_UPDATE()
 		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
 			local unit = group..i
 			if UnitExists(unit) then
-				NP.GroupRoles[UnitName(unit)] = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
+				NP.GroupRoles[UnitGUID(unit)] = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
 			end
 		end
 	end
@@ -726,9 +726,15 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	end
 end
 
+function NP:GetNPCID(guid)
+	if not guid then return end
+
+	local _, _, _, _, _, npcid = strsplit('-', guid)
+	return tonumber(npcid), guid
+end
+
 function NP:UnitNPCID(unit) -- also used by Bags.lua
-	local guid = UnitGUID(unit)
-	return tonumber(guid and select(6, strsplit('-', guid))), guid
+	return NP:GetNPCID(UnitGUID(unit))
 end
 
 function NP:UpdateNumPlates()
@@ -904,7 +910,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateBase(nameplate)
 			NP:BossMods_UpdateIcon(nameplate)
 
-			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
+			NP:StyleFilterEventWatch(nameplate, event, unit) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 		end
 
@@ -932,8 +938,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
 
-			NP:StyleFilterUpdate(nameplate, event, unit) -- lets clear it
-			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
+			NP:StyleFilterEventWatch(nameplate, event, unit) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		end
 

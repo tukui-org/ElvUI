@@ -540,7 +540,7 @@ end
 do
 	local empty = {}
 	function NP:StyleFilterChanges(frame)
-		return (frame and frame.StyleFilterChanges) or empty
+		return (frame and frame.isStyleFiltered and frame.StyleFilterChanges) or empty
 	end
 end
 
@@ -617,6 +617,8 @@ function NP:StyleFilterSetChanges(frame, event, filter, temp)
 	local changes = frame.StyleFilterChanges
 	local actions = filter.actions
 	local general = temp.general
+
+	frame.isStyleFiltered = true -- used to prevent previous updates, when a plate is first added like portraits
 
 	if general.visibility or general.nameOnly then
 		changes.general.visibility = general.visibility
@@ -715,7 +717,7 @@ function NP:StyleFilterClearVisibility(frame, event, previous)
 		end
 	end
 
-	if previous and not state and event ~= 'NAME_PLATE_UNIT_REMOVED' then
+	if previous and not state then
 		NP:StyleFilterBaseUpdate(frame, state == 1)
 	end
 end
@@ -796,13 +798,13 @@ function NP:StyleFilterClearChanges(frame)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
-	if NP:UnitExists(unit) then
-		local isTank, offTank, feedbackUnit = NP.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
-		if feedbackUnit and (feedbackUnit ~= unit) and NP:UnitExists(feedbackUnit) then
-			return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
-		else
-			return isTank, offTank, UnitThreatSituation(unit)
-		end
+	if not NP:UnitExists(unit) then return end
+
+	local isTank, offTank, feedbackUnit = NP.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
+	if feedbackUnit and (feedbackUnit ~= unit) and NP:UnitExists(feedbackUnit) then
+		return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
+	else
+		return isTank, offTank, UnitThreatSituation(unit)
 	end
 end
 
@@ -1055,10 +1057,10 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
-			local isTank, offTank, threat = NP:StyleFilterThreatUpdate(frame, frame.unit)
+			local isTank, offTank, status = NP:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local status = (checkOffTank and offTank and threat and -threat) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[threat]) or threat)) or nil
-			if trigger.threat[NP.TriggerConditions.threat[status]] then passed = true else return end
+			local value = (checkOffTank and offTank and status and -status) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
+			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
 		end
 	end
 
@@ -1507,7 +1509,6 @@ NP.StyleFilterDefaultEvents = { -- list of events style filter uses to populate 
 	UNIT_POWER_UPDATE = false,
 	-- mod events:
 	NAME_PLATE_UNIT_ADDED = true,
-	NAME_PLATE_UNIT_REMOVED = true,
 	INCOMING_RESURRECT_CHANGED = false,
 	GROUP_ROSTER_UPDATE = true,
 	MODIFIER_STATE_CHANGED = true,
@@ -1559,7 +1560,6 @@ function NP:StyleFilterConfigure()
 				-- NOTE: -1 is force, 0 for fake events, 1 is real events, 2 has a unitToken but cant use RegisterUnitEvent
 				events.PLAYER_TARGET_CHANGED = 1
 				events.NAME_PLATE_UNIT_ADDED = 2
-				events.NAME_PLATE_UNIT_REMOVED = 2
 				events.UNIT_FACTION = 1 -- frameType can change here
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
 				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
@@ -1741,12 +1741,10 @@ do
 			NP:StyleFilterClearChanges(frame)
 		end
 
-		if event ~= 'NAME_PLATE_UNIT_REMOVED' then
-			for filterNum in next, NP.StyleFilterTriggerList do
-				local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
-				if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
-					NP:StyleFilterPass(frame, event, filter, temp)
-				end
+		for filterNum in next, NP.StyleFilterTriggerList do
+			local filter = E.global.nameplates.filters[NP.StyleFilterTriggerList[filterNum][1]]
+			if filter and NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, filter.triggers) then
+				NP:StyleFilterPass(frame, event, filter, temp)
 			end
 		end
 
@@ -1766,8 +1764,6 @@ do -- oUF style filter inject watch functions without actually registering any e
 
 		local verifyUnit = (trigger ~= 2 and NP.StyleFilterDefaultEvents[event]) or (arg1 and arg1 == self.unit)
 		if not verifyUnit then return end -- this event doesnt match the unit, this checks unitless
-
-		-- REMOVED does not make it here, so we call inside of NamePlateCallBack
 
 		local allowUpdate = not NP.StyleFilterAuraEvents[event] or not ElvUF:ShouldSkipAuraUpdate(self, event, arg1, arg2)
 		if not allowUpdate then return end -- should we allow the update, aura events that can help populate cache
@@ -1820,21 +1816,27 @@ do -- oUF style filter inject watch functions without actually registering any e
 			end
 	end end
 
-	function NP:StyleFilterEventWatch(frame, disable)
+	function NP:StyleFilterEventWatch(frame, event, unit)
 		if frame == NP.TestFrame then return end
 
-		for event in next, NP.StyleFilterDefaultEvents do
-			local holdsEvent = NP:StyleFilterIsWatching(frame, event)
-			if disable then
+		if event == 'NAME_PLATE_UNIT_ADDED' then
+			frame.isStyleFiltered = nil
+		end
+
+		local removed = event == 'NAME_PLATE_UNIT_REMOVED'
+		for evnt in next, NP.StyleFilterDefaultEvents do
+			local holdsEvent = NP:StyleFilterIsWatching(frame, evnt)
+			if removed then
 				if holdsEvent then
-					NP:StyleFilterExecuteRegister(frame, event, true)
+					NP:StyleFilterExecuteRegister(frame, evnt, true)
 				end
-			elseif NP.StyleFilterPlateEvents[event] then
+			elseif NP.StyleFilterPlateEvents[evnt] then
 				if not holdsEvent then
-					NP:StyleFilterExecuteRegister(frame, event)
+					NP:StyleFilterExecuteRegister(frame, evnt)
+					NP.StyleFilterExecuteUpdate(frame, event, unit) -- let the first ADDED execute
 				end
 			elseif holdsEvent then
-				NP:StyleFilterExecuteRegister(frame, event, true)
+				NP:StyleFilterExecuteRegister(frame, evnt, true)
 	end end end
 
 	function NP:StyleFilterEventRegister(nameplate, event, unitless, func, objectEvent)

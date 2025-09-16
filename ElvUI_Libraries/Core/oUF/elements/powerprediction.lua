@@ -43,8 +43,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
-local _, playerClass = UnitClass('player')
-
 -- ElvUI block
 local next = next
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
@@ -89,7 +87,7 @@ local function Update(self, event, unit)
 	local mainMax = UnitPowerMax(unit, mainType)
 	local isPlayer = UnitIsUnit('player', unit)
 	local DISPLAY_INFO = isPlayer and ALT_POWER_BAR_PAIR_DISPLAY_INFO
-	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[playerClass]
+	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[oUF.myclass]
 	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
