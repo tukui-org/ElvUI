@@ -1816,27 +1816,28 @@ do -- oUF style filter inject watch functions without actually registering any e
 			end
 	end end
 
-	function NP:StyleFilterEventWatch(frame, event, unit)
+	function NP:StyleFilterEventWatch(frame, real, unit)
 		if frame == NP.TestFrame then return end
 
-		if event == 'NAME_PLATE_UNIT_ADDED' then
+		if real == 'NAME_PLATE_UNIT_ADDED' then
 			frame.isStyleFiltered = nil
+
+			NP.StyleFilterExecuteUpdate(frame, real, unit) -- let the first ADDED execute
 		end
 
-		local removed = event == 'NAME_PLATE_UNIT_REMOVED'
-		for evnt in next, NP.StyleFilterDefaultEvents do
-			local holdsEvent = NP:StyleFilterIsWatching(frame, evnt)
+		local removed = real == 'NAME_PLATE_UNIT_REMOVED'
+		for event in next, NP.StyleFilterDefaultEvents do
+			local holdsEvent = NP:StyleFilterIsWatching(frame, event)
 			if removed then
 				if holdsEvent then
-					NP:StyleFilterExecuteRegister(frame, evnt, true)
+					NP:StyleFilterExecuteRegister(frame, event, true)
 				end
-			elseif NP.StyleFilterPlateEvents[evnt] then
+			elseif NP.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
-					NP:StyleFilterExecuteRegister(frame, evnt)
-					NP.StyleFilterExecuteUpdate(frame, event, unit) -- let the first ADDED execute
+					NP:StyleFilterExecuteRegister(frame, event)
 				end
 			elseif holdsEvent then
-				NP:StyleFilterExecuteRegister(frame, evnt, true)
+				NP:StyleFilterExecuteRegister(frame, event, true)
 	end end end
 
 	function NP:StyleFilterEventRegister(nameplate, event, unitless, func, objectEvent)

@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local UnitName = UnitName
+local UnitGUID = UnitGUID
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
@@ -13,18 +13,21 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local nameplate, db, unitTarget, imTank = self.__owner, NP.db.threat, unit..'target', E.myrole == 'TANK' or NP.GroupRoles[E.myname] == 'TANK'
-	local targetExists = NP:UnitExists(unitTarget) and not UnitIsUnit(unitTarget, 'player')
-	local unitRole = NP.IsInGroup and targetExists and NP.GroupRoles[UnitName(unitTarget)] or 'NONE'
-	local unitTank = unitRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(unitTarget)])
-	local isTank, offTank, feedbackUnit = unitTank or imTank, db.beingTankedByTank and (unitTank and imTank) or false, (unitTank and unitTarget) or 'player'
+	local targetUnit, nameplate, db, imTank = unit..'target', self.__owner, NP.db.threat, E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK'
+	local targetExists = NP:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
+	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
+	local targetRole = NP.IsInGroup and NP.GroupRoles[targetGUID] or 'NONE'
+	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(targetUnit)])
+	local isTank, offTank, feedbackUnit = targetTank or imTank, db.beingTankedByTank and (targetTank and imTank) or false, (targetTank and targetUnit) or 'player'
 
 	nameplate.threatScale = nil
 
 	if pass then
-		return isTank, offTank, feedbackUnit, targetExists and unitTarget
+		return isTank, offTank, feedbackUnit, targetExists and targetUnit
 	else
-		self.threatTarget = targetExists and unitTarget
+		self.threatGUID = targetGUID
+		self.threatRole = targetRole
+		self.threatUnit = targetExists and targetUnit
 		self.feedbackUnit = feedbackUnit
 		self.offTank = offTank
 		self.isTank = isTank
@@ -36,7 +39,12 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 	local styleFilter = NP:StyleFilterChanges(nameplate)
 	local styleScale = styleFilter.general and styleFilter.general.scale
 
-	nameplate.ThreatStatus = status
+	nameplate.threatStatus = status -- export for plugins
+
+	local staleGUID = nameplate.threatStaleGUID -- previous unit with threat
+	if nameplate.threatStaleGUID ~= nameplate.threatGUID then
+		nameplate.threatStaleGUID = nameplate.threatGUID -- consider this the stale unit
+	end
 
 	if not status and not styleScale then
 		nameplate.threatScale = 1
@@ -48,15 +56,17 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if status == 3 then -- securely tanking
 			Color = (noGroup and db.useSoloColor and colors.soloColor) or (self.offTank and colors.offTankColor) or (self.isTank and colors.goodColor) or colors.badColor
 			Scale = (self.isTank and db.goodScale) or db.badScale
-		elseif status == 2 and (noGroup or self.threatTarget) then -- insecurely tanking
+		elseif status == 2 and (noGroup or self.threatUnit) then -- insecurely tanking
 			Color = (self.offTank and colors.offTankColorBadTransition) or (self.isTank and colors.badTransition) or colors.goodTransition
 			Scale = 1
-		elseif status == 1 and (noGroup or self.threatTarget) then -- not tanking but threat higher than tank
+		elseif status == 1 and (noGroup or self.threatUnit) then -- not tanking but threat higher than tank
 			Color = (self.offTank and colors.offTankColorGoodTransition) or (self.isTank and colors.goodTransition) or colors.badTransition
 			Scale = 1
 		else -- not tanking at all
-			Color = (self.isTank and colors.badColor) or colors.goodColor
-			Scale = (self.isTank and db.badScale) or db.goodScale
+			local previousTank = NP.GroupRoles[NP.IsInGroup and staleGUID or nil] == 'TANK' or (staleGUID and db.beingTankedByPet and NP.ThreatPets[NP:GetNPCID(staleGUID)])
+
+			Color = (previousTank and colors.offTankColor) or (self.isTank and colors.badColor) or colors.goodColor
+			Scale = (previousTank and db.goodScale) or (self.isTank and db.badScale) or db.goodScale
 		end
 
 		if styleFilter.health and styleFilter.health.color then
