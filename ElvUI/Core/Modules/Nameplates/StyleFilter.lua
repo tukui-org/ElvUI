@@ -798,13 +798,13 @@ function NP:StyleFilterClearChanges(frame)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
-	if NP:UnitExists(unit) then
-		local isTank, offTank, feedbackUnit = NP.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
-		if feedbackUnit and (feedbackUnit ~= unit) and NP:UnitExists(feedbackUnit) then
-			return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
-		else
-			return isTank, offTank, UnitThreatSituation(unit)
-		end
+	if not NP:UnitExists(unit) then return end
+
+	local isTank, offTank, feedbackUnit = NP.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
+	if feedbackUnit and (feedbackUnit ~= unit) and NP:UnitExists(feedbackUnit) then
+		return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
+	else
+		return isTank, offTank, UnitThreatSituation(unit)
 	end
 end
 
@@ -1057,10 +1057,10 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
-			local isTank, offTank, threat = NP:StyleFilterThreatUpdate(frame, frame.unit)
+			local isTank, offTank, status = NP:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local status = (checkOffTank and offTank and threat and -threat) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[threat]) or threat)) or nil
-			if trigger.threat[NP.TriggerConditions.threat[status]] then passed = true else return end
+			local value = (checkOffTank and offTank and status and -status) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
+			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
 		end
 	end
 
