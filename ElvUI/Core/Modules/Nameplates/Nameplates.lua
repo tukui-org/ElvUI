@@ -909,9 +909,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 			NP:UpdatePlateBase(nameplate)
 			NP:BossMods_UpdateIcon(nameplate)
-
-			NP:StyleFilterEventWatch(nameplate, event, unit) -- fire up the watcher
-			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+			NP:StyleFilterEventWatch(nameplate, event, unit) -- fire up the watcher and call an update on ADDED
 		end
 
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
@@ -937,9 +935,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
-
 			NP:StyleFilterEventWatch(nameplate, event, unit) -- shut down the watcher
-			NP:StyleFilterClearVariables(nameplate)
 		end
 
 		if nameplate.softTargetFrame then
