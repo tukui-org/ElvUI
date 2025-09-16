@@ -14,16 +14,6 @@ local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
 local INVITE_RESTRICTION_NONE = 9
 
---Social Frame
-local function SkinSocialHeaderTab(tab)
-	if not tab then return end
-
-	tab:StripTextures()
-	tab:CreateBackdrop('Transparent')
-	tab.backdrop:Point('TOPLEFT', 3, -8)
-	tab.backdrop:Point('BOTTOMRIGHT', -6, 0)
-end
-
 local function BattleNetFrame_OnEnter(button)
 	if not button.backdrop then return end
 	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
@@ -226,8 +216,6 @@ local function UpdateFriendInviteHeaderButton(button)
 end
 
 local StripAllTextures = {
-	'FriendsTabHeaderTab1',
-	'FriendsTabHeaderTab2',
 	'WhoFrameColumnHeader1',
 	'WhoFrameColumnHeader2',
 	'WhoFrameColumnHeader3',
@@ -241,8 +229,6 @@ local ButtonsToHandle = {
 	'WhoFrameWhoButton',
 	'WhoFrameAddFriendButton',
 	'WhoFrameGroupInviteButton',
-	'FriendsFrameIgnorePlayerButton',
-	'FriendsFrameUnsquelchButton',
 	'AddFriendEntryFrameAcceptButton',
 	'AddFriendEntryFrameCancelButton'
 }
@@ -263,7 +249,6 @@ function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
 	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.IgnoreListFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
@@ -280,7 +265,6 @@ function S:FriendsFrame()
 	S:HandlePortraitFrame(FriendsFrame)
 
 	_G.FriendsFrameIcon:Hide()
-	_G.IgnoreListFrame:StripTextures()
 
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
 
@@ -290,6 +274,8 @@ function S:FriendsFrame()
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
 	FriendsFrameBattlenetFrame:SetTemplate('Transparent')
+	S:HandleButton(FriendsFrameBattlenetFrame.ContactsMenuButton)
+	FriendsFrameBattlenetFrame.ContactsMenuButton:Size(31) -- Default is 32, 32
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local BattlenetFrame = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
@@ -304,7 +290,6 @@ function S:FriendsFrame()
 	BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
 	BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
-	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture(nil)
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetTemplate('Transparent')
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
@@ -331,6 +316,14 @@ function S:FriendsFrame()
 	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', UpdateFriendInviteButton)
 	hooksecurefunc('FriendsFrame_UpdateFriendInviteHeaderButton', UpdateFriendInviteHeaderButton)
 
+	-- IgnoreListWindow
+	local IgnoreWindow = FriendsFrame.IgnoreListWindow
+	IgnoreWindow:StripTextures()
+	IgnoreWindow:SetTemplate('Transparent')
+	S:HandleCloseButton(FriendsFrameCloseButton) -- Probably missing/temp name
+	S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
+	S:HandleButton(IgnoreWindow.UnignorePlayerButton)
+
 	--Who Frame
 	_G.WhoFrame:StripTextures()
 	_G.WhoFrameListInset:StripTextures()
@@ -353,9 +346,9 @@ function S:FriendsFrame()
 	HandleTabs()
 
 	for i = 1, 3 do
-		local tab = _G['FriendsTabHeaderTab'..i]
+		local tab = select(i, FriendsTabHeader.TabSystem:GetChildren())
 		if tab then
-			SkinSocialHeaderTab(tab)
+			S:HandleTab(tab)
 		end
 	end
 
