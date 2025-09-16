@@ -904,7 +904,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateBase(nameplate)
 			NP:BossMods_UpdateIcon(nameplate)
 
-			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
+			NP:StyleFilterEventWatch(nameplate, event, unit) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 		end
 
@@ -932,8 +932,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
 
-			NP:StyleFilterUpdate(nameplate, event, unit) -- lets clear it
-			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
+			NP:StyleFilterEventWatch(nameplate, event, unit) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		end
 
