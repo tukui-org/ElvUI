@@ -726,9 +726,12 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 	end
 end
 
-function NP:UnitNPCID(unit) -- also used by Bags.lua
-	local guid = UnitGUID(unit)
+function NP:GetNPCID(guid)
 	return tonumber(guid and select(6, strsplit('-', guid))), guid
+end
+
+function NP:UnitNPCID(unit) -- also used by Bags.lua
+	return NP:GetNPCID(UnitGUID(unit))
 end
 
 function NP:UpdateNumPlates()
