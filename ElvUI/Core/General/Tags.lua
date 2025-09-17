@@ -244,9 +244,9 @@ Tags.Env.GetClassPower = function(unit)
 	if mistWarlock then -- little gremlins
 		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
 	elseif E.Mists and unitClass == 'PRIEST' then -- only shadow orbs
-		barType = (spec == SPEC_PRIEST_SHADOW) and POWERTYPE_SHADOW_ORBS
-	elseif spec == SPEC_MAGE_ARCANE then
-		barType = POWERTYPE_ARCANE_CHARGES
+		barType = spec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS
+	elseif unitClass == 'MAGE' then
+		barType = spec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES
 	else
 		barType = ClassPowers[unitClass]
 	end
