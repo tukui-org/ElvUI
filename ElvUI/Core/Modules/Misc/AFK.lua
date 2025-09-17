@@ -37,6 +37,7 @@ local DNDstr = _G.DND
 local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
+local DEFAULT_AFK_ANIMATION = "dance"
 local ignoreKeys = {
 	LALT = true,
 	LSHIFT = true,
@@ -44,6 +45,68 @@ local ignoreKeys = {
 }
 local printKeys = {
 	PRINTSCREEN = true,
+}
+local afkAnimations = {
+	lean = {
+		name = L["Lean"],
+		id = 1260,
+		key = "lean",
+		facing = 5.8,
+		wait = 10,
+		offsetX = -100,
+		offsetY = 220,
+		duration = 600
+	},
+	dance = {
+		name = L["Dance"],
+		id = 69,
+		key = "dance",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 300
+	},
+	salute = {
+		name = L["Salute"],
+		id = 113,
+		key = "salute",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 5
+	},
+	talk = {
+		name = L["Talk"],
+		id = 60,
+		key = "talk",
+		facing = 6.2,
+		wait = 15,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 10
+	},
+	shy = {
+		name = L["Shy"],
+		id = 83,
+		key = "shy",
+		facing = 6.2,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 10
+	},
+	roar = {
+		name = L["Roar"],
+		id = 74,
+		key = "roar",
+		facing = 6,
+		wait = 30,
+		offsetX = -200,
+		offsetY = 220,
+		duration = 5
+	}
 }
 
 if IsMacClient() then
@@ -90,12 +153,16 @@ function AFK:SetAFK(status)
 			bottom.guild:SetText(L["No Guild"])
 		end
 
+		local afkAnimation = E.db.general.afkAnimation or DEFAULT_AFK_ANIMATION
+		local modelHolder = bottom.modelHolder
+		modelHolder:Point('BOTTOMRIGHT', bottom, 'BOTTOMRIGHT', afkAnimations[afkAnimation].offsetX, afkAnimations[afkAnimation].offsetY)
+
 		local model = bottom.model
 		model.curAnimation = 'wave'
 		model.startTime = GetTime()
 		model.duration = 2.3
 		model.isIdle = nil
-		model.idleDuration = 40
+		model.idleDuration = afkAnimations[afkAnimation].wait
 		model:SetUnit('player')
 		model:SetAnimation(67)
 
@@ -254,10 +321,12 @@ end
 function AFK:LoopAnimations()
 	local model = bottom.model
 	if model.curAnimation == 'wave' then
-		model:SetAnimation(69)
-		model.curAnimation = 'dance'
+		local afkAnimation = E.db.general.afkAnimation or DEFAULT_AFK_ANIMATION
+
+		model:SetAnimation(afkAnimations[afkAnimation].id)
+		model.curAnimation = afkAnimations[afkAnimation].key
 		model.startTime = GetTime()
-		model.duration = 300
+		model.duration = afkAnimations[afkAnimation].duration
 		model.isIdle = false
 		model.idleDuration = 120
 	end
@@ -371,20 +440,21 @@ function AFK:Initialize()
 	afkTime:SetTextColor(0.7, 0.7, 0.7)
 	bottom.time = afkTime
 
+	local afkAnimation = E.db.general.afkAnimation or DEFAULT_AFK_ANIMATION
 	--Use this frame to control position of the model
 	local modelHolder = CreateFrame('Frame', nil, bottom)
 	modelHolder:Size(150)
-	modelHolder:Point('BOTTOMRIGHT', bottom, 'BOTTOMRIGHT', -200, 220)
+	modelHolder:Point('BOTTOMRIGHT', bottom, 'BOTTOMRIGHT', afkAnimations[afkAnimation].offsetX, afkAnimations[afkAnimation].offsetY)
 	bottom.modelHolder = modelHolder
 
 	local model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', modelHolder)
 	model:Point('CENTER', modelHolder, 'CENTER')
 	model:Size(E.screenWidth * 2, E.screenHeight * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
-	model:SetFacing(6)
+	model:SetFacing(afkAnimations[afkAnimation].facing)
 	model:SetScript('OnUpdate', AFK.Model_OnUpdate)
 	bottom.model = model
-
+	
 	AFK:Toggle()
 
 	AFK.isActive = false
