@@ -23,11 +23,10 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 	nameplate.threatScale = nil
 
 	if pass then
-		return isTank, offTank, feedbackUnit, targetExists and targetUnit
+		return isTank, offTank, feedbackUnit, targetGUID, targetRole
 	else
-		self.threatGUID = targetGUID
 		self.threatRole = targetRole
-		self.threatUnit = targetExists and targetUnit
+		self.threatGUID = targetGUID
 		self.feedbackUnit = feedbackUnit
 		self.offTank = offTank
 		self.isTank = isTank
@@ -56,13 +55,13 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if status == 3 then -- securely tanking
 			Color = (noGroup and db.useSoloColor and colors.soloColor) or (self.offTank and colors.offTankColor) or (self.isTank and colors.goodColor) or colors.badColor
 			Scale = (self.isTank and db.goodScale) or db.badScale
-		elseif status == 2 and (noGroup or self.threatUnit) then -- insecurely tanking
+		elseif status == 2 and (noGroup or self.threatGUID) then -- insecurely tanking; verify guid to confirm a target exists (for tank swaps)
 			Color = (self.offTank and colors.offTankColorBadTransition) or (self.isTank and colors.badTransition) or colors.goodTransition
 			Scale = 1
-		elseif status == 1 and (noGroup or self.threatUnit) then -- not tanking but threat higher than tank
+		elseif status == 1 and (noGroup or self.threatGUID) then -- not tanking but threat higher than tank
 			Color = (self.offTank and colors.offTankColorGoodTransition) or (self.isTank and colors.goodTransition) or colors.badTransition
 			Scale = 1
-		else -- not tanking at all
+		else -- not tanking at all; we can try to check for a previous tank to prevent bad color while NPC cast on random nontank group unit
 			local previousTank = NP.GroupRoles[NP.IsInGroup and staleGUID or nil] == 'TANK' or (staleGUID and db.beingTankedByPet and NP.ThreatPets[NP:GetNPCID(staleGUID)])
 
 			Color = (previousTank and colors.offTankColor) or (self.isTank and colors.badColor) or colors.goodColor
