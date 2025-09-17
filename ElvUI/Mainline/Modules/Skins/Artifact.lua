@@ -62,9 +62,9 @@ S:AddCallbackForAddon('Blizzard_ArtifactUI')
 function S:Blizzard_RemixArtifactUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.remixArtifact) then return end
 
-	local Frame = RemixArtifactFrame
-	S:HandleCloseButton(Frame.CloseButton)
-	S:HandleButton(Frame.CommitConfigControls.CommitButton)
+	local ArtifactFrame = _G.RemixArtifactFrame
+	S:HandleCloseButton(ArtifactFrame.CloseButton)
+	S:HandleButton(ArtifactFrame.CommitConfigControls.CommitButton)
 end
 
 S:AddCallbackForAddon('Blizzard_RemixArtifactUI')

@@ -8,6 +8,20 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
+local function PositionCooldownViewerTab(tab, _, _, _, x, y)
+	if x ~= 1 or y ~= -10 then
+		tab:ClearAllPoints()
+		tab:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+	end
+end
+
+local function PositionTabIcons(icon, point)
+	if point ~= 'CENTER' then
+		icon:ClearAllPoints()
+		icon:SetPoint('CENTER')
+	end
+end
+
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
 	local color = db.countFontColor
@@ -214,37 +228,20 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
 
-	local Frame = _G.CooldownViewerSettings
-	if Frame then
-		S:HandlePortraitFrame(Frame)
-		S:HandleEditBox(Frame.SearchBox)
-		S:HandleTrimScrollBar(Frame.CooldownScroll.ScrollBar)
-		S:HandleButton(Frame.UndoButton)
+	local CooldownViewer = _G.CooldownViewerSettings
+	if CooldownViewer then
+		S:HandlePortraitFrame(CooldownViewer)
+		S:HandleEditBox(CooldownViewer.SearchBox)
+		S:HandleTrimScrollBar(CooldownViewer.CooldownScroll.ScrollBar)
+		S:HandleButton(CooldownViewer.UndoButton)
 
-		local tabs = {
-			CooldownViewerSettings.SpellsTab,
-			CooldownViewerSettings.AurasTab,
-		}
-
-		local function PositionCooldownViewerTab(tab, _, _, _, x, y)
-			if x ~= 1 or y ~= -10 then
-				tab:SetPoint('TOPLEFT', CooldownViewerSettings, 'TOPRIGHT', 1, -10)
-			end
-		end
-
-		local function PositionTabIcons(icon, _, anchor)
-			if anchor then
-				icon:SetPoint('CENTER')
-			end
-		end
-
-		for i, tab in next, tabs do
+		for i, tab in next, { CooldownViewer.SpellsTab, CooldownViewer.AurasTab } do
 			tab:CreateBackdrop()
 			tab:Size(30, 40)
 
 			if i == 1 then
 				tab:ClearAllPoints()
-				tab:SetPoint('TOPLEFT', CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+				tab:SetPoint('TOPLEFT', CooldownViewer, 'TOPRIGHT', 1, -10)
 
 				hooksecurefunc(tab, 'SetPoint', PositionCooldownViewerTab)
 			end
