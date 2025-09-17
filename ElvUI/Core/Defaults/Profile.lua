@@ -38,6 +38,7 @@ P.general = {
 	afk = true,
 	afkChat = true,
 	afkSpin = true,
+	afkAnimation = 'dance',
 	cropIcon = 2,
 	objectiveTracker = true,
 	numberPrefixStyle = 'ENGLISH',

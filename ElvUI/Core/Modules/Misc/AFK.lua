@@ -37,14 +37,20 @@ local DNDstr = _G.DND
 local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
-local ignoreKeys = {
-	LALT = true,
-	LSHIFT = true,
-	RSHIFT = true,
+local DEFAULT_ANIMATION = 'dance'
+
+local animations = {
+	wave = { name = L["Wave"], id = 67, facing = 6, wait = 40, offsetX = -200, offsetY = 220, duration = 2.3 }, -- start animation
+	lean = { name = L["Lean"], id = 1260, facing = 5.8, wait = 10, offsetX = -100, offsetY = 220, duration = 600 },
+	dance = { name = L["Dance"], id = 69, facing = 6, wait = 30, offsetX = -200, offsetY = 220, duration = 300 },
+	salute = { name = L["Salute"], id = 113, facing = 6, wait = 30, offsetX = -200, offsetY = 220, duration = 5 },
+	talk = { name = L["Talk"], id = 60, facing = 6.2, wait = 15, offsetX = -200, offsetY = 220, duration = 10 },
+	shy = { name = L["Shy"], id = 83, facing = 6.2, wait = 30, offsetX = -200, offsetY = 220, duration = 10 },
+	roar = { name = L["Roar"], id = 74, facing = 6, wait = 30, offsetX = -200, offsetY = 220, duration = 5 }
 }
-local printKeys = {
-	PRINTSCREEN = true,
-}
+
+local ignoreKeys = { LALT = true, LSHIFT = true, RSHIFT = true }
+local printKeys = { PRINTSCREEN = true }
 
 if IsMacClient() then
 	printKeys[_G.KEY_PRINTSCREEN_MAC] = true
@@ -62,7 +68,7 @@ afk.chat = chat
 afk.bottom = bottom
 
 function AFK:UpdateTimer()
-	local time = GetTime() - self.startTime
+	local time = GetTime() - AFK.startTime
 	bottom.time:SetFormattedText('%02d:%02d', floor(time/60), time % 60)
 end
 
@@ -71,6 +77,33 @@ function AFK:CameraSpin(status)
 		MoveViewLeftStart(CAMERA_SPEED)
 	else
 		MoveViewLeftStop()
+	end
+end
+
+function AFK:GetAnimation(key)
+	if not key then key = E.db.general.afkAnimation end -- check selected animation
+	if key == 'lean' and not E.Retail then key = nil end -- lean dont exist outside of retail
+
+	local animation = key or DEFAULT_ANIMATION
+	return animations[animation], animation
+end
+
+function AFK:SetAnimation(key)
+	local options = AFK:GetAnimation(key)
+
+	local model = bottom.model
+	model.curAnimation = key
+	model.duration = options.duration
+	model.idleDuration = options.wait
+	model.startTime = GetTime()
+	model.isIdle = nil
+
+	model:SetFacing(options.facing)
+	model:SetAnimation(options.id)
+
+	if bottom.modelHolder then
+		bottom.modelHolder:ClearAllPoints()
+		bottom.modelHolder:Point('BOTTOMRIGHT', bottom, options.offsetX, options.offsetY)
 	end
 end
 
@@ -90,14 +123,7 @@ function AFK:SetAFK(status)
 			bottom.guild:SetText(L["No Guild"])
 		end
 
-		local model = bottom.model
-		model.curAnimation = 'wave'
-		model.startTime = GetTime()
-		model.duration = 2.3
-		model.isIdle = nil
-		model.idleDuration = 40
-		model:SetUnit('player')
-		model:SetAnimation(67)
+		AFK:SetAnimation('wave')
 
 		AFK.startTime = GetTime()
 		AFK.timer = AFK:ScheduleRepeatingTimer('UpdateTimer', 1)
@@ -251,18 +277,6 @@ function AFK:Toggle()
 	end
 end
 
-function AFK:LoopAnimations()
-	local model = bottom.model
-	if model.curAnimation == 'wave' then
-		model:SetAnimation(69)
-		model.curAnimation = 'dance'
-		model.startTime = GetTime()
-		model.duration = 300
-		model.isIdle = false
-		model.idleDuration = 120
-	end
-end
-
 function AFK:ResetChatPosition(force)
 	if force then
 		chat:SetUserPlaced(false)
@@ -270,7 +284,7 @@ function AFK:ResetChatPosition(force)
 
 	if not chat:IsUserPlaced() then
 		chat:ClearAllPoints()
-		chat:Point('TOPLEFT', afk, 'TOPLEFT', 4, -4)
+		chat:Point('TOPLEFT', afk, 4, -4)
 	end
 end
 
@@ -286,14 +300,14 @@ function AFK:OnKeyDown(key)
 end
 
 function AFK:Model_OnUpdate()
-	if not self.isIdle then
-		local timePassed = GetTime() - self.startTime
-		if timePassed > self.duration then
-			self:SetAnimation(0)
-			self.isIdle = true
+	if self.isIdle then return end
 
-			AFK.animTimer = AFK:ScheduleTimer('LoopAnimations', self.idleDuration)
-		end
+	local timePassed = GetTime() - self.startTime
+	if timePassed >= self.duration then
+		self:SetAnimation(0)
+		self.isIdle = true
+
+		AFK.animTimer = AFK:ScheduleTimer('SetAnimation', self.idleDuration)
 	end
 end
 
@@ -322,19 +336,19 @@ function AFK:Initialize()
 
 	bottom:SetFrameLevel(0)
 	bottom:SetTemplate('Transparent')
-	bottom:Point('BOTTOM', afk, 'BOTTOM', 0, -E.Border)
+	bottom:Point('BOTTOM', afk, 0, -E.Border)
 	bottom:Width(E.screenWidth + (E.Border*2))
 	bottom:Height(E.screenHeight * 0.10)
 
 	local logoTop = afk:CreateTexture(nil, 'OVERLAY')
 	logoTop:Size(320, 150)
-	logoTop:Point('CENTER', bottom, 'CENTER', 0, 50)
+	logoTop:Point('CENTER', bottom, 0, 50)
 	logoTop:SetTexture(E.Media.Textures.LogoTop)
 	bottom.LogoTop = logoTop
 
 	local logoBottom = afk:CreateTexture(nil, 'OVERLAY')
 	logoBottom:Size(320, 150)
-	logoBottom:Point('CENTER', bottom, 'CENTER', 0, 50)
+	logoBottom:Point('CENTER', bottom, 0, 50)
 	logoBottom:SetTexture(E.Media.Textures.LogoBottom)
 	bottom.LogoBottom = logoBottom
 
@@ -344,7 +358,7 @@ function AFK:Initialize()
 	end
 
 	local faction = bottom:CreateTexture(nil, 'OVERLAY')
-	faction:Point('BOTTOMLEFT', bottom, 'BOTTOMLEFT', offsetX, offsetY)
+	faction:Point('BOTTOMLEFT', bottom, offsetX, offsetY)
 	faction:SetTexture(format([[Interface\Timer\%s-Logo]], factionGroup))
 	faction:Size(size, size)
 	bottom.faction = faction
@@ -372,18 +386,17 @@ function AFK:Initialize()
 	bottom.time = afkTime
 
 	--Use this frame to control position of the model
-	local modelHolder = CreateFrame('Frame', nil, bottom)
-	modelHolder:Size(150)
-	modelHolder:Point('BOTTOMRIGHT', bottom, 'BOTTOMRIGHT', -200, 220)
-	bottom.modelHolder = modelHolder
+	local holder = CreateFrame('Frame', nil, bottom)
+	holder:Size(150)
 
-	local model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', modelHolder)
-	model:Point('CENTER', modelHolder, 'CENTER')
+	local model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', holder)
+	model:Point('CENTER', holder)
 	model:Size(E.screenWidth * 2, E.screenHeight * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
-	model:SetFacing(6)
+	model:SetUnit('player')
 	model:SetScript('OnUpdate', AFK.Model_OnUpdate)
 	bottom.model = model
+	bottom.modelHolder = holder
 
 	AFK:Toggle()
 
