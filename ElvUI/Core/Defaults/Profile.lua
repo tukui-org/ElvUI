@@ -127,22 +127,7 @@ P.general = {
 	},
 	rotationAssist = {
 		nextcast = { r = 0.20, g = 0.60, b = 0.95, a = 0.9 },
-		alternative = { r = 0.40, g = 0.99, b = 0.20, a = 0.9 },
-		spells = {
-			HUNTER = {},
-			WARRIOR = {},
-			ROGUE = {},
-			MAGE = {},
-			PRIEST = {},
-			EVOKER = {},
-			SHAMAN = {},
-			WARLOCK = {},
-			DEMONHUNTER = {},
-			DEATHKNIGHT = {},
-			DRUID = {},
-			MONK = {},
-			PALADIN = {}
-		}
+		alternative = { r = 0.40, g = 0.99, b = 0.20, a = 0.9 }
 	},
 	customGlow = {
 		style = 'Pixel Glow',
