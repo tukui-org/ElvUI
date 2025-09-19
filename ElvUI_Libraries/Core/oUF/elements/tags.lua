@@ -740,6 +740,7 @@ end
 
 local eventHandlers = {}
 local eventAuraCache = {}
+local eventExtraUnits = {}
 local eventTickers = {}
 local eventTimerThreshold = 0.1
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
@@ -758,7 +759,12 @@ local function ShouldUpdateTag(event, unit, frame)
 	if unitlessEvents[event] then
 		return true
 	elseif unitExists(unit) then
-		return frame.unit == unit or (frame.tagExtraUnits and frame.tagExtraUnits[unit])
+		if frame.unit == unit then
+			return true
+		else
+			local allowExtra = eventExtraUnits[frame]
+			return allowExtra and allowExtra[unit]
+		end
 	end
 end
 
@@ -953,12 +959,13 @@ local function Tag(self, fs, ts, ...)
 		RegisterEvents(self, fs, ts)
 
 		if(...) then
-			if not self.tagExtraUnits then
-				self.tagExtraUnits = {}
+			if not eventExtraUnits[self] then
+				eventExtraUnits[self] = {}
 			end
 
+			local allowExtra = eventExtraUnits[self]
 			for index = 1, select('#', ...) do
-				self.tagExtraUnits[select(index, ...)] = true
+				allowExtra[select(index, ...)] = true
 			end
 		end
 	end
@@ -982,8 +989,7 @@ local function Untag(self, fs)
 
 	fs.UpdateTag = nil
 
-	self.tagExtraUnits = nil
-
+	eventExtraUnits[self] = nil
 	taggedFontStrings[fs] = nil
 	self.__tags[fs] = nil
 end
