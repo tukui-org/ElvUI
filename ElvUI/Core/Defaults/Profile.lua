@@ -42,7 +42,6 @@ P.general = {
 	cropIcon = 2,
 	objectiveTracker = true,
 	numberPrefixStyle = 'ENGLISH',
-	tagUpdateRate = 0.2, -- eventTimerThreshold
 	decimalLength = 1,
 	fontSize = 12,
 	font = 'PT Sans Narrow',
