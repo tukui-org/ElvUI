@@ -940,10 +940,6 @@ local function Tag(self, fs, ts, ...)
 	fs.parent = self
 	fs.UpdateTag = GetTagFunc(ts)
 
-	if not self.tagExtraUnits then
-		self.tagExtraUnits = {}
-	end
-
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then
 		local timer = 0.5
 		if(type(fs.frequentUpdates) == 'number') then
@@ -957,6 +953,10 @@ local function Tag(self, fs, ts, ...)
 		RegisterEvents(self, fs, ts)
 
 		if(...) then
+			if not self.tagExtraUnits then
+				self.tagExtraUnits = {}
+			end
+
 			for index = 1, select('#', ...) do
 				self.tagExtraUnits[select(index, ...)] = true
 			end
@@ -981,6 +981,8 @@ local function Untag(self, fs)
 	UnregisterTimer(self, fs)
 
 	fs.UpdateTag = nil
+
+	self.tagExtraUnits = nil
 
 	taggedFontStrings[fs] = nil
 	self.__tags[fs] = nil
