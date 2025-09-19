@@ -77,7 +77,7 @@ local _G = _G
 local format, tinsert, floor = format, tinsert, floor
 local rawset, select, tonumber = rawset, select, tonumber
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
-local next, type, pcall, unpack = next, type, pcall, unpack
+local next, wipe, type, pcall, unpack = next, wipe, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
@@ -940,10 +940,6 @@ local function Tag(self, fs, ts, ...)
 	fs.parent = self
 	fs.UpdateTag = GetTagFunc(ts)
 
-	if not self.tagExtraUnits then
-		self.tagExtraUnits = {}
-	end
-
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then
 		local timer = 0.5
 		if(type(fs.frequentUpdates) == 'number') then
@@ -957,6 +953,10 @@ local function Tag(self, fs, ts, ...)
 		RegisterEvents(self, fs, ts)
 
 		if(...) then
+			if not self.tagExtraUnits then
+				self.tagExtraUnits = {}
+			end
+
 			for index = 1, select('#', ...) do
 				self.tagExtraUnits[select(index, ...)] = true
 			end
@@ -981,6 +981,8 @@ local function Untag(self, fs)
 	UnregisterTimer(self, fs)
 
 	fs.UpdateTag = nil
+
+	self.tagExtraUnits = nil
 
 	taggedFontStrings[fs] = nil
 	self.__tags[fs] = nil
