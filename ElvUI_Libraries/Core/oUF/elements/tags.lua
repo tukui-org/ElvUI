@@ -73,15 +73,56 @@ local unitExists = Private.unitExists
 local validateEvent = Private.validateEvent
 
 local _G = _G
-local CreateFrame = CreateFrame
-local format, tinsert = format, tinsert
-local rawset, select, wipe = rawset, select, wipe
+
+local format, tinsert, floor = format, tinsert, floor
+local rawset, select, tonumber = rawset, select, tonumber
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
+local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
+local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION or 3
+local SPEC_MONK_WINDWALKER = SPEC_MONK_WINDWALKER or 3
+
+local POWERTYPE_MANA = Enum.PowerType.Mana or 0
+local POWERTYPE_COMBO_POINTS = Enum.PowerType.ComboPoints or 4
+local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
+local POWERTYPE_HOLY_POWER = Enum.PowerType.HolyPower or 9
+local POWERTYPE_CHI = Enum.PowerType.Chi or 12
+local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
+
+local CreateFrame = CreateFrame
 local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+
+local IsResting = IsResting
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
+local GetNumGroupMembers = GetNumGroupMembers
+local GetRaidRosterInfo = GetRaidRosterInfo
+local GetRuneCooldown = GetRuneCooldown
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+local GetThreatStatusColor = GetThreatStatusColor
+local UnitBattlePetLevel = UnitBattlePetLevel
+local UnitCanAttack = UnitCanAttack
+local UnitClassification = UnitClassification
+local UnitCreatureFamily = UnitCreatureFamily
+local UnitCreatureType = UnitCreatureType
+local UnitEffectiveLevel = UnitEffectiveLevel
+local UnitHealthMax = UnitHealthMax
+local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsPVP = UnitIsPVP
+local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitLevel = UnitLevel
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local UnitSex = UnitSex
+local UnitThreatSituation = UnitThreatSituation
+
+-- GLOBALS: Hex, _TAGS, _COLORS
+-- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
 
 local _PATTERN = '%[..-%]+'
 
@@ -151,7 +192,7 @@ end
 
 tagFunctions.arcanecharges = function()
 	if(GetSpecialization() == SPEC_MAGE_ARCANE) then
-		local num = UnitPower('player', Enum.PowerType.ArcaneCharges)
+		local num = UnitPower('player', POWERTYPE_ARCANE_CHARGES)
 		if(num > 0) then
 			return num
 		end
@@ -171,7 +212,7 @@ end
 
 tagFunctions.chi = function()
 	if(GetSpecialization() == SPEC_MONK_WINDWALKER) then
-		local num = UnitPower('player', Enum.PowerType.Chi)
+		local num = UnitPower('player', POWERTYPE_CHI)
 		if(num > 0) then
 			return num
 		end
@@ -194,7 +235,7 @@ tagFunctions.classification = function(u)
 end
 
 tagFunctions.cpoints = function(u)
-	local cp = UnitPower(u, Enum.PowerType.ComboPoints)
+	local cp = UnitPower(u, POWERTYPE_COMBO_POINTS)
 
 	if(cp > 0) then
 		return cp
@@ -206,7 +247,7 @@ tagFunctions.creature = function(u)
 end
 
 tagFunctions.curmana = function(unit)
-	return UnitPower(unit, Enum.PowerType.Mana)
+	return UnitPower(unit, POWERTYPE_MANA)
 end
 
 tagFunctions.dead = function(u)
@@ -236,7 +277,7 @@ end
 tagFunctions.group = function(unit)
 	local name, server = UnitName(unit)
 	if(server and server ~= '') then
-		name = string.format('%s-%s', name, server)
+		name = format('%s-%s', name, server)
 	end
 
 	for i=1, GetNumGroupMembers() do
@@ -249,7 +290,7 @@ end
 
 tagFunctions.holypower = function()
 	if(GetSpecialization() == SPEC_PALADIN_RETRIBUTION) then
-		local num = UnitPower('player', Enum.PowerType.HolyPower)
+		local num = UnitPower('player', POWERTYPE_HOLY_POWER)
 		if(num > 0) then
 			return num
 		end
@@ -282,7 +323,7 @@ tagFunctions.level = function(u)
 end
 
 tagFunctions.maxmana = function(unit)
-	return UnitPowerMax(unit, Enum.PowerType.Mana)
+	return UnitPowerMax(unit, POWERTYPE_MANA)
 end
 
 tagFunctions.missinghp = function(u)
@@ -314,7 +355,7 @@ tagFunctions.perhp = function(u)
 	if(m == 0) then
 		return 0
 	else
-		return math.floor(UnitHealth(u) / m * 100 + .5)
+		return floor(UnitHealth(u) / m * 100 + .5)
 	end
 end
 
@@ -323,7 +364,7 @@ tagFunctions.perpp = function(u)
 	if(m == 0) then
 		return 0
 	else
-		return math.floor(UnitPower(u) / m * 100 + .5)
+		return floor(UnitPower(u) / m * 100 + .5)
 	end
 end
 
@@ -449,7 +490,7 @@ tagFunctions.smartlevel = function(u)
 end
 
 tagFunctions.soulshards = function()
-	local num = UnitPower('player', Enum.PowerType.SoulShards)
+	local num = UnitPower('player', POWERTYPE_SOUL_SHARDS)
 	if(num > 0) then
 		return num
 	end
