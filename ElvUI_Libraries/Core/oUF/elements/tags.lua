@@ -80,6 +80,7 @@ local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
+local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
 local _PATTERN = '%[..-%]+'
@@ -571,8 +572,8 @@ local timerFontStrings = {}
 local function UpdateTimer(frame, elapsed)
 	local total = frame.total
 	if total >= frame.timer then
-		for fs in next, frame.strings do -- isForced prevents spam in ElvUI
-			if fs.parent:IsShown() and not fs.parent.isForced and unitExists(fs.parent.unit) then
+		for fs, parent in next, frame.strings do -- isForced prevents spam in ElvUI
+			if not parent.isForced and parent:IsShown() and unitExists(parent.unit) then
 				fs:UpdateTag()
 			end
 		end
@@ -698,6 +699,8 @@ end
 
 local eventHandlers = {}
 local eventAuraCache = {}
+local eventTickers = {}
+local eventTimerThreshold = 0.1
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	if aura and tagSpells[aura.spellId] then
 		eventAuraCache[auraInstanceID] = aura
@@ -708,19 +711,57 @@ local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	end
 end
 
+local function ShouldUpdateTag(event, unit, frame)
+	if frame.isForced then return end -- isForced prevents spam in ElvUI
+
+	if unitlessEvents[event] then
+		return true
+	elseif unitExists(unit) then
+		return frame.unit == unit or (frame.tagExtraUnits and frame.tagExtraUnits[unit])
+	end
+end
+
+local function HandlerTicker(handler)
+	local ticker = eventTickers[handler]
+	if not ticker then return end
+
+	if ticker.strings then
+		for fs in next, ticker.strings do
+			if fs:IsVisible() then
+				fs:UpdateTag()
+			end
+		end
+	end
+
+	ticker:Cancel()
+
+	eventTickers[handler] = nil
+end
+
 local function HandlerEvent(handler, event, unit, updateInfo)
 	local strings = handler.eventStrings[event]
-	if not strings then return end
+	if not strings or not ShouldUpdateTag(event, unit, handler.frame) then return end
 
 	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then
 		return -- we only want to let auras trigger an update when they are allowed
 	end
 
-	for fs in next, strings do -- isForced prevents spam in ElvUI
-		if fs:IsVisible() and not fs.parent.isForced and (unitlessEvents[event] or fs.parent.unit == unit or (fs.extraUnits and fs.extraUnits[unit])) then
-			fs:UpdateTag()
+	local ticker = eventTickers[handler]
+	if ticker then -- processed within the timer
+		ticker.strings = strings
+	else
+		for fs in next, strings do
+			if fs:IsVisible() then
+				fs:UpdateTag()
+			end
 		end
+
+		eventTickers[handler] = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
 	end
+end
+
+local function GenerateTicker(handler)
+	return function() HandlerTicker(handler) end
 end
 
 local function RegisterEvent(frame, event, fs)
@@ -729,6 +770,7 @@ local function RegisterEvent(frame, event, fs)
 	if not eventHandlers[frame] then
 		local handler = CreateFrame('Frame')
 		handler:SetScript('OnEvent', HandlerEvent)
+		handler.HandlerTicker = GenerateTicker(handler)
 		handler.eventStrings = {}
 		handler.frame = frame
 
@@ -773,17 +815,17 @@ local function UnregisterEvents(frame, fs)
 	end
 end
 
-local function RegisterTimer(fs, timer)
+local function RegisterTimer(frame, fs, timer)
 	if not timerFontStrings[timer] then
 		timerFontStrings[timer] = {}
 	end
 
-	timerFontStrings[timer][fs] = true
+	timerFontStrings[timer][fs] = frame
 
 	EnableTimer(timer)
 end
 
-local function UnregisterTimer(fs)
+local function UnregisterTimer(frame, fs)
 	for timer, strings in next, timerFontStrings do
 		strings[fs] = nil
 
@@ -857,6 +899,10 @@ local function Tag(self, fs, ts, ...)
 	fs.parent = self
 	fs.UpdateTag = GetTagFunc(ts)
 
+	if not self.tagExtraUnits then
+		self.tagExtraUnits = {}
+	end
+
 	if(self.__eventless or fs.frequentUpdates) or containsOnUpdate then
 		local timer = 0.5
 		if(type(fs.frequentUpdates) == 'number') then
@@ -865,17 +911,13 @@ local function Tag(self, fs, ts, ...)
 			timer = containsOnUpdate
 		end
 
-		RegisterTimer(fs, timer)
+		RegisterTimer(self, fs, timer)
 	else
 		RegisterEvents(self, fs, ts)
 
 		if(...) then
-			if(not fs.extraUnits) then
-				fs.extraUnits = {}
-			end
-
 			for index = 1, select('#', ...) do
-				fs.extraUnits[select(index, ...)] = true
+				self.tagExtraUnits[select(index, ...)] = true
 			end
 		end
 	end
@@ -895,7 +937,7 @@ local function Untag(self, fs)
 	if(not fs or not self.__tags) then return end
 
 	UnregisterEvents(self, fs)
-	UnregisterTimer(fs)
+	UnregisterTimer(self, fs)
 
 	fs.UpdateTag = nil
 
@@ -959,6 +1001,11 @@ oUF.Tags = {
 				end
 			end
 		end
+	end,
+	SetEventUpdateTimer = function(_, timer)
+		if not timer or type(timer) ~= 'number' then return end
+
+		eventTimerThreshold = max(0.05, timer)
 	end
 }
 

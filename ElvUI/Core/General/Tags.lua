@@ -118,6 +118,10 @@ function E:CallTag(tag, ...)
 	return func(...)
 end
 
+function E:TagUpdateRate(second)
+	Tags:SetEventUpdateTimer(second)
+end
+
 ------------------------------------------------------------------------
 --	Tag Extra Events
 ------------------------------------------------------------------------
