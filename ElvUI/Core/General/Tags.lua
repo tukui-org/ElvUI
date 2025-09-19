@@ -81,7 +81,7 @@ local PVP = PVP
 -- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
 local RefreshNewTags -- will turn true at EOF
-function E:AddTag(tagName, eventsOrSeconds, func, block)
+function E:AddTag(tagName, eventsOrSeconds, func, block, spells)
 	if block then return end -- easy killer for tags
 
 	if type(eventsOrSeconds) == 'number' then
@@ -98,6 +98,13 @@ function E:AddTag(tagName, eventsOrSeconds, func, block)
 	-- when we set these the env will be from oUF
 	Tags.Methods[tagName] = func
 
+	-- if it uses UNIT_AURA we block spells unless allowed
+	if spells then
+		for spellID, allow in next, spells do
+			Tags.Spells[spellID] = allow
+		end
+	end
+
 	if RefreshNewTags then
 		Tags:RefreshEvents(tagName)
 		Tags:RefreshMethods(tagName)
@@ -106,9 +113,9 @@ end
 
 function E:CallTag(tag, ...)
 	local func = ElvUF.Tags.Methods[tag]
-	if func then
-		return func(...)
-	end
+	if not func then return end
+
+	return func(...)
 end
 
 function E:TagUpdateRate(second)
@@ -296,8 +303,17 @@ end
 --	Looping
 ------------------------------------------------------------------------
 
-local classSpecificAura = { MONK = true, MAGE = true, SHAMAN = true }
+local classSpecificAura = { MAGE = E.Retail or E.Mists, SHAMAN = E.Retail, MONK = true }
 local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or (classSpecificAura[E.myclass] and 'UNIT_AURA ') or ''
+local classSpecificMonk = not E.Classic and E.myclass == 'MONK'
+local classSpecificSpells = { -- stagger IDs also in oUF stagger element
+	[124275] = classSpecificMonk or nil, -- [GREEN]  Light Stagger
+	[124274] = classSpecificMonk or nil, -- [YELLOW] Moderate Stagger
+	[124273] = classSpecificMonk or nil, -- [RED]    Heavy Stagger
+	[SPELL_ARCANE_CHARGE] = (E.Mists and E.myclass == 'MAGE') or nil,
+	[SPELL_FROST_ICICLES] = (E.Retail and E.myclass == 'MAGE') or nil,
+	[SPELL_MAELSTROM] = (E.Retail and E.myclass == 'SHAMAN') or nil
+}
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
@@ -363,7 +379,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
-	end, E.Classic)
+	end, E.Classic, classSpecificSpells)
 
 	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
 		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
@@ -432,7 +448,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, max, nil, true)
 			end
-		end, E.Classic)
+		end, E.Classic, classSpecificSpells)
 	end
 end
 
