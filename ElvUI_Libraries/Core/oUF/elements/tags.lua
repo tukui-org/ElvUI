@@ -77,7 +77,7 @@ local _G = _G
 local format, tinsert, floor = format, tinsert, floor
 local rawset, select, tonumber = rawset, select, tonumber
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
-local next, wipe, type, pcall, unpack = next, wipe, type, pcall, unpack
+local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
