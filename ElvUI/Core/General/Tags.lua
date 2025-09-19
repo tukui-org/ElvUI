@@ -49,6 +49,7 @@ local UnitIsDND = UnitIsDND
 local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
+local UnitHonorLevel = UnitHonorLevel
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
@@ -934,9 +935,9 @@ E:AddTag('classificationcolor', 'UNIT_CLASSIFICATION_CHANGED', function(unit)
 end)
 
 E:AddTag('guild', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
-	if UnitIsPlayer(unit) then
-		return GetGuildInfo(unit)
-	end
+	if not UnitIsPlayer(unit) then return end
+
+	return GetGuildInfo(unit)
 end)
 
 E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
@@ -962,11 +963,11 @@ E:AddTag('guild:brackets', 'PLAYER_GUILD_UPDATE', function(unit)
 end)
 
 E:AddTag('guild:translit', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
-	if UnitIsPlayer(unit) then
-		local guildName = GetGuildInfo(unit)
-		if guildName then
-			return Translit:Transliterate(guildName, translitMark)
-		end
+	if not UnitIsPlayer(unit) then return end
+
+	local guildName = GetGuildInfo(unit)
+	if guildName then
+		return Translit:Transliterate(guildName, translitMark)
 	end
 end)
 
@@ -978,11 +979,11 @@ E:AddTag('guild:brackets:translit', 'PLAYER_GUILD_UPDATE', function(unit)
 end)
 
 E:AddTag('guild:rank', 'UNIT_NAME_UPDATE', function(unit)
-	if UnitIsPlayer(unit) then
-		local _, rank = GetGuildInfo(unit)
-		if rank then
-			return rank
-		end
+	if not UnitIsPlayer(unit) then return end
+
+	local _, rank = GetGuildInfo(unit)
+	if rank then
+		return rank
 	end
 end)
 
@@ -1009,9 +1010,9 @@ E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', functi
 end)
 
 E:AddTag('title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-	if UnitIsPlayer(unit) then
-		return GetTitleName(GetCurrentTitle())
-	end
+	if not UnitIsPlayer(unit) then return end
+
+	return GetTitleName(GetCurrentTitle())
 end)
 
 E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
@@ -1307,6 +1308,7 @@ do
 	local typeIcon = { elite = gold, worldboss = gold, rareelite = silver, rare = silver }
 	E:AddTag('classification:icon', 'UNIT_NAME_UPDATE', function(unit)
 		if UnitIsPlayer(unit) then return end
+
 		return typeIcon[UnitClassification(unit)]
 	end)
 
@@ -1556,36 +1558,42 @@ if E.Classic then
 	end)
 end
 
-if not E.Retail then
-	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then
-			local rank = UnitPVPRank(unit)
-			local title = GetPVPRankInfo(rank, unit)
+if E.Retail then
+	E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
+		if not UnitIsPlayer(unit) then return end
 
-			return title
-		end
+	    return UnitHonorLevel(unit)
+	end)
+else
+	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
+		if not UnitIsPlayer(unit) then return end
+
+		local rank = UnitPVPRank(unit)
+		local title = GetPVPRankInfo(rank, unit)
+
+		return title
 	end)
 
 	E:AddTag('pvp:rank', 'UNIT_NAME_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then
-			local rank = UnitPVPRank(unit)
-			local _, num = GetPVPRankInfo(rank, unit)
+		if not UnitIsPlayer(unit) then return end
 
-			if num > 0 then
-				return num
-			end
+		local rank = UnitPVPRank(unit)
+		local _, num = GetPVPRankInfo(rank, unit)
+
+		if num > 0 then
+			return num
 		end
 	end)
 
 	local rankIcon = [[|TInterface\PvPRankBadges\PvPRank%02d:12:12:0:0:12:12:0:12:0:12|t]]
 	E:AddTag('pvp:icon', 'UNIT_NAME_UPDATE', function(unit)
-		if UnitIsPlayer(unit) then
-			local rank = UnitPVPRank(unit)
-			local _, num = GetPVPRankInfo(rank, unit)
+		if not UnitIsPlayer(unit) then return end
 
-			if num > 0 then
-				return format(rankIcon, num)
-			end
+		local rank = UnitPVPRank(unit)
+		local _, num = GetPVPRankInfo(rank, unit)
+
+		if num > 0 then
+			return format(rankIcon, num)
 		end
 	end)
 end
@@ -1834,6 +1842,7 @@ E.TagInfo = {
 		['faction'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde'" },
 		['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 		['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
+		['pvp:honorlevel'] = { hidden = not E.Retail, category = 'PvP', description = "Displays honor level of the unit" },
 		['pvp:icon'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank icon" },
 		['pvp:rank'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp rank number" },
 		['pvp:title'] = { hidden = E.Retail, category = 'PvP', description = "Displays player pvp title" },
