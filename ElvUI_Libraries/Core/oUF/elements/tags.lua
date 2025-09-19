@@ -74,8 +74,8 @@ local validateEvent = Private.validateEvent
 
 local _G = _G
 
+local rawset, tonumber = rawset, tonumber
 local format, tinsert, floor = format, tinsert, floor
-local rawset, select, tonumber = rawset, select, tonumber
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
@@ -892,7 +892,7 @@ Used to register a tag on a unit frame.
 --]]
 
 local taggedFontStrings = {}
-local function Tag(self, fs, ts, ...)
+local function Tag(self, fs, ts, arg1, ...)
 	if(not fs or not ts) then return end
 
 	if(not self.__tags) then
@@ -958,14 +958,14 @@ local function Tag(self, fs, ts, ...)
 	else
 		RegisterEvents(self, fs, ts)
 
-		if(...) then
+		if arg1 then
 			if not eventExtraUnits[self] then
 				eventExtraUnits[self] = {}
 			end
 
 			local allowExtra = eventExtraUnits[self]
-			for index = 1, select('#', ...) do
-				allowExtra[select(index, ...)] = true
+			for _, extraUnit in next, { arg1, ... } do
+				allowExtra[extraUnit] = true
 			end
 		end
 	end
