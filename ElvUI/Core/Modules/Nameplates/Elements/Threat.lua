@@ -13,21 +13,20 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local targetUnit, nameplate, db, imTank = unit..'target', self.__owner, NP.db.threat, E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK'
+	local targetUnit, imTank, db = unit..'target', E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK', NP.db.threat
 	local targetExists = NP:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
 	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
 	local targetRole = NP.IsInGroup and NP.GroupRoles[targetGUID] or 'NONE'
 	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(targetUnit)])
-	local isTank, offTank, feedbackUnit = targetTank or imTank, db.beingTankedByTank and (targetTank and imTank) or false, (targetTank and targetUnit) or 'player'
-
-	nameplate.threatScale = nil
+	local isTank, offTank = targetTank or imTank, db.beingTankedByTank and (targetTank and imTank) or false
 
 	if pass then
-		return isTank, offTank, feedbackUnit, targetGUID, targetRole
+		return isTank, offTank, targetGUID, targetRole
 	else
+		self.__owner.threatScale = nil
+
 		self.threatRole = targetRole
 		self.threatGUID = targetGUID
-		self.feedbackUnit = feedbackUnit
 		self.offTank = offTank
 		self.isTank = isTank
 	end
@@ -50,10 +49,10 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if status == 3 then -- securely tanking
 			Color = (noGroup and db.useSoloColor and colors.soloColor) or (self.offTank and colors.offTankColor) or (self.isTank and colors.goodColor) or colors.badColor
 			Scale = (self.isTank and db.goodScale) or db.badScale
-		elseif status == 2 and (noGroup or self.threatGUID) then -- insecurely tanking; verify guid to confirm a target exists (for tank swaps)
+		elseif status == 2 then -- insecurely tanking
 			Color = (self.offTank and colors.offTankColorBadTransition) or (self.isTank and colors.badTransition) or colors.goodTransition
 			Scale = 1
-		elseif status == 1 and (noGroup or self.threatGUID) then -- not tanking but threat higher than tank
+		elseif status == 1 then -- not tanking but threat higher than tank
 			Color = (self.offTank and colors.offTankColorGoodTransition) or (self.isTank and colors.goodTransition) or colors.badTransition
 			Scale = 1
 		else -- not tanking at all
@@ -83,6 +82,7 @@ function NP:Construct_ThreatIndicator(nameplate)
 	ThreatIndicator:Hide()
 	ThreatIndicator:Point('CENTER', nameplate.RaisedElement, 'TOPRIGHT')
 
+	ThreatIndicator.feedbackUnit = 'player'
 	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
 	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
 
