@@ -13,21 +13,24 @@ NP.ThreatPets = {
 }
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
-	local targetUnit, nameplate, db, imTank = unit..'target', self.__owner, NP.db.threat, E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK'
+	local targetUnit, db = unit..'target', NP.db.threat
 	local targetExists = NP:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
 	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
 	local targetRole = NP.IsInGroup and NP.GroupRoles[targetGUID] or 'NONE'
 	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(targetUnit)])
-	local isTank, offTank, feedbackUnit = targetTank or imTank, db.beingTankedByTank and (targetTank and imTank) or false, (targetTank and targetUnit) or 'player'
 
-	nameplate.threatScale = nil
+	local isTank = E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK'
+	local offTank = isTank and targetTank and db.beingTankedByTank
+	local useSolo = not NP.IsInGroup and db.useSoloColor
 
 	if pass then
-		return isTank, offTank, feedbackUnit, targetGUID, targetRole
+		return isTank, offTank, useSolo, targetGUID, targetRole
 	else
+		self.__owner.threatScale = nil
+
 		self.threatRole = targetRole
 		self.threatGUID = targetGUID
-		self.feedbackUnit = feedbackUnit
+		self.useSolo = useSolo
 		self.offTank = offTank
 		self.isTank = isTank
 	end
@@ -40,32 +43,25 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 
 	nameplate.threatStatus = status -- export for plugins
 
-	local staleGUID = nameplate.threatStaleGUID -- previous unit with threat
-	if nameplate.threatStaleGUID ~= nameplate.threatGUID then
-		nameplate.threatStaleGUID = nameplate.threatGUID -- consider this the stale unit
-	end
-
 	if not status and not styleScale then
 		nameplate.threatScale = 1
 		NP:ScalePlate(nameplate, 1)
 	elseif status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
 		NP:Health_SetColors(nameplate, true)
 
-		local noGroup, Color, Scale = not NP.IsInGroup
+		local Color, Scale
 		if status == 3 then -- securely tanking
-			Color = (noGroup and db.useSoloColor and colors.soloColor) or (self.offTank and colors.offTankColor) or (self.isTank and colors.goodColor) or colors.badColor
-			Scale = (self.isTank and db.goodScale) or db.badScale
-		elseif status == 2 and (noGroup or self.threatGUID) then -- insecurely tanking; verify guid to confirm a target exists (for tank swaps)
+			Color = (self.useSolo and colors.soloColor) or (self.isTank and colors.goodColor) or colors.badColor
+			Scale = (self.useSolo and db.goodScale) or (self.isTank and db.goodScale) or db.badScale
+		elseif status == 2 then -- insecurely tanking
 			Color = (self.offTank and colors.offTankColorBadTransition) or (self.isTank and colors.badTransition) or colors.goodTransition
 			Scale = 1
-		elseif status == 1 and (noGroup or self.threatGUID) then -- not tanking but threat higher than tank
+		elseif status == 1 then -- not tanking but threat higher than tank
 			Color = (self.offTank and colors.offTankColorGoodTransition) or (self.isTank and colors.goodTransition) or colors.badTransition
 			Scale = 1
-		else -- not tanking at all; we can try to check for a previous tank to prevent bad color while NPC cast on random nontank group unit
-			local previousTank = NP.GroupRoles[NP.IsInGroup and staleGUID or nil] == 'TANK' or (staleGUID and db.beingTankedByPet and NP.ThreatPets[NP:GetNPCID(staleGUID)])
-
-			Color = (previousTank and colors.offTankColor) or (self.isTank and colors.badColor) or colors.goodColor
-			Scale = (previousTank and db.goodScale) or (self.isTank and db.badScale) or db.goodScale
+		else -- not tanking at all
+			Color = (self.offTank and colors.offTankColor) or (self.isTank and colors.badColor) or colors.goodColor
+			Scale = (self.offTank and db.goodScale) or (self.isTank and db.badScale) or db.goodScale
 		end
 
 		if styleFilter.health and styleFilter.health.color then
@@ -90,6 +86,7 @@ function NP:Construct_ThreatIndicator(nameplate)
 	ThreatIndicator:Hide()
 	ThreatIndicator:Point('CENTER', nameplate.RaisedElement, 'TOPRIGHT')
 
+	ThreatIndicator.feedbackUnit = 'player'
 	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
 	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
 

@@ -6,6 +6,7 @@ local ElvUF = E.oUF
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
+local huge = math.huge
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, next, sort, wipe = strmatch, tinsert, tremove, next, sort, wipe
 
@@ -798,14 +799,18 @@ function NP:StyleFilterClearChanges(frame)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
-	if not NP:UnitExists(unit) then return end
+	local element, status = frame.ThreatIndicator
 
-	local isTank, offTank, feedbackUnit = NP.ThreatIndicator_PreUpdate(frame.ThreatIndicator, unit, true)
-	if feedbackUnit and (feedbackUnit ~= unit) and NP:UnitExists(feedbackUnit) then
-		return isTank, offTank, UnitThreatSituation(feedbackUnit, unit)
-	else
-		return isTank, offTank, UnitThreatSituation(unit)
+	if NP:UnitExists(unit) then
+		local feedbackUnit = element.feedbackUnit
+		if feedbackUnit and feedbackUnit ~= unit and NP:UnitExists(feedbackUnit) then
+			status = UnitThreatSituation(feedbackUnit, unit)
+		else
+			status = UnitThreatSituation(unit)
+		end
 	end
+
+	return status or huge, NP.ThreatIndicator_PreUpdate(element, unit, true)
 end
 
 function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
@@ -1057,7 +1062,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
-			local isTank, offTank, status = NP:StyleFilterThreatUpdate(frame, frame.unit)
+			local status, isTank, offTank = NP:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
 			local value = (checkOffTank and offTank and status and -status) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
 			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
