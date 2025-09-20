@@ -40,11 +40,6 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 
 	nameplate.threatStatus = status -- export for plugins
 
-	local staleGUID = nameplate.threatStaleGUID -- previous unit with threat
-	if nameplate.threatStaleGUID ~= nameplate.threatGUID then
-		nameplate.threatStaleGUID = nameplate.threatGUID -- consider this the stale unit
-	end
-
 	if not status and not styleScale then
 		nameplate.threatScale = 1
 		NP:ScalePlate(nameplate, 1)
@@ -61,11 +56,9 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		elseif status == 1 and (noGroup or self.threatGUID) then -- not tanking but threat higher than tank
 			Color = (self.offTank and colors.offTankColorGoodTransition) or (self.isTank and colors.goodTransition) or colors.badTransition
 			Scale = 1
-		else -- not tanking at all; we can try to check for a previous tank to prevent bad color while NPC cast on random nontank group unit
-			local previousTank = NP.GroupRoles[NP.IsInGroup and staleGUID or nil] == 'TANK' or (staleGUID and db.beingTankedByPet and NP.ThreatPets[NP:GetNPCID(staleGUID)])
-
-			Color = (previousTank and colors.offTankColor) or (self.isTank and colors.badColor) or colors.goodColor
-			Scale = (previousTank and db.goodScale) or (self.isTank and db.badScale) or db.goodScale
+		else -- not tanking at all
+			Color = (self.isTank and colors.badColor) or colors.goodColor
+			Scale = (self.isTank and db.badScale) or db.goodScale
 		end
 
 		if styleFilter.health and styleFilter.health.color then
