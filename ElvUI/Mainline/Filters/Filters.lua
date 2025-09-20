@@ -1077,7 +1077,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[1227549] = List(), -- Banishment
 		[1226362] = List(), -- Twilight Scar
 		[1228056] = List(), -- Reap
-		[1225316] = List(), -- Galactic Smash
 	-- Dimensius, the All-Devouring
 		[1239270] = List(), -- Voidwarding
 		[1250055] = List(), -- Voidgrasp

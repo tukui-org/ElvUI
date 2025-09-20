@@ -105,6 +105,9 @@ function UF:Configure_AuraBars(frame)
 		bars.disableMouse = db.clickThrough
 		bars.filterList = UF:ConvertFilters(bars, db.priority)
 		bars.auraSort = UF.SortAuraFuncs[db.sortMethod]
+		bars.tooltipAnchor = db.tooltipAnchorType
+		bars.tooltipAnchorX = db.tooltipAnchorX
+		bars.tooltipAnchorY = db.tooltipAnchorY
 
 		for _, bar in ipairs(bars) do
 			UF:AuraBars_UpdateBar(bar)

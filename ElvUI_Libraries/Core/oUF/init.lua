@@ -2,6 +2,8 @@ local _, ns = ...
 local oUF = { Private = {} }
 ns.oUF = oUF
 
+oUF.myLocalizedClass, oUF.myclass, oUF.myClassID = UnitClass('player')
+
 oUF.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
 oUF.isMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC

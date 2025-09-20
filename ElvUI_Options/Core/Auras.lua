@@ -27,10 +27,15 @@ local SharedOptions = {
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }),
 
+	tooltip = ACH:Group(L["Tooltip"], nil, -4),
 	statusBar = ACH:Group(L["Statusbar"], nil, -3),
 	timeGroup = ACH:Group(L["Time Text"], nil, -2),
 	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
+
+SharedOptions.tooltip.args.tooltipAnchorType = ACH:Select(L["Anchor Type"], nil, 1, C.Values.TooltipAnchors)
+SharedOptions.tooltip.args.tooltipAnchorX = ACH:Range(L["Anchor Offset X"], nil, 2, { min = -300, max = 300, step = 1 })
+SharedOptions.tooltip.args.tooltipAnchorY = ACH:Range(L["Anchor Offset Y"], nil, 3, { min = -300, max = 300, step = 1 })
 
 SharedOptions.timeGroup.args.timeFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedOptions.timeGroup.args.timeFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
