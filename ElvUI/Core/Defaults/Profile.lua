@@ -3212,6 +3212,7 @@ E.LayoutMoverPositions = {
 		ClassBarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,80',
 		DTPanelBottomMiddlePanelMover = 'BOTTOM,ElvUIParent,BOTTOM,0,0',
 		DTPanelQuickJoinMover = 'BOTTOMLEFT,UIParent,BOTTOMLEFT,318,250',
+		DTPanelGoldMover = 'BOTTOMRIGHT,UIParent,BOTTOMRIGHT,-76,49',
 		DebuffsMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-4',
 		DigSiteProgressBarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,315',
 		DurabilityFrameMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-167,-215',

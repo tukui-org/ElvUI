@@ -492,9 +492,30 @@ function E:LayoutAnniversary()
 		DT:BuildPanelFrame('QuickJoin')
 	end
 
+	if not E.global.datatexts.customPanels.Gold then
+		E.global.datatexts.customPanels.Gold = E:CopyTable({}, G.datatexts.newPanelInfo)
+	end
+	
+	E.global.datatexts.customPanels.Gold.backdrop = false
+	E.global.datatexts.customPanels.Gold.frameLevel = 24
+	E.global.datatexts.customPanels.Gold.frameStrata = 'MEDIUM'
+	E.global.datatexts.customPanels.Gold.name = 'Gold'
+	E.global.datatexts.customPanels.Gold.numPoints = 1
+	E.global.datatexts.customPanels.Gold.width = 86
+	E.global.datatexts.settings.Gold.goldCoins = false
+	E.global.datatexts.settings.Gold.goldFormat = 'SMART'
+
+	if not E.db.datatexts.panels.Gold then
+		E.db.datatexts.panels.Gold = {}
+	end	
+
+	E.db.datatexts.panels.Gold[1] = 'Gold'
+	E.db.datatexts.panels.Gold.battleground = false
+	E.db.datatexts.panels.Gold.enable = true
+	
+	DT:BuildPanelFrame('Gold')
+
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
-	E.db.datatexts.panels.MinimapPanel[1] = 'DurabilityItemLevel'
-	E.db.datatexts.panels.MinimapPanel[2] = 'Gold'
 	E.db.datatexts.panels.MinimapPanel.enable = false
 	E.db.datatexts.panels.MinimapPanel.panelTransparency = true
 	E.db.datatexts.panels.RightChatDataPanel.backdrop = false
