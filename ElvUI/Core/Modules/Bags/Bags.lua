@@ -2862,11 +2862,12 @@ function B:OpenAllBags(frame)
 	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
 		if B.BagBar then
 			B:SetBagsShown(true)
+			B:Layout()
+			B:OpenBags()
+			B:BagBar_UpdateDesaturated(false) -- force this when opening all
+		else
+			B:OpenBags()
 		end
-
-		B:Layout()
-		B:OpenBags()
-		B:BagBar_UpdateDesaturated(false) -- force this when opening all
 	else
 		B:CloseAllBags()
 	end
