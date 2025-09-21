@@ -38,7 +38,7 @@ local function Click()
 end
 
 local function ApplySettings(_, hex)
-	displayString = strjoin('', '%.2f ', hex, '||', '|r %.2f')
+	displayString = strjoin('', '%.2f ', hex, '|||r %.2f')
 end
 
 DT:RegisterDatatext('Coords', nil, {'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}, OnEvent, Update, Click, nil, nil, L["Coords"], mapInfo, ApplySettings)
