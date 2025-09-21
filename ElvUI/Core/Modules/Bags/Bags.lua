@@ -2787,17 +2787,26 @@ function B:ToggleBag(bagID)
 		end
 	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagBar then
-			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
-			if not holder then return end
-
-			if B.BagFrame:IsShown() then
-				B:ToggleContainer(holder) -- Frame is already open, just toggle the bag
-			else -- If the frame was closed, set the state for all bags first
-				B:SetBagsShown(bagID)
-				B:Layout()
-				B:OpenBags()
-				B:BagBar_UpdateDesaturated()
+			if B.BagFrame:IsShown() then -- Frame is already open, just toggle the bag
+				if bagID == BACKPACK_CONTAINER then
+					if B:AllBagsShown() then
+						B:CloseAllBags()
+						return -- stop here
+					else
+						B:SetBagsShown()
+					end
+				else
+					B:ToggleContainer(B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID])
+					return -- stop here
+				end
+			else
+				B:SetBagsShown((bagID ~= BACKPACK_CONTAINER or B:AllBagsShown()) and bagID)
 			end
+
+			-- If the frame was closed, set the state for all bags first
+			B:Layout()
+			B:OpenBags()
+			B:BagBar_UpdateDesaturated()
 		elseif B.BagFrame:IsShown() then
 			B:CloseAllBags()
 		else
