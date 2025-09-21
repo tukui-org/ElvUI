@@ -33,7 +33,7 @@ General.fadeOut = ACH:Toggle(L["Fade Out"], L["Fade out the tooltip when it disa
 General.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; S:StyleTooltips() end)
 General.xOffset = ACH:Range(L["X-Offset"], nil, 13, { min = -200, max = 200, step = 1 })
 General.yOffset = ACH:Range(L["Y-Offset"], nil, 14, { min = -200, max = 200, step = 1 })
-General.anchorToBags = ACH:Select(L["Anchor to Bags"], L["Tooltip gets anchored to bags when they are shown."], 15, { TOPLEFT = L["TOPLEFT"], TOPRIGHT = L["TOPRIGHT"], DISABLED = L["Disabled"] }, nil, nil, nil, nil, function() return not E.private.bags.enable or E.db.tooltip.cursorAnchor end)
+General.anchorToBags = ACH:Select(L["Anchor to Bags"], L["Tooltip gets anchored to bags when they are shown."], 15, { TOPLEFT = L["TOPLEFT"], TOPRIGHT = L["TOPRIGHT"], DISABLED = L["Disabled"] }, nil, nil, nil, nil, function() return E.db.tooltip.cursorAnchor end, function() return not E.private.bags.enable end)
 
 General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -3)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues)
