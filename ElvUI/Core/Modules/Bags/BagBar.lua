@@ -40,10 +40,18 @@ function B:BagButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
+	if B.BagFrame and B.BagFrame:IsShown() and B.db.shownBags['bag'..self.BagID] then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
+	end
+
 	B:BagBar_OnEnter()
 end
 
 function B:BagButton_OnLeave()
+	if B.BagFrame and B.BagFrame:IsShown() then
+		B:ResetSlotAlphaForBags(B.BagFrame)
+	end
+
 	B:BagBar_OnLeave()
 end
 
@@ -52,6 +60,10 @@ function B:KeyRing_OnEnter()
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 		GameTooltip:Show()
+	end
+
+	if B.BagFrame and B.BagFrame:IsShown() and B.db.shownBags['bag'..self.BagID] then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
 	B:BagBar_OnEnter()
@@ -65,6 +77,10 @@ end
 function B:KeyRing_OnLeave()
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
+	end
+
+	if B.BagFrame and B.BagFrame:IsShown() then
+		B:ResetSlotAlphaForBags(B.BagFrame)
 	end
 
 	B:BagBar_OnEnter()
@@ -204,6 +220,40 @@ function B:BagButton_UpdateTextures()
 	if self.SlotHighlightTexture then
 		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
 		self.SlotHighlightTexture:SetInside()
+	end
+end
+
+function B:UpdateBagBarAppearance()
+	if not E.private.bags.bagBar or not B.BagBar or not B.BagBar.buttons then return end
+
+	local shownCount = 0
+	local totalBags = 0
+
+	-- First, count how many bags are actually shown
+	for _, button in ipairs(B.BagBar.buttons) do
+		if button.BagID and button.BagID >= 0 then -- Exclude non-bag buttons like KeyRing
+			totalBags = totalBags + 1
+			if B.db.shownBags['bag'..button.BagID] then
+				shownCount = shownCount + 1
+			end
+		end
+	end
+
+	-- Determine if we are in a "partial" state (not all bags shown, but not zero either)
+	local desaturateInactive = (shownCount > 0 and shownCount < totalBags)
+
+	-- Now, apply the appearance to each button
+	for _, button in ipairs(B.BagBar.buttons) do
+		if button.BagID and button.BagID >= 0 then
+			local icon = button.icon or _G[button:GetName()..'IconTexture']
+			if desaturateInactive then
+				local isShown = B.db.shownBags['bag'..button.BagID]
+				icon:SetDesaturated(not isShown)
+			else
+				-- This is the "all or nothing" state, so ensure nothing is desaturated
+				icon:SetDesaturated(false)
+			end
+		end
 	end
 end
 
