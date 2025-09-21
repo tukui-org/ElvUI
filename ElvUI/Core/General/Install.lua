@@ -493,29 +493,26 @@ function E:LayoutAnniversary()
 	end
 
 	do
-		if not E.global.datatexts.customPanels.Gold then
-			E.global.datatexts.customPanels.Gold = E:CopyTable({}, G.datatexts.newPanelInfo)
+		if not E.global.datatexts.customPanels.Coords then
+			E.global.datatexts.customPanels.Coords = E:CopyTable({}, G.datatexts.newPanelInfo)
 		end
 
-		E.global.datatexts.customPanels.Gold.backdrop = false
-		E.global.datatexts.customPanels.Gold.frameLevel = 24
-		E.global.datatexts.customPanels.Gold.frameStrata = 'MEDIUM'
-		E.global.datatexts.customPanels.Gold.name = 'Gold'
-		E.global.datatexts.customPanels.Gold.numPoints = 1
-		E.global.datatexts.customPanels.Gold.width = 86
+		E.global.datatexts.customPanels.Coords.backdrop = false
+		E.global.datatexts.customPanels.Coords.frameLevel = 24
+		E.global.datatexts.customPanels.Coords.frameStrata = 'MEDIUM'
+		E.global.datatexts.customPanels.Coords.name = 'Coords'
+		E.global.datatexts.customPanels.Coords.numPoints = 1
+		E.global.datatexts.customPanels.Coords.width = 86
 
-		E.global.datatexts.settings.Gold.goldCoins = false
-		E.global.datatexts.settings.Gold.goldFormat = 'SMART'
-
-		if not E.db.datatexts.panels.Gold then
-			E.db.datatexts.panels.Gold = {}
+		if not E.db.datatexts.panels.Coords then
+			E.db.datatexts.panels.Coords = {}
 		end
 
-		E.db.datatexts.panels.Gold[1] = 'Gold'
-		E.db.datatexts.panels.Gold.battleground = false
-		E.db.datatexts.panels.Gold.enable = true
+		E.db.datatexts.panels.Coords[1] = 'Coords'
+		E.db.datatexts.panels.Coords.battleground = false
+		E.db.datatexts.panels.Coords.enable = true
 
-		DT:BuildPanelFrame('Gold')
+		DT:BuildPanelFrame('Coords')
 	end
 
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
