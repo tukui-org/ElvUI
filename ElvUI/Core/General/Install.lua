@@ -945,7 +945,6 @@ function E:LayoutAnniversary()
 
 	--Private
 	E.private.bags.bagBar = true
-	E.private.bags.enable = false
 	E.private.general.chatBubbleName = true
 
 	--Style Filters
