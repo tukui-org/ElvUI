@@ -224,8 +224,6 @@ function B:BagButton_UpdateTextures()
 end
 
 function B:BagBar_UpdateDesaturated()
-	if not B.BagBar or not B.BagBar.buttons then return end
-
 	-- Determine if we are in a "partial" state (not all bags shown, but not zero either)
 	local desaturateInactive = B:AnyBagsShown() and not B:AllBagsShown()
 

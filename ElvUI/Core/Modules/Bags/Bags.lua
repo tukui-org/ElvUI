@@ -1734,7 +1734,10 @@ function B:ToggleContainer(holder)
 
 	if B:AnyBagsShown() then
 		B:Layout(holder.isBank) -- Only call Layout if the frame is staying open.
-		B:BagBar_UpdateDesaturated()
+
+		if B.BagBar then
+			B:BagBar_UpdateDesaturated()
+		end
 	else
 		B:CloseAllBags()
 	end
@@ -2783,26 +2786,34 @@ function B:ToggleBag(bagID)
 			B:OpenBags()
 		end
 	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
-		local holder = B.BagFrame.ContainerHolderByBagID[bagID] or (B.BankFrame and B.BankFrame.ContainerHolderByBagID[bagID])
-		if not holder then return end
+		if B.BagBar then
+			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+			if not holder then return end
 
-		if B.BagFrame:IsShown() then
-			B:ToggleContainer(holder) -- Frame is already open, just toggle the bag
-		else -- If the frame was closed, set the state for all bags first
-			B:SetBagsShown(bagID)
-			B:Layout()
+			if B.BagFrame:IsShown() then
+				B:ToggleContainer(holder) -- Frame is already open, just toggle the bag
+			else -- If the frame was closed, set the state for all bags first
+				B:SetBagsShown(bagID)
+				B:Layout()
+				B:OpenBags()
+				B:BagBar_UpdateDesaturated()
+			end
+		elseif B.BagFrame:IsShown() then
+			B:CloseAllBags()
+		else
 			B:OpenBags()
-			B:BagBar_UpdateDesaturated()
 		end
 	end
 end
 
 function B:ToggleAllBags()
-	if not B.BagFrame:IsShown() or not B:AllBagsShown() then
+	if B.BagBar and (not B.BagFrame:IsShown() or not B:AllBagsShown()) then
 		B:SetBagsShown()
 		B:Layout()
 		B:OpenBags()
 		B:BagBar_UpdateDesaturated()
+	elseif not B.BagBar and IsBagOpen(0) then
+		B:OpenBags()
 	else
 		B:CloseAllBags()
 	end
@@ -2841,7 +2852,10 @@ function B:OpenAllBags(frame)
 	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
 	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
-		B:SetBagsShown()
+		if B.BagBar then
+			B:SetBagsShown()
+		end
+
 		B:Layout()
 		B:OpenBags()
 	else
@@ -2936,7 +2950,10 @@ function B:CloseAllBags()
 
 	B.BagFrame:Hide()
 
-	B:BagBar_UpdateDesaturated()
+	if B.BagBar then
+		B:BagBar_UpdateDesaturated()
+	end
+
 	B:CloseSound()
 
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
