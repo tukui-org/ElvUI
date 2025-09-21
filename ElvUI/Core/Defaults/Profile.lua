@@ -1431,8 +1431,10 @@ P.datatexts = {
 
 --Tooltip
 P.tooltip = {
+	xOffset = 0,
+	yOffset = 18,
 	showElvUIUsers = false,
-	anchorToElvUIBags = 'TOPLEFT',
+	anchorToBags = 'TOPRIGHT',
 	cursorAnchor = false,
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,

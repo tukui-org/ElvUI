@@ -149,31 +149,28 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	local RightChatPanel = _G.RightChatPanel
-	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
+	local TooltipMover = _G.TooltipMover
+	local RightChatPanel = _G.RightChatPanel
 
 	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.GameTooltipDefaultContainer or anchor == UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
 
-		if E.db.tooltip.anchorToElvUIBags ~= 'DISABLED' and B.BagFrame and B.BagFrame:IsShown() then
-			if E.db.tooltip.anchorToElvUIBags == 'TOPRIGHT' then
-				tt:Point('BOTTOMRIGHT', B.BagFrame, 'TOPRIGHT', 0, 10)
-			else
-				tt:Point('BOTTOMLEFT', B.BagFrame, 'TOPLEFT', 0, 10)
-			end
-		else
-			local point = E:GetScreenQuadrant(TooltipMover)
-			if point == 'TOPLEFT' then
-				tt:Point('TOPLEFT', TooltipMover, 'BOTTOMLEFT', 1, -4)
-			elseif point == 'TOPRIGHT' then
-				tt:Point('TOPRIGHT', TooltipMover, 'BOTTOMRIGHT', -1, -4)
-			elseif point == 'BOTTOMLEFT' or point == 'LEFT' then
-				tt:Point('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
-			else
-				tt:Point('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
-			end
+		local anchorBags = TT.db.anchorToBags
+		local anchorFrame = anchorBags ~= 'DISABLED' and ((B.BagFrame and B.BagFrame:IsShown() and B.BagFrame) or (not E:HasMoverBeenMoved('TooltipMover') and RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() and RightChatPanel))
+		if anchorFrame then
+			tt:Point(E.InversePoints[anchorBags], anchorFrame, anchorBags, TT.db.xOffset, TT.db.yOffset)
+			return -- dont fallback to the mover
 		end
+
+		local point = E:GetScreenQuadrant(TooltipMover)
+		if point == 'LEFT' then
+			point = 'BOTTOMLEFT'
+		elseif point == 'RIGHT' or point == 'CENTER' then
+			point = 'BOTTOMRIGHT'
+		end
+
+		tt:Point(point, TooltipMover, E.InversePoints[point], TT.db.xOffset, TT.db.yOffset)
 	end
 end
 

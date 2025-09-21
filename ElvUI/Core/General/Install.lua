@@ -704,6 +704,8 @@ function E:LayoutAnniversary()
 	E.db.tooltip.showElvUIUsers = true
 	E.db.tooltip.smallTextFontSize = 11
 	E.db.tooltip.textFontSize = 11
+	E.db.tooltip.yOffset = 10
+	E.db.tooltip.anchorToBags = 'TOPLEFT'
 	E.db.unitframe.colors.frameGlow.mouseoverGlow.texture = 'ElvUI Norm'
 	E.db.unitframe.cooldown.fonts.enable = true
 	E.db.unitframe.cooldown.fonts.fontSize = 12
