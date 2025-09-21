@@ -99,6 +99,13 @@ E.GroupUnitsByRole = {
 E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
 E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
 
+E.ThreatPets = {
+	[61146] = true,		-- Monk's Black Ox Statue
+	[103822] = true,	-- Druid's Force of Nature Treants
+	[95072] = true,		-- Shaman's Earth Elemental
+	[61056] = true,		-- Primal Earth Elemental
+}
+
 E.SpecByClass = {
 	DEATHKNIGHT	= { 250, 251, 252 },
 	DEMONHUNTER	= { 577, 581 },

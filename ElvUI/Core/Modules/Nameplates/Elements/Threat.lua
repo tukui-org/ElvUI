@@ -5,19 +5,12 @@ local UnitGUID = UnitGUID
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
-NP.ThreatPets = {
-	[61146] = true,		-- Monk's Black Ox Statue
-	[103822] = true,	-- Druid's Force of Nature Treants
-	[95072] = true,		-- Shaman's Earth Elemental
-	[61056] = true,		-- Primal Earth Elemental
-}
-
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local targetUnit, db = unit..'target', NP.db.threat
 	local targetExists = E:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
 	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
 	local targetRole = E.IsInGroup and E.GroupRoles[targetGUID] or 'NONE'
-	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(targetUnit)])
+	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)])
 
 	local isTank = E.myrole == 'TANK' or E.GroupRoles[E.myguid] == 'TANK'
 	local offTank = isTank and targetTank and db.beingTankedByTank
