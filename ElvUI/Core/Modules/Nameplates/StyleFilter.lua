@@ -10,12 +10,12 @@ local huge = math.huge
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, next, sort, wipe = strmatch, tinsert, tremove, next, sort, wipe
 
+local GetTime = GetTime
 local IsResting = IsResting
 local PlaySoundFile = PlaySoundFile
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -45,7 +45,6 @@ local UnitLevel = UnitLevel
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitThreatSituation = UnitThreatSituation
 
 local C_Sound_IsPlaying = C_Sound.IsPlaying
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -61,7 +60,6 @@ NP.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
 NP.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
-	tankThreat = {[0] = 3, 2, 1, 0},
 	frameTypes = {
 		FRIENDLY_PLAYER = 'friendlyPlayer',
 		FRIENDLY_NPC = 'friendlyNPC',
@@ -86,10 +84,12 @@ NP.TriggerConditions = {
 		RightAlt = IsRightAltKeyDown,
 		RightControl = IsRightControlKeyDown,
 	},
+	offTankThreat = { [0] = -3, -2, -1 }, -- exclude status 3
+	tankThreat = { [0] = 3, 2, 1, 0 },
 	threat = {
 		[-3] = 'offTank',
-		[-2] = 'offTankBadTransition',
-		[-1] = 'offTankGoodTransition',
+		[-2] = 'offTankGoodTransition', -- status 1
+		[-1] = 'offTankBadTransition', -- status 2
 		[0] = 'good',
 		[1] = 'badTransition',
 		[2] = 'goodTransition',
@@ -799,16 +799,8 @@ function NP:StyleFilterClearChanges(frame)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
-	local element, status = frame.ThreatIndicator
-
-	if NP:UnitExists(unit) then
-		local feedbackUnit = element.feedbackUnit
-		if feedbackUnit and feedbackUnit ~= unit and NP:UnitExists(feedbackUnit) then
-			status = UnitThreatSituation(feedbackUnit, unit)
-		else
-			status = UnitThreatSituation(unit)
-		end
-	end
+	local element = frame.ThreatIndicator
+	local status = E:GetThreatSituation(unit, element.feedbackUnit)
 
 	return status or huge, NP.ThreatIndicator_PreUpdate(element, unit, true)
 end
@@ -1064,7 +1056,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
 			local status, isTank, offTank = NP:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local value = (checkOffTank and offTank and status and -status) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
+			local value = (checkOffTank and offTank and NP.TriggerConditions.offTankThreat[status]) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
 			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
 		end
 	end

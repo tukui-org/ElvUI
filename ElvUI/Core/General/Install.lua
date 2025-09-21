@@ -492,9 +492,30 @@ function E:LayoutAnniversary()
 		DT:BuildPanelFrame('QuickJoin')
 	end
 
+	do
+		if not E.global.datatexts.customPanels.Coords then
+			E.global.datatexts.customPanels.Coords = E:CopyTable({}, G.datatexts.newPanelInfo)
+		end
+
+		E.global.datatexts.customPanels.Coords.backdrop = false
+		E.global.datatexts.customPanels.Coords.frameLevel = 24
+		E.global.datatexts.customPanels.Coords.frameStrata = 'MEDIUM'
+		E.global.datatexts.customPanels.Coords.name = 'Coords'
+		E.global.datatexts.customPanels.Coords.numPoints = 1
+		E.global.datatexts.customPanels.Coords.width = 86
+
+		if not E.db.datatexts.panels.Coords then
+			E.db.datatexts.panels.Coords = {}
+		end
+
+		E.db.datatexts.panels.Coords[1] = 'Coords'
+		E.db.datatexts.panels.Coords.battleground = false
+		E.db.datatexts.panels.Coords.enable = true
+
+		DT:BuildPanelFrame('Coords')
+	end
+
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
-	E.db.datatexts.panels.MinimapPanel[1] = 'DurabilityItemLevel'
-	E.db.datatexts.panels.MinimapPanel[2] = 'Gold'
 	E.db.datatexts.panels.MinimapPanel.enable = false
 	E.db.datatexts.panels.MinimapPanel.panelTransparency = true
 	E.db.datatexts.panels.RightChatDataPanel.backdrop = false
@@ -683,6 +704,8 @@ function E:LayoutAnniversary()
 	E.db.tooltip.showElvUIUsers = true
 	E.db.tooltip.smallTextFontSize = 11
 	E.db.tooltip.textFontSize = 11
+	E.db.tooltip.yOffset = 10
+	E.db.tooltip.anchorToBags = 'TOPLEFT'
 	E.db.unitframe.colors.frameGlow.mouseoverGlow.texture = 'ElvUI Norm'
 	E.db.unitframe.cooldown.fonts.enable = true
 	E.db.unitframe.cooldown.fonts.fontSize = 12
@@ -945,7 +968,6 @@ function E:LayoutAnniversary()
 
 	--Private
 	E.private.bags.bagBar = true
-	E.private.bags.enable = false
 	E.private.general.chatBubbleName = true
 
 	--Style Filters

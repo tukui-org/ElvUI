@@ -9,21 +9,14 @@ local strsplit, tonumber = strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
-local GetNumGroupMembers = GetNumGroupMembers
-local GetNumSubgroupMembers = GetNumSubgroupMembers
-local GetPartyAssignment = GetPartyAssignment
 local InCombatLockdown = InCombatLockdown
-local IsInGroup = IsInGroup
 local IsInInstance = IsInInstance
-local IsInRaid = IsInRaid
 local IsResting = IsResting
 local UIParent = UIParent
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
-local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsDead = UnitIsDead
@@ -38,7 +31,6 @@ local UnitReaction = UnitReaction
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
 local UnitWidgetSet = UnitWidgetSet
-local UnitIsVisible = UnitIsVisible
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 
@@ -56,10 +48,6 @@ local GetCVar = C_CVar.GetCVar
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
-
-	function NP:UnitExists(unit)
-		return unit and (UnitExists(unit) or UnitIsVisible(unit))
-	end
 
 	function NP:UnitSelectionType(unit, considerHostile)
 		if considerHostile and UnitThreatSituation('player', unit) then
@@ -574,29 +562,6 @@ function NP:Update_StatusBars()
 	end
 end
 
-function NP:GROUP_ROSTER_UPDATE()
-	local isInRaid = IsInRaid()
-	NP.IsInGroup = isInRaid or IsInGroup()
-
-	wipe(NP.GroupRoles)
-
-	if NP.IsInGroup then
-		local group = isInRaid and 'raid' or 'party'
-		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
-			local unit = group..i
-			if UnitExists(unit) then
-				NP.GroupRoles[UnitGUID(unit)] = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
-			end
-		end
-	end
-end
-
-function NP:GROUP_LEFT()
-	NP.IsInGroup = IsInRaid() or IsInGroup()
-
-	wipe(NP.GroupRoles)
-end
-
 function NP:EnviromentConditionals()
 	local db = NP.db
 	local env = db and db.enviromentConditions
@@ -1026,7 +991,6 @@ function NP:Initialize()
 	NP.Plates = {}
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
-	NP.GroupRoles = {}
 	NP.SoundHandlers = {}
 	NP.multiplier = 0.35
 	NP.numPlates = 0
@@ -1098,14 +1062,11 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	NP:RegisterEvent('GROUP_ROSTER_UPDATE')
-	NP:RegisterEvent('GROUP_LEFT')
 	NP:RegisterEvent('PLAYER_LOGOUT')
 
 	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()
-	NP:GROUP_ROSTER_UPDATE()
 	NP:SetCVars()
 end
 

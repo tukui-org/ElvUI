@@ -40,10 +40,18 @@ function B:BagButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
+	if B.BagFrame and B:IsBagShown(self.BagID) then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
+	end
+
 	B:BagBar_OnEnter()
 end
 
 function B:BagButton_OnLeave()
+	if B.BagFrame then
+		B:ResetSlotAlphaForBags(B.BagFrame)
+	end
+
 	B:BagBar_OnLeave()
 end
 
@@ -52,6 +60,10 @@ function B:KeyRing_OnEnter()
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 		GameTooltip:Show()
+	end
+
+	if B.BagFrame and B:IsBagShown(self.BagID) then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
 	B:BagBar_OnEnter()
@@ -65,6 +77,10 @@ end
 function B:KeyRing_OnLeave()
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
+	end
+
+	if B.BagFrame then
+		B:ResetSlotAlphaForBags(B.BagFrame)
 	end
 
 	B:BagBar_OnEnter()
@@ -204,6 +220,20 @@ function B:BagButton_UpdateTextures()
 	if self.SlotHighlightTexture then
 		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
 		self.SlotHighlightTexture:SetInside()
+	end
+end
+
+function B:BagBar_UpdateDesaturated(inactive)
+	if inactive == nil then -- Determine if we are in a "partial" state (not all bags shown, but not zero either)
+		inactive = B:AnyBagsShown() and not B:AllBagsShown()
+	end
+
+	-- Now, apply the appearance to each button
+	for _, button in ipairs(B.BagBar.buttons) do
+		if button.BagID and button.BagID >= 0 then
+			local icon = button.icon or _G[button:GetName()..'IconTexture']
+			icon:SetDesaturated(inactive and not B:IsBagShown(button.BagID))
+		end
 	end
 end
 

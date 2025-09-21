@@ -46,8 +46,6 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UIParent = UIParent
 local UnitExists = UnitExists
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -2851,21 +2849,18 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	if not E.allowRoles or not CH.db.lfgIcons or not IsInGroup() then return end
+	if not E.allowRoles or not E.IsInGroup or not CH.db.lfgIcons then return end
 
 	wipe(lfgRoles)
 
-	local playerRole = UnitGroupRolesAssigned('player')
-	if playerRole then
-		lfgRoles[PLAYER_NAME] = CH.RoleIcons[playerRole]
+	if E.myrole then
+		lfgRoles[PLAYER_NAME] = CH.RoleIcons[E.myrole]
 	end
 
-	local unit = (IsInRaid() and 'raid' or 'party')
-	for i = 1, GetNumGroupMembers() do
-		if UnitExists(unit..i) and not UnitIsUnit(unit..i, 'player') then
-			local role = UnitGroupRolesAssigned(unit..i)
-			local name, realm = UnitName(unit..i)
-
+	for guid, role in next, E.GroupRoles do
+		local unit = E.GroupUnitsByRole[role][guid]
+		if unit then
+			local name, realm = UnitName(unit)
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
 				lfgRoles[name] = CH.RoleIcons[role]

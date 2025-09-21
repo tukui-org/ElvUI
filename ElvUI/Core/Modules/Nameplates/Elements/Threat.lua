@@ -5,23 +5,15 @@ local UnitGUID = UnitGUID
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
-NP.ThreatPets = {
-	[61146] = true,		-- Monk's Black Ox Statue
-	[103822] = true,	-- Druid's Force of Nature Treants
-	[95072] = true,		-- Shaman's Earth Elemental
-	[61056] = true,		-- Primal Earth Elemental
-}
-
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local targetUnit, db = unit..'target', NP.db.threat
-	local targetExists = NP:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
-	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
-	local targetRole = NP.IsInGroup and NP.GroupRoles[targetGUID] or 'NONE'
-	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and NP.ThreatPets[NP:UnitNPCID(targetUnit)])
+	local targetGUID = E:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player') and UnitGUID(targetUnit)
+	local targetRole = E.GroupRoles[targetGUID] or 'NONE'
+	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)])
 
-	local isTank = E.myrole == 'TANK' or NP.GroupRoles[E.myguid] == 'TANK'
-	local offTank = isTank and targetTank and db.beingTankedByTank
-	local useSolo = not NP.IsInGroup and db.useSoloColor
+	local isTank = E.myrole == 'TANK' or E.GroupRoles[E.myguid] == 'TANK'
+	local offTank = isTank and (targetTank or E:UnitTankedByGroup(unit)) and db.beingTankedByTank
+	local useSolo = not E.IsInGroup and db.useSoloColor
 
 	if pass then
 		return isTank, offTank, useSolo, targetGUID, targetRole
