@@ -2528,7 +2528,7 @@ function B:ConstructContainerFrame(name, isBank)
 	else
 		local anchorButton = f.sortButton
 
-		if not E.private.bags.bagBar then
+		if not B.BagBar then
 			f.bagsButton:Show()
 			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
 			anchorButton = f.bagsButton -- Update the anchor for the next button.
@@ -2777,7 +2777,7 @@ function B:ToggleBag(bagID)
 	local shown = B.BagFrame:IsShown()
 	local closed = not shown
 
-	if E.private.bags.bagBar and bagID == KEYRING_CONTAINER then
+	if B.BagBar and bagID == KEYRING_CONTAINER then
 		B.ShowKeyRing = closed or not B.ShowKeyRing
 
 		B:Layout()
