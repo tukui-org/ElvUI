@@ -61,7 +61,6 @@ NP.StyleFilterStackPattern = '([^\n]+)\n?(%d*)$'
 NP.TriggerConditions = {
 	reactions = {'hated', 'hostile', 'unfriendly', 'neutral', 'friendly', 'honored', 'revered', 'exalted'},
 	raidTargets = {'star', 'circle', 'diamond', 'triangle', 'moon', 'square', 'cross', 'skull'},
-	tankThreat = {[0] = 3, 2, 1, 0},
 	frameTypes = {
 		FRIENDLY_PLAYER = 'friendlyPlayer',
 		FRIENDLY_NPC = 'friendlyNPC',
@@ -86,10 +85,12 @@ NP.TriggerConditions = {
 		RightAlt = IsRightAltKeyDown,
 		RightControl = IsRightControlKeyDown,
 	},
+	offTankThreat = { [0] = -3, -2, -1 }, -- exclude status 3
+	tankThreat = { [0] = 3, 2, 1, 0 },
 	threat = {
 		[-3] = 'offTank',
-		[-2] = 'offTankBadTransition',
-		[-1] = 'offTankGoodTransition',
+		[-2] = 'offTankGoodTransition', -- status 1
+		[-1] = 'offTankBadTransition', -- status 2
 		[0] = 'good',
 		[1] = 'badTransition',
 		[2] = 'goodTransition',
@@ -1064,7 +1065,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		if trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad or trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition then
 			local status, isTank, offTank = NP:StyleFilterThreatUpdate(frame, frame.unit)
 			local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-			local value = (checkOffTank and offTank and status and -status) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
+			local value = (checkOffTank and offTank and NP.TriggerConditions.offTankThreat[status]) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
 			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
 		end
 	end
