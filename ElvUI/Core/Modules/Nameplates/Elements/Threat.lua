@@ -1,19 +1,27 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local next = next
 local UnitGUID = UnitGUID
 local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
+function NP:ThreatIndicator_IsTankedByGroup(unit)
+	for guid, unitToken in next, E.GroupUnitsByRole.TANK do
+		if E.GroupRoles[guid] == 'TANK' and E:GetThreatSituation(unit, unitToken) == 3 then
+			return unitToken
+		end
+	end
+end
+
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local targetUnit, db = unit..'target', NP.db.threat
-	local targetExists = E:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')
-	local targetGUID = targetExists and UnitGUID(targetUnit) or nil
-	local targetRole = E.IsInGroup and E.GroupRoles[targetGUID] or 'NONE'
+	local targetGUID = E:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player') and UnitGUID(targetUnit)
+	local targetRole = E.GroupRoles[targetGUID] or 'NONE'
 	local targetTank = targetRole == 'TANK' or (db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)])
 
 	local isTank = E.myrole == 'TANK' or E.GroupRoles[E.myguid] == 'TANK'
-	local offTank = isTank and targetTank and db.beingTankedByTank
+	local offTank = isTank and (targetTank or NP:ThreatIndicator_IsTankedByGroup(unit)) and db.beingTankedByTank
 	local useSolo = not E.IsInGroup and db.useSoloColor
 
 	if pass then

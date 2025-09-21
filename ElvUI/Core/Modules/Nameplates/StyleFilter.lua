@@ -10,12 +10,12 @@ local huge = math.huge
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, next, sort, wipe = strmatch, tinsert, tremove, next, sort, wipe
 
+local GetTime = GetTime
 local IsResting = IsResting
 local PlaySoundFile = PlaySoundFile
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemID = GetInventoryItemID
 local GetRaidTargetIndex = GetRaidTargetIndex
-local GetTime = GetTime
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCanAttack = UnitCanAttack
 local UnitExists = UnitExists
@@ -45,7 +45,6 @@ local UnitLevel = UnitLevel
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
-local UnitThreatSituation = UnitThreatSituation
 
 local C_Sound_IsPlaying = C_Sound.IsPlaying
 local C_Timer_NewTimer = C_Timer.NewTimer
@@ -800,16 +799,8 @@ function NP:StyleFilterClearChanges(frame)
 end
 
 function NP:StyleFilterThreatUpdate(frame, unit)
-	local element, status = frame.ThreatIndicator
-
-	if E:UnitExists(unit) then
-		local feedbackUnit = element.feedbackUnit
-		if feedbackUnit and feedbackUnit ~= unit and E:UnitExists(feedbackUnit) then
-			status = UnitThreatSituation(feedbackUnit, unit)
-		else
-			status = UnitThreatSituation(unit)
-		end
-	end
+	local element = frame.ThreatIndicator
+	local status = E:GetThreatSituation(unit, element.feedbackUnit)
 
 	return status or huge, NP.ThreatIndicator_PreUpdate(element, unit, true)
 end

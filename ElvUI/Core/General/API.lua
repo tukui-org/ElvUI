@@ -41,6 +41,7 @@ local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
+local UnitThreatSituation = UnitThreatSituation
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
@@ -1259,6 +1260,16 @@ do -- complicated backwards compatible menu
 		else
 			_G.MenuUtil.CreateContextMenu(menuFrame, function(_, root) HandleMenuList(root, menuList, nil, 1) end)
 		end
+	end
+end
+
+function E:GetThreatSituation(unit, feedbackUnit)
+	if not E:UnitExists(unit) then return end
+
+	if feedbackUnit and feedbackUnit ~= unit and E:UnitExists(feedbackUnit) then
+		return UnitThreatSituation(feedbackUnit, unit)
+	else
+		return UnitThreatSituation(unit)
 	end
 end
 
