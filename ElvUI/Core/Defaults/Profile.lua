@@ -1432,6 +1432,7 @@ P.datatexts = {
 --Tooltip
 P.tooltip = {
 	showElvUIUsers = false,
+	anchorToElvUIBags = 'TOPLEFT',
 	cursorAnchor = false,
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,

@@ -156,13 +156,11 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if anchor == nil or anchor == B.BagFrame or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.GameTooltipDefaultContainer or anchor == UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
 
-		if not E:HasMoverBeenMoved('TooltipMover') then
-			if B.BagFrame and B.BagFrame:IsShown() then
-				tt:Point('BOTTOMRIGHT', B.BagFrame, 'TOPRIGHT', 0, 18)
-			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
+		if E.db.tooltip.anchorToElvUIBags ~= 'DISABLED' and B.BagFrame and B.BagFrame:IsShown() then
+			if E.db.tooltip.anchorToElvUIBags == 'TOPRIGHT' then
+				tt:Point('BOTTOMRIGHT', B.BagFrame, 'TOPRIGHT', 0, 10)
 			else
-				tt:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
+				tt:Point('BOTTOMLEFT', B.BagFrame, 'TOPLEFT', 0, 10)
 			end
 		else
 			local point = E:GetScreenQuadrant(TooltipMover)

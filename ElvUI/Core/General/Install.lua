@@ -512,7 +512,7 @@ function E:LayoutAnniversary()
 	E.db.datatexts.panels.Gold[1] = 'Gold'
 	E.db.datatexts.panels.Gold.battleground = false
 	E.db.datatexts.panels.Gold.enable = true
-	
+
 	DT:BuildPanelFrame('Gold')
 
 	E.db.datatexts.panels.LeftChatDataPanel.battleground = false
