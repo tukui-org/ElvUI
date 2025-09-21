@@ -1735,9 +1735,7 @@ function B:ToggleContainer(holder)
 	if B:AnyBagsShown() then
 		B:Layout(holder.isBank) -- Only call Layout if the frame is staying open.
 
-		if B.BagBar then
-			B:BagBar_UpdateDesaturated()
-		end
+		return true
 	else
 		B:CloseAllBags()
 	end
@@ -2776,8 +2774,10 @@ function B:ConstructContainerButton(f, bagID, slotID)
 end
 
 function B:ToggleBag(bagID)
+	local shown = B.BagFrame:IsShown()
+	local closed = not shown
+
 	if E.private.bags.bagBar and bagID == KEYRING_CONTAINER then
-		local closed = not B.BagFrame:IsShown()
 		B.ShowKeyRing = closed or not B.ShowKeyRing
 
 		B:Layout()
@@ -2787,41 +2787,41 @@ function B:ToggleBag(bagID)
 		end
 	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagBar then
-			if B.BagFrame:IsShown() then -- Frame is already open, just toggle the bag
-				if bagID == BACKPACK_CONTAINER then
-					if B:AllBagsShown() then
-						B:CloseAllBags()
-						return -- stop here
-					else
-						B:SetBagsShown()
-					end
-				else
-					B:ToggleContainer(B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID])
-					return -- stop here
-				end
-			else
-				B:SetBagsShown((bagID ~= BACKPACK_CONTAINER or B:AllBagsShown()) and bagID)
+			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+			if closed then -- reset shown
+				B:SetBagsShown(false)
 			end
 
-			-- If the frame was closed, set the state for all bags first
-			B:Layout()
-			B:OpenBags()
-			B:BagBar_UpdateDesaturated()
-		elseif B.BagFrame:IsShown() then
+			if B:ToggleContainer(holder) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
+				if closed then
+					B:OpenBags()
+				else
+					B:BagBar_UpdateDesaturated()
+				end
+			else
+				B:CloseAllBags()
+			end
+		elseif shown then
 			B:CloseAllBags()
-		else
+		elseif closed then
 			B:OpenBags()
 		end
 	end
 end
 
 function B:ToggleAllBags()
-	if B.BagBar and (not B.BagFrame:IsShown() or not B:AllBagsShown()) then
-		B:SetBagsShown()
-		B:Layout()
-		B:OpenBags()
-		B:BagBar_UpdateDesaturated()
-	elseif not B.BagBar and IsBagOpen(0) then
+	local backpack = IsBagOpen(BACKPACK_CONTAINER)
+
+	if B.BagBar then
+		if B.BagFrame:IsShown() and not backpack then
+			B:CloseAllBags()
+		elseif backpack then
+			B:SetBagsShown(true)
+			B:Layout()
+			B:OpenBags()
+			B:BagBar_UpdateDesaturated(false) -- force this when its showing all
+		end
+	elseif backpack then
 		B:OpenBags()
 	else
 		B:CloseAllBags()
@@ -2846,9 +2846,8 @@ function B:AnyBagsShown()
 	end
 end
 
-function B:SetBagsShown(id)
+function B:SetBagsShown(show)
 	for bagID, holder in pairs(B.BagFrame.ContainerHolderByBagID) do
-		local show = not id or bagID == id
 		B:SetBagShown(bagID, show)
 		B:SetBagShownTexture(holder.shownIcon, show)
 	end
@@ -2862,7 +2861,7 @@ function B:OpenAllBags(frame)
 
 	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
 		if B.BagBar then
-			B:SetBagsShown()
+			B:SetBagsShown(true)
 		end
 
 		B:Layout()
@@ -2943,6 +2942,10 @@ function B:OpenBags()
 
 	B.BagFrame:Show()
 
+	if B.BagBar then
+		B:BagBar_UpdateDesaturated()
+	end
+
 	if E.Retail then
 		B:UpdateTokensIfVisible()
 	end
@@ -2960,7 +2963,7 @@ function B:CloseAllBags()
 	B.BagFrame:Hide()
 
 	if B.BagBar then
-		B:BagBar_UpdateDesaturated()
+		B:BagBar_UpdateDesaturated(false)  -- force this when closing
 	end
 
 	B:CloseSound()

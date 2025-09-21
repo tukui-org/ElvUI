@@ -223,19 +223,16 @@ function B:BagButton_UpdateTextures()
 	end
 end
 
-function B:BagBar_UpdateDesaturated()
-	-- Determine if we are in a "partial" state (not all bags shown, but not zero either)
-	local desaturateInactive = B:AnyBagsShown() and not B:AllBagsShown()
+function B:BagBar_UpdateDesaturated(inactive)
+	if inactive == nil then -- Determine if we are in a "partial" state (not all bags shown, but not zero either)
+		inactive = B:AnyBagsShown() and not B:AllBagsShown()
+	end
 
 	-- Now, apply the appearance to each button
 	for _, button in ipairs(B.BagBar.buttons) do
 		if button.BagID and button.BagID >= 0 then
 			local icon = button.icon or _G[button:GetName()..'IconTexture']
-			if desaturateInactive then
-				icon:SetDesaturated(not B:IsBagShown(button.BagID))
-			else -- This is the "all or nothing" state, so ensure nothing is desaturated
-				icon:SetDesaturated(false)
-			end
+			icon:SetDesaturated(inactive and not B:IsBagShown(button.BagID))
 		end
 	end
 end
