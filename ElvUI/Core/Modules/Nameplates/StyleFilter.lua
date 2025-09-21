@@ -802,9 +802,9 @@ end
 function NP:StyleFilterThreatUpdate(frame, unit)
 	local element, status = frame.ThreatIndicator
 
-	if NP:UnitExists(unit) then
+	if E:UnitExists(unit) then
 		local feedbackUnit = element.feedbackUnit
-		if feedbackUnit and feedbackUnit ~= unit and NP:UnitExists(feedbackUnit) then
+		if feedbackUnit and feedbackUnit ~= unit and E:UnitExists(feedbackUnit) then
 			status = UnitThreatSituation(feedbackUnit, unit)
 		else
 			status = UnitThreatSituation(unit)

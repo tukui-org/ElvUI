@@ -735,22 +735,20 @@ function RU:OnEvent_RoleIcons(event, initLogin, isReload)
 	if event ~= 'PLAYER_ENTERING_WORLD' or (initLogin or isReload) then
 		wipe(roleCount)
 
-		local isRaid = IsInRaid()
-		local unit = isRaid and 'raid' or 'party'
-		for i = 1, GetNumGroupMembers() do
-			local role = UnitGroupRolesAssigned(unit..i)
-			if role and role ~= 'NONE' then
+		-- lets populate the counter
+		for _, role in next, E.GroupRoles do
+			if role ~= 'NONE' then
 				roleCount[role] = (roleCount[role] or 0) + 1
 			end
 		end
 
-		if IsInGroup() and not isRaid then
-			local role = UnitGroupRolesAssigned('player')
-			if role and role ~= 'NONE' then
-				roleCount[role] = (roleCount[role] or 0) + 1
-			end
+		-- we only need to add this when not in a raid
+		local myrole = IsInGroup() and not IsInRaid() and E.myrole
+		if myrole and myrole ~= 'NONE' then
+			roleCount[myrole] = (roleCount[myrole] or 0) + 1
 		end
 
+		-- update the text
 		for role, icon in next, _G.RaidUtilityRoleIcons.icons do
 			icon.count:SetText(roleCount[role] or 0)
 		end

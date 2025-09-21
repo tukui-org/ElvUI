@@ -11,7 +11,7 @@ local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
 local type, ipairs, pairs, unpack, strmatch = type, ipairs, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
-local strfind, strlen, tonumber, tostring = strfind, strlen, tonumber, tostring
+local strlen, tonumber, tostring = strlen, tonumber, tostring
 
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
@@ -19,11 +19,14 @@ local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetGameTime = GetGameTime
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
+local GetNumSubgroupMembers = GetNumSubgroupMembers
+local GetPartyAssignment = GetPartyAssignment
 local GetServerTime = GetServerTime
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInfoForSpecID or GetSpecializationInfoForSpecID
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
+local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsRestrictedAccount = IsRestrictedAccount
@@ -32,19 +35,19 @@ local IsVeteranTrialAccount = IsVeteranTrialAccount
 local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
-local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
+local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
-local UnitInParty = UnitInParty
-local UnitInRaid = UnitInRaid
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
-local UnitIsUnit = UnitIsUnit
+local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
 
+local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
@@ -85,6 +88,13 @@ local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 E.MountIDs = {}
 E.MountText = {}
+E.GroupRoles = {}
+E.GroupUnitsByRole = {
+	TANK = {},
+	HEALER = {},
+	DAMAGER = {},
+	NONE = {}
+}
 
 E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
 E.SpecInfoBySpecID = {} -- [250] = specInfo (table)
@@ -1005,24 +1015,6 @@ function E:XPIsLevelMax()
 	return IsLevelAtEffectiveMaxLevel(E.mylevel) or IsXPUserDisabled() or E:XPIsTrialMax()
 end
 
-function E:GetGroupUnit(unit)
-	if UnitIsUnit(unit, 'player') then return end
-	if strfind(unit, 'party') or strfind(unit, 'raid') then
-		return unit
-	end
-
-	-- returns the unit as raid# or party# when grouped
-	if UnitInParty(unit) or UnitInRaid(unit) then
-		local isInRaid = IsInRaid()
-		for i = 1, GetNumGroupMembers() do
-			local groupUnit = (isInRaid and 'raid' or 'party')..i
-			if UnitIsUnit(unit, groupUnit) then
-				return groupUnit
-			end
-		end
-	end
-end
-
 function E:GetUnitBattlefieldFaction(unit)
 	local englishFaction, localizedFaction = UnitFactionGroup(unit)
 
@@ -1263,13 +1255,50 @@ do -- complicated backwards compatible menu
 	end
 end
 
+function E:GROUP_ROSTER_UPDATE()
+	local isInRaid = IsInRaid()
+	E.IsInGroup = isInRaid or IsInGroup()
+
+	wipe(E.GroupRoles)
+
+	for _, units in next, E.GroupUnitsByRole do
+		wipe(units)
+	end
+
+	if E.IsInGroup then
+		local group = isInRaid and 'raid' or 'party'
+		for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
+			local unit = group..i
+			local guid = UnitGUID(unit)
+			local role = guid and (not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit))
+			if role then
+				E.GroupRoles[guid] = role
+				E.GroupUnitsByRole[role][guid] = unit
+			end
+		end
+	end
+end
+
+function E:GROUP_LEFT()
+	E.IsInGroup = IsInRaid() or IsInGroup()
+
+	wipe(E.GroupRoles)
+end
+
+function E:UnitExists(unit) -- oUF way
+	return unit and (UnitExists(unit) or UnitIsVisible(unit))
+end
+
 function E:LoadAPI()
+	E:RegisterEvent('GROUP_LEFT')
+	E:RegisterEvent('GROUP_ROSTER_UPDATE')
 	E:RegisterEvent('PLAYER_LEVEL_UP')
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
+	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
 
 	if E.Retail or E.Mists then

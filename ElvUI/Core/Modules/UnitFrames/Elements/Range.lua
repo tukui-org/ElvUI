@@ -84,9 +84,7 @@ function UF:UnitInSpellsRange(unit, which)
 	end
 end
 
-function UF:FriendlyInRange(realUnit)
-	local unit = E:GetGroupUnit(realUnit) or realUnit
-
+function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
 			if UnitPhaseReason(unit) then
