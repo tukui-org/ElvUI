@@ -1263,6 +1263,14 @@ do -- complicated backwards compatible menu
 	end
 end
 
+function E:UnitTankedByGroup(unit)
+	for guid, unitToken in next, E.GroupUnitsByRole.TANK do
+		if E.GroupRoles[guid] == 'TANK' and E:GetThreatSituation(unit, unitToken) == 3 then
+			return unitToken
+		end
+	end
+end
+
 function E:GetThreatSituation(unit, feedbackUnit)
 	if not unit or not E:UnitExists(unit) then return end
 
