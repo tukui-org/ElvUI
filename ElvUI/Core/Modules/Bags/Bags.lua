@@ -42,7 +42,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
 
-local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local IsBagOpen = IsBagOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 
@@ -2819,7 +2819,7 @@ function B:ToggleAllBags()
 			B:SetBagsShown(true)
 			B:Layout()
 			B:OpenBags()
-			B:BagBar_UpdateDesaturated(false) -- force this when its showing all
+			B:BagBar_UpdateDesaturated(false) -- force this when showing all
 		end
 	elseif backpack then
 		B:OpenBags()
@@ -2829,7 +2829,7 @@ function B:ToggleAllBags()
 end
 
 function B:AllBagsShown()
-	for bagID in pairs(B.BagFrame.ContainerHolderByBagID) do
+	for bagID in next, B.BagFrame.ContainerHolderByBagID do
 		if not B:IsBagShown(bagID) then
 			return false
 		end
@@ -2839,7 +2839,7 @@ function B:AllBagsShown()
 end
 
 function B:AnyBagsShown()
-	for bagID in pairs(B.BagFrame.ContainerHolderByBagID) do
+	for bagID in next, B.BagFrame.ContainerHolderByBagID do
 		if B:IsBagShown(bagID) then
 			return true
 		end
@@ -2847,7 +2847,7 @@ function B:AnyBagsShown()
 end
 
 function B:SetBagsShown(show)
-	for bagID, holder in pairs(B.BagFrame.ContainerHolderByBagID) do
+	for bagID, holder in next, B.BagFrame.ContainerHolderByBagID do
 		B:SetBagShown(bagID, show)
 		B:SetBagShownTexture(holder.shownIcon, show)
 	end
@@ -2866,6 +2866,7 @@ function B:OpenAllBags(frame)
 
 		B:Layout()
 		B:OpenBags()
+		B:BagBar_UpdateDesaturated(false) -- force this when opening all
 	else
 		B:CloseAllBags()
 	end
@@ -2963,7 +2964,7 @@ function B:CloseAllBags()
 	B.BagFrame:Hide()
 
 	if B.BagBar then
-		B:BagBar_UpdateDesaturated(false)  -- force this when closing
+		B:BagBar_UpdateDesaturated(false) -- force this when closing
 	end
 
 	B:CloseSound()

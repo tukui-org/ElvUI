@@ -40,7 +40,7 @@ function B:BagButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
-	if B.BagFrame and B.BagFrame:IsShown() and B:IsBagShown(self.BagID) then
+	if B.BagFrame and B:IsBagShown(self.BagID) then
 		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
@@ -48,7 +48,7 @@ function B:BagButton_OnEnter()
 end
 
 function B:BagButton_OnLeave()
-	if B.BagFrame and B.BagFrame:IsShown() then
+	if B.BagFrame then
 		B:ResetSlotAlphaForBags(B.BagFrame)
 	end
 
@@ -62,7 +62,7 @@ function B:KeyRing_OnEnter()
 		GameTooltip:Show()
 	end
 
-	if B.BagFrame and B.BagFrame:IsShown() and B:IsBagShown(self.BagID) then
+	if B.BagFrame and B:IsBagShown(self.BagID) then
 		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
@@ -79,7 +79,7 @@ function B:KeyRing_OnLeave()
 		GameTooltip:Hide()
 	end
 
-	if B.BagFrame and B.BagFrame:IsShown() then
+	if B.BagFrame then
 		B:ResetSlotAlphaForBags(B.BagFrame)
 	end
 
