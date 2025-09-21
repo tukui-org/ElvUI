@@ -40,7 +40,7 @@ function B:BagButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
-	if B.BagFrame and B.BagFrame:IsShown() and B.db.shownBags['bag'..self.BagID] then
+	if B.BagFrame and B.BagFrame:IsShown() and B:IsBagShown(self.BagID) then
 		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
@@ -62,7 +62,7 @@ function B:KeyRing_OnEnter()
 		GameTooltip:Show()
 	end
 
-	if B.BagFrame and B.BagFrame:IsShown() and B.db.shownBags['bag'..self.BagID] then
+	if B.BagFrame and B.BagFrame:IsShown() and B:IsBagShown(self.BagID) then
 		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
@@ -223,34 +223,19 @@ function B:BagButton_UpdateTextures()
 	end
 end
 
-function B:UpdateBagBarAppearance()
-	if not E.private.bags.bagBar or not B.BagBar or not B.BagBar.buttons then return end
-
-	local shownCount = 0
-	local totalBags = 0
-
-	-- First, count how many bags are actually shown
-	for _, button in ipairs(B.BagBar.buttons) do
-		if button.BagID and button.BagID >= 0 then -- Exclude non-bag buttons like KeyRing
-			totalBags = totalBags + 1
-			if B.db.shownBags['bag'..button.BagID] then
-				shownCount = shownCount + 1
-			end
-		end
-	end
+function B:BagBar_UpdateDesaturated()
+	if not B.BagBar or not B.BagBar.buttons then return end
 
 	-- Determine if we are in a "partial" state (not all bags shown, but not zero either)
-	local desaturateInactive = (shownCount > 0 and shownCount < totalBags)
+	local desaturateInactive = B:AnyBagsShown() and not B:AllBagsShown()
 
 	-- Now, apply the appearance to each button
 	for _, button in ipairs(B.BagBar.buttons) do
 		if button.BagID and button.BagID >= 0 then
 			local icon = button.icon or _G[button:GetName()..'IconTexture']
 			if desaturateInactive then
-				local isShown = B.db.shownBags['bag'..button.BagID]
-				icon:SetDesaturated(not isShown)
-			else
-				-- This is the "all or nothing" state, so ensure nothing is desaturated
+				icon:SetDesaturated(not B:IsBagShown(button.BagID))
+			else -- This is the "all or nothing" state, so ensure nothing is desaturated
 				icon:SetDesaturated(false)
 			end
 		end
