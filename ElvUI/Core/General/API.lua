@@ -1264,7 +1264,7 @@ do -- complicated backwards compatible menu
 end
 
 function E:GetThreatSituation(unit, feedbackUnit)
-	if not E:UnitExists(unit) then return end
+	if not unit or not E:UnitExists(unit) then return end
 
 	if feedbackUnit and feedbackUnit ~= unit and E:UnitExists(feedbackUnit) then
 		return UnitThreatSituation(feedbackUnit, unit)

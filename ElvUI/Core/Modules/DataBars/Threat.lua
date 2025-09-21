@@ -64,7 +64,7 @@ function DB:ThreatBar_Update()
 
 				for guid, role in next, E.GroupRoles do
 					local unit = E.GroupUnitsByRole[role][guid]
-					if unit and UnitExists(unit) and not UnitIsUnit(unit, 'player') then
+					if unit and not UnitIsUnit(unit, 'player') then
 						_, _, bar.list[unit] = UnitDetailedThreatSituation(unit, 'target')
 					end
 				end

@@ -2859,7 +2859,7 @@ function CH:CheckLFGRoles()
 
 	for guid, role in next, E.GroupRoles do
 		local unit = E.GroupUnitsByRole[role][guid]
-		if unit and UnitExists(unit) then
+		if unit then
 			local name, realm = UnitName(unit)
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
