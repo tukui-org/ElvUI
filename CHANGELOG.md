@@ -5,9 +5,9 @@
     *   Removed our debugging profiler and event pooler system.
     *   The result: Smoother frame times and a noticeable bump in average FPS.
 *   Nameplates and Style Filters
+    *   Threat handling should be a little better when in grouped content.
     *   Default threat colors got updated and solo threat color was added, you may want to revisit the color tab of the nameplate options.
-    *   Actions completely reworked and will now offer way more options to choose from. This includes, but is not limited to:
-    *   Texture, color, flash, border, glow for Health/Power/Castbars.
+    *   Actions completely reworked and will now offer way more options to choose from. This includes, but is not limited to: Texture, color, flash, border, glow for Health/Power/Castbars.
     *   Custom sounds via LibSharedMedia.
     *   Updated and added multiple options for displaying targets on castbars:
     *   Option to class color the cast target.
@@ -16,7 +16,7 @@
     *   Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
 *   Auras
     *   Added custom auras module for most frames. You can choose between displaying buffs or debuffs. Includes filter lists.
-    *   Mostly disabled by default     *   but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
+    *   Mostly disabled by default but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
     *   Fixed Aura Indicators with 'Show When Not Active' checkbox enabled bypassing the enable state.
 *   DataTexts
     *   Level datatext got label options.
@@ -33,13 +33,15 @@
     *   Added new tag [health:deficit-percent-absorbs].
     *   Fixed an error that caused the unskinned version of the options frame arrow to not be clickable when resizing.
     *   Improved the opening and closing behaviour of the Bank frame to be less wonky.
+    *   Castbar hold time now reverses for the duration of the hold and targeting something else no longer hides it instantly.
     *   The option to hide text on castbars is now split into separate options to hide text and hide time.
+    *   Bag bar now has better interaction with the bag module, opening individual bags instead.
     *   Updated deDE locales. (Credits: Dlarge)
     *   Updated koKR locales. (Credits: Crazyyoungs)
     *   Updated ptBR locales. (Credits: Eltreum)
-    *   (Retail only) Fixed spells randomly activating when trying to pick them up or move them around actionbars.
     *   (Retail & Mists only) Fixed right-click to dismiss totems for our Totem Tracker.
 *   WoW Retail
+    *   Fixed spells randomly activating when trying to pick them up or move them around actionbars.
     *   Elemental Shaman and Shadow Priest mana will be displayed as a regular classbar again.
     *   Frost Mage icicles will now show up as a classbar.
     *   Enhancement Shaman Maelstrom weapon stacks will now show up as a classbar.
