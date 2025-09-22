@@ -32,7 +32,8 @@
     *   (Retail only) Added new 'ClassDebuffs' filter which only displays debuffs you absolutely need to see for your action priority.
 *   General
     *   Added an ElvUI anniversary layout to the installer.
-    *   Added new tag [health:deficit-percent-absorbs].
+    *   Added new tag [health:deficit-percent-absorbs]
+    *   Titles removed from tag [name:abbrev]
     *   Added AFK screen idle animation selection. (Credits: kwilliams1987)
     *   Fixed an error that caused the unskinned version of the options frame arrow to not be clickable when resizing.
     *   Improved the opening and closing behaviour of the Bank frame to be less wonky.
