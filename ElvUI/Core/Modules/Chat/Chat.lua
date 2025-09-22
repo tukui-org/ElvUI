@@ -275,6 +275,7 @@ do --this can save some main file locals
 			z['Player-5-0E8301B7']		= itsElv -- Mage
 			z['Player-5-0E885971']		= itsElv -- Shaman
 			z['Player-162-0BB751DE']	= itsElv -- DH
+			z['Player-53-0DFD6F64']		= itsElv -- Hunter
 			--The Wife
 			z['Player-5-0E8B3558']		= itsTheWife -- Panda Mage
 			z['Player-53-0DFD6F4E']		= itsTheWife -- Cow Mage
