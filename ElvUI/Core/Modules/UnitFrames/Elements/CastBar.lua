@@ -129,6 +129,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH('RIGHT')
+	castbar.Time:SetWordWrap(false)
 	castbar.Time:FontTemplate()
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
