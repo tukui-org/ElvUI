@@ -239,8 +239,8 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
-	castbar.Text:SetWidth(castbar.Text:GetStringWidth())
-	castbar.Time:SetWidth(castbar.Time:GetStringWidth())
+	castbar.Text:SetWidth(castbar.Text:GetStringWidth() * 1.1)
+	castbar.Time:SetWidth(castbar.Time:GetStringWidth() * 1.1)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
@@ -386,7 +386,7 @@ function UF:CustomCastDelayText(duration)
 		end
 	end
 
-	self.Time:SetWidth(self.Time:GetStringWidth())
+	self.Time:SetWidth(self.Time:GetStringWidth() * 1.1)
 end
 
 function UF:CustomTimeText(duration)
@@ -416,7 +416,7 @@ function UF:CustomTimeText(duration)
 		end
 	end
 
-	self.Time:SetWidth(self.Time:GetStringWidth())
+	self.Time:SetWidth(self.Time:GetStringWidth() * 1.1)
 end
 
 function UF:HideTicks(frame)
