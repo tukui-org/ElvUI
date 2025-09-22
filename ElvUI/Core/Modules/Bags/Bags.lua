@@ -3071,8 +3071,7 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 	if not holder then return end
 
 	local info = data[bankID]
-	local shouldShow = not not info
-	holder:SetEnabled(shouldShow)
+	holder:SetEnabled(not not info)
 
 	local combined = B.db[B.WarbandBanks[bankID] and 'warbandCombined' or 'bankCombined']
 	holder.selectedTexture:SetShown(not combined and B.BankTab == bankID)
