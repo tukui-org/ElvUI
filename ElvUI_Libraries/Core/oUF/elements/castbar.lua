@@ -649,14 +649,12 @@ local function onUpdate(self, elapsed)
 					self:CustomDelayText(self.duration)
 				else
 					self.Time:SetFormattedText('%.1f|cffff0000%s%.2f|r', self.duration, isCasting and '+' or '-', self.delay)
-					self.Time:SetWidth(self.Time:GetStringWidth())
 				end
 			else
 				if(self.CustomTimeText) then
 					self:CustomTimeText(self.duration)
 				else
 					self.Time:SetFormattedText('%.1f', self.duration)
-					self.Time:SetWidth(self.Time:GetStringWidth())
 				end
 			end
 
@@ -681,7 +679,6 @@ local function onUpdate(self, elapsed)
 				self.Time:SetText('')
 			else
 				self.Time:SetFormattedText('%.1f', self.holdTime)
-				self.Time:SetWidth(self.Time:GetStringWidth())
 			end
 
 			self.elapsed = 0
