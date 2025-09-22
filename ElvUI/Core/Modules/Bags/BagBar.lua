@@ -94,6 +94,10 @@ function B:SkinBag(bag)
 	bag:SetTemplate()
 	bag:StyleButton(true)
 
+	if bag.searchOverlay then
+		bag.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
+	end
+
 	if E.Retail then
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
@@ -231,8 +235,14 @@ function B:BagBar_UpdateDesaturated(inactive)
 	-- Now, apply the appearance to each button
 	for _, button in ipairs(B.BagBar.buttons) do
 		if button.BagID and button.BagID >= 0 then
+			local desaturate = inactive and not B:IsBagShown(button.BagID)
+
 			local icon = button.icon or _G[button:GetName()..'IconTexture']
-			icon:SetDesaturated(inactive and not B:IsBagShown(button.BagID))
+			icon:SetDesaturated(desaturate)
+
+			if button.searchOverlay then
+				button.searchOverlay:SetShown(desaturate)
+			end
 		end
 	end
 end
