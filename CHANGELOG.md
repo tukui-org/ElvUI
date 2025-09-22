@@ -1,20 +1,21 @@
 ### Version ?? [ TBA ]
 *   Performance
-    *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend.
-    *   Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
     *   Reworked how Tags are updated on Unitframes and Nameplates.
     *   Removed our debugging profiler and event pooler system.
-    *   The result: Smoother frame times and a noticeable bump in average FPS.
+    *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend:
+    1. Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
+    2. The result: Smoother frame times and a noticeable bump in average FPS.
 *   Nameplates and Style Filters
     *   Threat handling should be a little better when in grouped content.
     *   Default threat colors got updated and solo threat color was added, you may want to revisit the color tab of the nameplate options.
-    *   Actions completely reworked and will now offer way more options to choose from. This includes, but is not limited to: Texture, color, flash, border, glow for Health/Power/Castbars.
-    *   Custom sounds via LibSharedMedia.
+    *   Actions completely reworked and will now offer way more options to choose from.
+    1. This includes, but is not limited to: Texture, Color, Flash, Border, Glow for Health/Power/Castbars.
+    2. Custom sounds via LibSharedMedia.
     *   Updated and added multiple options for displaying targets on castbars:
-    *   Option to class color the cast target.
-    *   Option whether you want to append the cast target name to the castbar text or set a custom anchor.
-    *   Option to limit the amount of letters displayed for very long cast names.
-    *   Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
+    1. Option to class color the cast target.
+    2. Option whether you want to append the cast target name to the castbar text or set a custom anchor.
+    3. Option to limit the amount of letters displayed for very long cast names.
+    4. Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
 *   Auras
     *   Added custom auras module for most frames. You can choose between displaying buffs or debuffs. Includes filter lists.
     *   Mostly disabled by default but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
