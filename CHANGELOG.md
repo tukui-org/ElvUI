@@ -1,7 +1,8 @@
 ### Version ?? [ TBA ]
 *   Performance
-    *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend:
+    *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend.
     *   Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
+    *   Reworked how Tags are updated on Unitframes and Nameplates.
     *   Removed our debugging profiler and event pooler system.
     *   The result: Smoother frame times and a noticeable bump in average FPS.
 *   Nameplates and Style Filters
@@ -31,6 +32,7 @@
 *   General
     *   Added an ElvUI anniversary layout to the installer.
     *   Added new tag [health:deficit-percent-absorbs].
+    *   Added AFK screen idle animation selection. (Credits: kwilliams1987)
     *   Fixed an error that caused the unskinned version of the options frame arrow to not be clickable when resizing.
     *   Improved the opening and closing behaviour of the Bank frame to be less wonky.
     *   Castbar hold time now reverses for the duration of the hold and targeting something else no longer hides it instantly.
@@ -47,6 +49,7 @@
     *   Enhancement Shaman Maelstrom weapon stacks will now show up as a classbar.
     *   Fixed misplaced tab for Delves in the PvE frame on lower levels.
     *   Removed the annoying 'Right Click for Frame Settings' line from tooltips.
+    *   Added new tag [pvp:honorlevel]
 *   WoW Mists of Pandaria Classic
     *   Fixed boss button settings not applying as intended.
     *   Skinned the sub-skill rank bars in the professions frame.
