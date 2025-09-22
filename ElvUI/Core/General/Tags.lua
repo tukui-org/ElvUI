@@ -7,8 +7,8 @@ local Translit = E.Libs.Translit
 local translitMark = '!'
 
 local _G = _G
+local abs, ipairs, pairs, floor, ceil = abs, ipairs, pairs, floor, ceil
 local next, type, gmatch, gsub, format = next, type, gmatch, gsub, format
-local abs, ipairs, pairs, wipe, floor, ceil = abs, ipairs, pairs, wipe, floor, ceil
 local strsub, strfind, strmatch, strlower, strsplit = strsub, strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
@@ -145,16 +145,19 @@ Tags.Env.UnitEffectiveLevel = function(unit)
 end
 
 Tags.Env.Abbrev = function(name)
-	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
+	local letters, text = '', gsub(name, '%s<.+>$', '') -- clean titles
+	local lastWord = strmatch(text, '.+%s(.+)$')
 	if lastWord then
-		for word in gmatch(name, '.-%s') do
+		for word in gmatch(text, '.-%s') do
 			local firstLetter = utf8sub(gsub(word, '^[%s%p]*', ''), 1, 1)
 			if firstLetter ~= utf8lower(firstLetter) then
 				letters = format('%s%s. ', letters, firstLetter)
 			end
 		end
+
 		name = format('%s%s', letters, lastWord)
 	end
+
 	return name
 end
 
@@ -915,9 +918,8 @@ E:AddTag('incomingheals', 'UNIT_HEAL_PREDICTION', function(unit)
 	end
 end)
 
-E:AddTag('distance', 0.1, function(realUnit)
-	if UnitIsConnected(realUnit) and not UnitIsUnit(realUnit, 'player') then
-		local unit = E:GetGroupUnit(realUnit) or realUnit
+E:AddTag('distance', 0.1, function(unit)
+	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
 		local distance = E:GetDistance('player', unit)
 		if distance then
 			return format('%.1f', distance)
@@ -1203,54 +1205,27 @@ do
 	end)
 end
 
-do
-	local GroupUnits = {}
-	local frame = CreateFrame('Frame')
-	frame:RegisterEvent('GROUP_ROSTER_UPDATE')
-	frame:SetScript('OnEvent', function()
-		wipe(GroupUnits)
+for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
+	E:AddTag(format('nearbyplayers:%s', var), 0.25, function(unit)
+		local inRange = 0
 
-		local groupType, groupSize
-		if IsInRaid() then
-			groupType = 'raid'
-			groupSize = GetNumGroupMembers()
-		elseif IsInGroup() then
-			groupType = 'party'
-			groupSize = GetNumGroupMembers()
-		else
-			groupType = 'solo'
-			groupSize = 1
-		end
-
-		for index = 1, groupSize do
-			local groupUnit = groupType..index
-			if not UnitIsUnit(groupUnit, 'player') then
-				GroupUnits[groupUnit] = true
-			end
-		end
-	end)
-
-	for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
-		E:AddTag(format('nearbyplayers:%s', var), 0.25, function(realUnit)
-			local inRange = 0
-
-			if UnitIsConnected(realUnit) then
-				local unit = E:GetGroupUnit(realUnit) or realUnit
-				for groupUnit in pairs(GroupUnits) do
-					if UnitIsConnected(groupUnit) and not UnitIsUnit(unit, groupUnit) then
-						local distance = E:GetDistance(unit, groupUnit)
+		if UnitIsConnected(unit) then
+			for _, units in next, E.GroupUnitsByRole do
+				for _, unitToken in next, units do
+					if UnitIsConnected(unitToken) and not UnitIsUnit(unit, unitToken) then
+						local distance = E:GetDistance(unit, unitToken)
 						if distance and distance <= var then
 							inRange = inRange + 1
 						end
 					end
 				end
 			end
+		end
 
-			if inRange > 0 then
-				return inRange
-			end
-		end)
-	end
+		if inRange > 0 then
+			return inRange
+		end
+	end)
 end
 
 do

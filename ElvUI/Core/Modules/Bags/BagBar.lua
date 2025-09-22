@@ -27,11 +27,11 @@ local commandNames = {
 }
 
 function B:BagBar_OnEnter()
-	return E.db.bags.bagBar.mouseover and E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
+	return B.BagBar.db.mouseover and E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
 end
 
 function B:BagBar_OnLeave()
-	return E.db.bags.bagBar.mouseover and E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
+	return B.BagBar.db.mouseover and E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 
 function B:BagButton_OnEnter()
@@ -40,10 +40,18 @@ function B:BagButton_OnEnter()
 		AB:BindUpdate(self)
 	end
 
+	if not B.BagBar.db.justBackpack and B.BagFrame and B:IsBagShown(self.BagID) then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
+	end
+
 	B:BagBar_OnEnter()
 end
 
 function B:BagButton_OnLeave()
+	if not B.BagBar.db.justBackpack and B.BagFrame then
+		B:ResetSlotAlphaForBags(B.BagFrame)
+	end
+
 	B:BagBar_OnLeave()
 end
 
@@ -52,6 +60,10 @@ function B:KeyRing_OnEnter()
 		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
 		GameTooltip:Show()
+	end
+
+	if B.BagFrame and B:IsBagShown(self.BagID) then
+		B:SetSlotAlphaForBag(B.BagFrame, self.BagID)
 	end
 
 	B:BagBar_OnEnter()
@@ -67,6 +79,10 @@ function B:KeyRing_OnLeave()
 		GameTooltip:Hide()
 	end
 
+	if B.BagFrame then
+		B:ResetSlotAlphaForBags(B.BagFrame)
+	end
+
 	B:BagBar_OnEnter()
 end
 
@@ -77,6 +93,10 @@ function B:SkinBag(bag)
 	bag:StripTextures(E.Retail)
 	bag:SetTemplate()
 	bag:StyleButton(true)
+
+	if bag.searchOverlay then
+		bag.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
+	end
 
 	if E.Retail then
 		bag:GetNormalTexture():SetAlpha(0)
@@ -93,14 +113,14 @@ function B:SkinBag(bag)
 end
 
 function B:BagBar_UpdateVisibility()
-	local visibility = gsub(E.db.bags.bagBar.visibility, '[\n\r]', '')
+	local visibility = gsub(B.BagBar.db.visibility, '[\n\r]', '')
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 end
 
 function B:SizeAndPositionBagBar()
 	if not B.BagBar then return end
 
-	local db = E.db.bags.bagBar
+	local db = B.BagBar.db
 	local bagBarSize = db.size
 	local buttonSpacing = db.spacing
 	local growthDirection = db.growthDirection
@@ -186,7 +206,7 @@ end
 
 function B:UpdateMainButtonCount()
 	local mainCount = B.BagBar.buttons[1].Count
-	mainCount:SetShown(E.db.bags.bagBar.showCount)
+	mainCount:SetShown(B.BagBar.db.showCount)
 	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
@@ -207,6 +227,26 @@ function B:BagButton_UpdateTextures()
 	end
 end
 
+function B:BagBar_UpdateDesaturated(inactive)
+	if inactive == nil then -- Determine if we are in a "partial" state (not all bags shown, but not zero either)
+		inactive = B:AnyBagsShown() and not B:AllBagsShown()
+	end
+
+	-- Now, apply the appearance to each button
+	for _, button in ipairs(B.BagBar.buttons) do
+		if button.BagID and button.BagID >= 0 then
+			local desaturate = inactive and not B:IsBagShown(button.BagID)
+
+			local icon = button.icon or _G[button:GetName()..'IconTexture']
+			icon:SetDesaturated(desaturate)
+
+			if button.searchOverlay then
+				button.searchOverlay:SetShown(desaturate)
+			end
+		end
+	end
+end
+
 function B:LoadBagBar()
 	if E.Retail then
 		_G.BagsBar:SetParent(E.HiddenFrame)
@@ -222,6 +262,7 @@ function B:LoadBagBar()
 	B.BagBar:SetScript('OnLeave', B.BagBar_OnLeave)
 	B.BagBar:SetScript('OnEvent', B.BagBar_OnEvent)
 	B.BagBar:EnableMouse(true)
+	B.BagBar.db = E.db.bags.bagBar
 	B.BagBar.buttons = {}
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
@@ -231,7 +272,7 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 0, 1)
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', B.BagBar.db.font), B.BagBar.db.fontSize, B.BagBar.db.fontOutline)
 
 	if E.Retail then
 		hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)

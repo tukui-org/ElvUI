@@ -42,7 +42,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
 
-local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
+local IsBagOpen = IsBagOpen
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local CloseBag, CloseBackpack = CloseBag, CloseBackpack
 
@@ -878,7 +878,7 @@ function B:Holder_OnEnter()
 		end
 
 		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(L["Shift + Left Click to Toggle Bag"], .8, .8, .8)
+		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
 
 		if E.Retail then
 			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
@@ -1256,7 +1256,7 @@ function B:Layout(isBank)
 		if not B.WarbandBanks[bagID] and not B.CharacterBanks[bagID] then
 			local bag = f.Bags[bagID]
 			local numSlots = B:GetContainerNumSlots(bagID)
-			local bagShown = numSlots > 0 and B.db.shownBags['bag'..bagID]
+			local bagShown = numSlots > 0 and B:IsBagShown(bagID)
 
 			bag.numSlots = numSlots
 			bag:SetShown(bagShown)
@@ -1702,8 +1702,8 @@ function B:BagItemAction(button, holder, func, id)
 		end
 	elseif CursorHasItem() then
 		if func then func(id) end
-	elseif IsShiftKeyDown() then
-		B:ToggleBag(holder)
+	else
+		B:ToggleContainer(holder)
 	end
 end
 
@@ -1716,15 +1716,29 @@ function B:SetBagShownTexture(icon, shown)
 	end
 end
 
-function B:ToggleBag(holder)
+function B:IsBagShown(bagID)
+	return bagID and B.db.shownBags['bag'..bagID]
+end
+
+function B:SetBagShown(bagID, shown)
+	B.db.shownBags['bag'..bagID] = shown
+end
+
+function B:ToggleContainer(holder)
 	if not holder then return end
 
-	local slotID = 'bag'..holder.BagID
-	local swap = not B.db.shownBags[slotID]
-	B.db.shownBags[slotID] = swap
+	local swap = not B:IsBagShown(holder.BagID)
 
+	B:SetBagShown(holder.BagID, swap)
 	B:SetBagShownTexture(holder.shownIcon, swap)
-	B:Layout(holder.isBank)
+
+	if B:AnyBagsShown() then
+		B:Layout(holder.isBank) -- Only call Layout if the frame is staying open.
+
+		return true
+	else
+		B:CloseAllBags()
+	end
 end
 
 function B:UpdateContainerIcons()
@@ -2051,7 +2065,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	holder.shownIcon:Size(16)
 	holder.shownIcon:Point('BOTTOMLEFT', 1, 1)
 
-	B:SetBagShownTexture(holder.shownIcon, B.db.shownBags['bag'..bagID])
+	B:SetBagShownTexture(holder.shownIcon, B:IsBagShown(bagID))
 	B:CreateFilterIcon(holder)
 
 	if bagID == BACKPACK_CONTAINER then
@@ -2287,7 +2301,7 @@ function B:Container_ToggleKeyring()
 	local holder = parent.ContainerHolderByBagID
 	local keyring = holder and holder[KEYRING_CONTAINER]
 	if keyring then
-		B:ToggleBag(keyring)
+		B:ToggleContainer(keyring)
 	end
 end
 
@@ -2387,7 +2401,6 @@ function B:ConstructContainerFrame(name, isBank)
 	f.bagsButton.ttText = L["Toggle Bags"]
 	f.bagsButton:SetScript('OnEnter', B.Tooltip_Show)
 	f.bagsButton:SetScript('OnLeave', GameTooltip_Hide)
-	f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
 	--Search
 	f.editBox = CreateFrame('EditBox', name..'EditBox', f, 'SearchBoxTemplate')
@@ -2421,6 +2434,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	if isBank then
 		f.notPurchased = {}
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
 		if not E.Retail then
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
@@ -2512,6 +2526,16 @@ function B:ConstructContainerFrame(name, isBank)
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
+		local anchorButton = f.sortButton
+
+		if not B.BagBar then
+			f.bagsButton:Show()
+			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
+			anchorButton = f.bagsButton -- Update the anchor for the next button.
+		else
+			f.bagsButton:Hide() -- Ensure the button is hidden if the BagBar is enabled.
+		end
+
 		f.pickupGold:SetScript('OnClick', B.Container_ClickGold)
 
 		-- Stack/Transfer Button
@@ -2525,28 +2549,26 @@ function B:ConstructContainerFrame(name, isBank)
 		f.sortButton:Point('RIGHT', f.stackButton, 'LEFT', -5, 0)
 		f.sortButton:SetScript('OnClick', B.Container_ClickSortBag)
 
-		--Bags Button
-		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
-
 		--Keyring Button
 		if E.Classic then
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
-			f.keyButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
+			f.keyButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.keyButton, 134237) -- Interface\ICONS\INV_Misc_Key_03
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
 			f.keyButton:SetScript('OnClick', B.Container_ToggleKeyring)
+			anchorButton = f.keyButton -- Update the anchor for the next button.
 		end
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(20)
 		f.vendorGraysButton:SetTemplate()
-		f.vendorGraysButton:Point('RIGHT', E.Classic and f.keyButton or f.bagsButton, 'LEFT', -5, 0)
+		f.vendorGraysButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor Grays"]
@@ -2751,9 +2773,11 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	return slot
 end
 
-function B:ToggleBags(bagID)
-	if E.private.bags.bagBar and bagID == KEYRING_CONTAINER then
-		local closed = not B.BagFrame:IsShown()
+function B:ToggleBag(bagID)
+	local shown = B.BagFrame:IsShown()
+	local closed = not shown
+
+	if B.BagBar and bagID == KEYRING_CONTAINER then
 		B.ShowKeyRing = closed or not B.ShowKeyRing
 
 		B:Layout()
@@ -2762,21 +2786,76 @@ function B:ToggleBags(bagID)
 			B:OpenBags()
 		end
 	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
-		if B.BagFrame:IsShown() then
-			B:CloseBags()
-		else
+		if B.BagBar then
+			local justBackpack = B.BagBar.db.justBackpack
+			if closed then -- reset shown
+				local allShown = B:AllBagsShown()
+				B:SetBagsShown(justBackpack)
+
+				if justBackpack and not allShown then
+					B:Layout() -- not all were shown
+				end
+			end
+
+			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+			if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
+				if closed then
+					B:OpenBags()
+				else
+					B:BagBar_UpdateDesaturated()
+				end
+			else
+				B:CloseAllBags()
+			end
+		elseif shown then
+			B:CloseAllBags()
+		elseif closed then
 			B:OpenBags()
 		end
 	end
 end
 
-function B:ToggleBackpack()
-	if IsOptionFrameOpen() then return end
+function B:ToggleAllBags()
+	local backpack = IsBagOpen(BACKPACK_CONTAINER)
 
-	if IsBagOpen(0) then
+	if B.BagBar then
+		if B.BagFrame:IsShown() and not backpack then
+			B:CloseAllBags()
+		elseif backpack then
+			B:SetBagsShown(true)
+			B:Layout()
+			B:OpenBags()
+			B:BagBar_UpdateDesaturated(false) -- force this when showing all
+		end
+	elseif backpack then
 		B:OpenBags()
 	else
-		B:CloseBags()
+		B:CloseAllBags()
+	end
+end
+
+function B:AllBagsShown()
+	for bagID in next, B.BagFrame.ContainerHolderByBagID do
+		if not B:IsBagShown(bagID) then
+			return false
+		end
+	end
+
+	return true
+end
+
+function B:AnyBagsShown()
+	for bagID in next, B.BagFrame.ContainerHolderByBagID do
+		if B:IsBagShown(bagID) then
+			return true
+		end
+	end
+end
+
+function B:SetBagsShown(show)
+	for bagID, holder in next, B.BagFrame.ContainerHolderByBagID do
+		B:SetBagShown(bagID, show)
+		B:SetBagShownTexture(holder.shownIcon, show)
 	end
 end
 
@@ -2787,9 +2866,16 @@ function B:OpenAllBags(frame)
 	local vendor = frame == _G.MerchantFrame and frame:IsShown()
 
 	if (not mail and not vendor) or (mail and B.db.autoToggle.mail) or (vendor and B.db.autoToggle.vendor) then
-		B:OpenBags()
+		if B.BagBar then
+			B:SetBagsShown(true)
+			B:Layout()
+			B:OpenBags()
+			B:BagBar_UpdateDesaturated(false) -- force this when opening all
+		else
+			B:OpenBags()
+		end
 	else
-		B:CloseBags()
+		B:CloseAllBags()
 	end
 end
 
@@ -2864,6 +2950,10 @@ function B:OpenBags()
 
 	B.BagFrame:Show()
 
+	if B.BagBar then
+		B:BagBar_UpdateDesaturated()
+	end
+
 	if E.Retail then
 		B:UpdateTokensIfVisible()
 	end
@@ -2873,12 +2963,16 @@ function B:OpenBags()
 	TT:GameTooltip_SetDefaultAnchor(GameTooltip)
 end
 
-function B:CloseBags()
+function B:CloseAllBags()
 	if not B.BagFrame:IsShown() then
 		return true -- for when the bank closes
 	end
 
 	B.BagFrame:Hide()
+
+	if B.BagBar then
+		B:BagBar_UpdateDesaturated(false) -- force this when closing
+	end
 
 	B:CloseSound()
 
@@ -2983,8 +3077,7 @@ function B:BankTabs_UpdateIcon(f, bankID, data)
 	if not holder then return end
 
 	local info = data[bankID]
-	local shouldShow = not not info
-	holder:SetEnabled(shouldShow)
+	holder:SetEnabled(not not info)
 
 	local combined = B.db[B.WarbandBanks[bankID] and 'warbandCombined' or 'bankCombined']
 	holder.selectedTexture:SetShown(not combined and B.BankTab == bankID)
@@ -3208,7 +3301,7 @@ function B:CloseBank()
 		B.BankFrame:Hide()
 	end
 
-	if B:CloseBags() then
+	if B:CloseAllBags() then
 		B:CloseSound() -- the bags werent open but we should play the sound
 	end
 end
@@ -3488,7 +3581,7 @@ function B:AutoToggleFunction()
 	if B.db.autoToggle[option] and not B.AutoToggleClose[self] then
 		B:OpenBags()
 	else
-		B:CloseBags()
+		B:CloseAllBags()
 	end
 end
 
@@ -3650,11 +3743,10 @@ function B:Initialize()
 		_G.BankPanel:SetScript('OnShow', nil)
 	end
 
+	B:SecureHook('ToggleBag')
+	B:SecureHook('ToggleAllBags')
+	B:SecureHook('CloseAllBags')
 	B:SecureHook('OpenAllBags')
-	B:SecureHook('CloseAllBags', 'CloseBags')
-	B:SecureHook('ToggleBag', 'ToggleBags')
-	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
-	B:SecureHook('ToggleBackpack')
 
 	B:SetupAutoToggle()
 	B:DisableBlizzard()

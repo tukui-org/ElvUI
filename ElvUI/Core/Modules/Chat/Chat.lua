@@ -46,8 +46,6 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UIParent = UIParent
 local UnitExists = UnitExists
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -196,6 +194,7 @@ do --this can save some main file locals
 	local x, y = ':16:16',':13:25'
 
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
+	local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
@@ -231,6 +230,8 @@ do --this can save some main file locals
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
+		--Wife Colors
+		local WifeColors = function(t) return specialText(t, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
 		--Mels: Fiery Rose (F94F6D), Saffron (F7C621), Emerald (4FC16D), Medium Slate Blue (7C7AF7), Cyan Process (11AFEA)
 		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
 		--Thradex: summer without you
@@ -240,6 +241,7 @@ do --this can save some main file locals
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
+		itsTheWife = function() return ElvPink, WifeColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
@@ -272,6 +274,11 @@ do --this can save some main file locals
 			z['Player-3675-0A85E395']	= itsElv -- Warrior
 			z['Player-5-0E8301B7']		= itsElv -- Mage
 			z['Player-5-0E885971']		= itsElv -- Shaman
+			z['Player-162-0BB751DE']	= itsElv -- DH
+			z['Player-53-0DFD6F64']		= itsElv -- Hunter
+			--The Wife
+			z['Player-5-0E8B3558']		= itsTheWife -- Panda Mage
+			z['Player-53-0DFD6F4E']		= itsTheWife -- Cow Mage
 			-- Repooc
 			z['Dapooc-Spirestone']		= itsPooc	-- [Alliance] Druid
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
@@ -2851,21 +2858,18 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	if not E.allowRoles or not CH.db.lfgIcons or not IsInGroup() then return end
+	if not E.allowRoles or not E.IsInGroup or not CH.db.lfgIcons then return end
 
 	wipe(lfgRoles)
 
-	local playerRole = UnitGroupRolesAssigned('player')
-	if playerRole then
-		lfgRoles[PLAYER_NAME] = CH.RoleIcons[playerRole]
+	if E.myrole then
+		lfgRoles[PLAYER_NAME] = CH.RoleIcons[E.myrole]
 	end
 
-	local unit = (IsInRaid() and 'raid' or 'party')
-	for i = 1, GetNumGroupMembers() do
-		if UnitExists(unit..i) and not UnitIsUnit(unit..i, 'player') then
-			local role = UnitGroupRolesAssigned(unit..i)
-			local name, realm = UnitName(unit..i)
-
+	for guid, role in next, E.GroupRoles do
+		local unit = E.GroupUnitsByRole[role][guid]
+		if unit then
+			local name, realm = UnitName(unit)
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
 				lfgRoles[name] = CH.RoleIcons[role]
