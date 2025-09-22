@@ -2787,12 +2787,18 @@ function B:ToggleBag(bagID)
 		end
 	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
 		if B.BagBar then
-			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+			local justBackpack = B.BagBar.db.justBackpack
 			if closed then -- reset shown
-				B:SetBagsShown(false)
+				local allShown = B:AllBagsShown()
+				B:SetBagsShown(justBackpack)
+
+				if justBackpack and not allShown then
+					B:Layout() -- not all were shown
+				end
 			end
 
-			if B:ToggleContainer(holder) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
+			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+			if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
 				if closed then
 					B:OpenBags()
 				else
