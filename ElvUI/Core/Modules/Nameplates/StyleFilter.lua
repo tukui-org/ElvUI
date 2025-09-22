@@ -1054,9 +1054,10 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 	-- Threat
 	if trigger.threat and trigger.threat.enable then
 		local checkOffTank = trigger.threat.offTank or trigger.threat.offTankGoodTransition or trigger.threat.offTankBadTransition
-		if checkOffTank or trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad then
+		local checkThreat = trigger.threat.good or trigger.threat.goodTransition or trigger.threat.badTransition or trigger.threat.bad
+		if checkOffTank or checkThreat then
 			local status, isTank, offTank = NP:StyleFilterThreatUpdate(frame, frame.unit)
-			local value = (checkOffTank and offTank and NP.TriggerConditions.offTankThreat[status]) or (not checkOffTank and ((isTank and NP.TriggerConditions.tankThreat[status]) or status)) or nil
+			local value = (checkOffTank and offTank and NP.TriggerConditions.offTankThreat[status]) or checkThreat and ((isTank and NP.TriggerConditions.tankThreat[status]) or status) or nil
 			if trigger.threat[NP.TriggerConditions.threat[value]] then passed = true else return end
 		end
 	end
