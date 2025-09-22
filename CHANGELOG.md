@@ -38,6 +38,7 @@
     *   Castbar hold time now reverses for the duration of the hold and targeting something else no longer hides it instantly.
     *   The option to hide text on castbars is now split into separate options to hide text and hide time.
     *   Bag bar now has better interaction with the bag module, opening individual bags instead.
+    *   Tooltip option to Anchor to Bags, as well as offset options from the anchor/mover.
     *   Updated deDE locales. (Credits: Dlarge)
     *   Updated koKR locales. (Credits: Crazyyoungs)
     *   Updated ptBR locales. (Credits: Eltreum)
