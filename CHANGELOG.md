@@ -1,3 +1,57 @@
+### Version ?? [ TBA ]
+*   Performance
+    *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend:
+    *   Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
+    *   Removed our debugging profiler and event pooler system.
+    *   The result: Smoother frame times and a noticeable bump in average FPS.
+*   Nameplates and Style Filters
+    *   Default threat colors got updated and solo threat color was added, you may want to revisit the color tab of the nameplate options.
+    *   Actions completely reworked and will now offer way more options to choose from. This includes, but is not limited to:
+    *   Texture, color, flash, border, glow for Health/Power/Castbars.
+    *   Custom sounds via LibSharedMedia.
+    *   Updated and added multiple options for displaying targets on castbars:
+    *   Option to class color the cast target.
+    *   Option whether you want to append the cast target name to the castbar text or set a custom anchor.
+    *   Option to limit the amount of letters displayed for very long cast names.
+    *   Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
+*   Auras
+    *   Added custom auras module for most frames. You can choose between displaying buffs or debuffs. Includes filter lists.
+    *   Mostly disabled by default     *   but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
+    *   Fixed Aura Indicators with 'Show When Not Active' checkbox enabled bypassing the enable state.
+*   DataTexts
+    *   Level datatext got label options.
+    *   Fixed a rendering issue when holding shift on the Friends datatext.
+    *   System datatext mouseover list now combines different HandyNotes and SilverDragon modules.
+*   Filters
+    *   Added mouseover descriptions for all filters, this should give a better understanding on what kind of spells they handle.
+    *   You can now CTRL + Left click to toggle between Allow and Block state for lists in your filter priority.
+    *   (Retail only) Updated RaidDebuffs filter to include Devourer's Ire on Soul Hunters and Oath-Bound from Nexus-King's Command.
+    *   (Retail only) Added new 'ImportantCC' filter with a carefully curated list of important crowd control like stuns and hard-cc.
+    *   (Retail only) Added new 'ClassDebuffs' filter which only displays debuffs you absolutely need to see for your action priority.
+*   General
+    *   Added an ElvUI anniversary layout to the installer.
+    *   Added new tag [health:deficit-percent-absorbs].
+    *   Fixed an error that caused the unskinned version of the options frame arrow to not be clickable when resizing.
+    *   Improved the opening and closing behaviour of the Bank frame to be less wonky.
+    *   The option to hide text on castbars is now split into separate options to hide text and hide time.
+    *   Updated deDE locales. (Credits: Dlarge)
+    *   Updated koKR locales. (Credits: Crazyyoungs)
+    *   Updated ptBR locales. (Credits: Eltreum)
+    *   (Retail only) Fixed spells randomly activating when trying to pick them up or move them around actionbars.
+    *   (Retail & Mists only) Fixed right-click to dismiss totems for our Totem Tracker.
+*   WoW Retail
+    *   Elemental Shaman and Shadow Priest mana will be displayed as a regular classbar again.
+    *   Frost Mage icicles will now show up as a classbar.
+    *   Enhancement Shaman Maelstrom weapon stacks will now show up as a classbar.
+    *   Fixed misplaced tab for Delves in the PvE frame on lower levels.
+    *   Removed the annoying 'Right Click for Frame Settings' line from tooltips.
+*   WoW Mists of Pandaria Classic
+    *   Fixed boss button settings not applying as intended.
+    *   Skinned the sub-skill rank bars in the professions frame.
+    *   Added option to toggle the black market action house skin.
+    *   Fixed Druid eclipse bar now working on lower levels.
+    *   Fixed soul shards showing up before they are available by player level.
+
 ### Version 13.97 [ August 13th 2025 ]
 *   Retail:
     *   Bank purchase tab not working.
