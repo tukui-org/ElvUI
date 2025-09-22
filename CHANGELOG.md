@@ -1,7 +1,7 @@
 ### Version ?? [ TBA ]
 *   Performance
-    *   Reworked how Tags are updated on Unitframes and Nameplates.
     *   Removed our debugging profiler and event pooler system.
+    *   Reworked how Tags are updated on Unitframes and Nameplates.
     *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend:
     1. Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
     2. The result: Smoother frame times and a noticeable bump in average FPS.
@@ -11,13 +11,13 @@
     *   Actions completely reworked and will now offer way more options to choose from.
     1. This includes, but is not limited to: Texture, Color, Flash, Border, Glow for Health/Power/Castbars.
     2. Custom sounds via LibSharedMedia.
+    3. Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
     *   Updated and added multiple options for displaying targets on castbars:
     1. Option to class color the cast target.
     2. Option whether you want to append the cast target name to the castbar text or set a custom anchor.
     3. Option to limit the amount of letters displayed for very long cast names.
-    4. Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
 *   Auras
-    *   Added custom auras module for most frames. You can choose between displaying buffs or debuffs. Includes filter lists.
+    *   Added custom auras module for most frames. You can choose between displaying buffs and/or debuffs, including filter lists.
     *   Mostly disabled by default but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
     *   Fixed Aura Indicators with 'Show When Not Active' checkbox enabled bypassing the enable state.
 *   DataTexts
@@ -40,10 +40,11 @@
     *   The option to hide text on castbars is now split into separate options to hide text and hide time.
     *   Bag bar now has better interaction with the bag module, opening individual bags instead.
     *   Tooltip option to Anchor to Bags, as well as offset options from the anchor/mover.
-    *   Updated deDE locales. (Credits: Dlarge)
-    *   Updated koKR locales. (Credits: Crazyyoungs)
-    *   Updated ptBR locales. (Credits: Eltreum)
     *   (Retail & Mists only) Fixed right-click to dismiss totems for our Totem Tracker.
+    *   Updated locales:
+    1. deDE (Credits: Dlarge)
+    2. koKR (Credits: Crazyyoungs)
+    3. ptBR (Credits: Eltreum)
 *   WoW Retail
     *   Fixed spells randomly activating when trying to pick them up or move them around actionbars.
     *   Elemental Shaman and Shadow Priest mana will be displayed as a regular classbar again.
