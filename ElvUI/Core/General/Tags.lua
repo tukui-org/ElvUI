@@ -145,16 +145,19 @@ Tags.Env.UnitEffectiveLevel = function(unit)
 end
 
 Tags.Env.Abbrev = function(name)
-	local letters, lastWord = '', strmatch(name, '.+%s(.+)$')
+	local letters, text = '', gsub(name, '%s<.+>$', '') -- clean titles
+	local lastWord = strmatch(text, '.+%s(.+)$')
 	if lastWord then
-		for word in gmatch(name, '.-%s') do
+		for word in gmatch(text, '.-%s') do
 			local firstLetter = utf8sub(gsub(word, '^[%s%p]*', ''), 1, 1)
 			if firstLetter ~= utf8lower(firstLetter) then
 				letters = format('%s%s. ', letters, firstLetter)
 			end
 		end
+
 		name = format('%s%s', letters, lastWord)
 	end
+
 	return name
 end
 
