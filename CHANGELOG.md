@@ -11,7 +11,7 @@
     *   Actions completely reworked and will now offer way more options to choose from.
     1. This includes, but is not limited to: Texture, Color, Flash, Border, Glow for Health/Power/Castbars.
     2. Custom sounds via LibSharedMedia.
-    3. Please note that due to the nature of the Style Filters rework, you will need to reconfigure your existing actions.
+    3. Please note that due to the nature of this rework, you will need to reconfigure your existing actions.
     *   Updated and added multiple options for displaying targets on castbars:
     1. Option to class color the cast target.
     2. Option whether you want to append the cast target name to the castbar text or set a custom anchor.
