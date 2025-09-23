@@ -18,7 +18,7 @@
     3. Option to limit the amount of letters displayed for very long cast names.
 *   Auras
     *   Consolidated the Aura sections for frames into their own group.
-    *   Custom Aura added to this new group; which can have Buffs, Debuffs, or both enabled at the time time.
+    *   Custom Aura added to this new group; which can have Buffs, Debuffs, or both enabled at the same time.
     *   Custom Aura is mostly disabled by default; except for Target UnitFrame, Enemy NPC and Friendly Player Nameplates to display CC debuffs.
     *   Fixed Aura Indicators with 'Show When Not Active' checkbox enabled bypassing the enable state.
 *   DataTexts
