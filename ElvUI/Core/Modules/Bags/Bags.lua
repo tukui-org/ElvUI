@@ -2815,6 +2815,10 @@ function B:ToggleBag(bagID)
 	end
 end
 
+function B:ToggleBackpack()
+	B:ToggleAllBags()
+end
+
 function B:ToggleAllBags()
 	local backpack = IsBagOpen(BACKPACK_CONTAINER)
 
@@ -3744,6 +3748,7 @@ function B:Initialize()
 	end
 
 	B:SecureHook('ToggleBag')
+	B:SecureHook('ToggleBackpack')
 	B:SecureHook('ToggleAllBags')
 	B:SecureHook('CloseAllBags')
 	B:SecureHook('OpenAllBags')

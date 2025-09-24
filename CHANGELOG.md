@@ -4,11 +4,11 @@
     *   Reworked how Tags are updated on Unitframes and Nameplates.
     *   Reworked how aura (buffs, debuffs, indicators) updates are handled in the backend:
     1. Instead of forcing full updates on every party/raid unit, the system now uses cached data and skips unnecessary updates.
-    2. The result: Smoother frame times and a noticeable bump in average FPS.
+    2. These changes reduce frame times and give a noticeable bump in average FPS.
 *   Nameplates and Style Filters
     *   Threat handling should be a little better when in grouped content.
     *   Default threat colors got updated and solo threat color was added, you may want to revisit the color tab of the nameplate options.
-    *   Actions completely reworked and will now offer way more options to choose from.
+    *   Style Filter Actions completely reworked and will now offer more options to choose from.
     1. This includes, but is not limited to: Texture, Color, Flash, Border, Glow for Health/Power/Castbars.
     2. Custom sounds via LibSharedMedia.
     3. Please note that due to the nature of this rework, you will need to reconfigure your existing actions.
@@ -17,8 +17,9 @@
     2. Option whether you want to append the cast target name to the castbar text or set a custom anchor.
     3. Option to limit the amount of letters displayed for very long cast names.
 *   Auras
-    *   Added custom auras module for most frames. You can choose between displaying buffs and/or debuffs, including filter lists.
-    *   Mostly disabled by default but Target UnitFrame, Enemy NPC and Friendly Player Nameplate is enabled by default to display CC debuffs.
+    *   Consolidated the Aura sections for frames into their own group.
+    *   Custom Aura added to this new group; which can have Buffs, Debuffs, or both enabled at the same time.
+    *   Custom Aura is mostly disabled by default; except for Target UnitFrame, Enemy NPC and Friendly Player Nameplates to display CC debuffs.
     *   Fixed Aura Indicators with 'Show When Not Active' checkbox enabled bypassing the enable state.
 *   DataTexts
     *   Level datatext got label options.
@@ -26,12 +27,12 @@
     *   System datatext mouseover list now combines different HandyNotes and SilverDragon modules.
 *   Filters
     *   Added mouseover descriptions for all filters, this should give a better understanding on what kind of spells they handle.
-    *   You can now CTRL + Left click to toggle between Allow and Block state for lists in your filter priority.
+    *   You can now use [CTRL + Left Click] to toggle between Allow and Block state for lists in your filter priority to override the filers type.
     *   (Retail only) Updated RaidDebuffs filter to include Devourer's Ire on Soul Hunters and Oath-Bound from Nexus-King's Command.
-    *   (Retail only) Added new 'ImportantCC' filter with a carefully curated list of important crowd control like stuns and hard-cc.
-    *   (Retail only) Added new 'ClassDebuffs' filter which only displays debuffs you absolutely need to see for your action priority.
+    *   (Retail only) Added new ImportantCC filter with a carefully curated list of important crowd control like stuns and hard-cc.
+    *   (Retail only) Added new ClassDebuffs filter which only displays debuffs you absolutely need to see for your action priority.
 *   General
-    *   Added an ElvUI anniversary layout to the installer.
+    *   Added an Anniversary layout to the installer.
     *   Added new tag [health:deficit-percent-absorbs]
     *   Titles removed from tag [name:abbrev]
     *   Added AFK screen idle animation selection. (Credits: kwilliams1987)

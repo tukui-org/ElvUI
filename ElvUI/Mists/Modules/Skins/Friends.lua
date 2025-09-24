@@ -7,11 +7,11 @@ local unpack, pairs = unpack, pairs
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local hooksecurefunc = hooksecurefunc
-
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
 local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
 local GetCVarBool = C_CVar.GetCVarBool
+local hooksecurefunc = hooksecurefunc
 
 local function SkinFriendRequest(frame)
 	if frame.IsSkinned then return end
@@ -106,8 +106,29 @@ local function RepositionTabs()
 	end
 end
 
+local StripAllTextures = {
+	'WhoFrameColumnHeader1',
+	'WhoFrameColumnHeader2',
+	'WhoFrameColumnHeader3',
+	'WhoFrameColumnHeader4',
+}
+
+local ButtonsToHandle = {
+	'WhoFrameWhoButton',
+	'WhoFrameAddFriendButton',
+	'WhoFrameGroupInviteButton',
+}
+
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
+
+	for _, button in pairs(ButtonsToHandle) do
+		S:HandleButton(_G[button])
+	end
+
+	for _, object in pairs(StripAllTextures) do
+		_G[object]:StripTextures()
+	end
 
 	-- Friends Frame
 	local FriendsFrame = _G.FriendsFrame
@@ -218,74 +239,27 @@ function S:FriendsFrame()
 	S:HandleButton(_G.FriendsFrameUnsquelchButton, true)
 	S:HandleScrollBar(_G.FriendsFrameIgnoreScrollFrameScrollBar)
 
-	-- Who Frame
+
+	--Who Frame
+	_G.WhoFrame:StripTextures()
 	_G.WhoFrameListInset:StripTextures()
-	_G.WhoFrameEditBoxInset:StripTextures()
-	_G.WhoListScrollFrame:StripTextures()
+	_G.WhoFrameListInset.NineSlice:Hide()
+	_G.WhoFrameEditBox:StripTextures()
+	_G.WhoFrameEditBox:CreateBackdrop()
+	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBox.Left)
+	_G.WhoFrameEditBox.backdrop:Point('BOTTOMRIGHT', _G.WhoFrameEditBox.Right)
 
-	for i = 1, 4 do
-		local header = _G['WhoFrameColumnHeader'..i]
-		header:StripTextures()
-		header:StyleButton()
-		header:ClearAllPoints()
-	end
+	--Increase width of Level column slightly
+	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
 
-	_G.WhoFrameColumnHeader1:Point('LEFT', _G.WhoFrameColumnHeader4, 'RIGHT', -2, 0)
-	_G.WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader1, 105)
-	_G.WhoFrameColumnHeader2:Point('LEFT', _G.WhoFrameColumnHeader1, 'RIGHT', -5, 0)
-	_G.WhoFrameColumnHeader3:Point('TOPLEFT', _G.WhoFrame, 'TOPLEFT', 8, -57)
-	_G.WhoFrameColumnHeader4:Point('LEFT', _G.WhoFrameColumnHeader3, 'RIGHT', -2, 0)
-	_G.WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader4, 50)
-
-	_G.WhoFrameButton1:Point('TOPLEFT', 10, -82)
-
-	S:HandleEditBox(_G.WhoFrameEditBox)
-	_G.WhoFrameEditBox:Point('BOTTOM', -3, 29)
-	_G.WhoFrameEditBox:Size(332, 18)
-
-	S:HandleButton(_G.WhoFrameWhoButton)
-	_G.WhoFrameWhoButton:Point('RIGHT', _G.WhoFrameAddFriendButton, 'LEFT', -2, 0)
-	_G.WhoFrameWhoButton:Width(90)
-
-	S:HandleButton(_G.WhoFrameAddFriendButton)
-	_G.WhoFrameAddFriendButton:Point('RIGHT', _G.WhoFrameGroupInviteButton, 'LEFT', -2, 0)
-
-	S:HandleButton(_G.WhoFrameGroupInviteButton)
-	_G.WhoFrameGroupInviteButton:Point('BOTTOMRIGHT', -6, 4)
-
-	S:HandleDropDownBox(_G.WhoFrameDropdown)
-	_G.WhoFrameDropdown:Point('TOPLEFT', -6, 4)
-
-	S:HandleScrollBar(_G.WhoListScrollFrameScrollBar, 3)
-	_G.WhoListScrollFrameScrollBar:ClearAllPoints()
-	_G.WhoListScrollFrameScrollBar:Point('TOPRIGHT', _G.WhoListScrollFrame, 'TOPRIGHT', 26, -13)
-	_G.WhoListScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.WhoListScrollFrame, 'BOTTOMRIGHT', 0, 18)
-
-	for i = 1, _G.WHOS_TO_DISPLAY do
-		local button = _G['WhoFrameButton'..i]
+	for i = 1, 17 do
 		local level = _G['WhoFrameButton'..i..'Level']
-		local name = _G['WhoFrameButton'..i..'Name']
-		local className = _G['WhoFrameButton'..i..'Class']
-
-		button.icon = button:CreateTexture('$parentIcon', 'ARTWORK')
-		button.icon:Point('LEFT', 45, 0)
-		button.icon:Size(15)
-		button.icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-		button.icon:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, button.icon)
-
-		S:HandleButtonHighlight(button)
-
-		level:ClearAllPoints()
-		level:SetPoint('TOPLEFT', 11, -1)
-
-		name:SetSize(100, 14)
-		name:ClearAllPoints()
-		name:SetPoint('LEFT', 85, 0)
-
-		className:Hide()
+		if level then
+			level:Width(level:GetWidth() + 5)
+		end
 	end
 
-	hooksecurefunc('WhoList_Update', UpdateWhoList)
+	S:HandleDropDownBox(_G.WhoFrameDropdown, 90)
 end
 
 S:AddCallback('FriendsFrame')
