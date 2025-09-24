@@ -286,7 +286,7 @@ do --this can save some main file locals
 			-- Elvs Wife
 			z['Player-5-0E8B3558']		= itsWife -- Panda Mage
 			z['Player-53-0DFD6F4E']		= itsWife -- Cow Mage
-			-- Botanica
+			-- Botanica (115: Draenor)
 			z['Player-115-01C73081']	= itsBot -- Druid:		Botanica
 			z['Player-115-00D6F2F0']	= itsBot -- Shaman:		Elysium
 			z['Player-115-00D69928']	= itsBot -- Priest:		Kamasuture
@@ -369,29 +369,29 @@ do --this can save some main file locals
 			z['Alysneaks-Cenarius']		= itsMel -- [Horde] Rogue
 			z['Alytotes-Cenarius']		= itsMel -- [Horde] Shaman
 			-- Thradex (Simpys Buddy)
-			z['Player-3676-0982798A']	= itsThradex -- Foam-Area52
-			z['Player-3676-0E6FC676']	= itsThradex -- Gur-Area52
-			z['Player-3676-0D834080']	= itsThradex -- Counselor-Area52
-			z['Player-3676-0E77A90A']	= itsThradex -- Archmage-Area52
-			z['Player-3676-0EA34C00']	= itsThradex -- Benito-Area52
-			z['Player-3676-0E0547CE']	= itsThradex -- Ahmir-Area52
-			z['Player-3676-0AFA7773']	= itsThradex -- Lifelink-Area52
-			z['Player-3676-0D829A31']	= itsThradex -- Psychiatrist-Area52
-			z['Player-3676-0A5800F2']	= itsThradex -- Italian-Area52
-			z['Player-125-0AA52CD1']	= itsThradex -- Monk-CenarionCircle
-			z['Player-3675-0AB731AC']	= itsThradex -- Jonesy-MoonGuard
-			z['Player-3675-0AD64DD0']	= itsThradex -- PuertoRican-MoonGuard
-			z['Player-3675-0AD64EA1']	= itsThradex -- Rainao-MoonGuard
-			z['Player-60-0A5E33DE']		= itsThradex -- Tb-Stormrage
-			z['Player-60-0A58F3D2']		= itsThradex -- Thradex-Stormrage
-			z['Player-60-0A4E0A3E']		= itsThradex -- Wrecked-Stormrage
-			z['Player-60-0F65AEC4']		= itsThradex -- Puertorican-Stormrage
-			z['Player-60-0AADFA03']		= itsThradex -- Quickscoper-Stormrage
-			z['Player-1168-0AE46826']	= itsThradex -- Daddy-Cairne
-			z['Player-115-0883DF8B']	= itsThradex -- Daddy-EchoIsles
-			z['Player-53-0D463E51']		= itsThradex -- Badbunny-Wildhammer
-			z['Player-113-0A9F78FF']	= itsThradex -- Vanessa-Darrowmere
-			z['Player-127-0AD64E79']	= itsThradex -- Christopher-Firetree
+			z['Player-3676-0982798A']	= itsThradex -- [Area52] Foam
+			z['Player-3676-0E6FC676']	= itsThradex -- [Area52] Gur
+			z['Player-3676-0D834080']	= itsThradex -- [Area52] Counselor
+			z['Player-3676-0E77A90A']	= itsThradex -- [Area52] Archmage
+			z['Player-3676-0EA34C00']	= itsThradex -- [Area52] Benito
+			z['Player-3676-0E0547CE']	= itsThradex -- [Area52] Ahmir
+			z['Player-3676-0AFA7773']	= itsThradex -- [Area52] Lifelink
+			z['Player-3676-0D829A31']	= itsThradex -- [Area52] Psychiatrist
+			z['Player-3676-0A5800F2']	= itsThradex -- [Area52] Italian
+			z['Player-125-0AA52CD1']	= itsThradex -- [CenarionCircle] Monk
+			z['Player-3675-0AB731AC']	= itsThradex -- [MoonGuard] Jonesy
+			z['Player-3675-0AD64DD0']	= itsThradex -- [MoonGuard] PuertoRican
+			z['Player-3675-0AD64EA1']	= itsThradex -- [MoonGuard] Rainao
+			z['Player-60-0A5E33DE']		= itsThradex -- [Stormrage] Tb
+			z['Player-60-0A58F3D2']		= itsThradex -- [Stormrage] Thradex
+			z['Player-60-0A4E0A3E']		= itsThradex -- [Stormrage] Wrecked
+			z['Player-60-0F65AEC4']		= itsThradex -- [Stormrage] Puertorican
+			z['Player-60-0AADFA03']		= itsThradex -- [Stormrage] Quickscoper
+			z['Player-1168-0AE46826']	= itsThradex -- [Cairne] Daddy
+			z['Player-115-0883DF8B']	= itsThradex -- [EchoIsles] Daddy
+			z['Player-53-0D463E51']		= itsThradex -- [Wildhammer] Badbunny
+			z['Player-113-0A9F78FF']	= itsThradex -- [Darrowmere] Vanessa
+			z['Player-127-0AD64E79']	= itsThradex -- [Firetree] Christopher
 			-- Tirain (NOTE: lol)
 			z['Tierone-Spirestone']		= TyroneBiggums
 			z['Tirain-Spirestone']		= TyroneBiggums
