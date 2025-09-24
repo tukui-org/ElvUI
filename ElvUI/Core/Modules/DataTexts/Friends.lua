@@ -6,12 +6,12 @@ local ipairs, pairs, select = ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
-local MouseIsOver = MouseIsOver
 local BNConnected = BNConnected
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNSetCustomMessage = BNSetCustomMessage
 local GetQuestDifficultyColor = GetQuestDifficultyColor
+local MouseIsOver = MouseIsOver
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsAltKeyDown = IsAltKeyDown
