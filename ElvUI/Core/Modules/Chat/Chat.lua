@@ -215,7 +215,7 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsMis, itsSimpy, itsMel, itsThradex, itsPooc
+	local itsElv, itsWife, itsSimpy, itsMel, itsMis, itsThradex, itsPooc
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
@@ -241,7 +241,7 @@ do --this can save some main file locals
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
-		itsTheWife = function() return ElvPink, WifeColors end
+		itsWife = function() return ElvPink, WifeColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
@@ -254,15 +254,19 @@ do --this can save some main file locals
 	local portal = GetCVar('portal')
 	if portal == 'US' then
 		if E.Classic then
-			-- Simpy (5099: Myzrael)
-			z['Player-5099-01947A77']	= itsSimpy -- Warlock: Simpy
+			-- Simpy Seasonal (5813: Wild Growth)
+			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
+			-- Simpy Era (5149: Mankrik)
+			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
+			-- Simpy Anniversary (6103: Dreamscythe)
+			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
+			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
 		elseif E.Mists then
 			-- Simpy (4373: Myzrael)
-			z['Player-4373-011657A7']	= itsSimpy -- Paladin:	Cutepally
 			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:	Kalline
 			z['Player-4373-040E5AA9']	= itsSimpy -- Druid:	Puttietat
 			z['Player-4373-03E24528']	= itsSimpy -- Hunter:	Arieva
-			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:	Imsojelly
+			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:		Imsojelly
 			z['Player-4373-04115928']	= itsSimpy -- [Horde] Shaman:	Yumi
 			-- Repooc
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
@@ -276,9 +280,9 @@ do --this can save some main file locals
 			z['Player-5-0E885971']		= itsElv -- Shaman
 			z['Player-162-0BB751DE']	= itsElv -- DH
 			z['Player-53-0DFD6F64']		= itsElv -- Hunter
-			--The Wife
-			z['Player-5-0E8B3558']		= itsTheWife -- Panda Mage
-			z['Player-53-0DFD6F4E']		= itsTheWife -- Cow Mage
+			-- Elvs Wife
+			z['Player-5-0E8B3558']		= itsWife -- Panda Mage
+			z['Player-53-0DFD6F4E']		= itsWife -- Cow Mage
 			-- Repooc
 			z['Dapooc-Spirestone']		= itsPooc	-- [Alliance] Druid
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
