@@ -215,8 +215,8 @@ do --this can save some main file locals
 		(a = a - (b and 1 or -1) if (b and a == 1 or a == 0) or a == #c then b = not b end return c[a])
 	]]
 
-	local itsElv, itsWife, itsSimpy, itsMel, itsMis, itsThradex, itsPooc
-	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
+	local itsElv, itsWife, itsSimpy, itsMel, itsMis, itsThradex, itsPooc, itsBot
+	do	-- Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
 		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
 		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end if r then tinsert(g, r) f[r] = w end return gsub(t, w, '\24') end
@@ -224,20 +224,22 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys: Turquoise (49CAF5), Sea Green (80C661), Khaki (FFF461), Salmon (F6885F), Orchid (CD84B9), Light Sky Blue (58CCF5)
+		-- Simpy: Turquoise (49CAF5), Sea Green (80C661), Khaki (FFF461), Salmon (F6885F), Orchid (CD84B9), Light Sky Blue (58CCF5)
 		local SimpyColors = function(t) return specialText(t, 0.28,0.79,0.96, 0.50,0.77,0.38, 1.00,0.95,0.38, 0.96,0.53,0.37, 0.80,0.51,0.72, 0.34,0.80,0.96) end
-		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
+		-- Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
-		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
+		-- Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
-		--Wife Colors
+		-- Wife Colors
 		local WifeColors = function(t) return specialText(t, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.5,0.75) end
-		--Mels: Fiery Rose (F94F6D), Saffron (F7C621), Emerald (4FC16D), Medium Slate Blue (7C7AF7), Cyan Process (11AFEA)
+		-- Mels: Fiery Rose (F94F6D), Saffron (F7C621), Emerald (4FC16D), Medium Slate Blue (7C7AF7), Cyan Process (11AFEA)
 		local MelColors = function(t) return specialText(t, 0.98,0.31,0.43, 0.97,0.78,0.13, 0.31,0.76,0.43, 0.49,0.48,0.97, 0.07,0.69,0.92) end
-		--Thradex: summer without you
+		-- Thradex: summer without you
 		local ThradexColors = function(t) return specialText(t, 0.00,0.60,0.09, 0.22,0.65,0.90, 0.22,0.65,0.90, 1.00,0.74,0.27, 1.00,0.66,0.00, 1.00,0.50,0.20, 0.92,0.31,0.23) end
-		--Repooc: Something to change it up a little
+		-- Repooc: Something to change it up a little
 		local PoocsColors = function(t) return specialText(t, 0.9,0.8,0.5) end
+		-- Botanica: Dark Cyan (048BA8), Mid Turquoise (52CCC0), Lime Green (32CD32), Khaki (EFEA5A), Coral (FF8348), Salmon (F24374), Blue Violet (9933ff), Sea Green (0DB39E)
+		local BotsColors = function(t) return specialText(t, 0.01,0.54,0.65, 0.30,0.80,0.64, 0.19,0.80,0.19, 0.93,0.91,0.35, 1.00,0.51,0.28, 0.94,0.26,0.45, 0.60,0.20,1.00, 0.05,0.70,0.61) end
 
 		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
@@ -246,6 +248,7 @@ do --this can save some main file locals
 		itsMis = function() return Rainbow, MisColors end
 		itsThradex = function() return PalmTree, ThradexColors end
 		itsPooc = function() return ElvBlue, PoocsColors end
+		itsBot = function() return Gem, BotsColors end
 	end
 
 	local z = {}
@@ -262,12 +265,12 @@ do --this can save some main file locals
 			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
 			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
 		elseif E.Mists then
-			-- Simpy (4373: Myzrael)
-			z['Player-4373-032FFEE2']	= itsSimpy -- Shaman:	Kalline
-			z['Player-4373-040E5AA9']	= itsSimpy -- Druid:	Puttietat
-			z['Player-4373-03E24528']	= itsSimpy -- Hunter:	Arieva
-			z['Player-4373-03351BC7']	= itsSimpy -- [Horde] DK:		Imsojelly
-			z['Player-4373-04115928']	= itsSimpy -- [Horde] Shaman:	Yumi
+			-- Simpy (4385: Pagle)
+			z['Player-4385-05E5F6DF']	= itsSimpy -- Shaman:	Kybi
+			z['Player-4385-05E5F60B']	= itsSimpy -- Druid:	Puttietat
+			z['Player-4385-05E5F466']	= itsSimpy -- Hunter:	Arbi
+			z['Player-4385-05E5F597']	= itsSimpy -- [Horde] DK:		Imsojelly
+			z['Player-4385-05E5F601']	= itsSimpy -- [Horde] Shaman:	Yube
 			-- Repooc
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
 		elseif E.Retail then
@@ -283,6 +286,16 @@ do --this can save some main file locals
 			-- Elvs Wife
 			z['Player-5-0E8B3558']		= itsWife -- Panda Mage
 			z['Player-53-0DFD6F4E']		= itsWife -- Cow Mage
+			-- Botanica
+			z['Player-115-01C73081']	= itsBot -- Druid:		Botanica
+			z['Player-115-00D6F2F0']	= itsBot -- Shaman:		Elysium
+			z['Player-115-00D69928']	= itsBot -- Priest:		Kamasuture
+			z['Player-115-016AA043']	= itsBot -- Paladin:	Pliades
+			z['Player-115-01492461']	= itsBot -- Warlock:	Ophiuchi
+			z['Player-115-022388DF']	= itsBot -- DK:			Chthonica
+			z['Player-115-00D75DD8']	= itsBot -- Druid:		Aluragon
+			z['Player-115-00977558']	= itsBot -- Hunter:		Pavonis
+			z['Player-115-007A62F0']	= itsBot -- Mage:		Aliandrill
 			-- Repooc
 			z['Dapooc-Spirestone']		= itsPooc	-- [Alliance] Druid
 			z['Sifpooc-Stormrage']		= itsPooc	-- [Alliance] DH
