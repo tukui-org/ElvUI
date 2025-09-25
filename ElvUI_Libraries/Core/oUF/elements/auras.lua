@@ -167,7 +167,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		name, _, icon = oUF:GetSpellInfo(spellId)
 
 		if forceShow then
-			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and 'Magic') or 'Poison', 0, 60, 'player'
+			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and 'Magic') or 'Curse', 0, 60, 'player'
 		end
 	end
 
