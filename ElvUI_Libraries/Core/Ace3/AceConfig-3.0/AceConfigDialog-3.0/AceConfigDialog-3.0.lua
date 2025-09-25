@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 92 -- based off 87
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 93 -- based off 87
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -24,10 +24,18 @@ AceConfigDialog.frame.closeAllOverride = AceConfigDialog.frame.closeAllOverride 
 -- Lua APIs
 local tinsert, tsort, tremove, wipe = table.insert, table.sort, table.remove, table.wipe
 local strmatch, format = string.match, string.format
-local error = error
 local pairs, next, select, type, unpack, ipairs = pairs, next, select, type, unpack, ipairs
-local tostring, tonumber = tostring, tonumber
+local tostring, tonumber, error = tostring, tonumber, error
 local math_min, math_max, math_floor = math.min, math.max, math.floor
+
+local _G = _G
+local geterrorhandler = geterrorhandler
+local CloseSpecialWindows = CloseSpecialWindows
+local CreateFrame = CreateFrame
+local PlaySound = PlaySound
+local Settings = Settings
+
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 
 local emptyTbl = {}
 
@@ -626,8 +634,8 @@ do
 		local function newButton(newText)
 			local button = CreateFrame("Button", nil, frame)
 			button:SetSize(128, 21)
-			button:SetNormalFontObject(GameFontNormal)
-			button:SetHighlightFontObject(GameFontHighlight)
+			button:SetNormalFontObject(_G.GameFontNormal)
+			button:SetHighlightFontObject(_G.GameFontHighlight)
 			button:SetNormalTexture(130763) -- "Interface\\Buttons\\UI-DialogBox-Button-Up"
 			button:GetNormalTexture():SetTexCoord(0.0, 1.0, 0.0, 0.71875)
 			button:SetPushedTexture(130761) -- "Interface\\Buttons\\UI-DialogBox-Button-Down"
@@ -1522,11 +1530,11 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 
 					local fontSize = GetOptionsMemberValue("fontSize",v, options, path, appName)
 					if fontSize == "medium" then
-						control:SetFontObject(GameFontHighlight)
+						control:SetFontObject(_G.GameFontHighlight)
 					elseif fontSize == "large" then
-						control:SetFontObject(GameFontHighlightLarge)
+						control:SetFontObject(_G.GameFontHighlightLarge)
 					else -- small or invalid
-						control:SetFontObject(GameFontHighlightSmall)
+						control:SetFontObject(_G.GameFontHighlightSmall)
 					end
 
 					local imageCoords = GetOptionsMemberValue("imageCoords",v, options, path, appName)
@@ -2153,7 +2161,7 @@ function AceConfigDialog:AddToBlizOptions(appName, name, parent, ...)
 			end
 		else
 			group:SetName(name or appName, parent)
-			InterfaceOptions_AddCategory(group.frame)
+			_G.InterfaceOptions_AddCategory(group.frame)
 		end
 		return group.frame, group.frame.name
 	else

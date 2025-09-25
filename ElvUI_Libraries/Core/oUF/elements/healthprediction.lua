@@ -85,6 +85,14 @@ local oUF = ns.oUF
 
 local HealComm = LibStub('LibHealComm-4.0', true)
 
+local select = select
+local UnitGUID = UnitGUID
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
+
 local function UpdateSize(self, event, unit)
 	local element = self.HealthPrediction
 

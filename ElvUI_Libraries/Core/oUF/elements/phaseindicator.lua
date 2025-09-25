@@ -36,6 +36,10 @@ OnEnter and/or OnLeave handlers.
 local _, ns = ...
 local oUF = ns.oUF
 
+local _G = _G
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsConnected = UnitIsConnected
+local UnitPhaseReason = UnitPhaseReason
 local GameTooltip = GameTooltip
 
 --[[ Override: PhaseIndicator:UpdateTooltip()
@@ -46,7 +50,7 @@ Used to populate the tooltip when the widget is hovered.
 local function UpdateTooltip(element)
 	if GameTooltip:IsForbidden() then return end
 
-	local text = PartyUtil.GetPhasedReasonString(element.reason, element.__owner.unit)
+	local text = _G.PartyUtil.GetPhasedReasonString(element.reason, element.__owner.unit)
 	if(text) then
 		GameTooltip:SetText(text, nil, nil, nil, nil, true)
 		GameTooltip:Show()

@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 MultiLineEditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "MultiLineEditBox-ElvUI", 36
+local Type, Version = "MultiLineEditBox-ElvUI", 37
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -9,6 +9,9 @@ local _G = _G
 local tostring, pairs = tostring, pairs
 local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
+
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+
 local ACCEPT = ACCEPT
 
 --[[-----------------------------------------------------------------------------
@@ -102,7 +105,7 @@ end
 local function OnReceiveDrag(self)                                               -- EditBox / ScrollFrame
 	local type, _, info, spellID = GetCursorInfo()
 	if type == "spell" then
-		local spell = spellID and C_Spell.GetSpellInfo(spellID, info)
+		local spell = spellID and C_Spell_GetSpellInfo(spellID, info)
 		info = (spell and spell.name) or nil
 	elseif type ~= "item" then
 		return

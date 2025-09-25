@@ -45,7 +45,6 @@ local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UIParent = UIParent
-local UnitExists = UnitExists
 local UnitName = UnitName
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID

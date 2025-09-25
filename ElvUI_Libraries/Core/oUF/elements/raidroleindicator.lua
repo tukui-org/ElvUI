@@ -25,6 +25,11 @@ This element updates by changing the texture.
 local _, ns = ...
 local oUF = ns.oUF
 
+local GetPartyAssignment = GetPartyAssignment
+local UnitAffectingCombat = UnitAffectingCombat
+local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitInRaid = UnitInRaid
+
 local MAINTANK_ICON = [[Interface\GROUPFRAME\UI-GROUP-MAINTANKICON]]
 local MAINASSIST_ICON = [[Interface\GROUPFRAME\UI-GROUP-MAINASSISTICON]]
 

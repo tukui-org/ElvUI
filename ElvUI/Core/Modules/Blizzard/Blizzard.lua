@@ -3,7 +3,9 @@ local BL = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, wipe = ipairs, wipe
+local wipe = wipe
+local next = next
+local ipairs = ipairs
 
 local UIParent = UIParent
 local UnitXP = UnitXP

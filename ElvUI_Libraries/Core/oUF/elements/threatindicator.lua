@@ -34,6 +34,8 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
+local UnitThreatSituation = UnitThreatSituation
+
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 

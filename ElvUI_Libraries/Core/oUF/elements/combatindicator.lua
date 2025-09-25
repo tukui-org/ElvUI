@@ -25,6 +25,8 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
+local UnitAffectingCombat = UnitAffectingCombat
+
 local function Update(self, event, unit)
 	if not unit or self.unit ~= unit then return end
 	local element = self.CombatIndicator

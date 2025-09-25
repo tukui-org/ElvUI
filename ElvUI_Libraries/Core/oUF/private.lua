@@ -2,6 +2,19 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
+local print = print
+local type, assert = type, assert
+local select, error = select, error
+local pcall, xpcall = pcall, xpcall
+local strjoin, format = strjoin, format
+local geterrorhandler = geterrorhandler
+local debugstack = debugstack
+
+local UnitExists = UnitExists
+local UnitIsVisible = UnitIsVisible
+local UnitSelectionType = UnitSelectionType
+local UnitThreatSituation = UnitThreatSituation
+
 function Private.argcheck(value, num, ...)
 	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got " .. type(num) .. ')')
 
@@ -9,9 +22,9 @@ function Private.argcheck(value, num, ...)
 		if(type(value) == select(i, ...)) then return end
 	end
 
-	local types = string.join(', ', ...)
+	local types = strjoin(', ', ...)
 	local name = debugstack(2,2,0):match(": in function [`<](.-)['>]")
-	error(string.format("Bad argument #%d to '%s' (%s expected, got %s)", num, name, types, type(value)), 3)
+	error(format("Bad argument #%d to '%s' (%s expected, got %s)", num, name, types, type(value)), 3)
 end
 
 function Private.print(...)
@@ -19,7 +32,7 @@ function Private.print(...)
 end
 
 function Private.error(...)
-	Private.print('|cffff0000Error:|r ' .. string.format(...))
+	Private.print('|cffff0000Error:|r ' .. format(...))
 end
 
 function Private.nierror(...)

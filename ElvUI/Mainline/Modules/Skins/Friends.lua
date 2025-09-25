@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local pairs = pairs
-local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame

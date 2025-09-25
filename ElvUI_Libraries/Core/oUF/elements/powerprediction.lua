@@ -43,7 +43,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
--- ElvUI block
 local next = next
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
 local UnitCastingInfo = UnitCastingInfo
@@ -53,7 +52,6 @@ local UnitIsUnit = UnitIsUnit
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 local ALT_POWER_BAR_PAIR_DISPLAY_INFO = ALT_POWER_BAR_PAIR_DISPLAY_INFO
--- end block
 
 local function UpdateSize(self, event, unit)
 	local element = self.PowerPrediction

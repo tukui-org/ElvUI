@@ -94,6 +94,21 @@ local unitSelectionType = Private.unitSelectionType
 
 local unpack = unpack
 
+local UnitClass = UnitClass
+local UnitInParty = UnitInParty
+local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitInRaid = UnitInRaid
+local UnitIsConnected = UnitIsConnected
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local UnitReaction = UnitReaction
+local UnitThreatSituation = UnitThreatSituation
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 

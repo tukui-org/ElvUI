@@ -25,6 +25,12 @@ This element updates by changing the texture.
 local _, ns = ...
 local oUF = ns.oUF
 
+local IsInInstance = IsInInstance
+local UnitIsGroupLeader = UnitIsGroupLeader
+local UnitLeadsAnyGroup = UnitLeadsAnyGroup
+local HasLFGRestrictions = HasLFGRestrictions
+local UnitAffectingCombat = UnitAffectingCombat
+
 local function Update(self, event)
 	local element = self.LeaderIndicator
 	local unit = self.unit

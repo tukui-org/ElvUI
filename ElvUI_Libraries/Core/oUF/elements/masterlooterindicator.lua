@@ -26,6 +26,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsUnit = UnitIsUnit

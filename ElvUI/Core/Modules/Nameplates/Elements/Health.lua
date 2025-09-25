@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 
 local ipairs = ipairs
 local unpack = unpack
+
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitClass = UnitClass
