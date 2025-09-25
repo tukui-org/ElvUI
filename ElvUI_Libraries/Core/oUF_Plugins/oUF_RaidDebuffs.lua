@@ -98,7 +98,7 @@ end
 local function UpdateDebuff(element, aura, forced, stackThreshold)
 	local name, icon, count, duration, timeMod, spellID, debuffType, expiration
 	if forced then
-		spellID, count, duration, expiration, stackThreshold, timeMod, debuffType = 5782, 5, 0, 60, 0, 1, 'Magic'
+		spellID, count, duration, expiration, stackThreshold, timeMod, debuffType = 5782, 5, 0, 60, 0, 1, 'Curse'
 		name, _, icon = oUF:GetSpellInfo(spellID)
 	elseif aura then
 		name, icon, count, duration, timeMod, spellID, debuffType, expiration = aura.name, aura.icon, aura.applications, aura.duration, aura.timeMod, aura.spellId, aura.dispelName, aura.expirationTime
