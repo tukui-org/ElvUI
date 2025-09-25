@@ -30,12 +30,13 @@ local math_min, math_max, math_floor = math.min, math.max, math.floor
 
 local _G = _G
 local geterrorhandler = geterrorhandler
-local CloseSpecialWindows = CloseSpecialWindows
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
 local Settings = Settings
 
 local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
+
+-- GLOBALS: CloseSpecialWindows
 
 local emptyTbl = {}
 
@@ -1884,9 +1885,6 @@ function AceConfigDialog:FeedGroup(appName,options,container,rootframe,path, isR
 	end
 end
 
-local old_CloseSpecialWindows
-
-
 local function RefreshOnUpdate(this)
 	for appName in pairs(this.closing) do
 		if AceConfigDialog.OpenFrames[appName] then
@@ -1981,9 +1979,10 @@ end
 -- @param appName The application name as given to `:RegisterOptionsTable()`
 -- @param container An optional container frame to feed the options into
 -- @param ... The path to open after creating the options window (see `:SelectGroup` for details)
+local old_CloseSpecialWindows
 function AceConfigDialog:Open(appName, container, ...)
 	if not old_CloseSpecialWindows then
-		old_CloseSpecialWindows = CloseSpecialWindows
+		old_CloseSpecialWindows = _G.CloseSpecialWindows
 		CloseSpecialWindows = function()
 			local found = old_CloseSpecialWindows()
 			return self:CloseAll() or found
