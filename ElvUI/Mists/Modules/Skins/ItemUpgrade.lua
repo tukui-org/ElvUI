@@ -7,15 +7,20 @@ function S:Blizzard_ItemUpgradeUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
 	-- Main Frame
-	local frame = _G.ItemUpgradeFrame
-	frame:StripTextures()
-	frame:SetTemplate('Transparent')
+	local ItemUpgrade = _G.ItemUpgradeFrame
+	ItemUpgrade:StripTextures()
+	ItemUpgrade:SetTemplate('Transparent')
 
-	local ItemButton = _G.ItemUpgradeFrame.ItemButton
+	local ItemButton = ItemUpgrade.ItemButton
 	if ItemButton then
 		ItemButton:StripTextures()
 		ItemButton:SetTemplate(nil, true)
 		ItemButton:StyleButton()
+	end
+
+	local ButtonFrame = ItemUpgrade.ButtonFrame
+	if ButtonFrame then
+		ButtonFrame:StripTextures()
 	end
 
 	-- Close Button
@@ -27,7 +32,6 @@ function S:Blizzard_ItemUpgradeUI()
 	-- Remaining Artwork
 	_G.ItemUpgradeFrameMoneyFrame:StripTextures()
 	_G.ItemUpgradeFrameMoneyFrame:SetTemplate('Default')
-	_G.ItemUpgradeFrame.ButtonFrame:StripTextures()
 end
 
 S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')
