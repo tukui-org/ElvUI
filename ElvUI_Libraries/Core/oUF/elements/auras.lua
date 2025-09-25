@@ -198,8 +198,8 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 
 	button.aura = aura or nil
 	button.filter = filter or nil
-	button.isDebuff = isDebuff or nil
 	button.auraInstanceID = auraInstanceID or nil
+	button.isDebuff = (forceShow and filter == 'HARMFUL') or isDebuff or nil
 	button.isPlayer = (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
