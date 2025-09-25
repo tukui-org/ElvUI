@@ -113,9 +113,6 @@ local UnitChannelInfo = UnitChannelInfo
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 
--- GLOBALS: PetCastingBarFrame, PetCastingBarFrame_OnLoad
--- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
-
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration

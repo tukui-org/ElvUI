@@ -25,6 +25,8 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
+local UnitIsQuestBoss = UnitIsQuestBoss
+
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 

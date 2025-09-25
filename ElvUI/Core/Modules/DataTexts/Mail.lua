@@ -4,8 +4,10 @@ local DT = E:GetModule('DataTexts')
 local next = next
 local pairs = pairs
 local strjoin = strjoin
+
 local HasNewMail = HasNewMail
 local GetLatestThreeSenders = GetLatestThreeSenders
+
 local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 local MAIL_LABEL = MAIL_LABEL
 

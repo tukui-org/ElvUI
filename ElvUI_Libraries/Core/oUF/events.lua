@@ -14,6 +14,10 @@ local registerUnitEvent = frame_metatable.__index.RegisterUnitEvent
 local unregisterEvent = frame_metatable.__index.UnregisterEvent
 local isEventRegistered = frame_metatable.__index.IsEventRegistered
 
+local next, type, assert = next, type, assert
+local format, tinsert = format, tinsert
+local setmetatable = setmetatable
+
 -- to update unit frames correctly, some events need to be registered for
 -- a specific combination of primary and secondary units
 local secondaryUnits = {
@@ -111,7 +115,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 				if(infunc == func) then return end
 			end
 
-			table.insert(curev, func)
+			tinsert(curev, func)
 		end
 
 		if(unitless or self.__eventless) then
@@ -145,7 +149,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 
 				-- be helpful and throw a custom error when attempting to register
 				-- an event that is unitless
-				assert(isUnitEvent(event, unit1), string.format('Event "%s" is not an unit event', event))
+				assert(isUnitEvent(event, unit1), format('Event "%s" is not an unit event', event))
 
 				registerUnitEvent(self, event, unit1, unit2 or '')
 			end

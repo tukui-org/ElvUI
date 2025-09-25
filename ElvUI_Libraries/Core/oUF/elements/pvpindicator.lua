@@ -35,6 +35,13 @@ The `Badge` sub-widget has to be on a lower sub-layer than the `PvP` texture.
 local _, ns = ...
 local oUF = ns.oUF
 
+local GetHonorRewardInfo = C_PvP.GetHonorRewardInfo
+local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
+local UnitFactionGroup = UnitFactionGroup
+local UnitHonorLevel = UnitHonorLevel
+local UnitIsMercenary = UnitIsMercenary
+local UnitIsPVP = UnitIsPVP
+
 local function Update(self, event, unit)
 	if(unit and unit ~= self.unit) then return end
 
@@ -53,7 +60,7 @@ local function Update(self, event, unit)
 
 	local status
 	local factionGroup = UnitFactionGroup(unit) or 'Neutral'
-	local honorRewardInfo = oUF.isRetail and C_PvP.GetHonorRewardInfo(UnitHonorLevel(unit))
+	local honorRewardInfo = oUF.isRetail and GetHonorRewardInfo(UnitHonorLevel(unit))
 
 	if(UnitIsPVPFreeForAll(unit)) then
 		status = 'FFA'
