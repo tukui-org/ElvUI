@@ -157,16 +157,17 @@ local function customFilter(element, unit, button, name)
 	end
 end
 
-local function updateAura(element, unit, aura, index, offset, filter, visible)
+local function updateAura(frame, which, unit, aura, index, offset, filter, visible)
 	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = UnpackAuraData(aura)
 
+	local element = frame[which]
 	local forceShow = element.forceShow
 	if forceShow or element.forceCreate then
 		spellId = 5782
 		name, _, icon = oUF:GetSpellInfo(spellId)
 
 		if forceShow then
-			applications, dispelName, duration, expirationTime, sourceUnit = 5, 'Magic', 0, 60, 'player'
+			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and 'Magic') or 'Curse', 0, 60, 'player'
 		end
 	end
 
@@ -198,8 +199,8 @@ local function updateAura(element, unit, aura, index, offset, filter, visible)
 
 	button.aura = aura or nil
 	button.filter = filter or nil
-	button.isDebuff = isDebuff or nil
 	button.auraInstanceID = auraInstanceID or nil
+	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
 	button.isPlayer = (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
@@ -317,7 +318,7 @@ local function SetPosition(element, from, to)
 	end
 end
 
-local function filterIcons(element, unit, filter, limit, offset, dontHide)
+local function filterIcons(frame, which, unit, filter, limit, offset, dontHide)
 	if not offset then offset = 0 end
 
 	local visible = 0
@@ -325,11 +326,12 @@ local function filterIcons(element, unit, filter, limit, offset, dontHide)
 	local created = 0
 
 	local index = 1
+	local element = frame[which]
 	local forceShow = element.forceShow
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while (aura or forceShow) and (visible < limit) do
-		local result = updateAura(element, unit, aura, index, offset, filter, visible)
+		local result = updateAura(frame, which, unit, aura, index, offset, filter, visible)
 		if result == VISIBLE then
 			visible = visible + 1
 		elseif result == HIDDEN then
@@ -372,8 +374,8 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		local filter = auras.filter or 'HELPFUL|HARMFUL'
 		local hasBoth = filter == 'HELPFUL|HARMFUL'
 
-		local visibleBuffs = filterIcons(auras, unit, (hasBoth and 'HELPFUL') or filter, num, nil, hasBoth)
-		local visibleDebuffs = hasBoth and filterIcons(auras, unit, 'HARMFUL', num - visibleBuffs, visibleBuffs) or 0
+		local visibleBuffs = filterIcons(self, 'Auras', unit, (hasBoth and 'HELPFUL') or filter, num, nil, hasBoth)
+		local visibleDebuffs = hasBoth and filterIcons(self, 'Auras', unit, 'HARMFUL', num - visibleBuffs, visibleBuffs) or 0
 
 		auras.visibleAuras = visibleBuffs + visibleDebuffs
 
@@ -397,7 +399,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		wipe(buffs.active)
 
 		local num = buffs.num or 32
-		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', num)
+		local visibleBuffs = filterIcons(self, 'Buffs', unit, buffs.filter or 'HELPFUL', num)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
@@ -420,7 +422,7 @@ local function UpdateAuras(self, event, unit, updateInfo)
 		wipe(debuffs.active)
 
 		local num = debuffs.num or 32
-		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', num)
+		local visibleDebuffs = filterIcons(self, 'Debuffs', unit, debuffs.filter or 'HARMFUL', num)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange
