@@ -239,12 +239,12 @@ function S:FriendsFrame()
 	S:HandleButton(_G.FriendsFrameUnsquelchButton, true)
 	S:HandleScrollBar(_G.FriendsFrameIgnoreScrollFrameScrollBar)
 
-
 	--Who Frame
 	_G.WhoFrame:StripTextures()
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
-	_G.WhoFrameEditBox:StripTextures()
+
+	S:HandleBlizzardRegions(_G.WhoFrameEditBox)
 	_G.WhoFrameEditBox:CreateBackdrop()
 	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBox.Left)
 	_G.WhoFrameEditBox.backdrop:Point('BOTTOMRIGHT', _G.WhoFrameEditBox.Right)
