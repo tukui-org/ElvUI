@@ -67,7 +67,6 @@ Group Types
 
   Select- Same as Tab but with entries in a dropdown rather than tabs
 
-
   Inline Groups
     - Will not become nodes of a select group, they will be effectivly part of thier parent group seperated by a border
     - If declared on a direct child of a root node of a select group, they will appear above the group container control
@@ -173,7 +172,6 @@ local allIsLiteral = {
 local function GetOptionsMemberValue(membername, option, options, path, appName, ...)
 	--get definition for the member
 	local inherits = isInherited[membername]
-
 
 	--get the member of the option, traversing the tree if it can be inherited
 	local member
@@ -311,8 +309,6 @@ local function compareOptions(a,b)
 	return OrderA < OrderB
 end
 
-
-
 --builds 2 tables out of an options group
 -- keySort, sorted keys
 -- opts, combined options from .plugins and args
@@ -439,7 +435,6 @@ end
 -- @param ... The path to the key that should be selected
 function AceConfigDialog:SelectGroup(appName, ...)
 	local path = new()
-
 
 	local app = reg:GetOptionsTable(appName)
 	if not app then
@@ -890,8 +885,6 @@ local function ActivateControl(widget, event, ...)
 		elseif type(func) == "function" then
 			safecall(func,info, ...)
 		end
-
-
 
 		local iscustom = user.rootframe:GetUserData("iscustom")
 		local basepath = user.rootframe:GetUserData("basepath") or emptyTbl
@@ -1611,7 +1604,6 @@ local function BuildPath(path, ...)
 	end
 end
 
-
 local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 	local user = widget:GetUserDataTable()
 	if not user then return end
@@ -1658,7 +1650,6 @@ local function TreeOnButtonLeave(widget, event, value, button)
 	AceConfigDialog.tooltip:Hide()
 	AceConfigDialog.tooltip:ClearAllPoints()
 end
-
 
 local function GroupExists(appName, options, path, uniquevalue)
 	if not uniquevalue then return false end
@@ -1709,8 +1700,6 @@ local function GroupSelected(widget, event, uniquevalue)
 	del(feedpath)
 end
 
-
-
 --[[
 -- INTERNAL --
 This function will feed one group, and any inline child groups into the given container
@@ -1732,7 +1721,6 @@ function AceConfigDialog:FeedGroup(appName,options,container,rootframe,path, isR
 	--follow the path to get to the curent group
 	local inline
 	local grouptype, parenttype = options.childGroups, "none"
-
 
 	for i = 1, #path do
 		local v = path[i]
