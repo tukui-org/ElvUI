@@ -1,4 +1,4 @@
-### Version ?? [ TBA ]
+### Version 14.00 [ September 25th 2025 ]
 *   Performance
     *   Removed our debugging profiler and event pooler system.
     *   Reworked how Tags are updated on Unitframes and Nameplates.
