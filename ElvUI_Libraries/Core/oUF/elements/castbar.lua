@@ -103,7 +103,6 @@ local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame
 -- ElvUI block
 local wipe = wipe
 local next = next
-local strsub = strsub
 local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -267,7 +266,7 @@ local function ShouldShow(element, unit)
 	return element.__owner.unit == unit
 end
 
-local function CastStart(self, event, unit, castGUID, spellID, castTime)
+local function CastStart(self, event, unit, arg2, spellID, castTime)
 	local element = self.Castbar
 	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
@@ -289,7 +288,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castTime * speedMod
 			end
 
-			castID = castGUID
+			castID = arg2 -- castGUID
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
@@ -320,8 +319,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
 
-	if strsub(event, 1, 14) == 'UNIT_SPELLCAST' then
-		UpdateCurrentTarget(element)
+	if real == 'UNIT_SPELLCAST_SENT' then
+		UpdateCurrentTarget(element, arg2) -- target
+	elseif unit ~= 'player' or (real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
+		UpdateCurrentTarget(element) -- we want to ignore the start events on player unit because sent adds the target info
 	end
 
 	if element.empowering then
