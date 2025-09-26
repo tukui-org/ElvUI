@@ -755,7 +755,7 @@ local function verifyAura(frame, event, unit, auraInstanceID, aura)
 end
 
 local function ShouldUpdateTag(frame, event, unit)
-	if frame.isForced then return end -- isForced prevents spam in ElvUI
+	if not frame:IsShown() or frame.isForced then return end -- isForced prevents spam in ElvUI
 
 	if unitlessEvents[event] then
 		return true
@@ -788,7 +788,9 @@ end
 
 local function HandlerEvent(handler, event, unit, updateInfo)
 	local strings = handler.eventStrings[event]
-	if not strings or not ShouldUpdateTag(handler.frame, event, unit) then return end
+	if not strings then return end
+
+	if not ShouldUpdateTag(handler.frame, event, unit) then return end
 
 	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then
 		return -- we only want to let auras trigger an update when they are allowed
