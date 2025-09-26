@@ -383,7 +383,7 @@ function E:ResetProfile()
 end
 
 function E:OnProfileReset()
-	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
+	E:ResetProfile()
 end
 
 function E:ResetPrivateProfile()
@@ -391,7 +391,7 @@ function E:ResetPrivateProfile()
 end
 
 function E:OnPrivateProfileReset()
-	E:StaticPopup_Show('RESET_PRIVATE_PROFILE_PROMPT')
+	E:ResetPrivateProfile()
 end
 
 function E:OnEnable()
