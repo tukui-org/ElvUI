@@ -297,7 +297,7 @@ function UF:UpdateAuraSettings(button)
 end
 
 function UF:EnableDisable_Auras(frame)
-	if frame.db.debuffs.enable or frame.db.buffs.enable then
+	if frame.db.debuffs.enable or frame.db.buffs.enable or frame.db.auras.enable then
 		if not frame:IsElementEnabled('Auras') then
 			frame:EnableElement('Auras')
 		end
