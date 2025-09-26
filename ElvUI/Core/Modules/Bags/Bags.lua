@@ -2526,16 +2526,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
-		local anchorButton = f.sortButton
-
-		if not B.BagBar then
-			f.bagsButton:Show()
-			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
-			anchorButton = f.bagsButton -- Update the anchor for the next button.
-		else
-			f.bagsButton:Hide() -- Ensure the button is hidden if the BagBar is enabled.
-		end
-
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
 		f.pickupGold:SetScript('OnClick', B.Container_ClickGold)
 
 		-- Stack/Transfer Button
@@ -2554,21 +2545,18 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
-			f.keyButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.keyButton, 134237) -- Interface\ICONS\INV_Misc_Key_03
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
 			f.keyButton:SetScript('OnClick', B.Container_ToggleKeyring)
-			anchorButton = f.keyButton -- Update the anchor for the next button.
 		end
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(20)
 		f.vendorGraysButton:SetTemplate()
-		f.vendorGraysButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor Grays"]
@@ -2608,6 +2596,9 @@ function B:ConstructContainerFrame(name, isBank)
 				f.currencyButton[i] = currency
 			end
 		end
+
+		-- position buttons
+		B:PositionButtons(f)
 	end
 
 	tinsert(_G.UISpecialFrames, name)
@@ -2886,6 +2877,26 @@ end
 function B:ToggleSortButtonState(isBank)
 	local button = (isBank and B.BankFrame.sortButton) or B.BagFrame.sortButton
 	button:SetEnabled(not B.db[isBank and 'disableBankSort' or 'disableBagSort'])
+end
+
+function B:PositionButtons(f)
+	if not f then return end
+
+	local bagsShown = not B.BagBar or B.BagBar.db.justBackpack
+	local bagsAnchor = bagsShown and f.bagsButton or f.sortButton
+
+	f.bagsButton:SetShown(bagsShown)
+
+	if f.keyButton then
+		f.keyButton:Point('RIGHT', bagsAnchor, 'LEFT', -5, 0)
+	end
+
+	f.vendorGraysButton:Point('RIGHT', f.keyButton or bagsAnchor, 'LEFT', -5, 0)
+
+	-- also hide the bags holder if it was open
+	if f.ContainerHolder:IsShown() then
+		ToggleFrame(f.ContainerHolder)
+	end
 end
 
 function B:Container_OnShow()

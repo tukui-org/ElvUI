@@ -135,6 +135,8 @@ function B:SizeAndPositionBagBar()
 		B:BagBar_UpdateVisibility()
 	end
 
+	B:PositionButtons(B.BagFrame) -- show the bag button again
+
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
 
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
