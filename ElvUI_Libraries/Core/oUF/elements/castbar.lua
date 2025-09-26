@@ -277,6 +277,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
+		event = 'UNIT_SPELLCAST_START'
 
 		if name then
 			if castDuration and castDuration ~= 0 then
