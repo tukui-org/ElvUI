@@ -93,7 +93,7 @@ local POWERTYPE_CHI = Enum.PowerType.Chi or 12
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 
 local CreateFrame = CreateFrame
-local C_Timer_NewTimer = C_Timer.NewTimer
+local C_Timer_After = C_Timer.After
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
 local IsResting = IsResting
@@ -804,7 +804,7 @@ local function HandlerEvent(handler, event, unit, updateInfo)
 			end
 		end
 
-		eventTickers[handler] = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
+		eventTickers[handler] = C_Timer_After(eventTimerThreshold, handler.HandlerTicker)
 	end
 end
 
