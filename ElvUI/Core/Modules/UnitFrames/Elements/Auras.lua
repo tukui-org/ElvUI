@@ -589,15 +589,13 @@ do
 		if #list > 0 then wipe(list) end
 
 		local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
-
-		local temp = { strsplit(',', priority) }
-		for i = 1, #temp do
-			local name = temp[i]
-			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(name)
+		for _, filter in next, { strsplit(',', priority) } do
+			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(filter)
+			local name = specialOldNames[real] or real
 			local custom = filters[real]
 
-			if special[specialOldNames[real] or real] or custom then
-				tinsert(list, { name = real, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
+			if special[name] or custom then
+				tinsert(list, { name = name, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
 			end
 		end
 
