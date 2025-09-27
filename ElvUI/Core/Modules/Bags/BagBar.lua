@@ -236,15 +236,13 @@ function B:BagBar_UpdateDesaturated(inactive)
 
 	-- Now, apply the appearance to each button
 	for _, button in ipairs(B.BagBar.buttons) do
-		if button.BagID and button.BagID >= 0 then
-			local desaturate = inactive and not B:IsBagShown(button.BagID)
+		local desaturate = inactive and not B:IsBagShown(button.BagID)
 
-			local icon = button.icon or _G[button:GetName()..'IconTexture']
-			icon:SetDesaturated(desaturate)
+		local icon = button.icon or _G[button:GetName()..'IconTexture']
+		icon:SetDesaturated(desaturate)
 
-			if button.searchOverlay then
-				button.searchOverlay:SetShown(desaturate)
-			end
+		if button.searchOverlay then
+			button.searchOverlay:SetShown(desaturate)
 		end
 	end
 end
@@ -334,6 +332,16 @@ function B:LoadBagBar()
 		KeyRing:StyleButton(true)
 
 		B:SetButtonTexture(KeyRing, [[Interface\ICONS\INV_Misc_Key_03]])
+
+		KeyRing.icon = KeyRing:GetNormalTexture()
+
+		if not KeyRing.searchOverlay then
+			KeyRing.searchOverlay = KeyRing:CreateTexture(nil, 'OVERLAY', nil, 1)
+			KeyRing.searchOverlay:SetInside()
+			KeyRing.searchOverlay:Hide()
+		end
+
+		KeyRing.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 
 		tinsert(B.BagBar.buttons, KeyRing)
 	end
