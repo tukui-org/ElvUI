@@ -35,8 +35,9 @@ oUF.AuraInfo = auraInfo -- export it, not filtered
 oUF.AuraFiltered = auraFiltered -- by filter
 
 local AlwaysAllow = { -- spells could get stuck but it's very rare, this table is for that
-	[335904] = true, -- Doom Winds: Unable to gain effects of Doom Winds
-	[25771] = oUF.myclass == 'PALADIN' -- Forbearance: Blizzard has it listed as a priority debuff
+	[335904] = oUF.myclass == 'SHAMAN' or nil,	-- Doom Winds: Unable to gain effects of Doom Winds.
+	[382912] = oUF.myclass == 'DRUID' or nil,	-- Well-Honed Instincts: You have recently gained Frenzied Regeneration from Well-Honed Instincts.
+	[25771] = oUF.myclass == 'PALADIN' or nil,	-- Forbearance: Cannot be affected by Divine Shield, Blessing of Protection, or Lay on Hands.
 }
 
 local eventFrame = CreateFrame('Frame')
