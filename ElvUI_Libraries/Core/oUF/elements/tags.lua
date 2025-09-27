@@ -769,45 +769,47 @@ local function ShouldUpdateTag(frame, event, unit)
 	end
 end
 
-local function HandlerTicker(handler)
-	local ticker = eventTickers[handler]
-	if not ticker then return end
+local function UpdateStrings(strs)
+	if not strs then return end
 
-	if ticker.strings then
-		for fs in next, ticker.strings do
-			if fs:IsVisible() then
-				fs:UpdateTag()
-			end
+	for fs in next, strs do
+		if fs:IsVisible() then
+			fs:UpdateTag()
 		end
 	end
+end
 
-	ticker:Cancel()
+local function HandlerTicker(handler)
+	local ticker = eventTickers[handler]
+	if ticker then
+		ticker:Cancel()
+	end
+
+	for event in next, handler.tickedEvents do
+		UpdateStrings(handler.eventStrings[event])
+
+		handler.tickedEvents[event] = nil
+	end
 
 	eventTickers[handler] = nil
 end
 
 local function HandlerEvent(handler, event, unit, updateInfo)
-	local strings = handler.eventStrings[event]
-	if not strings then return end
-
-	if not ShouldUpdateTag(handler.frame, event, unit) then return end
-
-	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then
-		return -- we only want to let auras trigger an update when they are allowed
-	end
+	handler.tickedEvents[event] = true -- so we know what events fired
 
 	local ticker = eventTickers[handler]
-	if ticker then -- processed within the timer
-		ticker.strings = strings
-	else
-		for fs in next, strings do
-			if fs:IsVisible() then
-				fs:UpdateTag()
-			end
-		end
+	if ticker then return end -- already waiting
 
-		eventTickers[handler] = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
-	end
+	-- we only want to show tags on validated units
+	if not ShouldUpdateTag(handler.frame, event, unit) then return end
+
+	-- we only want to let auras trigger an update when they are allowed
+	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then return end
+
+	-- lets spawn a ticker to handle stuff
+	ticker = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
+
+	eventTickers[handler] = ticker
 end
 
 local function GenerateTicker(handler)
@@ -822,6 +824,7 @@ local function RegisterEvent(frame, event, fs)
 		handler:SetScript('OnEvent', HandlerEvent)
 		handler.HandlerTicker = GenerateTicker(handler)
 		handler.eventStrings = {}
+		handler.tickedEvents = {}
 		handler.frame = frame
 
 		eventHandlers[frame] = handler
