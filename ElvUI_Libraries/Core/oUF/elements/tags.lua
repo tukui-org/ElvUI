@@ -742,7 +742,7 @@ end
 local eventHandlers = {}
 local eventAuraCache = {}
 local eventExtraUnits = {}
-local eventTickers = {}
+local eventWaiters = {}
 local eventTimerThreshold = 0.1
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	if aura and tagSpells[aura.spellId] then
@@ -779,26 +779,26 @@ local function UpdateStrings(strs)
 	end
 end
 
-local function HandlerTicker(handler)
-	local ticker = eventTickers[handler]
-	if ticker then
-		ticker:Cancel()
+local function WaiterHandler(handler)
+	local waiter = eventWaiters[handler]
+	if waiter then
+		waiter:Cancel()
 	end
 
-	for event in next, handler.tickedEvents do
+	for event in next, handler.eventHappened do
 		UpdateStrings(handler.eventStrings[event])
 
-		handler.tickedEvents[event] = nil
+		handler.eventHappened[event] = nil
 	end
 
-	eventTickers[handler] = nil
+	eventWaiters[handler] = nil
 end
 
 local function HandlerEvent(handler, event, unit, updateInfo)
-	handler.tickedEvents[event] = true -- so we know what events fired
+	handler.eventHappened[event] = true -- so we know what events fired
 
-	local ticker = eventTickers[handler]
-	if ticker then return end -- already waiting
+	local waiter = eventWaiters[handler]
+	if waiter then return end -- already waiting
 
 	-- we only want to show tags on validated units
 	if not ShouldUpdateTag(handler.frame, event, unit) then return end
@@ -806,14 +806,14 @@ local function HandlerEvent(handler, event, unit, updateInfo)
 	-- we only want to let auras trigger an update when they are allowed
 	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then return end
 
-	-- lets spawn a ticker to handle stuff
-	ticker = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
+	-- now we wait..
+	waiter = C_Timer_NewTimer(eventTimerThreshold, handler.WaiterHandler)
 
-	eventTickers[handler] = ticker
+	eventWaiters[handler] = waiter
 end
 
-local function GenerateTicker(handler)
-	return function() HandlerTicker(handler) end
+local function GenerateWaiter(handler)
+	return function() WaiterHandler(handler) end
 end
 
 local function RegisterEvent(frame, event, fs)
@@ -822,9 +822,9 @@ local function RegisterEvent(frame, event, fs)
 	if not eventHandlers[frame] then
 		local handler = CreateFrame('Frame')
 		handler:SetScript('OnEvent', HandlerEvent)
-		handler.HandlerTicker = GenerateTicker(handler)
+		handler.WaiterHandler = GenerateWaiter(handler)
 		handler.eventStrings = {}
-		handler.tickedEvents = {}
+		handler.eventHappened = {}
 		handler.frame = frame
 
 		eventHandlers[frame] = handler
