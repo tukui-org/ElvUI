@@ -782,7 +782,7 @@ end
 local function WaiterHandler(handler)
 	local waiter = eventWaiters[handler]
 	if waiter then
-		waiter:Cancel()
+		waiter:Cancel() -- this just makes it a timer
 	end
 
 	for event in next, handler.eventHappened do
