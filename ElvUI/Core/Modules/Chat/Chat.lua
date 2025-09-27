@@ -466,6 +466,11 @@ do --this can save some main file locals
 			z['Player-4454-060E4086']	= ElvGreen -- [Alliance] DK
 			z['Player-4454-060E45B6']	= ElvGreen -- [Alliance] Mage
 			z['Player-4454-060E45EA']	= ElvGreen -- [Alliance] Hunter
+			-- Luckyone (Horde: Norushen, Alliance: Everlook)
+			z['Player-4440-037C7E29']	= ElvGreen -- [Alliance] DK
+			z['Player-4454-060E3657']	= ElvGreen -- [Horde] Druid
+			z['Player-4454-060E364E']	= ElvGreen -- [Horde] Priest
+			z['Player-4454-060E361A']	= ElvGreen -- [Horde] Shaman
 		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
