@@ -19,7 +19,6 @@ local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 
 local hasValidPlayer
-local alwaysAllow = {}
 local cachedVisibility = {}
 local cachedPriority = SpellIsPriorityAura and {}
 
@@ -35,11 +34,14 @@ local auraFiltered = {
 oUF.AuraInfo = auraInfo -- export it, not filtered
 oUF.AuraFiltered = auraFiltered -- by filter
 
+local alwaysAllow = {
+	[25771] = oUF.myclass == 'PALADIN' or nil					-- Forbearance: Cannot be affected by Divine Shield, Blessing of Protection, or Lay on Hands.
+}
+
 if oUF.isRetail then
 	alwaysAllow[335904] = oUF.myclass == 'SHAMAN' or nil		-- Doom Winds: Unable to gain effects of Doom Winds.
 	alwaysAllow[374609] = oUF.myclass == 'DEATHKNIGHT' or nil	-- Blood Draw: You may not benefit from the effects of Blood Draw.
 	alwaysAllow[382912] = oUF.myclass == 'DRUID' or nil			-- Well-Honed Instincts: You have recently gained Frenzied Regeneration from Well-Honed Instincts.
-	alwaysAllow[25771] = oUF.myclass == 'PALADIN' or nil		-- Forbearance: Cannot be affected by Divine Shield, Blessing of Protection, or Lay on Hands.
 end
 
 local eventFrame = CreateFrame('Frame')
