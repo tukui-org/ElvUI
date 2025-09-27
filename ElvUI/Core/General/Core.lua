@@ -1884,18 +1884,6 @@ do
 	end
 end
 
-function E:ResetAllUI()
-	E:ResetMovers()
-
-	if E.db.lowresolutionset then
-		E:SetupResolution(true)
-	end
-
-	if E.db.layoutSet then
-		E:SetupLayout(E.db.layoutSet, true)
-	end
-end
-
 function E:ResetUI(...)
 	if E:AlertCombat() then return end
 

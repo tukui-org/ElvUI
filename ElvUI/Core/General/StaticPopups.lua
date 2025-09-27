@@ -310,7 +310,7 @@ E.PopupDialogs.RESETUI_CHECK = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
-		E:ResetAllUI()
+		E:ResetMovers()
 	end,
 	whileDead = 1,
 }

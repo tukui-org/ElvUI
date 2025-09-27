@@ -1020,8 +1020,6 @@ function E:LayoutNormal()
 	E.db.chat.panelWidth = 472
 	E.db.chat.tabFontSize = 12
 	E.db.chat.copyChatLines = true
-	--DataTexts
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
 	--DataBars
 	E.db.databars.threat.height = 24
 	E.db.databars.threat.width = 472
@@ -1036,9 +1034,6 @@ function E:LayoutNormal()
 	E.db.general.totems.size = 50
 	E.db.general.totems.spacing = 8
 	E.db.general.autoTrackReputation = true
-
-	--Tooltip
-	E.db.movers.TooltipMover = nil --ensure that this mover gets completely reset.. yes E:ResetMover call above doesn't work.
 	--Nameplates
 	E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
 	E.db.nameplates.colors.reactions.good = {r = 0.30, g=0.67, b=0.29}
@@ -1153,47 +1148,53 @@ function E:LayoutNormal()
 	E.db.unitframe.units.raid1.roleIcon.size = 12
 	E.db.unitframe.units.raid1.roleIcon.xOffset = 0
 	E.db.unitframe.units.raid1.width = 92
+	--DataTexts
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
 
+	if E.db.datatexts.panels.Coords then
+		E.db.datatexts.panels.Coords.enable = false
+	end
+
+	if E.db.datatexts.panels.QuickJoin then
+		E.db.datatexts.panels.QuickJoin.enable = false
+	end
+
+	--Private
+	E.private.bags.bagBar = false
+	E.private.general.chatBubbleName = false
+end
+
+function E:LayoutMovers(layout)
+	if not E.db.movers then
+		E.db.movers = {}
+	end
+
+	for mover, position in next, E.LayoutMoverPositions.ALL do
+		E.db.movers[mover] = position
+	end
+
+	local movers = E.LayoutMoverPositions[layout]
+	if movers then -- this can override any from ALL
+		for mover, position in next, movers do
+			E.db.movers[mover] = position
+		end
+	end
 end
 
 function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
+		E.data:ResetProfile(nil, true) -- noChildren, noCallbacks
+		E:DBConversions()
+
 		E.db.layoutSet = layout
-		E.db.layoutSetting = layout
-
-		--Unitframes
-		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
-
-		--Shared base layout, tweaks to individual layouts will be below
-		E:ResetMovers()
-
-		if not E.db.movers then
-			E.db.movers = {}
-		end
 
 		if layout == 'anniversary' then
 			E:LayoutAnniversary()
 		else
 			E:LayoutNormal()
-
-			--Movers
-			for mover, position in next, E.LayoutMoverPositions.ALL do
-				E.db.movers[mover] = position
-
-				E:SaveMoverDefaultPosition(mover)
-			end
 		end
 
-		--[[
-			Layout Tweaks will be handled below,
-			These are changes that deviate from the shared base layout.
-		]]
-		if E.LayoutMoverPositions[layout] then
-			for mover, position in next, E.LayoutMoverPositions[layout] do
-				E.db.movers[mover] = position
-				E:SaveMoverDefaultPosition(mover)
-			end
-		end
+		E:LayoutMovers(layout)
 	end
 
 	E:StaggeredUpdateAll()
@@ -1371,16 +1372,16 @@ function E:SetPage(num)
 		f.Desc3:FontTemplate(nil, 18)
 
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('anniversary') end)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupLayout('anniversary') end)
 		InstallOption1Button:SetFormattedText('%s%s|r', E.InfoColor, L["Anniversary"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
+		InstallOption2Button:SetScript('OnClick', function() E:SetupLayout('tank') end)
 		InstallOption2Button:SetText(_G.MELEE)
 		InstallOption3Button:Show()
-		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
+		InstallOption3Button:SetScript('OnClick', function() E:SetupLayout('healer') end)
 		InstallOption3Button:SetText(_G.HEALER)
 		InstallOption4Button:Show()
-		InstallOption4Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
+		InstallOption4Button:SetScript('OnClick', function() E:SetupLayout('dpsCaster') end)
 		InstallOption4Button:SetText(_G.RANGED)
 	elseif num == 6 then
 		f.SubTitle:SetText(L["Theme Setup"])
