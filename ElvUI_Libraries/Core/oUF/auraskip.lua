@@ -39,9 +39,10 @@ local alwaysAllow = {
 }
 
 if oUF.isRetail then
-	alwaysAllow[335904] = oUF.myclass == 'SHAMAN' or nil		-- Doom Winds: Unable to gain effects of Doom Winds.
-	alwaysAllow[374609] = oUF.myclass == 'DEATHKNIGHT' or nil	-- Blood Draw: You may not benefit from the effects of Blood Draw.
-	alwaysAllow[382912] = oUF.myclass == 'DRUID' or nil			-- Well-Honed Instincts: You have recently gained Frenzied Regeneration from Well-Honed Instincts.
+	alwaysAllow[335904] = oUF.myclass == 'SHAMAN' or nil		-- Unable to gain effects of Doom Winds.
+	alwaysAllow[374609] = oUF.myclass == 'DEATHKNIGHT' or nil	-- You may not benefit from the effects of Blood Draw.
+	alwaysAllow[382912] = oUF.myclass == 'DRUID' or nil			-- You have recently gained Frenzied Regeneration from Well-Honed Instincts.
+	alwaysAllow[393879] = oUF.myclass == 'PALADIN' or nil		-- Gift of the Golden Val'kyr has ended and will not activate.
 end
 
 local eventFrame = CreateFrame('Frame')
