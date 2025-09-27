@@ -452,24 +452,20 @@ do --this can save some main file locals
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
 		elseif E.Mists then
-			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
-			z['Player-4467-04540395']	= ElvGreen -- [Alliance] Druid
-			z['Player-4467-04542B4A']	= ElvGreen -- [Alliance] Priest
-			z['Player-4467-04571AA2']	= ElvGreen -- [Alliance] Warlock
-			z['Player-4467-04571911']	= ElvGreen -- [Alliance] Paladin
-			z['Player-4467-04571A9F']	= ElvGreen -- [Alliance] Mage
-			z['Player-4467-04571A8D']	= ElvGreen -- [Alliance] DK
-			z['Player-4467-048C4EED']	= ElvGreen -- [Alliance] Hunter
-			z['Player-4467-0489BE11']	= ElvGreen -- [Alliance] Shaman
-			z['Player-4467-0489BDFD'] 	= ElvGreen -- [Alliance] Rogue
-			z['Player-4467-04571A98']	= ElvGreen -- [Alliance] Warrior
-			z['Player-4440-03AD654A']	= ElvGreen -- [Alliance] Rogue
-			z['Player-4440-03ADE2DF']	= ElvGreen -- [Alliance] Shaman
-			z['Player-4467-0613ECA1']	= ElvGreen -- [Alliance] Monk
-			z['Player-4476-03BF41C9']	= ElvGreen -- [Horde] Hunter
-			z['Player-4476-049F4831']	= ElvGreen -- [Horde] DK
-			z['Player-4476-05C7B834']	= ElvGreen -- [Horde] Mage
-			z['Player-4476-05CAB05D']	= ElvGreen -- [Horde] Monk
+			-- Luckyone (Horde: Garalon, Alliance: Shek'zeer)
+			z['Player-4454-060E2FD9']	= ElvGreen -- [Horde] Mage
+			z['Player-4454-060E336E']	= ElvGreen -- [Horde] Hunter
+			z['Player-4454-060E339A']	= ElvGreen -- [Horde] Monk
+			z['Player-4454-060E4058']	= ElvGreen -- [Alliance] Druid
+			z['Player-4454-060E4064']	= ElvGreen -- [Alliance] Priest
+			z['Player-4454-060E406B']	= ElvGreen -- [Alliance] Warlock
+			z['Player-4454-060E4071']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4454-060E4076']	= ElvGreen -- [Alliance] Warrior
+			z['Player-4454-060E4089'] 	= ElvGreen -- [Alliance] Rogue
+			z['Player-4454-060E4091']	= ElvGreen -- [Alliance] Paladin
+			z['Player-4454-060E4086']	= ElvGreen -- [Alliance] DK
+			z['Player-4454-060E45B6']	= ElvGreen -- [Alliance] Mage
+			z['Player-4454-060E45EA']	= ElvGreen -- [Alliance] Hunter
 		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
