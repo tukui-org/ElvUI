@@ -75,7 +75,7 @@ local validateUnit = Private.validateUnit
 
 local _G = _G
 
-local rawset, tonumber = rawset, tonumber
+local wipe, rawset, tonumber = wipe, rawset, tonumber
 local format, tinsert, floor = format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
@@ -739,6 +739,7 @@ local function GetTagFunc(tagstr)
 	return func
 end
 
+local tempStrings = {}
 local eventHandlers = {}
 local eventAuraCache = {}
 local eventExtraUnits = {}
@@ -769,6 +770,14 @@ local function ShouldUpdateTag(frame, event, unit)
 	end
 end
 
+local function ProcessStrings(strs)
+	if not strs then return end
+
+	for fs in next, strs do
+		tempStrings[fs] = true
+	end
+end
+
 local function UpdateStrings(strs)
 	if not strs then return end
 
@@ -785,11 +794,15 @@ local function WaiterHandler(handler)
 		waiter:Cancel() -- this just makes it a timer
 	end
 
+	wipe(tempStrings)
+
 	for event in next, handler.eventHappened do
-		UpdateStrings(handler.eventStrings[event])
+		ProcessStrings(handler.eventStrings[event])
 
 		handler.eventHappened[event] = nil
 	end
+
+	UpdateStrings(tempStrings)
 
 	eventWaiters[handler] = nil
 end
