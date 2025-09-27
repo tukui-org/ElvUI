@@ -4,23 +4,15 @@ local oUF = ns.oUF
 local next = next
 local wipe = wipe
 local select = select
-local unpack = unpack
 
 local UnitGUID = UnitGUID
 local UnitName = UnitName
 local UnitClass = UnitClass
-local SpellIsPriorityAura = SpellIsPriorityAura
-local UnitAffectingCombat = UnitAffectingCombat
-local SpellGetVisibilityInfo = SpellGetVisibilityInfo
 
 local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
-
-local hasValidPlayer
-local cachedVisibility = {}
-local cachedPriority = SpellIsPriorityAura and {}
 
 local auraInfo = {}
 local auraFiltered = {
@@ -34,98 +26,28 @@ local auraFiltered = {
 oUF.AuraInfo = auraInfo -- export it, not filtered
 oUF.AuraFiltered = auraFiltered -- by filter
 
-local alwaysAllow = {
-	[25771] = oUF.myclass == 'PALADIN' or nil					-- Forbearance: Cannot be affected by Divine Shield, Blessing of Protection, or Lay on Hands.
-}
-
-if oUF.isRetail then
-	alwaysAllow[335904] = oUF.myclass == 'SHAMAN' or nil		-- Unable to gain effects of Doom Winds.
-	alwaysAllow[374609] = oUF.myclass == 'DEATHKNIGHT' or nil	-- You may not benefit from the effects of Blood Draw.
-	alwaysAllow[382912] = oUF.myclass == 'DRUID' or nil			-- You have recently gained Frenzied Regeneration from Well-Honed Instincts.
-	alwaysAllow[393879] = oUF.myclass == 'PALADIN' or nil		-- Gift of the Golden Val'kyr has ended and will not activate.
-end
-
+local hasValidPlayer
 local eventFrame = CreateFrame('Frame')
-eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
-eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
 eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 eventFrame:RegisterEvent('PLAYER_LEAVING_WORLD')
-
-if oUF.isRetail or oUF.isMists then
-	eventFrame:RegisterUnitEvent('PLAYER_SPECIALIZATION_CHANGED', 'player')
-end
-
 eventFrame:SetScript('OnEvent', function(_, event)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		hasValidPlayer = true
 	elseif event == 'PLAYER_LEAVING_WORLD' then
 		hasValidPlayer = false
-	elseif event == 'PLAYER_SPECIALIZATION_CHANGED' then
-		wipe(cachedVisibility)
-	elseif event == 'PLAYER_REGEN_ENABLED' or event == 'PLAYER_REGEN_DISABLED' then
-		wipe(cachedVisibility)
-
-		if cachedPriority then
-			wipe(cachedPriority)
-		end
 	end
 end)
-
-local function VisibilityInfo(spellId)
-	return SpellGetVisibilityInfo(spellId, UnitAffectingCombat('player') and 'RAID_INCOMBAT' or 'RAID_OUTOFCOMBAT')
-end
-
-local function CachedVisibility(spellId)
-	local cached = cachedVisibility[spellId]
-	if cached then -- send the cache
-		return unpack(cached)
-	end
-
-	local hasCustom, alwaysShowMine, showForMySpec = VisibilityInfo(spellId)
-	if hasValidPlayer then -- only cache when the player is valid
-		cachedVisibility[spellId] = { hasCustom, alwaysShowMine, showForMySpec }
-	end
-
-	return hasCustom, alwaysShowMine, showForMySpec
-end
 
 local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
-local function AllowAura(spellId, sourceUnit)
-	local hasCustom, alwaysShowMine, showForMySpec = CachedVisibility(spellId)
-	if hasCustom then -- whether the spell visibility should be customized
-		return showForMySpec or (alwaysShowMine and CheckIsMine(sourceUnit))
-	end
-
-	return true -- if hasCustom is false, it means always display
-end
-
-local function AuraIsPriority(spellId)
-	if alwaysAllow[spellId] then
-		return true
-	end
-
-	if cachedPriority then
-		if cachedPriority[spellId] == nil then
-			cachedPriority[spellId] = SpellIsPriorityAura(spellId)
-		end
-
-		return cachedPriority[spellId]
-	end
-end
-
-local function CouldDisplayAura(frame, event, unit, aura)
+local function AllowAura(frame, aura)
 	if aura.isNameplateOnly then
 		return frame.isNamePlate
-	elseif aura.isBossAura or AuraIsPriority(aura.spellId) then
-		return true
-	elseif aura.isHarmful or aura.isHelpful then
-		return AllowAura(aura.spellId, aura.sourceUnit)
 	end
 
-	return false
+	return true
 end
 
 local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
@@ -151,7 +73,7 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
-	local allow = (which == 'remove') or not aura or CouldDisplayAura(frame, event, unit, aura)
+	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
