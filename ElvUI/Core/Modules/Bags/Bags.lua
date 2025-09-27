@@ -2765,44 +2765,35 @@ function B:ConstructContainerButton(f, bagID, slotID)
 end
 
 function B:ToggleBag(bagID)
+	if not bagID or B:GetContainerNumSlots(bagID) == 0 then return end
 	local shown = B.BagFrame:IsShown()
 	local closed = not shown
 
-	if B.BagBar and bagID == KEYRING_CONTAINER then
-		B.ShowKeyRing = closed or not B.ShowKeyRing
+	if B.BagBar then
+		local justBackpack = B.BagBar.db.justBackpack
+		if closed then -- reset shown
+			local allShown = B:AllBagsShown()
+			B:SetBagsShown(justBackpack)
 
-		B:Layout()
-
-		if closed then
-			B:OpenBags()
-		end
-	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
-		if B.BagBar then
-			local justBackpack = B.BagBar.db.justBackpack
-			if closed then -- reset shown
-				local allShown = B:AllBagsShown()
-				B:SetBagsShown(justBackpack)
-
-				if justBackpack and not allShown then
-					B:Layout() -- not all were shown
-				end
+			if justBackpack and not allShown then
+				B:Layout() -- not all were shown
 			end
+		end
 
-			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
-			if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
-				if closed then
-					B:OpenBags()
-				else
-					B:BagBar_UpdateDesaturated()
-				end
+		local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+		if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
+			if closed then
+				B:OpenBags()
 			else
-				B:CloseAllBags()
+				B:BagBar_UpdateDesaturated()
 			end
-		elseif shown then
+		else
 			B:CloseAllBags()
-		elseif closed then
-			B:OpenBags()
 		end
+	elseif shown then
+		B:CloseAllBags()
+	elseif closed then
+		B:OpenBags()
 	end
 end
 
@@ -2888,10 +2879,15 @@ function B:PositionButtons(f)
 	f.bagsButton:SetShown(bagsShown)
 
 	if f.keyButton then
+		f.keyButton:SetShown(bagsShown)
 		f.keyButton:Point('RIGHT', bagsAnchor, 'LEFT', -5, 0)
+
+		if bagsShown then
+			bagsAnchor = f.keyButton
+		end
 	end
 
-	f.vendorGraysButton:Point('RIGHT', f.keyButton or bagsAnchor, 'LEFT', -5, 0)
+	f.vendorGraysButton:Point('RIGHT', bagsAnchor, 'LEFT', -5, 0)
 
 	-- also hide the bags holder if it was open
 	if f.ContainerHolder:IsShown() then
