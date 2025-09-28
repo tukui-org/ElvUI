@@ -103,11 +103,6 @@ function B:SkinBag(bag)
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
 		bag.CircleMask:Hide()
-
-		if icon then -- something azil added, not sure if its needed
-			icon.Show = nil
-			icon:Show()
-		end
 	end
 
 	if icon then
