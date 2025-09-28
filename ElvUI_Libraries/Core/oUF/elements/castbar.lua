@@ -93,24 +93,25 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 local _, ns = ...
 local oUF = ns.oUF
-local AuraFiltered = oUF.AuraFiltered
 
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
 local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
--- ElvUI block
 local wipe = wipe
 local next = next
 local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
+local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
@@ -129,32 +130,45 @@ if oUF.isClassic then
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
 	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
-	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
-
-	-- Berserking / Troll Racial (1 - 0.1, 10%)
-	-- Technically 10%-30% based on health, but since we don't do dynamic adjustment here we always assume the lowest buff
-	specialAuras[26635] = 0.9
+	specialAuras[6150] = 0.7 -- Quick Shots [Improved Hawk] (1 - 0.3, 30%)
+	specialAuras[26635] = 0.9 -- Berserking [Troll Racial] (1 - (0.1 to 0.3), 10% to 30%)
 end
 
 local function SpecialActive(frame, event, unit, filter)
-	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
+	if not next(specialAuras) then return end
 
 	local speed = 1
-	local unitAuraFiltered = AuraFiltered[filter][unit]
-	local auraInstanceID, aura = next(unitAuraFiltered)
-	while aura do
-		speed = specialAuras[aura.spellID]
+	for spellID in next, specialAuras do
+		local aura = GetPlayerAuraBySpellID(spellID)
+		if aura then
+			speed = specialAuras[spellID]
 
-		if speed == 0.6 then
-			return speed -- fastest speed
+			if spellID == 26635 then -- Berserking [Troll Racial]
+				local current = UnitHealth(unit)
+				local maximum = UnitHealthMax(unit)
+				local health = current / maximum
+
+				local increase
+				if health <= 0.4 then
+					increase = 0.3 -- 30% speed at 40% health or lower
+				elseif health >= 1 then
+					increase = 0.1 -- 10% speed at max health
+				else -- linearly interpolate between 10% to 30% for health between 40% to 100%
+					local amount, range = 0.2, 0.6 -- (0.3 - 0.1), (1 - 0.4)
+					increase = 0.1 + amount * (1 - health) / range
+				end
+
+				speed = 1 - increase
+			end
+
+			if speed == 0.6 then
+				return speed -- fastest speed
+			end
 		end
-
-		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
 	return speed -- we have to check the entire table otherwise just to see if a faster one is available
 end
--- end block
 
 local function resetAttributes(self)
 	self.casting = nil
