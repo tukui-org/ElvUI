@@ -89,7 +89,7 @@ end
 
 function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
-	bag.oldTex = icon:GetTexture()
+	bag.oldTex = icon and icon:GetTexture()
 
 	bag:StripTextures(E.Retail)
 	bag:SetTemplate()
@@ -104,13 +104,17 @@ function B:SkinBag(bag)
 		bag:GetHighlightTexture():SetAlpha(0)
 		bag.CircleMask:Hide()
 
-		icon.Show = nil
-		icon:Show()
+		if icon then -- something azil added, not sure if its needed
+			icon.Show = nil
+			icon:Show()
+		end
 	end
 
-	icon:SetInside()
-	icon:SetTexture((not bag.oldTex or bag.oldTex == 1721259) and E.Media.Textures.Backpack or bag.oldTex)
-	icon:SetTexCoord(unpack(E.TexCoords))
+	if icon then
+		icon:SetInside()
+		icon:SetTexture((not bag.oldTex or bag.oldTex == 1721259) and E.Media.Textures.Backpack or bag.oldTex)
+		icon:SetTexCoord(unpack(E.TexCoords))
+	end
 end
 
 function B:BagBar_UpdateVisibility()
@@ -151,6 +155,10 @@ function B:SizeAndPositionBagBar()
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		button:SetShown(not justBackpack or i == 1)
+
+		if button.checked then
+			button.checked:SetAlpha(0)
+		end
 
 		if sortDirection == 'ASCENDING'then
 			if i == 1 then firstButton = button else lastButton = button end
@@ -243,7 +251,9 @@ function B:BagBar_UpdateDesaturated(inactive)
 		local desaturate = inactive and not shown
 
 		local icon = button.icon or _G[button:GetName()..'IconTexture']
-		icon:SetDesaturated(desaturate)
+		if icon then
+			icon:SetDesaturated(desaturate)
+		end
 
 		if button.searchOverlay then
 			button.searchOverlay:SetShown(desaturate)
