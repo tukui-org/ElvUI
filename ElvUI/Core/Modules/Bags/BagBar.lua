@@ -16,7 +16,8 @@ local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
-local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
+local KEYRING_CONTAINER = Enum.BagIndex.Keyring
 
 local commandNames = {
 	[-1] = 'TOGGLEBACKPACK',
@@ -184,7 +185,9 @@ function B:SizeAndPositionBagBar()
 			end
 		end
 
-		B:GetBagAssignedInfo(button)
+		if button.bagID ~= KEYRING_CONTAINER then
+			B:GetBagAssignedInfo(button)
+		end
 	end
 
 	local btnSize = bagBarSize * (NUM_BAG_FRAMES + 1)
@@ -236,7 +239,8 @@ function B:BagBar_UpdateDesaturated(inactive)
 
 	-- Now, apply the appearance to each button
 	for _, button in ipairs(B.BagBar.buttons) do
-		local desaturate = inactive and not B:IsBagShown(button.BagID)
+		local shown = B:IsBagShown(button.BagID)
+		local desaturate = inactive and not shown
 
 		local icon = button.icon or _G[button:GetName()..'IconTexture']
 		icon:SetDesaturated(desaturate)
@@ -347,14 +351,15 @@ function B:LoadBagBar()
 	end
 
 	for i, button in ipairs(B.BagBar.buttons) do
-		button.BagID = i - 1
+		if button == KeyRing then
+			button.BagID = KEYRING_CONTAINER
+		else
+			button.BagID = i - 1
+			button:HookScript('OnClick', B.BagButton_OnClick)
+		end
 
 		if E.Retail then -- Item Assignment
 			B:CreateFilterIcon(button)
-		end
-
-		if button ~= KeyRing then
-			button:HookScript('OnClick', B.BagButton_OnClick)
 		end
 	end
 
