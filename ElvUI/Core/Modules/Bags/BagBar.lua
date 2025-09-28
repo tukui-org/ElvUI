@@ -12,9 +12,11 @@ local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-local PutItemInBag = PutItemInBag
+local IsModifiedClick = IsModifiedClick
+local PutItemInBackpack = PutItemInBackpack
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
+local GetInventoryItemTexture = GetInventoryItemTexture
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
@@ -220,9 +222,11 @@ function B:UpdateMainButtonCount()
 	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
-function B:BagSlotButton_OnClick()
-	if not PutItemInBag(self.BagID) then
-		_G.ToggleBag(self.BagID) -- dont cache
+function B:BackpackButton_OnClick()
+	if IsModifiedClick('OPENALLBAGS') then
+		_G.ToggleAllBags() -- dont cache, see below
+	elseif not PutItemInBackpack() then
+		_G.ToggleBag(self.BagID) -- dont cache, bag module hooks
 	end
 end
 
@@ -371,7 +375,7 @@ function B:LoadBagBar()
 			button.BagID = bagID
 
 			if not E.Retail and button.BagID == BACKPACK_CONTAINER then
-				button:SetScript('OnClick', B.BagSlotButton_OnClick)
+				button:SetScript('OnClick', B.BackpackButton_OnClick)
 			end
 
 			button:HookScript('OnClick', B.BagButton_OnClick)
