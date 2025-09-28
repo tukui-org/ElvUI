@@ -130,6 +130,10 @@ if oUF.isClassic then
 
 	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
 	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
+
+	-- Berserking / Troll Racial (1 - 0.1, 10%)
+	-- Technically 10%-30% based on health, but since we don't do dynamic adjustment here we always assume the lowest buff
+	specialAuras[26635] = 0.9
 end
 
 local function SpecialActive(frame, event, unit, filter)
