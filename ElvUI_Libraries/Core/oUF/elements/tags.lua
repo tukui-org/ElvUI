@@ -834,12 +834,11 @@ local function RegisterEvent(frame, event, fs)
 
 	if not eventHandlers[frame] then
 		local handler = CreateFrame('Frame')
-
-		handler.frame = frame
+		handler:SetScript('OnEvent', HandlerEvent)
+		handler.WaiterHandler = GenerateWaiter(handler)
 		handler.eventStrings = {}
 		handler.eventHappened = {}
-		handler.WaiterHandler = GenerateWaiter(handler)
-		handler:SetScript('OnEvent', HandlerEvent)
+		handler.frame = frame
 
 		eventHandlers[frame] = handler
 	end
