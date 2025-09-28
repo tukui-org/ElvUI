@@ -2797,7 +2797,7 @@ function B:ToggleBag(bagID)
 end
 
 function B:ToggleBackpack()
-	if E.Classic and B.BagBar and not B.BagBar.db.justBackpack then
+	if not E.Retail and B.BagBar and not B.BagBar.db.justBackpack then
 		if B.BagFrame:IsShown() and not IsBagOpen(BACKPACK_CONTAINER) then
 			B:CloseAllBags()
 		else
