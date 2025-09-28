@@ -134,15 +134,13 @@ if oUF.isClassic then
 	specialAuras[26635] = 0.9 -- Berserking [Troll Racial] (1 - (0.1 to 0.3), 10% to 30%)
 end
 
-local function SpecialActive(frame, event, unit, filter)
+local function SpecialActive(frame, event, unit)
 	if not next(specialAuras) then return end
 
 	local speed = 1
 	for spellID in next, specialAuras do
 		local aura = GetPlayerAuraBySpellID(spellID)
 		if aura then
-			speed = specialAuras[spellID]
-
 			if spellID == 26635 then -- Berserking [Troll Racial]
 				local current = UnitHealth(unit)
 				local maximum = UnitHealthMax(unit)
@@ -150,15 +148,17 @@ local function SpecialActive(frame, event, unit, filter)
 
 				local increase
 				if health <= 0.4 then
-					increase = 0.3 -- 30% speed at 40% health or lower
+					increase = 0.3 -- 30% at 40% health or lower
 				elseif health >= 1 then
-					increase = 0.1 -- 10% speed at max health
+					increase = 0.1 -- 10% at max health
 				else -- linearly interpolate between 10% to 30% for health between 40% to 100%
 					local amount, range = 0.2, 0.6 -- (0.3 - 0.1), (1 - 0.4)
 					increase = 0.1 + amount * (1 - health) / range
 				end
 
 				speed = 1 - increase
+			else
+				speed = specialAuras[spellID]
 			end
 
 			if speed == 0.6 then
@@ -301,7 +301,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, event, unit)
 			if speedMod then
 				castTime = castTime * speedMod
 			end
