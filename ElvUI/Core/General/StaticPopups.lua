@@ -310,7 +310,7 @@ E.PopupDialogs.RESETUI_CHECK = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	OnAccept = function()
-		E:ResetAllUI()
+		E:ResetMovers()
 	end,
 	whileDead = 1,
 }
@@ -328,22 +328,6 @@ E.PopupDialogs.CONFIRM_LOOT_DISTRIBUTION = {
 	button1 = YES,
 	button2 = NO,
 	hideOnEscape = 1,
-}
-
-E.PopupDialogs.RESET_PROFILE_PROMPT = {
-	text = L["Are you sure you want to reset all the settings on this profile?"],
-	button1 = YES,
-	button2 = NO,
-	hideOnEscape = 1,
-	OnAccept = function() E:ResetProfile() end,
-}
-
-E.PopupDialogs.RESET_PRIVATE_PROFILE_PROMPT = {
-	text = L["Are you sure you want to reset all the settings on this profile?"],
-	button1 = YES,
-	button2 = NO,
-	hideOnEscape = 1,
-	OnAccept = function() E:ResetPrivateProfile() end,
 }
 
 E.PopupDialogs.APPLY_FONT_WARNING = {

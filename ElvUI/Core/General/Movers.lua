@@ -38,12 +38,11 @@ local function GetPoint(obj)
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, x and E:Round(x) or 0, y and E:Round(y) or 0)
 end
 
-local function GetSettingPoints(name)
-	local db = E.db.movers and E.db.movers[name]
-	if db then
-		local delim = (find(db, '\031') and '\031') or ','
-		return split(delim, db)
-	end
+local function GetSettingPoints(text)
+	if not text then return end
+
+	local delim = (find(text, '\031') and '\031') or ','
+	return split(delim, text)
 end
 
 local function UpdateCoords(self)
@@ -60,8 +59,8 @@ function E:SetMoverPoints(name, parent)
 	local holder = E.CreatedMovers[name]
 	if not holder then return end
 
-	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = unpack(holder.parentPoint)
-	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
+	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = unpack(holder.originPoint)
+	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(E.db.movers and E.db.movers[name] or E:GetMoverLayout(name))
 	if not _G[relativeTo2] then -- fallback to the parents original point (on create) if the setting doesn't exist
 		point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = point1, relativeTo1, relativePoint1, xOffset1, yOffset1
 	end
@@ -344,6 +343,14 @@ function E:HasMoverBeenMoved(name)
 	return E.db.movers and E.db.movers[name]
 end
 
+function E:GetMoverLayout(name)
+	local holder = E.CreatedMovers[name]
+	if not holder then return end
+
+	local layout, all = E.LayoutMoverPositions[E.db.layoutSet], E.LayoutMoverPositions.ALL
+	return (layout and layout[name]) or (all and all[name])
+end
+
 function E:SaveMoverPosition(name)
 	local holder = E.CreatedMovers[name]
 	if not holder then return end
@@ -356,26 +363,6 @@ function E:SetMoverSnapOffset(name, offset)
 	if not holder then return end
 	holder.mover.snapOffset = offset or -2
 	holder.snapoffset = offset or -2
-end
-
-function E:SetMoverLayoutPositionPoint(holder, name, parent)
-	local layout = E.LayoutMoverPositions[E.db.layoutSetting]
-	local layoutPoint = (layout and layout[name]) or E.LayoutMoverPositions.ALL[name]
-	holder.layoutPoint = layoutPoint
-	holder.point = layoutPoint or GetPoint(parent or holder.mover)
-
-	if parent then -- CreateMover call
-		holder.parentPoint = {parent:GetPoint()}
-	end
-end
-
-function E:SaveMoverDefaultPosition(name)
-	local holder = E.CreatedMovers[name]
-	if not holder then return end
-
-	E:SetMoverLayoutPositionPoint(holder, name)
-
-	HandlePostDrag(holder.mover)
 end
 
 function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, ignoreSizeChanged)
@@ -393,7 +380,9 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 			holder.types.GENERAL = true
 		end
 
-		E:SetMoverLayoutPositionPoint(holder, name, parent)
+		holder.parent = parent
+		holder.originPoint = { parent:GetPoint() }
+
 		E.CreatedMovers[name] = holder
 	end
 
@@ -467,24 +456,17 @@ function E:ResetMovers(arg)
 
 	for name, holder in pairs(E.CreatedMovers) do
 		if all or (holder.mover and holder.mover.textString == arg) then
-			local point, anchor, secondaryPoint, x, y = split(',', holder.point)
-
-			local frame = holder.mover
-			if point then
-				frame:ClearAllPoints()
-				frame:SetPoint(point, anchor, secondaryPoint, x, y)
+			if E.db.movers then
+				E.db.movers[name] = nil
 			end
 
-			HandlePostDrag(frame)
+			E:SetMoverPoints(name)
 
-			if all then
-				E:SaveMoverPosition(name)
-			else
-				if holder.layoutPoint then
-					E:SaveMoverPosition(name)
-				elseif E.db.movers then
-					E.db.movers[name] = nil
-				end
+			if holder.mover then
+				HandlePostDrag(holder.mover)
+			end
+
+			if not all then
 				break
 			end
 		end

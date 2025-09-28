@@ -75,7 +75,7 @@ local validateUnit = Private.validateUnit
 
 local _G = _G
 
-local rawset, tonumber = rawset, tonumber
+local wipe, rawset, tonumber = wipe, rawset, tonumber
 local format, tinsert, floor = format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
@@ -739,10 +739,11 @@ local function GetTagFunc(tagstr)
 	return func
 end
 
+local tempStrings = {}
 local eventHandlers = {}
 local eventAuraCache = {}
 local eventExtraUnits = {}
-local eventTickers = {}
+local eventWaiters = {}
 local eventTimerThreshold = 0.1
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	if aura and tagSpells[aura.spellId] then
@@ -755,7 +756,7 @@ local function verifyAura(frame, event, unit, auraInstanceID, aura)
 end
 
 local function ShouldUpdateTag(frame, event, unit)
-	if frame.isForced then return end -- isForced prevents spam in ElvUI
+	if not frame:IsShown() or frame.isForced then return end -- isForced prevents spam in ElvUI
 
 	if unitlessEvents[event] then
 		return true
@@ -769,47 +770,63 @@ local function ShouldUpdateTag(frame, event, unit)
 	end
 end
 
-local function HandlerTicker(handler)
-	local ticker = eventTickers[handler]
-	if not ticker then return end
+local function ProcessStrings(strs)
+	if not strs then return end
 
-	if ticker.strings then
-		for fs in next, ticker.strings do
-			if fs:IsVisible() then
-				fs:UpdateTag()
-			end
+	for fs in next, strs do
+		tempStrings[fs] = true
+	end
+end
+
+local function UpdateStrings(strs)
+	if not strs then return end
+
+	for fs in next, strs do
+		if fs:IsVisible() then
+			fs:UpdateTag()
 		end
 	end
+end
 
-	ticker:Cancel()
+local function WaiterHandler(handler)
+	local waiter = eventWaiters[handler]
+	if waiter then
+		waiter:Cancel() -- this just makes it a timer
+	end
 
-	eventTickers[handler] = nil
+	wipe(tempStrings)
+
+	for event in next, handler.eventHappened do
+		ProcessStrings(handler.eventStrings[event])
+
+		handler.eventHappened[event] = nil
+	end
+
+	UpdateStrings(tempStrings)
+
+	eventWaiters[handler] = nil
 end
 
 local function HandlerEvent(handler, event, unit, updateInfo)
-	local strings = handler.eventStrings[event]
-	if not strings or not ShouldUpdateTag(handler.frame, event, unit) then return end
+	handler.eventHappened[event] = true -- so we know what events fired
 
-	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then
-		return -- we only want to let auras trigger an update when they are allowed
-	end
+	local waiter = eventWaiters[handler]
+	if waiter then return end -- already waiting
 
-	local ticker = eventTickers[handler]
-	if ticker then -- processed within the timer
-		ticker.strings = strings
-	else
-		for fs in next, strings do
-			if fs:IsVisible() then
-				fs:UpdateTag()
-			end
-		end
+	-- we only want to show tags on validated units
+	if not ShouldUpdateTag(handler.frame, event, unit) then return end
 
-		eventTickers[handler] = C_Timer_NewTimer(eventTimerThreshold, handler.HandlerTicker)
-	end
+	-- we only want to let auras trigger an update when they are allowed
+	if event == 'UNIT_AURA' and oUF:ShouldSkipAuraUpdate(handler.frame, event, unit, updateInfo, verifyAura) then return end
+
+	-- now we wait..
+	waiter = C_Timer_NewTimer(eventTimerThreshold, handler.WaiterHandler)
+
+	eventWaiters[handler] = waiter
 end
 
-local function GenerateTicker(handler)
-	return function() HandlerTicker(handler) end
+local function GenerateWaiter(handler)
+	return function() WaiterHandler(handler) end
 end
 
 local function RegisterEvent(frame, event, fs)
@@ -818,8 +835,9 @@ local function RegisterEvent(frame, event, fs)
 	if not eventHandlers[frame] then
 		local handler = CreateFrame('Frame')
 		handler:SetScript('OnEvent', HandlerEvent)
-		handler.HandlerTicker = GenerateTicker(handler)
+		handler.WaiterHandler = GenerateWaiter(handler)
 		handler.eventStrings = {}
+		handler.eventHappened = {}
 		handler.frame = frame
 
 		eventHandlers[frame] = handler

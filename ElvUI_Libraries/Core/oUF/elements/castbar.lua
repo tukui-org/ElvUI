@@ -103,7 +103,6 @@ local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame
 -- ElvUI block
 local wipe = wipe
 local next = next
-local strsub = strsub
 local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -277,6 +276,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
+		event = 'UNIT_SPELLCAST_START'
 
 		if name then
 			if castDuration and castDuration ~= 0 then
@@ -319,8 +319,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
 
-	if strsub(event, 1, 14) == 'UNIT_SPELLCAST' then
-		UpdateCurrentTarget(element)
+	if unit ~= 'player' or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
+		UpdateCurrentTarget(element) -- we want to ignore the start events on player unit because sent adds the target info
 	end
 
 	if element.empowering then
