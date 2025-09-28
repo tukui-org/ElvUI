@@ -12,11 +12,12 @@ local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
+local GetKeyRingSize = GetKeyRingSize
+local IsKeyRingEnabled = IsKeyRingEnabled
 local IsModifiedClick = IsModifiedClick
 local PutItemInBackpack = PutItemInBackpack
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local GetInventoryItemTexture = GetInventoryItemTexture
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
@@ -153,7 +154,12 @@ function B:SizeAndPositionBagBar()
 
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
-		button:SetShown(not justBackpack or i == 1)
+
+		if button.BagID == KEYRING_CONTAINER then
+			button:SetShown(not justBackpack and IsKeyRingEnabled() and GetKeyRingSize() > 0)
+		else
+			button:SetShown(not justBackpack or i == 1)
+		end
 
 		if button.checked then
 			button.checked:SetAlpha(0)
