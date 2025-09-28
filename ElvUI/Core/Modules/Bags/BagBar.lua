@@ -12,12 +12,14 @@ local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
+local PutItemInBag = PutItemInBag
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
 local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
+local BACKPACK_CONTAINER = Enum.BagIndex.Backpack
 
 local commandNames = {
 	[-1] = 'TOGGLEBACKPACK',
@@ -218,6 +220,12 @@ function B:UpdateMainButtonCount()
 	mainCount:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
+function B:BagSlotButton_OnClick()
+	if not PutItemInBag(self.BagID) then
+		_G.ToggleBag(self.BagID) -- dont cache
+	end
+end
+
 function B:BagButton_OnClick(key)
 	if E.Retail and key == 'RightButton' then
 		B:OpenBagFlagsMenu(self)
@@ -359,7 +367,13 @@ function B:LoadBagBar()
 		if button == KeyRing then
 			button.BagID = KEYRING_CONTAINER
 		else
-			button.BagID = i - 1
+			local bagID = i - 1
+			button.BagID = bagID
+
+			if not E.Retail and button.BagID == BACKPACK_CONTAINER then
+				button:SetScript('OnClick', B.BagSlotButton_OnClick)
+			end
+
 			button:HookScript('OnClick', B.BagButton_OnClick)
 		end
 
