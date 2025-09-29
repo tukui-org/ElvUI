@@ -129,9 +129,9 @@ if oUF.isClassic then
 	specialCast[20903] = 3000 -- Aimed Shot R5
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
-	specialAuras[3045] = 0.6 -- Rapid Fire: 1 - 0.4, 40%
-	specialAuras[6150] = 0.7 -- Quick Shots [Improved Hawk]: 1 - 0.3, 30%
-	specialAuras[26635] = 0.9 -- Berserking [Troll Racial]: 1 - (0.1 to 0.3), 10% to 30%
+	specialAuras[3045] = 0.4 -- Rapid Fire: 40%
+	specialAuras[6150] = 0.3 -- Quick Shots [Improved Hawk]: 30%
+	specialAuras[26635] = 0.3 -- Berserking [Troll Racial]: 10% to 30%
 end
 
 local function SpecialActive(frame, event, unit)
@@ -146,23 +146,15 @@ local function SpecialActive(frame, event, unit)
 				local maximum = UnitHealthMax(unit)
 				local health = current / maximum
 
-				local increase
 				if health <= 0.4 then
-					increase = 0.3 -- 30% at 40% health or lower
+					speed = speed - 0.3 -- 30% at 40% health or lower
 				elseif health >= 1 then
-					increase = 0.1 -- 10% at max health
+					speed = speed - 0.1 -- 10% at max health
 				else -- linearly interpolate between 10% to 30% for health between 40% to 100%
-					local amount, range = 0.2, 0.6 -- (0.3 - 0.1), (1 - 0.4)
-					increase = 0.1 + amount * (1 - health) / range
+					speed = speed - (0.1 + (0.2 * (1 - health)) / 0.6) -- 0.2 is speed range (0.3 - 0.1), 0.6 is health range (1 - 0.4)
 				end
-
-				speed = 1 - increase
 			else
-				speed = specialAuras[spellID]
-			end
-
-			if speed == 0.6 then
-				return speed -- fastest speed
+				speed = speed - specialAuras[spellID]
 			end
 		end
 	end
