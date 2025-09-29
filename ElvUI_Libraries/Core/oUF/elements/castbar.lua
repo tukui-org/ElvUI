@@ -129,9 +129,9 @@ if oUF.isClassic then
 	specialCast[20903] = 3000 -- Aimed Shot R5
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
-	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
-	specialAuras[6150] = 0.7 -- Quick Shots [Improved Hawk] (1 - 0.3, 30%)
-	specialAuras[26635] = 0.9 -- Berserking [Troll Racial] (1 - (0.1 to 0.3), 10% to 30%)
+	specialAuras[3045] = 0.6 -- Rapid Fire: 1 - 0.4, 40%
+	specialAuras[6150] = 0.7 -- Quick Shots [Improved Hawk]: 1 - 0.3, 30%
+	specialAuras[26635] = 0.9 -- Berserking [Troll Racial]: 1 - (0.1 to 0.3), 10% to 30%
 end
 
 local function SpecialActive(frame, event, unit)
