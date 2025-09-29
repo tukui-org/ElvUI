@@ -301,7 +301,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castDuration -- prefer duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, event, unit)
+			local speedMod = SpecialActive(self, real, unit)
 			if speedMod then
 				castTime = castTime * speedMod
 			end
