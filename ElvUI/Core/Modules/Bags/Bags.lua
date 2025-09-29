@@ -2731,15 +2731,15 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
-	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY', nil, 10)
+	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
-	slot.bindType = slot:CreateFontString(nil, 'OVERLAY', nil, 11)
+	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
-	slot.centerText = slot:CreateFontString(nil, 'OVERLAY', nil, 12)
+	slot.centerText = slot:CreateFontString(nil, 'OVERLAY')
 	slot.centerText:Point('CENTER', 0, 0)
 	slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
 	slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
