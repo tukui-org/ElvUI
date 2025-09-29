@@ -159,7 +159,7 @@ local function SpecialActive(frame, event, unit)
 		end
 	end
 
-	return speed -- we have to check the entire table otherwise just to see if a faster one is available
+	return speed -- we have to check the entire table for stacking
 end
 
 local function resetAttributes(self)
