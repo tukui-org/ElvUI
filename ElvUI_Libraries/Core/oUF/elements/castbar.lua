@@ -93,28 +93,25 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 local _, ns = ...
 local oUF = ns.oUF
-local AuraFiltered = oUF.AuraFiltered
 
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
 local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
--- ElvUI block
 local wipe = wipe
 local next = next
-local strsub = strsub
 local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
-
--- GLOBALS: PetCastingBarFrame, PetCastingBarFrame_OnLoad
--- GLOBALS: CastingBarFrame, CastingBarFrame_OnLoad, CastingBarFrame_SetUnit
+local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
@@ -132,29 +129,38 @@ if oUF.isClassic then
 	specialCast[20903] = 3000 -- Aimed Shot R5
 	specialCast[20904] = 3000 -- Aimed Shot R6
 
-	specialAuras[3045] = 0.6 -- Rapid Fire (1 - 0.4, 40%)
-	specialAuras[6150] = 0.7 -- Quick Shots / Improved Hawk (1 - 0.3, 30%)
+	specialAuras[3045] = 0.4 -- Rapid Fire: 40%
+	specialAuras[6150] = 0.3 -- Quick Shots [Improved Hawk]: 30%
+	specialAuras[26635] = 0.3 -- Berserking [Troll Racial]: 10% to 30%
 end
 
-local function SpecialActive(frame, event, unit, filter)
-	if not next(specialAuras) or oUF:ShouldSkipAuraUpdate(frame, event, unit) then return end
+local function SpecialActive(frame, event, unit)
+	if not next(specialAuras) then return end
 
 	local speed = 1
-	local unitAuraFiltered = AuraFiltered[filter][unit]
-	local auraInstanceID, aura = next(unitAuraFiltered)
-	while aura do
-		speed = specialAuras[aura.spellID]
+	for spellID in next, specialAuras do
+		local aura = GetPlayerAuraBySpellID(spellID)
+		if aura then
+			if spellID == 26635 then -- Berserking [Troll Racial]
+				local current = UnitHealth(unit)
+				local maximum = UnitHealthMax(unit)
+				local health = current / maximum
 
-		if speed == 0.6 then
-			return speed -- fastest speed
+				if health <= 0.4 then
+					speed = speed - 0.3 -- 30% at 40% health or lower
+				elseif health >= 1 then
+					speed = speed - 0.1 -- 10% at max health
+				else -- linearly interpolate between 10% to 30% for health between 40% to 100%
+					speed = speed - (0.1 + (0.2 * (1 - health)) / 0.6) -- 0.2 is speed range (0.3 - 0.1), 0.6 is health range (1 - 0.4)
+				end
+			else
+				speed = speed - specialAuras[spellID]
+			end
 		end
-
-		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
 	end
 
-	return speed -- we have to check the entire table otherwise just to see if a faster one is available
+	return speed -- we have to check the entire table for stacking
 end
--- end block
 
 local function resetAttributes(self)
 	self.casting = nil
@@ -280,13 +286,14 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
+		event = 'UNIT_SPELLCAST_START'
 
 		if name then
 			if castDuration and castDuration ~= 0 then
 				castTime = castDuration -- prefer duration time, otherwise use the static duration
 			end
 
-			local speedMod = SpecialActive(self, event, unit, 'HELPFUL')
+			local speedMod = SpecialActive(self, real, unit)
 			if speedMod then
 				castTime = castTime * speedMod
 			end
@@ -322,8 +329,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
 
-	if strsub(event, 1, 14) == 'UNIT_SPELLCAST' then
-		UpdateCurrentTarget(element)
+	if unit ~= 'player' or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
+		UpdateCurrentTarget(element) -- we want to ignore the start events on player unit because sent adds the target info
 	end
 
 	if element.empowering then

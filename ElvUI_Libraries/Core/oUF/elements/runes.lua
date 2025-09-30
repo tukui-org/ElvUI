@@ -49,6 +49,7 @@ if oUF.myclass ~= 'DEATHKNIGHT' then return end
 
 local sort = sort
 local ipairs = ipairs
+
 local UnitHasVehicleUI = UnitHasVehicleUI
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetRuneCooldown = GetRuneCooldown

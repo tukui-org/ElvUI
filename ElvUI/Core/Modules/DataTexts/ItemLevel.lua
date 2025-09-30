@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local ipairs = ipairs
 local format = format
+local strjoin = strjoin
 
 local GetItemLevelColor = GetItemLevelColor
 local GetAverageItemLevel = GetAverageItemLevel

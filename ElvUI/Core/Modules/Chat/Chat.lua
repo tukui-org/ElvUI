@@ -45,7 +45,6 @@ local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UIParent = UIParent
-local UnitExists = UnitExists
 local UnitName = UnitName
 
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
@@ -369,29 +368,38 @@ do --this can save some main file locals
 			z['Alysneaks-Cenarius']		= itsMel -- [Horde] Rogue
 			z['Alytotes-Cenarius']		= itsMel -- [Horde] Shaman
 			-- Thradex (Simpys Buddy)
-			z['Player-3676-0982798A']	= itsThradex -- [Area52] Foam
-			z['Player-3676-0E6FC676']	= itsThradex -- [Area52] Gur
-			z['Player-3676-0D834080']	= itsThradex -- [Area52] Counselor
-			z['Player-3676-0E77A90A']	= itsThradex -- [Area52] Archmage
-			z['Player-3676-0EA34C00']	= itsThradex -- [Area52] Benito
-			z['Player-3676-0E0547CE']	= itsThradex -- [Area52] Ahmir
-			z['Player-3676-0AFA7773']	= itsThradex -- [Area52] Lifelink
-			z['Player-3676-0D829A31']	= itsThradex -- [Area52] Psychiatrist
-			z['Player-3676-0A5800F2']	= itsThradex -- [Area52] Italian
+			z['Player-53-0D463E51']		= itsThradex -- [Wildhammer] Badbunny
+			z['Player-60-0A4E0A3E']		= itsThradex -- [Stormrage] Wrecked
+			z['Player-60-0A58F3D2']		= itsThradex -- [Stormrage] Thradex
+			z['Player-60-0A58F3D4']		= itsThradex -- [Stormrage] Rn
+			z['Player-60-0A5E33DE']		= itsThradex -- [Stormrage] Tb
+			z['Player-60-0AADFA03']		= itsThradex -- [Stormrage] Quickscoper
+			z['Player-60-0F65AEC4']		= itsThradex -- [Stormrage] Puertorican
+			z['Player-104-0EA94774']	= itsThradex -- [Onyxia] Alma
+			z['Player-104-0EBD81BA']	= itsThradex -- [Onyxia] Itachi
+			z['Player-104-0EBD81BF']	= itsThradex -- [Onyxia] Pompompurin
+			z['Player-104-0EBD81CD']	= itsThradex -- [Onyxia] Chococat
+			z['Player-104-0EBD81E4']	= itsThradex -- [Onyxia] Cinnamoroll
+			z['Player-113-0A9F78FF']	= itsThradex -- [Darrowmere] Vanessa
+			z['Player-115-0883DF8B']	= itsThradex -- [EchoIsles] Daddy
+			z['Player-121-0AF2D3EF']	= itsThradex -- [Khaz Modan] Juicewrld
+			z['Player-121-0AF2D3FC']	= itsThradex -- [Khaz Modan] Christopher
 			z['Player-125-0AA52CD1']	= itsThradex -- [CenarionCircle] Monk
+			z['Player-127-0AD64E79']	= itsThradex -- [Firetree] Christopher
+			z['Player-1168-0AE46826']	= itsThradex -- [Cairne] Daddy
 			z['Player-3675-0AB731AC']	= itsThradex -- [MoonGuard] Jonesy
 			z['Player-3675-0AD64DD0']	= itsThradex -- [MoonGuard] PuertoRican
 			z['Player-3675-0AD64EA1']	= itsThradex -- [MoonGuard] Rainao
-			z['Player-60-0A5E33DE']		= itsThradex -- [Stormrage] Tb
-			z['Player-60-0A58F3D2']		= itsThradex -- [Stormrage] Thradex
-			z['Player-60-0A4E0A3E']		= itsThradex -- [Stormrage] Wrecked
-			z['Player-60-0F65AEC4']		= itsThradex -- [Stormrage] Puertorican
-			z['Player-60-0AADFA03']		= itsThradex -- [Stormrage] Quickscoper
-			z['Player-1168-0AE46826']	= itsThradex -- [Cairne] Daddy
-			z['Player-115-0883DF8B']	= itsThradex -- [EchoIsles] Daddy
-			z['Player-53-0D463E51']		= itsThradex -- [Wildhammer] Badbunny
-			z['Player-113-0A9F78FF']	= itsThradex -- [Darrowmere] Vanessa
-			z['Player-127-0AD64E79']	= itsThradex -- [Firetree] Christopher
+			z['Player-3676-0982798A']	= itsThradex -- [Area52] Foam
+			z['Player-3676-0A5800F2']	= itsThradex -- [Area52] Italian
+			z['Player-3676-0AFA7773']	= itsThradex -- [Area52] Lifelink
+			z['Player-3676-0D829A31']	= itsThradex -- [Area52] Psychiatrist
+			z['Player-3676-0D834080']	= itsThradex -- [Area52] Counselor
+			z['Player-3676-0DE1CF52']	= itsThradex -- [Area52] Trashmaster
+			z['Player-3676-0E0547CE']	= itsThradex -- [Area52] Ahmir
+			z['Player-3676-0E6FC676']	= itsThradex -- [Area52] Gur
+			z['Player-3676-0E77A90A']	= itsThradex -- [Area52] Archmage
+			z['Player-3676-0EA34C00']	= itsThradex -- [Area52] Benito
 			-- Tirain (NOTE: lol)
 			z['Tierone-Spirestone']		= TyroneBiggums
 			z['Tirain-Spirestone']		= TyroneBiggums
@@ -444,24 +452,25 @@ do --this can save some main file locals
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
 		elseif E.Mists then
-			-- Luckyone (4467: Firemaw, 4440: Everlook, 4476: Gehennas)
-			z['Player-4467-04540395']	= ElvGreen -- [Alliance] Druid
-			z['Player-4467-04542B4A']	= ElvGreen -- [Alliance] Priest
-			z['Player-4467-04571AA2']	= ElvGreen -- [Alliance] Warlock
-			z['Player-4467-04571911']	= ElvGreen -- [Alliance] Paladin
-			z['Player-4467-04571A9F']	= ElvGreen -- [Alliance] Mage
-			z['Player-4467-04571A8D']	= ElvGreen -- [Alliance] DK
-			z['Player-4467-048C4EED']	= ElvGreen -- [Alliance] Hunter
-			z['Player-4467-0489BE11']	= ElvGreen -- [Alliance] Shaman
-			z['Player-4467-0489BDFD'] 	= ElvGreen -- [Alliance] Rogue
-			z['Player-4467-04571A98']	= ElvGreen -- [Alliance] Warrior
-			z['Player-4440-03AD654A']	= ElvGreen -- [Alliance] Rogue
-			z['Player-4440-03ADE2DF']	= ElvGreen -- [Alliance] Shaman
-			z['Player-4467-0613ECA1']	= ElvGreen -- [Alliance] Monk
-			z['Player-4476-03BF41C9']	= ElvGreen -- [Horde] Hunter
-			z['Player-4476-049F4831']	= ElvGreen -- [Horde] DK
-			z['Player-4476-05C7B834']	= ElvGreen -- [Horde] Mage
-			z['Player-4476-05CAB05D']	= ElvGreen -- [Horde] Monk
+			-- Luckyone (Horde: Garalon, Alliance: Shek'zeer)
+			z['Player-4454-060E2FD9']	= ElvGreen -- [Horde] Mage
+			z['Player-4454-060E336E']	= ElvGreen -- [Horde] Hunter
+			z['Player-4454-060E339A']	= ElvGreen -- [Horde] Monk
+			z['Player-4454-060E4058']	= ElvGreen -- [Alliance] Druid
+			z['Player-4454-060E4064']	= ElvGreen -- [Alliance] Priest
+			z['Player-4454-060E406B']	= ElvGreen -- [Alliance] Warlock
+			z['Player-4454-060E4071']	= ElvGreen -- [Alliance] Shaman
+			z['Player-4454-060E4076']	= ElvGreen -- [Alliance] Warrior
+			z['Player-4454-060E4089'] 	= ElvGreen -- [Alliance] Rogue
+			z['Player-4454-060E4091']	= ElvGreen -- [Alliance] Paladin
+			z['Player-4454-060E4086']	= ElvGreen -- [Alliance] DK
+			z['Player-4454-060E45B6']	= ElvGreen -- [Alliance] Mage
+			z['Player-4454-060E45EA']	= ElvGreen -- [Alliance] Hunter
+			-- Luckyone (Horde: Norushen, Alliance: Everlook)
+			z['Player-4440-037C7E29']	= ElvGreen -- [Alliance] DK
+			z['Player-4454-060E3657']	= ElvGreen -- [Horde] Druid
+			z['Player-4454-060E364E']	= ElvGreen -- [Horde] Priest
+			z['Player-4454-060E361A']	= ElvGreen -- [Horde] Shaman
 		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest

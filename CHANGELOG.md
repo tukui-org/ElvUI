@@ -1,4 +1,18 @@
-### Version ?? [ TBA ]
+### Version 14.01 [ September 27th 2025 ]
+*   Tags no longer running on hidden frames and they should update more accurately.
+*   Aura Filters with old entries (nonPersonal, notCastByUnit, notDispellable) were not properly handled.
+*   Aura Buffs and Debuffs being disabled, was also disabling the new Custom Aura.
+*   Castbar for Player wasn't showing Display Target.
+*   Bag Bar in Backpack only mode will show the bags icon again (on the bag frame) for a place to equip new bags. 
+*   Reset profile popup was eating profiles, regardless of trying to cancel.
+*   Installer layout buttons now reset the active profile before applying the settings.
+*   Retail:
+    *   Several class specific self debuffs were always blocked (example: Paladin's Forbearance).
+*   Classic:
+    *   Hunter fake castbars working again.
+    *   Bag bar works like Retail now and Keyring is fixed.
+
+### Version 14.00 [ September 25th 2025 ]
 *   Performance
     *   Removed our debugging profiler and event pooler system.
     *   Reworked how Tags are updated on Unitframes and Nameplates.

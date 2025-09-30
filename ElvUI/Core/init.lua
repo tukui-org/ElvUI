@@ -128,7 +128,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 13.97, '13.97-git', nil, true
+		return 14.01, '14.01-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -383,7 +383,7 @@ function E:ResetProfile()
 end
 
 function E:OnProfileReset()
-	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
+	E:ResetProfile()
 end
 
 function E:ResetPrivateProfile()
@@ -391,7 +391,7 @@ function E:ResetPrivateProfile()
 end
 
 function E:OnPrivateProfileReset()
-	E:StaticPopup_Show('RESET_PRIVATE_PROFILE_PROMPT')
+	E:ResetPrivateProfile()
 end
 
 function E:OnEnable()

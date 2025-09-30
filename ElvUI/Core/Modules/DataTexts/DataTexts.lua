@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
+
 -- GLOBALS: ElvDB
 
 local _G = _G

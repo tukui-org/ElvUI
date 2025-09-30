@@ -297,7 +297,7 @@ function UF:UpdateAuraSettings(button)
 end
 
 function UF:EnableDisable_Auras(frame)
-	if frame.db.debuffs.enable or frame.db.buffs.enable then
+	if frame.db.debuffs.enable or frame.db.buffs.enable or frame.db.auras.enable then
 		if not frame:IsElementEnabled('Auras') then
 			frame:EnableElement('Auras')
 		end
@@ -589,15 +589,13 @@ do
 		if #list > 0 then wipe(list) end
 
 		local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
-
-		local temp = { strsplit(',', priority) }
-		for i = 1, #temp do
-			local name = temp[i]
-			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(name)
+		for _, filter in next, { strsplit(',', priority) } do
+			local real, friend, enemy, block, allow = UF:GetFilterNameInfo(filter)
+			local name = specialOldNames[real] or real
 			local custom = filters[real]
 
-			if special[specialOldNames[real] or real] or custom then
-				tinsert(list, { name = real, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
+			if special[name] or custom then
+				tinsert(list, { name = name, block = block, allow = allow, enemy = enemy, friend = friend, custom = custom })
 			end
 		end
 
@@ -693,6 +691,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	--- button.aura = aura
 	--- button.filter = filter
 	--- button.isDebuff = isDebuff
+	--- button.debuffType = debuffType
 	--- button.auraInstanceID = auraInstanceID
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
 
@@ -704,7 +703,6 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
 
 	-- straight from the args
-	button.debuffType = debuffType
 	button.duration = duration
 	button.expiration = expiration
 	button.isStealable = isStealable

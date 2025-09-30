@@ -167,7 +167,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		name, _, icon = oUF:GetSpellInfo(spellId)
 
 		if forceShow then
-			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and 'Magic') or 'Curse', 0, 60, 'player'
+			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and '') or 'Magic', 0, 60, 'player'
 		end
 	end
 
@@ -202,6 +202,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 	button.auraInstanceID = auraInstanceID or nil
 	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
 	button.isPlayer = (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
+	button.debuffType = dispelName
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
 	Defines a custom filter that controls if the aura button should be shown.

@@ -199,6 +199,13 @@ E.Libs.AceConfig:RegisterOptionsTable('ElvUI', E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 E.Options.name = format('%s: |cff99ff33%s|r', L["Version"], E.versionString)
 
+local function SetupProfile(opt, name, order, confirmText)
+	opt.name = name
+	opt.order = order
+	opt.args.reset.confirm = true
+	opt.args.reset.confirmText = confirmText
+end
+
 local DEVELOPERS = {
 	'Tukz',
 	'Haste',
@@ -364,10 +371,8 @@ E.Options.args.profiles.args.spacer = ACH:Spacer(10)
 E.Options.args.profiles.args.profile = E.Libs.AceDBOptions:GetOptionsTable(E.data)
 E.Options.args.profiles.args.private = E.Libs.AceDBOptions:GetOptionsTable(E.charSettings)
 
-E.Options.args.profiles.args.profile.name = L["Profile"]
-E.Options.args.profiles.args.profile.order = 1
-E.Options.args.profiles.args.private.name = L["Private"]
-E.Options.args.profiles.args.private.order = 2
+SetupProfile(E.Options.args.profiles.args.profile, L["Profile"], 1, L["Are you sure you want to reset all the settings on this profile?"])
+SetupProfile(E.Options.args.profiles.args.private, L["Private"], 2, L["Are you sure you want to reset all the settings on this profile?"])
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 

@@ -499,10 +499,10 @@ function NP:StyleFilterSetupFlash(flashTexture)
 	return anim
 end
 
-function NP:StyleFilterBaseUpdate(frame, state)
-	if not frame.StyleFilterBaseAlreadyUpdated then -- skip updates from UpdatePlateBase
-		NP:UpdatePlate(frame, true) -- enable elements back
-	end
+function NP:StyleFilterBaseUpdate(frame, event, previous, state)
+	if state or previous == state then return end -- require no state and ignore same state, previous is already required
+
+	NP:UpdatePlate(frame, true) -- enable elements back
 
 	local db = NP:PlateDB(frame) -- keep this after UpdatePlate
 	if not db.nameOnly then
@@ -523,7 +523,7 @@ function NP:StyleFilterBaseUpdate(frame, state)
 		NP:SetupTarget(frame, db.nameOnly) -- so the classbar will show up
 	end
 
-	if state and not NP.SkipFading then
+	if not NP.SkipFading then
 		NP:PlateFade(frame, NP.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
@@ -718,8 +718,8 @@ function NP:StyleFilterClearVisibility(frame, event, previous)
 		end
 	end
 
-	if previous and not state then
-		NP:StyleFilterBaseUpdate(frame, state == 1)
+	if previous then
+		NP:StyleFilterBaseUpdate(frame, event, previous, state)
 	end
 end
 

@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 EditBox Widget
 -------------------------------------------------------------------------------]]
-local Type, Version = "EditBox-ElvUI", 32
+local Type, Version = "EditBox-ElvUI", 33
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -11,6 +11,8 @@ local PlaySound = PlaySound
 local GetMacroInfo = GetMacroInfo
 local GetCursorInfo, ClearCursor = GetCursorInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
+
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
 local OKAY = OKAY
 local _G = _G
@@ -82,7 +84,7 @@ local function EditBox_OnReceiveDrag(frame)
 	if type == "item" then
 		name = info
 	elseif type == "spell" then
-		local spell = spellID and C_Spell.GetSpellInfo(spellID, info)
+		local spell = spellID and C_Spell_GetSpellInfo(spellID, info)
 		name = (spell and spell.name) or nil
 	elseif type == "macro" then
 		name = GetMacroInfo(id)

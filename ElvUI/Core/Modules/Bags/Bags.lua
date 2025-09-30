@@ -666,7 +666,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
-	local keyring = E.Classic and (bagID == KEYRING_CONTAINER)
 	local info = B:GetContainerItemInfo(bagID, slotID)
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
@@ -685,7 +684,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
 
-	if keyring then
+	if bagID == KEYRING_CONTAINER then
 		slot.keyringTexture:SetShown(not info.iconFileID)
 	end
 
@@ -2526,16 +2525,7 @@ function B:ConstructContainerFrame(name, isBank)
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 	else
-		local anchorButton = f.sortButton
-
-		if not B.BagBar then
-			f.bagsButton:Show()
-			f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
-			anchorButton = f.bagsButton -- Update the anchor for the next button.
-		else
-			f.bagsButton:Hide() -- Ensure the button is hidden if the BagBar is enabled.
-		end
-
+		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBag)
 		f.pickupGold:SetScript('OnClick', B.Container_ClickGold)
 
 		-- Stack/Transfer Button
@@ -2554,21 +2544,18 @@ function B:ConstructContainerFrame(name, isBank)
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
-			f.keyButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 			B:SetButtonTexture(f.keyButton, 134237) -- Interface\ICONS\INV_Misc_Key_03
 			f.keyButton:StyleButton(nil, true)
 			f.keyButton.ttText = BINDING_NAME_TOGGLEKEYRING
 			f.keyButton:SetScript('OnEnter', B.Tooltip_Show)
 			f.keyButton:SetScript('OnLeave', GameTooltip_Hide)
 			f.keyButton:SetScript('OnClick', B.Container_ToggleKeyring)
-			anchorButton = f.keyButton -- Update the anchor for the next button.
 		end
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(20)
 		f.vendorGraysButton:SetTemplate()
-		f.vendorGraysButton:Point('RIGHT', anchorButton, 'LEFT', -5, 0)
 		B:SetButtonTexture(f.vendorGraysButton, 133784) -- Interface\ICONS\INV_Misc_Coin_01
 		f.vendorGraysButton:StyleButton(nil, true)
 		f.vendorGraysButton.ttText = L["Vendor Grays"]
@@ -2608,6 +2595,9 @@ function B:ConstructContainerFrame(name, isBank)
 				f.currencyButton[i] = currency
 			end
 		end
+
+		-- position buttons
+		B:PositionButtons(f)
 	end
 
 	tinsert(_G.UISpecialFrames, name)
@@ -2741,15 +2731,15 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
-	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
+	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
-	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
+	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
-	slot.centerText = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
+	slot.centerText = slot:CreateFontString(nil, 'OVERLAY')
 	slot.centerText:Point('CENTER', 0, 0)
 	slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
 	slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
@@ -2774,44 +2764,35 @@ function B:ConstructContainerButton(f, bagID, slotID)
 end
 
 function B:ToggleBag(bagID)
+	if not bagID or B:GetContainerNumSlots(bagID) == 0 then return end
 	local shown = B.BagFrame:IsShown()
 	local closed = not shown
 
-	if B.BagBar and bagID == KEYRING_CONTAINER then
-		B.ShowKeyRing = closed or not B.ShowKeyRing
+	if B.BagBar then
+		local justBackpack = B.BagBar.db.justBackpack
+		if closed then -- reset shown
+			local allShown = B:AllBagsShown()
+			B:SetBagsShown(justBackpack)
 
-		B:Layout()
-
-		if closed then
-			B:OpenBags()
-		end
-	elseif bagID and B:GetContainerNumSlots(bagID) ~= 0 then
-		if B.BagBar then
-			local justBackpack = B.BagBar.db.justBackpack
-			if closed then -- reset shown
-				local allShown = B:AllBagsShown()
-				B:SetBagsShown(justBackpack)
-
-				if justBackpack and not allShown then
-					B:Layout() -- not all were shown
-				end
+			if justBackpack and not allShown then
+				B:Layout() -- not all were shown
 			end
+		end
 
-			local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
-			if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
-				if closed then
-					B:OpenBags()
-				else
-					B:BagBar_UpdateDesaturated()
-				end
+		local holder = B.BagFrame.ContainerHolderByBagID[bagID] or B.BankFrame.ContainerHolderByBagID[bagID]
+		if (justBackpack or B:ToggleContainer(holder)) and (bagID ~= BACKPACK_CONTAINER or IsBagOpen(BACKPACK_CONTAINER)) then
+			if closed then
+				B:OpenBags()
 			else
-				B:CloseAllBags()
+				B:BagBar_UpdateDesaturated()
 			end
-		elseif shown then
+		else
 			B:CloseAllBags()
-		elseif closed then
-			B:OpenBags()
 		end
+	elseif shown then
+		B:CloseAllBags()
+	elseif closed then
+		B:OpenBags()
 	end
 end
 
@@ -2886,6 +2867,31 @@ end
 function B:ToggleSortButtonState(isBank)
 	local button = (isBank and B.BankFrame.sortButton) or B.BagFrame.sortButton
 	button:SetEnabled(not B.db[isBank and 'disableBankSort' or 'disableBagSort'])
+end
+
+function B:PositionButtons(f)
+	if not f then return end
+
+	local bagsShown = not B.BagBar or B.BagBar.db.justBackpack
+	local bagsAnchor = bagsShown and f.bagsButton or f.sortButton
+
+	f.bagsButton:SetShown(bagsShown)
+
+	if f.keyButton then
+		f.keyButton:SetShown(bagsShown)
+		f.keyButton:Point('RIGHT', bagsAnchor, 'LEFT', -5, 0)
+
+		if bagsShown then
+			bagsAnchor = f.keyButton
+		end
+	end
+
+	f.vendorGraysButton:Point('RIGHT', bagsAnchor, 'LEFT', -5, 0)
+
+	-- also hide the bags holder if it was open
+	if f.ContainerHolder:IsShown() then
+		ToggleFrame(f.ContainerHolder)
+	end
 end
 
 function B:Container_OnShow()

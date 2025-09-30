@@ -571,9 +571,9 @@ local function ApplySettings(self, hex)
 
 	local sec = db.seconds and ':|r%02d' or '|r%s'
 	displayFormats.eu_nocolor = strjoin('', '%02d', ':|r%02d', sec)
-	displayFormats.na_nocolor = strjoin('', '', '%d', ':|r%02d', sec, ' %s|r')
+	displayFormats.na_nocolor = strjoin('', '%d', ':|r%02d', sec, ' %s|r')
 	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
-	displayFormats.na_color = strjoin('', '', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
+	displayFormats.na_color = strjoin('', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
 
 	OnUpdate(self, 20000)
 end
