@@ -60,6 +60,9 @@ local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local PanelTemplates_TabResize = PanelTemplates_TabResize
 
+local ConfigEventHandler = (_G.ChatFrameUtil and _G.ChatFrameUtil.ConfigEventHandler) or _G.ChatFrame_ConfigEventHandler
+local SystemEventHandler = (_G.ChatFrameUtil and _G.ChatFrameUtil.SystemEventHandler) or _G.ChatFrame_SystemEventHandler
+
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
@@ -2400,11 +2403,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 end
 
 function CH:ChatFrame_ConfigEventHandler(...)
-	return _G.ChatFrame_ConfigEventHandler(...)
+	return ConfigEventHandler(...)
 end
 
 function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
-	return _G.ChatFrame_SystemEventHandler(frame, event, message, ...)
+	return SystemEventHandler(frame, event, message, ...)
 end
 
 function CH:ChatFrame_OnEvent(frame, event, ...)
