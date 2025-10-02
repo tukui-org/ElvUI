@@ -80,7 +80,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, avoidance)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["AVD: "], avoidance)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["AVD"])..separator, avoidance)
 	end
 
 	-- print(unhittableMax) - should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks

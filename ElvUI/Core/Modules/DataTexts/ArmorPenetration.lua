@@ -13,7 +13,7 @@ local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetArmorPenetration = GetArmorPenetration
 
-local displayString = ''
+local displayString, db = ''
 local APRating, APBonusRating, APPercent = 0, 0, 0
 
 local function OnEvent(self)
@@ -21,7 +21,13 @@ local function OnEvent(self)
 	APBonusRating = GetCombatRatingBonus(CR_ARMOR_PENETRATION)
 	APPercent = GetArmorPenetration()
 
-	self.text:SetFormattedText(displayString, 'Armor Penetration', APRating + APBonusRating)
+	local armorPen = APRating + APBonusRating
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, armorPen)
+	else
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or 'Armor Penetration')..separator, armorPen)
+	end
 end
 
 local function OnEnter()
@@ -33,8 +39,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(_, hex)
-	displayString = strjoin('', '%s: ', hex, '%s|r')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s|r')
 end
 
 DT:RegisterDatatext('Armor Penetration', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, nil, nil, ApplySettings)

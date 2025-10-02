@@ -167,6 +167,8 @@ local function CreateDTOptions(name, data)
 		for key in pairs(settings) do
 			if key == 'Label' then
 				optionTable.args[key] = ACH:Input(L["Label"], nil, 2, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end)
+			elseif key == 'LabelSeparator' then
+				optionTable.args[key] = ACH:Input(L["Label Separator"], L["Leave empty to use global default"], 2.5, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end)
 			elseif key == 'NoLabel' then
 				optionTable.args[key] = ACH:Toggle(L["No Label"], nil, 3)
 			elseif key == 'NoIcon' then
@@ -272,6 +274,7 @@ DataTexts.args.general.args.generalGroup = ACH:Group(L["General"], nil, 2)
 DataTexts.args.general.args.generalGroup.inline = true
 DataTexts.args.general.args.generalGroup.args.noCombatClick = ACH:Toggle(L["Block Combat Click"], L["Blocks all click events while in combat."], 2)
 DataTexts.args.general.args.generalGroup.args.noCombatHover = ACH:Toggle(L["Block Combat Hover"], L["Blocks datatext tooltip from showing in combat."], 3)
+DataTexts.args.general.args.generalGroup.args.labelSeparator = ACH:Input(L["Label Separator"], L["Character(s) between label and value. Default is colon and space."], 4)
 
 DataTexts.args.general.args.fontGroup = ACH:Group(L["Font Group"], nil, 3)
 DataTexts.args.general.args.fontGroup.inline = true

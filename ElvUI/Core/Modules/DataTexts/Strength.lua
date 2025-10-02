@@ -16,7 +16,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, stat)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', stat)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT)..separator, stat)
 	end
 end
 

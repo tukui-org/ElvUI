@@ -541,7 +541,8 @@ local function OnEvent(self, event, message)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, onlineFriends + numBNetOnline)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or _G.FRIENDS)..separator, onlineFriends + numBNetOnline)
 	end
 end
 

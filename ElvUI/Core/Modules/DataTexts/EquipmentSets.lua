@@ -69,7 +69,8 @@ local function OnEvent(self)
 		if db.NoLabel then
 			self.text:SetFormattedText(displayString, '', set.name, not db.NoIcon and set.iconFileID or '')
 		else
-			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Set:"], set.name, not db.NoIcon and set.iconFileID or '')
+			local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+			self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["Set"])..separator, set.name, not db.NoIcon and set.iconFileID or '')
 		end
 	end
 end

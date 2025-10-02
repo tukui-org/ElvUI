@@ -22,7 +22,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, spellHit)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Spell Hit"]..': ', spellHit)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["Spell Hit"])..separator, spellHit)
 	end
 end
 

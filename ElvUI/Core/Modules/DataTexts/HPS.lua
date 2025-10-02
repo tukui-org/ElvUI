@@ -7,7 +7,7 @@ local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, healTotal = 0, 0, 0
-local displayString = ''
+local displayString, db = ''
 local events = {
 	SPELL_HEAL = true,
 	SPELL_PERIODIC_HEAL = true
@@ -24,7 +24,13 @@ local function GetHPS(self)
 	else
 		hps = healTotal / combatTime
 	end
-	self.text:SetFormattedText(displayString, L["HPS"], E:ShortValue(hps))
+
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, E:ShortValue(hps))
+	else
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["HPS"])..separator, E:ShortValue(hps))
+	end
 end
 
 local function OnEvent(self, event)
@@ -56,8 +62,12 @@ local function OnClick(self)
 	GetHPS(self)
 end
 
-local function ApplySettings(_, hex)
-	displayString = strjoin('', '%s: ', hex, '%s')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s')
 end
 
 DT:RegisterDatatext('HPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ApplySettings)

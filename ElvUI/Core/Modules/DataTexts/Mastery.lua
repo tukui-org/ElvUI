@@ -60,7 +60,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, masteryRating)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_MASTERY..': ', masteryRating)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or STAT_MASTERY)..separator, masteryRating)
 	end
 end
 

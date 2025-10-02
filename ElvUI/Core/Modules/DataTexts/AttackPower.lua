@@ -27,7 +27,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayNumberString, totalAP)
 	else
-		self.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or ATTACK_POWER..': ', totalAP)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayNumberString, (db.Label ~= '' and db.Label or ATTACK_POWER)..separator, totalAP)
 	end
 end
 

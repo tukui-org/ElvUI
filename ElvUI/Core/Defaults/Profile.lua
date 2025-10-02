@@ -1379,6 +1379,7 @@ P.datatexts = {
 	fontSize = 12,
 	fontOutline = 'SHADOW',
 	wordWrap = false,
+	labelSeparator = ': ',
 	panels = {
 		LeftChatDataPanel = {
 			enable = true,

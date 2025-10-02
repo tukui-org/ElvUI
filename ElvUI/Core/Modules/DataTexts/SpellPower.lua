@@ -23,7 +23,13 @@ local function OnEvent(self)
 		minSpellPower = GetSpellBonusDamage(db.school)
 	end
 
-	self.text:SetFormattedText(displayString, L["SP"], minSpellPower or 0)
+	minSpellPower = minSpellPower or 0
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, minSpellPower)
+	else
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["Spell Power"])..separator, minSpellPower)
+	end
 end
 
 local icon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
@@ -44,7 +50,7 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', '%s: ', hex, '%d|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')
 end
 
 DT:RegisterDatatext('SpellPower', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA' }, OnEvent, nil, nil, OnEnter, nil, L["Spell Power"], nil, ApplySettings)

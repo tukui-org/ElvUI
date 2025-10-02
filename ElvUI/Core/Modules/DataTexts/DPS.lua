@@ -7,7 +7,7 @@ local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
-local displayString = ''
+local displayString, db = ''
 local events = {
 	SWING_DAMAGE = true,
 	RANGE_DAMAGE = true,
@@ -29,7 +29,13 @@ local function GetDPS(self)
 	else
 		DPS = DMGTotal / combatTime
 	end
-	self.text:SetFormattedText(displayString, L["DPS"], E:ShortValue(DPS))
+
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, E:ShortValue(DPS))
+	else
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or L["DPS"])..separator, E:ShortValue(DPS))
+	end
 end
 
 local function OnEvent(self, event)
@@ -70,8 +76,12 @@ local function OnClick(self)
 	GetDPS(self)
 end
 
-local function ApplySettings(_, hex)
-	displayString = strjoin('', '%s: ', hex, '%s')
+local function ApplySettings(self, hex)
+	if not db then
+		db = E.global.datatexts.settings[self.name]
+	end
+
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%s')
 end
 
 DT:RegisterDatatext('DPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT, nil, ApplySettings)

@@ -314,7 +314,8 @@ local function OnEvent(self, event, ...)
 		if db.NoLabel then
 			self.text:SetFormattedText(displayString, #guildTable)
 		else
-			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or GUILD..': ', #guildTable)
+			local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+			self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or GUILD)..separator, #guildTable)
 		end
 	else
 		self.text:SetText(noGuildString)

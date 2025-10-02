@@ -32,7 +32,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, hitPercent + hitPercentFromTalents)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_HIT_CHANCE..': ', hitPercent + hitPercentFromTalents)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or STAT_HIT_CHANCE)..separator, hitPercent + hitPercentFromTalents)
 	end
 end
 

@@ -64,7 +64,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText('%s%d%%|r', hex, totalDurability)
 	else
-		self.text:SetFormattedText('%s%s%d%%|r', db.Label ~= '' and db.Label or (DURABILITY..': '), hex, totalDurability)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText('%s%s%d%%|r', (db.Label ~= '' and db.Label or DURABILITY)..separator, hex, totalDurability)
 	end
 
 	if totalDurability <= db.percThreshold then

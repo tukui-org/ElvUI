@@ -14,7 +14,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, UnitStat('player', LE_UNIT_STAT_AGILITY))
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_AGILITY_SHORT..': ', UnitStat('player', LE_UNIT_STAT_AGILITY))
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or ITEM_MOD_AGILITY_SHORT)..separator, UnitStat('player', LE_UNIT_STAT_AGILITY))
 	end
 end
 

@@ -25,7 +25,13 @@ local function OnEvent(self)
 		minCrit = GetSpellCritChance(db.school)
 	end
 
-	self.text:SetFormattedText(displayString, CRIT_ABBR, minCrit or 0)
+	minCrit = minCrit or 0
+	if db.NoLabel then
+		self.text:SetFormattedText(displayString, minCrit)
+	else
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or CRIT_ABBR)..separator, minCrit)
+	end
 end
 
 local icon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
@@ -46,7 +52,7 @@ local function ApplySettings(self, hex)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
+	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.2f%%|r')
 end
 
 DT:RegisterDatatext('Spell Crit Chance', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS' }, OnEvent, nil, nil, OnEnter, nil, nil, nil, ApplySettings)
