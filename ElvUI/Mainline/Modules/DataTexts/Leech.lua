@@ -34,7 +34,8 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, lifesteal)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_LIFESTEAL..': ', lifesteal)
+		local separator = (db.LabelSeparator ~= '' and db.LabelSeparator) or DT.db.labelSeparator or ': '
+		self.text:SetFormattedText(displayString, (db.Label ~= '' and db.Label or STAT_LIFESTEAL)..separator, lifesteal)
 	end
 end
 
