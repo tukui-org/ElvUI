@@ -324,8 +324,6 @@ function NP:PostUpdateAllElements(event)
 
 	if event == 'ForceUpdate' then
 		NP:StyleFilterUpdate(self, event)
-
-		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
 	elseif event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
 		NP:SetupTarget(self)
 	end
@@ -626,7 +624,6 @@ function NP:ConfigurePlates(init)
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
 
-		NP.PlayerFrame.StyleFilterBaseAlreadyUpdated = nil
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
@@ -645,7 +642,6 @@ function NP:ConfigurePlates(init)
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 			end
 
-			nameplate.StyleFilterBaseAlreadyUpdated = nil
 			nameplate:UpdateAllElements('ForceUpdate')
 		end
 	end
@@ -749,13 +745,9 @@ function NP:UpdatePlateBase(nameplate)
 		NP:UpdatePlate(nameplate, true)
 	elseif nameplate == NP.PlayerFrame then
 		NP:UpdatePlate(nameplate, true)
-
-		nameplate.StyleFilterBaseAlreadyUpdated = true
 	else
-		local update = nameplate.frameType ~= nameplate.previousType
-		NP:UpdatePlate(nameplate, update)
+		NP:UpdatePlate(nameplate, nameplate.frameType ~= nameplate.previousType)
 
-		nameplate.StyleFilterBaseAlreadyUpdated = update
 		nameplate.previousType = nameplate.frameType
 	end
 end
@@ -802,7 +794,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlateBase(nameplate)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this after UpdatePlateBase
-		nameplate.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
 	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		if not unit then unit = nameplate.unit end
 

@@ -19,7 +19,7 @@ function BL:GuildBank_ItemLevel(button)
 	if not db then return end
 
 	if not button.itemLevel then
-		button.itemLevel = button:CreateFontString(nil, 'ARTWORK', nil, 1)
+		button.itemLevel = button:CreateFontString(nil, 'OVERLAY')
 	end
 
 	button.itemLevel:ClearAllPoints()

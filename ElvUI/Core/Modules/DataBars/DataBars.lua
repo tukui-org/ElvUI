@@ -48,7 +48,7 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	bar:Hide()
 
 	bar.barTexture = bar:GetStatusBarTexture()
-	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
+	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
