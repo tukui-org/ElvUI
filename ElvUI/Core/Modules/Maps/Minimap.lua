@@ -747,6 +747,13 @@ function M:Initialize()
 	if E.Retail then
 		MinimapCluster:KillEditMode()
 
+		-- Prevents saveLayout in EditMode, TODO
+		--[[
+		if MinimapCluster.systemInfo then -- fix an error when the cluster is moved to the lower part of screen
+			MinimapCluster.systemInfo.isInDefaultPosition = nil
+		end
+		]]
+
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
