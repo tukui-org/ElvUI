@@ -336,16 +336,6 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab2:Point('TOPLEFT', _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -5, 0)
 
-	hooksecurefunc('PVEFrame_ShowFrame', function()
-		if not _G.PVEFrameTab4:IsShown() then return end
-
-		local twoShown = _G.PVEFrameTab2:IsShown()
-		local threeShown = _G.PVEFrameTab3:IsShown()
-
-		_G.PVEFrameTab4:ClearAllPoints()
-		_G.PVEFrameTab4:SetPoint('TOPLEFT', (twoShown and threeShown and _G.PVEFrameTab3) or (twoShown and not threeShown and _G.PVEFrameTab2) or _G.PVEFrameTab1, 'TOPRIGHT', -5, 0)
-	end)
-
 	-- Scenario Tab [[New in 10.2.7]]
 	local ScenarioQueueFrame = _G.ScenarioQueueFrame
 	if ScenarioQueueFrame then
