@@ -142,9 +142,9 @@ function S:Blizzard_PVPUI()
 		if button.bg then button.bg:SetDesaturated(true) end
 	end)
 
-	HandleRoleButton(HonorFrame.TankIcon)
-	HandleRoleButton(HonorFrame.HealerIcon)
-	HandleRoleButton(HonorFrame.DPSIcon)
+	HandleRoleButton(HonorFrame.RoleList.TankIcon)
+	HandleRoleButton(HonorFrame.RoleList.HealerIcon)
+	HandleRoleButton(HonorFrame.RoleList.DPSIcon)
 
 	-- Conquest Frame
 	local ConquestFrame = _G.ConquestFrame
@@ -153,9 +153,9 @@ function S:Blizzard_PVPUI()
 
 	S:HandleButton(_G.ConquestJoinButton)
 
-	HandleRoleButton(ConquestFrame.TankIcon)
-	HandleRoleButton(ConquestFrame.HealerIcon)
-	HandleRoleButton(ConquestFrame.DPSIcon)
+	HandleRoleButton(ConquestFrame.RoleList.TankIcon)
+	HandleRoleButton(ConquestFrame.RoleList.HealerIcon)
+	HandleRoleButton(ConquestFrame.RoleList.DPSIcon)
 
 	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
 		local reward = bu.Reward
