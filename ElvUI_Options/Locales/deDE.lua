@@ -815,6 +815,7 @@ L["Horizontal Spacing"] = "Horizontaler Abstand"
 L["Horizontal"] = "Horizontal"
 L["Hostile"] = "Feindlich"
 L["Hours"] = "Stunden"
+L["Housing Dashboard"] = true
 L["Hover Highlight"] = "Mouseover Hervorhebung"
 L["Hover"] = "Mouseover"
 L["How far away the portrait is from the camera."] = "Entfernung der Kamera vom Portrait."
