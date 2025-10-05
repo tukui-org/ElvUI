@@ -122,7 +122,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	TT:SetCompareItems(tt, true)
 
 	local statusBar = tt.StatusBar
-	if statusBar then
+	if statusBar and not E.Midnight then
 		local spacing = E.Spacing * 3
 		local position = TT.db.healthBar.statusPosition
 		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
@@ -618,6 +618,7 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
+	if E.Midnight then return end -- TODO
 	if tt:IsForbidden() or not value or not tt.text or not TT.db.healthBar.text then return end
 
 	-- try to get ahold of the unit token
@@ -1064,16 +1065,18 @@ function TT:Initialize()
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
-	local statusBar = GameTooltipStatusBar
-	statusBar:Height(TT.db.healthBar.height)
-	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
+	if not E.Midnight then
+		local statusBar = GameTooltipStatusBar
+		statusBar:Height(TT.db.healthBar.height)
+		statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
 
-	GameTooltip.StatusBar = statusBar
+		GameTooltip.StatusBar = statusBar
 
-	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
-	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar)
-	statusBar.text = statusText
+		local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
+		statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+		statusText:Point('CENTER', statusBar)
+		statusBar.text = statusText
+	end
 
 	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
 		SetTooltipMoney(GameTooltip, 1, nil, '', '')
