@@ -826,6 +826,7 @@ L["Horizontal Spacing"] = "Отступ по горизонтали"
 L["Horizontal"] = "Горизонтально"
 L["Hostile"] = "Враждебный"
 L["Hours"] = "Часы"
+L["Housing Dashboard"] = true
 L["Hover Highlight"] = "Подсветка при наведении"
 L["Hover"] = "Наведение"
 L["How far away the portrait is from the camera."] = "Как далеко от персонажа находится камера."

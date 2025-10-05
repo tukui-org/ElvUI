@@ -817,6 +817,7 @@ L["Horizontal Spacing"] = "Espace horizontal"
 L["Horizontal"] = "Horizontale"
 L["Hostile"] = true
 L["Hours"] = "Heures"
+L["Housing Dashboard"] = true
 L["Hover Highlight"] = "Survol surligné"
 L["Hover"] = "Survoler"
 L["How far away the portrait is from the camera."] = "Configure la distance de la caméra par rapport au portrait."
