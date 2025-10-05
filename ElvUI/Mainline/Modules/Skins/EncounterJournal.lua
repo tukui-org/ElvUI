@@ -281,6 +281,7 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
+	S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
 
@@ -300,7 +301,9 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
 		_G.EncounterJournalLootJournalTab,
-		_G.EncounterJournalMonthlyActivitiesTab
+		_G.EncounterJournalMonthlyActivitiesTab,
+		_G.EncounterJournalJourneysTab,
+		_G.EncounterJournal.TutorialsTab
 	} do
 		S:HandleTab(tab)
 	end
@@ -611,6 +614,10 @@ function S:Blizzard_EncounterJournal()
 
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
+
+	-- Tutorials page
+	-- TODO: Strip Parchment (unnamed region)
+	S:HandleButton(_G.EncounterJournal.TutorialsFrame.Contents.StartButton)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
