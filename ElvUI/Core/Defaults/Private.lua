@@ -129,6 +129,7 @@ V.skins = {
 		guildcontrol = true,
 		guildregistrar = true,
 		help = true,
+		housingDashboard = true,
 		inspect = true,
 		islandQueue = true,
 		islandsPartyPose = true,
