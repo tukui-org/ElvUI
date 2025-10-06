@@ -51,7 +51,7 @@ local function CreateAuraIcon(element, index)
 end
 
 local stackAuras = {}
-local function CustomFilter(element, _, button, _, _, count)
+local function CustomFilter(element, _, button, _, _, _, count)
 	local spellID = button.spellID
 	local setting = element.watched[spellID]
 	if not setting then
