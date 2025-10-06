@@ -248,6 +248,7 @@ function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
 	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.RecentAlliesFrame.List.ScrollBar)
 	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
