@@ -22,6 +22,21 @@ local function PositionTabIcons(icon, point)
 	end
 end
 
+local function SkinHeaders(header)
+	if header.IsSkinned then return end
+
+	if header.HighlightMiddle then header.HighlightMiddle:SetAlpha(0) end
+	if header.HighlightLeft then header.HighlightLeft:SetAlpha(0) end
+	if header.HighlightRight then header.HighlightRight:SetAlpha(0) end
+	if header.Middle then header.Middle:Hide() end
+	if header.Left then header.Left:Hide() end
+	if header.Right then header.Right:Hide() end
+
+	S:HandleButton(header)
+
+	header.IsSkinned = true
+end
+
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
 	local color = db.countFontColor
@@ -213,6 +228,21 @@ function S:CooldownManager_UpdateViewers()
 	S:CooldownManager_UpdateViewer(_G.EssentialCooldownViewer)
 end
 
+function S:CooldownManager_SkinCategoryHeaders()
+	local CooldownViewer = _G.CooldownViewerSettings
+	if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
+
+	local content = CooldownViewer.CooldownScroll.Content
+	if not content then return end
+
+	for i = 1, content:GetNumChildren() do
+		local categoryFrame = select(i, content:GetChildren())
+		if categoryFrame and categoryFrame.Header then
+			SkinHeaders(categoryFrame.Header)
+		end
+	end
+end
+
 function S:Blizzard_CooldownViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
 
@@ -270,6 +300,9 @@ function S:Blizzard_CooldownViewer()
 				end
 			end
 		end
+
+		S:CooldownManager_SkinCategoryHeaders()
+		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_SkinCategoryHeaders)
 	end
 end
 
