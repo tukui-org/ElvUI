@@ -116,8 +116,8 @@ local function CreateAuraBar(element, index)
 	return bar
 end
 
-local function CustomFilter(element, unit, button, name)
-	if (element.onlyShowPlayer and button.isPlayer) or (not element.onlyShowPlayer and name) then
+local function CustomFilter(element, unit, bar, aura, name)
+	if (element.onlyShowPlayer and bar.isPlayer) or (not element.onlyShowPlayer and name) then
 		return true
 	end
 end
