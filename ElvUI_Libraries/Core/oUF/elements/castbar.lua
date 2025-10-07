@@ -156,6 +156,10 @@ local function SpecialActive(frame, event, unit)
 			else
 				speed = speed - specialAuras[spellID]
 			end
+
+			if speed <= 0.6 then -- fastest speed
+				return speed
+			end
 		end
 	end
 
