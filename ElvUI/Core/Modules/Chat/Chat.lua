@@ -60,7 +60,6 @@ local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local PanelTemplates_TabResize = PanelTemplates_TabResize
 
-
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
