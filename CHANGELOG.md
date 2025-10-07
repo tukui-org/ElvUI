@@ -1,3 +1,10 @@
+### Version 14.02 [ October 7th 2025 ]
+*   Nameplate Style Filters for Not Targeted not resetting from Name Only.
+*   Hunter fake castbars handle Rapid Fire, Quick Shots, and Berserking better.
+*   Item level text layer raised on Bag slots and Guild Bank slots.
+*   Aura Indicator count text bugging on a few spells.
+*   Edit Mode layouts failed to save.
+
 ### Version 14.01 [ September 27th 2025 ]
 *   Tags no longer running on hidden frames and they should update more accurately.
 *   Aura Filters with old entries (nonPersonal, notCastByUnit, notDispellable) were not properly handled.

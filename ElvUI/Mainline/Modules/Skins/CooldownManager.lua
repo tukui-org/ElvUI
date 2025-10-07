@@ -235,10 +235,9 @@ function S:CooldownManager_SkinCategoryHeaders()
 	local content = CooldownViewer.CooldownScroll.Content
 	if not content then return end
 
-	for i = 1, content:GetNumChildren() do
-		local categoryFrame = select(i, content:GetChildren())
-		if categoryFrame and categoryFrame.Header then
-			SkinHeaders(categoryFrame.Header)
+	for _, child in next, { content:GetChildren() } do
+		if child.Header then
+			SkinHeaders(child.Header)
 		end
 	end
 end
