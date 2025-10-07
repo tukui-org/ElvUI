@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 67 -- the real minor version is 126
+local MINOR_VERSION = 67 -- the real minor version is 133 (no Spell Cast VFX yet)
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
