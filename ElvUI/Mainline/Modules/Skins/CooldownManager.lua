@@ -8,6 +8,35 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
+local function PositionCooldownViewerTab(tab, _, _, _, x, y)
+	if x ~= 1 or y ~= -10 then
+		tab:ClearAllPoints()
+		tab:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+	end
+end
+
+local function PositionTabIcons(icon, point)
+	if point ~= 'CENTER' then
+		icon:ClearAllPoints()
+		icon:SetPoint('CENTER')
+	end
+end
+
+local function SkinHeaders(header)
+	if header.IsSkinned then return end
+
+	if header.HighlightMiddle then header.HighlightMiddle:SetAlpha(0) end
+	if header.HighlightLeft then header.HighlightLeft:SetAlpha(0) end
+	if header.HighlightRight then header.HighlightRight:SetAlpha(0) end
+	if header.Middle then header.Middle:Hide() end
+	if header.Left then header.Left:Hide() end
+	if header.Right then header.Right:Hide() end
+
+	S:HandleButton(header)
+
+	header.IsSkinned = true
+end
+
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
 	local color = db.countFontColor
@@ -199,6 +228,21 @@ function S:CooldownManager_UpdateViewers()
 	S:CooldownManager_UpdateViewer(_G.EssentialCooldownViewer)
 end
 
+function S:CooldownManager_SkinCategoryHeaders()
+	local CooldownViewer = _G.CooldownViewerSettings
+	if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
+
+	local content = CooldownViewer.CooldownScroll.Content
+	if not content then return end
+
+	for i = 1, content:GetNumChildren() do
+		local categoryFrame = select(i, content:GetChildren())
+		if categoryFrame and categoryFrame.Header then
+			SkinHeaders(categoryFrame.Header)
+		end
+	end
+end
+
 function S:Blizzard_CooldownViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
 
@@ -213,6 +257,53 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
+
+	local CooldownViewer = _G.CooldownViewerSettings
+	if CooldownViewer then
+		S:HandlePortraitFrame(CooldownViewer)
+		S:HandleEditBox(CooldownViewer.SearchBox)
+		S:HandleTrimScrollBar(CooldownViewer.CooldownScroll.ScrollBar)
+		S:HandleButton(CooldownViewer.UndoButton)
+
+		for i, tab in next, { CooldownViewer.SpellsTab, CooldownViewer.AurasTab } do
+			tab:CreateBackdrop()
+			tab:Size(30, 40)
+
+			if i == 1 then
+				tab:ClearAllPoints()
+				tab:SetPoint('TOPLEFT', CooldownViewer, 'TOPRIGHT', 1, -10)
+
+				hooksecurefunc(tab, 'SetPoint', PositionCooldownViewerTab)
+			end
+
+			if tab.Icon then
+				tab.Icon:ClearAllPoints()
+				tab.Icon:SetPoint('CENTER')
+
+				hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
+			end
+
+			if tab.Background then
+				tab.Background:SetAlpha(0)
+			end
+
+			if tab.SelectedTexture then
+				tab.SelectedTexture:SetDrawLayer('ARTWORK')
+				tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+				tab.SelectedTexture:SetAllPoints()
+			end
+
+			for _, region in next, { tab:GetRegions() } do
+				if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+					region:SetColorTexture(1, 1, 1, 0.3)
+					region:SetAllPoints()
+				end
+			end
+		end
+
+		S:CooldownManager_SkinCategoryHeaders()
+		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_SkinCategoryHeaders)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_CooldownViewer')
