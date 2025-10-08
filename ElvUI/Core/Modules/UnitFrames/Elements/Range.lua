@@ -13,11 +13,13 @@ local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local CheckInteractDistance = CheckInteractDistance
 local InCombatLockdown = InCombatLockdown
+local UnitPhaseReason = UnitPhaseReason
+local IsInInstance = IsInInstance
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
-
 local IsSpellInRange = C_Spell.IsSpellInRange
-local UnitPhaseReason = UnitPhaseReason
+
+local PhaseReason = Enum.PhaseReason
 
 local list = {}
 UF.RangeSpells = list
@@ -88,7 +90,11 @@ function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
 			local phaseReason = UnitPhaseReason(unit)
-			if phaseReason and phaseReason ~= 4 then -- ignore TimerunningHwt (world tier)
+			if phaseReason == PhaseReason.TimerunningHwt then
+				if not IsInInstance() then -- phased in open world (hero / nonhero) but not phased in dungeons
+					return false
+				end
+			elseif phaseReason then
 				return false
 			end
 		elseif not UnitInPhase(unit) then
