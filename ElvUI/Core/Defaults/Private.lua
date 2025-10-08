@@ -183,6 +183,7 @@ V.skins = {
 		genericTrait = true,
 		editor = true,
 		campsites = true,
+		remixArtifact = true,
 	}
 }
 
