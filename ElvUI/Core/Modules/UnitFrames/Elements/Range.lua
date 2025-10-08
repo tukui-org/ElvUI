@@ -87,7 +87,8 @@ end
 function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
-			if UnitPhaseReason(unit) then
+			local phaseReason = UnitPhaseReason(unit)
+			if phaseReason and phaseReason ~= 4 then -- ignore TimerunningHwt (world tier)
 				return false
 			end
 		elseif not UnitInPhase(unit) then
