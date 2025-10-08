@@ -1,13 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local IsInInstance = IsInInstance
-
 local PhaseReason = Enum.PhaseReason
 
 function UF:PostUpdate_PhaseIcon(hidden, phaseReason)
 	if phaseReason == PhaseReason.TimerunningHwt then -- timerunning world tier
-        hidden = IsInInstance() -- phased in open world (hero / nonhero) but not phased in dungeons
 		self.Center:SetVertexColor(0.4, 0.1, 1) -- purple
 	elseif phaseReason == PhaseReason.ChromieTime then
 		self.Center:SetVertexColor(1, 0.9, 0.5) -- gold
