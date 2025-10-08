@@ -1,12 +1,19 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local PhaseReason = Enum.PhaseReason
 
 function UF:PostUpdate_PhaseIcon(hidden, phaseReason)
-	if phaseReason == 3 then -- chromie, gold
+	if phaseReason == PhaseReason.TimerunningHwt then -- timerunning world tier, phased in open world between hero/nonhero, but not phased in dungeons.
+        local inInstance, _ = IsInInstance()
+		if inInstance then
+			self:Hide()
+			return
+		end
+	elseif phaseReason == PhaseReason.ChromieTime then -- chromie, gold
 		self.Center:SetVertexColor(1, 0.9, 0.5)
-	elseif phaseReason == 2 then -- warmode, red
+	elseif phaseReason == PhaseReason.WarMode then -- warmode, red
 		self.Center:SetVertexColor(1, 0.3, 0.3)
-	elseif phaseReason == 1 then -- sharding, green
+	elseif phaseReason == PhaseReason.Sharding then -- sharding, green
 		self.Center:SetVertexColor(0.5, 1, 0.3)
 	else -- phasing, blue
 		self.Center:SetVertexColor(0.3, 0.5, 1)
