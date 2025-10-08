@@ -35,7 +35,7 @@ function S:Blizzard_ItemSocketingUI()
 
 	hooksecurefunc('ItemSocketingFrame_Update', function()
 		for i, socket in ipairs(_G.ItemSocketingFrame.SocketingContainer.SocketFrames) do
-			local gemColor = C_ItemSocketInfo.GetSocketItemInfo(i)
+			local gemColor = C_ItemSocketInfo_GetSocketItemInfo(i)
 			local color = E.GemTypeInfo[gemColor]
 			if color then
 				socket:SetBackdropBorderColor(color.r, color.g, color.b)
