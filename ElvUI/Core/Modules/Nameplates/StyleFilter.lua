@@ -1396,7 +1396,7 @@ function NP:StyleFilterCastingFunction(event, unit, guid, spellID)
 		self.castChanneling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
 		self.castCasting = event == 'UNIT_SPELLCAST_START' or nil
 
-		local spellName, notInterruptible
+		local spellName, notInterruptible, _
 		if self.castChanneling or self.castEmpowering then
 			spellName, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
 		elseif self.castCasting then
