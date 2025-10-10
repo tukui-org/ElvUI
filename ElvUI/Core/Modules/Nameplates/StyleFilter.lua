@@ -1484,6 +1484,7 @@ function NP:StyleFilterClearVariables(nameplate)
 	nameplate.castCasting = nil
 	nameplate.castChanneling = nil
 	nameplate.castEmpowering = nil
+	nameplate.castSpellName = nil
 	nameplate.castSpellID = nil
 	nameplate.castGUID = nil
 end
