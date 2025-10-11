@@ -1212,7 +1212,7 @@ function NP:StyleFilterConditionCheck(frame, event, arg1, arg2, filter, trigger)
 		if cast.spells then
 			for _, value in next, cast.spells do
 				if value then -- only run if at least one is selected
-					local castingSpell = (frame.castSpellID and cast.spells[tostring(frame.castSpellID)]) or cast.spells[frame.spellName]
+					local castingSpell = (frame.castSpellID and cast.spells[tostring(frame.castSpellID)]) or cast.spells[frame.castSpellName]
 					if allow and ((cast.notSpell and not castingSpell) or (castingSpell and not cast.notSpell)) then passed = true else return end
 					break -- we can execute this once on the first enabled option then kill the loop
 				end
@@ -1396,15 +1396,16 @@ function NP:StyleFilterCastingFunction(event, unit, guid, spellID)
 		self.castChanneling = event == 'UNIT_SPELLCAST_CHANNEL_START' or nil
 		self.castCasting = event == 'UNIT_SPELLCAST_START' or nil
 
-		local _, notInterruptible
+		local spellName, notInterruptible, _
 		if self.castChanneling or self.castEmpowering then
-			_, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
+			spellName, _, _, _, _, _, notInterruptible = UnitChannelInfo(unit)
 		elseif self.castCasting then
-			_, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
+			spellName, _, _, _, _, _, _, notInterruptible = UnitCastingInfo(unit)
 		end
 
 		local active = self.castChanneling or self.castCasting or self.castEmpowering
 		self.castSpellID = (active and spellID) or nil
+		self.castSpellName = (active and spellName) or nil
 		self.castGUID = (active and guid) or nil
 		self.castInterruptible = (active and not notInterruptible) or nil
 	end
@@ -1483,6 +1484,7 @@ function NP:StyleFilterClearVariables(nameplate)
 	nameplate.castCasting = nil
 	nameplate.castChanneling = nil
 	nameplate.castEmpowering = nil
+	nameplate.castSpellName = nil
 	nameplate.castSpellID = nil
 	nameplate.castGUID = nil
 end
