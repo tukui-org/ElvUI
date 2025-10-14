@@ -24,6 +24,8 @@ E.Status_Bugsack = {
 	BugSack = true
 }
 
+local RemixMode = { 'Panda Remix', 'Legion Remix' }
+
 function E:AreOtherAddOnsEnabled()
 	local EP, addons, bugs, plugins = E.Libs.EP.plugins
 
@@ -273,7 +275,7 @@ function E:UpdateStatusFrame()
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	end
 
-	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', (E.TimerunningID == 1 and 'Remix') or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Retail and 'Classic') or 'Retail')
+	Section3.Content[E.Retail and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', RemixMode[E.TimerunningID] or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Retail and 'Classic') or 'Retail')
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end

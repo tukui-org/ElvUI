@@ -495,6 +495,7 @@ do --this can save some main file locals
 			z['Player-1598-0F5E4639']	= ElvGreen -- [Alliance] Druid: Luckyone
 			z['Player-1598-0F3E51B0']	= ElvGreen -- [Alliance] Druid: Luckydruid
 			z['Player-1598-0FB03F89']	= ElvGreen -- [Alliance] Monk
+			z['Player-1598-0FBCD9A2']	= ElvGreen -- [Alliance] DH
 			z['Player-1598-0F46FF5A']	= ElvGreen -- [Horde] Evoker
 			z['Player-1598-0F92E2B9']	= ElvGreen -- [Horde] Evoker 2
 			z['Player-1598-0BFF3341']	= ElvGreen -- [Horde] DH
@@ -508,7 +509,6 @@ do --this can save some main file locals
 			z['Player-1598-0BF8013A']	= ElvGreen -- [Horde] Warrior
 			z['Player-1598-0BF56103']	= ElvGreen -- [Horde] Shaman
 			z['Player-1598-0F87B5AA']	= ElvGreen -- [Alliance] Priest
-			z['Taylorswift-LaughingSkull'] = ElvGreen -- [Alliance] Legion Remix
 			-- Sneaky Darth
 			z['Player-1925-05F494A6']	= ElvPurple
 			z['Player-1925-05F495A1']	= ElvPurple
