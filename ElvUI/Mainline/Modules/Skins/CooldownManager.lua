@@ -22,9 +22,7 @@ local function PositionTabIcons(icon, point)
 	end
 end
 
-local function SkinHeaders(header)
-	if header.IsSkinned then return end
-
+function S:CooldownManager_HandleHeaders(header)
 	if header.HighlightMiddle then header.HighlightMiddle:SetAlpha(0) end
 	if header.HighlightLeft then header.HighlightLeft:SetAlpha(0) end
 	if header.HighlightRight then header.HighlightRight:SetAlpha(0) end
@@ -37,17 +35,27 @@ local function SkinHeaders(header)
 	header.IsSkinned = true
 end
 
-local function SkinSettingItem(item)
+function S:CooldownManager_HandleSettingItem(item)
 	if item.IsSkinned then return end
 
-	if not item.Icon or not item.Highlight then return end
+	local icon = item.Icon
+	if icon then
+		local highlight = item.Highlight
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, .25)
+			highlight:SetAllPoints(icon)
+		end
 
-	item.Highlight:SetColorTexture(1, 1, 1, .25)
-	item.Highlight:SetAllPoints(item.Icon)
-
-	S:HandleIcon(item.Icon, true)
+		S:HandleIcon(icon, true)
+	end
 
 	item.IsSkinned = true
+end
+
+function S:CooldownManager_HandleSettingItemPool()
+	for frame in self:EnumerateActive() do
+		S:CooldownManager_HandleSettingItem(frame)
+	end
 end
 
 function S:CooldownManager_CountText(text)
@@ -241,33 +249,29 @@ function S:CooldownManager_UpdateViewers()
 	S:CooldownManager_UpdateViewer(_G.EssentialCooldownViewer)
 end
 
-function S:CooldownManager_HandleSettingItems()
-	for frame in self:EnumerateActive() do
-		SkinSettingItem(frame)
-	end
-end
-
 do
 	local hookedItemPools = {}
 
-	function S:CooldownManager_SkinCategory()
+	function S:CooldownManager_RefreshLayout()
 		local CooldownViewer = _G.CooldownViewerSettings
 		if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
 
 		local content = CooldownViewer.CooldownScroll.Content
 		if not content then return end
 
-
-
 		for _, child in next, { content:GetChildren() } do
-			if child.Header then
-				SkinHeaders(child.Header)
+			local header = child.Header
+			if header and not header.IsSkinned then
+				S:CooldownManager_HandleHeaders(child.Header)
 			end
 
-			if child.itemPool and not hookedItemPools[child.itemPool] then
-				hookedItemPools[child.itemPool] = true
-				S.CooldownManager_HandleSettingItems(child.itemPool)
-				hooksecurefunc(child.itemPool, 'Acquire', S.CooldownManager_HandleSettingItems)
+			local itemPool = child.itemPool
+			if itemPool and not hookedItemPools[itemPool] then
+				hookedItemPools[itemPool] = true
+
+				S.CooldownManager_HandleSettingItemPool(itemPool)
+
+				hooksecurefunc(itemPool, 'Acquire', S.CooldownManager_HandleSettingItemPool)
 			end
 		end
 	end
@@ -331,8 +335,8 @@ function S:Blizzard_CooldownViewer()
 			end
 		end
 
-		S:CooldownManager_SkinCategory()
-		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_SkinCategory)
+		S:CooldownManager_RefreshLayout()
+		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_RefreshLayout)
 	end
 end
 
