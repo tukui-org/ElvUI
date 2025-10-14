@@ -37,6 +37,19 @@ local function SkinHeaders(header)
 	header.IsSkinned = true
 end
 
+local function SkinSettingItem(item)
+	if item.IsSkinned then return end
+
+	if not item.Icon or not item.Highlight then return end
+
+	item.Highlight:SetColorTexture(1, 1, 1, .25)
+	item.Highlight:SetAllPoints(item.Icon)
+
+	S:HandleIcon(item.Icon, true)
+
+	item.IsSkinned = true
+end
+
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
 	local color = db.countFontColor
@@ -228,16 +241,34 @@ function S:CooldownManager_UpdateViewers()
 	S:CooldownManager_UpdateViewer(_G.EssentialCooldownViewer)
 end
 
-function S:CooldownManager_SkinCategoryHeaders()
-	local CooldownViewer = _G.CooldownViewerSettings
-	if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
+function S:CooldownManager_HandleSettingItems()
+	for frame in self:EnumerateActive() do
+		SkinSettingItem(frame)
+	end
+end
 
-	local content = CooldownViewer.CooldownScroll.Content
-	if not content then return end
+do
+	local hookedItemPools = {}
 
-	for _, child in next, { content:GetChildren() } do
-		if child.Header then
-			SkinHeaders(child.Header)
+	function S:CooldownManager_SkinCategory()
+		local CooldownViewer = _G.CooldownViewerSettings
+		if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
+
+		local content = CooldownViewer.CooldownScroll.Content
+		if not content then return end
+
+
+
+		for _, child in next, { content:GetChildren() } do
+			if child.Header then
+				SkinHeaders(child.Header)
+			end
+
+			if child.itemPool and not hookedItemPools[child.itemPool] then
+				hookedItemPools[child.itemPool] = true
+				S.CooldownManager_HandleSettingItems(child.itemPool)
+				hooksecurefunc(child.itemPool, 'Acquire', S.CooldownManager_HandleSettingItems)
+			end
 		end
 	end
 end
@@ -300,8 +331,8 @@ function S:Blizzard_CooldownViewer()
 			end
 		end
 
-		S:CooldownManager_SkinCategoryHeaders()
-		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_SkinCategoryHeaders)
+		S:CooldownManager_SkinCategory()
+		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_SkinCategory)
 	end
 end
 
