@@ -114,6 +114,16 @@ function S:MerchantFrame()
 		icon:Point('TOPLEFT', 1, -1)
 		icon:Point('BOTTOMRIGHT', -1, 1)
 
+		local questIcon = button.IconQuestTexture
+		questIcon:SetTexCoord(0, 1, 0, 1)
+		questIcon:SetInside()
+		local QuestIconSetTexture = questIcon.SetTexture
+		hooksecurefunc(questIcon, 'SetTexture', function(thisIcon, tex)
+			if tex == [[Interface\ContainerFrame\UI-Icon-QuestBang]] then
+				QuestIconSetTexture(thisIcon, E.Media.Textures.BagQuestIcon)
+			end
+		end)
+
 		S:HandleIconBorder(button.IconBorder)
 	end
 
