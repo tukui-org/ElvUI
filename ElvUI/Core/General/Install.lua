@@ -631,7 +631,7 @@ function E:LayoutAnniversary()
 	E.db.nameplates.units.ENEMY_PLAYER.markHealers = false
 	E.db.nameplates.units.ENEMY_PLAYER.markTanks = false
 	E.db.nameplates.units.ENEMY_PLAYER.name.fontSize = 12
-	E.db.nameplates.units.ENEMY_PLAYER.name.format = '[spec:icon] [name]'
+	E.db.nameplates.units.ENEMY_PLAYER.name.format = E.Retail and '[spec:icon] [name]' or '[name]'
 	E.db.nameplates.units.ENEMY_PLAYER.name.yOffset = -9
 	E.db.nameplates.units.ENEMY_PLAYER.portrait.position = 'LEFT'
 	E.db.nameplates.units.ENEMY_PLAYER.portrait.specicon = false
@@ -677,7 +677,7 @@ function E:LayoutAnniversary()
 	E.db.nameplates.units.FRIENDLY_PLAYER.markHealers = false
 	E.db.nameplates.units.FRIENDLY_PLAYER.markTanks = false
 	E.db.nameplates.units.FRIENDLY_PLAYER.name.fontSize = 12
-	E.db.nameplates.units.FRIENDLY_PLAYER.name.format = '[spec:icon] [name]'
+	E.db.nameplates.units.FRIENDLY_PLAYER.name.format = E.Retail and '[spec:icon] [name]' or '[name]'
 	E.db.nameplates.units.FRIENDLY_PLAYER.name.yOffset = -9
 	E.db.nameplates.units.FRIENDLY_PLAYER.portrait.position = 'LEFT'
 	E.db.nameplates.units.FRIENDLY_PLAYER.portrait.specicon = false
