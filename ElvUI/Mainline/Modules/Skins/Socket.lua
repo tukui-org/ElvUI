@@ -7,6 +7,8 @@ local ipairs, unpack = ipairs, unpack
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
+local C_ItemSocketInfo_GetSocketItemInfo = C_ItemSocketInfo.GetSocketItemInfo
+
 function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
@@ -20,23 +22,20 @@ function S:Blizzard_ItemSocketingUI()
 	S:HandleTrimScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
 
 	for i = 1, _G.MAX_NUM_SOCKETS do
-		local button = _G[format('ItemSocketingSocket%d', i)]
-		local button_bracket = _G[format('ItemSocketingSocket%dBracketFrame', i)]
-		local button_bg = _G[format('ItemSocketingSocket%dBackground', i)]
-		local button_icon = _G[format('ItemSocketingSocket%dIconTexture', i)]
+		local button = _G.ItemSocketingFrame.SocketingContainer['Socket'..i]
+		local button_bracket = button.BracketFrame
+		local button_bg = button.Background
 
 		button:StripTextures()
 		button:StyleButton()
 		button:SetTemplate(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
-		button_icon:SetTexCoord(unpack(E.TexCoords))
-		button_icon:SetInside()
 	end
 
 	hooksecurefunc('ItemSocketingFrame_Update', function()
-		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
-			local gemColor = GetSocketTypes(i)
+		for i, socket in ipairs(_G.ItemSocketingFrame.SocketingContainer.SocketFrames) do
+			local gemColor = C_ItemSocketInfo_GetSocketItemInfo(i)
 			local color = E.GemTypeInfo[gemColor]
 			if color then
 				socket:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -47,9 +46,9 @@ function S:Blizzard_ItemSocketingUI()
 	end)
 
 	_G.ItemSocketingFramePortrait:Kill()
-	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
-	S:HandleButton(_G.ItemSocketingSocketButton)
+	_G.ItemSocketingFrame.SocketingContainer.ApplySocketsButton:ClearAllPoints()
+	_G.ItemSocketingFrame.SocketingContainer.ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+	S:HandleButton(_G.ItemSocketingFrame.SocketingContainer.ApplySocketsButton)
 end
 
 S:AddCallbackForAddon('Blizzard_ItemSocketingUI')

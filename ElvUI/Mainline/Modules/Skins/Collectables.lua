@@ -21,6 +21,12 @@ local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
+local function CheckAndDisplayHeirloomsTab()
+	if not _G.CollectionsJournalTab5 then return end
+
+	_G.CollectionsJournalTab5:Point('TOPLEFT', E.TimerunningID and _G.CollectionsJournalTab3 or _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+end
+
 local function ToyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
@@ -657,7 +663,7 @@ local function SkinTransmogFrames()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 220)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
 	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
 	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
 
@@ -748,11 +754,7 @@ local function HandleTabs()
 	end
 
 	-- Blizzard clears points on the wardrobe tab
-	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', function()
-		if _G.CollectionsJournalTab5 then
-			_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
-		end
-	end)
+	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
 local function SkinCollectionsFrames()

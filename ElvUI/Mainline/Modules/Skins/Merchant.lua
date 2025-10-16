@@ -5,6 +5,8 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
+
 local function HandleIconButton(button, ...)
 	S:HandleButton(button)
 	button:StyleButton()
@@ -15,6 +17,12 @@ local function HandleIconButton(button, ...)
 	local region = button:GetRegions()
 	region:SetTexCoord(...)
 	region:SetInside()
+end
+
+local function QuestIcon_SetTexture(iconQuest, texture)
+	if texture == QUEST_ICON then
+		iconQuest:SetTexture(E.Media.Textures.BagQuestIcon)
+	end
 end
 
 local function UpdateRepairButtons()
@@ -113,6 +121,12 @@ function S:MerchantFrame()
 		icon:ClearAllPoints()
 		icon:Point('TOPLEFT', 1, -1)
 		icon:Point('BOTTOMRIGHT', -1, 1)
+
+		local questIcon = button.IconQuestTexture
+		questIcon:SetTexCoord(0, 1, 0, 1)
+		questIcon:SetInside()
+
+		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
 
 		S:HandleIconBorder(button.IconBorder)
 	end
