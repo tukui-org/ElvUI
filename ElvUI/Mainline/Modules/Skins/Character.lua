@@ -464,6 +464,8 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
 	S:HandleButton(currencyTransfer.Content.ConfirmButton)
 	S:HandleButton(currencyTransfer.Content.CancelButton)
+	S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
+	S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
