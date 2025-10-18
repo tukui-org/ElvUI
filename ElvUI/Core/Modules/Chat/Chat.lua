@@ -77,6 +77,7 @@ local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
 local GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
 local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 
+local IsRecentAllyByGUID = C_RecentAllies.IsRecentAllyByGUID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
@@ -186,6 +187,13 @@ function CH:AddSmiley(key, texture)
 	if key and (type(key) == 'string' and not strfind(key, ':%%', 1, true)) and texture then
 		CH.Smileys[key] = texture
 	end
+end
+
+function CH:IsRecentAlly(guid)
+	if not E.Retail then
+		return false
+	end
+	retun guid and IsRecentAllyByGUID(guid)
 end
 
 local specialChatIcons
@@ -1982,6 +1990,10 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
 	else
 		playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
+		local isWhisper = (chatType == 'WHISPER' or chatType == 'BN_WHISPER')
+		if E.Retail and CH.db.recentAllyIcon and not usingEmote and not isWhisper and CH:IsRecentAlly(arg12) then
+			playerLink = playerLink .. ' ' .. '|A:friendslist-recentallies-yellow:11:11:0:0|a'
+		end
 	end
 
 	local message = arg1
