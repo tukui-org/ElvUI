@@ -1053,8 +1053,9 @@ function E:PLAYER_LEVEL_UP(_, level)
 end
 
 local gameMenuLastButtons = {
-	[_G.GAMEMENU_OPTIONS] = 1,
-	[_G.BLIZZARD_STORE] = 2
+	[_G.GAMEMENU_EXTERNALEVENT] = 1,
+	[_G.GAMEMENU_OPTIONS] = 2,
+	[_G.BLIZZARD_STORE] = 3
 }
 
 function E:PositionGameMenuButton()
@@ -1063,7 +1064,7 @@ function E:PositionGameMenuButton()
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
-		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
+		local anchorIndex = (StoreEnabled and StoreEnabled() and 3) or 2
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
