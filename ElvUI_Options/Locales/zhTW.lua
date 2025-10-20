@@ -211,6 +211,7 @@ L["BARBERSHOP"] = "美容沙龍"
 L["Bars will transition smoothly."] = "狀態條將會平滑增減."
 L["Battlefield"] = true
 L["BATTLEFIELDS"] = "戰場"
+L["BLIZZARD_STORE"] = "游戲商城"
 L["Battleground Friendly"] = "戰場友方"
 L["Battleground Texts"] = "戰場資訊"
 L["Battlegrounds"] = true
