@@ -10,6 +10,7 @@ local GetGuildRosterInfo = GetGuildRosterInfo
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local hooksecurefunc = hooksecurefunc
 
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 local GetCVarBool = C_CVar.GetCVarBool
 
