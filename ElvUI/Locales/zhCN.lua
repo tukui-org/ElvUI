@@ -15,7 +15,7 @@ L["Total Gold:"] = "总金币:"
 L["Total XP:"] = "总经验:"
 L["Quests:"] = "任务:"
 L["Time"] = "时间"
-L["Restrict Pings"] = "限制延迟"
+L["Restrict Pings"] = "限制指示"
 L["Player"] = "玩家"
 L["Small"] = "小"
 L["Medium"] = "中"
@@ -465,6 +465,6 @@ L["EHELP_COMMANDS"] = ([[这里列出了重要的 *ElvUI|r 命令:
  */egrid|r ^64|r or ^128|r or ^256|r  -  切换像素网格.
  */edebug|r ^on|r or ^off|r  -  禁用除 ElvUI 之外的所有插件.
   注意: */edebug|r ^off|r 将重新启用从使用 */edebug|r ^on|r 之前的会话中禁用的插件.
- */guildlist|r ^minPlayers|r  -  显示一个包含公会成员列表的窗口, 其中在线成员不少于指定数量.
- */guildapply|r ^"message"|r  -  申请加入前 5 个新公会, 可选附加消息.
+ */guildlist|r ^minPlayers|r  -  显示公会查找器中排序后的公会列表.
+ */guildapply|r ^"message"|r  -  向排名前 5 的新公会申请加入，可附带留言.
 ]]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
