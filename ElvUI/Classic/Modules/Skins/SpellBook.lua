@@ -105,15 +105,6 @@ function S:SpellBookFrame()
 		_G['SpellButton'..i]:PointXY(0, -20)
 	end
 
-	hooksecurefunc('SpellButton_UpdateButton', function(button)
-		local spellName = _G[button:GetName()..'SpellName']
-		local r = spellName:GetTextColor()
-
-		if r < 0.8 then
-			spellName:SetTextColor(0.6, 0.6, 0.6)
-		end
-	end)
-
 	for i = 1, _G.MAX_SKILLLINE_TABS do
 		local tab = _G['SpellBookSkillLineTab'..i]
 		if tab then
