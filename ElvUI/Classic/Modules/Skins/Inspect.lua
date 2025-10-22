@@ -2,25 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local CreateFrame = CreateFrame
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetGlyphSocketInfo = GetGlyphSocketInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
-local GetInspectSpecialization = GetInspectSpecialization
-
-local function FrameBackdrop_OnEnter(frame)
-	if not frame.backdrop then return end
-
-	frame.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
-local function FrameBackdrop_OnLeave(frame)
-	if not frame.backdrop then return end
-
-	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-end
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
@@ -28,13 +13,6 @@ local function Update_InspectPaperDollItemSlotButton(button)
 
 	local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
 	button.backdrop:SetBackdropBorderColor(r, g, b)
-end
-
-local function InspectTalentIconDesaturated(icon, desaturate)
-	local parent = icon:GetParent()
-	if parent.ShadowedTexture then
-		parent.ShadowedTexture:SetShown(desaturate)
-	end
 end
 
 local function HandleTabs()
@@ -54,14 +32,6 @@ local function HandleTabs()
 
 		index = index + 1
 		tab = _G['InspectFrameTab'..index]
-	end
-end
-
-local function UpdateGlyph(frame)
-	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup;
-	local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), talentGroup, true, _G.INSPECTED_UNIT)
-	if frame.texture then
-		frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
 	end
 end
 
@@ -134,9 +104,8 @@ function S:Blizzard_InspectUI()
 	_G.InspectHonorFrameProgressButton:CreateBackdrop('Transparent')
 
 	local InspectHonorFrameProgressBar = _G.InspectHonorFrameProgressBar
-	InspectHonorFrameProgressBar:Width(300)
 	InspectHonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-
+	InspectHonorFrameProgressBar:Width(300)
 	InspectHonorFrameProgressBar:PointXY(19, -74)
 end
 
