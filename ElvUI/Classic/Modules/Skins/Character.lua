@@ -134,9 +134,14 @@ function S:CharacterFrame()
 	hooksecurefunc('PetTab_Update', HandleTabs)
 	HandleTabs()
 
+	_G.CharacterModelFrame:CreateBackdrop('Transparent')
+	_G.CharacterModelFrame.backdrop:Point('TOPLEFT', -2, 4)
+	_G.CharacterModelFrame.backdrop:Point('BOTTOMRIGHT', _G.CharacterAttributesFrame, 2, -10)
+
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
-	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
+
+	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()
