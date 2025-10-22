@@ -7,10 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local function SkinRewards()
 	local pool = _G.AdventureMapQuestChoiceDialog.rewardPool
-	local objects = pool and pool.activeObjects
-	if not objects then return end
+	if not pool or not pool.EnumerateActive then return end
 
-	for reward in pairs(objects) do
+	for reward in pool:EnumerateActive() do
 		if not reward.IsSkinned then
 			S:HandleItemButton(reward)
 			S:HandleIcon(reward.Icon)
@@ -23,10 +22,11 @@ end
 function S:Blizzard_AdventureMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.adventureMap) then return end
 
-	--Quest Choise
+	-- Quest Choice
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
 	AdventureMapQuestChoiceDialog:StripTextures()
 	AdventureMapQuestChoiceDialog:SetTemplate('Transparent')
+	AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)
