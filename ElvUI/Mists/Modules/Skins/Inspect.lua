@@ -80,6 +80,24 @@ function S:Blizzard_InspectUI()
 	end
 
 	_G.InspectPaperDollFrame:StripTextures()
+	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
+	_G.InspectModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
+	_G.InspectModelFrameBackgroundOverlay:CreateBackdrop('Transparent')
+
+	-- Give inspect frame model backdrop it's color back
+	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
+		local bg = _G['InspectModelFrameBackground'..corner]
+		if bg then
+			bg:SetDesaturated(false)
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
+
+			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false)
+				end
+			end)
+		end
+	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
 	_G.InspectModelFrameBorderTopRight:Kill()
