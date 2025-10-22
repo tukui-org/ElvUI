@@ -98,7 +98,7 @@ function S:Blizzard_InspectUI()
 
 	-- PvP Tab
 	local InspectHonorFrame = _G.InspectHonorFrame
-	S:HandleFrame(InspectHonorFrame, true, nil, 18, -105, -39, 83)
+	S:HandleFrame(InspectHonorFrame, true)
 	InspectHonorFrame.backdrop:OffsetFrameLevel(nil, InspectHonorFrame)
 
 	_G.InspectHonorFrameProgressButton:CreateBackdrop('Transparent')
@@ -107,6 +107,8 @@ function S:Blizzard_InspectUI()
 	InspectHonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
 	InspectHonorFrameProgressBar:Width(300)
 	InspectHonorFrameProgressBar:PointXY(19, -74)
+
+	E:RegisterStatusBar(InspectHonorFrameProgressBar)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
