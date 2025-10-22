@@ -154,7 +154,7 @@ function S:Blizzard_InspectUI()
 	InspectSpec.backdrop:Point('BOTTOMRIGHT', 20, 12)
 	InspectSpec:SetHitRectInsets(18, -20, 16, 12)
 
-	InspectSpec.ring:SetTexture('')
+	InspectSpec.ring:SetTexture()
 
 	InspectSpec.specIcon:SetTexCoord(unpack(E.TexCoords))
 	InspectSpec.specIcon.backdrop = CreateFrame('Frame', nil, InspectSpec)

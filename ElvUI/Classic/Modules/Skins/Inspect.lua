@@ -50,6 +50,9 @@ function S:Blizzard_InspectUI()
 	end
 
 	_G.InspectPaperDollFrame:StripTextures()
+	_G.InspectModelFrameBackgroundOverlay:SetTexture()
+	_G.InspectModelFrameBackgroundOverlay:CreateBackdrop('Transparent')
+	_G.InspectModelFrameBackgroundOverlay.backdrop:OffsetFrameLevel(nil, _G.InspectModelFrame)
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
 	_G.InspectModelFrameBorderTopRight:Kill()
@@ -83,18 +86,10 @@ function S:Blizzard_InspectUI()
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
 
 	S:HandleRotateButton(_G.InspectModelFrameRotateLeftButton)
-	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	_G.InspectModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
-	_G.InspectModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
-
 	S:HandleRotateButton(_G.InspectModelFrameRotateRightButton)
+
+	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-	_G.InspectModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
-	_G.InspectModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
 
 	-- PvP Tab
 	local InspectHonorFrame = _G.InspectHonorFrame
