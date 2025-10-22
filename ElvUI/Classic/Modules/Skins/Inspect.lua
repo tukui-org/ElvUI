@@ -50,8 +50,7 @@ function S:Blizzard_InspectUI()
 	end
 
 	_G.InspectPaperDollFrame:StripTextures()
-	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
-	_G.InspectModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
+	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.Media.Textures.Invisible)
 	_G.InspectModelFrameBackgroundOverlay:CreateBackdrop('Transparent')
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
