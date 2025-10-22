@@ -39,7 +39,7 @@ function S:Blizzard_AdventureMap()
 
 	--Buttons
 	S:HandleCloseButton(AdventureMapQuestChoiceDialog.CloseButton)
-	S:HandleScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
+	S:HandleTrimScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
 	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
