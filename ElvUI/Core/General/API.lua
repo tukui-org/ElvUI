@@ -1052,11 +1052,17 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
-local gameMenuLastButtons = {
-	[_G.GAMEMENU_EXTERNALEVENT] = 1,
-	[_G.GAMEMENU_OPTIONS] = 2,
-	[_G.BLIZZARD_STORE] = 3
-}
+local gameMenuLastButtons = {}
+if _G.GAMEMENU_EXTERNALEVENT then
+	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 3 or 2
+	gameMenuLastButtons[_G.GAMEMENU_EXTERNALEVENT] = 1
+	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 2
+	gameMenuLastButtons[_G.BLIZZARD_STORE] = 3
+else
+	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 2 or 1
+	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 1
+	gameMenuLastButtons[_G.BLIZZARD_STORE] = 2
+end
 
 function E:PositionGameMenuButton()
 	if E.Retail then
@@ -1064,14 +1070,13 @@ function E:PositionGameMenuButton()
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
-		local anchorIndex = (StoreEnabled and StoreEnabled() and 3) or 2
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
 			GameMenuFrame.MenuButtons[text] = button -- export these
 
 			local lastIndex = gameMenuLastButtons[text]
-			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
+			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
 			elseif not lastIndex then
 				button:NudgePoint(nil, -35)

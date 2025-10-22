@@ -47,7 +47,7 @@ local function UpdateButton()
 
 			local r = button.SpellName:GetTextColor()
 			if r < 0.8 then
-				button.SpellName:SetTextColor(0.6, 0.6, 0.6)
+				button.SpellName:SetTextColor(0.8, 0.8, 0.8)
 			elseif r ~= 1 then
 				button.SpellName:SetTextColor(1, 1, 1)
 			end
@@ -144,7 +144,6 @@ function S:SpellBookFrame()
 
 		highlight:SetAllPoints(button.IconTexture)
 		hooksecurefunc(highlight, 'SetTexture', SpellButtonHighlight)
-
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
 
