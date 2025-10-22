@@ -694,47 +694,6 @@ do
 end
 
 do
-	local function SetOriginalHeight(f)
-		if InCombatLockdown() then
-			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
-			return
-		end
-
-		E.UIParent:SetHeight(E.UIParent.origHeight)
-
-		if f == SetOriginalHeight then
-			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
-		end
-	end
-
-	local function SetModifiedHeight(f)
-		if InCombatLockdown() then
-			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
-			return
-		end
-
-		E.UIParent:SetHeight(E.UIParent.origHeight - (_G.OrderHallCommandBar:GetHeight() + E.Border))
-
-		if f == SetModifiedHeight then
-			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
-		end
-	end
-
-	--This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
-	function E:HandleCommandBar()
-		if E.global.general.commandBarSetting == 'DISABLED' then
-			_G.OrderHallCommandBar:UnregisterAllEvents()
-			_G.OrderHallCommandBar:SetScript('OnShow', _G.OrderHallCommandBar.Hide)
-			_G.OrderHallCommandBar:Hide()
-			UIParent:UnregisterEvent('UNIT_AURA') --Only used for OrderHall Bar
-		elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
-			_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
-			_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
-		end
-	end
-end
-
-do
 	local Masque = E.Libs.Masque
 	local MasqueGroupState = {}
 	local MasqueGroupToTableElement = {
@@ -1376,25 +1335,5 @@ function E:LoadAPI()
 				E.TexCoords[i] = v + modifier
 			end
 		end
-	end
-
-	if _G.OrderHallCommandBar then
-		E:HandleCommandBar()
-	elseif E.Retail then
-		local frame = CreateFrame('Frame')
-		frame:RegisterEvent('ADDON_LOADED')
-		frame:SetScript('OnEvent', function(Frame, event, addon)
-			if event == 'ADDON_LOADED' and addon == 'Blizzard_OrderHallUI' then
-				if InCombatLockdown() then
-					Frame:RegisterEvent('PLAYER_REGEN_ENABLED')
-				else
-					E:HandleCommandBar()
-				end
-				Frame:UnregisterEvent(event)
-			elseif event == 'PLAYER_REGEN_ENABLED' then
-				E:HandleCommandBar()
-				Frame:UnregisterEvent(event)
-			end
-		end)
 	end
 end
