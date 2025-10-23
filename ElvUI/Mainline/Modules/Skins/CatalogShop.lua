@@ -58,6 +58,14 @@ function S:Blizzard_CatalogShop()
 			end
 		end
 	end
+
+	local ProductDetailsContainerFrame = CatalogShopFrame.ProductDetailsContainerFrame
+	if ProductDetailsContainerFrame then
+		local BackButton = ProductDetailsContainerFrame.BackButton
+		if BackButton then
+			S:HandleButton(BackButton, nil, nil, nil, true)
+		end
+	end
 end
 
 S:AddCallback('Blizzard_CatalogShop')
