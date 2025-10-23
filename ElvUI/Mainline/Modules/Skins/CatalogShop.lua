@@ -65,6 +65,14 @@ function S:Blizzard_CatalogShop()
 		if BackButton then
 			S:HandleButton(BackButton, nil, nil, nil, true)
 		end
+
+		local DetailsProductContainerFrame = ProductDetailsContainerFrame.DetailsProductContainerFrame
+		if DetailsProductContainerFrame and DetailsProductContainerFrame.ProductsScrollBoxContainer then
+			local ScrollBar = DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar
+			if ScrollBar then
+				S:HandleTrimScrollBar(ScrollBar)
+			end
+		end
 	end
 end
 
