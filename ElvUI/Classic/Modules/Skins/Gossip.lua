@@ -89,31 +89,29 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-	S:HandleCloseButton(_G.ItemTextCloseButton)
+	S:HandleCloseButton(_G.GossipFrame.CloseButton)
 
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
 	GreetingPanel:StripTextures()
 	GreetingPanel:CreateBackdrop('Transparent')
 	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
-	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 11)
+	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 4)
 
 	local ItemTextFrame = _G.ItemTextFrame
 	ItemTextFrame:StripTextures()
-	ItemTextFrame:CreateBackdrop('Transparent')
-	ItemTextFrame.backdrop:ClearAllPoints()
-	ItemTextFrame.backdrop:Point('TOPLEFT', ItemTextFrame, 5, -10)
-	ItemTextFrame.backdrop:Point('BOTTOMRIGHT', ItemTextFrame, -25, 45)
+	ItemTextFrame:SetTemplate('Transparent')
 
 	local ItemTextScrollFrame = _G.ItemTextScrollFrame
 	ItemTextScrollFrame:DisableDrawLayer('ARTWORK')
 	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
 
 	GossipFrame.backdrop:ClearAllPoints()
-	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
-	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, -28)
+	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -8, 69)
+	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 32, -30)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)

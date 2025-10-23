@@ -80,6 +80,24 @@ function S:Blizzard_InspectUI()
 	end
 
 	_G.InspectPaperDollFrame:StripTextures()
+	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
+	_G.InspectModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
+	_G.InspectModelFrameBackgroundOverlay:CreateBackdrop('Transparent')
+
+	-- Give inspect frame model backdrop it's color back
+	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
+		local bg = _G['InspectModelFrameBackground'..corner]
+		if bg then
+			bg:SetDesaturated(false)
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
+
+			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
+				if value and bckgnd.ignoreDesaturated then
+					bckgnd:SetDesaturated(false)
+				end
+			end)
+		end
+	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
 	_G.InspectModelFrameBorderTopRight:Kill()
@@ -113,18 +131,10 @@ function S:Blizzard_InspectUI()
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
 
 	S:HandleRotateButton(_G.InspectModelFrameRotateLeftButton)
-	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	_G.InspectModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
-	_G.InspectModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
-
 	S:HandleRotateButton(_G.InspectModelFrameRotateRightButton)
+
+	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-	_G.InspectModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
-	_G.InspectModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.InspectModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
 
 	-- PvP Tab
 	_G.InspectPVPFrame:StripTextures()
@@ -154,7 +164,7 @@ function S:Blizzard_InspectUI()
 	InspectSpec.backdrop:Point('BOTTOMRIGHT', 20, 12)
 	InspectSpec:SetHitRectInsets(18, -20, 16, 12)
 
-	InspectSpec.ring:SetTexture('')
+	InspectSpec.ring:SetTexture()
 
 	InspectSpec.specIcon:SetTexCoord(unpack(E.TexCoords))
 	InspectSpec.specIcon.backdrop = CreateFrame('Frame', nil, InspectSpec)
