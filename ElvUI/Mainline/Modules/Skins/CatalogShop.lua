@@ -1,10 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local next = next
 
 function S:Blizzard_CatalogShop()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.catalogShop) then return end
+
+	if E.private.skins.blizzard.tooltip and _G.CatalogShopTooltip then
+		TT:SetStyle(_G.CatalogShopTooltip)
+	end
 
 	local CatalogShopFrame = _G.CatalogShopFrame
 	if not CatalogShopFrame then
