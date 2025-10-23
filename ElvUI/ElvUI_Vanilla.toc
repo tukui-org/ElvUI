@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 11507
+## Interface: 11508
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 

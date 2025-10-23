@@ -223,6 +223,7 @@ L["Bind on Equip/Use Text"] = true
 L["BINDING_HEADER_RAID_TARGET"] = "Target Markers"
 L["BINDING_HEADER_VOICE_CHAT"] = "Voice Chat"
 L["BLACK_MARKET_AUCTION_HOUSE"] = "Black Market Auction House"
+L["BLIZZARD_STORE"] = "Negozio"
 L["Blacklist"] = true
 L["Blank Texture"] = true
 L["Blend Mode"] = true

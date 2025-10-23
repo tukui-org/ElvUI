@@ -22,8 +22,7 @@ G.general = {
 		width = 1024,
 		height = 768
 	},
-	disableTutorialButtons = true,
-	commandBarSetting = 'ENABLED_RESIZEPARENT'
+	disableTutorialButtons = true
 }
 
 G.classtimer = {}

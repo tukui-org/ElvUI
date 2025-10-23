@@ -8,18 +8,6 @@ local hooksecurefunc = hooksecurefunc
 function S:Blizzard_OrderHallUI()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall then return end
 
-	local classColor = E.myClassColor
-
-	-- CommandBar
-	local OrderHallCommandBar = _G.OrderHallCommandBar
-	OrderHallCommandBar:StripTextures()
-	OrderHallCommandBar:SetTemplate('Transparent')
-	OrderHallCommandBar.ClassIcon:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
-	OrderHallCommandBar.ClassIcon:Size(46, 20)
-	OrderHallCommandBar.CurrencyIcon:SetAtlas('legionmission-icon-currency', false)
-	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
-	OrderHallCommandBar.WorldMapButton:Hide()
-
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
 	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)

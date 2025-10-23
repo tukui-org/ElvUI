@@ -212,7 +212,6 @@ local function SettingsListScrollUpdateChild(child)
 
 		child.IsSkinned = true
 	end
-
 end
 
 local function SettingsListScrollUpdate(frame)
