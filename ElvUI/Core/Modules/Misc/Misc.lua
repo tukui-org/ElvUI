@@ -298,7 +298,7 @@ function M:AutoInvite(event, _, _, _, _, _, _, inviterGUID)
 		if not inviterGUID or inviterGUID == '' or IsInGroup() then return end
 
 		local queueButton = M:GetQueueStatusButton() -- don't auto accept during a queue
-		if queueButton == _G.LFGMinimapFrame then -- era has it always showing
+		if queueButton and queueButton == _G.LFGMinimapFrame then -- era has it always showing
 			if queueButton.eye and queueButton.eye:GetScript('OnUpdate') then
 				return -- its animating so lets not accept
 			end
