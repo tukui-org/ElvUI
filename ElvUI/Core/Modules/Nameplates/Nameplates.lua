@@ -954,7 +954,7 @@ function NP:SetNamePlateSizes()
 end
 
 function NP:HideClassNameplateBar(bar)
-	if not bar or bar:IsForbidden() then return end
+	if not bar then return end
 
 	bar:Hide()
 	bar:UnregisterAllEvents()
