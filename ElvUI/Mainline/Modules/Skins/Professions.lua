@@ -314,15 +314,11 @@ local function HandleOrderView(frame)
 		OrderInfo:StripTextures()
 		OrderInfo:CreateBackdrop('Transparent')
 		S:HandleButton(OrderInfo.BackButton)
-		--S:HandleButton(OrderInfo.IgnoreButton) -- plx check that
 		S:HandleButton(OrderInfo.StartOrderButton)
 		S:HandleButton(OrderInfo.DeclineOrderButton)
 		S:HandleButton(OrderInfo.ReleaseOrderButton)
 		S:HandleButton(OrderInfo.SocialDropdown)
-		S:HandleEditBox(OrderInfo.NoteBox)
-		if OrderInfo.NoteBox.backdrop then
-			OrderInfo.NoteBox.backdrop:SetTemplate('Transparent')
-		end
+		S:HandleEditBox(OrderInfo.NoteBox, 'Transparent')
 
 		local RewardsFrame = OrderInfo.NPCRewardsFrame
 		if RewardsFrame then
@@ -348,19 +344,17 @@ local function HandleOrderView(frame)
 		S:HandleCheckBox(OrderDetails.SchematicForm.TrackRecipeCheckbox)
 
 		local FulfillmentForm = OrderDetails.FulfillmentForm
-		S:HandleEditBox(FulfillmentForm.NoteEditBox)
-		if FulfillmentForm.NoteEditBox.backdrop then
-			FulfillmentForm.NoteEditBox.backdrop:SetTemplate('Transparent')
-		end
+		if FulfillmentForm then
+			S:HandleEditBox(FulfillmentForm.NoteEditBox, 'Transparent')
+			S:HandleIcon(frame.ConcentrationDisplay.Icon)
 
-		S:HandleIcon(frame.ConcentrationDisplay.Icon)
-
-		local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
-		if OrderItemIcon then
-			S:HandleIcon(OrderItemIcon.Icon, true)
-			S:HandleIconBorder(OrderItemIcon.IconBorder, OrderItemIcon.Icon.backdrop)
-			OrderItemIcon:GetHighlightTexture():Hide()
-			OrderItemIcon.CircleMask:Hide()
+			local OrderItemIcon = FulfillmentForm.ItemIcon
+			if OrderItemIcon then
+				S:HandleIcon(OrderItemIcon.Icon, true)
+				S:HandleIconBorder(OrderItemIcon.IconBorder, OrderItemIcon.Icon.backdrop)
+				OrderItemIcon:GetHighlightTexture():Hide()
+				OrderItemIcon.CircleMask:Hide()
+			end
 		end
 	end
 end
