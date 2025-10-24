@@ -1284,6 +1284,7 @@ P.chat = {
 	keywordSound = 'None',
 	noAlertInCombat = false,
 	flashClientIcon = true,
+	recentAllyIcon = true,
 	timerunningIcon = true,
 	mentorshipIcon = true,
 	chatHistory = true,
