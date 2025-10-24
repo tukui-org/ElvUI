@@ -64,19 +64,18 @@ function S:Blizzard_CatalogShop()
 		end
 	end
 
-	local ProductDetailsContainerFrame = CatalogShopFrame.ProductDetailsContainerFrame
-	if ProductDetailsContainerFrame then
-		local BackButton = ProductDetailsContainerFrame.BackButton
+	local ProductDetails = CatalogShopFrame.ProductDetailsContainerFrame
+	if ProductDetails then
+		local BackButton = ProductDetails.BackButton
 		if BackButton then
 			S:HandleButton(BackButton, nil, nil, nil, true)
 		end
 
-		local DetailsProductContainerFrame = ProductDetailsContainerFrame.DetailsProductContainerFrame
-		if DetailsProductContainerFrame and DetailsProductContainerFrame.ProductsScrollBoxContainer then
-			local ScrollBar = DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar
-			if ScrollBar then
-				S:HandleTrimScrollBar(ScrollBar)
-			end
+		local ProductContainer = ProductDetails.DetailsProductContainerFrame
+		local ProductScrollContainer = ProductContainer.ProductsScrollBoxContainer
+		local ProductScrollBar = ProductScrollContainer and ProductScrollContainer.ScrollBar
+		if ProductScrollBar then
+			S:HandleTrimScrollBar(ProductScrollBar)
 		end
 	end
 end
