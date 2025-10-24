@@ -91,8 +91,11 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 
-local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
+local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a '
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+
+local RECENTALLY_ATLAS = '|A:friendslist-recentallies-yellow:%s:%s:0:0|a '
+local RECENTALLY_SMALL = format(RECENTALLY_ATLAS, 11, 11)
 
 -- GLOBALS: ElvCharacterDB
 
@@ -187,13 +190,6 @@ function CH:AddSmiley(key, texture)
 	if key and (type(key) == 'string' and not strfind(key, ':%%', 1, true)) and texture then
 		CH.Smileys[key] = texture
 	end
-end
-
-function CH:IsRecentAlly(guid)
-	if not E.Retail then
-		return false
-	end
-	return guid and IsRecentAllyByGUID(guid)
 end
 
 local specialChatIcons
@@ -1862,12 +1858,14 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and CH.db.timerunningIcon and unitGUID and IsTimerunningPlayer(unitGUID) then
-		flag = flag .. TIMERUNNING_SMALL
-	end
+	if E.Retail and unitGUID then
+		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
+			flag = flag .. TIMERUNNING_SMALL
+		end
 
-	if E.Retail and CH.db.recentAllyIcon and unitGUID and CH:IsRecentAlly(unitGUID) then
-		flag = flag .. '|A:friendslist-recentallies-yellow:11:11:0:0|a '
+		if CH.db.recentAllyIcon and IsRecentAllyByGUID(unitGUID) then
+			flag = flag .. RECENTALLY_SMALL
+		end
 	end
 
 	return flag
