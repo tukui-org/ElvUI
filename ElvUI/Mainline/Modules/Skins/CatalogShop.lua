@@ -1,10 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local next = next
 
 function S:Blizzard_CatalogShop()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.catalogShop) then return end
+
+	if E.private.skins.blizzard.tooltip and _G.CatalogShopTooltip then
+		TT:SetStyle(_G.CatalogShopTooltip)
+	end
 
 	local CatalogShopFrame = _G.CatalogShopFrame
 	if not CatalogShopFrame then
@@ -55,6 +60,22 @@ function S:Blizzard_CatalogShop()
 				if button and button.IsObjectType and button:IsObjectType('Button') then
 					S:HandleButton(button, nil, nil, nil, true)
 				end
+			end
+		end
+	end
+
+	local ProductDetailsContainerFrame = CatalogShopFrame.ProductDetailsContainerFrame
+	if ProductDetailsContainerFrame then
+		local BackButton = ProductDetailsContainerFrame.BackButton
+		if BackButton then
+			S:HandleButton(BackButton, nil, nil, nil, true)
+		end
+
+		local DetailsProductContainerFrame = ProductDetailsContainerFrame.DetailsProductContainerFrame
+		if DetailsProductContainerFrame and DetailsProductContainerFrame.ProductsScrollBoxContainer then
+			local ScrollBar = DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar
+			if ScrollBar then
+				S:HandleTrimScrollBar(ScrollBar)
 			end
 		end
 	end
