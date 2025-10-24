@@ -193,7 +193,7 @@ function CH:IsRecentAlly(guid)
 	if not E.Retail then
 		return false
 	end
-	retun guid and IsRecentAllyByGUID(guid)
+	return guid and IsRecentAllyByGUID(guid)
 end
 
 local specialChatIcons
@@ -1866,6 +1866,10 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		flag = flag .. TIMERUNNING_SMALL
 	end
 
+	if E.Retail and CH.db.recentAllyIcon and unitGUID and CH:IsRecentAlly(unitGUID) then
+		flag = flag .. '|A:friendslist-recentallies-yellow:11:11:0:0|a '
+	end
+
 	return flag
 end
 
@@ -1990,10 +1994,6 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
 	else
 		playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
-		local isWhisper = (chatType == 'WHISPER' or chatType == 'BN_WHISPER')
-		if E.Retail and CH.db.recentAllyIcon and not usingEmote and not isWhisper and CH:IsRecentAlly(arg12) then
-			playerLink = playerLink .. ' ' .. '|A:friendslist-recentallies-yellow:11:11:0:0|a'
-		end
 	end
 
 	local message = arg1
