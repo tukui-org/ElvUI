@@ -3648,6 +3648,10 @@ function B:PlayerInteraction_ShowFrame(_, interactionType)
 	end
 end
 
+function B:GetMaxTokensWatched()
+	return MAX_WATCHED_TOKENS
+end
+
 function B:Initialize()
 	BIND_START, BIND_END = B:GetBindLines()
 
@@ -3740,6 +3744,8 @@ function B:Initialize()
 		B:SecureHook(_G.PlayerInteractionFrameManager, 'ShowFrame', 'PlayerInteraction_ShowFrame')
 	elseif E.Retail then
 		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'UpdateTokensIfVisible')
+
+		_G.BackpackTokenFrame.GetMaxTokensWatched = B.GetMaxTokensWatched -- silly little override
 	else
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
