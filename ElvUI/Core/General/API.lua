@@ -1291,6 +1291,7 @@ function E:LoadAPI()
 
 	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
+	E:UpdateTexCoords() -- update cropIcon texCoords
 
 	if E.Retail or E.Mists then
 		E:PopulateSpecInfo()
@@ -1323,17 +1324,5 @@ function E:LoadAPI()
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
-	end
-
-	do -- setup cropIcon texCoords
-		local opt = E.db.general.cropIcon
-		local modifier = 0.04 * opt
-		for i, v in ipairs(E.TexCoords) do
-			if i % 2 == 0 then
-				E.TexCoords[i] = v - modifier
-			else
-				E.TexCoords[i] = v + modifier
-			end
-		end
 	end
 end

@@ -1367,7 +1367,10 @@ do
 end
 
 function S:HandleBlizzardRegions(frame, name, kill, zero)
-	if not name then name = frame.GetName and frame:GetName() end
+	if not name then
+		name = frame.GetName and frame:GetName()
+	end
+
 	for _, area in pairs(S.Blizzard.Regions) do
 		local object = (name and _G[name..area]) or frame[area]
 		if object then
