@@ -1275,13 +1275,15 @@ function S:HandleRotateButton(frame, width, height, noSize)
 end
 
 do
-	local btns = {MaximizeButton = 'up', MinimizeButton = 'down'}
+	local btns = { MaximizeButton = 'up', MinimizeButton = 'down' }
 
 	local function ButtonOnEnter(btn)
-		local r,g,b = unpack(E.media.rgbvaluecolor)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+
 		btn:GetNormalTexture():SetVertexColor(r,g,b)
 		btn:GetPushedTexture():SetVertexColor(r,g,b)
 	end
+
 	local function ButtonOnLeave(btn)
 		btn:GetNormalTexture():SetVertexColor(1, 1, 1)
 		btn:GetPushedTexture():SetVertexColor(1, 1, 1)
@@ -1295,24 +1297,39 @@ do
 		for name, direction in pairs(btns) do
 			local button = frame[name]
 			if button then
-				button:Size(14)
+				button:SetHitRectInsets(1, 1, 1, 1)
 				button:ClearAllPoints()
 				button:Point('CENTER')
-				button:SetHitRectInsets(1, 1, 1, 1)
-				button:GetHighlightTexture():Kill()
+				button:Size(14)
 
-				button:SetScript('OnEnter', ButtonOnEnter)
-				button:SetScript('OnLeave', ButtonOnLeave)
+				local highlight = button:GetHighlightTexture()
+				if highlight then
+					highlight:Kill()
+				end
 
-				button:SetNormalTexture(E.Media.Textures.ArrowUp)
-				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
+				local rotation = S.ArrowRotation[direction]
+				if button.SetNormalTexture then
+					button:SetNormalTexture(E.Media.Textures.ArrowUp)
+					button:GetNormalTexture():SetRotation(rotation)
 
-				button:SetPushedTexture(E.Media.Textures.ArrowUp)
-				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
+					button:SetScript('OnEnter', ButtonOnEnter)
+					button:SetScript('OnLeave', ButtonOnLeave)
+				end
 
-				button:SetDisabledTexture(E.Media.Textures.ArrowUp)
-				button:GetDisabledTexture():SetRotation(S.ArrowRotation[direction])
-				button:GetDisabledTexture():SetVertexColor(.4, .4, .4)
+				if button.SetPushedTexture then
+					button:SetPushedTexture(E.Media.Textures.ArrowUp)
+					button:GetPushedTexture():SetRotation(rotation)
+				end
+
+				if button.SetDisabledTexture then
+					button:SetDisabledTexture(E.Media.Textures.ArrowUp)
+
+					local disabled = button:GetDisabledTexture()
+					if disabled then
+						disabled:SetRotation(rotation)
+						disabled:SetVertexColor(.4, .4, .4)
+					end
+				end
 			end
 		end
 
