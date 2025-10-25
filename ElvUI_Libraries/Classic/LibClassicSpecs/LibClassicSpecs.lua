@@ -378,21 +378,22 @@ LCS.Stat = Stat
 LCS.Role = Role
 LCS.SpecInfo = SpecInfo
 
-function LCS.GetClassInfo(classId)
-	local info = ClassByID[classId]
-	if not info then
-		return
-	end
+function LCS.GetClassInfo(classID)
+	local info = classID and ClassByID[classID]
+	if not info then return end
 
-	return info.displayName, info.name, classId
+	return info.displayName, info.name, classID
 end
 
-function LCS.GetNumSpecializationsForClassID(classId)
-	if (classId <= 0 or classId > LCS:GetNumClasses()) then
+function LCS.GetNumSpecializationsForClassID(classID)
+	local info = classID and ClassByID[classID]
+	if not info then return end
+
+	if classID <= 0 or classID > LCS:GetNumClasses() then
 		return
 	end
 
-	return #ClassByID[classId].specs
+	return #info.specs
 end
 
 function LCS.GetInspectSpecialization() return end
@@ -400,9 +401,7 @@ function LCS.GetInspectSpecialization() return end
 function LCS.GetActiveSpecGroup() return 1 end
 
 function LCS.GetSpecialization(isInspect, isPet)
-	if isInspect or isPet then
-		return
-	end
+	if isInspect or isPet then return end
 
 	local specIndex, maxSpent = 0, 0
 	for tabIndex = 1, GetNumTalentTabs() do
@@ -420,7 +419,7 @@ function LCS.GetSpecialization(isInspect, isPet)
 			return DRUID_GUARDIAN_SPEC_INDEX
 		end
 
-		-- return 4 if Resto (3rd tab has most points), because Guardian is 3
+		-- return 4 if Resto (3rd tab has most points) because Guardian is 3
 		if specIndex == DRUID_GUARDIAN_SPEC_INDEX then
 			return DRUID_RESTO_SPEC_INDEX
 		end
@@ -430,50 +429,48 @@ function LCS.GetSpecialization(isInspect, isPet)
 end
 
 function LCS.GetSpecializationInfo(specIndex, isInspect, isPet)
-	if (isInspect or isPet) then
-		return
-	end
+	if isInspect or isPet then return end
 
-	local specId = ClassByID[ClassID].specs[specIndex]
-	local spec = SpecInfo[specId]
+	local info = ClassID and ClassByID[ClassID]
+	if not info then return end
 
-	if not spec then
-		return
-	end
+	local specID = info.specs[specIndex]
+	local spec = specID and SpecInfo[specID]
+	if not spec then return end
 
-	return specId, spec.name, spec.description, spec.icon, spec.background, spec.role, spec.primaryStat
+	return specID, spec.name, spec.description, spec.icon, spec.background, spec.role, spec.primaryStat
 end
 
-function LCS.GetSpecializationInfoForClassID(classId, specIndex)
-	local classInfo = ClassByID[classId]
+function LCS.GetSpecializationInfoForClassID(classID, specIndex)
+	local info = ClassID and ClassByID[ClassID]
+	if not info then return end
 
-	if not classInfo then
-		return
-	end
+	local specID = info.specs[specIndex]
+	local spec = specID and SpecInfo[specID]
+	if not spec then return end
 
-	local specId = classInfo.specs[specIndex]
-	local info = SpecInfo[specId]
-
-	if not info then
-		return
-	end
-
-	local isAllowed = classId == ClassID
-
-	return specId, info.name, info.description, info.icon, info.role, info.isRecommended, isAllowed
+	local isAllowed = classID == ClassID
+	return specID, spec.name, spec.description, spec.icon, spec.role, spec.isRecommended, isAllowed
 end
 
-function LCS.GetSpecializationRoleByID(specId)
-	return SpecInfo[specId] and SpecInfo[specId].role
+function LCS.GetSpecializationRoleByID(specID)
+	local spec = specID and SpecInfo[specID]
+	if not spec then return end
+
+	return spec.role
 end
 
 function LCS.GetSpecializationRole(specIndex, isInspect, isPet)
-	if (isInspect or isPet) then
-		return
-	end
+	if isInspect or isPet then return end
 
-	local specId = ClassByID[ClassID].specs[specIndex]
-	return SpecInfo[specId] and SpecInfo[specId].role
+	local info = ClassID and ClassByID[ClassID]
+	if not info then return end
+
+	local specID = info.specs[specIndex]
+	local spec = specID and SpecInfo[specID]
+	if not spec then return end
+
+	return spec.role
 end
 
 function LCS.GetNumClasses()
