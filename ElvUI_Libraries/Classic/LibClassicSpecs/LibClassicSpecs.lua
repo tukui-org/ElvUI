@@ -1,8 +1,6 @@
-local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1004
+local MAJOR, MINOR = 'LibClassicSpecs-ElvUI', 1005
 local LCS = LibStub:NewLibrary(MAJOR, MINOR)
 if not LCS then return end
-
-local select = select
 
 local UnitClass = UnitClass
 local GetNumTalentTabs = GetNumTalentTabs
@@ -46,7 +44,7 @@ local isMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 local Stat = { Strength = 1, Agility = 2, Stamina = 3, Intellect = 4, Spirit = 5 }
 local Role = { Damager = 'DAMAGER', Tank = 'TANK', Healer = 'HEALER' }
 
-local ClassID = select(3, UnitClass('player'))
+local _, _, ClassID = UnitClass('player')
 
 -- Detailed info for each spec
 local SpecInfo = {
@@ -402,29 +400,28 @@ function LCS.GetInspectSpecialization() return end
 function LCS.GetActiveSpecGroup() return 1 end
 
 function LCS.GetSpecialization(isInspect, isPet)
-	if (isInspect or isPet) then
+	if isInspect or isPet then
 		return
 	end
 
 	local specIndex, maxSpent = 0, 0
-
 	for tabIndex = 1, GetNumTalentTabs() do
-		local spent = select(5, GetTalentTabInfo(tabIndex))
-		if (spent > maxSpent) then
+		local _, _, _, _, spent = GetTalentTabInfo(tabIndex)
+		if spent and spent > maxSpent then
 			specIndex, maxSpent = tabIndex, spent
 		end
 	end
 
-	if (ClassID == 11) then -- Druid
-		local feralInstinctPoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_FERAL_INSTINCT))
-		local thickHidePoints = select(5, GetTalentInfo(DRUID_FERAL_TAB, DRUID_THICK_HIDE))
+	if ClassID == 11 then -- Druid
+		local _, _, _, _, feralInstinctPoints = GetTalentInfo(DRUID_FERAL_TAB, DRUID_FERAL_INSTINCT)
+		local _, _, _, _, thickHidePoints = GetTalentInfo(DRUID_FERAL_TAB, DRUID_THICK_HIDE)
 
-		if (feralInstinctPoints >= 2 or thickHidePoints >= 2) then
+		if (feralInstinctPoints and feralInstinctPoints >= 2) or (thickHidePoints and thickHidePoints >= 2) then
 			return DRUID_GUARDIAN_SPEC_INDEX
 		end
 
 		-- return 4 if Resto (3rd tab has most points), because Guardian is 3
-		if (specIndex == DRUID_GUARDIAN_SPEC_INDEX) then
+		if specIndex == DRUID_GUARDIAN_SPEC_INDEX then
 			return DRUID_RESTO_SPEC_INDEX
 		end
 	end
