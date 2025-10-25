@@ -25,7 +25,6 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local tinsert = tinsert
 local format = format
-local unpack = unpack
 local next = next
 local max = max
 

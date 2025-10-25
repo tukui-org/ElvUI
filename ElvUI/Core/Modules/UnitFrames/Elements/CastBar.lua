@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
-local unpack = unpack
 local abs, next = abs, next
 local utf8sub = string.utf8sub
 

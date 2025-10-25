@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
 local NUM_GUILDBANK_COLUMNS = 7

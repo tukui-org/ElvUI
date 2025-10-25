@@ -3,7 +3,6 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local pairs = pairs
-local unpack = unpack
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame

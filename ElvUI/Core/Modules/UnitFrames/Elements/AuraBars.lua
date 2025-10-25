@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local ipairs = ipairs
-local unpack = unpack
 local strfind = strfind
 
 local CreateFrame = CreateFrame

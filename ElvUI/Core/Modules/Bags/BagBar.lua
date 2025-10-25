@@ -6,7 +6,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local gsub = gsub
 local ipairs = ipairs
-local unpack = unpack
 local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 

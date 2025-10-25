@@ -6,7 +6,6 @@ local B = E:GetModule('Bags')
 local _G = _G
 local next = next
 local select = select
-local unpack = unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_Trinket(frame)

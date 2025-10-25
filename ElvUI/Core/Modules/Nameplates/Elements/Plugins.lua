@@ -3,7 +3,7 @@ local NP = E:GetModule('NamePlates')
 local PA = E:GetModule('PrivateAuras')
 local LSM = E.Libs.LSM
 
-local ipairs, unpack = ipairs, unpack
+local ipairs = ipairs
 local CreateFrame = CreateFrame
 
 local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}

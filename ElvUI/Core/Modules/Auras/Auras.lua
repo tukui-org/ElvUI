@@ -4,9 +4,9 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local strmatch = strmatch
 local tonumber = tonumber
 local tinsert, next = tinsert, next
-local unpack, strmatch = unpack, strmatch
 
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture

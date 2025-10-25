@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, pairs = unpack, pairs
+local next = next
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
@@ -45,7 +45,7 @@ end
 
 local function AcquireInvitePool(pool)
 	if pool.activeObjects then
-		for object in pairs(pool.activeObjects) do
+		for object in next, pool.activeObjects do
 			SkinFriendRequest(object)
 		end
 	end
@@ -252,7 +252,7 @@ local function HandleGuild() -- /groster
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('TOPLEFT', 0, -5)
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
-	for _, checkBox in pairs({ _G.GuildControlPopupFrameCheckboxes:GetChildren()}) do
+	for _, checkBox in next, { _G.GuildControlPopupFrameCheckboxes:GetChildren() } do
 		if checkBox:IsObjectType('CheckButton') then
 			S:HandleCheckBox(checkBox)
 		end
@@ -265,11 +265,11 @@ end
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	for _, button in pairs(ButtonsToHandle) do
+	for _, button in next, ButtonsToHandle do
 		S:HandleButton(_G[button])
 	end
 
-	for _, object in pairs(StripAllTextures) do
+	for _, object in next, StripAllTextures do
 		_G[object]:StripTextures()
 	end
 

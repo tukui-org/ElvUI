@@ -6,7 +6,6 @@ local LSM = E.Libs.LSM
 
 local abs = abs
 local next = next
-local unpack = unpack
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 

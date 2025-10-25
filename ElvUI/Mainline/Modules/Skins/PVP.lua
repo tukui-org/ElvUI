@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
+local ipairs, pairs, next = ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = C_Item.GetItemInfo

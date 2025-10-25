@@ -4,7 +4,6 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
-local unpack = unpack
 
 local GetLootSlotInfo = GetLootSlotInfo
 local hooksecurefunc = hooksecurefunc

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)

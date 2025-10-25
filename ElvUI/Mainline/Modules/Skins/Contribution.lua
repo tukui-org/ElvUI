@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Contribution()

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 
