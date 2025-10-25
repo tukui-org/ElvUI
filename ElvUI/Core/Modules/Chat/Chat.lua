@@ -77,7 +77,7 @@ local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
 local GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
 local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 
-local IsRecentAllyByGUID = C_RecentAllies.IsRecentAllyByGUID
+local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
