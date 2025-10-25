@@ -1309,6 +1309,10 @@ do
 
 				button:SetPushedTexture(E.Media.Textures.ArrowUp)
 				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
+
+				button:SetDisabledTexture(E.Media.Textures.ArrowUp)
+				button:GetDisabledTexture():SetRotation(S.ArrowRotation[direction])
+				button:GetDisabledTexture():SetVertexColor(.4, .4, .4)
 			end
 		end
 
