@@ -969,10 +969,10 @@ do
 
 		local txt = overlay:CreateFontString(nil, textLayer or 'OVERLAY')
 		if txt then
-			txt:SetText(text)
-			txt:SetTextColor(1, 0.81, 0)
-			txt:SetPoint('CENTER')
 			txt:FontTemplate()
+			txt:SetPoint('CENTER')
+			txt:SetTextColor(1, 0.81, 0)
+			txt:SetText(text)
 
 			overlay.text = txt
 
