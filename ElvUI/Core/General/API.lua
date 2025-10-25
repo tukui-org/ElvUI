@@ -3,7 +3,6 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
-local LCS = E.Libs.LCS
 local ElvUF = E.oUF
 
 local _G = _G
@@ -56,8 +55,8 @@ local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataFor
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil.UnpackAuraData
 
-local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled

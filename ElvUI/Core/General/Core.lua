@@ -1,7 +1,6 @@
 local ElvUI = select(2, ...)
 ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
 local E, L, V, P, G = unpack(ElvUI)
-local LCS = E.Libs.LCS
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, tostring = tonumber, pairs, ipairs, error, unpack, tostring
@@ -24,7 +23,7 @@ local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 
-local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = C_AddOns.DisableAddOn
