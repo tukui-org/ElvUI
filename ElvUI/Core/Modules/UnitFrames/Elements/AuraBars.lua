@@ -23,7 +23,7 @@ function UF:Construct_AuraBars(bar)
 	bar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	bar.icon:ClearAllPoints()
 	bar.icon:Point('RIGHT', bar, 'LEFT', -self.barSpacing, 0)
-	bar.icon:SetTexCoord(unpack(E.TexCoords))
+	bar.icon:SetTexCoords()
 
 	UF.statusbars[bar] = 'aurabars'
 	UF:Update_StatusBar(bar)

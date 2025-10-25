@@ -147,7 +147,7 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrame:Point('TOP', E.UIParent, 'TOP', 0, -200)
 		_G.GhostFrameContentsFrame:SetTemplate('Transparent')
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
-		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
+		_G.GhostFrameContentsFrameIcon:SetTexCoords()
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
 
 		local x = E.PixelMode and 1 or 2

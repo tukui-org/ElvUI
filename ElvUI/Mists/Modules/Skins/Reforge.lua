@@ -12,7 +12,7 @@ local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()
 	local texture = itemID and GetItemIconByID(itemID) or nil
 	_G.ReforgingFrameItemButtonIconTexture:SetTexture(texture)
-	_G.ReforgingFrameItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.ReforgingFrameItemButtonIconTexture:SetTexCoords()
 
 	local r, g, b = E:GetItemQualityColor(quality)
 	_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)

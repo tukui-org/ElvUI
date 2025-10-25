@@ -531,7 +531,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
 			icon:Hide()
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			dt.icon = icon
 
 			DT.FontStrings[text] = true

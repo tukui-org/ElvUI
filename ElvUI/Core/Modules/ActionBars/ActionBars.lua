@@ -213,7 +213,7 @@ function AB:TrimIcon(button, masque)
 		local left, right, top, bottom = E:CropRatio(width, height)
 		icon:SetTexCoord(left, right, top, bottom)
 	elseif not masque then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 	end
 end
 
@@ -399,7 +399,7 @@ function AB:CreateBar(id)
 		if targetReticle then
 			targetReticle:SetAllPoints()
 
-			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetTexCoords()
 			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
 			targetReticle.Base:SetInside()
 

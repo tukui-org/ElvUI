@@ -72,7 +72,7 @@ function S:Blizzard_InspectUI()
 		local name = slot:GetName()
 		local icon = _G[name..'IconTexture']
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 

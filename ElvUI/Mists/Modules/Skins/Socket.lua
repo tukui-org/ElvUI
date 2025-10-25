@@ -32,7 +32,7 @@ function S:Blizzard_ItemSocketingUI()
 		button:CreateBackdrop(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
-		button_icon:SetTexCoord(unpack(E.TexCoords))
+		button_icon:SetTexCoords()
 		button_icon:SetInside()
 	end
 

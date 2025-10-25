@@ -92,7 +92,7 @@ local function MasterLooterShow()
 		item:SetBackdropBorderColor(r, g, b)
 
 		icon:SetTexture(texture)
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 	end
 
 	for _, child in next, { looter:GetChildren() } do
@@ -260,7 +260,7 @@ function S:LootFrame()
 		BonusPrompt.IconBackdrop:OffsetFrameLevel(-1)
 		BonusPrompt.IconBackdrop:SetOutside(BonusPrompt.Icon)
 		BonusPrompt.IconBackdrop:SetTemplate()
-		BonusPrompt.Icon:SetTexCoord(unpack(E.TexCoords))
+		BonusPrompt.Icon:SetTexCoords()
 
 		BonusPrompt.Timer:SetStatusBarTexture(E.media.normTex)
 		BonusPrompt.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
@@ -282,7 +282,7 @@ function S:LootFrame()
 			BonusSpecIcon.backdrop:SetFrameLevel(6)
 
 			BonusSpecIcon:SetParent(BonusSpecIcon.backdrop)
-			BonusSpecIcon:SetTexCoord(unpack(E.TexCoords))
+			BonusSpecIcon:SetTexCoords()
 			BonusSpecIcon:SetInside()
 
 			hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)

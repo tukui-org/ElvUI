@@ -69,7 +69,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButton.Icon:SetInside()
-	_G.MacroFrameSelectedMacroButton.Icon:SetTexCoord(unpack(E.TexCoords))
+	_G.MacroFrameSelectedMacroButton.Icon:SetTexCoords()
 
 	-- handle the macro buttons
 	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', MacroSelectorScrollUpdate)

@@ -18,7 +18,7 @@ local function Skin_SendMail()
 
 		local icon = btn:GetNormalTexture()
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 	end
@@ -40,7 +40,7 @@ local function Skin_OpenMail()
 
 		local icon = btn.icon or btn.Icon
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 	end
@@ -62,7 +62,7 @@ local function Skin_InboxItems()
 
 		local icon = btn.icon or btn.Icon
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 	end
@@ -178,13 +178,13 @@ function S:MailFrame()
 	_G.OpenMailLetterButton:StripTextures()
 	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
-	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.OpenMailLetterButtonIconTexture:SetTexCoords()
 	_G.OpenMailLetterButtonIconTexture:SetInside()
 
 	_G.OpenMailMoneyButton:StripTextures()
 	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
-	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.OpenMailMoneyButtonIconTexture:SetTexCoords()
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
 
 	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)

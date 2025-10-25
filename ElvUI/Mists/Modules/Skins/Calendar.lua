@@ -25,7 +25,7 @@ local function HandleEventIcon(icon)
 	icon:ClearAllPoints()
 	icon:Point('TOPLEFT', _G.CalendarViewEventFrame.HeaderFrame, 'TOPLEFT', 15, -20)
 	icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 	icon.SetTexCoord = E.noop
 end
 

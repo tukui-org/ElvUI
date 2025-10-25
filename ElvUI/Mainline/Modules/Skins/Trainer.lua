@@ -72,7 +72,7 @@ function S:Blizzard_TrainerUI()
 
 	local stepButton = _G.ClassTrainerFrameSkillStepButton
 	stepButton:SetTemplate()
-	stepButton.icon:SetTexCoord(unpack(E.TexCoords))
+	stepButton.icon:SetTexCoords()
 	stepButton.selectedTex:SetColorTexture(1,1,1,0.3)
 	_G.ClassTrainerFrameSkillStepButtonHighlight:SetColorTexture(1,1,1,0.3)
 

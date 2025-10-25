@@ -307,7 +307,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.IncrementButton)
 	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
 	CapacitiveDisplay.IconBG:SetTexture()
-	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoords()
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetInside()
 	--Fix unitframes appearing above work orders
 	GarrisonCapacitiveDisplayFrame:SetFrameStrata('MEDIUM')

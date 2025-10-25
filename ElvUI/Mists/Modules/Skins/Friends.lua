@@ -162,7 +162,7 @@ function S:FriendsFrame()
 		local button = 'FriendsFrameFriendsScrollFrameButton'..i
 		local btn = _G[button]
 
-		_G[button..'SummonButtonIcon']:SetTexCoord(unpack(E.TexCoords))
+		_G[button..'SummonButtonIcon']:SetTexCoords()
 		_G[button..'SummonButtonNormalTexture']:SetAlpha(0)
 		_G[button..'SummonButton']:StyleButton()
 		btn.highlight:SetTexture(E.Media.Textures.Highlight)

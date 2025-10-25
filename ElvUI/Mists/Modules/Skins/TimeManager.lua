@@ -34,7 +34,7 @@ function S:Blizzard_TimeManager()
 	local TimeManagerStopwatchCheck = _G.TimeManagerStopwatchCheck
 	_G.TimeManagerStopwatchFrame:StripTextures()
 	TimeManagerStopwatchCheck:SetTemplate()
-	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoords()
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
 
 	local hover = TimeManagerStopwatchCheck:CreateTexture()

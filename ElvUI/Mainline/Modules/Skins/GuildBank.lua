@@ -58,7 +58,7 @@ function S:Blizzard_GuildBankUI()
 		button:StyleButton(true)
 		button:SetTemplate(nil, true)
 		icon:SetTexture(texture)
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:SetInside()
 	end
 
@@ -73,7 +73,7 @@ function S:Blizzard_GuildBankUI()
 			button:SetTemplate()
 
 			button.icon:SetInside()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+			button.icon:SetTexCoords()
 
 			S:HandleIconBorder(button.IconBorder)
 		end

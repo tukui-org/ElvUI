@@ -46,7 +46,7 @@ local function SkinAchievementAlert(frame)
 
 		local texture = frame.Icon.Texture
 		if texture then
-			texture:SetTexCoord(unpack(E.TexCoords))
+			texture:SetTexCoords()
 			texture:ClearAllPoints()
 			texture:Point('LEFT', frame, 7, 0)
 
@@ -89,7 +89,7 @@ local function SkinCriteriaAlert(frame)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
 
-	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon.Texture:SetTexCoords()
 end
 
 local function SkinDungeonCompletionAlert(frame)
@@ -124,7 +124,7 @@ local function SkinDungeonCompletionAlert(frame)
 	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
 
 	-- Icon
-	frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
+	frame.dungeonTexture:SetTexCoords()
 	frame.dungeonTexture:SetDrawLayer('OVERLAY')
 	frame.dungeonTexture:ClearAllPoints()
 	frame.dungeonTexture:Point('LEFT', frame, 7, 0)
@@ -173,7 +173,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.shine:Kill()
 
 		-- Icon
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon:SetTexCoords()
 		frame.Icon:SetDrawLayer('ARTWORK')
 		frame.Icon.b = CreateFrame('Frame', nil, frame)
 		frame.Icon.b:SetTemplate()
@@ -332,7 +332,7 @@ local function SkinNewPetAlert(frame)
 	frame.IconBorder:Kill()
 
 	frame.Icon:SetMask('')
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon:SetTexCoords()
 	frame.Icon:SetDrawLayer('BORDER', 5)
 
 	-- Icon border

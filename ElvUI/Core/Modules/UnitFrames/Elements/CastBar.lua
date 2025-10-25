@@ -290,7 +290,7 @@ function UF:Configure_Castbar(frame)
 	--Icon
 	if db.icon then
 		castbar.Icon = castbar.ButtonIcon
-		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
+		castbar.Icon:SetTexCoords()
 
 		if db.overlayOnFrame == 'None' then
 			castbar.Icon.bg:Size(db.iconAttached and (height - UF.SPACING*2) or db.iconSize)

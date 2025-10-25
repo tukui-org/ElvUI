@@ -10,7 +10,7 @@ function S:Blizzard_ObliterumUI()
 	local ObliterumForgeFrame = _G.ObliterumForgeFrame
 	S:HandlePortraitFrame(ObliterumForgeFrame)
 	ObliterumForgeFrame.ItemSlot:SetTemplate()
-	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
+	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoords()
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)
 end
 

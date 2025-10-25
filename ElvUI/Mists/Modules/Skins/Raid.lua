@@ -72,13 +72,13 @@ function S:Blizzard_RaidUI()
 
 			if index == 11 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			elseif index == 12 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			elseif index == 13 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			else
 				icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 				icon:SetTexCoord(E:GetClassCoords(CLASS_SORT_ORDER[index], 0.02))

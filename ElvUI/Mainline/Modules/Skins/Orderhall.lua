@@ -28,7 +28,7 @@ function S:Blizzard_OrderHallUI()
 
 					bu.Border:SetAlpha(0)
 					bu.Highlight:SetColorTexture(1, 1, 1, .25)
-					bu.Icon:SetTexCoord(unpack(E.TexCoords))
+					bu.Icon:SetTexCoords()
 					bu.Icon:SetInside()
 
 					if bu.talent.isBeingResearched then

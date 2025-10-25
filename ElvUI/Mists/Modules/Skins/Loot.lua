@@ -27,7 +27,7 @@ local function UpdateLoots()
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetTexCoords()
 
 			-- Create a backdrop around the icon
 			frame:CreateBackdrop()
@@ -90,7 +90,7 @@ function S:LootFrame()
 
 			item:StripTextures()
 			icon:SetTexture(texture)
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 
 			if not item.backdrop then
 				item:CreateBackdrop()

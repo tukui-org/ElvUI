@@ -1091,7 +1091,7 @@ function B:CreateFilterIcon(parent)
 
 	parent.filterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
 	parent.filterIcon:SetTexture(E.Media.Textures.GreenPotion)
-	parent.filterIcon:SetTexCoord(unpack(E.TexCoords))
+	parent.filterIcon:SetTexCoords()
 	parent.filterIcon:SetInside()
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
 
@@ -1986,10 +1986,10 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	holder:SetID(bagNum)
 
 	if holder.animIcon then
-		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
+		holder.animIcon:SetTexCoords()
 	end
 
-	holder.icon:SetTexCoord(unpack(E.TexCoords))
+	holder.icon:SetTexCoords()
 	holder.icon:SetTexture(DEFAULT_ICON)
 	holder.icon:SetInside()
 
@@ -2051,10 +2051,10 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	holder:SetScript('OnClick', B.Holder_OnClick)
 
 	if holder.animIcon then
-		holder.animIcon:SetTexCoord(unpack(E.TexCoords))
+		holder.animIcon:SetTexCoords()
 	end
 
-	holder.icon:SetTexCoord(unpack(E.TexCoords))
+	holder.icon:SetTexCoords()
 	holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface\ICONS\INV_Misc_Key_03
 	holder.icon:SetInside()
 
@@ -2584,7 +2584,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 				local icon = (currency.icon or currency.Icon)
 				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 				icon:SetDrawLayer('ARTWORK', 7)
 
 				currency.text = currency:CreateFontString(nil, 'OVERLAY')
@@ -2698,7 +2698,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.keyringTexture:SetAlpha(0.5)
 		slot.keyringTexture:SetInside(slot)
 		slot.keyringTexture:SetTexture(130980) -- Interface\ContainerFrame\KeyRing-Bag-Icon
-		slot.keyringTexture:SetTexCoord(unpack(E.TexCoords))
+		slot.keyringTexture:SetTexCoords()
 		slot.keyringTexture:SetDesaturated(true)
 	end
 
@@ -2729,7 +2729,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.icon:SetInside()
-	slot.icon:SetTexCoord(unpack(E.TexCoords))
+	slot.icon:SetTexCoords()
 
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)

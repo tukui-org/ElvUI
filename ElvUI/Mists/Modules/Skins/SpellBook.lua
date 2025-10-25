@@ -242,7 +242,7 @@ function S:SpellBookFrame()
 				button.ActiveTexture:SetAlpha(0)
 				button.FutureTexture:SetAlpha(0)
 
-				button.iconTexture:SetTexCoord(unpack(E.TexCoords))
+				button.iconTexture:SetTexCoords()
 				button.iconTexture:SetInside()
 
 				button.Name:Point('TOPLEFT', 50, 0)
@@ -289,7 +289,7 @@ function S:SpellBookFrame()
 
 				local normal = tab:GetNormalTexture()
 				normal:SetInside()
-				normal:SetTexCoord(unpack(E.TexCoords))
+				normal:SetTexCoords()
 
 				tab.IsSkinned = true
 			end

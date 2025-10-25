@@ -24,7 +24,7 @@ function S:Blizzard_WarfrontsPartyPoseUI()
 
 	rewardFrame.NameFrame:SetAlpha(0)
 	rewardFrame.IconBorder:Kill()
-	rewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	rewardFrame.Icon:SetTexCoords()
 end
 
 S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')

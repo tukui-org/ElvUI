@@ -25,7 +25,7 @@ function S:Blizzard_IslandsQueueUI()
 	StatusBar:CreateBackdrop()
 
 	--StatusBar Icon
-	WeeklyQuest.QuestReward.Icon:SetTexCoord(unpack(E.TexCoords))
+	WeeklyQuest.QuestReward.Icon:SetTexCoords()
 
 	-- Maybe Adjust me
 	local TutorialFrame = IslandsFrame.TutorialFrame

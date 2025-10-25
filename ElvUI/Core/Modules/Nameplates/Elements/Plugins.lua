@@ -28,7 +28,7 @@ function NP:Construct_QuestIcons(nameplate)
 		QuestIcons[object] = icon
 	end
 
-	QuestIcons.Item:SetTexCoord(unpack(E.TexCoords))
+	QuestIcons.Item:SetTexCoords()
 	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 

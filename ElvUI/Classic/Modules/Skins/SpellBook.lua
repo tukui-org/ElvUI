@@ -146,7 +146,7 @@ function S:SpellBookFrame()
 			local normalTexture = tab:GetNormalTexture()
 			if normalTexture then
 				normalTexture:SetInside()
-				normalTexture:SetTexCoord(unpack(E.TexCoords))
+				normalTexture:SetTexCoords()
 			end
 
 			if i == 1 then

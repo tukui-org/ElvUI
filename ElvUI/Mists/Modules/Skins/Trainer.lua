@@ -38,7 +38,7 @@ function S:Blizzard_TrainerUI()
 		local skillIcon = _G.ClassTrainerSkillIcon:GetNormalTexture()
 		if skillIcon then
 			skillIcon:SetInside()
-			skillIcon:SetTexCoord(unpack(E.TexCoords))
+			skillIcon:SetTexCoords()
 
 			_G.ClassTrainerSkillIcon:SetTemplate()
 		end

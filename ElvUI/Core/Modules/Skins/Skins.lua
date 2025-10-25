@@ -494,7 +494,7 @@ do -- We need to test this for the BGScore frame
 
 			if nextAvailable.Icon then
 				nextAvailable.Icon:SetDrawLayer('ARTWORK')
-				nextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+				nextAvailable.Icon:SetTexCoords()
 			end
 		end
 	end
@@ -1632,7 +1632,7 @@ function S:ReplaceIconString(text)
 end
 
 function S:HandleIcon(icon, backdrop)
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 
 	if backdrop and not icon.backdrop then
 		icon:CreateBackdrop()
@@ -1651,7 +1651,7 @@ function S:HandleItemButton(b, setInside)
 	b:StyleButton()
 
 	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 
 		if setInside then
 			icon:SetInside(b)
@@ -1910,7 +1910,7 @@ function S:HandleShipFollowerPage(followerTab)
 		border:SetTexture() -- I think the default border looks nice, not sure if we want to replace that
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 		end
 	end
 
@@ -1921,7 +1921,7 @@ function S:HandleShipFollowerPage(followerTab)
 		border:SetAtlas('ShipMission_ShipFollower-TypeFrame') -- This border is ugly though, use the traits border instead
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 		end
 	end
 end
@@ -1971,7 +1971,7 @@ do
 						end
 
 						if counter.Icon then
-							counter.Icon:SetTexCoord(unpack(E.TexCoords))
+							counter.Icon:SetTexCoords()
 							counter.Icon:SetInside()
 						end
 					end
@@ -2130,7 +2130,7 @@ do
 	local function HandleButton(button, i, buttonNameTemplate)
 		local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside(button)
 			texture = icon:GetTexture() -- keep this before strip textures
 		end

@@ -168,7 +168,7 @@ local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
 
 				if not frame.backdrop then
 					frame.ring:Hide()
-					frame.icon:SetTexCoord(unpack(E.TexCoords))
+					frame.icon:SetTexCoords()
 					frame.icon:SetInside(frame, 8, 8)
 
 					frame:CreateBackdrop()
@@ -377,7 +377,7 @@ function S:Blizzard_TalentUI()
 
 			local normal = tab:GetNormalTexture()
 			normal:SetInside()
-			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetTexCoords()
 		end
 	end
 
@@ -498,7 +498,7 @@ function S:Blizzard_GlyphUI()
 	GlyphFrame.clearInfo:ClearAllPoints()
 	GlyphFrame.clearInfo:Point('BOTTOMLEFT', GlyphFrame, 'BOTTOMLEFT', 4, -25)
 
-	GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
+	GlyphFrame.clearInfo.icon:SetTexCoords()
 	GlyphFrame.clearInfo.icon:ClearAllPoints()
 	GlyphFrame.clearInfo.icon:SetInside()
 end
