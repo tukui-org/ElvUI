@@ -378,6 +378,14 @@ LCS.Stat = Stat
 LCS.Role = Role
 LCS.SpecInfo = SpecInfo
 
+function LCS.GetInspectSpecialization() return end
+
+function LCS.GetActiveSpecGroup() return 1 end
+
+function LCS.GetNumClasses()
+	return #ClassByID
+end
+
 function LCS.GetClassInfo(classID)
 	local info = classID and ClassByID[classID]
 	if not info then return end
@@ -395,10 +403,6 @@ function LCS.GetNumSpecializationsForClassID(classID)
 
 	return #info.specs
 end
-
-function LCS.GetInspectSpecialization() return end
-
-function LCS.GetActiveSpecGroup() return 1 end
 
 function LCS.GetSpecialization(isInspect, isPet)
 	if isInspect or isPet then return end
@@ -471,8 +475,4 @@ function LCS.GetSpecializationRole(specIndex, isInspect, isPet)
 	if not spec then return end
 
 	return spec.role
-end
-
-function LCS.GetNumClasses()
-	return #ClassByID
 end
