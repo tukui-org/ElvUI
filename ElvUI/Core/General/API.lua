@@ -1143,7 +1143,7 @@ end
 function E:CropRatio(width, height, mult)
 	if not mult then mult = 0.5 end
 
-	local left, right, top, bottom = unpack(E.TexCoords)
+	local left, right, top, bottom = E:GetTexCoords()
 
 	local ratio = width / height
 	if ratio > 1 then

@@ -50,6 +50,10 @@ do
 		frame:SetTexCoord(left, right, top, bottom)
 	end
 
+	function E:GetTexCoords()
+		return left, right, top, bottom
+	end
+
 	function E:UpdateTexCoords()
 		local m = 0.04 * (E.db.general.cropIcon or 2)
 		for i, v in next, E.TexCoords do
