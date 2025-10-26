@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local function SetToggleIcon(button, texture)
 	local icon = button:CreateTexture()
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 	icon:SetInside()
 	icon:SetTexture(texture)
 

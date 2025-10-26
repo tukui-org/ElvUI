@@ -212,7 +212,7 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)
 		local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
 		if normal then
-			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetTexCoords()
 			normal:SetInside()
 
 			local _, _, _, quality = GetAuctionSellItemInfo()

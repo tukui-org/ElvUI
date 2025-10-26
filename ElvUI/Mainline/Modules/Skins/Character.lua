@@ -115,7 +115,7 @@ end
 local function UpdateAzeriteEmpoweredItem(item)
 	item.AzeriteTexture:SetAtlas('AzeriteIconFrame')
 	item.AzeriteTexture:SetInside()
-	item.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
+	item.AzeriteTexture:SetTexCoords()
 	item.AzeriteTexture:SetDrawLayer('BORDER', 1)
 end
 
@@ -155,7 +155,7 @@ local function EquipmentDisplayButton(button)
 		button:StyleButton()
 
 		button.icon:SetInside()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetTexCoords()
 
 		S:HandleIconBorder(button.IconBorder)
 
@@ -430,7 +430,8 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCheckBox(DetailFrame.AtWarCheckbox)
 	S:HandleCheckBox(DetailFrame.MakeInactiveCheckbox)
 	S:HandleCheckBox(DetailFrame.WatchFactionCheckbox)
-	S:HandleButton(DetailFrame.ViewRenownButton)
+	S:HandleButton(DetailFrame.ViewRenownButton, nil, nil, nil, true)
+	S:HandleTrimScrollBar(DetailFrame.ScrollingDescriptionScrollBar)
 
 	-- Currency Frame
 	_G.TokenFramePopup:StripTextures()

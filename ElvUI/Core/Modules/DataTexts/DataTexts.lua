@@ -265,9 +265,17 @@ function DT:BuildPanelFunctions(name, obj)
 		end
 
 		panel.text:SetText(str)
-		panel.icon:SetShown(icon)
+
+		local left, right, top, bottom
+		if data.iconCoords then
+			left, right, top, bottom = unpack(data.iconCoords)
+		else
+			left, right, top, bottom = E:GetTexCoords()
+		end
+
 		panel.icon:SetTexture(icon)
-		panel.icon:SetTexCoord(unpack(data.iconCoords or E.TexCoords))
+		panel.icon:SetTexCoord(left, right, top, bottom)
+		panel.icon:SetShown(icon)
 	end
 
 	local function UpdateColor(_, Hex)
@@ -531,7 +539,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			local icon = dt:CreateTexture(nil, 'ARTWORK')
 			icon:Hide()
 			icon:Point('RIGHT', text, 'LEFT', -4, 0)
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			dt.icon = icon
 
 			DT.FontStrings[text] = true

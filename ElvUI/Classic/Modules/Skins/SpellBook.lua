@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -146,7 +146,7 @@ function S:SpellBookFrame()
 			local normalTexture = tab:GetNormalTexture()
 			if normalTexture then
 				normalTexture:SetInside()
-				normalTexture:SetTexCoord(unpack(E.TexCoords))
+				normalTexture:SetTexCoords()
 			end
 
 			if i == 1 then

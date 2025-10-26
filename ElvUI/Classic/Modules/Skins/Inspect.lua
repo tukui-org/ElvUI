@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -72,7 +72,7 @@ function S:Blizzard_InspectUI()
 		local name = slot:GetName()
 		local icon = _G[name..'IconTexture']
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 

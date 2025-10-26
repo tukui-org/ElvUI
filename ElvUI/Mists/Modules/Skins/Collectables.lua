@@ -190,7 +190,7 @@ local function HeirloomsJournalUpdateButton(_, button)
 	if not button.IsSkinned then
 		S:HandleItemButton(button, true)
 
-		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetTexCoords()
 		button.iconTextureUncollected:SetInside(button)
 		button.iconTexture:SetDrawLayer('ARTWORK')
 		button.hover:SetAllPoints(button.iconTexture)
@@ -254,7 +254,7 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 	local icon = itemFrame.Icon
 	if not icon.backdrop then
 		icon:CreateBackdrop()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		itemFrame.IconBorder:Hide()
 	end
 
@@ -415,7 +415,7 @@ local function SkinPetFrame()
 		frame:OffsetFrameLevel(2)
 		frame:DisableDrawLayer('BACKGROUND')
 		frame:SetTemplate()
-		frame.icon:SetTexCoord(unpack(E.TexCoords))
+		frame.icon:SetTexCoords()
 	end
 
 	Card.HealthFrame.healthBar:StripTextures()
@@ -453,7 +453,7 @@ local function SkinToyFrame()
 		local button = ToyBox.iconsFrame['spellButton'..i]
 		S:HandleItemButton(button, true)
 
-		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetTexCoords()
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
 		button.checked:SetAllPoints(button.iconTexture)
@@ -616,7 +616,7 @@ local function SkinTransmogFrames()
 		slotButton:StripTextures()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
-		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
+		slotButton.Icon:SetTexCoords()
 		slotButton.Icon:SetInside(slotButton.backdrop)
 
 		local undo = slotButton.UndoButton

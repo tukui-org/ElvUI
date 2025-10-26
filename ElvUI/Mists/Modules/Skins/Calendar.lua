@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
@@ -25,7 +25,7 @@ local function HandleEventIcon(icon)
 	icon:ClearAllPoints()
 	icon:Point('TOPLEFT', _G.CalendarViewEventFrame.HeaderFrame, 'TOPLEFT', 15, -20)
 	icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 	icon.SetTexCoord = E.noop
 end
 

@@ -175,7 +175,7 @@ local function UpdateCurrencySkins()
 			if button.itemID == HONOR_CURRENCY and E.myfaction then
 				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 			else
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:SetTexCoords()
 			end
 
 			button.icon:Size(17)
@@ -249,7 +249,7 @@ local function EquipmentDisplayButton(button)
 		button:StyleButton()
 
 		button.icon:SetInside()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetTexCoords()
 
 		button.isHooked = true
 	end

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
@@ -29,7 +28,7 @@ function UF:ToggleArenaPreparationInfo(frame, specID)
 
 		if show and frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
 			frame.PVPSpecIcon.Icon:SetTexture(specInfo.icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-			frame.PVPSpecIcon.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.PVPSpecIcon.Icon:SetTexCoords()
 			frame.PVPSpecIcon:Show()
 		end
 	end

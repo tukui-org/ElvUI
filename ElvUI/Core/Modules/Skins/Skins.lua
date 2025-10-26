@@ -58,16 +58,12 @@ S.Blizzard.Regions = {
 }
 
 -- Depends on the arrow texture to be up by default.
-S.ArrowRotation = {
-	up = 0,
-	down = 3.14,
-	left = 1.57,
-	right = -1.57,
-}
+S.ArrowRotation = { up = 0, down = 3.14, left = 1.57, right = -1.57 }
 
 do
 	local function HighlightOnEnter(button)
 		local r, g, b = unpack(E.media.rgbvaluecolor)
+
 		button.HighlightTexture:SetVertexColor(r, g, b, 0.50)
 		button.HighlightTexture:Show()
 	end
@@ -86,18 +82,23 @@ do
 		if button.SetDisabledTexture then button:SetDisabledTexture(E.ClearTexture) end
 
 		if strip then button:StripTextures() end
+
 		S:HandleBlizzardRegions(button)
 
-		button.HighlightTexture = button:CreateTexture(nil, "BACKGROUND")
-		button.HighlightTexture:SetBlendMode("BLEND")
-		button.HighlightTexture:SetSize(button:GetSize())
-		button.HighlightTexture:Point('CENTER', button, 0, 2)
-		button.HighlightTexture:SetTexture(E.Media.Textures.Highlight)
-		button.HighlightTexture:SetVertexColor(0, 0, 0, 0)
-		button.HighlightTexture:Hide()
+		local highlight = button:CreateTexture(nil, 'BACKGROUND')
+		if highlight then
+			highlight:SetBlendMode('BLEND')
+			highlight:SetSize(button:GetSize())
+			highlight:Point('CENTER', button, 0, 2)
+			highlight:SetTexture(E.Media.Textures.Highlight)
+			highlight:SetVertexColor(0, 0, 0, 0)
+			highlight:Hide()
 
-		button:HookScript('OnEnter', HighlightOnEnter)
-		button:HookScript('OnLeave', HighlightOnLeave)
+			button.HighlightTexture = highlight
+
+			button:HookScript('OnEnter', HighlightOnEnter)
+			button:HookScript('OnLeave', HighlightOnLeave)
+		end
 
 		button.IsSkinned = true
 	end
@@ -105,27 +106,25 @@ end
 
 do
 	local NavBarCheck = {
-		EncounterJournal = function()
-			return S.db.blizzard.encounterjournal
-		end,
-		WorldMapFrame = function()
-			return S.db.blizzard.worldmap
-		end,
-		HelpFrameKnowledgebase = function()
-			return S.db.blizzard.help
-		end
+		EncounterJournal		= function() return S.db.blizzard.encounterjournal end,
+		WorldMapFrame			= function() return S.db.blizzard.worldmap end,
+		HelpFrameKnowledgebase	= function() return S.db.blizzard.help end
 	}
 
 	local function NavButtonXOffset(button, point, anchor, point2, _, yoffset, skip)
-		if not skip then
-			button:Point(point, anchor, point2, 1, yoffset, true)
-		end
+		if skip then return end
+
+		button:Point(point, anchor, point2, 1, yoffset, true)
 	end
 
 	function S:SkinNavBarButton(button, index)
 		if button and not button.IsSkinned then
 			S:HandleButton(button, true)
-			button:GetFontString():SetTextColor(1, 1, 1)
+
+			local fontstring = button:GetFontString()
+			if fontstring then
+				fontstring:SetTextColor(1, 1, 1)
+			end
 
 			local arrow = button.MenuArrowButton
 			if arrow then
@@ -308,9 +307,13 @@ function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
 end
 
 function S:SetBackdropBorderColor(frame, script)
-	if frame.backdrop then frame = frame.backdrop end
+	if frame.backdrop then
+		frame = frame.backdrop
+	end
+
 	if frame.SetBackdropBorderColor then
-		frame:SetBackdropBorderColor(unpack(script == 'OnEnter' and E.media.rgbvaluecolor or E.media.bordercolor))
+		local r, g, b = unpack(script == 'OnEnter' and E.media.rgbvaluecolor or E.media.bordercolor)
+		frame:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -360,13 +363,22 @@ function S:StaticPopup_HandleButton(button)
 
 	button:OffsetFrameLevel(1)
 	button:CreateShadow(5)
-	button.shadow:SetAlpha(0)
-	button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	button.Flash:Hide()
 
-	local anim1, anim2 = button.PulseAnim:GetAnimations()
-	anim1:SetTarget(button.shadow)
-	anim2:SetTarget(button.shadow)
+	if button.Flash then
+		button.Flash:Hide()
+	end
+
+	if button.shadow then
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		button.shadow:SetBackdropBorderColor(r, g, b)
+		button.shadow:SetAlpha(0)
+
+		if button.PulseAnim then
+			local anim1, anim2 = button.PulseAnim:GetAnimations()
+			anim1:SetTarget(button.shadow)
+			anim2:SetTarget(button.shadow)
+		end
+	end
 end
 
 function S:HandleStaticPopup(popup)
@@ -427,54 +439,62 @@ do -- We need to test this for the BGScore frame
 	S.PVPHonorXPBarFrames = {}
 	S.PVPHonorXPBarSkinned = false
 
-	local function SetNextAvailable(XPBar)
-		if not S.PVPHonorXPBarFrames[XPBar:GetParent():GetName()] then return end
+	local function SetNextAvailable(frame)
+		local parent = frame:GetParent()
+		local parentName = parent and parent:GetName()
+		if not parentName or not S.PVPHonorXPBarFrames[parentName] then return end
 
-		XPBar:StripTextures()
+		frame:StripTextures()
 
-		if XPBar.Bar and not XPBar.Bar.backdrop then
-			XPBar.Bar:CreateBackdrop()
+		local bar = frame.Bar
+		if bar and not bar.backdrop then
+			bar:CreateBackdrop()
 
-			if XPBar.Bar.Background then
-				XPBar.Bar.Background:SetInside(XPBar.Bar.backdrop)
+			if bar.Background then
+				bar.Background:SetInside(bar.backdrop)
 			end
-			if XPBar.Bar.Spark then
-				XPBar.Bar.Spark:SetAlpha(0)
-			end
-			if XPBar.Bar.OverlayFrame and XPBar.Bar.OverlayFrame.Text then
-				XPBar.Bar.OverlayFrame.Text:ClearAllPoints()
-				XPBar.Bar.OverlayFrame.Text:Point('CENTER', XPBar.Bar)
-			end
-		end
 
-		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
-			XPBar.PrestigeReward.Accept:ClearAllPoints()
-			XPBar.PrestigeReward.Accept:Point('TOP', XPBar.PrestigeReward, 'BOTTOM', 0, 0)
-			if not XPBar.PrestigeReward.Accept.template then
-				S:HandleButton(XPBar.PrestigeReward.Accept)
+			if bar.Spark then
+				bar.Spark:SetAlpha(0)
+			end
+
+			if bar.OverlayFrame and bar.OverlayFrame.Text then
+				bar.OverlayFrame.Text:ClearAllPoints()
+				bar.OverlayFrame.Text:Point('CENTER', bar)
 			end
 		end
 
-		if XPBar.NextAvailable then
-			if XPBar.Bar then
-				XPBar.NextAvailable:ClearAllPoints()
-				XPBar.NextAvailable:Point('LEFT', XPBar.Bar, 'RIGHT', 0, -2)
+		local prestigeReward = frame.PrestigeReward
+		if prestigeReward and prestigeReward.Accept then
+			prestigeReward.Accept:ClearAllPoints()
+			prestigeReward.Accept:Point('TOP', prestigeReward, 'BOTTOM', 0, 0)
+
+			if not prestigeReward.Accept.template then
+				S:HandleButton(prestigeReward.Accept)
+			end
+		end
+
+		local nextAvailable = frame.NextAvailable
+		if nextAvailable then
+			if bar then
+				nextAvailable:ClearAllPoints()
+				nextAvailable:Point('LEFT', bar, 'RIGHT', 0, -2)
 			end
 
-			if not XPBar.NextAvailable.backdrop then
-				XPBar.NextAvailable:StripTextures()
-				XPBar.NextAvailable:CreateBackdrop()
+			if not nextAvailable.backdrop then
+				nextAvailable:StripTextures()
+				nextAvailable:CreateBackdrop()
 
-				if XPBar.NextAvailable.Icon then
+				if nextAvailable.Icon then
 					local x = E.PixelMode and 1 or 2
-					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -x, x)
-					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, x, -x)
+					nextAvailable.backdrop:Point('TOPLEFT', nextAvailable.Icon, -x, x)
+					nextAvailable.backdrop:Point('BOTTOMRIGHT', nextAvailable.Icon, x, -x)
 				end
 			end
 
-			if XPBar.NextAvailable.Icon then
-				XPBar.NextAvailable.Icon:SetDrawLayer('ARTWORK')
-				XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
+			if nextAvailable.Icon then
+				nextAvailable.Icon:SetDrawLayer('ARTWORK')
+				nextAvailable.Icon:SetTexCoords()
 			end
 		end
 	end
@@ -576,7 +596,8 @@ do -- WIM replaces Blizzard globals we need to rehook
 
 			local normTex = expandArrow:GetNormalTexture()
 			if normTex then
-				normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+				local r, g, b = unpack(E.media.rgbvaluecolor)
+				normTex:SetVertexColor(r, g, b)
 				normTex:SetRotation(S.ArrowRotation.right)
 			end
 		end
@@ -814,6 +835,7 @@ do
 		local atlas = quality and E:GetQualityColor(quality)
 		if customFunc then
 			border.customFunc = customFunc
+
 			local br, bg, bb = unpack(E.media.bordercolor)
 			customFunc(border, r, g, b, a, br, bg, bb)
 		elseif atlas then
@@ -946,14 +968,18 @@ do
 		overlay:Hide()
 
 		local txt = overlay:CreateFontString(nil, textLayer or 'OVERLAY')
-		txt:SetPoint('CENTER')
-		txt:FontTemplate()
-		txt:SetText(text)
-		txt:SetTextColor(1, 0.81, 0)
-		overlay.text = txt
+		if txt then
+			txt:FontTemplate()
+			txt:SetPoint('CENTER')
+			txt:SetTextColor(1, 0.81, 0)
+			txt:SetText(text)
 
-		button:HookScript('OnEnter', OverlayOnEnter)
-		button:HookScript('OnLeave', OverlayOnLeave)
+			overlay.text = txt
+
+			button:HookScript('OnEnter', OverlayOnEnter)
+			button:HookScript('OnLeave', OverlayOnLeave)
+		end
+
 		button:HookScript('OnHide', OverlayHide)
 		button:HookScript('OnShow', OverlayShow)
 
@@ -974,17 +1000,18 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 
 	S:HandleBlizzardRegions(button, nil, regionsKill, regionsZero)
 
-	if button.Icon then
-		local Texture = button.Icon:GetTexture()
-		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
-			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetRotation(S.ArrowRotation.right)
-			button.Icon:SetVertexColor(1, 1, 1)
+	local icon = button.Icon
+	if icon then
+		local iconTexture = icon:GetTexture()
+		if iconTexture and (type(iconTexture) == 'string' and strfind(iconTexture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
+			icon:SetTexture(E.Media.Textures.ArrowUp)
+			icon:SetRotation(S.ArrowRotation.right)
+			icon:SetVertexColor(1, 1, 1)
 		end
-	end
 
-	if isDecline and button.Icon then
-		button.Icon:SetTexture(E.Media.Textures.Close)
+		if isDecline then
+			icon:SetTexture(E.Media.Textures.Close)
+		end
 	end
 
 	if not noStyle then
@@ -999,8 +1026,8 @@ function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, templ
 		button:HookScript('OnDisable', S.SetDisabledBackdrop)
 	end
 
-	if isFilterButton then
-		local arrow = button:CreateTexture(nil, 'ARTWORK')
+	local arrow = isFilterButton and button:CreateTexture(nil, 'ARTWORK')
+	if arrow then
 		arrow:Size(10)
 		arrow:ClearAllPoints()
 		arrow:Point('RIGHT', -1, 0)
@@ -1044,11 +1071,12 @@ do
 			return
 		end
 
-		local _, max = frame:GetMinMaxValues()
-		if max == 0 then
+		local _, maximum = frame:GetMinMaxValues()
+		if maximum == 0 then
 			frame.Thumb.backdrop:SetBackdropColor(0.3, 0.3, 0.3)
 		else
-			frame.Thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			frame.Thumb.backdrop:SetBackdropColor(r, g, b)
 		end
 	end
 
@@ -1106,7 +1134,8 @@ do
 				if frame.SetEnabled then
 					ThumbWatcher(frame)
 				else
-					thumb.backdrop:SetBackdropColor(unpack(E.media.rgbvaluecolor))
+					local r, g, b = unpack(E.media.rgbvaluecolor)
+					thumb.backdrop:SetBackdropColor(r, g, b)
 				end
 			end
 		end
@@ -1275,13 +1304,15 @@ function S:HandleRotateButton(frame, width, height, noSize)
 end
 
 do
-	local btns = {MaximizeButton = 'up', MinimizeButton = 'down'}
+	local btns = { MaximizeButton = 'up', MinimizeButton = 'down' }
 
 	local function ButtonOnEnter(btn)
-		local r,g,b = unpack(E.media.rgbvaluecolor)
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+
 		btn:GetNormalTexture():SetVertexColor(r,g,b)
 		btn:GetPushedTexture():SetVertexColor(r,g,b)
 	end
+
 	local function ButtonOnLeave(btn)
 		btn:GetNormalTexture():SetVertexColor(1, 1, 1)
 		btn:GetPushedTexture():SetVertexColor(1, 1, 1)
@@ -1295,20 +1326,39 @@ do
 		for name, direction in pairs(btns) do
 			local button = frame[name]
 			if button then
-				button:Size(14)
+				button:SetHitRectInsets(1, 1, 1, 1)
 				button:ClearAllPoints()
 				button:Point('CENTER')
-				button:SetHitRectInsets(1, 1, 1, 1)
-				button:GetHighlightTexture():Kill()
+				button:Size(14)
 
-				button:SetScript('OnEnter', ButtonOnEnter)
-				button:SetScript('OnLeave', ButtonOnLeave)
+				local highlight = button:GetHighlightTexture()
+				if highlight then
+					highlight:Kill()
+				end
 
-				button:SetNormalTexture(E.Media.Textures.ArrowUp)
-				button:GetNormalTexture():SetRotation(S.ArrowRotation[direction])
+				local rotation = S.ArrowRotation[direction]
+				if button.SetNormalTexture then
+					button:SetNormalTexture(E.Media.Textures.ArrowUp)
+					button:GetNormalTexture():SetRotation(rotation)
 
-				button:SetPushedTexture(E.Media.Textures.ArrowUp)
-				button:GetPushedTexture():SetRotation(S.ArrowRotation[direction])
+					button:SetScript('OnEnter', ButtonOnEnter)
+					button:SetScript('OnLeave', ButtonOnLeave)
+				end
+
+				if button.SetPushedTexture then
+					button:SetPushedTexture(E.Media.Textures.ArrowUp)
+					button:GetPushedTexture():SetRotation(rotation)
+				end
+
+				if button.SetDisabledTexture then
+					button:SetDisabledTexture(E.Media.Textures.ArrowUp)
+
+					local disabled = button:GetDisabledTexture()
+					if disabled then
+						disabled:SetRotation(rotation)
+						disabled:SetVertexColor(.4, .4, .4)
+					end
+				end
 			end
 		end
 
@@ -1317,7 +1367,10 @@ do
 end
 
 function S:HandleBlizzardRegions(frame, name, kill, zero)
-	if not name then name = frame.GetName and frame:GetName() end
+	if not name then
+		name = frame.GetName and frame:GetName()
+	end
+
 	for _, area in pairs(S.Blizzard.Regions) do
 		local object = (name and _G[name..area]) or frame[area]
 		if object then
@@ -1421,13 +1474,19 @@ function S:HandleDropDownBox(frame, width, template, old)
 	end
 end
 
-function S:HandleStatusBar(frame, color, template)
-	frame:OffsetFrameLevel(1)
-	frame:StripTextures()
-	frame:CreateBackdrop(template or 'Transparent')
-	frame:SetStatusBarTexture(E.media.normTex)
-	frame:SetStatusBarColor(unpack(color or {.01, .39, .1}))
-	E:RegisterStatusBar(frame)
+do
+	local green = { 0.01, 0.39, 0.1 }
+	function S:HandleStatusBar(frame, color, template)
+		local r, g, b = unpack(color or green)
+
+		frame:OffsetFrameLevel(1)
+		frame:StripTextures()
+		frame:CreateBackdrop(template or 'Transparent')
+		frame:SetStatusBarTexture(E.media.normTex)
+		frame:SetStatusBarColor(r, g, b)
+
+		E:RegisterStatusBar(frame)
+	end
 end
 
 function S:ForEachCheckboxTextureRegion(checkbox, func)
@@ -1532,8 +1591,9 @@ do
 		Button:SetHighlightTexture(E.media.normTex)
 		Button:SetDisabledTexture(E.media.normTex)
 
+		local rc, gc, bc = unpack(E.media.rgbvaluecolor)
 		local Check = Button:GetCheckedTexture()
-		Check:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		Check:SetVertexColor(rc, gc, bc)
 		Check:SetTexCoord(0, 1, 0, 1)
 		Check:SetInside()
 		Check:AddMaskTexture(InsideMask)
@@ -1543,10 +1603,11 @@ do
 		Highlight:SetVertexColor(1, 1, 1)
 		Highlight:AddMaskTexture(InsideMask)
 
+		local rn, gb, bn = unpack(E.media.bordercolor)
 		local Normal = Button:GetNormalTexture()
 		Normal:SetOutside()
 		Normal:SetTexCoord(0, 1, 0, 1)
-		Normal:SetVertexColor(unpack(E.media.bordercolor))
+		Normal:SetVertexColor(rn, gb, bn)
 		Normal:AddMaskTexture(OutsideMask)
 
 		local Disabled = Button:GetDisabledTexture()
@@ -1571,7 +1632,7 @@ function S:ReplaceIconString(text)
 end
 
 function S:HandleIcon(icon, backdrop)
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 
 	if backdrop and not icon.backdrop then
 		icon:CreateBackdrop()
@@ -1590,7 +1651,7 @@ function S:HandleItemButton(b, setInside)
 	b:StyleButton()
 
 	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 
 		if setInside then
 			icon:SetInside(b)
@@ -1609,8 +1670,18 @@ function S:HandleItemButton(b, setInside)
 end
 
 do
-	local closeOnEnter = function(btn) if btn.Texture then btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor)) end end
-	local closeOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
+	local closeOnEnter = function(btn)
+		if btn.Texture then
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			btn.Texture:SetVertexColor(r, g, b)
+		end
+	end
+
+	local closeOnLeave = function(btn)
+		if btn.Texture then
+			btn.Texture:SetVertexColor(1, 1, 1)
+		end
+	end
 
 	function S:HandleCloseButton(f, point, x, y)
 		if f.IsSkinned then return end
@@ -1622,6 +1693,7 @@ do
 			f.Texture:Point('CENTER')
 			f.Texture:SetTexture(E.Media.Textures.Close)
 			f.Texture:Size(12)
+
 			f:HookScript('OnEnter', closeOnEnter)
 			f:HookScript('OnLeave', closeOnLeave)
 			f:SetHitRectInsets(6, 6, 7, 7)
@@ -1838,7 +1910,7 @@ function S:HandleShipFollowerPage(followerTab)
 		border:SetTexture() -- I think the default border looks nice, not sure if we want to replace that
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 		end
 	end
 
@@ -1849,7 +1921,7 @@ function S:HandleShipFollowerPage(followerTab)
 		border:SetAtlas('ShipMission_ShipFollower-TypeFrame') -- This border is ugly though, use the traits border instead
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 		end
 	end
 end
@@ -1899,7 +1971,7 @@ do
 						end
 
 						if counter.Icon then
-							counter.Icon:SetTexCoord(unpack(E.TexCoords))
+							counter.Icon:SetTexCoords()
 							counter.Icon:SetInside()
 						end
 					end
@@ -2058,7 +2130,7 @@ do
 	local function HandleButton(button, i, buttonNameTemplate)
 		local icon, texture = button.Icon or _G[buttonNameTemplate..i..'Icon']
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside(button)
 			texture = icon:GetTexture() -- keep this before strip textures
 		end

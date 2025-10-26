@@ -40,7 +40,7 @@ function UF:Configure_RaidDebuffs(frame)
 		debuff.showDispellableDebuff = db.showDispellableDebuff
 		debuff.onlyMatchSpellID = db.onlyMatchSpellID
 		debuff.forceShow = frame.forceShowAuras
-		debuff.icon:SetTexCoord(unpack(E.TexCoords))
+		debuff.icon:SetTexCoords()
 		debuff:Point('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + UF.SPACING)
 		debuff:Size(db.size)
 

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 
 local MAX_TALENT_TABS = MAX_TALENT_TABS
 
@@ -30,7 +29,7 @@ function S:Blizzard_TalentUI()
 		tab:StyleButton(nil, true)
 
 		tab:GetNormalTexture():SetInside()
-		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+		tab:GetNormalTexture():SetTexCoords()
 	end
 
 	if _G.PlayerTalentFrameActivateButton then
@@ -61,7 +60,7 @@ function S:Blizzard_TalentUI()
 			talent:StyleButton()
 
 			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetDrawLayer('ARTWORK')
 
 			rank:FontTemplate(nil, 12, 'OUTLINE')

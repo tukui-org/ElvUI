@@ -213,7 +213,7 @@ function AB:TrimIcon(button, masque)
 		local left, right, top, bottom = E:CropRatio(width, height)
 		icon:SetTexCoord(left, right, top, bottom)
 	elseif not masque then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 	end
 end
 
@@ -399,7 +399,7 @@ function AB:CreateBar(id)
 		if targetReticle then
 			targetReticle:SetAllPoints()
 
-			targetReticle.Base:SetTexCoord(unpack(E.TexCoords))
+			targetReticle.Base:SetTexCoords()
 			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
 			targetReticle.Base:SetInside()
 
@@ -1091,20 +1091,20 @@ function AB:ButtonEventsRegisterFrame(added)
 end
 
 function AB:IconIntroTracker_Skin()
-	local l, r, t, b = unpack(E.TexCoords)
+	local left, right, top, bottom = E:GetTexCoords()
 	for _, iconIntro in ipairs(self.iconList) do
 		if not iconIntro.IsSkinned then
-			iconIntro.trail1.icon:SetTexCoord(l, r, t, b)
-			iconIntro.trail1.bg:SetTexCoord(l, r, t, b)
+			iconIntro.trail1.icon:SetTexCoord(left, right, top, bottom)
+			iconIntro.trail1.bg:SetTexCoord(left, right, top, bottom)
 
-			iconIntro.trail2.icon:SetTexCoord(l, r, t, b)
-			iconIntro.trail2.bg:SetTexCoord(l, r, t, b)
+			iconIntro.trail2.icon:SetTexCoord(left, right, top, bottom)
+			iconIntro.trail2.bg:SetTexCoord(left, right, top, bottom)
 
-			iconIntro.trail3.icon:SetTexCoord(l, r, t, b)
-			iconIntro.trail3.bg:SetTexCoord(l, r, t, b)
+			iconIntro.trail3.icon:SetTexCoord(left, right, top, bottom)
+			iconIntro.trail3.bg:SetTexCoord(left, right, top, bottom)
 
-			iconIntro.icon.icon:SetTexCoord(l, r, t, b)
-			iconIntro.icon.bg:SetTexCoord(l, r, t, b)
+			iconIntro.icon.icon:SetTexCoord(left, right, top, bottom)
+			iconIntro.icon.bg:SetTexCoord(left, right, top, bottom)
 
 			iconIntro.IsSkinned = true
 		end

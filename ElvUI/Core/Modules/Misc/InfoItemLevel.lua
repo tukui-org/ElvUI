@@ -40,7 +40,7 @@ local numInspectItems = #InspectItems
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
 	texture:Point('BOTTOM', x, y)
-	texture:SetTexCoord(unpack(E.TexCoords))
+	texture:SetTexCoords()
 	texture:Size(14)
 
 	local backdrop = CreateFrame('Frame', nil, slot)

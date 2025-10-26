@@ -512,7 +512,7 @@ function S:Blizzard_EncounterJournal()
 
 					sugg.icon:SetMask('')
 					sugg.icon:SetTexture(data.iconPath)
-					sugg.icon:SetTexCoord(unpack(E.TexCoords))
+					sugg.icon:SetTexCoords()
 					sugg.iconRing:Hide()
 				end
 			end
@@ -527,7 +527,7 @@ function S:Blizzard_EncounterJournal()
 
 				sugg.reward.icon:SetMask('')
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
-				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
+				sugg.reward.icon:SetTexCoords()
 
 				local quality = rewardData.itemID and GetItemQualityByID(rewardData.itemID)
 				local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)

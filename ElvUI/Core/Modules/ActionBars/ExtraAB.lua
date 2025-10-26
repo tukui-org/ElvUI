@@ -3,7 +3,6 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local pairs = pairs
-local unpack = unpack
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame
@@ -60,7 +59,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:SetTemplate()
 
 				spellButton.Icon:SetDrawLayer('ARTWORK', -1)
-				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
+				spellButton.Icon:SetTexCoords()
 				spellButton.Icon:SetInside()
 
 				spellButton.holder = ZoneAbilityHolder

@@ -118,7 +118,7 @@ function S:Blizzard_InspectUI()
 		local name = slot:GetName()
 		local icon = _G[name..'IconTexture']
 		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 			icon:SetInside()
 		end
 
@@ -166,7 +166,7 @@ function S:Blizzard_InspectUI()
 
 	InspectSpec.ring:SetTexture()
 
-	InspectSpec.specIcon:SetTexCoord(unpack(E.TexCoords))
+	InspectSpec.specIcon:SetTexCoords()
 	InspectSpec.specIcon.backdrop = CreateFrame('Frame', nil, InspectSpec)
 	InspectSpec.specIcon.backdrop:SetTemplate()
 	InspectSpec.specIcon.backdrop:SetOutside(InspectSpec.specIcon)
@@ -189,7 +189,7 @@ function S:Blizzard_InspectUI()
 			frame.tooltip = data.desc
 
 			frame.roleIcon:Size(20)
-			frame.roleIcon:SetTexCoord(unpack(E.TexCoords))
+			frame.roleIcon:SetTexCoords()
 			frame.roleName:SetTextColor(1, 1, 1)
 			frame.specIcon:SetTexture(data.icon)
 		end
@@ -206,7 +206,7 @@ function S:Blizzard_InspectUI()
 				button:GetHighlightTexture():SetInside(button.backdrop)
 
 				if button.icon then
-					button.icon:SetTexCoord(unpack(E.TexCoords))
+					button.icon:SetTexCoords()
 					button.icon:SetInside(button.backdrop)
 
 					button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
@@ -245,7 +245,7 @@ function S:Blizzard_InspectUI()
 
 			if not glyph.texture then
 				glyph.texture = glyph:CreateTexture(nil, 'OVERLAY')
-				glyph.texture:SetTexCoord(unpack(E.TexCoords))
+				glyph.texture:SetTexCoords()
 				glyph.texture:SetInside()
 
 				UpdateGlyph(glyph)
