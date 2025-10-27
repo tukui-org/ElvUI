@@ -33,6 +33,13 @@ local function UpdateCollapse(texture, atlas)
 	end
 end
 
+local function UpdateToggleCollapseButton(self)
+	local isCollapsed = self:GetHeader():IsCollapsed()
+	local tex = isCollapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	self:SetNormalTexture(tex)
+	self:SetPushedTexture(tex)
+end
+
 local function UpdateTokenSkinsChild(child)
 	if not child.IsSkinned then
 		if child.Right then
@@ -50,6 +57,12 @@ local function UpdateTokenSkinsChild(child)
 		local icon = child.Content and child.Content.CurrencyIcon
 		if icon then
 			S:HandleIcon(icon)
+		end
+
+		local ToggleCollapseButton = child.ToggleCollapseButton
+		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
+			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+			UpdateToggleCollapseButton(ToggleCollapseButton)
 		end
 
 		child.IsSkinned = true
@@ -259,6 +272,12 @@ local function UpdateFactionSkinsChild(child)
 				ReputationBar:CreateBackdrop()
 				E:RegisterStatusBar(ReputationBar)
 			end
+		end
+
+		local ToggleCollapseButton = child.ToggleCollapseButton
+		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
+			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+			UpdateToggleCollapseButton(ToggleCollapseButton)
 		end
 
 		child.IsSkinned = true
