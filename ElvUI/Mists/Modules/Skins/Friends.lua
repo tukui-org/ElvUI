@@ -2,14 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, pairs = unpack, pairs
+local next = next
 
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-local C_FriendList_GetNumWhoResults = C_FriendList.GetNumWhoResults
-local C_FriendList_GetWhoInfo = C_FriendList.GetWhoInfo
 local GetCVarBool = C_CVar.GetCVarBool
 local hooksecurefunc = hooksecurefunc
 
@@ -44,47 +41,8 @@ end
 
 local function AcquireInvitePool(pool)
 	if pool.activeObjects then
-		for object in pairs(pool.activeObjects) do
+		for object in next, pool.activeObjects do
 			SkinFriendRequest(object)
-		end
-	end
-end
-
-local function UpdateWhoList()
-	local numWhos = C_FriendList_GetNumWhoResults()
-	if numWhos == 0 then return end
-
-	if numWhos > _G.WHOS_TO_DISPLAY then
-		numWhos = _G.WHOS_TO_DISPLAY
-	end
-
-	local playerZone = E.MapInfo.realZoneText
-	for i = 1, numWhos do
-		local button = _G['WhoFrameButton'..i]
-		if button and button.whoIndex then
-			local info = C_FriendList_GetWhoInfo(button.whoIndex)
-			if info.filename then
-				local classTextColor = E:ClassColor(info.filename)
-				_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-
-				button.icon:Show()
-				button.icon:SetTexCoord(E:GetClassCoords(info.filename))
-			else
-				local classTextColor = _G.HIGHLIGHT_FONT_COLOR
-				_G['WhoFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-
-				button.icon:Hide()
-			end
-
-			local levelTextColor = GetQuestDifficultyColor(info.level)
-			_G['WhoFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
-			_G['WhoFrameButton'..i..'Class']:SetTextColor(1, 1, 1)
-
-			if info.area == playerZone then
-				_G['WhoFrameButton'..i..'Variable']:SetTextColor(0, 1, 0)
-			else
-				_G['WhoFrameButton'..i..'Variable']:SetTextColor(1, 1, 1)
-			end
 		end
 	end
 end
@@ -122,11 +80,11 @@ local ButtonsToHandle = {
 function S:FriendsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
 
-	for _, button in pairs(ButtonsToHandle) do
+	for _, button in next, ButtonsToHandle do
 		S:HandleButton(_G[button])
 	end
 
-	for _, object in pairs(StripAllTextures) do
+	for _, object in next, StripAllTextures do
 		_G[object]:StripTextures()
 	end
 
@@ -162,7 +120,7 @@ function S:FriendsFrame()
 		local button = 'FriendsFrameFriendsScrollFrameButton'..i
 		local btn = _G[button]
 
-		_G[button..'SummonButtonIcon']:SetTexCoord(unpack(E.TexCoords))
+		_G[button..'SummonButtonIcon']:SetTexCoords()
 		_G[button..'SummonButtonNormalTexture']:SetAlpha(0)
 		_G[button..'SummonButton']:StyleButton()
 		btn.highlight:SetTexture(E.Media.Textures.Highlight)

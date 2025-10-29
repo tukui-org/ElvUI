@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 
 function S:Blizzard_DeathRecap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.deathRecap) then return end
@@ -18,7 +17,7 @@ function S:Blizzard_DeathRecap()
 		local recap = DeathRecapFrame['Recap'..i].SpellInfo
 		recap:CreateBackdrop()
 		recap.backdrop:SetOutside(recap.Icon)
-		recap.Icon:SetTexCoord(unpack(E.TexCoords))
+		recap.Icon:SetTexCoords()
 		recap.Icon:SetParent(recap.backdrop)
 		recap.IconBorder:Kill()
 	end

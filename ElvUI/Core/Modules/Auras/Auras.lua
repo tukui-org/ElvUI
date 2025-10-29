@@ -4,9 +4,9 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local strmatch = strmatch
 local tonumber = tonumber
 local tinsert, next = tinsert, next
-local unpack, strmatch = unpack, strmatch
 
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
@@ -199,7 +199,7 @@ function A:UpdateTexture(button) -- self here can be the header from UpdateMasqu
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
 
 	if db.keepSizeRatio then
-		button.texture:SetTexCoord(unpack(E.TexCoords))
+		button.texture:SetTexCoords()
 	else
 		local left, right, top, bottom = E:CropRatio(width, height)
 		button.texture:SetTexCoord(left, right, top, bottom)

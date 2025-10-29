@@ -31,7 +31,7 @@ function NP:BossMods_CreateIcon(element)
 	E:RegisterCooldown(cooldown, 'nameplates')
 
 	local icon = button:CreateTexture(nil, 'ARTWORK')
-	icon:SetTexCoord(unpack(E.TexCoords))
+	icon:SetTexCoords()
 	icon:SetInside()
 
 	button.icon = icon

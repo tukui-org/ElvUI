@@ -6,7 +6,6 @@ local B = E:GetModule('Bags')
 local _G = _G
 local next = next
 local select = select
-local unpack = unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -72,11 +71,11 @@ local function SkinButton(button)
 	button.IconBorder:SetAlpha(0)
 
 	button.icon:SetInside()
-	button.icon:SetTexCoord(unpack(E.TexCoords))
+	button.icon:SetTexCoords()
 	button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
 	if button.IconQuestTexture then
-		button.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
+		button.IconQuestTexture:SetTexCoords()
 		button.IconQuestTexture:SetInside(button)
 	end
 
@@ -142,7 +141,7 @@ end
 local function BagIcon(container, texture)
 	if not container.BagIcon then
 		container.BagIcon = container.PortraitButton:CreateTexture()
-		container.BagIcon:SetTexCoord(unpack(E.TexCoords))
+		container.BagIcon:SetTexCoords()
 		container.BagIcon:SetInside()
 	end
 
@@ -234,7 +233,7 @@ local function HandleItem(button)
 	button:SetTemplate()
 
 	button.icon:SetInside()
-	button.icon:SetTexCoord(unpack(E.TexCoords))
+	button.icon:SetTexCoords()
 
 	if button.Background then
 		button.Background:Hide()
@@ -282,7 +281,7 @@ local function HandleAutoSortButton(button)
 
 	button.Icon = button:CreateTexture()
 	button.Icon:SetTexture(E.Media.Textures.PetBroom)
-	button.Icon:SetTexCoord(unpack(E.TexCoords))
+	button.Icon:SetTexCoords()
 	button.Icon:SetInside()
 end
 

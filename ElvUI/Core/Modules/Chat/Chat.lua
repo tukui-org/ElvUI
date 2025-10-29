@@ -77,6 +77,7 @@ local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
 local GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
 local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 
+local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
 
@@ -90,8 +91,11 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 
-local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
+local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a '
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
+
+local RECENTALLY_ATLAS = '|A:friendslist-recentallies-yellow:%s:%s:0:0|a '
+local RECENTALLY_SMALL = format(RECENTALLY_ATLAS, 11, 11)
 
 -- GLOBALS: ElvCharacterDB
 
@@ -1855,8 +1859,14 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and CH.db.timerunningIcon and unitGUID and IsTimerunningPlayer(unitGUID) then
-		flag = flag .. TIMERUNNING_SMALL
+	if E.Retail and unitGUID then
+		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
+			flag = flag .. TIMERUNNING_SMALL
+		end
+
+		if CH.db.recentAllyIcon and IsRecentAllyByGUID(unitGUID) then
+			flag = flag .. RECENTALLY_SMALL
+		end
 	end
 
 	return flag

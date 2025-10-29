@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local select = select
 local hooksecurefunc = hooksecurefunc
-local unpack, select = unpack, select
 
 local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
@@ -48,7 +48,7 @@ local function SkinAchievementAlert(frame)
 
 		local texture = frame.Icon.Texture
 		if texture then
-			texture:SetTexCoord(unpack(E.TexCoords))
+			texture:SetTexCoords()
 			texture:ClearAllPoints()
 			texture:Point('LEFT', frame, 7, 0)
 
@@ -91,7 +91,7 @@ local function SkinCriteriaAlert(frame)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
 
-	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon.Texture:SetTexCoords()
 end
 
 local function SkinDungeonCompletionAlert(frame)
@@ -126,7 +126,7 @@ local function SkinDungeonCompletionAlert(frame)
 	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
 
 	-- Icon
-	frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
+	frame.dungeonTexture:SetTexCoords()
 	frame.dungeonTexture:SetDrawLayer('OVERLAY')
 	frame.dungeonTexture:ClearAllPoints()
 	frame.dungeonTexture:Point('LEFT', frame, 7, 0)
@@ -226,7 +226,7 @@ local function SkinInvasionAlert(frame)
 					icon.b:SetOutside(icon)
 					icon:SetParent(icon.b)
 					icon:SetDrawLayer('OVERLAY')
-					icon:SetTexCoord(unpack(E.TexCoords))
+					icon:SetTexCoords()
 				end
 			end
 		end
@@ -290,7 +290,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.ToastBackground:Kill()
 
 		--Icon
-		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
+		frame.QuestTexture:SetTexCoords()
 		frame.QuestTexture:SetDrawLayer('ARTWORK')
 		frame.QuestTexture.b = CreateFrame('Frame', nil, frame)
 		frame.QuestTexture.b:SetTemplate()
@@ -378,7 +378,7 @@ local function SkinGarrisonTalentAlert(frame)
 		frame.shine:Kill()
 
 		--Icon
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon:SetTexCoords()
 		frame.Icon:SetDrawLayer('ARTWORK')
 		frame.Icon.b = CreateFrame('Frame', nil, frame)
 		frame.Icon.b:SetTemplate()
@@ -425,7 +425,7 @@ local function SkinGarrisonMissionAlert(frame)
 		frame.Background:Kill()
 
 		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+		frame.MissionType:SetTexCoords()
 		frame.MissionType:SetDrawLayer('ARTWORK')
 		frame.MissionType.b = CreateFrame('Frame', nil, frame)
 		frame.MissionType.b:SetTemplate()
@@ -448,7 +448,7 @@ local function SkinGarrisonShipMissionAlert(frame)
 		frame.shine:Kill()
 
 		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+		frame.MissionType:SetTexCoords()
 		frame.MissionType:SetDrawLayer('ARTWORK')
 		frame.MissionType.b = CreateFrame('Frame', nil, frame)
 		frame.MissionType.b:SetTemplate()
@@ -473,7 +473,7 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.shine:Kill()
 
 		--Icon
-		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
+		frame.MissionType:SetTexCoords()
 		frame.MissionType:SetDrawLayer('ARTWORK')
 		frame.MissionType.b = CreateFrame('Frame', nil, frame)
 		frame.MissionType.b:SetTemplate()
@@ -508,7 +508,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.shine:Kill()
 
 		--Icon
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon:SetTexCoords()
 		frame.Icon:SetDrawLayer('ARTWORK')
 		frame.Icon.b = CreateFrame('Frame', nil, frame)
 		frame.Icon.b:SetTemplate()
@@ -755,7 +755,7 @@ local function SkinMiscAlerts(frame)
 	frame.IconBorder:Kill()
 
 	frame.Icon:SetMask('')
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon:SetTexCoords()
 	frame.Icon:SetDrawLayer('BORDER', 5)
 
 	-- Icon border

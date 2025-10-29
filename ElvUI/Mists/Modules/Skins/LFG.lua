@@ -41,7 +41,7 @@ local function HandleGoldIcon(button)
 	Button.backdrop:Point('LEFT', 1, 0)
 	Button.backdrop:Size(42)
 
-	iconTexture:SetTexCoord(unpack(E.TexCoords))
+	iconTexture:SetTexCoords()
 	iconTexture:SetDrawLayer('OVERLAY')
 	iconTexture:SetParent(Button.backdrop)
 	iconTexture:SetInside()
@@ -62,7 +62,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item.backdrop:Point('LEFT', 1, 0)
 		item.backdrop:Size(42)
 
-		item.Icon:SetTexCoord(unpack(E.TexCoords))
+		item.Icon:SetTexCoords()
 		item.Icon:SetDrawLayer('OVERLAY')
 		item.Icon:SetParent(item.backdrop)
 		item.Icon:SetInside()
@@ -552,7 +552,7 @@ function S:LookingForGroupFrames()
 			if not button.IsSkinned then
 				button:SetTemplate()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
-				button.Icon:SetTexCoord(unpack(E.TexCoords))
+				button.Icon:SetTexCoords()
 				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
@@ -630,7 +630,7 @@ function S:Blizzard_ChallengesUI()
 
 			button:CreateBackdrop()
 
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
+			button.Icon:SetTexCoords()
 		end
 	end
 end

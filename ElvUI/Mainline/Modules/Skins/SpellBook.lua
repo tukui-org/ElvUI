@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local select = select
 local hooksecurefunc = hooksecurefunc
 
 local GetProfessionInfo = GetProfessionInfo
@@ -19,9 +18,10 @@ end
 local function FormatProfessionHook(frame, id)
 	if not (id and frame and frame.icon) then return end
 
-	-- Some Texture Magic
-	local texture = select(2, GetProfessionInfo(id))
-	if texture then frame.icon:SetTexture(texture) end
+	local _, texture = GetProfessionInfo(id)
+	if texture then
+		frame.icon:SetTexture(texture)
+	end
 end
 
 local function ProfessionButtonUpdate(button)

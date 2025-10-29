@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -16,7 +15,7 @@ end
 local function AbilityTooltip(frame)
 	if not frame then return end
 
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon:SetTexCoords()
 	S:HandleIcon(frame.Icon, true)
 	TT:SetStyle(frame)
 end
@@ -76,7 +75,7 @@ function S:GarrisonTooltip()
 		local ability = abilities[numAbilitiesStyled]
 		while ability do
 			local icon = ability.Icon
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 
 			if not ability.border then
 				ability.border = CreateFrame('Frame', nil, ability)
@@ -98,7 +97,7 @@ function S:GarrisonTooltip()
 		local trait = traits[numTraitsStyled]
 		while trait do
 			local icon = trait.Icon
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 
 			if not trait.border then
 				trait.border = CreateFrame('Frame', nil, trait)
@@ -120,7 +119,7 @@ function S:GarrisonTooltip()
 		local properties = tooltipFrame.Properties
 		local property = properties[numPropertiesStyled]
 		while property do
-			property.Icon:SetTexCoord(unpack(E.TexCoords))
+			property.Icon:SetTexCoords()
 
 			if not property.border then
 				property.border = CreateFrame('Frame', nil, property)

@@ -4,7 +4,6 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
-local unpack = unpack
 
 local GetLootSlotInfo = GetLootSlotInfo
 local hooksecurefunc = hooksecurefunc
@@ -27,7 +26,7 @@ local function UpdateLoots()
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetTexCoords()
 
 			-- create a backdrop around the icon
 			frame:CreateBackdrop()
@@ -90,7 +89,7 @@ function S:LootFrame()
 
 			item:StripTextures()
 			icon:SetTexture(texture)
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 
 			if not item.backdrop then
 				item:CreateBackdrop()

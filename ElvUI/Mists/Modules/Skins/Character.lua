@@ -175,7 +175,7 @@ local function UpdateCurrencySkins()
 			if button.itemID == HONOR_CURRENCY and E.myfaction then
 				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 			else
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:SetTexCoords()
 			end
 
 			button.icon:Size(17)
@@ -249,7 +249,7 @@ local function EquipmentDisplayButton(button)
 		button:StyleButton()
 
 		button.icon:SetInside()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetTexCoords()
 
 		button.isHooked = true
 	end
@@ -370,7 +370,9 @@ function S:CharacterFrame()
 	end
 
 	-- Re-add the overlay texture which was removed right above via StripTextures
-	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
+	_G.CharacterModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
+	_G.CharacterModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
+
 	_G.CharacterModelScene:CreateBackdrop()
 	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)

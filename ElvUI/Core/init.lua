@@ -176,10 +176,6 @@ do
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 
-	if E.Classic then
-		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
-	end
-
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
 	E.UnitFrames.LSM = E.Libs.LSM

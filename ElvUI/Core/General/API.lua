@@ -3,7 +3,6 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
-local LCS = E.Libs.LCS
 local ElvUF = E.oUF
 
 local _G = _G
@@ -56,8 +55,8 @@ local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataFor
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local UnpackAuraData = AuraUtil.UnpackAuraData
 
-local GetSpecialization = (LCS and LCS.GetSpecialization) or C_SpecializationInfo.GetSpecialization or GetSpecialization
-local GetSpecializationInfo = (LCS and LCS.GetSpecializationInfo) or C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
@@ -694,47 +693,6 @@ do
 end
 
 do
-	local function SetOriginalHeight(f)
-		if InCombatLockdown() then
-			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
-			return
-		end
-
-		E.UIParent:SetHeight(E.UIParent.origHeight)
-
-		if f == SetOriginalHeight then
-			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetOriginalHeight, SetOriginalHeight)
-		end
-	end
-
-	local function SetModifiedHeight(f)
-		if InCombatLockdown() then
-			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
-			return
-		end
-
-		E.UIParent:SetHeight(E.UIParent.origHeight - (_G.OrderHallCommandBar:GetHeight() + E.Border))
-
-		if f == SetModifiedHeight then
-			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', SetModifiedHeight, SetModifiedHeight)
-		end
-	end
-
-	--This function handles disabling of OrderHall Bar or resizing of ElvUIParent if needed
-	function E:HandleCommandBar()
-		if E.global.general.commandBarSetting == 'DISABLED' then
-			_G.OrderHallCommandBar:UnregisterAllEvents()
-			_G.OrderHallCommandBar:SetScript('OnShow', _G.OrderHallCommandBar.Hide)
-			_G.OrderHallCommandBar:Hide()
-			UIParent:UnregisterEvent('UNIT_AURA') --Only used for OrderHall Bar
-		elseif E.global.general.commandBarSetting == 'ENABLED_RESIZEPARENT' then
-			_G.OrderHallCommandBar:HookScript('OnShow', SetModifiedHeight)
-			_G.OrderHallCommandBar:HookScript('OnHide', SetOriginalHeight)
-		end
-	end
-end
-
-do
 	local Masque = E.Libs.Masque
 	local MasqueGroupState = {}
 	local MasqueGroupToTableElement = {
@@ -1052,10 +1010,17 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
-local gameMenuLastButtons = {
-	[_G.GAMEMENU_OPTIONS] = 1,
-	[_G.BLIZZARD_STORE] = 2
-}
+local gameMenuLastButtons = {}
+if _G.GAMEMENU_EXTERNALEVENT then
+	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 3 or 2
+	gameMenuLastButtons[_G.GAMEMENU_EXTERNALEVENT] = 1
+	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 2
+	gameMenuLastButtons[_G.BLIZZARD_STORE] = 3
+else
+	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 2 or 1
+	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 1
+	gameMenuLastButtons[_G.BLIZZARD_STORE] = 2
+end
 
 function E:PositionGameMenuButton()
 	if E.Retail then
@@ -1063,14 +1028,13 @@ function E:PositionGameMenuButton()
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
-		local anchorIndex = (StoreEnabled and StoreEnabled() and 2) or 1
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
 			GameMenuFrame.MenuButtons[text] = button -- export these
 
 			local lastIndex = gameMenuLastButtons[text]
-			if lastIndex == anchorIndex and GameMenuFrame.ElvUI then
+			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
 			elseif not lastIndex then
 				button:NudgePoint(nil, -35)
@@ -1178,7 +1142,7 @@ end
 function E:CropRatio(width, height, mult)
 	if not mult then mult = 0.5 end
 
-	local left, right, top, bottom = unpack(E.TexCoords)
+	local left, right, top, bottom = E:GetTexCoords()
 
 	local ratio = width / height
 	if ratio > 1 then
@@ -1326,6 +1290,7 @@ function E:LoadAPI()
 
 	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
+	E:UpdateTexCoords() -- update cropIcon texCoords
 
 	if E.Retail or E.Mists then
 		E:PopulateSpecInfo()
@@ -1358,37 +1323,5 @@ function E:LoadAPI()
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
-	end
-
-	do -- setup cropIcon texCoords
-		local opt = E.db.general.cropIcon
-		local modifier = 0.04 * opt
-		for i, v in ipairs(E.TexCoords) do
-			if i % 2 == 0 then
-				E.TexCoords[i] = v - modifier
-			else
-				E.TexCoords[i] = v + modifier
-			end
-		end
-	end
-
-	if _G.OrderHallCommandBar then
-		E:HandleCommandBar()
-	elseif E.Retail then
-		local frame = CreateFrame('Frame')
-		frame:RegisterEvent('ADDON_LOADED')
-		frame:SetScript('OnEvent', function(Frame, event, addon)
-			if event == 'ADDON_LOADED' and addon == 'Blizzard_OrderHallUI' then
-				if InCombatLockdown() then
-					Frame:RegisterEvent('PLAYER_REGEN_ENABLED')
-				else
-					E:HandleCommandBar()
-				end
-				Frame:UnregisterEvent(event)
-			elseif event == 'PLAYER_REGEN_ENABLED' then
-				E:HandleCommandBar()
-				Frame:UnregisterEvent(event)
-			end
-		end)
 	end
 end

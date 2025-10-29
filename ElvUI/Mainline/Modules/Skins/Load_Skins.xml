@@ -18,6 +18,7 @@
 	<Script file='Binding.lua'/>
 	<Script file='BlackMarket.lua'/>
 	<Script file='Calendar.lua'/>
+	<Script file='CatalogShop.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
 	<Script file='ChatConfig.lua'/>

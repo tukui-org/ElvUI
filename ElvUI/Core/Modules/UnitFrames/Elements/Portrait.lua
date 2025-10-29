@@ -146,7 +146,7 @@ function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
 			local left, right, top, bottom = unpack(texCoords)
 			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
 		else
-			self:SetTexCoord(unpack(E.TexCoords))
+			self:SetTexCoords()
 		end
 	end
 end

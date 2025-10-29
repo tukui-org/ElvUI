@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TrainerUI()
@@ -38,7 +37,7 @@ function S:Blizzard_TrainerUI()
 		local skillIcon = _G.ClassTrainerSkillIcon:GetNormalTexture()
 		if skillIcon then
 			skillIcon:SetInside()
-			skillIcon:SetTexCoord(unpack(E.TexCoords))
+			skillIcon:SetTexCoords()
 
 			_G.ClassTrainerSkillIcon:SetTemplate()
 		end

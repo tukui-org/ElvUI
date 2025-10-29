@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 local CreateFrame = CreateFrame
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
@@ -63,7 +63,7 @@ function S:Blizzard_GuildBankUI()
 		button:StyleButton(true)
 		button:SetTemplate(nil, true)
 		icon:SetTexture(texture)
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:SetInside()
 	end
 
@@ -78,7 +78,7 @@ function S:Blizzard_GuildBankUI()
 			button:SetTemplate('Transparent')
 
 			button.icon:SetInside()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+			button.icon:SetTexCoords()
 
 			S:HandleIconBorder(button.IconBorder)
 		end

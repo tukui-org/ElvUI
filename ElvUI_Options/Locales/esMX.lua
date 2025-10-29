@@ -223,6 +223,7 @@ L["Bind on Equip/Use Text"] = true
 L["BINDING_HEADER_RAID_TARGET"] = "Marcador de objetivo"
 L["BINDING_HEADER_VOICE_CHAT"] = "Chat de voz"
 L["BLACK_MARKET_AUCTION_HOUSE"] = "Casa de subastas del mercado negro"
+L["BLIZZARD_STORE"] = "Tienda"
 L["Blacklist"] = "Lista Negra"
 L["Blank Texture"] = "Textura en Blanco"
 L["Blend Mode"] = "Modo de Mezcla"

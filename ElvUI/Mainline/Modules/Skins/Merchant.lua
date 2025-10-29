@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
@@ -117,7 +116,7 @@ function S:MerchantFrame()
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
 		local icon = button.icon
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:ClearAllPoints()
 		icon:Point('TOPLEFT', 1, -1)
 		icon:Point('BOTTOMRIGHT', -1, 1)
@@ -149,7 +148,7 @@ function S:MerchantFrame()
 
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoords()
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)

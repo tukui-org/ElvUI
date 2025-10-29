@@ -23,7 +23,7 @@ local function PetButtons(btn, p)
 	end
 
 	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:ClearAllPoints()
 		icon:Point('TOPLEFT', p, -p)
 		icon:Point('BOTTOMRIGHT', -p, p)
@@ -43,7 +43,7 @@ function S:PetStableFrame()
 	_G.PetStableBottomInset:Hide()
 	_G.PetStableFrameModelBg:Hide()
 	_G.PetStableDietTexture:SetTexture(132165)
-	_G.PetStableDietTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.PetStableDietTexture:SetTexCoords()
 	_G.PetStableFrameInset:SetTemplate('Transparent')
 
 	S:HandleModelSceneControlButtons(_G.PetStableModelScene.ControlFrame)
@@ -53,7 +53,7 @@ function S:PetStableFrame()
 	local p = E.PixelMode and 1 or 2
 	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
 	if PetStableSelectedPetIcon then
-		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
+		PetStableSelectedPetIcon:SetTexCoords()
 
 		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
 		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)

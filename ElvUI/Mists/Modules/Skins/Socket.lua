@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local format = format
-local unpack = unpack
 
 local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
@@ -32,7 +31,7 @@ function S:Blizzard_ItemSocketingUI()
 		button:CreateBackdrop(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
-		button_icon:SetTexCoord(unpack(E.TexCoords))
+		button_icon:SetTexCoords()
 		button_icon:SetInside()
 	end
 

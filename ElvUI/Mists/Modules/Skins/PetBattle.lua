@@ -22,7 +22,7 @@ local function SkinPetButton(self, bf)
 	end
 
 	self:SetNormalTexture(E.ClearTexture)
-	self.Icon:SetTexCoord(unpack(E.TexCoords))
+	self.Icon:SetTexCoords()
 	self.Icon:SetParent(self.backdrop)
 	self.Icon:SetDrawLayer('BORDER')
 	self:StyleButton(nil, nil, true)
@@ -182,7 +182,7 @@ function S:PetBattleFrame()
 				if not frame.backdrop then
 					frame:CreateBackdrop()
 					frame.backdrop:SetOutside(frame.Icon)
-					frame.Icon:SetTexCoord(unpack(E.TexCoords))
+					frame.Icon:SetTexCoords()
 					frame.Icon:SetParent(frame.backdrop)
 				end
 
@@ -223,7 +223,7 @@ function S:PetBattleFrame()
 	end)
 
 	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(frame)
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon:SetTexCoords()
 
 		if frame.petOwner and frame.petIndex and (frame.Icon.backdrop and frame.Icon.backdrop:IsShown()) then
 			local quality = C_PetBattles_GetBreedQuality(frame.petOwner, frame.petIndex)

@@ -33,7 +33,7 @@ local function SkinAch(Achievement, BiggerIcon)
 	Achievement.icon:Point('TOPLEFT', 8, -8)
 	Achievement.icon.bling:Kill()
 	Achievement.icon.frame:Kill()
-	Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
+	Achievement.icon.texture:SetTexCoords()
 	Achievement.icon.texture:SetInside()
 
 	if Achievement.highlight then

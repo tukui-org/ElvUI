@@ -37,14 +37,14 @@ local function GlyphFrame_Update()
 	local talentFrame = _G.PlayerTalentFrame
 	local talentGroup = talentFrame and talentFrame.talentGroup
 	if talentGroup then
-		local l, r, t, b = unpack(E.TexCoords)
+		local left, right, top, bottom = E:GetTexCoords()
 		for i = 1, _G.NUM_GLYPH_SLOTS do
 			local glyph = _G['GlyphFrameGlyph'..i]
 			if glyph and glyph.icon then
 				local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
 				if iconFilename then
 					glyph.icon:SetTexture(iconFilename)
-					glyph.icon:SetTexCoord(l, r, t, b)
+					glyph.icon:SetTexCoord(left, right, top, bottom)
 				else
 					glyph.icon:SetTexture([[Interface\Spellbook\UI-Glyph-Rune-]]..i)
 					glyph.icon:SetTexCoord(0, 1, 0, 1)
@@ -168,7 +168,7 @@ local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
 
 				if not frame.backdrop then
 					frame.ring:Hide()
-					frame.icon:SetTexCoord(unpack(E.TexCoords))
+					frame.icon:SetTexCoords()
 					frame.icon:SetInside(frame, 8, 8)
 
 					frame:CreateBackdrop()
@@ -377,7 +377,7 @@ function S:Blizzard_TalentUI()
 
 			local normal = tab:GetNormalTexture()
 			normal:SetInside()
-			normal:SetTexCoord(unpack(E.TexCoords))
+			normal:SetTexCoords()
 		end
 	end
 
@@ -498,7 +498,7 @@ function S:Blizzard_GlyphUI()
 	GlyphFrame.clearInfo:ClearAllPoints()
 	GlyphFrame.clearInfo:Point('BOTTOMLEFT', GlyphFrame, 'BOTTOMLEFT', 4, -25)
 
-	GlyphFrame.clearInfo.icon:SetTexCoord(unpack(E.TexCoords))
+	GlyphFrame.clearInfo.icon:SetTexCoords()
 	GlyphFrame.clearInfo.icon:ClearAllPoints()
 	GlyphFrame.clearInfo.icon:SetInside()
 end

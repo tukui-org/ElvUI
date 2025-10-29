@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 local StripAllTextures = {
@@ -71,13 +71,13 @@ function S:Blizzard_RaidUI()
 
 			if index == 11 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			elseif index == 12 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			elseif index == 13 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			end
 
 			count:FontTemplate(nil, 12, 'OUTLINE')

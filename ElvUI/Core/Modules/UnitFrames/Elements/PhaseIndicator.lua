@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local PhaseReason = Enum.PhaseReason
+local PhaseReason = Enum.PhaseReason or { Phasing = 0, Sharding = 1, WarMode = 2, ChromieTime = 3, TimerunningHwt = 4 }
 
 function UF:PostUpdate_PhaseIcon(hidden, phaseReason)
 	if phaseReason == PhaseReason.TimerunningHwt then -- timerunning world tier

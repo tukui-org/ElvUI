@@ -335,7 +335,7 @@ function S:BlizzardQuestFrames()
 	QuestInfoSkillPointFrame:OffsetFrameLevel(2)
 
 	local QuestInfoSkillPointFrameIconTexture = _G.QuestInfoSkillPointFrameIconTexture
-	QuestInfoSkillPointFrameIconTexture:SetTexCoord(unpack(E.TexCoords))
+	QuestInfoSkillPointFrameIconTexture:SetTexCoords()
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer('OVERLAY')
 	QuestInfoSkillPointFrameIconTexture:Point('TOPLEFT', 2, -2)
 	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
@@ -363,7 +363,7 @@ function S:BlizzardQuestFrames()
 	QuestInfoPlayerTitleFrame.FrameLeft:SetTexture()
 	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture()
 	QuestInfoPlayerTitleFrame.FrameRight:SetTexture()
-	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	QuestInfoPlayerTitleFrame.Icon:SetTexCoords()
 
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
@@ -441,7 +441,7 @@ function S:BlizzardQuestFrames()
 	for i = 1, 6 do
 		local button = _G['QuestProgressItem'..i]
 		local icon = _G['QuestProgressItem'..i..'IconTexture']
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:Point('TOPLEFT', 2, -2)
 		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
 		button:Width(button:GetWidth() -4)
