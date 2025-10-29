@@ -33,11 +33,13 @@ local function UpdateCollapse(texture, atlas)
 	end
 end
 
-local function UpdateToggleCollapseButton(self)
-	local isCollapsed = self:GetHeader():IsCollapsed()
-	local tex = isCollapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
-	self:SetNormalTexture(tex)
-	self:SetPushedTexture(tex)
+local function UpdateToggleCollapseButton(button)
+	local header = button.GetHeader and button:GetHeader()
+	if not header then return end
+
+	local tex = header:IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	button:SetNormalTexture(tex)
+	button:SetPushedTexture(tex)
 end
 
 local function UpdateTokenSkinsChild(child)
@@ -62,6 +64,7 @@ local function UpdateTokenSkinsChild(child)
 		local ToggleCollapseButton = child.ToggleCollapseButton
 		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
 			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+
 			UpdateToggleCollapseButton(ToggleCollapseButton)
 		end
 
@@ -277,6 +280,7 @@ local function UpdateFactionSkinsChild(child)
 		local ToggleCollapseButton = child.ToggleCollapseButton
 		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
 			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+
 			UpdateToggleCollapseButton(ToggleCollapseButton)
 		end
 
@@ -476,20 +480,26 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Currency Transfer (new in 11.0)
 	local currencyTransfer = _G.CurrencyTransferMenu
-	currencyTransfer:StripTextures()
-	currencyTransfer:SetTemplate('Transparent')
-	S:HandleCloseButton(currencyTransfer.CloseButton)
-	S:HandleDropDownBox(currencyTransfer.Content.SourceSelector.Dropdown)
-	S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
-	S:HandleButton(currencyTransfer.Content.ConfirmButton)
-	S:HandleButton(currencyTransfer.Content.CancelButton)
-	S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
-	S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
-	local InputBox = currencyTransfer.Content.AmountSelector.InputBox
-	S:HandleEditBox(InputBox)
-	InputBox.backdrop:ClearAllPoints()
-	InputBox.backdrop:Point('TOPLEFT', 0, -3)
-	InputBox.backdrop:Point('BOTTOMRIGHT', -1, 8)
+	if currencyTransfer then
+		currencyTransfer:StripTextures()
+		currencyTransfer:SetTemplate('Transparent')
+
+		S:HandleCloseButton(currencyTransfer.CloseButton)
+		S:HandleDropDownBox(currencyTransfer.Content.SourceSelector.Dropdown)
+		S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
+		S:HandleButton(currencyTransfer.Content.ConfirmButton)
+		S:HandleButton(currencyTransfer.Content.CancelButton)
+		S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
+		S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
+
+		local transferInputBox = currencyTransfer.Content.AmountSelector.InputBox
+		if transferInputBox then
+			S:HandleEditBox(transferInputBox)
+			transferInputBox.backdrop:ClearAllPoints()
+			transferInputBox.backdrop:Point('TOPLEFT', 0, -3)
+			transferInputBox.backdrop:Point('BOTTOMRIGHT', -1, 8)
+		end
+	end
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
