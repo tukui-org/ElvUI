@@ -2115,7 +2115,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return
 		end
 
-		if ChatFrameUtil and ChatFrameUtil.GetMessageEventFilters then
+		if ChatFrameUtil and ChatFrameUtil.ProcessMessageEventFilters then
 			local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = ChatFrameUtil.ProcessMessageEventFilters(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 			if filtered then
 				return true
