@@ -1790,9 +1790,9 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local name = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
 	-- handle the class color
+	local ShouldColorChatByClass = ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass or _G.Chat_ShouldColorChatByClass
 	local info = name and arg12 and _G.ChatTypeInfo[chatType]
-	local v = E.Midnight and ChatFrameUtil.ShouldColorChatByClass(info) or _G.Chat_ShouldColorChatByClass(info)
-	if info and v then
+	if info and ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local color = data and data.classColor
 		if color then
@@ -2115,7 +2115,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return
 		end
 
-		local chatFilters = E.Midnight and ChatFrameUtil.GetMessageEventFilters(event) or _G.ChatFrame_GetMessageEventFilters(event)
+		local GetMessageEventFilters = ChatFrameUtil and ChatFrameUtil.GetMessageEventFilters or _G.ChatFrame_GetMessageEventFilters
+		local chatFilters = GetMessageEventFilters(event)
 		if chatFilters then
 			for _, filterFunc in next, chatFilters do
 				local filter, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
@@ -2170,7 +2171,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		local chatGroup = E.Midnight and ChatFrameUtil.GetChatCategory(chatType) or _G.Chat_GetChatCategory(chatType)
+		local GetChatCategory = GetChatCategory and ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
+
+		local chatGroup = GetChatCategory(chatType)
 		local chatTarget = CH:FCFManager_GetChatTarget(chatGroup, arg2, arg8)
 
 		if _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
@@ -2356,7 +2359,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- The message formatter is captured so that the original message can be reformatted when a censored message
 			-- is approved to be shown. We only need to pack the event args if the line was censored, as the message transformation
 			-- step is the only code that needs these arguments. See ItemRef.lua "censoredmessage".
-			local isChatLineCensored, eventArgs, msgFormatter = IsChatLineCensored
+			local isChatLineCensored, eventArgs, msgFormatter = IsChatLineCensored and IsChatLineCensored(arg11) -- arg11: lineID
 			if isChatLineCensored then
 				eventArgs = _G.SafePack(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 				msgFormatter = function(msg) -- to translate the message on click [Show Message]
@@ -2400,13 +2403,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 	end
 end
 
-local ConfigEventHandler = E.Midnight and ChatFrameMixin.ConfigEventHandler or ConfigEventHandler
 function CH:ChatFrame_ConfigEventHandler(...)
+	local ConfigEventHandler = ChatFrameMixin and ChatFrameMixin.ConfigEventHandler or ConfigEventHandler
 	return ConfigEventHandler(...)
 end
 
-local SystemEventHandler = E.Midnight and ChatFrameMixin.SystemEventHandler or SystemEventHandler
 function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
+	local SystemEventHandler = ChatFrameMixin and ChatFrameMixin.SystemEventHandler or SystemEventHandler
 	return SystemEventHandler(frame, event, message, ...)
 end
 
@@ -2418,7 +2421,7 @@ function CH:ChatFrame_OnEvent(frame, event, ...)
 end
 
 function CH:FloatingChatFrame_OnEvent(...)
-	if E.Midnight then
+	if ChatFrameMixin and ChatFrameMixin.OnEvent then
 		ChatFrameMixin.OnEvent(...)
 	else
 		CH:ChatFrame_OnEvent(...)

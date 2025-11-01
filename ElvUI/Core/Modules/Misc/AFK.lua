@@ -25,7 +25,7 @@ local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
-local Chat_GetChatCategory = E.Midnight and ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
+local Chat_GetChatCategory = ChatFrameUtil and ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 
