@@ -391,7 +391,7 @@ function AB:CreateBar(id)
 		button.AuraCooldown.targetAura = true
 		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
-		if E.Retail then
+		if E.Retail and not E.Midnight then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
 		end
 

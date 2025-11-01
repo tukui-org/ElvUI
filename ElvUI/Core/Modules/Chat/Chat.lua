@@ -2115,15 +2115,23 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return
 		end
 
-		local GetMessageEventFilters = ChatFrameUtil and ChatFrameUtil.GetMessageEventFilters or _G.ChatFrame_GetMessageEventFilters
-		local chatFilters = GetMessageEventFilters(event)
-		if chatFilters then
-			for _, filterFunc in next, chatFilters do
-				local filter, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-				if filter then
-					return true
-				elseif new1 then
-					arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
+		if ChatFrameUtil and ChatFrameUtil.GetMessageEventFilters then
+			local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = ChatFrameUtil.ProcessMessageEventFilters(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+			if filtered then
+				return true
+			else
+				arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
+			end
+		else
+			local chatFilters = _G.ChatFrame_GetMessageEventFilters(event)
+			if chatFilters then
+				for _, filterFunc in next, chatFilters do
+					local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+					if filtered then
+						return true
+					elseif new1 then
+						arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
+					end
 				end
 			end
 		end
@@ -2362,6 +2370,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local isChatLineCensored, eventArgs, msgFormatter = IsChatLineCensored and IsChatLineCensored(arg11) -- arg11: lineID
 			if isChatLineCensored then
 				eventArgs = _G.SafePack(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+
 				msgFormatter = function(msg) -- to translate the message on click [Show Message]
 					local body = CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, msg, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 					return CH:AddMessageEdits(frame, body, isHistory, historyTime)
@@ -2408,23 +2417,23 @@ function CH:ChatFrame_ConfigEventHandler(...)
 	return ConfigEventHandler(...)
 end
 
-function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
+function CH:ChatFrame_SystemEventHandler(...)
 	local SystemEventHandler = ChatFrameMixin and ChatFrameMixin.SystemEventHandler or SystemEventHandler
-	return SystemEventHandler(frame, event, message, ...)
+	return SystemEventHandler(...)
 end
 
-function CH:ChatFrame_OnEvent(frame, event, ...)
-	if frame.customEventHandler and frame.customEventHandler(frame, event, ...) then return end
-	if CH:ChatFrame_ConfigEventHandler(frame, event, ...) then return end
-	if CH:ChatFrame_SystemEventHandler(frame, event, ...) then return end
-	if CH:ChatFrame_MessageEventHandler(frame, event, ...) then return end
+function CH:ChatFrame_OnEvent(frame, ...)
+	if frame.customEventHandler and frame:customEventHandler(...) then return end
+
+	if CH:ChatFrame_ConfigEventHandler(frame, ...) then return end
+	if CH:ChatFrame_SystemEventHandler(frame, ...) then return end
+	if CH:ChatFrame_MessageEventHandler(frame, ...) then return end
 end
 
 function CH:FloatingChatFrame_OnEvent(...)
-	if ChatFrameMixin and ChatFrameMixin.OnEvent then
-		ChatFrameMixin.OnEvent(...)
-	else
-		CH:ChatFrame_OnEvent(...)
+	CH:ChatFrame_OnEvent(...)
+
+	if _G.FloatingChatFrame_OnEvent then
 		_G.FloatingChatFrame_OnEvent(...)
 	end
 end
@@ -3860,7 +3869,6 @@ function CH:Initialize()
 
 	CH:SecureHook('ChatEdit_ActivateChat')
 	CH:SecureHook('ChatEdit_DeactivateChat')
-	CH:SecureHook('ChatEdit_OnEnterPressed')
 	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
@@ -3874,11 +3882,15 @@ function CH:Initialize()
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
-	CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
-	CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
 	CH:SecureHook('FCFDockOverflowButton_UpdatePulseState')
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
+
+	if not E.Midnight then
+		CH:SecureHook('ChatEdit_OnEnterPressed')
+		CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
+		CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
+	end
 
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
