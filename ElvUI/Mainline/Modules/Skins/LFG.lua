@@ -415,6 +415,11 @@ function S:LookingForGroupFrames()
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 
+	local NothingAvailable = LFGListFrame.NothingAvailable
+	if NothingAvailable then
+		NothingAvailable.Inset:StripTextures()
+	end
+
 	local EntryCreation = LFGListFrame.EntryCreation
 	EntryCreation.Inset:StripTextures()
 	S:HandleButton(EntryCreation.CancelButton)
