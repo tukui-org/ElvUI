@@ -236,6 +236,17 @@ function S:WorldMapFrame()
 		end
 	end
 
+	local CampaignOverview = QuestMapFrame.QuestsFrame and QuestMapFrame.QuestsFrame.CampaignOverview
+	if CampaignOverview then
+		S:HandleTrimScrollBar(CampaignOverview.ScrollFrame.ScrollBar)
+		CampaignOverview.BorderFrame:SetAlpha(0)
+
+		if E.private.skins.parchmentRemoverEnable then
+			CampaignOverview:StripTextures()
+			CampaignOverview:SetTemplate('Transparent')
+		end
+	end
+
 	local QuestScrollFrame = _G.QuestScrollFrame
 	QuestScrollFrame:SetTemplate('Transparent')
 
