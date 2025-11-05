@@ -212,10 +212,8 @@ function DT:BuildPanelFrame(name, fromInit)
 	end
 end
 
-function DT:BuildPanelFunctions(name, obj)
-	local panel, hex
-
-	local function OnEnter(dt)
+function DT:Panel_OnEnter(_, obj)
+	return function(dt)
 		if obj.tooltip then
 			obj.tooltip:ClearAllPoints()
 			obj.tooltip:SetOwner(DT:SetupTooltip(dt))
@@ -232,68 +230,99 @@ function DT:BuildPanelFunctions(name, obj)
 			DT.tooltip:Show()
 		end
 	end
+end
 
-	local function OnLeave(dt)
+function DT:Panel_OnLeave(_, obj)
+	return function(dt)
 		if obj.tooltip then
 			obj.tooltip:Hide()
 		elseif obj.OnLeave then
 			obj.OnLeave(dt)
 		end
 	end
+end
 
-	local function OnClick(dt, button)
+function DT:Panel_OnClick(_, obj)
+	return function(dt, button)
 		if obj.OnClick then
 			obj.OnClick(dt, button)
 		end
 	end
+end
 
-	local function UpdateText(_, _, _, _, data)
-		local db = E.global.datatexts.settings['LDB_'..name]
-		local icon = db.icon and data.icon
-		local label = db.label and data.label
-		local value = db.text and data.text
+do
+	local panel, hex
+	function DT:Panel_UpdateText(name)
+		return function(_, _, _, _, data)
+			local db = E.global.datatexts.settings['LDB_'..name]
+			local icon = db.icon and data.icon
+			local label = db.label and data.label
+			local value = db.text and data.text
+			local str = ''
 
-		local str = ''
+			if label then
+				str = (db.customLabel ~= '' and db.customLabel) or label
+			end
 
-		if label then
-			str = (db.customLabel ~= '' and db.customLabel) or label
-		end
+			if value then
+				local color = (db.useValueColor and hex) or '|cFFFFFFFF'
+				str = str .. (label and ': ' or '') .. (color .. value .. '|r')
+			end
 
-		if value then
-			local color = (db.useValueColor and hex) or '|cFFFFFFFF'
-			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
-		end
+			if panel then
+				if panel.icon then
+					local left, right, top, bottom
+					if data.iconCoords then
+						left, right, top, bottom = unpack(data.iconCoords)
+					else
+						left, right, top, bottom = E:GetTexCoords()
+					end
 
-		panel.text:SetText(str)
+					panel.icon:SetTexture(icon)
+					panel.icon:SetTexCoord(left, right, top, bottom)
+					panel.icon:SetShown(icon)
+				end
 
-		local left, right, top, bottom
-		if data.iconCoords then
-			left, right, top, bottom = unpack(data.iconCoords)
-		else
-			left, right, top, bottom = E:GetTexCoords()
-		end
-
-		panel.icon:SetTexture(icon)
-		panel.icon:SetTexCoord(left, right, top, bottom)
-		panel.icon:SetShown(icon)
-	end
-
-	local function UpdateColor(_, Hex)
-		hex = Hex
-		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
-	end
-
-	local function OnEvent(dt, event)
-		if event == 'ELVUI_REMOVE' then
-			LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
-		else
-			panel = dt
-			LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
-			UpdateColor(dt, hex)
+				if panel.text then
+					panel.text:SetText(str)
+				end
+			end
 		end
 	end
 
-	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
+	function DT:Panel_UpdateColor(name, obj)
+		return function(_, color)
+			hex = color
+
+			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
+		end
+	end
+
+	function DT:Panel_OnEvent(name, _, UpdateText, UpdateColor)
+		return function(dt, event)
+			if event == 'ELVUI_REMOVE' then
+				LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
+			else
+				panel = dt
+
+				LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
+
+				UpdateColor(dt, hex)
+			end
+		end
+	end
+end
+
+function DT:BuildPanelFunctions(name, obj)
+	local onClick = DT:Panel_OnClick(name, obj)
+	local onEnter = DT:Panel_OnEnter(name, obj)
+	local onLeave = DT:Panel_OnLeave(name, obj)
+
+	local updateText = DT:Panel_UpdateText(name, obj)
+	local updateColor = DT:Panel_UpdateColor(name, obj)
+	local onEvent = DT:Panel_OnEvent(name, obj, updateText, updateColor)
+
+	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
 end
 
 function DT:SetupObjectLDB(name, obj)
