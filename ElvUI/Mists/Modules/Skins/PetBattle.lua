@@ -15,26 +15,26 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local C_PetBattles_GetBreedQuality = C_PetBattles.GetBreedQuality
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
-local function SkinPetButton(self, bf)
-	if not self.backdrop then
-		self:CreateBackdrop()
-		self.backdrop:SetFrameStrata('LOW')
+local function SkinPetButton(frame, bf)
+	if not frame.backdrop then
+		frame:CreateBackdrop()
+		frame.backdrop:SetFrameStrata('LOW')
 	end
 
-	self:SetNormalTexture(E.ClearTexture)
-	self.Icon:SetTexCoords()
-	self.Icon:SetParent(self.backdrop)
-	self.Icon:SetDrawLayer('BORDER')
-	self:StyleButton(nil, nil, true)
-	self.SelectedHighlight:SetAlpha(0)
-	self.pushed:SetInside(self.backdrop)
-	self.hover:SetInside(self.backdrop)
-	self:SetFrameStrata('LOW')
+	frame:SetNormalTexture(E.ClearTexture)
+	frame.Icon:SetTexCoords()
+	frame.Icon:SetParent(frame.backdrop)
+	frame.Icon:SetDrawLayer('BORDER')
+	frame:StyleButton(nil, nil, true)
+	frame.SelectedHighlight:SetAlpha(0)
+	frame.pushed:SetInside(frame.backdrop)
+	frame.hover:SetInside(frame.backdrop)
+	frame:SetFrameStrata('LOW')
 
-	if self == bf.SwitchPetButton then
-		local spbc = self:GetCheckedTexture()
+	if frame == bf.SwitchPetButton then
+		local spbc = frame:GetCheckedTexture()
 		spbc:SetColorTexture(1, 1, 1, 0.3)
-		spbc:SetInside(self.backdrop)
+		spbc:SetInside(frame.backdrop)
 	end
 end
 

@@ -7,9 +7,9 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local function ForceAlpha(self, alpha, forced)
+local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
-		self:SetAlpha(1, true)
+		frame:SetAlpha(1, true)
 	end
 end
 
