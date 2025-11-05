@@ -186,33 +186,7 @@ function DT:ReleasePanel(givenName)
 	end
 end
 
-function DT:BuildPanelFrame(name, fromInit)
-	local db = DT:GetPanelSettings(name)
-
-	local Panel = DT:FetchFrame(name)
-	Panel:ClearAllPoints()
-	Panel:SetPoint('CENTER')
-	Panel:SetSize(db.width, db.height)
-
-	local MoverName = 'DTPanel'..name..'Mover'
-	Panel.moverName = MoverName
-	Panel.givenName = name
-
-	local holder = E:GetMoverHolder(MoverName)
-	if holder then
-		E:SetMoverPoints(MoverName, Panel)
-	else
-		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
-	end
-
-	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
-
-	if not fromInit then
-		DT:UpdatePanelAttributes(name, db)
-	end
-end
-
-function DT:Panel_OnEnter(_, obj)
+function DT:BuildPanel_OnEnter(_, obj)
 	return function(dt)
 		if obj.tooltip then
 			obj.tooltip:ClearAllPoints()
@@ -232,7 +206,7 @@ function DT:Panel_OnEnter(_, obj)
 	end
 end
 
-function DT:Panel_OnLeave(_, obj)
+function DT:BuildPanel_OnLeave(_, obj)
 	return function(dt)
 		if obj.tooltip then
 			obj.tooltip:Hide()
@@ -242,7 +216,7 @@ function DT:Panel_OnLeave(_, obj)
 	end
 end
 
-function DT:Panel_OnClick(_, obj)
+function DT:BuildPanel_OnClick(_, obj)
 	return function(dt, button)
 		if obj.OnClick then
 			obj.OnClick(dt, button)
@@ -252,7 +226,7 @@ end
 
 do
 	local panel, hex
-	function DT:Panel_UpdateText(name)
+	function DT:BuildPanel_UpdateText(name)
 		return function(_, _, _, _, data)
 			local db = E.global.datatexts.settings['LDB_'..name]
 			local icon = db.icon and data.icon
@@ -290,7 +264,7 @@ do
 		end
 	end
 
-	function DT:Panel_UpdateColor(name, obj)
+	function DT:BuildPanel_UpdateColor(name, obj)
 		return function(_, color)
 			hex = color
 
@@ -298,7 +272,7 @@ do
 		end
 	end
 
-	function DT:Panel_OnEvent(name, _, UpdateText, UpdateColor)
+	function DT:BuildPanel_OnEvent(name, _, UpdateText, UpdateColor)
 		return function(dt, event)
 			if event == 'ELVUI_REMOVE' then
 				LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
@@ -313,14 +287,40 @@ do
 	end
 end
 
-function DT:BuildPanelFunctions(name, obj)
-	local onClick = DT:Panel_OnClick(name, obj)
-	local onEnter = DT:Panel_OnEnter(name, obj)
-	local onLeave = DT:Panel_OnLeave(name, obj)
+function DT:BuildPanelFrame(name, fromInit)
+	local db = DT:GetPanelSettings(name)
 
-	local updateText = DT:Panel_UpdateText(name, obj)
-	local updateColor = DT:Panel_UpdateColor(name, obj)
-	local onEvent = DT:Panel_OnEvent(name, obj, updateText, updateColor)
+	local Panel = DT:FetchFrame(name)
+	Panel:ClearAllPoints()
+	Panel:SetPoint('CENTER')
+	Panel:SetSize(db.width, db.height)
+
+	local MoverName = 'DTPanel'..name..'Mover'
+	Panel.moverName = MoverName
+	Panel.givenName = name
+
+	local holder = E:GetMoverHolder(MoverName)
+	if holder then
+		E:SetMoverPoints(MoverName, Panel)
+	else
+		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
+	end
+
+	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+
+	if not fromInit then
+		DT:UpdatePanelAttributes(name, db)
+	end
+end
+
+function DT:BuildPanelFunctions(name, obj)
+	local onClick = DT:BuildPanel_OnClick(name, obj)
+	local onEnter = DT:BuildPanel_OnEnter(name, obj)
+	local onLeave = DT:BuildPanel_OnLeave(name, obj)
+
+	local updateText = DT:BuildPanel_UpdateText(name, obj)
+	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
+	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateText, updateColor)
 
 	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
 end
