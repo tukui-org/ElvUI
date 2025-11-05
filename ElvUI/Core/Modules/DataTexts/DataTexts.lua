@@ -272,7 +272,7 @@ do
 		end
 	end
 
-	function DT:BuildPanel_OnEvent(name, _, UpdateText, UpdateColor)
+	function DT:BuildPanel_OnEvent(name, _, UpdateColor, UpdateText)
 		return function(dt, event)
 			if event == 'ELVUI_REMOVE' then
 				LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
@@ -292,9 +292,10 @@ function DT:BuildPanelFunctions(name, obj)
 	local onEnter = DT:BuildPanel_OnEnter(name, obj)
 	local onLeave = DT:BuildPanel_OnLeave(name, obj)
 
-	local updateText = DT:BuildPanel_UpdateText(name, obj)
 	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
-	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateText, updateColor)
+	local updateText = DT:BuildPanel_UpdateText(name, obj)
+
+	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateColor, updateText)
 
 	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
 end
