@@ -287,6 +287,18 @@ do
 	end
 end
 
+function DT:BuildPanelFunctions(name, obj)
+	local onClick = DT:BuildPanel_OnClick(name, obj)
+	local onEnter = DT:BuildPanel_OnEnter(name, obj)
+	local onLeave = DT:BuildPanel_OnLeave(name, obj)
+
+	local updateText = DT:BuildPanel_UpdateText(name, obj)
+	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
+	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateText, updateColor)
+
+	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
+end
+
 function DT:BuildPanelFrame(name, fromInit)
 	local db = DT:GetPanelSettings(name)
 
@@ -311,18 +323,6 @@ function DT:BuildPanelFrame(name, fromInit)
 	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
 	end
-end
-
-function DT:BuildPanelFunctions(name, obj)
-	local onClick = DT:BuildPanel_OnClick(name, obj)
-	local onEnter = DT:BuildPanel_OnEnter(name, obj)
-	local onLeave = DT:BuildPanel_OnLeave(name, obj)
-
-	local updateText = DT:BuildPanel_UpdateText(name, obj)
-	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
-	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateText, updateColor)
-
-	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
 end
 
 function DT:SetupObjectLDB(name, obj)
