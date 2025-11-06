@@ -186,6 +186,120 @@ function DT:ReleasePanel(givenName)
 	end
 end
 
+function DT:BuildPanel_OnEnter(_, obj)
+	return function(dt)
+		if obj.tooltip then
+			obj.tooltip:ClearAllPoints()
+			obj.tooltip:SetOwner(DT:SetupTooltip(dt))
+			obj.tooltip:Show()
+		else
+			DT.tooltip:ClearLines()
+
+			if obj.OnEnter then
+				obj.OnEnter(dt)
+			elseif obj.OnTooltipShow then
+				obj.OnTooltipShow(DT.tooltip)
+			end
+
+			DT.tooltip:Show()
+		end
+	end
+end
+
+function DT:BuildPanel_OnLeave(_, obj)
+	return function(dt)
+		if obj.tooltip then
+			obj.tooltip:Hide()
+		elseif obj.OnLeave then
+			obj.OnLeave(dt)
+		end
+	end
+end
+
+function DT:BuildPanel_OnClick(_, obj)
+	return function(dt, button)
+		if obj.OnClick then
+			obj.OnClick(dt, button)
+		end
+	end
+end
+
+do
+	local panel, hex
+	function DT:BuildPanel_UpdateText(name)
+		return function(_, _, _, _, data)
+			local db = E.global.datatexts.settings['LDB_'..name]
+			local icon = db.icon and data.icon
+			local label = db.label and data.label
+			local value = db.text and data.text
+			local str = ''
+
+			if label then
+				str = (db.customLabel ~= '' and db.customLabel) or label
+			end
+
+			if value then
+				local color = (db.useValueColor and hex) or '|cFFFFFFFF'
+				str = str .. (label and ': ' or '') .. (color .. value .. '|r')
+			end
+
+			if panel then
+				if panel.icon then
+					local left, right, top, bottom
+					if data.iconCoords then
+						left, right, top, bottom = unpack(data.iconCoords)
+					else
+						left, right, top, bottom = E:GetTexCoords()
+					end
+
+					panel.icon:SetTexture(icon)
+					panel.icon:SetTexCoord(left, right, top, bottom)
+					panel.icon:SetShown(icon)
+				end
+
+				if panel.text then
+					panel.text:SetText(str)
+				end
+			end
+		end
+	end
+
+	function DT:BuildPanel_UpdateColor(name, obj)
+		return function(_, color)
+			hex = color
+
+			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
+		end
+	end
+
+	function DT:BuildPanel_OnEvent(name, _, UpdateColor, UpdateText)
+		return function(dt, event)
+			if event == 'ELVUI_REMOVE' then
+				LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
+			else
+				panel = dt
+
+				LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
+
+				UpdateColor(dt, hex)
+			end
+		end
+	end
+end
+
+function DT:BuildPanelFunctions(name, obj)
+	local onClick = DT:BuildPanel_OnClick(name, obj)
+	local onEnter = DT:BuildPanel_OnEnter(name, obj)
+	local onLeave = DT:BuildPanel_OnLeave(name, obj)
+
+	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
+	local updateText = DT:BuildPanel_UpdateText(name, obj)
+
+	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateColor, updateText)
+
+	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
+end
+
 function DT:BuildPanelFrame(name, fromInit)
 	local db = DT:GetPanelSettings(name)
 
@@ -210,90 +324,6 @@ function DT:BuildPanelFrame(name, fromInit)
 	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
 	end
-end
-
-function DT:BuildPanelFunctions(name, obj)
-	local panel, hex
-
-	local function OnEnter(dt)
-		if obj.tooltip then
-			obj.tooltip:ClearAllPoints()
-			obj.tooltip:SetOwner(DT:SetupTooltip(dt))
-			obj.tooltip:Show()
-		else
-			DT.tooltip:ClearLines()
-
-			if obj.OnEnter then
-				obj.OnEnter(dt)
-			elseif obj.OnTooltipShow then
-				obj.OnTooltipShow(DT.tooltip)
-			end
-
-			DT.tooltip:Show()
-		end
-	end
-
-	local function OnLeave(dt)
-		if obj.tooltip then
-			obj.tooltip:Hide()
-		elseif obj.OnLeave then
-			obj.OnLeave(dt)
-		end
-	end
-
-	local function OnClick(dt, button)
-		if obj.OnClick then
-			obj.OnClick(dt, button)
-		end
-	end
-
-	local function UpdateText(_, _, _, _, data)
-		local db = E.global.datatexts.settings['LDB_'..name]
-		local icon = db.icon and data.icon
-		local label = db.label and data.label
-		local value = db.text and data.text
-
-		local str = ''
-
-		if label then
-			str = (db.customLabel ~= '' and db.customLabel) or label
-		end
-
-		if value then
-			local color = (db.useValueColor and hex) or '|cFFFFFFFF'
-			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
-		end
-
-		panel.text:SetText(str)
-
-		local left, right, top, bottom
-		if data.iconCoords then
-			left, right, top, bottom = unpack(data.iconCoords)
-		else
-			left, right, top, bottom = E:GetTexCoords()
-		end
-
-		panel.icon:SetTexture(icon)
-		panel.icon:SetTexCoord(left, right, top, bottom)
-		panel.icon:SetShown(icon)
-	end
-
-	local function UpdateColor(_, Hex)
-		hex = Hex
-		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
-	end
-
-	local function OnEvent(dt, event)
-		if event == 'ELVUI_REMOVE' then
-			LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
-		else
-			panel = dt
-			LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
-			UpdateColor(dt, hex)
-		end
-	end
-
-	return OnEvent, OnClick, OnEnter, OnLeave, UpdateColor, UpdateText
 end
 
 function DT:SetupObjectLDB(name, obj)
