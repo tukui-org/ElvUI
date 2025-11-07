@@ -90,7 +90,8 @@ function S:Blizzard_InspectUI()
 		local bg = _G['InspectModelFrameBackground'..corner]
 		if bg then
 			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
+
 			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
 				if value and bckgnd.ignoreDesaturated then
 					bckgnd:SetDesaturated(false)

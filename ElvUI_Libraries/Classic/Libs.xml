@@ -25,13 +25,12 @@
 
 	<Script file='..\Classic\LibQuestXP\LibQuestXPDB.lua'/>
 	<Script file='..\Classic\LibQuestXP\LibQuestXP.lua'/>
-	<Script file='..\Classic\LibClassicSpecs\LibClassicSpecs.lua'/>
 
 	<Script file='..\Core\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='..\Core\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='..\Core\LibActionButton-1.0\LibActionButton-1.0.lua'/>
 	<Script file='..\Core\LibDataBroker\LibDataBroker-1.1.lua'/>
-	<Script file='..\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/> <!-- keep under LibClassicSpecs -->
+	<Script file='..\Core\LibDualSpec-1.0\LibDualSpec-1.0.lua'/>
 	<Script file='..\Core\LibElvUIPlugin-1.0\LibElvUIPlugin-1.0.lua'/>
 	<Script file='..\Core\LibSimpleSticky\LibSimpleSticky.lua'/>
 	<Script file='..\Core\LibTranslit-1.0\LibTranslit-1.0.lua'/>

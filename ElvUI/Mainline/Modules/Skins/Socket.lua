@@ -2,10 +2,26 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local format = format
 local ipairs, unpack = ipairs, unpack
-local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
+
+local C_ItemSocketInfo_GetSocketItemInfo = C_ItemSocketInfo.GetSocketItemInfo
+
+local function UpdateItemSocketing()
+	local SocketingContainer = _G.ItemSocketingFrame.SocketingContainer
+	if not SocketingContainer or not SocketingContainer.SocketFrames then return end
+
+	for i, socket in ipairs(SocketingContainer.SocketFrames) do
+		local gemColor = C_ItemSocketInfo_GetSocketItemInfo(i)
+		local color = E.GemTypeInfo[gemColor]
+		if color then
+			socket:SetBackdropBorderColor(color.r, color.g, color.b)
+		else
+			local r, g, b = unpack(E.media.bordercolor)
+			socket:SetBackdropBorderColor(r, g, b)
+		end
+	end
+end
 
 function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
@@ -13,43 +29,41 @@ function S:Blizzard_ItemSocketingUI()
 	local ItemSocketingFrame = _G.ItemSocketingFrame
 	S:HandlePortraitFrame(ItemSocketingFrame)
 
+	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
 	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
 	_G.ItemSocketingScrollFrame:SetTemplate('Transparent')
+
 	S:HandleTrimScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
 
+	local SocketingContainer = ItemSocketingFrame.SocketingContainer
 	for i = 1, _G.MAX_NUM_SOCKETS do
-		local button = _G[format('ItemSocketingSocket%d', i)]
-		local button_bracket = _G[format('ItemSocketingSocket%dBracketFrame', i)]
-		local button_bg = _G[format('ItemSocketingSocket%dBackground', i)]
-		local button_icon = _G[format('ItemSocketingSocket%dIconTexture', i)]
+		local button = SocketingContainer['Socket'..i]
+		if button then
+			button:StripTextures()
+			button:StyleButton()
+			button:SetTemplate(nil, true)
 
-		button:StripTextures()
-		button:StyleButton()
-		button:SetTemplate(nil, true)
-		button_bracket:Kill()
-		button_bg:Kill()
-		button_icon:SetTexCoord(unpack(E.TexCoords))
-		button_icon:SetInside()
-	end
+			if button.BracketFrame then
+				button.BracketFrame:Kill()
+			end
 
-	hooksecurefunc('ItemSocketingFrame_Update', function()
-		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
-			local gemColor = GetSocketTypes(i)
-			local color = E.GemTypeInfo[gemColor]
-			if color then
-				socket:SetBackdropBorderColor(color.r, color.g, color.b)
-			else
-				socket:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			if button.Background then
+				button.Background:Kill()
 			end
 		end
-	end)
+	end
 
-	_G.ItemSocketingFramePortrait:Kill()
-	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
-	S:HandleButton(_G.ItemSocketingSocketButton)
+	local ApplySocketsButton = SocketingContainer.ApplySocketsButton
+	if ApplySocketsButton then
+		ApplySocketsButton:ClearAllPoints()
+		ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+
+		S:HandleButton(ApplySocketsButton)
+	end
+
+	hooksecurefunc('ItemSocketingFrame_Update', UpdateItemSocketing)
 end
 
 S:AddCallbackForAddon('Blizzard_ItemSocketingUI')

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 function S:TradeFrame()
@@ -39,13 +38,13 @@ function S:TradeFrame()
 			local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
 			if playerIcon then
 				playerIcon:SetInside(player)
-				playerIcon:SetTexCoord(unpack(E.TexCoords))
+				playerIcon:SetTexCoords()
 			end
 
 			local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
 			if recipientIcon then
 				recipientIcon:SetInside(recipient)
-				recipientIcon:SetTexCoord(unpack(E.TexCoords))
+				recipientIcon:SetTexCoords()
 			end
 
 			player:OffsetFrameLevel(-1)

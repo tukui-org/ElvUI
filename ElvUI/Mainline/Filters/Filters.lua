@@ -114,6 +114,7 @@ G.unitframe.aurafilters.ImportantCC = {
 		[211881]	= List(3), -- Fel Eruption
 		[217832]	= List(5), -- Imprison
 		[207685]	= List(4), -- Sigil of Misery
+		[204490]	= List(4), -- Sigil of Silence
 	-- Druid
 		[33786]		= List(3), -- Cyclone
 		[339]		= List(3), -- Entangling Roots

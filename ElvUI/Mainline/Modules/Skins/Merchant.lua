@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+
+local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
 
 local function HandleIconButton(button, ...)
 	S:HandleButton(button)
@@ -15,6 +16,12 @@ local function HandleIconButton(button, ...)
 	local region = button:GetRegions()
 	region:SetTexCoord(...)
 	region:SetInside()
+end
+
+local function QuestIcon_SetTexture(iconQuest, texture)
+	if texture == QUEST_ICON then
+		iconQuest:SetTexture(E.Media.Textures.BagQuestIcon)
+	end
 end
 
 local function UpdateRepairButtons()
@@ -109,10 +116,16 @@ function S:MerchantFrame()
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
 		local icon = button.icon
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:ClearAllPoints()
 		icon:Point('TOPLEFT', 1, -1)
 		icon:Point('BOTTOMRIGHT', -1, 1)
+
+		local questIcon = button.IconQuestTexture
+		questIcon:SetTexCoord(0, 1, 0, 1)
+		questIcon:SetInside()
+
+		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
 
 		S:HandleIconBorder(button.IconBorder)
 	end
@@ -135,7 +148,7 @@ function S:MerchantFrame()
 
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoords()
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)

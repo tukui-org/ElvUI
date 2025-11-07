@@ -10,8 +10,16 @@ local CreateFrame = CreateFrame
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and UnitIsUnit('player', frame.initiator) then
-		frame:Hide() -- bug fix, don't show it if player is initiator
+		frame:Hide()
 	end
+end
+
+local function FixAutoCompleteLevel(frame)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	local frameLevel = parent:GetFrameLevel()
+	frame:SetFrameLevel(frameLevel + 4)
 end
 
 function S:BlizzardMiscFrames()
@@ -43,7 +51,9 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.PVPReadyDialogHideButton)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
+	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame) -- bug fix, don't show it if player is initiator
+
+	_G.AutoCompleteBox:SetScript('OnShow', FixAutoCompleteLevel) -- bug fix, swap to AutoCompleteBoxMixin.OnShow instead of AutoComplete_OnShow
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 

@@ -100,6 +100,7 @@ V.skins = {
 		blizzardOptions = true,
 		bmah = true, --black market
 		calendar = true,
+		catalogShop = true,
 		channels = true,
 		character = true,
 		chromieTime = true,

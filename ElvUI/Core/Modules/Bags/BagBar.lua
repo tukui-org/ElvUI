@@ -6,7 +6,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local gsub = gsub
 local ipairs = ipairs
-local unpack = unpack
 local tinsert = tinsert
 local hooksecurefunc = hooksecurefunc
 
@@ -118,7 +117,7 @@ function B:SkinBag(bag)
 	if icon then
 		icon:SetInside()
 		icon:SetTexture((not bag.oldTex or bag.oldTex == 1721259) and E.Media.Textures.Backpack or bag.oldTex)
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 	end
 end
 

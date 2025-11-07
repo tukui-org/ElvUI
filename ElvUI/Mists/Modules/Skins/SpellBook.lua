@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local next, select = next, select
 local hooksecurefunc = hooksecurefunc
 
@@ -47,7 +46,7 @@ local function UpdateButton()
 
 			local r = button.SpellName:GetTextColor()
 			if r < 0.8 then
-				button.SpellName:SetTextColor(0.6, 0.6, 0.6)
+				button.SpellName:SetTextColor(0.8, 0.8, 0.8)
 			elseif r ~= 1 then
 				button.SpellName:SetTextColor(1, 1, 1)
 			end
@@ -144,7 +143,6 @@ function S:SpellBookFrame()
 
 		highlight:SetAllPoints(button.IconTexture)
 		hooksecurefunc(highlight, 'SetTexture', SpellButtonHighlight)
-
 		hooksecurefunc(button, 'UpdateButton', UpdateButton)
 	end
 
@@ -243,7 +241,7 @@ function S:SpellBookFrame()
 				button.ActiveTexture:SetAlpha(0)
 				button.FutureTexture:SetAlpha(0)
 
-				button.iconTexture:SetTexCoord(unpack(E.TexCoords))
+				button.iconTexture:SetTexCoords()
 				button.iconTexture:SetInside()
 
 				button.Name:Point('TOPLEFT', 50, 0)
@@ -290,7 +288,7 @@ function S:SpellBookFrame()
 
 				local normal = tab:GetNormalTexture()
 				normal:SetInside()
-				normal:SetTexCoord(unpack(E.TexCoords))
+				normal:SetTexCoords()
 
 				tab.IsSkinned = true
 			end

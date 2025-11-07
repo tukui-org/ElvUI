@@ -215,7 +215,7 @@ function M:LootRoll_Create(index)
 
 	button.icon = button:CreateTexture(nil, 'OVERLAY')
 	button.icon:SetAllPoints()
-	button.icon:SetTexCoord(unpack(E.TexCoords))
+	button.icon:SetTexCoords()
 
 	button.stack = button:CreateFontString(nil, 'OVERLAY')
 	button.stack:SetPoint('BOTTOMRIGHT', -1, 1)

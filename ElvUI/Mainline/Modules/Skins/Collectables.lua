@@ -21,6 +21,12 @@ local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
+local function CheckAndDisplayHeirloomsTab()
+	if not _G.CollectionsJournalTab5 then return end
+
+	_G.CollectionsJournalTab5:Point('TOPLEFT', E.TimerunningID and _G.CollectionsJournalTab3 or _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
+end
+
 local function ToyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
@@ -186,7 +192,7 @@ local function HeirloomsJournalUpdateButton(_, button)
 	if not button.IsSkinned then
 		S:HandleItemButton(button, true)
 
-		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetTexCoords()
 		button.iconTextureUncollected:SetInside(button)
 		button.iconTexture:SetDrawLayer('ARTWORK')
 		button.hover:SetAllPoints(button.iconTexture)
@@ -257,7 +263,7 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 	local icon = itemFrame.Icon
 	if not icon.backdrop then
 		icon:CreateBackdrop()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		itemFrame.IconBorder:Hide()
 	end
 
@@ -461,7 +467,7 @@ local function SkinPetFrame()
 		frame:OffsetFrameLevel(2)
 		frame:DisableDrawLayer('BACKGROUND')
 		frame:SetTemplate()
-		frame.icon:SetTexCoord(unpack(E.TexCoords))
+		frame.icon:SetTexCoords()
 	end
 
 	Card.HealthFrame.healthBar:StripTextures()
@@ -499,7 +505,7 @@ local function SkinToyFrame()
 		local button = ToyBox.iconsFrame['spellButton'..i]
 		S:HandleItemButton(button, true)
 
-		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+		button.iconTextureUncollected:SetTexCoords()
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
 		button.checked:SetAllPoints(button.iconTexture)
@@ -657,7 +663,7 @@ local function SkinTransmogFrames()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 220)
+	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
 	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
 	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
 
@@ -667,7 +673,7 @@ local function SkinTransmogFrames()
 		slotButton:StripTextures()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
-		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
+		slotButton.Icon:SetTexCoords()
 		slotButton.Icon:SetInside(slotButton.backdrop)
 
 		local undo = slotButton.UndoButton
@@ -748,11 +754,7 @@ local function HandleTabs()
 	end
 
 	-- Blizzard clears points on the wardrobe tab
-	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', function()
-		if _G.CollectionsJournalTab5 then
-			_G.CollectionsJournalTab5:Point('TOPLEFT', _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
-		end
-	end)
+	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
 local function SkinCollectionsFrames()

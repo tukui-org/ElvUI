@@ -83,6 +83,7 @@ if E.Retail then
 	toggles.azeriteEssence = L["Azerite Essence"]
 	toggles.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
 	toggles.campsites = L["Campsite"]
+	toggles.catalogShop = L["BLIZZARD_STORE"]
 	toggles.chromieTime = L["Chromie Time Frame"]
 	toggles.cooldownManager = L["Cooldown Manager"]
 	toggles.contribution = L["Contribution"]

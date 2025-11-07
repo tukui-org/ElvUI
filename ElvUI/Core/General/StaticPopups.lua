@@ -1136,11 +1136,7 @@ function E:StaticPopup_ButtonOnClick()
 	local id = self:GetID()
 	local parent = self:GetParent()
 
-	if not E.Classic then -- has ButtonContainer
-		E.StaticPopup_OnClick(parent:GetParent(), id)
-	else
-		E.StaticPopup_OnClick(parent, id)
-	end
+	E.StaticPopup_OnClick(parent:GetParent(), id)
 end
 
 function E:StaticPopup_CheckButtonOnClick()
@@ -1377,7 +1373,7 @@ function E:LoadStaticPopups()
 			end
 
 			if popup.itemFrameIconTexture then
-				popup.itemFrameIconTexture:SetTexCoord(unpack(E.TexCoords))
+				popup.itemFrameIconTexture:SetTexCoords()
 				popup.itemFrameIconTexture:SetInside()
 			end
 

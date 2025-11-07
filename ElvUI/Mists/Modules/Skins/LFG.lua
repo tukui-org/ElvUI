@@ -15,17 +15,23 @@ local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
 local groupButtonIcons = {
-	133076, -- interface\icons\inv_helmet_08.blp
-	133074, -- interface\icons\inv_helmet_06.blp
-	464820 -- interface\icons\achievement_general_stayclassy.blp
+	133076,	-- interface\icons\inv_helmet_08.blp
+	133074,	-- interface\icons\inv_helmet_06.blp
+	464820	-- interface\icons\achievement_general_stayclassy.blp
 }
 
-local function LFDQueueFrameRoleButtonIconOnShow(self)
-	LCG.ShowOverlayGlow(self:GetParent().checkButton)
+local function LFDQueueFrameRoleButtonIconOnShow(frame)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.ShowOverlayGlow(parent.checkButton)
 end
 
-local function LFDQueueFrameRoleButtonIconOnHide(self)
-	LCG.HideOverlayGlow(self:GetParent().checkButton)
+local function LFDQueueFrameRoleButtonIconOnHide(frame)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.HideOverlayGlow(parent.checkButton)
 end
 
 local function HandleGoldIcon(button)
@@ -41,7 +47,7 @@ local function HandleGoldIcon(button)
 	Button.backdrop:Point('LEFT', 1, 0)
 	Button.backdrop:Size(42)
 
-	iconTexture:SetTexCoord(unpack(E.TexCoords))
+	iconTexture:SetTexCoords()
 	iconTexture:SetDrawLayer('OVERLAY')
 	iconTexture:SetParent(Button.backdrop)
 	iconTexture:SetInside()
@@ -62,7 +68,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item.backdrop:Point('LEFT', 1, 0)
 		item.backdrop:Size(42)
 
-		item.Icon:SetTexCoord(unpack(E.TexCoords))
+		item.Icon:SetTexCoords()
 		item.Icon:SetDrawLayer('OVERLAY')
 		item.Icon:SetParent(item.backdrop)
 		item.Icon:SetInside()
@@ -552,7 +558,7 @@ function S:LookingForGroupFrames()
 			if not button.IsSkinned then
 				button:SetTemplate()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
-				button.Icon:SetTexCoord(unpack(E.TexCoords))
+				button.Icon:SetTexCoords()
 				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
@@ -630,7 +636,7 @@ function S:Blizzard_ChallengesUI()
 
 			button:CreateBackdrop()
 
-			button.Icon:SetTexCoord(unpack(E.TexCoords))
+			button.Icon:SetTexCoords()
 		end
 	end
 end

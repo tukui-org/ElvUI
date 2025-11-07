@@ -37,10 +37,13 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local _G = _G
+local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsConnected = UnitIsConnected
 local UnitPhaseReason = UnitPhaseReason
 local GameTooltip = GameTooltip
+
+local PhaseReason = Enum.PhaseReason
 
 --[[ Override: PhaseIndicator:UpdateTooltip()
 Used to populate the tooltip when the widget is hovered.
@@ -88,24 +91,22 @@ local function Update(self, event, unit)
 
 	-- BUG: UnitPhaseReason returns wrong data for friendly NPCs in phased scenarios like WM or Chromie Time
 	-- https://github.com/Stanzilla/WoWUIBugs/issues/49
-	local phaseReason = UnitIsPlayer(unit) and UnitIsConnected(unit) and UnitPhaseReason(unit) or nil
-	if(phaseReason) then
-		element:Show()
-	else
-		element:Hide()
-	end
+	local reason = UnitIsPlayer(unit) and UnitIsConnected(unit) and UnitPhaseReason(unit) or nil
+	local worldtier = reason == PhaseReason.TimerunningHwt -- phased in open world (hero / nonhero) but not phased in dungeons
+	local shouldShow = (worldtier and not IsInInstance()) or (not worldtier and reason)
 
-	element.reason = phaseReason
+	element:SetShown(shouldShow)
+	element.reason = reason
 
-	--[[ Callback: PhaseIndicator:PostUpdate(isInSamePhase, phaseReason)
+	--[[ Callback: PhaseIndicator:PostUpdate(isInSamePhase, reason)
 	Called after the element has been updated.
 
 	* self          - the PhaseIndicator element
 	* isInSamePhase - indicates whether the unit is in the same phase as the player (boolean)
-	* phaseReason   - the reason why the unit is in a different phase (number?)
+	* reason        - the reason why the unit is in a different phase (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(not phaseReason, phaseReason)
+		return element:PostUpdate(not shouldShow, reason)
 	end
 end
 

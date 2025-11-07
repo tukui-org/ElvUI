@@ -128,7 +128,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 14.02, '14.02-git', nil, true
+		return 14.03, '14.03-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -173,10 +173,6 @@ do
 
 	if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
-	end
-
-	if E.Classic then
-		E:AddLib('LCS', 'LibClassicSpecs-ElvUI')
 	end
 
 	-- backwards compatible for plugins

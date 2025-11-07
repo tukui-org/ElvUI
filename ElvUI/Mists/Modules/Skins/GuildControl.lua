@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GetNumGuildBankTabs = GetNumGuildBankTabs
@@ -43,7 +42,7 @@ local function SkinBankTabs()
 
 		local owned = tab.owned
 		if owned then
-			owned.tabIcon:SetTexCoord(unpack(E.TexCoords))
+			owned.tabIcon:SetTexCoords()
 
 			if owned.editBox and not owned.editBox.backdrop then
 				S:HandleEditBox(owned.editBox)

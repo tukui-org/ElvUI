@@ -2,38 +2,23 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local GetInboxHeaderInfo = GetInboxHeaderInfo
-local GetInboxItemLink = GetInboxItemLink
-local GetInboxNumItems = GetInboxNumItems
-local GetSendMailItem = GetSendMailItem
-
-local GetItemQualityByID = C_Item.GetItemQualityByID
-
-local function MailFrameSkin()
+local function Skin_SendMail()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
-		local button = _G['SendMailAttachment'..i]
-		if not button.template then
-			button:StripTextures()
-			button:SetTemplate(nil, true)
-			button:StyleButton(nil, true)
+		local btn = _G['SendMailAttachment'..i]
+		if not btn.template then
+			btn:StripTextures()
+			btn:SetTemplate()
+			btn:StyleButton()
+
+			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local name = GetSendMailItem(i)
-		if name then
-			local quality = GetItemQualityByID(name)
-			local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
-			button:SetBackdropBorderColor(r, g, b)
-
-			local icon = button:GetNormalTexture()
-			if icon then
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetInside()
-			end
-		else
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		local icon = btn:GetNormalTexture()
+		if icon then
+			icon:SetTexCoords()
+			icon:SetInside()
 		end
 	end
 
@@ -41,93 +26,77 @@ local function MailFrameSkin()
 	_G.MailEditBox:Size(285, _G.SendStationeryBackgroundLeft:GetHeight())
 end
 
+local function Skin_OpenMail()
+	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
+		local btn = _G['OpenMailAttachmentButton'..i]
+		if not btn.template then
+			btn:StripTextures()
+			btn:SetTemplate(nil, true)
+			btn:StyleButton()
+
+			S:HandleIconBorder(btn.IconBorder)
+		end
+
+		local icon = btn.icon or btn.Icon
+		if icon then
+			icon:SetTexCoords()
+			icon:SetInside()
+		end
+	end
+end
+
+local function Skin_InboxItems()
+	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
+		local item = _G['MailItem'..i]
+		item:StripTextures() -- background
+
+		local btn = item.Button
+		if not btn.template then
+			btn:StripTextures()
+			btn:SetTemplate(nil, true)
+			btn:StyleButton()
+
+			S:HandleIconBorder(btn.IconBorder)
+		end
+
+		local icon = btn.icon or btn.Icon
+		if icon then
+			icon:SetTexCoords()
+			icon:SetInside()
+		end
+	end
+end
+
 function S:MailFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
-	-- Mail Frame / Inbox Frame
 	local MailFrame = _G.MailFrame
-	S:HandleFrame(MailFrame, true, nil, -5, 0, -2, 0)
+	S:HandlePortraitFrame(MailFrame)
 
-	_G.MailFrameCloseButton:Point('TOPRIGHT', 0, 2)
-
-	_G.InboxFrameBg:StripTextures()
-	_G.MailFrameBg:StripTextures()
-
-	for i = 1, _G.INBOXITEMS_TO_DISPLAY do
-		local mail = _G['MailItem'..i]
-		local button = _G['MailItem'..i..'Button']
-		local icon = _G['MailItem'..i..'ButtonIcon']
-
-		mail:StripTextures()
-		mail:CreateBackdrop('Transparent')
-		mail.backdrop:Point('TOPLEFT', 42, -3)
-		mail.backdrop:Point('BOTTOMRIGHT', -2, 5)
-
-		button:StripTextures()
-		button:SetTemplate()
-		button:StyleButton()
-
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
-	end
-
-	hooksecurefunc('InboxFrame_Update', function()
-		local numItems = GetInboxNumItems()
-		local index = ((_G.InboxFrame.pageNum - 1) * _G.INBOXITEMS_TO_DISPLAY) + 1
-
-		for i = 1, _G.INBOXITEMS_TO_DISPLAY do
-			local mail = _G['MailItem'..i]
-
-			if index <= numItems then
-				local packageIcon, _, _, _, _, _, _, _, _, _, _, _, isGM = GetInboxHeaderInfo(index)
-				if packageIcon and not isGM then
-					local itemlink = GetInboxItemLink(index, 1)
-					if itemlink then
-						local quality = GetItemQualityByID(itemlink)
-						if quality and quality > 1 then
-							local r, g, b = E:GetItemQualityColor(quality)
-							mail.backdrop:SetBackdropBorderColor(r, g, b)
-						else
-							mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end
-					end
-				elseif isGM then
-					mail.backdrop:SetBackdropBorderColor(0, 0.56, 0.94)
-				else
-					mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			else
-				mail.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-
-			index = index + 1
-		end
-	end)
+	_G.InboxFrame:CreateBackdrop('Transparent')
+	_G.InboxFrame.backdrop:Point('TOPLEFT', _G.MailItem1, 'TOPLEFT')
+	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
-	_G.InboxPrevPageButton:Size(24)
-	_G.InboxPrevPageButton:Point('CENTER', _G.InboxFrame, 'BOTTOMLEFT', 12, 104)
+	_G.InboxPrevPageButton:StripTexts()
+	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
 
 	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
-	_G.InboxNextPageButton:Size(24)
-	_G.InboxNextPageButton:Point('CENTER', _G.InboxFrame, 'BOTTOMLEFT', 319, 104)
+	_G.InboxNextPageButton:StripTexts()
+	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 
-	S:HandleButton(_G.OpenAllMail)
-	_G.OpenAllMail:Point('CENTER', _G.InboxFrame, 'BOTTOM', -28, 104)
-
-	for i = 1, 2 do
-		local tab = _G['MailFrameTab'..i]
-
-		tab:StripTextures()
-		tab:ClearAllPoints()
-		S:HandleTab(tab)
-	end
+	_G.MailFrameTab1:StripTextures()
+	_G.MailFrameTab2:StripTextures()
+	S:HandleTab(_G.MailFrameTab1)
+	S:HandleTab(_G.MailFrameTab2)
 
 	-- Reposition Tabs
-	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -15, 0)
+	_G.MailFrameTab1:ClearAllPoints()
+	_G.MailFrameTab2:ClearAllPoints()
+	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -10, 0)
 	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -19, 0)
 
-	-- Send Mail Frame
+	-- send mail
 	_G.SendMailFrame:StripTextures()
 	_G.SendStationeryBackgroundLeft:Hide()
 	_G.SendStationeryBackgroundRight:Hide()
@@ -141,29 +110,38 @@ function S:MailFrame()
 	_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
 	_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
 
-	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
+	S:HandleTrimScrollBar(_G.MailEditBoxScrollBar)
+	_G.MailEditBoxScrollBar:ClearAllPoints()
+	_G.MailEditBoxScrollBar:Point('TOPLEFT', _G.MailEditBox.ScrollBox, 'TOPRIGHT', 0, 8)
+	_G.MailEditBoxScrollBar:Point('BOTTOMLEFT', _G.MailEditBox.ScrollBox, 'BOTTOMRIGHT', 0, 0)
 
-	S:HandleScrollBar(_G.MailEditBoxScrollBar)
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
 	S:HandleEditBox(_G.SendMailMoneyGold)
 	S:HandleEditBox(_G.SendMailMoneySilver)
 	S:HandleEditBox(_G.SendMailMoneyCopper)
-
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
-	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
-	_G.SendMailSubjectEditBox:Height(18)
+
+	_G.SendMailNameEditBox:ClearAllPoints()
+	_G.SendMailNameEditBox:Point('TOPLEFT', _G.SendMailFrame, 'TOPLEFT', 90, -30)
+	_G.SendMailNameEditBox:Width(109)
 	_G.SendMailNameEditBox:Height(18)
-	_G.SendMailFrame:StripTextures()
 
-	S:HandleButton(_G.SendMailMailButton)
-	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
+	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
+	_G.SendMailSubjectEditBox:Width(214)
+	_G.SendMailSubjectEditBox:Height(18)
 
-	S:HandleButton(_G.SendMailCancelButton)
-	_G.SendMailCancelButton:Point('BOTTOMRIGHT', -53, 94)
+	Skin_SendMail()
+	Skin_OpenMail()
+	Skin_InboxItems()
 
-	_G.SendMailMoneyFrame:Point('BOTTOMLEFT', 170, 94)
+	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
+	hooksecurefunc('OpenMail_Update', Skin_OpenMail)
+	hooksecurefunc('InboxFrame_Update', Skin_InboxItems)
+
+	S:HandleButton(_G.SendMailMailButton, true)
+	S:HandleButton(_G.SendMailCancelButton, true)
 
 	S:HandleRadioButton(_G.SendMailSendMoneyButton)
 	S:HandleRadioButton(_G.SendMailCODButton)
@@ -171,97 +149,46 @@ function S:MailFrame()
 	_G.SendMailSendMoneyButton:ClearAllPoints()
 	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 20, 8)
 
-	for i = 1, 5 do
-		_G['AutoCompleteButton'..i]:StyleButton()
-	end
+	-- open mail (cod)
+	_G.OpenMailFrame:StripTextures(true)
+	_G.OpenMailFrame:SetTemplate('Transparent')
+	_G.OpenMailFrameInset:Kill()
 
-	-- Open Mail Frame
-	local OpenMailFrame = _G.OpenMailFrame
-	OpenMailFrame:StripTextures(true)
-	S:HandleFrame(OpenMailFrame, true)
-	OpenMailFrame.backdrop:Point('TOPLEFT', -5, 0)
-	OpenMailFrame.backdrop:Point('BOTTOMRIGHT', -2, 0)
+	S:HandleCloseButton(_G.OpenMailFrameCloseButton)
+	S:HandleButton(_G.OpenMailReportSpamButton, true)
+	S:HandleButton(_G.OpenMailReplyButton, true)
+	S:HandleButton(_G.OpenMailDeleteButton, true)
+	S:HandleButton(_G.OpenMailCancelButton, true)
+	S:HandleButton(_G.OpenAllMail, true)
 
-	_G.OpenMailFrameCloseButton:Point('TOPRIGHT', OpenMailFrame.backdrop, 'TOPRIGHT', 4, 3)
-
-	for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
-		local button = _G['OpenMailAttachmentButton'..i]
-		local icon = _G['OpenMailAttachmentButton'..i..'IconTexture']
-		local count = _G['OpenMailAttachmentButton'..i..'Count']
-
-		button:StripTextures()
-		button:SetTemplate(nil, true)
-		button:StyleButton()
-
-		if icon then
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetDrawLayer('ARTWORK')
-			icon:SetInside()
-
-			count:SetDrawLayer('OVERLAY')
-		end
-	end
-
-	hooksecurefunc('OpenMailFrame_UpdateButtonPositions', function()
-		for i = 1, _G.ATTACHMENTS_MAX_RECEIVE do
-			local itemLink = GetInboxItemLink(_G.InboxFrame.openMailID, i)
-			local button = _G['OpenMailAttachmentButton'..i]
-
-			if itemLink then
-				local quality = GetItemQualityByID(itemLink)
-				if quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-	end)
-
-	S:HandleButton(_G.OpenMailReportSpamButton)
-
-	S:HandleButton(_G.OpenMailReplyButton)
-	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
-
-	S:HandleButton(_G.OpenMailDeleteButton)
-	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)
-
-	S:HandleButton(_G.OpenMailCancelButton)
+	_G.InboxFrame:StripTextures()
+	_G.MailFrameInset:Kill()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
 	_G.OpenMailScrollFrame:SetTemplate()
-
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
-	_G.OpenMailBodyText:SetTextColor('P', 1, 1, 1)
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
+	_G.MailTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
-	_G.OpenMailInvoiceBuyMode:SetTextColor(1, 0.80, 0.10)
-
+	_G.MailTextFontNormal:SetTextColor(1, 1, 1)
 	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
 	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
-
-	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	_G.OpenMailLetterButtonIconTexture:SetDrawLayer('ARTWORK')
+	_G.OpenMailLetterButtonIconTexture:SetTexCoords()
 	_G.OpenMailLetterButtonIconTexture:SetInside()
-
-	_G.OpenMailLetterButtonCount:SetDrawLayer('OVERLAY')
 
 	_G.OpenMailMoneyButton:StripTextures()
 	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
-
-	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
-	_G.OpenMailMoneyButtonIconTexture:SetDrawLayer('ARTWORK')
+	_G.OpenMailMoneyButtonIconTexture:SetTexCoords()
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
 
-	_G.OpenMailMoneyButtonCount:SetDrawLayer('OVERLAY')
+	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
+	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)
+	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
 S:AddCallback('MailFrame')

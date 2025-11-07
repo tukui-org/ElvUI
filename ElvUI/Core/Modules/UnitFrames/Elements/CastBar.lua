@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
-local unpack = unpack
 local abs, next = abs, next
 local utf8sub = string.utf8sub
 
@@ -290,7 +289,7 @@ function UF:Configure_Castbar(frame)
 	--Icon
 	if db.icon then
 		castbar.Icon = castbar.ButtonIcon
-		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
+		castbar.Icon:SetTexCoords()
 
 		if db.overlayOnFrame == 'None' then
 			castbar.Icon.bg:Size(db.iconAttached and (height - UF.SPACING*2) or db.iconSize)

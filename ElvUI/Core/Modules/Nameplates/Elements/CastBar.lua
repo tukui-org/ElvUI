@@ -6,7 +6,6 @@ local LSM = E.Libs.LSM
 
 local abs = abs
 local next = next
-local unpack = unpack
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 
@@ -161,7 +160,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.Button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
 	castbar.Icon = castbar.Button:CreateTexture(nil, 'ARTWORK')
-	castbar.Icon:SetTexCoord(unpack(E.TexCoords))
+	castbar.Icon:SetTexCoords()
 	castbar.Icon:SetInside()
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')

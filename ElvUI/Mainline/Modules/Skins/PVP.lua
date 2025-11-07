@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, unpack, next = ipairs, pairs, unpack, next
+local ipairs, pairs, next = ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = C_Item.GetItemInfo
@@ -38,7 +38,7 @@ local function HonorSpecificScrollUpdateChild(bu)
 		bu.SelectedTexture:SetInside(bu.backdrop)
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		bu.Icon:SetTexCoord(unpack(E.TexCoords))
+		bu.Icon:SetTexCoords()
 		bu.Icon:Point('TOPLEFT', 5, -3)
 
 		bu.IsSkinned = true
@@ -95,7 +95,7 @@ function S:Blizzard_PVPUI()
 	local SeasonReward = HonorInset.RatedPanel.SeasonRewardFrame
 	SeasonReward:CreateBackdrop()
 	SeasonReward.Icon:SetInside(SeasonReward.backdrop)
-	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
+	SeasonReward.Icon:SetTexCoords()
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
 
@@ -228,7 +228,7 @@ function S:Blizzard_PVPUI()
 	RewardFrame:CreateBackdrop()
 	RewardFrame.CircleMask:Hide()
 	RewardFrame.Ring:Hide()
-	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
+	RewardFrame.Icon:SetTexCoords()
 	RewardFrame.backdrop:SetOutside(RewardFrame.Icon)
 
 	if NewSeasonPopup.NewSeason then

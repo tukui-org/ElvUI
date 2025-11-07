@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Contribution()
@@ -45,7 +44,7 @@ function S:Blizzard_Contribution()
 			reward:CreateBackdrop()
 
 			reward.Border:SetAlpha(0)
-			reward.Icon:SetTexCoord(unpack(E.TexCoords))
+			reward.Icon:SetTexCoords()
 			reward.Icon:SetDrawLayer('ARTWORK', -1)
 			reward.backdrop:SetOutside(reward.Icon)
 		end

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_Trinket(frame)
@@ -28,7 +27,7 @@ function UF:Configure_Trinket(frame)
 
 	trinket:Size(db.pvpTrinket.size)
 	trinket:ClearAllPoints()
-	trinket.icon:SetTexCoord(unpack(E.TexCoords))
+	trinket.icon:SetTexCoords()
 
 	if db.pvpTrinket.position == 'RIGHT' then
 		trinket:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
