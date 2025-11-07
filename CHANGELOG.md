@@ -1,3 +1,14 @@
+### Version 14.03 [ November 6th 2025 ]
+*   Item socket skin was erroring.
+*   Phasing is handled a little better; it seems a little broken on Blizzard side.
+*   Stylefilter triggering on Cast by Spell Name not working. (Thanks hladik-dan)
+*   Catalog frame and several other skin updates. (Thanks fang2hou)
+*   Recent Allies icon for chat added. (Thanks DakJaniels)
+*   Orderhall command bar was removed by Blizzard.
+*   Profession Inspect Recipe frame is skinned now.
+*   Nameplate Classbar (Blizzard) error on friendly units in instances.
+*   Mail frame Blizzard bug fix for Auto Complete.
+
 ### Version 14.02 [ October 7th 2025 ]
 *   Nameplate Style Filters for Not Targeted not resetting from Name Only.
 *   Hunter fake castbars handle Rapid Fire, Quick Shots, and Berserking better.
