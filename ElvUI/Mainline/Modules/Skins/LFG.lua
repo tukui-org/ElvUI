@@ -26,11 +26,17 @@ local groupButtonIcons = {
 }
 
 local function LFDQueueFrameRoleButtonIconOnShow(frame)
-	LCG.ShowOverlayGlow(frame:GetParent().checkButton)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.ShowOverlayGlow(parent.checkButton)
 end
 
 local function LFDQueueFrameRoleButtonIconOnHide(frame)
-	LCG.HideOverlayGlow(frame:GetParent().checkButton)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.HideOverlayGlow(parent.checkButton)
 end
 
 local function HandleGoldIcon(button)

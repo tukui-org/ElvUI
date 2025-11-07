@@ -20,12 +20,18 @@ local groupButtonIcons = {
 	464820 -- interface\icons\achievement_general_stayclassy.blp
 }
 
-local function LFDQueueFrameRoleButtonIconOnShow(self)
-	LCG.ShowOverlayGlow(self:GetParent().checkButton)
+local function LFDQueueFrameRoleButtonIconOnShow(frame)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.ShowOverlayGlow(parent.checkButton)
 end
 
-local function LFDQueueFrameRoleButtonIconOnHide(self)
-	LCG.HideOverlayGlow(self:GetParent().checkButton)
+local function LFDQueueFrameRoleButtonIconOnHide(frame)
+	local parent = frame:GetParent()
+	if not parent then return end
+
+	LCG.HideOverlayGlow(parent.checkButton)
 end
 
 local function HandleGoldIcon(button)
