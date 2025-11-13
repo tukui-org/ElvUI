@@ -323,9 +323,8 @@ function S:FriendsFrame()
 		IgnoreWindow:SetTemplate('Transparent')
 		S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
 		S:HandleButton(IgnoreWindow.UnignorePlayerButton)
+		S:HandleCloseButton(IgnoreWindow.CloseButton)
 	end
-
-	S:HandleCloseButton(_G.FriendsFrameCloseButton) -- Probably missing/temp name
 
 	--Who Frame
 	_G.WhoFrame:StripTextures()
