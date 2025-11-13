@@ -2223,9 +2223,9 @@ do -- Handle collapse
 			elseif texture == 130821 then -- Interface\Buttons\UI-MinusButton-UP
 				button:SetNormalTexture(E.Media.Textures.MinusButton, true)
 			end
-		elseif strfind(texture, 'Plus') or strfind(texture, 'Closed') then
+		elseif strfind(texture, 'Plus') or strfind(texture, '[cC]losed') then
 			button:SetNormalTexture(E.Media.Textures.PlusButton, true)
-		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
+		elseif strfind(texture, 'Minus') or strfind(texture, '[oO]pen') then
 			button:SetNormalTexture(E.Media.Textures.MinusButton, true)
 		end
 	end
