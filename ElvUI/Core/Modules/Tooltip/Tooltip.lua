@@ -801,7 +801,8 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
-	-- Blizzard_SharedXML/Backdrop.lua: secrets cause entire system crashes out over using NineSlice
+	-- Blizzard_SharedXML/Backdrop.lua: secrets cause backdrop system to crash out
+	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use alwaysCompareItems 0
 	if not issecretvalue or not issecretvalue(tt:GetWidth()) then
 		tt.customBackdropAlpha = TT.db.colorAlpha
 		tt:SetTemplate('Transparent')
