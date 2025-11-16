@@ -380,6 +380,7 @@ function M:LoadLoot()
 	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
 	_G.LootFrame:UnregisterAllEvents()
+
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
 
 	-- fix blizzard setpoint connection bs
