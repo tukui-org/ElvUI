@@ -662,10 +662,10 @@ local function SkinTransmogFrames()
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
-	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
+	S:HandleButton(WardrobeTransmogFrame.CustomSetDropdown.SaveButton)
+	S:HandleDropDownBox(WardrobeTransmogFrame.CustomSetDropdown, 200)
+	WardrobeTransmogFrame.CustomSetDropdown.SaveButton:ClearAllPoints()
+	WardrobeTransmogFrame.CustomSetDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.CustomSetDropdown, 'RIGHT', 2, 0)
 
 	for i = 1, #WardrobeTransmogFrame.SlotButtons do
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
@@ -723,15 +723,6 @@ local function SkinTransmogFrames()
 	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
-	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:SetTemplate('Transparent')
-	WardrobeOutfitEditFrame.EditBox:StripTextures()
-	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
-	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
-	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 local function HandleTabs()
