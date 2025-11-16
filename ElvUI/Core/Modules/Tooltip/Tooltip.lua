@@ -104,16 +104,17 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail and tt == GameTooltip then
-		tt.supportsItemComparison = value
-	end
+	if E.Midnight or not E.Retail or tt ~= GameTooltip then return end
+
+	tt.supportsItemComparison = value
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
-		TT:SetCompareItems(tt, false)
+		TT:SetCompareItems(tt, nil)
+
 		tt:Hide() -- during kb mode this will trigger AB.ShowBinds
 		return
 	end
