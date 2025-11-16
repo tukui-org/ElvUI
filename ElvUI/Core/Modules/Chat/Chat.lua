@@ -2127,10 +2127,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 	end
 
-	local message = arg1
-	if arg14 then --isMobile
-		message = _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message
-	end
+	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local message = format('%s%s', isMobile or '', arg1)
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
