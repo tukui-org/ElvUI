@@ -56,6 +56,7 @@ DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
 DT.DataTextList = {}
 DT.LoadedInfo = {}
+DT.DataBroker = {}
 DT.PanelPool = {
 	InUse = {},
 	Free = {},
@@ -224,64 +225,71 @@ function DT:BuildPanel_OnClick(_, obj)
 	end
 end
 
-do
-	local panel, hex
-	function DT:BuildPanel_UpdateText(name)
-		return function(_, _, _, _, data)
-			local db = E.global.datatexts.settings['LDB_'..name]
-			local icon = db.icon and data.icon
-			local label = db.label and data.label
-			local value = db.text and data.text
-			local str = ''
+function DT:BuildPanel_UpdateText(name, obj)
+	return function()
+		local db = E.global.datatexts.settings['LDB_'..name]
+		local icon = db.icon and obj.icon
+		local label = db.label and obj.label
+		local value = db.text and obj.text
+		local str = ''
 
-			if label then
-				str = (db.customLabel ~= '' and db.customLabel) or label
-			end
+		if label then
+			str = (db.customLabel ~= '' and db.customLabel) or label
+		end
 
-			if value then
-				local color = (db.useValueColor and hex) or '|cFFFFFFFF'
-				str = str .. (label and ': ' or '') .. (color .. value .. '|r')
-			end
+		local data = DT.DataBroker[obj]
+		if value then
+			local color = (db.useValueColor and data and data.color) or '|cFFFFFFFF'
+			str = str .. (label and ': ' or '') .. (color .. value .. '|r')
+		end
 
-			if panel then
-				if panel.icon then
-					local left, right, top, bottom
-					if data.iconCoords then
-						left, right, top, bottom = unpack(data.iconCoords)
-					else
-						left, right, top, bottom = E:GetTexCoords()
-					end
-
-					panel.icon:SetTexture(icon)
-					panel.icon:SetTexCoord(left, right, top, bottom)
-					panel.icon:SetShown(icon)
+		local panel = data and data.panel
+		if panel then
+			if panel.icon then
+				local left, right, top, bottom
+				if obj.iconCoords then
+					left, right, top, bottom = unpack(obj.iconCoords)
+				else
+					left, right, top, bottom = E:GetTexCoords()
 				end
 
-				if panel.text then
-					panel.text:SetText(str)
-				end
+				panel.icon:SetTexture(icon)
+				panel.icon:SetTexCoord(left, right, top, bottom)
+				panel.icon:SetShown(icon)
+			end
+
+			if panel.text then
+				panel.text:SetText(str)
 			end
 		end
 	end
+end
 
-	function DT:BuildPanel_UpdateColor(name, obj)
-		return function(_, color)
-			hex = color
+function DT:BuildPanel_UpdateColor(name, obj)
+	return function(_, color)
+		if not color then return end
 
-			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
+		local data = DT.DataBroker[obj]
+		if data then -- set color
+			data.color = color
 		end
+
+		LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name, name, nil, obj.text, obj)
 	end
+end
 
-	function DT:BuildPanel_OnEvent(name, _, UpdateColor, UpdateText)
-		return function(dt, event)
-			if event == 'ELVUI_REMOVE' then
-				LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
-			else
-				panel = dt
+function DT:BuildPanel_OnEvent(name, obj, UpdateColor, UpdateText)
+	return function(dt, event)
+		if event == 'ELVUI_REMOVE' then
+			LDB.UnregisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name)
+		else
+			LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
 
-				LDB.RegisterCallback(dt, 'LibDataBroker_AttributeChanged_'..name, UpdateText)
+			local data = DT.DataBroker[obj]
+			if data then -- set panel
+				data.panel = dt
 
-				UpdateColor(dt, hex)
+				UpdateColor(dt, data.color)
 			end
 		end
 	end
@@ -292,10 +300,10 @@ function DT:BuildPanelFunctions(name, obj)
 	local onEnter = DT:BuildPanel_OnEnter(name, obj)
 	local onLeave = DT:BuildPanel_OnLeave(name, obj)
 
-	local updateColor = DT:BuildPanel_UpdateColor(name, obj)
+	local updateColor = DT:BuildPanel_UpdateColor(name, obj) -- will set data.color
 	local updateText = DT:BuildPanel_UpdateText(name, obj)
 
-	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateColor, updateText)
+	local onEvent = DT:BuildPanel_OnEvent(name, obj, updateColor, updateText) -- will set data.panel
 
 	return onEvent, onClick, onEnter, onLeave, updateColor, updateText
 end
@@ -327,6 +335,10 @@ function DT:BuildPanelFrame(name, fromInit)
 end
 
 function DT:SetupObjectLDB(name, obj)
+	if not name or not obj or not obj.type then return end
+
+	DT.DataBroker[obj] = {}
+
 	if obj.type == 'data source' or obj.type == 'launcher' then
 		local ldbName = 'LDB_'..name
 		if DT.RegisteredDataTexts[ldbName] then return end
