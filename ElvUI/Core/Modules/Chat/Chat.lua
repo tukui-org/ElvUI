@@ -2173,21 +2173,16 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	local senderLink = linkSender and playerLink or arg2
 	if usingDifferentLanguage then
-		body = format(_G['CHAT_'..chatType..'_GET']..('['..arg3..'] ')..message, pflag..senderLink) -- arg3 is language header
-	elseif chatType == 'EMOTE' then
-		body = format(_G['CHAT_'..chatType..'_GET']..message, senderLink)
-	elseif chatType == 'TEXT_EMOTE' and realm then
-		if info.colorNameByClass then
-			body = gsub(message, arg2..'%-'..realm, pflag..(linkSender and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or arg2), 1)
-		else
-			body = gsub(message, arg2..'%-'..realm, pflag..(linkSender and gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h') or arg2), 1)
-		end
-	elseif chatType == 'TEXT_EMOTE' then
-		body = gsub(message, arg2, senderLink, 1)
-	elseif chatType == 'GUILD_ITEM_LOOTED' then
+		body = format(_G['CHAT_'..chatType..'_GET']..'[%s] %s', pflag..senderLink, arg3, message) -- arg3 is language header
+	elseif not isProtected and chatType == 'GUILD_ITEM_LOOTED' then
 		body = gsub(message, '$s', senderLink, 1)
+	elseif not isProtected and realm and chatType == 'TEXT_EMOTE' then
+		local classLink = playerLink and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
+		body = classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1) or message
+	elseif chatType == 'TEXT_EMOTE' then
+		body = ((not issecretvalue or not issecretvalue(arg2)) and arg2 ~= senderLink) and gsub(message, arg2, senderLink, 1) or message
 	else
-		body = format(_G['CHAT_'..chatType..'_GET']..message, senderLink)
+		body = format(_G['CHAT_'..chatType..'_GET'] .. '%s', senderLink, message)
 	end
 
 	-- Add Channel
