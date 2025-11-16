@@ -2711,7 +2711,7 @@ function CH:ChatThrottleHandler(arg1, arg2, when)
 	end
 
 	if not throttle[msg] then
-		throttle[msg] = {time = time(), count = 1}
+		throttle[msg] = { time = time(), count = 1 }
 	else
 		throttle[msg].count = throttle[msg].count + 1
 	end
