@@ -899,7 +899,7 @@ do
 
 		if (E.Retail and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Midnight and (UnitHealth('player') ~= UnitHealthMax('player'))) then
 			self.mouseLock = true
 			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 			AB:FadeBlings(1)
